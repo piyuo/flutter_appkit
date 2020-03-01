@@ -1,0 +1,84 @@
+import 'package:flutter/foundation.dart';
+import 'package:libcli/app/app.dart' as app;
+
+/// serviceUrl return service url base on app.branch
+///
+///     String url = serviceUrl('sys',3001);
+String serviceUrl(String funcName, int debugPort) {
+  if (!kReleaseMode) {
+    if (app.branch == app.Branch.debug) {
+      return 'http://localhost:$debugPort/$funcName';
+    }
+  }
+
+  /// https://us-central1-piyuo-m-base.cloudfunctions.net/sys
+  // return 'https://${host()}-piyuo-${branch()}-${region()}.cloudfunctions.net/$funcName';
+  return 'https://us-central1-master-255220.cloudfunctions.net/$funcName';
+}
+
+/// branch return tag for service branch
+///
+///     expect(commandUrl.branch(), 't');
+String branch() {
+  switch (app.branch) {
+    case app.Branch.test:
+      return 't';
+    case app.Branch.alpha:
+      return 'a';
+    case app.Branch.beta:
+      return 'b';
+    case app.Branch.master:
+      return 'm';
+    default:
+  }
+  assert(false, 'branch not support');
+  return '';
+}
+
+/// host return google cloud platform host location
+///
+///     expect(commandUrl.host(), 'us-central1');
+String host() {
+  switch (app.region) {
+    case app.Region.us:
+      return 'us-central1';
+    case app.Region.cn:
+      return 'asia-east2';
+    case app.Region.tw:
+      return 'asia-east1';
+    default:
+  }
+  assert(false, 'region not support');
+  return '';
+}
+
+/// region return tag for service region
+///
+///     expect(commandUrl.region(), 'us');
+String region() {
+  switch (app.region) {
+    case app.Region.us:
+      return 'us';
+    case app.Region.cn:
+      return 'cn';
+    case app.Region.tw:
+      return 'tw';
+    default:
+  }
+  assert(false, 'region not support');
+  return '';
+}
+
+/*
+停止使用 rxdart 因為很難同時處理同步及非同步程序
+  Observable<ProtoObject> execute(ProtoObject obj) {
+    assert(url != null && url.length > 0);
+    if (this.mockResponse != null) return Observable.just(this.mockResponse);
+    if (this.mockResponder != null) return Observable.just(mockResponder(obj));
+    Uint8List bytes = this.encode(obj);
+    var fromFutureObservable = Observable.fromFuture(this.post(bytes));
+    return fromFutureObservable.switchMap<ProtoObject>((List<int> i) {
+      return Observable.just(this.decode(i));
+    });
+  }
+  */
