@@ -1,7 +1,7 @@
 name: libcli
 description: piyuo.com client library.
 version: 0.0.13
-homepage: https://github.com/piyuo/fl-libcli
+homepage: https://github.com/piyuo/libcli
 
 environment:
     sdk: '>=2.1.0 <3.0.0'
