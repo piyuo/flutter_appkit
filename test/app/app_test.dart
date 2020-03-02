@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/app/app.dart' as app;
 
 void main() {
-  group('system', () {
+  group('app', () {
     test('should set variable', () {
       app.piyuoid = 'piyuo-web-index';
       app.identity = '111-222';
