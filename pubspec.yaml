@@ -1,6 +1,6 @@
 name: libcli
 description: piyuo.com client library.
-version: 0.0.13
+version: 0.0.14
 homepage: https://github.com/piyuo/libcli
 
 environment:
