@@ -8,7 +8,7 @@ void main() {
   MockListener listener = MockListener(true);
   contract.removeAllListener();
   contract.addListener(listener);
-  group('error', () {
+  group('[error]', () {
     test('should catch exception', () {
       listener.clear();
       error.catchError(suspect, () {
