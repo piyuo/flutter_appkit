@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'command_protobuf.dart';
 import 'command_url.dart';
 import 'command_http.dart';
-import 'package:libcli/contract/contract.dart' as c;
+import 'package:libcli/events/events.dart';
 import 'package:libcli/command/commands/shared/err.pb.dart';
 
 const _here = 'command';
@@ -104,7 +104,7 @@ abstract class Service {
       }
     } catch (e, s) {
       var errId = log.error(_here, e, s);
-      giveup(c.EError(errId));
+      giveup(EError(errId));
       return rNull;
     }
     log.debugWarning(_here, 'got NULL from $url');

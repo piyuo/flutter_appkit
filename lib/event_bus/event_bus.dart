@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/log/color.dart';
 
 const _here = 'eventbus';
 
@@ -9,8 +10,8 @@ class Contract {
   Completer<bool> _completer = new Completer<bool>();
 
   void complete(bool ok) {
-    var text = ok ? '\u001b[32mok' : '\u001b[31mfailed';
-    log.debug(_here, '${this.runtimeType} $text');
+    var text = ok ? '${GREEN}done' : '${RED}fail';
+    log.debug(_here, '$text $RESET${this.runtimeType}');
     _completer.complete(ok);
   }
 
@@ -23,8 +24,12 @@ StreamController _streamController = StreamController.broadcast(sync: false);
 
 /// Listens for events of Type [T] and its subtypes.
 ///
-listen<T>(Function(dynamic) func) {
-  log.debug(_here, ' \u001b[36mlisten to \u001b[0m$T');
+///     StreamSubscription sub = eventBus.listen<MockEvent>((event) {
+///       text = event.text;
+///     });
+///     sub.cancel();
+StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
+  log.debug(_here, '${CYAN}listened $RESET$T');
 
   Stream stream;
   if (T == dynamic) {
@@ -32,7 +37,7 @@ listen<T>(Function(dynamic) func) {
   } else {
     stream = _streamController.stream.where((event) => event is T).cast<T>();
   }
-  stream.listen((event) {
+  return stream.listen((event) {
     try {
       func(event);
     } catch (e, s) {
@@ -53,7 +58,7 @@ listen<T>(Function(dynamic) func) {
 ///     eventBus.brodcast(MockEventA('a1'));
 ///
 void brodcast(event) {
-  log.debug(_here, ' \u001b[33mbrodcast \u001b[0m${event.runtimeType}');
+  log.debug(_here, '${MAGENTA}brodcast $RESET${event.runtimeType}');
   _streamController.add(event);
 }
 
@@ -67,7 +72,7 @@ void brodcast(event) {
 ///     });
 ///
 Future<bool> contract(Contract event) {
-  log.debug(_here, ' \u001b[35mcontract \u001b[0m${event.runtimeType}');
+  log.debug(_here, '${MAGENTA}contract $RESET${event.runtimeType}');
   _streamController.add(event);
   return event.future;
 }

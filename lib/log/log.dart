@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/analytic/analytic.dart' as analytic;
+import 'package:libcli/log/color.dart';
 
 const _LEVEL_INFO = 1;
 const _LEVEL_WARNING = 2;
@@ -24,9 +25,7 @@ String head(String where) {
 ///     log.debug(HERE,'hello');
 void debug(String where, String message) {
   if (!kReleaseMode) {
-    var blueColor = '\u001b[34m';
-    var whiteColor = '\u001b[0m';
-    message = '$blueColor${head(where)}$whiteColor$message';
+    message = '$BLUE${head(where)}$RESET$message';
     print(message);
   }
 }
@@ -36,8 +35,7 @@ void debug(String where, String message) {
 ///     const HERE='current package';
 ///     log.debug(HERE,'hello');
 void debugWarning(String where, String message) {
-  var yellowColor = '\u001b[33m';
-  debug(where, yellowColor + message);
+  debug(where, YELLOW + message);
 }
 
 /// print debug info to console
@@ -45,8 +43,7 @@ void debugWarning(String where, String message) {
 ///     const HERE='current package';
 ///     log.debug(HERE,'hello');
 void debugAlert(String where, String message) {
-  var redColor = '\u001b[31m';
-  debug(where, redColor + message);
+  debug(where, RED + message);
 }
 
 /// Normal but significant events, such as start up, shut down, or a configuration change.
@@ -78,19 +75,19 @@ void alert(String where, String message) {
 ///     const HERE='current package';
 ///     _log(HERE,'hello');
 void _log(String where, String message, int level) {
-  var fontColor = '\u001b[0m'; // reset
+  var fontColor = RESET;
   switch (level) {
     case 1:
-      fontColor = '\u001b[36m'; // Cyan
+      fontColor = CYAN;
       break;
     case 2:
-      fontColor = '\u001b[33m'; // yellow
+      fontColor = YELLOW;
       break;
     case 3:
-      fontColor = '\u001b[31m'; // red
+      fontColor = RED;
       break;
   }
-  print('\u001b[34m${head(where)}$fontColor$message\u001b[35m (logged)');
+  print('$BLUE${head(where)}$fontColor$message$MAGENTA (logged)');
   analytic.log(where, message, level);
 }
 
@@ -106,8 +103,7 @@ String error(String where, e, s) {
   String errID = tools.uuid();
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(s);
-  print(
-      '\u001b[34m${head(where)}\u001b[31m$msg \u001b[35m($errID)\n\u001b[33m$stack');
+  print('$BLUE${head(where)}$RED$msg $MAGENTA($errID)\n$YELLOW$stack');
   analytic.error(where, msg, stack, errID);
   return errID;
 }

@@ -4,59 +4,76 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command/command_http.dart' as commandHttp;
-import 'package:libcli/contract/contract.dart' as c;
-import '../contract/mock_listener.dart';
+import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/events/events.dart';
 
 void main() {
-  MockListener okListener = MockListener(false);
-  c.removeAllListener();
-  c.addListener(okListener);
+  var contract;
+  var event;
+
+  setUp(() async {
+    contract = null;
+    event = null;
+
+    eventBus.listen((e) {
+      if (e is eventBus.Contract) {
+        contract = e;
+      } else {
+        event = e;
+      }
+    });
+
+    eventBus.listen<eventBus.Contract>((e) {
+      e.complete(false);
+    });
+  });
 
   group('command_http_request_refuse', () {
     test('should retry no network but refuse', () async {
-      okListener.clear();
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {
         return false;
       };
+
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestContract.runtimeType, c.CInternetRequired);
-      expect(okListener.latestEvent.runtimeType, c.ERefuseInternet);
+      expect(contract.runtimeType, CInternetRequired);
+      expect(event.runtimeType, ERefuseInternet);
     });
 
     test('should retry 511 and failed, access token required', () async {
-      okListener.clear();
       var req = newRequest(statucMock(511));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestContract.runtimeType, c.CAccessTokenRequired);
-      expect(okListener.latestEvent.runtimeType, c.ERefuseSignin);
+      expect(contract.runtimeType, CAccessTokenRequired);
+      expect(event.runtimeType, ERefuseSignin);
     });
 
     test('should retry 412 and failed, access token expired', () async {
-      okListener.clear();
       var req = newRequest(statucMock(412));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestContract.runtimeType, c.CAccessTokenExpired);
-      expect(okListener.latestEvent.runtimeType, c.ERefuseSignin);
+      expect(contract.runtimeType, CAccessTokenExpired);
+      expect(event.runtimeType, ERefuseSignin);
     });
 
     test('should retry 402 and failed, payment token expired', () async {
-      okListener.clear();
       var req = newRequest(statucMock(402));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestContract.runtimeType, c.CPaymentTokenRequired);
-      expect(okListener.latestEvent.runtimeType, c.ERefuseSignin);
+      expect(contract.runtimeType, CPaymentTokenRequired);
+      expect(event.runtimeType, ERefuseSignin);
     });
 
     test('should retry', () async {
-      okListener.clear();
       var req = newRequest(statucMock(412));
-      await commandHttp.retry(c.CAccessTokenExpired(), c.ERefuseSignin(), req);
-      expect(okListener.latestEvent.runtimeType, c.ERefuseSignin);
+      await commandHttp.retry(CAccessTokenExpired(), ERefuseSignin(), req);
+      await eventBus.doneForTest();
+      expect(event.runtimeType, ERefuseSignin);
     });
   });
 }

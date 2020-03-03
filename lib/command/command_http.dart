@@ -4,7 +4,8 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/tools/tools.dart' as tools;
-import 'package:libcli/contract/contract.dart' as c;
+import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/events/events.dart';
 import 'cookies.dart';
 
 const _here = 'command_http';
@@ -29,7 +30,7 @@ Future<List<int>> post(http.Client client, String url, Uint8List bytes,
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
     if (!completer.isCompleted) {
-      c.brodcast(c.ENetworkSlow());
+      eventBus.brodcast(ENetworkSlow());
     }
   });
   Request req = Request();
@@ -96,17 +97,17 @@ Future<List<int>> doPost(Request r) async {
     log.debugWarning(_here, msg);
     switch (resp.statusCode) {
       case 500: //internal server error
-        return giveup(c.EError(resp.body)); //body is err id
+        return giveup(EError(resp.body)); //body is err id
       case 501: //the remote servie is not properly setup
         return throw Exception(msg); //remote server not setup so no error id
       case 504: //service context deadline exceeded
-        return giveup(c.EServiceTimeout(resp.body)); //body is err id
+        return giveup(EServiceTimeout(resp.body)); //body is err id
       case 511: //access token required
-        return await retry(c.CAccessTokenRequired(), c.ERefuseSignin(), r);
+        return await retry(CAccessTokenRequired(), ERefuseSignin(), r);
       case 412: //access token expired
-        return await retry(c.CAccessTokenExpired(), c.ERefuseSignin(), r);
+        return await retry(CAccessTokenExpired(), ERefuseSignin(), r);
       case 402: //payment token expired
-        return await retry(c.CPaymentTokenRequired(), c.ERefuseSignin(), r);
+        return await retry(CPaymentTokenRequired(), ERefuseSignin(), r);
     }
     //unknow status code
     throw Exception('unsupport status ' + msg);
@@ -115,7 +116,7 @@ Future<List<int>> doPost(Request r) async {
       return emmitError(r);
     }
     var errID = log.error(_here, e, s);
-    return giveup(c.EClientTimeout(errID));
+    return giveup(EClientTimeout(errID));
   } on SocketException catch (e, s) {
     if (r.onError != null) {
       return emmitError(r);
@@ -123,14 +124,14 @@ Future<List<int>> doPost(Request r) async {
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
         log.debugAlert(_here, 'caught service not available');
-        return giveup(c.EContactUs(e, s));
+        return giveup(EContactUs(e, s));
       } else {
         log.debugAlert(_here, 'caught service blocked');
-        return giveup(c.EServiceBlocked());
+        return giveup(EServiceBlocked());
       }
     } else {
       log.debugWarning(_here, 'caught no network');
-      return await retry(c.CInternetRequired(), c.ERefuseInternet(), r);
+      return await retry(CInternetRequired(), ERefuseInternet(), r);
     }
   } catch (e, s) {
     if (r.onError != null) {
@@ -138,7 +139,7 @@ Future<List<int>> doPost(Request r) async {
     }
     //handle exception here to get better stack trace
     var errId = log.error(_here, e, s);
-    return giveup(c.EError(errId));
+    return giveup(EError(errId));
   }
 }
 
@@ -155,19 +156,20 @@ emmitError(Request r) {
 /// giveup brodcast event then return null
 ///
 ///   commandHttp.giveup(c.ERefuseInternet());
-giveup(c.Event e) {
-  c.brodcast(e);
+giveup(dynamic e) {
+  eventBus.brodcast(e);
   return null;
 }
 
 /// retry use contract, broadcast event when failed
 ///
 ///     await commandHttp.retry(c.CAccessTokenExpired(), c.ERefuseSignin(), req);
-Future<List<int>> retry(c.Contract contr, c.Event fail, Request r) async {
-  if (await c.open(contr)) {
+Future<List<int>> retry(
+    eventBus.Contract contr, dynamic fail, Request r) async {
+  if (await eventBus.contract(contr)) {
     log.debug(_here, 'ok, redo post');
     return await doPost(r);
   }
-  c.brodcast(fail);
+  eventBus.brodcast(fail);
   return null;
 }
