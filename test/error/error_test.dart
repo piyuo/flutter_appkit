@@ -1,33 +1,48 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/error/error.dart' as error;
-import 'package:libcli/contract/contract.dart' as contract;
-import '../contract/mock_listener.dart';
+import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/events/events.dart';
 import 'dart:async';
 
 void main() {
-  MockListener listener = MockListener(true);
-  contract.removeAllListener();
-  contract.addListener(listener);
   group('[error]', () {
-    test('should catch exception', () {
-      listener.clear();
-      error.catchError(suspect, () {
-        expect(listener.latestEvent.runtimeType, contract.EError);
+    test('should catch exception', () async {
+      var event;
+      eventBus.listen<EError>((e) {
+        event = e;
       });
+      error.catchAndBroadcast(
+          suspect: suspect,
+          callback: () async {
+            await eventBus.doneForTest();
+            expect(event is EError, true);
+          });
     });
 
-    test('should catch async exception', () {
-      listener.clear();
-      error.catchError(suspectAsync, () {
-        expect(listener.latestEvent.runtimeType, contract.EError);
+    test('should catch async exception', () async {
+      var event;
+      eventBus.listen<EError>((e) {
+        event = e;
       });
+      error.catchAndBroadcast(
+          suspect: suspectAsync,
+          callback: () async {
+            await eventBus.doneForTest();
+            expect(event is EError, true);
+          });
     });
 
     test('should catch timer exception', () async {
-      listener.clear();
-      error.catchError(suspectTimer, () {
-        expect(listener.latestEvent.runtimeType, contract.EError);
+      var event;
+      eventBus.listen<EError>((e) {
+        event = e;
       });
+      error.catchAndBroadcast(
+          suspect: suspectTimer,
+          callback: () async {
+            await eventBus.doneForTest();
+            expect(event is EError, true);
+          });
       await Future.delayed(const Duration(milliseconds: 100));
     });
   });

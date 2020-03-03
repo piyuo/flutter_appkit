@@ -1,28 +1,32 @@
 import 'dart:async';
-import 'package:libcli/contract/contract.dart' as contract;
+import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/events/events.dart' as events;
 import 'package:libcli/log/log.dart' as log;
 import 'package:flutter/material.dart';
 
-const _here = 'catch';
+const _here = 'error';
 
-/// catchError catch all unhandle exception
+/// catch unhandle exception
 ///
-///      errors.catchAll(suspect, null);
-catchError(Function main, Function error) {
+///      error.catchAndBroadcast(suspect, null);
+catchAndBroadcast({Function suspect, Function callback}) {
   FlutterError.onError = (FlutterErrorDetails details) {
     var errId = log.error(_here, details.exception, details.stack);
-    contract.brodcast(contract.EError(errId));
+    eventBus.brodcast(events.EError(errId));
+    if (callback != null) {
+      callback();
+    }
   };
 
   runZoned<Future<void>>(
     () async {
-      main();
+      suspect();
     },
     onError: (dynamic e, StackTrace s) {
       var errId = log.error(_here, e, s);
-      contract.brodcast(contract.EError(errId));
-      if (error != null) {
-        error();
+      eventBus.brodcast(events.EError(errId));
+      if (callback != null) {
+        callback();
       }
     },
   );

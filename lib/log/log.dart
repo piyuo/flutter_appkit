@@ -141,6 +141,11 @@ String beautyStack(StackTrace stack) {
 ///
 ///	log.beautyLine(l);
 String beautyLine(String l) {
+  l = beautyLine2(l);
+  return l.replaceAll('file:///Users/cc/Dropbox/prj/fl/', '');
+}
+
+String beautyLine2(String l) {
   l = l.replaceAll('<anonymous closure>', '').replaceAll(
       new RegExp(r"\s+\b|\b\s"),
       ' '); // convert spaces to _ for stack driver format
@@ -148,13 +153,12 @@ String beautyLine(String l) {
   if (l.startsWith('#')) {
     var i = l.indexOf(' ');
     return 'at ' + l.substring(i, l.length).trim();
-  } else {
-    var list = l.split('.dart');
-    if (list.length == 2) {
-      var file = list[0].trim().replaceAll(' ', '_') + '.dart';
-      var pos = list[1].trim().replaceAll(' ', '_');
-      return 'at $file ($pos)';
-    }
+  }
+  var list = l.split('.dart');
+  if (list.length == 2) {
+    var file = list[0].trim().replaceAll(' ', '_') + '.dart';
+    var pos = list[1].trim().replaceAll(' ', '_');
+    return 'at $file ($pos)';
   }
   return '';
 }

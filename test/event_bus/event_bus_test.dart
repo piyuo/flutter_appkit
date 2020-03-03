@@ -5,12 +5,11 @@ main() {
   group('[EventBus]', () {
     test('should broadcst & listen', () async {
       var text;
-      // when
       eventBus.listen<MockEvent>((event) {
         text = event.text;
       });
-      // given
       eventBus.brodcast(MockEvent('a'));
+
       await eventBus.doneForTest();
       expect(text, 'a');
     });
@@ -20,11 +19,9 @@ main() {
       eventBus.listen<MockEvent>((event) {
         throw 'unhandle exception';
       });
-
       eventBus.listen<MockEvent>((event) {
         text = event.text;
       });
-
       eventBus.brodcast(MockEvent('c'));
 
       await eventBus.doneForTest();
