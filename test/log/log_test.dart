@@ -5,7 +5,7 @@ import 'package:libcli/app/app.dart' as app;
 const HERE = 'log_test';
 
 void main() {
-  group('log', () {
+  group('[log]', () {
     test('should print info', () {
       app.piyuoid = 'piyuo-web-index';
       app.identity = '111-222';

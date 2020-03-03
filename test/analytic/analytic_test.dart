@@ -8,7 +8,7 @@ import 'package:libcli/log/log.dart' as log;
 const _here = 'analytic_test';
 
 void main() {
-  group('analytic', () {
+  group('[analytic]', () {
     test('should set time', () {
       var time = timestamp.Timestamp.fromDateTime(DateTime.now());
       expect(time != null, true);
