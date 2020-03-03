@@ -5,17 +5,32 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command/command_http.dart' as commandHttp;
-import 'package:libcli/contract/contract.dart' as c;
-import '../contract/mock_listener.dart';
+import 'package:libcli/events/events.dart';
+import 'package:libcli/event_bus/event_bus.dart' as eventBus;
 
 void main() {
-  MockListener okListener = MockListener(true);
-  c.removeAllListener();
-  c.addListener(okListener);
+  var contract;
+  var event;
 
-  group('command_http_request_exception', () {
+  setUp(() async {
+    contract = null;
+    event = null;
+
+    eventBus.listen((e) {
+      if (e is eventBus.Contract) {
+        contract = e;
+      } else {
+        event = e;
+      }
+    });
+
+    eventBus.listen<eventBus.Contract>((e) {
+      e.complete(true);
+    });
+  });
+
+  group('[command_http_request_exception]', () {
     test('should throw exception when something wrong in request()', () async {
-      okListener.clear();
       var req = newRequest(MockClient((request) async {
         throw Exception('mock');
       }));
@@ -27,7 +42,6 @@ void main() {
     });
 
     test('should use custom onError when error happen', () async {
-      okListener.clear();
       var req = newRequest(MockClient((request) async {
         throw Exception('mock');
       }));
@@ -36,13 +50,13 @@ void main() {
         onErrorCalled = true;
       };
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent, null);
+      expect(event, null);
       expect(onErrorCalled, true);
     });
 
     test('should handle service not available', () async {
-      okListener.clear();
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {
         return true;
@@ -51,12 +65,12 @@ void main() {
         return true;
       };
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent.runtimeType, c.EContactUs);
+      expect(event.runtimeType, EContactUs);
     });
 
     test('should retry service blocked', () async {
-      okListener.clear();
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {
         return true;
@@ -65,24 +79,24 @@ void main() {
         return false;
       };
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent.runtimeType, c.EServiceBlocked);
+      expect(event.runtimeType, EServiceBlocked);
     });
 
     test('should handle no network', () async {
-      okListener.clear();
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {
         return false;
       };
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
-      expect(okListener.latestContract.runtimeType, c.CInternetRequired);
+      expect(contract.runtimeType, CInternetRequired);
     });
 
     test('should handle client timeout', () async {
-      okListener.clear();
       var client = MockClient((request) async {
         await Future.delayed(const Duration(milliseconds: 2));
         return http.Response('hi', 200);
@@ -90,12 +104,12 @@ void main() {
       var req = newRequest(client);
       req.timeout = 1;
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent.runtimeType, c.EClientTimeout);
+      expect(event.runtimeType, EClientTimeout);
     });
 
     test('should use onError when client timeout', () async {
-      okListener.clear();
       var client = MockClient((request) async {
         await Future.delayed(const Duration(milliseconds: 2));
         return http.Response('hi', 200);
@@ -107,8 +121,9 @@ void main() {
       };
       req.timeout = 1;
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent, null);
+      expect(event, null);
       expect(onErrorCalled, true);
     });
   });

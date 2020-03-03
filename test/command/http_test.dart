@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
-  group('http', () {
+  group('[http]', () {
     test('should failed on bad url or no internet', () async {
       var url = 'http://notexist';
       try {

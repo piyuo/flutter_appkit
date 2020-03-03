@@ -9,7 +9,7 @@ import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
 import 'package:http/http.dart' as http;
 
 void main() {
-  group('command', () {
+  group('[command]', () {
     test('should send command and receive response', () async {
       var client = MockClient((request) async {
         StringResponse sr = StringResponse();

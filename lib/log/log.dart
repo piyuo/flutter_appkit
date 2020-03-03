@@ -168,7 +168,8 @@ bool isLineUsable(String line) {
     'asynchronous',
     '(dart:',
     'package:http/src/',
-    'test_api/',
+    'test_api',
+    'flutter_test',
     'StackZone'
   ];
   for (var keyword in containKeywords) {

@@ -28,7 +28,7 @@ void main() {
     });
   });
 
-  group('command_http_request_refuse', () {
+  group('[command_http_request_refuse]', () {
     test('should retry no network but refuse', () async {
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {

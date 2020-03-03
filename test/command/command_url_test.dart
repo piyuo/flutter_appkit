@@ -3,7 +3,7 @@ import 'package:libcli/command/command_url.dart' as commandUrl;
 import 'package:libcli/app/app.dart' as app;
 
 void main() {
-  group('command_url_test', () {
+  group('[command_url_test]', () {
     test('should get service url', () {
       app.branch = app.Branch.test;
       expect(commandUrl.branch(), 't');

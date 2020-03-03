@@ -4,94 +4,108 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command/command_http.dart' as commandHttp;
-import 'package:libcli/contract/contract.dart' as c;
-import '../contract/mock_listener.dart';
+import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/events/events.dart';
 
 void main() {
-  MockListener okListener = MockListener(true);
-  c.removeAllListener();
-  c.addListener(okListener);
+  var contract;
+  var event;
 
-  group('command_http_request', () {
+  setUp(() async {
+    contract = null;
+    event = null;
+
+    eventBus.listen((e) {
+      if (e is eventBus.Contract) {
+        contract = e;
+      } else {
+        event = e;
+      }
+    });
+
+    eventBus.listen<eventBus.Contract>((e) {
+      e.complete(true);
+    });
+  });
+
+  group('[command_http_request]', () {
     test('should return body bytes', () async {
-      okListener.clear();
       var req = newRequest(statucMock(200));
       var bytes = await commandHttp.doPost(req);
       expect(bytes.length, greaterThan(1));
     });
 
     test('should use custom onError', () async {
-      okListener.clear();
       var req = newRequest(statucMock(500));
       var onErrorCalled = false;
       req.onError = () {
         onErrorCalled = true;
       };
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent, null);
+      expect(event, null);
       expect(onErrorCalled, true);
     });
 
     test('should handle 500, internal server error', () async {
-      okListener.clear();
       var req = newRequest(statucMock(500));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent.runtimeType, c.EError);
-      c.EError e = okListener.latestEvent as c.EError;
+      expect(event.runtimeType, EError);
+      EError e = event as EError;
       expect(e.errId, 'mock');
     });
 
     test('should handle 501, servie is not properly setup', () async {
-      okListener.clear();
       var req = newRequest(statucMock(501));
       try {
         await commandHttp.doPost(req);
+        await eventBus.doneForTest();
       } catch (e) {
         expect(e, isNotNull);
       }
     });
 
     test('should handle 504, service context deadline exceeded', () async {
-      okListener.clear();
       var req = newRequest(statucMock(504));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, null);
-      expect(okListener.latestEvent.runtimeType, c.EServiceTimeout);
-      c.EServiceTimeout e = okListener.latestEvent as c.EServiceTimeout;
+      expect(event.runtimeType, EServiceTimeout);
+      EServiceTimeout e = event as EServiceTimeout;
       expect(e.errId, 'mock');
     });
 
     test('should retry 511 and ok, access token required', () async {
-      okListener.clear();
       var req = newRequest(statucMock(511));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
-      expect(okListener.latestContract.runtimeType, c.CAccessTokenRequired);
+      expect(contract.runtimeType, CAccessTokenRequired);
     });
 
     test('should retry 412 and ok, access token expired', () async {
-      okListener.clear();
       var req = newRequest(statucMock(412));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
-      expect(okListener.latestContract.runtimeType, c.CAccessTokenExpired);
+      expect(contract.runtimeType, CAccessTokenExpired);
     });
 
     test('should retry 402 and ok, payment token expired', () async {
-      okListener.clear();
       var req = newRequest(statucMock(402));
       var bytes = await commandHttp.doPost(req);
+      await eventBus.doneForTest();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
-      expect(okListener.latestContract.runtimeType, c.CPaymentTokenRequired);
+      expect(contract.runtimeType, CPaymentTokenRequired);
     });
 
     test('should handle unknown status', () async {
-      okListener.clear();
       var req = newRequest(statucMock(101));
       try {
         await commandHttp.doPost(req);
@@ -101,30 +115,30 @@ void main() {
     });
 
     test('should broadcast slow network', () async {
-      okListener.clear();
       var client = MockClient((request) async {
         await Future.delayed(const Duration(milliseconds: 2));
         return http.Response('hi', 200);
       });
       Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await commandHttp.post(client, '', bytes, 500, 1, null);
-      expect(okListener.latestEvent.runtimeType, c.ENetworkSlow);
+      await eventBus.doneForTest();
+      expect(event.runtimeType, ENetworkSlow);
     });
 
     test('should no slow network', () async {
-      okListener.clear();
       var client = MockClient((request) async {
         return http.Response('hi', 200);
       });
       Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await commandHttp.post(client, '', bytes, 500, 3000, null);
-      expect(okListener.latestEvent, null);
+      await eventBus.doneForTest();
+      expect(event, null);
     });
 
     test('should giveup', () async {
-      okListener.clear();
-      commandHttp.giveup(c.ERefuseInternet());
-      expect(okListener.latestEvent.runtimeType, c.ERefuseInternet);
+      commandHttp.giveup(ERefuseInternet());
+      await eventBus.doneForTest();
+      expect(event.runtimeType, ERefuseInternet);
     });
   });
 }

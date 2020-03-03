@@ -5,7 +5,7 @@ import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
 
 void main() {
   var service = SysService();
-  group('command_protobuf_test', () {
+  group('[command_protobuf_test]', () {
     test('should encode ProtoObject', () {
       EchoAction echoAction = EchoAction();
       echoAction.text = 'hi';

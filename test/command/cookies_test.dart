@@ -25,7 +25,7 @@ void main() async {
   });
   */
   //SharedPreferences.setMockInitialValues(Map < String, dynamic > values);
-  group('command_cookies', () {
+  group('[command_cookies]', () {
     test('should save and load', () async {
 //      expect(preferences.get('String'), kTestValues['flutter.String']);
       await clearCookies();

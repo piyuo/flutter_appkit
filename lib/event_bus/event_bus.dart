@@ -29,7 +29,11 @@ StreamController _streamController = StreamController.broadcast(sync: false);
 ///     });
 ///     sub.cancel();
 StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
-  log.debug(_here, '${CYAN}listened $RESET$T');
+  if (T == dynamic) {
+    log.debug(_here, '${CYAN}listened ${RESET}All');
+  } else {
+    log.debug(_here, '${CYAN}listened $RESET$T');
+  }
 
   Stream stream;
   if (T == dynamic) {
