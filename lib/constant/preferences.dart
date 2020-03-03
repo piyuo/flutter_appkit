@@ -1,0 +1,1 @@
+const kCookies = 'kCookies';

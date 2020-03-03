@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'command_protobuf.dart';
 import 'command_url.dart';
 import 'command_http.dart';
-import 'package:libcli/events/events.dart';
+import 'package:libcli/constant/events.dart';
 import 'package:libcli/command/commands/shared/err.pb.dart';
 
 const _here = 'command';

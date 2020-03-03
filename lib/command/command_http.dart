@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/event_bus/event_bus.dart' as eventBus;
-import 'package:libcli/events/events.dart';
-import 'cookies.dart';
+import 'package:libcli/constant/events.dart';
+import 'package:libcli/constant/contracts.dart';
+import 'package:libcli/data/cookies.dart' as cookies;
+import 'package:flutter/foundation.dart';
 
 const _here = 'command_http';
 
@@ -68,10 +70,10 @@ Future<List<int>> doPost(Request r) async {
     'accept': '',
   };
 
-  var cookies = await loadCookies();
-  if (cookies != '') {
-    log.debug(_here, 'cookies=$cookies');
-    headers['Cookie'] = cookies;
+  if (!kIsWeb) {
+    var c = await cookies.get();
+    log.debug(_here, 'cookies=$c');
+    headers['Cookie'] = c;
   }
 
   try {
@@ -79,10 +81,12 @@ Future<List<int>> doPost(Request r) async {
         .post(r.url, headers: headers, body: r.bytes)
         .timeout(Duration(milliseconds: r.timeout));
 
-    cookies = resp.headers['set-cookie'];
-    if (cookies != null) {
-      log.debug(_here, 'set-cookies=$cookies');
-      saveCookies(cookies);
+    if (!kIsWeb) {
+      var c = resp.headers['set-cookie'];
+      if (c != null) {
+        log.debug(_here, 'set-cookies=$c');
+        cookies.set(c);
+      }
     }
 
     if (resp.statusCode == 200) {

@@ -18,16 +18,31 @@ void main() {
       expect(result, false);
     });
 
+    test('should get false when no data', () async {
+      var result = await data.getBool('');
+      expect(result, false);
+    });
+
     test('should get/set Int', () async {
       await data.setInt('k', 1);
       var result = await data.getInt('k');
       expect(result, 1);
     });
 
-    test('should get/set doublel', () async {
+    test('should get 0 when no data', () async {
+      var result = await data.getInt('');
+      expect(result, 0);
+    });
+
+    test('should get/set double', () async {
       await data.setDouble('k', 1.1);
       var result = await data.getDouble('k');
       expect(result, 1.1);
+    });
+
+    test('should get 0 when no data', () async {
+      var result = await data.getDouble('');
+      expect(result, 0);
     });
 
     test('should get/set string', () async {
@@ -36,11 +51,21 @@ void main() {
       expect(result, 'a');
     });
 
+    test('should get empty string when no data', () async {
+      var result = await data.getString('');
+      expect(result, '');
+    });
+
     test('should get/set string list', () async {
       var list = ['a', 'b', 'c'];
       await data.setStringList('k', list);
       var result = await data.getStringList('k');
       expect(result[1], 'b');
+    });
+
+    test('should get empty list when no data', () async {
+      var result = await data.getStringList('');
+      expect(result, []);
     });
   });
 }

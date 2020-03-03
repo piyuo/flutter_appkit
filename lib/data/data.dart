@@ -17,32 +17,34 @@ Future<SharedPreferences> _get() async {
 ///
 ///     var result = await data.getBool('k');
 ///
-Future<bool> getBool(String key) async => (await _get()).getBool(key);
+Future<bool> getBool(String key) async => (await _get()).getBool(key) ?? false;
 
 /// getInt return int value from data
 ///
 ///     var result = await data.getInt('k');
 ///
-Future<int> getInt(String key) async => (await _get()).getInt(key);
+Future<int> getInt(String key) async => (await _get()).getInt(key) ?? 0;
 
 /// getDouble return double value from data
 ///
 ///     var result = await data.getDouble('k');
 ///
-Future<double> getDouble(String key) async => (await _get()).getDouble(key);
+Future<double> getDouble(String key) async =>
+    (await _get()).getDouble(key) ?? 0;
 
 /// getString return string value from data
 ///
 ///     var result = await data.getString('k');
 ///
-Future<String> getString(String key) async => (await _get()).getString(key);
+Future<String> getString(String key) async =>
+    (await _get()).getString(key) ?? '';
 
 /// getStringList return string list from data
 ///
 ///     var result = await data.getStringList('k');
 ///
 Future<List<String>> getStringList(String key) async =>
-    (await _get()).getStringList(key);
+    (await _get()).getStringList(key) ?? [];
 
 /// setBool set boolean value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
