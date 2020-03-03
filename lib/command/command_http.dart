@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/tools/tools.dart' as tools;
+import 'package:libcli/tools/net.dart' as net;
 import 'package:libcli/event_bus/event_bus.dart' as eventBus;
 import 'package:libcli/constant/events.dart';
 import 'package:libcli/constant/contracts.dart';
@@ -40,8 +40,8 @@ Future<List<int>> post(http.Client client, String url, Uint8List bytes,
   req.url = url;
   req.bytes = bytes;
   req.timeout = timeout;
-  req.isInternetConnected = tools.isInternetConnected;
-  req.isGoogleCloudFunctionAvailable = tools.isGoogleCloudFunctionAvailable;
+  req.isInternetConnected = net.isInternetConnected;
+  req.isGoogleCloudFunctionAvailable = net.isGoogleCloudFunctionAvailable;
   req.onError = onError;
   doPost(req).then((response) {
     timer.cancel();

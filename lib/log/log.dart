@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/app/app.dart' as app;
-import 'package:libcli/tools/tools.dart' as tools;
+import 'package:libcli/tools/id.dart' as id;
 import 'package:libcli/analytic/analytic.dart' as analytic;
 import 'package:libcli/log/color.dart';
 
@@ -100,7 +100,7 @@ void _log(String where, String message, int level) {
 ///       var errID = log.error(HERE, e, s);
 ///     }
 String error(String where, e, s) {
-  String errID = tools.uuid();
+  String errID = id.uuid();
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(s);
   print('$BLUE${head(where)}$RED$msg $MAGENTA($errID)\n$YELLOW$stack');
