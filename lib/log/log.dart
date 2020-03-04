@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/env/env.dart';
 import 'package:libcli/tools/id.dart' as id;
 import 'package:libcli/analytic/analytic.dart' as analytic;
 import 'package:libcli/log/color.dart';
@@ -12,9 +12,9 @@ const _LEVEL_ALERT = 3;
 ///
 ///     String head = head();
 String head(String where) {
-  String text = '${app.piyuoid}/$where';
-  if (app.identity != '') {
-    text = app.identity + "@" + text;
+  String text = '${envAppID}/$where';
+  if (envUserID != '') {
+    text = envUserID + "@" + text;
   }
   return text + ": ";
 }

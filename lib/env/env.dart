@@ -10,20 +10,20 @@ enum Region { us, cn, tw }
 
 /// application identity
 ///
-///     application='piyuo-web-index'
-String piyuoid = '';
+///     envAppID='piyuo-web-index'
+String envAppID = '';
 
 /// user identity
 ///
-///     piyuoId='user-store'
-String identity = '';
+///     envUserID='user-store'
+String envUserID = '';
 
 /// current service branch
 ///
-///     branch=Branch.debug
-Branch branch = Branch.debug;
+///     envBranch=Branch.debug
+Branch envBranch = Branch.debug;
 
 /// current service region
 ///
-///     region=Region.us
-Region region = Region.us;
+///     envRegion=Region.us
+Region envRegion = Region.us;

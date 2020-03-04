@@ -1,29 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/env/env.dart';
 
 const HERE = 'log_test';
 
 void main() {
   group('[log]', () {
     test('should print info', () {
-      app.piyuoid = 'piyuo-web-index';
-      app.identity = '111-222';
+      envAppID = 'piyuo-web-index';
+      envUserID = '111-222';
       log.debug('log_test', 'hi');
       log.debugWarning('log_test', 'hi');
       log.debugAlert('log_test', 'hi');
     });
 
     test('should create head', () {
-      app.piyuoid = 'piyuo-web-index';
-      app.identity = '111-222';
+      envAppID = 'piyuo-web-index';
+      envUserID = '111-222';
       expect(log.head(HERE), '111-222@piyuo-web-index/log_test: ');
     });
 
     test('should log', () async {
-      app.piyuoid = 'log_test';
-      app.identity = 'developer';
-      app.branch = app.Branch.test;
+      envAppID = 'log_test';
+      envUserID = 'developer';
+      envBranch = Branch.test;
       log.info(HERE, 'flutter info');
       log.warning(HERE, 'flutter warning');
       log.alert(HERE, 'flutter alert');
@@ -50,9 +50,9 @@ void main() {
     });
 
     test('should error', () async {
-      app.piyuoid = 'log_test';
-      app.identity = 'developer';
-      app.branch = app.Branch.test;
+      envAppID = 'log_test';
+      envUserID = 'developer';
+      envBranch = Branch.test;
       try {
         throw Exception('my error');
       } catch (e, s) {

@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/env/env.dart';
 
 /// serviceUrl return service url base on app.branch
 ///
 ///     String url = serviceUrl('sys',3001);
 String serviceUrl(String funcName, int debugPort) {
   if (!kReleaseMode) {
-    if (app.branch == app.Branch.debug) {
+    if (branch == Branch.debug) {
       return 'http://localhost:$debugPort/$funcName';
     }
   }
@@ -20,14 +20,14 @@ String serviceUrl(String funcName, int debugPort) {
 ///
 ///     expect(commandUrl.branch(), 't');
 String branch() {
-  switch (app.branch) {
-    case app.Branch.test:
+  switch (envBranch) {
+    case Branch.test:
       return 't';
-    case app.Branch.alpha:
+    case Branch.alpha:
       return 'a';
-    case app.Branch.beta:
+    case Branch.beta:
       return 'b';
-    case app.Branch.master:
+    case Branch.master:
       return 'm';
     default:
   }
@@ -39,12 +39,12 @@ String branch() {
 ///
 ///     expect(commandUrl.host(), 'us-central1');
 String host() {
-  switch (app.region) {
-    case app.Region.us:
+  switch (envRegion) {
+    case Region.us:
       return 'us-central1';
-    case app.Region.cn:
+    case Region.cn:
       return 'asia-east2';
-    case app.Region.tw:
+    case Region.tw:
       return 'asia-east1';
     default:
   }
@@ -56,12 +56,12 @@ String host() {
 ///
 ///     expect(commandUrl.region(), 'us');
 String region() {
-  switch (app.region) {
-    case app.Region.us:
+  switch (envRegion) {
+    case Region.us:
       return 'us';
-    case app.Region.cn:
+    case Region.cn:
       return 'cn';
-    case app.Region.tw:
+    case Region.tw:
       return 'tw';
     default:
   }

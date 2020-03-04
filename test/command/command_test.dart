@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/env/env.dart';
 import 'package:http/testing.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import '../mock/protobuf/string_response.pbserver.dart';
@@ -36,7 +36,7 @@ void main() {
     });
 
     test('should send command to test server and receive response', () async {
-      app.branch = app.Branch.test;
+      envBranch = Branch.test;
       SysService service = SysService();
       PingAction action = new PingAction();
       var response = await service.request(action);
@@ -44,7 +44,7 @@ void main() {
       expect(response.ok, true);
     });
     test('should return null when send wrong action to test server', () async {
-      app.branch = app.Branch.test;
+      envBranch = Branch.test;
       SysService service = SysService();
       EchoAction action = new EchoAction();
       var response = await service.request(action);
