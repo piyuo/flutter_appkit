@@ -7,8 +7,10 @@ import 'package:libcli/command/command_http.dart' as commandHttp;
 import 'package:libcli/event_bus/event_bus.dart' as eventBus;
 import 'package:libcli/constant/events.dart';
 import 'package:libcli/constant/contracts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   var contract;
   var event;
 

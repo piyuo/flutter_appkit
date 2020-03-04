@@ -4,10 +4,13 @@ import 'package:libcli/analytic/analytic.dart' as analytic;
 import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
 import 'package:libcli/env/env.dart';
 import 'package:libcli/log/log.dart' as log;
+import 'package:shared_preferences/shared_preferences.dart';
 
 const _here = 'analytic_test';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
+
   group('[analytic]', () {
     test('should set time', () {
       var time = timestamp.Timestamp.fromDateTime(DateTime.now());
@@ -25,7 +28,7 @@ void main() {
       expect(result, true);
     });
 
-    test('should Error', () async {
+    test('should error', () async {
       envBranch = Branch.test;
       analytic.clear();
       var current = analytic.current();

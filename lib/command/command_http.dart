@@ -72,8 +72,10 @@ Future<List<int>> doPost(Request r) async {
 
   if (!kIsWeb) {
     var c = await cookies.get();
-    log.debug(_here, 'cookies=$c');
-    headers['Cookie'] = c;
+    if (c.length > 0) {
+      log.debug(_here, 'cookies=$c');
+      headers['Cookie'] = c;
+    }
   }
 
   try {
@@ -83,7 +85,7 @@ Future<List<int>> doPost(Request r) async {
 
     if (!kIsWeb) {
       var c = resp.headers['set-cookie'];
-      if (c != null) {
+      if (c != null && c.length > 0) {
         log.debug(_here, 'set-cookies=$c');
         cookies.set(c);
       }

@@ -6,7 +6,7 @@ import 'package:libcli/env/env.dart';
 ///     String url = serviceUrl('sys',3001);
 String serviceUrl(String funcName, int debugPort) {
   if (!kReleaseMode) {
-    if (branch == Branch.debug) {
+    if (envBranch == Branch.debug) {
       return 'http://localhost:$debugPort/$funcName';
     }
   }
