@@ -60,6 +60,7 @@ abstract class Service {
   ///
   /// debug port used in debug branch
   Service(String funcName, int debugPort, this.timeout, this.slow) {
+    assert(funcName != null && funcName.length > 0);
     url = serviceUrl(funcName, debugPort);
   }
 
@@ -73,6 +74,7 @@ abstract class Service {
   ///     });
   Future<dynamic> request(ProtoObject obj) async {
     assert(url != null && url.length > 0);
+    assert(obj != null);
     http.Client client = http.Client();
     return requestWithClient(client, obj);
   }

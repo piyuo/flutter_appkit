@@ -1,4 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+class DataException implements Exception {}
 
 /// _instance provide SharedPreferences instance
 ///
@@ -46,37 +49,71 @@ Future<String> getString(String key) async =>
 Future<List<String>> getStringList(String key) async =>
     (await _get()).getStringList(key) ?? [];
 
+/// getMap return map from data
+///
+///     var result = await data.getMap('k');
+///
+Future<Map<String, dynamic>> getMap(String key) async {
+  var j = await getString(key);
+  return jsonDecode(j);
+}
+
 /// setBool set boolean value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
 ///     await data.setBool('k');
 ///
-Future<bool> setBool(String key, bool value) async =>
-    (await _get()).setBool(key, value);
+Future<void> setBool(String key, bool value) async {
+  if (!await (await _get()).setBool(key, value)) {
+    throw DataException();
+  }
+}
 
 /// setInt set int value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
 ///     await data.setInt('k');
 ///
-Future<bool> setInt(String key, int value) async =>
-    (await _get()).setInt(key, value);
+Future<void> setInt(String key, int value) async {
+  if (!await (await _get()).setInt(key, value)) {
+    throw DataException();
+  }
+}
 
 /// setDouble set double value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
 ///     await data.setDouble('k');
 ///
-Future<bool> setDouble(String key, double value) async =>
-    (await _get()).setDouble(key, value);
+Future<void> setDouble(String key, double value) async {
+  if (!await (await _get()).setDouble(key, value)) {
+    throw DataException();
+  }
+}
 
 /// setString set string value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
 ///     await data.setString('k');
 ///
-Future<bool> setString(String key, String value) async =>
-    (await _get()).setString(key, value);
+Future<void> setString(String key, String value) async {
+  if (!await (await _get()).setString(key, value)) {
+    throw DataException();
+  }
+}
 
 /// setStringList set string list to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
 ///     await data.setStringList('k');
 ///
-Future<bool> setStringList(String key, List<String> value) async =>
-    (await _get()).setStringList(key, value);
+Future<void> setStringList(String key, List<String> value) async {
+  if (!await (await _get()).setStringList(key, value)) {
+    throw DataException();
+  }
+}
+
+/// setMap set string map to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
+///
+///     await data.setMap('k');
+///
+Future<void> setMap(String key, Map<String, dynamic> map) async {
+  // String json = JsonEncoder.withIndent('').convert(map);
+  String j = json.encode(map);
+  return await setString(key, j);
+}

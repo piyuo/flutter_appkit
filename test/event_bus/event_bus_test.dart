@@ -29,6 +29,13 @@ main() {
       expect(text, 'c');
     });
 
+    test('should isolate error', () async {
+      try {} catch (e) {
+        eventBus.brodcast(null);
+        expect(e, isNotNull);
+      }
+    });
+
     test('should unsubscribe', () async {
       var text = '';
       StreamSubscription sub = eventBus.listen<MockEvent>((event) {

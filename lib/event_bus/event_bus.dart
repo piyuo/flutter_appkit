@@ -29,6 +29,7 @@ StreamController _streamController = StreamController.broadcast(sync: false);
 ///     });
 ///     sub.cancel();
 StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
+  assert(func != null);
   if (T == dynamic) {
     log.debug(_here, '${CYAN}listened ${RESET}All');
   } else {
@@ -62,6 +63,7 @@ StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
 ///     eventBus.brodcast(MockEventA('a1'));
 ///
 void brodcast(event) {
+  assert(event != null);
   log.debug(_here, '${MAGENTA}brodcast $RESET${event.runtimeType}');
   _streamController.add(event);
 }
@@ -76,6 +78,7 @@ void brodcast(event) {
 ///     });
 ///
 Future<bool> contract(Contract event) {
+  assert(event != null);
   log.debug(_here, '${MAGENTA}contract $RESET${event.runtimeType}');
   _streamController.add(event);
   return event.future;

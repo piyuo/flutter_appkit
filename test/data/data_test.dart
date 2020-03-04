@@ -67,5 +67,15 @@ void main() {
       var result = await data.getStringList('');
       expect(result, []);
     });
+
+    test('should get/set map', () async {
+      Map<String, dynamic> map = Map<String, dynamic>();
+      map['a'] = 1;
+      map['b'] = 2;
+
+      await data.setMap('k', map);
+      var result = await data.getMap('k');
+      expect(result['b'], 2);
+    });
   });
 }
