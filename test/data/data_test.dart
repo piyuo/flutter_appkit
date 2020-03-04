@@ -18,7 +18,7 @@ void main() {
     });
 
     test('should get false when no data', () async {
-      var result = await data.getBool('');
+      var result = await data.getBool('na');
       expect(result, false);
     });
 
@@ -29,7 +29,7 @@ void main() {
     });
 
     test('should get 0 when no data', () async {
-      var result = await data.getInt('');
+      var result = await data.getInt('na');
       expect(result, 0);
     });
 
@@ -40,7 +40,7 @@ void main() {
     });
 
     test('should get 0 when no data', () async {
-      var result = await data.getDouble('');
+      var result = await data.getDouble('na');
       expect(result, 0);
     });
 
@@ -51,7 +51,7 @@ void main() {
     });
 
     test('should get empty string when no data', () async {
-      var result = await data.getString('');
+      var result = await data.getString('na');
       expect(result, '');
     });
 
@@ -63,7 +63,7 @@ void main() {
     });
 
     test('should get empty list when no data', () async {
-      var result = await data.getStringList('');
+      var result = await data.getStringList('na');
       expect(result, []);
     });
 
