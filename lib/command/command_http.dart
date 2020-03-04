@@ -70,7 +70,7 @@ Future<List<int>> doPost(Request r) async {
     'accept': '',
   };
 
-  if (!kIsWeb) {
+  if (kReleaseMode && !kIsWeb) {
     var c = await cookies.get();
     if (c.length > 0) {
       log.debug(_here, 'cookies=$c');
@@ -83,7 +83,7 @@ Future<List<int>> doPost(Request r) async {
         .post(r.url, headers: headers, body: r.bytes)
         .timeout(Duration(milliseconds: r.timeout));
 
-    if (!kIsWeb) {
+    if (kReleaseMode && !kIsWeb) {
       var c = resp.headers['set-cookie'];
       if (c != null && c.length > 0) {
         log.debug(_here, 'set-cookies=$c');
