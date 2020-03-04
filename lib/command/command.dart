@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 import 'dart:typed_data';
-import 'package:libcli/log/log.dart' as log;
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:http/http.dart' as http;
 import 'command_protobuf.dart';
@@ -8,6 +8,8 @@ import 'command_url.dart';
 import 'command_http.dart';
 import 'package:libcli/constant/events.dart';
 import 'package:libcli/command/commands/shared/err.pb.dart';
+import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/data/data.dart' as data;
 
 const _here = 'command';
 
@@ -112,4 +114,13 @@ abstract class Service {
     log.debugWarning(_here, 'got NULL from $url');
     return rNull;
   }
+}
+
+/// mockInit Initializes the value for testing
+///
+///     command.mockInit({});
+///
+@visibleForTesting
+void mockInit() {
+  data.mockInit({});
 }

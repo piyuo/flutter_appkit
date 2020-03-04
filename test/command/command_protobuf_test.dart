@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import '../mock/protobuf/echo_action.pbserver.dart';
 import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:libcli/command/command.dart' as command;
 
 void main() {
-  SharedPreferences.setMockInitialValues({});
+  command.mockInit();
 
   var service = SysService();
   group('[command_protobuf_test]', () {

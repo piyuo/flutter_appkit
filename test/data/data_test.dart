@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/data/data.dart' as data;
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  SharedPreferences.setMockInitialValues({});
+  data.mockInit({});
   setUp(() async {});
 
   group('[data]', () {

@@ -7,10 +7,10 @@ import '../mock/protobuf/echo_action.pbserver.dart';
 import 'package:libcli/command/commands/shared/ping_action.pb.dart';
 import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:libcli/command/command.dart' as command;
 
 void main() {
-  SharedPreferences.setMockInitialValues({});
+  command.mockInit();
 
   group('[command]', () {
     test('should send command and receive response', () async {

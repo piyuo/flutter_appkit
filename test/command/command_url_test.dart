@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/command/command_url.dart' as commandUrl;
 import 'package:libcli/env/env.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:libcli/command/command.dart' as command;
 
 void main() {
-  SharedPreferences.setMockInitialValues({});
+  command.mockInit();
   group('[command_url_test]', () {
     test('should get service url', () {
       envBranch = Branch.test;
