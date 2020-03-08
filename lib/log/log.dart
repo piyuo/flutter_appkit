@@ -41,7 +41,7 @@ extension LogExtension on String {
       assert(args.length == 2);
       var h = head(args[0]);
       var m = args[1];
-      printToConsole('$HEAD${h}$END/$m');
+      printToConsole('$HEAD${h}$END$m');
     }
   }
 
@@ -55,7 +55,7 @@ extension LogExtension on String {
     assert(args.length == 2);
     var h = head(args[0]);
     var m = args[1];
-    printToConsole('$HEAD$h$END/$hint$m$END (logged)');
+    printToConsole('$HEAD$h$END$hint$m$END (logged)');
     analytic.log(args[0], args[1], level);
   }
 
