@@ -8,7 +8,7 @@ import 'command_url.dart';
 import 'command_http.dart';
 import 'package:libcli/constant/events.dart';
 import 'package:libcli/command/commands/shared/err.pb.dart';
-import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/log/log.dart';
 import 'package:libcli/data/data.dart' as data;
 
 const _here = 'command';
@@ -89,7 +89,7 @@ abstract class Service {
       http.Client client, ProtoObject obj) async {
     Response rNull = Response(null);
     try {
-      log.debug(_here, 'send ${obj.runtimeType} to $url');
+      '$_here|send $NOUN${obj.runtimeType}$END to $NOUN2$url'.print;
       Uint8List bytes = encode(obj);
       List<int> ret = await post(client, url, bytes, timeout, slow, onError);
       if (ret != null) {
@@ -100,18 +100,18 @@ abstract class Service {
           if (type == ' Err') {
             type = '';
           }
-          log.debug(_here, 'got OK$type  from $url');
+          '_here|got ${VERB}OK$END $type  from $url'.print;
         } else {
-          log.debug(_here, 'got ${retObj.runtimeType}=${r.errCode} from $url');
+          '_here|got ${retObj.runtimeType}=${r.errCode} from $url'.print;
         }
         return r;
       }
     } catch (e, s) {
-      var errId = log.error(_here, e, s);
+      var errId = _here.error(e, s);
       giveup(EError(errId));
       return rNull;
     }
-    log.debugWarning(_here, 'got NULL from $url');
+    '_here|got NULL from $url'.print;
     return rNull;
   }
 }

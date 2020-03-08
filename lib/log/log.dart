@@ -1,12 +1,103 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/env/env.dart';
-import 'package:libcli/tools/id.dart' as id;
 import 'package:libcli/analytic/analytic.dart' as analytic;
-import 'package:libcli/log/color.dart';
+import 'package:libcli/tools/id.dart' as id;
+import 'package:libcli/env/env.dart';
 
-const _LEVEL_INFO = 1;
-const _LEVEL_WARNING = 2;
-const _LEVEL_ALERT = 3;
+const LEVEL_INFO = 1;
+const LEVEL_WARNING = 2;
+const LEVEL_ALERT = 3;
+const _b = '\u001b[';
+const RESET = _b + '0m';
+const RED = _b + '31m';
+const GREEN = _b + '32m';
+const YELLOW = _b + '33m';
+const BLUE = _b + '34m';
+const MAGENTA = _b + '35m';
+const CYAN = _b + '36m';
+
+const HEAD = BLUE;
+const VERB = MAGENTA;
+const NOUN = GREEN;
+const NOUN2 = YELLOW;
+const END = RESET;
+const WARNING = YELLOW;
+const ALERT = RED;
+
+printToConsole(String message) {
+  print(message);
+}
+
+///LogExtension will allow you to add `.print`,`.log`,`.warning`,`.alert`,`.error` to your strings
+///
+extension LogExtension on String {
+  /// print debug info to console
+  ///
+  ///     'here|Job ${VERB}done'.print;
+  get print {
+    if (!kReleaseMode) {
+      assert(this.length > 0);
+      assert(this.indexOf('|') != -1, 'must begin with "where|"');
+      List<String> args = this.split('|');
+      assert(args.length == 2);
+      var h = head(args[0]);
+      var m = args[1];
+      printToConsole('$HEAD${h}$END/$m');
+    }
+  }
+
+  /// log print message and log to analytic
+  ///
+  ///      _log(this, logger.LEVEL_INFO, '');
+  _log(String message, int level, String hint) {
+    assert(message.length > 0);
+    assert(message.indexOf('|') != -1, 'must begin with "where|"');
+    List<String> args = message.split('|');
+    assert(args.length == 2);
+    var h = head(args[0]);
+    var m = args[1];
+    printToConsole('$HEAD$h$END/$hint$m$END (logged)');
+    analytic.log(args[0], args[1], level);
+  }
+
+  /// log normal but significant events, such as start up, shut down, or a configuration change.
+  ///
+  ///     'here|something ${VERB} done'.log;
+  get log {
+    _log(this, LEVEL_INFO, '');
+  }
+
+  /// warning events might cause problems.
+  ///
+  ///     'here|things need to ${VERB}watch'.warning;
+  get warning {
+    _log(this, LEVEL_WARNING, '${WARNING}[!WARNING] $END');
+  }
+
+  /// alert a person must take an action immediately
+  ///
+  ///     'here|something${VERB} go ${NOUN}wrong'.alert;
+  get alert {
+    _log(this, LEVEL_ALERT, '${ALERT}[!!ALERT]  $END');
+  }
+
+  /// error handling
+  ///
+  ///     const HERE='current package';
+  ///     try {
+  ///       throw Exception('my error');
+  ///     } catch (e, s) {
+  ///       var errID = error(HERE, e, s);
+  ///     }
+  String error(dynamic e, StackTrace stacktrace) {
+    String errID = id.uuid();
+    String msg = e.toString().replaceAll('Exception: ', '');
+    String stack = beautyStack(stacktrace);
+    printToConsole('$HEAD${head(this)}$END/$msg $NOUN($errID)\n$NOUN2$stack');
+
+    analytic.error(this, msg, stack, errID);
+    return errID;
+  }
+}
 
 /// create log head, like application.identity.where:
 ///
@@ -19,99 +110,10 @@ String head(String where) {
   return text + ": ";
 }
 
-/// print debug info to console
-///
-///     const HERE='current package';
-///     log.debug(HERE,'hello');
-void debug(String where, String message) {
-  if (!kReleaseMode) {
-    message = '$BLUE${head(where)}$RESET$message';
-    print(message);
-  }
-}
-
-/// print debug info to console
-///
-///     const HERE='current package';
-///     log.debug(HERE,'hello');
-void debugWarning(String where, String message) {
-  debug(where, YELLOW + message);
-}
-
-/// print debug info to console
-///
-///     const HERE='current package';
-///     log.debug(HERE,'hello');
-void debugAlert(String where, String message) {
-  debug(where, RED + message);
-}
-
-/// Normal but significant events, such as start up, shut down, or a configuration change.
-///
-///     const HERE='current package';
-///     log.notice(HERE,'hello');
-void info(String where, String message) {
-  _log(where, message, _LEVEL_INFO);
-}
-
-/// Warning events might cause problems.
-///
-///     const HERE='current package';
-///     log.warning(HERE,'hello');
-void warning(String where, String message) {
-  _log(where, message, _LEVEL_WARNING);
-}
-
-/// A person must take an action immediately
-///
-///     const HERE='current package';
-///     log.alert(HERE,'hello');
-void alert(String where, String message) {
-  _log(where, message, _LEVEL_ALERT);
-}
-
-/// log to server with emergency level
-///
-///     const HERE='current package';
-///     _log(HERE,'hello');
-void _log(String where, String message, int level) {
-  var fontColor = RESET;
-  switch (level) {
-    case 1:
-      fontColor = CYAN;
-      break;
-    case 2:
-      fontColor = YELLOW;
-      break;
-    case 3:
-      fontColor = RED;
-      break;
-  }
-  print('$BLUE${head(where)}$fontColor$message$MAGENTA (logged)');
-  analytic.log(where, message, level);
-}
-
-/// record error to server
-///
-///     const HERE='current package';
-///     try {
-///       throw Exception('my error');
-///     } catch (e, s) {
-///       var errID = log.error(HERE, e, s);
-///     }
-String error(String where, e, s) {
-  String errID = id.uuid();
-  String msg = e.toString().replaceAll('Exception: ', '');
-  String stack = beautyStack(s);
-  print('$BLUE${head(where)}$RED$msg $MAGENTA($errID)\n$YELLOW$stack');
-  analytic.error(where, msg, stack, errID);
-  return errID;
-}
-
 ///beautyStack return simple format stack trace
 ///
 ///	catch (e, s) {
-///	String text = log.beautyStack(s);
+///	String text = beautyStack(s);
 ///	expect(text.length > 0, true);
 ///	}
 String beautyStack(StackTrace stack) {
@@ -135,7 +137,7 @@ String beautyStack(StackTrace stack) {
 
 ///beautyLine return line that accept by google stack driver format
 ///
-///	log.beautyLine(l);
+///	beautyLine(l);
 String beautyLine(String l) {
   l = beautyLine2(l);
   return l.replaceAll('file:///Users/cc/Dropbox/prj/fl/', '');

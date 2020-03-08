@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/log/color.dart';
+import 'package:libcli/log/log.dart';
 
 const _here = 'data';
 
@@ -28,7 +27,7 @@ Future<SharedPreferences> _get() async {
 Future<bool> getBool(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getBool(key) ?? false;
-  log.debug(_here, '${YELLOW}get $key=$value');
+  '$_here|get $NOUN$key=$value'.print;
   return value;
 }
 
@@ -39,7 +38,7 @@ Future<bool> getBool(String key) async {
 Future<int> getInt(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getInt(key) ?? 0;
-  log.debug(_here, '${YELLOW}get $key=$value');
+  '$_here|get $NOUN$key=$value'.print;
   return value;
 }
 
@@ -50,7 +49,7 @@ Future<int> getInt(String key) async {
 Future<double> getDouble(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getDouble(key) ?? 0;
-  log.debug(_here, '${YELLOW}get $key=$value');
+  '$_here|get $NOUN$key=$value'.print;
   return value;
 }
 
@@ -61,7 +60,7 @@ Future<double> getDouble(String key) async {
 Future<String> getString(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getString(key) ?? '';
-  log.debug(_here, '${YELLOW}get $key=$value');
+  '$_here|get $NOUN$key=$value'.print;
   return value;
 }
 
@@ -72,7 +71,7 @@ Future<String> getString(String key) async {
 Future<List<String>> getStringList(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getStringList(key) ?? [];
-  log.debug(_here, '${YELLOW}get $key=$value');
+  '$_here|get $NOUN$key=$value'.print;
   return value;
 }
 
@@ -91,7 +90,7 @@ Future<Map<String, dynamic>> getMap(String key) async {
 ///
 Future<void> setBool(String key, bool value) async {
   assert(key.length > 0);
-  log.debug(_here, '${MAGENTA}set $key=$value');
+  '$_here|set $NOUN$key=$value'.print;
   if (!await (await _get()).setBool(key, value)) {
     throw DataException();
   }
@@ -103,7 +102,7 @@ Future<void> setBool(String key, bool value) async {
 ///
 Future<void> setInt(String key, int value) async {
   assert(key.length > 0);
-  log.debug(_here, '${MAGENTA}set $key=$value');
+  '$_here|set $NOUN$key=$value'.print;
   if (!await (await _get()).setInt(key, value)) {
     throw DataException();
   }
@@ -115,7 +114,7 @@ Future<void> setInt(String key, int value) async {
 ///
 Future<void> setDouble(String key, double value) async {
   assert(key.length > 0);
-  log.debug(_here, '${MAGENTA}set $key=$value');
+  '$_here|set $NOUN$key=$value'.print;
   if (!await (await _get()).setDouble(key, value)) {
     throw DataException();
   }
@@ -127,7 +126,7 @@ Future<void> setDouble(String key, double value) async {
 ///
 Future<void> setString(String key, String value) async {
   assert(key.length > 0);
-  log.debug(_here, '${MAGENTA}set $key=$value');
+  '$_here|set $NOUN$key=$value'.print;
   if (!await (await _get()).setString(key, value)) {
     throw DataException();
   }
@@ -139,7 +138,7 @@ Future<void> setString(String key, String value) async {
 ///
 Future<void> setStringList(String key, List<String> value) async {
   assert(key.length > 0);
-  log.debug(_here, '${MAGENTA}set $key=$value');
+  '$_here|set $NOUN$key=$value'.print;
   if (!await (await _get()).setStringList(key, value)) {
     throw DataException();
   }

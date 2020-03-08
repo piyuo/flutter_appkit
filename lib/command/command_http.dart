@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
-import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/log/log.dart';
 import 'package:libcli/tools/net.dart' as net;
 import 'package:libcli/event_bus/event_bus.dart' as eventBus;
 import 'package:libcli/constant/events.dart';
@@ -73,7 +73,7 @@ Future<List<int>> doPost(Request r) async {
   if (kReleaseMode && !kIsWeb) {
     var c = await cookies.get();
     if (c.length > 0) {
-      log.debug(_here, 'cookies=$c');
+      '$_here|cookies=$c'.print;
       headers['Cookie'] = c;
     }
   }
@@ -86,7 +86,7 @@ Future<List<int>> doPost(Request r) async {
     if (kReleaseMode && !kIsWeb) {
       var c = resp.headers['set-cookie'];
       if (c != null && c.length > 0) {
-        log.debug(_here, 'set-cookies=$c');
+        '$_here|set-cookies=$c'.print;
         cookies.set(c);
       }
     }
@@ -100,7 +100,7 @@ Future<List<int>> doPost(Request r) async {
     }
 
     var msg = 'got ${resp.statusCode} ${resp.body} from ${r.url}';
-    log.debugWarning(_here, msg);
+    '$_here|msg'.log;
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(EError(resp.body)); //body is err id
@@ -121,7 +121,7 @@ Future<List<int>> doPost(Request r) async {
     if (r.onError != null) {
       return emmitError(r);
     }
-    var errID = log.error(_here, e, s);
+    var errID = _here.error(e, s);
     return giveup(EClientTimeout(errID));
   } on SocketException catch (e, s) {
     if (r.onError != null) {
@@ -129,14 +129,14 @@ Future<List<int>> doPost(Request r) async {
     }
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
-        log.debugAlert(_here, 'caught service not available');
+        '$_here|service not available'.alert;
         return giveup(EContactUs(e, s));
       } else {
-        log.debugAlert(_here, 'caught service blocked');
+        '$_here|service blocked'.alert;
         return giveup(EServiceBlocked());
       }
     } else {
-      log.debugWarning(_here, 'caught no network');
+      '$_here|no network'.warning;
       return await retry(CInternetRequired(), ERefuseInternet(), r);
     }
   } catch (e, s) {
@@ -144,7 +144,7 @@ Future<List<int>> doPost(Request r) async {
       return emmitError(r);
     }
     //handle exception here to get better stack trace
-    var errId = log.error(_here, e, s);
+    var errId = _here.error(e, s);
     return giveup(EError(errId));
   }
 }
@@ -173,7 +173,7 @@ giveup(dynamic e) {
 Future<List<int>> retry(
     eventBus.Contract contr, dynamic fail, Request r) async {
   if (await eventBus.contract(contr)) {
-    log.debug(_here, 'ok, redo post');
+    '$_here|ok, retry'.log;
     return await doPost(r);
   }
   eventBus.brodcast(fail);

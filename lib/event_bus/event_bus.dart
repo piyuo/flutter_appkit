@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/log/color.dart';
+import 'package:libcli/log/log.dart';
 
 const _here = 'eventbus';
 
@@ -10,8 +9,8 @@ class Contract {
   Completer<bool> _completer = new Completer<bool>();
 
   void complete(bool ok) {
-    var text = ok ? '${GREEN}done' : '${RED}fail';
-    log.debug(_here, '$text $RESET${this.runtimeType}');
+    var text = ok ? '${NOUN}}done' : '${NOUN2}fail';
+    '$_here|${this.runtimeType} $text '.log;
     _completer.complete(ok);
   }
 
@@ -31,9 +30,9 @@ StreamController _streamController = StreamController.broadcast(sync: false);
 StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
   assert(func != null);
   if (T == dynamic) {
-    log.debug(_here, '${CYAN}listened ${RESET}All');
+    '$_here|All listened'.print;
   } else {
-    log.debug(_here, '${CYAN}listened $RESET$T');
+    '$_here|listen $T listened'.print;
   }
 
   Stream stream;
@@ -46,8 +45,7 @@ StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
     try {
       func(event);
     } catch (e, s) {
-      // handle unexpect error
-      log.error(_here, e, s);
+      _here.error(e, s);
       if (event is Contract) {
         event.complete(false);
       }
@@ -64,7 +62,7 @@ StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
 ///
 void brodcast(event) {
   assert(event != null);
-  log.debug(_here, '${MAGENTA}brodcast $RESET${event.runtimeType}');
+  '$_here|brodcast $NOUN${event.runtimeType}'.log;
   _streamController.add(event);
 }
 
@@ -79,7 +77,7 @@ void brodcast(event) {
 ///
 Future<bool> contract(Contract event) {
   assert(event != null);
-  log.debug(_here, '${MAGENTA}contract $RESET${event.runtimeType}');
+  '$_here|contract $NOUN${event.runtimeType}'.log;
   _streamController.add(event);
   return event.future;
 }

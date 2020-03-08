@@ -1,52 +1,30 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/log/log.dart';
 import 'package:libcli/env/env.dart';
-
-const HERE = 'log_test';
 
 void main() {
   group('[log]', () {
-    test('should print info', () {
+    test('should print', () {
       envAppID = 'piyuo-web-index';
       envUserID = '111-222';
-      log.debug('log_test', 'hi');
-      log.debugWarning('log_test', 'hi');
-      log.debugAlert('log_test', 'hi');
-    });
-
-    test('should create head', () {
-      envAppID = 'piyuo-web-index';
-      envUserID = '111-222';
-      expect(log.head(HERE), '111-222@piyuo-web-index/log_test: ');
+      'here|mock ${VERB}test'.print;
     });
 
     test('should log', () async {
       envAppID = 'log_test';
       envUserID = 'developer';
       envBranch = Branch.test;
-      log.info(HERE, 'flutter info');
-      log.warning(HERE, 'flutter warning');
-      log.alert(HERE, 'flutter alert');
+      'here|thing ${VERB}log ${NOUN}here'.log;
+      'here|thing ${VERB}warning ${NOUN}here'.warning;
+      'here|thing ${VERB}alert ${NOUN}here'.alert;
     });
 
-    test('should beautify stack trace', () async {
+    test('should alert no head', () async {
       try {
-        throw Exception('hi');
-      } catch (e, s) {
-        String text = log.beautyStack(s);
-        expect(text.length, greaterThan(0));
+        'no head'.print;
+      } catch (e) {
+        expect(e, isNotNull);
       }
-    });
-
-    test('should beautify stack line', () async {
-      var l =
-          '#0      main.<anonymous closure>.<anonymous closure> (file://libcli/test/log/log_test.dart:34:9)';
-      expect(log.beautyLine(l),
-          'at main.. (file://libcli/test/log/log_test.dart:34:9)');
-
-      l = 'package:libcli/command/command_http.dart 46:15 post.<fn>';
-      expect(log.beautyLine(l),
-          'at package:libcli/command/command_http.dart (46:15_post.<fn>)');
     });
 
     test('should error', () async {
@@ -56,8 +34,34 @@ void main() {
       try {
         throw Exception('my error');
       } catch (e, s) {
-        log.error(HERE, e, s);
+        'here'.error(e, s);
       }
+    });
+
+    test('should create head', () {
+      envAppID = 'piyuo-web-index';
+      envUserID = '111-222';
+      expect(head('here'), '111-222@piyuo-web-index/here: ');
+    });
+
+    test('should beautify stack trace', () async {
+      try {
+        throw Exception('hi');
+      } catch (e, s) {
+        String text = beautyStack(s);
+        expect(text.length, greaterThan(0));
+      }
+    });
+
+    test('should beautify stack line', () async {
+      var l =
+          '#0      main.<anonymous closure>.<anonymous closure> (file://libcli/test/log/log_test.dart:34:9)';
+      expect(beautyLine(l),
+          'at main.. (file://libcli/test/log/log_test.dart:34:9)');
+
+      l = 'package:libcli/command/command_http.dart 46:15 post.<fn>';
+      expect(beautyLine(l),
+          'at package:libcli/command/command_http.dart (46:15_post.<fn>)');
     });
   });
 }
