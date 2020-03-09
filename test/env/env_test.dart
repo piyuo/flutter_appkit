@@ -8,7 +8,7 @@ void main() {
       envAppID = 'piyuo-web-index';
       envUserID = '111-222';
       envBranch = Branch.debug;
-      envRegion = Region.us;
+      envRegion = Region.US;
       expect(envAppID, 'piyuo-web-index');
     });
   });

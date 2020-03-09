@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:libcli/assets/assets.dart' as assets;
+import 'package:libcli/hook/assets.dart' as assets;
 import 'package:libcli/log/log.dart';
 
 class I18nState {

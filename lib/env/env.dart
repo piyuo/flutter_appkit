@@ -6,7 +6,7 @@
 enum Branch { debug, test, alpha, beta, master }
 
 /// service deploy location,
-enum Region { us, cn, tw }
+enum Region { US, CN, TW }
 
 /// application identity
 ///
@@ -26,4 +26,4 @@ Branch envBranch = Branch.debug;
 /// current service region
 ///
 ///     envRegion=Region.us
-Region envRegion = Region.us;
+Region envRegion = Region.US;

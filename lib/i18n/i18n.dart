@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart';
-import 'package:libcli/assets/assets.dart' as assets;
+import 'package:libcli/hook/assets.dart' as assets;
 import 'package:provider/provider.dart';
 import 'package:libcli/i18n/i18n_provider.dart';
 

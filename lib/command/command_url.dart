@@ -40,11 +40,11 @@ String branch() {
 ///     expect(commandUrl.host(), 'us-central1');
 String host() {
   switch (envRegion) {
-    case Region.us:
+    case Region.US:
       return 'us-central1';
-    case Region.cn:
+    case Region.CN:
       return 'asia-east2';
-    case Region.tw:
+    case Region.TW:
       return 'asia-east1';
     default:
   }
@@ -57,11 +57,11 @@ String host() {
 ///     expect(commandUrl.region(), 'us');
 String region() {
   switch (envRegion) {
-    case Region.us:
+    case Region.US:
       return 'us';
-    case Region.cn:
+    case Region.CN:
       return 'cn';
-    case Region.tw:
+    case Region.TW:
       return 'tw';
     default:
   }

@@ -9,7 +9,7 @@ void main() {
     test('should get service url', () {
       envBranch = Branch.test;
       expect(commandUrl.branch(), 't');
-      envRegion = Region.us;
+      envRegion = Region.US;
       expect(commandUrl.region(), 'us');
       expect(commandUrl.host(), 'us-central1');
       expect(commandUrl.region(), 'us');
