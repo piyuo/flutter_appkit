@@ -15,17 +15,22 @@ dependencies:
     shared_preferences: ^0.5.6+2
     fixnum: ^0.10.11
     meta: ^1.1.8
+    provider: ^4.0.4
     #  rxdart: ^0.23.1
 
 dev_dependencies:
     flutter_test:
         sdk: flutter
+    mockito: ^4.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
+    uses-material-design: true
+    assets:
+        - assets/i18n/
     # To add assets to your package, add an assets section, like this:
     # assets:
     #  - images/a_dot_burr.jpeg
