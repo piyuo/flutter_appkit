@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart';
-import 'package:libcli/async/async_provider.dart';
+import 'package:libcli/provider-redux/async_provider.dart';
 
 class AwaitProvider with ChangeNotifier {
   List<AsyncProvider> list;

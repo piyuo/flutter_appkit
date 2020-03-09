@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/analytic/analytic.dart' as analytic;
+import 'package:libcli/log/analytic.dart' as analytic;
 import 'package:libcli/tools/id.dart' as id;
 import 'package:libcli/env/env.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/async/async_provider.dart';
+import 'package:libcli/provider-redux/async_provider.dart';
 
 class ThemeController extends AsyncProvider {
   static const fonts = ['system', 'kuaile'];

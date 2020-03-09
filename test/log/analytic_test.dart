@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:libcli/analytic/analytic.dart' as analytic;
+import 'package:libcli/log/analytic.dart' as analytic;
 import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
 import 'package:libcli/env/env.dart';
 import 'package:libcli/log/log.dart' as log;

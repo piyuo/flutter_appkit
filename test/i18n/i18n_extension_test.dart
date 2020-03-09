@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/async/await.dart';
+import 'package:libcli/provider-redux/await.dart';
 import 'package:libcli/i18n/i18n_provider.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 

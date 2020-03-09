@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/redux/redux_provider.dart';
+import 'package:libcli/provider-redux/redux_provider.dart';
 import 'package:libcli/i18n/i18n_state.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/log/log.dart';
