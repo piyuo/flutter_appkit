@@ -28,7 +28,8 @@ class MockState {
 
 enum MockAction { Increment }
 
-MockState reducer(MockState state, MockAction action, dynamic payload) {
+Future<MockState> reducer(
+    MockState state, MockAction action, dynamic payload) async {
   switch (action) {
     case MockAction.Increment:
       return state..value = state.value + payload;

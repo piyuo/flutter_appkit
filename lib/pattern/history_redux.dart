@@ -106,10 +106,10 @@ class HistoryRedux<S, A> {
   Future<void> dispatch(A action, dynamic payload) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (kReleaseMode) {
-      _setState(_reducer(state, action, payload));
+      _setState(await _reducer(state, action, payload));
     } else {
       var jOld = toString(state);
-      var newState = _reducer(state, action, payload);
+      var newState = await _reducer(state, action, payload);
       var jNew = toString(newState);
       var jAction = toString(action);
       var jPayload = toString(payload);

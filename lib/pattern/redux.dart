@@ -6,7 +6,7 @@ const _here = 'redux';
 
 /// Redux reducer implementation
 ///
-typedef S Reducer<S, A>(S state, A action, dynamic payload);
+typedef Future<S> Reducer<S, A>(S state, A action, dynamic payload);
 
 /// Redux implements redux pattern
 ///
@@ -46,10 +46,10 @@ class Redux<S, A> {
   Future<void> dispatch(A action, dynamic payload) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (kReleaseMode) {
-      _state = _reducer(state, action, payload);
+      _state = await _reducer(state, action, payload);
     } else {
       var jOld = toString(state);
-      var newState = _reducer(state, action, payload);
+      var newState = await _reducer(state, action, payload);
       var jNew = toString(newState);
       var jAction = toString(action);
       var jPayload = toString(payload);
