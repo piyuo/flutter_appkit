@@ -1,22 +1,13 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:libcli/pattern/async_provider.dart';
+import 'package:libcli/pattern/redux_provider.dart';
+import 'package:libcli/theme/theme_reducer.dart';
+import 'package:libcli/theme/theme_state.dart';
 
-class ThemeController extends AsyncProvider {
-  static const fonts = ['system', 'kuaile'];
-
-  int fontIndex;
-
-  ThemeController() {}
-
-  ThemeData theme = ThemeData(
-    brightness: Brightness.light,
-  );
-
-  ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-  );
+class ThemeProvider extends ReduxProvider<ThemeState, ThemeAction> {
+  ThemeProvider() : super(reducer, ThemeState());
 
   @override
-  Future<void> load() async {}
+  Future<void> load() async {
+    state = await readState();
+  }
 }
