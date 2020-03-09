@@ -43,7 +43,7 @@ class Redux<S, A> {
   ///
   ///     redux.dispatch(MockAction.Increment, 1);
   ///
-  Future<void> dispatch(A action, dynamic payload) async {
+  Future<S> dispatch(A action, dynamic payload) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (kReleaseMode) {
       _state = await _reducer(state, action, payload);
@@ -56,6 +56,7 @@ class Redux<S, A> {
       '$_here|$jOld => $VERB$jAction $NOUN$jPayload $END=> $NOUN2$jNew'.print;
       _state = newState;
     }
+    return state;
   }
 }
 
