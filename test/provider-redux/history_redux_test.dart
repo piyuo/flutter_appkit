@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/provider-redux/history_redux.dart';
+import 'package:libcli/pattern/history_redux.dart';
 
 void main() {
   setUp(() async {});

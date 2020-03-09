@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/provider-redux/await.dart';
+import 'package:libcli/pattern/await.dart';
 import 'package:provider/provider.dart';
 import 'mock_provider.dart';
 import 'mock_views.dart';

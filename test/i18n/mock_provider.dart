@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/provider-redux/async_provider.dart';
+import 'package:libcli/pattern/async_provider.dart';
 
 class MockProvider extends AsyncProvider {
   @override

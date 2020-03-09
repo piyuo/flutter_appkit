@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/provider-redux/async_provider.dart';
-import 'package:libcli/provider-redux/await_provider.dart';
+import 'package:libcli/pattern/async_provider.dart';
+import 'package:libcli/pattern/await_provider.dart';
 
 class Await extends StatelessWidget {
   final AwaitProvider provider = AwaitProvider();
