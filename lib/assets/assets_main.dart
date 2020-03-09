@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:libui/assets/assets.dart' as assets;
+import 'package:libcli/assets/assets.dart' as assets;
 import 'package:libcli/log/log.dart';
 
 const _here = 'assets_main';

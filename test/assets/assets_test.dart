@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/services.dart';
-import 'package:libui/assets/assets.dart' as assets;
-import 'package:libui/assets/assets_main.dart' as assetsMain;
-import 'package:libui/assets/assets_web.dart' as assetsWeb;
+import 'package:libcli/assets/assets.dart' as assets;
+import 'package:libcli/assets/assets_main.dart' as assetsMain;
+import 'package:libcli/assets/assets_web.dart' as assetsWeb;
 
 /*
 class TestAssetBundle extends CachingAssetBundle {
