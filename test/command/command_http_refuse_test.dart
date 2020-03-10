@@ -39,7 +39,7 @@ void main() {
       };
 
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(contract.runtimeType, CInternetRequired);
       expect(event.runtimeType, ERefuseInternet);
@@ -48,7 +48,7 @@ void main() {
     test('should retry 511 and failed, access token required', () async {
       var req = newRequest(statucMock(511));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(contract.runtimeType, CAccessTokenRequired);
       expect(event.runtimeType, ERefuseSignin);
@@ -57,7 +57,7 @@ void main() {
     test('should retry 412 and failed, access token expired', () async {
       var req = newRequest(statucMock(412));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(contract.runtimeType, CAccessTokenExpired);
       expect(event.runtimeType, ERefuseSignin);
@@ -66,7 +66,7 @@ void main() {
     test('should retry 402 and failed, payment token expired', () async {
       var req = newRequest(statucMock(402));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(contract.runtimeType, CPaymentTokenRequired);
       expect(event.runtimeType, ERefuseSignin);
@@ -75,7 +75,7 @@ void main() {
     test('should retry', () async {
       var req = newRequest(statucMock(412));
       await commandHttp.retry(CAccessTokenExpired(), ERefuseSignin(), req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(event.runtimeType, ERefuseSignin);
     });
   });

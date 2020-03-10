@@ -11,7 +11,7 @@ main() {
       });
       eventBus.brodcast(MockEvent('a'));
 
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(text, 'a');
     });
 
@@ -25,7 +25,7 @@ main() {
       });
       eventBus.brodcast(MockEvent('c'));
 
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(text, 'c');
     });
 
@@ -43,7 +43,7 @@ main() {
       });
       sub.cancel();
       eventBus.brodcast(MockEvent('a'));
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(text, '');
     });
   });

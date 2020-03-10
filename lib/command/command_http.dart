@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart';
 import 'package:libcli/tools/net.dart' as net;
@@ -8,7 +9,6 @@ import 'package:libcli/event_bus/event_bus.dart' as eventBus;
 import 'package:libcli/constant/events.dart';
 import 'package:libcli/constant/contracts.dart';
 import 'package:libcli/data/cookies.dart' as cookies;
-import 'package:flutter/foundation.dart';
 
 const _here = 'command_http';
 
@@ -98,9 +98,8 @@ Future<List<int>> doPost(Request r) async {
     if (r.onError != null) {
       return emmitError(r);
     }
-
-    var msg = 'got ${resp.statusCode} ${resp.body} from ${r.url}';
-    '$_here|msg'.log;
+    var msg = 'got ${resp.statusCode} ${resp.body} from $NOUN2${r.url}';
+    '$_here|$msg'.print;
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(EError(resp.body)); //body is err id
@@ -173,7 +172,7 @@ giveup(dynamic e) {
 Future<List<int>> retry(
     eventBus.Contract contr, dynamic fail, Request r) async {
   if (await eventBus.contract(contr)) {
-    '$_here|ok, retry'.log;
+    '$_here|ok,retry'.log;
     return await doPost(r);
   }
   eventBus.brodcast(fail);

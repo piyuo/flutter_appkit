@@ -18,7 +18,7 @@ enum Regions { us, cn, tw }
 String _appID = '';
 String get AppID => _appID;
 set AppID(String value) {
-  '$_here|set AppID=$value'.print;
+  '$_here|set AppID=${NOUN}$value'.print;
   _appID = value;
 }
 
@@ -28,7 +28,7 @@ set AppID(String value) {
 String _userID = '';
 String get UserID => _userID;
 set UserID(String value) {
-  '$_here|set UserID=$value'.print;
+  '$_here|set UserID=${NOUN}$value'.print;
   _userID = value;
 }
 
@@ -38,7 +38,7 @@ set UserID(String value) {
 Branches _branch = Branches.debug;
 Branches get Branch => _branch;
 set Branch(Branches value) {
-  '$_here|set Branch=${value.toString()}'.print;
+  '$_here|set Branch=${NOUN}${value.toString()}'.print;
   _branch = value;
 }
 
@@ -48,7 +48,7 @@ set Branch(Branches value) {
 Regions _region = Regions.us;
 Regions get Region => _region;
 set Region(Regions value) {
-  '$_here|set Region=${value.toString()}'.print;
+  '$_here|set Region=${NOUN}${value.toString()}'.print;
   _region = value;
 }
 

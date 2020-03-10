@@ -45,7 +45,7 @@ void main() {
         onErrorCalled = true;
       };
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event, null);
       expect(onErrorCalled, true);
@@ -54,7 +54,7 @@ void main() {
     test('should handle 500, internal server error', () async {
       var req = newRequest(statucMock(500));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event.runtimeType, EError);
       EError e = event as EError;
@@ -65,7 +65,7 @@ void main() {
       var req = newRequest(statucMock(501));
       try {
         await commandHttp.doPost(req);
-        await eventBus.doneForTest();
+        await eventBus.mockDone();
       } catch (e) {
         expect(e, isNotNull);
       }
@@ -74,7 +74,7 @@ void main() {
     test('should handle 504, service context deadline exceeded', () async {
       var req = newRequest(statucMock(504));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event.runtimeType, EServiceTimeout);
       EServiceTimeout e = event as EServiceTimeout;
@@ -84,7 +84,7 @@ void main() {
     test('should retry 511 and ok, access token required', () async {
       var req = newRequest(statucMock(511));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
       expect(contract.runtimeType, CAccessTokenRequired);
@@ -93,7 +93,7 @@ void main() {
     test('should retry 412 and ok, access token expired', () async {
       var req = newRequest(statucMock(412));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
       expect(contract.runtimeType, CAccessTokenExpired);
@@ -102,7 +102,7 @@ void main() {
     test('should retry 402 and ok, payment token expired', () async {
       var req = newRequest(statucMock(402));
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
       expect(contract.runtimeType, CPaymentTokenRequired);
@@ -124,7 +124,7 @@ void main() {
       });
       Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await commandHttp.post(client, '', bytes, 500, 1, null);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(event.runtimeType, ENetworkSlow);
     });
 
@@ -134,13 +134,13 @@ void main() {
       });
       Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await commandHttp.post(client, '', bytes, 500, 3000, null);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(event, null);
     });
 
     test('should giveup', () async {
       commandHttp.giveup(ERefuseInternet());
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(event.runtimeType, ERefuseInternet);
     });
   });

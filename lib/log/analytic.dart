@@ -43,7 +43,7 @@ Future<bool> post() async {
     clear();
     SysService service = SysService();
     service.onError = () {}; // ignore error
-    var r = await service.request(readyAction);
+    var r = await service.dispatch(readyAction);
     return r.ok;
   }
   return false;

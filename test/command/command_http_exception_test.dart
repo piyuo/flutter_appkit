@@ -53,7 +53,7 @@ void main() {
         onErrorCalled = true;
       };
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event, null);
       expect(onErrorCalled, true);
@@ -68,7 +68,7 @@ void main() {
         return true;
       };
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event.runtimeType, EContactUs);
     });
@@ -82,7 +82,7 @@ void main() {
         return false;
       };
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event.runtimeType, EServiceBlocked);
     });
@@ -93,7 +93,7 @@ void main() {
         return false;
       };
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, isNotNull);
       expect(bytes.length, greaterThan(1));
       expect(contract.runtimeType, CInternetRequired);
@@ -107,7 +107,7 @@ void main() {
       var req = newRequest(client);
       req.timeout = 1;
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event.runtimeType, EClientTimeout);
     });
@@ -124,7 +124,7 @@ void main() {
       };
       req.timeout = 1;
       var bytes = await commandHttp.doPost(req);
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(bytes, null);
       expect(event, null);
       expect(onErrorCalled, true);

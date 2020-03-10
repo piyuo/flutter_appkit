@@ -14,7 +14,7 @@ void main() {
       error.catchAndBroadcast(
           suspect: suspect,
           callback: () async {
-            await eventBus.doneForTest();
+            await eventBus.mockDone();
             expect(event is EError, true);
           });
     });
@@ -27,7 +27,7 @@ void main() {
       error.catchAndBroadcast(
           suspect: suspectAsync,
           callback: () async {
-            await eventBus.doneForTest();
+            await eventBus.mockDone();
             expect(event is EError, true);
           });
     });
@@ -40,7 +40,7 @@ void main() {
       error.catchAndBroadcast(
           suspect: suspectTimer,
           callback: () async {
-            await eventBus.doneForTest();
+            await eventBus.mockDone();
             expect(event is EError, true);
           });
       await Future.delayed(const Duration(milliseconds: 100));

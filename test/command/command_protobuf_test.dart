@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import '../mock/protobuf/sys_service.pb.dart';
-import '../mock/protobuf/echo_action.pbserver.dart';
+import '../mock/protobuf/echo_request.pbserver.dart';
 import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
 import 'package:libcli/command/command.dart' as command;
 
@@ -10,22 +10,22 @@ void main() {
   var service = SysService();
   group('[command_protobuf_test]', () {
     test('should encode ProtoObject', () {
-      EchoAction echoAction = EchoAction();
+      EchoRequest echoAction = EchoRequest();
       echoAction.text = 'hi';
       List<int> bytes = commandProtobuf.encode(echoAction);
       expect(bytes.length, 6);
     });
 
     test('should decode ProtoObject', () {
-      EchoAction echoAction = EchoAction();
+      EchoRequest echoAction = EchoRequest();
       echoAction.text = 'hi';
       List<int> bytes = commandProtobuf.encode(echoAction);
-      EchoAction decodeAction = commandProtobuf.decode(bytes, service);
+      EchoRequest decodeAction = commandProtobuf.decode(bytes, service);
       expect(decodeAction.text, 'hi');
     });
 
     test('should decode fail when id is wrong', () {
-      EchoAction echoAction = EchoAction();
+      EchoRequest echoAction = EchoRequest();
       echoAction.text = 'hi';
       List<int> bytes = commandProtobuf.encode(echoAction);
       bytes[bytes.length - 1] = 255;

@@ -16,7 +16,7 @@ main() {
         ok = value;
       });
 
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(text, 'c');
       expect(ok, true);
     });
@@ -33,7 +33,7 @@ main() {
         ok = value;
       });
 
-      await eventBus.doneForTest();
+      await eventBus.mockDone();
       expect(text, '');
       expect(ok, false);
     });

@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 import 'package:libcli/log/log.dart';
 
-const _here = 'eventbus';
+const _here = 'eventBus';
 
 /// Contract need listener do something and need callback when job is done
 ///
@@ -9,7 +10,7 @@ class Contract {
   Completer<bool> _completer = new Completer<bool>();
 
   void complete(bool ok) {
-    var text = ok ? '${NOUN}}done' : '${NOUN2}fail';
+    var text = ok ? 'ok' : 'fail';
     '$_here|${this.runtimeType} $text '.log;
     _completer.complete(ok);
   }
@@ -30,9 +31,9 @@ StreamController _streamController = StreamController.broadcast(sync: false);
 StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
   assert(func != null);
   if (T == dynamic) {
-    '$_here|All listened'.print;
+    '$_here|someone listen ${NOUN}all event'.print;
   } else {
-    '$_here|listen $T listened'.print;
+    '$_here|someone listen ${NOUN}$T'.print;
   }
 
   Stream stream;
@@ -62,7 +63,7 @@ StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
 ///
 void brodcast(event) {
   assert(event != null);
-  '$_here|brodcast $NOUN${event.runtimeType}'.log;
+  '$_here|brodcast ${event.runtimeType}'.log;
   _streamController.add(event);
 }
 
@@ -77,14 +78,15 @@ void brodcast(event) {
 ///
 Future<bool> contract(Contract event) {
   assert(event != null);
-  '$_here|contract $NOUN${event.runtimeType}'.log;
+  '$_here|contract ${event.runtimeType}'.log;
   _streamController.add(event);
   return event.future;
 }
 
 /// This is generally only in a testing context.
 ///
-Future<void> doneForTest() async {
+@visibleForTesting
+Future<void> mockDone() async {
   await _streamController.close();
   _streamController = StreamController.broadcast(sync: false);
 }
