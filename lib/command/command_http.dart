@@ -98,13 +98,13 @@ Future<List<int>> doPost(Request r) async {
     if (r.onError != null) {
       return emmitError(r);
     }
-    var msg = 'got ${resp.statusCode} ${resp.body} from $NOUN2${r.url}';
-    '$_here|$msg'.print;
+    var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
+    '$_here|caught $msg'.log;
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(EError(resp.body)); //body is err id
       case 501: //the remote servie is not properly setup
-        return throw Exception(msg); //remote server not setup so no error id
+        return throw Exception(); //remote server not setup so no error id, treat as unknow error
       case 504: //service context deadline exceeded
         return giveup(EServiceTimeout(resp.body)); //body is err id
       case 511: //access token required
@@ -115,7 +115,7 @@ Future<List<int>> doPost(Request r) async {
         return await retry(CPaymentTokenRequired(), ERefuseSignin(), r);
     }
     //unknow status code
-    throw Exception('unsupport status ' + msg);
+    throw Exception('unknown status ' + msg);
   } on TimeoutException catch (e, s) {
     if (r.onError != null) {
       return emmitError(r);

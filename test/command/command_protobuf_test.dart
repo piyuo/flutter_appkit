@@ -2,11 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import '../mock/protobuf/echo_request.pbserver.dart';
 import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
-import 'package:libcli/command/command.dart' as command;
 
 void main() {
-  command.mockInit();
-
   var service = SysService();
   group('[command_protobuf_test]', () {
     test('should encode ProtoObject', () {

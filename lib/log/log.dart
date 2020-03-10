@@ -92,7 +92,8 @@ extension LogExtension on String {
     String errID = id.uuid();
     String msg = e.toString().replaceAll('Exception: ', '');
     String stack = beautyStack(stacktrace);
-    printToConsole('$HEAD${head(this)}$END$msg $NOUN($errID)\n$NOUN2$stack');
+    printToConsole(
+        '$HEAD${head(this)}${END}${VERB}caught $NOUN2$msg$END ($errID)\n$RED$stack');
 
     analytic.error(this, msg, stack, errID);
     return errID;

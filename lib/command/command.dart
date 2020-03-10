@@ -72,10 +72,9 @@ abstract class Service {
             if (type == ' Err') {
               type = '';
             }
-            '$_here|got ${VERB}OK$END$type from $NOUN2$url'.print;
+            '$_here|got OK $type from $url'.log;
           } else {
-            '$_here|got ${retObj.runtimeType}=${r.errCode} from $NOUN2$url'
-                .print;
+            '$_here|got ${retObj.runtimeType}=${r.errCode} from $url'.log;
           }
         }
         return r;
