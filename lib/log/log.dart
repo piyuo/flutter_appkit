@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log/analytic.dart' as analytic;
 import 'package:libcli/tools/id.dart' as id;
-import 'package:libcli/env/env.dart';
+import 'package:libcli/hook/vars.dart' as vars;
 
 const LEVEL_INFO = 1;
 const LEVEL_WARNING = 2;
@@ -103,9 +103,9 @@ extension LogExtension on String {
 ///
 ///     String head = head();
 String head(String where) {
-  String text = '${envAppID}/$where';
-  if (envUserID != '') {
-    text = envUserID + "@" + text;
+  String text = '${vars.AppID}/$where';
+  if (vars.UserID != '') {
+    text = vars.UserID + "@" + text;
   }
   return text + ": ";
 }

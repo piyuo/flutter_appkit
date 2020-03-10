@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:libcli/log/analytic.dart' as analytic;
 import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
-import 'package:libcli/env/env.dart';
+import 'package:libcli/hook/vars.dart' as vars;
 import 'package:libcli/log/log.dart' as log;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,13 +23,13 @@ void main() {
       expect(current.logs.length, 0);
       '$_here|mock warning'.warning;
       expect(current.logs.length, 1);
-      envBranch = Branch.test;
+      vars.Branch = vars.Branches.test;
       var result = await analytic.post();
       expect(result, true);
     });
 
     test('should error', () async {
-      envBranch = Branch.test;
+      vars.Branch = vars.Branches.test;
       analytic.clear();
       var current = analytic.current();
       expect(current.errors.length, 0);

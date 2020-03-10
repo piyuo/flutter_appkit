@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:libcli/hook/region.dart' as region;
-import 'package:libcli/env/env.dart';
+import 'package:libcli/hook/vars.dart';
 import 'package:libcli/log/log.dart';
 
 const _here = 'region_web';
 inject() => region.get = get;
 
-Future<Region> get() async {
+Future<Regions> get() async {
   '$_here|os region is US'.print;
-  return Region.US;
+  return Regions.us;
 }

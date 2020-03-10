@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:libcli/env/env.dart';
+import 'package:libcli/hook/vars.dart' as vars;
 
-typedef Future<Region> Get();
+typedef Future<vars.Regions> Get();
 
 /// get region from os or browser
 ///

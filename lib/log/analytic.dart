@@ -1,6 +1,6 @@
 library analytic;
 
-import 'package:libcli/env/env.dart';
+import 'package:libcli/hook/vars.dart' as vars;
 import 'package:libcli/command/commands/sys/analytics_action.pbserver.dart';
 import 'package:libcli/command/commands/sys/sys_service.pb.dart';
 import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
@@ -10,8 +10,8 @@ AnalyticsAction _current = AnalyticsAction();
 log(String where, String message, int level) {
   Log log = Log();
   log.time = timestamp.Timestamp.fromDateTime(DateTime.now());
-  log.app = envAppID;
-  log.user = envUserID;
+  log.app = vars.AppID;
+  log.user = vars.UserID;
   log.where = where;
   log.msg = message;
   log.level = level;
@@ -21,8 +21,8 @@ log(String where, String message, int level) {
 error(String where, String message, String stack, String errid) {
   Error error = Error();
   error.msg = message;
-  error.app = envAppID;
-  error.user = envUserID;
+  error.app = vars.AppID;
+  error.user = vars.UserID;
   error.where = where;
   error.stack = '$stack';
   error.errid = errid;

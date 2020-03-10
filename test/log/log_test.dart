@@ -1,19 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/log/log.dart';
-import 'package:libcli/env/env.dart';
+import 'package:libcli/hook/vars.dart' as vars;
 
 void main() {
   group('[log]', () {
     test('should print', () {
-      envAppID = 'piyuo-web-index';
-      envUserID = '111-222';
+      vars.AppID = 'piyuo-web-index';
+      vars.UserID = '111-222';
       'here|mock ${VERB}test'.print;
     });
 
     test('should log', () async {
-      envAppID = 'log_test';
-      envUserID = 'developer';
-      envBranch = Branch.test;
+      vars.AppID = 'log_test';
+      vars.UserID = 'developer';
+      vars.Branch = vars.Branches.test;
       'here|thing ${VERB}log ${NOUN}here'.log;
       'here|thing ${VERB}warning ${NOUN}here'.warning;
       'here|thing ${VERB}alert ${NOUN}here'.alert;
@@ -28,9 +28,9 @@ void main() {
     });
 
     test('should error', () async {
-      envAppID = 'log_test';
-      envUserID = 'developer';
-      envBranch = Branch.test;
+      vars.AppID = 'log_test';
+      vars.UserID = 'developer';
+      vars.Branch = vars.Branches.test;
       try {
         throw Exception('my error');
       } catch (e, s) {
@@ -39,8 +39,8 @@ void main() {
     });
 
     test('should create head', () {
-      envAppID = 'piyuo-web-index';
-      envUserID = '111-222';
+      vars.AppID = 'piyuo-web-index';
+      vars.UserID = '111-222';
       expect(head('here'), '111-222@piyuo-web-index/here: ');
     });
 

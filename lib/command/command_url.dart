@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/env/env.dart';
+import 'package:libcli/hook/vars.dart' as vars;
 
 /// serviceUrl return service url base on app.branch
 ///
 ///     String url = serviceUrl('sys',3001);
 String serviceUrl(String funcName, int debugPort) {
   if (!kReleaseMode) {
-    if (envBranch == Branch.debug) {
+    if (vars.Branch == vars.Branches.debug) {
       return 'http://localhost:$debugPort/$funcName';
     }
   }
@@ -14,59 +14,6 @@ String serviceUrl(String funcName, int debugPort) {
   /// https://us-central1-piyuo-m-base.cloudfunctions.net/sys
   // return 'https://${host()}-piyuo-${branch()}-${region()}.cloudfunctions.net/$funcName';
   return 'https://us-central1-master-255220.cloudfunctions.net/$funcName';
-}
-
-/// branch return tag for service branch
-///
-///     expect(commandUrl.branch(), 't');
-String branch() {
-  switch (envBranch) {
-    case Branch.test:
-      return 't';
-    case Branch.alpha:
-      return 'a';
-    case Branch.beta:
-      return 'b';
-    case Branch.master:
-      return 'm';
-    default:
-  }
-  assert(false, 'branch not support');
-  return '';
-}
-
-/// host return google cloud platform host location
-///
-///     expect(commandUrl.host(), 'us-central1');
-String host() {
-  switch (envRegion) {
-    case Region.US:
-      return 'us-central1';
-    case Region.CN:
-      return 'asia-east2';
-    case Region.TW:
-      return 'asia-east1';
-    default:
-  }
-  assert(false, 'region not support');
-  return '';
-}
-
-/// region return tag for service region
-///
-///     expect(commandUrl.region(), 'us');
-String region() {
-  switch (envRegion) {
-    case Region.US:
-      return 'us';
-    case Region.CN:
-      return 'cn';
-    case Region.TW:
-      return 'tw';
-    default:
-  }
-  assert(false, 'region not support');
-  return '';
 }
 
 /*
