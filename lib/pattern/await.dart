@@ -59,14 +59,14 @@ class Await extends StatelessWidget {
       }
 
       if (provider.asyncStatus == AsyncStatus.none) {
-        provider.asyncStatus == AsyncStatus.loading;
-        '$here|${provider.runtimeType} stateus=${provider.asyncStatus}'.print;
+        provider.asyncStatus = AsyncStatus.loading;
+        '$here|${provider.runtimeType} status=${provider.asyncStatus}'.print;
 
         Future.microtask(() {
           provider.load().then((_) {
             '$here|${provider.runtimeType} ${NOUN}loaded'.print;
             provider.asyncStatus = AsyncStatus.ready;
-            '$here|${provider.runtimeType} stateus=${provider.asyncStatus}'
+            '$here|${provider.runtimeType} status=${provider.asyncStatus}'
                 .print;
 
             provider.notifyListeners();
