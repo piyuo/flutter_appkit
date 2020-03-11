@@ -3,10 +3,10 @@ import 'package:libcli/log/log.dart';
 
 const here = 'async_provider';
 
-enum AsyncStatus { wait, ready, error }
+enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
-  AsyncStatus asyncStatus = AsyncStatus.wait;
+  AsyncStatus asyncStatus = AsyncStatus.none;
 
   /// prevent notifyListeners after dispose
   bool _disposed = false;
@@ -24,7 +24,7 @@ abstract class AsyncProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    '$here|dispose $NOUN$runtimeType'.print;
+    '$here|$runtimeType ${VERB}disposed'.print;
     _disposed = true;
     super.dispose();
   }
