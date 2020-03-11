@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pattern/await.dart';
 import 'package:libcli/i18n/i18n_provider.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'mock_views.dart';
+import 'mock_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -42,11 +42,14 @@ class TestWidget extends StatelessWidget {
         ChangeNotifierProvider<I18nProvider>(
           create: (context) => I18nProvider('mock'),
         ),
+        ChangeNotifierProvider<MockProvider>(
+          create: (context) => MockProvider(),
+        ),
       ],
-      child: Consumer<I18nProvider>(
-          builder: (context, provider, child) => Await(
-                list: [provider],
-                child: widget(provider),
+      child: Consumer2<I18nProvider, MockProvider>(
+          builder: (context, i18n, mock, child) => Await(
+                list: [i18n, mock],
+                child: widget(i18n),
               )),
     );
   }

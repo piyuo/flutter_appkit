@@ -8,6 +8,14 @@ class Await extends StatelessWidget {
   final Widget wait;
   final Widget error;
 
+  /// Await load provider in list
+  ///
+  /// show wait view when provider still loading
+  ///
+  /// show error view when provider has error
+  ///
+  /// show child view when provider successfully load
+  ///
   Await(
       {Key key,
       @required List<AsyncProvider> list,
@@ -22,6 +30,8 @@ class Await extends StatelessWidget {
     });
   }
 
+  /// errorView when provider has error
+  ///
   Widget errorView() {
     if (error != null) {
       return error;
@@ -30,6 +40,8 @@ class Await extends StatelessWidget {
         child: Text('Oops... something is wrong, please try again later'));
   }
 
+  /// waitView when provider still loading
+  ///
   Widget waitView() {
     if (wait != null) {
       return wait;
@@ -37,6 +49,8 @@ class Await extends StatelessWidget {
     return Center(child: CircularProgressIndicator());
   }
 
+  /// build widget
+  ///
   @override
   Widget build(BuildContext context) {
     switch (provider.status()) {

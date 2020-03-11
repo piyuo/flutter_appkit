@@ -1,7 +1,7 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart';
 import 'package:libcli/hook/assets.dart' as assets;
-import 'package:provider/provider.dart';
 import 'package:libcli/i18n/i18n_provider.dart';
 
 const _here = 'i18n';
@@ -30,12 +30,8 @@ String _localeID;
 ///
 @visibleForTesting
 void mockInit(String map) {
-  Future<String> mockLoad(fileName) async {
-    return map;
-  }
-
   _localeID = 'mockLocale';
-  assets.get = mockLoad;
+  assets.mockInit(map);
 }
 
 get localeID => _localeID;
