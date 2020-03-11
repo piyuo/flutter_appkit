@@ -20,6 +20,16 @@ class Contract {
   }
 }
 
+/// latestContract is used for testing purpose
+///
+@visibleForTesting
+Contract latestContract;
+
+/// latestEvent is used for testing purpose
+///
+@visibleForTesting
+dynamic latestEvent;
+
 StreamController _streamController = StreamController.broadcast(sync: false);
 
 /// Listens for events of Type [T] and its subtypes.
@@ -61,8 +71,9 @@ StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
 ///     });
 ///     eventBus.brodcast(MockEventA('a1'));
 ///
-void brodcast(event) {
+void broadcast(event) {
   assert(event != null);
+  latestEvent = event;
   '$_here|brodcast ${event.runtimeType}'.log;
   _streamController.add(event);
 }
@@ -78,6 +89,7 @@ void brodcast(event) {
 ///
 Future<bool> contract(Contract event) {
   assert(event != null);
+  latestContract = event;
   '$_here|contract ${event.runtimeType}'.log;
   _streamController.add(event);
   return event.future;
@@ -87,6 +99,7 @@ Future<bool> contract(Contract event) {
 ///
 @visibleForTesting
 Future<void> mockDone() async {
-  await _streamController.close();
+  var backup = _streamController;
   _streamController = StreamController.broadcast(sync: false);
+  await backup.close();
 }

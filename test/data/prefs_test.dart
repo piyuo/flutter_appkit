@@ -1,68 +1,68 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/data/prefs.dart' as prefs;
 
 void main() {
-  data.mockInit({});
+  prefs.mockInit({});
   setUp(() async {});
 
-  group('[data]', () {
+  group('[prefs]', () {
     test('should get/set bool', () async {
-      await data.setBool('k', true);
-      var result = await data.getBool('k');
+      await prefs.setBool('k', true);
+      var result = await prefs.getBool('k');
       expect(result, true);
 
-      await data.setBool('k', false);
-      result = await data.getBool('k');
+      await prefs.setBool('k', false);
+      result = await prefs.getBool('k');
       expect(result, false);
     });
 
     test('should get false when no data', () async {
-      var result = await data.getBool('na');
+      var result = await prefs.getBool('na');
       expect(result, false);
     });
 
     test('should get/set Int', () async {
-      await data.setInt('k', 1);
-      var result = await data.getInt('k');
+      await prefs.setInt('k', 1);
+      var result = await prefs.getInt('k');
       expect(result, 1);
     });
 
     test('should get 0 when no data', () async {
-      var result = await data.getInt('na');
+      var result = await prefs.getInt('na');
       expect(result, 0);
     });
 
     test('should get/set double', () async {
-      await data.setDouble('k', 1.1);
-      var result = await data.getDouble('k');
+      await prefs.setDouble('k', 1.1);
+      var result = await prefs.getDouble('k');
       expect(result, 1.1);
     });
 
     test('should get 0 when no data', () async {
-      var result = await data.getDouble('na');
+      var result = await prefs.getDouble('na');
       expect(result, 0);
     });
 
     test('should get/set string', () async {
-      await data.setString('k', 'a');
-      var result = await data.getString('k');
+      await prefs.setString('k', 'a');
+      var result = await prefs.getString('k');
       expect(result, 'a');
     });
 
     test('should get empty string when no data', () async {
-      var result = await data.getString('na');
+      var result = await prefs.getString('na');
       expect(result, '');
     });
 
     test('should get/set string list', () async {
       var list = ['a', 'b', 'c'];
-      await data.setStringList('k', list);
-      var result = await data.getStringList('k');
+      await prefs.setStringList('k', list);
+      var result = await prefs.getStringList('k');
       expect(result[1], 'b');
     });
 
     test('should get empty list when no data', () async {
-      var result = await data.getStringList('na');
+      var result = await prefs.getStringList('na');
       expect(result, []);
     });
 
@@ -71,8 +71,8 @@ void main() {
       map['a'] = 1;
       map['b'] = 2;
 
-      await data.setMap('k', map);
-      var result = await data.getMap('k');
+      await prefs.setMap('k', map);
+      var result = await prefs.getMap('k');
       expect(result['b'], 2);
     });
   });

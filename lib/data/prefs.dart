@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log/log.dart';
+import 'package:libcli/hook/events.dart';
+import 'package:libcli/hook/contracts.dart';
+import 'package:libcli/event_bus/event_bus.dart' as eventBus;
 
 const _here = 'data';
-
-class DataException implements Exception {}
 
 /// _instance provide SharedPreferences instance
 ///
@@ -86,67 +87,72 @@ Future<Map<String, dynamic>> getMap(String key) async {
 
 /// setBool set boolean value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setBool('k');
+///     await data.setBool('k',true);
 ///
-Future<void> setBool(String key, bool value) async {
+Future<bool> setBool(String key, bool value) async {
   assert(key.length > 0);
-  '$_here|set $NOUN$key=$value'.print;
-  if (!await (await _get()).setBool(key, value)) {
-    throw DataException();
+  '$_here|set $key=$NOUN$value'.print;
+  var result = (await (await _get()).setBool(key, value));
+  if (!result) {
+    eventBus.broadcast(EDiskFullOrNoAccess());
   }
 }
 
 /// setInt set int value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setInt('k');
+///     await data.setInt('k',1);
 ///
-Future<void> setInt(String key, int value) async {
+Future<bool> setInt(String key, int value) async {
   assert(key.length > 0);
   '$_here|set $NOUN$key=$value'.print;
-  if (!await (await _get()).setInt(key, value)) {
-    throw DataException();
+  var result = (await (await _get()).setInt(key, value));
+  if (!result) {
+    eventBus.broadcast(EDiskFullOrNoAccess());
   }
 }
 
 /// setDouble set double value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setDouble('k');
+///     await data.setDouble('k',1);
 ///
 Future<void> setDouble(String key, double value) async {
   assert(key.length > 0);
   '$_here|set $NOUN$key=$value'.print;
-  if (!await (await _get()).setDouble(key, value)) {
-    throw DataException();
+  var result = (await (await _get()).setDouble(key, value));
+  if (!result) {
+    eventBus.broadcast(EDiskFullOrNoAccess());
   }
 }
 
 /// setString set string value to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setString('k');
+///     await data.setString('k','value');
 ///
 Future<void> setString(String key, String value) async {
   assert(key.length > 0);
   '$_here|set $NOUN$key=$value'.print;
-  if (!await (await _get()).setString(key, value)) {
-    throw DataException();
+  var result = (await (await _get()).setString(key, value));
+  if (!result) {
+    eventBus.broadcast(EDiskFullOrNoAccess());
   }
 }
 
 /// setStringList set string list to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setStringList('k');
+///     await data.setStringList('k',list);
 ///
-Future<void> setStringList(String key, List<String> value) async {
+Future<bool> setStringList(String key, List<String> value) async {
   assert(key.length > 0);
   '$_here|set $NOUN$key=$value'.print;
-  if (!await (await _get()).setStringList(key, value)) {
-    throw DataException();
+  var result = (await (await _get()).setStringList(key, value));
+  if (!result) {
+    eventBus.broadcast(EDiskFullOrNoAccess());
   }
 }
 
 /// setMap set string map to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setMap('k');
+///     await data.setMap('k',map);
 ///
 Future<void> setMap(String key, Map<String, dynamic> map) async {
   // String json = JsonEncoder.withIndent('').convert(map);

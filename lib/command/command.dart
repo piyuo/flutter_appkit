@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart';
-import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/data/prefs.dart' as prefs;
 import 'package:libcli/command/command_protobuf.dart';
 import 'package:libcli/command/command_url.dart';
 import 'package:libcli/command/command_http.dart';
-import 'package:libcli/constant/events.dart';
+import 'package:libcli/hook/events.dart';
 import 'package:libcli/command/commands/shared/err.pb.dart';
 
 const _here = 'command';
@@ -136,5 +136,5 @@ class Response {
 ///
 @visibleForTesting
 void mockInit() {
-  data.mockInit({});
+  prefs.mockInit({});
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/data/data.dart' as data;
-import 'package:libcli/constant/preferences.dart' as pref;
+import 'package:libcli/data/prefs.dart' as prefs;
+import 'package:libcli/hook/preferences.dart' as pref;
 
 ///get cookies from
 ///
@@ -9,7 +9,7 @@ Future<String> get() async {
   if (kIsWeb) {
     return '';
   }
-  return await data.getString(pref.kCookies);
+  return await prefs.getString(pref.kCookies);
 }
 
 ///set cookies to data
@@ -18,6 +18,15 @@ Future<String> get() async {
 set(String cookies) async {
   if (kIsWeb) {
   } else {
-    await data.setString(pref.kCookies, cookies);
+    await prefs.setString(pref.kCookies, cookies);
   }
+}
+
+/// mockInit Initializes the value for testing
+///
+///     data.mockInit({});
+///
+@visibleForTesting
+void mockInit(Map<String, dynamic> values) {
+  prefs.mockInit(values);
 }

@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command/command_http.dart' as commandHttp;
-import 'package:libcli/constant/events.dart';
-import 'package:libcli/constant/contracts.dart';
+import 'package:libcli/hook/events.dart';
+import 'package:libcli/hook/contracts.dart';
 import 'package:libcli/event_bus/event_bus.dart' as eventBus;
 import 'package:libcli/command/command.dart' as command;
 

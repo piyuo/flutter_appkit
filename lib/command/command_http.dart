@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart';
 import 'package:libcli/tools/net.dart' as net;
 import 'package:libcli/event_bus/event_bus.dart' as eventBus;
-import 'package:libcli/constant/events.dart';
-import 'package:libcli/constant/contracts.dart';
+import 'package:libcli/hook/events.dart';
+import 'package:libcli/hook/contracts.dart';
 import 'package:libcli/data/cookies.dart' as cookies;
 
 const _here = 'command_http';
@@ -32,7 +32,7 @@ Future<List<int>> post(http.Client client, String url, Uint8List bytes,
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
     if (!completer.isCompleted) {
-      eventBus.brodcast(ENetworkSlow());
+      eventBus.broadcast(ENetworkSlow());
     }
   });
   Request req = Request();
@@ -47,12 +47,7 @@ Future<List<int>> post(http.Client client, String url, Uint8List bytes,
     timer.cancel();
     completer.complete(response);
   });
-  /* no need to catch error since request() catch all exception
-  .catchError((e) {
-    timer.cancel();
-    completer.completeError(e);
-  });
-  */
+  // no need to catch error since doPost() catch all exception
   return completer.future;
 }
 
@@ -104,7 +99,8 @@ Future<List<int>> doPost(Request r) async {
       case 500: //internal server error
         return giveup(EError(resp.body)); //body is err id
       case 501: //the remote servie is not properly setup
-        return throw Exception(); //remote server not setup so no error id, treat as unknow error
+        throw Exception(
+            msg); //remote server not setup so no error id, treat as unknow error
       case 504: //service context deadline exceeded
         return giveup(EServiceTimeout(resp.body)); //body is err id
       case 511: //access token required
@@ -162,7 +158,7 @@ emmitError(Request r) {
 ///
 ///   commandHttp.giveup(c.ERefuseInternet());
 giveup(dynamic e) {
-  eventBus.brodcast(e);
+  eventBus.broadcast(e);
   return null;
 }
 
@@ -175,6 +171,6 @@ Future<List<int>> retry(
     '$_here|ok,retry'.log;
     return await doPost(r);
   }
-  eventBus.brodcast(fail);
+  eventBus.broadcast(fail);
   return null;
 }

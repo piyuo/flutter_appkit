@@ -9,7 +9,7 @@ main() {
       eventBus.listen<MockEvent>((event) {
         text = event.text;
       });
-      eventBus.brodcast(MockEvent('a'));
+      eventBus.broadcast(MockEvent('a'));
 
       await eventBus.mockDone();
       expect(text, 'a');
@@ -23,7 +23,7 @@ main() {
       eventBus.listen<MockEvent>((event) {
         text = event.text;
       });
-      eventBus.brodcast(MockEvent('c'));
+      eventBus.broadcast(MockEvent('c'));
 
       await eventBus.mockDone();
       expect(text, 'c');
@@ -31,7 +31,7 @@ main() {
 
     test('should isolate error', () async {
       try {} catch (e) {
-        eventBus.brodcast(null);
+        eventBus.broadcast(null);
         expect(e, isNotNull);
       }
     });
@@ -42,7 +42,7 @@ main() {
         text = event.text;
       });
       sub.cancel();
-      eventBus.brodcast(MockEvent('a'));
+      eventBus.broadcast(MockEvent('a'));
       await eventBus.mockDone();
       expect(text, '');
     });
