@@ -26,7 +26,7 @@ class AwaitProvider with ChangeNotifier {
   /// reload provider in list, but skip ready provider
   ///
   void reload() {
-    '$_here|reload list$NOUN(${list.length})'.print;
+    '$_here|reload'.print;
     list.forEach((provider) {
       if (provider.asyncStatus == AsyncStatus.error) {
         provider.asyncStatus == AsyncStatus.wait;

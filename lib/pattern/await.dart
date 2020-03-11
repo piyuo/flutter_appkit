@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pattern/async_provider.dart';
 import 'package:libcli/pattern/await_provider.dart';
+import 'package:libcli/log/log.dart';
 
 class Await extends StatelessWidget {
   final AwaitProvider provider = AwaitProvider();
@@ -24,7 +25,7 @@ class Await extends StatelessWidget {
       this.error})
       : super(key: key) {
     provider.list = list;
-
+    'await|list$NOUN(${list.length})'.print;
     Future.microtask(() {
       provider.reload();
     });
