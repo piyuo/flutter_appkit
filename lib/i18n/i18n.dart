@@ -62,11 +62,9 @@ Locale idToLocale(String id) {
 }
 
 Locale determineLocale(List<Locale> locales) {
-  '$_here|determine best locale'.print;
-  print('determine Locale');
   for (var locale in locales) {
     if (isSupportedLocale(locale)) {
-      '$_here|choose ${locale.languageCode}_${locale.countryCode}'.print;
+      '$_here|determinie ${locale.languageCode}_${locale.countryCode}'.print;
       return locale;
     }
   }
