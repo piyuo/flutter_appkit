@@ -6,6 +6,10 @@ const here = 'async_provider';
 enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
+  AsyncProvider() {
+    '$here|$runtimeType ${VERB}created'.print;
+  }
+
   AsyncStatus asyncStatus = AsyncStatus.none;
 
   /// prevent notifyListeners after dispose
