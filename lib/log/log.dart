@@ -23,8 +23,22 @@ const END = RESET;
 const WARNING = YELLOW;
 const ALERT = RED;
 
+bool useColorLog = true;
+
 printToConsole(String message) {
-  print(message);
+  if (useColorLog) {
+    print(message);
+    return;
+  }
+  print(message
+      .replaceAll(HEAD, '')
+      .replaceAll(HEAD, '')
+      .replaceAll(VERB, '')
+      .replaceAll(NOUN, '')
+      .replaceAll(NOUN2, '')
+      .replaceAll(END, '')
+      .replaceAll(WARNING, '')
+      .replaceAll(ALERT, ''));
 }
 
 ///LogExtension will allow you to add `.print`,`.log`,`.warning`,`.alert`,`.error` to your strings
