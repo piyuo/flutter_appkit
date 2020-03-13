@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log/log.dart';
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
-import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/event_bus.dart' as eventBus;
 
 const _here = 'data';
 

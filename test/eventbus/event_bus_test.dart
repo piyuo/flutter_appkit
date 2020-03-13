@@ -1,4 +1,4 @@
-import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/event_bus.dart' as eventBus;
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:async';
 

@@ -2,14 +2,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/data/prefs.dart' as prefs;
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
-import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/contract.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   setUp(() async {
-    eventBus.latestContract = null;
-    eventBus.latestEvent = null;
+    latestContract = null;
+    latestEvent = null;
   });
 
   group('[prefs_error]', () {

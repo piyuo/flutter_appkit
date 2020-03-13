@@ -1,34 +1,9 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:libcli/log/log.dart';
+import 'package:libcli/eventbus/contract.dart';
 
 const _here = 'eventBus';
-
-/// Contract need listener do something and need callback when job is done
-///
-class Contract {
-  Completer<bool> _completer = new Completer<bool>();
-
-  void complete(bool ok) {
-    var text = ok ? 'ok' : 'fail';
-    '$_here|${this.runtimeType} $text '.log;
-    _completer.complete(ok);
-  }
-
-  Future<bool> get future {
-    return _completer.future;
-  }
-}
-
-/// latestContract is used for testing purpose
-///
-@visibleForTesting
-Contract latestContract;
-
-/// latestEvent is used for testing purpose
-///
-@visibleForTesting
-dynamic latestEvent;
 
 StreamController _streamController = StreamController.broadcast(sync: false);
 

@@ -7,7 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/command/command_http.dart' as commandHttp;
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
-import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/contract.dart' as eventBus;
 import 'package:libcli/command/command.dart' as command;
 
 void main() {

@@ -1,4 +1,5 @@
-import 'package:libcli/event_bus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/contract.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {
@@ -40,7 +41,7 @@ main() {
   });
 }
 
-class MockContract extends eventBus.Contract {
+class MockContract extends Contract {
   String text;
 
   MockContract(this.text);
