@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/log/analytic.dart' as analytic;
 import 'package:libcli/tools/id.dart' as id;
 import 'package:libcli/hook/vars.dart' as vars;
+import 'dart:io';
 
 const LEVEL_INFO = 1;
 const LEVEL_WARNING = 2;
@@ -23,22 +24,20 @@ const END = RESET;
 const WARNING = YELLOW;
 const ALERT = RED;
 
-bool useColorLog = true;
-
 printToConsole(String message) {
-  if (useColorLog) {
-    print(message);
+  if (Platform.isIOS) {
+    print(message
+        .replaceAll(HEAD, '')
+        .replaceAll(HEAD, '')
+        .replaceAll(VERB, '')
+        .replaceAll(NOUN, '')
+        .replaceAll(NOUN2, '')
+        .replaceAll(END, '')
+        .replaceAll(WARNING, '')
+        .replaceAll(ALERT, ''));
     return;
   }
-  print(message
-      .replaceAll(HEAD, '')
-      .replaceAll(HEAD, '')
-      .replaceAll(VERB, '')
-      .replaceAll(NOUN, '')
-      .replaceAll(NOUN2, '')
-      .replaceAll(END, '')
-      .replaceAll(WARNING, '')
-      .replaceAll(ALERT, ''));
+  print(message);
 }
 
 ///LogExtension will allow you to add `.print`,`.log`,`.warning`,`.alert`,`.error` to your strings

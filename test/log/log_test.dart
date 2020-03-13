@@ -8,9 +8,6 @@ void main() {
       vars.AppID = 'piyuo-web-index';
       vars.UserID = '111-222';
       'here|mock ${VERB}test'.print;
-      useColorLog = false;
-      'here|mock ${VERB}test'.print;
-      useColorLog = true;
     });
 
     test('should log', () async {
