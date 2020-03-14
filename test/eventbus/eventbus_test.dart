@@ -1,46 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/mock/mock.dart';
 
 main() {
+  setUp(() async {
+    eventbus.removeAllListeners();
+  });
+
   group('[eventbus]', () {
-    testWidgets('should broadcst & listen', (WidgetTester tester) async {
-/*
-  await tester.pumpWidget(
-    Builder(
-      builder: (BuildContext context) {
-        var actual = sut.myMethodName(context, ...);
-        expect(actual, something);
-
-        // The builder function must return a widget.
-        return Placeholder();
-      },
-    ),
-  );*/
+    testWidgets('should remove all listeners', (WidgetTester tester) async {
+      await tester.inWidget((ctx) {
+        eventbus.listen<String>((BuildContext ctx, event) {
+          expect(event, 'hi');
+        });
+        expect(eventbus.getListenerCount(), 1);
+        eventbus.removeAllListeners();
+        expect(eventbus.getListenerCount(), 0);
+      });
     });
 
-    test('should broadcst & listen on type', () async {
+    testWidgets('should safe cancel subscription', (WidgetTester tester) async {
+      await tester.inWidget((ctx) {
+        var sub = eventbus.listen<String>((BuildContext ctx, event) {
+          expect(event, 'hi');
+        });
+        expect(eventbus.getListenerCount(), 1);
+        sub.cancel();
+        expect(eventbus.getListenerCount(), 0);
+        sub.cancel();
+        expect(eventbus.getListenerCount(), 0);
+      });
+    });
+
+    testWidgets('should broadcst on type', (WidgetTester tester) async {
+      await tester.inWidget((ctx) {
+        eventbus.listen<String>((BuildContext ctx, event) {
+          expect(event, 'hi');
+        });
+        eventbus.broadcast(ctx, 'hi');
+      });
+    });
+
+    testWidgets('should dispatch', (WidgetTester tester) async {
       eventbus.listen<String>((BuildContext ctx, event) {
         expect(event, 'hi');
+        expect(ctx, isNotNull);
       });
-      eventbus.broadcast(null, 'hi');
+      await tester.inWidget((ctx) {
+        eventbus.dispatch(ctx, 'hi');
+      });
     });
 
-    test('should dispatch', () async {
-      eventbus.listen<String>((BuildContext ctx, event) {
-        expect(event, 'hi');
-      });
-      eventbus.dispatch(null, 'hi');
-    });
-
-    test('should broadcst & listen all', () async {
+    testWidgets('should broadcst & listen all', (WidgetTester tester) async {
       eventbus.listen((BuildContext ctx, event) {
         expect(event, 'hi');
       });
-      eventbus.broadcast(null, 'hi');
+      await tester.inWidget((ctx) {
+        eventbus.dispatch(ctx, 'hi');
+      });
     });
 
-    test('should isolate error', () async {
+    testWidgets('should isolate error', (WidgetTester tester) async {
       var text;
       eventbus.listen<String>((_, event) {
         throw 'unhandle exception';
@@ -48,18 +69,24 @@ main() {
       eventbus.listen<String>((_, event) {
         text = event;
       });
-      eventbus.broadcast(null, 'hi');
-      expect(text, 'hi');
+
+      await tester.inWidget((ctx) {
+        eventbus.broadcast(ctx, 'hi');
+        expect(text, 'hi');
+      });
     });
 
-    test('should unsubscribe', () async {
+    testWidgets('should unsubscribe', (WidgetTester tester) async {
       var text = '';
       var sub = eventbus.listen<String>((_, event) {
         text = event.text;
       });
-      sub.cancel();
-      eventbus.broadcast(null, 'hi');
-      expect(text, '');
+
+      await tester.inWidget((ctx) {
+        sub.cancel();
+        eventbus.broadcast(ctx, 'hi');
+        expect(text, '');
+      });
     });
   });
 }

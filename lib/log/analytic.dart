@@ -1,9 +1,8 @@
-library analytic;
-
 import 'package:libcli/hook/vars.dart' as vars;
 import 'package:libcli/command/commands/sys/analytics_action.pbserver.dart';
 import 'package:libcli/command/commands/sys/sys_service.pb.dart';
 import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
+import 'package:flutter/material.dart';
 
 AnalyticsAction _current = AnalyticsAction();
 
@@ -37,13 +36,13 @@ current() {
   return _current;
 }
 
-Future<bool> post() async {
+Future<bool> post(BuildContext ctx) async {
   if (_current.logs.length > 0 || _current.errors.length > 0) {
     var readyAction = _current;
     clear();
     SysService service = SysService();
     service.onError = () {}; // ignore error
-    var r = await service.dispatch(readyAction);
+    var r = await service.dispatch(ctx, readyAction);
     return r.ok;
   }
   return false;

@@ -1,49 +1,51 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/error/error.dart' as error;
-import 'package:libcli/eventbus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/hook/events.dart';
 import 'dart:async';
 
 void main() {
   group('[error]', () {
-    test('should catch exception', () async {
+    testWidgets('should catch exception', (WidgetTester tester) async {
+      await error.mockInit(tester);
       var event;
-      eventBus.listen<EError>((e) {
+      eventbus.listen<EError>((_, e) {
         event = e;
       });
       error.catchAndBroadcast(
           suspect: suspect,
           callback: () async {
-            await eventBus.mockDone();
             expect(event is EError, true);
           });
     });
 
-    test('should catch async exception', () async {
+    testWidgets('should catch async exception', (WidgetTester tester) async {
+      await error.mockInit(tester);
       var event;
-      eventBus.listen<EError>((e) {
+      eventbus.listen<EError>((_, e) {
         event = e;
       });
       error.catchAndBroadcast(
           suspect: suspectAsync,
           callback: () async {
-            await eventBus.mockDone();
             expect(event is EError, true);
           });
     });
 
-    test('should catch timer exception', () async {
-      var event;
-      eventBus.listen<EError>((e) {
-        event = e;
+    testWidgets('should catch timer exception', (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        await error.mockInit(tester);
+        var event;
+        eventbus.listen<EError>((_, e) {
+          event = e;
+        });
+        error.catchAndBroadcast(
+            suspect: suspectTimer,
+            callback: () async {
+              expect(event is EError, true);
+            });
+        await Future.delayed(const Duration(milliseconds: 100));
       });
-      error.catchAndBroadcast(
-          suspect: suspectTimer,
-          callback: () async {
-            await eventBus.mockDone();
-            expect(event is EError, true);
-          });
-      await Future.delayed(const Duration(milliseconds: 100));
     });
   });
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:libcli/log/log.dart';
-import 'package:meta/meta.dart';
 
 /// Contract need listener do something and need callback when job is done
 ///
@@ -19,13 +18,3 @@ class Contract {
     return _completer.future;
   }
 }
-
-/// latestContract is used for testing purpose
-///
-@visibleForTesting
-Contract latestContract;
-
-/// latestEvent is used for testing purpose
-///
-@visibleForTesting
-dynamic latestEvent;

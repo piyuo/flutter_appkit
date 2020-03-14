@@ -7,30 +7,61 @@ const _here = 'eventbus';
 
 typedef Callback(BuildContext context, dynamic event);
 
+/// latestContract is used for testing purpose
+///
+@visibleForTesting
+Contract latestContract;
+
+/// latestEvent is used for testing purpose
+///
+@visibleForTesting
+dynamic latestEvent;
+
+/// Listener
 class Listener {
   final dynamic _type;
 
   final Callback _func;
 
   Listener(this._type, this._func);
+
+  /// call send event to listener
+  ///
   call(BuildContext context, dynamic event) {
-    if (_type == null || _type == event.runtimeType) {
+    if (_type == dynamic || _type == event.runtimeType) {
       _func(context, event);
     }
   }
 }
 
+/// Subscription use for remove listener from _listeners
+///
 class Subscription {
   Listener _listener;
 
   Subscription(this._listener);
 
+  /// cancel remove listener from _listeners
+  ///
   cancel() {
     _listeners.remove(_listener);
   }
 }
 
+/// _listeners save all listener
+///
 List<Listener> _listeners = List<Listener>();
+
+/// removeAllListeners remove all listener
+///
+removeAllListeners() {
+  _listeners.clear();
+}
+
+@visibleForTesting
+int getListenerCount() {
+  return _listeners.length;
+}
 
 /// Listens for events of Type [T] and its subtypes.
 ///
@@ -50,24 +81,6 @@ Subscription listen<T>(Function(BuildContext, dynamic) func) {
   _listeners.add(listener);
   var sub = Subscription(listener);
   return sub;
-/*
-  Stream stream;
-  if (T == dynamic) {
-    stream = _streamController.stream;
-  } else {
-    stream = _streamController.stream.where((event) => event is T).cast<T>();
-  }
-  return stream.listen((event) {
-    try {
-      func(event);
-    } catch (e, s) {
-      _here.error(e, s);
-      if (event is Contract) {
-        event.complete(false);
-      }
-    }
-  });
-  */
 }
 
 /// brodcast a new event on the event bus with the specified [event].
@@ -86,10 +99,10 @@ broadcast(BuildContext ctx, dynamic event) {
 
 /// contract open by caller, need call back when job done
 ///
-///     eventbus.listen<MockContract>((event) {
+///     eventbus.listen<MockContract>((BuildContext ctx,event) {
 ///       event.complete(true);
 ///     });
-///     eventBus.contract(MockContract('c1')).then((value) {
+///     eventBus.contract(ctx,MockContract('c1')).then((value) {
 ///       ok = value;
 ///     });
 ///

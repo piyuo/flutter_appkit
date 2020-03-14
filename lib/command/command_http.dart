@@ -5,12 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart';
 import 'package:libcli/tools/net.dart' as net;
-import 'package:libcli/eventbus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/eventbus/contract.dart';
 
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
 import 'package:libcli/data/cookies.dart' as cookies;
+import 'package:flutter/material.dart';
 
 const _here = 'command_http';
 
@@ -29,12 +30,12 @@ class Request {
 ///
 ///     await commandHttp.postclient, '', bytes, 500, 1);
 ///     expect(listener.latestEvent is contract.EventNetworkSlow, true);
-Future<List<int>> post(http.Client client, String url, Uint8List bytes,
-    int timeout, int slow, Function onError) async {
+Future<List<int>> post(BuildContext ctx, http.Client client, String url,
+    Uint8List bytes, int timeout, int slow, Function onError) async {
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
     if (!completer.isCompleted) {
-      eventBus.broadcast(ENetworkSlow());
+      eventbus.broadcast(ctx, ENetworkSlow());
     }
   });
   Request req = Request();
@@ -45,7 +46,7 @@ Future<List<int>> post(http.Client client, String url, Uint8List bytes,
   req.isInternetConnected = net.isInternetConnected;
   req.isGoogleCloudFunctionAvailable = net.isGoogleCloudFunctionAvailable;
   req.onError = onError;
-  doPost(req).then((response) {
+  doPost(ctx, req).then((response) {
     timer.cancel();
     completer.complete(response);
   });
@@ -61,7 +62,7 @@ Future<List<int>> post(http.Client client, String url, Uint8List bytes,
 ///     req.url = 'http://mock';
 ///     req.timeout = 9000;
 ///     var bytes = await commandHttp.doPost(req);
-Future<List<int>> doPost(Request r) async {
+Future<List<int>> doPost(BuildContext ctx, Request r) async {
   Map<String, String> headers = {
     'Content-Type': 'multipart/form-data',
     'accept': '',
@@ -84,7 +85,7 @@ Future<List<int>> doPost(Request r) async {
       var c = resp.headers['set-cookie'];
       if (c != null && c.length > 0) {
         '$_here|set-cookies=$c'.print;
-        cookies.set(c);
+        cookies.set(ctx, c);
       }
     }
 
@@ -99,18 +100,19 @@ Future<List<int>> doPost(Request r) async {
     '$_here|caught $msg'.log;
     switch (resp.statusCode) {
       case 500: //internal server error
-        return giveup(EError(resp.body)); //body is err id
+        return giveup(ctx, EError(resp.body)); //body is err id
       case 501: //the remote servie is not properly setup
-        throw Exception(
-            msg); //remote server not setup so no error id, treat as unknow error
+        throw Exception(msg);
       case 504: //service context deadline exceeded
-        return giveup(EServiceTimeout(resp.body)); //body is err id
+        return giveup(ctx, EServiceTimeout(resp.body)); //body is err id
       case 511: //access token required
-        return await retry(CAccessTokenRequired(), ERefuseSignin(), r);
+        return await retry(ctx, CAccessTokenRequired(), ERefuseSignin(), r);
       case 412: //access token expired
-        return await retry(CAccessTokenExpired(), ERefuseSignin(), r);
+        return await retry(ctx, CAccessTokenExpired(), ERefuseSignin(), r);
       case 402: //payment token expired
-        return await retry(CPaymentTokenRequired(), ERefuseSignin(), r);
+        return await retry(ctx, CPaymentTokenRequired(), ERefuseSignin(), r);
+      case 400: //bad request
+        throw Exception(msg);
     }
     //unknow status code
     throw Exception('unknown status ' + msg);
@@ -119,7 +121,7 @@ Future<List<int>> doPost(Request r) async {
       return emmitError(r);
     }
     var errID = _here.error(e, s);
-    return giveup(EClientTimeout(errID));
+    return giveup(ctx, EClientTimeout(errID));
   } on SocketException catch (e, s) {
     if (r.onError != null) {
       return emmitError(r);
@@ -127,14 +129,14 @@ Future<List<int>> doPost(Request r) async {
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
         '$_here|service not available'.alert;
-        return giveup(EContactUs(e, s));
+        return giveup(ctx, EContactUs(e, s));
       } else {
         '$_here|service blocked'.alert;
-        return giveup(EServiceBlocked());
+        return giveup(ctx, EServiceBlocked());
       }
     } else {
       '$_here|no network'.warning;
-      return await retry(CInternetRequired(), ERefuseInternet(), r);
+      return await retry(ctx, CInternetRequired(), ERefuseInternet(), r);
     }
   } catch (e, s) {
     if (r.onError != null) {
@@ -142,7 +144,7 @@ Future<List<int>> doPost(Request r) async {
     }
     //handle exception here to get better stack trace
     var errId = _here.error(e, s);
-    return giveup(EError(errId));
+    return giveup(ctx, EError(errId));
   }
 }
 
@@ -158,20 +160,20 @@ emmitError(Request r) {
 
 /// giveup brodcast event then return null
 ///
-///   commandHttp.giveup(c.ERefuseInternet());
-giveup(dynamic e) {
-  eventBus.broadcast(e);
-  return null;
+///     commandHttp.giveup(ctx,ERefuseInternet());
+giveup(BuildContext ctx, dynamic e) {
+  eventbus.broadcast(ctx, e);
 }
 
 /// retry use contract, broadcast event when failed
 ///
-///     await commandHttp.retry(c.CAccessTokenExpired(), c.ERefuseSignin(), req);
-Future<List<int>> retry(Contract contr, dynamic fail, Request r) async {
-  if (await eventBus.contract(contr)) {
+///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
+Future<List<int>> retry(
+    BuildContext ctx, Contract contr, dynamic fail, Request r) async {
+  if (await eventbus.contract(ctx, contr)) {
     '$_here|ok,retry'.log;
-    return await doPost(r);
+    return await doPost(ctx, r);
   }
-  eventBus.broadcast(fail);
+  eventbus.broadcast(ctx, fail);
   return null;
 }

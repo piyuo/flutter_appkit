@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/data/prefs.dart' as prefs;
 import 'package:libcli/hook/preferences.dart' as pref;
+import 'package:flutter/material.dart';
 
 ///get cookies from
 ///
@@ -15,10 +16,10 @@ Future<String> get() async {
 ///set cookies to data
 ///
 ///     await  cookies.set('mock');
-set(String cookies) async {
+set(BuildContext ctx, String cookies) async {
   if (kIsWeb) {
   } else {
-    await prefs.setString(pref.kCookies, cookies);
+    await prefs.setString(ctx, pref.kCookies, cookies);
   }
 }
 

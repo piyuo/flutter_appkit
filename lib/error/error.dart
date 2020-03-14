@@ -1,10 +1,13 @@
 import 'dart:async';
-import 'package:libcli/eventbus/event_bus.dart' as eventBus;
-import 'package:libcli/hook/events.dart';
-import 'package:libcli/log/log.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/log/log.dart';
+import 'package:libcli/hook/events.dart';
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:flutter_test/flutter_test.dart';
 
-const _here = 'error';
+const _here = 'catch';
+
+BuildContext catchContext;
 
 /// catch unhandle exception
 ///
@@ -12,7 +15,7 @@ const _here = 'error';
 catchAndBroadcast({Function suspect, Function callback}) {
   FlutterError.onError = (FlutterErrorDetails details) {
     var errId = _here.error(details.exception, details.stack);
-    eventBus.broadcast(EError(errId));
+    eventbus.broadcast(catchContext, EError(errId));
     if (callback != null) {
       callback();
     }
@@ -24,10 +27,26 @@ catchAndBroadcast({Function suspect, Function callback}) {
     },
     onError: (dynamic e, StackTrace s) {
       var errId = _here.error(e, s);
-      eventBus.broadcast(EError(errId));
+      eventbus.broadcast(catchContext, EError(errId));
       if (callback != null) {
         callback();
       }
     },
+  );
+}
+
+/// mockInit Initializes the value for testing
+///
+///     command.mockInit({});
+///
+@visibleForTesting
+void mockInit(tester) async {
+  await tester.pumpWidget(
+    Builder(
+      builder: (BuildContext ctx) {
+        catchContext = ctx;
+        return Placeholder();
+      },
+    ),
   );
 }

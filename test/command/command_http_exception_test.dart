@@ -7,9 +7,10 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/command/command_http.dart' as commandHttp;
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
-import 'package:libcli/eventbus/event_bus.dart' as eventBus;
-import 'package:libcli/eventbus/contract.dart' as eventBus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus/contract.dart';
 import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/mock/mock.dart';
 
 void main() {
   command.mockInit();
@@ -19,33 +20,38 @@ void main() {
   setUp(() async {
     contract = null;
     event = null;
-
-    eventBus.listen((e) {
-      if (e is eventBus.Contract) {
+    eventbus.removeAllListeners();
+    eventbus.listen((_, e) {
+      if (e is Contract) {
         contract = e;
       } else {
         event = e;
       }
     });
 
-    eventBus.listen<eventBus.Contract>((e) {
+    eventbus.listen<Contract>((_, e) {
       e.complete(true);
     });
   });
 
   group('[command_http_request_exception]', () {
-    test('should throw exception when something wrong in request()', () async {
+    testWidgets('should throw exception when something wrong in request()',
+        (WidgetTester tester) async {
       var req = newRequest(MockClient((request) async {
         throw Exception('mock');
       }));
-      try {
-        await commandHttp.doPost(req);
-      } catch (e) {
-        expect(e, isNotNull);
-      }
+
+      await tester.inWidget((ctx) async {
+        try {
+          await commandHttp.doPost(ctx, req);
+        } catch (e) {
+          expect(e, isNotNull);
+        }
+      });
     });
 
-    test('should use custom onError when error happen', () async {
+    testWidgets('should use custom onError when error happen',
+        (WidgetTester tester) async {
       var req = newRequest(MockClient((request) async {
         throw Exception('mock');
       }));
@@ -53,14 +59,17 @@ void main() {
       req.onError = () {
         onErrorCalled = true;
       };
-      var bytes = await commandHttp.doPost(req);
-      await eventBus.mockDone();
-      expect(bytes, null);
-      expect(event, null);
-      expect(onErrorCalled, true);
+
+      await tester.inWidget((ctx) async {
+        var bytes = await commandHttp.doPost(ctx, req);
+        expect(bytes, null);
+        expect(event, null);
+        expect(onErrorCalled, true);
+      });
     });
 
-    test('should handle service not available', () async {
+    testWidgets('should handle service not available',
+        (WidgetTester tester) async {
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {
         return true;
@@ -68,13 +77,14 @@ void main() {
       req.isGoogleCloudFunctionAvailable = () async {
         return true;
       };
-      var bytes = await commandHttp.doPost(req);
-      await eventBus.mockDone();
-      expect(bytes, null);
-      expect(event.runtimeType, EContactUs);
+      await tester.inWidget((ctx) async {
+        var bytes = await commandHttp.doPost(ctx, req);
+        expect(bytes, null);
+        expect(event.runtimeType, EContactUs);
+      });
     });
 
-    test('should retry service blocked', () async {
+    testWidgets('should retry service blocked', (WidgetTester tester) async {
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {
         return true;
@@ -82,53 +92,65 @@ void main() {
       req.isGoogleCloudFunctionAvailable = () async {
         return false;
       };
-      var bytes = await commandHttp.doPost(req);
-      await eventBus.mockDone();
-      expect(bytes, null);
-      expect(event.runtimeType, EServiceBlocked);
+      await tester.inWidget((ctx) async {
+        var bytes = await commandHttp.doPost(ctx, req);
+        expect(bytes, null);
+        expect(event.runtimeType, EServiceBlocked);
+      });
     });
 
-    test('should handle no network', () async {
+    testWidgets('should handle no network', (WidgetTester tester) async {
       var req = newRequest(socketMock());
       req.isInternetConnected = () async {
         return false;
       };
-      var bytes = await commandHttp.doPost(req);
-      await eventBus.mockDone();
-      expect(bytes, isNotNull);
-      expect(bytes.length, greaterThan(1));
-      expect(contract.runtimeType, CInternetRequired);
+
+      await tester.inWidget((ctx) async {
+        var bytes = await commandHttp.doPost(ctx, req);
+        expect(bytes, isNotNull);
+        expect(bytes.length, greaterThan(1));
+        expect(contract.runtimeType, CInternetRequired);
+      });
     });
 
-    test('should handle client timeout', () async {
-      var client = MockClient((request) async {
-        await Future.delayed(const Duration(milliseconds: 2));
-        return http.Response('hi', 200);
+    testWidgets('should handle client timeout', (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        //runAsync fix Future.delayed stop problem
+        var client = MockClient((request) async {
+          await Future.delayed(const Duration(milliseconds: 2));
+          return http.Response('hi', 200);
+        });
+
+        var context = await tester.mockContext();
+        var req = newRequest(client);
+        req.timeout = 1;
+        var bytes = await commandHttp.doPost(context, req);
+        expect(bytes, null);
+        expect(event.runtimeType, EClientTimeout);
       });
-      var req = newRequest(client);
-      req.timeout = 1;
-      var bytes = await commandHttp.doPost(req);
-      await eventBus.mockDone();
-      expect(bytes, null);
-      expect(event.runtimeType, EClientTimeout);
     });
 
-    test('should use onError when client timeout', () async {
-      var client = MockClient((request) async {
-        await Future.delayed(const Duration(milliseconds: 2));
-        return http.Response('hi', 200);
+    testWidgets('should use onError when client timeout',
+        (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        var client = MockClient((request) async {
+          await Future.delayed(const Duration(milliseconds: 2));
+          return http.Response('hi', 200);
+        });
+        var req = newRequest(client);
+        var onErrorCalled = false;
+        req.onError = () {
+          onErrorCalled = true;
+        };
+
+        await tester.inWidget((ctx) async {
+          req.timeout = 1;
+          var bytes = await commandHttp.doPost(ctx, req);
+          expect(bytes, null);
+          expect(event, null);
+          expect(onErrorCalled, true);
+        });
       });
-      var req = newRequest(client);
-      var onErrorCalled = false;
-      req.onError = () {
-        onErrorCalled = true;
-      };
-      req.timeout = 1;
-      var bytes = await commandHttp.doPost(req);
-      await eventBus.mockDone();
-      expect(bytes, null);
-      expect(event, null);
-      expect(onErrorCalled, true);
     });
   });
 }

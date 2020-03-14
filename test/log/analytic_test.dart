@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:libcli/mock/mock.dart';
 import 'package:libcli/log/analytic.dart' as analytic;
 import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
 import 'package:libcli/hook/vars.dart' as vars;
-import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _here = 'analytic_test';
@@ -24,7 +24,7 @@ void main() {
       '$_here|mock warning'.warning;
       expect(current.logs.length, 1);
       vars.Branch = vars.Branches.test;
-      var result = await analytic.post();
+      var result = await analytic.post(null);
       expect(result, true);
     });
 
@@ -39,13 +39,13 @@ void main() {
         _here.error(e, s);
       }
       expect(current.errors.length, 1);
-      var result = await analytic.post();
+      var result = await analytic.post(null);
       expect(result, true);
     });
 
     test('should return false if no logs or errors', () async {
       analytic.clear();
-      var result = await analytic.post();
+      var result = await analytic.post(null);
       expect(result, false);
     });
   });

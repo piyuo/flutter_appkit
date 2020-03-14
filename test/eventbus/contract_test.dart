@@ -1,43 +1,33 @@
-import 'package:libcli/eventbus/event_bus.dart' as eventBus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/eventbus/contract.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/mock/mock.dart';
 
 main() {
-  group('[EventBus_Contract]', () {
-    test('should contract', () async {
-      var ok = false;
-      var text = '';
-
-      eventBus.listen<MockContract>((event) {
-        text = event.text;
-        event.complete(true);
-      });
-
-      eventBus.contract(MockContract('c')).then((value) {
-        ok = value;
-      });
-
-      await eventBus.mockDone();
-      expect(text, 'c');
-      expect(ok, true);
-    });
-
+  setUp(() async {
+    eventbus.removeAllListeners();
+  });
+  group('[eventbus_contract]', () {
     test('should handle error', () async {
-      var ok = false;
-      var text = '';
-
-      eventBus.listen<MockContract>((event) {
+      eventbus.listen<MockContract>((_, event) {
         throw 'unhandle exception';
       });
-
-      eventBus.contract(MockContract('c')).then((value) {
-        ok = value;
+      eventbus.contract(null, MockContract('c')).then((value) {
+        expect(value, false);
       });
-
-      await eventBus.mockDone();
-      expect(text, '');
-      expect(ok, false);
     });
+  });
+
+  test('should contract', () async {
+    var text = '';
+    eventbus.listen<MockContract>((ctx, event) {
+      text = event.text;
+      event.complete(true);
+    });
+    eventbus.contract(null, MockContract('c')).then((value) {
+      expect(value, true);
+    });
+    expect(text, 'c');
   });
 }
 

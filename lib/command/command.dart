@@ -11,6 +11,7 @@ import 'package:libcli/command/command_url.dart';
 import 'package:libcli/command/command_http.dart';
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/command/commands/shared/err.pb.dart';
+import 'package:flutter/material.dart';
 
 const _here = 'command';
 
@@ -47,22 +48,23 @@ abstract class Service {
   ///         print(response.data);
   ///       };
   ///     });
-  Future<dynamic> dispatch(ProtoObject obj) async {
+  Future<dynamic> dispatch(BuildContext ctx, ProtoObject obj) async {
     assert(url != null && url.length > 0);
     assert(obj != null);
     http.Client client = http.Client();
-    return dispatchWithClient(obj, client);
+    return dispatchWithClient(ctx, obj, client);
   }
 
   /// dispatchWithClient dispatch request to remote service
   ///
   ///     var response = await service.dispatchWithClient(client, EchoRequest());
   Future<Response> dispatchWithClient(
-      ProtoObject obj, http.Client client) async {
+      BuildContext ctx, ProtoObject obj, http.Client client) async {
     try {
       '$_here|dispatch ${obj.runtimeType} to $url'.log;
       Uint8List bytes = encode(obj);
-      List<int> ret = await post(client, url, bytes, timeout, slow, onError);
+      List<int> ret =
+          await post(ctx, client, url, bytes, timeout, slow, onError);
       if (ret != null) {
         ProtoObject retObj = decode(ret, this);
         var r = Response.from(retObj);
@@ -81,7 +83,7 @@ abstract class Service {
       }
     } catch (e, s) {
       var errId = _here.error(e, s);
-      giveup(EError(errId));
+      giveup(ctx, EError(errId));
     }
     return Response();
   }

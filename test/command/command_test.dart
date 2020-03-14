@@ -9,12 +9,16 @@ import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
 import 'package:http/http.dart' as http;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/hook/vars.dart' as vars;
+import 'package:libcli/mock/mock.dart';
 
 void main() {
   command.mockInit();
 
+  setUp(() {});
+
   group('[command]', () {
-    test('should send command and receive response', () async {
+    testWidgets('should send command and receive response',
+        (WidgetTester tester) async {
       var client = MockClient((request) async {
         StringResponse sr = StringResponse();
         sr.text = 'hi';
@@ -22,33 +26,33 @@ void main() {
         return http.Response.bytes(bytes, 200);
       });
 
-      SysService service = SysService();
-      var response = await service.dispatchWithClient(EchoRequest(), client);
-      expect(response.ok, true);
-      expect((response.data as StringResponse).text, 'hi');
+      await tester.inWidget((ctx) async {
+        SysService service = SysService();
+        var response =
+            await service.dispatchWithClient(ctx, EchoRequest(), client);
+        expect(response.ok, true);
+        expect((response.data as StringResponse).text, 'hi');
+      });
     });
 
-    test('should receive null', () async {
+    testWidgets('should receive null', (WidgetTester tester) async {
       var client = MockClient((request) async {
         return http.Response('', 501);
       });
-      SysService service = SysService();
-      var response = await service.dispatchWithClient(EchoRequest(), client);
-      expect(response.ok, false);
+
+      await tester.inWidget((ctx) async {
+        SysService service = SysService();
+        var response =
+            await service.dispatchWithClient(ctx, EchoRequest(), client);
+        expect(response.ok, false);
+      });
     });
 
-    test('should send command to test server and receive response', () async {
-      vars.Branch = vars.Branches.test;
-      SysService service = SysService();
-      var response = await service.dispatch(PingAction());
-      expect(response, isNotNull);
-      expect(response.ok, true);
-    });
     test('should return null when send wrong action to test server', () async {
       vars.Branch = vars.Branches.test;
       SysService service = SysService();
       EchoRequest action = new EchoRequest();
-      var response = await service.dispatch(action);
+      var response = await service.dispatch(null, action);
       expect(response.ok, false);
       expect(response.data, null);
     });
