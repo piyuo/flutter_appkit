@@ -30,14 +30,14 @@ abstract class ReduxProvider<S, A> extends AsyncProvider {
   ///     redux.dispatch(MockAction.Increment, 1);
   ///
   @mustCallSuper
-  Future<S> dispatch(BuildContext ctx,A action, dynamic payload) async {
-    await _redux.dispatch(ctx,action, payload);
-    await onDispatch(action, payload);
+  Future<S> dispatch(BuildContext ctx, A action, dynamic payload) async {
+    await _redux.dispatch(ctx, action, payload);
+    await onDispatch(ctx, action, payload);
     notifyListeners();
     return state;
   }
 
   /// onDIspatch happen after dispatch
   ///
-  Future<void> onDispatch(A action, dynamic payload) async {}
+  Future<void> onDispatch(BuildContext ctx, A action, dynamic payload) async {}
 }
