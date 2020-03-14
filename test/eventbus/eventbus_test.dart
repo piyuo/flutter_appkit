@@ -5,7 +5,7 @@ import 'package:libcli/mock/mock.dart';
 
 main() {
   setUp(() async {
-    eventbus.removeAllListeners();
+    eventbus.reset();
   });
 
   group('[eventbus]', () {
@@ -15,7 +15,7 @@ main() {
           expect(event, 'hi');
         });
         expect(eventbus.getListenerCount(), 1);
-        eventbus.removeAllListeners();
+        eventbus.reset();
         expect(eventbus.getListenerCount(), 0);
       });
     });

@@ -20,7 +20,7 @@ void main() {
   setUp(() async {
     contract = null;
     event = null;
-    eventbus.removeAllListeners();
+    eventbus.reset();
     eventbus.listen((_, e) {
       if (e is Contract) {
         contract = e;

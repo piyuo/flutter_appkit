@@ -5,7 +5,7 @@ import 'package:libcli/mock/mock.dart';
 
 main() {
   setUp(() async {
-    eventbus.removeAllListeners();
+    eventbus.reset();
   });
   group('[eventbus_contract]', () {
     test('should handle error', () async {

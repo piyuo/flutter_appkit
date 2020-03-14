@@ -52,9 +52,9 @@ class Subscription {
 ///
 List<Listener> _listeners = List<Listener>();
 
-/// removeAllListeners remove all listener
+/// reset  remove all listener from eventbus
 ///
-removeAllListeners() {
+reset() {
   _listeners.clear();
 }
 
