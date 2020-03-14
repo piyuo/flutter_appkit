@@ -1,12 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pattern/redux_provider.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   MockRedux provider = MockRedux();
   group('[redux_provider]', () {
     test('should dispatch reducer', () async {
       expect(provider.state.value, 0);
-      provider.dispatch(MockAction.Increment, 1);
+      provider.dispatch(null, MockAction.Increment, 1);
       expect(provider.state.value, 1);
     });
   });
@@ -21,8 +22,8 @@ class MockState {
 
 enum MockAction { Increment }
 
-Future<MockState> reducer(
-    MockState state, MockAction action, dynamic payload) async {
+Future<MockState> reducer(BuildContext ctx, MockState state, MockAction action,
+    dynamic payload) async {
   switch (action) {
     case MockAction.Increment:
       state.value += payload;

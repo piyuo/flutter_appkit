@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log/log.dart';
 import 'package:libcli/pattern/redux.dart';
+import 'package:flutter/material.dart';
 
 const _here = 'history_redux';
 
@@ -103,13 +104,13 @@ class HistoryRedux<S, A> {
   ///
   ///     redux.dispatch(MockAction.Increment, 1);
   ///
-  Future<S> dispatch(A action, dynamic payload) async {
+  Future<S> dispatch(BuildContext ctx, A action, dynamic payload) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (kReleaseMode) {
-      _setState(await _reducer(state, action, payload));
+      _setState(await _reducer(ctx, state, action, payload));
     } else {
       var jOld = toString(state);
-      var newState = await _reducer(state, action, payload);
+      var newState = await _reducer(ctx, state, action, payload);
       var jNew = toString(newState);
       var jAction = toString(action);
       var jPayload = toString(payload);

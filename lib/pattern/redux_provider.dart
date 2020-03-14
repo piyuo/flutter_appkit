@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/pattern/async_provider.dart';
 import 'package:libcli/pattern/redux.dart';
+import 'package:flutter/material.dart';
 
 /// ReduxProvider implement AsyncProvicer and Redux
 abstract class ReduxProvider<S, A> extends AsyncProvider {
@@ -29,8 +30,8 @@ abstract class ReduxProvider<S, A> extends AsyncProvider {
   ///     redux.dispatch(MockAction.Increment, 1);
   ///
   @mustCallSuper
-  Future<S> dispatch(A action, dynamic payload) async {
-    await _redux.dispatch(action, payload);
+  Future<S> dispatch(BuildContext ctx,A action, dynamic payload) async {
+    await _redux.dispatch(ctx,action, payload);
     await onDispatch(action, payload);
     notifyListeners();
     return state;

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pattern/history_redux.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   setUp(() async {});
@@ -9,15 +10,15 @@ void main() {
       HistoryRedux redux =
           HistoryRedux<MockState, MockAction>(2, reducer, MockState());
       expect(redux.state.value, 0);
-      await redux.dispatch(MockAction.Increment, 1);
+      await redux.dispatch(null, MockAction.Increment, 1);
       expect(redux.state.value, 1);
     });
 
     test('should undo', () async {
       HistoryRedux redux =
           HistoryRedux<MockState, MockAction>(3, reducer, MockState());
-      await redux.dispatch(MockAction.Increment, 1);
-      await redux.dispatch(MockAction.Increment, 1);
+      await redux.dispatch(null, MockAction.Increment, 1);
+      await redux.dispatch(null, MockAction.Increment, 1);
       expect(redux.state.value, 2);
       expect(redux.hasUndo, true);
       redux.undo();
@@ -32,8 +33,8 @@ void main() {
     test('should redo', () async {
       HistoryRedux redux =
           HistoryRedux<MockState, MockAction>(3, reducer, MockState());
-      await redux.dispatch(MockAction.Increment, 1);
-      await redux.dispatch(MockAction.Increment, 1);
+      await redux.dispatch(null, MockAction.Increment, 1);
+      await redux.dispatch(null, MockAction.Increment, 1);
       redux.undo();
       expect(redux.state.value, 1);
       expect(redux.hasRedo, true);
@@ -55,8 +56,8 @@ class MockState {
 
 enum MockAction { Increment }
 
-Future<MockState> reducer(
-    MockState state, MockAction action, dynamic payload) async {
+Future<MockState> reducer(BuildContext ctx, MockState state, MockAction action,
+    dynamic payload) async {
   switch (action) {
     case MockAction.Increment:
       return MockState()..value = state.value + payload;
