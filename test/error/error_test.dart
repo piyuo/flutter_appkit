@@ -7,7 +7,6 @@ import 'dart:async';
 void main() {
   group('[error]', () {
     testWidgets('should catch exception', (WidgetTester tester) async {
-      await error.mockInit(tester);
       var event;
       eventbus.listen<EError>((_, e) {
         event = e;
@@ -20,7 +19,6 @@ void main() {
     });
 
     testWidgets('should catch async exception', (WidgetTester tester) async {
-      await error.mockInit(tester);
       var event;
       eventbus.listen<EError>((_, e) {
         event = e;
@@ -34,7 +32,6 @@ void main() {
 
     testWidgets('should catch timer exception', (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await error.mockInit(tester);
         var event;
         eventbus.listen<EError>((_, e) {
           event = e;
