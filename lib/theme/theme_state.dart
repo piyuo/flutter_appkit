@@ -20,5 +20,5 @@ class ThemeState {
 }
 
 Future<ThemeState> readState() async {
-  return ThemeState()..fontIndex = 0;
+  return ThemeState()..fontIndex = 1;
 }
