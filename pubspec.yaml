@@ -16,6 +16,7 @@ dependencies:
     fixnum: ^0.10.11
     meta: ^1.1.8
     provider: ^4.0.4
+    #intl: ^0.16.1
     #  rxdart: ^0.23.1
 
 dev_dependencies:

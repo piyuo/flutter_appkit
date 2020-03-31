@@ -58,6 +58,16 @@ void main() {
       });
     });
 
+    testWidgets('should get/set datetime', (WidgetTester tester) async {
+      await tester.inWidget((ctx) async {
+        var now = DateTime.now();
+        var short = now.toString().toString().substring(0, 16);
+        await prefs.setDateTime(ctx, 'k', now);
+        var result = await prefs.getDateTime('k');
+        expect(result.toString().substring(0, 16), short);
+      });
+    });
+
     test('should get empty string when no data', () async {
       var result = await prefs.getString('na');
       expect(result, '');
