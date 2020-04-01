@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 const _here = 'catch';
 
+class DiskFullException implements Exception {}
+
 /// catch unhandle exception
 ///
 ///      error.catchAndBroadcast(suspect, null);

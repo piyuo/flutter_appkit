@@ -19,7 +19,7 @@ Future<String> get() async {
 set(BuildContext ctx, String cookies) async {
   if (kIsWeb) {
   } else {
-    await prefs.setString(ctx, pref.kCookies, cookies);
+    await prefs.setString(pref.kCookies, cookies);
   }
 }
 

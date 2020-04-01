@@ -1,10 +1,9 @@
+import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log/log.dart';
-import 'package:libcli/hook/events.dart';
-import 'package:libcli/eventbus/eventbus.dart' as eventBus;
-import 'package:flutter/material.dart';
+import 'package:libcli/hook/errors.dart';
 
 const _here = 'prefs';
 
@@ -34,14 +33,14 @@ Future<bool> getBool(String key) async {
 
 /// setBool set boolean value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setBool(ctx,'k',true);
+///     await data.setBool('k',true);
 ///
-setBool(BuildContext ctx, String key, bool value) async {
+setBool(String key, bool value) async {
   assert(key.length > 0);
   debugPrint('$_here|set $key=$NOUN$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
-    eventBus.broadcast(ctx, EDiskFullOrNoAccess());
+    throw DiskFullException();
   }
 }
 
@@ -58,14 +57,14 @@ Future<int> getInt(String key) async {
 
 /// setInt set int value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setInt(ctx,'k',1);
+///     await data.setInt('k',1);
 ///
-setInt(BuildContext ctx, String key, int value) async {
+setInt(String key, int value) async {
   assert(key.length > 0);
   debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
-    eventBus.broadcast(ctx, EDiskFullOrNoAccess());
+    throw DiskFullException();
   }
 }
 
@@ -82,14 +81,14 @@ Future<double> getDouble(String key) async {
 
 /// setDouble set double value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setDouble(ctx,'k',1);
+///     await data.setDouble('k',1);
 ///
-setDouble(BuildContext ctx, String key, double value) async {
+setDouble(String key, double value) async {
   assert(key.length > 0);
   debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
-    eventBus.broadcast(ctx, EDiskFullOrNoAccess());
+    throw DiskFullException();
   }
 }
 
@@ -106,14 +105,14 @@ Future<String> getString(String key) async {
 
 /// setString set string value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setString(ctx,'k','value');
+///     await data.setString('k','value');
 ///
-setString(BuildContext ctx, String key, String value) async {
+setString(String key, String value) async {
   assert(key.length > 0);
   debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
-    eventBus.broadcast(ctx, EDiskFullOrNoAccess());
+    throw DiskFullException();
   }
 }
 
@@ -131,9 +130,9 @@ Future<DateTime> getDateTime(String key) async {
 
 /// setDateTime set datatime value to preference, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setString(ctx,'k','value');
+///     await data.setString('k','value');
 ///
-setDateTime(BuildContext ctx, String key, DateTime value) async {
+setDateTime(String key, DateTime value) async {
   assert(key.length > 0);
   String formatted = null;
   if (value != null) {
@@ -141,7 +140,7 @@ setDateTime(BuildContext ctx, String key, DateTime value) async {
     //formatter.format(value);
     formatted = value.toString().substring(0, 16);
   }
-  return await setString(ctx, key, formatted);
+  return await setString(key, formatted);
 }
 
 /// getStringList return string list from data
@@ -157,14 +156,14 @@ Future<List<String>> getStringList(String key) async {
 
 /// setStringList set string list to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setStringList(ctx,'k',list);
+///     await data.setStringList('k',list);
 ///
-setStringList(BuildContext ctx, String key, List<String> value) async {
+setStringList(String key, List<String> value) async {
   assert(key.length > 0);
   debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setStringList(key, value));
   if (!result) {
-    eventBus.broadcast(ctx, EDiskFullOrNoAccess());
+    throw DiskFullException();
   }
 }
 
@@ -181,11 +180,9 @@ Future<Map<String, dynamic>> getMap(String key) async {
 ///
 ///     await data.setMap('k',map);
 ///
-Future<void> setMap(
-    BuildContext ctx, String key, Map<String, dynamic> map) async {
-  // String json = JsonEncoder.withIndent('').convert(map);
+Future<void> setMap(String key, Map<String, dynamic> map) async {
   String j = json.encode(map);
-  return await setString(ctx, key, j);
+  return await setString(key, j);
 }
 
 /// mockInit Initializes the value for testing
