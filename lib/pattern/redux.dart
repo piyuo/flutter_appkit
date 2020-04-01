@@ -36,7 +36,7 @@ class Redux<S, A> {
   set state(S value) {
     if (!kReleaseMode) {
       var s = toString(value);
-      '$_here|set state=$s'.print;
+      debugPrint('$_here|set state=$s');
     }
     _state = value;
   }
@@ -55,7 +55,8 @@ class Redux<S, A> {
       var jNew = toString(newState);
       var jAction = toString(action);
       var jPayload = toString(payload);
-      '$_here|$jOld => $VERB$jAction $NOUN$jPayload $END=> $NOUN2$jNew'.print;
+      debugPrint(
+          '$_here|$jOld => $VERB$jAction $NOUN$jPayload $END=> $NOUN2$jNew');
       _state = newState;
     }
     return state;

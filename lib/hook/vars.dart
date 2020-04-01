@@ -1,4 +1,5 @@
 import 'package:libcli/log/log.dart';
+import 'package:flutter/foundation.dart';
 
 const _here = 'vars';
 
@@ -18,7 +19,7 @@ enum Regions { us, cn, tw }
 String _appID = '';
 String get AppID => _appID;
 set AppID(String value) {
-  '$_here|set AppID=${NOUN}$value'.print;
+  debugPrint('$_here|set AppID=${NOUN}$value');
   _appID = value;
 }
 
@@ -28,7 +29,7 @@ set AppID(String value) {
 String _userID = '';
 String get UserID => _userID;
 set UserID(String value) {
-  '$_here|set UserID=${NOUN}$value'.print;
+  debugPrint('$_here|set UserID=${NOUN}$value');
   _userID = value;
 }
 
@@ -38,7 +39,7 @@ set UserID(String value) {
 Branches _branch = Branches.debug;
 Branches get Branch => _branch;
 set Branch(Branches value) {
-  '$_here|set Branch=${NOUN}${value.toString()}'.print;
+  debugPrint('$_here|set Branch=${NOUN}${value.toString()}');
   _branch = value;
 }
 
@@ -48,7 +49,7 @@ set Branch(Branches value) {
 Regions _region = Regions.us;
 Regions get Region => _region;
 set Region(Regions value) {
-  '$_here|set Region=${NOUN}${value.toString()}'.print;
+  debugPrint('$_here|set Region=${NOUN}${value.toString()}');
   _region = value;
 }
 

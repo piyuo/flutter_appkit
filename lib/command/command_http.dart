@@ -71,7 +71,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
   if (kReleaseMode && !kIsWeb) {
     var c = await cookies.get();
     if (c.length > 0) {
-      '$_here|cookies=$c'.print;
+      debugPrint('$_here|cookies=$c');
       headers['Cookie'] = c;
     }
   }
@@ -84,7 +84,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (kReleaseMode && !kIsWeb) {
       var c = resp.headers['set-cookie'];
       if (c != null && c.length > 0) {
-        '$_here|set-cookies=$c'.print;
+        debugPrint('$_here|set-cookies=$c');
         cookies.set(ctx, c);
       }
     }
@@ -97,7 +97,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
-    '$_here|caught $msg'.log;
+    log('$_here|caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(ctx, EError(resp.body)); //body is err id
@@ -120,7 +120,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (r.onError != null) {
       return emmitError(r);
     }
-    var errID = _here.error(e, s);
+    var errID = error(_here, e, s);
     return giveup(ctx, EClientTimeout(errID));
   } on SocketException catch (e, s) {
     if (r.onError != null) {
@@ -128,14 +128,14 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     }
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
-        '$_here|service not available'.alert;
+        alert('$_here|service not available');
         return giveup(ctx, EContactUs(e, s));
       } else {
-        '$_here|service blocked'.alert;
+        alert('$_here|service blocked');
         return giveup(ctx, EServiceBlocked());
       }
     } else {
-      '$_here|no network'.warning;
+      warning('$_here|no network');
       return await retry(ctx, CInternetRequired(), ERefuseInternet(), r);
     }
   } catch (e, s) {
@@ -143,7 +143,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     //handle exception here to get better stack trace
-    var errId = _here.error(e, s);
+    var errId = error(_here, e, s);
     return giveup(ctx, EError(errId));
   }
 }
@@ -171,7 +171,7 @@ giveup(BuildContext ctx, dynamic e) {
 Future<List<int>> retry(
     BuildContext ctx, Contract contr, dynamic fail, Request r) async {
   if (await eventbus.contract(ctx, contr)) {
-    '$_here|ok,retry'.log;
+    log('$_here|ok,retry');
     return await doPost(ctx, r);
   }
   eventbus.broadcast(ctx, fail);

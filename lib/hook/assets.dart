@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart';
+import 'package:flutter/foundation.dart';
 
 typedef Future<String> Get(fileName);
 Get get;
@@ -13,7 +13,7 @@ Get get;
 @visibleForTesting
 void mockInit(String result) {
   Future<String> mock(fileName) async {
-    'assets_mock|get $NOUN$fileName$END return mock $NOUN2$result'.print;
+    debugPrint('assets_mock|get $NOUN$fileName$END return mock $NOUN2$result');
     return result;
   }
 

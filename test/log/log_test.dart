@@ -1,27 +1,30 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/log/log.dart';
 import 'package:libcli/hook/vars.dart' as vars;
 
 void main() {
+  debugPrint = overrideDebugPrint;
+
   group('[log]', () {
-    test('should print', () {
+    test('should debugPrint', () {
       vars.AppID = 'piyuo-web-index';
       vars.UserID = '111-222';
-      'here|mock ${VERB}test'.print;
+      debugPrint('here|mock ${VERB}test');
     });
 
     test('should log', () async {
       vars.AppID = 'log_test';
       vars.UserID = 'developer';
       vars.Branch = vars.Branches.test;
-      'here|thing ${VERB}log ${NOUN}here'.log;
-      'here|thing ${VERB}warning ${NOUN}here'.warning;
-      'here|thing ${VERB}alert ${NOUN}here'.alert;
+      log('here|thing ${VERB}log ${NOUN}here');
+      warning('here|thing ${VERB}warning ${NOUN}here');
+      alert('here|thing ${VERB}alert ${NOUN}here');
     });
 
     test('should alert no head', () async {
       try {
-        'no head'.print;
+        debugPrint('no head');
       } catch (e) {
         expect(e, isNotNull);
       }
@@ -34,7 +37,7 @@ void main() {
       try {
         throw Exception('my error');
       } catch (e, s) {
-        'here'.error(e, s);
+        error('here', e, s);
       }
     });
 

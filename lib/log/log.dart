@@ -24,99 +24,93 @@ const END = RESET;
 const WARNING = YELLOW;
 const ALERT = RED;
 
-printToConsole(String message) {
-  if (Platform.isIOS) {
-    print(message
-        .replaceAll(HEAD, '')
-        .replaceAll(HEAD, '')
-        .replaceAll(VERB, '')
-        .replaceAll(NOUN, '')
-        .replaceAll(NOUN2, '')
-        .replaceAll(END, '')
-        .replaceAll(WARNING, '')
-        .replaceAll(ALERT, ''));
-    return;
-  }
-  print(message);
-}
-
-///LogExtension will allow you to add `.print`,`.log`,`.warning`,`.alert`,`.error` to your strings
+/// overrideDebugPrint override debugPrint()
 ///
-extension LogExtension on String {
-  /// print debug info to console
-  ///
-  ///     'here|Job ${VERB}done'.print;
-  get print {
-    if (!kReleaseMode) {
-      assert(this.length > 0);
-      assert(this.indexOf('|') != -1, 'must begin with "where|"');
-      List<String> args = this.split('|');
+overrideDebugPrint(String message, {int wrapWidth}) {
+  if (!kReleaseMode) {
+    if (message.indexOf('|') != -1) {
+      List<String> args = message.split('|');
       assert(args.length == 2);
       var h = head(args[0]);
       var m = args[1];
-      printToConsole('$HEAD${h}$END$m');
+      message = '$HEAD${h}$END$m';
     }
-  }
 
-  /// log print message and log to analytic
-  ///
-  ///      _log(this, logger.LEVEL_INFO, '');
-  _log(String message, int level, String hint) {
-    assert(message.length > 0);
-    assert(message.indexOf('|') != -1, 'must begin with "where|"');
-    List<String> args = message.split('|');
-    assert(args.length == 2);
-    var h = head(args[0]);
-    var m = args[1];
-    printToConsole('$HEAD$h$END$hint$m$END (logged)');
-    analytic.log(args[0], args[1], level);
+    if (Platform.isIOS) {
+      print(message
+          .replaceAll(HEAD, '')
+          .replaceAll(HEAD, '')
+          .replaceAll(VERB, '')
+          .replaceAll(NOUN, '')
+          .replaceAll(NOUN2, '')
+          .replaceAll(END, '')
+          .replaceAll(WARNING, '')
+          .replaceAll(ALERT, ''));
+      return;
+    }
+    print(message);
   }
+}
 
-  /// log normal but significant events, such as start up, shut down, or a configuration change.
-  ///
-  ///     'here|something ${VERB} done'.log;
-  get log {
-    _log(this, LEVEL_INFO, '');
-  }
+/// log print message and log to analytic
+///
+///      _log(this, logger.LEVEL_INFO, '');
+_log(String message, int level, String hint) {
+  assert(message.length > 0);
+  assert(message.indexOf('|') != -1, 'must begin with "where|"');
+  List<String> args = message.split('|');
+  assert(args.length == 2);
+  var h = head(args[0]);
+  var m = args[1];
+  debugPrint('$HEAD$h$END$hint$m$END (logged)');
+  analytic.log(args[0], args[1], level);
+}
 
-  /// warning events might cause problems.
-  ///
-  ///     'here|things need to ${VERB}watch'.warning;
-  get warning {
-    _log(this, LEVEL_WARNING, '${WARNING}[!WARNING] $END');
-  }
+/// log normal but significant events, such as start up, shut down, or a configuration change.
+///
+///     log('here|something ${VERB} done');
+log(String message) {
+  _log(message, LEVEL_INFO, '');
+}
 
-  /// alert a person must take an action immediately
-  ///
-  ///     'here|something${VERB} go ${NOUN}wrong'.alert;
-  get alert {
-    _log(this, LEVEL_ALERT, '${ALERT}[!!ALERT]  $END');
-  }
+/// warning events might cause problems.
+///
+///     warning('here|things need to ${VERB}watch');
+warning(String message) {
+  _log(message, LEVEL_WARNING, '${WARNING}[!WARNING] $END');
+}
 
-  /// error handling
-  ///
-  ///     const HERE='current package';
-  ///     try {
-  ///       throw Exception('my error');
-  ///     } catch (e, s) {
-  ///       var errID = error(HERE, e, s);
-  ///     }
-  String error(dynamic e, StackTrace stacktrace) {
-    String errID = id.uuid();
-    String msg = e.toString().replaceAll('Exception: ', '');
-    String stack = beautyStack(stacktrace);
-    printToConsole(
-        '$HEAD${head(this)}${END}${VERB}caught $NOUN2$msg$END ($errID)\n$RED$stack');
+/// alert a person must take an action immediately
+///
+///     alert('here|something${VERB} go ${NOUN}wrong');
+alert(String message) {
+  _log(message, LEVEL_ALERT, '${ALERT}[!!ALERT]  $END');
+}
 
-    analytic.error(this, msg, stack, errID);
-    return errID;
-  }
+/// error handling
+///
+///     const HERE='current package';
+///     try {
+///       throw Exception('my error');
+///     } catch (e, s) {
+///       var errID = error(HERE, e, s);
+///     }
+String error(String where, dynamic e, StackTrace stacktrace) {
+  String errID = id.uuid();
+  String msg = e.toString().replaceAll('Exception: ', '');
+  String stack = beautyStack(stacktrace);
+  debugPrint(
+      '$HEAD${head(where)}${END}${VERB}caught $NOUN2$msg$END ($errID)\n$RED$stack');
+
+  analytic.error(where, msg, stack, errID);
+  return errID;
 }
 
 /// create log head, like application.identity.where:
 ///
 ///     String head = head();
-String head(String where) {
+@visibleForTesting
+head(String where) {
   String text = '${vars.AppID}/$where';
   if (vars.UserID != '') {
     text = vars.UserID + "@" + text;
@@ -130,6 +124,7 @@ String head(String where) {
 ///	String text = beautyStack(s);
 ///	expect(text.length > 0, true);
 ///	}
+@visibleForTesting
 String beautyStack(StackTrace stack) {
   final buffer = StringBuffer();
   List<String> lines = stack.toString().split('\n');
@@ -152,6 +147,7 @@ String beautyStack(StackTrace stack) {
 ///beautyLine return line that accept by google stack driver format
 ///
 ///	beautyLine(l);
+@visibleForTesting
 String beautyLine(String l) {
   l = beautyLine2(l);
   return l.replaceAll('file:///Users/cc/Dropbox/prj/fl/', '');
@@ -179,6 +175,7 @@ String beautyLine2(String l) {
 ///
 ///	line := "/convey/doc.go:75"
 ///	So(isLineUsable(line), ShouldBeFalse)
+@visibleForTesting
 bool isLineUsable(String line) {
   List<String> containKeywords = [
     'asynchronous',

@@ -5,7 +5,6 @@ import 'package:libcli/log/log.dart';
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/eventbus/eventbus.dart' as eventBus;
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 const _here = 'prefs';
 
@@ -29,7 +28,7 @@ Future<SharedPreferences> _get() async {
 Future<bool> getBool(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getBool(key) ?? false;
-  '$_here|get $NOUN$key=$value'.print;
+  debugPrint('$_here|get $NOUN$key=$value');
   return value;
 }
 
@@ -39,7 +38,7 @@ Future<bool> getBool(String key) async {
 ///
 setBool(BuildContext ctx, String key, bool value) async {
   assert(key.length > 0);
-  '$_here|set $key=$NOUN$value'.print;
+  debugPrint('$_here|set $key=$NOUN$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
     eventBus.broadcast(ctx, EDiskFullOrNoAccess());
@@ -53,7 +52,7 @@ setBool(BuildContext ctx, String key, bool value) async {
 Future<int> getInt(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getInt(key) ?? 0;
-  '$_here|get $NOUN$key=$value'.print;
+  debugPrint('$_here|get $NOUN$key=$value');
   return value;
 }
 
@@ -63,7 +62,7 @@ Future<int> getInt(String key) async {
 ///
 setInt(BuildContext ctx, String key, int value) async {
   assert(key.length > 0);
-  '$_here|set $NOUN$key=$value'.print;
+  debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
     eventBus.broadcast(ctx, EDiskFullOrNoAccess());
@@ -77,7 +76,7 @@ setInt(BuildContext ctx, String key, int value) async {
 Future<double> getDouble(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getDouble(key) ?? 0;
-  '$_here|get $NOUN$key=$value'.print;
+  debugPrint('$_here|get $NOUN$key=$value');
   return value;
 }
 
@@ -87,7 +86,7 @@ Future<double> getDouble(String key) async {
 ///
 setDouble(BuildContext ctx, String key, double value) async {
   assert(key.length > 0);
-  '$_here|set $NOUN$key=$value'.print;
+  debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
     eventBus.broadcast(ctx, EDiskFullOrNoAccess());
@@ -101,7 +100,7 @@ setDouble(BuildContext ctx, String key, double value) async {
 Future<String> getString(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getString(key) ?? '';
-  '$_here|get $NOUN$key=$value'.print;
+  debugPrint('$_here|get $NOUN$key=$value');
   return value;
 }
 
@@ -111,7 +110,7 @@ Future<String> getString(String key) async {
 ///
 setString(BuildContext ctx, String key, String value) async {
   assert(key.length > 0);
-  '$_here|set $NOUN$key=$value'.print;
+  debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
     eventBus.broadcast(ctx, EDiskFullOrNoAccess());
@@ -152,7 +151,7 @@ setDateTime(BuildContext ctx, String key, DateTime value) async {
 Future<List<String>> getStringList(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getStringList(key) ?? [];
-  '$_here|get $NOUN$key=$value'.print;
+  debugPrint('$_here|get $NOUN$key=$value');
   return value;
 }
 
@@ -162,7 +161,7 @@ Future<List<String>> getStringList(String key) async {
 ///
 setStringList(BuildContext ctx, String key, List<String> value) async {
   assert(key.length > 0);
-  '$_here|set $NOUN$key=$value'.print;
+  debugPrint('$_here|set $NOUN$key=$value');
   var result = (await (await _get()).setStringList(key, value));
   if (!result) {
     eventBus.broadcast(ctx, EDiskFullOrNoAccess());

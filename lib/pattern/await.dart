@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pattern/async_provider.dart';
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log/log.dart' as log;
+import 'package:flutter/foundation.dart';
 
 const _here = 'await';
 
@@ -27,7 +28,6 @@ class Await extends StatelessWidget {
       this.wait,
       this.error})
       : super(key: key) {
-    'await|list$NOUN(${list.length})'.print;
     Future.microtask(() {
       reload();
     });
@@ -62,11 +62,11 @@ class Await extends StatelessWidget {
         provider.asyncStatus = AsyncStatus.loading;
         Future.microtask(() {
           provider.load().then((_) {
-            '$here|${provider.runtimeType} ${NOUN}loaded'.print;
+            debugPrint('$_here|${provider.runtimeType} loaded');
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
           }).catchError((e, s) {
-            here.error(e, s);
+            log.error(_here, e, s);
             provider.asyncStatus = AsyncStatus.error;
           });
         });

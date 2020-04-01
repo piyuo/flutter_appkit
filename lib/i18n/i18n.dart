@@ -1,8 +1,8 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/log/log.dart';
 import 'package:libcli/hook/assets.dart' as assets;
 import 'package:libcli/i18n/i18n_provider.dart';
+import 'package:flutter/foundation.dart';
 
 const _here = 'i18n';
 
@@ -38,7 +38,7 @@ get localeID => _localeID;
 
 set localeID(String value) {
   _localeID = value;
-  '$_here|set locale=$_localeID'.print;
+  debugPrint('$_here|set locale=$_localeID');
 }
 
 bool isSupportedLocale(Locale locale) {
@@ -60,17 +60,18 @@ Locale idToLocale(String id) {
 Locale determineLocale(List<Locale> locales) {
   for (var locale in locales) {
     if (isSupportedLocale(locale)) {
-      '$_here|determinie ${locale.languageCode}_${locale.countryCode}'.print;
+      debugPrint(
+          '$_here|determinie ${locale.languageCode}_${locale.countryCode}');
       return locale;
     }
   }
   var locale = idToLocale(Locales[0]);
-  '$_here|use default ${locale.languageCode}_${locale.countryCode}'.print;
+  debugPrint('$_here|use default ${locale.languageCode}_${locale.countryCode}');
   return locale;
 }
 
 List<Locale> supportedLocales() {
-  '$_here|ask supported locales'.print;
+  debugPrint('$_here|ask supported locales');
   return Locales.map((id) => idToLocale(id)).toList();
 }
 

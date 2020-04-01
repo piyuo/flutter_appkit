@@ -12,19 +12,19 @@ const _here = 'catch';
 ///      error.catchAndBroadcast(suspect, null);
 catchAndBroadcast({Function suspect, Function callback}) {
   FlutterError.onError = (FlutterErrorDetails details) {
-    var errId = _here.error(details.exception, details.stack);
+    var errId = error(_here, details.exception, details.stack);
     eventbus.broadcast(null, EError(errId));
     if (callback != null) {
       callback();
     }
   };
 
-  runZoned<Future<void>>(
+  runZonedGuarded<Future<void>>(
     () async {
       suspect();
     },
-    onError: (dynamic e, StackTrace s) {
-      var errId = _here.error(e, s);
+    (Object e, StackTrace stack) {
+      var errId = error(_here, e, stack);
       eventbus.broadcast(null, EError(errId));
       if (callback != null) {
         callback();

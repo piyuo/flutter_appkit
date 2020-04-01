@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart';
+import 'package:flutter/foundation.dart';
 
 const here = 'async_provider';
 
@@ -7,7 +8,7 @@ enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
   AsyncProvider() {
-    '$here|$runtimeType ${VERB}created'.print;
+    debugPrint('$here|$runtimeType ${VERB}created');
   }
 
   AsyncStatus asyncStatus = AsyncStatus.none;
@@ -28,7 +29,7 @@ abstract class AsyncProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    '$here|$runtimeType ${VERB}disposed'.print;
+    debugPrint('$here|$runtimeType ${VERB}disposed');
     _disposed = true;
     super.dispose();
   }

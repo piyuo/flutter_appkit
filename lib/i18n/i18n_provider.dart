@@ -22,7 +22,7 @@ class I18nProvider extends ReduxProvider<I18nState, dynamic> {
   String translate(String key) {
     var value = state.translate(key);
     if (value == null) {
-      'i18n|missing $key in ${_pageName}_${i18n.localeID}'.alert;
+      alert('i18n|missing $key in ${_pageName}_${i18n.localeID}');
       return '!!! $key not found';
     }
     return value;
