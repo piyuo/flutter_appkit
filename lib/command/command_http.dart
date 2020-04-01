@@ -10,8 +10,9 @@ import 'package:libcli/eventbus/contract.dart';
 
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
-import 'package:libcli/data/cookies.dart' as cookies;
+
 import 'package:flutter/material.dart';
+import 'package:libcli/auth/auth.dart' as auth;
 
 const _here = 'command_http';
 
@@ -68,12 +69,10 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     'accept': '',
   };
 
-  if (kReleaseMode && !kIsWeb) {
-    var c = await cookies.get();
-    if (c.length > 0) {
-      debugPrint('$_here|cookies=$c');
-      headers['Cookie'] = c;
-    }
+  var accessToken = await auth.getAccessToken();
+  if (accessToken.length > 0) {
+    debugPrint('$_here|accessToken=$accessToken');
+    headers['Cookie'] = accessToken;
   }
 
   try {
@@ -81,12 +80,10 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
         .post(r.url, headers: headers, body: r.bytes)
         .timeout(Duration(milliseconds: r.timeout));
 
-    if (kReleaseMode && !kIsWeb) {
-      var c = resp.headers['set-cookie'];
-      if (c != null && c.length > 0) {
-        debugPrint('$_here|set-cookies=$c');
-        cookies.set(ctx, c);
-      }
+    var c = resp.headers['set-cookie'];
+    if (c != null && c.length > 0) {
+      debugPrint('$_here|refresh accessToken=$c');
+      auth.setAccessToken(c);
     }
 
     if (resp.statusCode == 200) {
