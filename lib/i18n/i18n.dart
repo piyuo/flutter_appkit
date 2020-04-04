@@ -78,6 +78,12 @@ List<Locale> supportedLocales() {
 //This will allow you to add `.i18n` to your strings
 extension Localization on String {
   String i18n(BuildContext context) {
+    if (!kReleaseMode) {
+      // allow null context in test
+      if (context == null) {
+        return this;
+      }
+    }
     var provider = Provider.of<I18nProvider>(context);
     assert(provider != null, 'I18nProvider need inject in context');
     return provider.translate(this);

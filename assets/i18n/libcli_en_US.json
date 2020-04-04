@@ -1,0 +1,6 @@
+{
+    "@validator": "Please enter a valid %1.  (Example: %2)",
+    "@email": "email address",
+    "@domain": "domain name",
+    "@url": "url"
+}
