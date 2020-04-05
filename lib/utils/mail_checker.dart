@@ -142,27 +142,27 @@ class MailChecker {
    * * [full]: the full suggestion, ie: if user supplies `me@hotwail.com`, full suggestion would be `me@hotmail.com`
    */
   MailCheckerSuggestion suggest() {
-    String email = emailStr.toLowerCase();
     MailCheckerEmail emailParts = _splitEmail();
-    //print("${emailParts.toString()}");
-    String closestDomain = _findClosestDomain(emailParts.domain, domains);
-    if (closestDomain != null) {
-      if (closestDomain != emailParts.domain) //we have a close match
-        return new MailCheckerSuggestion(emailParts.address, closestDomain,
-            emailParts.address + "@" + closestDomain);
-    } else {
-      //not a close match...mis-spell tld?
-      String closestTopLevelDomain =
-          _findClosestDomain(emailParts.topLevelDomain, topLevelDomains);
-      if (closestTopLevelDomain != null &&
-          closestTopLevelDomain != emailParts.topLevelDomain) {
-        //May be mis-spelled TLD
-        String domain = emailParts.domain;
-        closestDomain =
-            domain.substring(0, domain.lastIndexOf(emailParts.topLevelDomain)) +
-                closestTopLevelDomain;
-        return new MailCheckerSuggestion(emailParts.address, closestDomain,
-            emailParts.address + "@" + closestDomain);
+    if (emailParts != null) {
+      String closestDomain = _findClosestDomain(emailParts.domain, domains);
+      if (closestDomain != null) {
+        if (closestDomain != emailParts.domain) //we have a close match
+          return new MailCheckerSuggestion(emailParts.address, closestDomain,
+              emailParts.address + "@" + closestDomain);
+      } else {
+        //not a close match...mis-spell tld?
+        String closestTopLevelDomain =
+            _findClosestDomain(emailParts.topLevelDomain, topLevelDomains);
+        if (closestTopLevelDomain != null &&
+            closestTopLevelDomain != emailParts.topLevelDomain) {
+          //May be mis-spelled TLD
+          String domain = emailParts.domain;
+          closestDomain = domain.substring(
+                  0, domain.lastIndexOf(emailParts.topLevelDomain)) +
+              closestTopLevelDomain;
+          return new MailCheckerSuggestion(emailParts.address, closestDomain,
+              emailParts.address + "@" + closestDomain);
+        }
       }
     }
     return null; //Cannot find a suggestion

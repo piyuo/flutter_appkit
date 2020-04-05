@@ -6,13 +6,17 @@ void main() {
 
   group('[mail_checker]', () {
     test('should suggest correct domain', () async {
-      var checker = MailChecker("me@hotwail.com");
-      var suggest = checker.suggest();
+      var suggest = MailChecker("me@hotwail.com").suggest();
       expect(suggest.full, "me@hotmail.com");
 
-      var checker2 = MailChecker("me@qql.com");
-      var suggest2 = checker2.suggest();
-      expect(suggest2.full, "me@qq.com");
+      suggest = MailChecker("me@qql.com").suggest();
+      expect(suggest.full, "me@qq.com");
+
+      suggest = MailChecker("").suggest();
+      expect(suggest, null);
+
+      suggest = MailChecker("a").suggest();
+      expect(suggest, null);
     });
   });
 }
