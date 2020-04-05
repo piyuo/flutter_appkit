@@ -38,8 +38,11 @@ String regexpValidator(
 
 /// emailRegexp regexp use to validate email
 ///
+/// Stop Validating Email Addresses With Regex
+/// https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
+///
 RegExp emailRegexp() {
-  return RegExp(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
+  return RegExp(r".+@.+\..+");
 }
 
 /// emailValidator validate input string is email, return error message when input not valid, other return null
