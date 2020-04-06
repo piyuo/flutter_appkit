@@ -99,8 +99,7 @@ String error(String where, dynamic e, StackTrace stacktrace) {
   String errID = id.uuid();
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(stacktrace);
-  debugPrint(
-      '$HEAD${head(where)}${END}${VERB}caught $NOUN2$msg$END ($errID)\n$RED$stack');
+  debugPrint('$where|caught $NOUN2$msg$END ($errID)\n$RED$stack');
 
   analytic.error(where, msg, stack, errID);
   return errID;
