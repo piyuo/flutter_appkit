@@ -111,9 +111,9 @@ String error(String where, dynamic e, StackTrace stacktrace) {
 ///     String head = head();
 @visibleForTesting
 head(String where) {
-  String text = '${vars.AppID}/$where';
-  if (vars.UserID != '') {
-    text = vars.UserID + "@" + text;
+  String text = '${vars.appID}/$where';
+  if (vars.userID != '') {
+    text = vars.userID + "@" + text;
   }
   return text + ": ";
 }

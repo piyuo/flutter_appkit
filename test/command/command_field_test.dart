@@ -12,7 +12,7 @@ void main() {
   group('[command]', () {
     //!!! testWidgets not allow real http call
     test('should request and get response', () async {
-      vars.Branch = vars.Branches.test;
+      vars.branch = vars.Branches.test;
       SysService service = SysService();
       var response = await service.dispatch(null, PingAction());
       expect(response, isNotNull);

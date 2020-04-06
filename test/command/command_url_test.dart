@@ -7,7 +7,7 @@ void main() {
   command.mockInit();
   group('[command_url_test]', () {
     test('should use serviceUrl', () async {
-      vars.Branch = vars.Branches.debug;
+      vars.branch = vars.Branches.debug;
       expect(commandUrl.serviceUrl('mock', 80), 'http://localhost:80/mock');
     });
   });

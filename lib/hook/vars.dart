@@ -15,58 +15,68 @@ enum Regions { us, cn, tw }
 
 /// application identity
 ///
-///     variables.appID='piyuo-web-index'
+///     vars.appID='piyuo-web-index'
 String _appID = '';
-String get AppID => _appID;
-set AppID(String value) {
-  debugPrint('$_here|set AppID=${NOUN}$value');
+String get appID => _appID;
+set appID(String value) {
+  debugPrint('$_here|set appID=${NOUN}$value');
   _appID = value;
 }
 
 /// user identity
 ///
-///     variables.userID='user-store'
+///     vars.userID='user-store'
 String _userID = '';
-String get UserID => _userID;
-set UserID(String value) {
-  debugPrint('$_here|set UserID=${NOUN}$value');
+String get userID => _userID;
+set userID(String value) {
+  debugPrint('$_here|set userID=${NOUN}$value');
   _userID = value;
+}
+
+/// country
+///
+///     vars.appID='piyuo-web-index'
+String _country = '';
+String get country => _country;
+set country(String value) {
+  debugPrint('$_here|set country=${NOUN}$value');
+  _country = value;
 }
 
 /// current service branch
 ///
-///     variables.branch=Branch.debug
+///     vars.branch=Branch.debug
 Branches _branch = Branches.debug;
-Branches get Branch => _branch;
-set Branch(Branches value) {
-  debugPrint('$_here|set Branch=${NOUN}${value.toString()}');
+Branches get branch => _branch;
+set branch(Branches value) {
+  debugPrint('$_here|set branch=${NOUN}${value.toString()}');
   _branch = value;
 }
 
 /// current service region
 ///
-///     variables.region=Region.us
+///     vars.region=Region.us
 Regions _region = Regions.us;
-Regions get Region => _region;
-set Region(Regions value) {
-  debugPrint('$_here|set Region=${NOUN}${value.toString()}');
+Regions get region => _region;
+set region(Regions value) {
+  debugPrint('$_here|set region=${NOUN}${value.toString()}');
   _region = value;
 }
 
 /// branch in string
 ///
-///     variables.region=Region.us
-String branch() => branchToString(Branch);
+///     vars.branchString();
+String branchString() => branchToString(branch);
 
 /// region in string
 ///
-///     variables.region=Region.us
-String region() => regionToString(Region);
+///     vars.regionString();
+String regionString() => regionToString(region);
 
 /// region in host
 ///
-///     variables.region=Region.us
-String host() => regionToHost(Region);
+///     vars.region=Region.us
+String host() => regionToHost(region);
 
 /// branchToString return string from branch
 ///

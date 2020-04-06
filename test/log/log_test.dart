@@ -8,15 +8,15 @@ void main() {
 
   group('[log]', () {
     test('should debugPrint', () {
-      vars.AppID = 'piyuo-web-index';
-      vars.UserID = '111-222';
+      vars.appID = 'piyuo-web-index';
+      vars.userID = '111-222';
       debugPrint('here|mock ${VERB}test');
     });
 
     test('should log', () async {
-      vars.AppID = 'log_test';
-      vars.UserID = 'developer';
-      vars.Branch = vars.Branches.test;
+      vars.appID = 'log_test';
+      vars.userID = 'developer';
+      vars.branch = vars.Branches.test;
       log('here|thing ${VERB}log ${NOUN}here');
       warning('here|thing ${VERB}warning ${NOUN}here');
       alert('here|thing ${VERB}alert ${NOUN}here');
@@ -31,9 +31,9 @@ void main() {
     });
 
     test('should error', () async {
-      vars.AppID = 'log_test';
-      vars.UserID = 'developer';
-      vars.Branch = vars.Branches.test;
+      vars.appID = 'log_test';
+      vars.userID = 'developer';
+      vars.branch = vars.Branches.test;
       try {
         throw Exception('my error');
       } catch (e, s) {
@@ -42,8 +42,8 @@ void main() {
     });
 
     test('should create head', () {
-      vars.AppID = 'piyuo-web-index';
-      vars.UserID = '111-222';
+      vars.appID = 'piyuo-web-index';
+      vars.userID = '111-222';
       expect(head('here'), '111-222@piyuo-web-index/here: ');
     });
 

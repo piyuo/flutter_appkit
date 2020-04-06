@@ -9,8 +9,8 @@ AnalyticsAction _current = AnalyticsAction();
 log(String where, String message, int level) {
   Log log = Log();
   log.time = timestamp.Timestamp.fromDateTime(DateTime.now());
-  log.app = vars.AppID;
-  log.user = vars.UserID;
+  log.app = vars.appID;
+  log.user = vars.userID;
   log.where = where;
   log.msg = message;
   log.level = level;
@@ -20,8 +20,8 @@ log(String where, String message, int level) {
 error(String where, String message, String stack, String errid) {
   Error error = Error();
   error.msg = message;
-  error.app = vars.AppID;
-  error.user = vars.UserID;
+  error.app = vars.appID;
+  error.user = vars.userID;
   error.where = where;
   error.stack = '$stack';
   error.errid = errid;

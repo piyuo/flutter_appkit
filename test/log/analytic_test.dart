@@ -23,13 +23,13 @@ void main() {
       expect(current.logs.length, 0);
       warning('$_here|mock warning');
       expect(current.logs.length, 1);
-      vars.Branch = vars.Branches.test;
+      vars.branch = vars.Branches.test;
       var result = await analytic.post(null);
       expect(result, true);
     });
 
     test('should error', () async {
-      vars.Branch = vars.Branches.test;
+      vars.branch = vars.Branches.test;
       analytic.clear();
       var current = analytic.current();
       expect(current.errors.length, 0);

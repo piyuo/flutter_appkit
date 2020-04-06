@@ -49,7 +49,7 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
-      vars.Branch = vars.Branches.test;
+      vars.branch = vars.Branches.test;
       SysService service = SysService();
       EchoRequest action = new EchoRequest();
       var response = await service.dispatch(null, action);

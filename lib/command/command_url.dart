@@ -6,7 +6,7 @@ import 'package:libcli/hook/vars.dart' as vars;
 ///     String url = serviceUrl('sys',3001);
 String serviceUrl(String funcName, int debugPort) {
   if (!kReleaseMode) {
-    if (vars.Branch == vars.Branches.debug) {
+    if (vars.branch == vars.Branches.debug) {
       return 'http://localhost:$debugPort/$funcName';
     }
   }

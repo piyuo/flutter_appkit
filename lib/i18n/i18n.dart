@@ -1,6 +1,8 @@
+import 'package:libcli/log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/data/assets.dart' as assets;
+import 'package:libcli/hook/vars.dart' as vars;
 import 'package:libcli/i18n/i18n_provider.dart';
 import 'package:flutter/foundation.dart';
 
@@ -38,10 +40,6 @@ get locale => _locale;
 
 get localeID => '${_locale.languageCode}_${_locale.countryCode}';
 
-get languageCode => _locale.languageCode;
-
-get countryCode => _locale.countryCode;
-
 set locale(Locale locale) {
   _locale = locale;
   debugPrint('$_here|set locale=$localeID');
@@ -53,6 +51,9 @@ bool isSupportedLocale(Locale locale) {
   return result;
 }
 
+/// localeToId convert Locale(''en,'US') to 'en_US'
+///
+/// var id = localeToId(Locale('en','US'));
 String localeToId(Locale locale) {
   return '${locale.languageCode}_${locale.countryCode}';
 }
@@ -63,17 +64,30 @@ Locale idToLocale(String id) {
   return Locale(ids[0]);
 }
 
+/// determineLocale select best locale for user and save user country to vars
+///
+///https://api.flutter.dev/flutter/widgets/LocaleListResolutionCallback.html
+///
+///The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
+///
 Locale determineLocale(List<Locale> locales) {
-  for (var locale in locales) {
-    if (isSupportedLocale(locale)) {
-      debugPrint(
-          '$_here|determinie ${locale.languageCode}_${locale.countryCode}');
-      return locale;
+  Locale firstLocale;
+  Locale bestLocale;
+  if (locales == null || locales.length == 0) {
+    firstLocale = bestLocale = Locale('en', 'US');
+  } else {
+    firstLocale = bestLocale = locales[0];
+    for (var locale in locales) {
+      if (isSupportedLocale(locale)) {
+        bestLocale = locale;
+        break;
+      }
     }
   }
-  var locale = idToLocale(Locales[0]);
-  debugPrint('$_here|use default ${locale.languageCode}_${locale.countryCode}');
-  return locale;
+  vars.country = firstLocale.countryCode;
+  debugPrint(
+      '$_here|set locale=$NOUN${bestLocale.languageCode}_${bestLocale.countryCode}');
+  return bestLocale;
 }
 
 List<Locale> supportedLocales() {
