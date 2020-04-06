@@ -1,6 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/hook/assets.dart' as assets;
+import 'package:libcli/data/assets.dart' as assets;
 import 'package:libcli/i18n/i18n_provider.dart';
 import 'package:flutter/foundation.dart';
 
@@ -31,7 +31,7 @@ Locale _locale;
 @visibleForTesting
 void mock(Locale locale, String map) {
   _locale = locale;
-  assets.mock(map);
+  assets.mockString(map);
 }
 
 get locale => _locale;
