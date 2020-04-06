@@ -180,6 +180,7 @@ bool isLineUsable(String line) {
     'asynchronous',
     '(dart:',
     'package:http/src/',
+    'package:flutter/',
     'test_api',
     'flutter_test',
     'StackZone'
