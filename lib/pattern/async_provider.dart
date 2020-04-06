@@ -18,7 +18,7 @@ abstract class AsyncProvider with ChangeNotifier {
 
   /// load happen when object created
   ///
-  Future<void> load() async {}
+  Future<void> load(BuildContext context) async {}
 
   @override
   notifyListeners() {

@@ -7,7 +7,7 @@ const _here = 'await';
 
 /// Await load provider in list
 ///
-class Await extends StatelessWidget {
+class Await extends StatefulWidget {
   final List<AsyncProvider> list;
   final Widget child;
   final Widget wait;
@@ -27,10 +27,19 @@ class Await extends StatelessWidget {
       @required this.child,
       this.wait,
       this.error})
-      : super(key: key) {
+      : super(key: key);
+
+  @override
+  _AwaitState createState() => _AwaitState();
+}
+
+class _AwaitState extends State<Await> {
+  @override
+  void initState() {
     Future.microtask(() {
-      reload();
+      reload(context);
     });
+    super.initState();
   }
 
   ///status return wait if there is a provider still wait
@@ -39,7 +48,7 @@ class Await extends StatelessWidget {
   ///
   ///others return ready
   AsyncStatus status() {
-    for (var p in list) {
+    for (var p in widget.list) {
       if (p.asyncStatus == AsyncStatus.loading ||
           p.asyncStatus == AsyncStatus.none) {
         return AsyncStatus.loading;
@@ -52,8 +61,8 @@ class Await extends StatelessWidget {
 
   /// reload provider in list, but skip ready provider
   ///
-  void reload() {
-    list.forEach((provider) {
+  void reload(BuildContext context) {
+    widget.list.forEach((provider) {
       if (provider.asyncStatus == AsyncStatus.error) {
         provider.asyncStatus == AsyncStatus.none;
       }
@@ -61,7 +70,7 @@ class Await extends StatelessWidget {
       if (provider.asyncStatus == AsyncStatus.none) {
         provider.asyncStatus = AsyncStatus.loading;
         Future.microtask(() {
-          provider.load().then((_) {
+          provider.load(context).then((_) {
             debugPrint('$_here|${provider.runtimeType} loaded');
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
@@ -77,8 +86,8 @@ class Await extends StatelessWidget {
   /// errorView when provider has error
   ///
   Widget errorView() {
-    if (error != null) {
-      return error;
+    if (widget.error != null) {
+      return widget.error;
     }
     return Center(
         child: Text('Oops... something is wrong, please try again later'));
@@ -87,8 +96,8 @@ class Await extends StatelessWidget {
   /// waitView when provider still loading
   ///
   Widget waitView() {
-    if (wait != null) {
-      return wait;
+    if (widget.wait != null) {
+      return widget.wait;
     }
     return Center(child: CircularProgressIndicator());
   }
@@ -99,7 +108,7 @@ class Await extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (status()) {
       case AsyncStatus.ready:
-        return child;
+        return widget.child;
       case AsyncStatus.error:
         return errorView();
       default:

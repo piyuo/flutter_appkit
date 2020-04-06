@@ -11,11 +11,11 @@ void main() {
 
   group('[assets]', () {
     test('should load string', () async {
-      String asset = await assets.loadString('i18n/libcli_en_US.json');
+      String asset = await assets.loadString('i18n/en_US.json');
       expect(asset, isNotNull);
       expect(asset.indexOf('@validator'), greaterThan(0));
 
-      asset = await assets.loadString('i18n/libcli_en_US.json');
+      asset = await assets.loadString('i18n/en_US.json');
       expect(asset, isNotNull);
       expect(asset.indexOf('@validator'), greaterThan(0));
     });
@@ -40,7 +40,7 @@ void main() {
 
       assets.mock((_mockLoadAssets));
 
-      String asset = await assets.loadString('i18n/libcli_en_US.json');
+      String asset = await assets.loadString('i18n/en_US.json');
       expect(asset, 'hi');
     });
   });

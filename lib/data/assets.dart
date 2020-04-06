@@ -20,7 +20,7 @@ LoadString loadString = _loadString;
 ///
 ///  using package to load asset from packages
 ///
-///     String asset = await assets.loadString('i18n/libcli_en_US.json');
+///     String asset = await assets.loadString('i18n/en_US.json');
 ///
 Future<String> _loadString(String assetName,
     {BuildContext context, String package}) async {
@@ -45,7 +45,7 @@ Future<String> _loadString(String assetName,
 ///
 ///  using package to load asset from packages
 ///
-///     String asset = await assets.loadString('i18n/libcli_en_US.json');
+///     String asset = await assets.loadString('i18n/en_US.json');
 ///
 Future<String> loadJson(String assetName,
     {BuildContext context, String package}) async {
