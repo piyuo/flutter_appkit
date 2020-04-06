@@ -8,7 +8,7 @@ import 'mock_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  i18n.mockInit('{"a": "A"}');
+  i18n.mock(Locale('en', 'US'), '{"a": "A"}');
 
   group('[i18n_await]', () {
     testWidgets('should load i18n', (WidgetTester tester) async {

@@ -22,23 +22,29 @@ const Locales = [
   'de_DE',
 ];
 
-String _localeID;
+Locale _locale;
 
 /// mockInit Initializes the value for testing
 ///
 ///     I18nModel.mockInit('{"title": "mock"}');
 ///
 @visibleForTesting
-void mockInit(String map) {
-  _localeID = 'mockLocale';
-  assets.mockInit(map);
+void mock(Locale locale, String map) {
+  _locale = locale;
+  assets.mock(map);
 }
 
-get localeID => _localeID;
+get locale => _locale;
 
-set localeID(String value) {
-  _localeID = value;
-  debugPrint('$_here|set locale=$_localeID');
+get localeID => '${_locale.languageCode}_${_locale.countryCode}';
+
+get languageCode => _locale.languageCode;
+
+get countryCode => _locale.countryCode;
+
+set locale(Locale locale) {
+  _locale = locale;
+  debugPrint('$_here|set locale=$localeID');
 }
 
 bool isSupportedLocale(Locale locale) {

@@ -11,7 +11,7 @@ Get get;
 ///     I18nModel.mockInit('{"title": "mock"}');
 ///
 @visibleForTesting
-void mockInit(String result) {
+void mock(String result) {
   Future<String> mock(fileName) async {
     debugPrint('assets_mock|get $NOUN$fileName$END return mock $NOUN2$result');
     return result;

@@ -8,13 +8,13 @@ import 'mock_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  i18n.mockInit('{"a": "A"}');
+  i18n.mock(Locale('en', 'US'), '{"a": "A"}');
 
   setUp(() async {});
 
   group('[i18n_provider]', () {
     testWidgets('should load', (WidgetTester tester) async {
-      i18n.localeID = 'en_US';
+      i18n.locale = Locale('en', 'US');
       await tester.pumpWidget(MaterialApp(
         home: Material(
           child: TestWidget(),

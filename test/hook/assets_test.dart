@@ -15,16 +15,16 @@ void main() {
       expect(assets.get, null);
       assetsWeb.inject();
       expect(assets.get, isNotNull);
-      String asset = await assets.get('i18n/mock_en_US.json');
+      String asset = await assets.get('i18n/libcli_en_US.json');
       expect(asset, isNotNull);
-      expect(asset.indexOf('mock'), greaterThan(0));
+      expect(asset.indexOf('@validator'), greaterThan(0));
 
       assets.get = null;
       assetsMain.inject();
       expect(assets.get, isNotNull);
-      asset = await assets.get('i18n/mock_en_US.json');
+      asset = await assets.get('i18n/libcli_en_US.json');
       expect(asset, isNotNull);
-      expect(asset.indexOf('mock'), greaterThan(0));
+      expect(asset.indexOf('@validator'), greaterThan(0));
     });
   });
 }
