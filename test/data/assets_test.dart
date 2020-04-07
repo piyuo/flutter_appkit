@@ -11,13 +11,9 @@ void main() {
 
   group('[assets]', () {
     test('should load string', () async {
-      String asset = await assets.loadString('i18n/en_US.json');
+      String asset = await assets.loadString('test/test.json');
       expect(asset, isNotNull);
-      expect(asset.indexOf('@validator'), greaterThan(0));
-
-      asset = await assets.loadString('i18n/en_US.json');
-      expect(asset, isNotNull);
-      expect(asset.indexOf('@validator'), greaterThan(0));
+      expect(asset.indexOf('A'), greaterThan(0));
     });
 
     test('should load json', () async {
@@ -27,10 +23,10 @@ void main() {
       expect(obj, isNotNull);
     });
 
-    test('should load string in other package', () async {
+    test('should load string in package', () async {
       String asset =
           await assets.loadString('i18n/en_US.json', package: 'libcli');
-      expect(asset, isEmpty);
+      expect(asset, isNotEmpty);
     });
 
     test('should return empty if asset not exist', () async {
@@ -46,7 +42,7 @@ void main() {
 
       assets.mock((_mockLoadAssets));
 
-      String asset = await assets.loadString('i18n/en_US.json');
+      String asset = await assets.loadString('test/test.json');
       expect(asset, 'hi');
     });
   });

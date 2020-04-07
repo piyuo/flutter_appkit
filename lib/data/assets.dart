@@ -25,8 +25,9 @@ LoadString loadString = _loadString;
 ///
 Future<String> _loadString(String assetName,
     {BuildContext context, String package}) async {
-  String path =
-      package != null ? 'packages/$package/$assetName' : 'assets/$assetName';
+  String path = package != null
+      ? 'packages/$package/assets/$assetName'
+      : 'assets/$assetName';
   debugPrint('$_here|load asset $path');
 
   //File myAsset = File(path);
