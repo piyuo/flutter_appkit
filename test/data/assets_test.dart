@@ -27,6 +27,12 @@ void main() {
       expect(obj, isNotNull);
     });
 
+    test('should load string in other package', () async {
+      String asset =
+          await assets.loadString('i18n/en_US.json', package: 'libcli');
+      expect(asset, isEmpty);
+    });
+
     test('should return empty if asset not exist', () async {
       String asset = await assets.loadString('not exist.json');
       expect(asset, isEmpty);

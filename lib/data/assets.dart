@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart';
@@ -24,9 +25,12 @@ LoadString loadString = _loadString;
 ///
 Future<String> _loadString(String assetName,
     {BuildContext context, String package}) async {
-  debugPrint('$_here|load asset $assetName');
   String path =
       package != null ? 'packages/$package/$assetName' : 'assets/$assetName';
+  debugPrint('$_here|load asset $path');
+
+  //File myAsset = File(path);
+  //String text = myAsset.readAsStringSync();
   try {
     if (context != null) {
       var bundle = DefaultAssetBundle.of(context);
