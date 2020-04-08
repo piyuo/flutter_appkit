@@ -104,7 +104,7 @@ extension Localization on String {
         return this;
       }
     }
-    var provider = Provider.of<I18nProvider>(context);
+    var provider = Provider.of<I18nProvider>(context, listen: false);
     assert(provider != null, 'I18nProvider need inject in context');
     return provider.translate(this);
   }
