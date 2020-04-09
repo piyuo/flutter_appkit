@@ -10,7 +10,7 @@ class Contract {
 
   void complete(bool ok) {
     var text = ok ? 'ok' : 'fail';
-    log('contract|${this.runtimeType} $text ');
+    log('contract~${this.runtimeType} $text ');
     _completer.complete(ok);
   }
 

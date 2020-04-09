@@ -26,16 +26,21 @@ const ALERT = RED;
 
 /// overrideDebugPrint override debugPrint()
 ///
+///     debugPrint = overrideDebugPrint;
+///
 overrideDebugPrint(String message, {int wrapWidth}) {
   if (!kReleaseMode) {
-    if (message.indexOf('|') != -1) {
-      List<String> args = message.split('|');
-      assert(args.length == 2);
-      var h = head(args[0]);
-      var m = args[1];
-      message = '$HEAD${h}$END$m';
+    int pos = message.indexOf('~');
+    var h = '';
+    var m = '';
+    if (pos != -1) {
+      h = head(message.substring(0, pos));
+      m = message.substring(pos + 1, message.length);
+    } else {
+      h = head('');
+      m = message;
     }
-
+    message = '$HEAD$h$END$m';
     if (Platform.isIOS) {
       print(message
           .replaceAll(HEAD, '')
@@ -57,32 +62,38 @@ overrideDebugPrint(String message, {int wrapWidth}) {
 ///      _log(this, logger.LEVEL_INFO, '');
 _log(String message, int level, String hint) {
   assert(message.length > 0);
-  assert(message.indexOf('|') != -1, 'must begin with "where|"');
-  List<String> args = message.split('|');
-  assert(args.length == 2);
-  var h = head(args[0]);
-  var m = args[1];
-  debugPrint('$HEAD$h$END$hint$m$END (logged)');
-  analytic.log(args[0], args[1], level);
+  assert(message.indexOf('~') != -1, 'must begin with "where~"');
+  int pos = message.indexOf('~');
+  var h = '';
+  var m = '';
+  if (pos != -1) {
+    h = head(message.substring(0, pos));
+    m = message.substring(pos + 1, message.length);
+  } else {
+    h = head('');
+    m = message;
+  }
+  debugPrint('$message (logged)');
+  analytic.log(h, m, level);
 }
 
 /// log normal but significant events, such as start up, shut down, or a configuration change.
 ///
-///     log('here|something ${VERB} done');
+///     log('here~something ${VERB} done');
 log(String message) {
   _log(message, LEVEL_INFO, '');
 }
 
 /// warning events might cause problems.
 ///
-///     warning('here|things need to ${VERB}watch');
+///     warning('here~things need to ${VERB}watch');
 warning(String message) {
   _log(message, LEVEL_WARNING, '${WARNING}[!WARNING] $END');
 }
 
 /// alert a person must take an action immediately
 ///
-///     alert('here|something${VERB} go ${NOUN}wrong');
+///     alert('here~something${VERB} go ${NOUN}wrong');
 alert(String message) {
   _log(message, LEVEL_ALERT, '${ALERT}[!!ALERT]  $END');
 }
@@ -99,7 +110,7 @@ String error(String where, dynamic e, StackTrace stacktrace) {
   String errID = id.uuid();
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(stacktrace);
-  debugPrint('$where|caught $NOUN2$msg$END ($errID)\n$RED$stack');
+  debugPrint('$where~caught $NOUN2$msg$END ($errID)\n$RED$stack');
 
   analytic.error(where, msg, stack, errID);
   return errID;
@@ -148,11 +159,10 @@ String beautyStack(StackTrace stack) {
 ///	beautyLine(l);
 @visibleForTesting
 String beautyLine(String l) {
-  l = beautyLine2(l);
-  return l.replaceAll('file:///Users/cc/Dropbox/prj/fl/', '');
+  return _beautyLine(l).replaceAll('file:///Users/cc/Dropbox/prj/fl/', '');
 }
 
-String beautyLine2(String l) {
+String _beautyLine(String l) {
   l = l.replaceAll('<anonymous closure>', '').replaceAll(
       new RegExp(r"\s+\b|\b\s"),
       ' '); // convert spaces to _ for stack driver format

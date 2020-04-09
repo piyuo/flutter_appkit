@@ -7,6 +7,6 @@ const _here = 'region_web';
 inject() => region.get = get;
 
 Future<Regions> get() async {
-  debugPrint('$_here|os region is US');
+  debugPrint('$_here~os region is US');
   return Regions.us;
 }

@@ -72,9 +72,9 @@ int getListenerCount() {
 Subscription listen<T>(Function(BuildContext, dynamic) func) {
   assert(func != null);
   if (T == dynamic) {
-    debugPrint('$_here|someone listen ${NOUN}all event');
+    debugPrint('$_here~someone listen ${NOUN}all event');
   } else {
-    debugPrint('$_here|someone listen ${NOUN}$T');
+    debugPrint('$_here~someone listen ${NOUN}$T');
   }
 
   var listener = Listener(T, func);
@@ -93,7 +93,7 @@ Subscription listen<T>(Function(BuildContext, dynamic) func) {
 broadcast(BuildContext ctx, dynamic event) {
   assert(event != null);
   latestEvent = event;
-  log('$_here|brodcast ${event.runtimeType}');
+  log('$_here~brodcast ${event.runtimeType}');
   dispatch(ctx, event);
 }
 
@@ -109,7 +109,7 @@ broadcast(BuildContext ctx, dynamic event) {
 Future<bool> contract(BuildContext ctx, Contract event) {
   assert(event != null);
   latestContract = event;
-  log('$_here|contract ${event.runtimeType}');
+  log('$_here~contract ${event.runtimeType}');
   dispatch(ctx, event);
   return event.future;
 }

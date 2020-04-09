@@ -61,7 +61,7 @@ abstract class Service {
   Future<Response> dispatchWithClient(
       BuildContext ctx, ProtoObject obj, http.Client client) async {
     try {
-      log('$_here|dispatch ${obj.runtimeType} to $url');
+      log('$_here~dispatch ${obj.runtimeType} to $url');
       Uint8List bytes = encode(obj);
       List<int> ret =
           await post(ctx, client, url, bytes, timeout, slow, onError);
@@ -74,9 +74,9 @@ abstract class Service {
             if (type == ' Err') {
               type = '';
             }
-            log('$_here|got OK $type from $url');
+            log('$_here~got OK $type from $url');
           } else {
-            log('$_here|got ${retObj.runtimeType}=${r.errCode} from $url');
+            log('$_here~got ${retObj.runtimeType}=${r.errCode} from $url');
           }
         }
         return r;

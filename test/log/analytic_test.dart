@@ -21,7 +21,7 @@ void main() {
       analytic.clear();
       var current = analytic.current();
       expect(current.logs.length, 0);
-      warning('$_here|mock warning');
+      warning('$_here~mock warning');
       expect(current.logs.length, 1);
       vars.branch = vars.Branches.test;
       var result = await analytic.post(null);

@@ -10,16 +10,16 @@ void main() {
     test('should debugPrint', () {
       vars.appID = 'piyuo-web-index';
       vars.userID = '111-222';
-      debugPrint('here|mock ${VERB}test');
+      debugPrint('here~mock ${VERB}test');
     });
 
     test('should log', () async {
       vars.appID = 'log_test';
       vars.userID = 'developer';
       vars.branch = vars.Branches.test;
-      log('here|thing ${VERB}log ${NOUN}here');
-      warning('here|thing ${VERB}warning ${NOUN}here');
-      alert('here|thing ${VERB}alert ${NOUN}here');
+      log('here~thing ${VERB}log ${NOUN}here');
+      warning('here~thing ${VERB}warning ${NOUN}here');
+      alert('here~thing ${VERB}alert ${NOUN}here');
     });
 
     test('should alert no head', () async {

@@ -27,7 +27,7 @@ Future<String> _loadString(String assetName,
   String path = package != null
       ? 'packages/$package/assets/$assetName'
       : 'assets/$assetName';
-  debugPrint('$_here|load asset $path');
+  debugPrint('$_here~load asset $path');
 
   //File myAsset = File(path);
   //String text = myAsset.readAsStringSync();

@@ -27,7 +27,7 @@ Future<SharedPreferences> _get() async {
 Future<bool> getBool(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getBool(key) ?? false;
-  debugPrint('$_here|get $NOUN$key=$value');
+  debugPrint('$_here~get $NOUN$key=$value');
   return value;
 }
 
@@ -37,7 +37,7 @@ Future<bool> getBool(String key) async {
 ///
 setBool(String key, bool value) async {
   assert(key.length > 0);
-  debugPrint('$_here|set $key=$NOUN$value');
+  debugPrint('$_here~set $key=$NOUN$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
     throw DiskFullException();
@@ -51,7 +51,7 @@ setBool(String key, bool value) async {
 Future<int> getInt(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getInt(key) ?? 0;
-  debugPrint('$_here|get $NOUN$key=$value');
+  debugPrint('$_here~get $NOUN$key=$value');
   return value;
 }
 
@@ -61,7 +61,7 @@ Future<int> getInt(String key) async {
 ///
 setInt(String key, int value) async {
   assert(key.length > 0);
-  debugPrint('$_here|set $NOUN$key=$value');
+  debugPrint('$_here~set $NOUN$key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
     throw DiskFullException();
@@ -75,7 +75,7 @@ setInt(String key, int value) async {
 Future<double> getDouble(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getDouble(key) ?? 0;
-  debugPrint('$_here|get $NOUN$key=$value');
+  debugPrint('$_here~get $NOUN$key=$value');
   return value;
 }
 
@@ -85,7 +85,7 @@ Future<double> getDouble(String key) async {
 ///
 setDouble(String key, double value) async {
   assert(key.length > 0);
-  debugPrint('$_here|set $NOUN$key=$value');
+  debugPrint('$_here~set $NOUN$key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
     throw DiskFullException();
@@ -99,7 +99,7 @@ setDouble(String key, double value) async {
 Future<String> getString(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getString(key) ?? '';
-  debugPrint('$_here|get $NOUN$key=$value');
+  debugPrint('$_here~get $NOUN$key=$value');
   return value;
 }
 
@@ -109,7 +109,7 @@ Future<String> getString(String key) async {
 ///
 setString(String key, String value) async {
   assert(key.length > 0);
-  debugPrint('$_here|set $NOUN$key=$value');
+  debugPrint('$_here~set $NOUN$key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
     throw DiskFullException();
@@ -150,7 +150,7 @@ setDateTime(String key, DateTime value) async {
 Future<List<String>> getStringList(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getStringList(key) ?? [];
-  debugPrint('$_here|get $NOUN$key=$value');
+  debugPrint('$_here~get $NOUN$key=$value');
   return value;
 }
 
@@ -160,7 +160,7 @@ Future<List<String>> getStringList(String key) async {
 ///
 setStringList(String key, List<String> value) async {
   assert(key.length > 0);
-  debugPrint('$_here|set $NOUN$key=$value');
+  debugPrint('$_here~set $NOUN$key=$value');
   var result = (await (await _get()).setStringList(key, value));
   if (!result) {
     throw DiskFullException();

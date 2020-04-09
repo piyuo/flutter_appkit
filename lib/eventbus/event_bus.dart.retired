@@ -16,9 +16,9 @@ StreamController _streamController = StreamController.broadcast(sync: false);
 StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
   assert(func != null);
   if (T == dynamic) {
-    '$_here|someone listen ${NOUN}all event'.print;
+    '$_here~someone listen ${NOUN}all event'.print;
   } else {
-    '$_here|someone listen ${NOUN}$T'.print;
+    '$_here~someone listen ${NOUN}$T'.print;
   }
 
   Stream stream;
@@ -49,7 +49,7 @@ StreamSubscription<dynamic> listen<T>(Function(dynamic) func) {
 void broadcast(event) {
   assert(event != null);
   latestEvent = event;
-  '$_here|brodcast ${event.runtimeType}'.log;
+  '$_here~brodcast ${event.runtimeType}'.log;
   _streamController.add(event);
 }
 
@@ -65,7 +65,7 @@ void broadcast(event) {
 Future<bool> contract(Contract event) {
   assert(event != null);
   latestContract = event;
-  '$_here|contract ${event.runtimeType}'.log;
+  '$_here~contract ${event.runtimeType}'.log;
   _streamController.add(event);
   return event.future;
 }

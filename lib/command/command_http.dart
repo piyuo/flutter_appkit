@@ -71,7 +71,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
 
   var accessToken = await auth.getAccessToken();
   if (accessToken.length > 0) {
-    debugPrint('$_here|accessToken=$accessToken');
+    debugPrint('$_here~accessToken=$accessToken');
     headers['Cookie'] = accessToken;
   }
 
@@ -82,7 +82,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
 
     var c = resp.headers['set-cookie'];
     if (c != null && c.length > 0) {
-      debugPrint('$_here|refresh accessToken=$c');
+      debugPrint('$_here~refresh accessToken=$c');
       auth.setAccessToken(c);
     }
 
@@ -94,7 +94,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
-    log('$_here|caught $msg');
+    log('$_here~caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(ctx, EError(resp.body)); //body is err id
@@ -125,14 +125,14 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     }
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
-        alert('$_here|service not available');
+        alert('$_here~service not available');
         return giveup(ctx, EContactUs(e, s));
       } else {
-        alert('$_here|service blocked');
+        alert('$_here~service blocked');
         return giveup(ctx, EServiceBlocked());
       }
     } else {
-      warning('$_here|no network');
+      warning('$_here~no network');
       return await retry(ctx, CInternetRequired(), ERefuseInternet(), r);
     }
   } catch (e, s) {
@@ -168,7 +168,7 @@ giveup(BuildContext ctx, dynamic e) {
 Future<List<int>> retry(
     BuildContext ctx, Contract contr, dynamic fail, Request r) async {
   if (await eventbus.contract(ctx, contr)) {
-    log('$_here|ok,retry');
+    log('$_here~ok,retry');
     return await doPost(ctx, r);
   }
   eventbus.broadcast(ctx, fail);

@@ -42,7 +42,7 @@ get localeID => '${_locale.languageCode}_${_locale.countryCode}';
 
 set locale(Locale locale) {
   _locale = locale;
-  debugPrint('$_here|set locale=$localeID');
+  debugPrint('$_here~set locale=$localeID');
 }
 
 bool isSupportedLocale(Locale locale) {
@@ -86,12 +86,12 @@ Locale determineLocale(List<Locale> locales) {
   }
   vars.country = firstLocale.countryCode;
   debugPrint(
-      '$_here|set locale=$NOUN${bestLocale.languageCode}_${bestLocale.countryCode}');
+      '$_here~set locale=$NOUN${bestLocale.languageCode}_${bestLocale.countryCode}');
   return bestLocale;
 }
 
 List<Locale> supportedLocales() {
-  debugPrint('$_here|ask supported locales');
+  debugPrint('$_here~ask supported locales');
   return Locales.map((id) => idToLocale(id)).toList();
 }
 

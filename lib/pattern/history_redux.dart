@@ -74,10 +74,10 @@ class HistoryRedux<S, A> {
         var jOld = toString(state);
         _index--;
         var jNew = toString(state);
-        debugPrint('$_here|undo $NOUN$jOld $END=> $NOUN2$jNew');
+        debugPrint('$_here~undo $NOUN$jOld $END=> $NOUN2$jNew');
       }
     } else {
-      debugPrint('$_here|nothing to undo');
+      debugPrint('$_here~nothing to undo');
     }
   }
 
@@ -93,10 +93,10 @@ class HistoryRedux<S, A> {
         var jOld = toString(state);
         _index++;
         var jNew = toString(state);
-        debugPrint('$_here|redo $NOUN$jOld $END=> $NOUN2$jNew');
+        debugPrint('$_here~redo $NOUN$jOld $END=> $NOUN2$jNew');
       }
     } else {
-      debugPrint('$_here|nothing to undo');
+      debugPrint('$_here~nothing to undo');
     }
   }
 
@@ -115,7 +115,7 @@ class HistoryRedux<S, A> {
       var jAction = toString(action);
       var jPayload = toString(payload);
       debugPrint(
-          '$_here|$jOld => $VERB$jAction $NOUN$jPayload $END=> $NOUN2$jNew');
+          '$_here~$jOld => $VERB$jAction $NOUN$jPayload $END=> $NOUN2$jNew');
       _setState(newState);
     }
     return state;
