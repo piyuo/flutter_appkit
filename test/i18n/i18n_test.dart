@@ -9,7 +9,7 @@ void main() {
   group('[i18n]', () {
     test('should set/get global variable', () async {
       locale = Locale('en', 'US');
-      expect(localeId, 'en_US');
+      expect(localeID, 'en_US');
     });
 
     test('should convert locale to id', () async {

@@ -42,11 +42,11 @@ get languageCode => _locale.languageCode;
 
 get countryCode => _locale.countryCode;
 
-get localeId => '${_locale.languageCode}_${_locale.countryCode}';
+get localeID => '${_locale.languageCode}_${_locale.countryCode}';
 
 set locale(Locale locale) {
   _locale = locale;
-  debugPrint('$_here~set locale=$localeId');
+  debugPrint('$_here~set locale=$localeID');
 }
 
 bool isSupportedLocale(Locale locale) {

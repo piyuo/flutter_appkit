@@ -11,7 +11,7 @@ TextEditingValue currencyFormatter(
     return newValue;
   }
   double value = double.parse(newValue.text);
-  final formatter = NumberFormat.simpleCurrency(locale: localeId);
+  final formatter = NumberFormat.simpleCurrency(locale: localeID);
   String newText = formatter.format(value);
   return newValue.copyWith(
       text: newText,

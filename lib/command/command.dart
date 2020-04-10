@@ -82,8 +82,8 @@ abstract class Service {
         return r;
       }
     } catch (e, s) {
-      var errId = error(_here, e, s);
-      giveup(ctx, EError(errId));
+      var errID = error(_here, e, s);
+      giveup(ctx, EError(errID));
     }
     return Response();
   }
