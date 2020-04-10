@@ -16,12 +16,15 @@ class I18nState {
   }
 }
 
-Future<I18nState> readState(String page, String localeID) async {
+Future<I18nState> readState(
+    String page, String languageCode, String countryCode) async {
   assert(page.length > 0);
-  String pageJson = await assets.loadJson('i18n/${page}_$localeID.json');
+  String pageJson =
+      await assets.loadJson('i18n/$languageCode/$countryCode/${page}.json');
   Map<String, dynamic> localization = json.decode(pageJson);
-  String libJson =
-      await assets.loadJson('i18n/$localeID.json', package: 'libcli');
+  String libJson = await assets.loadJson(
+      'i18n/$languageCode/$countryCode/libcli.json',
+      package: 'libcli');
   var libLocalization = json.decode(libJson);
   localization.addAll(libLocalization);
   return I18nState(localization);

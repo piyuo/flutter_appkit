@@ -32,7 +32,7 @@ flutter:
     uses-material-design: true
     assets:
         - assets/test/
-        - packages/libcli/assets/i18n/en_US.json
+        - packages/libcli/assets/i18n/en/US/libcli.json
     # To add assets to your package, add an assets section, like this:
     # assets:
     #  - images/a_dot_burr.jpeg

@@ -38,11 +38,15 @@ void mock(Locale locale, String map) {
 
 get locale => _locale;
 
-get localeID => '${_locale.languageCode}_${_locale.countryCode}';
+get languageCode => _locale.languageCode;
+
+get countryCode => _locale.countryCode;
+
+get localeId => '${_locale.languageCode}_${_locale.countryCode}';
 
 set locale(Locale locale) {
   _locale = locale;
-  debugPrint('$_here~set locale=$localeID');
+  debugPrint('$_here~set locale=$localeId');
 }
 
 bool isSupportedLocale(Locale locale) {

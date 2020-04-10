@@ -25,7 +25,7 @@ void main() {
 
     test('should load string in package', () async {
       String asset =
-          await assets.loadString('i18n/en_US.json', package: 'libcli');
+          await assets.loadString('i18n/en/US/libcli.json', package: 'libcli');
       expect(asset, isNotEmpty);
     });
 
