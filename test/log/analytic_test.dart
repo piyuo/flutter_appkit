@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
-import 'package:libcli/command.dart';
+import 'package:libcli/command_type.dart';
 import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';

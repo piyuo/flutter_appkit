@@ -4,13 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/hook.dart';
+import 'package:libcli/common.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart' as command;
 import '../mock.dart';
 
 void main() {
-  command.mock();
+  command.mockCommand();
   var contract;
   var event;
 
@@ -92,7 +92,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
-        expect(event.runtimeType, EServiceBlocked);
+        expect(event.runtimeType, command.EServiceBlocked);
       });
     });
 
@@ -106,7 +106,7 @@ void main() {
         var bytes = await command.doPost(ctx, req);
         expect(bytes, isNotNull);
         expect(bytes.length, greaterThan(1));
-        expect(contract.runtimeType, CInternetRequired);
+        expect(contract.runtimeType, command.CInternetRequired);
       });
     });
 
@@ -123,7 +123,7 @@ void main() {
         req.timeout = 1;
         var bytes = await command.doPost(context, req);
         expect(bytes, null);
-        expect(event.runtimeType, EClientTimeout);
+        expect(event.runtimeType, command.EClientTimeout);
       });
     });
 

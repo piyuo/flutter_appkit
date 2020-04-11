@@ -6,13 +6,10 @@
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
 import 'dart:core' as $core;
-import 'package:libcli/src/command/command.dart' as command;
-
 import 'package:protobuf/protobuf.dart' as $pb;
-
-import 'package:libcli/src/command/commands/google/source_context.pb.dart'
-    as $0;
-import 'package:libcli/src/command/commands/google/any.pb.dart' as $1;
+import 'package:libcli/src/command/command.dart' as command;
+import 'package:libcli/src/command_type/google/source_context.pb.dart' as $0;
+import 'package:libcli/src/command_type/google/any.pb.dart' as $1;
 
 import 'type.pbenum.dart';
 

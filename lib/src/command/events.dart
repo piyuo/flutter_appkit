@@ -1,3 +1,5 @@
+import 'package:libcli/common.dart';
+
 /// ENetworkSlow happen when [http post take too long], need let user know their network is slow than usual
 ///
 class ENetworkSlow {}
@@ -14,21 +16,6 @@ class ERefuseSignin {}
 ///
 class EServiceBlocked {}
 
-/// EContactUs happen when there is [unknow error] and we can't log it. the only way to solve this is contact us
-///
-class EContactUs {
-  var e;
-  var s;
-  EContactUs(this.e, this.s);
-}
-
-/// EError happen when there is [a  error and we already logged]. prompt user with error id to let them track issue
-///
-class EError {
-  String errId;
-  EError(this.errId);
-}
-
 /// EServiceTimeout  happen when [service meet context deadline exceed], listener let user know they can try again later or contact us with errId to get solution
 ///
 class EServiceTimeout extends EError {
@@ -40,7 +27,3 @@ class EServiceTimeout extends EError {
 class EClientTimeout extends EError {
   EClientTimeout(errId) : super(errId);
 }
-
-/// EDiskFullOrNoAccess  happen when [disk is full or no access].
-///
-class EDiskFullOrNoAccess {}

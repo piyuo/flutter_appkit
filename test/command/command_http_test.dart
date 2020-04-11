@@ -4,12 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/hook.dart';
-import 'package:libcli/command.dart' as command;
+import 'package:libcli/common.dart';
+import 'package:libcli/command.dart';
 import '../mock.dart';
 
 void main() {
-  command.mock();
+  mockCommand();
   var contract;
   var event;
 
@@ -34,7 +34,7 @@ void main() {
     testWidgets('should return body bytes', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(200));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes.length, greaterThan(1));
       });
     });
@@ -46,7 +46,7 @@ void main() {
         req.errorHandler = () {
           onErrorCalled = true;
         };
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, null);
         expect(event, null);
         expect(onErrorCalled, true);
@@ -57,7 +57,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(500));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, null);
         expect(event.runtimeType, EError);
         EError e = event as EError;
@@ -70,7 +70,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(501));
         try {
-          await command.doPost(ctx, req);
+          await doPost(ctx, req);
         } catch (e) {
           expect(e, isNotNull);
         }
@@ -81,7 +81,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(504));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, null);
         expect(event.runtimeType, EServiceTimeout);
         EServiceTimeout e = event as EServiceTimeout;
@@ -93,7 +93,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(511));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, isNotNull);
         expect(bytes.length, greaterThan(1));
         expect(contract.runtimeType, CAccessTokenRequired);
@@ -104,7 +104,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, isNotNull);
         expect(bytes.length, greaterThan(1));
         expect(contract.runtimeType, CAccessTokenExpired);
@@ -115,7 +115,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(402));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, isNotNull);
         expect(bytes.length, greaterThan(1));
         expect(contract.runtimeType, CPaymentTokenRequired);
@@ -126,7 +126,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(101));
         try {
-          await command.doPost(ctx, req);
+          await doPost(ctx, req);
         } catch (e) {
           expect(e, isNotNull);
         }
@@ -141,7 +141,7 @@ void main() {
             return http.Response('hi', 200);
           });
           Uint8List bytes = Uint8List.fromList(''.codeUnits);
-          await command.post(ctx, client, '', bytes, 500, 1, null);
+          await post(ctx, client, '', bytes, 500, 1, null);
           expect(event.runtimeType, ENetworkSlow);
         });
       });
@@ -153,22 +153,22 @@ void main() {
           return http.Response('hi', 200);
         });
         Uint8List bytes = Uint8List.fromList(''.codeUnits);
-        await command.post(ctx, client, '', bytes, 500, 3000, null);
+        await post(ctx, client, '', bytes, 500, 3000, null);
         expect(event, null);
       });
     });
 
     testWidgets('should giveup', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        command.giveup(ctx, ERefuseInternet());
+        giveup(ctx, ERefuseInternet());
         expect(event.runtimeType, ERefuseInternet);
       });
     });
   });
 }
 
-command.Request newRequest(MockClient client) {
-  var req = command.Request();
+Request newRequest(MockClient client) {
+  var req = Request();
   req.client = client;
   req.bytes = Uint8List(2);
   req.url = 'http://mock';

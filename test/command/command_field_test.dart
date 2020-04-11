@@ -1,10 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import 'package:libcli/command.dart' as command;
+import 'package:libcli/command_type.dart';
 import 'package:libcli/configuration.dart' as configuration;
 
 void main() {
-  command.mock();
+  command.mockCommand();
 
   setUp(() {});
 
@@ -13,7 +14,7 @@ void main() {
     test('should request and get response', () async {
       configuration.branch = configuration.Branches.test;
       SysService service = SysService();
-      var response = await service.dispatch(null, command.PingAction());
+      var response = await service.dispatch(null, PingAction());
       expect(response, isNotNull);
       expect(response.ok, true);
     });

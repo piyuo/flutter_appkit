@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/src/log/log.dart';
-import 'package:libcli/hook.dart';
+import 'package:libcli/common.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:flutter_test/flutter_test.dart';
 

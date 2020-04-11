@@ -3,7 +3,7 @@ import 'package:libcli/command.dart' as command;
 import 'package:libcli/configuration.dart' as configuration;
 
 void main() {
-  command.mock();
+  command.mockCommand();
   group('[command_url_test]', () {
     test('should use serviceUrl', () async {
       configuration.branch = configuration.Branches.debug;

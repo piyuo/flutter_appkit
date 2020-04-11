@@ -4,12 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/hook.dart';
-import 'package:libcli/command.dart' as command;
+import 'package:libcli/command.dart';
 import '../mock.dart';
 
 void main() {
-  command.mock();
+  mockCommand();
   var contract;
   var event;
 
@@ -39,7 +38,7 @@ void main() {
       };
 
       await tester.inWidget((ctx) async {
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CInternetRequired);
         expect(event.runtimeType, ERefuseInternet);
@@ -50,7 +49,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(511));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CAccessTokenRequired);
         expect(event.runtimeType, ERefuseSignin);
@@ -61,7 +60,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CAccessTokenExpired);
         expect(event.runtimeType, ERefuseSignin);
@@ -72,7 +71,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(402));
-        var bytes = await command.doPost(ctx, req);
+        var bytes = await doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CPaymentTokenRequired);
         expect(event.runtimeType, ERefuseSignin);
@@ -82,15 +81,15 @@ void main() {
     testWidgets('should retry', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        await command.retry(ctx, CAccessTokenExpired(), ERefuseSignin(), req);
+        await retry(ctx, CAccessTokenExpired(), ERefuseSignin(), req);
         expect(event.runtimeType, ERefuseSignin);
       });
     });
   });
 }
 
-command.Request newRequest(MockClient client) {
-  var req = command.Request();
+Request newRequest(MockClient client) {
+  var req = Request();
   req.client = client;
   req.bytes = Uint8List(2);
   req.url = 'http://mock';

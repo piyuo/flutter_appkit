@@ -7,14 +7,10 @@
 
 import 'dart:core' as $core;
 import 'package:libcli/src/command/command.dart' as command;
-
 import 'package:protobuf/protobuf.dart' as $pb;
-
-import 'package:libcli/src/command/commands/google/type.pb.dart' as $0;
-import 'package:libcli/src/command/commands/google/source_context.pb.dart'
-    as $1;
-
-import 'package:libcli/src/command/commands/google/type.pbenum.dart' as $0;
+import 'package:libcli/src/command_type/google/type.pb.dart' as $0;
+import 'package:libcli/src/command_type/google/source_context.pb.dart' as $1;
+import 'package:libcli/src/command_type/google/type.pbenum.dart' as $0;
 
 class Api extends command.ProtoObject {
   $core.int mapIdXXX() {

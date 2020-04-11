@@ -6,7 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
 import 'package:libcli/tools.dart' as net;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/hook.dart';
+import 'package:libcli/common.dart';
+import 'package:libcli/src/command/events.dart';
+import 'package:libcli/src/command/contracts.dart';
 
 import 'package:flutter/material.dart';
 import 'package:libcli/src/command/auth.dart' as auth;
