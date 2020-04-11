@@ -3,7 +3,7 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/configuration.dart' as configuration;
-import 'package:libcli/mock/mock.dart';
+import '../mock.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import '../mock/protobuf/string_response.pbserver.dart';
 import '../mock/protobuf/echo_request.pbserver.dart';

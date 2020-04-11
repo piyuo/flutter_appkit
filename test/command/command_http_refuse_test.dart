@@ -5,9 +5,8 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/hook.dart';
-import 'package:libcli/hook.dart';
 import 'package:libcli/command.dart' as command;
-import 'package:libcli/mock/mock.dart';
+import '../mock.dart';
 
 void main() {
   command.mock();
