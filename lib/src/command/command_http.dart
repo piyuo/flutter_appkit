@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
-import 'package:libcli/tools/net.dart' as net;
+import 'package:libcli/tools.dart' as net;
 import 'package:libcli/eventbus.dart' as eventbus;
 
 import 'package:libcli/hook/events.dart';
