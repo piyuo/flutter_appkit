@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/hook/vars.dart' as vars;
+import 'package:libcli/src/hook/vars.dart' as vars;
 
 typedef Future<vars.Regions> Get();
 

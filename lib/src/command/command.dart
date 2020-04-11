@@ -10,7 +10,7 @@ import 'package:libcli/prefs.dart' as prefs;
 import 'package:libcli/src/command/command_protobuf.dart';
 import 'package:libcli/src/command/command_url.dart';
 import 'package:libcli/src/command/command_http.dart';
-import 'package:libcli/hook/events.dart';
+import 'package:libcli/hook.dart';
 import 'package:libcli/src/command/commands/shared/err.pb.dart';
 
 const _here = 'command';

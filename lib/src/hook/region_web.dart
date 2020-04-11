@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:libcli/hook/region.dart' as region;
-import 'package:libcli/hook/vars.dart';
+import 'package:libcli/src/hook/region.dart' as region;
+import 'package:libcli/src/hook/vars.dart';
 import 'package:flutter/foundation.dart';
 
 const _here = 'region_web';

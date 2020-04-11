@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/command.dart';
-import 'package:libcli/hook/vars.dart' as vars;
+import 'package:libcli/hook.dart' as vars;
 import 'package:libcli/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

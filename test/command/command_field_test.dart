@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import 'package:libcli/command.dart' as command;
-import 'package:libcli/hook/vars.dart' as vars;
+import 'package:libcli/hook.dart' as vars;
 
 void main() {
   command.mock();

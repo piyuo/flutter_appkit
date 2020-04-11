@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/hook/events.dart';
+import 'package:libcli/hook.dart';
 import 'dart:async';
 
 void main() {

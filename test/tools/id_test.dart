@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/tools/id.dart' as id;
+import 'package:libcli/tools.dart' as id;
 
 void main() {
   group('[tools_id]', () {

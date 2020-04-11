@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:libcli/hook/vars.dart';
+import 'package:libcli/hook.dart';
 
 void main() {
   group('[vars]', () {

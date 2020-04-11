@@ -6,12 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
 import 'package:libcli/tools.dart' as net;
 import 'package:libcli/eventbus.dart' as eventbus;
-
-import 'package:libcli/hook/events.dart';
-import 'package:libcli/hook/contracts.dart';
+import 'package:libcli/hook.dart';
 
 import 'package:flutter/material.dart';
-import 'package:libcli/auth/auth.dart' as auth;
+import 'package:libcli/src/command/auth.dart' as auth;
 
 const _here = 'command_http';
 

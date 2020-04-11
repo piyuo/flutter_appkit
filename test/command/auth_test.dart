@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/auth/auth.dart' as auth;
+import 'package:libcli/command.dart' as auth;
 
 void main() {
   auth.mockInit({});

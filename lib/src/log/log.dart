@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/tools.dart' as id;
-import 'package:libcli/hook/vars.dart' as vars;
+import 'package:libcli/hook.dart' as vars;
 import 'dart:io';
 
 const LEVEL_INFO = 1;

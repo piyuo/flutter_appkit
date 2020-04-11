@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/hook/vars.dart' as vars;
+import 'package:libcli/hook.dart' as vars;
 
 /// serviceUrl return service url base on app.branch
 ///
