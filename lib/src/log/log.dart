@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/tools.dart' as id;
-import 'package:libcli/hook.dart' as vars;
+import 'package:libcli/configuration.dart' as configuration;
 import 'dart:io';
 
 const LEVEL_INFO = 1;
@@ -121,9 +121,9 @@ String error(String where, dynamic e, StackTrace stacktrace) {
 ///     String head = head();
 @visibleForTesting
 head(String where) {
-  String text = '${vars.appID}/$where';
-  if (vars.userID != '') {
-    text = vars.userID + "@" + text;
+  String text = '${configuration.appID}/$where';
+  if (configuration.userID != '') {
+    text = configuration.userID + "@" + text;
   }
   return text + ": ";
 }

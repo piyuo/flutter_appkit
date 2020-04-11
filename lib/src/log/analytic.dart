@@ -1,16 +1,16 @@
-import 'package:libcli/hook.dart' as vars;
+import 'package:flutter/material.dart';
 import 'package:libcli/src/log/commands/sys/analytics_action.pbserver.dart';
 import 'package:libcli/src/log/commands/sys/sys_service.pb.dart';
 import 'package:libcli/command.dart';
-import 'package:flutter/material.dart';
+import 'package:libcli/configuration.dart' as configuration;
 
 AnalyticsAction _current = AnalyticsAction();
 
 log(String where, String message, int level) {
   Log log = Log();
   log.time = Timestamp.fromDateTime(DateTime.now());
-  log.app = vars.appID;
-  log.user = vars.userID;
+  log.app = configuration.appID;
+  log.user = configuration.userID;
   log.where = where;
   log.msg = message;
   log.level = level;
@@ -20,8 +20,8 @@ log(String where, String message, int level) {
 error(String where, String message, String stack, String errid) {
   Error error = Error();
   error.msg = message;
-  error.app = vars.appID;
-  error.user = vars.userID;
+  error.app = configuration.appID;
+  error.user = configuration.userID;
   error.where = where;
   error.stack = '$stack';
   error.errid = errid;

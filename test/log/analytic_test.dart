@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/command.dart';
-import 'package:libcli/hook.dart' as vars;
+import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,13 +22,13 @@ void main() {
       expect(current.logs.length, 0);
       warning('$_here~mock warning');
       expect(current.logs.length, 1);
-      vars.branch = vars.Branches.test;
+      configuration.branch = configuration.Branches.test;
       var result = await analytic.post(null);
       expect(result, true);
     });
 
     test('should error', () async {
-      vars.branch = vars.Branches.test;
+      configuration.branch = configuration.Branches.test;
       analytic.clear();
       var current = analytic.current();
       expect(current.errors.length, 0);

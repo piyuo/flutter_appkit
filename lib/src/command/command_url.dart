@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/hook.dart' as vars;
+import 'package:libcli/configuration.dart' as configuration;
 
 /// serviceUrl return service url base on app.branch
 ///
 ///     String url = serviceUrl('sys',3001);
 String serviceUrl(String funcName, int debugPort) {
   if (!kReleaseMode) {
-    if (vars.branch == vars.Branches.debug) {
+    if (configuration.branch == configuration.Branches.debug) {
       return 'http://localhost:$debugPort/$funcName';
     }
   }

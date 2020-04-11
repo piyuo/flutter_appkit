@@ -2,7 +2,7 @@ import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/assets.dart' as assets;
-import 'package:libcli/hook.dart' as vars;
+import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/src/i18n/i18n_provider.dart';
 import 'package:flutter/foundation.dart';
 
@@ -88,7 +88,7 @@ Locale determineLocale(List<Locale> locales) {
       }
     }
   }
-  vars.country = firstLocale.countryCode;
+  configuration.country = firstLocale.countryCode;
   debugPrint(
       '$_here~set locale=$NOUN${bestLocale.languageCode}_${bestLocale.countryCode}');
   return bestLocale;

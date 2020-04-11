@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command.dart' as command;
-import 'package:libcli/hook.dart' as vars;
+import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/mock/mock.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import '../mock/protobuf/string_response.pbserver.dart';
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
-      vars.branch = vars.Branches.test;
+      configuration.branch = configuration.Branches.test;
       SysService service = SysService();
       EchoRequest action = new EchoRequest();
       var response = await service.dispatch(null, action);
