@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart';
 import 'package:libcli/hook/events.dart';
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:flutter_test/flutter_test.dart';
 
 const _here = 'catch';

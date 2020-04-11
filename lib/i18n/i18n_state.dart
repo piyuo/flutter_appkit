@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:libcli/data/assets.dart' as assets;
+import 'package:libcli/assets.dart' as assets;
 
 class I18nState {
   final Map<String, dynamic> _localization;

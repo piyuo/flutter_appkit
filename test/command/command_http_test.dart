@@ -3,8 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/eventbus/contract.dart';
+import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
 import 'package:libcli/command.dart' as command;
@@ -20,14 +19,14 @@ void main() {
     event = null;
     eventbus.reset();
     eventbus.listen((_, e) {
-      if (e is Contract) {
+      if (e is eventbus.Contract) {
         contract = e;
       } else {
         event = e;
       }
     });
 
-    eventbus.listen<Contract>((_, e) {
+    eventbus.listen<eventbus.Contract>((_, e) {
       e.complete(true);
     });
   });

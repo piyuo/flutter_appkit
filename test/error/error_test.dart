@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/error/error.dart' as error;
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/hook/events.dart';
 import 'dart:async';
 

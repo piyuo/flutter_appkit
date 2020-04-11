@@ -5,8 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart';
 import 'package:libcli/tools/net.dart' as net;
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/eventbus/contract.dart';
+import 'package:libcli/eventbus.dart' as eventbus;
 
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
@@ -166,7 +165,7 @@ giveup(BuildContext ctx, dynamic e) {
 ///
 ///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 Future<List<int>> retry(
-    BuildContext ctx, Contract contr, dynamic fail, Request r) async {
+    BuildContext ctx, eventbus.Contract contr, dynamic fail, Request r) async {
   if (await eventbus.contract(ctx, contr)) {
     log('$_here~ok,retry');
     return await doPost(ctx, r);

@@ -1,7 +1,7 @@
 import 'package:libcli/log/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/data/assets.dart' as assets;
+import 'package:libcli/assets.dart' as assets;
 import 'package:libcli/hook/vars.dart' as vars;
 import 'package:libcli/i18n/i18n_provider.dart';
 import 'package:flutter/foundation.dart';

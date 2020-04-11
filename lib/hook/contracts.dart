@@ -1,4 +1,4 @@
-import 'package:libcli/eventbus/contract.dart';
+import 'package:libcli/eventbus.dart';
 
 ///CInternetRequired  happen when [internet not connected], listener need let user connect to the internet then report back
 ///

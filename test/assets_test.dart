@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/data/assets.dart' as assets;
+import 'package:libcli/assets.dart' as assets;
 import 'dart:convert';
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/data/prefs.dart' as prefs;
+import 'package:libcli/prefs.dart' as prefs;
 
 void main() {
   prefs.mock({});
