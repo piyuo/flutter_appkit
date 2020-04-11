@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/log/analytic.dart' as analytic;
+import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/command.dart';
 import 'package:libcli/hook/vars.dart' as vars;
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _here = 'analytic_test';

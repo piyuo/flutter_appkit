@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/src/i18n/i18n.dart' as i18n;
 
 class I18nDelegate extends LocalizationsDelegate<Locale> {
   @override

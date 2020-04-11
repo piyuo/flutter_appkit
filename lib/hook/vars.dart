@@ -1,4 +1,4 @@
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log.dart';
 import 'package:flutter/foundation.dart';
 
 const _here = 'vars';

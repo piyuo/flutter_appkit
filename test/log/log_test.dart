@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log.dart';
 import 'package:libcli/hook/vars.dart' as vars;
 
 void main() {

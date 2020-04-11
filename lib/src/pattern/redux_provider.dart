@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/pattern/async_provider.dart';
-import 'package:libcli/pattern/redux.dart';
+import 'package:libcli/src/pattern/async_provider.dart';
+import 'package:libcli/src/pattern/redux.dart';
 import 'package:flutter/material.dart';
 
 /// ReduxProvider implement AsyncProvicer and Redux

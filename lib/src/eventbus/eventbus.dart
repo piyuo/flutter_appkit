@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log.dart';
 import 'package:libcli/src/eventbus/contract.dart';
 
 const _here = 'eventbus';

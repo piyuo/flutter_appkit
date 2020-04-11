@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n/i18n.dart';
+import 'package:libcli/i18n.dart';
 
 /// requiredValidator validate input string, return error message when input is empty, other return null
 ///

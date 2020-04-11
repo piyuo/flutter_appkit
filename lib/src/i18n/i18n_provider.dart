@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:libcli/pattern/redux_provider.dart';
-import 'package:libcli/i18n/i18n_state.dart';
-import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/log/log.dart';
+import 'package:libcli/pattern.dart';
+import 'package:libcli/src/i18n/i18n_state.dart';
+import 'package:libcli/src/i18n/i18n.dart' as i18n;
+import 'package:libcli/log.dart';
 import 'package:flutter/material.dart';
 
 class I18nProvider extends ReduxProvider<I18nState, dynamic> {

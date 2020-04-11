@@ -1,9 +1,9 @@
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/assets.dart' as assets;
 import 'package:libcli/hook/vars.dart' as vars;
-import 'package:libcli/i18n/i18n_provider.dart';
+import 'package:libcli/src/i18n/i18n_provider.dart';
 import 'package:flutter/foundation.dart';
 
 const _here = 'i18n';
@@ -31,7 +31,7 @@ Locale _locale;
 ///     I18nModel.mockInit('{"title": "mock"}');
 ///
 @visibleForTesting
-void mock(Locale locale, String map) {
+void i18nMock(Locale locale, String map) {
   _locale = locale;
   assets.mockString(map);
 }

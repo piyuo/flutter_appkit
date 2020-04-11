@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/i18n/i18n.dart';
+import 'package:libcli/i18n.dart';
 import 'package:libcli/hook/vars.dart' as vars;
 import 'package:flutter/material.dart';
 

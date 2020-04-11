@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/error/error.dart' as error;
+import 'package:libcli/log.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/hook/events.dart';
 import 'dart:async';
@@ -11,7 +11,7 @@ void main() {
       eventbus.listen<EError>((_, e) {
         event = e;
       });
-      error.catchAndBroadcast(
+      catchAndBroadcast(
           suspect: suspect,
           callback: () async {
             expect(event is EError, true);
@@ -23,7 +23,7 @@ void main() {
       eventbus.listen<EError>((_, e) {
         event = e;
       });
-      error.catchAndBroadcast(
+      catchAndBroadcast(
           suspect: suspectAsync,
           callback: () async {
             expect(event is EError, true);
@@ -36,7 +36,7 @@ void main() {
         eventbus.listen<EError>((_, e) {
           event = e;
         });
-        error.catchAndBroadcast(
+        catchAndBroadcast(
             suspect: suspectTimer,
             callback: () async {
               expect(event is EError, true);

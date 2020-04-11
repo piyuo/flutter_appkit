@@ -1,6 +1,6 @@
 import 'package:libcli/hook/vars.dart' as vars;
-import 'package:libcli/log/commands/sys/analytics_action.pbserver.dart';
-import 'package:libcli/log/commands/sys/sys_service.pb.dart';
+import 'package:libcli/src/log/commands/sys/analytics_action.pbserver.dart';
+import 'package:libcli/src/log/commands/sys/sys_service.pb.dart';
 import 'package:libcli/command.dart';
 import 'package:flutter/material.dart';
 

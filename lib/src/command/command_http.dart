@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log.dart';
 import 'package:libcli/tools/net.dart' as net;
 import 'package:libcli/eventbus.dart' as eventbus;
 

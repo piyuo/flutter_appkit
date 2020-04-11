@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/log/log.dart';
+import 'package:libcli/log.dart';
 
 /// Contract need listener do something and need callback when job is done
 ///

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/pattern/async_provider.dart';
+import 'package:libcli/pattern.dart';
 
 class MockProvider extends AsyncProvider {
   @override

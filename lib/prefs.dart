@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:libcli/log/log.dart';
-import 'package:libcli/hook/errors.dart';
+import 'package:libcli/log.dart';
 
 const _here = 'prefs';
 

@@ -1,20 +1,19 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/pattern/await.dart';
-import 'package:libcli/i18n/i18n_provider.dart';
-import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/pattern.dart';
+import 'package:libcli/i18n.dart';
 import 'mock_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  i18n.mock(Locale('en', 'US'), '{"a": "A"}');
+  i18nMock(Locale('en', 'US'), '{"a": "A"}');
 
   setUp(() async {});
 
   group('[i18n_provider]', () {
     testWidgets('should load', (WidgetTester tester) async {
-      i18n.locale = Locale('en', 'US');
+      locale = Locale('en', 'US');
       await tester.pumpWidget(MaterialApp(
         home: Material(
           child: TestWidget(),

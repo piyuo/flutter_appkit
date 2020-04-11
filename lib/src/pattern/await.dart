@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pattern/async_provider.dart';
-import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/src/pattern/async_provider.dart';
+import 'package:libcli/log.dart' as log;
 import 'package:flutter/foundation.dart';
 
 const _here = 'await';

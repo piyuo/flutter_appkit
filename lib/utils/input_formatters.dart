@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'package:libcli/i18n/i18n.dart';
+import 'package:libcli/i18n.dart';
 
 TextEditingValue currencyFormatter(
     TextEditingValue oldValue, TextEditingValue newValue) {
