@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart';
@@ -11,26 +12,38 @@ import 'package:libcli/command/command_url.dart';
 import 'package:libcli/command/command_http.dart';
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/command/commands/shared/err.pb.dart';
-import 'package:flutter/material.dart';
 
 const _here = 'command';
+
+/// DispatchFunc let test can swap dispatch function in service
+///
+typedef Future<dynamic> MockDispatchFunc(BuildContext ctx, ProtoObject obj);
 
 /// communicate with server with command using ajax,protobuf and command pattern
 /// simplefy the network call to request and response
 ///
 abstract class Service {
   /// remote service url
+  ///
   String url;
 
   /// timeout define request timeout in ms
   final int timeout;
 
   /// slow define slow network in ms
+  ///
   final int slow;
 
-  Function onError;
+  /// errorHandler override default error handling
+  ///
+  Function errorHandler;
+
+  /// mockDispatch function is for test
+  ///
+  MockDispatchFunc mockDispatch;
 
   /// find object by id
+  ///
   ProtoObject newObjectByID(int id, List<int> bytes);
 
   /// Service create service with remote cloud function name,timeout and slow
@@ -49,10 +62,14 @@ abstract class Service {
   ///       };
   ///     });
   Future<dynamic> dispatch(BuildContext ctx, ProtoObject obj) async {
+    if (mockDispatch != null) {
+      return await mockDispatch(ctx, obj);
+    }
+
     assert(url != null && url.length > 0);
     assert(obj != null);
     http.Client client = http.Client();
-    return dispatchWithClient(ctx, obj, client);
+    return await dispatchWithClient(ctx, obj, client);
   }
 
   /// dispatchWithClient dispatch request to remote service
@@ -64,7 +81,7 @@ abstract class Service {
       log('$_here~dispatch ${obj.runtimeType} to $url');
       Uint8List bytes = encode(obj);
       List<int> ret =
-          await post(ctx, client, url, bytes, timeout, slow, onError);
+          await post(ctx, client, url, bytes, timeout, slow, errorHandler);
       if (ret != null) {
         ProtoObject retObj = decode(ret, this);
         var r = Response.from(retObj);

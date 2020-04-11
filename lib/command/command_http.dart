@@ -24,7 +24,7 @@ class Request {
   int timeout;
   Future<bool> Function() isInternetConnected;
   Future<bool> Function() isGoogleCloudFunctionAvailable;
-  Function onError;
+  Function errorHandler;
 }
 
 /// post call request() and broadcast network slow if request time is longer than slow
@@ -32,7 +32,7 @@ class Request {
 ///     await commandHttp.postclient, '', bytes, 500, 1);
 ///     expect(listener.latestEvent is contract.EventNetworkSlow, true);
 Future<List<int>> post(BuildContext ctx, http.Client client, String url,
-    Uint8List bytes, int timeout, int slow, Function onError) async {
+    Uint8List bytes, int timeout, int slow, Function errorHandler) async {
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
     if (!completer.isCompleted) {
@@ -46,7 +46,7 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
   req.timeout = timeout;
   req.isInternetConnected = net.isInternetConnected;
   req.isGoogleCloudFunctionAvailable = net.isGoogleCloudFunctionAvailable;
-  req.onError = onError;
+  req.errorHandler = errorHandler;
   doPost(ctx, req).then((response) {
     timer.cancel();
     completer.complete(response);
@@ -90,7 +90,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return resp.bodyBytes;
     }
 
-    if (r.onError != null) {
+    if (r.errorHandler != null) {
       return emmitError(r);
     }
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
@@ -114,13 +114,13 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     //unknow status code
     throw Exception('unknown status ' + msg);
   } on TimeoutException catch (e, s) {
-    if (r.onError != null) {
+    if (r.errorHandler != null) {
       return emmitError(r);
     }
     var errID = error(_here, e, s);
     return giveup(ctx, EClientTimeout(errID));
   } on SocketException catch (e, s) {
-    if (r.onError != null) {
+    if (r.errorHandler != null) {
       return emmitError(r);
     }
     if (await r.isInternetConnected()) {
@@ -136,7 +136,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return await retry(ctx, CInternetRequired(), ERefuseInternet(), r);
     }
   } catch (e, s) {
-    if (r.onError != null) {
+    if (r.errorHandler != null) {
       return emmitError(r);
     }
     //handle exception here to get better stack trace
@@ -150,7 +150,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
 ///   commandHttp.giveup(c.ERefuseInternet());
 emmitError(Request r) {
   try {
-    r.onError();
+    r.errorHandler();
   } catch (_) {}
   return null;
 }

@@ -1,15 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
-import '../mock/protobuf/sys_service.pb.dart';
-import '../mock/protobuf/string_response.pbserver.dart';
-import '../mock/protobuf/echo_request.pbserver.dart';
-import 'package:libcli/command/commands/shared/ping_action.pb.dart';
+import 'package:http/http.dart' as http;
 import 'package:libcli/command/commands/shared/err.pb.dart';
 import 'package:libcli/command/command_protobuf.dart' as commandProtobuf;
-import 'package:http/http.dart' as http;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/hook/vars.dart' as vars;
 import 'package:libcli/mock/mock.dart';
+import '../mock/protobuf/sys_service.pb.dart';
+import '../mock/protobuf/string_response.pbserver.dart';
+import '../mock/protobuf/echo_request.pbserver.dart';
 
 void main() {
   command.mockInit();
@@ -78,6 +77,23 @@ void main() {
       var response = command.Response.from(err);
       expect(response.ok, true);
       expect(response.data is Err, true);
+    });
+
+    test('should mock dispatch', () async {
+      SysService service = SysService();
+      service.mockDispatch = (ctx, obj) async {
+        var data = StringResponse();
+        data.text = 'hi';
+        return command.Response()
+          ..data = data
+          ..errCode = -3;
+      };
+
+      EchoRequest action = new EchoRequest();
+      var response = await service.dispatch(null, action);
+      expect(response.errCode, -3);
+      StringResponse returnData = response.data as StringResponse;
+      expect(returnData.text, 'hi');
     });
   });
 }

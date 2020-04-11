@@ -56,7 +56,7 @@ void main() {
         throw Exception('mock');
       }));
       var onErrorCalled = false;
-      req.onError = () {
+      req.errorHandler = () {
         onErrorCalled = true;
       };
 
@@ -139,7 +139,7 @@ void main() {
         });
         var req = newRequest(client);
         var onErrorCalled = false;
-        req.onError = () {
+        req.errorHandler = () {
           onErrorCalled = true;
         };
 

@@ -41,7 +41,7 @@ Future<bool> post(BuildContext ctx) async {
     var readyAction = _current;
     clear();
     SysService service = SysService();
-    service.onError = () {}; // ignore error
+    service.errorHandler = () {}; // ignore error
     var r = await service.dispatch(ctx, readyAction);
     return r.ok;
   }

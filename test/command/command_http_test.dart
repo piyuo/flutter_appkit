@@ -46,7 +46,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(500));
         var onErrorCalled = false;
-        req.onError = () {
+        req.errorHandler = () {
           onErrorCalled = true;
         };
         var bytes = await commandHttp.doPost(ctx, req);
