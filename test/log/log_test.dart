@@ -62,9 +62,8 @@ void main() {
       expect(beautyLine(l),
           'at main.. (file://libcli/test/log/log_test.dart:34:9)');
 
-      l = 'package:libcli/command/command_http.dart 46:15 post.<fn>';
-      expect(beautyLine(l),
-          'at package:libcli/command/command_http.dart (46:15_post.<fn>)');
+      l = 'package:libcli/command.dart 46:15 post.<fn>';
+      expect(beautyLine(l), 'at package:libcli/command.dart (46:15_post.<fn>)');
     });
   });
 }

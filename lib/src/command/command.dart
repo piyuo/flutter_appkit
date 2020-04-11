@@ -7,11 +7,11 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart';
 import 'package:libcli/data/prefs.dart' as prefs;
-import 'package:libcli/command/command_protobuf.dart';
-import 'package:libcli/command/command_url.dart';
-import 'package:libcli/command/command_http.dart';
+import 'package:libcli/src/command/command_protobuf.dart';
+import 'package:libcli/src/command/command_url.dart';
+import 'package:libcli/src/command/command_http.dart';
 import 'package:libcli/hook/events.dart';
-import 'package:libcli/command/commands/shared/err.pb.dart';
+import 'package:libcli/src/command/commands/shared/err.pb.dart';
 
 const _here = 'command';
 
@@ -149,11 +149,11 @@ class Response {
   }
 }
 
-/// mockInit Initializes the value for testing
+/// mock Initializes the value for testing
 ///
-///     command.mockInit({});
+///     command.mock({});
 ///
 @visibleForTesting
-void mockInit() {
-  prefs.mockInit({});
+void mock() {
+  prefs.mock({});
 }

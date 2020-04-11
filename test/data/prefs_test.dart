@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/data/prefs.dart' as prefs;
 
 void main() {
-  prefs.mockInit({});
+  prefs.mock({});
   setUp(() async {});
 
   group('[prefs]', () {

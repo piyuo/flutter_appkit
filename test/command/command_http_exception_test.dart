@@ -4,16 +4,15 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/command/command_http.dart' as commandHttp;
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/eventbus/contract.dart';
-import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/command.dart' as command;
 import 'package:libcli/mock/mock.dart';
 
 void main() {
-  command.mockInit();
+  command.mock();
   var contract;
   var event;
 
@@ -43,7 +42,7 @@ void main() {
 
       await tester.inWidget((ctx) async {
         try {
-          await commandHttp.doPost(ctx, req);
+          await command.doPost(ctx, req);
         } catch (e) {
           expect(e, isNotNull);
         }
@@ -61,7 +60,7 @@ void main() {
       };
 
       await tester.inWidget((ctx) async {
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(event, null);
         expect(onErrorCalled, true);
@@ -78,7 +77,7 @@ void main() {
         return true;
       };
       await tester.inWidget((ctx) async {
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(event.runtimeType, EContactUs);
       });
@@ -93,7 +92,7 @@ void main() {
         return false;
       };
       await tester.inWidget((ctx) async {
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(event.runtimeType, EServiceBlocked);
       });
@@ -106,7 +105,7 @@ void main() {
       };
 
       await tester.inWidget((ctx) async {
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, isNotNull);
         expect(bytes.length, greaterThan(1));
         expect(contract.runtimeType, CInternetRequired);
@@ -124,7 +123,7 @@ void main() {
         var context = await tester.mockContext();
         var req = newRequest(client);
         req.timeout = 1;
-        var bytes = await commandHttp.doPost(context, req);
+        var bytes = await command.doPost(context, req);
         expect(bytes, null);
         expect(event.runtimeType, EClientTimeout);
       });
@@ -145,7 +144,7 @@ void main() {
 
         await tester.inWidget((ctx) async {
           req.timeout = 1;
-          var bytes = await commandHttp.doPost(ctx, req);
+          var bytes = await command.doPost(ctx, req);
           expect(bytes, null);
           expect(event, null);
           expect(onErrorCalled, true);
@@ -155,8 +154,8 @@ void main() {
   });
 }
 
-commandHttp.Request newRequest(MockClient client) {
-  var req = commandHttp.Request();
+command.Request newRequest(MockClient client) {
+  var req = command.Request();
   req.client = client;
   req.bytes = Uint8List(2);
   req.url = 'http://mock';

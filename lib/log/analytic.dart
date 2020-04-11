@@ -1,14 +1,14 @@
 import 'package:libcli/hook/vars.dart' as vars;
-import 'package:libcli/command/commands/sys/analytics_action.pbserver.dart';
-import 'package:libcli/command/commands/sys/sys_service.pb.dart';
-import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
+import 'package:libcli/log/commands/sys/analytics_action.pbserver.dart';
+import 'package:libcli/log/commands/sys/sys_service.pb.dart';
+import 'package:libcli/command.dart';
 import 'package:flutter/material.dart';
 
 AnalyticsAction _current = AnalyticsAction();
 
 log(String where, String message, int level) {
   Log log = Log();
-  log.time = timestamp.Timestamp.fromDateTime(DateTime.now());
+  log.time = Timestamp.fromDateTime(DateTime.now());
   log.app = vars.appID;
   log.user = vars.userID;
   log.where = where;

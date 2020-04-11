@@ -185,11 +185,11 @@ Future<void> setMap(String key, Map<String, dynamic> map) async {
   return await setString(key, j);
 }
 
-/// mockInit Initializes the value for testing
+/// mock Initializes the value for testing
 ///
-///     data.mockInit({});
+///     data.mock({});
 ///
 @visibleForTesting
-void mockInit(Map<String, dynamic> values) {
+void mock(Map<String, dynamic> values) {
   SharedPreferences.setMockInitialValues(values);
 }

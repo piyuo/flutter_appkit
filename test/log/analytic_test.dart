@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/mock/mock.dart';
 import 'package:libcli/log/analytic.dart' as analytic;
-import 'package:libcli/command/commands/google/timestamp.pb.dart' as timestamp;
+import 'package:libcli/command.dart';
 import 'package:libcli/hook/vars.dart' as vars;
 import 'package:libcli/log/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +12,7 @@ void main() {
 
   group('[analytic]', () {
     test('should set time', () {
-      var time = timestamp.Timestamp.fromDateTime(DateTime.now());
+      var time = Timestamp.fromDateTime(DateTime.now());
       expect(time != null, true);
     });
 

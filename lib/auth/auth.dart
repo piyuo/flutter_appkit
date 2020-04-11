@@ -82,5 +82,5 @@ mockAccessTokenCreateDate(DateTime date) async {
 ///
 @visibleForTesting
 mockInit(Map<String, dynamic> values) {
-  prefs.mockInit(values);
+  prefs.mock(values);
 }

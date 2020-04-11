@@ -1,6 +1,6 @@
 import 'dart:typed_data';
-import 'package:libcli/command/command.dart';
-import 'package:libcli/command/commands/shared/shared_service.pb.dart'
+import 'package:libcli/src/command/command.dart';
+import 'package:libcli/src/command/commands/shared/shared_service.pb.dart'
     as shared;
 
 shared.SharedService _sharedService = shared.SharedService();

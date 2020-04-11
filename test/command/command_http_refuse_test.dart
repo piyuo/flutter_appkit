@@ -3,16 +3,15 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/command/command_http.dart' as commandHttp;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/eventbus/contract.dart';
 import 'package:libcli/hook/events.dart';
 import 'package:libcli/hook/contracts.dart';
-import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/command.dart' as command;
 import 'package:libcli/mock/mock.dart';
 
 void main() {
-  command.mockInit();
+  command.mock();
   var contract;
   var event;
 
@@ -42,7 +41,7 @@ void main() {
       };
 
       await tester.inWidget((ctx) async {
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CInternetRequired);
         expect(event.runtimeType, ERefuseInternet);
@@ -53,7 +52,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(511));
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CAccessTokenRequired);
         expect(event.runtimeType, ERefuseSignin);
@@ -64,7 +63,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CAccessTokenExpired);
         expect(event.runtimeType, ERefuseSignin);
@@ -75,7 +74,7 @@ void main() {
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(402));
-        var bytes = await commandHttp.doPost(ctx, req);
+        var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(contract.runtimeType, CPaymentTokenRequired);
         expect(event.runtimeType, ERefuseSignin);
@@ -85,16 +84,15 @@ void main() {
     testWidgets('should retry', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        await commandHttp.retry(
-            ctx, CAccessTokenExpired(), ERefuseSignin(), req);
+        await command.retry(ctx, CAccessTokenExpired(), ERefuseSignin(), req);
         expect(event.runtimeType, ERefuseSignin);
       });
     });
   });
 }
 
-commandHttp.Request newRequest(MockClient client) {
-  var req = commandHttp.Request();
+command.Request newRequest(MockClient client) {
+  var req = command.Request();
   req.client = client;
   req.bytes = Uint8List(2);
   req.url = 'http://mock';
