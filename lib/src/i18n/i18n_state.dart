@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:libcli/assets.dart' as assets;
 
+Map<String, dynamic> _libcliLocalization;
+
 class I18nState {
   final Map<String, dynamic> _localization;
 
@@ -22,10 +24,12 @@ Future<I18nState> readState(
   String pageJson =
       await assets.loadJson('i18n/$languageCode/$countryCode/${page}.json');
   Map<String, dynamic> localization = json.decode(pageJson);
-  String libJson = await assets.loadJson(
-      'i18n/$languageCode/$countryCode/libcli.json',
-      package: 'libcli');
-  var libLocalization = json.decode(libJson);
-  localization.addAll(libLocalization);
+  if (_libcliLocalization == null) {
+    String libJson = await assets.loadJson(
+        'i18n/$languageCode/$countryCode/libcli.json',
+        package: 'libcli');
+    _libcliLocalization = json.decode(libJson);
+  }
+  localization.addAll(_libcliLocalization);
   return I18nState(localization);
 }
