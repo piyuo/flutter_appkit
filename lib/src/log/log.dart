@@ -41,6 +41,7 @@ overrideDebugPrint(String message, {int wrapWidth}) {
       m = message;
     }
     message = '$HEAD$h$END$m';
+/*
     if (Platform.isIOS) {
       print(message
           .replaceAll(HEAD, '')
@@ -52,7 +53,7 @@ overrideDebugPrint(String message, {int wrapWidth}) {
           .replaceAll(WARNING, '')
           .replaceAll(ALERT, ''));
       return;
-    }
+    }*/
     print(message);
   }
 }
