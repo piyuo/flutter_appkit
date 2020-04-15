@@ -19,7 +19,7 @@ Future<bool> _lookup(String url) async {
 ///
 ///     bool result = await tools.isInternetConnected();
 Future<bool> isInternetConnected() async {
-  return _lookup('baidu.com');
+  return _lookup('starbucks.com');
 }
 
 /// isGoogleCloudFunctionAvailable check google clound function can be connect
