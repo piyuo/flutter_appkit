@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/assets.dart' as assets;
+import 'package:libcli/common.dart' as assets;
 import 'dart:convert';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() async {
-    assets.mockStop();
+    assets.mockAssetsStop();
   });
 
   group('[assets]', () {
@@ -17,7 +17,7 @@ void main() {
     });
 
     test('should load json', () async {
-      assets.mockString('');
+      assets.mockAssetsByString('');
       String j = await assets.loadJson('mock');
       var obj = json.decode(j);
       expect(obj, isNotNull);
@@ -40,7 +40,7 @@ void main() {
         return 'hi';
       }
 
-      assets.mock((_mockLoadAssets));
+      assets.mockAssets((_mockLoadAssets));
 
       String asset = await assets.loadString('test/test.json');
       expect(asset, 'hi');

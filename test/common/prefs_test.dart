@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/prefs.dart' as prefs;
+import 'package:libcli/common.dart' as prefs;
 
 void main() {
-  prefs.mock({});
+  prefs.mockPrefs({});
   setUp(() async {});
 
   group('[prefs]', () {

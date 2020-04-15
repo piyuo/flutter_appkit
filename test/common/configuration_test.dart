@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/configuration.dart';
+import 'package:libcli/common.dart';
 
 void main() {
   group('[vars]', () {

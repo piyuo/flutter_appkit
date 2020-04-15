@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/command_type.dart';
-import 'package:libcli/configuration.dart' as configuration;
+import 'package:libcli/common.dart' as configuration;
 
 void main() {
   command.mockCommand();

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:libcli/assets.dart' as assets;
+import 'package:libcli/src/common/assets.dart' as assets;
 
 Map<String, dynamic> _libcliLocalization;
 

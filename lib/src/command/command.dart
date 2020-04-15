@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
-import 'package:libcli/prefs.dart' as prefs;
+import 'package:libcli/src/common/prefs.dart' as prefs;
 import 'package:libcli/src/command/command_protobuf.dart';
 import 'package:libcli/src/command/command_url.dart';
 import 'package:libcli/src/command/command_http.dart';
@@ -155,5 +155,5 @@ class Response {
 ///
 @visibleForTesting
 void mockCommand() {
-  prefs.mock({});
+  prefs.mockPrefs({});
 }

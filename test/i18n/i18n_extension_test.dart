@@ -6,7 +6,7 @@ import 'package:libcli/i18n.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  i18nMock(Locale('en', 'US'), '{"a": "A"}');
+  mockI18n(Locale('en', 'US'), '{"a": "A"}');
 
   group('[i18n_extension]', () {
     testWidgets('should translate ' '.i18n(context)',

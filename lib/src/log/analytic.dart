@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/src/log/commands/sys/analytics_action.pbserver.dart';
 import 'package:libcli/src/log/commands/sys/sys_service.pb.dart';
 import 'package:libcli/command_type.dart';
-import 'package:libcli/configuration.dart' as configuration;
+import 'package:libcli/src/common/configuration.dart' as configuration;
 
 AnalyticsAction _current = AnalyticsAction();
 

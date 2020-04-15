@@ -60,7 +60,7 @@ Future<String> loadJson(String assetName,
   return '{}';
 }
 
-/// mock Initializes the value for testing
+/// mockAssets Initializes the value for testing
 ///
 ///     Future<String> _mockLoadAssets(String assetName,
 ///       {BuildContext context, String package}) async {
@@ -69,11 +69,11 @@ Future<String> loadJson(String assetName,
 ///     assets.mock((_mockLoadAssets));
 ///
 @visibleForTesting
-mock(LoadString func) {
+mockAssets(LoadString func) {
   loadString = func;
 }
 
-/// mock Initializes the value for testing
+/// mockAssetsByString Initializes the value for testing
 ///
 ///     Future<String> _mockLoadAssets(String assetName,
 ///       {BuildContext context, String package}) async {
@@ -82,20 +82,20 @@ mock(LoadString func) {
 ///     assets.mock((_mockLoadAssets));
 ///
 @visibleForTesting
-mockString(String text) {
+mockAssetsByString(String text) {
   Future<String> _mockLoadAssets(String assetName,
       {BuildContext context, String package}) async {
     return text;
   }
 
-  mock((_mockLoadAssets));
+  mockAssets((_mockLoadAssets));
 }
 
-/// mockStop stop mock
+/// mockAssetsStop stop mock
 ///
 ///     assets.mockStop();
 ///
 @visibleForTesting
-mockStop() {
+mockAssetsStop() {
   loadString = _loadString;
 }

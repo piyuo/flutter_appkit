@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/prefs.dart' as prefs;
+import 'package:libcli/src/common/prefs.dart' as prefs;
 import 'package:flutter/material.dart';
 
 /// refreshTokenExipre set refresh token expire duration
@@ -81,6 +81,6 @@ mockAccessTokenCreateDate(DateTime date) async {
 ///     mockInit({});
 ///
 @visibleForTesting
-mockInit(Map<String, dynamic> values) {
-  prefs.mock(values);
+mockAuth(Map<String, dynamic> values) {
+  prefs.mockPrefs(values);
 }

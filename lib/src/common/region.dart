@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/configuration.dart' as configuration;
+import 'package:libcli/src/common/configuration.dart' as configuration;
 
 typedef Future<configuration.Regions> Get();
 
