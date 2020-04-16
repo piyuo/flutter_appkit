@@ -7,6 +7,8 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart' as command;
 import '../mock.dart';
 
+const _here = 'command_http_test';
+
 void main() {
   command.mockCommand();
   var contract;
@@ -16,7 +18,7 @@ void main() {
     contract = null;
     event = null;
     eventbus.reset();
-    eventbus.listen((_, e) {
+    eventbus.listen(_here, (_, e) {
       if (e is eventbus.Contract) {
         contract = e;
       } else {
@@ -24,7 +26,7 @@ void main() {
       }
     });
 
-    eventbus.listen<eventbus.Contract>((_, e) {
+    eventbus.listen<eventbus.Contract>(_here, (_, e) {
       e.complete(true);
     });
   });

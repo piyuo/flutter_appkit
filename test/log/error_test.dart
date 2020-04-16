@@ -3,11 +3,13 @@ import 'package:libcli/log.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'dart:async';
 
+const _here = 'error_test';
+
 void main() {
   group('[error]', () {
     testWidgets('should catch exception', (WidgetTester tester) async {
       var event;
-      eventbus.listen<eventbus.EError>((_, e) {
+      eventbus.listen<eventbus.EError>(_here, (_, e) {
         event = e;
       });
       catchAndBroadcast(
@@ -19,7 +21,7 @@ void main() {
 
     testWidgets('should catch async exception', (WidgetTester tester) async {
       var event;
-      eventbus.listen<eventbus.EError>((_, e) {
+      eventbus.listen<eventbus.EError>(_here, (_, e) {
         event = e;
       });
       catchAndBroadcast(
@@ -32,7 +34,7 @@ void main() {
     testWidgets('should catch timer exception', (WidgetTester tester) async {
       await tester.runAsync(() async {
         var event;
-        eventbus.listen<eventbus.EError>((_, e) {
+        eventbus.listen<eventbus.EError>(_here, (_, e) {
           event = e;
         });
         catchAndBroadcast(

@@ -1,13 +1,15 @@
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:flutter_test/flutter_test.dart';
 
+const _here = 'eventbus_contract_test';
+
 main() {
   setUp(() async {
     eventbus.reset();
   });
   group('[eventbus_contract]', () {
     test('should handle error', () async {
-      eventbus.listen<MockContract>((_, event) {
+      eventbus.listen<MockContract>(_here, (_, event) {
         throw 'unhandle exception';
       });
       eventbus.contract(null, MockContract('c')).then((value) {
@@ -18,7 +20,7 @@ main() {
 
   test('should contract', () async {
     var text = '';
-    eventbus.listen<MockContract>((ctx, event) {
+    eventbus.listen<MockContract>(_here, (ctx, event) {
       text = event.text;
       event.complete(true);
     });

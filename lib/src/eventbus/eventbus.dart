@@ -65,16 +65,19 @@ int getListenerCount() {
 
 /// Listens for events of Type [T] and its subtypes.
 ///
-///     Subscription sub = eventbus.listen<MockEvent>((ctx,event) {
+///     Subscription sub = eventbus.listen<MockEvent>('test',(ctx,event) {
 ///       text = event.text;
 ///     });
 ///     sub.cancel();
-Subscription listen<T>(Function(BuildContext, dynamic) func) {
+Subscription listen<T>(
+  String where,
+  Function(BuildContext, dynamic) func,
+) {
   assert(func != null);
   if (T == dynamic) {
-    debugPrint('$_here~someone listen ${NOUN}all event');
+    debugPrint('$_here~$where listen all event');
   } else {
-    debugPrint('$_here~someone listen ${NOUN}$T');
+    debugPrint('$_here~$where listen $T');
   }
 
   var listener = Listener(T, func);
