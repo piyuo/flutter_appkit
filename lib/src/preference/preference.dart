@@ -36,7 +36,7 @@ Future<bool> getBool(String key) async {
 ///
 setBool(String key, bool value) async {
   assert(key.length > 0);
-  debugPrint('$_here~set $key=$NOUN$value');
+  debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
     throw DiskFullException();
@@ -60,7 +60,7 @@ Future<int> getInt(String key) async {
 ///
 setInt(String key, int value) async {
   assert(key.length > 0);
-  debugPrint('$_here~set $NOUN$key=$value');
+  debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
     throw DiskFullException();
@@ -84,7 +84,7 @@ Future<double> getDouble(String key) async {
 ///
 setDouble(String key, double value) async {
   assert(key.length > 0);
-  debugPrint('$_here~set $NOUN$key=$value');
+  debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
     throw DiskFullException();
@@ -108,7 +108,7 @@ Future<String> getString(String key) async {
 ///
 setString(String key, String value) async {
   assert(key.length > 0);
-  debugPrint('$_here~set $NOUN$key=$value');
+  debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
     throw DiskFullException();
@@ -149,7 +149,7 @@ setDateTime(String key, DateTime value) async {
 Future<List<String>> getStringList(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getStringList(key) ?? [];
-  debugPrint('$_here~get $NOUN$key=$value');
+  debugPrint('$_here~get $key=$value');
   return value;
 }
 
@@ -159,7 +159,7 @@ Future<List<String>> getStringList(String key) async {
 ///
 setStringList(String key, List<String> value) async {
   assert(key.length > 0);
-  debugPrint('$_here~set $NOUN$key=$value');
+  debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setStringList(key, value));
   if (!result) {
     throw DiskFullException();
@@ -184,11 +184,12 @@ Future<void> setMap(String key, Map<String, dynamic> map) async {
   return await setString(key, j);
 }
 
-/// mock Initializes the value for testing
+/// mockPrefs Initializes the value for testing
 ///
-///     data.mock({});
+///     data.mockPrefs({});
 ///
 @visibleForTesting
 void mockPrefs(Map<String, dynamic> values) {
+  // ignore:invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues(values);
 }

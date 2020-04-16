@@ -26,13 +26,14 @@ const Locales = [
 
 Locale _locale;
 
-/// mockInit Initializes the value for testing
+/// mockI18n Initializes the value for testing
 ///
-///     I18nModel.mockInit('{"title": "mock"}');
+///     I18nModel.mockI18n(Locale('en', 'US'), '{"title": "mock"}');
 ///
 @visibleForTesting
 void mockI18n(Locale locale, String map) {
   _locale = locale;
+  // ignore:invalid_use_of_visible_for_testing_member
   asset.mockAssetsByString(map);
 }
 
@@ -90,7 +91,7 @@ Locale determineLocale(List<Locale> locales) {
   }
   configuration.country = firstLocale.countryCode;
   debugPrint(
-      '$_here~set locale=$NOUN${bestLocale.languageCode}_${bestLocale.countryCode}');
+      '$_here~${STATE}set locale=${bestLocale.languageCode}_${bestLocale.countryCode}');
   return bestLocale;
 }
 

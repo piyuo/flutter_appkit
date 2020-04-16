@@ -55,8 +55,7 @@ class Redux<S, A> {
       var jNew = toString(newState);
       var jAction = toString(action);
       var jPayload = toString(payload);
-      debugPrint(
-          '$_here~$jOld => $VERB$jAction $NOUN$jPayload $END=> $NOUN2$jNew');
+      debugPrint('$_here~${STATE}$jOld => $jAction $jPayload $END=> $jNew');
       _state = newState;
     }
     return state;

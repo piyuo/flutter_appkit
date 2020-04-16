@@ -76,11 +76,12 @@ mockAccessTokenCreateDate(DateTime date) async {
   await preference.setDateTime(kAccessTokenCreateDate, date);
 }
 
-/// mockInit create test enviroment
+/// mockAuth create test enviroment
 ///
-///     mockInit({});
+///     mockAuth({});
 ///
 @visibleForTesting
 mockAuth(Map<String, dynamic> values) {
+  // ignore:invalid_use_of_visible_for_testing_member
   preference.mockPrefs(values);
 }

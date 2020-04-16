@@ -151,9 +151,10 @@ class Response {
 
 /// mockCommand Initializes the value for testing
 ///
-///     command.mock({});
+///     command.mockCommand({});
 ///
 @visibleForTesting
 void mockCommand() {
+  // ignore:invalid_use_of_visible_for_testing_member
   preference.mockPrefs({});
 }

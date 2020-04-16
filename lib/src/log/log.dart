@@ -16,12 +16,13 @@ const MAGENTA = _b + '35m';
 const CYAN = _b + '36m';
 
 const HEAD = BLUE;
-const VERB = MAGENTA;
-const NOUN = GREEN;
-const NOUN2 = YELLOW;
 const END = RESET;
+
 const WARNING = YELLOW;
 const ALERT = RED;
+const ALLOCATION = MAGENTA;
+const NETWORK = CYAN;
+const STATE = GREEN;
 
 /// overrideDebugPrint override debugPrint()
 ///
@@ -110,7 +111,7 @@ String error(String where, dynamic e, StackTrace stacktrace) {
   String errID = utils.uuid();
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(stacktrace);
-  debugPrint('$where~caught $NOUN2$msg$END ($errID)\n$RED$stack');
+  debugPrint('$where~${ALERT}caught $msg ($errID)\n$stack');
 
   analytic.error(where, msg, stack, errID);
   return errID;

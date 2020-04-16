@@ -8,7 +8,7 @@ enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
   AsyncProvider() {
-    debugPrint('$here~$runtimeType ${VERB}created');
+    debugPrint('$here~${ALLOCATION}$runtimeType created');
   }
 
   AsyncStatus asyncStatus = AsyncStatus.none;
@@ -29,7 +29,7 @@ abstract class AsyncProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    debugPrint('$here~$runtimeType ${VERB}disposed');
+    debugPrint('$here~${ALLOCATION}$runtimeType disposed');
     _disposed = true;
     super.dispose();
   }
