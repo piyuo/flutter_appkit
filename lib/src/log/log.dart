@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
-import 'package:libcli/tools.dart' as id;
-import 'package:libcli/src/common/configuration.dart' as configuration;
-import 'dart:io';
+import 'package:libcli/utils.dart' as utils;
+import 'package:libcli/configuration.dart' as configuration;
 
 const LEVEL_INFO = 1;
 const LEVEL_WARNING = 2;
@@ -108,7 +107,7 @@ alert(String message) {
 ///       var errID = error(HERE, e, s);
 ///     }
 String error(String where, dynamic e, StackTrace stacktrace) {
-  String errID = id.uuid();
+  String errID = utils.uuid();
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(stacktrace);
   debugPrint('$where~caught $NOUN2$msg$END ($errID)\n$RED$stack');

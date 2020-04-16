@@ -1,45 +1,44 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/common.dart';
 import 'dart:async';
 
 void main() {
   group('[error]', () {
     testWidgets('should catch exception', (WidgetTester tester) async {
       var event;
-      eventbus.listen<EError>((_, e) {
+      eventbus.listen<eventbus.EError>((_, e) {
         event = e;
       });
       catchAndBroadcast(
           suspect: suspect,
           callback: () async {
-            expect(event is EError, true);
+            expect(event is eventbus.EError, true);
           });
     });
 
     testWidgets('should catch async exception', (WidgetTester tester) async {
       var event;
-      eventbus.listen<EError>((_, e) {
+      eventbus.listen<eventbus.EError>((_, e) {
         event = e;
       });
       catchAndBroadcast(
           suspect: suspectAsync,
           callback: () async {
-            expect(event is EError, true);
+            expect(event is eventbus.EError, true);
           });
     });
 
     testWidgets('should catch timer exception', (WidgetTester tester) async {
       await tester.runAsync(() async {
         var event;
-        eventbus.listen<EError>((_, e) {
+        eventbus.listen<eventbus.EError>((_, e) {
           event = e;
         });
         catchAndBroadcast(
             suspect: suspectTimer,
             callback: () async {
-              expect(event is EError, true);
+              expect(event is eventbus.EError, true);
             });
         await Future.delayed(const Duration(milliseconds: 100));
       });

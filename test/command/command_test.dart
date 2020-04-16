@@ -2,8 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command.dart' as command;
-import 'package:libcli/command_type.dart';
-import 'package:libcli/common.dart' as configuration;
+import 'package:libcli/configuration.dart' as configuration;
 import '../mock.dart';
 import '../mock/protobuf/sys_service.pb.dart';
 import '../mock/protobuf/string_response.pbserver.dart';
@@ -63,19 +62,19 @@ void main() {
     });
 
     test('should return error response', () async {
-      var err = Err()
+      var err = command.Err()
         ..code = 1
         ..msg = 'mock_error';
       var response = command.Response.from(err);
       expect(response.ok, false);
-      expect(response.data is Err, true);
+      expect(response.data is command.Err, true);
     });
 
     test('should return ok response', () async {
-      var err = Err()..code = 0;
+      var err = command.Err()..code = 0;
       var response = command.Response.from(err);
       expect(response.ok, true);
-      expect(response.data is Err, true);
+      expect(response.data is command.Err, true);
     });
 
     test('should mock dispatch', () async {

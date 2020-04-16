@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
-import 'package:libcli/command_type.dart';
-import 'package:libcli/common.dart' as configuration;
+import 'package:libcli/command.dart' as command;
+import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,7 +12,7 @@ void main() {
 
   group('[analytic]', () {
     test('should set time', () {
-      var time = Timestamp.fromDateTime(DateTime.now());
+      var time = command.Timestamp.fromDateTime(DateTime.now());
       expect(time != null, true);
     });
 

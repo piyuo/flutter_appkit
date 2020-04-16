@@ -10,7 +10,7 @@ import 'package:libcli/command.dart' as command;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'package:libcli/command_type.dart' as $0;
+import 'package:libcli/command.dart' as $0;
 
 class AnalyticsAction extends command.ProtoObject {
   $core.int mapIdXXX() {

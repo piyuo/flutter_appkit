@@ -1,4 +1,4 @@
-import 'package:libcli/common.dart';
+import 'package:libcli/eventbus.dart';
 
 /// ENetworkSlow happen when [http post take too long], need let user know their network is slow than usual
 ///

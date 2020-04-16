@@ -1,16 +1,14 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/log.dart';
-import 'package:libcli/tools.dart' as net;
+import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/common.dart';
+import 'package:libcli/utils.dart' as utils;
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/contracts.dart';
-
-import 'package:flutter/material.dart';
 import 'package:libcli/src/command/auth.dart' as auth;
 
 const _here = 'command_http';
@@ -43,8 +41,8 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
   req.url = url;
   req.bytes = bytes;
   req.timeout = timeout;
-  req.isInternetConnected = net.isInternetConnected;
-  req.isGoogleCloudFunctionAvailable = net.isGoogleCloudFunctionAvailable;
+  req.isInternetConnected = utils.isInternetConnected;
+  req.isGoogleCloudFunctionAvailable = utils.isGoogleCloudFunctionAvailable;
   req.errorHandler = errorHandler;
   doPost(ctx, req).then((response) {
     timer.cancel();
@@ -93,10 +91,10 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
-    log('$_here~caught $msg');
+    log.log('$_here~caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
-        return giveup(ctx, EError(resp.body)); //body is err id
+        return giveup(ctx, eventbus.EError(resp.body)); //body is err id
       case 501: //the remote servie is not properly setup
         throw Exception(msg);
       case 504: //service context deadline exceeded
@@ -116,7 +114,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    var errID = error(_here, e, s);
+    var errID = log.error(_here, e, s);
     return giveup(ctx, EClientTimeout(errID));
   } on SocketException catch (e, s) {
     if (r.errorHandler != null) {
@@ -124,14 +122,14 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     }
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
-        alert('$_here~service not available');
-        return giveup(ctx, EContactUs(e, s));
+        log.alert('$_here~service not available');
+        return giveup(ctx, eventbus.EContactUs(e, s));
       } else {
-        alert('$_here~service blocked');
+        log.alert('$_here~service blocked');
         return giveup(ctx, EServiceBlocked());
       }
     } else {
-      warning('$_here~no network');
+      log.warning('$_here~no network');
       return await retry(ctx, CInternetRequired(), ERefuseInternet(), r);
     }
   } catch (e, s) {
@@ -139,8 +137,8 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     //handle exception here to get better stack trace
-    var errId = error(_here, e, s);
-    return giveup(ctx, EError(errId));
+    var errId = log.error(_here, e, s);
+    return giveup(ctx, eventbus.EError(errId));
   }
 }
 
@@ -167,7 +165,7 @@ giveup(BuildContext ctx, dynamic e) {
 Future<List<int>> retry(
     BuildContext ctx, eventbus.Contract contr, dynamic fail, Request r) async {
   if (await eventbus.contract(ctx, contr)) {
-    log('$_here~ok,retry');
+    log.log('$_here~ok,retry');
     return await doPost(ctx, r);
   }
   eventbus.broadcast(ctx, fail);

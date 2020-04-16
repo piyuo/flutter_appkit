@@ -8,8 +8,8 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/src/command/command.dart' as command;
-import 'package:libcli/src/command_type/google/source_context.pb.dart' as $0;
-import 'package:libcli/src/command_type/google/any.pb.dart' as $1;
+import 'package:libcli/src/command/types/google/source_context.pb.dart' as $0;
+import 'package:libcli/src/command/types/google/any.pb.dart' as $1;
 
 import 'type.pbenum.dart';
 

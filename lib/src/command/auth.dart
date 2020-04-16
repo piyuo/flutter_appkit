@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/common/prefs.dart' as prefs;
+import 'package:libcli/preference.dart' as preference;
 import 'package:flutter/material.dart';
 
 /// refreshTokenExipre set refresh token expire duration
@@ -27,7 +27,7 @@ const kUserName = 'kUser';
 ///     await auth.setRefreshToken('xxx');
 ///
 setRefreshToken(String token) async {
-  await prefs.setString(kRefreshToken, token);
+  await preference.setString(kRefreshToken, token);
 }
 
 /// getRefreshToken load refresh token
@@ -35,7 +35,7 @@ setRefreshToken(String token) async {
 ///     await auth.getRefreshToken();
 ///
 Future<String> getRefreshToken() async {
-  return await prefs.getString(kRefreshToken);
+  return await preference.getString(kRefreshToken);
 }
 
 /// setAccessToken save access token
@@ -43,8 +43,8 @@ Future<String> getRefreshToken() async {
 ///     await auth.setAccessToken('xxx');
 ///
 setAccessToken(String token) async {
-  await prefs.setString(kAccessToken, token);
-  await prefs.setDateTime(kAccessTokenCreateDate,
+  await preference.setString(kAccessToken, token);
+  await preference.setDateTime(kAccessTokenCreateDate,
       token != null && token.length > 0 ? DateTime.now() : null);
 }
 
@@ -53,15 +53,15 @@ setAccessToken(String token) async {
 ///     await auth.getAccessToken();
 ///
 Future<String> getAccessToken() async {
-  var createDate = await prefs.getDateTime(kAccessTokenCreateDate);
+  var createDate = await preference.getDateTime(kAccessTokenCreateDate);
   if (createDate != null) {
-    var token = await prefs.getString(kAccessToken);
+    var token = await preference.getString(kAccessToken);
     if (createDate.add(accessTokenExipre).isAfter(DateTime.now()) &&
         token.length > 0) {
       return token;
     } else {
-      await prefs.setString(kAccessToken, null);
-      await prefs.setString(kAccessTokenCreateDate, null);
+      await preference.setString(kAccessToken, null);
+      await preference.setString(kAccessTokenCreateDate, null);
     }
   }
   return '';
@@ -73,7 +73,7 @@ Future<String> getAccessToken() async {
 ///
 @visibleForTesting
 mockAccessTokenCreateDate(DateTime date) async {
-  await prefs.setDateTime(kAccessTokenCreateDate, date);
+  await preference.setDateTime(kAccessTokenCreateDate, date);
 }
 
 /// mockInit create test enviroment
@@ -82,5 +82,5 @@ mockAccessTokenCreateDate(DateTime date) async {
 ///
 @visibleForTesting
 mockAuth(Map<String, dynamic> values) {
-  prefs.mockPrefs(values);
+  preference.mockPrefs(values);
 }

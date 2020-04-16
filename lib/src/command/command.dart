@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:http/http.dart' as http;
-import 'package:libcli/log.dart';
-import 'package:libcli/src/common/prefs.dart' as prefs;
+import 'package:libcli/log.dart' as log;
+import 'package:libcli/preference.dart' as preference;
 import 'package:libcli/src/command/command_protobuf.dart';
 import 'package:libcli/src/command/command_url.dart';
 import 'package:libcli/src/command/command_http.dart';
-import 'package:libcli/command_type.dart';
-import 'package:libcli/src/common/events.dart';
+import 'package:libcli/src/command/types/shared/err.pb.dart';
+import 'package:libcli/eventbus.dart' as eventbus;
 
 const _here = 'command';
 
@@ -78,7 +78,7 @@ abstract class Service {
   Future<Response> dispatchWithClient(
       BuildContext ctx, ProtoObject obj, http.Client client) async {
     try {
-      log('$_here~dispatch ${obj.runtimeType} to $url');
+      log.log('$_here~dispatch ${obj.runtimeType} to $url');
       Uint8List bytes = encode(obj);
       List<int> ret =
           await post(ctx, client, url, bytes, timeout, slow, errorHandler);
@@ -91,16 +91,16 @@ abstract class Service {
             if (type == ' Err') {
               type = '';
             }
-            log('$_here~got OK $type from $url');
+            log.log('$_here~got OK $type from $url');
           } else {
-            log('$_here~got ${retObj.runtimeType}=${r.errCode} from $url');
+            log.log('$_here~got ${retObj.runtimeType}=${r.errCode} from $url');
           }
         }
         return r;
       }
     } catch (e, s) {
-      var errID = error(_here, e, s);
-      giveup(ctx, EError(errID));
+      var errID = log.error(_here, e, s);
+      giveup(ctx, eventbus.EError(errID));
     }
     return Response();
   }
@@ -149,11 +149,11 @@ class Response {
   }
 }
 
-/// mock Initializes the value for testing
+/// mockCommand Initializes the value for testing
 ///
 ///     command.mock({});
 ///
 @visibleForTesting
 void mockCommand() {
-  prefs.mockPrefs({});
+  preference.mockPrefs({});
 }

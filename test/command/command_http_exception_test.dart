@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/common.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart' as command;
 import '../mock.dart';
@@ -77,7 +76,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
-        expect(event.runtimeType, EContactUs);
+        expect(event.runtimeType, eventbus.EContactUs);
       });
     });
 
