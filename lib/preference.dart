@@ -1,3 +1,3 @@
 library prefence;
 
-export 'package:libcli/src/prefence/prefence.dart';
+export 'package:libcli/src/preference/preference.dart';

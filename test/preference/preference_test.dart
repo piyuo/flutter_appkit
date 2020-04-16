@@ -5,7 +5,7 @@ void main() {
   preferences.mockPrefs({});
   setUp(() async {});
 
-  group('[prefs]', () {
+  group('[preference]', () {
     test('should get/set bool', () async {
       await preferences.setBool('k', true);
       var result = await preferences.getBool('k');

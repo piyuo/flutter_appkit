@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log.dart';
 
-const _here = 'prefs';
+const _here = 'preference';
 
 /// _instance provide SharedPreferences instance
 ///
@@ -26,7 +26,7 @@ Future<SharedPreferences> _get() async {
 Future<bool> getBool(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getBool(key) ?? false;
-  debugPrint('$_here~get $NOUN$key=$value');
+  debugPrint('$_here~get $key=$value');
   return value;
 }
 
@@ -50,7 +50,7 @@ setBool(String key, bool value) async {
 Future<int> getInt(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getInt(key) ?? 0;
-  debugPrint('$_here~get $NOUN$key=$value');
+  debugPrint('$_here~get $key=$value');
   return value;
 }
 
@@ -74,7 +74,7 @@ setInt(String key, int value) async {
 Future<double> getDouble(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getDouble(key) ?? 0;
-  debugPrint('$_here~get $NOUN$key=$value');
+  debugPrint('$_here~get $key=$value');
   return value;
 }
 
@@ -98,7 +98,7 @@ setDouble(String key, double value) async {
 Future<String> getString(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getString(key) ?? '';
-  debugPrint('$_here~get $NOUN$key=$value');
+  debugPrint('$_here~get $key=$value');
   return value;
 }
 
