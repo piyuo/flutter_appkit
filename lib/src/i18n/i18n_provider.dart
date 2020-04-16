@@ -14,7 +14,8 @@ class I18nProvider extends ReduxProvider<I18nState, dynamic> {
   Future<void> load(BuildContext context) async {
     assert(_pageName.length > 0, 'need page name');
     assert(i18n.locale != null, "need I18nDelegate to localizationsDelegates");
-    state = await readState(_pageName, i18n.languageCode, i18n.countryCode);
+    state =
+        await readPageTranslation(_pageName ?? '', i18n.languageCode, i18n.countryCode);
   }
 
   String translate(String key) {

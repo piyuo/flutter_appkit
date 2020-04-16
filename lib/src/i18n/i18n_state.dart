@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:libcli/src/common/assets.dart' as assets;
 
-Map<String, dynamic> _libcliLocalization;
+Map<String, dynamic> _libLocalization = null;
 
 class I18nState {
   final Map<String, dynamic> _localization;
@@ -18,18 +18,38 @@ class I18nState {
   }
 }
 
-Future<I18nState> readState(
-    String page, String languageCode, String countryCode) async {
-  assert(page.length > 0);
-  String pageJson =
-      await assets.loadJson('i18n/$languageCode/$countryCode/${page}.json');
-  Map<String, dynamic> localization = json.decode(pageJson);
-  if (_libcliLocalization == null) {
+/// readLibTranslation load lib.json, library predefine translation
+///
+Future<Map<String, dynamic>> readLibTranslation(
+  String languageCode,
+  String countryCode,
+) async {
+  if (_libLocalization == null) {
     String libJson = await assets.loadJson(
-        'i18n/$languageCode/$countryCode/libcli.json',
+        'i18n/$languageCode/$countryCode/lib.json',
         package: 'libcli');
-    _libcliLocalization = json.decode(libJson);
+    _libLocalization = json.decode(libJson);
   }
-  localization.addAll(_libcliLocalization);
+  return _libLocalization;
+}
+
+/// readPageTranslation load page's  translation
+///
+Future<I18nState> readPageTranslation(
+  String page,
+  String languageCode,
+  String countryCode,
+) async {
+  assert(page != null);
+  Map<String, dynamic> localization;
+
+  if (page.isNotEmpty) {
+    String pageJson =
+        await assets.loadJson('i18n/$languageCode/$countryCode/${page}.json');
+    localization = json.decode(pageJson);
+  } else {
+    localization = Map<String, dynamic>();
+  }
+  localization.addAll(await readLibTranslation(languageCode, countryCode));
   return I18nState(localization);
 }
