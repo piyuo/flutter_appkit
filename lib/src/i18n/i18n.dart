@@ -47,7 +47,7 @@ get localeID => '${_locale.languageCode}_${_locale.countryCode}';
 
 set locale(Locale locale) {
   _locale = locale;
-  debugPrint('$_here~set locale=$localeID');
+  debugPrint('$_here~${STATE}set locale=$localeID');
 }
 
 bool isSupportedLocale(Locale locale) {
@@ -91,7 +91,7 @@ Locale determineLocale(List<Locale> locales) {
   }
   configuration.country = firstLocale.countryCode;
   debugPrint(
-      '$_here~${STATE}set locale=${bestLocale.languageCode}_${bestLocale.countryCode}');
+      '$_here~best locale is ${bestLocale.languageCode}_${bestLocale.countryCode}');
   return bestLocale;
 }
 
