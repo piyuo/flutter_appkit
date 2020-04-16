@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/configuration.dart' as configuration;
 
 void main() {
-  group('[vars]', () {
+  group('[configuration]', () {
     test('should set/get variable', () {
       configuration.appID = 'piyuo-app';
       configuration.userID = '1-2';
