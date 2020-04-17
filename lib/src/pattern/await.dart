@@ -113,7 +113,19 @@ class _AwaitState extends State<Await> {
       case AsyncStatus.error:
         return widget.error != null
             ? widget.error
-            : AwaitErrorMessage(records: errors());
+            : AwaitErrorMessage(
+                onEmailLinkPressed: () {
+                  support.ErrorEmailBuilder builder =
+                      support.ErrorEmailBuilder();
+                  for (var rec in errors()) {
+                    builder.add(rec);
+                  }
+                  print(builder.body);
+                },
+                onRetry: () {
+                  reload(context);
+                },
+              );
       default:
         return widget.progress != null
             ? widget.progress

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/support.dart' as support;
 
 class AwaitErrorMessage extends StatelessWidget {
   final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
 
-  final List<support.ErrorRecord> records;
+  final Function onEmailLinkPressed;
 
-  AwaitErrorMessage({this.records});
+  final Function onRetry;
+
+  AwaitErrorMessage({this.onEmailLinkPressed, this.onRetry});
 
   String get ErrorTitle {
     switch (i18n.localeID) {
@@ -44,7 +45,7 @@ class AwaitErrorMessage extends StatelessWidget {
 
   content(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 140, 0, 0),
+      padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
       //alignment: Alignment.center,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,19 +74,23 @@ class AwaitErrorMessage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 40),
-            Icon(
-              Icons.mail_outline,
-              color: Colors.white,
-              size: 35,
-            ),
-            Text(
-              ErrorEmail,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.red[100],
-                fontSize: 14.0,
-              ),
-            ),
+            InkWell(
+                onTap: onEmailLinkPressed,
+                child: Icon(
+                  Icons.mail_outline,
+                  color: Colors.white,
+                  size: 35,
+                )),
+            InkWell(
+                onTap: onEmailLinkPressed,
+                child: Text(
+                  ErrorEmail,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.red[100],
+                    fontSize: 14.0,
+                  ),
+                )),
             SizedBox(height: 60),
             SizedBox(
               width: double.infinity,
@@ -95,12 +100,7 @@ class AwaitErrorMessage extends StatelessWidget {
                 color: Colors.white,
                 child:
                     Text(ErrorRetry, style: TextStyle(color: Colors.red[700])),
-                onPressed: () {
-                  //dialog.alertError(context);
-                  //dialog.alertNoInternet(context);
-                  //dialog.alertBlockedInternet(context);
-                  //dialog.alertDisk(context);
-                },
+                onPressed: onRetry,
               ),
             )
           ]),
@@ -117,14 +117,7 @@ class AwaitErrorMessage extends StatelessWidget {
           child: SingleChildScrollView(
               child: Center(
                   child: Container(
-                      padding: EdgeInsets.only(bottom: 40),
-                      width: 370,
-                      //color: Colors.teal,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            content(context),
-                          ]))))),
+                      padding: EdgeInsets.all(40), child: content(context))))),
     );
   }
 }
