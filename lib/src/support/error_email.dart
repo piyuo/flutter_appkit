@@ -10,14 +10,21 @@ class ErrorEmailBuilder {
   Account:\n${configuration.userID}
   ''';
 
-  String get to => Uri.encodeComponent(configuration.supportEmail);
+  String get to => configuration.supportEmail;
 
-  String get subject => Uri.encodeComponent(_subject);
+  String get subject => _subject.trim();
 
-  String get body => Uri.encodeComponent(_body);
+  String get body => _body.trim();
+
+  String get toUrlSafe => Uri.encodeComponent(to);
+
+  String get subjectUrlSafe => Uri.encodeComponent(subject);
+
+  String get bodyUrlSafe => Uri.encodeComponent(body);
 
   add(ErrorRecord record) {
-    _subject += record.id + ',';
-    _body += 'error: ${record.id}\n${record.e}\n${record.stacktrace}';
+    _subject += record.id + ' ';
+    _body +=
+        'error: ${record.id}\n${record.exception}\n${record.stackTrace}\n\n';
   }
 }

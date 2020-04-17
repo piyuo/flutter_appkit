@@ -17,7 +17,7 @@ class Await extends StatefulWidget {
 
   final Widget error;
 
-  final Widget wait;
+  final Widget progress;
 
   /// Await load provider in list
   ///
@@ -31,7 +31,7 @@ class Await extends StatefulWidget {
       {Key key,
       @required this.list,
       @required this.child,
-      this.wait,
+      this.progress,
       this.error})
       : super(key: key);
 
@@ -95,8 +95,7 @@ class _AwaitState extends State<Await> {
             provider.notifyListeners();
           }).catchError((e, s) {
             var errorID = log.error(_here, e, s);
-            provider.errorRecord =
-                support.ErrorRecord(id: errorID, e: e, stacktrace: s);
+            provider.errorRecord = support.ErrorRecord(errorID, e, s);
             provider.asyncStatus = AsyncStatus.error;
           });
         });
@@ -116,7 +115,9 @@ class _AwaitState extends State<Await> {
             ? widget.error
             : AwaitErrorMessage(records: errors());
       default:
-        return widget.wait != null ? widget.wait : AwaitProgressIndicator();
+        return widget.progress != null
+            ? widget.progress
+            : AwaitProgressIndicator();
     }
   }
 }

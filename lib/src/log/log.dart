@@ -135,7 +135,6 @@ head(String where) {
 ///	String text = beautyStack(s);
 ///	expect(text.length > 0, true);
 ///	}
-@visibleForTesting
 String beautyStack(StackTrace stack) {
   final buffer = StringBuffer();
   List<String> lines = stack.toString().split('\n');
