@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/log.dart' as log;
 import 'package:flutter/foundation.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:libcli/log.dart' as log;
+import 'package:libcli/support.dart' as support;
 import 'package:libcli/src/pattern/async_provider.dart';
 import 'package:libcli/src/pattern/await_progress_indicator.dart';
 import 'package:libcli/src/pattern/await_error_message.dart';
-import 'package:libcli/support.dart' as support;
 
 const _here = 'await';
 
@@ -115,15 +116,20 @@ class _AwaitState extends State<Await> {
         return widget.error != null
             ? widget.error
             : AwaitErrorMessage(
-                onEmailLinkPressed: () {
+                onEmailLinkPressed: () async {
                   support.ErrorEmailBuilder builder =
                       support.ErrorEmailBuilder();
                   for (var rec in errors()) {
                     builder.add(rec);
                   }
-                  print(builder.body);
+                  var url = builder.linkMailTo;
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
                 },
-                onRetry: () {
+                onRetryPressed: () {
                   reload(context);
                 },
               );

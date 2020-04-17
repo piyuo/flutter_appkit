@@ -7,9 +7,9 @@ class AwaitErrorMessage extends StatelessWidget {
 
   final Function onEmailLinkPressed;
 
-  final Function onRetry;
+  final Function onRetryPressed;
 
-  AwaitErrorMessage({this.onEmailLinkPressed, this.onRetry});
+  AwaitErrorMessage({this.onEmailLinkPressed, this.onRetryPressed});
 
   String get ErrorTitle {
     switch (i18n.localeID) {
@@ -100,7 +100,7 @@ class AwaitErrorMessage extends StatelessWidget {
                 color: Colors.white,
                 child:
                     Text(ErrorRetry, style: TextStyle(color: Colors.red[700])),
-                onPressed: onRetry,
+                onPressed: onRetryPressed,
               ),
             )
           ]),
