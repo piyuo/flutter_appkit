@@ -6,8 +6,11 @@ class ErrorEmailBuilder {
   String _subject = 'report error ';
 
   String _body = '''
-Application:\n${configuration.appID}\n\n
+
+Application:\n${configuration.appID}
+
 Account:\n${configuration.userID}
+
 ''';
 
   String get to => configuration.supportEmail;
