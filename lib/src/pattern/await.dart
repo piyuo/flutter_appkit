@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/src/pattern/async_provider.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:flutter/foundation.dart';
+import 'package:libcli/src/pattern/async_provider.dart';
+import 'package:libcli/src/pattern/await_progress_indicator.dart';
+import 'package:libcli/src/pattern/await_error_message.dart';
+import 'package:libcli/support.dart' as support;
 
 const _here = 'await';
 
@@ -9,15 +12,18 @@ const _here = 'await';
 ///
 class Await extends StatefulWidget {
   final List<AsyncProvider> list;
+
   final Widget child;
-  final Widget wait;
+
   final Widget error;
+
+  final Widget wait;
 
   /// Await load provider in list
   ///
-  /// show wait view when provider still loading
+  /// show progress indicator when provider still loading
   ///
-  /// show error view when provider has error
+  /// show error message when provider throw exception
   ///
   /// show child view when provider successfully load
   ///
@@ -59,10 +65,23 @@ class _AwaitState extends State<Await> {
     return AsyncStatus.ready;
   }
 
+  ///errors return provider error record
+  ///
+  List<support.ErrorRecord> errors() {
+    List<support.ErrorRecord> list = List<support.ErrorRecord>();
+    for (var p in widget.list) {
+      if (p.errorRecord != null) {
+        list.add(p.errorRecord);
+      }
+    }
+    return list;
+  }
+
   /// reload provider in list, but skip ready provider
   ///
   void reload(BuildContext context) {
     widget.list.forEach((provider) {
+      provider.errorRecord = null;
       if (provider.asyncStatus == AsyncStatus.error) {
         provider.asyncStatus == AsyncStatus.none;
       }
@@ -75,31 +94,14 @@ class _AwaitState extends State<Await> {
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
           }).catchError((e, s) {
-            log.error(_here, e, s);
+            var errorID = log.error(_here, e, s);
+            provider.errorRecord =
+                support.ErrorRecord(id: errorID, e: e, stacktrace: s);
             provider.asyncStatus = AsyncStatus.error;
           });
         });
       }
     });
-  }
-
-  /// errorView when provider has error
-  ///
-  Widget errorView() {
-    if (widget.error != null) {
-      return widget.error;
-    }
-    return Center(
-        child: Text('Oops... something is wrong, please try again later'));
-  }
-
-  /// waitView when provider still loading
-  ///
-  Widget waitView() {
-    if (widget.wait != null) {
-      return widget.wait;
-    }
-    return Center(child: CircularProgressIndicator());
   }
 
   /// build widget
@@ -110,9 +112,11 @@ class _AwaitState extends State<Await> {
       case AsyncStatus.ready:
         return widget.child;
       case AsyncStatus.error:
-        return errorView();
+        return widget.error != null
+            ? widget.error
+            : AwaitErrorMessage(records: errors());
       default:
-        return waitView();
+        return widget.wait != null ? widget.wait : AwaitProgressIndicator();
     }
   }
 }

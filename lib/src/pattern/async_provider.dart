@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/log.dart';
 import 'package:flutter/foundation.dart';
+import 'package:libcli/log.dart';
+import 'package:libcli/support.dart' as support;
 
 const here = 'async_provider';
 
@@ -12,6 +13,8 @@ abstract class AsyncProvider with ChangeNotifier {
   }
 
   AsyncStatus asyncStatus = AsyncStatus.none;
+
+  support.ErrorRecord errorRecord = null;
 
   /// prevent notifyListeners after dispose
   bool _disposed = false;

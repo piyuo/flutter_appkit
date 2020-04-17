@@ -12,6 +12,11 @@ enum Branches { debug, test, alpha, beta, master }
 /// service deploy location,
 enum Regions { us, cn, tw }
 
+/// supportEmail
+///
+///     vars.supportEmail='anyone@piyuo.com'
+String supportEmail = 'support@piyuo.com';
+
 /// application identity
 ///
 ///     vars.appID='piyuo-web-index'
