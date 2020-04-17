@@ -20,7 +20,12 @@ class ErrorEmailBuilder {
 
   String get subjectUrlSafe => Uri.encodeComponent(subject);
 
-  String get bodyUrlSafe => Uri.encodeComponent(body);
+  String get bodyUrlSafe =>
+      Uri.encodeComponent(body).replaceAll('\n', '%0D%0A');
+
+  String get linkMailTo {
+    return 'mailto:${to}?Subject=${subjectUrlSafe}body=${bodyUrlSafe}';
+  }
 
   add(ErrorRecord record) {
     _subject += record.id + ' ';
