@@ -27,6 +27,7 @@ void main() {
       expect(builder.to, isNotEmpty);
       expect(builder.subject, isNotEmpty);
       expect(builder.body, isNotEmpty);
+      expect(builder.linkMailTo, isNotEmpty);
     });
   });
 }
