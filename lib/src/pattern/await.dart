@@ -92,10 +92,12 @@ class _AwaitState extends State<Await> {
         provider.asyncStatus = AsyncStatus.loading;
         Future.microtask(() {
           provider.load(context).then((_) {
-            debugPrint('$_here~${provider.runtimeType} loaded');
+            debugPrint('$_here~${provider.runtimeType} load sucessfully');
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
           }).catchError((e, s) {
+            debugPrint(
+                '$_here~${log.ALERT}${provider.runtimeType} failed to load');
             var errorID = log.error(_here, e, s);
             provider.errorRecord = support.ErrorRecord(errorID, e, s);
             provider.asyncStatus = AsyncStatus.error;
