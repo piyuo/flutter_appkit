@@ -55,7 +55,6 @@ class AwaitErrorMessage extends StatelessWidget {
   content(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
-      //alignment: Alignment.center,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
