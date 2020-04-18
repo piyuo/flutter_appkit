@@ -85,7 +85,7 @@ class _AwaitState extends State<Await> {
       provider.errorRecord = null;
       if (provider.asyncStatus == AsyncStatus.error) {
         debugPrint('$_here~retry ${provider.runtimeType}');
-        provider.asyncStatus == AsyncStatus.none;
+        provider.asyncStatus = AsyncStatus.none;
       }
 
       if (provider.asyncStatus == AsyncStatus.none) {
