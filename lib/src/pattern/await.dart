@@ -128,7 +128,9 @@ class _AwaitState extends State<Await> {
                   }
                 },
                 onRetryPressed: () {
-                  reload(context);
+                  setState(() {
+                    reload(context);
+                  });
                 },
               );
       default:
