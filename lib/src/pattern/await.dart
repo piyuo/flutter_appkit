@@ -125,8 +125,6 @@ class _AwaitState extends State<Await> {
                   var url = builder.linkMailTo;
                   if (await canLaunch(url)) {
                     await launch(url);
-                  } else {
-                    throw 'Could not launch $url';
                   }
                 },
                 onRetryPressed: () {
