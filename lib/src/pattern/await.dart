@@ -84,7 +84,7 @@ class _AwaitState extends State<Await> {
     widget.list.forEach((provider) {
       provider.errorRecord = null;
       if (provider.asyncStatus == AsyncStatus.error) {
-        debugPrint('$_here~retry ${provider.runtimeType}');
+        debugPrint('$_here~reload ${provider.runtimeType}');
         provider.asyncStatus = AsyncStatus.none;
       }
 
