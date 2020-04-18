@@ -4,6 +4,8 @@ import 'package:libcli/i18n.dart' as i18n;
 import 'package:auto_size_text/auto_size_text.dart';
 
 class AwaitErrorMessage extends StatelessWidget {
+  final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
+
   final Function onEmailLinkPressed;
 
   final Function onRetryPressed;
@@ -119,7 +121,11 @@ class AwaitErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(203, 29, 57, 1),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: backgroundColor,
+      ),
+      backgroundColor: backgroundColor,
       body: SafeArea(
           right: false,
           bottom: false,
