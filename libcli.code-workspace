@@ -1,7 +1,9 @@
 {
-    "folders": [{
-        "path": "."
-    }],
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
     "settings": {
         "cSpell.words": [
             "angular",
@@ -32,13 +34,11 @@
             "styl"
         ],
         "breadcrumbs.enabled": true,
-        "debug.console.fontSize": 14,
         "editor.codeActionsOnSave": {
             "source.fixAll.tslint": true
         },
         "files.autoGuessEncoding": true,
         "files.trimTrailingWhitespace": true,
-        "terminal.integrated.fontSize": 14,
         "terminal.integrated.copyOnSelection": true,
         "workbench.colorCustomizations": {},
         "typescript.referencesCodeLens.enabled": true,
@@ -47,26 +47,18 @@
         "editor.formatOnSave": true,
         "editor.formatOnSaveTimeout": 500,
         "editor.tabCompletion": "on",
-        "editor.fontWeight": "500",
         "files.trimFinalNewlines": true,
         "files.autoSaveDelay": 300000,
         "files.autoSave": "afterDelay",
         "explorer.confirmDragAndDrop": false,
         "explorer.confirmDelete": false,
-        "editor.fontFamily": "",
         "editor.suggest.localityBonus": true,
         "editor.suggest.shareSuggestSelections": true,
-        "editor.fontSize": 15,
         "editor.insertSpaces": false,
         "telemetry.enableCrashReporter": false,
         "workbench.list.openMode": "doubleClick",
-        "workbench.colorTheme": "Night Owl",
         "workbench.editor.enablePreview": false,
         "workbench.editor.enablePreviewFromQuickOpen": false,
-        "workbench.iconTheme": "material-icon-theme",
-        "go.docsTool": "gogetdoc",
-        "go.toolsGopath": "/Users/cc/go",
-        "go.autocompleteUnimportedPackages": true,
         "git.ignoreMissingGitWarning": true,
         "git.enableSmartCommit": true,
         "git.autofetch": true,
@@ -75,31 +67,6 @@
             "**/.tmp.drivedownload": true,
             "**/node_modules": true,
             "**/_samples": true
-        },
-        "eslint.autoFixOnSave": true,
-        "eslint.validate": [
-            "javascript",
-            "javascriptreact",
-            {
-                "language": "typescript",
-                "autoFix": true
-            },
-            {
-                "language": "typescriptreact",
-                "autoFix": true
-            }
-        ],
-        "[javascript]": {
-            "editor.formatOnSave": false
-        },
-        "[javascriptreact]": {
-            "editor.formatOnSave": false
-        },
-        "[typescript]": {
-            "editor.formatOnSave": false
-        },
-        "[typescriptreact]": {
-            "editor.formatOnSave": false
         }
     }
 }
