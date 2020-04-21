@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
-import 'package:libcli/utils.dart' as utils;
 import 'package:libcli/configuration.dart' as configuration;
 
 const LEVEL_INFO = 1;
@@ -75,7 +74,7 @@ _log(String message, int level, String hint) {
     m = message;
   }
   debugPrint('$message (logged)');
-  analytic.log(h, m, level);
+  analytic.saveLog(h, m, level);
 }
 
 /// log normal but significant events, such as start up, shut down, or a configuration change.
@@ -107,14 +106,11 @@ alert(String message) {
 ///     } catch (e, s) {
 ///       var errID = error(HERE, e, s);
 ///     }
-String error(String where, dynamic e, StackTrace stacktrace) {
-  String errID = utils.uuid();
+error(String where, dynamic e, StackTrace stacktrace) {
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(stacktrace);
-  debugPrint('$where~${ALERT}caught $msg ($errID)\n$stack');
-
-  analytic.error(where, msg, stack, errID);
-  return errID;
+  debugPrint('$where~${ALERT}caught $msg\n$stack');
+  analytic.saveError(where, msg, stack);
 }
 
 /// create log head, like application.identity.where:

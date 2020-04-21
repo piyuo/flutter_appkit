@@ -94,7 +94,8 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     log.log('$_here~caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
-        return giveup(ctx, eventbus.EError(resp.body)); //body is err id
+        return giveup(
+            ctx, eventbus.UnknownErrorEvent(resp.body)); //body is err id
       case 501: //the remote servie is not properly setup
         throw Exception(msg);
       case 504: //service context deadline exceeded
@@ -123,7 +124,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
         log.alert('$_here~service not available');
-        return giveup(ctx, eventbus.EContactUs(e, s));
+        return giveup(ctx, eventbus.ContactUsErrorEvent(e, s));
       } else {
         log.alert('$_here~service blocked');
         return giveup(ctx, EServiceBlocked());
@@ -138,7 +139,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     }
     //handle exception here to get better stack trace
     var errId = log.error(_here, e, s);
-    return giveup(ctx, eventbus.EError(errId));
+    return giveup(ctx, eventbus.UnknownErrorEvent(errId));
   }
 }
 

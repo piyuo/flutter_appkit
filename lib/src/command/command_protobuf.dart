@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 import 'package:libcli/src/command/command.dart';
-import 'package:libcli/src/command/types/shared/shared_service.pb.dart';
+import 'package:libcli/command.dart' as shared;
 
-SharedService _sharedService;
+shared.SharedService _sharedService;
 
-SharedService _getSharedService() {
+shared.SharedService _getSharedService() {
   if (_sharedService == null) {
-    _sharedService = SharedService();
+    _sharedService = shared.SharedService();
   }
   return _sharedService;
 }

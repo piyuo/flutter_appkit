@@ -26,7 +26,7 @@ void main() {
       await tester.inWidget((ctx) async {
         SysService service = SysService();
         var response =
-            await service.dispatchWithClient(ctx, EchoRequest(), client);
+            await service.executehWithClient(ctx, EchoRequest(), client);
         expect(response.ok, true);
         expect((response.data as StringResponse).text, 'hi');
       });
@@ -40,7 +40,7 @@ void main() {
       await tester.inWidget((ctx) async {
         SysService service = SysService();
         var response =
-            await service.dispatchWithClient(ctx, EchoRequest(), client);
+            await service.executehWithClient(ctx, EchoRequest(), client);
         expect(response.ok, false);
       });
     });
@@ -49,7 +49,7 @@ void main() {
       configuration.branch = configuration.Branches.test;
       SysService service = SysService();
       EchoRequest action = new EchoRequest();
-      var response = await service.dispatch(null, action);
+      var response = await service.execute(null, action);
       expect(response.ok, false);
       expect(response.data, null);
     });
@@ -79,7 +79,7 @@ void main() {
 
     test('should mock dispatch', () async {
       SysService service = SysService();
-      service.mockDispatch = (ctx, obj) async {
+      service.mockExecute = (ctx, obj) async {
         var data = StringResponse();
         data.text = 'hi';
         return command.Response()
@@ -88,7 +88,7 @@ void main() {
       };
 
       EchoRequest action = new EchoRequest();
-      var response = await service.dispatch(null, action);
+      var response = await service.execute(null, action);
       expect(response.errCode, -3);
       StringResponse returnData = response.data as StringResponse;
       expect(returnData.text, 'hi');

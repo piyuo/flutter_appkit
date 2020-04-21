@@ -1,49 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/command.dart' as command;
-import 'package:libcli/src/log/types/sys/analytics_action.pbserver.dart';
-import 'package:libcli/src/log/types/sys/sys_service.pb.dart';
+import 'package:libcli/utils.dart' as utils;
+import 'package:libcli/commands_sys.dart' as commandsSys;
 
-AnalyticsAction _current = AnalyticsAction();
+commandsSys.SendAnalyticAction _current = commandsSys.SendAnalyticAction();
 
-log(String where, String message, int level) {
-  Log log = Log();
-  log.time = command.Timestamp.fromDateTime(DateTime.now());
-  log.app = configuration.appID;
-  log.user = configuration.userID;
-  log.where = where;
-  log.msg = message;
-  log.level = level;
-  _current.logs.add(log);
+saveLog(String where, String message, int level) {
+  _current.logs.add(commandsSys.Log()
+    ..time = command.Timestamp.fromDateTime(DateTime.now())
+    ..app = configuration.appID
+    ..user = configuration.userID
+    ..where = where
+    ..msg = message
+    ..level = level);
 }
 
-error(String where, String message, String stack, String errid) {
-  Error error = Error();
-  error.msg = message;
-  error.app = configuration.appID;
-  error.user = configuration.userID;
-  error.where = where;
-  error.stack = '$stack';
-  error.errid = errid;
-  _current.errors.add(error);
+saveError(String where, String message, String stack) {
+  _current.errors.add(commandsSys.Error()
+    ..msg = message
+    ..app = configuration.appID
+    ..user = configuration.userID
+    ..where = where
+    ..stack = '$stack');
 }
 
-clear() {
-  _current = AnalyticsAction();
+reset() {
+  _current = commandsSys.SendAnalyticAction();
 }
 
+@visibleForTesting
 current() {
   return _current;
 }
 
-Future<bool> post(BuildContext ctx) async {
+///report send analytic to server, return error id if  success others return empty
+///
+Future<String> report(BuildContext ctx) async {
   if (_current.logs.length > 0 || _current.errors.length > 0) {
     var readyAction = _current;
-    clear();
-    SysService service = SysService();
+    readyAction.id = utils.uuid();
+    reset();
+    commandsSys.SysService service = commandsSys.SysService();
     service.errorHandler = () {}; // ignore error
-    var r = await service.dispatch(ctx, readyAction);
-    return r.ok;
+    var response = await service.execute(ctx, readyAction);
+    if (response.ok) {
+      return readyAction.id;
+    }
   }
-  return false;
+  return '';
 }

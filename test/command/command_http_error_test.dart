@@ -78,7 +78,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
-        expect(event.runtimeType, eventbus.EContactUs);
+        expect(event.runtimeType, eventbus.ContactUsErrorEvent);
       });
     });
 

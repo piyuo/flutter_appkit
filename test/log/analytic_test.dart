@@ -17,19 +17,19 @@ void main() {
     });
 
     test('should log', () async {
-      analytic.clear();
+      analytic.reset();
       var current = analytic.current();
       expect(current.logs.length, 0);
       warning('$_here~mock warning');
       expect(current.logs.length, 1);
       configuration.branch = configuration.Branches.test;
-      var result = await analytic.post(null);
+      var result = await analytic.report(null);
       expect(result, true);
     });
 
     test('should error', () async {
       configuration.branch = configuration.Branches.test;
-      analytic.clear();
+      analytic.reset();
       var current = analytic.current();
       expect(current.errors.length, 0);
       try {
@@ -38,13 +38,13 @@ void main() {
         error(_here, e, s);
       }
       expect(current.errors.length, 1);
-      var result = await analytic.post(null);
+      var result = await analytic.report(null);
       expect(result, true);
     });
 
     test('should return false if no logs or errors', () async {
-      analytic.clear();
-      var result = await analytic.post(null);
+      analytic.reset();
+      var result = await analytic.report(null);
       expect(result, false);
     });
   });

@@ -7,12 +7,13 @@ import 'ping_action.pb.dart';
 import 'text.pb.dart';
 
 class SharedService extends Service {
+
   /// init shared service with predefine remote url
   /// remote url is defined in "service project/proto/.proto.json"
   /// For example:
   ///
   ///     SharedService service = SharedService();
-  SharedService() : super('shared', 0, 10000, 20000);
+  SharedService(): super('shared',0,10000,20000);
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {

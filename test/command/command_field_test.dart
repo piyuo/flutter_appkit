@@ -13,7 +13,7 @@ void main() {
     test('should request and get response', () async {
       configuration.branch = configuration.Branches.test;
       SysService service = SysService();
-      var response = await service.dispatch(null, command.PingAction());
+      var response = await service.execute(null, command.PingAction());
       expect(response, isNotNull);
       expect(response.ok, true);
     });

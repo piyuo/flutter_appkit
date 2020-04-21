@@ -10,7 +10,7 @@ import 'package:libcli/preference.dart' as preference;
 import 'package:libcli/src/command/command_protobuf.dart';
 import 'package:libcli/src/command/command_url.dart';
 import 'package:libcli/src/command/command_http.dart';
-import 'package:libcli/src/command/types/shared/err.pb.dart';
+import 'package:libcli/command.dart' as shared;
 import 'package:libcli/eventbus.dart' as eventbus;
 
 const _here = 'command';
@@ -40,7 +40,7 @@ abstract class Service {
 
   /// mockDispatch function is for test
   ///
-  MockDispatchFunc mockDispatch;
+  MockDispatchFunc mockExecute;
 
   /// find object by id
   ///
@@ -54,28 +54,28 @@ abstract class Service {
     url = serviceUrl(funcName, debugPort);
   }
 
-  /// dispatch request to remote service, no need to handle exception, all exception contract to eventBus
+  /// execute request to remote service, no need to handle exception, all exception contract to eventBus
   ///
-  ///     service.dispatch(EchoRequest()).then((response) {
+  ///     service.execute(EchoRequest()).then((response) {
   ///       if(response.ok){
   ///         print(response.data);
   ///       };
   ///     });
-  Future<dynamic> dispatch(BuildContext ctx, ProtoObject obj) async {
-    if (mockDispatch != null) {
-      return await mockDispatch(ctx, obj);
+  Future<Response> execute(BuildContext ctx, ProtoObject obj) async {
+    if (mockExecute != null) {
+      return await mockExecute(ctx, obj);
     }
 
     assert(url != null && url.length > 0);
     assert(obj != null);
     http.Client client = http.Client();
-    return await dispatchWithClient(ctx, obj, client);
+    return await executehWithClient(ctx, obj, client);
   }
 
-  /// dispatchWithClient dispatch request to remote service
+  /// executehWithClient dispatch request to remote service
   ///
-  ///     var response = await service.dispatchWithClient(client, EchoRequest());
-  Future<Response> dispatchWithClient(
+  ///     var response = await service.executehWithClient(client, EchoRequest());
+  Future<Response> executehWithClient(
       BuildContext ctx, ProtoObject obj, http.Client client) async {
     try {
       log.log('$_here~dispatch ${obj.runtimeType} to $url');
@@ -100,7 +100,7 @@ abstract class Service {
       }
     } catch (e, s) {
       var errID = log.error(_here, e, s);
-      giveup(ctx, eventbus.EError(errID));
+      giveup(ctx, eventbus.UnknownErrorEvent(errID));
     }
     return Response();
   }
@@ -134,7 +134,7 @@ class Response {
   static Response from(ProtoObject value) {
     assert(value != null);
     Response response = Response();
-    if (value is Err) {
+    if (value is shared.Err) {
       response.errMessage = value.msg;
       response.errCode = value.code;
     } else {

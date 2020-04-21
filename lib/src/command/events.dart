@@ -18,12 +18,12 @@ class EServiceBlocked {}
 
 /// EServiceTimeout  happen when [service meet context deadline exceed], listener let user know they can try again later or contact us with errId to get solution
 ///
-class EServiceTimeout extends EError {
+class EServiceTimeout extends UnknownErrorEvent {
   EServiceTimeout(errId) : super(errId);
 }
 
 /// EClientTimeout  happen when client [http post timeout]. this usually mean bug because service should always timeout first. somethins is wrong with service/client timeout setup
 ///
-class EClientTimeout extends EError {
+class EClientTimeout extends UnknownErrorEvent {
   EClientTimeout(errId) : super(errId);
 }

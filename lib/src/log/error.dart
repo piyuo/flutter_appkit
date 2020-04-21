@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:flutter_test/flutter_test.dart';
 
@@ -13,8 +13,9 @@ class DiskFullException implements Exception {}
 ///      error.catchAndBroadcast(suspect, null);
 catchAndBroadcast({Function suspect, Function callback}) {
   FlutterError.onError = (FlutterErrorDetails details) {
-    var errId = error(_here, details.exception, details.stack);
-    eventbus.broadcast(null, eventbus.EError(errId));
+    var errId = log.error(_here, details.exception, details.stack);
+
+    eventbus.broadcast(null, eventbus.UnknownErrorEvent(errId));
     if (callback != null) {
       callback();
     }
@@ -25,8 +26,8 @@ catchAndBroadcast({Function suspect, Function callback}) {
       suspect();
     },
     (Object e, StackTrace stack) {
-      var errId = error(_here, e, stack);
-      eventbus.broadcast(null, eventbus.EError(errId));
+      var errId = log.error(_here, e, stack);
+      eventbus.broadcast(null, eventbus.UnknownErrorEvent(errId));
       if (callback != null) {
         callback();
       }
