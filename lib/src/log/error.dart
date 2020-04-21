@@ -10,7 +10,7 @@ const _here = 'error';
 /// catch unhandle exception
 ///
 ///      error.catchAndBroadcast(suspect, null);
-catchAndBroadcast({Function suspect, Function callback}) {
+catchAndBroadcast(Function suspect, {Function callback}) {
   FlutterError.onError = (FlutterErrorDetails details) =>
       dispatchException(details.exception, details.stack, callback: callback);
 

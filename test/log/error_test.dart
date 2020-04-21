@@ -12,11 +12,9 @@ void main() {
       eventbus.listen<ErrorEvent>(_here, (_, e) {
         event = e;
       });
-      catchAndBroadcast(
-          suspect: suspect,
-          callback: () async {
-            expect(event is ErrorEvent, true);
-          });
+      catchAndBroadcast(suspect, callback: () async {
+        expect(event is ErrorEvent, true);
+      });
     });
 
     testWidgets('should catch async exception', (WidgetTester tester) async {
@@ -24,11 +22,9 @@ void main() {
       eventbus.listen<ErrorEvent>(_here, (_, e) {
         event = e;
       });
-      catchAndBroadcast(
-          suspect: suspectAsync,
-          callback: () async {
-            expect(event is ErrorEvent, true);
-          });
+      catchAndBroadcast(suspectAsync, callback: () async {
+        expect(event is ErrorEvent, true);
+      });
     });
 
     testWidgets('should catch timer exception', (WidgetTester tester) async {
@@ -37,11 +33,9 @@ void main() {
         eventbus.listen<ErrorEvent>(_here, (_, e) {
           event = e;
         });
-        catchAndBroadcast(
-            suspect: suspectTimer,
-            callback: () async {
-              expect(event is ErrorEvent, true);
-            });
+        catchAndBroadcast(suspectTimer, callback: () async {
+          expect(event is ErrorEvent, true);
+        });
         await Future.delayed(const Duration(milliseconds: 100));
       });
     });
