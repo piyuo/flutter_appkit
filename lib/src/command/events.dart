@@ -11,19 +11,3 @@ class ERefuseInternet {}
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
 ///
 class ERefuseSignin {}
-
-/// EServiceBlocked happen when [internet is connected but can't connect to www.cloudfunctions.net], uausally mean block by firewall
-///
-class EServiceBlocked {}
-
-/// EServiceTimeout  happen when [service meet context deadline exceed], listener let user know they can try again later or contact us with errId to get solution
-///
-class EServiceTimeout extends UnknownErrorEvent {
-  EServiceTimeout(errId) : super(errId);
-}
-
-/// EClientTimeout  happen when client [http post timeout]. this usually mean bug because service should always timeout first. somethins is wrong with service/client timeout setup
-///
-class EClientTimeout extends UnknownErrorEvent {
-  EClientTimeout(errId) : super(errId);
-}

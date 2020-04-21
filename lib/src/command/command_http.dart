@@ -32,7 +32,7 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
     Uint8List bytes, int timeout, int slow, Function errorHandler) async {
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
-    if (!completer.isCompleted) {
+    if (!completer.isCompleted && errorHandler == null) {
       eventbus.broadcast(ctx, ENetworkSlow());
     }
   });
@@ -95,11 +95,15 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(
-            ctx, eventbus.UnknownErrorEvent(resp.body)); //body is err id
+            ctx,
+            log.ErrorEvent(
+              errorCode: log.ERROR_SERVER_INTERNAL_ERROR,
+            )); //body is err id
       case 501: //the remote servie is not properly setup
         throw Exception(msg);
       case 504: //service context deadline exceeded
-        return giveup(ctx, EServiceTimeout(resp.body)); //body is err id
+        return giveup(
+            ctx, log.NetworkDeadlineExceedEvent(resp.body)); //body is err id
       case 511: //access token required
         return await retry(ctx, CAccessTokenRequired(), ERefuseSignin(), r);
       case 412: //access token expired
@@ -115,8 +119,8 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    var errID = log.error(_here, e, s);
-    return giveup(ctx, EClientTimeout(errID));
+    log.error(_here, e, s);
+    return giveup(ctx, log.NetworkTimeoutEvent());
   } on SocketException catch (e, s) {
     if (r.errorHandler != null) {
       return emmitError(r);
@@ -124,10 +128,12 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
         log.alert('$_here~service not available');
-        return giveup(ctx, eventbus.ContactUsErrorEvent(e, s));
+        //return giveup(ctx, eventbus.ContactUsErrorEvent(e, s));
+        return giveup(ctx, log.NetworkTimeoutEvent());
       } else {
         log.alert('$_here~service blocked');
-        return giveup(ctx, EServiceBlocked());
+        //return giveup(ctx, EServiceBlocked());
+        return giveup(ctx, log.NetworkTimeoutEvent());
       }
     } else {
       log.warning('$_here~no network');
@@ -138,8 +144,8 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     //handle exception here to get better stack trace
-    var errId = log.error(_here, e, s);
-    return giveup(ctx, eventbus.UnknownErrorEvent(errId));
+    log.dispatchException(e, s);
+    return null;
   }
 }
 
@@ -150,7 +156,6 @@ emmitError(Request r) {
   try {
     r.errorHandler();
   } catch (_) {}
-  return null;
 }
 
 /// giveup brodcast event then return null

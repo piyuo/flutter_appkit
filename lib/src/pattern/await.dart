@@ -95,10 +95,12 @@ class _AwaitState extends State<Await> {
             debugPrint('$_here~${provider.runtimeType} load sucessfully');
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
-          }).catchError((e, s) {
+          }).catchError((e, s) async {
             debugPrint(
                 '$_here~${log.ALERT}${provider.runtimeType} failed to load');
-            var errorID = log.error(_here, e, s);
+            //handle error here, dont let global error handler to do it
+            log.error(_here, e, s);
+            var errorID = await log.sendAnalytic();
             provider.errorRecord = support.ErrorRecord(errorID, e, s);
             provider.asyncStatus = AsyncStatus.error;
           });

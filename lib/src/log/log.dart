@@ -27,7 +27,7 @@ const STATE = GREEN;
 ///
 ///     debugPrint = overrideDebugPrint;
 ///
-overrideDebugPrint(String message, {int wrapWidth}) {
+void overrideDebugPrint(String message, {int wrapWidth}) {
   if (!kReleaseMode) {
     int pos = message.indexOf('~');
     var h = '';
@@ -60,7 +60,7 @@ overrideDebugPrint(String message, {int wrapWidth}) {
 /// log print message and log to analytic
 ///
 ///      _log(this, logger.LEVEL_INFO, '');
-_log(String message, int level, String hint) {
+void _log(String message, int level, String hint) {
   assert(message.length > 0);
   assert(message.indexOf('~') != -1, 'must begin with "where~"');
   int pos = message.indexOf('~');
@@ -80,21 +80,21 @@ _log(String message, int level, String hint) {
 /// log normal but significant events, such as start up, shut down, or a configuration change.
 ///
 ///     log('here~something ${VERB} done');
-log(String message) {
+void log(String message) {
   _log(message, LEVEL_INFO, '');
 }
 
 /// warning events might cause problems.
 ///
 ///     warning('here~things need to ${VERB}watch');
-warning(String message) {
+void warning(String message) {
   _log(message, LEVEL_WARNING, '${WARNING}[!WARNING] $END');
 }
 
 /// alert a person must take an action immediately
 ///
 ///     alert('here~something${VERB} go ${NOUN}wrong');
-alert(String message) {
+void alert(String message) {
   _log(message, LEVEL_ALERT, '${ALERT}[!!ALERT]  $END');
 }
 
@@ -106,7 +106,7 @@ alert(String message) {
 ///     } catch (e, s) {
 ///       var errID = error(HERE, e, s);
 ///     }
-error(String where, dynamic e, StackTrace stacktrace) {
+void error(String where, dynamic e, StackTrace stacktrace) {
   String msg = e.toString().replaceAll('Exception: ', '');
   String stack = beautyStack(stacktrace);
   debugPrint('$where~${ALERT}caught $msg\n$stack');
@@ -117,7 +117,7 @@ error(String where, dynamic e, StackTrace stacktrace) {
 ///
 ///     String head = head();
 @visibleForTesting
-head(String where) {
+String head(String where) {
   String text = '${configuration.appID}/$where';
   if (configuration.userID != '') {
     text = configuration.userID + "@" + text;

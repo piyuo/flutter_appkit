@@ -23,8 +23,8 @@ void main() {
       warning('$_here~mock warning');
       expect(current.logs.length, 1);
       configuration.branch = configuration.Branches.test;
-      var result = await analytic.report(null);
-      expect(result, true);
+      var id = await analytic.sendAnalytic();
+      expect(id, isNotEmpty);
     });
 
     test('should error', () async {
@@ -38,14 +38,14 @@ void main() {
         error(_here, e, s);
       }
       expect(current.errors.length, 1);
-      var result = await analytic.report(null);
-      expect(result, true);
+      var result = await analytic.sendAnalytic();
+      expect(result, isNotEmpty);
     });
 
     test('should return false if no logs or errors', () async {
       analytic.reset();
-      var result = await analytic.report(null);
-      expect(result, false);
+      var result = await analytic.sendAnalytic();
+      expect(result, isNotEmpty);
     });
   });
 }

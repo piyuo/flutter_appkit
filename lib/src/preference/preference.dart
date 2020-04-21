@@ -39,7 +39,7 @@ setBool(String key, bool value) async {
   debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
-    throw DiskFullException();
+    throw DiskErrorException();
   }
 }
 
@@ -63,7 +63,7 @@ setInt(String key, int value) async {
   debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
-    throw DiskFullException();
+    throw DiskErrorException();
   }
 }
 
@@ -87,7 +87,7 @@ setDouble(String key, double value) async {
   debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
-    throw DiskFullException();
+    throw DiskErrorException();
   }
 }
 
@@ -111,7 +111,7 @@ setString(String key, String value) async {
   debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
-    throw DiskFullException();
+    throw DiskErrorException();
   }
 }
 
@@ -162,7 +162,7 @@ setStringList(String key, List<String> value) async {
   debugPrint('$_here~${STATE}set $key=$value');
   var result = (await (await _get()).setStringList(key, value));
   if (!result) {
-    throw DiskFullException();
+    throw DiskErrorException();
   }
 }
 

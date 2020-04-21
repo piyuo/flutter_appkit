@@ -9,38 +9,38 @@ void main() {
   group('[error]', () {
     testWidgets('should catch exception', (WidgetTester tester) async {
       var event;
-      eventbus.listen<eventbus.UnknownErrorEvent>(_here, (_, e) {
+      eventbus.listen<ErrorEvent>(_here, (_, e) {
         event = e;
       });
       catchAndBroadcast(
           suspect: suspect,
           callback: () async {
-            expect(event is eventbus.UnknownErrorEvent, true);
+            expect(event is ErrorEvent, true);
           });
     });
 
     testWidgets('should catch async exception', (WidgetTester tester) async {
       var event;
-      eventbus.listen<eventbus.UnknownErrorEvent>(_here, (_, e) {
+      eventbus.listen<ErrorEvent>(_here, (_, e) {
         event = e;
       });
       catchAndBroadcast(
           suspect: suspectAsync,
           callback: () async {
-            expect(event is eventbus.UnknownErrorEvent, true);
+            expect(event is ErrorEvent, true);
           });
     });
 
     testWidgets('should catch timer exception', (WidgetTester tester) async {
       await tester.runAsync(() async {
         var event;
-        eventbus.listen<eventbus.UnknownErrorEvent>(_here, (_, e) {
+        eventbus.listen<ErrorEvent>(_here, (_, e) {
           event = e;
         });
         catchAndBroadcast(
             suspect: suspectTimer,
             callback: () async {
-              expect(event is eventbus.UnknownErrorEvent, true);
+              expect(event is ErrorEvent, true);
             });
         await Future.delayed(const Duration(milliseconds: 100));
       });

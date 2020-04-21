@@ -36,14 +36,14 @@ current() {
 
 ///report send analytic to server, return error id if  success others return empty
 ///
-Future<String> report(BuildContext ctx) async {
+Future<String> sendAnalytic() async {
   if (_current.logs.length > 0 || _current.errors.length > 0) {
     var readyAction = _current;
     readyAction.id = utils.uuid();
     reset();
     commandsSys.SysService service = commandsSys.SysService();
     service.errorHandler = () {}; // ignore error
-    var response = await service.execute(ctx, readyAction);
+    var response = await service.execute(null, readyAction);
     if (response.ok) {
       return readyAction.id;
     }

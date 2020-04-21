@@ -99,8 +99,8 @@ abstract class Service {
         return r;
       }
     } catch (e, s) {
-      var errID = log.error(_here, e, s);
-      giveup(ctx, eventbus.UnknownErrorEvent(errID));
+      //handle exception here to get better stack trace
+      log.dispatchException(e, s);
     }
     return Response();
   }
