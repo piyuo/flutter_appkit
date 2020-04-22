@@ -33,7 +33,7 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
     if (!completer.isCompleted && errorHandler == null) {
-      eventbus.broadcast(ctx, ENetworkSlow());
+      eventbus.broadcast(ctx, NetworkSlowEvent());
     }
   });
   Request req = Request();
@@ -94,16 +94,12 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     log.log('$_here~caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
-        return giveup(
-            ctx,
-            log.ErrorEvent(
-              errorCode: log.ERROR_SERVER_INTERNAL_ERROR,
-            )); //body is err id
+        return giveup(ctx, ServerInternalErrorEvent()); //body is err id
       case 501: //the remote servie is not properly setup
-        throw Exception(msg);
+        return giveup(ctx, ServerNeedSetupEvent()); //body is err id
       case 504: //service context deadline exceeded
         return giveup(
-            ctx, log.NetworkDeadlineExceedEvent(resp.body)); //body is err id
+            ctx, NetworkDeadlineExceedEvent(resp.body)); //body is err id
       case 511: //access token required
         return await retry(ctx, CAccessTokenRequired(), ERefuseSignin(), r);
       case 412: //access token expired
@@ -111,7 +107,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       case 402: //payment token expired
         return await retry(ctx, CPaymentTokenRequired(), ERefuseSignin(), r);
       case 400: //bad request
-        throw Exception(msg);
+        return giveup(ctx, ServerBadRequest()); //body is err id
     }
     //unknow status code
     throw Exception('unknown status ' + msg);
@@ -120,7 +116,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     log.error(_here, e, s);
-    return giveup(ctx, log.NetworkTimeoutEvent());
+    return giveup(ctx, NetworkTimeoutEvent());
   } on SocketException catch (e, s) {
     if (r.errorHandler != null) {
       return emmitError(r);
@@ -128,12 +124,10 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (await r.isInternetConnected()) {
       if (await r.isGoogleCloudFunctionAvailable()) {
         log.alert('$_here~service not available');
-        //return giveup(ctx, eventbus.ContactUsErrorEvent(e, s));
-        return giveup(ctx, log.NetworkTimeoutEvent());
+        return giveup(ctx, NetworkServiceNotAvailableEvent());
       } else {
         log.alert('$_here~service blocked');
-        //return giveup(ctx, EServiceBlocked());
-        return giveup(ctx, log.NetworkTimeoutEvent());
+        return giveup(ctx, NetworkServiceBlocked());
       }
     } else {
       log.warning('$_here~no network');
@@ -144,7 +138,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     //handle exception here to get better stack trace
-    log.dispatchException(ctx, e, s);
+    log.sendToGlobalExceptionHanlder(ctx, e, s);
     return null;
   }
 }

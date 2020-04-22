@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/log.dart' as log;
 import '../mock.dart';
 
 const _here = 'eventbus_test';

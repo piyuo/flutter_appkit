@@ -3,12 +3,17 @@ import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/log.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:libcli/commands_sys.dart' as commandsSys;
 
 const _here = 'analytic_test';
 
 void main() {
-  SharedPreferences.setMockInitialValues({});
+  setUp(() async {
+    analytic.sysService = commandsSys.SysService()
+      ..mockExecute = (ctx, act) async {
+        return await command.ok;
+      };
+  });
 
   group('[analytic]', () {
     test('should set time', () {
@@ -42,10 +47,10 @@ void main() {
       expect(result, isNotEmpty);
     });
 
-    test('should return false if no logs or errors', () async {
+    test('should have no id if no logs or errors', () async {
       analytic.reset();
-      var result = await analytic.sendAnalytic();
-      expect(result, isNotEmpty);
+      var id = await analytic.sendAnalytic();
+      expect(id, isEmpty);
     });
   });
 }

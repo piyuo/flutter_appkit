@@ -11,13 +11,12 @@ import 'package:libcli/src/command/command_protobuf.dart';
 import 'package:libcli/src/command/command_url.dart';
 import 'package:libcli/src/command/command_http.dart';
 import 'package:libcli/command.dart' as shared;
-import 'package:libcli/eventbus.dart' as eventbus;
 
 const _here = 'command';
 
-/// DispatchFunc let test can swap dispatch function in service
+/// MockExecuteFunc let test can swap dispatch function in service
 ///
-typedef Future<dynamic> MockDispatchFunc(BuildContext ctx, ProtoObject obj);
+typedef Future<dynamic> MockExecuteFunc(BuildContext ctx, ProtoObject obj);
 
 /// communicate with server with command using ajax,protobuf and command pattern
 /// simplefy the network call to request and response
@@ -38,9 +37,17 @@ abstract class Service {
   ///
   Function errorHandler;
 
-  /// mockDispatch function is for test
+  set ignoreError(bool value) {
+    if (value) {
+      errorHandler = () {};
+    } else {
+      errorHandler = null;
+    }
+  }
+
+  /// MockExecuteFunc is for test
   ///
-  MockDispatchFunc mockExecute;
+  MockExecuteFunc mockExecute;
 
   /// find object by id
   ///
@@ -100,7 +107,7 @@ abstract class Service {
       }
     } catch (e, s) {
       //handle exception here to get better stack trace
-      log.dispatchException(ctx, e, s);
+      log.sendToGlobalExceptionHanlder(ctx, e, s);
     }
     return Response();
   }
@@ -147,6 +154,10 @@ class Response {
   bool get ok {
     return errCode == 0;
   }
+}
+
+Future<Response> get ok async {
+  return Response.from(shared.Err()..code = 0);
 }
 
 /// mockCommand Initializes the value for testing
