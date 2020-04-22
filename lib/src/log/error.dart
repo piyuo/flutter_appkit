@@ -7,21 +7,8 @@ import 'package:libcli/src/log/error_event.dart';
 
 const _here = 'error';
 
-/// catch unhandle exception
-///
-///      error.catchAndBroadcast(suspect, null);
-catchAndBroadcast(Function suspect, {Function callback}) {
-  FlutterError.onError = (FlutterErrorDetails details) =>
-      dispatchException(details.exception, details.stack, callback: callback);
-
-  runZonedGuarded<Future<void>>(() async {
-    suspect();
-  },
-      (Object e, StackTrace stack) =>
-          dispatchException(e, stack, callback: callback));
-}
-
-dispatchException(dynamic e, StackTrace stack, {Function callback}) async {
+dispatchException(BuildContext context, dynamic e, StackTrace stack,
+    {Function callback}) async {
   var event;
 
   if (e is DiskErrorException) {
@@ -35,7 +22,7 @@ dispatchException(dynamic e, StackTrace stack, {Function callback}) async {
     log.error(_here, e, stack);
   }
 
-  eventbus.broadcast(null, event);
+  eventbus.broadcast(context, event);
   if (callback != null) {
     callback(event);
   }

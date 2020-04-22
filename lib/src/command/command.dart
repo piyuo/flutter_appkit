@@ -100,7 +100,7 @@ abstract class Service {
       }
     } catch (e, s) {
       //handle exception here to get better stack trace
-      log.dispatchException(e, s);
+      log.dispatchException(ctx, e, s);
     }
     return Response();
   }

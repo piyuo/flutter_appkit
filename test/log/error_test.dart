@@ -4,7 +4,7 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'dart:async';
 
 const _here = 'error_test';
-
+/*
 void main() {
   group('[error]', () {
     testWidgets('should catch exception', (WidgetTester tester) async {
@@ -41,7 +41,7 @@ void main() {
     });
   });
 }
-
+*/
 suspect() {
   throw Exception('unhandle error');
 }

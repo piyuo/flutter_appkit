@@ -144,7 +144,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     //handle exception here to get better stack trace
-    log.dispatchException(e, s);
+    log.dispatchException(ctx, e, s);
     return null;
   }
 }
