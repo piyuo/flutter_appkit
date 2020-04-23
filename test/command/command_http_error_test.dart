@@ -111,7 +111,7 @@ void main() {
         var bytes = await command.doPost(ctx, req);
         expect(bytes, isNotNull);
         expect(bytes.length, greaterThan(1));
-        expect(contract.runtimeType, command.CInternetRequired);
+        expect(contract.runtimeType, command.InternetRequiredContract);
       });
     });
 

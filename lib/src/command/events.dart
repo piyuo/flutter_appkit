@@ -43,9 +43,9 @@ class ERefuseInternet {}
 ///
 class ERefuseSignin {}
 
-///CInternetRequired  happen when [internet not connected], listener need let user connect to the internet then report back
+///InternetRequiredContract happen when [SocketException] [internet not connected], listener need let user connect to the internet then report back
 ///
-class CInternetRequired extends eventbus.Contract {}
+class InternetRequiredContract extends eventbus.Contract {}
 
 ///CAccessTokenRequired  happen when [service need access token], listener need let user sign in or use refresh token to get access token
 ///

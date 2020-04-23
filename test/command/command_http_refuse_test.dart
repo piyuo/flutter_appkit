@@ -42,7 +42,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var bytes = await doPost(ctx, req);
         expect(bytes, null);
-        expect(contract.runtimeType, CInternetRequired);
+        expect(contract.runtimeType, InternetRequiredContract);
         expect(event.runtimeType, ERefuseInternet);
       });
     });
@@ -83,7 +83,10 @@ void main() {
     testWidgets('should retry', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        await retry(ctx, CAccessTokenExpired(), ERefuseSignin(), req);
+        await retry(ctx,
+            contract: CAccessTokenExpired(),
+            fail: ERefuseSignin(),
+            request: req);
         expect(event.runtimeType, ERefuseSignin);
       });
     });

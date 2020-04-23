@@ -100,11 +100,18 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
         return giveup(
             ctx, NetworkDeadlineExceedEvent(resp.body)); //body is err id
       case 511: //access token required
-        return await retry(ctx, CAccessTokenRequired(), ERefuseSignin(), r);
+        return await retry(ctx,
+            contract: CAccessTokenRequired(),
+            fail: ERefuseSignin(),
+            request: r);
       case 412: //access token expired
-        return await retry(ctx, CAccessTokenExpired(), ERefuseSignin(), r);
+        return await retry(ctx,
+            contract: CAccessTokenExpired(), fail: ERefuseSignin(), request: r);
       case 402: //payment token expired
-        return await retry(ctx, CPaymentTokenRequired(), ERefuseSignin(), r);
+        return await retry(ctx,
+            contract: CPaymentTokenRequired(),
+            fail: ERefuseSignin(),
+            request: r);
       case 400: //bad request
         return giveup(ctx, ServerBadRequest()); //body is err id
     }
@@ -117,6 +124,8 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     log.error(_here, e, s);
     return giveup(ctx, NetworkTimeoutEvent());
   } on SocketException catch (e, s) {
+    return await retry(ctx, contract: InternetRequiredContract(), request: r);
+/*
     if (r.errorHandler != null) {
       return emmitError(r);
     }
@@ -130,8 +139,11 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       }
     } else {
       log.warning('$_here~no network');
-      return await retry(ctx, CInternetRequired(), ERefuseInternet(), r);
-    }
+      return await retry(ctx,
+          contract: InternetRequiredContract(),
+          fail: ERefuseInternet(),
+          request: r);
+    }*/
   } catch (e, s) {
     if (r.errorHandler != null) {
       return emmitError(r);
@@ -161,12 +173,14 @@ giveup(BuildContext ctx, dynamic e) {
 /// retry use contract, broadcast event when failed
 ///
 ///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
-Future<List<int>> retry(
-    BuildContext ctx, eventbus.Contract contr, dynamic fail, Request r) async {
-  if (await eventbus.contract(ctx, contr)) {
+Future<List<int>> retry(BuildContext ctx,
+    {eventbus.Contract contract, dynamic fail, Request request}) async {
+  if (await eventbus.contract(ctx, contract)) {
     log.log('$_here~ok,retry');
-    return await doPost(ctx, r);
+    return await doPost(ctx, request);
   }
-  eventbus.broadcast(ctx, fail);
+  if (fail != null) {
+    eventbus.broadcast(ctx, fail);
+  }
   return null;
 }
