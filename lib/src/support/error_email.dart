@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:libcli/src/support/error_record.dart';
 import 'package:libcli/configuration.dart' as configuration;
+import 'package:url_launcher/url_launcher.dart';
 
 class ErrorEmailBuilder {
   String _subject = 'report error ';
@@ -28,6 +29,13 @@ Account:\n${configuration.userID}
 
   String get linkMailTo {
     return 'mailto:${to}?Subject=${subjectUrlSafe}&body=${bodyUrlSafe}';
+  }
+
+  void launchMailTo() async {
+    var url = linkMailTo;
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
   }
 
   add(ErrorRecord record) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/support.dart' as support;
 import 'package:libcli/src/pattern/async_provider.dart';
@@ -126,10 +125,7 @@ class _AwaitState extends State<Await> {
                   for (var rec in errors()) {
                     builder.add(rec);
                   }
-                  var url = builder.linkMailTo;
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  }
+                  builder.launchMailTo();
                 },
                 onRetryPressed: () {
                   setState(() {
