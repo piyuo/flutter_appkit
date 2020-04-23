@@ -103,6 +103,7 @@ class _AwaitState extends State<Await> {
             var errorID = await log.sendAnalytic();
             provider.errorReport = log.ErrorReport(errorID, e, s);
             provider.asyncStatus = AsyncStatus.error;
+            provider.notifyListeners();
           });
         });
       }
@@ -126,12 +127,7 @@ class _AwaitState extends State<Await> {
                     EmailSupportContract(errorReports()),
                   );
                 },
-                onRetryPressed: () {
-                  setState(() {
-                    reload(context);
-                  });
-                },
-              );
+                onRetryPressed: () => reload(context));
       default:
         return widget.progress != null
             ? widget.progress
