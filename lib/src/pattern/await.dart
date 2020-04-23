@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/support.dart' as support;
+import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/src/pattern/contracts.dart';
 import 'package:libcli/src/pattern/async_provider.dart';
 import 'package:libcli/src/pattern/await_progress_indicator.dart';
 import 'package:libcli/src/pattern/await_error_message.dart';
@@ -65,13 +66,13 @@ class _AwaitState extends State<Await> {
     return AsyncStatus.ready;
   }
 
-  ///errors return provider error record
+  ///errorReports return every provider's error report
   ///
-  List<support.ErrorRecord> errors() {
-    List<support.ErrorRecord> list = List<support.ErrorRecord>();
+  List<log.ErrorReport> errorReports() {
+    var list = List<log.ErrorReport>();
     for (var p in widget.list) {
-      if (p.errorRecord != null) {
-        list.add(p.errorRecord);
+      if (p.errorReport != null) {
+        list.add(p.errorReport);
       }
     }
     return list;
@@ -81,7 +82,7 @@ class _AwaitState extends State<Await> {
   ///
   void reload(BuildContext context) {
     widget.list.forEach((provider) {
-      provider.errorRecord = null;
+      provider.errorReport = null;
       if (provider.asyncStatus == AsyncStatus.error) {
         debugPrint('$_here~reload ${provider.runtimeType}');
         provider.asyncStatus = AsyncStatus.none;
@@ -100,7 +101,7 @@ class _AwaitState extends State<Await> {
             //handle error here, dont let global error handler to do it
             log.error(_here, e, s);
             var errorID = await log.sendAnalytic();
-            provider.errorRecord = support.ErrorRecord(errorID, e, s);
+            provider.errorReport = log.ErrorReport(errorID, e, s);
             provider.asyncStatus = AsyncStatus.error;
           });
         });
@@ -119,13 +120,11 @@ class _AwaitState extends State<Await> {
         return widget.error != null
             ? widget.error
             : AwaitErrorMessage(
-                onEmailLinkPressed: () async {
-                  support.ErrorEmailBuilder builder =
-                      support.ErrorEmailBuilder();
-                  for (var rec in errors()) {
-                    builder.add(rec);
-                  }
-                  builder.launchMailTo();
+                onEmailLinkPressed: () {
+                  eventbus.contract(
+                    context,
+                    EmailSupportContract(errorReports()),
+                  );
                 },
                 onRetryPressed: () {
                   setState(() {

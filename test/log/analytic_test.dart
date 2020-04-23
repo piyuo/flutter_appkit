@@ -36,13 +36,13 @@ void main() {
       configuration.branch = configuration.Branches.test;
       analytic.reset();
       var current = analytic.current();
-      expect(current.errors.length, 0);
+      expect(current.errorReports.length, 0);
       try {
         throw Exception('test error');
       } catch (e, s) {
         error(_here, e, s);
       }
-      expect(current.errors.length, 1);
+      expect(current.errorReports.length, 1);
       var result = await analytic.sendAnalytic();
       expect(result, isNotEmpty);
     });
