@@ -1,24 +1,27 @@
-import 'package:meta/meta.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/pattern.dart';
 import 'package:libcli/i18n.dart';
 
-class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
+///ProviderWidget is widget that build by provider model
+///
+abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
+  /// i18nFilename is language file that widget need
+  ///
   final String i18nFilename;
 
-  ProviderWidget(this.i18nFilename);
+  /// ProviderWidget
+  ///
+  ProviderWidget({this.i18nFilename});
 
-  @protected
-  T createProvider(BuildContext context) {
-    return null;
-  }
+  /// createProvider create provider that widget need
+  ///
+  T createProvider(BuildContext context);
 
-  @protected
-  Widget onBuild(BuildContext context) {
-    return null;
-  }
+  /// onBuild replace build() to create widget content, do no use build()
+  ///
+  Widget onBuild(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
