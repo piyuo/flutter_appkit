@@ -8,7 +8,6 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/utils.dart' as utils;
 import 'package:libcli/src/command/events.dart';
-import 'package:libcli/src/command/contracts.dart';
 import 'package:libcli/src/command/auth.dart' as auth;
 
 const _here = 'command_http';

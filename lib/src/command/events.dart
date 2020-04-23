@@ -1,3 +1,5 @@
+import 'package:libcli/eventbus.dart' as eventbus;
+
 /// ServerInternalErrorEvent when [service return 500 internal server error], need let user know their network is slow than usual
 ///
 class ServerInternalErrorEvent {}
@@ -40,3 +42,19 @@ class ERefuseInternet {}
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
 ///
 class ERefuseSignin {}
+
+///CInternetRequired  happen when [internet not connected], listener need let user connect to the internet then report back
+///
+class CInternetRequired extends eventbus.Contract {}
+
+///CAccessTokenRequired  happen when [service need access token], listener need let user sign in or use refresh token to get access token
+///
+class CAccessTokenRequired extends eventbus.Contract {}
+
+///CAccessTokenExpired happen when [access token expired], listener need let user sign in or use refresh token to get access token
+///
+class CAccessTokenExpired extends eventbus.Contract {}
+
+///CPaymentTokenRequired happen when [service need payment token], listener need let user sign in immedately
+///
+class CPaymentTokenRequired extends eventbus.Contract {}
