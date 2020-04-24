@@ -90,9 +90,9 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     log.log('$_here~caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
-        return giveup(ctx, ServerInternalErrorEvent()); //body is err id
+        return giveup(ctx, InternalServerErrorEvent()); //body is err id
       case 501: //the remote servie is not properly setup
-        return giveup(ctx, ServerNeedSetupEvent()); //body is err id
+        return giveup(ctx, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
         return giveup(
             ctx, NetworkDeadlineExceedEvent(resp.body)); //body is err id

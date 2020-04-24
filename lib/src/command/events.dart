@@ -2,11 +2,11 @@ import 'package:libcli/eventbus.dart' as eventbus;
 
 /// ServerInternalErrorEvent when [service return 500 internal server error], need let user know their network is slow than usual
 ///
-class ServerInternalErrorEvent {}
+class InternalServerErrorEvent {}
 
 /// InternalServerErrorEvent when [service return 501 the remote servie is not properly setup], need let user know their network is slow than usual
 ///
-class ServerNeedSetupEvent {}
+class ServerNotReadyEvent {}
 
 /// ServerBadRequest when [service return 400 bad request], need let user know their network is slow than usual
 ///
