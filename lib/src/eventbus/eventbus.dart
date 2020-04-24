@@ -93,11 +93,11 @@ Subscription listen<T>(
 ///     });
 ///     eventbus.brodcast(ctx,MockEventA('a1'));
 ///
-broadcast(BuildContext ctx, dynamic event) {
+broadcast(BuildContext context, dynamic event) {
   assert(event != null);
   latestEvent = event;
   log('$_here~brodcast ${event.runtimeType}');
-  dispatch(ctx, event);
+  dispatch(context, event);
 }
 
 /// contract open by caller, need call back when job done
@@ -109,11 +109,11 @@ broadcast(BuildContext ctx, dynamic event) {
 ///       ok = value;
 ///     });
 ///
-Future<bool> contract(BuildContext ctx, Contract event) {
+Future<bool> contract(BuildContext context, Contract event) {
   assert(event != null);
   latestContract = event;
   log('$_here~contract ${event.runtimeType}');
-  dispatch(ctx, event);
+  dispatch(context, event);
   return event.future;
 }
 
@@ -122,10 +122,10 @@ Future<bool> contract(BuildContext ctx, Contract event) {
 ///     dispatch(ctx,'hello');
 ///
 @visibleForTesting
-dispatch(BuildContext ctx, dynamic event) {
+dispatch(BuildContext context, dynamic event) {
   for (var listener in _listeners) {
     try {
-      listener.call(ctx, event);
+      listener.call(context, event);
     } catch (e, s) {
       error(_here, e, s);
       if (event is Contract) {
