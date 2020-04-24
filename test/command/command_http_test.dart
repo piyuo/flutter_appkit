@@ -165,8 +165,8 @@ void main() {
 
     testWidgets('should giveup', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        command.giveup(ctx, command.ERefuseInternet());
-        expect(event.runtimeType, command.ERefuseInternet);
+        command.giveup(ctx, command.BadRequestEvent());
+        expect(event.runtimeType, command.BadRequestEvent);
       });
     });
   });

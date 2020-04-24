@@ -32,21 +32,6 @@ void main() {
   });
 
   group('[command_http_request_refuse]', () {
-    testWidgets('should retry no network but refuse',
-        (WidgetTester tester) async {
-      var req = newRequest(socketMock());
-      req.isInternetConnected = () async {
-        return false;
-      };
-
-      await tester.inWidget((ctx) async {
-        var bytes = await doPost(ctx, req);
-        expect(bytes, null);
-        expect(contract.runtimeType, InternetRequiredContract);
-        expect(event.runtimeType, ERefuseInternet);
-      });
-    });
-
     testWidgets('should retry 511 and failed, access token required',
         (WidgetTester tester) async {
       await tester.inWidget((ctx) async {

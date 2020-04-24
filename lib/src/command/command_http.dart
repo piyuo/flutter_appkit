@@ -94,8 +94,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       case 501: //the remote servie is not properly setup
         return giveup(ctx, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
-        return giveup(
-            ctx, NetworkDeadlineExceedEvent(resp.body)); //body is err id
+        return giveup(ctx, DeadlineExceedEvent(resp.body)); //body is err id
       case 511: //access token required
         return await retry(ctx,
             contract: CAccessTokenRequired(),
@@ -110,7 +109,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
             fail: ERefuseSignin(),
             request: r);
       case 400: //bad request
-        return giveup(ctx, ServerBadRequest()); //body is err id
+        return giveup(ctx, BadRequestEvent()); //body is err id
     }
     //unknow status code
     throw Exception('unknown status ' + msg);
@@ -142,7 +141,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
 
 /// emmitError send error to onError
 ///
-///   commandHttp.giveup(c.ERefuseInternet());
+///   commandHttp.giveup(BadRequestEvent());
 emmitError(Request r) {
   try {
     r.errorHandler();
@@ -151,7 +150,7 @@ emmitError(Request r) {
 
 /// giveup brodcast event then return null
 ///
-///     commandHttp.giveup(ctx,ERefuseInternet());
+///     commandHttp.giveup(ctx,BadRequestEvent());
 giveup(BuildContext ctx, dynamic e) {
   eventbus.broadcast(ctx, e);
 }

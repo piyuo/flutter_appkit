@@ -1,26 +1,26 @@
 import 'package:libcli/eventbus.dart' as eventbus;
 
-/// ServerInternalErrorEvent when [service return 500 internal server error], need let user know their network is slow than usual
+/// InternalServerErrorEvent when [service return 500 internal server error], need let user know their network is slow than usual
 ///
 class InternalServerErrorEvent {}
 
-/// InternalServerErrorEvent when [service return 501 the remote servie is not properly setup], need let user know their network is slow than usual
+/// ServerNotReadyEvent when [service return 501 the remote servie is not properly setup], need let user know their network is slow than usual
 ///
 class ServerNotReadyEvent {}
 
-/// ServerBadRequest when [service return 400 bad request], need let user know their network is slow than usual
+/// BadRequest when [service return 400 bad request], need let user know their network is slow than usual
 ///
-class ServerBadRequest {}
+class BadRequestEvent {}
 
 /// NetworkSlowEvent happen when command [execute longer than usual]
 ///
 class NetworkSlowEvent {}
 
-/// NetworkDeadlineExceedEvent  happen when [service meet context deadline exceed], listener let user know they can try again later or contact us with errId to get solution
+/// DeadlineExceedEvent  happen when [service meet context deadline exceed], listener let user know they can try again later or contact us with errId to get solution
 ///
-class NetworkDeadlineExceedEvent {
+class DeadlineExceedEvent {
   final String errorID;
-  NetworkDeadlineExceedEvent(this.errorID);
+  DeadlineExceedEvent(this.errorID);
 }
 
 /// NetworkTimeoutEvent happen when [TimeoutException] is thrown
@@ -30,10 +30,6 @@ class NetworkTimeoutEvent {
   final String url;
   NetworkTimeoutEvent({this.exception, this.url});
 }
-
-/// ERefuseInternet happen when [user refuse to  connect] to internet, listener let user know they need connect to then internet
-///
-class ERefuseInternet {}
 
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
 ///
