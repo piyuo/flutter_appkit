@@ -23,17 +23,13 @@ class NetworkDeadlineExceedEvent {
   NetworkDeadlineExceedEvent(this.errorID);
 }
 
-/// NetworkServiceNotAvailableEvent happen when internet is connected but google service is down
-///
-class NetworkServiceNotAvailableEvent {}
-
-/// NetworkServiceBlocked happen when internet is connected but can not connect to google service is down
-///
-class NetworkServiceBlocked {}
-
 /// NetworkTimeoutEvent happen when [TimeoutException] is thrown
 ///
-class NetworkTimeoutEvent {}
+class NetworkTimeoutEvent {
+  final dynamic exception;
+  final String url;
+  NetworkTimeoutEvent({this.exception, this.url});
+}
 
 /// ERefuseInternet happen when [user refuse to  connect] to internet, listener let user know they need connect to then internet
 ///
@@ -45,7 +41,13 @@ class ERefuseSignin {}
 
 ///InternetRequiredContract happen when [SocketException] [internet not connected], listener need let user connect to the internet then report back
 ///
-class InternetRequiredContract extends eventbus.Contract {}
+class InternetRequiredContract extends eventbus.Contract {
+  final dynamic exception;
+  final String url;
+  InternetRequiredContract({this.exception, this.url});
+  Future<bool> Function() isInternetConnected;
+  Future<bool> Function() isGoogleCloudFunctionAvailable;
+}
 
 ///CAccessTokenRequired  happen when [service need access token], listener need let user sign in or use refresh token to get access token
 ///

@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/utils.dart' as utils;
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/auth.dart' as auth;
 
@@ -40,8 +39,6 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
   req.url = url;
   req.bytes = bytes;
   req.timeout = timeout;
-  req.isInternetConnected = utils.isInternetConnected;
-  req.isGoogleCloudFunctionAvailable = utils.isGoogleCloudFunctionAvailable;
   req.errorHandler = errorHandler;
   doPost(ctx, req).then((response) {
     timer.cancel();
@@ -117,38 +114,27 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     }
     //unknow status code
     throw Exception('unknown status ' + msg);
+  } on SocketException catch (e, s) {
+    if (r.errorHandler != null) {
+      return emmitError(r);
+    }
+    log.error(_here, 'failed to connect ${r.url} cause $e', s);
+    return await retry(ctx,
+        contract: InternetRequiredContract(exception: e, url: r.url),
+        request: r);
   } on TimeoutException catch (e, s) {
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    log.error(_here, e, s);
-    return giveup(ctx, NetworkTimeoutEvent());
-  } on SocketException catch (e, s) {
-    return await retry(ctx, contract: InternetRequiredContract(), request: r);
-/*
-    if (r.errorHandler != null) {
-      return emmitError(r);
-    }
-    if (await r.isInternetConnected()) {
-      if (await r.isGoogleCloudFunctionAvailable()) {
-        log.alert('$_here~service not available');
-        return giveup(ctx, NetworkServiceNotAvailableEvent());
-      } else {
-        log.alert('$_here~service blocked');
-        return giveup(ctx, NetworkServiceBlocked());
-      }
-    } else {
-      log.warning('$_here~no network');
-      return await retry(ctx,
-          contract: InternetRequiredContract(),
-          fail: ERefuseInternet(),
-          request: r);
-    }*/
+    log.error(_here, 'connection timeout ${r.url} cause $e', s);
+    return giveup(
+        ctx, NetworkTimeoutEvent(exception: e, url: r.url)); //body is err id
   } catch (e, s) {
+    //handle exception here to get better stack trace
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    //handle exception here to get better stack trace
+    log.error(_here, 'unknown exception ${r.url} cause $e', s);
     log.sendToGlobalExceptionHanlder(ctx, e, s);
     return null;
   }
