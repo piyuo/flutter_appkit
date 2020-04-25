@@ -87,14 +87,17 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
-    log.log('$_here~caught $msg');
+    log.warning('$_here~caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(ctx, InternalServerErrorEvent()); //body is err id
       case 501: //the remote servie is not properly setup
         return giveup(ctx, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
-        return giveup(ctx, DeadlineExceedEvent(resp.body)); //body is err id
+        return await retry(ctx,
+            contract: RequestTimeoutContract(
+                isServer: true, errorID: resp.body, url: r.url),
+            request: r); //body is err id
       case 511: //access token required
         return await retry(ctx,
             contract: CAccessTokenRequired(),
@@ -113,27 +116,29 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     }
     //unknow status code
     throw Exception('unknown status ' + msg);
-  } on SocketException catch (e, s) {
+  } on SocketException catch (e) {
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    log.error(_here, 'failed to connect ${r.url} cause $e', s);
+    log.warning('$_here~failed to connect ${r.url} cause $e');
     return await retry(ctx,
         contract: InternetRequiredContract(exception: e, url: r.url),
         request: r);
-  } on TimeoutException catch (e, s) {
+  } on TimeoutException catch (e) {
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    log.error(_here, 'connection timeout ${r.url} cause $e', s);
-    return giveup(
-        ctx, NetworkTimeoutEvent(exception: e, url: r.url)); //body is err id
+    log.warning('$_here~connection timeout ${r.url} cause $e');
+    return await retry(ctx,
+        contract:
+            RequestTimeoutContract(isServer: false, exception: e, url: r.url),
+        request: r);
   } catch (e, s) {
     //handle exception here to get better stack trace
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    log.error(_here, 'unknown exception ${r.url} cause $e', s);
+    log.error(_here, 'unhandle exception ${r.url} cause $e', s);
     log.sendToGlobalExceptionHanlder(ctx, e, s);
     return null;
   }

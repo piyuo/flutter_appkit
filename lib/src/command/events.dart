@@ -12,24 +12,20 @@ class ServerNotReadyEvent {}
 ///
 class BadRequestEvent {}
 
+/// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
+///
+class RequestTimeoutContract extends eventbus.Contract {
+  final dynamic exception;
+  final String url;
+  final String errorID;
+  final bool isServer;
+  RequestTimeoutContract(
+      {this.exception, this.url, this.isServer, this.errorID});
+}
+
 /// NetworkSlowEvent happen when command [execute longer than usual]
 ///
 class NetworkSlowEvent {}
-
-/// DeadlineExceedEvent  happen when [service meet context deadline exceed], listener let user know they can try again later or contact us with errId to get solution
-///
-class DeadlineExceedEvent {
-  final String errorID;
-  DeadlineExceedEvent(this.errorID);
-}
-
-/// NetworkTimeoutEvent happen when [TimeoutException] is thrown
-///
-class NetworkTimeoutEvent {
-  final dynamic exception;
-  final String url;
-  NetworkTimeoutEvent({this.exception, this.url});
-}
 
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
 ///
