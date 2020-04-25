@@ -23,9 +23,9 @@ class RequestTimeoutContract extends eventbus.Contract {
       {this.exception, this.url, this.isServer, this.errorID});
 }
 
-/// NetworkSlowEvent happen when command [execute longer than usual]
+/// SlowNetworkEvent happen when command [execute longer than usual]
 ///
-class NetworkSlowEvent {}
+class SlowNetworkEvent {}
 
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
 ///

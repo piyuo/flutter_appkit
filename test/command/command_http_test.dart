@@ -147,7 +147,7 @@ void main() {
           });
           Uint8List bytes = Uint8List.fromList(''.codeUnits);
           await command.post(ctx, client, '', bytes, 500, 1, null);
-          expect(event.runtimeType, command.NetworkSlowEvent);
+          expect(event.runtimeType, command.SlowNetworkEvent);
         });
       });
     });

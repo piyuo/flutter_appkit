@@ -31,7 +31,7 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
     if (!completer.isCompleted && errorHandler == null) {
-      eventbus.broadcast(ctx, NetworkSlowEvent());
+      eventbus.broadcast(ctx, SlowNetworkEvent());
     }
   });
   Request req = Request();
