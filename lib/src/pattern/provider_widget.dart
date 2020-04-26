@@ -19,9 +19,9 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
   ///
   T createProvider(BuildContext context);
 
-  /// onBuild replace build() to create widget content, do no use build()
+  /// createWidget to create widget for content
   ///
-  Widget onBuild(BuildContext context);
+  Widget createWidget(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
       child: Consumer2<I18nProvider, T>(
           builder: (context, i18n, provider, child) => Await(
                 list: [i18n, provider],
-                child: onBuild(context),
+                child: createWidget(context),
               )),
     );
   }
