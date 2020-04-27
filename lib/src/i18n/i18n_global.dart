@@ -50,6 +50,8 @@ void _en_US() {
   _global['errTitle'] = 'Oops, some thing went wrong';
   _global['errMsg'] =
       'The developer team has been notified of this issue. Please try again later';
+  _global['emailUs'] = 'Email Us';
+  _global['errCode'] = 'Error code: ';
   _global['email'] = 'Email';
   _global['retry'] = 'Retry';
   _global['ok'] = 'Ok';
@@ -66,6 +68,8 @@ void _en_US() {
 void _zh_TW() {
   _global['errTitle'] = '糟糕，有東西出錯了';
   _global['errMsg'] = '發生的錯誤已被記錄並且通知了我們的開發團隊，您可以稍後再重試';
+  _global['emailUs'] = '發送電子郵件給我們';
+  _global['errCode'] = '錯誤代碼: ';
   _global['email'] = '電子郵件';
   _global['retry'] = '重試';
   _global['ok'] = '確定';
@@ -83,6 +87,8 @@ void _zh_CN() {
   _global['errTitle'] = '糟了，有东西出错';
   _global['errMsg'] = '发生的错误已被记录并且通知了我们的开发团队，您可以按下方 "重试" 按钮再试一遍';
   _global['email'] = '电子邮件';
+  _global['emailUs'] = '發送电子邮件给我们';
+  _global['errCode'] = '错误代码: ';
   _global['retry'] = '重试';
   _global['ok'] = '确定';
   _global['cancel'] = '取消';
