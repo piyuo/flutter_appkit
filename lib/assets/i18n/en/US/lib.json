@@ -1,4 +1,9 @@
 {
+    "@ok": "Ok",
+    "@cancel": "Cancel",
+    "@close": "Close",
+    "@retry": "Retry",
+    "@slow": "your network is slow than usual",
     "@required": "%1 is required",
     "@validator": "Please enter a valid %1.  (Example: %2)",
     "@email": "email address",
