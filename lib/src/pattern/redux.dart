@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'package:libcli/log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/log.dart';
 
 const _here = 'redux';
 
@@ -60,15 +59,4 @@ class Redux<S, A> {
     }
     return state;
   }
-}
-
-/// toString encode object to string
-///
-///     toString(state);
-///
-String toString(dynamic d) {
-  try {
-    return json.encode(d);
-  } catch (_) {}
-  return '${d.toString()}';
 }

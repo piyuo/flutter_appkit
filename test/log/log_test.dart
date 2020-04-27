@@ -65,5 +65,17 @@ void main() {
       l = 'package:libcli/command.dart 46:15 post.<fn>';
       expect(beautyLine(l), 'at package:libcli/command.dart (46:15_post.<fn>)');
     });
+
+    test('should turn object into string', () async {
+      String str = toString(MockObject);
+      expect(str.length, greaterThan(0));
+    });
   });
+}
+
+class MockObject {
+  int value = 0;
+  Map toJson() {
+    return {'value': value};
+  }
 }

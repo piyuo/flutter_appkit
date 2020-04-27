@@ -12,11 +12,6 @@ void main() {
       await redux.dispatch(null, MockAction.Increment, 1);
       expect(redux.state.value, 1);
     });
-
-    test('should turn object into string', () async {
-      String str = toString(MockState);
-      expect(str.length, greaterThan(0));
-    });
   });
 }
 

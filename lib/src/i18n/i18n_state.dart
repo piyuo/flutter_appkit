@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
+import 'package:libcli/log.dart' as log;
+
+const _here = 'i18n_state';
 
 Map<String, dynamic> _globalLocalization = null;
 
@@ -50,6 +54,8 @@ Future<I18nState> getTranslationFromAsset(
   if (_globalLocalization == null) {
     _globalLocalization =
         await getTranslationFromLib(languageCode, countryCode);
+    var json = log.toString(_globalLocalization);
+    debugPrint('$_here~global localzation = $json');
   }
 
   var localization = Map<String, dynamic>();

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/configuration.dart' as configuration;
@@ -208,4 +209,15 @@ bool isLineUsable(String line) {
   }
 
   return true;
+}
+
+/// toString encode object to string
+///
+///     toString(state);
+///
+String toString(dynamic d) {
+  try {
+    return json.encode(d);
+  } catch (_) {}
+  return '${d.toString()}';
 }
