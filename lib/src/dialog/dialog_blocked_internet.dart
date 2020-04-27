@@ -31,7 +31,7 @@ class DialogBlockedInternetWidget extends StatelessWidget {
 
 class DialogBlockedInternet
     extends ProviderWidget<DialogBlockedInternetProvider> {
-  DialogBlockedInternet() : super(i18nFilename: 'dialog');
+  DialogBlockedInternet() : super(i18nFilename: 'dialog', package: 'libcli');
 
   @override
   createProvider(BuildContext context) => DialogBlockedInternetProvider();

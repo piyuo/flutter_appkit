@@ -19,11 +19,12 @@ class I18nState {
 
 /// getTranslationFromAsset load translation from assets/i18n
 ///
-Future<I18nState> getTranslation(String filename) async {
+Future<I18nState> getTranslation(String filename, {String package}) async {
   var localization = Map<String, dynamic>();
   if (filename != null && filename.isNotEmpty) {
     String pageJson = await asset.loadJson(
-        'i18n/${i18n.languageCode}/${i18n.countryCode}/${filename}.json');
+        'i18n/${i18n.languageCode}/${i18n.countryCode}/${filename}.json',
+        package: package);
     localization = json.decode(pageJson);
   }
   return I18nState(localization);

@@ -20,7 +20,7 @@ class DialogDiskErrorWidget extends StatelessWidget {
 }
 
 class DialogDiskError extends ProviderWidget<DialogDiskErrorProvider> {
-  DialogDiskError() : super(i18nFilename: 'dialog');
+  DialogDiskError() : super(i18nFilename: 'dialog', package: 'libcli');
 
   @override
   createProvider(BuildContext context) => DialogDiskErrorProvider();

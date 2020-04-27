@@ -19,7 +19,8 @@ class DialogTimeoutOptions {
 class DialogTimeout extends ProviderWidget<DialogTimeoutProvider> {
   final DialogTimeoutOptions options;
 
-  DialogTimeout(this.options) : super(i18nFilename: 'dialog');
+  DialogTimeout(this.options)
+      : super(i18nFilename: 'dialog', package: 'libcli');
 
   @override
   createProvider(BuildContext context) => DialogTimeoutProvider();

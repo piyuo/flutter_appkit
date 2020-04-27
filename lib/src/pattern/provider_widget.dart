@@ -11,9 +11,13 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
   ///
   final String i18nFilename;
 
+  /// package set if i18nfile is in other package
+  ///
+  final String package;
+
   /// ProviderWidget
   ///
-  ProviderWidget({this.i18nFilename});
+  ProviderWidget({this.i18nFilename, this.package});
 
   /// createProvider create provider that widget need
   ///
@@ -28,7 +32,7 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<I18nProvider>(
-          create: (context) => I18nProvider(i18nFilename),
+          create: (context) => I18nProvider(i18nFilename, package: package),
         ),
         ChangeNotifierProvider<T>(
           create: (context) {

@@ -6,22 +6,25 @@ import 'package:libcli/log.dart';
 import 'package:flutter/material.dart';
 
 class I18nProvider extends ReduxProvider<I18nState, dynamic> {
-  final String _pageName;
+  final String _fileName;
 
-  I18nProvider(this._pageName) : super(null, I18nState(Map<String, dynamic>()));
+  final String package;
+
+  I18nProvider(this._fileName, {this.package})
+      : super(null, I18nState(Map<String, dynamic>()));
 
   @override
   Future<void> load(BuildContext context) async {
-    assert(_pageName != null, 'need page name');
+    assert(_fileName != null, 'need page name');
     assert(i18n.locale != null, "need I18nDelegate to localizationsDelegates");
-    state = await getTranslation(_pageName);
+    state = await getTranslation(_fileName, package: package);
   }
 
   String translate(String key) {
     var value = state.translate(key);
     if (value == null) {
       alert(
-          'i18n~missing $key in assets/i18n/${i18n.languageCode}/${i18n.countryCode}/${_pageName}.json');
+          'i18n~missing $key in assets/i18n/${i18n.languageCode}/${i18n.countryCode}/${_fileName}.json');
       return '!!! $key not found';
     }
     return value;

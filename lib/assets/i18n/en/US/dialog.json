@@ -1,0 +1,11 @@
+{
+    "netTitle": "No internet !",
+    "netMsg": "Poor network connection detected, Please check your connectivity",
+    "blockTitle": "Internet blocked !",
+    "blockMsg": "Our website is blocked by your Firewall or antivirus software , You need unblock",
+    "blockLink": "http://www.cloudfunctions.net",
+    "diskTitle": "Disk write failed !",
+    "diskMsg": "Insufficient disk space or write access denied",
+    "timeoutTitle": "Operation timed out !",
+    "timeoutMsg": "Your operation didn't complete in time, this issue has been notified. Please try again later"
+}

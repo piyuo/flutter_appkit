@@ -46,7 +46,8 @@ class DialogNoInternetWidget extends StatelessWidget {
 class DialogNoInternet extends ProviderWidget<DialogNoInternetProvider> {
   final DialogNoInternetOptions options;
 
-  DialogNoInternet(this.options) : super(i18nFilename: 'dialog');
+  DialogNoInternet(this.options)
+      : super(i18nFilename: 'dialog', package: 'libcli');
 
   @override
   createProvider(BuildContext context) => DialogNoInternetProvider();
