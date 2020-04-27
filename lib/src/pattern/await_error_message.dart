@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/i18n.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class AwaitErrorMessage extends StatelessWidget {
@@ -11,46 +11,6 @@ class AwaitErrorMessage extends StatelessWidget {
   final Function onRetryPressed;
 
   AwaitErrorMessage({this.onEmailLinkPressed, this.onRetryPressed});
-
-  String get ErrorTitle {
-    switch (i18n.localeID) {
-      case 'zh_TW':
-        return '糟糕，有東西出錯了';
-      case 'zh-CN':
-        return '糟了，有东西出错';
-    }
-    return 'Oops, some thing went wrong';
-  }
-
-  String get ErrorMessage {
-    switch (i18n.localeID) {
-      case 'zh_TW':
-        return '發生的錯誤已被記錄並且通知了我們的開發團隊，您可以按下方 "重試" 按鈕再試一遍，如果錯誤一直發生，您可以用下方 "電子郵件" 按鈕，直接聯繫我們';
-      case 'zh-CN':
-        return '发生的错误已被记录并且通知了我们的开发团队，您可以按下方 "重试" 按钮再试一遍，如果错误一直发生，您可以用下方 "电子邮件" 按钮，直接联系我们';
-    }
-    return 'This error have been logged and our developer team has been notified. You can try again by click "Retry", or if the error persists, you can contact us using "Email" link';
-  }
-
-  String get ErrorEmail {
-    switch (i18n.localeID) {
-      case 'zh_TW':
-        return '電子郵件';
-      case 'zh-CN':
-        return '电子邮件';
-    }
-    return 'Email';
-  }
-
-  String get ErrorRetry {
-    switch (i18n.localeID) {
-      case 'zh_TW':
-        return '重試';
-      case 'zh_CN':
-        return '重试';
-    }
-    return 'Retry';
-  }
 
   content(BuildContext context) {
     return Container(
@@ -65,7 +25,7 @@ class AwaitErrorMessage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             AutoSizeText(
-              ErrorTitle,
+              'errTitle'.i18n_,
               maxLines: 2,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -75,7 +35,7 @@ class AwaitErrorMessage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             AutoSizeText(
-              ErrorMessage,
+              'errMsg'.i18n_,
               maxLines: 5,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -94,7 +54,7 @@ class AwaitErrorMessage extends StatelessWidget {
             InkWell(
                 onTap: onEmailLinkPressed,
                 child: Text(
-                  ErrorEmail,
+                  'emailAdr'.i18n_,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.red[100],
@@ -108,8 +68,8 @@ class AwaitErrorMessage extends StatelessWidget {
               child: RaisedButton(
                 padding: EdgeInsets.all(0.0),
                 color: Colors.white,
-                child:
-                    Text(ErrorRetry, style: TextStyle(color: Colors.red[700])),
+                child: Text('retry'.i18n_,
+                    style: TextStyle(color: Colors.red[700])),
                 onPressed: onRetryPressed,
               ),
             )

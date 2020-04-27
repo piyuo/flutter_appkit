@@ -8,17 +8,9 @@ void main() {
   setUp(() async {});
 
   group('[i18n_state]', () {
-    test('should getTranslationFromLib', () async {
-      var translation = await i18n.getTranslationFromLib('en', 'US');
-      expect(translation, isNotNull);
-      expect(translation['a'], 'A');
-    });
-
-    test('should getTranslationFromAsset', () async {
-      var translation = await i18n.getTranslationFromAsset('any', 'en', 'US');
-      expect(translation, isNotNull);
-      expect(translation.translate('a'), 'A');
-      expect(i18n.globalTranslate('a'), 'A');
+    test('should reloadGlobalTranslation', () async {
+      await i18n.reloadGlobalTranslation('en', 'US');
+      expect(i18n.globalTranslate('ok'), 'Ok');
     });
 
     test('should getTranslation', () async {

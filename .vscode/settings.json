@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "Schyler",
         "angular",
         "arraybuffer",
         "assertion",
@@ -32,6 +33,7 @@
         "lib",
         "libcli",
         "libsample",
+        "mockito",
         "module",
         "multipart",
         "ng",

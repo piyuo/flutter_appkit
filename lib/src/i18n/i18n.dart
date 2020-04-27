@@ -1,11 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/src/i18n/i18n_provider.dart';
-import 'package:libcli/src/i18n/i18n_state.dart';
-import 'package:flutter/foundation.dart';
+import 'package:libcli/src/i18n/i18n_global.dart';
 
 const _here = 'i18n';
 
