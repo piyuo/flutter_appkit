@@ -18,7 +18,7 @@ void main() {
       var translation = await i18n.getTranslationFromAsset('any', 'en', 'US');
       expect(translation, isNotNull);
       expect(translation.translate('a'), 'A');
-      expect(i18n.global('a'), 'A');
+      expect(i18n.globalTranslate('a'), 'A');
     });
 
     test('should getTranslation', () async {

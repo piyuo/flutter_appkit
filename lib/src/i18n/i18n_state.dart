@@ -9,7 +9,7 @@ const _here = 'i18n_state';
 
 Map<String, dynamic> _globalLocalization = null;
 
-String global(String key) {
+String globalTranslate(String key) {
   return _globalLocalization[key];
 }
 
@@ -21,7 +21,7 @@ class I18nState {
   String translate(String key) {
     var result = _localization[key];
     if (result == null) {
-      return global(key);
+      return globalTranslate(key);
     }
     return result;
   }

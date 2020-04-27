@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/src/i18n/i18n_provider.dart';
+import 'package:libcli/src/i18n/i18n_state.dart';
 import 'package:flutter/foundation.dart';
 
 const _here = 'i18n';
@@ -102,6 +103,10 @@ List<Locale> supportedLocales() {
 
 //This will allow you to add `.i18n` to your strings
 extension Localization on String {
+  String get i18n_ {
+    return globalTranslate(this);
+  }
+
   String i18n(BuildContext context) {
     if (!kReleaseMode) {
       // allow null context in test
