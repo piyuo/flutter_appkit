@@ -10,7 +10,10 @@ const _here = 'i18n_state';
 Map<String, dynamic> _globalLocalization = null;
 
 String globalTranslate(String key) {
-  return _globalLocalization[key];
+  if (_globalLocalization != null) {
+    return _globalLocalization[key];
+  }
+  return null;
 }
 
 class I18nState {
