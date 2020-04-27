@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
-import 'package:libcli/src/i18n/i18n_global.dart';
 
 class I18nState {
   final Map<String, dynamic> _localization;
@@ -10,11 +9,7 @@ class I18nState {
   I18nState(this._localization);
 
   String translate(String key) {
-    var result = _localization[key];
-    if (result == null) {
-      return globalTranslate(key);
-    }
-    return result;
+    return _localization[key];
   }
 
   Map toJson() {
