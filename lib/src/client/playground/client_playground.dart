@@ -6,8 +6,8 @@ import 'package:libcli/pattern.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:piyuo/libcli/client.dart' as client;
-import 'package:piyuo/libcli/client/playground/wrong_provider_page.dart';
+import 'package:libcli/client.dart' as client;
+import 'package:libcli/src/client/playground/wrong_provider_page.dart';
 
 class ClientPlaygroundProvider extends AsyncProvider {
   @override
