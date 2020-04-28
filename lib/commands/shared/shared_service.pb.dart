@@ -5,6 +5,7 @@ import 'err.pb.dart';
 import 'num.pb.dart';
 import 'ping_action.pb.dart';
 import 'text.pb.dart';
+import 'bool.pb.dart';
 
 class SharedService extends Service {
 
@@ -26,6 +27,8 @@ class SharedService extends Service {
         return PingAction.fromBuffer(l);
       case 5:
         return Text.fromBuffer(l);
+      case 6:
+        return Bool.fromBuffer(l);
     }
     return null;
   }
