@@ -12,11 +12,10 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class Err extends ProtoObject {
   $core.int mapIdXXX() {
-    return 1;
+    return 0;
   }
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Err', createEmptyInstance: create)
-    ..a<$core.int>(1, 'code', $pb.PbFieldType.O3)
-    ..aOS(2, 'msg')
+    ..aOS(1, 'code')
     ..hasRequiredFields = false
   ;
 
@@ -36,21 +35,12 @@ class Err extends ProtoObject {
   static Err _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get code => $_getIZ(0);
+  $core.String get code => $_getSZ(0);
   @$pb.TagNumber(1)
-  set code($core.int v) { $_setSignedInt32(0, v); }
+  set code($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasCode() => $_has(0);
   @$pb.TagNumber(1)
   void clearCode() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get msg => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set msg($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasMsg() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMsg() => clearField(2);
 }
 

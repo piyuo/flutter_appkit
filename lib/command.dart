@@ -21,4 +21,3 @@ export 'package:libcli/commands/shared/err.pb.dart';
 export 'package:libcli/commands/shared/num.pb.dart';
 export 'package:libcli/commands/shared/text.pb.dart';
 export 'package:libcli/commands/shared/err.pb.dart';
-export 'package:libcli/commands/shared/ping_action.pb.dart';

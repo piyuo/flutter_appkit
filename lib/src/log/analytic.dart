@@ -56,7 +56,7 @@ Future<String> sendAnalytic() async {
     readyAction.id = utils.uuid();
     reset();
     var response = await sysService.execute(null, readyAction);
-    if (command.ok(response)) {
+    if (command.isOK(response)) {
       return readyAction.id;
     }
   }

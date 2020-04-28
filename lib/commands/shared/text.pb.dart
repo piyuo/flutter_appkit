@@ -12,7 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class Text extends ProtoObject {
   $core.int mapIdXXX() {
-    return 5;
+    return 3;
   }
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Text', createEmptyInstance: create)
     ..aOS(1, 'value')

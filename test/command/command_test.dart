@@ -75,7 +75,7 @@ void main() {
     test('should use shared object', () async {
       SysService service = SysService();
       service.mockExecute = (ctx, obj) async {
-        return command.Err()..code = 0;
+        return command.Err()..code = '';
       };
 
       EchoRequest action = new EchoRequest();

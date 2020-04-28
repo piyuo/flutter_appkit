@@ -2,10 +2,9 @@
 
 import 'package:libcli/command.dart';
 import 'err.pb.dart';
-import 'num.pb.dart';
-import 'ping_action.pb.dart';
-import 'text.pb.dart';
 import 'bool.pb.dart';
+import 'num.pb.dart';
+import 'text.pb.dart';
 
 class SharedService extends Service {
 
@@ -19,16 +18,14 @@ class SharedService extends Service {
   @override
   ProtoObject newObjectByID(int id, List<int> l) {
     switch (id) {
-      case 1:
+      case 0:
         return Err.fromBuffer(l);
+      case 1:
+        return Bool.fromBuffer(l);
       case 2:
         return Num.fromBuffer(l);
-      case 4:
-        return PingAction.fromBuffer(l);
-      case 5:
+      case 3:
         return Text.fromBuffer(l);
-      case 6:
-        return Bool.fromBuffer(l);
     }
     return null;
   }

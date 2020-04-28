@@ -14,10 +14,10 @@ import 'package:libcli/command.dart' as shared;
 
 const _here = 'command';
 
-const OK = 0;
+const OK = '';
 
-bool ok(dynamic response) {
-  return response is shared.Err && response.code == OK;
+bool isOK(dynamic response) {
+  return response is shared.Err && response.code.isEmpty;
 }
 
 /// MockExecuteFunc let test can swap dispatch function in service
