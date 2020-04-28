@@ -26,9 +26,13 @@ void main() {
       await tester.inWidget((ctx) async {
         SysService service = SysService();
         var response =
-            await service.executehWithClient(ctx, EchoRequest(), client);
-        expect(response.ok, true);
-        expect((response.data as StringResponse).text, 'hi');
+            await service.executeWithClient(ctx, EchoRequest(), client);
+        if (response is StringResponse) {
+          expect(response, isNotNull);
+          expect(response.text, 'hi');
+        } else {
+          expect(1, 0); // should not be here
+        }
       });
     });
 
@@ -40,8 +44,8 @@ void main() {
       await tester.inWidget((ctx) async {
         SysService service = SysService();
         var response =
-            await service.executehWithClient(ctx, EchoRequest(), client);
-        expect(response.ok, false);
+            await service.executeWithClient(ctx, EchoRequest(), client);
+        expect(response, isNull);
       });
     });
 
@@ -50,48 +54,37 @@ void main() {
       SysService service = SysService();
       EchoRequest action = new EchoRequest();
       var response = await service.execute(null, action);
-      expect(response.ok, false);
-      expect(response.data, null);
+      expect(response, null);
     });
 
-    test('should return ok when is not Err response', () async {
-      var protoObject = StringResponse();
-      var response = command.Response.from(protoObject);
-      expect(response.ok, true);
-      expect(response.data, protoObject);
-    });
-
-    test('should return error response', () async {
-      var err = command.Err()
-        ..code = 1
-        ..msg = 'mock_error';
-      var response = command.Response.from(err);
-      expect(response.ok, false);
-      expect(response.data is command.Err, true);
-    });
-
-    test('should return ok response', () async {
-      var err = command.Err()..code = 0;
-      var response = command.Response.from(err);
-      expect(response.ok, true);
-      expect(response.data is command.Err, true);
-    });
-
-    test('should mock dispatch', () async {
+    test('should mock execute', () async {
       SysService service = SysService();
       service.mockExecute = (ctx, obj) async {
-        var data = StringResponse();
-        data.text = 'hi';
-        return command.Response()
-          ..data = data
-          ..errCode = -3;
+        return StringResponse()..text = 'hi';
       };
 
       EchoRequest action = new EchoRequest();
       var response = await service.execute(null, action);
-      expect(response.errCode, -3);
-      StringResponse returnData = response.data as StringResponse;
-      expect(returnData.text, 'hi');
+      if (response is StringResponse) {
+        expect(response.text, 'hi');
+      } else {
+        expect(1, 0);
+      }
+    });
+
+    test('should use shared object', () async {
+      SysService service = SysService();
+      service.mockExecute = (ctx, obj) async {
+        return command.Err()..code = 0;
+      };
+
+      EchoRequest action = new EchoRequest();
+      var response = await service.execute(null, action);
+      if (response is command.Err) {
+        expect(response.code, command.OK);
+      } else {
+        expect(1, 0);
+      }
     });
   });
 }

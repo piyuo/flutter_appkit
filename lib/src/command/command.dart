@@ -14,6 +14,12 @@ import 'package:libcli/command.dart' as shared;
 
 const _here = 'command';
 
+const OK = 0;
+
+bool ok(dynamic response) {
+  return response is shared.Err && response.code == OK;
+}
+
 /// MockExecuteFunc let test can swap dispatch function in service
 ///
 typedef Future<dynamic> MockExecuteFunc(BuildContext ctx, ProtoObject obj);
@@ -61,14 +67,14 @@ abstract class Service {
     url = serviceUrl(funcName, debugPort);
   }
 
-  /// execute request to remote service, no need to handle exception, all exception contract to eventBus
+  /// execute action to remote service, no need to handle exception, all exception contract to eventBus
   ///
   ///     service.execute(EchoRequest()).then((response) {
   ///       if(response.ok){
   ///         print(response.data);
   ///       };
   ///     });
-  Future<Response> execute(BuildContext ctx, ProtoObject obj) async {
+  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj) async {
     if (mockExecute != null) {
       return await mockExecute(ctx, obj);
     }
@@ -76,40 +82,44 @@ abstract class Service {
     assert(url != null && url.length > 0);
     assert(obj != null);
     http.Client client = http.Client();
-    return await executehWithClient(ctx, obj, client);
+    return await executeWithClient(ctx, obj, client);
   }
 
-  /// executehWithClient dispatch request to remote service
+  /// executehWithClient send action to remote service,return object if success, return null if exception happen
   ///
   ///     var response = await service.executehWithClient(client, EchoRequest());
-  Future<Response> executehWithClient(
+  Future<ProtoObject> executeWithClient(
       BuildContext ctx, ProtoObject obj, http.Client client) async {
     try {
-      log.log('$_here~dispatch ${obj.runtimeType} to $url');
+      var jsonSent = log.toString(obj);
+      debugPrint('$_here~execute ${obj.runtimeType}$jsonSent to $url');
       Uint8List bytes = encode(obj);
       List<int> ret =
           await post(ctx, client, url, bytes, timeout, slow, errorHandler);
       if (ret != null) {
         ProtoObject retObj = decode(ret, this);
-        var r = Response.from(retObj);
+        var jsonReturn = log.toString(retObj);
+        debugPrint('$_here~got ${retObj.runtimeType}$jsonReturn from $url');
+/*
         if (!kReleaseMode) {
-          if (r.ok) {
+
+
+          if (retObj.runtimeType.toString() == ) {
             String type = ' ' + retObj.runtimeType.toString();
             if (type == ' Err') {
               type = '';
             }
-            log.log('$_here~got OK $type from $url');
           } else {
             log.log('$_here~got ${retObj.runtimeType}=${r.errCode} from $url');
           }
-        }
-        return r;
+        }*/
+        return retObj;
       }
     } catch (e, s) {
       //handle exception here to get better stack trace
       log.sendToGlobalExceptionHanlder(ctx, e, s);
     }
-    return Response();
+    return null;
   }
 }
 
@@ -119,6 +129,7 @@ abstract class ProtoObject extends $pb.GeneratedMessage {
   int mapIdXXX();
 }
 
+/*
 /// Response return data when ok,otherwise check err and errCode
 ///
 class Response {
@@ -159,7 +170,7 @@ class Response {
 Future<Response> get ok async {
   return Response.from(shared.Err()..code = 0);
 }
-
+*/
 /// mockCommand Initializes the value for testing
 ///
 ///     command.mockCommand({});

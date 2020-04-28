@@ -11,7 +11,7 @@ void main() {
   setUp(() async {
     analytic.sysService = commandsSys.SysService()
       ..mockExecute = (ctx, act) async {
-        return await command.ok;
+        return command.Err()..code = 0;
       };
   });
 
