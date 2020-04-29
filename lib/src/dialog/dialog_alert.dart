@@ -22,7 +22,7 @@ class DialogAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return MessageDialog(
       color: color ?? Colors.red,
-      icon: icon ?? Icons.info_outline,
+      icon: icon ?? Icons.error_outline,
       title: title,
       okText: 'close'.i18n_,
       okOnPressed: () => Navigator.of(context).pop(),

@@ -42,8 +42,12 @@ void toast(BuildContext context, Widget child) {
 
 Future alert(BuildContext context, String message,
     {String title, Color color, IconData icon}) async {
-  var alert =
-      DialogAlert(title: title, message: message, color: color, icon: icon);
+  var alert = DialogAlert(
+    title: title,
+    message: message,
+    color: color,
+    icon: icon,
+  );
   return show(context, alert);
 }
 
