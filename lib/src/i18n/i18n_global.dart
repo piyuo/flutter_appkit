@@ -12,7 +12,12 @@ var _global = Map<String, dynamic>();
 /// globalTranslate translate from global localization
 ///
 String globalTranslate(String key) {
-  return _global[key];
+  var value = _global[key];
+  if (value == null) {
+    alert('i18n~missing $key in global');
+    return '!!! $key not found';
+  }
+  return value;
 }
 
 /// reloadGlobalTranslation load global translation base on locale
@@ -59,7 +64,7 @@ void _en_US() {
   _global['close'] = 'Close';
   _global['slow'] = 'your network is slow than usual';
   _global['required'] = '%1 is required';
-  _global['validator'] = 'Please enter a valid %1.  (Example: %2)';
+  _global['valid'] = 'Please enter a valid %1.  (Example: %2)';
   _global['emailAdr'] = 'email address';
   _global['domain'] = 'domain name';
   _global['url'] = 'url';

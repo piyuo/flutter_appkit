@@ -1,17 +1,14 @@
 import 'dart:core';
-import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 
 /// requiredValidator validate input string, return error message when input is empty, other return null
 ///
 ///  use title to set error message title
 ///
-///     String error = requiredValidator(context, nameField.value,''title);
+///     String error = requiredValidator(nameField.value,''title);
 ///
-String requiredValidator(BuildContext context, String input, String title) {
-  return input.length > 0
-      ? null
-      : '@required'.i18n(context).replaceAll('%1', title);
+String requiredValidator(String input, String title) {
+  return input.length > 0 ? null : 'required'.i18n_.replaceAll('%1', title);
 }
 
 /// regexpValidator validate input string using regex, return error message when input not valid, other return null
@@ -19,10 +16,9 @@ String requiredValidator(BuildContext context, String input, String title) {
 ///  use  title and example to set proper error message
 ///
 ///     RegExp regexp = RegExp(r"^[A-Za-z]");
-///     String error = regexpValidator(context, nameField.value, regexp, 'title', 'A-z')
+///     String error = regexpValidator(nameField.value, regexp, 'title', 'A-z')
 ///
 String regexpValidator(
-  BuildContext context,
   String input,
   RegExp regexp,
   String title,
@@ -30,10 +26,7 @@ String regexpValidator(
 ) {
   return regexp.hasMatch(input)
       ? null
-      : '@validator'
-          .i18n(context)
-          .replaceAll('%1', title)
-          .replaceAll('%2', example);
+      : 'valid'.i18n_.replaceAll('%1', title).replaceAll('%2', example);
 }
 
 /// emailRegexp regexp use to validate email
@@ -47,14 +40,13 @@ RegExp emailRegexp() {
 
 /// emailValidator validate input string is email, return error message when input not valid, other return null
 ///
-///     String error = emailValidator(context, 'johndoe@domain.com');
+///     String error = emailValidator('johndoe@domain.com');
 ///
-String emailValidator(BuildContext context, String input) {
+String emailValidator(String input) {
   return regexpValidator(
-    context,
     input,
     emailRegexp(),
-    '@email'.i18n(context),
+    'emailAdr'.i18n_,
     'johndoe@domain.com',
   );
 }
@@ -68,14 +60,13 @@ RegExp domainNameRegexp() {
 
 /// domainNameValidator validate input string is domain name, return error message when input not valid, other return null
 ///
-///     String error = domainNameValidator(context, 'johndoe@domain.com');
+///     String error = domainNameValidator('johndoe@domain.com');
 ///
-String domainNameValidator(BuildContext context, String input) {
+String domainNameValidator(String input) {
   return regexpValidator(
-    context,
     input,
     domainNameRegexp(),
-    '@domain'.i18n(context),
+    'domain'.i18n_,
     'www.domain.com',
   );
 }
@@ -88,14 +79,13 @@ RegExp urlRegexp() {
 
 /// urlValidator validate input string is url, return error message when input not valid, other return null
 ///
-///     String error = urlValidator(context, 'http://www.g.com');
+///     String error = urlValidator('http://www.g.com');
 ///
-String urlValidator(BuildContext context, String input) {
+String urlValidator(String input) {
   return regexpValidator(
-    context,
     input,
     urlRegexp(),
-    '@url'.i18n(context),
+    'url'.i18n_,
     'http://www.domain.com',
   );
 }
