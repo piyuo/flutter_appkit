@@ -7,43 +7,43 @@ const _here = 'history_redux';
 
 /// HistoryRedux implements redux pattern and have ability to undo and redo
 ///
-class HistoryRedux<S, A> {
+class HistoryRedux {
   /// history length
   ///
-  final int _historyLength;
+  int historyLength;
 
   /// _reducer only instance
   ///
-  final Reducer<S, A> _reducer;
+  final Reducer _reducer;
 
   /// _index point to current state in states history
   /// ,
   int _index = 0;
 
-  ///_states is entiry state's hisotry and length is limit to _historyLength
+  ///_states is entiry state's hisotry and length is limit to historyLength
   ///
-  List<S> _states = List<S>();
+  List<Map> _states = List<Map>();
 
   /// HistoryRedux constructor with default hisotry length, reducer and state
   ///
-  ///     HistoryRedux redux =HistoryRedux<MockState, MockAction>(20, reducer, MockState());
+  ///     HistoryRedux redux =HistoryRedux(reducer, {},historyLength:10);
   ///
-  HistoryRedux(this._historyLength, this._reducer, S state) {
+  HistoryRedux(this._reducer, Map state, {this.historyLength = 16}) {
     _states.add(state);
   }
 
   /// _state is current state
   ///
-  S get state => _states[_index];
+  Map get state => _states[_index];
 
   /// _setState add states to states history
   ///
-  _setState(S value) {
+  _setState(Map value) {
     if (_index != _states.length - 1) {
       _states.removeRange(_index, _states.length);
     }
     _states.add(value);
-    if (_states.length > _historyLength) {
+    if (_states.length > historyLength) {
       _states.removeAt(0);
       _index--;
     }
@@ -74,7 +74,7 @@ class HistoryRedux<S, A> {
         var jOld = toString(state);
         _index--;
         var jNew = toString(state);
-        debugPrint('$_here~${STATE}undo $jOld $END=> $jNew');
+        debugPrint('$_here~${STATE}undo $jNew $END<= $jOld');
       }
     } else {
       debugPrint('$_here~nothing to undo');
@@ -93,7 +93,7 @@ class HistoryRedux<S, A> {
         var jOld = toString(state);
         _index++;
         var jNew = toString(state);
-        debugPrint('$_here~${STATE}redo $jOld $END=> $jNew');
+        debugPrint('$_here~${STATE}redo $jNew $END<= $jOld');
       }
     } else {
       debugPrint('$_here~nothing to undo');
@@ -104,17 +104,15 @@ class HistoryRedux<S, A> {
   ///
   ///     redux.dispatch(MockAction.Increment, 1);
   ///
-  Future<S> dispatch(BuildContext ctx, A action, dynamic payload) async {
+  Future<Map> dispatch(BuildContext ctx, dynamic action) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (kReleaseMode) {
-      _setState(await _reducer(ctx, state, action, payload));
+      _setState(await _reducer(ctx, state, action));
     } else {
       var jOld = toString(state);
-      var newState = await _reducer(ctx, state, action, payload);
+      var newState = await _reducer(ctx, state, action);
       var jNew = toString(newState);
-      var jAction = toString(action);
-      var jPayload = toString(payload);
-      debugPrint('$_here~${STATE}$jOld => $jAction $jPayload $END=> $jNew');
+      debugPrint('$_here~${STATE}${action.runtimeType} $jNew $END<= $jOld');
       _setState(newState);
     }
     return state;

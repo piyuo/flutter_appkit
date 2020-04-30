@@ -7,16 +7,10 @@ void main() {
 
   setUp(() async {});
 
-  group('[i18n_state]', () {
+  group('[i18n_global]', () {
     test('should reloadGlobalTranslation', () async {
       await i18n.reloadGlobalTranslation('en', 'US');
       expect(i18n.globalTranslate('ok'), 'Ok');
-    });
-
-    test('should getTranslation', () async {
-      var translation = await i18n.getTranslation('any');
-      expect(translation, isNotNull);
-      expect(translation.translate('a'), 'A');
     });
   });
 }

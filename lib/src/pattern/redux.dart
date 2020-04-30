@@ -6,33 +6,32 @@ const _here = 'redux';
 
 /// Redux reducer implementation
 ///
-typedef Future<S> Reducer<S, A>(
-    BuildContext ctx, S state, A action, dynamic payload);
+typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
 
 /// Redux implements redux pattern
 ///
-class Redux<S, A> {
+class Redux {
   /// _reducer only instance
   ///
-  final Reducer<S, A> _reducer;
+  final Reducer _reducer;
 
   /// _state is current state
   ///
-  S _state;
+  Map _state;
 
   /// Redux constructor with default reducer and state
   ///
-  ///     Redux redux = Redux<MockState, MockAction>(reducer, MockState());
+  ///     Redux redux = Redux(reducer, {'value':1});
   ///
   Redux(this._reducer, this._state) {}
 
   /// state get current state
   ///
-  S get state => _state;
+  Map get state => _state;
 
   /// set current state
   ///
-  set state(S value) {
+  set state(Map value) {
     if (!kReleaseMode) {
       var s = toString(value);
       debugPrint('$_here~${STATE}set state=$s');
@@ -42,19 +41,17 @@ class Redux<S, A> {
 
   /// dispatch action and change state
   ///
-  ///     redux.dispatch(MockAction.Increment, 1);
+  ///     redux.dispatch(context, Increment(1));
   ///
-  Future<S> dispatch(BuildContext ctx, A action, dynamic payload) async {
+  Future<Map> dispatch(BuildContext context, dynamic action) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (kReleaseMode) {
-      _state = await _reducer(ctx, state, action, payload);
+      _state = await _reducer(context, state, action);
     } else {
       var jOld = toString(state);
-      var newState = await _reducer(ctx, state, action, payload);
+      var newState = await _reducer(context, state, action);
       var jNew = toString(newState);
-      var jAction = toString(action);
-      var jPayload = toString(payload);
-      debugPrint('$_here~${STATE}$jOld => $jAction $jPayload => $jNew');
+      debugPrint('$_here~${STATE}${action.runtimeType} $jNew $END<= $jOld');
       _state = newState;
     }
     return state;

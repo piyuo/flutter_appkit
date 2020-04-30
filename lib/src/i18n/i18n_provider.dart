@@ -1,32 +1,46 @@
 import 'dart:async';
 import 'package:libcli/pattern.dart';
-import 'package:libcli/src/i18n/i18n_state.dart';
-import 'package:libcli/src/i18n/i18n.dart' as i18n;
+import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/log.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/asset.dart' as asset;
+import 'dart:convert';
 
-class I18nProvider extends ReduxProvider<I18nState, dynamic> {
+class I18nProvider extends ReduxProvider {
   final String _fileName;
 
   final String package;
 
-  I18nProvider(this._fileName, {this.package})
-      : super(null, I18nState(Map<String, dynamic>()));
+  I18nProvider(this._fileName, {this.package}) : super(null, {});
 
   @override
   Future<void> load(BuildContext context) async {
     assert(_fileName != null, 'need page name');
-    assert(i18n.locale != null, "need I18nDelegate to localizationsDelegates");
+    assert(locale != null,
+        "please add I18nDelegate to app's localizationsDelegates");
     state = await getTranslation(_fileName, package: package);
   }
 
   String translate(String key) {
-    var value = state.translate(key);
+    var value = state[key];
     if (value == null) {
       alert(
-          'i18n~missing $key in assets/i18n/${i18n.languageCode}/${i18n.countryCode}/${_fileName}.json');
+          'i18n~missing $key in assets/i18n/${_fileName}_${languageCode}_${countryCode}.json');
       return '!!! $key not found';
     }
     return value;
   }
+}
+
+/// getTranslation load translation from assets/i18n
+///
+Future<Map> getTranslation(String filename, {String package}) async {
+  var localization = {};
+  if (filename != null && filename.isNotEmpty) {
+    String pageJson = await asset.loadJson(
+        'i18n/${languageCode}/${countryCode}/${filename}.json',
+        package: package);
+    localization = json.decode(pageJson);
+  }
+  return localization;
 }

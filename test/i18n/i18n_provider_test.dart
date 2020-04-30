@@ -12,6 +12,12 @@ void main() {
   setUp(() async {});
 
   group('[i18n_provider]', () {
+    test('should getTranslation', () async {
+      var translation = await getTranslation('any');
+      expect(translation, isNotNull);
+      expect(translation['a'], 'A');
+    });
+
     testWidgets('should load', (WidgetTester tester) async {
       locale = Locale('en', 'US');
       await tester.pumpWidget(MaterialApp(

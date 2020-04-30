@@ -6,32 +6,27 @@ void main() {
   MockRedux provider = MockRedux();
   group('[redux_provider]', () {
     test('should dispatch reducer', () async {
-      expect(provider.state.value, 0);
-      provider.dispatch(null, MockAction.Increment, 1);
-      expect(provider.state.value, 1);
+      expect(provider.state['value'], 0);
+      await provider.dispatch(null, Increment(1));
+      expect(provider.state['value'], 1);
     });
   });
 }
 
-class MockState {
-  int value = 0;
-  Map toJson() {
-    return {'value': value};
-  }
+class Increment {
+  final int value;
+  Increment(this.value);
 }
 
-enum MockAction { Increment }
-
-Future<MockState> reducer(BuildContext ctx, MockState state, MockAction action,
-    dynamic payload) async {
-  switch (action) {
-    case MockAction.Increment:
-      state.value += payload;
-      return state;
+Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
+  if (action is Increment) {
+    var state = Map.from(old);
+    state['value'] += action.value;
+    return state;
   }
-  return state;
+  return old;
 }
 
-class MockRedux extends ReduxProvider<MockState, MockAction> {
-  MockRedux() : super(reducer, MockState());
+class MockRedux extends ReduxProvider {
+  MockRedux() : super(reducer, {'value': 0});
 }

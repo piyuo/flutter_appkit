@@ -7,7 +7,7 @@ const _here = 'i18n_global';
 
 /// _global global translation
 ///
-var _global = Map<String, dynamic>();
+var _global = {};
 
 /// globalTranslate translate from global localization
 ///
@@ -37,7 +37,7 @@ Future<void> reloadGlobalTranslation(
       break;
   }
   var j = toString(_global);
-  debugPrint('$_here~localzation = $j');
+  debugPrint('$_here~globla localzation = $j');
 }
 /*
 Future<void> reloadGlobalTranslation(

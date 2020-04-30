@@ -4,40 +4,33 @@ import 'package:libcli/src/pattern/redux.dart';
 import 'package:flutter/material.dart';
 
 /// ReduxProvider implement AsyncProvicer and Redux
-abstract class ReduxProvider<S, A> extends AsyncProvider {
+abstract class ReduxProvider extends AsyncProvider {
   /// _redux instance
   ///
-  Redux<S, A> _redux;
+  Redux _redux;
 
   /// ReduxProvider constructor with default reducer and state
   ///
-  ///     MockRedux() : super(reducer, MockState());
-  ///
-  ReduxProvider(Reducer<S, A> reducer, S state) {
-    _redux = Redux<S, A>(reducer, state);
+  ReduxProvider(Reducer reducer, Map state) {
+    _redux = Redux(reducer, state);
   }
 
   /// state return current redux state
   ///
-  S get state => _redux.state;
+  Map get state => _redux.state;
 
   /// state set current redux state
   ///
-  set state(S value) => _redux.state = value;
+  set state(Map value) => _redux.state = value;
 
   /// dispatch action and change state
   ///
-  ///     redux.dispatch(MockAction.Increment, 1);
+  ///     redux.dispatch(context,Increment(1));
   ///
   @mustCallSuper
-  Future<S> dispatch(BuildContext ctx, A action, dynamic payload) async {
-    await _redux.dispatch(ctx, action, payload);
-    await onDispatch(ctx, action, payload);
+  Future<Map> dispatch(BuildContext ctx, dynamic action) async {
+    await _redux.dispatch(ctx, action);
     notifyListeners();
     return state;
   }
-
-  /// onDIspatch happen after dispatch
-  ///
-  Future<void> onDispatch(BuildContext ctx, A action, dynamic payload) async {}
 }

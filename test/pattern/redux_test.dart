@@ -7,28 +7,24 @@ void main() {
 
   group('[redux]', () {
     test('should dispatch', () async {
-      Redux redux = Redux<MockState, MockAction>(reducer, MockState());
-      expect(redux.state.value, 0);
-      await redux.dispatch(null, MockAction.Increment, 1);
-      expect(redux.state.value, 1);
+      Redux redux = Redux(reducer, {'value': 0});
+      expect(redux.state['value'], 0);
+      await redux.dispatch(null, Increment(1));
+      expect(redux.state['value'], 1);
     });
   });
 }
 
-class MockState {
-  int value = 0;
-  Map toJson() {
-    return {'value': value};
-  }
+class Increment {
+  final int value;
+  Increment(this.value);
 }
 
-enum MockAction { Increment }
-
-Future<MockState> reducer(BuildContext ctx, MockState state, MockAction action,
-    dynamic payload) async {
-  switch (action) {
-    case MockAction.Increment:
-      return state..value = state.value + payload;
+Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
+  if (action is Increment) {
+    var state = Map.from(old);
+    state['value'] += action.value;
+    return state;
   }
-  return state;
+  return old;
 }

@@ -8,59 +8,55 @@ void main() {
   group('[history_redux]', () {
     test('should dispatch', () async {
       HistoryRedux redux =
-          HistoryRedux<MockState, MockAction>(2, reducer, MockState());
-      expect(redux.state.value, 0);
-      await redux.dispatch(null, MockAction.Increment, 1);
-      expect(redux.state.value, 1);
+          HistoryRedux(reducer, {'value': 0}, historyLength: 2);
+      expect(redux.state['value'], 0);
+      await redux.dispatch(null, Increment(1));
+      expect(redux.state['value'], 1);
     });
 
     test('should undo', () async {
       HistoryRedux redux =
-          HistoryRedux<MockState, MockAction>(3, reducer, MockState());
-      await redux.dispatch(null, MockAction.Increment, 1);
-      await redux.dispatch(null, MockAction.Increment, 1);
-      expect(redux.state.value, 2);
+          HistoryRedux(reducer, {'value': 0}, historyLength: 3);
+      await redux.dispatch(null, Increment(1));
+      await redux.dispatch(null, Increment(1));
+      expect(redux.state['value'], 2);
       expect(redux.hasUndo, true);
       redux.undo();
-      expect(redux.state.value, 1);
+      expect(redux.state['value'], 1);
       redux.undo();
-      expect(redux.state.value, 0);
+      expect(redux.state['value'], 0);
       //nothing to undo
       redux.undo();
-      expect(redux.state.value, 0);
+      expect(redux.state['value'], 0);
     });
 
     test('should redo', () async {
       HistoryRedux redux =
-          HistoryRedux<MockState, MockAction>(3, reducer, MockState());
-      await redux.dispatch(null, MockAction.Increment, 1);
-      await redux.dispatch(null, MockAction.Increment, 1);
+          HistoryRedux(reducer, {'value': 0}, historyLength: 3);
+      await redux.dispatch(null, Increment(1));
+      await redux.dispatch(null, Increment(1));
       redux.undo();
-      expect(redux.state.value, 1);
+      expect(redux.state['value'], 1);
       expect(redux.hasRedo, true);
       redux.redo();
-      expect(redux.state.value, 2);
+      expect(redux.state['value'], 2);
       //nothing to redo
       redux.redo();
-      expect(redux.state.value, 2);
+      expect(redux.state['value'], 2);
     });
   });
 }
 
-class MockState {
-  int value = 0;
-  Map toJson() {
-    return {'value': value};
-  }
+class Increment {
+  final int value;
+  Increment(this.value);
 }
 
-enum MockAction { Increment }
-
-Future<MockState> reducer(BuildContext ctx, MockState state, MockAction action,
-    dynamic payload) async {
-  switch (action) {
-    case MockAction.Increment:
-      return MockState()..value = state.value + payload;
+Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
+  if (action is Increment) {
+    var state = Map.from(old);
+    state['value'] += action.value;
+    return state;
   }
-  return state;
+  return old;
 }
