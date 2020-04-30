@@ -112,7 +112,9 @@ class HistoryRedux {
       var jOld = toString(state);
       var newState = await _reducer(ctx, state, action);
       var jNew = toString(newState);
-      debugPrint('$_here~${STATE}${action.runtimeType} $jNew $END<= $jOld');
+      var payload = toString(action);
+      debugPrint(
+          '$_here~${STATE}action: ${action.runtimeType}{$payload}, state: $jNew $END<= $jOld');
       _setState(newState);
     }
     return state;

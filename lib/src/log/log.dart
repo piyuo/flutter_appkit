@@ -215,9 +215,12 @@ bool isLineUsable(String line) {
 ///
 ///     toString(state);
 ///
-String toString(dynamic d) {
-  try {
-    return json.encode(d);
-  } catch (_) {}
-  return '${d.toString()}';
+String toString(dynamic value) {
+  if (value != null) {
+    var text = value.toString().replaceAll('\n', '');
+    if (text.indexOf('Instance of') == -1) {
+      return text;
+    }
+  }
+  return '';
 }

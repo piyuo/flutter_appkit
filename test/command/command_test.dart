@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command.dart' as command;
+import 'package:libcli/log.dart';
 import 'package:libcli/configuration.dart' as configuration;
 import '../mock.dart';
 import '../mock/protobuf/sys_service.pb.dart';
@@ -10,6 +12,7 @@ import '../mock/protobuf/echo_request.pbserver.dart';
 
 void main() {
   command.mockCommand();
+  debugPrint = overrideDebugPrint;
 
   setUp(() {});
 
@@ -25,8 +28,8 @@ void main() {
 
       await tester.inWidget((ctx) async {
         SysService service = SysService();
-        var response =
-            await service.executeWithClient(ctx, EchoRequest(), client);
+        var response = await service.executeWithClient(
+            ctx, EchoAction()..text = 'hello', client);
         if (response is StringResponse) {
           expect(response, isNotNull);
           expect(response.text, 'hi');
@@ -44,7 +47,7 @@ void main() {
       await tester.inWidget((ctx) async {
         SysService service = SysService();
         var response =
-            await service.executeWithClient(ctx, EchoRequest(), client);
+            await service.executeWithClient(ctx, EchoAction(), client);
         expect(response, isNull);
       });
     });
@@ -52,7 +55,7 @@ void main() {
     test('should return null when send wrong action to test server', () async {
       configuration.branch = configuration.Branches.test;
       SysService service = SysService();
-      EchoRequest action = new EchoRequest();
+      EchoAction action = new EchoAction();
       var response = await service.execute(null, action);
       expect(response, null);
     });
@@ -62,7 +65,7 @@ void main() {
         return StringResponse()..text = 'hi';
       });
 
-      EchoRequest action = new EchoRequest();
+      EchoAction action = new EchoAction();
       var response = await service.execute(null, action);
       if (response is StringResponse) {
         expect(response.text, 'hi');
@@ -76,7 +79,7 @@ void main() {
         return command.ok();
       });
 
-      EchoRequest action = new EchoRequest();
+      EchoAction action = new EchoAction();
       var response = await service.execute(null, action);
       if (response is command.Err) {
         expect(response.code, command.OK);

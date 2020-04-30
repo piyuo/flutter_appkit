@@ -7,22 +7,22 @@ void main() {
   var service = SysService();
   group('[command_protobuf_test]', () {
     test('should encode ProtoObject', () {
-      EchoRequest echoAction = EchoRequest();
+      EchoAction echoAction = EchoAction();
       echoAction.text = 'hi';
       List<int> bytes = command.encode(echoAction);
       expect(bytes.length, 6);
     });
 
     test('should decode ProtoObject', () {
-      EchoRequest echoAction = EchoRequest();
+      EchoAction echoAction = EchoAction();
       echoAction.text = 'hi';
       List<int> bytes = command.encode(echoAction);
-      EchoRequest decodeAction = command.decode(bytes, service);
+      EchoAction decodeAction = command.decode(bytes, service);
       expect(decodeAction.text, 'hi');
     });
 
     test('should decode fail when id is wrong', () {
-      EchoRequest echoAction = EchoRequest();
+      EchoAction echoAction = EchoAction();
       echoAction.text = 'hi';
       List<int> bytes = command.encode(echoAction);
       bytes[bytes.length - 1] = 255;

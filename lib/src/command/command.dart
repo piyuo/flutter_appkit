@@ -71,11 +71,7 @@ abstract class Service {
 
   /// execute action to remote service, no need to handle exception, all exception contract to eventBus
   ///
-  ///     service.execute(EchoRequest()).then((response) {
-  ///       if(response.ok){
-  ///         print(response.data);
-  ///       };
-  ///     });
+  ///     var response = await service.execute(EchoAction());
   Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj) async {
     assert(url != null && url.length > 0);
     assert(obj != null);
@@ -85,19 +81,21 @@ abstract class Service {
 
   /// executehWithClient send action to remote service,return object if success, return null if exception happen
   ///
-  ///     var response = await service.executehWithClient(client, EchoRequest());
+  ///     var response = await service.executehWithClient(client, EchoAction());
   Future<ProtoObject> executeWithClient(
       BuildContext ctx, ProtoObject obj, http.Client client) async {
     try {
       var jsonSent = log.toString(obj);
-      debugPrint('$_here~execute ${obj.runtimeType}$jsonSent to $url');
+      debugPrint(
+          '$_here~${log.STATE}execute ${obj.runtimeType}{$jsonSent}${log.END} to $url');
       Uint8List bytes = encode(obj);
       List<int> ret =
           await post(ctx, client, url, bytes, timeout, slow, errorHandler);
       if (ret != null) {
         ProtoObject retObj = decode(ret, this);
         var jsonReturn = log.toString(retObj);
-        debugPrint('$_here~got ${retObj.runtimeType}$jsonReturn from $url');
+        debugPrint(
+            '$_here~${log.STATE}got ${retObj.runtimeType}{$jsonReturn}${log.END} from $url');
         return retObj;
       }
     } catch (e, s) {

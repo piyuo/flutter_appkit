@@ -11,7 +11,7 @@ class SysService extends command.Service {
   command.ProtoObject newObjectByID(int id, List<int> l) {
     switch (id) {
       case 9001:
-        return EchoRequest.fromBuffer(l);
+        return EchoAction.fromBuffer(l);
       case 1002:
         return StringResponse.fromBuffer(l);
     }

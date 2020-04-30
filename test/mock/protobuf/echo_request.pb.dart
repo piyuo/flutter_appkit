@@ -11,7 +11,7 @@ import 'package:libcli/command.dart' as command;
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class EchoRequest extends command.ProtoObject {
+class EchoAction extends command.ProtoObject {
   $core.int mapIdXXX() {
     return 9001;
   }
@@ -22,24 +22,24 @@ class EchoRequest extends command.ProtoObject {
         ..a<Int64>(2, 'like64', $pb.PbFieldType.OU6, defaultOrMaker: Int64.ZERO)
         ..hasRequiredFields = false;
 
-  EchoRequest._() : super();
-  factory EchoRequest() => create();
-  factory EchoRequest.fromBuffer($core.List<$core.int> i,
+  EchoAction._() : super();
+  factory EchoAction() => create();
+  factory EchoAction.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory EchoRequest.fromJson($core.String i,
+  factory EchoAction.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  EchoRequest clone() => EchoRequest()..mergeFromMessage(this);
-  EchoRequest copyWith(void Function(EchoRequest) updates) =>
-      super.copyWith((message) => updates(message as EchoRequest));
+  EchoAction clone() => EchoAction()..mergeFromMessage(this);
+  EchoAction copyWith(void Function(EchoAction) updates) =>
+      super.copyWith((message) => updates(message as EchoAction));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static EchoRequest create() => EchoRequest._();
-  EchoRequest createEmptyInstance() => create();
-  static $pb.PbList<EchoRequest> createRepeated() => $pb.PbList<EchoRequest>();
-  static EchoRequest getDefault() => _defaultInstance ??= create()..freeze();
-  static EchoRequest _defaultInstance;
+  static EchoAction create() => EchoAction._();
+  EchoAction createEmptyInstance() => create();
+  static $pb.PbList<EchoAction> createRepeated() => $pb.PbList<EchoAction>();
+  static EchoAction getDefault() => _defaultInstance ??= create()..freeze();
+  static EchoAction _defaultInstance;
 
   $core.String get text => $_getS(0, '');
   set text($core.String v) {
