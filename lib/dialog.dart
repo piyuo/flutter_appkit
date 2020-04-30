@@ -1,6 +1,5 @@
 library dialog;
 
-export 'package:libcli/src/dialog/playground/dialog_playground.dart';
 export 'package:libcli/src/dialog/dialog.dart';
 export 'package:libcli/src/dialog/dialog_alert.dart';
 export 'package:libcli/src/dialog/dialog_error.dart';
