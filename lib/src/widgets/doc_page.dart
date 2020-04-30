@@ -46,7 +46,7 @@ class DocWidget extends StatelessWidget {
               bottom: 8,
               child: CupertinoButton(
                   //color: Theme.of(context).accentColor,
-                  child: Text('close'.i18n_),
+                  child: Text('back'.i18n_),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
