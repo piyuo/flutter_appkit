@@ -58,10 +58,9 @@ void main() {
     });
 
     test('should mock execute', () async {
-      SysService service = SysService();
-      service.mockExecute = (ctx, obj) async {
+      var service = command.MockService((ctx, action) {
         return StringResponse()..text = 'hi';
-      };
+      });
 
       EchoRequest action = new EchoRequest();
       var response = await service.execute(null, action);
@@ -73,10 +72,9 @@ void main() {
     });
 
     test('should use shared object', () async {
-      SysService service = SysService();
-      service.mockExecute = (ctx, obj) async {
-        return command.Err()..code = '';
-      };
+      command.MockService service = command.MockService((_, action) {
+        return command.ok();
+      });
 
       EchoRequest action = new EchoRequest();
       var response = await service.execute(null, action);

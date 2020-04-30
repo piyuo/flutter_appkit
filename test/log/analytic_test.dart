@@ -3,16 +3,14 @@ import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/log.dart';
-import 'package:libcli/commands_sys.dart' as commandsSys;
 
 const _here = 'analytic_test';
 
 void main() {
   setUp(() async {
-    analytic.sysService = commandsSys.SysService()
-      ..mockExecute = (ctx, act) async {
-        return command.Err()..code = command.OK;
-      };
+    analytic.sysService = command.MockService((ctx, act) {
+      return command.ok();
+    });
   });
 
   group('[analytic]', () {

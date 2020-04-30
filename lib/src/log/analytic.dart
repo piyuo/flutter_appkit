@@ -6,14 +6,14 @@ import 'package:libcli/commands_sys.dart' as commandsSys;
 
 commandsSys.SendAnalyticAction _current = commandsSys.SendAnalyticAction();
 
-commandsSys.SysService _sysService;
+command.Service _sysService;
 
 @visibleForTesting
-set sysService(commandsSys.SysService service) {
+set sysService(command.Service service) {
   _sysService = service;
 }
 
-commandsSys.SysService get sysService {
+command.Service get sysService {
   if (_sysService == null) {
     _sysService = commandsSys.SysService()..ignoreError = true;
   }
