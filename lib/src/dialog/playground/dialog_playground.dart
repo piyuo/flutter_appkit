@@ -18,6 +18,12 @@ class DialogPlayground extends StatelessWidget {
                       dialog.hint(context, 'dialog closed');
                     }),
                 RaisedButton(
+                    child: Text('error'),
+                    onPressed: () async {
+                      await dialog.error(context, 'error code');
+                      dialog.hint(context, 'dialog closed');
+                    }),
+                RaisedButton(
                     child: Text('hint'),
                     onPressed: () {
                       dialog.hint(context, 'your network is slow than usual',
