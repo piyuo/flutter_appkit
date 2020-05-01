@@ -24,10 +24,16 @@ bool isOK(dynamic response) {
   return response is Err && response.code.isEmpty;
 }
 
-/// ok return ok Err object
+/// ok return Err with OK
 ///
 Err ok() {
   return Err()..code = OK;
+}
+
+/// error return Err with error code
+///
+Err error(String errorCode) {
+  return Err()..code = errorCode;
 }
 
 /// communicate with server with command using ajax,protobuf and command pattern
