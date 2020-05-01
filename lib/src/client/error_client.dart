@@ -61,11 +61,11 @@ void diskErrorException(BuildContext context, dynamic e, StackTrace s) {
 @visibleForTesting
 void listened(BuildContext context, dynamic e) {
   if (e is command.InternalServerErrorEvent) {
-    alertError(context, '500 Internal Server Error');
+    dialog.alert(context, '500 internal server error');
   } else if (e is command.ServerNotReadyEvent) {
-    alertError(context, '501 Server Not Ready');
+    dialog.alert(context, '501 server not ready');
   } else if (e is command.BadRequestEvent) {
-    alertError(context, '400 Bad Request');
+    dialog.alert(context, '400 bad request');
   } else if (e is command.SlowNetworkEvent) {
     toastSlowNetwork(context);
   } else if (e is command.RequestTimeoutContract) {
@@ -87,7 +87,7 @@ void listened(BuildContext context, dynamic e) {
 void alertTimeout(
     BuildContext context, command.RequestTimeoutContract contract) {
   String errorCode =
-      contract.isServer ? '504 Deadline Exceeded' : '408 Request Timeout';
+      contract.isServer ? '504 deadline exceeded' : '408 request timeout';
   dialog.show(
       context,
       dialog.DialogTimeout(dialog.DialogTimeoutOptions(
@@ -101,23 +101,13 @@ void alertTimeout(
       )));
 }
 
-///alertError show error dialog with error code
-///
-void alertError(BuildContext context, String errorCode) {
-  dialog.show(
-      context,
-      dialog.DialogError(
-        errorCode: errorCode,
-      ));
-}
-
 ///internetRequired happen when socket exception
 ///
 void internetRequired(
     BuildContext context, command.InternetRequiredContract contract) async {
   if (await contract.isInternetConnected()) {
     if (await contract.isGoogleCloudFunctionAvailable()) {
-      alertError(context, 'Service Not Available');
+      dialog.error(context, 'service not available');
     } else {
       dialog.show(context, dialog.DialogBlockedInternet());
     }

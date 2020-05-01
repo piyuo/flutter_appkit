@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:libcli/src/dialog/dialog_error.dart';
 import 'package:libcli/src/dialog/dialog_alert.dart';
 import 'package:libcli/src/dialog/dialog_choice.dart';
 import 'package:libcli/src/dialog/message_toast.dart';
@@ -90,4 +91,14 @@ Future confirm(BuildContext context, String message,
               )
             ],
           ));
+}
+
+///error show error dialog with error code
+///
+void error(BuildContext context, String errorCode) {
+  show(
+      context,
+      DialogError(
+        errorCode: errorCode,
+      ));
 }
