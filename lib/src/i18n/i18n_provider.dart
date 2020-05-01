@@ -38,7 +38,7 @@ Future<Map> getTranslation(String filename, {String package}) async {
   var localization = {};
   if (filename != null && filename.isNotEmpty) {
     String pageJson = await asset.loadJson(
-        'i18n/${languageCode}/${countryCode}/${filename}.json',
+        'i18n/${filename}_${languageCode}_${countryCode}.json',
         package: package);
     localization = json.decode(pageJson);
   }
