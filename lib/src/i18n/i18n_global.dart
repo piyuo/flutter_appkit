@@ -69,6 +69,7 @@ void _en_US() {
   _global['emailAdr'] = 'email address';
   _global['domain'] = 'domain name';
   _global['url'] = 'url';
+  _global['enterYour'] = 'Enter your ';
 }
 
 void _zh_TW() {
@@ -88,6 +89,7 @@ void _zh_TW() {
   _global['emailAdr'] = '電子郵件地址';
   _global['domain'] = '域名';
   _global['url'] = '網址';
+  _global['enterYour'] = '輸入你的';
 }
 
 void _zh_CN() {
@@ -107,4 +109,5 @@ void _zh_CN() {
   _global['emailAdr'] = '电子邮件地址';
   _global['domain'] = '域名';
   _global['url'] = '网址';
+  _global['enterYour'] = '输入你的';
 }
