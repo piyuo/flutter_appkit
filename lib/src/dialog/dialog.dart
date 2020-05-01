@@ -42,7 +42,7 @@ void toast(BuildContext context, Widget child) {
 }
 
 Future alert(BuildContext context, String message,
-    {String title, Color color, IconData icon}) async {
+    {String title, Color color, IconData icon}) {
   var alert = DialogAlert(
     title: title,
     message: message,
@@ -57,11 +57,7 @@ void hint(BuildContext context, String message, {Color color, IconData icon}) {
 }
 
 Future choice(BuildContext context, String message,
-    {String ok,
-    String cancel,
-    String title,
-    Color color,
-    IconData icon}) async {
+    {String ok, String cancel, String title, Color color, IconData icon}) {
   var alert = DialogChoice(
       title: title,
       message: message,
@@ -73,7 +69,7 @@ Future choice(BuildContext context, String message,
 }
 
 Future confirm(BuildContext context, String message,
-    {String ok, String cancel, String title}) async {
+    {String ok, String cancel, String title}) {
   return showDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
@@ -95,8 +91,8 @@ Future confirm(BuildContext context, String message,
 
 ///error show error dialog with error code
 ///
-void error(BuildContext context, String errorCode) {
-  show(
+Future error(BuildContext context, String errorCode) {
+  return show(
       context,
       DialogError(
         errorCode: errorCode,
