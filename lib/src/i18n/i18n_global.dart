@@ -37,7 +37,7 @@ Future<void> reloadGlobalTranslation(
       break;
   }
   var j = toString(_global);
-  debugPrint('$_here~globla localzation = $j');
+  debugPrint('$_here~global localzation = $j');
 }
 /*
 Future<void> reloadGlobalTranslation(
