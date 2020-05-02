@@ -38,7 +38,7 @@ void watchError(Function suspect, {Function callback}) {
 @visibleForTesting
 void logAndThrow(BuildContext context, dynamic e, StackTrace s,
     {String errorCode}) {
-  log.error(_here, 'caught $e', s);
+  log.error(_here, e, s);
   catched(context, e, s);
 }
 
