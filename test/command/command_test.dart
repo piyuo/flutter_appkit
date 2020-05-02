@@ -61,7 +61,7 @@ void main() {
     });
 
     test('should mock execute', () async {
-      var service = command.MockService((ctx, action) {
+      var service = command.MockService((ctx, action) async {
         return StringResponse()..text = 'hi';
       });
 
@@ -75,7 +75,7 @@ void main() {
     });
 
     test('should use shared object', () async {
-      command.MockService service = command.MockService((_, action) {
+      command.MockService service = command.MockService((_, action) async {
         return command.ok();
       });
 

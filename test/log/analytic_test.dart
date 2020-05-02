@@ -8,7 +8,7 @@ const _here = 'analytic_test';
 
 void main() {
   setUp(() async {
-    analytic.sysService = command.MockService((ctx, act) {
+    analytic.sysService = command.MockService((ctx, act) async {
       return command.ok();
     });
   });

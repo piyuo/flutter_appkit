@@ -4,7 +4,7 @@ import 'package:libcli/command.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
-typedef ProtoObject MockExecute(BuildContext ctx, ProtoObject obj);
+typedef Future<ProtoObject> MockExecute(BuildContext ctx, ProtoObject obj);
 
 /// MockService let you mock service with your own execute function
 ///
@@ -22,6 +22,6 @@ class MockService extends Service {
 
   @override
   Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj) async {
-    return mockExecute(ctx, obj);
+    return await mockExecute(ctx, obj);
   }
 }
