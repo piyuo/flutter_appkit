@@ -138,7 +138,7 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
     if (r.errorHandler != null) {
       return emmitError(r);
     }
-    log.error(_here, 'unhandle exception ${r.url} cause $e', s);
+    log.error(_here, 'caught $e, url: ${r.url}', s);
     log.sendToGlobalExceptionHanlder(ctx, e, s);
     return null;
   }

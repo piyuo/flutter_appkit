@@ -17,7 +17,7 @@ const _here = 'error_client';
 void watchError(Function suspect, {Function callback}) {
   log.globalExceptionHandler = catched;
 
-  FlutterError.onError = (FlutterErrorDetails details) => catched(
+  FlutterError.onError = (FlutterErrorDetails details) => logAndThrow(
         dialog.rootContext,
         details.exception,
         details.stack,
@@ -26,13 +26,20 @@ void watchError(Function suspect, {Function callback}) {
   runZonedGuarded<Future<void>>(() async {
     suspect();
   },
-      (Object e, StackTrace stack) => catched(
+      (Object e, StackTrace stack) => logAndThrow(
             dialog.rootContext,
             e,
             stack,
           ));
 
   eventbus.listen(_here, listened);
+}
+
+@visibleForTesting
+void logAndThrow(BuildContext context, dynamic e, StackTrace s,
+    {String errorCode}) {
+  log.error(_here, 'caught $e', s);
+  catched(context, e, s);
 }
 
 @visibleForTesting
