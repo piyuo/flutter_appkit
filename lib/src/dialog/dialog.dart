@@ -6,6 +6,8 @@ import 'package:libcli/src/dialog/dialog_choice.dart';
 import 'package:libcli/src/dialog/message_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:libcli/i18n.dart';
+import 'package:libcli/src/dialog/popup.dart';
+import 'package:libcli/src/dialog/popup_menu.dart';
 
 final navigatorKey = new GlobalKey<NavigatorState>();
 
@@ -97,4 +99,50 @@ Future error(BuildContext context, String errorCode) {
       DialogError(
         errorCode: errorCode,
       ));
+}
+
+tip(
+  BuildContext context,
+  String text, {
+  Function(MenuItem) onPressed,
+  GlobalKey targetKey,
+}) {
+  double width = 130;
+  double height = 160;
+  var len = text.length;
+  if (len > 50) {
+    width = 160;
+    height = 200;
+  }
+  if (len > 160) {
+    width = 180;
+    height = 240;
+  }
+
+  var popup = Popup(
+    context,
+    child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(12),
+        child: Text(text, style: TextStyle(color: Colors.white))),
+    itemWidth: width,
+    itemHeight: height,
+    backgroundColor: Colors.blue,
+  );
+
+  popup.show(widgetKey: targetKey);
+}
+
+void menu(
+  BuildContext context, {
+  List<MenuItem> items,
+  Function(MenuItem) onPressed,
+  GlobalKey targetKey,
+}) {
+  var menu = PopupMenu(
+    context,
+    items: items,
+    onClickMenu: onPressed,
+  );
+  menu.show(widgetKey: targetKey);
 }

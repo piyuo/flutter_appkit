@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:libcli/src/dialog/dialog.dart' as dialog;
+import 'package:libcli/dialog.dart' as dialog;
 
 class DialogPlayground extends StatelessWidget {
+  GlobalKey btnKey = GlobalKey();
+  GlobalKey btnKey2 = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +68,53 @@ class DialogPlayground extends StatelessWidget {
                           dialog.hint(context, 'close');
                           break;
                       }
+                    }),
+                RaisedButton(
+                    key: btnKey,
+                    child: Text('pop text'),
+                    onPressed: () async {
+                      dialog.tip(
+                          context,
+                          //'you can mark your computer or mobile device as trusted. With trusted computers and devices, you don’t need to enter a verification code each time you sign in',
+                          '您可以將計算機或移動設備標記為受信任。 使用受信任的計算機和設備，您無需每次登錄都輸入驗證碼。',
+                          targetKey: btnKey);
+                    }),
+                RaisedButton(
+                    key: btnKey2,
+                    child: Text('pop menu'),
+                    onPressed: () async {
+                      dialog.menu(context, items: [
+                        dialog.MenuItem(
+                            id: 'home',
+                            title: 'Home',
+                            widget: Icon(
+                              Icons.home,
+                              color: Colors.white,
+                            )),
+                        dialog.MenuItem(
+                            id: 'mail',
+                            title: 'Mail',
+                            widget: Icon(
+                              Icons.mail,
+                              color: Colors.white,
+                            )),
+                        dialog.MenuItem(
+                            id: 'power',
+                            title: 'Power',
+                            widget: Icon(
+                              Icons.power,
+                              color: Colors.white,
+                            )),
+                        dialog.MenuItem(
+                            id: 'setting',
+                            title: 'Setting',
+                            widget: Icon(
+                              Icons.settings,
+                              color: Colors.white,
+                            )),
+                      ], onPressed: (item) {
+                        print('${item.id} clicked');
+                      }, targetKey: btnKey2);
                     }),
               ],
             ),

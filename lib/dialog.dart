@@ -8,3 +8,4 @@ export 'package:libcli/src/dialog/dialog_blocked_internet.dart';
 export 'package:libcli/src/dialog/dialog_disk_error.dart';
 export 'package:libcli/src/dialog/dialog_timeout.dart';
 export 'package:libcli/src/dialog/dialog_overlay.dart';
+export 'package:libcli/src/dialog/popup_menu.dart';
