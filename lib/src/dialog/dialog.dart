@@ -106,6 +106,7 @@ tip(
   String text, {
   Function(MenuItem) onPressed,
   GlobalKey targetKey,
+  Rect rect,
 }) {
   double width = 130;
   double height = 160;
@@ -130,7 +131,7 @@ tip(
     backgroundColor: Colors.blue,
   );
 
-  popup.show(widgetKey: targetKey);
+  popup.show(widgetKey: targetKey, rect: rect);
 }
 
 void menu(
