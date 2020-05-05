@@ -7,6 +7,8 @@ const double _TOAST_HEIGHT = 160;
 class MessageToast extends StatelessWidget {
   final String message;
 
+  final Color color;
+
   final Color backgroundColor;
 
   final IconData icon;
@@ -14,6 +16,7 @@ class MessageToast extends StatelessWidget {
   MessageToast({
     @required this.message,
     this.backgroundColor,
+    this.color,
     this.icon,
   });
 
@@ -28,7 +31,7 @@ class MessageToast extends StatelessWidget {
           ),
           child: DecoratedBox(
               decoration: BoxDecoration(
-                  color: backgroundColor ?? Colors.black.withOpacity(0.6)),
+                  color: backgroundColor ?? Colors.black.withOpacity(0.85)),
               child: Padding(
                   padding: EdgeInsets.all(16),
                   child: Wrap(
@@ -39,7 +42,7 @@ class MessageToast extends StatelessWidget {
                               child: Icon(
                                 icon,
                                 size: 60.0,
-                                color: Colors.white,
+                                color: color ?? Colors.white,
                               ))
                           : SizedBox(),
                       SizedBox(
