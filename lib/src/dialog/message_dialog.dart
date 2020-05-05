@@ -103,7 +103,7 @@ class MessageDialog extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                   child: AutoSizeText(
                     message ?? '',
-                    maxLines: 4,
+                    maxLines: 5,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey[800],
