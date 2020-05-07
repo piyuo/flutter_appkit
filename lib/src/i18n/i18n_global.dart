@@ -70,6 +70,7 @@ void _en_US() {
   _global['domain'] = 'domain name';
   _global['url'] = 'url';
   _global['enterYour'] = 'Enter your ';
+  _global['minLenth'] = 'must contain at least %1 character';
 }
 
 void _zh_TW() {
@@ -90,6 +91,7 @@ void _zh_TW() {
   _global['domain'] = '域名';
   _global['url'] = '網址';
   _global['enterYour'] = '輸入你的';
+  _global['minLenth'] = '必須至少包含 %1 個字元';
 }
 
 void _zh_CN() {
@@ -110,4 +112,5 @@ void _zh_CN() {
   _global['domain'] = '域名';
   _global['url'] = '网址';
   _global['enterYour'] = '输入你的';
+  _global['minLenth'] = '必须至少包含 %1 个字元';
 }
