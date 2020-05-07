@@ -4,7 +4,6 @@ import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/log.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/asset.dart' as asset;
-import 'dart:convert';
 
 class I18nProvider extends ReduxProvider {
   final String _fileName;
@@ -37,10 +36,9 @@ class I18nProvider extends ReduxProvider {
 Future<Map> getTranslation(String filename, {String package}) async {
   var localization = {};
   if (filename != null && filename.isNotEmpty) {
-    String pageJson = await asset.loadJson(
+    localization = await asset.loadMap(
         'i18n/${filename}_${languageCode}_${countryCode}.json',
         package: package);
-    localization = json.decode(pageJson);
   }
   return localization;
 }
