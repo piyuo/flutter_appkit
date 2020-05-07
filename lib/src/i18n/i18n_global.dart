@@ -69,8 +69,8 @@ void _en_US() {
   _global['emailAdr'] = 'email address';
   _global['domain'] = 'domain name';
   _global['url'] = 'url';
-  _global['enterYour'] = 'Enter your ';
-  _global['minLenth'] = 'must contain at least %1 character';
+  _global['enterYour'] = 'Enter your %1';
+  _global['minLenth'] = '%1 must contain at least %2 character';
 }
 
 void _zh_TW() {
@@ -90,8 +90,8 @@ void _zh_TW() {
   _global['emailAdr'] = '電子郵件地址';
   _global['domain'] = '域名';
   _global['url'] = '網址';
-  _global['enterYour'] = '輸入你的';
-  _global['minLenth'] = '必須至少包含 %1 個字元';
+  _global['enterYour'] = '輸入你的%1';
+  _global['minLenth'] = '%1必須至少包含 %2 個字元';
 }
 
 void _zh_CN() {
@@ -111,6 +111,6 @@ void _zh_CN() {
   _global['emailAdr'] = '电子邮件地址';
   _global['domain'] = '域名';
   _global['url'] = '网址';
-  _global['enterYour'] = '输入你的';
-  _global['minLenth'] = '必须至少包含 %1 个字元';
+  _global['enterYour'] = '输入你的%1';
+  _global['minLenth'] = '%1必须至少包含 %2 个字元';
 }
