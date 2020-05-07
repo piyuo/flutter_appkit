@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 
 const _here = 'assets';
 
@@ -58,6 +59,20 @@ Future<String> loadJson(String assetName,
     return json;
   }
   return '{}';
+}
+
+/// loadMap return map if asset exist, return empty json if not found.
+///
+/// using context to load asset from context
+///
+///  using package to load asset from packages
+///
+///     Map map = await assets.loadMap('i18n/en/US/global.json');
+///
+Future<Map> loadMap(String assetName,
+    {BuildContext context, String package}) async {
+  String text = await loadJson(assetName, context: context, package: package);
+  return json.decode(text);
 }
 
 /// mockAssets Initializes the value for testing

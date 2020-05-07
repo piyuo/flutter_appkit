@@ -23,6 +23,12 @@ void main() {
       expect(obj, isNotNull);
     });
 
+    test('should load map', () async {
+      asset.mockAssetsByString('{}');
+      Map map = await asset.loadMap('');
+      expect(map, isNotNull);
+    });
+
     test('should load string in package', () async {
       String text =
           await asset.loadString('i18n/dialog_en_US.json', package: 'libcli');
