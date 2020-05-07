@@ -45,20 +45,27 @@ void logAndThrow(BuildContext context, dynamic e, StackTrace s,
 @visibleForTesting
 void catched(BuildContext context, dynamic e, StackTrace s,
     {String errorCode}) {
-  if (e is log.DiskErrorException) {
+  if (e is AssertionError) {
+    //don't do anything, assertion only happen in development
+    return;
+  } else if (e is log.DiskErrorException) {
     diskErrorException(context, e, s);
     return;
   }
 
-  dialog.show(
-      context,
-      dialog.DialogError(
-          errorCode: errorCode ?? e.toString(),
-          onEmailLinkPressed: () {
-            ErrorEmailBuilder()
-              ..addException(null, e, log.beautyStack(s))
-              ..launchMailTo();
-          }));
+  try {
+    dialog.show(
+        context,
+        dialog.DialogError(
+            errorCode: errorCode ?? e.toString(),
+            onEmailLinkPressed: () {
+              ErrorEmailBuilder()
+                ..addException(null, e, log.beautyStack(s))
+                ..launchMailTo();
+            }));
+  } catch (e, stacktrace) {
+    log.error(_here, e, stacktrace);
+  }
 }
 
 void diskErrorException(BuildContext context, dynamic e, StackTrace s) {
