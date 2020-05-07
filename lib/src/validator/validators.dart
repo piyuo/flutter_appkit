@@ -71,6 +71,46 @@ String domainNameValidator(String input) {
   );
 }
 
+/// subDomainNameRegexp regexp use to validate domain name
+///
+RegExp subDomainNameRegexp() {
+  return RegExp(
+      r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9]))+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]");
+}
+
+/// domainNameValidator validate input string is domain name, return error message when input not valid, other return null
+///
+///     String error = domainNameValidator('johndoe@domain.com');
+///
+String subDomainNameValidator(String input) {
+  return regexpValidator(
+    input,
+    subDomainNameRegexp(),
+    'domain'.i18n_,
+    'your-name',
+  );
+}
+
+/// nameRegexp regexp use to validate name, charchter and space only
+///
+RegExp noSymbolRegexp() {
+  //return RegExp(r"^[^*|\":<>[\]{}`\\()';@&$]+$");
+  return RegExp(r"""^[^*|\":<>[\]{}`\\()';!@#%^*?&$.~,]+$""");
+}
+
+/// nameValidator validate input string is character and space only, return error message when input not valid, other return null
+///
+///     String error = domainNameValidator('johndoe@domain.com');
+///
+String noSymbolValidator(String input) {
+  return regexpValidator(
+    input,
+    noSymbolRegexp(),
+    'domain'.i18n_,
+    'your-name',
+  );
+}
+
 /// urlRegexp regexp use to validate url
 ///
 RegExp urlRegexp() {
