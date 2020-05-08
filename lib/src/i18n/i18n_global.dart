@@ -36,20 +36,8 @@ Future<void> reloadGlobalTranslation(
       _en_US();
       break;
   }
-  var j = toString(_global);
-  debugPrint('$_here~global localzation = $j');
+  debugPrint('$_here~globalTranslation=${i18n.localeID}');
 }
-/*
-Future<void> reloadGlobalTranslation(
-    String languageCode, String countryCode) async {
-  String libJson = await asset.loadJson(
-      'i18n/$languageCode/$countryCode/global.json',
-      package: 'libcli');
-  _globalLocalization = json.decode(libJson);
-  var j = toString(_globalLocalization);
-  debugPrint('$_here~global localzation = $j');
-}
-*/
 
 void _en_US() {
   _global['errTitle'] = 'Oops, some thing went wrong';
