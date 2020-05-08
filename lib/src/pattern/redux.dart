@@ -72,7 +72,7 @@ String diffState(Map newState, Map oldState) {
       text += diffState(newValue, oldValue);
     } else {
       if (newValue != oldValue) {
-        text += '$key=$newValue<-$oldValue, ';
+        text += '$key=$RED$newValue$END<-$oldValue, ';
       }
     }
   }
