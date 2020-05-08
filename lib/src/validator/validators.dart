@@ -74,8 +74,7 @@ String domainNameValidator(String input) {
 /// subDomainNameRegexp regexp use to validate domain name
 ///
 RegExp subDomainNameRegexp() {
-  return RegExp(
-      r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9]))+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]");
+  return RegExp(r"^[a-zA-Z0-9-]*[a-zA-Z0-9]$");
 }
 
 /// domainNameValidator validate input string is domain name, return error message when input not valid, other return null

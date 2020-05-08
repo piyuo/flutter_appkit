@@ -35,7 +35,7 @@ void main() {
     });
 
     test('should validate sub domain name', () async {
-      String error = validator.subDomainNameValidator('abcde');
+      String error = validator.subDomainNameValidator('a');
       expect(error, isNull);
       error = validator.subDomainNameValidator('ab-cde');
       expect(error, isNull);
@@ -50,7 +50,7 @@ void main() {
       error = validator.subDomainNameValidator('中');
       expect(error, isNotNull);
       error = validator.subDomainNameValidator('123');
-      expect(error, isNotNull);
+      expect(error, isNull);
     });
 
     test('should validate name', () async {
