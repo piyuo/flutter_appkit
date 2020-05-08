@@ -17,6 +17,9 @@ class RegexpTextInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue, // unused.
     TextEditingValue newValue,
   ) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
     if (regexp.hasMatch(newValue.text)) {
       return newValue;
     }
