@@ -94,7 +94,6 @@ String subDomainNameValidator(String input) {
 /// nameRegexp regexp use to validate name, charchter and space only
 ///
 RegExp noSymbolRegexp() {
-  //return RegExp(r"^[^*|\":<>[\]{}`\\()';@&$]+$");
   return RegExp(r"""^[^*|\":<>[\]{}`\\()';!@#%^*?&$.~,\-_=]+$""");
 }
 

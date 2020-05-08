@@ -70,6 +70,12 @@ void main() {
       expect(error, isNull);
       error = validator.noSymbolValidator('123');
       expect(error, isNull);
+      error = validator.noSymbolValidator('-');
+      expect(error, isNotNull);
+      error = validator.noSymbolValidator('=');
+      expect(error, isNotNull);
+      error = validator.noSymbolValidator('_');
+      expect(error, isNotNull);
     });
 
     test('should validate url', () async {
