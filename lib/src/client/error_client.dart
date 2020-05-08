@@ -74,6 +74,7 @@ void diskErrorException(BuildContext context, dynamic e, StackTrace s) {
 
 @visibleForTesting
 void listened(BuildContext context, dynamic e) {
+  debugPrint('$_here~alert user error(${e.runtimeType})');
   if (e is command.InternalServerErrorEvent) {
     dialog.alert(context, '500 internal server error');
   } else if (e is command.ServerNotReadyEvent) {
