@@ -45,20 +45,24 @@ class Redux {
   ///
   Future<bool> dispatch(BuildContext context, dynamic action) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
-    var newState;
     if (kReleaseMode) {
-      newState = await _reducer(context, state, action);
-    } else {
-      newState = await _reducer(context, state, action);
-      var payload = toString(action);
-      var diff = diffState(newState, _state);
-      debugPrint('$_here~${action.runtimeType}{$payload} $diff');
+      var newState = await _reducer(context, state, action);
+      if (newState != _state) {
+        _state = newState;
+        return true;
+      }
+      return false;
     }
 
+    var newState = await _reducer(context, state, action);
+    var payload = toString(action);
+    var diff = diffState(newState, _state);
     if (newState != _state) {
       _state = newState;
+      debugPrint('$_here~${action.runtimeType}{$payload} $diff');
       return true;
     }
+    debugPrint('$_here~${action.runtimeType}{$payload}$RED state not change');
     return false;
   }
 }
@@ -72,7 +76,7 @@ String diffState(Map newState, Map oldState) {
       text += diffState(newValue, oldValue);
     } else {
       if (newValue != oldValue) {
-        text += '$key=$RED$newValue$END<-$oldValue, ';
+        text += '$RED$key=$newValue$END<-$oldValue, ';
       }
     }
   }
