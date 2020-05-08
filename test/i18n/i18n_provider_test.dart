@@ -26,7 +26,6 @@ void main() {
         ),
       ));
       await tester.pumpAndSettle();
-      expect(i18nProvider.state, isNotNull);
       expect(i18nProvider.translate('a'), 'A');
     });
   });

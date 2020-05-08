@@ -5,23 +5,25 @@ import 'package:libcli/log.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/asset.dart' as asset;
 
-class I18nProvider extends ReduxProvider {
+class I18nProvider extends AsyncProvider {
   final String _fileName;
 
   final String package;
 
-  I18nProvider(this._fileName, {this.package}) : super(null, {});
+  Map _translation = {};
+
+  I18nProvider(this._fileName, {this.package});
 
   @override
   Future<void> load(BuildContext context) async {
     assert(_fileName != null, 'need page name');
     assert(locale != null,
         "please add I18nDelegate to app's localizationsDelegates");
-    state = await getTranslation(_fileName, package: package);
+    _translation = await getTranslation(_fileName, package: package);
   }
 
   String translate(String key) {
-    var value = state[key];
+    var value = _translation[key];
     if (value == null) {
       alert(
           'i18n~missing $key in assets/i18n/${_fileName}_${languageCode}_${countryCode}.json');
