@@ -26,10 +26,10 @@ Future<void> reloadGlobalTranslation(
     String languageCode, String countryCode) async {
   _global.clear();
   switch (i18n.localeID) {
-    case 'zh_TW':
+    case 'zh-TW':
       _zh_TW();
       break;
-    case 'zh_CN':
+    case 'zh-CN':
       _zh_CN();
       break;
     default:

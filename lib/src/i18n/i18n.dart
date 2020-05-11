@@ -11,20 +11,25 @@ const _here = 'i18n';
 
 //https://www.oracle.com/technical-resources/articles/javase/locale.html
 const Locales = [
-  'en_US',
-  'en_CA',
-  'en_GB',
-  'en_AU',
-  'zh_CN',
-  'zh_TW',
-  'zh_TW',
-  'zh_TW',
-  'zh_TW',
-  'ja_JP',
-  'it_IT',
-  'de_DE',
+  'en-US',
+  'zh-CN',
+  'zh-TW',
 ];
+/*
+  'en-US',
+  'en-CA',
+  'en-GB',
+  'en-AU',
+  'zh-CN',
+  'zh-TW',
+  'zh-TW',
+  'zh-TW',
+  'zh-TW',
+  'ja-JP',
+  'it-IT',
+  'de-DE',
 
+*/
 Locale _locale;
 
 /// mockI18n Initializes the value for testing
