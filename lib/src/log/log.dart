@@ -108,7 +108,12 @@ void alert(String message) {
 ///       var errID = error(HERE, e, s);
 ///     }
 void error(String where, dynamic e, StackTrace stacktrace) {
-  String msg = e.toString().replaceAll('Exception: ', '');
+  String msg = '';
+  try {
+    msg = e.toString().replaceAll('Exception: ', '');
+  } catch (_) {
+    msg = e.runtimeType.toString();
+  }
   String stack = beautyStack(stacktrace);
   debugPrint('$where~${ALERT}caught $msg\n$stack');
   analytic.saveError(where, msg, stack);

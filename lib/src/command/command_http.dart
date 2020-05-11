@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/events.dart';
-import 'package:libcli/src/command/auth.dart' as auth;
+import 'package:libcli/src/command/command_http_header.dart';
 
 const _here = 'command_http';
 
@@ -57,27 +57,12 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
 ///     req.timeout = 9000;
 ///     var bytes = await commandHttp.doPost(req);
 Future<List<int>> doPost(BuildContext ctx, Request r) async {
-  Map<String, String> headers = {
-    'Content-Type': 'multipart/form-data',
-    'accept': '',
-  };
-
-  var accessToken = await auth.getAccessToken();
-  if (accessToken.length > 0) {
-    debugPrint('$_here~accessToken=$accessToken');
-    headers['Cookie'] = accessToken;
-  }
-
   try {
+    var headers = await doRequestHeaders();
     var resp = await r.client
         .post(r.url, headers: headers, body: r.bytes)
         .timeout(Duration(milliseconds: r.timeout));
-
-    var c = resp.headers['set-cookie'];
-    if (c != null && c.length > 0) {
-      debugPrint('$_here~refresh accessToken=$c');
-      auth.setAccessToken(c);
-    }
+    await doResponseHeaders(resp.headers);
 
     if (resp.statusCode == 200) {
       return resp.bodyBytes;
