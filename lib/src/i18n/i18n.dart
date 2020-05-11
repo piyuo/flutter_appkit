@@ -66,7 +66,7 @@ bool isSupportedLocale(Locale locale) {
 ///
 /// var id = localeToId(Locale('en','US'));
 String localeToId(Locale locale) {
-  return '${locale.languageCode}_${locale.countryCode}';
+  return '${locale.languageCode}-${locale.countryCode}';
 }
 
 Locale idToLocale(String id) {
@@ -97,7 +97,7 @@ Locale determineLocale(List<Locale> locales) {
   }
   configuration.country = firstLocale.countryCode;
   debugPrint(
-      '$_here~best locale is ${bestLocale.languageCode}_${bestLocale.countryCode}');
+      '$_here~best locale is ${bestLocale.languageCode}-${bestLocale.countryCode}');
   return bestLocale;
 }
 

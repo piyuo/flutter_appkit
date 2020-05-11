@@ -13,7 +13,7 @@ class DocProvider extends AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
     md = await asset.loadString(
-      'docs/${docName}_${languageCode}_${countryCode}.md',
+      'docs/${docName}_${localeID}.md',
     );
   }
 }

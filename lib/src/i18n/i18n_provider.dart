@@ -37,8 +37,7 @@ class I18nProvider extends AsyncProvider {
 Future<Map> getTranslation(String filename, {String package}) async {
   var localization = {};
   if (filename != null && filename.isNotEmpty) {
-    localization = await asset.loadMap(
-        'i18n/${filename}_${languageCode}_${countryCode}.json',
+    localization = await asset.loadMap('i18n/${filename}_${localeID}.json',
         package: package);
   }
   return localization;
