@@ -38,13 +38,18 @@ void mockI18n(Locale locale, String map) {
   asset.mockAssetsByString(map);
 }
 
-get locale => _locale;
+get locale {
+  if (_locale == null) {
+    return Locale('en', 'US');
+  }
+  return _locale;
+}
 
-get languageCode => _locale.languageCode;
+get languageCode => locale.languageCode;
 
-get countryCode => _locale.countryCode;
+get countryCode => locale.countryCode;
 
-get localeID => '${_locale.languageCode}_${_locale.countryCode}';
+get localeID => '${locale.languageCode}-${locale.countryCode}';
 
 set locale(Locale locale) {
   _locale = locale;

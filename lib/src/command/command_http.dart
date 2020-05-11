@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/client.dart' as client;
+import 'package:libcli/i18n.dart' as i18n;
 
 const _here = 'command_http_header';
 
@@ -16,6 +17,7 @@ Future<Map<String, String>> doRequestHeaders() async {
     debugPrint('$_here~accessToken=$accessToken');
     headers['Cookie'] = accessToken;
   }
+  headers['Accept-Language'] = i18n.localeID;
   return headers;
 }
 

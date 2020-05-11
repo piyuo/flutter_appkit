@@ -25,8 +25,7 @@ class I18nProvider extends AsyncProvider {
   String translate(String key) {
     var value = _translation[key];
     if (value == null) {
-      alert(
-          'i18n~missing $key in assets/i18n/${_fileName}_${languageCode}_${countryCode}.json');
+      alert('i18n~missing $key in assets/i18n/${_fileName}_${localeID}.json');
       return '!!! $key not found';
     }
     return value;
