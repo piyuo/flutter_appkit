@@ -16,7 +16,6 @@ void main() {
     test('should log', () async {
       configuration.appID = 'log_test';
       configuration.userID = 'developer';
-      configuration.branch = configuration.Branches.test;
       log('here~thing log here');
       warning('here~thing warning here');
       alert('here~thing alert here');
@@ -33,7 +32,6 @@ void main() {
     test('should error', () async {
       configuration.appID = 'log_test';
       configuration.userID = 'developer';
-      configuration.branch = configuration.Branches.test;
       try {
         throw Exception('my error');
       } catch (e, s) {

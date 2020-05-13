@@ -3,7 +3,6 @@ import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/src/i18n/i18n_provider.dart';
 import 'package:libcli/src/i18n/i18n_global.dart';
 
@@ -31,6 +30,10 @@ const Locales = [
 
 */
 Locale _locale;
+
+/// userPreferCountryCode is  the first country code to determineLocale(), it mean user's default country
+///
+String userPreferCountryCode;
 
 /// mockI18n Initializes the value for testing
 ///
@@ -100,9 +103,9 @@ Locale determineLocale(List<Locale> locales) {
       }
     }
   }
-  configuration.country = firstLocale.countryCode;
+  userPreferCountryCode = firstLocale.countryCode;
   debugPrint(
-      '$_here~best locale is ${bestLocale.languageCode}-${bestLocale.countryCode}');
+      '$_here~default country is $userPreferCountryCode, best locale is ${bestLocale.languageCode}-${bestLocale.countryCode}');
   return bestLocale;
 }
 

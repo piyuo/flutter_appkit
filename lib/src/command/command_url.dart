@@ -1,31 +1,52 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/configuration.dart' as configuration;
+import 'package:libcli/i18n.dart' as i18n;
+
+/// serviceCountry is country code where service locate
+///
+String serviceCountry;
+
+/// serviceBranch is service branch
+///
+String serviceBranch = BRANCH_MASTER;
+
+const BRANCH_DEBUG = 'd';
+const BRANCH_TEST = 't';
+const BRANCH_ALPHA = 'a';
+const BRANCH_BETA = 'b';
+const BRANCH_MASTER = 'm';
 
 /// serviceUrl return service url base on app.branch
 ///
 ///     String url = serviceUrl('sys',3001);
 String serviceUrl(String funcName, int debugPort) {
-  if (!kReleaseMode) {
-    if (configuration.branch == configuration.Branches.debug) {
-      return 'http://localhost:$debugPort/$funcName';
-    }
+  if (!kReleaseMode && serviceBranch == BRANCH_DEBUG) {
+    return 'http://localhost:$debugPort/$funcName';
   }
-
-  /// https://us-central1-piyuo-m-base.cloudfunctions.net/sys
-  // return 'https://${host()}-piyuo-${branch()}-${region()}.cloudfunctions.net/$funcName';
-  return 'https://us-central1-master-255220.cloudfunctions.net/$funcName';
+  return 'https://$_googleHost-$_country-$serviceBranch.cloudfunctions.net/$funcName';
 }
 
-/*
-停止使用 rxdart 因為很難同時處理同步及非同步程序
-  Observable<ProtoObject> execute(ProtoObject obj) {
-    assert(url != null && url.length > 0);
-    if (this.mockResponse != null) return Observable.just(this.mockResponse);
-    if (this.mockResponder != null) return Observable.just(mockResponder(obj));
-    Uint8List bytes = this.encode(obj);
-    var fromFutureObservable = Observable.fromFuture(this.post(bytes));
-    return fromFutureObservable.switchMap<ProtoObject>((List<int> i) {
-      return Observable.just(this.decode(i));
-    });
+/// _country return country where service located
+///
+String get _country {
+  if (serviceCountry != null) {
+    return serviceCountry;
   }
-  */
+  if (i18n.userPreferCountryCode != null) {
+    return i18n.userPreferCountryCode;
+  }
+  return 'US';
+}
+
+/// _googleHost return google region where service located
+///
+String get _googleHost {
+  switch (_country) {
+    case 'TW':
+      return 'asia-east1';
+    case 'CN':
+      return 'asia-east2';
+    case 'US':
+    default:
+      return 'us-central1';
+  }
+}

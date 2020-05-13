@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/i18n.dart';
-import 'package:libcli/configuration.dart' as configuration;
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,19 +18,19 @@ void main() {
     test('should determine locale', () async {
       Locale loc = determineLocale(null);
       expect(localeToId(loc), 'en-US');
-      expect(configuration.country, 'US');
+      expect(userPreferCountryCode, 'US');
 
       List<Locale> emptyList = List<Locale>();
       loc = determineLocale(emptyList);
       expect(localeToId(loc), 'en-US');
-      expect(configuration.country, 'US');
+      expect(userPreferCountryCode, 'US');
 
       List<Locale> list = List<Locale>();
       list.add(Locale('zh', 'TW'));
       list.add(Locale('en', 'CA'));
       loc = determineLocale(list);
       expect(localeToId(loc), 'zh-TW');
-      expect(configuration.country, 'TW');
+      expect(userPreferCountryCode, 'TW');
     });
   });
 }
