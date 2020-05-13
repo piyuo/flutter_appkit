@@ -2,16 +2,6 @@ import 'package:flutter/foundation.dart';
 
 const _here = 'configuration';
 
-/// master: customer production use
-/// beta: customer test on
-/// alpha: QA test on
-/// test: for unit test
-/// debug: can debug local service
-enum Branches { debug, test, alpha, beta, master }
-
-/// service deploy location,
-enum Regions { us, cn, tw }
-
 /// supportEmail
 ///
 ///     vars.supportEmail='anyone@piyuo.com'
