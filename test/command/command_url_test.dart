@@ -15,7 +15,7 @@ void main() {
       serviceCountry = null;
       serviceBranch = BRANCH_MASTER;
       expect(serviceUrl('mock', 80),
-          'https://us-central1-US-m.cloudfunctions.net/mock');
+          'https://us-central1-piyuo-us.cloudfunctions.net/mock');
     });
 
     test('should use beta url', () async {
@@ -23,7 +23,7 @@ void main() {
       serviceCountry = null;
       serviceBranch = BRANCH_BETA;
       expect(serviceUrl('mock', 80),
-          'https://asia-east1-TW-b.cloudfunctions.net/mock');
+          'https://asia-east2-piyuo-beta-cn.cloudfunctions.net/mock');
     });
 
     test('should use service country', () async {

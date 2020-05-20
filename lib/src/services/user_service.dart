@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/preference.dart' as preference;
 import 'package:flutter/material.dart';
+import 'package:libcli/configuration.dart' as configuration;
 
 /// refreshTokenExipre set refresh token expire duration
 ///
@@ -22,11 +23,26 @@ const kAccessTokenCreateDate = 'kAccessDate';
 ///
 const kUserName = 'kUser';
 
+const kBranch = 'kBranch';
+
+const kRegion = 'kRegion';
+
+void authorize() async {
+  String branchStr = await preference.getString(kBranch);
+  if (branchStr != '') {
+    //configuration.branch = configuration.stringToBranch(branchStr);
+  }
+  String regionStr = await preference.getString(kRegion);
+  if (regionStr != '') {
+    //configuration.region = configuration.stringToRegion(regionStr);
+  }
+}
+
 /// setRefreshToken save refresh token
 ///
 ///     await auth.setRefreshToken('xxx');
 ///
-setRefreshToken(String token) async {
+void setRefreshToken(String token) async {
   await preference.setString(kRefreshToken, token);
 }
 
@@ -42,7 +58,7 @@ Future<String> getRefreshToken() async {
 ///
 ///     await auth.setAccessToken('xxx');
 ///
-setAccessToken(String token) async {
+void setAccessToken(String token) async {
   await preference.setString(kAccessToken, token);
   await preference.setDateTime(kAccessTokenCreateDate,
       token != null && token.length > 0 ? DateTime.now() : null);
@@ -72,7 +88,7 @@ Future<String> getAccessToken() async {
 ///     await auth.mockAccessTokenCreateDate(DateTime.now().add(Duration(hours: -5)));
 ///
 @visibleForTesting
-mockAccessTokenCreateDate(DateTime date) async {
+void mockAccessTokenCreateDate(DateTime date) async {
   await preference.setDateTime(kAccessTokenCreateDate, date);
 }
 
@@ -81,7 +97,7 @@ mockAccessTokenCreateDate(DateTime date) async {
 ///     mockAuth({});
 ///
 @visibleForTesting
-mockAuth(Map<String, dynamic> values) {
+void mockAuth(Map<String, dynamic> values) {
   // ignore:invalid_use_of_visible_for_testing_member
   preference.mockPrefs(values);
 }

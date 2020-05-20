@@ -6,8 +6,8 @@ import 'package:libcli/pattern.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/client.dart' as client;
-import 'package:libcli/src/client/playground/wrong_provider_page.dart';
+import 'package:libcli/services.dart' as services;
+import 'package:libcli/src/services/playground/wrong_provider_page.dart';
 
 class ClientPlaygroundProvider extends AsyncProvider {
   @override
@@ -51,7 +51,7 @@ class ClientPlayground extends StatelessWidget {
                         contract.isInternetConnected = () async {
                           return false;
                         };
-                        client.internetRequired(context, contract);
+                        services.internetRequired(context, contract);
                       }
                     }),
                 RaisedButton(
@@ -65,7 +65,7 @@ class ClientPlayground extends StatelessWidget {
                       contract.isGoogleCloudFunctionAvailable = () async {
                         return true;
                       };
-                      client.internetRequired(context, contract);
+                      services.internetRequired(context, contract);
                     }),
                 RaisedButton(
                     child: Text('internet blocked'),
@@ -78,7 +78,7 @@ class ClientPlayground extends StatelessWidget {
                       contract.isGoogleCloudFunctionAvailable = () async {
                         return false;
                       };
-                      client.internetRequired(context, contract);
+                      services.internetRequired(context, contract);
                     }),
                 RaisedButton(
                     child: Text('internal server error'),

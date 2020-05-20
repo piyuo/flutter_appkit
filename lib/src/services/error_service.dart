@@ -7,7 +7,7 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/pattern.dart' as pattern;
 import 'package:libcli/utils.dart' as utils;
 import 'package:libcli/i18n.dart';
-import 'package:libcli/src/client/error_email.dart';
+import 'package:libcli/src/services/error_email.dart';
 
 const _here = 'error_client';
 
