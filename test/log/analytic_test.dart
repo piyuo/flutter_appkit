@@ -25,13 +25,13 @@ void main() {
       expect(current.logs.length, 0);
       warning('$_here~mock warning');
       expect(current.logs.length, 1);
-      command.serviceBranch = command.BRANCH_TEST;
+      command.serviceBranch = command.BRANCH_BETA;
       var id = await analytic.sendAnalytic();
       expect(id, isNotEmpty);
     });
 
     test('should error', () async {
-      command.serviceBranch = command.BRANCH_TEST;
+      command.serviceBranch = command.BRANCH_BETA;
       analytic.reset();
       var current = analytic.current();
       expect(current.errors.length, 0);

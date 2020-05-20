@@ -53,7 +53,7 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
-      command.serviceBranch = command.BRANCH_TEST;
+      command.serviceBranch = command.BRANCH_BETA;
       SysService service = SysService();
       EchoAction action = new EchoAction();
       var response = await service.execute(null, action);

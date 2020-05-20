@@ -19,7 +19,7 @@ void main() {
     });
 
     test('should use beta url', () async {
-      i18n.userPreferCountryCode = 'TW';
+      i18n.userPreferCountryCode = 'tw';
       serviceCountry = null;
       serviceBranch = BRANCH_BETA;
       expect(serviceUrl('mock', 80),
@@ -27,11 +27,11 @@ void main() {
     });
 
     test('should use service country', () async {
-      i18n.userPreferCountryCode = 'TW';
-      serviceCountry = 'CN';
-      serviceBranch = BRANCH_TEST;
+      i18n.userPreferCountryCode = 'tw';
+      serviceCountry = 'us';
+      serviceBranch = BRANCH_BETA;
       expect(serviceUrl('mock', 80),
-          'https://asia-east2-CN-t.cloudfunctions.net/mock');
+          'https://us-central1-piyuo-beta-us.cloudfunctions.net/mock');
     });
   });
 }
