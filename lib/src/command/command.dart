@@ -40,15 +40,16 @@ Err error(String errorCode) {
 /// simplefy the network call to request and response
 ///
 abstract class Service {
-  /// remote service url
-  ///
-  String url;
-
   /// debugPort used debug local service, service url will chnage to http://localhost:$debugPort
   ///
   int debugPort;
 
+  /// serviceName is remote service name and equal to google cloud run service name
+  ///
+  String serviceName;
+
   /// timeout define request timeout in ms
+  ///
   int timeout;
 
   /// slow define slow network in ms
@@ -74,21 +75,25 @@ abstract class Service {
   /// Service create service with remote cloud function name,timeout and slow
   ///
   /// debug port used in debug branch
-  Service(String funcName, this.timeout, this.slow) {
-    assert(funcName != null && funcName.length > 0);
-    url = serviceUrl(funcName);
+  Service(this.serviceName, this.timeout, this.slow) {
+    assert(serviceName != null && serviceName.length > 0);
+  }
+
+  /// url return remote service url
+  ///
+  String get url {
     if (!kReleaseMode && debugPort != null) {
-      url = 'http://localhost:$debugPort';
       timeout = 99999999;
       slow = 99999999;
+      return 'http://localhost:$debugPort';
     }
+    return serviceUrl(serviceName);
   }
 
   /// execute action to remote service, no need to handle exception, all exception contract to eventBus
   ///
   ///     var response = await service.execute(EchoAction());
   Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj) async {
-    assert(url != null && url.length > 0);
     assert(obj != null);
     http.Client client = http.Client();
     return await executeWithClient(ctx, obj, client);

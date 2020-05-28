@@ -86,5 +86,13 @@ void main() {
         expect(1, 0);
       }
     });
+
+    test('debugPort should return local test url', () async {
+      command.MockService service = command.MockService((_, action) async {
+        return command.ok();
+      });
+      service.debugPort = 3001;
+      expect(service.url, 'http://localhost:3001');
+    });
   });
 }
