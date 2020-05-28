@@ -4,25 +4,23 @@ version: 0.0.16
 homepage: https://github.com/piyuo/libcli
 
 environment:
-    sdk: '>=2.7.0 <3.0.0'
-    flutter: '>=1.12.8 <2.0.0'
+    sdk: '>=2.8.0 <3.0.0'
+    flutter: '>=1.18.0 <2.0.0'
 
 dependencies:
     flutter:
         sdk: flutter
-    http: ^0.12.0
+    http: ^0.12.1
     protobuf: ^1.0.1
-    shared_preferences: ^0.5.6+2
+    shared_preferences: ^0.5.7+3
     fixnum: ^0.10.11
     meta: ^1.1.8
-    provider: ^4.0.4
+    provider: ^4.1.2
     intl: ^0.16.1
-    url_launcher: ^5.4.2
+    url_launcher: ^5.4.10
     auto_size_text: ^2.1.0
     oktoast: ^2.3.2
-    flutter_markdown: ^0.3.5
-
-    #  rxdart: ^0.23.1
+    flutter_markdown: ^0.4.1
 
 dev_dependencies:
     flutter_test:
