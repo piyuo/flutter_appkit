@@ -13,7 +13,7 @@ class MockService extends Service {
   ///
   MockExecute mockExecute;
 
-  MockService(this.mockExecute) : super('mock', -1, -1, -1);
+  MockService(this.mockExecute) : super('mock', -1, -1);
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {

@@ -3,13 +3,12 @@
 import 'package:libcli/command.dart';
 
 class SysService extends Service {
-
   /// init sys service with predefine remote url
   /// remote url is defined in "service project/proto/.proto.json"
   /// For example:
   ///
   ///     SysService service = SysService();
-  SysService(): super('sys',3001,10000,20000);
+  SysService() : super('sys', 10000, 20000);
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {

@@ -13,7 +13,7 @@ class SharedService extends Service {
   /// For example:
   ///
   ///     SharedService service = SharedService();
-  SharedService(): super('shared',0,10000,20000);
+  SharedService(): super('shared',10000,20000);
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {

@@ -44,12 +44,16 @@ abstract class Service {
   ///
   String url;
 
+  /// debugPort used debug local service, service url will chnage to http://localhost:$debugPort
+  ///
+  int debugPort;
+
   /// timeout define request timeout in ms
-  final int timeout;
+  int timeout;
 
   /// slow define slow network in ms
   ///
-  final int slow;
+  int slow;
 
   /// errorHandler override default error handling
   ///
@@ -70,9 +74,14 @@ abstract class Service {
   /// Service create service with remote cloud function name,timeout and slow
   ///
   /// debug port used in debug branch
-  Service(String funcName, int debugPort, this.timeout, this.slow) {
+  Service(String funcName, this.timeout, this.slow) {
     assert(funcName != null && funcName.length > 0);
-    url = serviceUrl(funcName, debugPort);
+    url = serviceUrl(funcName);
+    if (!kReleaseMode && debugPort != null) {
+      url = 'http://localhost:$debugPort';
+      timeout = 99999999;
+      slow = 99999999;
+    }
   }
 
   /// execute action to remote service, no need to handle exception, all exception contract to eventBus

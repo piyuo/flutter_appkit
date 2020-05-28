@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/command.dart' as command;
-import 'package:libcli/configuration.dart' as configuration;
 import 'package:libcli/log.dart';
 
 const _here = 'analytic_test';

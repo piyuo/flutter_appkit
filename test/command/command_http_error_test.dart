@@ -62,6 +62,7 @@ void main() {
         var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
         expect(event, null);
+        expect(contract, null);
         expect(onErrorCalled, true);
       });
     });

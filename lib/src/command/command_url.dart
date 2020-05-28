@@ -1,73 +1,66 @@
-import 'package:flutter/foundation.dart';
 import 'package:libcli/i18n.dart' as i18n;
 
 /// serviceMark
 ///
-String serviceMark = 'piyuo';
+String baseDomain = 'piyuo.com';
 
-/// serviceCountry is country where service locate
+/// serviceRegion is country where service locate
 ///
-String serviceCountry;
+String serviceRegion;
 
 /// serviceBranch is service branch
 ///
 String serviceBranch = BRANCH_MASTER;
 
-const BRANCH_DEBUG = 'd';
+/// BRANCH_BETA is for development
+///
 const BRANCH_BETA = 'b';
+
+/// BRANCH_MASTER is for production
+///
 const BRANCH_MASTER = 'm';
 
 /// serviceUrl return service url base on app.branch
 ///
-///     String url = serviceUrl('sys',3001);
-String serviceUrl(String funcName, int debugPort) {
-  if (!kReleaseMode && serviceBranch == BRANCH_DEBUG) {
-    return 'http://localhost:$debugPort/$funcName';
+///     String url = serviceUrl('sys');
+///
+String serviceUrl(String funcName) {
+  String subdomain = 'api';
+  if (serviceBranch == BRANCH_BETA) {
+    subdomain = 'beta';
   }
-  return 'https://$_googleHost-$serviceMark$_branch-$_country.cloudfunctions.net/$funcName';
-}
-
-String get _branch {
-  switch (serviceBranch) {
-    case BRANCH_BETA:
-      return '-beta';
-  }
-  return '';
-}
-
-String get _i18nCountry {
-  if (i18n.userPreferCountryCode != null) {
-    return i18n.userPreferCountryCode.toLowerCase();
-  }
-  return 'us';
-}
-
-String get _serviceCountryFromI18n {
-  switch (_i18nCountry) {
-    case 'tw':
-    case 'cn':
-    case 'hk':
-    case 'mo':
-      return 'cn';
-  }
-  return 'us';
+  return 'https://$funcName-${determineRegion()}.$subdomain.$baseDomain';
 }
 
 /// _country return country where service located
 ///
-String get _country {
-  if (serviceCountry != null) {
-    return serviceCountry;
+String determineRegion() {
+  if (serviceRegion != null) {
+    return serviceRegion;
   }
-  return _serviceCountryFromI18n;
+  var region = 'us';
+  //first check i18n prefered
+  if (i18n.userPreferCountryCode != null) {
+    region = i18n.userPreferCountryCode.toLowerCase();
+  }
+  return mapping(region);
 }
 
-/// _googleHost return google region where service located
+/// country code world map
+/// https://www.nationsonline.org/gallery/World/World-map-all-country-codes.jpg
+
+/// mapping country to nearest google data center
 ///
-String get _googleHost {
-  switch (_country) {
-    case 'cn':
-      return 'asia-east2';
+String mapping(String region) {
+  var asia = ['jp', 'kr', 'sg', 'th', 'tw', 'cn', 'hk', 'mo'];
+  if (asia.contains(region)) {
+    return 'jp';
   }
-  return 'us-central1';
+
+  var eu = ['be', 'gb', 'de', 'fr', 'it', 'cz', 'ie', 'es'];
+  if (eu.contains(region)) {
+    return 'be';
+  }
+
+  return 'us';
 }

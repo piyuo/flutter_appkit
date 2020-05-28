@@ -8,7 +8,7 @@ class GoogleProtoService extends command.Service {
   /// For example:
   ///
   ///     GoogleProtoService service = GoogleProtoService();
-  GoogleProtoService() : super('googleProto', 80, 10000, 20000);
+  GoogleProtoService() : super('googleProto', 10000, 20000);
 
   @override
   command.ProtoObject newObjectByID(int id, List<int> l) {

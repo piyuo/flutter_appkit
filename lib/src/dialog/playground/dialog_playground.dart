@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:libcli/dialog.dart' as dialog;
 
 class DialogPlayground extends StatelessWidget {
-  GlobalKey btnKey = GlobalKey();
-  GlobalKey btnKey2 = GlobalKey();
+  final GlobalKey btnKey = GlobalKey();
+  final GlobalKey btnKey2 = GlobalKey();
 
   @override
   Widget build(BuildContext context) {

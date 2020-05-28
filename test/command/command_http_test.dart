@@ -60,11 +60,6 @@ void main() {
         var req = newRequest(statucMock(500));
         var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
-
-        ///TODO : move this to logClient
-        //        expect(event.runtimeType, eventbus.UnknownErrorEvent);
-        //      eventbus.UnknownErrorEvent e = event as eventbus.UnknownErrorEvent;
-        //    expect(e.errorID, 'mock');
       });
     });
 
@@ -86,11 +81,6 @@ void main() {
         var req = newRequest(statucMock(504));
         var bytes = await command.doPost(ctx, req);
         expect(bytes, null);
-
-        ///TODO : move this to logClient
-        //expect(event.runtimeType, command.EServiceTimeout);
-        //command.EServiceTimeout e = event as command.EServiceTimeout;
-        //expect(e.errorID, 'mock');
       });
     });
 

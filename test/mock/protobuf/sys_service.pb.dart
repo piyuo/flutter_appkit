@@ -5,7 +5,7 @@ import 'echo_request.pb.dart';
 import 'string_response.pb.dart';
 
 class SysService extends command.Service {
-  SysService() : super('sys', 3001, 20000, 10000);
+  SysService() : super('sys', 20000, 10000);
 
   @override
   command.ProtoObject newObjectByID(int id, List<int> l) {

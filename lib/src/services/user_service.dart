@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/preference.dart' as preference;
 import 'package:flutter/material.dart';
-import 'package:libcli/configuration.dart' as configuration;
 
 /// refreshTokenExipre set refresh token expire duration
 ///
