@@ -29,7 +29,8 @@ String serviceUrl(String funcName) {
   if (serviceBranch == BRANCH_BETA) {
     subdomain = 'beta';
   }
-  return 'https://$funcName-${determineRegion()}.$subdomain.$baseDomain';
+  // add /?q query string to avoid cache by cloud flare
+  return 'https://$funcName-${determineRegion()}.$subdomain.$baseDomain/?q';
 }
 
 /// _country return country where service located
