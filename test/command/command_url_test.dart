@@ -8,7 +8,7 @@ void main() {
     test('should use stable url', () async {
       serviceBranch = BRANCH_STABLE;
       serviceRegion = 'us';
-      expect(serviceUrl('mock'), 'https://mock-us-stable.piyuo.com/?q');
+      expect(serviceUrl('mock'), 'https://mock-us.piyuo.com/?q');
     });
 
     test('should use master url', () async {

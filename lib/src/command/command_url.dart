@@ -26,11 +26,15 @@ const BRANCH_STABLE = 'stable';
 
 /// serviceUrl return service url base on app.branch
 ///
-///     String url = serviceUrl('sys'); // https://auth-us-stable.piyuo.com
+///     String url = serviceUrl('sys'); // https://auth-us.piyuo.com , https://auth-us-master.piyuo.com
 ///
 String serviceUrl(String funcName) {
+  String branch = '-' + serviceBranch;
+  if (branch == '-stable') {
+    branch = '';
+  }
   // add /?q query string to avoid cache by cloud flare
-  return 'https://$funcName-${determineRegion()}-$serviceBranch.$baseDomain/?q';
+  return 'https://$funcName-${determineRegion()}$branch.$baseDomain/?q';
 }
 
 /// _country return country where service located
