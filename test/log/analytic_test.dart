@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart';
+import 'package:libcli/configuration.dart';
 
 const _here = 'analytic_test';
 
@@ -24,13 +25,13 @@ void main() {
       expect(current.logs.length, 0);
       warning('$_here~mock warning');
       expect(current.logs.length, 1);
-      command.serviceBranch = command.BRANCH_BETA;
+      setBranch(BRANCH_MASTER);
       var id = await analytic.sendAnalytic();
       expect(id, isNotEmpty);
     });
 
     test('should error', () async {
-      command.serviceBranch = command.BRANCH_BETA;
+      setBranch(BRANCH_MASTER);
       analytic.reset();
       var current = analytic.current();
       expect(current.errors.length, 0);

@@ -4,7 +4,8 @@ typedef void GlobalExceptionHandler(
     BuildContext context, dynamic e, StackTrace stackTrace,
     {String errorCode});
 
-GlobalExceptionHandler _globalExceptionHandler;
+GlobalExceptionHandler _globalExceptionHandler =
+    (BuildContext context, dynamic e, StackTrace s, {String errorCode}) {};
 
 void set globalExceptionHandler(GlobalExceptionHandler handler) {
   _globalExceptionHandler = handler;
@@ -13,9 +14,5 @@ void set globalExceptionHandler(GlobalExceptionHandler handler) {
 void sendToGlobalExceptionHanlder(
     BuildContext context, dynamic e, StackTrace stackTrace,
     {String errorCode}) {
-  assert(_globalExceptionHandler != null,
-      'need set log.globalExceptionHandler first');
-  if (_globalExceptionHandler != null) {
-    _globalExceptionHandler(context, e, stackTrace, errorCode: errorCode);
-  }
+  _globalExceptionHandler(context, e, stackTrace, errorCode: errorCode);
 }

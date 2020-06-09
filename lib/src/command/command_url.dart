@@ -1,4 +1,5 @@
 import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/configuration.dart' as configuration;
 
 /// serviceMark
 ///
@@ -8,28 +9,12 @@ String baseDomain = 'piyuo.com';
 ///
 String serviceRegion;
 
-/// serviceBranch is service branch
-///
-String serviceBranch = BRANCH_STABLE;
-
-/// BRANCH_MASTER is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
-///
-const BRANCH_MASTER = 'master';
-
-/// BRANCH_BETA We will branch from master for a new beta release at the beginning of the month, usually the first Monday
-///
-const BRANCH_BETA = 'beta';
-
-/// BRANCH_STABLE is a a branch that has been stabilized on beta will become our next stable branch and we will create a stable release from that branch. We recommend that you use this channel for all production app releases.
-///
-const BRANCH_STABLE = 'stable';
-
 /// serviceUrl return service url base on app.branch
 ///
 ///     String url = serviceUrl('sys'); // https://auth-us.piyuo.com , https://auth-us-master.piyuo.com
 ///
 String serviceUrl(String funcName) {
-  String branch = '-' + serviceBranch;
+  String branch = '-' + configuration.branch;
   if (branch == '-stable') {
     branch = '';
   }
