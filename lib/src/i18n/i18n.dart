@@ -3,8 +3,8 @@ import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/src/i18n/i18n_provider.dart';
-import 'package:libcli/src/i18n/i18n_global.dart';
+import 'package:libcli/src/i18n/i18n-provider.dart';
+import 'package:libcli/src/i18n/i18n-global.dart';
 
 const _here = 'i18n';
 

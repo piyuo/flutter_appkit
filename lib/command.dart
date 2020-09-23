@@ -1,10 +1,10 @@
 library command;
 
 export 'package:libcli/src/command/command.dart';
-export 'package:libcli/src/command/command_http.dart';
-export 'package:libcli/src/command/command_protobuf.dart';
-export 'package:libcli/src/command/command_url.dart';
-export 'package:libcli/src/command/command_mock.dart';
+export 'package:libcli/src/command/command-http.dart';
+export 'package:libcli/src/command/command-protobuf.dart';
+export 'package:libcli/src/command/command-url.dart';
+export 'package:libcli/src/command/command-mock.dart';
 export 'package:libcli/src/command/events.dart';
 
 export 'package:libcli/src/command/google/any.pb.dart';

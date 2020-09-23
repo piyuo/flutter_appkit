@@ -33,6 +33,7 @@
             "src",
             "styl"
         ],
+        "dart.allowTestsOutsideTestFolder": true,
         "breadcrumbs.enabled": true,
         "editor.codeActionsOnSave": {
             "source.fixAll.tslint": true

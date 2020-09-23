@@ -7,9 +7,9 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/preference.dart' as preference;
-import 'package:libcli/src/command/command_protobuf.dart';
-import 'package:libcli/src/command/command_url.dart';
-import 'package:libcli/src/command/command_http.dart';
+import 'package:libcli/src/command/command-protobuf.dart';
+import 'package:libcli/src/command/command-url.dart';
+import 'package:libcli/src/command/command-http.dart';
 import 'package:libcli/commands/shared/err.pb.dart';
 
 const _here = 'command';

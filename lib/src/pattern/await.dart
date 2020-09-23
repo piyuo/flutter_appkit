@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/src/pattern/contracts.dart';
-import 'package:libcli/src/pattern/async_provider.dart';
-import 'package:libcli/src/pattern/await_progress_indicator.dart';
-import 'package:libcli/src/pattern/await_error_message.dart';
+import 'package:libcli/src/pattern/async-provider.dart';
+import 'package:libcli/src/pattern/await-progress-indicator.dart';
+import 'package:libcli/src/pattern/await-error-message.dart';
 
 const _here = 'await';
 
