@@ -8,7 +8,7 @@
 const Num$json = const {
   '1': 'Num',
   '2': const [
-    const {'1': 'value', '3': 1, '4': 1, '5': 3, '10': 'value'},
+    const {'1': 'value', '3': 1, '4': 1, '5': 5, '10': 'value'},
   ],
 };
 

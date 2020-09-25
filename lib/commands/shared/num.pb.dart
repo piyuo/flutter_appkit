@@ -8,7 +8,6 @@
 import 'dart:core' as $core;
 import 'package:libcli/command.dart';
 
-import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Num extends ProtoObject {
@@ -16,7 +15,7 @@ class Num extends ProtoObject {
     return 2;
   }
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Num', createEmptyInstance: create)
-    ..aInt64(1, 'value')
+    ..a<$core.int>(1, 'value', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -36,9 +35,9 @@ class Num extends ProtoObject {
   static Num _defaultInstance;
 
   @$pb.TagNumber(1)
-  $fixnum.Int64 get value => $_getI64(0);
+  $core.int get value => $_getIZ(0);
   @$pb.TagNumber(1)
-  set value($fixnum.Int64 v) { $_setInt64(0, v); }
+  set value($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasValue() => $_has(0);
   @$pb.TagNumber(1)

@@ -11,6 +11,9 @@ import 'package:libcli/src/command/command-protobuf.dart';
 import 'package:libcli/src/command/command-url.dart';
 import 'package:libcli/src/command/command-http.dart';
 import 'package:libcli/commands/shared/err.pb.dart';
+import 'package:libcli/commands/shared/text.pb.dart' as sharedText;
+import 'package:libcli/commands/shared/num.pb.dart';
+import 'package:libcli/commands/shared/bool.pb.dart';
 
 const _here = 'command';
 
@@ -34,6 +37,24 @@ Err ok() {
 ///
 Err error(String errorCode) {
   return Err()..code = errorCode;
+}
+
+/// text return shared text object
+///
+sharedText.Text text(String value) {
+  return sharedText.Text()..value = value;
+}
+
+/// number return shared number object
+///
+Num number(int value) {
+  return Num()..value = value;
+}
+
+/// number return shared number object
+///
+Bool boolean(bool value) {
+  return Bool()..value = value;
 }
 
 /// communicate with server with command using ajax,protobuf and command pattern
@@ -102,20 +123,16 @@ abstract class Service {
   /// executehWithClient send action to remote service,return object if success, return null if exception happen
   ///
   ///     var response = await service.executehWithClient(client, EchoAction());
-  Future<ProtoObject> executeWithClient(
-      BuildContext ctx, ProtoObject obj, http.Client client) async {
+  Future<ProtoObject> executeWithClient(BuildContext ctx, ProtoObject obj, http.Client client) async {
     try {
       var jsonSent = log.toString(obj);
-      debugPrint(
-          '$_here~${log.STATE}execute ${obj.runtimeType}{$jsonSent}${log.END} to $url');
+      debugPrint('$_here~${log.STATE}execute ${obj.runtimeType}{$jsonSent}${log.END} to $url');
       Uint8List bytes = encode(obj);
-      List<int> ret =
-          await post(ctx, client, url, bytes, timeout, slow, errorHandler);
+      List<int> ret = await post(ctx, client, url, bytes, timeout, slow, errorHandler);
       if (ret != null) {
         ProtoObject retObj = decode(ret, this);
         var jsonReturn = log.toString(retObj);
-        debugPrint(
-            '$_here~${log.STATE}got ${retObj.runtimeType}{$jsonReturn}${log.END} from $url');
+        debugPrint('$_here~${log.STATE}got ${retObj.runtimeType}{$jsonReturn}${log.END} from $url');
         return retObj;
       }
     } catch (e, s) {
