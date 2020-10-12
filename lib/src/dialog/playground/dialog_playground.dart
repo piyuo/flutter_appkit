@@ -29,8 +29,7 @@ class DialogPlayground extends StatelessWidget {
                 RaisedButton(
                     child: Text('hint'),
                     onPressed: () {
-                      dialog.hint(context, 'your network is slow than usual',
-                          icon: Icons.cloud);
+                      dialog.hint(context, 'your network is slow than usual', icon: Icons.cloud);
                     }),
                 RaisedButton(
                     child: Text('choice'),
