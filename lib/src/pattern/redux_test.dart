@@ -9,15 +9,14 @@ void main() {
     test('should dispatch and return true because state change', () async {
       Redux redux = Redux(reducer, {'value': 0});
       expect(redux.state['value'], 0);
-      bool changed = await redux.dispatch(null, Increment(1));
+      redux.dispatch(null, Increment(1));
       expect(redux.state['value'], 1);
-      expect(changed, true);
     });
 
     test('should return false cause state not change', () async {
       Redux redux = Redux(reducer, {'value': 0});
-      bool changed = await redux.dispatch(null, DoNothing());
-      expect(changed, false);
+      redux.dispatch(null, DoNothing());
+      expect(redux.state['value'], 0);
     });
 
     test('should diff nest state', () async {
@@ -25,8 +24,8 @@ void main() {
         'value': 0,
         'child': {'text': 'hi'}
       });
-      bool changed = await redux.dispatch(null, Change());
-      expect(changed, true);
+      redux.dispatch(null, Change());
+      expect(redux.state['value'], 2);
     });
   });
 }
