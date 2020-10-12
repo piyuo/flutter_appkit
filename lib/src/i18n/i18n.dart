@@ -46,18 +46,18 @@ void mockI18n(Locale locale, String map) {
   asset.mockAssetsByString(map);
 }
 
-get locale {
+get currentLocale {
   if (_locale == null) {
     return Locale('en', 'US');
   }
   return _locale;
 }
 
-get languageCode => locale.languageCode;
+get currentLanguageCode => currentLocale.languageCode;
 
-get countryCode => locale.countryCode;
+get currentCountryCode => currentLocale.countryCode;
 
-get localeID => '${locale.languageCode}-${locale.countryCode}';
+get localeID => '${currentLocale.languageCode}-${currentLocale.countryCode}';
 
 set locale(Locale locale) {
   _locale = locale;
@@ -85,9 +85,9 @@ Locale idToLocale(String id) {
 
 /// determineLocale select best locale for user and save user country to vars
 ///
-///https://api.flutter.dev/flutter/widgets/LocaleListResolutionCallback.html
+/// https://api.flutter.dev/flutter/widgets/LocaleListResolutionCallback.html
 ///
-///The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
+/// The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
 ///
 Locale determineLocale(List<Locale> locales) {
   Locale firstLocale;
