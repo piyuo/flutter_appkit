@@ -7,16 +7,14 @@ void main() {
 
   group('[history-redux]', () {
     test('should dispatch', () async {
-      HistoryRedux redux =
-          HistoryRedux(reducer, {'value': 0}, historyLength: 2);
+      HistoryRedux redux = HistoryRedux(reducer, {'value': 0}, historyLength: 2);
       expect(redux.state['value'], 0);
       await redux.dispatch(null, Increment(1));
       expect(redux.state['value'], 1);
     });
 
     test('should undo', () async {
-      HistoryRedux redux =
-          HistoryRedux(reducer, {'value': 0}, historyLength: 3);
+      HistoryRedux redux = HistoryRedux(reducer, {'value': 0}, historyLength: 3);
       await redux.dispatch(null, Increment(1));
       await redux.dispatch(null, Increment(1));
       expect(redux.state['value'], 2);
@@ -31,8 +29,7 @@ void main() {
     });
 
     test('should redo', () async {
-      HistoryRedux redux =
-          HistoryRedux(reducer, {'value': 0}, historyLength: 3);
+      HistoryRedux redux = HistoryRedux(reducer, {'value': 0}, historyLength: 3);
       await redux.dispatch(null, Increment(1));
       await redux.dispatch(null, Increment(1));
       redux.undo();
@@ -52,7 +49,7 @@ class Increment {
   Increment(this.value);
 }
 
-Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
+Map reducer(BuildContext context, Map old, dynamic action) {
   if (action is Increment) {
     var state = Map.from(old);
     state['value'] += action.value;
