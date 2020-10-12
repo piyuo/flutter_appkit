@@ -43,27 +43,22 @@ class Redux {
   ///
   ///     redux.dispatch(context, Increment(1));
   ///
-  bool dispatch(BuildContext context, dynamic action) {
+  void dispatch(BuildContext context, dynamic action) {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
-    if (kReleaseMode) {
+    if (!kReleaseMode) {
       var newState = _reducer(context, state, action);
-      if (newState != _state) {
-        _state = newState;
-        return true;
+      var payload = toString(action);
+      var diff = diffState(newState, _state);
+      if (diff != '') {
+        debugPrint('$_here~${action.runtimeType}{$payload} $diff');
+      } else {
+        debugPrint('$_here~${action.runtimeType}{$payload}$RED state not change');
       }
-      return false;
-    }
-
-    var newState = _reducer(context, state, action);
-    var payload = toString(action);
-    var diff = diffState(newState, _state);
-    if (newState != _state) {
       _state = newState;
-      debugPrint('$_here~${action.runtimeType}{$payload} $diff');
-      return true;
+      return;
     }
-    debugPrint('$_here~${action.runtimeType}{$payload}$RED state not change');
-    return false;
+    _state = _reducer(context, state, action);
+    return;
   }
 }
 
