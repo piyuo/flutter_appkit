@@ -19,7 +19,7 @@ using project libcli.code-workspace
 unit test
 
 ```bash
-flutter test
+flutter test lib
 ```
 
 debug test using vscode flutter extension
