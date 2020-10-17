@@ -6,7 +6,7 @@ const _here = 'redux';
 
 /// Redux reducer implementation
 ///
-typedef Map Reducer(BuildContext context, Map state, dynamic action);
+typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
 
 /// Redux implements redux pattern
 ///
@@ -43,10 +43,10 @@ class Redux {
   ///
   ///     redux.dispatch(context, Increment(1));
   ///
-  void dispatch(BuildContext context, dynamic action) {
+  dispatch(BuildContext context, dynamic action) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (!kReleaseMode) {
-      var newState = _reducer(context, state, action);
+      var newState = await _reducer(context, state, action);
       var payload = toString(action);
       var diff = diffState(newState, _state);
       if (diff != '') {
@@ -57,7 +57,7 @@ class Redux {
       _state = newState;
       return;
     }
-    _state = _reducer(context, state, action);
+    _state = await _reducer(context, state, action);
     return;
   }
 }

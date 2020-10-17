@@ -39,7 +39,7 @@ class Change {}
 
 class DoNothing {}
 
-Map reducer(BuildContext context, Map oldState, dynamic action) {
+Future<Map> reducer(BuildContext context, Map oldState, dynamic action) async {
   var newState = oldState.deepCopy();
   if (action is Increment) {
     newState['value'] += action.value;
