@@ -9,13 +9,13 @@ void main() {
     test('should dispatch and return true because state change', () async {
       Redux redux = Redux(reducer, {'value': 0});
       expect(redux.state['value'], 0);
-      redux.dispatch(null, Increment(1));
+      await redux.dispatch(null, Increment(1));
       expect(redux.state['value'], 1);
     });
 
     test('should return false cause state not change', () async {
       Redux redux = Redux(reducer, {'value': 0});
-      redux.dispatch(null, DoNothing());
+      await redux.dispatch(null, DoNothing());
       expect(redux.state['value'], 0);
     });
 
@@ -24,7 +24,7 @@ void main() {
         'value': 0,
         'child': {'text': 'hi'}
       });
-      redux.dispatch(null, Change());
+      await redux.dispatch(null, Change());
       expect(redux.state['value'], 2);
     });
   });

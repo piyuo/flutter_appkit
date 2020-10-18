@@ -29,6 +29,7 @@ class Redux {
   ///
   Map get state => _state;
 
+/*
   /// set current state
   ///
   set state(Map value) {
@@ -38,10 +39,10 @@ class Redux {
     }
     _state = value;
   }
-
+*/
   /// dispatch action,return true if state changed. return false if state not change
   ///
-  ///     redux.dispatch(context, Increment(1));
+  ///     await redux.dispatch(context, Increment(1));
   ///
   dispatch(BuildContext context, dynamic action) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');

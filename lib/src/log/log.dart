@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
 import 'package:libcli/configuration.dart' as configuration;
@@ -23,6 +24,27 @@ const ALLOCATION = MAGENTA;
 const NETWORK = CYAN;
 const STATE = GREEN;
 
+/// instances keep active redux instance
+///
+final List<Map> reduxStates = List();
+
+/// readReduxStates print all redux states to string
+///
+///
+String readReduxStates() {
+  var buffer = new StringBuffer();
+  buffer.write('[');
+  for (var i = 0; i < reduxStates.length; i++) {
+    var str = jsonEncode(reduxStates[i]);
+    buffer.write(str);
+    if (i < reduxStates.length - 1) {
+      buffer.write(',');
+    }
+  }
+  buffer.write(']');
+  return buffer.toString();
+}
+
 /// overrideDebugPrint override debugPrint()
 ///
 ///     debugPrint = overrideDebugPrint;
@@ -40,6 +62,8 @@ void overrideDebugPrint(String message, {int wrapWidth}) {
       m = message;
     }
     message = '$HEAD$h$END$m';
+    print(message);
+  }
 /*
     if (Platform.isIOS) {
       print(message
@@ -53,8 +77,6 @@ void overrideDebugPrint(String message, {int wrapWidth}) {
           .replaceAll(ALERT, ''));
       return;
     }*/
-    print(message);
-  }
 }
 
 /// log print message and log to analytic
@@ -106,6 +128,7 @@ void alert(String message) {
 ///     } catch (e, s) {
 ///       var errID = error(HERE, e, s);
 ///     }
+///
 void error(String where, dynamic e, StackTrace stacktrace) {
   String msg = '';
   try {
@@ -113,9 +136,11 @@ void error(String where, dynamic e, StackTrace stacktrace) {
   } catch (_) {
     msg = e.runtimeType.toString();
   }
+
+  String states = readReduxStates();
   String stack = beautyStack(stacktrace);
-  debugPrint('$where~${ALERT}caught $msg\n$stack');
-  analytic.saveError(where, msg, stack);
+  debugPrint('$where~${ALERT}caught $msg\n$stack\n$states');
+  analytic.saveError(where, msg, stack, states);
 }
 
 /// create log head, like application.identity.where:
@@ -164,9 +189,9 @@ String beautyLine(String l) {
 }
 
 String _beautyLine(String l) {
-  l = l.replaceAll('<anonymous closure>', '').replaceAll(
-      new RegExp(r"\s+\b|\b\s"),
-      ' '); // convert spaces to _ for stack driver format
+  l = l
+      .replaceAll('<anonymous closure>', '')
+      .replaceAll(new RegExp(r"\s+\b|\b\s"), ' '); // convert spaces to _ for stack driver format
 
   if (l.startsWith('#')) {
     var i = l.indexOf(' ');

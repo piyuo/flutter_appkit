@@ -1,14 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/log.dart';
 
 void main() {
-  MockRedux provider = MockRedux();
   group('[redux_provider]', () {
+    test('should add/remove redux to instances', () async {
+      reduxStates.clear();
+      expect(reduxStates.length, 0);
+      MockReduxProvider provider = MockReduxProvider();
+      expect(reduxStates.length, 1);
+      provider.dispose();
+      expect(reduxStates.length, 0);
+    });
+
     test('should dispatch reducer', () async {
+      MockReduxProvider provider = MockReduxProvider();
       expect(provider.state['value'], 0);
       await provider.dispatch(null, Increment(1));
       expect(provider.state['value'], 1);
+      provider.dispose();
     });
   });
 }
@@ -27,6 +38,6 @@ Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
   return old;
 }
 
-class MockRedux extends ReduxProvider {
-  MockRedux() : super(reducer, {'value': 0});
+class MockReduxProvider extends ReduxProvider {
+  MockReduxProvider() : super(reducer, {'value': 0});
 }

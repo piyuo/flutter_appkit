@@ -30,13 +30,16 @@ saveLog(String where, String message, int level) {
     ..level = level);
 }
 
-saveError(String where, String message, String stack) {
-  _current.errors.add(commandsSys.Error()
-    ..msg = message
-    ..app = configuration.appID
-    ..user = configuration.userID
-    ..where = where
-    ..stack = '$stack');
+//todo:add states to commands sys
+saveError(String where, String message, String stack, String states) {
+  _current.errors.add(
+    commandsSys.Error()
+      ..msg = message
+      ..app = configuration.appID
+      ..user = configuration.userID
+      ..where = where
+      ..stack = stack,
+  );
 }
 
 reset() {

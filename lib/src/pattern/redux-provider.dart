@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/src/pattern/async-provider.dart';
 import 'package:libcli/src/pattern/redux.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/log.dart';
 
 /// ReduxProvider implement AsyncProvicer and Redux
 abstract class ReduxProvider extends AsyncProvider {
@@ -13,16 +14,26 @@ abstract class ReduxProvider extends AsyncProvider {
   ///
   ReduxProvider(Reducer reducer, Map state) {
     _redux = Redux(reducer, state);
+    reduxStates.add(_redux.state);
+  }
+
+  /// dispose remove  redux instances list
+  ///
+  @override
+  void dispose() {
+    reduxStates.remove(_redux.state);
+    super.dispose();
   }
 
   /// state return current redux state
   ///
   Map get state => _redux.state;
 
+/*
   /// state set current redux state
   ///
   set state(Map value) => _redux.state = value;
-
+*/
   /// dispatch action and change state
   ///
   ///     redux.dispatch(context,Increment(1));

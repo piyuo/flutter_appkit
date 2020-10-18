@@ -7,6 +7,15 @@ void main() {
   debugPrint = overrideDebugPrint;
 
   group('[log]', () {
+    test('should readReduxStates', () {
+      reduxStates.clear();
+      reduxStates.add({'a': 0, 'b': 1});
+      reduxStates.add({'c': 2, 'd': 1});
+      String s = readReduxStates();
+      expect(s, '[{"a":0,"b":1},{"c":2,"d":1}]');
+      reduxStates.clear();
+    });
+
     test('should debugPrint', () {
       configuration.appID = 'piyuo-web-index';
       configuration.userID = '111-222';
@@ -56,11 +65,9 @@ void main() {
     });
 
     test('should beautify stack line', () async {
-      var l =
-          '#0      main.<anonymous closure>.<anonymous closure> (file://libcli/test/log/log_test.dart:34:9)';
+      var l = '#0      main.<anonymous closure>.<anonymous closure> (file://libcli/test/log/log_test.dart:34:9)';
       // ignore: invalid_use_of_visible_for_testing_member
-      expect(beautyLine(l),
-          'at main.. (file://libcli/test/log/log_test.dart:34:9)');
+      expect(beautyLine(l), 'at main.. (file://libcli/test/log/log_test.dart:34:9)');
 
       l = 'package:libcli/command.dart 46:15 post.<fn>';
       // ignore: invalid_use_of_visible_for_testing_member
