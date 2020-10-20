@@ -5,7 +5,19 @@ import 'package:libcli/log.dart';
 
 void main() {
   group('[redux_provider]', () {
-    test('should add/remove redux to instances', () async {
+    test('should set reduxNewState when use from()', () async {
+      reduxNewState = null;
+      Map state = Map();
+      Map newState = from(state);
+      expect(reduxNewState, newState);
+
+      MockReduxProvider provider = MockReduxProvider();
+      await provider.dispatch(null, Increment(1));
+      expect(reduxNewState, isNull);
+      reduxNewState = null;
+    });
+
+    test('should add/remove redux to state', () async {
       reduxStates.clear();
       expect(reduxStates.length, 0);
       MockReduxProvider provider = MockReduxProvider();

@@ -8,6 +8,11 @@ const _here = 'redux';
 ///
 typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
 
+Map from(Map state) {
+  reduxNewState = Map.from(state);
+  return reduxNewState;
+}
+
 /// Redux implements redux pattern
 ///
 class Redux {
@@ -56,9 +61,11 @@ class Redux {
         debugPrint('$_here~${action.runtimeType}{$payload}$RED state not change');
       }
       _state = newState;
+      reduxNewState = null;
       return;
     }
     _state = await _reducer(context, state, action);
+    reduxNewState = null;
     return;
   }
 }

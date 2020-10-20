@@ -24,9 +24,13 @@ const ALLOCATION = MAGENTA;
 const NETWORK = CYAN;
 const STATE = GREEN;
 
-/// instances keep active redux instance
+/// reduxStates keep all redux states
 ///
 final List<Map> reduxStates = List();
+
+/// reduxNewState keep newStat in from(), it will be null when merage to state
+///
+Map reduxNewState = null;
 
 /// readReduxStates print all redux states to string
 ///
