@@ -7,37 +7,35 @@ import 'package:libcli/log.dart';
 /// ReduxProvider implement AsyncProvicer and Redux
 ///
 abstract class ReduxProvider extends AsyncProvider {
-  /// _redux instance
+  /// redux instance
   ///
-  Redux _redux;
+  Redux redux;
 
   /// ReduxProvider constructor with default reducer and state
   ///
-  ReduxProvider(Reducer reducer, Map state) {
-    _redux = Redux(reducer, state);
-    reduxStates.add(_redux.state);
+  ReduxProvider(this.redux) {
+    reduxStates.add(redux.state);
   }
 
   /// dispose remove  redux instances list
   ///
   @override
   void dispose() {
-    reduxStates.remove(_redux.state);
+    reduxStates.remove(redux.state);
     super.dispose();
   }
 
   /// state return current redux state
   ///
-  Map get state => _redux.state;
+  Map get state => redux.state;
 
   /// dispatch action and change state
   ///
   ///     redux.dispatch(context,Increment(1));
   ///
   @mustCallSuper
-  Future<Map> dispatch(BuildContext ctx, dynamic action) async {
-    await _redux.dispatch(ctx, action);
+  void dispatch(BuildContext ctx, dynamic action) async {
+    await redux.dispatch(ctx, action);
     notifyListeners();
-    return state;
   }
 }
