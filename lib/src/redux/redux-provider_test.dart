@@ -51,5 +51,7 @@ Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
 }
 
 class MockReduxProvider extends ReduxProvider {
-  MockReduxProvider() : super(Redux(reducer, {'value': 0}));
+  MockReduxProvider() {
+    redux = Redux(reducer, {'value': 0});
+  }
 }

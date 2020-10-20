@@ -17,9 +17,13 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
 
   /// ProviderWidget
   ///
-  ProviderWidget({this.i18nFilename, this.package});
+  ProviderWidget(this.i18nFilename, this.package);
 
-  /// createProvider create provider that widget need
+  /// onProviderCreated called when parovider is created
+  ///
+  void onProviderCreated(T provider) {}
+
+  /// createProvider create provider that widget need, it will assign redux to redux provider
   ///
   T createProvider(BuildContext context);
 
@@ -38,6 +42,7 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
           create: (context) {
             var p = createProvider(context);
             assert(p != null, '$runtimeType must override createProvider and do no return null');
+            onProviderCreated(p);
             return p;
           },
         )

@@ -7,3 +7,4 @@ export 'package:libcli/src/redux/map.dart';
 export 'package:libcli/src/redux/history-redux.dart';
 export 'package:libcli/src/redux/await.dart';
 export 'package:libcli/src/redux/provider-widget.dart';
+export 'package:libcli/src/redux/redux-widget.dart';
