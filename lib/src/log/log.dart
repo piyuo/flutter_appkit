@@ -45,6 +45,12 @@ String readReduxStates() {
       buffer.write(',');
     }
   }
+  if (reduxNewState != null) {
+    buffer.write(',');
+    var str = jsonEncode(reduxNewState);
+    buffer.write(str);
+  }
+
   buffer.write(']');
   return buffer.toString();
 }

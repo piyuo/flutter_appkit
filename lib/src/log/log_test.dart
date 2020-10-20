@@ -13,6 +13,10 @@ void main() {
       reduxStates.add({'c': 2, 'd': 1});
       String s = readReduxStates();
       expect(s, '[{"a":0,"b":1},{"c":2,"d":1}]');
+
+      reduxNewState = {'e': 0};
+      s = readReduxStates();
+      expect(s, '[{"a":0,"b":1},{"c":2,"d":1},{"e":0}]');
       reduxStates.clear();
     });
 
