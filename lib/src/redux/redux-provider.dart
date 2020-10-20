@@ -11,9 +11,16 @@ abstract class ReduxProvider extends AsyncProvider {
   ///
   Redux _redux;
 
-  /// ReduxProvider constructor
+  /// dispose remove  redux instances list
   ///
-  ReduxProvider() {}
+  @override
+  void dispose() {
+    if (_redux != null) {
+      reduxStates.remove(_redux.state);
+      _redux = null;
+    }
+    super.dispose();
+  }
 
   /// ReduxProvider constructor with default reducer and state
   ///
@@ -27,22 +34,15 @@ abstract class ReduxProvider extends AsyncProvider {
     reduxStates.add(_redux.state);
   }
 
-  /// dispose remove  redux instances list
-  ///
-  @override
-  void dispose() {
-    if (_redux != null) {
-      reduxStates.remove(_redux.state);
-      _redux = null;
-    }
-    super.dispose();
+  get redux {
+    assert(_redux != null, 'redux must no be null');
+    return _redux;
   }
 
   /// state return current redux state
   ///
   Map get state {
-    assert(_redux != null, 'redux must no be null');
-    return _redux.state;
+    return redux.state;
   }
 
   /// dispatch action and change state
