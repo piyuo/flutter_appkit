@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/pattern.dart';
+import 'package:libcli/redux.dart';
 import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/log.dart';
 import 'package:flutter/material.dart';

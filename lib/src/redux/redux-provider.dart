@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/pattern/async-provider.dart';
-import 'package:libcli/src/pattern/redux.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/src/redux/async-provider.dart';
+import 'package:libcli/src/redux/redux.dart';
 import 'package:libcli/log.dart';
 
 /// ReduxProvider implement AsyncProvicer and Redux
+///
 abstract class ReduxProvider extends AsyncProvider {
   /// _redux instance
   ///
@@ -29,11 +30,6 @@ abstract class ReduxProvider extends AsyncProvider {
   ///
   Map get state => _redux.state;
 
-/*
-  /// state set current redux state
-  ///
-  set state(Map value) => _redux.state = value;
-*/
   /// dispatch action and change state
   ///
   ///     redux.dispatch(context,Increment(1));

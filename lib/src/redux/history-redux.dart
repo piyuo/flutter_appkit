@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart';
-import 'package:libcli/src/pattern/redux.dart';
+import 'package:libcli/src/redux/redux.dart';
 import 'package:flutter/material.dart';
 
 const _here = 'history_redux';
@@ -113,8 +113,7 @@ class HistoryRedux {
       var newState = await _reducer(ctx, state, action);
       var jNew = toString(newState);
       var payload = toString(action);
-      debugPrint(
-          '$_here~${STATE}action: ${action.runtimeType}{$payload}, state: $jNew $END<= $jOld');
+      debugPrint('$_here~${STATE}action: ${action.runtimeType}{$payload}, state: $jNew $END<= $jOld');
       _setState(newState);
     }
     return state;

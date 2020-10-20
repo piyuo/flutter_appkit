@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pattern.dart';
+import 'package:libcli/redux.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/asset.dart' as asset;
 

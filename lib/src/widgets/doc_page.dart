@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n.dart';
-import 'package:libcli/pattern.dart';
+import 'package:libcli/redux.dart';
 import 'package:libcli/src/widgets/doc_provider.dart';
 
 class DocPage extends ProviderWidget<DocProvider> {
@@ -36,9 +36,7 @@ class DocWidget extends StatelessWidget {
           child: Stack(children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(bottom: 75),
-              child: Consumer<DocProvider>(
-                  builder: (context, provider, _) =>
-                      Markdown(data: provider.md)),
+              child: Consumer<DocProvider>(builder: (context, provider, _) => Markdown(data: provider.md)),
             ),
             Positioned(
               left: 30,

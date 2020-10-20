@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/pattern.dart';
+import 'package:libcli/redux.dart';
 import 'package:libcli/i18n.dart';
 
 ///ProviderWidget is widget that build by provider model
@@ -37,8 +37,7 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
         ChangeNotifierProvider<T>(
           create: (context) {
             var p = createProvider(context);
-            assert(p != null,
-                '$runtimeType must override createProvider and do no return null');
+            assert(p != null, '$runtimeType must override createProvider and do no return null');
             return p;
           },
         )

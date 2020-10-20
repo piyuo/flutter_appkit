@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/src/pattern/contracts.dart';
-import 'package:libcli/src/pattern/async-provider.dart';
-import 'package:libcli/src/pattern/await-progress-indicator.dart';
-import 'package:libcli/src/pattern/await-error-message.dart';
+import 'package:libcli/contracts.dart';
+import 'package:libcli/src/redux/async-provider.dart';
+import 'package:libcli/src/redux/await-progress-indicator.dart';
+import 'package:libcli/src/redux/await-error-message.dart';
 
 const _here = 'await';
 
@@ -28,13 +28,7 @@ class Await extends StatefulWidget {
   ///
   /// show child view when provider successfully load
   ///
-  Await(
-      {Key key,
-      @required this.list,
-      @required this.child,
-      this.progress,
-      this.error})
-      : super(key: key);
+  Await({Key key, @required this.list, @required this.child, this.progress, this.error}) : super(key: key);
 
   @override
   _AwaitState createState() => _AwaitState();
@@ -56,8 +50,7 @@ class _AwaitState extends State<Await> {
   ///others return ready
   AsyncStatus status() {
     for (var p in widget.list) {
-      if (p.asyncStatus == AsyncStatus.loading ||
-          p.asyncStatus == AsyncStatus.none) {
+      if (p.asyncStatus == AsyncStatus.loading || p.asyncStatus == AsyncStatus.none) {
         return AsyncStatus.loading;
       } else if (p.asyncStatus == AsyncStatus.error) {
         return AsyncStatus.error;
@@ -125,9 +118,7 @@ class _AwaitState extends State<Await> {
                 },
                 onRetryPressed: () => reload(context));
       default:
-        return widget.progress != null
-            ? widget.progress
-            : AwaitProgressIndicator();
+        return widget.progress != null ? widget.progress : AwaitProgressIndicator();
     }
   }
 }
