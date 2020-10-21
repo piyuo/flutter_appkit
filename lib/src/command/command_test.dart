@@ -18,8 +18,7 @@ void main() {
   setUp(() {});
 
   group('[command]', () {
-    testWidgets('should send command and receive response',
-        (WidgetTester tester) async {
+    testWidgets('should send command and receive response', (WidgetTester tester) async {
       var client = MockClient((request) async {
         StringResponse sr = StringResponse();
         sr.text = 'hi';
@@ -29,8 +28,7 @@ void main() {
 
       await tester.inWidget((ctx) async {
         SysService service = SysService();
-        var response = await service.executeWithClient(
-            ctx, EchoAction()..text = 'hello', client);
+        var response = await service.executeWithClient(ctx, EchoAction()..text = 'hello', client);
         if (response is StringResponse) {
           expect(response, isNotNull);
           expect(response.text, 'hi');
@@ -47,8 +45,7 @@ void main() {
 
       await tester.inWidget((ctx) async {
         SysService service = SysService();
-        var response =
-            await service.executeWithClient(ctx, EchoAction(), client);
+        var response = await service.executeWithClient(ctx, EchoAction(), client);
         expect(response, isNull);
       });
     });
@@ -83,7 +80,7 @@ void main() {
       EchoAction action = new EchoAction();
       var response = await service.execute(null, action);
       if (response is command.Err) {
-        expect(response.code, command.OK);
+        expect(response.code, isEmpty);
       } else {
         expect(1, 0);
       }
