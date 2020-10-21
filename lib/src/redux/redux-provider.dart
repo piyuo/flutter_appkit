@@ -52,6 +52,5 @@ abstract class ReduxProvider extends AsyncProvider {
   @mustCallSuper
   void dispatch(BuildContext ctx, dynamic action) async {
     await _redux.dispatch(ctx, action);
-//    notifyListeners();
   }
 }
