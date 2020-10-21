@@ -17,7 +17,7 @@ abstract class ProviderWidget<T extends AsyncProvider> extends StatelessWidget {
 
   /// ProviderWidget
   ///
-  ProviderWidget(this.i18nFilename, this.package);
+  ProviderWidget(this.i18nFilename, {this.package});
 
   /// onProviderCreated called when parovider is created
   ///

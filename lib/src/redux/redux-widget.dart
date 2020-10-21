@@ -10,7 +10,7 @@ abstract class ReduxWidget<T extends ReduxProvider> extends ProviderWidget<T> {
 
   /// ReduxWidget create instance wih redux and default i18nFilename
   ///
-  ReduxWidget(this.redux, String i18nFilename, {String package}) : super(i18nFilename, package) {
+  ReduxWidget(this.redux, String i18nFilename, {String package}) : super(i18nFilename, package: package) {
     assert(redux != null, 'redux must no be null');
   }
 
