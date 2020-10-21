@@ -19,8 +19,7 @@ class RequestTimeoutContract extends eventbus.Contract {
   final String url;
   final String errorID;
   final bool isServer;
-  RequestTimeoutContract(
-      {this.exception, this.url, this.isServer, this.errorID});
+  RequestTimeoutContract({this.exception, this.url, this.isServer, this.errorID});
 }
 
 /// SlowNetworkEvent happen when command [execute longer than usual]
