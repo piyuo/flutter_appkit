@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/contracts.dart';
 import 'package:libcli/src/redux/async-provider.dart';
 import 'package:libcli/src/redux/await-progress-indicator.dart';
 import 'package:libcli/src/redux/await-error-message.dart';
@@ -113,7 +112,7 @@ class _AwaitState extends State<Await> {
                 onEmailLinkPressed: () {
                   eventbus.contract(
                     context,
-                    EmailSupportContract(errorReports()),
+                    eventbus.EmailSupportContract(errorReports()),
                   );
                 },
                 onRetryPressed: () => reload(context));
