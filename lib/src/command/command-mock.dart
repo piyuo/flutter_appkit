@@ -21,7 +21,11 @@ class MockService extends Service {
   }
 
   @override
-  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj) async {
-    return await mockExecute(ctx, obj);
+  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj, {Map state}) async {
+    var response = await mockExecute(ctx, obj);
+    if (state != null) {
+      setErrState(state, response);
+    }
+    return response;
   }
 }

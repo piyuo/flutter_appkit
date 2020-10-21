@@ -72,6 +72,17 @@ void main() {
       }
     });
 
+    test('should execute set state', () async {
+      var service = command.MockService((ctx, action) async {
+        return StringResponse()..text = 'hi';
+      });
+
+      EchoAction action = new EchoAction();
+      Map state = Map();
+      await service.execute(null, action, state: state);
+      expect(state['err'], '');
+    });
+
     test('should use shared object', () async {
       command.MockService service = command.MockService((_, action) async {
         return command.ok();

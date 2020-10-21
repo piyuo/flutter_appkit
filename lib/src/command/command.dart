@@ -127,10 +127,14 @@ abstract class Service {
   /// execute action to remote service, no need to handle exception, all exception contract to eventBus
   ///
   ///     var response = await service.execute(EchoAction());
-  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj) async {
+  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj, {Map state}) async {
     assert(obj != null);
     http.Client client = http.Client();
-    return await executeWithClient(ctx, obj, client);
+    var response = await executeWithClient(ctx, obj, client);
+    if (state != null) {
+      setErrState(state, response);
+    }
+    return response;
   }
 
   /// executehWithClient send action to remote service,return object if success, return null if exception happen
