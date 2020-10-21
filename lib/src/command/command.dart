@@ -39,6 +39,19 @@ Err error(String errorCode) {
   return Err()..code = errorCode;
 }
 
+/// setErrState set state['err'], null if response is null, '' if response is not null,'error code' if response is err code
+///
+void setErrState(Map state, ProtoObject response) {
+  if (response == null) {
+    state['err'] = null;
+    return;
+  }
+  state['err'] = '';
+  if (response is Err) {
+    state['err'] = response.code;
+  }
+}
+
 /// text return shared text object
 ///
 sharedText.Text text(String value) {
