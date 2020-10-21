@@ -34,22 +34,11 @@ class Redux {
   ///
   Map get state => _state;
 
-/*
-  /// set current state
-  ///
-  set state(Map value) {
-    if (!kReleaseMode) {
-      var s = toString(value);
-      debugPrint('$_here~${STATE}set state=$s');
-    }
-    _state = value;
-  }
-*/
   /// dispatch action,return true if state changed. return false if state not change
   ///
   ///     await redux.dispatch(context, Increment(1));
   ///
-  dispatch(BuildContext context, dynamic action) async {
+  void dispatch(BuildContext context, dynamic action) async {
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (!kReleaseMode) {
       var newState = await _reducer(context, state, action);
@@ -60,11 +49,14 @@ class Redux {
       } else {
         debugPrint('$_here~${action.runtimeType}{$payload}$RED state not change');
       }
+      assert(newState != null, 'state can not be null');
       _state = newState;
       reduxNewState = null;
       return;
     }
-    _state = await _reducer(context, state, action);
+    var newState = await _reducer(context, state, action);
+    assert(newState != null, 'state can not be null');
+    _state = newState;
     reduxNewState = null;
     return;
   }
@@ -79,7 +71,7 @@ String diffState(Map newState, Map oldState) {
       text += diffState(newValue, oldValue);
     } else {
       if (newValue != oldValue) {
-        text += '$RED$key=$newValue$END<-$oldValue, ';
+        text += '$RED$key=$newValue$END < $oldValue, ';
       }
     }
   }
