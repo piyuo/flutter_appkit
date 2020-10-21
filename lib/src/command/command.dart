@@ -17,6 +17,10 @@ import 'package:libcli/commands/shared/bool.pb.dart';
 
 const _here = 'command';
 
+/// OK is empty string which is mean empty error is OK
+///
+const OK = '';
+
 /// isOK check if response is Err object and error code is empty
 ///
 bool isOK(dynamic response) {
@@ -26,7 +30,7 @@ bool isOK(dynamic response) {
 /// ok return Err with OK
 ///
 Err ok() {
-  return Err()..code = '';
+  return Err()..code = OK;
 }
 
 /// error return Err with error code
