@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:libcli/src/redux/async-provider.dart';
 import 'package:libcli/src/redux/redux.dart';
 import 'package:libcli/log.dart';
+import 'package:libcli/i18n.dart';
+import 'package:libcli/eventbus.dart' as eventbus;
 
 /// ReduxProvider implement AsyncProvicer and Redux
 ///
@@ -52,5 +54,18 @@ abstract class ReduxProvider extends AsyncProvider {
   @mustCallSuper
   void dispatch(BuildContext ctx, dynamic action) async {
     await _redux.dispatch(ctx, action);
+  }
+
+  /// checkErrState check state['err'] return true if no error, brodcast [ShowErrorEvent] if receive error code
+  ///
+  bool checkErrorCodeState(BuildContext context) {
+    String err = state['err'];
+    if (err == null) {
+      return false;
+    } else if (err != '') {
+      eventbus.broadcast(context, eventbus.ShowErrorEvent(err.i18n(context)));
+      return false;
+    }
+    return true;
   }
 }
