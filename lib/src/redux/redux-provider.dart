@@ -58,7 +58,7 @@ abstract class ReduxProvider extends AsyncProvider {
 
   /// checkErrState check state['err'] return true if no error, brodcast [ShowErrorEvent] if receive error code
   ///
-  bool checkErrorCodeState(BuildContext context) {
+  bool checkErrState(BuildContext context) {
     String err = state['err'];
     if (err == null) {
       return false;
