@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/log.dart';
 
-/// ReduxProvider implement AsyncProvicer and Redux
+/// ReduxProvider provide redux
 ///
 class ReduxProvider extends ChangeNotifier {
   /// redux instance
@@ -12,6 +12,7 @@ class ReduxProvider extends ChangeNotifier {
 
   ReduxProvider(this.redux) {
     assert(redux != null, 'redux must no be null');
+    reduxStates.add(redux.state);
   }
 
   /// dispose remove  redux instances list

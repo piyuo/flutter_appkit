@@ -1,4 +1,4 @@
-library pattern;
+library module;
 
 export 'package:libcli/src/module/async-provider.dart';
 export 'package:libcli/src/module/redux-provider.dart';

@@ -6,7 +6,7 @@
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
 import 'dart:core' as $core;
-import 'package:libcli/src/command/command.dart' as command;
+import 'package:libcli/command.dart' as command;
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/src/command/google/type.pb.dart' as $0;
 import 'package:libcli/src/command/google/source_context.pb.dart' as $1;
@@ -17,42 +17,33 @@ class Api extends command.ProtoObject {
     return 1004;
   }
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Api',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..pc<Method>(2, 'methods', $pb.PbFieldType.PM, subBuilder: Method.create)
-    ..pc<$0.Option>(3, 'options', $pb.PbFieldType.PM,
-        subBuilder: $0.Option.create)
-    ..aOS(4, 'version')
-    ..aOM<$1.SourceContext>(5, 'sourceContext',
-        subBuilder: $1.SourceContext.create)
-    ..pc<Mixin>(6, 'mixins', $pb.PbFieldType.PM, subBuilder: Mixin.create)
-    ..e<$0.Syntax>(7, 'syntax', $pb.PbFieldType.OE,
-        defaultOrMaker: $0.Syntax.SYNTAX_PROTO2,
-        valueOf: $0.Syntax.valueOf,
-        enumValues: $0.Syntax.values)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('Api', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..pc<Method>(2, 'methods', $pb.PbFieldType.PM, subBuilder: Method.create)
+        ..pc<$0.Option>(3, 'options', $pb.PbFieldType.PM, subBuilder: $0.Option.create)
+        ..aOS(4, 'version')
+        ..aOM<$1.SourceContext>(5, 'sourceContext', subBuilder: $1.SourceContext.create)
+        ..pc<Mixin>(6, 'mixins', $pb.PbFieldType.PM, subBuilder: Mixin.create)
+        ..e<$0.Syntax>(7, 'syntax', $pb.PbFieldType.OE,
+            defaultOrMaker: $0.Syntax.SYNTAX_PROTO2, valueOf: $0.Syntax.valueOf, enumValues: $0.Syntax.values)
+        ..hasRequiredFields = false;
 
   Api._() : super();
   factory Api() => create();
-  factory Api.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Api.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Api.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Api.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   Api clone() => Api()..mergeFromMessage(this);
-  Api copyWith(void Function(Api) updates) =>
-      super.copyWith((message) => updates(message as Api));
+  Api copyWith(void Function(Api) updates) => super.copyWith((message) => updates(message as Api));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Api create() => Api._();
   Api createEmptyInstance() => create();
   static $pb.PbList<Api> createRepeated() => $pb.PbList<Api>();
   @$core.pragma('dart2js:noInline')
-  static Api getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Api>(create);
+  static Api getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Api>(create);
   static Api _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -116,41 +107,33 @@ class Api extends command.ProtoObject {
 }
 
 class Method extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Method',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..aOS(2, 'requestTypeUrl')
-    ..aOB(3, 'requestStreaming')
-    ..aOS(4, 'responseTypeUrl')
-    ..aOB(5, 'responseStreaming')
-    ..pc<$0.Option>(6, 'options', $pb.PbFieldType.PM,
-        subBuilder: $0.Option.create)
-    ..e<$0.Syntax>(7, 'syntax', $pb.PbFieldType.OE,
-        defaultOrMaker: $0.Syntax.SYNTAX_PROTO2,
-        valueOf: $0.Syntax.valueOf,
-        enumValues: $0.Syntax.values)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('Method', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..aOS(2, 'requestTypeUrl')
+        ..aOB(3, 'requestStreaming')
+        ..aOS(4, 'responseTypeUrl')
+        ..aOB(5, 'responseStreaming')
+        ..pc<$0.Option>(6, 'options', $pb.PbFieldType.PM, subBuilder: $0.Option.create)
+        ..e<$0.Syntax>(7, 'syntax', $pb.PbFieldType.OE,
+            defaultOrMaker: $0.Syntax.SYNTAX_PROTO2, valueOf: $0.Syntax.valueOf, enumValues: $0.Syntax.values)
+        ..hasRequiredFields = false;
 
   Method._() : super();
   factory Method() => create();
-  factory Method.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Method.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Method.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Method.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   Method clone() => Method()..mergeFromMessage(this);
-  Method copyWith(void Function(Method) updates) =>
-      super.copyWith((message) => updates(message as Method));
+  Method copyWith(void Function(Method) updates) => super.copyWith((message) => updates(message as Method));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Method create() => Method._();
   Method createEmptyInstance() => create();
   static $pb.PbList<Method> createRepeated() => $pb.PbList<Method>();
   @$core.pragma('dart2js:noInline')
-  static Method getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Method>(create);
+  static Method getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Method>(create);
   static Method _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -230,32 +213,27 @@ class Method extends $pb.GeneratedMessage {
 }
 
 class Mixin extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Mixin',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..aOS(2, 'root')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('Mixin', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..aOS(2, 'root')
+        ..hasRequiredFields = false;
 
   Mixin._() : super();
   factory Mixin() => create();
-  factory Mixin.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Mixin.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Mixin.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Mixin.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   Mixin clone() => Mixin()..mergeFromMessage(this);
-  Mixin copyWith(void Function(Mixin) updates) =>
-      super.copyWith((message) => updates(message as Mixin));
+  Mixin copyWith(void Function(Mixin) updates) => super.copyWith((message) => updates(message as Mixin));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Mixin create() => Mixin._();
   Mixin createEmptyInstance() => create();
   static $pb.PbList<Mixin> createRepeated() => $pb.PbList<Mixin>();
   @$core.pragma('dart2js:noInline')
-  static Mixin getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Mixin>(create);
+  static Mixin getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Mixin>(create);
   static Mixin _defaultInstance;
 
   @$pb.TagNumber(1)

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/events.dart';
-import 'package:libcli/src/command/command-http-header.dart';
+import 'package:libcli/src/command/http-header.dart';
 
 const _here = 'command_http';
 
@@ -25,8 +25,8 @@ class Request {
 ///
 ///     await commandHttp.postclient, '', bytes, 500, 1);
 ///     expect(listener.latestEvent is contract.EventNetworkSlow, true);
-Future<List<int>> post(BuildContext ctx, http.Client client, String url,
-    Uint8List bytes, int timeout, int slow, Function errorHandler) async {
+Future<List<int>> post(BuildContext ctx, http.Client client, String url, Uint8List bytes, int timeout, int slow,
+    Function errorHandler) async {
   Completer<List<int>> completer = new Completer<List<int>>();
   var timer = Timer(Duration(milliseconds: slow), () {
     if (!completer.isCompleted && errorHandler == null) {
@@ -58,9 +58,7 @@ Future<List<int>> post(BuildContext ctx, http.Client client, String url,
 Future<List<int>> doPost(BuildContext ctx, Request r) async {
   try {
     var headers = await doRequestHeaders();
-    var resp = await r.client
-        .post(r.url, headers: headers, body: r.bytes)
-        .timeout(Duration(milliseconds: r.timeout));
+    var resp = await r.client.post(r.url, headers: headers, body: r.bytes).timeout(Duration(milliseconds: r.timeout));
     await doResponseHeaders(resp.headers);
 
     if (resp.statusCode == 200) {
@@ -79,22 +77,14 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
         return giveup(ctx, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
         return await retry(ctx,
-            contract: RequestTimeoutContract(
-                isServer: true, errorID: resp.body, url: r.url),
+            contract: RequestTimeoutContract(isServer: true, errorID: resp.body, url: r.url),
             request: r); //body is err id
       case 511: //access token required
-        return await retry(ctx,
-            contract: CAccessTokenRequired(),
-            fail: ERefuseSignin(),
-            request: r);
+        return await retry(ctx, contract: CAccessTokenRequired(), fail: ERefuseSignin(), request: r);
       case 412: //access token expired
-        return await retry(ctx,
-            contract: CAccessTokenExpired(), fail: ERefuseSignin(), request: r);
+        return await retry(ctx, contract: CAccessTokenExpired(), fail: ERefuseSignin(), request: r);
       case 402: //payment token expired
-        return await retry(ctx,
-            contract: CPaymentTokenRequired(),
-            fail: ERefuseSignin(),
-            request: r);
+        return await retry(ctx, contract: CPaymentTokenRequired(), fail: ERefuseSignin(), request: r);
       case 400: //bad request
         return giveup(ctx, BadRequestEvent()); //body is err id
     }
@@ -105,18 +95,13 @@ Future<List<int>> doPost(BuildContext ctx, Request r) async {
       return emmitError(r);
     }
     log.warning('$_here~failed to connect ${r.url} cause $e');
-    return await retry(ctx,
-        contract: InternetRequiredContract(exception: e, url: r.url),
-        request: r);
+    return await retry(ctx, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
   } on TimeoutException catch (e) {
     if (r.errorHandler != null) {
       return emmitError(r);
     }
     log.warning('$_here~connection timeout ${r.url} cause $e');
-    return await retry(ctx,
-        contract:
-            RequestTimeoutContract(isServer: false, exception: e, url: r.url),
-        request: r);
+    return await retry(ctx, contract: RequestTimeoutContract(isServer: false, exception: e, url: r.url), request: r);
   } catch (e, s) {
     //handle exception here to get better stack trace
     if (r.errorHandler != null) {
@@ -147,8 +132,7 @@ giveup(BuildContext ctx, dynamic e) {
 /// retry use contract, broadcast event when failed
 ///
 ///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
-Future<List<int>> retry(BuildContext ctx,
-    {eventbus.Contract contract, dynamic fail, Request request}) async {
+Future<List<int>> retry(BuildContext ctx, {eventbus.Contract contract, dynamic fail, Request request}) async {
   if (await eventbus.contract(ctx, contract)) {
     log.log('$_here~ok,retry');
     return await doPost(ctx, request);

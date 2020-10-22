@@ -7,7 +7,7 @@
 
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
-import 'package:libcli/src/command/command.dart' as command;
+import 'package:libcli/command.dart' as command;
 import 'package:libcli/src/command/google/source_context.pb.dart' as $0;
 import 'package:libcli/src/command/google/any.pb.dart' as $1;
 
@@ -20,40 +20,32 @@ class Type extends command.ProtoObject {
     return 1012;
   }
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Type',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..pc<Field>(2, 'fields', $pb.PbFieldType.PM, subBuilder: Field.create)
-    ..pPS(3, 'oneofs')
-    ..pc<Option>(4, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
-    ..aOM<$0.SourceContext>(5, 'sourceContext',
-        subBuilder: $0.SourceContext.create)
-    ..e<Syntax>(6, 'syntax', $pb.PbFieldType.OE,
-        defaultOrMaker: Syntax.SYNTAX_PROTO2,
-        valueOf: Syntax.valueOf,
-        enumValues: Syntax.values)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('Type', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..pc<Field>(2, 'fields', $pb.PbFieldType.PM, subBuilder: Field.create)
+        ..pPS(3, 'oneofs')
+        ..pc<Option>(4, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
+        ..aOM<$0.SourceContext>(5, 'sourceContext', subBuilder: $0.SourceContext.create)
+        ..e<Syntax>(6, 'syntax', $pb.PbFieldType.OE,
+            defaultOrMaker: Syntax.SYNTAX_PROTO2, valueOf: Syntax.valueOf, enumValues: Syntax.values)
+        ..hasRequiredFields = false;
 
   Type._() : super();
   factory Type() => create();
-  factory Type.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Type.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Type.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Type.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   Type clone() => Type()..mergeFromMessage(this);
-  Type copyWith(void Function(Type) updates) =>
-      super.copyWith((message) => updates(message as Type));
+  Type copyWith(void Function(Type) updates) => super.copyWith((message) => updates(message as Type));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Type create() => Type._();
   Type createEmptyInstance() => create();
   static $pb.PbList<Type> createRepeated() => $pb.PbList<Type>();
   @$core.pragma('dart2js:noInline')
-  static Type getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Type>(create);
+  static Type getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Type>(create);
   static Type _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -105,46 +97,39 @@ class Type extends command.ProtoObject {
 }
 
 class Field extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Field',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..e<Field_Kind>(1, 'kind', $pb.PbFieldType.OE,
-        defaultOrMaker: Field_Kind.TYPE_UNKNOWN,
-        valueOf: Field_Kind.valueOf,
-        enumValues: Field_Kind.values)
-    ..e<Field_Cardinality>(2, 'cardinality', $pb.PbFieldType.OE,
-        defaultOrMaker: Field_Cardinality.CARDINALITY_UNKNOWN,
-        valueOf: Field_Cardinality.valueOf,
-        enumValues: Field_Cardinality.values)
-    ..a<$core.int>(3, 'number', $pb.PbFieldType.O3)
-    ..aOS(4, 'name')
-    ..aOS(6, 'typeUrl')
-    ..a<$core.int>(7, 'oneofIndex', $pb.PbFieldType.O3)
-    ..aOB(8, 'packed')
-    ..pc<Option>(9, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
-    ..aOS(10, 'jsonName')
-    ..aOS(11, 'defaultValue')
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('Field', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..e<Field_Kind>(1, 'kind', $pb.PbFieldType.OE,
+            defaultOrMaker: Field_Kind.TYPE_UNKNOWN, valueOf: Field_Kind.valueOf, enumValues: Field_Kind.values)
+        ..e<Field_Cardinality>(2, 'cardinality', $pb.PbFieldType.OE,
+            defaultOrMaker: Field_Cardinality.CARDINALITY_UNKNOWN,
+            valueOf: Field_Cardinality.valueOf,
+            enumValues: Field_Cardinality.values)
+        ..a<$core.int>(3, 'number', $pb.PbFieldType.O3)
+        ..aOS(4, 'name')
+        ..aOS(6, 'typeUrl')
+        ..a<$core.int>(7, 'oneofIndex', $pb.PbFieldType.O3)
+        ..aOB(8, 'packed')
+        ..pc<Option>(9, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
+        ..aOS(10, 'jsonName')
+        ..aOS(11, 'defaultValue')
+        ..hasRequiredFields = false;
 
   Field._() : super();
   factory Field() => create();
-  factory Field.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Field.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Field.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Field.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   Field clone() => Field()..mergeFromMessage(this);
-  Field copyWith(void Function(Field) updates) =>
-      super.copyWith((message) => updates(message as Field));
+  Field copyWith(void Function(Field) updates) => super.copyWith((message) => updates(message as Field));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Field create() => Field._();
   Field createEmptyInstance() => create();
   static $pb.PbList<Field> createRepeated() => $pb.PbList<Field>();
   @$core.pragma('dart2js:noInline')
-  static Field getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Field>(create);
+  static Field getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Field>(create);
   static Field _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -260,40 +245,31 @@ class Field extends $pb.GeneratedMessage {
 }
 
 class Enum extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Enum',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..pc<EnumValue>(2, 'enumvalue', $pb.PbFieldType.PM,
-        subBuilder: EnumValue.create)
-    ..pc<Option>(3, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
-    ..aOM<$0.SourceContext>(4, 'sourceContext',
-        subBuilder: $0.SourceContext.create)
-    ..e<Syntax>(5, 'syntax', $pb.PbFieldType.OE,
-        defaultOrMaker: Syntax.SYNTAX_PROTO2,
-        valueOf: Syntax.valueOf,
-        enumValues: Syntax.values)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('Enum', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..pc<EnumValue>(2, 'enumvalue', $pb.PbFieldType.PM, subBuilder: EnumValue.create)
+        ..pc<Option>(3, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
+        ..aOM<$0.SourceContext>(4, 'sourceContext', subBuilder: $0.SourceContext.create)
+        ..e<Syntax>(5, 'syntax', $pb.PbFieldType.OE,
+            defaultOrMaker: Syntax.SYNTAX_PROTO2, valueOf: Syntax.valueOf, enumValues: Syntax.values)
+        ..hasRequiredFields = false;
 
   Enum._() : super();
   factory Enum() => create();
-  factory Enum.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Enum.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Enum.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Enum.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   Enum clone() => Enum()..mergeFromMessage(this);
-  Enum copyWith(void Function(Enum) updates) =>
-      super.copyWith((message) => updates(message as Enum));
+  Enum copyWith(void Function(Enum) updates) => super.copyWith((message) => updates(message as Enum));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Enum create() => Enum._();
   Enum createEmptyInstance() => create();
   static $pb.PbList<Enum> createRepeated() => $pb.PbList<Enum>();
   @$core.pragma('dart2js:noInline')
-  static Enum getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Enum>(create);
+  static Enum getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Enum>(create);
   static Enum _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -342,33 +318,28 @@ class Enum extends $pb.GeneratedMessage {
 }
 
 class EnumValue extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnumValue',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..a<$core.int>(2, 'number', $pb.PbFieldType.O3)
-    ..pc<Option>(3, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('EnumValue', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..a<$core.int>(2, 'number', $pb.PbFieldType.O3)
+        ..pc<Option>(3, 'options', $pb.PbFieldType.PM, subBuilder: Option.create)
+        ..hasRequiredFields = false;
 
   EnumValue._() : super();
   factory EnumValue() => create();
-  factory EnumValue.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EnumValue.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory EnumValue.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EnumValue.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   EnumValue clone() => EnumValue()..mergeFromMessage(this);
-  EnumValue copyWith(void Function(EnumValue) updates) =>
-      super.copyWith((message) => updates(message as EnumValue));
+  EnumValue copyWith(void Function(EnumValue) updates) => super.copyWith((message) => updates(message as EnumValue));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static EnumValue create() => EnumValue._();
   EnumValue createEmptyInstance() => create();
   static $pb.PbList<EnumValue> createRepeated() => $pb.PbList<EnumValue>();
   @$core.pragma('dart2js:noInline')
-  static EnumValue getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EnumValue>(create);
+  static EnumValue getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EnumValue>(create);
   static EnumValue _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -400,32 +371,27 @@ class EnumValue extends $pb.GeneratedMessage {
 }
 
 class Option extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Option',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..aOM<$1.Any>(2, 'value', subBuilder: $1.Any.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('Option', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..aOM<$1.Any>(2, 'value', subBuilder: $1.Any.create)
+        ..hasRequiredFields = false;
 
   Option._() : super();
   factory Option() => create();
-  factory Option.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Option.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory Option.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory Option.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   Option clone() => Option()..mergeFromMessage(this);
-  Option copyWith(void Function(Option) updates) =>
-      super.copyWith((message) => updates(message as Option));
+  Option copyWith(void Function(Option) updates) => super.copyWith((message) => updates(message as Option));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static Option create() => Option._();
   Option createEmptyInstance() => create();
   static $pb.PbList<Option> createRepeated() => $pb.PbList<Option>();
   @$core.pragma('dart2js:noInline')
-  static Option getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Option>(create);
+  static Option getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Option>(create);
   static Option _defaultInstance;
 
   @$pb.TagNumber(1)

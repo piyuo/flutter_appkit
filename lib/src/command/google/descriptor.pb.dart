@@ -6,7 +6,7 @@
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
 import 'dart:core' as $core;
-import 'package:libcli/src/command/command.dart' as command;
+import 'package:libcli/command.dart' as command;
 
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
@@ -21,18 +21,15 @@ class FileDescriptorSet extends command.ProtoObject {
   }
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('FileDescriptorSet',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..pc<FileDescriptorProto>(1, 'file', $pb.PbFieldType.PM,
-        subBuilder: FileDescriptorProto.create);
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+    ..pc<FileDescriptorProto>(1, 'file', $pb.PbFieldType.PM, subBuilder: FileDescriptorProto.create);
 
   FileDescriptorSet._() : super();
   factory FileDescriptorSet() => create();
   factory FileDescriptorSet.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory FileDescriptorSet.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory FileDescriptorSet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   FileDescriptorSet clone() => FileDescriptorSet()..mergeFromMessage(this);
   FileDescriptorSet copyWith(void Function(FileDescriptorSet) updates) =>
@@ -41,11 +38,10 @@ class FileDescriptorSet extends command.ProtoObject {
   @$core.pragma('dart2js:noInline')
   static FileDescriptorSet create() => FileDescriptorSet._();
   FileDescriptorSet createEmptyInstance() => create();
-  static $pb.PbList<FileDescriptorSet> createRepeated() =>
-      $pb.PbList<FileDescriptorSet>();
+  static $pb.PbList<FileDescriptorSet> createRepeated() => $pb.PbList<FileDescriptorSet>();
   @$core.pragma('dart2js:noInline')
-  static FileDescriptorSet getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FileDescriptorSet>(create);
+  static FileDescriptorSet getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FileDescriptorSet>(create);
   static FileDescriptorSet _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -54,22 +50,16 @@ class FileDescriptorSet extends command.ProtoObject {
 
 class FileDescriptorProto extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('FileDescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'name')
     ..aOS(2, 'package')
     ..pPS(3, 'dependency')
-    ..pc<DescriptorProto>(4, 'messageType', $pb.PbFieldType.PM,
-        subBuilder: DescriptorProto.create)
-    ..pc<EnumDescriptorProto>(5, 'enumType', $pb.PbFieldType.PM,
-        subBuilder: EnumDescriptorProto.create)
-    ..pc<ServiceDescriptorProto>(6, 'service', $pb.PbFieldType.PM,
-        subBuilder: ServiceDescriptorProto.create)
-    ..pc<FieldDescriptorProto>(7, 'extension', $pb.PbFieldType.PM,
-        subBuilder: FieldDescriptorProto.create)
+    ..pc<DescriptorProto>(4, 'messageType', $pb.PbFieldType.PM, subBuilder: DescriptorProto.create)
+    ..pc<EnumDescriptorProto>(5, 'enumType', $pb.PbFieldType.PM, subBuilder: EnumDescriptorProto.create)
+    ..pc<ServiceDescriptorProto>(6, 'service', $pb.PbFieldType.PM, subBuilder: ServiceDescriptorProto.create)
+    ..pc<FieldDescriptorProto>(7, 'extension', $pb.PbFieldType.PM, subBuilder: FieldDescriptorProto.create)
     ..aOM<FileOptions>(8, 'options', subBuilder: FileOptions.create)
-    ..aOM<SourceCodeInfo>(9, 'sourceCodeInfo',
-        subBuilder: SourceCodeInfo.create)
+    ..aOM<SourceCodeInfo>(9, 'sourceCodeInfo', subBuilder: SourceCodeInfo.create)
     ..p<$core.int>(10, 'publicDependency', $pb.PbFieldType.P3)
     ..p<$core.int>(11, 'weakDependency', $pb.PbFieldType.P3)
     ..aOS(12, 'syntax');
@@ -79,8 +69,7 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   factory FileDescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory FileDescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory FileDescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   FileDescriptorProto clone() => FileDescriptorProto()..mergeFromMessage(this);
   FileDescriptorProto copyWith(void Function(FileDescriptorProto) updates) =>
@@ -89,11 +78,10 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static FileDescriptorProto create() => FileDescriptorProto._();
   FileDescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<FileDescriptorProto> createRepeated() =>
-      $pb.PbList<FileDescriptorProto>();
+  static $pb.PbList<FileDescriptorProto> createRepeated() => $pb.PbList<FileDescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static FileDescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FileDescriptorProto>(create);
+  static FileDescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FileDescriptorProto>(create);
   static FileDescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -183,14 +171,11 @@ class FileDescriptorProto extends $pb.GeneratedMessage {
 }
 
 class DescriptorProto_ExtensionRange extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      'DescriptorProto.ExtensionRange',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DescriptorProto.ExtensionRange',
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..a<$core.int>(1, 'start', $pb.PbFieldType.O3)
     ..a<$core.int>(2, 'end', $pb.PbFieldType.O3)
-    ..aOM<ExtensionRangeOptions>(3, 'options',
-        subBuilder: ExtensionRangeOptions.create);
+    ..aOM<ExtensionRangeOptions>(3, 'options', subBuilder: ExtensionRangeOptions.create);
 
   DescriptorProto_ExtensionRange._() : super();
   factory DescriptorProto_ExtensionRange() => create();
@@ -200,22 +185,17 @@ class DescriptorProto_ExtensionRange extends $pb.GeneratedMessage {
   factory DescriptorProto_ExtensionRange.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  DescriptorProto_ExtensionRange clone() =>
-      DescriptorProto_ExtensionRange()..mergeFromMessage(this);
-  DescriptorProto_ExtensionRange copyWith(
-          void Function(DescriptorProto_ExtensionRange) updates) =>
-      super.copyWith(
-          (message) => updates(message as DescriptorProto_ExtensionRange));
+  DescriptorProto_ExtensionRange clone() => DescriptorProto_ExtensionRange()..mergeFromMessage(this);
+  DescriptorProto_ExtensionRange copyWith(void Function(DescriptorProto_ExtensionRange) updates) =>
+      super.copyWith((message) => updates(message as DescriptorProto_ExtensionRange));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static DescriptorProto_ExtensionRange create() =>
-      DescriptorProto_ExtensionRange._();
+  static DescriptorProto_ExtensionRange create() => DescriptorProto_ExtensionRange._();
   DescriptorProto_ExtensionRange createEmptyInstance() => create();
-  static $pb.PbList<DescriptorProto_ExtensionRange> createRepeated() =>
-      $pb.PbList<DescriptorProto_ExtensionRange>();
+  static $pb.PbList<DescriptorProto_ExtensionRange> createRepeated() => $pb.PbList<DescriptorProto_ExtensionRange>();
   @$core.pragma('dart2js:noInline')
-  static DescriptorProto_ExtensionRange getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DescriptorProto_ExtensionRange>(create);
+  static DescriptorProto_ExtensionRange getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DescriptorProto_ExtensionRange>(create);
   static DescriptorProto_ExtensionRange _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -258,10 +238,8 @@ class DescriptorProto_ExtensionRange extends $pb.GeneratedMessage {
 }
 
 class DescriptorProto_ReservedRange extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      'DescriptorProto.ReservedRange',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DescriptorProto.ReservedRange',
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..a<$core.int>(1, 'start', $pb.PbFieldType.O3)
     ..a<$core.int>(2, 'end', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
@@ -274,22 +252,17 @@ class DescriptorProto_ReservedRange extends $pb.GeneratedMessage {
   factory DescriptorProto_ReservedRange.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  DescriptorProto_ReservedRange clone() =>
-      DescriptorProto_ReservedRange()..mergeFromMessage(this);
-  DescriptorProto_ReservedRange copyWith(
-          void Function(DescriptorProto_ReservedRange) updates) =>
-      super.copyWith(
-          (message) => updates(message as DescriptorProto_ReservedRange));
+  DescriptorProto_ReservedRange clone() => DescriptorProto_ReservedRange()..mergeFromMessage(this);
+  DescriptorProto_ReservedRange copyWith(void Function(DescriptorProto_ReservedRange) updates) =>
+      super.copyWith((message) => updates(message as DescriptorProto_ReservedRange));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static DescriptorProto_ReservedRange create() =>
-      DescriptorProto_ReservedRange._();
+  static DescriptorProto_ReservedRange create() => DescriptorProto_ReservedRange._();
   DescriptorProto_ReservedRange createEmptyInstance() => create();
-  static $pb.PbList<DescriptorProto_ReservedRange> createRepeated() =>
-      $pb.PbList<DescriptorProto_ReservedRange>();
+  static $pb.PbList<DescriptorProto_ReservedRange> createRepeated() => $pb.PbList<DescriptorProto_ReservedRange>();
   @$core.pragma('dart2js:noInline')
-  static DescriptorProto_ReservedRange getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DescriptorProto_ReservedRange>(create);
+  static DescriptorProto_ReservedRange getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DescriptorProto_ReservedRange>(create);
   static DescriptorProto_ReservedRange _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -318,35 +291,27 @@ class DescriptorProto_ReservedRange extends $pb.GeneratedMessage {
 }
 
 class DescriptorProto extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('DescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..aOS(1, 'name')
-    ..pc<FieldDescriptorProto>(2, 'field', $pb.PbFieldType.PM,
-        subBuilder: FieldDescriptorProto.create)
-    ..pc<DescriptorProto>(3, 'nestedType', $pb.PbFieldType.PM,
-        subBuilder: DescriptorProto.create)
-    ..pc<EnumDescriptorProto>(4, 'enumType', $pb.PbFieldType.PM,
-        subBuilder: EnumDescriptorProto.create)
-    ..pc<DescriptorProto_ExtensionRange>(
-        5, 'extensionRange', $pb.PbFieldType.PM,
-        subBuilder: DescriptorProto_ExtensionRange.create)
-    ..pc<FieldDescriptorProto>(6, 'extension', $pb.PbFieldType.PM,
-        subBuilder: FieldDescriptorProto.create)
-    ..aOM<MessageOptions>(7, 'options', subBuilder: MessageOptions.create)
-    ..pc<OneofDescriptorProto>(8, 'oneofDecl', $pb.PbFieldType.PM,
-        subBuilder: OneofDescriptorProto.create)
-    ..pc<DescriptorProto_ReservedRange>(9, 'reservedRange', $pb.PbFieldType.PM,
-        subBuilder: DescriptorProto_ReservedRange.create)
-    ..pPS(10, 'reservedName');
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('DescriptorProto', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..aOS(1, 'name')
+        ..pc<FieldDescriptorProto>(2, 'field', $pb.PbFieldType.PM, subBuilder: FieldDescriptorProto.create)
+        ..pc<DescriptorProto>(3, 'nestedType', $pb.PbFieldType.PM, subBuilder: DescriptorProto.create)
+        ..pc<EnumDescriptorProto>(4, 'enumType', $pb.PbFieldType.PM, subBuilder: EnumDescriptorProto.create)
+        ..pc<DescriptorProto_ExtensionRange>(5, 'extensionRange', $pb.PbFieldType.PM,
+            subBuilder: DescriptorProto_ExtensionRange.create)
+        ..pc<FieldDescriptorProto>(6, 'extension', $pb.PbFieldType.PM, subBuilder: FieldDescriptorProto.create)
+        ..aOM<MessageOptions>(7, 'options', subBuilder: MessageOptions.create)
+        ..pc<OneofDescriptorProto>(8, 'oneofDecl', $pb.PbFieldType.PM, subBuilder: OneofDescriptorProto.create)
+        ..pc<DescriptorProto_ReservedRange>(9, 'reservedRange', $pb.PbFieldType.PM,
+            subBuilder: DescriptorProto_ReservedRange.create)
+        ..pPS(10, 'reservedName');
 
   DescriptorProto._() : super();
   factory DescriptorProto() => create();
   factory DescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory DescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory DescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   DescriptorProto clone() => DescriptorProto()..mergeFromMessage(this);
   DescriptorProto copyWith(void Function(DescriptorProto) updates) =>
@@ -355,11 +320,10 @@ class DescriptorProto extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static DescriptorProto create() => DescriptorProto._();
   DescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<DescriptorProto> createRepeated() =>
-      $pb.PbList<DescriptorProto>();
+  static $pb.PbList<DescriptorProto> createRepeated() => $pb.PbList<DescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static DescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DescriptorProto>(create);
+  static DescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DescriptorProto>(create);
   static DescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -415,10 +379,8 @@ class DescriptorProto extends $pb.GeneratedMessage {
 
 class ExtensionRangeOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ExtensionRangeOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   ExtensionRangeOptions._() : super();
@@ -426,23 +388,19 @@ class ExtensionRangeOptions extends $pb.GeneratedMessage {
   factory ExtensionRangeOptions.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory ExtensionRangeOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory ExtensionRangeOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  ExtensionRangeOptions clone() =>
-      ExtensionRangeOptions()..mergeFromMessage(this);
-  ExtensionRangeOptions copyWith(
-          void Function(ExtensionRangeOptions) updates) =>
+  ExtensionRangeOptions clone() => ExtensionRangeOptions()..mergeFromMessage(this);
+  ExtensionRangeOptions copyWith(void Function(ExtensionRangeOptions) updates) =>
       super.copyWith((message) => updates(message as ExtensionRangeOptions));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static ExtensionRangeOptions create() => ExtensionRangeOptions._();
   ExtensionRangeOptions createEmptyInstance() => create();
-  static $pb.PbList<ExtensionRangeOptions> createRepeated() =>
-      $pb.PbList<ExtensionRangeOptions>();
+  static $pb.PbList<ExtensionRangeOptions> createRepeated() => $pb.PbList<ExtensionRangeOptions>();
   @$core.pragma('dart2js:noInline')
-  static ExtensionRangeOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ExtensionRangeOptions>(create);
+  static ExtensionRangeOptions getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExtensionRangeOptions>(create);
   static ExtensionRangeOptions _defaultInstance;
 
   @$pb.TagNumber(999)
@@ -451,8 +409,7 @@ class ExtensionRangeOptions extends $pb.GeneratedMessage {
 
 class FieldDescriptorProto extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('FieldDescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'name')
     ..aOS(2, 'extendee')
     ..a<$core.int>(3, 'number', $pb.PbFieldType.O3)
@@ -475,22 +432,19 @@ class FieldDescriptorProto extends $pb.GeneratedMessage {
   factory FieldDescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory FieldDescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory FieldDescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  FieldDescriptorProto clone() =>
-      FieldDescriptorProto()..mergeFromMessage(this);
+  FieldDescriptorProto clone() => FieldDescriptorProto()..mergeFromMessage(this);
   FieldDescriptorProto copyWith(void Function(FieldDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as FieldDescriptorProto));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static FieldDescriptorProto create() => FieldDescriptorProto._();
   FieldDescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<FieldDescriptorProto> createRepeated() =>
-      $pb.PbList<FieldDescriptorProto>();
+  static $pb.PbList<FieldDescriptorProto> createRepeated() => $pb.PbList<FieldDescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static FieldDescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FieldDescriptorProto>(create);
+  static FieldDescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FieldDescriptorProto>(create);
   static FieldDescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -618,8 +572,7 @@ class FieldDescriptorProto extends $pb.GeneratedMessage {
 
 class OneofDescriptorProto extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('OneofDescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'name')
     ..aOM<OneofOptions>(2, 'options', subBuilder: OneofOptions.create);
 
@@ -628,22 +581,19 @@ class OneofDescriptorProto extends $pb.GeneratedMessage {
   factory OneofDescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory OneofDescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory OneofDescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  OneofDescriptorProto clone() =>
-      OneofDescriptorProto()..mergeFromMessage(this);
+  OneofDescriptorProto clone() => OneofDescriptorProto()..mergeFromMessage(this);
   OneofDescriptorProto copyWith(void Function(OneofDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as OneofDescriptorProto));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static OneofDescriptorProto create() => OneofDescriptorProto._();
   OneofDescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<OneofDescriptorProto> createRepeated() =>
-      $pb.PbList<OneofDescriptorProto>();
+  static $pb.PbList<OneofDescriptorProto> createRepeated() => $pb.PbList<OneofDescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static OneofDescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<OneofDescriptorProto>(create);
+  static OneofDescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OneofDescriptorProto>(create);
   static OneofDescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -674,40 +624,32 @@ class OneofDescriptorProto extends $pb.GeneratedMessage {
 }
 
 class EnumDescriptorProto_EnumReservedRange extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      'EnumDescriptorProto.EnumReservedRange',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnumDescriptorProto.EnumReservedRange',
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..a<$core.int>(1, 'start', $pb.PbFieldType.O3)
     ..a<$core.int>(2, 'end', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   EnumDescriptorProto_EnumReservedRange._() : super();
   factory EnumDescriptorProto_EnumReservedRange() => create();
-  factory EnumDescriptorProto_EnumReservedRange.fromBuffer(
-          $core.List<$core.int> i,
+  factory EnumDescriptorProto_EnumReservedRange.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
   factory EnumDescriptorProto_EnumReservedRange.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  EnumDescriptorProto_EnumReservedRange clone() =>
-      EnumDescriptorProto_EnumReservedRange()..mergeFromMessage(this);
-  EnumDescriptorProto_EnumReservedRange copyWith(
-          void Function(EnumDescriptorProto_EnumReservedRange) updates) =>
-      super.copyWith((message) =>
-          updates(message as EnumDescriptorProto_EnumReservedRange));
+  EnumDescriptorProto_EnumReservedRange clone() => EnumDescriptorProto_EnumReservedRange()..mergeFromMessage(this);
+  EnumDescriptorProto_EnumReservedRange copyWith(void Function(EnumDescriptorProto_EnumReservedRange) updates) =>
+      super.copyWith((message) => updates(message as EnumDescriptorProto_EnumReservedRange));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static EnumDescriptorProto_EnumReservedRange create() =>
-      EnumDescriptorProto_EnumReservedRange._();
+  static EnumDescriptorProto_EnumReservedRange create() => EnumDescriptorProto_EnumReservedRange._();
   EnumDescriptorProto_EnumReservedRange createEmptyInstance() => create();
   static $pb.PbList<EnumDescriptorProto_EnumReservedRange> createRepeated() =>
       $pb.PbList<EnumDescriptorProto_EnumReservedRange>();
   @$core.pragma('dart2js:noInline')
   static EnumDescriptorProto_EnumReservedRange getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<
-          EnumDescriptorProto_EnumReservedRange>(create);
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EnumDescriptorProto_EnumReservedRange>(create);
   static EnumDescriptorProto_EnumReservedRange _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -737,14 +679,11 @@ class EnumDescriptorProto_EnumReservedRange extends $pb.GeneratedMessage {
 
 class EnumDescriptorProto extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnumDescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'name')
-    ..pc<EnumValueDescriptorProto>(2, 'value', $pb.PbFieldType.PM,
-        subBuilder: EnumValueDescriptorProto.create)
+    ..pc<EnumValueDescriptorProto>(2, 'value', $pb.PbFieldType.PM, subBuilder: EnumValueDescriptorProto.create)
     ..aOM<EnumOptions>(3, 'options', subBuilder: EnumOptions.create)
-    ..pc<EnumDescriptorProto_EnumReservedRange>(
-        4, 'reservedRange', $pb.PbFieldType.PM,
+    ..pc<EnumDescriptorProto_EnumReservedRange>(4, 'reservedRange', $pb.PbFieldType.PM,
         subBuilder: EnumDescriptorProto_EnumReservedRange.create)
     ..pPS(5, 'reservedName');
 
@@ -753,8 +692,7 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
   factory EnumDescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory EnumDescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EnumDescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   EnumDescriptorProto clone() => EnumDescriptorProto()..mergeFromMessage(this);
   EnumDescriptorProto copyWith(void Function(EnumDescriptorProto) updates) =>
@@ -763,11 +701,10 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static EnumDescriptorProto create() => EnumDescriptorProto._();
   EnumDescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<EnumDescriptorProto> createRepeated() =>
-      $pb.PbList<EnumDescriptorProto>();
+  static $pb.PbList<EnumDescriptorProto> createRepeated() => $pb.PbList<EnumDescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static EnumDescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<EnumDescriptorProto>(create);
+  static EnumDescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EnumDescriptorProto>(create);
   static EnumDescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -800,8 +737,7 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
   EnumOptions ensureOptions() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.List<EnumDescriptorProto_EnumReservedRange> get reservedRange =>
-      $_getList(3);
+  $core.List<EnumDescriptorProto_EnumReservedRange> get reservedRange => $_getList(3);
 
   @$pb.TagNumber(5)
   $core.List<$core.String> get reservedName => $_getList(4);
@@ -809,8 +745,7 @@ class EnumDescriptorProto extends $pb.GeneratedMessage {
 
 class EnumValueDescriptorProto extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnumValueDescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'name')
     ..a<$core.int>(2, 'number', $pb.PbFieldType.O3)
     ..aOM<EnumValueOptions>(3, 'options', subBuilder: EnumValueOptions.create);
@@ -820,23 +755,19 @@ class EnumValueDescriptorProto extends $pb.GeneratedMessage {
   factory EnumValueDescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory EnumValueDescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EnumValueDescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  EnumValueDescriptorProto clone() =>
-      EnumValueDescriptorProto()..mergeFromMessage(this);
-  EnumValueDescriptorProto copyWith(
-          void Function(EnumValueDescriptorProto) updates) =>
+  EnumValueDescriptorProto clone() => EnumValueDescriptorProto()..mergeFromMessage(this);
+  EnumValueDescriptorProto copyWith(void Function(EnumValueDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as EnumValueDescriptorProto));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static EnumValueDescriptorProto create() => EnumValueDescriptorProto._();
   EnumValueDescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<EnumValueDescriptorProto> createRepeated() =>
-      $pb.PbList<EnumValueDescriptorProto>();
+  static $pb.PbList<EnumValueDescriptorProto> createRepeated() => $pb.PbList<EnumValueDescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static EnumValueDescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<EnumValueDescriptorProto>(create);
+  static EnumValueDescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EnumValueDescriptorProto>(create);
   static EnumValueDescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -880,11 +811,9 @@ class EnumValueDescriptorProto extends $pb.GeneratedMessage {
 
 class ServiceDescriptorProto extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ServiceDescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'name')
-    ..pc<MethodDescriptorProto>(2, 'method', $pb.PbFieldType.PM,
-        subBuilder: MethodDescriptorProto.create)
+    ..pc<MethodDescriptorProto>(2, 'method', $pb.PbFieldType.PM, subBuilder: MethodDescriptorProto.create)
     ..aOM<ServiceOptions>(3, 'options', subBuilder: ServiceOptions.create);
 
   ServiceDescriptorProto._() : super();
@@ -892,23 +821,19 @@ class ServiceDescriptorProto extends $pb.GeneratedMessage {
   factory ServiceDescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory ServiceDescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory ServiceDescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  ServiceDescriptorProto clone() =>
-      ServiceDescriptorProto()..mergeFromMessage(this);
-  ServiceDescriptorProto copyWith(
-          void Function(ServiceDescriptorProto) updates) =>
+  ServiceDescriptorProto clone() => ServiceDescriptorProto()..mergeFromMessage(this);
+  ServiceDescriptorProto copyWith(void Function(ServiceDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as ServiceDescriptorProto));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static ServiceDescriptorProto create() => ServiceDescriptorProto._();
   ServiceDescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<ServiceDescriptorProto> createRepeated() =>
-      $pb.PbList<ServiceDescriptorProto>();
+  static $pb.PbList<ServiceDescriptorProto> createRepeated() => $pb.PbList<ServiceDescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static ServiceDescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ServiceDescriptorProto>(create);
+  static ServiceDescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ServiceDescriptorProto>(create);
   static ServiceDescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -943,8 +868,7 @@ class ServiceDescriptorProto extends $pb.GeneratedMessage {
 
 class MethodDescriptorProto extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('MethodDescriptorProto',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'name')
     ..aOS(2, 'inputType')
     ..aOS(3, 'outputType')
@@ -957,23 +881,19 @@ class MethodDescriptorProto extends $pb.GeneratedMessage {
   factory MethodDescriptorProto.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory MethodDescriptorProto.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory MethodDescriptorProto.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  MethodDescriptorProto clone() =>
-      MethodDescriptorProto()..mergeFromMessage(this);
-  MethodDescriptorProto copyWith(
-          void Function(MethodDescriptorProto) updates) =>
+  MethodDescriptorProto clone() => MethodDescriptorProto()..mergeFromMessage(this);
+  MethodDescriptorProto copyWith(void Function(MethodDescriptorProto) updates) =>
       super.copyWith((message) => updates(message as MethodDescriptorProto));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static MethodDescriptorProto create() => MethodDescriptorProto._();
   MethodDescriptorProto createEmptyInstance() => create();
-  static $pb.PbList<MethodDescriptorProto> createRepeated() =>
-      $pb.PbList<MethodDescriptorProto>();
+  static $pb.PbList<MethodDescriptorProto> createRepeated() => $pb.PbList<MethodDescriptorProto>();
   @$core.pragma('dart2js:noInline')
-  static MethodDescriptorProto getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MethodDescriptorProto>(create);
+  static MethodDescriptorProto getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MethodDescriptorProto>(create);
   static MethodDescriptorProto _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1053,8 +973,7 @@ class MethodDescriptorProto extends $pb.GeneratedMessage {
 
 class FileOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('FileOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOS(1, 'javaPackage')
     ..aOS(8, 'javaOuterClassname')
     ..e<FileOptions_OptimizeMode>(9, 'optimizeFor', $pb.PbFieldType.OE,
@@ -1078,17 +997,14 @@ class FileOptions extends $pb.GeneratedMessage {
     ..aOB(42, 'phpGenericServices')
     ..aOS(44, 'phpMetadataNamespace')
     ..aOS(45, 'rubyPackage')
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   FileOptions._() : super();
   factory FileOptions() => create();
-  factory FileOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory FileOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory FileOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory FileOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   FileOptions clone() => FileOptions()..mergeFromMessage(this);
   FileOptions copyWith(void Function(FileOptions) updates) =>
@@ -1099,8 +1015,7 @@ class FileOptions extends $pb.GeneratedMessage {
   FileOptions createEmptyInstance() => create();
   static $pb.PbList<FileOptions> createRepeated() => $pb.PbList<FileOptions>();
   @$core.pragma('dart2js:noInline')
-  static FileOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FileOptions>(create);
+  static FileOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FileOptions>(create);
   static FileOptions _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1353,23 +1268,19 @@ class FileOptions extends $pb.GeneratedMessage {
 
 class MessageOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('MessageOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOB(1, 'messageSetWireFormat')
     ..aOB(2, 'noStandardDescriptorAccessor')
     ..aOB(3, 'deprecated')
     ..aOB(7, 'mapEntry')
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   MessageOptions._() : super();
   factory MessageOptions() => create();
-  factory MessageOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory MessageOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory MessageOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory MessageOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   MessageOptions clone() => MessageOptions()..mergeFromMessage(this);
   MessageOptions copyWith(void Function(MessageOptions) updates) =>
@@ -1378,11 +1289,9 @@ class MessageOptions extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static MessageOptions create() => MessageOptions._();
   MessageOptions createEmptyInstance() => create();
-  static $pb.PbList<MessageOptions> createRepeated() =>
-      $pb.PbList<MessageOptions>();
+  static $pb.PbList<MessageOptions> createRepeated() => $pb.PbList<MessageOptions>();
   @$core.pragma('dart2js:noInline')
-  static MessageOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MessageOptions>(create);
+  static MessageOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MessageOptions>(create);
   static MessageOptions _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1439,8 +1348,7 @@ class MessageOptions extends $pb.GeneratedMessage {
 
 class FieldOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('FieldOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..e<FieldOptions_CType>(1, 'ctype', $pb.PbFieldType.OE,
         defaultOrMaker: FieldOptions_CType.STRING,
         valueOf: FieldOptions_CType.valueOf,
@@ -1453,17 +1361,14 @@ class FieldOptions extends $pb.GeneratedMessage {
         valueOf: FieldOptions_JSType.valueOf,
         enumValues: FieldOptions_JSType.values)
     ..aOB(10, 'weak')
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   FieldOptions._() : super();
   factory FieldOptions() => create();
-  factory FieldOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory FieldOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory FieldOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory FieldOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   FieldOptions clone() => FieldOptions()..mergeFromMessage(this);
   FieldOptions copyWith(void Function(FieldOptions) updates) =>
@@ -1472,11 +1377,9 @@ class FieldOptions extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static FieldOptions create() => FieldOptions._();
   FieldOptions createEmptyInstance() => create();
-  static $pb.PbList<FieldOptions> createRepeated() =>
-      $pb.PbList<FieldOptions>();
+  static $pb.PbList<FieldOptions> createRepeated() => $pb.PbList<FieldOptions>();
   @$core.pragma('dart2js:noInline')
-  static FieldOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FieldOptions>(create);
+  static FieldOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FieldOptions>(create);
   static FieldOptions _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1557,19 +1460,15 @@ class FieldOptions extends $pb.GeneratedMessage {
 
 class OneofOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('OneofOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   OneofOptions._() : super();
   factory OneofOptions() => create();
-  factory OneofOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory OneofOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory OneofOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory OneofOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   OneofOptions clone() => OneofOptions()..mergeFromMessage(this);
   OneofOptions copyWith(void Function(OneofOptions) updates) =>
@@ -1578,11 +1477,9 @@ class OneofOptions extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static OneofOptions create() => OneofOptions._();
   OneofOptions createEmptyInstance() => create();
-  static $pb.PbList<OneofOptions> createRepeated() =>
-      $pb.PbList<OneofOptions>();
+  static $pb.PbList<OneofOptions> createRepeated() => $pb.PbList<OneofOptions>();
   @$core.pragma('dart2js:noInline')
-  static OneofOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<OneofOptions>(create);
+  static OneofOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OneofOptions>(create);
   static OneofOptions _defaultInstance;
 
   @$pb.TagNumber(999)
@@ -1591,21 +1488,17 @@ class OneofOptions extends $pb.GeneratedMessage {
 
 class EnumOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnumOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOB(2, 'allowAlias')
     ..aOB(3, 'deprecated')
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   EnumOptions._() : super();
   factory EnumOptions() => create();
-  factory EnumOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EnumOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory EnumOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EnumOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   EnumOptions clone() => EnumOptions()..mergeFromMessage(this);
   EnumOptions copyWith(void Function(EnumOptions) updates) =>
@@ -1616,8 +1509,7 @@ class EnumOptions extends $pb.GeneratedMessage {
   EnumOptions createEmptyInstance() => create();
   static $pb.PbList<EnumOptions> createRepeated() => $pb.PbList<EnumOptions>();
   @$core.pragma('dart2js:noInline')
-  static EnumOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<EnumOptions>(create);
+  static EnumOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EnumOptions>(create);
   static EnumOptions _defaultInstance;
 
   @$pb.TagNumber(2)
@@ -1650,11 +1542,9 @@ class EnumOptions extends $pb.GeneratedMessage {
 
 class EnumValueOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('EnumValueOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOB(1, 'deprecated')
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   EnumValueOptions._() : super();
@@ -1662,8 +1552,7 @@ class EnumValueOptions extends $pb.GeneratedMessage {
   factory EnumValueOptions.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory EnumValueOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EnumValueOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   EnumValueOptions clone() => EnumValueOptions()..mergeFromMessage(this);
   EnumValueOptions copyWith(void Function(EnumValueOptions) updates) =>
@@ -1672,11 +1561,10 @@ class EnumValueOptions extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static EnumValueOptions create() => EnumValueOptions._();
   EnumValueOptions createEmptyInstance() => create();
-  static $pb.PbList<EnumValueOptions> createRepeated() =>
-      $pb.PbList<EnumValueOptions>();
+  static $pb.PbList<EnumValueOptions> createRepeated() => $pb.PbList<EnumValueOptions>();
   @$core.pragma('dart2js:noInline')
-  static EnumValueOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<EnumValueOptions>(create);
+  static EnumValueOptions getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EnumValueOptions>(create);
   static EnumValueOptions _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1697,20 +1585,16 @@ class EnumValueOptions extends $pb.GeneratedMessage {
 
 class ServiceOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('ServiceOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOB(33, 'deprecated')
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   ServiceOptions._() : super();
   factory ServiceOptions() => create();
-  factory ServiceOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory ServiceOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory ServiceOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory ServiceOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   ServiceOptions clone() => ServiceOptions()..mergeFromMessage(this);
   ServiceOptions copyWith(void Function(ServiceOptions) updates) =>
@@ -1719,11 +1603,9 @@ class ServiceOptions extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static ServiceOptions create() => ServiceOptions._();
   ServiceOptions createEmptyInstance() => create();
-  static $pb.PbList<ServiceOptions> createRepeated() =>
-      $pb.PbList<ServiceOptions>();
+  static $pb.PbList<ServiceOptions> createRepeated() => $pb.PbList<ServiceOptions>();
   @$core.pragma('dart2js:noInline')
-  static ServiceOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ServiceOptions>(create);
+  static ServiceOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ServiceOptions>(create);
   static ServiceOptions _defaultInstance;
 
   @$pb.TagNumber(33)
@@ -1744,25 +1626,20 @@ class ServiceOptions extends $pb.GeneratedMessage {
 
 class MethodOptions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('MethodOptions',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aOB(33, 'deprecated')
-    ..e<MethodOptions_IdempotencyLevel>(
-        34, 'idempotencyLevel', $pb.PbFieldType.OE,
+    ..e<MethodOptions_IdempotencyLevel>(34, 'idempotencyLevel', $pb.PbFieldType.OE,
         defaultOrMaker: MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN,
         valueOf: MethodOptions_IdempotencyLevel.valueOf,
         enumValues: MethodOptions_IdempotencyLevel.values)
-    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption.create)
+    ..pc<UninterpretedOption>(999, 'uninterpretedOption', $pb.PbFieldType.PM, subBuilder: UninterpretedOption.create)
     ..hasExtensions = true;
 
   MethodOptions._() : super();
   factory MethodOptions() => create();
-  factory MethodOptions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory MethodOptions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory MethodOptions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory MethodOptions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   MethodOptions clone() => MethodOptions()..mergeFromMessage(this);
   MethodOptions copyWith(void Function(MethodOptions) updates) =>
@@ -1771,11 +1648,9 @@ class MethodOptions extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static MethodOptions create() => MethodOptions._();
   MethodOptions createEmptyInstance() => create();
-  static $pb.PbList<MethodOptions> createRepeated() =>
-      $pb.PbList<MethodOptions>();
+  static $pb.PbList<MethodOptions> createRepeated() => $pb.PbList<MethodOptions>();
   @$core.pragma('dart2js:noInline')
-  static MethodOptions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MethodOptions>(create);
+  static MethodOptions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MethodOptions>(create);
   static MethodOptions _defaultInstance;
 
   @$pb.TagNumber(33)
@@ -1807,10 +1682,8 @@ class MethodOptions extends $pb.GeneratedMessage {
 }
 
 class UninterpretedOption_NamePart extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      'UninterpretedOption.NamePart',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('UninterpretedOption.NamePart',
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..aQS(1, 'namePart')
     ..a<$core.bool>(2, 'isExtension', $pb.PbFieldType.QB);
 
@@ -1822,22 +1695,17 @@ class UninterpretedOption_NamePart extends $pb.GeneratedMessage {
   factory UninterpretedOption_NamePart.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  UninterpretedOption_NamePart clone() =>
-      UninterpretedOption_NamePart()..mergeFromMessage(this);
-  UninterpretedOption_NamePart copyWith(
-          void Function(UninterpretedOption_NamePart) updates) =>
-      super.copyWith(
-          (message) => updates(message as UninterpretedOption_NamePart));
+  UninterpretedOption_NamePart clone() => UninterpretedOption_NamePart()..mergeFromMessage(this);
+  UninterpretedOption_NamePart copyWith(void Function(UninterpretedOption_NamePart) updates) =>
+      super.copyWith((message) => updates(message as UninterpretedOption_NamePart));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static UninterpretedOption_NamePart create() =>
-      UninterpretedOption_NamePart._();
+  static UninterpretedOption_NamePart create() => UninterpretedOption_NamePart._();
   UninterpretedOption_NamePart createEmptyInstance() => create();
-  static $pb.PbList<UninterpretedOption_NamePart> createRepeated() =>
-      $pb.PbList<UninterpretedOption_NamePart>();
+  static $pb.PbList<UninterpretedOption_NamePart> createRepeated() => $pb.PbList<UninterpretedOption_NamePart>();
   @$core.pragma('dart2js:noInline')
-  static UninterpretedOption_NamePart getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UninterpretedOption_NamePart>(create);
+  static UninterpretedOption_NamePart getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UninterpretedOption_NamePart>(create);
   static UninterpretedOption_NamePart _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1867,13 +1735,10 @@ class UninterpretedOption_NamePart extends $pb.GeneratedMessage {
 
 class UninterpretedOption extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('UninterpretedOption',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..pc<UninterpretedOption_NamePart>(2, 'name', $pb.PbFieldType.PM,
-        subBuilder: UninterpretedOption_NamePart.create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+    ..pc<UninterpretedOption_NamePart>(2, 'name', $pb.PbFieldType.PM, subBuilder: UninterpretedOption_NamePart.create)
     ..aOS(3, 'identifierValue')
-    ..a<$fixnum.Int64>(4, 'positiveIntValue', $pb.PbFieldType.OU6,
-        defaultOrMaker: $fixnum.Int64.ZERO)
+    ..a<$fixnum.Int64>(4, 'positiveIntValue', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
     ..aInt64(5, 'negativeIntValue')
     ..a<$core.double>(6, 'doubleValue', $pb.PbFieldType.OD)
     ..a<$core.List<$core.int>>(7, 'stringValue', $pb.PbFieldType.OY)
@@ -1884,8 +1749,7 @@ class UninterpretedOption extends $pb.GeneratedMessage {
   factory UninterpretedOption.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory UninterpretedOption.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory UninterpretedOption.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   UninterpretedOption clone() => UninterpretedOption()..mergeFromMessage(this);
   UninterpretedOption copyWith(void Function(UninterpretedOption) updates) =>
@@ -1894,11 +1758,10 @@ class UninterpretedOption extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static UninterpretedOption create() => UninterpretedOption._();
   UninterpretedOption createEmptyInstance() => create();
-  static $pb.PbList<UninterpretedOption> createRepeated() =>
-      $pb.PbList<UninterpretedOption>();
+  static $pb.PbList<UninterpretedOption> createRepeated() => $pb.PbList<UninterpretedOption>();
   @$core.pragma('dart2js:noInline')
-  static UninterpretedOption getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UninterpretedOption>(create);
+  static UninterpretedOption getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UninterpretedOption>(create);
   static UninterpretedOption _defaultInstance;
 
   @$pb.TagNumber(2)
@@ -1979,8 +1842,7 @@ class UninterpretedOption extends $pb.GeneratedMessage {
 
 class SourceCodeInfo_Location extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('SourceCodeInfo.Location',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..p<$core.int>(1, 'path', $pb.PbFieldType.K3)
     ..p<$core.int>(2, 'span', $pb.PbFieldType.K3)
     ..aOS(3, 'leadingComments')
@@ -1993,23 +1855,19 @@ class SourceCodeInfo_Location extends $pb.GeneratedMessage {
   factory SourceCodeInfo_Location.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory SourceCodeInfo_Location.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory SourceCodeInfo_Location.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  SourceCodeInfo_Location clone() =>
-      SourceCodeInfo_Location()..mergeFromMessage(this);
-  SourceCodeInfo_Location copyWith(
-          void Function(SourceCodeInfo_Location) updates) =>
+  SourceCodeInfo_Location clone() => SourceCodeInfo_Location()..mergeFromMessage(this);
+  SourceCodeInfo_Location copyWith(void Function(SourceCodeInfo_Location) updates) =>
       super.copyWith((message) => updates(message as SourceCodeInfo_Location));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static SourceCodeInfo_Location create() => SourceCodeInfo_Location._();
   SourceCodeInfo_Location createEmptyInstance() => create();
-  static $pb.PbList<SourceCodeInfo_Location> createRepeated() =>
-      $pb.PbList<SourceCodeInfo_Location>();
+  static $pb.PbList<SourceCodeInfo_Location> createRepeated() => $pb.PbList<SourceCodeInfo_Location>();
   @$core.pragma('dart2js:noInline')
-  static SourceCodeInfo_Location getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SourceCodeInfo_Location>(create);
+  static SourceCodeInfo_Location getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SourceCodeInfo_Location>(create);
   static SourceCodeInfo_Location _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2047,20 +1905,16 @@ class SourceCodeInfo_Location extends $pb.GeneratedMessage {
 }
 
 class SourceCodeInfo extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('SourceCodeInfo',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
-    ..pc<SourceCodeInfo_Location>(1, 'location', $pb.PbFieldType.PM,
-        subBuilder: SourceCodeInfo_Location.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i =
+      $pb.BuilderInfo('SourceCodeInfo', package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
+        ..pc<SourceCodeInfo_Location>(1, 'location', $pb.PbFieldType.PM, subBuilder: SourceCodeInfo_Location.create)
+        ..hasRequiredFields = false;
 
   SourceCodeInfo._() : super();
   factory SourceCodeInfo() => create();
-  factory SourceCodeInfo.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory SourceCodeInfo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory SourceCodeInfo.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory SourceCodeInfo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   SourceCodeInfo clone() => SourceCodeInfo()..mergeFromMessage(this);
   SourceCodeInfo copyWith(void Function(SourceCodeInfo) updates) =>
@@ -2069,11 +1923,9 @@ class SourceCodeInfo extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static SourceCodeInfo create() => SourceCodeInfo._();
   SourceCodeInfo createEmptyInstance() => create();
-  static $pb.PbList<SourceCodeInfo> createRepeated() =>
-      $pb.PbList<SourceCodeInfo>();
+  static $pb.PbList<SourceCodeInfo> createRepeated() => $pb.PbList<SourceCodeInfo>();
   @$core.pragma('dart2js:noInline')
-  static SourceCodeInfo getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SourceCodeInfo>(create);
+  static SourceCodeInfo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SourceCodeInfo>(create);
   static SourceCodeInfo _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2081,10 +1933,8 @@ class SourceCodeInfo extends $pb.GeneratedMessage {
 }
 
 class GeneratedCodeInfo_Annotation extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      'GeneratedCodeInfo.Annotation',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GeneratedCodeInfo.Annotation',
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..p<$core.int>(1, 'path', $pb.PbFieldType.K3)
     ..aOS(2, 'sourceFile')
     ..a<$core.int>(3, 'begin', $pb.PbFieldType.O3)
@@ -2099,22 +1949,17 @@ class GeneratedCodeInfo_Annotation extends $pb.GeneratedMessage {
   factory GeneratedCodeInfo_Annotation.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
-  GeneratedCodeInfo_Annotation clone() =>
-      GeneratedCodeInfo_Annotation()..mergeFromMessage(this);
-  GeneratedCodeInfo_Annotation copyWith(
-          void Function(GeneratedCodeInfo_Annotation) updates) =>
-      super.copyWith(
-          (message) => updates(message as GeneratedCodeInfo_Annotation));
+  GeneratedCodeInfo_Annotation clone() => GeneratedCodeInfo_Annotation()..mergeFromMessage(this);
+  GeneratedCodeInfo_Annotation copyWith(void Function(GeneratedCodeInfo_Annotation) updates) =>
+      super.copyWith((message) => updates(message as GeneratedCodeInfo_Annotation));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static GeneratedCodeInfo_Annotation create() =>
-      GeneratedCodeInfo_Annotation._();
+  static GeneratedCodeInfo_Annotation create() => GeneratedCodeInfo_Annotation._();
   GeneratedCodeInfo_Annotation createEmptyInstance() => create();
-  static $pb.PbList<GeneratedCodeInfo_Annotation> createRepeated() =>
-      $pb.PbList<GeneratedCodeInfo_Annotation>();
+  static $pb.PbList<GeneratedCodeInfo_Annotation> createRepeated() => $pb.PbList<GeneratedCodeInfo_Annotation>();
   @$core.pragma('dart2js:noInline')
-  static GeneratedCodeInfo_Annotation getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GeneratedCodeInfo_Annotation>(create);
+  static GeneratedCodeInfo_Annotation getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GeneratedCodeInfo_Annotation>(create);
   static GeneratedCodeInfo_Annotation _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2159,8 +2004,7 @@ class GeneratedCodeInfo_Annotation extends $pb.GeneratedMessage {
 
 class GeneratedCodeInfo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GeneratedCodeInfo',
-      package: const $pb.PackageName('google.protobuf'),
-      createEmptyInstance: create)
+      package: const $pb.PackageName('google.protobuf'), createEmptyInstance: create)
     ..pc<GeneratedCodeInfo_Annotation>(1, 'annotation', $pb.PbFieldType.PM,
         subBuilder: GeneratedCodeInfo_Annotation.create)
     ..hasRequiredFields = false;
@@ -2170,8 +2014,7 @@ class GeneratedCodeInfo extends $pb.GeneratedMessage {
   factory GeneratedCodeInfo.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory GeneratedCodeInfo.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory GeneratedCodeInfo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   GeneratedCodeInfo clone() => GeneratedCodeInfo()..mergeFromMessage(this);
   GeneratedCodeInfo copyWith(void Function(GeneratedCodeInfo) updates) =>
@@ -2180,11 +2023,10 @@ class GeneratedCodeInfo extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static GeneratedCodeInfo create() => GeneratedCodeInfo._();
   GeneratedCodeInfo createEmptyInstance() => create();
-  static $pb.PbList<GeneratedCodeInfo> createRepeated() =>
-      $pb.PbList<GeneratedCodeInfo>();
+  static $pb.PbList<GeneratedCodeInfo> createRepeated() => $pb.PbList<GeneratedCodeInfo>();
   @$core.pragma('dart2js:noInline')
-  static GeneratedCodeInfo getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<GeneratedCodeInfo>(create);
+  static GeneratedCodeInfo getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GeneratedCodeInfo>(create);
   static GeneratedCodeInfo _defaultInstance;
 
   @$pb.TagNumber(1)
