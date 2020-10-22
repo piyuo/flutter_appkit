@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart';
-import 'package:libcli/src/redux/redux.dart';
+import 'package:libcli/module.dart';
 import 'package:flutter/material.dart';
 
 const _here = 'history_redux';

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/redux.dart';
+import 'package:libcli/module.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/log.dart';
 
@@ -11,7 +11,7 @@ void main() {
       Map newState = from(state);
       expect(reduxNewState, newState);
 
-      MockReduxProvider provider = MockReduxProvider();
+      ReduxProvider provider = ReduxProvider(Redux(reducer, {'value': 0}));
       await provider.dispatch(null, Increment(1));
       expect(reduxNewState, isNull);
       reduxNewState = null;
@@ -20,14 +20,14 @@ void main() {
     test('should add/remove redux to state', () async {
       reduxStates.clear();
       expect(reduxStates.length, 0);
-      MockReduxProvider provider = MockReduxProvider();
+      ReduxProvider provider = ReduxProvider(Redux(reducer, {'value': 0}));
       expect(reduxStates.length, 1);
       provider.dispose();
       expect(reduxStates.length, 0);
     });
 
     test('should dispatch reducer', () async {
-      MockReduxProvider provider = MockReduxProvider();
+      ReduxProvider provider = ReduxProvider(Redux(reducer, {'value': 0}));
       expect(provider.state['value'], 0);
       await provider.dispatch(null, Increment(1));
       expect(provider.state['value'], 1);
@@ -48,10 +48,4 @@ Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
     return state;
   }
   return old;
-}
-
-class MockReduxProvider extends ReduxProvider {
-  MockReduxProvider() {
-    redux = Redux(reducer, {'value': 0});
-  }
 }

@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n.dart';
-import 'package:libcli/redux.dart';
+import 'package:libcli/module.dart';
 import 'package:libcli/src/widgets/doc_provider.dart';
 
-class DocPage extends ProviderWidget<DocProvider> {
+class DocPage extends PageWidget<DocProvider> {
   final String docName;
 
   DocPage(this.docName) : super('');

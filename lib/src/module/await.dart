@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/src/redux/async-provider.dart';
-import 'package:libcli/src/redux/await-progress-indicator.dart';
-import 'package:libcli/src/redux/await-error-message.dart';
+import 'package:libcli/module.dart';
 
 const _here = 'await';
 

@@ -39,6 +39,7 @@ class Redux {
   ///     await redux.dispatch(context, Increment(1));
   ///
   void dispatch(BuildContext context, dynamic action) async {
+    
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (!kReleaseMode) {
       var newState = await _reducer(context, state, action);
