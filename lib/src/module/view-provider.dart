@@ -12,14 +12,18 @@ class ViewProvider extends AsyncProvider {
   ///
   Future<Map> dispatch(BuildContext context, dynamic action) async {
     final redux = Provider.of<ReduxProvider>(context);
+    assert(redux != null, 'redux provider not found');
     await redux.dispatch(context, action);
     return redux.state;
   }
 
-  /// checkErr check state['err'] return true if no error, brodcast [ShowErrorEvent] if receive error code
+  /// errCheck check redux state['err'] return true if no error, brodcast [ShowErrorEvent] if receive error code
   ///
-  bool checkErr(BuildContext context, Map state) {
-    String err = state['err'];
+  bool errCheck(BuildContext context) {
+    final redux = Provider.of<ReduxProvider>(context);
+    assert(redux != null, 'redux provider not found');
+
+    String err = redux.state['err'];
     if (err == null) {
       return false;
     } else if (err != '') {
