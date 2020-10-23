@@ -6,7 +6,7 @@ import 'package:libcli/i18n.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/src/widgets/doc_provider.dart';
 
-class DocPage extends PageWidget<DocProvider> {
+class DocPage extends ViewWidget<DocProvider> {
   final String docName;
 
   DocPage(this.docName) : super('');

@@ -3,7 +3,7 @@ import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 
-class PageProvider extends AsyncProvider {
+class ViewProvider extends AsyncProvider {
   /// checkErr check state['err'] return true if no error, brodcast [ShowErrorEvent] if receive error code
   ///
   bool checkErr(BuildContext context, Map state) {

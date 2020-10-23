@@ -6,7 +6,7 @@ import 'package:libcli/i18n.dart';
 
 ///ProviderWidget is widget that build by provider model
 ///
-abstract class PageWidget<T extends AsyncProvider> extends StatelessWidget {
+abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
   /// i18nFilename is language file that widget need
   ///
   final String i18nFilename;
@@ -17,7 +17,7 @@ abstract class PageWidget<T extends AsyncProvider> extends StatelessWidget {
 
   /// ProviderWidget
   ///
-  PageWidget(this.i18nFilename, {this.package});
+  ViewWidget(this.i18nFilename, {this.package});
 
   /// onProviderCreated called when parovider is created
   ///

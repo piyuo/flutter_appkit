@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/module.dart';
+import 'package:libcli/redux.dart';
 
 void main() {
   setUp(() async {});
