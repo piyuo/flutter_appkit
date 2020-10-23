@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/module.dart';
+import 'package:libcli/redux.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 
 class ViewProvider extends AsyncProvider {
+  /// dispatch action and change state
+  ///
+  ///     var state=provider.dispatch(context,Increment(1));
+  ///
+  Future<Map> dispatch(BuildContext context, dynamic action) async {
+    final redux = Provider.of<ReduxProvider>(context);
+    await redux.dispatch(context, action);
+    return redux.state;
+  }
+
   /// checkErr check state['err'] return true if no error, brodcast [ShowErrorEvent] if receive error code
   ///
   bool checkErr(BuildContext context, Map state) {
