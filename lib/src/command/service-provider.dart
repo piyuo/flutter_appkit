@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/command.dart';
 
 /// ServiceProvider provide service
 ///
 class ServiceProvider extends ChangeNotifier {
   /// service instance
   ///
-  Service service;
+  final Map services;
 
-  ServiceProvider(this.service) {
-    assert(service != null, 'service must no be null');
+  ServiceProvider(this.services) {
+    assert(services != null, 'service must no be null');
+    assert(services.length > 0, 'services must have a leat one service');
   }
 }
