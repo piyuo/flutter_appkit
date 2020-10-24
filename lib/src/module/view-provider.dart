@@ -4,6 +4,7 @@ import 'package:libcli/module.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:flutter/cupertino.dart';
 
 class ViewProvider extends AsyncProvider {
   /// dispatch action and change state
@@ -31,5 +32,15 @@ class ViewProvider extends AsyncProvider {
       return false;
     }
     return true;
+  }
+
+  void redirect(BuildContext context, Widget widget) {
+    final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
+    Navigator.of(context).push(CupertinoPageRoute(
+      builder: (ctx) => Provider.value(
+        value: moduleProvider,
+        builder: (context, child) => widget,
+      ),
+    ));
   }
 }
