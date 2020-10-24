@@ -11,7 +11,7 @@ class ViewProvider extends AsyncProvider {
   ///     var state=provider.dispatch(context,Increment(1));
   ///
   Future<Map> dispatch(BuildContext context, dynamic action) async {
-    final redux = Provider.of<ReduxProvider>(context);
+    final redux = Provider.of<ReduxProvider>(context, listen: false);
     assert(redux != null, 'redux provider not found');
     await redux.dispatch(context, action);
     return redux.state;
@@ -20,7 +20,7 @@ class ViewProvider extends AsyncProvider {
   /// errCheck check redux state['err'] return true if no error, brodcast [ShowErrorEvent] if receive error code
   ///
   bool errCheck(BuildContext context) {
-    final redux = Provider.of<ReduxProvider>(context);
+    final redux = Provider.of<ReduxProvider>(context, listen: false);
     assert(redux != null, 'redux provider not found');
 
     String err = redux.state['err'];
