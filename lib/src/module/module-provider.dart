@@ -15,11 +15,14 @@ class ModuleProvider extends ChangeNotifier {
   Map services;
 
   ModuleProvider({
-    @required this.redux,
+    @required Reducer reducer,
+    @required Map state,
     this.services,
   }) {
-    assert(redux != null, 'redux must no be null');
-    reduxStates.add(redux.state);
+    assert(reducer != null, 'reducer must no be null');
+    assert(state != null, 'state must no be null');
+    redux = Redux(reducer, state);
+    reduxStates.add(state);
   }
 
   /// dispose remove  redux instances list
