@@ -2,15 +2,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/log.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 
-/// ReduxProvider provide redux
+/// ModuleProvider provide redux and services
 ///
 class ModuleProvider extends ChangeNotifier {
   /// redux instance
   ///
   Redux redux;
 
-  ModuleProvider(this.redux) {
+  Map services;
+
+  ModuleProvider(this.redux, this.services) {
     assert(redux != null, 'redux must no be null');
     reduxStates.add(redux.state);
   }
@@ -36,4 +40,14 @@ class ModuleProvider extends ChangeNotifier {
   Future<void> dispatch(BuildContext ctx, dynamic action) async {
     await redux.dispatch(ctx, action);
   }
+}
+
+void switchView(BuildContext context, Widget widget) {
+  final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
+  Navigator.of(context).push(CupertinoPageRoute(
+    builder: (ctx) => Provider.value(
+      value: moduleProvider,
+      builder: (context, child) => widget,
+    ),
+  ));
 }
