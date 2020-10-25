@@ -33,14 +33,14 @@ class ViewProvider extends AsyncProvider {
     }
     return true;
   }
+}
 
-  void switchView(BuildContext context, Widget widget) {
-    final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
-    Navigator.of(context).push(CupertinoPageRoute(
-      builder: (ctx) => Provider.value(
-        value: moduleProvider,
-        builder: (context, child) => widget,
-      ),
-    ));
-  }
+void switchView(BuildContext context, Widget widget) {
+  final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
+  Navigator.of(context).push(CupertinoPageRoute(
+    builder: (ctx) => Provider.value(
+      value: moduleProvider,
+      builder: (context, child) => widget,
+    ),
+  ));
 }
