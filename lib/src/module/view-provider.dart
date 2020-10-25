@@ -34,7 +34,7 @@ class ViewProvider extends AsyncProvider {
     return true;
   }
 
-  void redirect(BuildContext context, Widget widget) {
+  void switchView(BuildContext context, Widget widget) {
     final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (ctx) => Provider.value(
