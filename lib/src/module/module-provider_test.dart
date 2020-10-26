@@ -1,17 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/redux.dart';
+import 'package:libcli/module.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/log.dart';
 
 void main() {
-  group('[redux_provider]', () {
+  group('[module_provider]', () {
     test('should set reduxNewState when use from()', () async {
       reduxNewState = null;
       Map state = Map();
       Map newState = from(state);
       expect(reduxNewState, newState);
 
-      ReduxProvider provider = ReduxProvider(Redux(reducer, {'value': 0}));
+      ModuleProvider provider = ModuleProvider(reducer: reducer, state: {'value': 0});
       await provider.dispatch(null, Increment(1));
       expect(reduxNewState, isNull);
       reduxNewState = null;
@@ -20,14 +21,14 @@ void main() {
     test('should add/remove redux to state', () async {
       reduxStates.clear();
       expect(reduxStates.length, 0);
-      ReduxProvider provider = ReduxProvider(Redux(reducer, {'value': 0}));
+      ModuleProvider provider = ModuleProvider(reducer: reducer, state: {'value': 0});
       expect(reduxStates.length, 1);
       provider.dispose();
       expect(reduxStates.length, 0);
     });
 
     test('should dispatch reducer', () async {
-      ReduxProvider provider = ReduxProvider(Redux(reducer, {'value': 0}));
+      ModuleProvider provider = ModuleProvider(reducer: reducer, state: {'value': 0});
       expect(provider.state['value'], 0);
       await provider.dispatch(null, Increment(1));
       expect(provider.state['value'], 1);
