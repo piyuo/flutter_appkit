@@ -8,28 +8,28 @@ void main() {
   group('[i18n]', () {
     test('should set/get global variable', () async {
       locale = Locale('en', 'US');
-      expect(localeID, 'en-US');
+      expect(localeID, 'en_US');
     });
 
     test('should convert locale to id', () async {
-      expect(localeToId(Locale('en', 'US')), 'en-US');
+      expect(localeToId(Locale('en', 'US')), 'en_US');
     });
 
     test('should determine locale', () async {
       Locale loc = determineLocale(null);
-      expect(localeToId(loc), 'en-US');
+      expect(localeToId(loc), 'en_US');
       expect(userPreferCountryCode, 'US');
 
       List<Locale> emptyList = List<Locale>();
       loc = determineLocale(emptyList);
-      expect(localeToId(loc), 'en-US');
+      expect(localeToId(loc), 'en_US');
       expect(userPreferCountryCode, 'US');
 
       List<Locale> list = List<Locale>();
       list.add(Locale('zh', 'TW'));
       list.add(Locale('en', 'CA'));
       loc = determineLocale(list);
-      expect(localeToId(loc), 'zh-TW');
+      expect(localeToId(loc), 'zh_TW');
       expect(userPreferCountryCode, 'TW');
     });
   });

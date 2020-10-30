@@ -8,7 +8,7 @@ import '../../mock/mock.dart';
 import '../../mock/protobuf/sys_service.pb.dart';
 import '../../mock/protobuf/string_response.pbserver.dart';
 import '../../mock/protobuf/echo_request.pbserver.dart';
-import 'package:libcli/configuration.dart';
+import 'package:libcli/configuration.dart' as config;
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
@@ -51,7 +51,7 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
-      setBranch(BRANCH_MASTER);
+      config.branch = config.BRANCH_MASTER;
       SysService service = SysService();
       EchoAction action = new EchoAction();
       var response = await service.execute(null, action);

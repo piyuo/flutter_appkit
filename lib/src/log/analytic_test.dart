@@ -3,7 +3,7 @@ import 'package:libcli/src/log/analytic.dart';
 
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart';
-import 'package:libcli/configuration.dart';
+import 'package:libcli/configuration.dart' as config;
 
 const _here = 'analytic_test';
 
@@ -28,13 +28,13 @@ void main() {
       expect(curr.logs.length, 0);
       warning('$_here~mock warning');
       expect(curr.logs.length, 1);
-      setBranch(BRANCH_MASTER);
+      config.branch = config.BRANCH_MASTER;
       var id = await sendAnalytic();
       expect(id, isNotEmpty);
     });
 
     test('should error', () async {
-      setBranch(BRANCH_MASTER);
+      config.branch = config.BRANCH_MASTER;
       reset();
       // ignore: invalid_use_of_visible_for_testing_member
       var curr = current();

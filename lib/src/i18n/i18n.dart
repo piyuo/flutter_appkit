@@ -3,8 +3,8 @@ import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/src/i18n/i18n-provider.dart';
-import 'package:libcli/src/i18n/i18n-global.dart';
+import 'package:libcli/src/i18n/provider.dart';
+import 'package:libcli/src/i18n/global.dart';
 
 const _here = 'i18n';
 
@@ -57,7 +57,7 @@ get currentLanguageCode => currentLocale.languageCode;
 
 get currentCountryCode => currentLocale.countryCode;
 
-get localeID => '${currentLocale.languageCode}-${currentLocale.countryCode}';
+get localeID => localeToId(currentLocale);
 
 set locale(Locale locale) {
   _locale = locale;
@@ -74,7 +74,7 @@ bool isSupportedLocale(Locale locale) {
 ///
 /// var id = localeToId(Locale('en','US'));
 String localeToId(Locale locale) {
-  return '${locale.languageCode}-${locale.countryCode}';
+  return '${locale.languageCode}_${locale.countryCode}';
 }
 
 Locale idToLocale(String id) {
@@ -90,12 +90,13 @@ Locale idToLocale(String id) {
 /// The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
 ///
 Locale determineLocale(List<Locale> locales) {
-  Locale firstLocale;
   Locale bestLocale;
   if (locales == null || locales.length == 0) {
-    firstLocale = bestLocale = Locale('en', 'US');
+    bestLocale = Locale('en', 'US');
+    userPreferCountryCode = bestLocale.countryCode;
   } else {
-    firstLocale = bestLocale = locales[0];
+    bestLocale = locales[0];
+    userPreferCountryCode = bestLocale.countryCode;
     for (var locale in locales) {
       if (isSupportedLocale(locale)) {
         bestLocale = locale;
@@ -103,9 +104,7 @@ Locale determineLocale(List<Locale> locales) {
       }
     }
   }
-  userPreferCountryCode = firstLocale.countryCode;
-  debugPrint(
-      '$_here~default country is $userPreferCountryCode, best locale is ${bestLocale.languageCode}-${bestLocale.countryCode}');
+  debugPrint('$_here~default country is $userPreferCountryCode, best locale is ${localeToId(bestLocale)}');
   return bestLocale;
 }
 
