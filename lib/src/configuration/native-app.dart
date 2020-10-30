@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/log.dart';
+import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/src/configuration/configuration.dart' as config;
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -16,7 +17,7 @@ Future<void> nativeConfiguration({
   config.branch = branch;
   config.appID = appID;
   config.supportEmail = supportEmail;
-  config.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
+  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
 
   debugPrint = overrideDebugPrint;
   Provider.debugCheckInvalidValueType = null;

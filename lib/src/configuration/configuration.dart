@@ -38,8 +38,3 @@ set userID(String value) {
   debugPrint('$_here~set userID=$value');
   _userID = value;
 }
-
-/// initDateFormatting load datetime formatting file
-///
-///     configuration.initDateFormatting();
-Function initDateFormatting;

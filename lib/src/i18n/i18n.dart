@@ -64,12 +64,6 @@ set locale(Locale locale) {
   debugPrint('$_here~${STATE}set locale=$localeID');
 }
 
-bool isSupportedLocale(Locale locale) {
-  var id = localeToId(locale);
-  var result = Locales.contains(id);
-  return result;
-}
-
 /// localeToId convert Locale(''en,'US') to 'en_US'
 ///
 /// var id = localeToId(Locale('en','US'));
@@ -81,6 +75,23 @@ Locale idToLocale(String id) {
   var ids = id.split('_');
   if (ids.length > 1) return Locale(ids[0], ids[1]);
   return Locale(ids[0]);
+}
+
+/// askSupportedLocales ask what kind of locales we support
+///
+///
+List<Locale> askSupportedLocales() {
+  debugPrint('$_here~ask supported locales');
+  return Locales.map((id) => idToLocale(id)).toList();
+}
+
+/// isSupportedLocale check locale is supported?
+///
+///
+bool isSupportedLocale(Locale locale) {
+  var id = localeToId(locale);
+  var result = Locales.contains(id);
+  return result;
 }
 
 /// determineLocale select best locale for user and save user country to vars
@@ -108,9 +119,22 @@ Locale determineLocale(List<Locale> locales) {
   return bestLocale;
 }
 
-List<Locale> supportedLocales() {
-  debugPrint('$_here~ask supported locales');
-  return Locales.map((id) => idToLocale(id)).toList();
+class I18nDelegate extends LocalizationsDelegate<Locale> {
+  @override
+  bool isSupported(Locale locale) => isSupportedLocale(locale);
+
+  @override
+  Future<Locale> load(Locale l) async {
+    locale = l;
+    reloadGlobalTranslation(l.languageCode, l.countryCode);
+    if (initDateFormatting != null) {
+      initDateFormatting();
+    }
+    return l;
+  }
+
+  @override
+  bool shouldReload(I18nDelegate old) => false;
 }
 
 //This will allow you to add `.i18n` to your strings
@@ -131,3 +155,9 @@ extension Localization on String {
     return provider.translate(this);
   }
 }
+
+/// initDateFormatting will set by configuration
+///
+///     i18n.initDateFormatting();
+///
+Function initDateFormatting;
