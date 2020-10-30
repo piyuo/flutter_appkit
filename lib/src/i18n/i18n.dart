@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/log.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:libcli/log.dart';
 import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/src/i18n/provider.dart';
 import 'package:libcli/src/i18n/global.dart';
@@ -161,3 +162,20 @@ extension Localization on String {
 ///     i18n.initDateFormatting();
 ///
 Function initDateFormatting;
+
+/// withLocale run function in Intl zone
+///
+withLocale(Function() function) {
+  Intl.withLocale(localeID, function);
+}
+
+/// timeToStr convert hour and minute to local string
+///
+String timeToStr(int hour, int minute) {
+  var date = new DateTime.utc(2001, 1, 1, hour, minute);
+  var str = '';
+  withLocale(() {
+    str = new DateFormat.jm().format(date);
+  });
+  return str;
+}
