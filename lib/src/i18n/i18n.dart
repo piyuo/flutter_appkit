@@ -11,23 +11,17 @@ const _here = 'i18n';
 
 //https://www.oracle.com/technical-resources/articles/javase/locale.html
 const Locales = [
-  'en-US',
-  'zh-CN',
-  'zh-TW',
+  'en_US',
+  'zh_CN',
+  'zh_TW',
 ];
 /*
-  'en-US',
-  'en-CA',
-  'en-GB',
-  'en-AU',
-  'zh-CN',
-  'zh-TW',
-  'zh-TW',
-  'zh-TW',
-  'zh-TW',
-  'ja-JP',
-  'it-IT',
-  'de-DE',
+  'en_CA',
+  'en_GB',
+  'en_AU',
+  'ja_JP',
+  'it_IT',
+  'de_DE',
 
 */
 Locale _locale;
