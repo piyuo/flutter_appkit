@@ -6,7 +6,7 @@ const _here = 'redux';
 
 /// Redux reducer implementation
 ///
-typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
+typedef Future<Map<String, dynamic>> Reducer(BuildContext context, Map<String, dynamic> state, dynamic action);
 
 Map from(Map state) {
   reduxNewState = Map.from(state);
@@ -22,7 +22,7 @@ class Redux {
 
   /// _state is current state
   ///
-  Map _state;
+  Map<String, dynamic> _state;
 
   /// Redux constructor with default reducer and state
   ///
@@ -32,14 +32,13 @@ class Redux {
 
   /// state get current state
   ///
-  Map get state => _state;
+  Map<String, dynamic> get state => _state;
 
   /// dispatch action,return true if state changed. return false if state not change
   ///
   ///     await redux.dispatch(context, Increment(1));
   ///
   void dispatch(BuildContext context, dynamic action) async {
-    
     assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (!kReleaseMode) {
       var newState = await _reducer(context, state, action);
@@ -63,7 +62,7 @@ class Redux {
   }
 }
 
-String diffState(Map newState, Map oldState) {
+String diffState(Map<String, dynamic> newState, Map<String, dynamic> oldState) {
   String text = '';
   for (final key in newState.keys) {
     var newValue = newState[key];

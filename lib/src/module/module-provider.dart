@@ -16,7 +16,7 @@ class ModuleProvider extends ChangeNotifier {
 
   ModuleProvider({
     @required Reducer reducer,
-    @required Map state,
+    @required Map<String, dynamic> state,
     this.services,
   }) {
     assert(reducer != null, 'reducer must no be null');
