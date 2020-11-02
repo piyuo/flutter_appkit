@@ -9,11 +9,15 @@ import 'package:libcli/src/i18n/global.dart';
 
 const _here = 'i18n';
 
+const en_US = 'en_US';
+const zh_CN = 'zh_CN';
+const zh_TW = 'zh_TW';
+
 //https://www.oracle.com/technical-resources/articles/javase/locale.html
 const Locales = [
-  'en_US',
-  'zh_CN',
-  'zh_TW',
+  en_US,
+  zh_CN,
+  zh_TW,
 ];
 /*
   'en_CA',

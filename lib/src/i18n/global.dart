@@ -3,7 +3,7 @@ import 'package:libcli/log.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
 
-const _here = 'i18n_global';
+const _here = 'i18n-global';
 
 /// _global global translation
 ///
@@ -22,14 +22,13 @@ String globalTranslate(String key) {
 
 /// reloadGlobalTranslation load global translation base on locale
 ///
-Future<void> reloadGlobalTranslation(
-    String languageCode, String countryCode) async {
+Future<void> reloadGlobalTranslation(String languageCode, String countryCode) async {
   _global.clear();
   switch (i18n.localeID) {
-    case 'zh-TW':
+    case i18n.zh_TW:
       _zh_TW();
       break;
-    case 'zh-CN':
+    case i18n.zh_CN:
       _zh_CN();
       break;
     default:
@@ -41,8 +40,7 @@ Future<void> reloadGlobalTranslation(
 
 void _en_US() {
   _global['errTitle'] = 'Oops, some thing went wrong';
-  _global['errMsg'] =
-      'The developer team has been notified of this issue. Please try again later';
+  _global['errMsg'] = 'The developer team has been notified of this issue. Please try again later';
   _global['emailUs'] = 'Email Us';
   _global['errCode'] = 'Error code: ';
   _global['email'] = 'Email';
