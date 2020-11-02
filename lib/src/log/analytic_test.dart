@@ -3,7 +3,7 @@ import 'package:libcli/src/log/analytic.dart';
 
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart';
-import 'package:libcli/configuration.dart' as config;
+import 'package:libcli/app.dart' as config;
 
 const _here = 'analytic_test';
 

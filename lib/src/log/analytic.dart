@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/configuration.dart' as configuration;
+import 'package:libcli/app.dart' as configuration;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/utils.dart' as utils;
 import 'package:libcli/commands_sys.dart' as commandsSys;

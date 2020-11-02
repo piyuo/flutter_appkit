@@ -8,7 +8,7 @@ import '../../mock/mock.dart';
 import '../../mock/protobuf/sys_service.pb.dart';
 import '../../mock/protobuf/string_response.pbserver.dart';
 import '../../mock/protobuf/echo_request.pbserver.dart';
-import 'package:libcli/configuration.dart' as config;
+import 'package:libcli/app.dart' as config;
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member

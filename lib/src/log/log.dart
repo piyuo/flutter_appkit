@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/analytic.dart' as analytic;
-import 'package:libcli/configuration.dart' as configuration;
+import 'package:libcli/app.dart' as configuration;
 
 const LEVEL_INFO = 1;
 const LEVEL_WARNING = 2;

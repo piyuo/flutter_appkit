@@ -1,5 +1,5 @@
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/configuration.dart' as configuration;
+import 'package:libcli/app.dart' as configuration;
 
 /// serviceMark
 ///
