@@ -49,7 +49,7 @@ class Increment {
   Increment(this.value);
 }
 
-Future<Map<String, dynamic>> reducer(BuildContext context, Map<String, dynamic> old, dynamic action) async {
+Future<Map> reducer(BuildContext context, Map old, dynamic action) async {
   if (action is Increment) {
     var state = Map.from(old);
     state['value'] += action.value;
