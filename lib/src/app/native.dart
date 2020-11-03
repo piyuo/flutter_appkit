@@ -17,7 +17,8 @@ void nativeConfiguration({
   config.branch = branch;
   config.appID = appID;
   config.supportEmail = supportEmail;
-  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
+  //no need for now, cause GlobalCupertinoLocalizations will load date formatting
+//  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
 
   debugPrint = overrideDebugPrint;
   Provider.debugCheckInvalidValueType = null;

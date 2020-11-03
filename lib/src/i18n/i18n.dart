@@ -126,9 +126,10 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
   Future<Locale> load(Locale l) async {
     locale = l;
     reloadGlobalTranslation(l.languageCode, l.countryCode);
-    if (initDateFormatting != null) {
-      //initDateFormatting(localeToId(l));
-    }
+    //no need for now, cause GlobalCupertinoLocalizations will load date formatting
+    //if (initDateFormatting != null) {
+    //initDateFormatting(localeToId(l));
+    //}
     return l;
   }
 
