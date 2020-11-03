@@ -8,11 +8,11 @@ import 'package:intl/date_symbol_data_local.dart';
 
 /// nativeConfiguration set configuration to native application
 ///
-void nativeConfiguration({
-  @required String branch,
-  @required String appID,
-  @required String supportEmail,
-}) {
+void nativeConfiguration(
+  String branch,
+  String appID,
+  String supportEmail,
+) {
   debugPrint('native configuration, branch=$branch, appID=$appID, supportEmail=$supportEmail');
   config.branch = branch;
   config.appID = appID;
