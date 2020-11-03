@@ -127,7 +127,7 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
     locale = l;
     reloadGlobalTranslation(l.languageCode, l.countryCode);
     if (initDateFormatting != null) {
-      initDateFormatting();
+      initDateFormatting(localeToId(l));
     }
     return l;
   }
