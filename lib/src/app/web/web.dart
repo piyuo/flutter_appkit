@@ -9,11 +9,11 @@ import 'package:intl/date_symbol_data_http_request.dart';
 
 /// webConfiguration set configuration to web application
 ///
-Future<void> webConfiguration({
+void webConfiguration({
   @required branch,
   @required appID,
   @required supportEmail,
-}) async {
+}) {
   debugPrint('web configuration, branch=$branch, appID=$appID, supportEmail=$supportEmail');
   config.branch = branch;
   config.appID = appID;
