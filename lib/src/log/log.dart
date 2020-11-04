@@ -38,7 +38,9 @@ Map reduxNewState = null;
 String safeJsonEncode(Object object) {
   try {
     return jsonEncode(object);
-  } on Exception catch (_) {}
+  } catch (e) {
+    debugPrint(e);
+  }
   return toString(object);
 }
 
