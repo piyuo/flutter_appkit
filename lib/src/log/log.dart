@@ -32,6 +32,16 @@ final List<Map> reduxStates = List();
 ///
 Map reduxNewState = null;
 
+/// safeJsonEncode return json of object, return object.toString() if can't encode json
+///
+///
+String safeJsonEncode(Object object) {
+  try {
+    return jsonEncode(object);
+  } on Exception catch (_) {}
+  return toString(object);
+}
+
 /// readReduxStates print all redux states to string
 ///
 ///
@@ -39,7 +49,7 @@ String readReduxStates() {
   var buffer = new StringBuffer();
   buffer.write('[');
   for (var i = 0; i < reduxStates.length; i++) {
-    var str = jsonEncode(reduxStates[i]);
+    var str = safeJsonEncode(reduxStates[i]);
     buffer.write(str);
     if (i < reduxStates.length - 1) {
       buffer.write(',');
@@ -47,7 +57,7 @@ String readReduxStates() {
   }
   if (reduxNewState != null) {
     buffer.write(',');
-    var str = jsonEncode(reduxNewState);
+    var str = safeJsonEncode(reduxNewState);
     buffer.write(str);
   }
 
