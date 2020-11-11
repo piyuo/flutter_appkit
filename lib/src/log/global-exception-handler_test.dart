@@ -9,9 +9,7 @@ void main() {
 
   group('[global-exception-handler]', () {
     test('should sendToGlobalExceptionHanlder', () {
-      globalExceptionHandler =
-          (BuildContext context, dynamic e, StackTrace stackTrace,
-              {String errorCode}) {
+      globalExceptionHandler = (BuildContext context, dynamic e, StackTrace stackTrace, {String errorCode}) {
         expect(e, 'mock');
         expect(stackTrace, isNotNull);
         expect(errorCode, 'Mock Error');
@@ -20,7 +18,7 @@ void main() {
       try {
         throw 'mock';
       } catch (e, s) {
-        sendToGlobalExceptionHanlder(null, e, s, errorCode: 'Mock Error');
+        sendToGlobalExceptionHanlder(null, e, s);
       }
     });
   });
