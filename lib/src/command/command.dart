@@ -8,7 +8,6 @@ import 'package:libcli/commands/shared/text.pb.dart' as sharedText;
 import 'package:libcli/commands/shared/num.pb.dart';
 import 'package:libcli/commands/shared/bool.pb.dart';
 
-
 /// OK is empty string which is mean empty error is OK
 ///
 const OK = '';
@@ -33,7 +32,7 @@ Err error(String errorCode) {
 
 /// setErrState set state['err'], null if response is null, '' if response is not null,'error code' if response is err code
 ///
-void setErrState(Map state, ProtoObject response) {
+void setErrState(Map state, ProtoObject? response) {
   if (response == null) {
     state['err'] = null;
     return;

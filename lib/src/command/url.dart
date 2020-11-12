@@ -7,7 +7,7 @@ String baseDomain = 'piyuo.com';
 
 /// serviceRegion is set if service need tie to specify region, usually when user sign in and they need to to same region where they create the account
 ///
-String serviceRegion;
+String serviceRegion = 'US';
 
 /// serviceUrl return service url base on app.branch
 ///
@@ -19,21 +19,13 @@ String serviceUrl(String funcName) {
     branch = '';
   }
   // add /?q query string to avoid cache by cloud flare
-  return 'https://$funcName-${determineRegion()}$branch.$baseDomain/?q';
+  return 'https://$funcName-${serviceRegion.toLowerCase()}$branch.$baseDomain/?q';
 }
 
-/// _country return country where service located
+/// determineRegion return datacenter region base on user prefer country in user locale
 ///
 String determineRegion() {
-  if (serviceRegion != null) {
-    return serviceRegion;
-  }
-  var region = 'us';
-  //first check i18n prefered
-  if (i18n.userPreferCountryCode != null) {
-    region = i18n.userPreferCountryCode.toLowerCase();
-  }
-  return mapping(region);
+  return mapping(i18n.userPreferCountryCode);
 }
 
 /// country code world map
@@ -42,15 +34,14 @@ String determineRegion() {
 /// mapping country to nearest google data center
 ///
 String mapping(String region) {
-  var asia = ['jp', 'kr', 'sg', 'th', 'tw', 'cn', 'hk', 'mo'];
+  var asia = ['JP', 'KR', 'SG', 'TH', 'TW', 'CN', 'HK', 'MO'];
   if (asia.contains(region)) {
-    return 'jp';
+    return 'JP';
   }
 
-  var eu = ['be', 'gb', 'de', 'fr', 'it', 'cz', 'ie', 'es'];
+  var eu = ['BE', 'GB', 'DE', 'FR', 'IT', 'CZ', 'IE', 'ES'];
   if (eu.contains(region)) {
-    return 'be';
+    return 'BE';
   }
-
-  return 'us';
+  return 'US';
 }

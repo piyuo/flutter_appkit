@@ -13,11 +13,14 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
 
   /// package set if i18nfile is in other package
   ///
-  final String package;
+  final String? package;
 
   /// ProviderWidget
   ///
-  ViewWidget(this.i18nFilename, {this.package});
+  ViewWidget({
+    required this.i18nFilename,
+    this.package,
+  });
 
   /// onProviderCreated called when parovider is created
   ///
@@ -36,12 +39,11 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<I18nProvider>(
-          create: (context) => I18nProvider(i18nFilename, package: package),
+          create: (context) => I18nProvider(fileName: i18nFilename, package: package),
         ),
         ChangeNotifierProvider<T>(
           create: (context) {
             var p = createProvider(context);
-            assert(p != null, '$runtimeType must override createProvider and do no return null');
             onProviderCreated(p);
             return p;
           },

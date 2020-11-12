@@ -1,14 +1,7 @@
 import 'dart:typed_data';
 import 'package:libcli/command.dart';
 
-SharedService _sharedService;
-
-SharedService _getSharedService() {
-  if (_sharedService == null) {
-    _sharedService = SharedService();
-  }
-  return _sharedService;
-}
+final _sharedService = SharedService();
 
 /// encode protobuf object into bytes
 ///
@@ -29,6 +22,7 @@ Uint8List encode(ProtoObject obj) {
 ///
 ///     EchoAction decodeAction = commandProtobuf.decode(bytes, service);
 ///     expect(decodeAction.text, 'hi');
+///
 ProtoObject decode(List<int> bytes, Service service) {
   List<int> protoBytes = bytes.sublist(0, bytes.length - 2);
   Uint8List idBytes = Uint8List.fromList(bytes.sublist(bytes.length - 2, bytes.length));
@@ -36,12 +30,9 @@ ProtoObject decode(List<int> bytes, Service service) {
 
   ProtoObject obj;
   if (id <= 1000) {
-    obj = _getSharedService().newObjectByID(id, protoBytes);
+    obj = _sharedService.newObjectByID(id, protoBytes);
   } else {
     obj = service.newObjectByID(id, protoBytes);
-  }
-  if (obj == null) {
-    throw new Exception('response id $id out of range');
   }
   return obj;
 }

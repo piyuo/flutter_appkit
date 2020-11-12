@@ -14,7 +14,7 @@ void main() {
 
   group('[i18n-provider]', () {
     test('should getTranslation', () async {
-      var translation = await getTranslation('any');
+      var translation = await getTranslation(fileName: 'any');
       expect(translation, isNotNull);
       expect(translation['a'], 'A');
     });
@@ -27,14 +27,14 @@ void main() {
         ),
       ));
       await tester.pumpAndSettle();
-      expect(i18nProvider.translate('a'), 'A');
+      expect(TestWidget.i18nProvider!.translate('a'), 'A');
     });
   });
 }
 
-I18nProvider i18nProvider;
-
 class TestWidget extends StatelessWidget {
+  static I18nProvider? i18nProvider;
+
   Widget widget(I18nProvider value) {
     i18nProvider = value;
     return Text('');
@@ -45,7 +45,7 @@ class TestWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<I18nProvider>(
-          create: (context) => I18nProvider('mock'),
+          create: (context) => I18nProvider(fileName: 'mock'),
         ),
         ChangeNotifierProvider<MockProvider>(
           create: (context) => MockProvider(),

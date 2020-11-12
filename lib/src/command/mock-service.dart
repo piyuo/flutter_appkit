@@ -13,15 +13,20 @@ class MockService extends Service {
   ///
   MockExecute mockExecute;
 
-  MockService(this.mockExecute) : super('mock', -1, -1);
+  MockService(this.mockExecute)
+      : super(
+          serviceName: 'mock',
+          timeout: -1,
+          slow: -1,
+        );
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {
-    return null;
+    throw 'failed to create object in MockService. cause id ($id) out of range';
   }
 
   @override
-  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj, {Map state}) async {
+  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj, {Map? state}) async {
     var response = await mockExecute(ctx, obj);
     if (state != null) {
       setErrState(state, response);

@@ -28,11 +28,11 @@ const Locales = [
   'de_DE',
 
 */
-Locale _locale;
+Locale _locale = Locale('en', 'US');
 
 /// userPreferCountryCode is  the first country code to determineLocale(), it mean user's default country
 ///
-String userPreferCountryCode;
+String userPreferCountryCode = 'US';
 
 /// mockI18n Initializes the value for testing
 ///
@@ -45,12 +45,7 @@ void mockI18n(Locale locale, String map) {
   asset.mockAssetsByString(map);
 }
 
-get currentLocale {
-  if (_locale == null) {
-    return Locale('en', 'US');
-  }
-  return _locale;
-}
+get currentLocale => _locale;
 
 get currentLanguageCode => currentLocale.languageCode;
 
@@ -100,13 +95,10 @@ bool isSupportedLocale(Locale locale) {
 /// The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
 ///
 Locale determineLocale(List<Locale> locales) {
-  Locale bestLocale;
-  if (locales == null || locales.length == 0) {
-    bestLocale = Locale('en', 'US');
-    userPreferCountryCode = bestLocale.countryCode;
-  } else {
+  Locale bestLocale = Locale('en', 'US');
+  if (locales.length > 0) {
     bestLocale = locales[0];
-    userPreferCountryCode = bestLocale.countryCode;
+    userPreferCountryCode = bestLocale.countryCode ?? 'US';
     for (var locale in locales) {
       if (isSupportedLocale(locale)) {
         bestLocale = locale;
@@ -125,7 +117,7 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
   @override
   Future<Locale> load(Locale l) async {
     locale = l;
-    reloadGlobalTranslation(l.languageCode, l.countryCode);
+    reloadGlobalTranslation(l.languageCode, l.countryCode ?? 'US');
     //no need for now, cause GlobalCupertinoLocalizations will load date formatting
     //if (initDateFormatting != null) {
     //initDateFormatting(localeToId(l));
@@ -144,14 +136,7 @@ extension Localization on String {
   }
 
   String i18n(BuildContext context) {
-    if (!kReleaseMode) {
-      // allow null context in test
-      if (context == null) {
-        return this;
-      }
-    }
     var provider = Provider.of<I18nProvider>(context, listen: false);
-    assert(provider != null, 'I18nProvider need inject in context');
     return provider.translate(this);
   }
 }
@@ -160,7 +145,7 @@ extension Localization on String {
 ///
 ///     i18n.initDateFormatting();
 ///
-Function initDateFormatting;
+//Function initDateFormatting;
 
 /// withLocale run function in Intl zone
 ///

@@ -3,13 +3,15 @@ import 'package:libcli/src/log/log.dart';
 ///ErrorReport save error detail let user write emamil to us
 ///
 class ErrorReport {
-  String analyticID;
+  final String analyticID;
 
-  dynamic exception;
+  final dynamic exception;
 
-  String stackTrace;
+  final String stackTrace;
 
-  ErrorReport(this.analyticID, this.exception, StackTrace stack) {
-    stackTrace = beautyStack(stack);
-  }
+  ErrorReport({
+    required this.analyticID,
+    required this.exception,
+    required this.stackTrace,
+  });
 }

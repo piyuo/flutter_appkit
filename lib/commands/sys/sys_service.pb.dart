@@ -8,12 +8,18 @@ class SysService extends Service {
   /// For example:
   ///
   ///     SysService service = SysService();
-  SysService() : super('sys', 10000, 20000);
+  SysService()
+      : super(
+          serviceName: 'sys',
+          timeout: 10000,
+          slow: 20000,
+        ) {
+    //ignore error when report analytic to server
+    errorHandler = (_) {};
+  }
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {
-    switch (id) {
-    }
-    return null;
+    throw 'failed to create object in SysService. id ($id) out of range';
   }
 }

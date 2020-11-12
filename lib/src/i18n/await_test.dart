@@ -19,13 +19,13 @@ void main() {
       ));
       await tester.pumpAndSettle();
       expect(TestWidget.i18n, isNotNull);
-      expect(TestWidget.i18n.translate('a'), 'A');
+      expect(TestWidget.i18n!.translate('a'), 'A');
     });
   });
 }
 
 class TestWidget extends StatelessWidget {
-  static I18nProvider i18n;
+  static I18nProvider? i18n;
 
   Widget widget(I18nProvider value) {
     i18n = value;
@@ -40,7 +40,7 @@ class TestWidget extends StatelessWidget {
           create: (context) => MockProvider(),
         ),
         ChangeNotifierProvider<I18nProvider>(
-          create: (context) => I18nProvider('mock'),
+          create: (context) => I18nProvider(fileName: 'mock'),
         ),
       ],
       child: Consumer2<MockProvider, I18nProvider>(

@@ -6,19 +6,7 @@ import 'package:libcli/commands_sys.dart' as commandsSys;
 
 commandsSys.SendAnalyticAction _current = commandsSys.SendAnalyticAction();
 
-command.Service _sysService;
-
-@visibleForTesting
-set sysService(command.Service service) {
-  _sysService = service;
-}
-
-command.Service get sysService {
-  if (_sysService == null) {
-    _sysService = commandsSys.SysService()..ignoreError = true;
-  }
-  return _sysService;
-}
+command.Service sysService = commandsSys.SysService();
 
 saveLog(String where, String message, int level) {
   _current.logs.add(commandsSys.Log()
@@ -53,12 +41,12 @@ current() {
 
 ///report send analytic to server, return error id if  success others return empty
 ///
-Future<String> sendAnalytic() async {
+Future<String> sendAnalytic(BuildContext context) async {
   if (_current.logs.length > 0 || _current.errors.length > 0) {
     var readyAction = _current;
     readyAction.id = utils.uuid();
     reset();
-    var response = await sysService.execute(null, readyAction);
+    var response = await sysService.execute(context, readyAction);
     if (command.isOK(response)) {
       return readyAction.id;
     }

@@ -9,6 +9,10 @@ import '../../mock/protobuf/sys_service.pb.dart';
 import '../../mock/protobuf/string_response.pbserver.dart';
 import '../../mock/protobuf/echo_request.pbserver.dart';
 import 'package:libcli/app.dart' as config;
+import 'package:mockito/mockito.dart';
+import 'package:flutter/material.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
@@ -54,7 +58,7 @@ void main() {
       config.branch = config.BRANCH_MASTER;
       SysService service = SysService();
       EchoAction action = new EchoAction();
-      var response = await service.execute(null, action);
+      var response = await service.execute(MockBuildContext(), action);
       expect(response, null);
     });
 
@@ -64,7 +68,7 @@ void main() {
       });
 
       EchoAction action = new EchoAction();
-      var response = await service.execute(null, action);
+      var response = await service.execute(MockBuildContext(), action);
       if (response is StringResponse) {
         expect(response.text, 'hi');
       } else {
@@ -79,7 +83,7 @@ void main() {
 
       EchoAction action = new EchoAction();
       Map state = Map();
-      await service.execute(null, action, state: state);
+      await service.execute(MockBuildContext(), action, state: state);
       expect(state['err'], '');
     });
 
@@ -89,7 +93,7 @@ void main() {
       });
 
       EchoAction action = new EchoAction();
-      var response = await service.execute(null, action);
+      var response = await service.execute(MockBuildContext(), action);
       if (response is command.Err) {
         expect(response.code, isEmpty);
       } else {

@@ -8,12 +8,15 @@ class GoogleProtoService extends command.Service {
   /// For example:
   ///
   ///     GoogleProtoService service = GoogleProtoService();
-  GoogleProtoService() : super('googleProto', 10000, 20000);
+  GoogleProtoService()
+      : super(
+          serviceName: 'googleProto',
+          timeout: 10000,
+          slow: 20000,
+        );
 
   @override
   command.ProtoObject newObjectByID(int id, List<int> l) {
-    switch (id) {
-    }
-    return null;
+    throw 'failed to create object in GoogleProtoService. cause id ($id) out of range';
   }
 }

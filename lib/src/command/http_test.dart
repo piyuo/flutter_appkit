@@ -18,7 +18,7 @@ void main() {
   setUp(() async {
     contract = null;
     event = null;
-    eventbus.reset();
+    eventbus.clearListeners();
     eventbus.listen(_here, (_, e) {
       if (e is eventbus.Contract) {
         contract = e;
@@ -37,7 +37,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(200));
         var bytes = await command.doPost(ctx, req);
-        expect(bytes.length, greaterThan(1));
+        expect(bytes!.length, greaterThan(1));
       });
     });
 
@@ -45,7 +45,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(500));
         var onErrorCalled = false;
-        req.errorHandler = () {
+        req.errorHandler = (_) {
           onErrorCalled = true;
         };
         var bytes = await command.doPost(ctx, req);
@@ -55,8 +55,7 @@ void main() {
       });
     });
 
-    testWidgets('should handle 500, internal server error',
-        (WidgetTester tester) async {
+    testWidgets('should handle 500, internal server error', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(500));
         var bytes = await command.doPost(ctx, req);
@@ -64,8 +63,7 @@ void main() {
       });
     });
 
-    testWidgets('should handle 501, servie is not properly setup',
-        (WidgetTester tester) async {
+    testWidgets('should handle 501, servie is not properly setup', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(501));
         try {
@@ -76,8 +74,7 @@ void main() {
       });
     });
 
-    testWidgets('should handle 504, service context deadline exceeded',
-        (WidgetTester tester) async {
+    testWidgets('should handle 504, service context deadline exceeded', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(504));
         var bytes = await command.doPost(ctx, req);
@@ -85,35 +82,32 @@ void main() {
       });
     });
 
-    testWidgets('should retry 511 and ok, access token required',
-        (WidgetTester tester) async {
+    testWidgets('should retry 511 and ok, access token required', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(511));
         var bytes = await command.doPost(ctx, req);
         expect(bytes, isNotNull);
-        expect(bytes.length, greaterThan(1));
+        expect(bytes!.length, greaterThan(1));
         expect(contract.runtimeType, command.CAccessTokenRequired);
       });
     });
 
-    testWidgets('should retry 412 and ok, access token expired',
-        (WidgetTester tester) async {
+    testWidgets('should retry 412 and ok, access token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
         var bytes = await command.doPost(ctx, req);
         expect(bytes, isNotNull);
-        expect(bytes.length, greaterThan(1));
+        expect(bytes!.length, greaterThan(1));
         expect(contract.runtimeType, command.CAccessTokenExpired);
       });
     });
 
-    testWidgets('should retry 402 and ok, payment token expired',
-        (WidgetTester tester) async {
+    testWidgets('should retry 402 and ok, payment token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(402));
         var bytes = await command.doPost(ctx, req);
         expect(bytes, isNotNull);
-        expect(bytes.length, greaterThan(1));
+        expect(bytes!.length, greaterThan(1));
         expect(contract.runtimeType, command.CPaymentTokenRequired);
       });
     });
@@ -164,12 +158,12 @@ void main() {
 }
 
 command.Request newRequest(MockClient client) {
-  var req = command.Request();
-  req.client = client;
-  req.bytes = Uint8List(2);
-  req.url = 'http://mock';
-  req.timeout = 9000;
-  return req;
+  return command.Request(
+    client: client,
+    bytes: Uint8List(2),
+    url: 'http://mock',
+    timeout: 9000,
+  );
 }
 
 MockClient statucMock(int status) {

@@ -23,7 +23,7 @@ void main() {
 }
 
 class LocaleWidget extends StatelessWidget {
-  static String value;
+  static String value = '';
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class TestWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<I18nProvider>(
-          create: (context) => I18nProvider('mock'),
+          create: (context) => I18nProvider(fileName: 'mock'),
         ),
       ],
       child: Consumer<I18nProvider>(

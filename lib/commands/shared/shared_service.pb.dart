@@ -7,13 +7,17 @@ import 'num.pb.dart';
 import 'text.pb.dart';
 
 class SharedService extends Service {
-
   /// init shared service with predefine remote url
   /// remote url is defined in "service project/proto/.proto.json"
   /// For example:
   ///
   ///     SharedService service = SharedService();
-  SharedService(): super('shared',10000,20000);
+  SharedService()
+      : super(
+          serviceName: 'shared',
+          timeout: 10000,
+          slow: 20000,
+        );
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {
@@ -27,6 +31,6 @@ class SharedService extends Service {
       case 3:
         return Text.fromBuffer(l);
     }
-    return null;
+    throw 'failed to create object in SharedService. cause id ($id) out of range';
   }
 }

@@ -1,4 +1,5 @@
 import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/utils.dart' as utils;
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
 ///
@@ -15,11 +16,20 @@ class BadRequestEvent {}
 /// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
 ///
 class RequestTimeoutContract extends eventbus.Contract {
-  final dynamic exception;
   final String url;
-  final String errorID;
   final bool isServer;
-  RequestTimeoutContract({this.exception, this.url, this.isServer, this.errorID});
+  final dynamic exception;
+
+  /// errorID will be set if is server timeout
+  ///
+  final String? errorID;
+
+  RequestTimeoutContract({
+    this.exception,
+    required this.url,
+    required this.isServer,
+    this.errorID,
+  });
 }
 
 /// SlowNetworkEvent happen when command [execute longer than usual]
@@ -35,9 +45,13 @@ class ERefuseSignin {}
 class InternetRequiredContract extends eventbus.Contract {
   final dynamic exception;
   final String url;
-  InternetRequiredContract({this.exception, this.url});
-  Future<bool> Function() isInternetConnected;
-  Future<bool> Function() isGoogleCloudFunctionAvailable;
+  InternetRequiredContract({
+    this.exception,
+    required this.url,
+  });
+
+  Future<bool> Function() isInternetConnected = utils.isInternetConnected;
+  Future<bool> Function() isGoogleCloudFunctionAvailable = utils.isGoogleCloudFunctionAvailable;
 }
 
 ///CAccessTokenRequired  happen when [service need access token], listener need let user sign in or use refresh token to get access token

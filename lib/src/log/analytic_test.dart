@@ -1,9 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/src/log/analytic.dart';
 
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart';
 import 'package:libcli/app.dart' as config;
+import 'package:mockito/mockito.dart';
+import 'package:flutter/material.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
 
 const _here = 'analytic_test';
 
@@ -17,25 +22,26 @@ void main() {
 
   group('[analytic]', () {
     test('should set time', () {
-      var time = command.Timestamp.fromDateTime(DateTime.now());
-      expect(time != null, true);
+      var now = DateTime.now();
+      var time = command.Timestamp.fromDateTime(now);
+      expect(time.toDateTime().compareTo(now) == 0, true);
     });
 
     test('should log', () async {
-      reset();
+      clearListeners();
       // ignore: invalid_use_of_visible_for_testing_member
       var curr = current();
       expect(curr.logs.length, 0);
       warning('$_here~mock warning');
       expect(curr.logs.length, 1);
       config.branch = config.BRANCH_MASTER;
-      var id = await sendAnalytic();
+      var id = await sendAnalytic(MockBuildContext());
       expect(id, isNotEmpty);
     });
 
     test('should error', () async {
       config.branch = config.BRANCH_MASTER;
-      reset();
+      clearListeners();
       // ignore: invalid_use_of_visible_for_testing_member
       var curr = current();
       expect(curr.errors.length, 0);
@@ -45,13 +51,13 @@ void main() {
         error(_here, e, s);
       }
       expect(curr.errors.length, 1);
-      var result = await sendAnalytic();
+      var result = await sendAnalytic(MockBuildContext());
       expect(result, isNotEmpty);
     });
 
     test('should have no id if no logs or errors', () async {
-      reset();
-      var id = await sendAnalytic();
+      clearListeners();
+      var id = await sendAnalytic(MockBuildContext());
       expect(id, isEmpty);
     });
   });

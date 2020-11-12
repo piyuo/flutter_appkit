@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/redux.dart';
 import 'package:flutter/material.dart';
+import 'package:mockito/mockito.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
   setUp(() async {});
@@ -9,14 +12,14 @@ void main() {
     test('should dispatch', () async {
       HistoryRedux redux = HistoryRedux(reducer, {'value': 0}, historyLength: 2);
       expect(redux.state['value'], 0);
-      await redux.dispatch(null, Increment(1));
+      await redux.dispatch(MockBuildContext(), Increment(1));
       expect(redux.state['value'], 1);
     });
 
     test('should undo', () async {
       HistoryRedux redux = HistoryRedux(reducer, {'value': 0}, historyLength: 3);
-      await redux.dispatch(null, Increment(1));
-      await redux.dispatch(null, Increment(1));
+      await redux.dispatch(MockBuildContext(), Increment(1));
+      await redux.dispatch(MockBuildContext(), Increment(1));
       expect(redux.state['value'], 2);
       expect(redux.hasUndo, true);
       redux.undo();
@@ -30,8 +33,8 @@ void main() {
 
     test('should redo', () async {
       HistoryRedux redux = HistoryRedux(reducer, {'value': 0}, historyLength: 3);
-      await redux.dispatch(null, Increment(1));
-      await redux.dispatch(null, Increment(1));
+      await redux.dispatch(MockBuildContext(), Increment(1));
+      await redux.dispatch(MockBuildContext(), Increment(1));
       redux.undo();
       expect(redux.state['value'], 1);
       expect(redux.hasRedo, true);

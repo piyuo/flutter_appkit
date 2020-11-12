@@ -22,7 +22,7 @@ class HistoryRedux {
 
   ///_states is entiry state's hisotry and length is limit to historyLength
   ///
-  List<Map> _states = List<Map>();
+  List<Map> _states = [];
 
   /// HistoryRedux constructor with default hisotry length, reducer and state
   ///

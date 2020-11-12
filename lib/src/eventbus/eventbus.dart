@@ -5,12 +5,10 @@ import 'package:libcli/src/eventbus/contract.dart';
 
 const _here = 'eventbus';
 
-typedef Callback(BuildContext context, dynamic event);
-
 /// latestContract is used for testing purpose
 ///
 @visibleForTesting
-Contract latestContract;
+Contract? latestContract;
 
 /// latestEvent is used for testing purpose
 ///
@@ -19,17 +17,24 @@ dynamic latestEvent;
 
 /// Listener
 class Listener {
-  final dynamic _type;
-
-  final Callback _func;
-
-  Listener(this._type, this._func);
-
-  /// call send event to listener
+  /// eventType is event type the listener listen to
   ///
-  call(BuildContext context, dynamic event) {
-    if (_type == dynamic || _type == event.runtimeType) {
-      _func(context, event);
+  final dynamic eventType;
+
+  /// callback called when event happen
+  ///
+  final void Function(BuildContext context, dynamic event) callback;
+
+  Listener({
+    required this.eventType,
+    required this.callback,
+  });
+
+  /// listen all event and run callback when event type is match
+  ///
+  void listen(BuildContext context, dynamic event) {
+    if (eventType == dynamic || eventType == event.runtimeType) {
+      callback(context, event);
     }
   }
 }
@@ -50,11 +55,11 @@ class Subscription {
 
 /// _listeners save all listener
 ///
-List<Listener> _listeners = List<Listener>();
+List<Listener> _listeners = [];
 
-/// reset  remove all listener from eventbus
+/// clearListeners  remove all listener from eventbus
 ///
-reset() {
+clearListeners() {
   _listeners.clear();
 }
 
@@ -71,16 +76,15 @@ int getListenerCount() {
 ///     sub.cancel();
 Subscription listen<T>(
   String where,
-  Function(BuildContext, dynamic) func,
+  void Function(BuildContext?, dynamic) func,
 ) {
-  assert(func != null);
   if (T == dynamic) {
     debugPrint('$_here~$where listen all event');
   } else {
     debugPrint('$_here~$where listen $T');
   }
 
-  var listener = Listener(T, func);
+  var listener = Listener(eventType: T, callback: func);
   _listeners.add(listener);
   var sub = Subscription(listener);
   return sub;
@@ -110,7 +114,6 @@ broadcast(BuildContext context, dynamic event) {
 ///     });
 ///
 Future<bool> contract(BuildContext context, Contract event) {
-  assert(event != null);
   latestContract = event;
   log('$_here~contract ${event.runtimeType}');
   dispatch(context, event);
@@ -125,7 +128,7 @@ Future<bool> contract(BuildContext context, Contract event) {
 dispatch(BuildContext context, dynamic event) {
   for (var listener in _listeners) {
     try {
-      listener.call(context, event);
+      listener.listen(context, event);
     } catch (e, s) {
       error(_here, e, s);
       if (event is Contract) {

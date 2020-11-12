@@ -18,7 +18,7 @@ void main() {
   setUp(() async {
     contract = null;
     event = null;
-    eventbus.reset();
+    eventbus.clearListeners();
     eventbus.listen(_here, (_, e) {
       if (e is eventbus.Contract) {
         contract = e;
@@ -33,8 +33,7 @@ void main() {
   });
 
   group('[command-http-refuse]', () {
-    testWidgets('should retry 511 and failed, access token required',
-        (WidgetTester tester) async {
+    testWidgets('should retry 511 and failed, access token required', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(511));
         var bytes = await doPost(ctx, req);
@@ -44,8 +43,7 @@ void main() {
       });
     });
 
-    testWidgets('should retry 412 and failed, access token expired',
-        (WidgetTester tester) async {
+    testWidgets('should retry 412 and failed, access token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
         var bytes = await doPost(ctx, req);
@@ -55,8 +53,7 @@ void main() {
       });
     });
 
-    testWidgets('should retry 402 and failed, payment token expired',
-        (WidgetTester tester) async {
+    testWidgets('should retry 402 and failed, payment token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(402));
         var bytes = await doPost(ctx, req);
@@ -69,10 +66,7 @@ void main() {
     testWidgets('should retry', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        await retry(ctx,
-            contract: CAccessTokenExpired(),
-            fail: ERefuseSignin(),
-            request: req);
+        await retry(ctx, contract: CAccessTokenExpired(), fail: ERefuseSignin(), request: req);
         expect(event.runtimeType, ERefuseSignin);
       });
     });
@@ -80,12 +74,12 @@ void main() {
 }
 
 Request newRequest(MockClient client) {
-  var req = Request();
-  req.client = client;
-  req.bytes = Uint8List(2);
-  req.url = 'http://mock';
-  req.timeout = 9000;
-  return req;
+  return Request(
+    client: client,
+    bytes: Uint8List(2),
+    url: 'http://mock',
+    timeout: 9000,
+  );
 }
 
 MockClient socketMock() {

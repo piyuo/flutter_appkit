@@ -13,7 +13,7 @@ abstract class AsyncProvider with ChangeNotifier {
 
   AsyncStatus asyncStatus = AsyncStatus.none;
 
-  ErrorReport errorReport = null;
+  ErrorReport? errorReport = null;
 
   /// prevent notifyListeners after dispose
   bool _disposed = false;

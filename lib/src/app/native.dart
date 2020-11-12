@@ -9,9 +9,9 @@ import 'package:intl/date_symbol_data_local.dart';
 /// nativeConfiguration set configuration to native application
 ///
 void nativeConfiguration({
-  @required String branch,
-  @required String appID,
-  @required String supportEmail,
+  required String branch,
+  required String appID,
+  required String supportEmail,
 }) {
   debugPrint('native configuration, branch=$branch, appID=$appID, supportEmail=$supportEmail');
   config.branch = branch;

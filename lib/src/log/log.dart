@@ -26,11 +26,11 @@ const STATE = GREEN;
 
 /// reduxStates keep all redux states
 ///
-final List<Map> reduxStates = List();
+final List<Map> reduxStates = [];
 
 /// reduxNewState keep newStat in from(), it will be null when merage to state
 ///
-Map reduxNewState = null;
+Map? reduxNewState = null;
 
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
 ///
@@ -39,7 +39,7 @@ String safeJsonEncode(Object object) {
   try {
     return jsonEncode(object);
   } catch (e) {
-    debugPrint(e);
+    debugPrint(e.toString());
   }
   return toString(object);
 }
@@ -59,7 +59,7 @@ String readReduxStates() {
   }
   if (reduxNewState != null) {
     buffer.write(',');
-    var str = safeJsonEncode(reduxNewState);
+    var str = safeJsonEncode(reduxNewState!);
     buffer.write(str);
   }
 
@@ -71,7 +71,10 @@ String readReduxStates() {
 ///
 ///     debugPrint = overrideDebugPrint;
 ///
-void overrideDebugPrint(String message, {int wrapWidth}) {
+void overrideDebugPrint(String? message, {int? wrapWidth}) {
+  if (message == null) {
+    return;
+  }
   if (!kReleaseMode) {
     int pos = message.indexOf('~');
     var h = '';
@@ -85,7 +88,9 @@ void overrideDebugPrint(String message, {int wrapWidth}) {
     }
     message = '$HEAD$h$END$m';
     print(message);
+    return;
   }
+  debugPrintThrottled(message, wrapWidth: wrapWidth);
 /*
     if (Platform.isIOS) {
       print(message

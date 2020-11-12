@@ -7,19 +7,20 @@ import 'package:libcli/asset.dart' as asset;
 import 'package:flutter/foundation.dart';
 
 class I18nProvider extends AsyncProvider {
-  final String _fileName;
+  final String fileName;
 
-  final String package;
+  final String? package;
 
   Map _translation = {};
 
-  I18nProvider(this._fileName, {this.package});
+  I18nProvider({
+    required this.fileName,
+    this.package,
+  });
 
   @override
   Future<void> load(BuildContext context) async {
-    assert(_fileName != null, 'need page name');
-    assert(currentLocale != null, "please add I18nDelegate to app's localizationsDelegates");
-    _translation = await getTranslation(_fileName, package: package);
+    _translation = await getTranslation(fileName: fileName, package: package);
   }
 
   String translate(String key) {
@@ -28,7 +29,7 @@ class I18nProvider extends AsyncProvider {
       if (kReleaseMode) {
         return key;
       } else {
-        alert('i18n~missing $key in assets/i18n/${_fileName}_${localeID}.json');
+        alert('i18n~missing $key in assets/i18n/${fileName}_${localeID}.json');
         return '!!! $key not found';
       }
     }
@@ -38,10 +39,10 @@ class I18nProvider extends AsyncProvider {
 
 /// getTranslation load translation from assets/i18n
 ///
-Future<Map> getTranslation(String filename, {String package}) async {
-  var localization = {};
-  if (filename != null && filename.isNotEmpty) {
-    localization = await asset.loadMap('i18n/${filename}_${localeID}.json', package: package);
-  }
-  return localization;
+@visibleForTesting
+Future<Map> getTranslation({
+  required String fileName,
+  String? package,
+}) async {
+  return await asset.loadMap(assetName: 'i18n/${fileName}_${localeID}.json', package: package);
 }

@@ -18,18 +18,12 @@ void main() {
     });
 
     test('should determine locale', () async {
-      Locale loc = determineLocale(null);
+      List<Locale> emptyList = [];
+      Locale loc = determineLocale(emptyList);
       expect(localeToId(loc), 'en_US');
       expect(userPreferCountryCode, 'US');
 
-      List<Locale> emptyList = List<Locale>();
-      loc = determineLocale(emptyList);
-      expect(localeToId(loc), 'en_US');
-      expect(userPreferCountryCode, 'US');
-
-      List<Locale> list = List<Locale>();
-      list.add(Locale('zh', 'TW'));
-      list.add(Locale('en', 'CA'));
+      List<Locale> list = [Locale('zh', 'TW'), Locale('en', 'CA')];
       loc = determineLocale(list);
       expect(localeToId(loc), 'zh_TW');
       expect(userPreferCountryCode, 'TW');

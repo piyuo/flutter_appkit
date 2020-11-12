@@ -13,9 +13,9 @@ class Await extends StatefulWidget {
 
   final Widget child;
 
-  final Widget error;
+  final Widget? error;
 
-  final Widget progress;
+  final Widget? progress;
 
   /// Await load provider in list
   ///
@@ -25,7 +25,13 @@ class Await extends StatefulWidget {
   ///
   /// show child view when provider successfully load
   ///
-  Await({Key key, @required this.list, @required this.child, this.progress, this.error}) : super(key: key);
+  Await({
+    Key? key,
+    required this.list,
+    required this.child,
+    this.progress,
+    this.error,
+  }) : super(key: key);
 
   @override
   _AwaitState createState() => _AwaitState();
@@ -59,10 +65,10 @@ class _AwaitState extends State<Await> {
   ///errorReports return every provider's error report
   ///
   List<log.ErrorReport> errorReports() {
-    var list = List<log.ErrorReport>();
+    List<log.ErrorReport> list = [];
     for (var p in widget.list) {
       if (p.errorReport != null) {
-        list.add(p.errorReport);
+        list.add(p.errorReport!);
       }
     }
     return list;
@@ -86,8 +92,12 @@ class _AwaitState extends State<Await> {
             provider.notifyListeners();
           }).catchError((e, s) async {
             log.error(_here, e, s);
-            var errorID = await log.sendAnalytic();
-            provider.errorReport = log.ErrorReport(errorID, e, s);
+            var errorID = await log.sendAnalytic(context);
+            provider.errorReport = log.ErrorReport(
+              analyticID: errorID,
+              exception: e,
+              stackTrace: log.beautyStack(s),
+            );
             provider.asyncStatus = AsyncStatus.error;
             provider.notifyListeners();
           });
@@ -105,7 +115,7 @@ class _AwaitState extends State<Await> {
         return widget.child;
       case AsyncStatus.error:
         return widget.error != null
-            ? widget.error
+            ? widget.error!
             : AwaitErrorMessage(
                 onEmailLinkPressed: () {
                   eventbus.contract(
@@ -115,7 +125,7 @@ class _AwaitState extends State<Await> {
                 },
                 onRetryPressed: () => reload(context));
       default:
-        return widget.progress != null ? widget.progress : AwaitProgressIndicator();
+        return widget.progress != null ? widget.progress! : AwaitProgressIndicator();
     }
   }
 }

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 ///     String url = routeToStr(settings);
 ///
 String routeToStr(RouteSettings settings) {
-  Uri uri = Uri(path: settings.name, queryParameters: settings.arguments);
+  Map<String, dynamic> map = settings.arguments as Map<String, dynamic>;
+  Uri uri = Uri(path: settings.name, queryParameters: map);
   return uri.toString();
 }
 

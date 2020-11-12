@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/redux.dart';
 import 'package:flutter/material.dart';
+import 'package:mockito/mockito.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
   setUp(() async {});
@@ -9,13 +12,13 @@ void main() {
     test('should dispatch and return true because state change', () async {
       Redux redux = Redux(reducer, {'value': 0});
       expect(redux.state['value'], 0);
-      await redux.dispatch(null, Increment(1));
+      await redux.dispatch(MockBuildContext(), Increment(1));
       expect(redux.state['value'], 1);
     });
 
     test('should return false cause state not change', () async {
       Redux redux = Redux(reducer, {'value': 0});
-      await redux.dispatch(null, DoNothing());
+      await redux.dispatch(MockBuildContext(), DoNothing());
       expect(redux.state['value'], 0);
     });
 
@@ -24,7 +27,7 @@ void main() {
         'value': 0,
         'child': {'text': 'hi'}
       });
-      await redux.dispatch(null, Change());
+      await redux.dispatch(MockBuildContext(), Change());
       expect(redux.state['value'], 2);
     });
   });

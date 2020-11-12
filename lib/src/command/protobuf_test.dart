@@ -17,7 +17,7 @@ void main() {
       EchoAction echoAction = EchoAction();
       echoAction.text = 'hi';
       List<int> bytes = command.encode(echoAction);
-      EchoAction decodeAction = command.decode(bytes, service);
+      EchoAction decodeAction = command.decode(bytes, service) as EchoAction;
       expect(decodeAction.text, 'hi');
     });
 
@@ -26,12 +26,7 @@ void main() {
       echoAction.text = 'hi';
       List<int> bytes = command.encode(echoAction);
       bytes[bytes.length - 1] = 255;
-      try {
-        command.decode(bytes, service);
-        expect(1, 0); // this line should not be execute
-      } on Exception catch (e) {
-        expect(e != null, true);
-      }
+      expect(() => command.decode(bytes, service), throwsException);
     });
   });
 }

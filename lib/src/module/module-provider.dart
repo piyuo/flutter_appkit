@@ -10,19 +10,15 @@ import 'package:flutter/cupertino.dart';
 class ModuleProvider extends ChangeNotifier {
   /// redux instance
   ///
-  Redux redux;
+  final Redux redux;
 
-  Map services;
+  final Map services;
 
   ModuleProvider({
-    @required Reducer reducer,
-    @required Map state,
-    this.services,
+    required this.redux,
+    required this.services,
   }) {
-    assert(reducer != null, 'reducer must no be null');
-    assert(state != null, 'state must no be null');
-    redux = Redux(reducer, state);
-    reduxStates.add(state);
+    reduxStates.add(redux.state);
   }
 
   /// dispose remove  redux instances list
@@ -43,14 +39,14 @@ class ModuleProvider extends ChangeNotifier {
   ///
   ///     provider.dispatch(context,Increment(1));
   ///
-  Future<void> dispatch(BuildContext ctx, dynamic action) async {
-    await redux.dispatch(ctx, action);
+  Future<void> dispatch(BuildContext context, dynamic action) async {
+    await redux.dispatch(context, action);
   }
 }
 
 void switchView(BuildContext context, Widget widget) {
   final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
-  Navigator.of(context).push(CupertinoPageRoute(
+  Navigator.of(context)!.push(CupertinoPageRoute(
     builder: (ctx) => Provider.value(
       value: moduleProvider,
       builder: (context, child) => widget,

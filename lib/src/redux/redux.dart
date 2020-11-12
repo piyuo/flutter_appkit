@@ -10,7 +10,7 @@ typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
 
 Map from(Map state) {
   reduxNewState = Map.from(state);
-  return reduxNewState;
+  return reduxNewState!;
 }
 
 /// Redux implements redux pattern
@@ -28,7 +28,7 @@ class Redux {
   ///
   ///     Redux redux = Redux(reducer, {'value':1});
   ///
-  Redux(this._reducer, this._state) {}
+  Redux(this._reducer, this._state);
 
   /// state get current state
   ///
@@ -38,8 +38,7 @@ class Redux {
   ///
   ///     await redux.dispatch(context, Increment(1));
   ///
-  void dispatch(BuildContext context, dynamic action) async {
-    assert(_reducer != null, '${runtimeType} must set reducer before use');
+  Future<void> dispatch(BuildContext context, dynamic action) async {
     if (!kReleaseMode) {
       var newState = await _reducer(context, state, action);
       var payload = toString(action);
@@ -49,13 +48,11 @@ class Redux {
       } else {
         debugPrint('$_here~${action.runtimeType}{$payload}$RED state not change');
       }
-      assert(newState != null, 'state can not be null');
       _state = newState;
       reduxNewState = null;
       return;
     }
     var newState = await _reducer(context, state, action);
-    assert(newState != null, 'state can not be null');
     _state = newState;
     reduxNewState = null;
     return;

@@ -19,7 +19,7 @@ void main() {
   setUp(() async {
     contract = null;
     event = null;
-    eventbus.reset();
+    eventbus.clearListeners();
     eventbus.listen(_here, (_, e) {
       if (e is eventbus.Contract) {
         contract = e;
@@ -34,8 +34,7 @@ void main() {
   });
 
   group('[command-http-error]', () {
-    testWidgets('should throw exception when something wrong in request()',
-        (WidgetTester tester) async {
+    testWidgets('should throw exception when something wrong in request()', (WidgetTester tester) async {
       var req = newRequest(MockClient((request) async {
         throw Exception('mock');
       }));
@@ -49,13 +48,12 @@ void main() {
       });
     });
 
-    testWidgets('should use custom onError when error happen',
-        (WidgetTester tester) async {
+    testWidgets('should use custom onError when error happen', (WidgetTester tester) async {
       var req = newRequest(MockClient((request) async {
         throw Exception('mock');
       }));
       var onErrorCalled = false;
-      req.errorHandler = () {
+      req.errorHandler = (_) {
         onErrorCalled = true;
       };
 
@@ -68,8 +66,7 @@ void main() {
       });
     });
 
-    testWidgets('should use onError when client timeout',
-        (WidgetTester tester) async {
+    testWidgets('should use onError when client timeout', (WidgetTester tester) async {
       await tester.runAsync(() async {
         var client = MockClient((request) async {
           await Future.delayed(const Duration(milliseconds: 2));
@@ -77,7 +74,7 @@ void main() {
         });
         var req = newRequest(client);
         var onErrorCalled = false;
-        req.errorHandler = () {
+        req.errorHandler = (_) {
           onErrorCalled = true;
         };
 
@@ -94,12 +91,12 @@ void main() {
 }
 
 command.Request newRequest(MockClient client) {
-  var req = command.Request();
-  req.client = client;
-  req.bytes = Uint8List(2);
-  req.url = 'http://mock';
-  req.timeout = 9000;
-  return req;
+  return command.Request(
+    client: client,
+    bytes: Uint8List(2),
+    url: 'http://mock',
+    timeout: 9000,
+  );
 }
 
 MockClient socketMock() {
