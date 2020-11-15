@@ -13,10 +13,6 @@
  *     print(m.simpleSuggest()); //will return empty string
  */
 class MailChecker {
-  String emailStr;
-
-  int _threshold;
-
   /// The default list of domains to match against. Modify, if needed, after creating a `MailCheck` object, and before calling [suggest()] or [simpleSuggest()].
   List<String> domains = [
     "yahoo.com",
@@ -56,30 +52,24 @@ class MailChecker {
   ];
 
   /// The default list of TLDs. Modify, if needed, after creating a `MailChecker` object, and before calling [suggest()] or [simpleSuggest()].
-  List<String> topLevelDomains = [
-    "co.uk",
-    "com",
-    "net",
-    "org",
-    "info",
-    "edu",
-    "gov",
-    "mil"
-  ];
+  List<String> topLevelDomains = ["co.uk", "com", "net", "org", "info", "edu", "gov", "mil"];
+  final String email;
+
+  final int threshold;
 
   /**
    * Parameter String [email] is the email address you want to check
    *
    * Optional int [threshold] to adjust the threshold - minimum distance to assume match. It is suggested you leave [threshold] at the default value.
    */
-  MailChecker(String email, [int threshold = 3]) {
-    emailStr = email;
-    _threshold = threshold;
-  }
+  MailChecker({
+    required this.email,
+    this.threshold = 3,
+  });
 
-  MailCheckerEmail _splitEmail() {
+  MailCheckerEmail? _splitEmail() {
     //Creates a MailCheckerEmail object from this.emailStr
-    List<String> parts = emailStr.split("@");
+    List<String> parts = email.split("@");
     if (parts.length < 2) //Invalid email
       return null;
     for (String i in parts) //Also invalid..
@@ -100,8 +90,7 @@ class MailChecker {
         tld += domainParts[i] + '.';
       }
       if (domainParts.length >= 2) {
-        tld = tld.substring(
-            0, tld.length - 1); //remove '.' in, for example, 'com.'
+        tld = tld.substring(0, tld.length - 1); //remove '.' in, for example, 'com.'
       }
     }
 
@@ -121,7 +110,7 @@ class MailChecker {
    *
    */
   String simpleSuggest() {
-    MailCheckerSuggestion s = suggest();
+    MailCheckerSuggestion? s = suggest();
     if (s == null) return "";
     return s.full;
   }
@@ -141,39 +130,33 @@ class MailChecker {
    *
    * * [full]: the full suggestion, ie: if user supplies `me@hotwail.com`, full suggestion would be `me@hotmail.com`
    */
-  MailCheckerSuggestion suggest() {
-    MailCheckerEmail emailParts = _splitEmail();
+  MailCheckerSuggestion? suggest() {
+    MailCheckerEmail? emailParts = _splitEmail();
     if (emailParts != null) {
-      String closestDomain = _findClosestDomain(emailParts.domain, domains);
+      String? closestDomain = _findClosestDomain(emailParts.domain, domains);
       if (closestDomain != null) {
         if (closestDomain != emailParts.domain) //we have a close match
-          return new MailCheckerSuggestion(emailParts.address, closestDomain,
-              emailParts.address + "@" + closestDomain);
+          return new MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
       } else {
         //not a close match...mis-spell tld?
-        String closestTopLevelDomain =
-            _findClosestDomain(emailParts.topLevelDomain, topLevelDomains);
-        if (closestTopLevelDomain != null &&
-            closestTopLevelDomain != emailParts.topLevelDomain) {
+        String? closestTopLevelDomain = _findClosestDomain(emailParts.topLevelDomain, topLevelDomains);
+        if (closestTopLevelDomain != null && closestTopLevelDomain != emailParts.topLevelDomain) {
           //May be mis-spelled TLD
           String domain = emailParts.domain;
-          closestDomain = domain.substring(
-                  0, domain.lastIndexOf(emailParts.topLevelDomain)) +
-              closestTopLevelDomain;
-          return new MailCheckerSuggestion(emailParts.address, closestDomain,
-              emailParts.address + "@" + closestDomain);
+          closestDomain = domain.substring(0, domain.lastIndexOf(emailParts.topLevelDomain)) + closestTopLevelDomain;
+          return new MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
         }
       }
     }
     return null; //Cannot find a suggestion
   }
 
-  String _findClosestDomain(String domain, List<String> domains) {
+  String? _findClosestDomain(String domain, List<String> domains) {
     //Attempts to find closest domain such as gmail.com
     //If it cannot, it will return null
     double dist = 0.0;
     double minDist = 99.0;
-    String closestDomain = null;
+    String? closestDomain = null;
     for (int i = 0; i < domains.length; i++) {
       if (domain == domains[i]) //found exact match
         return domain;
@@ -184,13 +167,13 @@ class MailChecker {
       }
     }
 
-    if (minDist <= _threshold && closestDomain != null)
+    if (minDist <= threshold && closestDomain != null)
       return closestDomain;
     else
       return null;
   }
 
-  double _sift3Distance(String s1, String s2) {
+  double _sift3Distance(String? s1, String? s2) {
     //Sift3 Distance method
     // Uses sift3: http://siderite.blogspot.com/2007/04/super-fast-and-accurate-string-distance.html
     if (s1 == null || s1.length == 0) {

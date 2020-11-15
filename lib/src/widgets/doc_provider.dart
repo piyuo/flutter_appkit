@@ -6,14 +6,16 @@ import 'package:libcli/asset.dart' as asset;
 class DocProvider extends AsyncProvider {
   final String docName;
 
-  String md;
+  String md = '';
 
-  DocProvider(this.docName);
+  DocProvider(
+    final this.docName,
+  );
 
   @override
   Future<void> load(BuildContext context) async {
     md = await asset.loadString(
-      'docs/${docName}_${localeID}.md',
+      assetName: 'docs/${docName}_${localeID}.md',
     );
   }
 }

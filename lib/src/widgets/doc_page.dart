@@ -9,7 +9,7 @@ import 'package:libcli/src/widgets/doc_provider.dart';
 class DocPage extends ViewWidget<DocProvider> {
   final String docName;
 
-  DocPage(this.docName) : super('');
+  DocPage(this.docName) : super(i18nFilename: '');
 
   @protected
   createProvider(BuildContext context) => DocProvider(docName);

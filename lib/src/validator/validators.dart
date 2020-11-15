@@ -1,14 +1,14 @@
 import 'dart:core';
 import 'package:libcli/i18n.dart';
 
-/// requiredValidator validate input string, return error message when input is empty, other return null
+/// requiredValidator validate input string, return error message when input is empty, return empty is no error
 ///
 ///  use title to set error message title
 ///
-///     String error = requiredValidator(nameField.value,''title);
+///     String error = requiredValidator(nameField.value,title);
 ///
 String requiredValidator(String input, String title) {
-  return input.length > 0 ? null : 'required'.i18n_.replaceAll('%1', title);
+  return input.length > 0 ? '' : 'required'.i18n_.replaceAll('%1', title);
 }
 
 /// regexpValidator validate input string using regex, return error message when input not valid, other return null
@@ -24,9 +24,7 @@ String regexpValidator(
   String title,
   String example,
 ) {
-  return regexp.hasMatch(input)
-      ? null
-      : 'valid'.i18n_.replaceAll('%1', title).replaceAll('%2', example);
+  return regexp.hasMatch(input) ? '' : 'valid'.i18n_.replaceAll('%1', title).replaceAll('%2', example);
 }
 
 /// emailRegexp regexp use to validate email
@@ -54,8 +52,7 @@ String emailValidator(String input) {
 /// domainNameRegexp regexp use to validate domain name
 ///
 RegExp domainNameRegexp() {
-  return RegExp(
-      r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]");
+  return RegExp(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]");
 }
 
 /// domainNameValidator validate input string is domain name, return error message when input not valid, other return null

@@ -7,26 +7,24 @@
 
 import 'dart:core' as $core;
 import 'package:libcli/command.dart' as command;
+import 'package:libpb/pb.dart';
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class StringResponse extends command.ProtoObject {
+class StringResponse extends ProtoObject {
   $core.int mapIdXXX() {
     return 1002;
   }
 
-  static final $pb.BuilderInfo _i =
-      $pb.BuilderInfo('StringResponse', createEmptyInstance: create)
-        ..aOS(1, 'text')
-        ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('StringResponse', createEmptyInstance: create)
+    ..aOS(1, 'text')
+    ..hasRequiredFields = false;
 
   StringResponse._() : super();
   factory StringResponse() => create();
-  factory StringResponse.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory StringResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory StringResponse.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory StringResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   StringResponse clone() => StringResponse()..mergeFromMessage(this);
   StringResponse copyWith(void Function(StringResponse) updates) =>
@@ -35,8 +33,7 @@ class StringResponse extends command.ProtoObject {
   @$core.pragma('dart2js:noInline')
   static StringResponse create() => StringResponse._();
   StringResponse createEmptyInstance() => create();
-  static $pb.PbList<StringResponse> createRepeated() =>
-      $pb.PbList<StringResponse>();
+  static $pb.PbList<StringResponse> createRepeated() => $pb.PbList<StringResponse>();
   static StringResponse getDefault() => _defaultInstance ??= create()..freeze();
   static StringResponse _defaultInstance;
 

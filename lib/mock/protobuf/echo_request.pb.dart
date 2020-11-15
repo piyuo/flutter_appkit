@@ -10,29 +10,26 @@ import 'package:libcli/command.dart' as command;
 
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
+import 'package:libpb/pb.dart';
 
-class EchoAction extends command.ProtoObject {
+class EchoAction extends ProtoObject {
   $core.int mapIdXXX() {
     return 9001;
   }
 
-  static final $pb.BuilderInfo _i =
-      $pb.BuilderInfo('EchoAction', createEmptyInstance: create)
-        ..aOS(1, 'text')
-        ..a<Int64>(2, 'like64', $pb.PbFieldType.OU6, defaultOrMaker: Int64.ZERO)
-        ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('EchoAction', createEmptyInstance: create)
+    ..aOS(1, 'text')
+    ..a<Int64>(2, 'like64', $pb.PbFieldType.OU6, defaultOrMaker: Int64.ZERO)
+    ..hasRequiredFields = false;
 
   EchoAction._() : super();
   factory EchoAction() => create();
-  factory EchoAction.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EchoAction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory EchoAction.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+  factory EchoAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   EchoAction clone() => EchoAction()..mergeFromMessage(this);
-  EchoAction copyWith(void Function(EchoAction) updates) =>
-      super.copyWith((message) => updates(message as EchoAction));
+  EchoAction copyWith(void Function(EchoAction) updates) => super.copyWith((message) => updates(message as EchoAction));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static EchoAction create() => EchoAction._();

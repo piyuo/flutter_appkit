@@ -115,16 +115,16 @@ setString(String key, String value) async {
   }
 }
 
-/// getDateTime return datetime value from prefences
+/// getDateTime return datetime value from prefences. return 1970/01/01 Epoch if not exist
 ///
 ///     var result = await data.getString('k');
 ///
 Future<DateTime> getDateTime(String key) async {
   var value = await getString(key);
-  if (value != null && value.length > 0) {
+  if (value.length > 0) {
     return DateTime.parse(value);
   }
-  return null;
+  return DateTime.fromMicrosecondsSinceEpoch(0);
 }
 
 /// setDateTime set datatime value to preference, If [value] is null, this is equivalent to calling [remove()] on the [key].
@@ -133,12 +133,9 @@ Future<DateTime> getDateTime(String key) async {
 ///
 setDateTime(String key, DateTime value) async {
   assert(key.length > 0);
-  String formatted = null;
-  if (value != null) {
-    //var formatter = new DateFormat('yyyy-MM-dd HH:mm');
-    //formatter.format(value);
-    formatted = value.toString().substring(0, 16);
-  }
+  //var formatter = new DateFormat('yyyy-MM-dd HH:mm');
+  //formatter.format(value);
+  String formatted = value.toString().substring(0, 16);
   return await setString(key, formatted);
 }
 

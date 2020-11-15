@@ -10,6 +10,9 @@ environment:
 dependencies:
     flutter:
         sdk: flutter
+    libpb:
+        git:
+            url: git@github.com:piyuo/libpb.git
     http: ^0.12.1
     protobuf: ^1.1.0
     shared_preferences: ^0.5.7+3

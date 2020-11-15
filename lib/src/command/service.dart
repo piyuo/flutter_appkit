@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/command.dart';
+import 'package:libpb/pb.dart';
 
 const _here = 'command';
 

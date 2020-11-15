@@ -5,10 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart';
 import '../../mock/mock.dart';
-import '../../mock/protobuf/sys_service.pb.dart';
+import '../../mock/protobuf/mock_service.pb.dart';
 import '../../mock/protobuf/string_response.pbserver.dart';
 import '../../mock/protobuf/echo_request.pbserver.dart';
 import 'package:libcli/app.dart' as config;
+import 'package:libpb/pb.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ void main() {
       });
 
       await tester.inWidget((ctx) async {
-        SysService service = SysService();
+        MockService service = MockService();
         var response = await service.executeWithClient(ctx, EchoAction()..text = 'hello', client);
         if (response is StringResponse) {
           expect(response, isNotNull);
@@ -48,7 +49,7 @@ void main() {
       });
 
       await tester.inWidget((ctx) async {
-        SysService service = SysService();
+        MockService service = MockService();
         var response = await service.executeWithClient(ctx, EchoAction(), client);
         expect(response, isNull);
       });
@@ -56,7 +57,7 @@ void main() {
 
     test('should return null when send wrong action to test server', () async {
       config.branch = config.BRANCH_MASTER;
-      SysService service = SysService();
+      MockService service = MockService();
       EchoAction action = new EchoAction();
       var response = await service.execute(MockBuildContext(), action);
       expect(response, null);
@@ -94,7 +95,7 @@ void main() {
 
       EchoAction action = new EchoAction();
       var response = await service.execute(MockBuildContext(), action);
-      if (response is command.Err) {
+      if (response is PbError) {
         expect(response.code, isEmpty);
       } else {
         expect(1, 0);

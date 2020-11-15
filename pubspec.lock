@@ -212,6 +212,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3-nullsafety.2"
+  libpb:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: ef00cea2fa398c9b7fd8f5cc9edc5670fc2ca998
+      url: "git@github.com:piyuo/libpb.git"
+    source: git
+    version: "0.0.16"
   logging:
     dependency: transitive
     description:
@@ -531,7 +540,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.3"
+    version: "1.7.4"
   xdg_directories:
     dependency: transitive
     description:

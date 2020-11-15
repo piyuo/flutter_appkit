@@ -2,11 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/preference.dart' as preference;
-import 'package:libcli/command.dart';
-import 'package:libcli/commands/shared/err.pb.dart';
-import 'package:libcli/commands/shared/text.pb.dart' as sharedText;
-import 'package:libcli/commands/shared/num.pb.dart';
-import 'package:libcli/commands/shared/bool.pb.dart';
+import 'package:libpb/pb.dart';
 
 /// OK is empty string which is mean empty error is OK
 ///
@@ -15,19 +11,19 @@ const OK = '';
 /// isOK check if response is Err object and error code is empty
 ///
 bool isOK(dynamic response) {
-  return response is Err && response.code.isEmpty;
+  return response is PbError && response.code.isEmpty;
 }
 
 /// ok return Err with OK
 ///
-Err ok() {
-  return Err()..code = OK;
+PbError ok() {
+  return PbError()..code = OK;
 }
 
 /// error return Err with error code
 ///
-Err error(String errorCode) {
-  return Err()..code = errorCode;
+PbError error(String errorCode) {
+  return PbError()..code = errorCode;
 }
 
 /// setErrState set state['err'], null if response is null, '' if response is not null,'error code' if response is err code
@@ -38,27 +34,27 @@ void setErrState(Map state, ProtoObject? response) {
     return;
   }
   state['err'] = '';
-  if (response is Err) {
+  if (response is PbError) {
     state['err'] = response.code;
   }
 }
 
-/// text return shared text object
+/// newPbString return shared text object
 ///
-sharedText.Text text(String value) {
-  return sharedText.Text()..value = value;
+PbString newPbString(String value) {
+  return PbString()..value = value;
+}
+
+/// newPbInt return shared number object
+///
+PbInt newPbInt(int value) {
+  return PbInt()..value = value;
 }
 
 /// number return shared number object
 ///
-Num number(int value) {
-  return Num()..value = value;
-}
-
-/// number return shared number object
-///
-Bool boolean(bool value) {
-  return Bool()..value = value;
+PbBool newPbBool(bool value) {
+  return PbBool()..value = value;
 }
 
 /// mockCommand Initializes the value for testing

@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'package:libcli/command.dart';
-
-final _sharedService = SharedService();
+import 'package:libpb/pb.dart';
 
 /// encode protobuf object into bytes
 ///
@@ -30,7 +29,7 @@ ProtoObject decode(List<int> bytes, Service service) {
 
   ProtoObject obj;
   if (id <= 1000) {
-    obj = _sharedService.newObjectByID(id, protoBytes);
+    obj = sharedObjectByID(id, protoBytes);
   } else {
     obj = service.newObjectByID(id, protoBytes);
   }

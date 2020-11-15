@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/command.dart';
+import 'package:libpb/pb.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
