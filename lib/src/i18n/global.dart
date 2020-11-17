@@ -1,9 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart';
-import 'package:flutter/material.dart';
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
-
-const _here = 'i18n-global';
 
 /// _global global translation
 ///
@@ -14,7 +10,7 @@ var _global = {};
 String globalTranslate(String key) {
   var value = _global[key];
   if (value == null) {
-    alert('i18n~missing $key in global');
+    log('${COLOR_ALERT}missing $key in i18n global');
     return '!!! $key not found';
   }
   return value;
@@ -35,7 +31,7 @@ Future<void> reloadGlobalTranslation(String languageCode, String countryCode) as
       _en_US();
       break;
   }
-  debugPrint('$_here~globalTranslation=${i18n.localeID}');
+  log('globalTranslation=${i18n.localeID}');
 }
 
 void _en_US() {

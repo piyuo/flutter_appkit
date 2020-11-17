@@ -7,8 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart' as command;
 import '../../mock/mock.dart';
-
-const _here = 'command_http_exception_test';
+import 'package:libcli/src/command/mock-service_test.dart';
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
@@ -20,7 +19,7 @@ void main() {
     contract = null;
     event = null;
     eventbus.clearListeners();
-    eventbus.listen(_here, (_, e) {
+    eventbus.listen((_, e) {
       if (e is eventbus.Contract) {
         contract = e;
       } else {
@@ -28,7 +27,7 @@ void main() {
       }
     });
 
-    eventbus.listen<eventbus.Contract>(_here, (_, e) {
+    eventbus.listen<eventbus.Contract>((_, e) {
       e.complete(true);
     });
   });
@@ -48,21 +47,19 @@ void main() {
       });
     });
 
-    testWidgets('should use custom onError when error happen', (WidgetTester tester) async {
+    testWidgets('should throw exception when error happen', (WidgetTester tester) async {
       var req = newRequest(MockClient((request) async {
         throw Exception('mock');
       }));
-      var onErrorCalled = false;
-      req.errorHandler = (_) {
-        onErrorCalled = true;
-      };
 
       await tester.inWidget((ctx) async {
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes, null);
-        expect(event, null);
-        expect(contract, null);
-        expect(onErrorCalled, true);
+        expect(() async => await command.doPost(ctx, req), throwsException);
+
+//        var bytes = ;
+        //      expect(bytes, null);
+        //    expect(event, null);
+        //  expect(contract, null);
+        //expect(onErrorCalled, true);
       });
     });
 
@@ -73,17 +70,15 @@ void main() {
           return http.Response('hi', 200);
         });
         var req = newRequest(client);
-        var onErrorCalled = false;
-        req.errorHandler = (_) {
-          onErrorCalled = true;
-        };
 
         await tester.inWidget((ctx) async {
           req.timeout = 1;
-          var bytes = await command.doPost(ctx, req);
-          expect(bytes, null);
-          expect(event, null);
-          expect(onErrorCalled, true);
+          expect(() async => await command.doPost(ctx, req), throwsException);
+
+//          var bytes = await command.doPost(ctx, req);
+          //        expect(bytes, null);
+          //      expect(event, null);
+          //    expect(onErrorCalled, true);
         });
       });
     });
@@ -92,6 +87,7 @@ void main() {
 
 command.Request newRequest(MockClient client) {
   return command.Request(
+    service: MockService(),
     client: client,
     bytes: Uint8List(2),
     url: 'http://mock',

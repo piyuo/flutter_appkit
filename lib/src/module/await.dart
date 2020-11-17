@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/module.dart';
-
-const _here = 'await';
 
 /// Await load provider in list
 ///
@@ -62,25 +60,12 @@ class _AwaitState extends State<Await> {
     return AsyncStatus.ready;
   }
 
-  ///errorReports return every provider's error report
-  ///
-  List<log.ErrorReport> errorReports() {
-    List<log.ErrorReport> list = [];
-    for (var p in widget.list) {
-      if (p.errorReport != null) {
-        list.add(p.errorReport!);
-      }
-    }
-    return list;
-  }
-
   /// reload provider in list, but skip ready provider
   ///
   void reload(BuildContext context) {
     widget.list.forEach((provider) {
-      provider.errorReport = null;
       if (provider.asyncStatus == AsyncStatus.error) {
-        debugPrint('$_here~reload ${provider.runtimeType}');
+        log('reload ${provider.runtimeType}');
         provider.asyncStatus = AsyncStatus.none;
       }
 
@@ -91,13 +76,7 @@ class _AwaitState extends State<Await> {
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
           }).catchError((e, s) async {
-            log.error(_here, e, s);
-            var errorID = await log.sendAnalytic(context);
-            provider.errorReport = log.ErrorReport(
-              analyticID: errorID,
-              exception: e,
-              stackTrace: log.beautyStack(s),
-            );
+            error(e, s);
             provider.asyncStatus = AsyncStatus.error;
             provider.notifyListeners();
           });
@@ -120,7 +99,7 @@ class _AwaitState extends State<Await> {
                 onEmailLinkPressed: () {
                   eventbus.contract(
                     context,
-                    eventbus.EmailSupportContract(errorReports()),
+                    eventbus.EmailSupportContract(),
                   );
                 },
                 onRetryPressed: () => reload(context));

@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
-
-const _here = 'configuration';
+import 'package:libcli/log.dart';
 
 /// BRANCH_MASTER is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 ///
@@ -35,6 +33,6 @@ String supportEmail = 'support@piyuo.com';
 String _userID = '';
 String get userID => _userID;
 set userID(String value) {
-  debugPrint('$_here~set userID=$value');
+  log('${COLOR_STATE}set userID=$value');
   _userID = value;
 }

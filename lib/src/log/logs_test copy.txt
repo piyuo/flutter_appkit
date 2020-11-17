@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
-import 'package:libcli/src/log/analytic.dart';
+import 'package:libcli/src/log/logs.dart';
 
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart';
@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 class MockBuildContext extends Mock implements BuildContext {}
 
-const _here = 'analytic_test';
 
 void main() {
   setUp(() async {
@@ -32,7 +31,7 @@ void main() {
       // ignore: invalid_use_of_visible_for_testing_member
       var curr = current();
       expect(curr.logs.length, 0);
-      warning('$_here~mock warning');
+      warning('mock warning');
       expect(curr.logs.length, 1);
       config.branch = config.BRANCH_MASTER;
       var id = await sendAnalytic(MockBuildContext());
@@ -48,7 +47,7 @@ void main() {
       try {
         throw Exception('test error');
       } catch (e, s) {
-        error(_here, e, s);
+        error( e, s);
       }
       expect(curr.errors.length, 1);
       var result = await sendAnalytic(MockBuildContext());

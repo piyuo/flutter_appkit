@@ -1,24 +1,22 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command.dart' as command;
-import 'package:libcli/log.dart';
-import '../../mock/mock.dart';
-import '../../mock/protobuf/mock_service.pb.dart';
-import '../../mock/protobuf/string_response.pbserver.dart';
-import '../../mock/protobuf/echo_request.pbserver.dart';
 import 'package:libcli/app.dart' as config;
 import 'package:libpb/pb.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/src/command/mock-service_test.dart' as mockServiceTest;
+import '../../mock/mock.dart';
+import '../../mock/protobuf/mock_service.pb.dart';
+import '../../mock/protobuf/string_response.pbserver.dart';
+import '../../mock/protobuf/echo_request.pbserver.dart';
 
 class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
   command.mockCommand();
-  debugPrint = overrideDebugPrint;
 
   setUp(() {});
 
@@ -64,9 +62,10 @@ void main() {
     });
 
     test('should mock execute', () async {
-      var service = command.MockService((ctx, action) async {
-        return StringResponse()..text = 'hi';
-      });
+      var service = mockServiceTest.MockService()
+        ..mockExecute = (ctx, action) async {
+          return StringResponse()..text = 'hi';
+        };
 
       EchoAction action = new EchoAction();
       var response = await service.execute(MockBuildContext(), action);
@@ -78,9 +77,10 @@ void main() {
     });
 
     test('should execute set state', () async {
-      var service = command.MockService((ctx, action) async {
-        return StringResponse()..text = 'hi';
-      });
+      var service = mockServiceTest.MockService()
+        ..mockExecute = (ctx, action) async {
+          return StringResponse()..text = 'hi';
+        };
 
       EchoAction action = new EchoAction();
       Map state = Map();
@@ -89,9 +89,10 @@ void main() {
     });
 
     test('should use shared object', () async {
-      command.MockService service = command.MockService((_, action) async {
-        return command.ok();
-      });
+      var service = mockServiceTest.MockService()
+        ..mockExecute = (ctx, action) async {
+          return StringResponse()..text = 'hi';
+        };
 
       EchoAction action = new EchoAction();
       var response = await service.execute(MockBuildContext(), action);
@@ -103,9 +104,7 @@ void main() {
     });
 
     test('debugPort should return local test url', () async {
-      command.MockService service = command.MockService((_, action) async {
-        return command.ok();
-      });
+      mockServiceTest.MockService service = mockServiceTest.MockService();
       service.debugPort = 3001;
       expect(service.url, 'http://localhost:3001');
     });

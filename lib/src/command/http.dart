@@ -3,58 +3,58 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http-header.dart';
-
-const _here = 'command_http';
+import 'package:libcli/src/command/protobuf.dart';
+import 'package:libcli/src/command/service.dart';
+import 'package:libpb/pb.dart' as pb;
 
 ///Request for reuest(),let test more easily
 class Request {
+  Service service;
   http.Client client;
   String url;
   Uint8List bytes;
   int timeout;
   Future<bool> Function()? isInternetConnected;
   Future<bool> Function()? isGoogleCloudFunctionAvailable;
-  void Function(dynamic error)? errorHandler;
   Request({
+    required this.service,
     required this.client,
     required this.url,
     required this.bytes,
     required this.timeout,
     this.isInternetConnected,
     this.isGoogleCloudFunctionAvailable,
-    this.errorHandler,
   });
 }
 
-/// post call request() and broadcast network slow if request time is longer than slow
+/// post call doPost() and broadcast network slow if request time is longer than slow
 ///
-///     await commandHttp.postclient, '', bytes, 500, 1);
-///     expect(listener.latestEvent is contract.EventNetworkSlow, true);
-Future<List<int>?> post(
+Future<pb.ProtoObject> post(
   BuildContext ctx,
+  Service service,
   http.Client client,
   String url,
-  Uint8List bytes,
+  pb.ProtoObject obj,
   int timeout,
   int slow,
-  void Function(dynamic error)? errorHandler,
 ) async {
-  Completer<List<int>> completer = new Completer<List<int>>();
+  Completer<pb.ProtoObject> completer = new Completer<pb.ProtoObject>();
   var timer = Timer(Duration(milliseconds: slow), () {
-    if (!completer.isCompleted && errorHandler == null) {
+    if (!completer.isCompleted) {
       eventbus.broadcast(ctx, SlowNetworkEvent());
     }
   });
+  Uint8List bytes = encode(obj);
   Request req = Request(
+    service: service,
     client: client,
     url: url,
     bytes: bytes,
     timeout: timeout,
-    errorHandler: errorHandler,
   );
   doPost(ctx, req).then((response) {
     timer.cancel();
@@ -73,22 +73,18 @@ Future<List<int>?> post(
 ///     req.timeout = 9000;
 ///     var bytes = await commandHttp.doPost(req);
 ///
-Future<List<int>?> doPost(BuildContext context, Request r) async {
+Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
   try {
     var headers = await doRequestHeaders();
     var resp = await r.client.post(r.url, headers: headers, body: r.bytes).timeout(Duration(milliseconds: r.timeout));
     await doResponseHeaders(resp.headers);
 
     if (resp.statusCode == 200) {
-      return resp.bodyBytes;
-    }
-
-    if (emmitError(r, resp.statusCode)) {
-      return null;
+      return decode(resp.bodyBytes, r.service);
     }
 
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
-    log.warning('$_here~caught $msg');
+    log('${COLOR_WARNING}caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
         return giveup(context, InternalServerErrorEvent()); //body is err id
@@ -108,21 +104,18 @@ Future<List<int>?> doPost(BuildContext context, Request r) async {
         return await retry(
           context,
           contract: CAccessTokenRequired(),
-          fail: ERefuseSignin(),
           request: r,
         );
       case 412: //access token expired
         return await retry(
           context,
           contract: CAccessTokenExpired(),
-          fail: ERefuseSignin(),
           request: r,
         );
       case 402: //payment token expired
         return await retry(
           context,
           contract: CPaymentTokenRequired(),
-          fail: ERefuseSignin(),
           request: r,
         );
       case 400: //bad request
@@ -131,39 +124,21 @@ Future<List<int>?> doPost(BuildContext context, Request r) async {
     //unknow status code
     throw Exception('unknown status ' + msg);
   } on SocketException catch (e) {
-    if (emmitError(r, e)) {
-      return null;
-    }
-    log.warning('$_here~failed to connect ${r.url} cause $e');
+    log('${COLOR_WARNING}failed to connect ${r.url} cause $e');
     return await retry(context, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
   } on TimeoutException catch (e) {
-    if (emmitError(r, e)) {
-      return null;
-    }
-    log.warning('$_here~connection timeout ${r.url} cause $e');
+    log('${COLOR_WARNING}connection timeout ${r.url} cause $e');
     return await retry(context,
         contract: RequestTimeoutContract(isServer: false, exception: e, url: r.url), request: r);
-  } catch (e, s) {
-    //handle exception here to get better stack trace
-    if (emmitError(r, e)) {
-      return null;
-    }
-    log.error(_here, '$e, url: ${r.url}', s);
-    log.sendToGlobalExceptionHanlder(context, e, s);
-    return null;
   }
-}
 
-/// emmitError return true if send error to custom error handler
-///
-///     emmitError(request);
-///
-bool emmitError(Request r, dynamic error) {
-  if (r.errorHandler != null) {
-    r.errorHandler!(error);
-    return true;
-  }
-  return false;
+  //throw everything else
+  //catch (e, s) {
+  //handle exception here to get better stack trace
+  //log.error( '$e, url: ${r.url}', s);
+  //log.sendToGlobalExceptionHanlder(context, e, s);
+  //return null;
+  //}
 }
 
 /// giveup brodcast event then return null
@@ -174,22 +149,18 @@ giveup(BuildContext ctx, dynamic e) {
   eventbus.broadcast(ctx, e);
 }
 
-/// retry use contract, broadcast event when failed
+/// retry use contract, return empty proto object is contract failed
 ///
 ///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 ///
-Future<List<int>?> retry(
+Future<pb.ProtoObject> retry(
   BuildContext context, {
   required eventbus.Contract contract,
   required Request request,
-  dynamic? fail,
 }) async {
   if (await eventbus.contract(context, contract)) {
-    log.log('$_here~ok,retry');
+    log('try again');
     return await doPost(context, request);
   }
-  if (fail != null) {
-    eventbus.broadcast(context, fail);
-  }
-  return null;
+  return pb.ProtoObject.empty;
 }

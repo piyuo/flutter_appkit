@@ -12,9 +12,11 @@ typedef Future<ProtoObject> MockExecute(BuildContext ctx, ProtoObject obj);
 class MockService extends Service {
   /// mockExecute mock execute function
   ///
-  MockExecute mockExecute;
+  MockExecute mockExecute = (_, action) async {
+    return ok();
+  };
 
-  MockService(this.mockExecute)
+  MockService()
       : super(
           serviceName: 'mock',
           timeout: -1,
@@ -23,7 +25,7 @@ class MockService extends Service {
 
   @override
   ProtoObject newObjectByID(int id, List<int> l) {
-    throw 'failed to create object in MockService. cause id ($id) out of range';
+    return ok();
   }
 
   @override

@@ -4,8 +4,6 @@ import 'package:libcli/src/eventbus/contract.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:mockito/mockito.dart';
 
-const _here = 'eventbus-contract-test';
-
 class MockBuildContext extends Mock implements BuildContext {}
 
 main() {
@@ -14,7 +12,7 @@ main() {
   });
   group('[eventbus/contract]', () {
     test('should handle error', () async {
-      listen<MockContract>(_here, (_, event) {
+      listen<MockContract>((_, event) {
         throw 'unhandle exception';
       });
       contract(MockBuildContext(), MockContract('c')).then((value) {
@@ -25,7 +23,7 @@ main() {
 
   test('should contract', () async {
     var text = '';
-    listen<MockContract>(_here, (ctx, event) {
+    listen<MockContract>((ctx, event) {
       text = event.text;
       event.complete(true);
     });

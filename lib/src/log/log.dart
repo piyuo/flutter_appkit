@@ -1,28 +1,22 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/log/analytic.dart' as analytic;
+import 'package:libcli/src/log/logs.dart';
 import 'package:libcli/app.dart' as configuration;
 
-const LEVEL_INFO = 1;
-const LEVEL_WARNING = 2;
-const LEVEL_ALERT = 3;
 const _b = '\u001b[';
-const RESET = _b + '0m';
-const RED = _b + '31m';
-const GREEN = _b + '32m';
-const YELLOW = _b + '33m';
-const BLUE = _b + '34m';
-const MAGENTA = _b + '35m';
-const CYAN = _b + '36m';
+const COLOR_END = _b + '0m';
+const COLOR_RED = _b + '31m';
+const COLOR_GREEN = _b + '32m';
+const COLOR_YELLOW = _b + '33m';
+const COLOR_BLUE = _b + '34m';
+const COLOR_MAGENTA = _b + '35m';
+const COLOR_CYAN = _b + '36m';
 
-const HEAD = BLUE;
-const END = RESET;
-
-const WARNING = YELLOW;
-const ALERT = RED;
-const ALLOCATION = MAGENTA;
-const NETWORK = CYAN;
-const STATE = GREEN;
+const COLOR_ALERT = COLOR_END;
+const COLOR_WARNING = COLOR_YELLOW;
+const COLOR_MEMORY = COLOR_MAGENTA;
+const COLOR_NETWORK = COLOR_CYAN;
+const COLOR_STATE = COLOR_GREEN;
 
 /// reduxStates keep all redux states
 ///
@@ -41,7 +35,7 @@ String safeJsonEncode(Object object) {
   } catch (e) {
     debugPrint(e.toString());
   }
-  return toString(object);
+  return toLogString(object);
 }
 
 /// readReduxStates print all redux states to string
@@ -67,119 +61,48 @@ String readReduxStates() {
   return buffer.toString();
 }
 
-/// overrideDebugPrint override debugPrint()
-///
-///     debugPrint = overrideDebugPrint;
-///
-void overrideDebugPrint(String? message, {int? wrapWidth}) {
-  if (message == null) {
-    return;
-  }
-  if (!kReleaseMode) {
-    int pos = message.indexOf('~');
-    var h = '';
-    var m = '';
-    if (pos != -1) {
-      h = head(message.substring(0, pos));
-      m = message.substring(pos + 1, message.length);
-    } else {
-      h = head('');
-      m = message;
-    }
-    message = '$HEAD$h$END$m';
-    print(message);
-    return;
-  }
-  debugPrintThrottled(message, wrapWidth: wrapWidth);
-/*
-    if (Platform.isIOS) {
-      print(message
-          .replaceAll(HEAD, '')
-          .replaceAll(HEAD, '')
-          .replaceAll(VERB, '')
-          .replaceAll(NOUN, '')
-          .replaceAll(NOUN2, '')
-          .replaceAll(END, '')
-          .replaceAll(WARNING, '')
-          .replaceAll(ALERT, ''));
-      return;
-    }*/
-}
-
-/// log print message and log to analytic
-///
-///      _log(this, logger.LEVEL_INFO, '');
-void _log(String message, int level, String hint) {
-  assert(message.length > 0);
-  assert(message.indexOf('~') != -1, 'must begin with "where~"');
-  int pos = message.indexOf('~');
-  var h = '';
-  var m = '';
-  if (pos != -1) {
-    h = head(message.substring(0, pos));
-    m = message.substring(pos + 1, message.length);
-  } else {
-    h = head('');
-    m = message;
-  }
-  debugPrint('$message (logged)');
-  analytic.saveLog(h, m, level);
-}
-
 /// log normal but significant events, such as start up, shut down, or a configuration change.
 ///
-///     log('here~something ${VERB} done');
+///     log('something done');
+///
 void log(String message) {
-  _log(message, LEVEL_INFO, '');
+//  if (!kReleaseMode) {}
+  debugPrint('$COLOR_BLUE$header$COLOR_END $message');
+  addLog(message: message);
 }
 
-/// warning events might cause problems.
+/// error print error message to console and keep log
 ///
-///     warning('here~things need to ${VERB}watch');
-void warning(String message) {
-  _log(message, LEVEL_WARNING, '${WARNING}[!WARNING] $END');
-}
-
-/// alert a person must take an action immediately
-///
-///     alert('here~something${VERB} go ${NOUN}wrong');
-void alert(String message) {
-  _log(message, LEVEL_ALERT, '${ALERT}[!!ALERT]  $END');
-}
-
-/// error handling
-///
-///     const HERE='current package';
 ///     try {
 ///       throw Exception('my error');
 ///     } catch (e, s) {
-///       var errID = error(HERE, e, s);
+///       error( e, s);
 ///     }
 ///
-void error(String where, dynamic e, StackTrace stacktrace) {
-  String msg = '';
+void error(dynamic e, StackTrace stacktrace) {
+  String message = '';
   try {
-    msg = e.toString().replaceAll('Exception: ', '');
+    message = e.toString().replaceAll('Exception: ', '');
   } catch (_) {
-    msg = e.runtimeType.toString();
+    message = e.runtimeType.toString();
   }
-
   String states = readReduxStates();
   String stack = beautyStack(stacktrace);
-  debugPrint('$where~${ALERT}caught $msg\n$stack\n$states');
-  analytic.saveError(where, msg, stack, states);
+  debugPrint('$COLOR_BLUE$header$COLOR_END ${COLOR_ALERT}caught $message\n$stack\n$states');
+  addLog(
+    message: message,
+    stacktrace: stack,
+    states: states,
+  );
 }
 
-/// create log head, like application.identity.where:
+/// header return  user@application:
 ///
-///     String head = head();
+///     print(header); // 'kevin@piyuo: hello world'
+///
 @visibleForTesting
-String head(String where) {
-  String text = '${configuration.appID}/$where';
-  if (configuration.userID != '') {
-    text = configuration.userID + "@" + text;
-  }
-  return text + ": ";
+String get header {
+  return '${configuration.userID}@${configuration.appID}:';
 }
 
 ///beautyStack return simple format stack trace
@@ -267,11 +190,11 @@ bool isLineUsable(String line) {
   return true;
 }
 
-/// toString encode object to string
+/// toLogString encode object into string
 ///
-///     toString(state);
+///     toLogString(state);
 ///
-String toString(dynamic value) {
+String toLogString(dynamic value) {
   if (value != null) {
     var text = value.toString().replaceAll('\n', '');
     if (text.indexOf('Instance of') == -1) {

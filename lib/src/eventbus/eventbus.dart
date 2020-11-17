@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/src/eventbus/contract.dart';
 
-const _here = 'eventbus';
-
 /// latestContract is used for testing purpose
 ///
 @visibleForTesting
@@ -75,13 +73,12 @@ int getListenerCount() {
 ///     });
 ///     sub.cancel();
 Subscription listen<T>(
-  String where,
-  void Function(BuildContext?, dynamic) func,
+  void Function(BuildContext, dynamic) func,
 ) {
   if (T == dynamic) {
-    debugPrint('$_here~$where listen all event');
+    log('listen all event');
   } else {
-    debugPrint('$_here~$where listen $T');
+    log('listen $T');
   }
 
   var listener = Listener(eventType: T, callback: func);
@@ -100,7 +97,7 @@ Subscription listen<T>(
 broadcast(BuildContext context, dynamic event) {
   assert(event != null);
   latestEvent = event;
-  log('$_here~brodcast ${event.runtimeType}');
+  log('brodcast ${event.runtimeType}');
   dispatch(context, event);
 }
 
@@ -115,7 +112,7 @@ broadcast(BuildContext context, dynamic event) {
 ///
 Future<bool> contract(BuildContext context, Contract event) {
   latestContract = event;
-  log('$_here~contract ${event.runtimeType}');
+  log('contract ${event.runtimeType}');
   dispatch(context, event);
   return event.future;
 }
@@ -130,7 +127,7 @@ dispatch(BuildContext context, dynamic event) {
     try {
       listener.listen(context, event);
     } catch (e, s) {
-      error(_here, e, s);
+      error(e, s);
       if (event is Contract) {
         event.complete(false);
       }

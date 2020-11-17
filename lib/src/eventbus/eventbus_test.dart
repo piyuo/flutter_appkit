@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../mock/mock.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 
-const _here = 'eventbus-test';
-
 main() {
   setUp(() async {
     clearListeners();
@@ -13,7 +11,7 @@ main() {
   group('[eventbus/eventbus]', () {
     testWidgets('should remove all listeners', (WidgetTester tester) async {
       await tester.inWidget((ctx) {
-        listen<String>(_here, (BuildContext? ctx, event) {
+        listen<String>((BuildContext ctx, event) {
           expect(event, 'hi');
         });
         // ignore: invalid_use_of_visible_for_testing_member
@@ -26,7 +24,7 @@ main() {
 
     testWidgets('should safe cancel subscription', (WidgetTester tester) async {
       await tester.inWidget((ctx) {
-        var sub = listen<String>(_here, (BuildContext? ctx, event) {
+        var sub = listen<String>((BuildContext ctx, event) {
           expect(event, 'hi');
         });
         // ignore: invalid_use_of_visible_for_testing_member
@@ -42,7 +40,7 @@ main() {
 
     testWidgets('should broadcst on type', (WidgetTester tester) async {
       await tester.inWidget((ctx) {
-        listen<String>(_here, (BuildContext? ctx, event) {
+        listen<String>((BuildContext ctx, event) {
           expect(event, 'hi');
         });
         broadcast(ctx, 'hi');
@@ -50,7 +48,7 @@ main() {
     });
 
     testWidgets('should dispatch', (WidgetTester tester) async {
-      listen<String>(_here, (BuildContext? ctx, event) {
+      listen<String>((BuildContext? ctx, event) {
         expect(event, 'hi');
         expect(ctx, isNotNull);
       });
@@ -61,7 +59,7 @@ main() {
     });
 
     testWidgets('should broadcst & listen all', (WidgetTester tester) async {
-      listen(_here, (BuildContext? ctx, event) {
+      listen((BuildContext? ctx, event) {
         expect(event, 'hi');
       });
       await tester.inWidget((ctx) {
@@ -72,10 +70,10 @@ main() {
 
     testWidgets('should isolate error', (WidgetTester tester) async {
       var text;
-      listen<String>(_here, (_, event) {
+      listen<String>((_, event) {
         throw 'unhandle exception';
       });
-      listen<String>(_here, (_, event) {
+      listen<String>((_, event) {
         text = event;
       });
 
@@ -87,7 +85,7 @@ main() {
 
     testWidgets('should unsubscribe', (WidgetTester tester) async {
       var text = '';
-      var sub = listen<String>(_here, (_, event) {
+      var sub = listen<String>((_, event) {
         text = event.text;
       });
 

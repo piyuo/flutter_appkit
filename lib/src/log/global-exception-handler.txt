@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:libcli/src/log/log.dart';
 
 typedef void GlobalExceptionHandler(BuildContext context, dynamic e, StackTrace stackTrace);
 
-GlobalExceptionHandler _globalExceptionHandler = (BuildContext context, dynamic e, StackTrace s) {};
+GlobalExceptionHandler _globalExceptionHandler = (BuildContext context, dynamic e, StackTrace s) {
+  error(e, s);
+};
 
 void set globalExceptionHandler(GlobalExceptionHandler handler) {
   _globalExceptionHandler = handler;
 }
 
-void sendToGlobalExceptionHanlder(
+void throwToGlobalExceptionHandler(
   BuildContext context,
   dynamic e,
   StackTrace stackTrace,

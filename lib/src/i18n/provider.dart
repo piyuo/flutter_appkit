@@ -29,7 +29,7 @@ class I18nProvider extends AsyncProvider {
       if (kReleaseMode) {
         return key;
       } else {
-        alert('i18n~missing $key in assets/i18n/${fileName}_${localeID}.json');
+        log('${COLOR_ALERT}missing $key in assets/i18n/${fileName}_${localeID}.json');
         return '!!! $key not found';
       }
     }

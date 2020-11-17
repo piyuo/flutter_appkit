@@ -7,8 +7,6 @@ import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/src/i18n/provider.dart';
 import 'package:libcli/src/i18n/global.dart';
 
-const _here = 'i18n';
-
 const en_US = 'en_US';
 const zh_CN = 'zh_CN';
 const zh_TW = 'zh_TW';
@@ -55,7 +53,7 @@ get localeID => localeToId(currentLocale);
 
 set locale(Locale locale) {
   _locale = locale;
-  debugPrint('$_here~${STATE}set locale=$localeID');
+  log('${COLOR_STATE}set locale=$localeID');
 }
 
 /// localeToId convert Locale(''en,'US') to 'en_US'
@@ -75,7 +73,6 @@ Locale idToLocale(String id) {
 ///
 ///
 List<Locale> askSupportedLocales() {
-  debugPrint('$_here~ask supported locales');
   return Locales.map((id) => idToLocale(id)).toList();
 }
 
@@ -106,7 +103,7 @@ Locale determineLocale(List<Locale> locales) {
       }
     }
   }
-  debugPrint('$_here~default country is $userPreferCountryCode, best locale is ${localeToId(bestLocale)}');
+  log('country: $userPreferCountryCode, best locale: ${localeToId(bestLocale)}');
   return bestLocale;
 }
 

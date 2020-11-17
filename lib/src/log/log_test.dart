@@ -4,8 +4,6 @@ import 'package:libcli/log.dart';
 import 'package:libcli/app.dart' as configuration;
 
 void main() {
-  debugPrint = overrideDebugPrint;
-
   group('[log]', () {
     test('should readReduxStates', () {
       reduxStates.clear();
@@ -20,26 +18,10 @@ void main() {
       reduxStates.clear();
     });
 
-    test('should debugPrint', () {
-      configuration.appID = 'piyuo-web-index';
-      configuration.userID = '111-222';
-      debugPrint('here~mock test');
-    });
-
     test('should log', () async {
       configuration.appID = 'log_test';
       configuration.userID = 'developer';
-      log('here~thing log here');
-      warning('here~thing warning here');
-      alert('here~thing alert here');
-    });
-
-    test('should alert no head', () async {
-      try {
-        debugPrint('no head');
-      } catch (e) {
-        expect(e, isNotNull);
-      }
+      log('hi');
     });
 
     test('should error', () async {
@@ -48,7 +30,7 @@ void main() {
       try {
         throw Exception('my error');
       } catch (e, s) {
-        error('here', e, s);
+        error(e, s);
       }
     });
 
@@ -56,7 +38,7 @@ void main() {
       configuration.appID = 'piyuo-web-index';
       configuration.userID = '111-222';
       // ignore: invalid_use_of_visible_for_testing_member
-      expect(head('here'), '111-222@piyuo-web-index/here: ');
+      expect(header, '111-222@piyuo-web-index/here: ');
     });
 
     test('should beautify stack trace', () async {
@@ -79,7 +61,7 @@ void main() {
     });
 
     test('should turn object into string', () async {
-      String str = toString(MockObject);
+      String str = toLogString(MockObject);
       expect(str.length, greaterThan(0));
     });
   });

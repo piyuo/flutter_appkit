@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
-const _here = 'assets';
-
 /// loadString return string if asset exist, return empty string if not found.
 ///
 /// using context to load asset from context
@@ -19,10 +17,8 @@ Future<String> Function({required String assetName, BuildContext? context, Strin
 
 Future<String> _loadString({required String assetName, BuildContext? context, String? package}) async {
   String path = package != null ? 'packages/$package/assets/$assetName' : 'assets/$assetName';
-  debugPrint('$_here~load asset $path');
+  log('load asset $path');
 
-  //File myAsset = File(path);
-  //String text = myAsset.readAsStringSync();
   try {
     if (context != null) {
       var bundle = DefaultAssetBundle.of(context);
@@ -30,7 +26,7 @@ Future<String> _loadString({required String assetName, BuildContext? context, St
     }
     return await rootBundle.loadString(path);
   } catch (e, s) {
-    error(_here, e, s);
+    error(e, s);
   }
   return '';
 }

@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/log.dart';
 
-const _here = 'redux';
-
 /// Redux reducer implementation
 ///
 typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
@@ -41,12 +39,12 @@ class Redux {
   Future<void> dispatch(BuildContext context, dynamic action) async {
     if (!kReleaseMode) {
       var newState = await _reducer(context, state, action);
-      var payload = toString(action);
+      var payload = toLogString(action);
       var diff = diffState(newState, _state);
       if (diff != '') {
-        debugPrint('$_here~${action.runtimeType}{$payload} $diff');
+        log('${action.runtimeType}{$payload} $diff');
       } else {
-        debugPrint('$_here~${action.runtimeType}{$payload}$RED state not change');
+        log('${action.runtimeType}{$payload}${COLOR_STATE} state not change');
       }
       _state = newState;
       reduxNewState = null;
@@ -68,7 +66,7 @@ String diffState(Map newState, Map oldState) {
       text += diffState(newValue, oldValue);
     } else {
       if (newValue != oldValue) {
-        text += '$RED$key=$newValue$END < $oldValue, ';
+        text += '${COLOR_STATE}$key=$newValue${COLOR_END} < $oldValue, ';
       }
     }
   }

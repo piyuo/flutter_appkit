@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log.dart';
 import 'package:libcli/command.dart';
 import 'package:libpb/pb.dart';
-
-const _here = 'command';
 
 /// communicate with server with command using ajax,protobuf and command pattern
 /// simplefy the network call to request and response
@@ -29,10 +26,6 @@ abstract class Service {
   ///
   int slow;
 
-  /// errorHandler override default error handling
-  ///
-  void Function(dynamic error)? errorHandler = null;
-
   /// Service create service with remote cloud function name,timeout and slow
   ///
   /// debug port used in debug branch
@@ -53,10 +46,12 @@ abstract class Service {
   /// url return remote service url
   ///
   String get url {
-    if (!kReleaseMode && debugPort != null) {
-      timeout = 99999999;
-      slow = 99999999;
-      return 'http://localhost:$debugPort';
+    if (!kReleaseMode) {
+      if (debugPort != null) {
+        timeout = 99999999;
+        slow = 99999999;
+        return 'http://localhost:$debugPort';
+      }
     }
     return serviceUrl(serviceName);
   }
@@ -65,7 +60,7 @@ abstract class Service {
   ///
   ///     var response = await service.execute(EchoAction());
   ///
-  Future<ProtoObject?> execute(BuildContext ctx, ProtoObject obj, {Map? state}) async {
+  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj, {Map? state}) async {
     http.Client client = http.Client();
     var response = await executeWithClient(ctx, obj, client);
     if (state != null) {
@@ -78,22 +73,12 @@ abstract class Service {
   ///
   ///     var response = await service.executehWithClient(client, EchoAction());
   ///
-  Future<ProtoObject?> executeWithClient(BuildContext context, ProtoObject obj, http.Client client) async {
-    try {
-      var jsonSent = log.toString(obj);
-      debugPrint('$_here~${log.STATE}execute ${obj.runtimeType}{$jsonSent}${log.END} to $url');
-      Uint8List bytes = encode(obj);
-      List<int>? ret = await post(context, client, url, bytes, timeout, slow, errorHandler);
-      if (ret != null) {
-        ProtoObject retObj = decode(ret, this);
-        var jsonReturn = log.toString(retObj);
-        debugPrint('$_here~${log.STATE}got ${retObj.runtimeType}{$jsonReturn}${log.END} from $url');
-        return retObj;
-      }
-    } catch (e, s) {
-      //handle exception here to get better stack trace
-      log.sendToGlobalExceptionHanlder(context, e, s);
-    }
-    return null;
+  Future<ProtoObject> executeWithClient(BuildContext context, ProtoObject obj, http.Client client) async {
+    var jsonSent = toLogString(obj);
+    log('${COLOR_STATE}send ${obj.runtimeType}{$jsonSent}${COLOR_END} to $url');
+    ProtoObject returnObj = await post(context, this, client, url, obj, timeout, slow);
+    var jsonReturn = toLogString(returnObj);
+    log('${COLOR_STATE}got ${returnObj.runtimeType}{$jsonReturn}${COLOR_END} from $url');
+    return returnObj;
   }
 }

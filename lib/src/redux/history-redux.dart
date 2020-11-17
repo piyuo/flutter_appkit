@@ -3,8 +3,6 @@ import 'package:libcli/log.dart';
 import 'package:libcli/redux.dart';
 import 'package:flutter/material.dart';
 
-const _here = 'history_redux';
-
 /// HistoryRedux implements redux pattern and have ability to undo and redo
 ///
 class HistoryRedux {
@@ -71,13 +69,13 @@ class HistoryRedux {
       if (kReleaseMode) {
         _index--;
       } else {
-        var jOld = toString(state);
+        var jOld = toLogString(state);
         _index--;
-        var jNew = toString(state);
-        debugPrint('$_here~${STATE}undo $jNew $END<= $jOld');
+        var jNew = toLogString(state);
+        log('${COLOR_STATE}undo $jNew ${COLOR_END}<= $jOld');
       }
     } else {
-      debugPrint('$_here~nothing to undo');
+      log('nothing to undo');
     }
   }
 
@@ -90,13 +88,13 @@ class HistoryRedux {
       if (kReleaseMode) {
         _index++;
       } else {
-        var jOld = toString(state);
+        var jOld = toLogString(state);
         _index++;
-        var jNew = toString(state);
-        debugPrint('$_here~${STATE}redo $jNew $END<= $jOld');
+        var jNew = toLogString(state);
+        log('${COLOR_STATE}redo $jNew ${COLOR_END}<= $jOld');
       }
     } else {
-      debugPrint('$_here~nothing to undo');
+      log('nothing to undo');
     }
   }
 
@@ -105,15 +103,14 @@ class HistoryRedux {
   ///     redux.dispatch(MockAction.Increment, 1);
   ///
   Future<Map> dispatch(BuildContext ctx, dynamic action) async {
-    assert(_reducer != null, '${runtimeType} must set reducer before use');
     if (kReleaseMode) {
       _setState(await _reducer(ctx, state, action));
     } else {
-      var jOld = toString(state);
+      var jOld = toLogString(state);
       var newState = await _reducer(ctx, state, action);
-      var jNew = toString(newState);
-      var payload = toString(action);
-      debugPrint('$_here~${STATE}action: ${action.runtimeType}{$payload}, state: $jNew $END<= $jOld');
+      var jNew = toLogString(newState);
+      var payload = toLogString(action);
+      log('${COLOR_STATE}action: ${action.runtimeType}{$payload}, state: $jNew ${COLOR_END}<= $jOld');
       _setState(newState);
     }
     return state;

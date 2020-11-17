@@ -5,9 +5,9 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart';
+import 'package:libpb/pb.dart';
 import '../../mock/mock.dart';
-
-const _here = 'command_http_refuse_test';
+import 'package:libcli/src/command/mock-service_test.dart';
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
@@ -19,7 +19,7 @@ void main() {
     contract = null;
     event = null;
     eventbus.clearListeners();
-    eventbus.listen(_here, (_, e) {
+    eventbus.listen((_, e) {
       if (e is eventbus.Contract) {
         contract = e;
       } else {
@@ -27,7 +27,7 @@ void main() {
       }
     });
 
-    eventbus.listen<eventbus.Contract>(_here, (_, e) {
+    eventbus.listen<eventbus.Contract>((_, e) {
       e.complete(false);
     });
   });
@@ -66,15 +66,18 @@ void main() {
     testWidgets('should retry', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        await retry(ctx, contract: CAccessTokenExpired(), fail: ERefuseSignin(), request: req);
-        expect(event.runtimeType, ERefuseSignin);
+        var obj = await retry(ctx, contract: CAccessTokenExpired(), request: req);
+        expect(ProtoObject.isEmpty(obj), ERefuseSignin);
       });
     });
   });
 }
 
 Request newRequest(MockClient client) {
+  MockService service = MockService();
+
   return Request(
+    service: service,
     client: client,
     bytes: Uint8List(2),
     url: 'http://mock',

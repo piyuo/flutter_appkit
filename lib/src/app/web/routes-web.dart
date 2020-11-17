@@ -1,9 +1,8 @@
 import 'dart:html' as html;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:libcli/log.dart';
 
 void webRedirect(String url) {
-  debugPrint('redirect: $url');
+  log('redirect: $url');
   html.window.location.href = url;
 }
 
@@ -24,11 +23,3 @@ Map<String, String> webArguments() {
   Uri uri = Uri.parse(html.window.location.href);
   return uri.queryParameters;
 }
-
-/*
-      Uri uri = new Uri(scheme: 'http',
-          host: 'localhost',
-          port: 8080,
-          path: 'myapp',
-          queryParameters:json);
-          */

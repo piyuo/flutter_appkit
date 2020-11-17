@@ -6,8 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart' as command;
 import '../../mock/mock.dart';
-
-const _here = 'command_http_test';
+import 'package:libcli/src/command/mock-service_test.dart';
+import 'package:libcli/command.dart';
+import 'package:libpb/pb.dart' as pb;
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
@@ -19,7 +20,7 @@ void main() {
     contract = null;
     event = null;
     eventbus.clearListeners();
-    eventbus.listen(_here, (_, e) {
+    eventbus.listen((_, e) {
       if (e is eventbus.Contract) {
         contract = e;
       } else {
@@ -27,31 +28,24 @@ void main() {
       }
     });
 
-    eventbus.listen<eventbus.Contract>(_here, (_, e) {
+    eventbus.listen<eventbus.Contract>((_, e) {
       e.complete(true);
     });
   });
 
   group('[command-http]', () {
-    testWidgets('should return body bytes', (WidgetTester tester) async {
+    testWidgets('should return object', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(200));
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes!.length, greaterThan(1));
+        var obj = await command.doPost(ctx, req);
+        expect(pb.ProtoObject.isEmpty(obj), false);
       });
     });
 
     testWidgets('should use custom onError', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(500));
-        var onErrorCalled = false;
-        req.errorHandler = (_) {
-          onErrorCalled = true;
-        };
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes, null);
-        expect(event, null);
-        expect(onErrorCalled, true);
+        expect(() async => await command.doPost(ctx, req), throwsException);
       });
     });
 
@@ -85,9 +79,8 @@ void main() {
     testWidgets('should retry 511 and ok, access token required', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(511));
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes, isNotNull);
-        expect(bytes!.length, greaterThan(1));
+        var obj = await command.doPost(ctx, req);
+        expect(command.isOK(obj), true);
         expect(contract.runtimeType, command.CAccessTokenRequired);
       });
     });
@@ -95,9 +88,8 @@ void main() {
     testWidgets('should retry 412 and ok, access token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(412));
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes, isNotNull);
-        expect(bytes!.length, greaterThan(1));
+        var obj = await command.doPost(ctx, req);
+        expect(command.isOK(obj), true);
         expect(contract.runtimeType, command.CAccessTokenExpired);
       });
     });
@@ -105,9 +97,8 @@ void main() {
     testWidgets('should retry 402 and ok, payment token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
         var req = newRequest(statucMock(402));
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes, isNotNull);
-        expect(bytes!.length, greaterThan(1));
+        var obj = await command.doPost(ctx, req);
+        expect(command.isOK(obj), true);
         expect(contract.runtimeType, command.CPaymentTokenRequired);
       });
     });
@@ -130,8 +121,8 @@ void main() {
             await Future.delayed(const Duration(milliseconds: 2));
             return http.Response('hi', 200);
           });
-          Uint8List bytes = Uint8List.fromList(''.codeUnits);
-          await command.post(ctx, client, '', bytes, 500, 1, null);
+//          Uint8List bytes = Uint8List.fromList(''.codeUnits);
+          await command.post(ctx, MockService(), client, '', ok(), 500, 1);
           expect(event.runtimeType, command.SlowNetworkEvent);
         });
       });
@@ -142,8 +133,8 @@ void main() {
         var client = MockClient((request) async {
           return http.Response('hi', 200);
         });
-        Uint8List bytes = Uint8List.fromList(''.codeUnits);
-        await command.post(ctx, client, '', bytes, 500, 3000, null);
+        //Uint8List bytes = Uint8List.fromList(''.codeUnits);
+        await command.post(ctx, MockService(), client, '', ok(), 500, 3000);
         expect(event, null);
       });
     });
@@ -158,7 +149,9 @@ void main() {
 }
 
 command.Request newRequest(MockClient client) {
+  MockService service = MockService();
   return command.Request(
+    service: service,
     client: client,
     bytes: Uint8List(2),
     url: 'http://mock',
