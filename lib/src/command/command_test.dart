@@ -3,16 +3,11 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/app.dart' as config;
-import 'package:libpb/pb.dart';
-import 'package:mockito/mockito.dart';
-import 'package:flutter/material.dart';
-import 'package:libcli/src/command/mock-service_test.dart' as mockServiceTest;
-import '../../mock/mock.dart';
-import '../../mock/protobuf/mock_service.pb.dart';
-import '../../mock/protobuf/string_response.pbserver.dart';
-import '../../mock/protobuf/echo_request.pbserver.dart';
-
-class MockBuildContext extends Mock implements BuildContext {}
+import 'package:libcli/src/command/mock-service.dart';
+import 'package:libcli/mock/protobuf/string_response.pbserver.dart';
+import 'package:libcli/mock/protobuf/echo_request.pbserver.dart';
+import 'package:libcli/mock/protobuf/sample_service.pb.dart';
+import 'package:libpb/pb.dart' as pb;
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
@@ -21,63 +16,58 @@ void main() {
   setUp(() {});
 
   group('[command]', () {
-    testWidgets('should send command and receive response', (WidgetTester tester) async {
+    test('should send command and receive response', () async {
       var client = MockClient((request) async {
         StringResponse sr = StringResponse();
         sr.text = 'hi';
         List<int> bytes = command.encode(sr);
         return http.Response.bytes(bytes, 200);
       });
-
-      await tester.inWidget((ctx) async {
-        MockService service = MockService();
-        var response = await service.executeWithClient(ctx, EchoAction()..text = 'hello', client);
-        if (response is StringResponse) {
-          expect(response, isNotNull);
-          expect(response.text, 'hi');
-        } else {
-          expect(1, 0); // should not be here
-        }
-      });
+      SampleService service = SampleService();
+      var response = await service.executeWithClient(MockBuildContext(), EchoAction()..text = 'hello', client);
+      expect(response is StringResponse, true);
+      if (response is StringResponse) {
+        expect(response.text, 'hi');
+      }
     });
 
-    testWidgets('should receive null', (WidgetTester tester) async {
+    test('should receive empty', () async {
       var client = MockClient((request) async {
         return http.Response('', 501);
       });
-
-      await tester.inWidget((ctx) async {
-        MockService service = MockService();
-        var response = await service.executeWithClient(ctx, EchoAction(), client);
-        expect(response, isNull);
-      });
+      MockService service = MockService();
+      var response = await service.executeWithClient(MockBuildContext(), EchoAction(), client);
+      expect(response is pb.PbEmpty, true);
     });
 
     test('should return null when send wrong action to test server', () async {
       config.branch = config.BRANCH_MASTER;
-      MockService service = MockService();
+      var service = MockService()
+        ..mockExecute = (ctx, action) async {
+          throw Exception('mock');
+        };
       EchoAction action = new EchoAction();
-      var response = await service.execute(MockBuildContext(), action);
-      expect(response, null);
+      expect(() async {
+        await service.execute(MockBuildContext(), action);
+      }, throwsException);
     });
 
     test('should mock execute', () async {
-      var service = mockServiceTest.MockService()
+      var service = MockService()
         ..mockExecute = (ctx, action) async {
           return StringResponse()..text = 'hi';
         };
 
       EchoAction action = new EchoAction();
       var response = await service.execute(MockBuildContext(), action);
+      expect(response is StringResponse, true);
       if (response is StringResponse) {
         expect(response.text, 'hi');
-      } else {
-        expect(1, 0);
       }
     });
 
     test('should execute set state', () async {
-      var service = mockServiceTest.MockService()
+      var service = MockService()
         ..mockExecute = (ctx, action) async {
           return StringResponse()..text = 'hi';
         };
@@ -89,22 +79,18 @@ void main() {
     });
 
     test('should use shared object', () async {
-      var service = mockServiceTest.MockService()
+      var service = MockService()
         ..mockExecute = (ctx, action) async {
           return StringResponse()..text = 'hi';
         };
 
       EchoAction action = new EchoAction();
       var response = await service.execute(MockBuildContext(), action);
-      if (response is PbError) {
-        expect(response.code, isEmpty);
-      } else {
-        expect(1, 0);
-      }
+      expect(response is StringResponse, true);
     });
 
     test('debugPort should return local test url', () async {
-      mockServiceTest.MockService service = mockServiceTest.MockService();
+      MockService service = MockService();
       service.debugPort = 3001;
       expect(service.url, 'http://localhost:3001');
     });

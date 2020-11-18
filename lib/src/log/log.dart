@@ -40,7 +40,6 @@ String safeJsonEncode(Object object) {
 
 /// readReduxStates print all redux states to string
 ///
-///
 String readReduxStates() {
   var buffer = new StringBuffer();
   buffer.write('[');
@@ -86,9 +85,16 @@ void error(dynamic e, StackTrace stacktrace) {
   } catch (_) {
     message = e.runtimeType.toString();
   }
-  String states = readReduxStates();
+  var out = '$COLOR_BLUE$header$COLOR_END ${COLOR_ALERT}caught $message';
   String stack = beautyStack(stacktrace);
-  debugPrint('$COLOR_BLUE$header$COLOR_END ${COLOR_ALERT}caught $message\n$stack\n$states');
+  if (stack.isNotEmpty) {
+    out += '\n$stack';
+  }
+  String states = readReduxStates();
+  if (states != '[]') {
+    out += '\n$states';
+  }
+  debugPrint(out);
   addLog(
     message: message,
     stacktrace: stack,
@@ -102,7 +108,12 @@ void error(dynamic e, StackTrace stacktrace) {
 ///
 @visibleForTesting
 String get header {
-  return '${configuration.userID}@${configuration.appID}:';
+  var user = configuration.userID.isEmpty ? '' : configuration.userID + '@';
+  var head = user + configuration.appID;
+  if (head.isNotEmpty) {
+    head += ':';
+  }
+  return head;
 }
 
 ///beautyStack return simple format stack trace

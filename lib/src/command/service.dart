@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
 import 'package:libcli/command.dart';
-import 'package:libpb/pb.dart';
+import 'package:libpb/pb.dart' as pb;
 
 /// communicate with server with command using ajax,protobuf and command pattern
 /// simplefy the network call to request and response
@@ -41,7 +41,7 @@ abstract class Service {
 
   /// find object by id
   ///
-  ProtoObject newObjectByID(int id, List<int> bytes);
+  pb.ProtoObject newObjectByID(int id, List<int> bytes);
 
   /// url return remote service url
   ///
@@ -60,7 +60,7 @@ abstract class Service {
   ///
   ///     var response = await service.execute(EchoAction());
   ///
-  Future<ProtoObject> execute(BuildContext ctx, ProtoObject obj, {Map? state}) async {
+  Future<pb.ProtoObject> execute(BuildContext ctx, pb.ProtoObject obj, {Map? state}) async {
     http.Client client = http.Client();
     var response = await executeWithClient(ctx, obj, client);
     if (state != null) {
@@ -73,10 +73,19 @@ abstract class Service {
   ///
   ///     var response = await service.executehWithClient(client, EchoAction());
   ///
-  Future<ProtoObject> executeWithClient(BuildContext context, ProtoObject obj, http.Client client) async {
+  Future<pb.ProtoObject> executeWithClient(BuildContext context, pb.ProtoObject obj, http.Client client) async {
     var jsonSent = toLogString(obj);
     log('${COLOR_STATE}send ${obj.runtimeType}{$jsonSent}${COLOR_END} to $url');
-    ProtoObject returnObj = await post(context, this, client, url, obj, timeout, slow);
+    pb.ProtoObject returnObj = await post(
+        context,
+        Request(
+          service: this,
+          client: client,
+          url: url,
+          action: obj,
+          timeout: Duration(milliseconds: timeout),
+          slow: Duration(milliseconds: slow),
+        ));
     var jsonReturn = toLogString(returnObj);
     log('${COLOR_STATE}got ${returnObj.runtimeType}{$jsonReturn}${COLOR_END} from $url');
     return returnObj;

@@ -1,165 +1,150 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/command.dart' as command;
-import '../../mock/mock.dart';
-import 'package:libcli/src/command/mock-service_test.dart';
 import 'package:libcli/command.dart';
+import '../../mock/mock.dart';
+import 'package:libcli/src/command/mock-service.dart';
 import 'package:libpb/pb.dart' as pb;
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
-  command.mockCommand();
-  var contract;
-  var event;
+  mockCommand();
+  var contractHappening;
+  var eventHappening;
 
   setUp(() async {
-    contract = null;
-    event = null;
+    contractHappening = null;
+    eventHappening = null;
     eventbus.clearListeners();
     eventbus.listen((_, e) {
       if (e is eventbus.Contract) {
-        contract = e;
+        contractHappening = e;
       } else {
-        event = e;
+        eventHappening = e;
       }
-    });
-
-    eventbus.listen<eventbus.Contract>((_, e) {
-      e.complete(true);
     });
   });
 
   group('[command-http]', () {
     testWidgets('should return object', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(200));
-        var obj = await command.doPost(ctx, req);
-        expect(pb.ProtoObject.isEmpty(obj), false);
-      });
-    });
-
-    testWidgets('should use custom onError', (WidgetTester tester) async {
-      await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(500));
-        expect(() async => await command.doPost(ctx, req), throwsException);
+        var req = newRequest(statusMock(200));
+        var obj = await doPost(ctx, req);
+        expect(isOK(obj), true);
       });
     });
 
     testWidgets('should handle 500, internal server error', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(500));
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes, null);
+        var req = newRequest(statusMock(500));
+        var response = await doPost(ctx, req);
+        expect(response is pb.PbEmpty, true);
+        expect(eventHappening is InternalServerErrorEvent, true);
       });
     });
 
     testWidgets('should handle 501, servie is not properly setup', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(501));
-        try {
-          await command.doPost(ctx, req);
-        } catch (e) {
-          expect(e, isNotNull);
-        }
+        var req = newRequest(statusMock(501));
+        var response = await doPost(ctx, req);
+        expect(response is pb.PbEmpty, true);
+        expect(eventHappening is ServerNotReadyEvent, true);
       });
     });
 
     testWidgets('should handle 504, service context deadline exceeded', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(504));
-        var bytes = await command.doPost(ctx, req);
-        expect(bytes, null);
+        var req = newRequest(statusMock(504));
+        var response = await doPost(ctx, req);
+        expect(response is pb.PbEmpty, true);
+        expect(contractHappening is RequestTimeoutContract, true);
       });
     });
 
     testWidgets('should retry 511 and ok, access token required', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(511));
-        var obj = await command.doPost(ctx, req);
-        expect(command.isOK(obj), true);
-        expect(contract.runtimeType, command.CAccessTokenRequired);
+        var req = newRequest(statusMock(511));
+        var response = await doPost(ctx, req);
+        expect(response is pb.PbEmpty, true);
+        expect(contractHappening is CAccessTokenRequired, true);
       });
     });
 
     testWidgets('should retry 412 and ok, access token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(412));
-        var obj = await command.doPost(ctx, req);
-        expect(command.isOK(obj), true);
-        expect(contract.runtimeType, command.CAccessTokenExpired);
+        var req = newRequest(statusMock(412));
+        var response = await doPost(ctx, req);
+        expect(response is pb.PbEmpty, true);
+        expect(contractHappening is CAccessTokenExpired, true);
       });
     });
 
     testWidgets('should retry 402 and ok, payment token expired', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(402));
-        var obj = await command.doPost(ctx, req);
-        expect(command.isOK(obj), true);
-        expect(contract.runtimeType, command.CPaymentTokenRequired);
+        var req = newRequest(statusMock(402));
+        var response = await doPost(ctx, req);
+        expect(response is pb.PbEmpty, true);
+        expect(contractHappening is CPaymentTokenRequired, true);
       });
     });
 
     testWidgets('should handle unknown status', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        var req = newRequest(statucMock(101));
-        try {
-          await command.doPost(ctx, req);
-        } catch (e) {
-          expect(e, isNotNull);
-        }
+        var req = newRequest(statusMock(101));
+
+        expect(() async => {await doPost(ctx, req)}, throwsException);
       });
     });
 
-    testWidgets('should broadcast slow network', (WidgetTester tester) async {
-      await tester.runAsync(() async {
-        await tester.inWidget((ctx) async {
-          var client = MockClient((request) async {
-            await Future.delayed(const Duration(milliseconds: 2));
-            return http.Response('hi', 200);
-          });
-//          Uint8List bytes = Uint8List.fromList(''.codeUnits);
-          await command.post(ctx, MockService(), client, '', ok(), 500, 1);
-          expect(event.runtimeType, command.SlowNetworkEvent);
-        });
+    test('should broadcast slow network', () async {
+      var client = MockClient((request) async {
+        await Future.delayed(const Duration(milliseconds: 2));
+        return http.Response('hi', 200);
       });
+
+      await post(
+          MockBuildContext(),
+          Request(
+            service: MockService(),
+            client: client,
+            action: pb.PbString(),
+            url: 'http://mock',
+            timeout: Duration(milliseconds: 500),
+            slow: Duration(milliseconds: 1),
+          ));
+      expect(eventHappening.runtimeType, SlowNetworkEvent);
     });
 
-    testWidgets('should no slow network', (WidgetTester tester) async {
-      await tester.inWidget((ctx) async {
-        var client = MockClient((request) async {
-          return http.Response('hi', 200);
-        });
-        //Uint8List bytes = Uint8List.fromList(''.codeUnits);
-        await command.post(ctx, MockService(), client, '', ok(), 500, 3000);
-        expect(event, null);
+    test('should no slow network', () async {
+      var client = MockClient((request) async {
+        return http.Response('hi', 200);
       });
+      //Uint8List bytes = Uint8List.fromList(''.codeUnits);
+      await post(
+          MockBuildContext(),
+          Request(
+            service: MockService(),
+            client: client,
+            action: pb.PbString(),
+            url: 'http://mock',
+            timeout: Duration(milliseconds: 500),
+            slow: Duration(milliseconds: 3000),
+          ));
+      expect(eventHappening, null);
     });
 
     testWidgets('should giveup', (WidgetTester tester) async {
       await tester.inWidget((ctx) async {
-        command.giveup(ctx, command.BadRequestEvent());
-        expect(event.runtimeType, command.BadRequestEvent);
+        giveup(ctx, BadRequestEvent());
+        expect(eventHappening.runtimeType, BadRequestEvent);
       });
     });
   });
 }
 
-command.Request newRequest(MockClient client) {
-  MockService service = MockService();
-  return command.Request(
-    service: service,
-    client: client,
-    bytes: Uint8List(2),
-    url: 'http://mock',
-    timeout: 9000,
-  );
-}
-
-MockClient statucMock(int status) {
+MockClient statusMock(int status) {
   bool badNews = true;
   var resp = http.Response('mock', status);
 

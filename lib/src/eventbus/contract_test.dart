@@ -32,6 +32,11 @@ main() {
     });
     expect(text, 'c');
   });
+
+  test('should complete contract with false if no listener', () async {
+    var result = await contract(MockBuildContext(), MockContract('c'));
+    expect(result, false);
+  });
 }
 
 class MockContract extends Contract {

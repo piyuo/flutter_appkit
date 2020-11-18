@@ -5,8 +5,8 @@ import 'package:libpb/pb.dart';
 import 'echo_request.pb.dart';
 import 'string_response.pb.dart';
 
-class MockService extends command.Service {
-  MockService()
+class SampleService extends command.Service {
+  SampleService()
       : super(
           serviceName: 'mock',
           timeout: 20000,

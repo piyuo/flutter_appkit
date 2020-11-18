@@ -19,7 +19,7 @@ using project libcli.code-workspace
 unit test
 
 ```bash
-flutter test lib
+flutter test  --enable-experiment=non-nullable --no-sound-null-safety lib
 ```
 
 debug test using vscode flutter extension

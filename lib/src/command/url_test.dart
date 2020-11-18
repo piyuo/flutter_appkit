@@ -26,15 +26,16 @@ void main() {
 
     test('should use beta url', () async {
       config.branch = config.BRANCH_BETA;
-      i18n.userPreferCountryCode = 'tw';
-      //tw using jp data center
+      i18n.userPreferCountryCode = 'TW';
+      serviceRegion = '';
+      //TW using JP data center
       expect(serviceUrl('mock'), 'https://mock-jp-beta.piyuo.com/?q');
     });
 
     test('should use service country', () async {
       config.branch = config.BRANCH_BETA;
-      i18n.userPreferCountryCode = 'tw';
-      serviceRegion = 'us';
+      i18n.userPreferCountryCode = 'TW';
+      serviceRegion = 'US';
       expect(serviceUrl('mock'), 'https://mock-us-beta.piyuo.com/?q');
     });
   });

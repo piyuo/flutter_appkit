@@ -101,7 +101,7 @@ broadcast(BuildContext context, dynamic event) {
   dispatch(context, event);
 }
 
-/// contract open by caller, need call back when job done
+/// contract open by caller, need call back when job done. if no listener complete event it will be complete by false
 ///
 ///     eventbus.listen<MockContract>((BuildContext ctx,event) {
 ///       event.complete(true);
@@ -114,6 +114,11 @@ Future<bool> contract(BuildContext context, Contract event) {
   latestContract = event;
   log('contract ${event.runtimeType}');
   dispatch(context, event);
+  if (!event.isCompleted) {
+    // no listener complete event
+    log('${COLOR_ALERT}caught no listener for ${event.runtimeType}');
+    event.complete(false);
+  }
   return event.future;
 }
 

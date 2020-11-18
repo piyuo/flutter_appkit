@@ -13,7 +13,7 @@ void main() {
   group('[asset]', () {
     test('should load string', () async {
       String text = await loadString(assetName: 'test/test.json');
-      expect(text, isNotNull);
+      expect(text, isNotEmpty);
       expect(text.indexOf('A'), greaterThan(0));
     });
 
@@ -22,14 +22,14 @@ void main() {
       mockAssetsByString('');
       String j = await loadJson(assetName: 'mock');
       var obj = json.decode(j);
-      expect(obj, isNotNull);
+      expect(obj is Map, true);
     });
 
     test('should load map', () async {
       // ignore: invalid_use_of_visible_for_testing_member
       mockAssetsByString('{}');
       Map map = await loadMap(assetName: '');
-      expect(map, isNotNull);
+      expect(map, isEmpty);
     });
 
     test('should load string in package', () async {

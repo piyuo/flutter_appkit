@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: string_response.proto
 //
-// @dart = 2.3
+// @dart = 2.12
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
 import 'dart:core' as $core;
@@ -28,14 +28,15 @@ class StringResponse extends ProtoObject {
       create()..mergeFromJson(i, r);
   StringResponse clone() => StringResponse()..mergeFromMessage(this);
   StringResponse copyWith(void Function(StringResponse) updates) =>
-      super.copyWith((message) => updates(message as StringResponse));
+      super.copyWith((message) => updates(message as StringResponse)) as StringResponse;
+
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static StringResponse create() => StringResponse._();
   StringResponse createEmptyInstance() => create();
   static $pb.PbList<StringResponse> createRepeated() => $pb.PbList<StringResponse>();
   static StringResponse getDefault() => _defaultInstance ??= create()..freeze();
-  static StringResponse _defaultInstance;
+  static StringResponse? _defaultInstance;
 
   $core.String get text => $_getS(0, '');
   set text($core.String v) {

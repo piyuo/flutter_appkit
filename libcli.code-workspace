@@ -33,8 +33,13 @@
             "src",
             "styl"
         ],
-        "dart.allowTestsOutsideTestFolder": true,
         "breadcrumbs.enabled": true,
+        "dart.allowTestsOutsideTestFolder": true,
+        "dart.flutterAdditionalArgs": [
+            "--enable-experiment=non-nullable",
+            "--no-sound-null-safety"
+        ],
+
         "editor.codeActionsOnSave": {
             "source.fixAll.tslint": true
         },
@@ -46,7 +51,6 @@
         "editor.formatOnType": true,
         "editor.formatOnPaste": true,
         "editor.formatOnSave": true,
-        "editor.formatOnSaveTimeout": 500,
         "editor.tabCompletion": "on",
         "files.trimFinalNewlines": true,
         "files.autoSaveDelay": 300000,

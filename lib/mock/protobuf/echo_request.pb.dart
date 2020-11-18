@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: echo_action.proto
 //
-// @dart = 2.3
+// @dart = 2.12
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
 import 'dart:core' as $core;
@@ -29,14 +29,15 @@ class EchoAction extends ProtoObject {
   factory EchoAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   EchoAction clone() => EchoAction()..mergeFromMessage(this);
-  EchoAction copyWith(void Function(EchoAction) updates) => super.copyWith((message) => updates(message as EchoAction));
+  EchoAction copyWith(void Function(EchoAction) updates) =>
+      super.copyWith((message) => updates(message as EchoAction)) as EchoAction;
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
   static EchoAction create() => EchoAction._();
   EchoAction createEmptyInstance() => create();
   static $pb.PbList<EchoAction> createRepeated() => $pb.PbList<EchoAction>();
   static EchoAction getDefault() => _defaultInstance ??= create()..freeze();
-  static EchoAction _defaultInstance;
+  static EchoAction? _defaultInstance;
 
   $core.String get text => $_getS(0, '');
   set text($core.String v) {

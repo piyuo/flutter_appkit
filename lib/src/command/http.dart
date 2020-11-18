@@ -11,52 +11,34 @@ import 'package:libcli/src/command/protobuf.dart';
 import 'package:libcli/src/command/service.dart';
 import 'package:libpb/pb.dart' as pb;
 
-///Request for reuest(),let test more easily
+///Request for post()
 class Request {
-  Service service;
-  http.Client client;
-  String url;
-  Uint8List bytes;
-  int timeout;
-  Future<bool> Function()? isInternetConnected;
-  Future<bool> Function()? isGoogleCloudFunctionAvailable;
+  final Service service;
+  final http.Client client;
+  final String url;
+  final pb.ProtoObject action;
+  Duration timeout;
+  Duration slow;
   Request({
     required this.service,
     required this.client,
     required this.url,
-    required this.bytes,
+    required this.action,
     required this.timeout,
-    this.isInternetConnected,
-    this.isGoogleCloudFunctionAvailable,
+    required this.slow,
   });
 }
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
 ///
-Future<pb.ProtoObject> post(
-  BuildContext ctx,
-  Service service,
-  http.Client client,
-  String url,
-  pb.ProtoObject obj,
-  int timeout,
-  int slow,
-) async {
+Future<pb.ProtoObject> post(BuildContext ctx, Request request) async {
   Completer<pb.ProtoObject> completer = new Completer<pb.ProtoObject>();
-  var timer = Timer(Duration(milliseconds: slow), () {
+  var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
       eventbus.broadcast(ctx, SlowNetworkEvent());
     }
   });
-  Uint8List bytes = encode(obj);
-  Request req = Request(
-    service: service,
-    client: client,
-    url: url,
-    bytes: bytes,
-    timeout: timeout,
-  );
-  doPost(ctx, req).then((response) {
+  doPost(ctx, request).then((response) {
     timer.cancel();
     completer.complete(response);
   });
@@ -76,7 +58,8 @@ Future<pb.ProtoObject> post(
 Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
   try {
     var headers = await doRequestHeaders();
-    var resp = await r.client.post(r.url, headers: headers, body: r.bytes).timeout(Duration(milliseconds: r.timeout));
+    Uint8List bytes = encode(r.action);
+    var resp = await r.client.post(r.url, headers: headers, body: bytes).timeout(r.timeout);
     await doResponseHeaders(resp.headers);
 
     if (resp.statusCode == 200) {
@@ -87,9 +70,9 @@ Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
     log('${COLOR_WARNING}caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
-        return giveup(context, InternalServerErrorEvent()); //body is err id
+        return await giveup(context, InternalServerErrorEvent()); //body is err id
       case 501: //the remote servie is not properly setup
-        return giveup(context, ServerNotReadyEvent()); //body is err id
+        return await giveup(context, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
         return await retry(
           context,
@@ -119,10 +102,10 @@ Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
           request: r,
         );
       case 400: //bad request
-        return giveup(context, BadRequestEvent()); //body is err id
+        return await giveup(context, BadRequestEvent()); //body is err id
     }
     //unknow status code
-    throw Exception('unknown status ' + msg);
+    throw Exception('unknown $msg');
   } on SocketException catch (e) {
     log('${COLOR_WARNING}failed to connect ${r.url} cause $e');
     return await retry(context, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
@@ -131,7 +114,6 @@ Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
     return await retry(context,
         contract: RequestTimeoutContract(isServer: false, exception: e, url: r.url), request: r);
   }
-
   //throw everything else
   //catch (e, s) {
   //handle exception here to get better stack trace
@@ -145,8 +127,9 @@ Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
 ///
 ///     commandHttp.giveup(ctx,BadRequestEvent());
 ///
-giveup(BuildContext ctx, dynamic e) {
+Future<pb.ProtoObject> giveup(BuildContext ctx, dynamic e) async {
   eventbus.broadcast(ctx, e);
+  return pb.ProtoObject.empty;
 }
 
 /// retry use contract, return empty proto object is contract failed

@@ -7,7 +7,7 @@ String baseDomain = 'piyuo.com';
 
 /// serviceRegion is set if service need tie to specify region, usually when user sign in and they need to to same region where they create the account
 ///
-String serviceRegion = 'US';
+String serviceRegion = '';
 
 /// serviceUrl return service url base on app.branch
 ///
@@ -18,8 +18,13 @@ String serviceUrl(String funcName) {
   if (branch == '-stable') {
     branch = '';
   }
+  String region = serviceRegion;
+  if (region.isEmpty) {
+    region = determineRegion();
+  }
+
   // add /?q query string to avoid cache by cloud flare
-  return 'https://$funcName-${serviceRegion.toLowerCase()}$branch.$baseDomain/?q';
+  return 'https://$funcName-${region.toLowerCase()}$branch.$baseDomain/?q';
 }
 
 /// determineRegion return datacenter region base on user prefer country in user locale

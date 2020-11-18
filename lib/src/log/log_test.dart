@@ -38,7 +38,7 @@ void main() {
       configuration.appID = 'piyuo-web-index';
       configuration.userID = '111-222';
       // ignore: invalid_use_of_visible_for_testing_member
-      expect(header, '111-222@piyuo-web-index/here: ');
+      expect(header, '111-222@piyuo-web-index:');
     });
 
     test('should beautify stack trace', () async {
