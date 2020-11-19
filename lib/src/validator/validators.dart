@@ -7,7 +7,10 @@ import 'package:libcli/i18n.dart';
 ///
 ///     String error = requiredValidator(nameField.value,title);
 ///
-String requiredValidator(String input, String title) {
+String? requiredValidator(String? input, String title) {
+  if (input == null) {
+    return null;
+  }
   return input.length > 0 ? '' : 'required'.i18n_.replaceAll('%1', title);
 }
 
@@ -18,12 +21,15 @@ String requiredValidator(String input, String title) {
 ///     RegExp regexp = RegExp(r"^[A-Za-z]");
 ///     String error = regexpValidator(nameField.value, regexp, 'title', 'A-z')
 ///
-String regexpValidator(
-  String input,
+String? regexpValidator(
+  String? input,
   RegExp regexp,
   String title,
   String example,
 ) {
+  if (input == null) {
+    return null;
+  }
   return regexp.hasMatch(input) ? '' : 'valid'.i18n_.replaceAll('%1', title).replaceAll('%2', example);
 }
 
@@ -40,7 +46,7 @@ RegExp emailRegexp() {
 ///
 ///     String error = emailValidator('johndoe@domain.com');
 ///
-String emailValidator(String input) {
+String? emailValidator(String? input) {
   return regexpValidator(
     input,
     emailRegexp(),
@@ -59,7 +65,7 @@ RegExp domainNameRegexp() {
 ///
 ///     String error = domainNameValidator('johndoe@domain.com');
 ///
-String domainNameValidator(String input) {
+String? domainNameValidator(String? input) {
   return regexpValidator(
     input,
     domainNameRegexp(),
@@ -78,7 +84,7 @@ RegExp subDomainNameRegexp() {
 ///
 ///     String error = domainNameValidator('johndoe@domain.com');
 ///
-String subDomainNameValidator(String input) {
+String? subDomainNameValidator(String? input) {
   return regexpValidator(
     input,
     subDomainNameRegexp(),
@@ -97,7 +103,7 @@ RegExp noSymbolRegexp() {
 ///
 ///     String error = domainNameValidator('johndoe@domain.com');
 ///
-String noSymbolValidator(String input) {
+String? noSymbolValidator(String? input) {
   return regexpValidator(
     input,
     noSymbolRegexp(),
@@ -116,7 +122,7 @@ RegExp urlRegexp() {
 ///
 ///     String error = urlValidator('http://www.g.com');
 ///
-String urlValidator(String input) {
+String? urlValidator(String? input) {
   return regexpValidator(
     input,
     urlRegexp(),
