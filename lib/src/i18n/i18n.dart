@@ -91,9 +91,9 @@ bool isSupportedLocale(Locale locale) {
 ///
 /// The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
 ///
-Locale determineLocale(List<Locale> locales) {
+Locale determineLocale(List<Locale>? locales) {
   Locale bestLocale = Locale('en', 'US');
-  if (locales.length > 0) {
+  if (locales != null && locales.length > 0) {
     bestLocale = locales[0];
     userPreferCountryCode = bestLocale.countryCode ?? 'US';
     for (var locale in locales) {
