@@ -78,7 +78,7 @@ void log(String message) {
 ///       error( e, s);
 ///     }
 ///
-void error(dynamic e, StackTrace stacktrace) {
+void error(dynamic e, StackTrace? stacktrace) {
   String message = '';
   try {
     message = e.toString().replaceAll('Exception: ', '');
@@ -86,7 +86,7 @@ void error(dynamic e, StackTrace stacktrace) {
     message = e.runtimeType.toString();
   }
   var out = '$COLOR_BLUE$header$COLOR_END ${COLOR_ALERT}caught $message';
-  String stack = beautyStack(stacktrace);
+  String stack = stacktrace == null ? '' : beautyStack(stacktrace);
   if (stack.isNotEmpty) {
     out += '\n$stack';
   }
