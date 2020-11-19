@@ -17,9 +17,19 @@ Future<SharedPreferences> _get() async {
   return _instance;
 }
 
-/// getBool return boolean value from prefences
+/// remove value from preferences
 ///
-///     var result = await data.getBool('k');
+///     var result = await pref.remove('k');
+///
+Future<bool> remove(String key) async {
+  assert(key.length > 0);
+  log('${COLOR_STATE}remove $key');
+  return (await _get()).remove(key);
+}
+
+/// getBool return boolean value from preferences
+///
+///     var result = await pref.getBool('k');
 ///
 Future<bool> getBool(String key) async {
   assert(key.length > 0);
@@ -28,9 +38,9 @@ Future<bool> getBool(String key) async {
   return value;
 }
 
-/// setBool set boolean value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// setBool set boolean value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setBool('k',true);
+///     await pref.setBool('k',true);
 ///
 setBool(String key, bool value) async {
   assert(key.length > 0);
@@ -41,9 +51,9 @@ setBool(String key, bool value) async {
   }
 }
 
-/// getInt return int value from prefences
+/// getInt return int value from preferences
 ///
-///     var result = await data.getInt('k');
+///     var result = await pref.getInt('k');
 ///
 Future<int> getInt(String key) async {
   assert(key.length > 0);
@@ -52,9 +62,9 @@ Future<int> getInt(String key) async {
   return value;
 }
 
-/// setInt set int value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// setInt set int value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setInt('k',1);
+///     await pref.setInt('k',1);
 ///
 setInt(String key, int value) async {
   assert(key.length > 0);
@@ -65,9 +75,9 @@ setInt(String key, int value) async {
   }
 }
 
-/// getDouble return double value from prefences
+/// getDouble return double value from preferences
 ///
-///     var result = await data.getDouble('k');
+///     var result = await pref.getDouble('k');
 ///
 Future<double> getDouble(String key) async {
   assert(key.length > 0);
@@ -76,9 +86,9 @@ Future<double> getDouble(String key) async {
   return value;
 }
 
-/// setDouble set double value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// setDouble set double value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setDouble('k',1);
+///     await pref.setDouble('k',1);
 ///
 setDouble(String key, double value) async {
   assert(key.length > 0);
@@ -89,9 +99,9 @@ setDouble(String key, double value) async {
   }
 }
 
-/// getString return string value from prefences
+/// getString return string value from preferences
 ///
-///     var result = await data.getString('k');
+///     var result = await pref.getString('k');
 ///
 Future<String> getString(String key) async {
   assert(key.length > 0);
@@ -100,9 +110,9 @@ Future<String> getString(String key) async {
   return value;
 }
 
-/// setString set string value to prefences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// setString set string value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setString('k','value');
+///     await pref.setString('k','value');
 ///
 setString(String key, String value) async {
   assert(key.length > 0);
@@ -113,9 +123,9 @@ setString(String key, String value) async {
   }
 }
 
-/// getDateTime return datetime value from prefences. return 1970/01/01 Epoch if not exist
+/// getDateTime return datetime value from preferences. return 1970/01/01 Epoch if not exist
 ///
-///     var result = await data.getString('k');
+///     var result = await pref.getString('k');
 ///
 Future<DateTime> getDateTime(String key) async {
   var value = await getString(key);
@@ -127,7 +137,7 @@ Future<DateTime> getDateTime(String key) async {
 
 /// setDateTime set datatime value to preference, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setString('k','value');
+///     await pref.setString('k','value');
 ///
 setDateTime(String key, DateTime value) async {
   assert(key.length > 0);
@@ -139,7 +149,7 @@ setDateTime(String key, DateTime value) async {
 
 /// getStringList return string list from data
 ///
-///     var result = await data.getStringList('k');
+///     var result = await pref.getStringList('k');
 ///
 Future<List<String>> getStringList(String key) async {
   assert(key.length > 0);
@@ -150,7 +160,7 @@ Future<List<String>> getStringList(String key) async {
 
 /// setStringList set string list to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setStringList('k',list);
+///     await pref.setStringList('k',list);
 ///
 setStringList(String key, List<String> value) async {
   assert(key.length > 0);
@@ -163,7 +173,7 @@ setStringList(String key, List<String> value) async {
 
 /// getMap return map from data
 ///
-///     var result = await data.getMap('k');
+///     var result = await pref.getMap('k');
 ///
 Future<Map<String, dynamic>> getMap(String key) async {
   var j = await getString(key);
@@ -172,7 +182,7 @@ Future<Map<String, dynamic>> getMap(String key) async {
 
 /// setMap set string map to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await data.setMap('k',map);
+///     await pref.setMap('k',map);
 ///
 Future<void> setMap(String key, Map<String, dynamic> map) async {
   String j = json.encode(map);
@@ -181,7 +191,7 @@ Future<void> setMap(String key, Map<String, dynamic> map) async {
 
 /// mockPrefs Initializes the value for testing
 ///
-///     data.mockPrefs({});
+///     pref.mockPrefs({});
 ///
 @visibleForTesting
 void mockPrefs(Map<String, dynamic> values) {

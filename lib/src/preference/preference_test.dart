@@ -7,6 +7,16 @@ void main() {
   setUp(() async {});
 
   group('[preference]', () {
+    test('should remove', () async {
+      await preferences.setBool('k', true);
+      var result = await preferences.getBool('k');
+      expect(result, true);
+
+      await preferences.remove('k');
+      result = await preferences.getBool('k');
+      expect(result, false);
+    });
+
     test('should get/set bool', () async {
       await preferences.setBool('k', true);
       var result = await preferences.getBool('k');
