@@ -39,9 +39,9 @@ class I18nProvider extends AsyncProvider {
 
 /// getTranslation load translation from assets/i18n
 ///
-Future<Map> getTranslation({
-  required String fileName,
-  String? package,
-}) async {
+Future<Map> getTranslation({required String fileName, String? package}) async {
+  if (fileName.isEmpty) {
+    return {};
+  }
   return await asset.loadMap(assetName: 'i18n/${fileName}_${localeID}.json', package: package);
 }

@@ -15,8 +15,13 @@ void main() {
   group('[i18n-provider]', () {
     test('should getTranslation', () async {
       var translation = await getTranslation(fileName: 'any');
-      expect(translation, isNotNull);
+      expect(translation.isEmpty, false);
       expect(translation['a'], 'A');
+    });
+
+    test('should get empty map when filename is empty', () async {
+      var translation = await getTranslation(fileName: '');
+      expect(translation.isEmpty, true);
     });
 
     testWidgets('should load', (WidgetTester tester) async {
