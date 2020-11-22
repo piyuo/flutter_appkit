@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'package:libcli/i18n.dart';
 
-/// requiredValidator validate input string, return error message when input is empty, return empty is no error
+/// requiredValidator validate input string, return error message when input is empty, return null if no error
 ///
 ///  use title to set error message title
 ///
@@ -11,10 +11,10 @@ String? requiredValidator(String? input, String title) {
   if (input == null) {
     return null;
   }
-  return input.length > 0 ? '' : 'required'.i18n_.replaceAll('%1', title);
+  return input.length > 0 ? null : 'required'.i18n_.replaceAll('%1', title);
 }
 
-/// regexpValidator validate input string using regex, return error message when input not valid, other return null
+/// regexpValidator validate input string using regex, return error message when input not valid, otherwise return null
 ///
 ///  use  title and example to set proper error message
 ///
@@ -30,7 +30,7 @@ String? regexpValidator(
   if (input == null) {
     return null;
   }
-  return regexp.hasMatch(input) ? '' : 'valid'.i18n_.replaceAll('%1', title).replaceAll('%2', example);
+  return regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', title).replaceAll('%2', example);
 }
 
 /// emailRegexp regexp use to validate email

@@ -14,7 +14,7 @@ void main() {
       String? error = validator.requiredValidator('', 'title');
       expect(error, isNotEmpty);
       error = validator.requiredValidator('has value', 'title');
-      expect(error, isEmpty);
+      expect(error, isNull);
     });
 
     test('should validate using regex', () async {
@@ -22,28 +22,28 @@ void main() {
       String? error = validator.regexpValidator('1', regexp, 'title', 'A-z');
       expect(error, isNotEmpty);
       error = validator.regexpValidator('A', regexp, 'title', 'A-z');
-      expect(error, isEmpty);
+      expect(error, isNull);
     });
 
     test('should validate email', () async {
       String? error = validator.emailValidator('1');
       expect(error, isNotEmpty);
       error = validator.emailValidator('johndoe@domain.com');
-      expect(error, isEmpty);
+      expect(error, isNull);
     });
 
     test('should validate domain name', () async {
       String? error = validator.domainNameValidator('a');
       expect(error, isNotEmpty);
       error = validator.domainNameValidator('www.g.com');
-      expect(error, isEmpty);
+      expect(error, isNull);
     });
 
     test('should validate sub domain name', () async {
       String? error = validator.subDomainNameValidator('a');
-      expect(error, isEmpty);
+      expect(error, isNull);
       error = validator.subDomainNameValidator('ab-cde');
-      expect(error, isEmpty);
+      expect(error, isNull);
       error = validator.subDomainNameValidator('ab_cde');
       expect(error, isNotEmpty);
       error = validator.subDomainNameValidator('www.g.com');
@@ -55,16 +55,16 @@ void main() {
       error = validator.subDomainNameValidator('中');
       expect(error, isNotEmpty);
       error = validator.subDomainNameValidator('123');
-      expect(error, isEmpty);
+      expect(error, isNull);
     });
 
     test('should validate name', () async {
       String? error = validator.noSymbolValidator('abcde');
-      expect(error, isEmpty);
+      expect(error, isNull);
       error = validator.noSymbolValidator('ab cde');
-      expect(error, isEmpty);
+      expect(error, isNull);
       error = validator.noSymbolValidator('中文');
-      expect(error, isEmpty);
+      expect(error, isNull);
       error = validator.noSymbolValidator('!abcde');
       expect(error, isNotEmpty);
       error = validator.noSymbolValidator('www.g.com');
@@ -72,9 +72,9 @@ void main() {
       error = validator.noSymbolValidator('a@');
       expect(error, isNotEmpty);
       error = validator.noSymbolValidator('中1');
-      expect(error, isEmpty);
+      expect(error, isNull);
       error = validator.noSymbolValidator('123');
-      expect(error, isEmpty);
+      expect(error, isNull);
       error = validator.noSymbolValidator('-');
       expect(error, isNotEmpty);
       error = validator.noSymbolValidator('=');
@@ -91,7 +91,7 @@ void main() {
       String? error = validator.urlValidator('www.g.com');
       expect(error, isNotEmpty);
       error = validator.urlValidator('http://www.ggg.com');
-      expect(error, isEmpty);
+      expect(error, isNull);
     });
   });
 }
