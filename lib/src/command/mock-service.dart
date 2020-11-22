@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/command.dart';
 import 'package:mockito/mockito.dart';
 import 'package:libpb/pb.dart' as pb;
-import 'package:libcli/mock/protobuf/echo_request.pbserver.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
