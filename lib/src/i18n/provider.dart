@@ -39,7 +39,6 @@ class I18nProvider extends AsyncProvider {
 
 /// getTranslation load translation from assets/i18n
 ///
-@visibleForTesting
 Future<Map> getTranslation({
   required String fileName,
   String? package,
