@@ -10,11 +10,15 @@ import 'package:libcli/i18n.dart';
 String? requiredValidator({
   String? input,
   required String label,
+  bool enterYour: false,
   int minLength = 0,
   int maxLength = 65535,
 }) {
   assert(minLength < maxLength, 'minLength($minLength) must small than maxLength($maxLength)');
   if (input == null || input.isEmpty) {
+    if (enterYour) {
+      return 'enterYour'.i18n_.replaceAll('%1', label);
+    }
     return 'required'.i18n_.replaceAll('%1', label);
   }
   if (input.length < minLength) {
