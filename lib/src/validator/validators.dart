@@ -7,11 +7,23 @@ import 'package:libcli/i18n.dart';
 ///
 ///     String error = requiredValidator(nameField.value,title);
 ///
-String? requiredValidator(String? input, String title) {
-  if (input == null) {
-    return null;
+String? requiredValidator({
+  String? input,
+  required String label,
+  int minLength = 0,
+  int maxLength = 65535,
+}) {
+  assert(minLength < maxLength, 'minLength($minLength) must small than maxLength($maxLength)');
+  if (input == null || input.isEmpty) {
+    return 'required'.i18n_.replaceAll('%1', label);
   }
-  return input.length > 0 ? null : 'required'.i18n_.replaceAll('%1', title);
+  if (input.length < minLength) {
+    return 'minLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$minLength').replaceAll('%3', '${input.length}');
+  }
+  if (input.length > maxLength) {
+    return 'maxLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$maxLength').replaceAll('%3', '${input.length}');
+  }
+  return null;
 }
 
 /// regexpValidator validate input string using regex, return error message when input not valid, otherwise return null
@@ -21,16 +33,16 @@ String? requiredValidator(String? input, String title) {
 ///     RegExp regexp = RegExp(r"^[A-Za-z]");
 ///     String error = regexpValidator(nameField.value, regexp, 'title', 'A-z')
 ///
-String? regexpValidator(
+String? regexpValidator({
   String? input,
-  RegExp regexp,
-  String title,
-  String example,
-) {
+  required RegExp regexp,
+  required String label,
+  required String example,
+}) {
   if (input == null) {
     return null;
   }
-  return regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', title).replaceAll('%2', example);
+  return regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', label).replaceAll('%2', example);
 }
 
 /// emailRegexp regexp use to validate email
@@ -48,10 +60,10 @@ RegExp emailRegexp() {
 ///
 String? emailValidator(String? input) {
   return regexpValidator(
-    input,
-    emailRegexp(),
-    'emailAdr'.i18n_,
-    'johndoe@domain.com',
+    input: input,
+    regexp: emailRegexp(),
+    label: 'emailAdr'.i18n_,
+    example: 'johndoe@domain.com',
   );
 }
 
@@ -67,10 +79,10 @@ RegExp domainNameRegexp() {
 ///
 String? domainNameValidator(String? input) {
   return regexpValidator(
-    input,
-    domainNameRegexp(),
-    'domain'.i18n_,
-    'www.domain.com',
+    input: input,
+    regexp: domainNameRegexp(),
+    label: 'domain'.i18n_,
+    example: 'www.domain.com',
   );
 }
 
@@ -86,10 +98,10 @@ RegExp subDomainNameRegexp() {
 ///
 String? subDomainNameValidator(String? input) {
   return regexpValidator(
-    input,
-    subDomainNameRegexp(),
-    'domain'.i18n_,
-    'your-name',
+    input: input,
+    regexp: subDomainNameRegexp(),
+    label: 'domain'.i18n_,
+    example: 'your-name',
   );
 }
 
@@ -105,10 +117,10 @@ RegExp noSymbolRegexp() {
 ///
 String? noSymbolValidator(String? input) {
   return regexpValidator(
-    input,
-    noSymbolRegexp(),
-    'domain'.i18n_,
-    'your-name',
+    input: input,
+    regexp: noSymbolRegexp(),
+    label: 'domain'.i18n_,
+    example: 'your-name',
   );
 }
 
@@ -124,9 +136,9 @@ RegExp urlRegexp() {
 ///
 String? urlValidator(String? input) {
   return regexpValidator(
-    input,
-    urlRegexp(),
-    'url'.i18n_,
-    'http://www.domain.com',
+    input: input,
+    regexp: urlRegexp(),
+    label: 'url'.i18n_,
+    example: 'http://www.domain.com',
   );
 }

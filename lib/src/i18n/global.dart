@@ -52,7 +52,8 @@ void _en_US() {
   _global['domain'] = 'domain name';
   _global['url'] = 'url';
   _global['enterYour'] = 'Enter your %1';
-  _global['minLenth'] = '%1 must contain at least %2 character';
+  _global['minLenth'] = '%1 must contain at least %2 character. You entered %3 characters';
+  _global['maxLenth'] = '%1 must be %2 characters or fewer. You entered %3 characters';
 }
 
 void _zh_TW() {
@@ -73,7 +74,8 @@ void _zh_TW() {
   _global['domain'] = '域名';
   _global['url'] = '網址';
   _global['enterYour'] = '輸入你的%1';
-  _global['minLenth'] = '%1必須至少包含 %2 個字元';
+  _global['minLenth'] = '%1必須至少包含 %2 個字元. 你輸入了 %3 個字元';
+  _global['maxLenth'] = '%1必須是%2個或更少字元. 你輸入了 %3 個字元';
 }
 
 void _zh_CN() {
@@ -94,5 +96,6 @@ void _zh_CN() {
   _global['domain'] = '域名';
   _global['url'] = '网址';
   _global['enterYour'] = '输入你的%1';
-  _global['minLenth'] = '%1必须至少包含 %2 个字元';
+  _global['minLenth'] = '%1必须至少包含 %2 个字元. 您输入了 %3 个字元';
+  _global['maxLenth'] = '%1必须是%2个或更少字元. 您输入了 %3 个字元';
 }

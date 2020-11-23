@@ -5,23 +5,33 @@ void main() {
   setUp(() async {});
 
   group('[validators]', () {
-    test('should return null if input is null', () async {
-      String? error = validator.requiredValidator(null, 'title');
-      expect(error, isNull);
-    });
-
-    test('should validate string is empty', () async {
-      String? error = validator.requiredValidator('', 'title');
+    test('should check input is required', () async {
+      //show error on null input
+      String? error = validator.requiredValidator(input: null, label: 'title');
       expect(error, isNotEmpty);
-      error = validator.requiredValidator('has value', 'title');
+
+      //show error on empty input
+      error = validator.requiredValidator(input: '', label: 'title');
+      expect(error, isNotEmpty);
+
+      //show error on input no have min length
+      error = validator.requiredValidator(input: '1', label: 'title', minLength: 3);
+      expect(error, isNotEmpty);
+
+      //show error on input over max length
+      error = validator.requiredValidator(input: '1234', label: 'title', maxLength: 3);
+      expect(error, isNotEmpty);
+
+      //no error
+      error = validator.requiredValidator(input: '1234', label: 'title', minLength: 3, maxLength: 5);
       expect(error, isNull);
     });
 
     test('should validate using regex', () async {
       RegExp regexp = RegExp(r"^[A-Za-z]");
-      String? error = validator.regexpValidator('1', regexp, 'title', 'A-z');
+      String? error = validator.regexpValidator(input: '1', regexp: regexp, label: 'title', example: 'A-z');
       expect(error, isNotEmpty);
-      error = validator.regexpValidator('A', regexp, 'title', 'A-z');
+      error = validator.regexpValidator(input: 'A', regexp: regexp, label: 'title', example: 'A-z');
       expect(error, isNull);
     });
 
