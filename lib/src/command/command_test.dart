@@ -66,18 +66,6 @@ void main() {
       }
     });
 
-    test('should execute set state', () async {
-      var service = MockService()
-        ..mockExecute = (ctx, action) async {
-          return StringResponse()..text = 'hi';
-        };
-
-      EchoAction action = new EchoAction();
-      Map state = Map();
-      await service.execute(MockBuildContext(), action, state: state);
-      expect(state['err'], '');
-    });
-
     test('should use shared object', () async {
       var service = MockService()
         ..mockExecute = (ctx, action) async {
@@ -93,19 +81,6 @@ void main() {
       MockService service = MockService();
       service.debugPort = 3001;
       expect(service.url, 'http://localhost:3001');
-    });
-
-    test('should set err state', () async {
-      Map map = {};
-
-      command.setErrState(map, command.error(''));
-      expect(map['err'], isEmpty);
-
-      command.setErrState(map, command.error('test'));
-      expect(map['err'], 'test');
-
-      command.setErrState(map, null);
-      expect(map['err'], isNull);
     });
   });
 }

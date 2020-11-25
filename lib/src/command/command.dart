@@ -26,19 +26,6 @@ PbError error(String errorCode) {
   return PbError()..code = errorCode;
 }
 
-/// setErrState set state['err'], null if response is null, '' if response is not null,'error code' if response is err code
-///
-void setErrState(Map state, ProtoObject? response) {
-  if (response == null) {
-    state['err'] = null;
-    return;
-  }
-  state['err'] = '';
-  if (response is PbError) {
-    state['err'] = response.code;
-  }
-}
-
 /// newPbString return shared text object
 ///
 PbString newPbString(String value) {
