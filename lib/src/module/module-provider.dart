@@ -44,12 +44,21 @@ class ModuleProvider extends ChangeNotifier {
   }
 }
 
-void switchView(BuildContext context, Widget widget) {
+void switchView(
+  BuildContext context,
+  Widget widget, {
+  bool replace = false,
+}) {
   final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
-  Navigator.of(context)!.push(CupertinoPageRoute(
+  final route = CupertinoPageRoute(
     builder: (ctx) => Provider.value(
       value: moduleProvider,
       builder: (context, child) => widget,
     ),
-  ));
+  );
+  if (replace) {
+    Navigator.of(context)!.pushReplacement(route);
+    return;
+  }
+  Navigator.of(context)!.push(route);
 }
