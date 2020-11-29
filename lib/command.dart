@@ -1,7 +1,6 @@
 library command;
 
 export 'package:libcli/src/command/service.dart';
-export 'package:libcli/src/command/command.dart';
 export 'package:libcli/src/command/http.dart';
 export 'package:libcli/src/command/protobuf.dart';
 export 'package:libcli/src/command/url.dart';
