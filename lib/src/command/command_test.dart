@@ -10,9 +10,6 @@ import 'package:libcli/mock/protobuf/sample_service.pb.dart';
 import 'package:libpb/pb.dart' as pb;
 
 void main() {
-  // ignore: invalid_use_of_visible_for_testing_member
-  command.mockCommand();
-
   setUp(() {});
 
   group('[command]', () {

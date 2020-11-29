@@ -8,7 +8,7 @@ import 'package:libpb/pb.dart' as pb;
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
-typedef Future<pb.ProtoObject> MockExecute(BuildContext ctx, pb.ProtoObject obj);
+typedef Future<pb.PbObject> MockExecute(BuildContext ctx, pb.PbObject obj);
 
 /// MockService let you mock service with your own execute function
 ///
@@ -16,7 +16,7 @@ class MockService extends Service {
   /// mockExecute mock execute function
   ///
   MockExecute mockExecute = (_, action) async {
-    return ok();
+    return pb.PbOK();
   };
 
   MockService()
@@ -27,12 +27,12 @@ class MockService extends Service {
         );
 
   @override
-  pb.ProtoObject newObjectByID(int id, List<int> l) {
-    return ok();
+  pb.PbObject newObjectByID(int id, List<int> l) {
+    return pb.PbOK();
   }
 
   @override
-  Future<pb.ProtoObject> execute(BuildContext ctx, pb.ProtoObject obj) async {
+  Future<pb.PbObject> execute(BuildContext ctx, pb.PbObject obj) async {
     return await mockExecute(ctx, obj);
   }
 }

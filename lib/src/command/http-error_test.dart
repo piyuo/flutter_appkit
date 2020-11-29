@@ -8,8 +8,6 @@ import 'package:libpb/pb.dart' as pb;
 import 'package:libcli/src/command/mock-service.dart';
 
 void main() {
-  // ignore: invalid_use_of_visible_for_testing_member
-  mockCommand();
   var contract;
 
   setUp(() async {

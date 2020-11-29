@@ -12,7 +12,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libpb/pb.dart';
 
-class EchoAction extends ProtoObject {
+class EchoAction extends PbObject {
   $core.int mapIdXXX() {
     return 9001;
   }

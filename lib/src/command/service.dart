@@ -5,7 +5,19 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
 import 'package:libcli/command.dart';
 import 'package:libpb/pb.dart' as pb;
+//import 'package:libcli/preference.dart' as preference;
 
+/*
+/// mockCommand Initializes the value for testing
+///
+///     command.mockCommand({});
+///
+@visibleForTesting
+void mockCommand() {
+  // ignore:invalid_use_of_visible_for_testing_member
+  preference.mockPrefs({});
+}
+*/
 /// communicate with server with command using ajax,protobuf and command pattern
 /// simplefy the network call to request and response
 ///
@@ -41,7 +53,7 @@ abstract class Service {
 
   /// find object by id
   ///
-  pb.ProtoObject newObjectByID(int id, List<int> bytes);
+  pb.PbObject newObjectByID(int id, List<int> bytes);
 
   /// url return remote service url
   ///
@@ -60,7 +72,7 @@ abstract class Service {
   ///
   ///     var response = await service.execute(EchoAction());
   ///
-  Future<pb.ProtoObject> execute(BuildContext ctx, pb.ProtoObject obj) async {
+  Future<pb.PbObject> execute(BuildContext ctx, pb.PbObject obj) async {
     http.Client client = http.Client();
     return await executeWithClient(ctx, obj, client);
   }
@@ -69,10 +81,10 @@ abstract class Service {
   ///
   ///     var response = await service.executehWithClient(client, EchoAction());
   ///
-  Future<pb.ProtoObject> executeWithClient(BuildContext context, pb.ProtoObject obj, http.Client client) async {
+  Future<pb.PbObject> executeWithClient(BuildContext context, pb.PbObject obj, http.Client client) async {
     var jsonSent = toLogString(obj);
     log('${COLOR_STATE}send ${obj.runtimeType}{$jsonSent}${COLOR_END} to $url');
-    pb.ProtoObject returnObj = await post(
+    pb.PbObject returnObj = await post(
         context,
         Request(
           service: this,

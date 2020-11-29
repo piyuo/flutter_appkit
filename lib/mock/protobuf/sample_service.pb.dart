@@ -14,7 +14,7 @@ class SampleService extends command.Service {
         );
 
   @override
-  ProtoObject newObjectByID(int id, List<int> l) {
+  PbObject newObjectByID(int id, List<int> l) {
     switch (id) {
       case 9001:
         return EchoAction.fromBuffer(l);

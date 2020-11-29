@@ -11,7 +11,7 @@ import 'package:libpb/pb.dart';
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class StringResponse extends ProtoObject {
+class StringResponse extends PbObject {
   $core.int mapIdXXX() {
     return 1002;
   }

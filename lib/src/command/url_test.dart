@@ -4,8 +4,6 @@ import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/app.dart' as config;
 
 void main() {
-  // ignore: invalid_use_of_visible_for_testing_member
-  mockCommand();
   group('[command_url_test]', () {
     test('should use defult url', () async {
       config.branch = config.BRANCH_MASTER;

@@ -9,8 +9,6 @@ import 'package:libcli/src/command/mock-service.dart';
 import 'package:libpb/pb.dart' as pb;
 
 void main() {
-  // ignore: invalid_use_of_visible_for_testing_member
-  mockCommand();
   var contractHappening;
   var eventHappening;
 
@@ -32,7 +30,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(200));
         var obj = await doPost(ctx, req);
-        expect(isOK(obj), true);
+        expect(obj is pb.PbOK, true);
       });
     });
 

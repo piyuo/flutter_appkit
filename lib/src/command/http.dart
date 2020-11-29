@@ -16,7 +16,7 @@ class Request {
   final Service service;
   final http.Client client;
   final String url;
-  final pb.ProtoObject action;
+  final pb.PbObject action;
   Duration timeout;
   Duration slow;
   Request({
@@ -31,8 +31,8 @@ class Request {
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
 ///
-Future<pb.ProtoObject> post(BuildContext ctx, Request request) async {
-  Completer<pb.ProtoObject> completer = new Completer<pb.ProtoObject>();
+Future<pb.PbObject> post(BuildContext ctx, Request request) async {
+  Completer<pb.PbObject> completer = new Completer<pb.PbObject>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
       eventbus.broadcast(ctx, SlowNetworkEvent());
@@ -55,7 +55,7 @@ Future<pb.ProtoObject> post(BuildContext ctx, Request request) async {
 ///     req.timeout = 9000;
 ///     var bytes = await commandHttp.doPost(req);
 ///
-Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
+Future<pb.PbObject> doPost(BuildContext context, Request r) async {
   try {
     var headers = await doRequestHeaders();
     Uint8List bytes = encode(r.action);
@@ -127,16 +127,16 @@ Future<pb.ProtoObject> doPost(BuildContext context, Request r) async {
 ///
 ///     commandHttp.giveup(ctx,BadRequestEvent());
 ///
-Future<pb.ProtoObject> giveup(BuildContext ctx, dynamic e) async {
+Future<pb.PbObject> giveup(BuildContext ctx, dynamic e) async {
   eventbus.broadcast(ctx, e);
-  return pb.ProtoObject.empty;
+  return pb.PbObject.empty;
 }
 
 /// retry use contract, return empty proto object is contract failed
 ///
 ///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 ///
-Future<pb.ProtoObject> retry(
+Future<pb.PbObject> retry(
   BuildContext context, {
   required eventbus.Contract contract,
   required Request request,
@@ -145,5 +145,5 @@ Future<pb.ProtoObject> retry(
     log('try again');
     return await doPost(context, request);
   }
-  return pb.ProtoObject.empty;
+  return pb.PbObject.empty;
 }
