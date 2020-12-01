@@ -39,8 +39,9 @@ class ModuleProvider extends ChangeNotifier {
   ///
   ///     provider.dispatch(context,Increment(1));
   ///
-  Future<void> dispatch(BuildContext context, dynamic action) async {
+  Future<Map> dispatch(BuildContext context, dynamic action) async {
     await redux.dispatch(context, action);
+    return redux.state;
   }
 }
 
