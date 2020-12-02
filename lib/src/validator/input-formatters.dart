@@ -10,7 +10,7 @@ TextEditingValue currencyFormatter(TextEditingValue oldValue, TextEditingValue n
     return newValue;
   }
   double value = double.parse(newValue.text);
-  final formatter = NumberFormat.simpleCurrency(locale: localeID);
+  final formatter = NumberFormat.simpleCurrency(locale: currentLocaleID);
   String newText = formatter.format(value);
   return newValue.copyWith(text: newText, selection: new TextSelection.collapsed(offset: newText.length));
 //      selection: new TextSelection.collapsed());

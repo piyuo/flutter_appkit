@@ -29,7 +29,7 @@ class I18nProvider extends AsyncProvider {
       if (kReleaseMode) {
         return key;
       } else {
-        log('${COLOR_ALERT}missing $key in assets/i18n/${fileName}_${localeID}.json');
+        log('${COLOR_ALERT}missing $key in assets/i18n/${fileName}_${currentLocaleID}.json');
         return '!!! $key not found';
       }
     }
@@ -43,5 +43,5 @@ Future<Map> getTranslation({required String fileName, String? package}) async {
   if (fileName.isEmpty) {
     return {};
   }
-  return await asset.loadMap(assetName: 'i18n/${fileName}_${localeID}.json', package: package);
+  return await asset.loadMap(assetName: 'i18n/${fileName}_${currentLocaleID}.json', package: package);
 }

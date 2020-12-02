@@ -20,7 +20,7 @@ String globalTranslate(String key) {
 ///
 Future<void> reloadGlobalTranslation(String languageCode, String countryCode) async {
   _global.clear();
-  switch (i18n.localeID) {
+  switch (i18n.currentLocaleID) {
     case i18n.zh_TW:
       _zh_TW();
       break;
@@ -31,7 +31,7 @@ Future<void> reloadGlobalTranslation(String languageCode, String countryCode) as
       _en_US();
       break;
   }
-  log('globalTranslation=${i18n.localeID}');
+  log('globalTranslation=${i18n.currentLocaleID}');
 }
 
 void _en_US() {

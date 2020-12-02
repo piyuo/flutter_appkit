@@ -15,7 +15,7 @@ class DocProvider extends AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
     md = await asset.loadString(
-      assetName: 'docs/${docName}_${localeID}.md',
+      assetName: 'docs/${docName}_${currentLocaleID}.md',
     );
   }
 }

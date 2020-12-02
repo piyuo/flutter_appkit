@@ -49,11 +49,11 @@ get currentLanguageCode => currentLocale.languageCode;
 
 get currentCountryCode => currentLocale.countryCode;
 
-get localeID => localeToId(currentLocale);
+get currentLocaleID => localeToId(currentLocale);
 
 set locale(Locale locale) {
   _locale = locale;
-  log('${COLOR_STATE}set locale=$localeID');
+  log('${COLOR_STATE}set locale=$currentLocaleID');
 }
 
 /// localeToId convert Locale(''en,'US') to 'en_US'
@@ -147,7 +147,7 @@ extension Localization on String {
 /// withLocale run function in Intl zone
 ///
 withLocale(Function() function) {
-  Intl.withLocale(localeID, function);
+  Intl.withLocale(currentLocaleID, function);
 }
 
 /// timeToStr convert hour and minute to local string
