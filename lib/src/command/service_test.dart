@@ -7,7 +7,7 @@ import 'package:libcli/src/command/mock-service.dart';
 import 'package:libcli/mock/protobuf/string_response.pbserver.dart';
 import 'package:libcli/mock/protobuf/echo_request.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
-import 'package:libpb/pb.dart' as pb;
+import 'package:libpb/pb.dart';
 
 void main() {
   setUp(() {});
@@ -34,7 +34,7 @@ void main() {
       });
       MockService service = MockService();
       var response = await service.executeWithClient(MockBuildContext(), EchoAction(), client);
-      expect(response is pb.PbEmpty, true);
+      expect(response is PbEmpty, true);
     });
 
     test('should return null when send wrong action to test server', () async {

@@ -4,11 +4,11 @@ import 'package:http/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/command.dart';
 import 'package:mockito/mockito.dart';
-import 'package:libpb/pb.dart' as pb;
+import 'package:libpb/pb.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
-typedef Future<pb.PbObject> MockExecute(BuildContext ctx, pb.PbObject obj);
+typedef Future<PbObject> MockExecute(BuildContext ctx, PbObject obj);
 
 /// MockService let you mock service with your own execute function
 ///
@@ -16,7 +16,7 @@ class MockService extends Service {
   /// mockExecute mock execute function
   ///
   MockExecute mockExecute = (_, action) async {
-    return pb.PbOK();
+    return PbOK();
   };
 
   MockService()
@@ -27,12 +27,12 @@ class MockService extends Service {
         );
 
   @override
-  pb.PbObject newObjectByID(int id, List<int> l) {
-    return pb.PbOK();
+  PbObject newObjectByID(int id, List<int> l) {
+    return PbOK();
   }
 
   @override
-  Future<pb.PbObject> execute(BuildContext ctx, pb.PbObject obj) async {
+  Future<PbObject> execute(BuildContext ctx, PbObject obj) async {
     return await mockExecute(ctx, obj);
   }
 }
@@ -44,7 +44,7 @@ Request newRequest(MockClient client) {
   return Request(
     service: service,
     client: client,
-    action: pb.PbString(),
+    action: PbString(),
     url: 'http://mock',
     timeout: Duration(milliseconds: 9000),
     slow: Duration(milliseconds: 9000),

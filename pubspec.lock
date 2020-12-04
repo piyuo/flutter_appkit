@@ -182,7 +182,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: e8e516ecb8062507f118294dade9e73d0942a962
+      resolved-ref: "82a5f69a7f84848a68055896ebd990f79685bf7d"
       url: "git@github.com:piyuo/libpb.git"
     source: git
     version: "0.0.16"

@@ -6,7 +6,7 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart';
 import '../../mock/mock.dart';
 import 'package:libcli/src/command/mock-service.dart';
-import 'package:libpb/pb.dart' as pb;
+import 'package:libpb/pb.dart';
 
 void main() {
   var contractHappening;
@@ -30,7 +30,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(200));
         var obj = await doPost(ctx, req);
-        expect(obj is pb.PbOK, true);
+        expect(obj is PbOK, true);
       });
     });
 
@@ -38,7 +38,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(500));
         var response = await doPost(ctx, req);
-        expect(response is pb.PbEmpty, true);
+        expect(response is PbEmpty, true);
         expect(eventHappening is InternalServerErrorEvent, true);
       });
     });
@@ -47,7 +47,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(501));
         var response = await doPost(ctx, req);
-        expect(response is pb.PbEmpty, true);
+        expect(response is PbEmpty, true);
         expect(eventHappening is ServerNotReadyEvent, true);
       });
     });
@@ -56,7 +56,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(504));
         var response = await doPost(ctx, req);
-        expect(response is pb.PbEmpty, true);
+        expect(response is PbEmpty, true);
         expect(contractHappening is RequestTimeoutContract, true);
       });
     });
@@ -65,7 +65,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(511));
         var response = await doPost(ctx, req);
-        expect(response is pb.PbEmpty, true);
+        expect(response is PbEmpty, true);
         expect(contractHappening is CAccessTokenRequired, true);
       });
     });
@@ -74,7 +74,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(412));
         var response = await doPost(ctx, req);
-        expect(response is pb.PbEmpty, true);
+        expect(response is PbEmpty, true);
         expect(contractHappening is CAccessTokenExpired, true);
       });
     });
@@ -83,7 +83,7 @@ void main() {
       await tester.inWidget((ctx) async {
         var req = newRequest(statusMock(402));
         var response = await doPost(ctx, req);
-        expect(response is pb.PbEmpty, true);
+        expect(response is PbEmpty, true);
         expect(contractHappening is CPaymentTokenRequired, true);
       });
     });
@@ -107,7 +107,7 @@ void main() {
           Request(
             service: MockService(),
             client: client,
-            action: pb.PbString(),
+            action: PbString(),
             url: 'http://mock',
             timeout: Duration(milliseconds: 500),
             slow: Duration(milliseconds: 1),
@@ -125,7 +125,7 @@ void main() {
           Request(
             service: MockService(),
             client: client,
-            action: pb.PbString(),
+            action: PbString(),
             url: 'http://mock',
             timeout: Duration(milliseconds: 500),
             slow: Duration(milliseconds: 3000),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
 import 'package:libcli/command.dart';
-import 'package:libpb/pb.dart' as pb;
+import 'package:libpb/pb.dart';
 //import 'package:libcli/preference.dart' as preference;
 
 /*
@@ -53,7 +53,7 @@ abstract class Service {
 
   /// find object by id
   ///
-  pb.PbObject newObjectByID(int id, List<int> bytes);
+  PbObject newObjectByID(int id, List<int> bytes);
 
   /// url return remote service url
   ///
@@ -72,7 +72,7 @@ abstract class Service {
   ///
   ///     var response = await service.execute(EchoAction());
   ///
-  Future<pb.PbObject> execute(BuildContext ctx, pb.PbObject obj) async {
+  Future<PbObject> execute(BuildContext ctx, PbObject obj) async {
     http.Client client = http.Client();
     return await executeWithClient(ctx, obj, client);
   }
@@ -81,10 +81,10 @@ abstract class Service {
   ///
   ///     var response = await service.executehWithClient(client, EchoAction());
   ///
-  Future<pb.PbObject> executeWithClient(BuildContext context, pb.PbObject obj, http.Client client) async {
+  Future<PbObject> executeWithClient(BuildContext context, PbObject obj, http.Client client) async {
     var jsonSent = toLogString(obj);
     log('${COLOR_STATE}send ${obj.runtimeType}{$jsonSent}${COLOR_END} to $url');
-    pb.PbObject returnObj = await post(
+    PbObject returnObj = await post(
         context,
         Request(
           service: this,

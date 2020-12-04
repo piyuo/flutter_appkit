@@ -4,7 +4,7 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart';
-import 'package:libpb/pb.dart' as pb;
+import 'package:libpb/pb.dart';
 import 'package:libcli/src/command/mock-service.dart';
 
 void main() {
@@ -43,7 +43,7 @@ void main() {
 
       req.timeout = const Duration(milliseconds: 1);
       var obj = await doPost(MockBuildContext(), req);
-      expect(obj is pb.PbEmpty, true);
+      expect(obj is PbEmpty, true);
       expect(contract is RequestTimeoutContract, true);
     });
   });
