@@ -36,8 +36,9 @@ Future<void> reloadGlobalTranslation(String languageCode, String countryCode) as
 
 void _en_US() {
   _global['errTitle'] = 'Oops, some thing went wrong';
-  _global['errMsg'] = 'The developer team has been notified of this issue. Please try again later';
-  _global['emailUs'] = 'Email Us';
+  _global['errNotify'] = 'The developer team has been notified of this issue';
+  _global['errTry'] = 'Please try again later';
+  _global['emailUs'] = 'You can email us if this keep happening';
   _global['errCode'] = 'Error code: ';
   _global['email'] = 'Email';
   _global['retry'] = 'Retry';
