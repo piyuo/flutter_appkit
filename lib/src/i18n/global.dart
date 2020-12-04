@@ -39,7 +39,6 @@ void _en_US() {
   _global['errNotified'] = 'The developer team has been notified of this issue, Please try again later';
   _global['errTry'] = 'Please try again later';
   _global['emailUs'] = 'send email to support team';
-  _global['errCode'] = 'Error code: ';
   _global['email'] = 'Email';
   _global['retry'] = 'Retry';
   _global['ok'] = 'Ok';
