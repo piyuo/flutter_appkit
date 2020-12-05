@@ -8,6 +8,10 @@ import 'package:flutter/cupertino.dart';
 /// ModuleProvider provide redux and services
 ///
 class ModuleProvider extends ChangeNotifier {
+  static ModuleProvider of(BuildContext context) {
+    return Provider.of<ModuleProvider>(context, listen: false);
+  }
+
   /// redux instance
   ///
   final Redux redux;
