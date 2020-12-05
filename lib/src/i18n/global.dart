@@ -54,6 +54,14 @@ void _en_US() {
   _global['enterYour'] = 'Enter your %1';
   _global['minLenth'] = '%1 must contain at least %2 character. You entered %3 characters';
   _global['maxLenth'] = '%1 must be %2 characters or fewer. You entered %3 characters';
+  _global['noInternet'] = 'No internet!';
+  _global['noInternetDesc'] = 'Poor network connection detected, Please check your connectivity';
+  _global['blocked'] = 'Internet blocked!';
+  _global['blockedDesc'] = 'Our website is blocked by your Firewall or antivirus software';
+  _global['diskError'] = 'Write failed!';
+  _global['diskErrorDesc'] = 'Insufficient disk space or write access denied';
+  _global['timeout'] = 'Operation timed out!';
+  _global['timeoutDesc'] = 'Your operation didn\'t complete in time, Please try again later';
 }
 
 void _zh_TW() {
@@ -76,6 +84,14 @@ void _zh_TW() {
   _global['enterYour'] = '輸入你的%1';
   _global['minLenth'] = '%1必須至少包含 %2 個字元. 你輸入了 %3 個字元';
   _global['maxLenth'] = '%1必須是%2個或更少字元. 你輸入了 %3 個字元';
+  _global['noInternet'] = '無法連接到網際網路!';
+  _global['noInternetDesc'] = '請檢查你的網路連線或稍後重試';
+  _global['blocked'] = '我們的網站可能被封鎖了!';
+  _global['blockedDesc'] = '我們的網站可能被您的防火牆或防毒軟體阻擋了，請檢查您的防火牆或防毒軟體設置';
+  _global['diskError'] = '寫入錯誤!';
+  _global['diskErrorDesc'] = '請檢查是否空間不足或是權限不夠';
+  _global['timeout'] = '操作已經超時!';
+  _global['timeoutDesc'] = '您的操作沒有得到伺服器回應，可能是伺服器目前忙碌中，請稍後數分鐘再試';
 }
 
 void _zh_CN() {
@@ -98,4 +114,12 @@ void _zh_CN() {
   _global['enterYour'] = '输入你的%1';
   _global['minLenth'] = '%1必须至少包含 %2 个字元. 您输入了 %3 个字元';
   _global['maxLenth'] = '%1必须是%2个或更少字元. 您输入了 %3 个字元';
+  _global['noInternet'] = '无法连接到互联网!';
+  _global['noInternetDesc'] = '请检查你的网路连线或稍后重试';
+  _global['blocked'] = '我们的网站可能被封锁了!';
+  _global['blockedDesc'] = '我们的网站可能被您的防火墙或防毒软体阻挡了，请检查您的防火墙或防毒软体设置';
+  _global['diskError'] = '写入错误!';
+  _global['diskErrorDesc'] = '请检查是否空间不足或是权限不够';
+  _global['timeout'] = '操作已经超时!';
+  _global['timeoutDesc'] = '您的操作没有得到服务器回应，可能是服务器目前忙碌中，请稍后数分钟再试';
 }
