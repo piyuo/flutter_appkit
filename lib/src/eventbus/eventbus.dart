@@ -21,7 +21,7 @@ class Listener {
 
   /// callback called when event happen
   ///
-  final void Function(BuildContext context, dynamic event) callback;
+  final Future<void> Function(BuildContext context, dynamic event) callback;
 
   Listener({
     required this.eventType,
@@ -30,9 +30,9 @@ class Listener {
 
   /// listen all event and run callback when event type is match
   ///
-  void listen(BuildContext context, dynamic event) {
+  Future<void> listen(BuildContext context, dynamic event) async {
     if (eventType == dynamic || eventType == event.runtimeType) {
-      callback(context, event);
+      await callback(context, event);
     }
   }
 }
@@ -73,7 +73,7 @@ int getListenerCount() {
 ///     });
 ///     sub.cancel();
 Subscription listen<T>(
-  void Function(BuildContext, dynamic) func,
+  Future<void> Function(BuildContext, dynamic) func,
 ) {
   if (T == dynamic) {
     log('listen all event');
@@ -94,11 +94,11 @@ Subscription listen<T>(
 ///     });
 ///     eventbus.brodcast(ctx,MockEventA('a1'));
 ///
-broadcast(BuildContext context, dynamic event) {
+Future<void> broadcast(BuildContext context, dynamic event) async {
   assert(event != null);
   latestEvent = event;
   log('brodcast ${event.runtimeType}');
-  dispatch(context, event);
+  await dispatch(context, event);
 }
 
 /// contract open by caller, need call back when job done. if no listener complete event it will be complete by false
@@ -110,16 +110,12 @@ broadcast(BuildContext context, dynamic event) {
 ///       ok = value;
 ///     });
 ///
-Future<bool> contract(BuildContext context, Contract event) {
-  latestContract = event;
-  log('contract ${event.runtimeType}');
-  dispatch(context, event);
-  if (!event.isCompleted) {
-    // no listener complete event
-    log('${COLOR_ALERT}caught no listener for ${event.runtimeType}');
-    event.complete(false);
-  }
-  return event.future;
+Future<bool> contract(BuildContext context, Contract contract) async {
+  latestContract = contract;
+  log('contract ${contract.runtimeType}');
+  await dispatch(context, contract);
+  assert(contract.completed != null, '${COLOR_ALERT}caught no listener for ${contract.runtimeType}');
+  return contract.completed!;
 }
 
 /// dispatch event to [listener]
@@ -127,15 +123,19 @@ Future<bool> contract(BuildContext context, Contract event) {
 ///     dispatch(ctx,'hello');
 ///
 @visibleForTesting
-dispatch(BuildContext context, dynamic event) {
+Future<void> dispatch(BuildContext context, dynamic event) async {
   for (var listener in _listeners) {
     try {
-      listener.listen(context, event);
+      await listener.listen(context, event);
     } catch (e, s) {
       error(e, s);
       if (event is Contract) {
         event.complete(false);
       }
+    }
+
+    if (event is Contract && event.completed != null) {
+      return;
     }
   }
 }

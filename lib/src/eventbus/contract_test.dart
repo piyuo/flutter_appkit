@@ -15,27 +15,24 @@ main() {
       listen<MockContract>((_, event) {
         throw 'unhandle exception';
       });
-      contract(MockBuildContext(), MockContract('c')).then((value) {
-        expect(value, false);
-      });
+      var value = await contract(MockBuildContext(), MockContract('c'));
+      expect(value, false);
     });
   });
 
   test('should contract', () async {
     var text = '';
-    listen<MockContract>((ctx, event) {
+    listen<MockContract>((ctx, event) async {
       text = event.text;
       event.complete(true);
     });
-    contract(MockBuildContext(), MockContract('c')).then((value) {
-      expect(value, true);
-    });
+    var value = await contract(MockBuildContext(), MockContract('c'));
+    expect(value, true);
     expect(text, 'c');
   });
 
-  test('should complete contract with false if no listener', () async {
-    var result = await contract(MockBuildContext(), MockContract('c'));
-    expect(result, false);
+  test('should have AssertionError if no listener', () async {
+    expect(() async => await contract(MockBuildContext(), MockContract('c')), throwsA(AssertionError));
   });
 }
 

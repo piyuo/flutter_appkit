@@ -1,9 +1,18 @@
-import 'dart:async';
 import 'package:libcli/log.dart';
 
-/// Contract need listener do something and need callback when job is done
+/// Contract need listener do something and call complete() when job is done
 ///
 class Contract {
+  bool? completed;
+
+  void complete(bool value) {
+    log('contract~${this.runtimeType} completed=$value');
+    completed = value;
+  }
+}
+
+/*
+import 'dart:async';
   Completer<bool> _completer = new Completer<bool>();
 
   bool get isCompleted => _completer.isCompleted;
@@ -17,4 +26,5 @@ class Contract {
   Future<bool> get future {
     return _completer.future;
   }
-}
+
+*/

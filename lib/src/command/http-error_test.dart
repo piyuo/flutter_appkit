@@ -13,13 +13,13 @@ void main() {
   setUp(() async {
     contract = null;
     eventbus.clearListeners();
-    eventbus.listen((_, e) {
+    eventbus.listen((_, e) async {
       if (e is eventbus.Contract) {
         contract = e;
       }
     });
 
-    eventbus.listen<eventbus.Contract>((_, e) {
+    eventbus.listen<eventbus.Contract>((_, e) async {
       e.complete(true);
     });
   });

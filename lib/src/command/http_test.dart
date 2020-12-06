@@ -16,7 +16,7 @@ void main() {
     contractHappening = null;
     eventHappening = null;
     eventbus.clearListeners();
-    eventbus.listen((_, e) {
+    eventbus.listen((_, e) async {
       if (e is eventbus.Contract) {
         contractHappening = e;
       } else {
