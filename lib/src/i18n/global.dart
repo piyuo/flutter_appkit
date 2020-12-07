@@ -16,9 +16,9 @@ String globalTranslate(String key) {
   return value;
 }
 
-/// reloadGlobalTranslation load global translation base on locale
+/// initGlobalTranslation load global translation base on locale
 ///
-Future<void> reloadGlobalTranslation(String languageCode, String countryCode) async {
+Future<void> initGlobalTranslation(String languageCode, String countryCode) async {
   _global.clear();
   switch (i18n.currentLocaleID) {
     case i18n.zh_TW:

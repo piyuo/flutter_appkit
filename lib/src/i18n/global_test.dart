@@ -10,7 +10,7 @@ void main() {
 
   group('[i18n-global]', () {
     test('should reloadGlobalTranslation', () async {
-      await i18n.reloadGlobalTranslation('en', 'US');
+      await i18n.initGlobalTranslation('en', 'US');
       expect(i18n.globalTranslate('ok'), 'Ok');
     });
   });
