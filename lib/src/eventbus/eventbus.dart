@@ -114,7 +114,10 @@ Future<bool> contract(BuildContext context, Contract contract) async {
   latestContract = contract;
   log('contract ${contract.runtimeType}');
   await dispatch(context, contract);
-  assert(contract.completed != null, '${COLOR_ALERT}caught no listener for ${contract.runtimeType}');
+  if (contract.completed == null) {
+    log('${COLOR_ALERT}caught no listener for ${contract.runtimeType}');
+    contract.completed = false;
+  }
   return contract.completed!;
 }
 

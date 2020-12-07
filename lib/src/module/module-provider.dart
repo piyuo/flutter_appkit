@@ -55,6 +55,7 @@ void switchView(
   bool replace = false,
 }) {
   final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
+  var navigator = Navigator.of(context);
   final route = CupertinoPageRoute(
     builder: (ctx) => Provider.value(
       value: moduleProvider,
@@ -62,8 +63,8 @@ void switchView(
     ),
   );
   if (replace) {
-    Navigator.of(context)!.pushReplacement(route);
+    navigator.pushReplacement(route);
     return;
   }
-  Navigator.of(context)!.push(route);
+  navigator.push(route);
 }

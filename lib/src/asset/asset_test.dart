@@ -33,7 +33,7 @@ void main() {
     });
 
     test('should load string in package', () async {
-      String text = await loadString(assetName: 'i18n/dialog_en-US.json', package: 'libcli');
+      String text = await loadString(assetName: 'i18n/mock.json', package: 'libcli');
       expect(text, isNotEmpty);
     });
 

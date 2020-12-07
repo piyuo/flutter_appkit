@@ -31,8 +31,14 @@ main() {
     expect(text, 'c');
   });
 
-  test('should have AssertionError if no listener', () async {
-    expect(() async => await contract(MockBuildContext(), MockContract('c')), throwsA(AssertionError));
+  test('should have no error if no listener', () async {
+    var ex = null;
+    try {
+      await contract(MockBuildContext(), MockContract('c'));
+    } catch (e) {
+      ex = e;
+    }
+    expect(ex, null);
   });
 }
 
