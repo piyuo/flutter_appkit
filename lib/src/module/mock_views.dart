@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class MockWaitView extends StatelessWidget {
   static int count = 0;

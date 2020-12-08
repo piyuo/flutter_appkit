@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/module.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:libcli/log.dart';
 import 'package:mockito/mockito.dart';
 

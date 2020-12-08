@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +11,8 @@ void main() {
 
   group('[await]', () {
     testWidgets('should wait then ready', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Material(
-          child: TestWidget(),
-        ),
+      await tester.pumpWidget(CupertinoApp(
+        home: TestWidget(),
       ));
       await tester.pumpAndSettle();
       expect(MockWaitView.count, 1);

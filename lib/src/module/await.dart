@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/eventbus.dart' as eventbus;
