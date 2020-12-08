@@ -35,7 +35,7 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         SizedBox(height: 10),
         AutoSizeText(
-          'errMsg'.i18n_,
+          'errNotified'.i18n_,
           maxLines: 5,
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -54,7 +54,7 @@ class AwaitErrorMessage extends StatelessWidget {
         GestureDetector(
             onTap: onEmailLinkPressed,
             child: Text(
-              'emailAdr'.i18n_,
+              'emailUs'.i18n_,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: CupertinoColors.activeOrange,
