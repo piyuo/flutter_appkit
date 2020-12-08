@@ -1,6 +1,5 @@
-/// ShowErrorEvent happen when [service return error], need show this error to user
+///EmailSupportEvent happen when user click 'Email Us' link
 ///
-//class ShowErrorEvent {
-//  final String error;
-//  ShowErrorEvent(this.error);
-//}
+class EmailSupportEvent {
+  EmailSupportEvent();
+}

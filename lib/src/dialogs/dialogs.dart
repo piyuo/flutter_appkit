@@ -6,6 +6,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:libcli/src/dialogs/toast.dart';
 import 'package:libcli/src/dialogs/popup.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
+import 'package:libcli/eventbus.dart';
 
 /// dialogsNavigatorKey used in rootContext
 ///
@@ -116,7 +117,6 @@ class Dialogs {
   Future<void> error(
     BuildContext context, {
     bool notified = false,
-    void Function()? onEmailUs,
   }) async {
     return showCupertinoDialog(
         context: context,
@@ -136,12 +136,10 @@ class Dialogs {
                       ? Text('errNotified'.i18n_, style: TextStyle(fontSize: 16.0))
                       : Text('errTry'.i18n_, style: TextStyle(fontSize: 16.0)),
                   SizedBox(height: 20),
-                  onEmailUs != null
-                      ? _emailUs(() {
-                          onEmailUs();
-                          Navigator.of(context).pop();
-                        })
-                      : SizedBox(),
+                  _emailUs(() {
+                    broadcast(context, EmailSupportEvent());
+                    Navigator.of(context).pop();
+                  }),
                 ],
               ),
             ),
@@ -157,7 +155,8 @@ class Dialogs {
   }
 
   Widget _emailUs(void Function()? onPressed) {
-    return Row(
+    return Container(
+        child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         GestureDetector(
@@ -176,29 +175,7 @@ class Dialogs {
               style: TextStyle(fontSize: 15, color: CupertinoColors.activeBlue),
             )),
       ],
-    );
-    /*    return Material(
-        type: MaterialType.transparency,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: onPressed,
-              child: Icon(
-                Icons.mail_outline,
-                color: Colors.grey,
-                size: 18,
-              ),
-            ),
-            SizedBox(width: 5),
-            InkWell(
-                onTap: onPressed,
-                child: Text(
-                  'emailUs'.i18n_,
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                )),
-          ],
-        ));*/
+    ));
   }
 
   /// toast show toast

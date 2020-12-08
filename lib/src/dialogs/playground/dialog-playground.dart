@@ -70,9 +70,7 @@ class DialogPlayground extends StatelessWidget {
                       ),
                       CupertinoButton(
                         child: Text('error email us'),
-                        onPressed: () => provider.error(context, onEmailUs: () {
-                          provider.toast(context, 'you click email');
-                        }),
+                        onPressed: () => provider.error(context),
                       ),
                       CupertinoButton(
                         child: Text('diskError'),

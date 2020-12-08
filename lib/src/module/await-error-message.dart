@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:libcli/i18n.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:libcli/eventbus.dart';
 
 class AwaitErrorMessage extends StatelessWidget {
   final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
 
-  final void Function() onEmailLinkPressed;
-
   final void Function() onRetryPressed;
 
   AwaitErrorMessage({
-    required this.onEmailLinkPressed,
     required this.onRetryPressed,
   });
 
@@ -45,14 +43,14 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         SizedBox(height: 40),
         GestureDetector(
-            onTap: onEmailLinkPressed,
+            onTap: () => broadcast(context, EmailSupportEvent()),
             child: Icon(
               CupertinoIcons.envelope,
               color: CupertinoColors.activeOrange,
               size: 38,
             )),
         GestureDetector(
-            onTap: onEmailLinkPressed,
+            onTap: () => broadcast(context, EmailSupportEvent()),
             child: Text(
               'emailUs'.i18n_,
               textAlign: TextAlign.center,
