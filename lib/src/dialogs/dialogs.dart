@@ -7,9 +7,17 @@ import 'package:libcli/src/dialogs/toast.dart';
 import 'package:libcli/src/dialogs/popup.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 
-/// navigatorKey used in rootContext
+/// dialogsNavigatorKey used in rootContext
 ///
-final navigatorKey = new GlobalKey<NavigatorState>();
+final dialogsNavigatorKey = new GlobalKey<NavigatorState>();
+
+/// dialogRootContext return context from navigatorKey
+///
+BuildContext get dialogRootContext {
+  assert(dialogsNavigatorKey.currentState != null && dialogsNavigatorKey.currentState!.overlay != null,
+      'you need set navigatorKey: dialog.navigatorKey in MaterialApp');
+  return dialogsNavigatorKey.currentState!.overlay!.context;
+}
 
 /// DialogOverlay provide overlay for dialog
 ///
@@ -24,12 +32,6 @@ class DialogOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return OKToast(child: child);
   }
-}
-
-BuildContext get rootContext {
-  assert(navigatorKey.currentState != null && navigatorKey.currentState!.overlay != null,
-      'you need set navigatorKey: dialog.navigatorKey in MaterialApp');
-  return navigatorKey.currentState!.overlay!.context;
 }
 
 class Dialogs {
