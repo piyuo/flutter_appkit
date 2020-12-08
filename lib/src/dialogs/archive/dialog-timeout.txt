@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:libcli/module.dart';
+import 'package:libcli/i18n.dart';
+import 'package:piyuo/src/dialog/message-dialog.txt';
+
+class DialogTimeoutProvider extends AsyncProvider {}
+
+class DialogTimeoutOptions {
+  final Function(bool retry) onPressed;
+
+  final void Function() onEmailLinkPressed;
+
+  final String errorCode;
+
+  DialogTimeoutOptions({
+    required this.onEmailLinkPressed,
+    required this.onPressed,
+    required this.errorCode,
+  });
+}
+
+class DialogTimeout extends ViewWidget<DialogTimeoutProvider> {
+  final DialogTimeoutOptions options;
+
+  DialogTimeout(this.options) : super(i18nFilename: 'dialog', package: 'libcli');
+
+  @override
+  createProvider(BuildContext context) => DialogTimeoutProvider();
+
+  @override
+  Widget createWidget(BuildContext context) => DialogTimeoutWidget(options);
+}
+
+class DialogTimeoutWidget extends StatelessWidget {
+  final DialogTimeoutOptions options;
+
+  DialogTimeoutWidget(this.options);
+
+  void close(BuildContext context, bool retry) {
+    Navigator.of(context)!.pop();
+    options.onPressed(retry);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MessageDialog(
+      color: Colors.red,
+      icon: Icons.access_time,
+      title: 'timeoutTitle'.i18n(context),
+      labelOK: 'retry'.i18n_,
+      onOKPressed: () => close(context, true),
+      labelCancel: 'close'.i18n_,
+      onCancelPressed: () => close(context, false),
+      labelLink: 'emailUs'.i18n_,
+      iconLink: Icons.mail_outline,
+      onLinkPressed: options.onEmailLinkPressed,
+      message: 'timeoutMsg'.i18n(context),
+      notes: 'errCode'.i18n_ + options.errorCode,
+    );
+  }
+}

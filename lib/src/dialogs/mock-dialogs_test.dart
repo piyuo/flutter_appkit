@@ -1,0 +1,84 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:mockito/mockito.dart';
+import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/mock-dialogs.dart';
+import 'package:libcli/src/dialogs/popup-menu.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
+
+void main() {
+  final GlobalKey keyBtn = GlobalKey();
+  setUp(() async {});
+
+  Widget createSample({
+    required void Function(BuildContext context, Dialogs provider) onPressed,
+  }) {
+    return CupertinoApp(
+      home: DialogOverlay(
+          child: Provider(
+        create: (_) => MockDialogs(),
+        child: Consumer<MockDialogs>(
+          builder: (context, provider, child) => CupertinoButton(
+            key: keyBtn,
+            child: Text('button'),
+            onPressed: () => onPressed(context, provider),
+          ),
+        ),
+      )),
+    );
+  }
+
+  group('[mock-dialogs]', () {
+    testWidgets('should get mock dialogs from context and pop menu', (WidgetTester tester) async {
+      MockDialogs.didPopMenu = false;
+      await tester.pumpWidget(createSample(
+          onPressed: (context, provider) => provider.popMenu(context, widgetKey: keyBtn, items: [
+                MenuItem(
+                    id: 'home',
+                    text: 'Home',
+                    widget: Icon(
+                      CupertinoIcons.add,
+                      color: CupertinoColors.white,
+                    ))
+              ])));
+      expect(find.byType(CupertinoButton), findsOneWidget);
+      await tester.tap(find.byType(CupertinoButton));
+      await tester.pumpAndSettle();
+      expect(MockDialogs.didPopMenu, true);
+    });
+
+    testWidgets('should tooltip', (WidgetTester tester) async {
+      MockDialogs.didTooltip = false;
+      await tester.pumpWidget(createSample(onPressed: (context, provider) => provider.tooltip(context, 'hi')));
+      expect(find.byType(CupertinoButton), findsOneWidget);
+      await tester.tap(find.byType(CupertinoButton));
+      await tester.pumpAndSettle();
+      expect(MockDialogs.didTooltip, true);
+    });
+
+    test('should track dialog', () async {
+      var dialogs = MockDialogs();
+      //alert
+      MockDialogs.didAlert = false;
+      dialogs.alert(MockBuildContext(), 'hi');
+      expect(MockDialogs.didAlert, true);
+
+      //confirm
+      MockDialogs.didConfirm = false;
+      await dialogs.confirm(MockBuildContext(), 'hi');
+      expect(MockDialogs.didConfirm, true);
+
+      //error
+      MockDialogs.didError = false;
+      await dialogs.error(MockBuildContext());
+      expect(MockDialogs.didError, true);
+
+      //toast
+      MockDialogs.didToast = false;
+      dialogs.toast(MockBuildContext(), 'hi');
+      expect(MockDialogs.didToast, true);
+    });
+  });
+}
