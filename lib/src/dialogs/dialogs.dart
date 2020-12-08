@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:libcli/i18n.dart';
+import 'package:provider/provider.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/toast.dart';
 import 'package:libcli/src/dialogs/popup.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
@@ -172,7 +172,7 @@ class Dialogs {
             onTap: onPressed,
             child: Text(
               'emailUs'.i18n_,
-              style: TextStyle(fontSize: 15, color: CupertinoColors.activeBlue),
+              style: TextStyle(fontSize: 14, color: CupertinoColors.activeBlue),
             )),
       ],
     ));
