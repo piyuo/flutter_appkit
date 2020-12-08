@@ -3,6 +3,8 @@ import 'package:libcli/i18n.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class AwaitErrorMessage extends StatelessWidget {
+  final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
+
   final void Function() onEmailLinkPressed;
 
   final void Function() onRetryPressed;
@@ -37,7 +39,7 @@ class AwaitErrorMessage extends StatelessWidget {
           maxLines: 5,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: CupertinoColors.systemRed,
+            color: CupertinoColors.white,
             fontSize: 18.0,
           ),
         ),
@@ -46,7 +48,7 @@ class AwaitErrorMessage extends StatelessWidget {
             onTap: onEmailLinkPressed,
             child: Icon(
               CupertinoIcons.envelope,
-              color: CupertinoColors.activeBlue,
+              color: CupertinoColors.activeOrange,
               size: 38,
             )),
         GestureDetector(
@@ -55,7 +57,7 @@ class AwaitErrorMessage extends StatelessWidget {
               'emailAdr'.i18n_,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: CupertinoColors.activeBlue,
+                color: CupertinoColors.activeOrange,
                 fontSize: 14.0,
               ),
             )),
@@ -65,8 +67,8 @@ class AwaitErrorMessage extends StatelessWidget {
           height: 40,
           child: CupertinoButton(
             padding: EdgeInsets.all(0.0),
-            color: CupertinoColors.activeBlue,
-            child: Text('retry'.i18n_, style: TextStyle(color: CupertinoColors.activeBlue)),
+            color: CupertinoColors.white,
+            child: Text('retry'.i18n_, style: TextStyle(color: CupertinoColors.systemRed)),
             onPressed: onRetryPressed,
           ),
         )
@@ -78,9 +80,9 @@ class AwaitErrorMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-          //    backgroundColor: backgroundColor,
-          ),
-//      backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor,
+      ),
+      backgroundColor: backgroundColor,
       child: SafeArea(
           right: false,
           bottom: false,
