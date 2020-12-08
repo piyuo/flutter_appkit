@@ -11,9 +11,9 @@ import 'package:libcli/src/dialogs/popup-menu.dart';
 ///
 final dialogsNavigatorKey = new GlobalKey<NavigatorState>();
 
-/// dialogRootContext return context from navigatorKey
+/// dialogsRootContext return context from navigatorKey
 ///
-BuildContext get dialogRootContext {
+BuildContext get dialogsRootContext {
   assert(dialogsNavigatorKey.currentState != null && dialogsNavigatorKey.currentState!.overlay != null,
       'you need set navigatorKey: dialog.navigatorKey in MaterialApp');
   return dialogsNavigatorKey.currentState!.overlay!.context;
