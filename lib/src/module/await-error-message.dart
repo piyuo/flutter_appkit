@@ -3,8 +3,6 @@ import 'package:libcli/i18n.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class AwaitErrorMessage extends StatelessWidget {
-  final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
-
   final void Function() onEmailLinkPressed;
 
   final void Function() onRetryPressed;
@@ -16,10 +14,10 @@ class AwaitErrorMessage extends StatelessWidget {
 
   content(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         Icon(
-          CupertinoIcons.exclamationmark_shield,
+          CupertinoIcons.exclamationmark_triangle,
           color: CupertinoColors.white,
           size: 120,
         ),
@@ -80,9 +78,9 @@ class AwaitErrorMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        backgroundColor: backgroundColor,
-      ),
-      backgroundColor: backgroundColor,
+          //    backgroundColor: backgroundColor,
+          ),
+//      backgroundColor: backgroundColor,
       child: SafeArea(
           right: false,
           bottom: false,
