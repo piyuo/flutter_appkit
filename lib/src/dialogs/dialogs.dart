@@ -35,7 +35,7 @@ class DialogOverlay extends StatelessWidget {
   }
 }
 
-class Dialogs extends Provider {
+class Dialogs {
   static Dialogs of(BuildContext context) {
     return Provider.of<Dialogs>(context, listen: false);
   }
@@ -164,7 +164,7 @@ class Dialogs extends Provider {
           child: Icon(
             CupertinoIcons.envelope,
             color: CupertinoColors.activeBlue,
-            size: 18,
+            size: 14,
           ),
         ),
         SizedBox(width: 5),
@@ -172,7 +172,7 @@ class Dialogs extends Provider {
             onTap: onPressed,
             child: Text(
               'emailUs'.i18n_,
-              style: TextStyle(fontSize: 14, color: CupertinoColors.activeBlue),
+              style: TextStyle(fontSize: 8, color: CupertinoColors.activeBlue),
             )),
       ],
     ));

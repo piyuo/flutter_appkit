@@ -3,15 +3,15 @@ import 'package:libcli/utils.dart' as utils;
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
 ///
-class InternalServerErrorEvent {}
+class InternalServerErrorEvent extends Event {}
 
 /// ServerNotReadyEvent happen when [service return 501 the remote servie is not properly setup], need let user know their network is slow than usual
 ///
-class ServerNotReadyEvent {}
+class ServerNotReadyEvent extends Event {}
 
 /// BadRequestEvent happen when [service return 400 bad request], need let user know their network is slow than usual
 ///
-class BadRequestEvent {}
+class BadRequestEvent extends Event {}
 
 /// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
 ///
