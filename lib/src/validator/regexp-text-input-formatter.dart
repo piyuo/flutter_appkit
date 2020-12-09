@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 class RegexpTextInputFormatter extends TextInputFormatter {
@@ -10,7 +10,7 @@ class RegexpTextInputFormatter extends TextInputFormatter {
   /// Creates a formatter that allows only the insertion of regexp match
   ///
   /// The [regexp] must not be null.
-  RegexpTextInputFormatter(this.regexp) : assert(regexp != null);
+  RegexpTextInputFormatter(this.regexp);
 
   @override
   TextEditingValue formatEditUpdate(
