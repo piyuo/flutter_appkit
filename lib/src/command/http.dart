@@ -74,6 +74,7 @@ Future<PbObject> doPost(BuildContext context, Request r) async {
       case 501: //the remote servie is not properly setup
         return await giveup(context, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
+        log('${COLOR_WARNING}504 deadline exceeded when connect ${r.url},error:${resp.body}');
         return await retry(
           context,
           contract: RequestTimeoutContract(

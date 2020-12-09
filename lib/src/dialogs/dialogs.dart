@@ -42,7 +42,13 @@ class Dialogs {
 
   /// alert show alert dialog
   ///
-  Future<void> alert(BuildContext context, String message, {String? title, Icon? icon}) async {
+  Future<void> alert(
+    BuildContext context,
+    String message, {
+    String? title,
+    Icon? icon,
+    String? description,
+  }) async {
     return showCupertinoDialog(
         context: context,
         builder: (BuildContext ctx) {
@@ -52,6 +58,9 @@ class Dialogs {
               child: ListBody(
                 children: <Widget>[
                   icon ?? SizedBox(),
+                  description != null
+                      ? Text(message, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey6))
+                      : SizedBox(),
                   SizedBox(height: 10),
                   Text(message, style: TextStyle(fontSize: 16.0)),
                 ],
