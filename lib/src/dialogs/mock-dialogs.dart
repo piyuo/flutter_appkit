@@ -42,7 +42,7 @@ class MockDialogs extends Dialogs {
   Future<void> error(
     BuildContext context, {
     bool notified = false,
-    void Function()? onEmailUs,
+    String? description,
   }) async {
     didError = true;
   }
