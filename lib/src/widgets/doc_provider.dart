@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/asset.dart' as asset;

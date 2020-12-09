@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -21,16 +20,16 @@ class DocPage extends ViewWidget<DocProvider> {
 class DocWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.grey[50],
-          iconTheme: IconThemeData(
-            color: Colors.blue, //change your color here
-          ),
+    return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          //elevation: 0,
+          backgroundColor: CupertinoColors.lightBackgroundGray,
+          //iconTheme: IconThemeData(
+          //  color: Colors.blue, //change your color here
+          //),
         ),
-        backgroundColor: Colors.grey[50],
-        body: SafeArea(
+        backgroundColor: CupertinoColors.lightBackgroundGray,
+        child: SafeArea(
           right: false,
           bottom: false,
           child: Stack(children: <Widget>[
