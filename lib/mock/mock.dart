@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 extension MockContext on WidgetTester {
   /// inWidget let you run test function inside widget and get build  context

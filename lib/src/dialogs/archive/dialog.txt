@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:libcli/i18n.dart';
 import 'package:piyuo/src/dialog/popup.dart';

@@ -57,7 +57,6 @@ typedef Map<String, String> Arguments();
 Arguments arguments;
 
 import 'package:piyuo/src/path.dart' as routes;
-import 'package:flutter/material.dart';
 import 'package:piyuo/src/dialog/playground/dialog-playground.dart';
 import 'package:piyuo/src/services/playground/services-playground.dart';
 import 'package:piyuo/src/routes/current.dart' as current;

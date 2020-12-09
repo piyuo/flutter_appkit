@@ -6,7 +6,6 @@ import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart';
 import 'package:libcli/app.dart' as config;
 import 'package:mockito/mockito.dart';
-import 'package:flutter/material.dart';
 
 class MockBuildContext extends Mock implements BuildContext {}
 

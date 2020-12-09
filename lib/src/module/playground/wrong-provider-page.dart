@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:libcli/module.dart';
 
@@ -16,7 +15,10 @@ class WrongProvider extends AsyncProvider {
 class WrongWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white, body: Container());
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.white,
+      child: Container(),
+    );
   }
 }
 
