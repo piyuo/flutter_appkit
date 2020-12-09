@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/src/eventbus/contract.dart';
 
