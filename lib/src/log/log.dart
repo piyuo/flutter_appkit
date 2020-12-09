@@ -88,11 +88,11 @@ void error(dynamic e, StackTrace? stacktrace) {
   var out = '$COLOR_BLUE$header$COLOR_END ${COLOR_ALERT}caught $message';
   String stack = stacktrace == null ? '' : beautyStack(stacktrace);
   if (stack.isNotEmpty) {
-    out += '\n$stack';
+    out += '\n${COLOR_ALERT}$stack';
   }
   String states = readReduxStates();
   if (states != '[]') {
-    out += '\n$states';
+    out += '\n${COLOR_MEMORY}$states';
   }
   debugPrint(out);
   addLog(
