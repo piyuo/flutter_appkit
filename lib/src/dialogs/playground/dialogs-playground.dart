@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 
-class DialogPlayground extends StatelessWidget {
+class DialogsPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
   final GlobalKey btnTooltip = GlobalKey();
 
