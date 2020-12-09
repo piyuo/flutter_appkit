@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:libcli/command.dart';
 import 'package:mockito/mockito.dart';
 import 'package:libpb/pb.dart';
