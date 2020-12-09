@@ -164,16 +164,17 @@ class Dialogs {
           child: Icon(
             CupertinoIcons.envelope,
             color: CupertinoColors.activeBlue,
-            size: 14,
+            size: 18,
           ),
         ),
         SizedBox(width: 5),
-        GestureDetector(
-            onTap: onPressed,
-            child: Text(
-              'emailUs'.i18n_,
-              style: TextStyle(fontSize: 8, color: CupertinoColors.activeBlue),
-            )),
+        Expanded(
+            child: GestureDetector(
+                onTap: onPressed,
+                child: Text(
+                  'emailUs'.i18n_,
+                  style: TextStyle(fontSize: 14, color: CupertinoColors.activeBlue),
+                ))),
       ],
     ));
   }
