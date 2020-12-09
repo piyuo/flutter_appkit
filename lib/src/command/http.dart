@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
-import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus.dart';
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http-header.dart';
 import 'package:libcli/src/command/protobuf.dart';
@@ -35,7 +35,7 @@ Future<PbObject> post(BuildContext ctx, Request request) async {
   Completer<PbObject> completer = new Completer<PbObject>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
-      eventbus.broadcast(ctx, SlowNetworkEvent());
+      broadcast(ctx, SlowNetworkEvent());
     }
   });
   doPost(ctx, request).then((response) {
@@ -128,7 +128,7 @@ Future<PbObject> doPost(BuildContext context, Request r) async {
 ///     commandHttp.giveup(ctx,BadRequestEvent());
 ///
 Future<PbObject> giveup(BuildContext ctx, dynamic e) async {
-  eventbus.broadcast(ctx, e);
+  broadcast(ctx, e);
   return PbObject.empty;
 }
 
@@ -138,10 +138,10 @@ Future<PbObject> giveup(BuildContext ctx, dynamic e) async {
 ///
 Future<PbObject> retry(
   BuildContext context, {
-  required eventbus.Contract contract,
+  required Contract contract,
   required Request request,
 }) async {
-  if (await eventbus.contract(context, contract)) {
+  if (await broadcast(context, contract)) {
     log('try again');
     return await doPost(context, request);
   }

@@ -1,4 +1,4 @@
-import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus.dart';
 import 'package:libcli/utils.dart' as utils;
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
@@ -15,7 +15,7 @@ class BadRequestEvent {}
 
 /// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
 ///
-class RequestTimeoutContract extends eventbus.Contract {
+class RequestTimeoutContract extends Contract {
   final String url;
   final bool isServer;
   final dynamic exception;
@@ -34,15 +34,15 @@ class RequestTimeoutContract extends eventbus.Contract {
 
 /// SlowNetworkEvent happen when command [execute longer than usual]
 ///
-class SlowNetworkEvent {}
+class SlowNetworkEvent extends Event {}
 
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
 ///
-class ERefuseSignin {}
+class ERefuseSignin extends Event {}
 
 ///InternetRequiredContract happen when [SocketException] [internet not connected], listener need let user connect to the internet then report back
 ///
-class InternetRequiredContract extends eventbus.Contract {
+class InternetRequiredContract extends Contract {
   final dynamic exception;
   final String url;
   InternetRequiredContract({
@@ -56,12 +56,12 @@ class InternetRequiredContract extends eventbus.Contract {
 
 ///CAccessTokenRequired  happen when [service need access token], listener need let user sign in or use refresh token to get access token
 ///
-class CAccessTokenRequired extends eventbus.Contract {}
+class CAccessTokenRequired extends Contract {}
 
 ///CAccessTokenExpired happen when [access token expired], listener need let user sign in or use refresh token to get access token
 ///
-class CAccessTokenExpired extends eventbus.Contract {}
+class CAccessTokenExpired extends Contract {}
 
 ///CPaymentTokenRequired happen when [service need payment token], listener need let user sign in immedately
 ///
-class CPaymentTokenRequired extends eventbus.Contract {}
+class CPaymentTokenRequired extends Contract {}

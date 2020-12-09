@@ -1,14 +1,24 @@
 import 'package:libcli/log.dart';
 
+/// Event
+///
+class Event {}
+
 /// Contract need listener do something and call complete() when job is done
 ///
-class Contract {
+class Contract extends Event {
   bool? completed;
 
   void complete(bool value) {
     log('contract~${this.runtimeType} completed=$value');
     completed = value;
   }
+}
+
+///EmailSupportEvent happen when user click 'Email Us' link
+///
+class EmailSupportEvent extends Event {
+  EmailSupportEvent();
 }
 
 /*

@@ -2,6 +2,18 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../../mock/mock.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/types.dart';
+import 'package:mockito/mockito.dart';
+
+class MockBuildContext extends Mock implements BuildContext {}
+
+class MyEvent extends Event {
+  String value = '';
+}
+
+class MyEvent2 extends Event {
+  String value = '';
+}
 
 main() {
   setUp(() async {
@@ -38,61 +50,71 @@ main() {
       });
     });
 
-    testWidgets('should broadcst on type', (WidgetTester tester) async {
-      await tester.inWidget((ctx) {
-        listen<String>((BuildContext ctx, event) async {
-          expect(event, 'hi');
-        });
-        broadcast(ctx, 'hi');
+    test('should broadcast', () async {
+      String listened = '';
+      listen<MyEvent>((BuildContext ctx, event) async {
+        expect(event is MyEvent, true);
+        var my = event as MyEvent;
+        listened = my.value;
       });
+      await broadcast(MockBuildContext(), MyEvent()..value = 'hi');
+      expect(listened, 'hi');
     });
 
-    testWidgets('should dispatch', (WidgetTester tester) async {
-      listen<String>((BuildContext? ctx, event) async {
-        expect(event, 'hi');
-        expect(ctx, isNotNull);
+    test('should listen on type', () async {
+      var eventType = null;
+      listen<MyEvent>((BuildContext ctx, event) async {
+        eventType = event.runtimeType;
       });
-      await tester.inWidget((ctx) {
-        // ignore: invalid_use_of_visible_for_testing_member
-        dispatch(ctx, 'hi');
-      });
+      await broadcast(MockBuildContext(), MyEvent());
+      expect(eventType, MyEvent);
     });
 
-    testWidgets('should broadcst & listen all', (WidgetTester tester) async {
-      listen((BuildContext? ctx, event) async {
-        expect(event, 'hi');
+    test('should not listened', () async {
+      var eventType = null;
+      listen<MyEvent>((BuildContext ctx, event) async {
+        eventType = event.runtimeType;
       });
-      await tester.inWidget((ctx) {
-        // ignore: invalid_use_of_visible_for_testing_member
-        dispatch(ctx, 'hi');
+      await broadcast(MockBuildContext(), MyEvent2());
+      expect(eventType, null);
+    });
+
+    test('should listen all', () async {
+      var eventType = null;
+      listen((BuildContext ctx, event) async {
+        eventType = event.runtimeType;
       });
+      await broadcast(MockBuildContext(), MyEvent());
+      expect(eventType, MyEvent);
+      await broadcast(MockBuildContext(), MyEvent2());
+      expect(eventType, MyEvent2);
     });
 
     testWidgets('should isolate error', (WidgetTester tester) async {
-      var text;
-      listen<String>((_, event) async {
+      var eventType;
+      listen<MyEvent>((_, event) async {
         throw 'unhandle exception';
       });
-      listen<String>((_, event) async {
-        text = event;
+      listen<MyEvent>((_, event) async {
+        eventType = event.runtimeType;
       });
 
       await tester.inWidget((ctx) async {
-        await broadcast(ctx, 'hi');
-        expect(text, 'hi');
+        await broadcast(ctx, MyEvent());
+        expect(eventType, MyEvent);
       });
     });
 
     testWidgets('should unsubscribe', (WidgetTester tester) async {
-      var text = '';
-      var sub = listen<String>((_, event) async {
-        text = event.text;
+      var eventType;
+      var sub = listen<MyEvent>((_, event) async {
+        eventType = event.runtimeType;
       });
 
       await tester.inWidget((ctx) async {
         sub.cancel();
-        await broadcast(ctx, 'hi');
-        expect(text, '');
+        await broadcast(ctx, MyEvent());
+        expect(eventType, null);
       });
     });
   });

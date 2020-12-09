@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/eventbus/contract.dart';
+import 'package:libcli/src/eventbus/types.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:mockito/mockito.dart';
 
@@ -15,7 +15,7 @@ main() {
       listen<MockContract>((_, event) {
         throw 'unhandle exception';
       });
-      var value = await contract(MockBuildContext(), MockContract('c'));
+      var value = await broadcast(MockBuildContext(), MockContract('c'));
       expect(value, false);
     });
   });
@@ -26,7 +26,7 @@ main() {
       text = event.text;
       event.complete(true);
     });
-    var value = await contract(MockBuildContext(), MockContract('c'));
+    var value = await broadcast(MockBuildContext(), MockContract('c'));
     expect(value, true);
     expect(text, 'c');
   });
@@ -34,7 +34,7 @@ main() {
   test('should have no error if no listener', () async {
     var ex = null;
     try {
-      await contract(MockBuildContext(), MockContract('c'));
+      await broadcast(MockBuildContext(), MockContract('c'));
     } catch (e) {
       ex = e;
     }
