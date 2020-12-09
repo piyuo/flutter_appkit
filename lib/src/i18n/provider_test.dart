@@ -1,5 +1,5 @@
 import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/Cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
@@ -26,10 +26,8 @@ void main() {
 
     testWidgets('should load', (WidgetTester tester) async {
       locale = Locale('en', 'US');
-      await tester.pumpWidget(MaterialApp(
-        home: Material(
-          child: TestWidget(),
-        ),
+      await tester.pumpWidget(CupertinoApp(
+        home: TestWidget(),
       ));
       await tester.pumpAndSettle();
       expect(TestWidget.i18nProvider!.translate('a'), 'A');
