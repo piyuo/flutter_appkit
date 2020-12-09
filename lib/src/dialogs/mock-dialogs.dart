@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 
@@ -72,7 +72,7 @@ class MockDialogs extends Dialogs {
     String message, {
     double width = 160,
     double height = 40,
-    backgroundColor: Colors.black87,
+    backgroundColor: CupertinoColors.darkBackgroundGray,
     GlobalKey? widgetKey,
     Rect? widgetRect,
   }) {
