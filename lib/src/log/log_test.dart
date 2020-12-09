@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/app.dart' as configuration;
