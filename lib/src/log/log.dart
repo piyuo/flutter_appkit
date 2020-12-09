@@ -12,7 +12,7 @@ const COLOR_BLUE = _b + '34m';
 const COLOR_MAGENTA = _b + '35m';
 const COLOR_CYAN = _b + '36m';
 
-const COLOR_ALERT = COLOR_END;
+const COLOR_ALERT = COLOR_RED;
 const COLOR_WARNING = COLOR_YELLOW;
 const COLOR_MEMORY = COLOR_MAGENTA;
 const COLOR_NETWORK = COLOR_CYAN;
