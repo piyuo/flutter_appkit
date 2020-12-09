@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart';
-import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/module.dart';
 
 /// Await load provider in list
