@@ -47,7 +47,6 @@ class Dialogs {
     String message, {
     String? title,
     Icon? icon,
-    String? description,
   }) async {
     return showCupertinoDialog(
         context: context,
@@ -58,9 +57,6 @@ class Dialogs {
               child: ListBody(
                 children: <Widget>[
                   icon ?? SizedBox(),
-                  description != null
-                      ? Text(message, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey6))
-                      : SizedBox(),
                   SizedBox(height: 10),
                   Text(message, style: TextStyle(fontSize: 16.0)),
                 ],
@@ -126,6 +122,7 @@ class Dialogs {
   Future<void> error(
     BuildContext context, {
     bool notified = false,
+    String? description,
   }) async {
     return showCupertinoDialog(
         context: context,
@@ -140,6 +137,9 @@ class Dialogs {
               child: ListBody(
                 children: <Widget>[
                   Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
+                  description != null
+                      ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey6))
+                      : SizedBox(),
                   SizedBox(height: 10),
                   notified
                       ? Text('errNotified'.i18n_, style: TextStyle(fontSize: 16.0))
