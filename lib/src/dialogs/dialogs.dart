@@ -35,7 +35,7 @@ class DialogOverlay extends StatelessWidget {
   }
 }
 
-class Dialogs {
+class Dialogs extends Provider {
   static Dialogs of(BuildContext context) {
     return Provider.of<Dialogs>(context, listen: false);
   }
