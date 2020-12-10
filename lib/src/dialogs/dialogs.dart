@@ -47,6 +47,7 @@ class Dialogs {
     String message, {
     String? title,
     Icon? icon,
+    String? description,
   }) async {
     return showCupertinoDialog(
         context: context,
@@ -59,6 +60,10 @@ class Dialogs {
                   icon ?? SizedBox(),
                   SizedBox(height: 10),
                   Text(message, style: TextStyle(fontSize: 16.0)),
+                  SizedBox(height: 20),
+                  description != null
+                      ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
+                      : SizedBox(),
                 ],
               ),
             ),
