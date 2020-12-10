@@ -22,13 +22,13 @@ class RequestTimeoutContract extends Contract {
 
   /// errorID will be set if is server timeout
   ///
-  final String? errorID;
+  final String errorID;
 
   RequestTimeoutContract({
     this.exception,
     required this.url,
     required this.isServer,
-    this.errorID,
+    this.errorID = '',
   });
 }
 
