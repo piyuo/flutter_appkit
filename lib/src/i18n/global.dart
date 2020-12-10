@@ -55,7 +55,7 @@ void _en_US() {
   _global['minLenth'] = '%1 must contain at least %2 character. You entered %3 characters';
   _global['maxLenth'] = '%1 must be %2 characters or fewer. You entered %3 characters';
   _global['noService'] = 'Service Unavailable';
-  _global['noServiceDesc'] = 'This service isn\'t available right now -please try again later';
+  _global['noServiceDesc'] = 'This service isn\'t available right now, Please try again later';
   _global['noInternet'] = 'No internet!';
   _global['noInternetDesc'] = 'Poor network connection detected, Please check your connectivity';
   _global['blocked'] = 'Internet blocked!';
