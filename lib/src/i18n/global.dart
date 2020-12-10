@@ -54,6 +54,7 @@ void _en_US() {
   _global['enterYour'] = 'Enter your %1';
   _global['minLenth'] = '%1 must contain at least %2 character. You entered %3 characters';
   _global['maxLenth'] = '%1 must be %2 characters or fewer. You entered %3 characters';
+  _global['noService'] = 'This service isn\'t available right now -please try again later';
   _global['noInternet'] = 'No internet!';
   _global['noInternetDesc'] = 'Poor network connection detected, Please check your connectivity';
   _global['blocked'] = 'Internet blocked!';
@@ -84,6 +85,7 @@ void _zh_TW() {
   _global['enterYour'] = '輸入你的%1';
   _global['minLenth'] = '%1必須至少包含 %2 個字元. 你輸入了 %3 個字元';
   _global['maxLenth'] = '%1必須是%2個或更少字元. 你輸入了 %3 個字元';
+  _global['noService'] = '此服務當前不可用，請稍後再試';
   _global['noInternet'] = '無法連接到網際網路!';
   _global['noInternetDesc'] = '請檢查你的網路連線或稍後重試';
   _global['blocked'] = '我們的網站可能被封鎖了!';
@@ -114,6 +116,7 @@ void _zh_CN() {
   _global['enterYour'] = '输入你的%1';
   _global['minLenth'] = '%1必须至少包含 %2 个字元. 您输入了 %3 个字元';
   _global['maxLenth'] = '%1必须是%2个或更少字元. 您输入了 %3 个字元';
+  _global['noService'] = '服務暫時不可用，請稍候再試';
   _global['noInternet'] = '无法连接到互联网!';
   _global['noInternetDesc'] = '请检查你的网路连线或稍后重试';
   _global['blocked'] = '我们的网站可能被封锁了!';
