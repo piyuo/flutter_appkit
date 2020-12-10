@@ -18,8 +18,17 @@ const COLOR_MEMORY = COLOR_MAGENTA;
 const COLOR_NETWORK = COLOR_CYAN;
 const COLOR_STATE = COLOR_GREEN;
 
-
-
+//removeColor
+String removeColor(String str) {
+  return str
+      .replaceAll(COLOR_END, '')
+      .replaceAll(COLOR_RED, '')
+      .replaceAll(COLOR_GREEN, '')
+      .replaceAll(COLOR_YELLOW, '')
+      .replaceAll(COLOR_BLUE, '')
+      .replaceAll(COLOR_MAGENTA, '')
+      .replaceAll(COLOR_CYAN, '');
+}
 
 /// reduxStates keep all redux states
 ///
@@ -70,7 +79,7 @@ String readReduxStates() {
 void log(String message) {
 //  if (!kReleaseMode) {}
   debugPrint('$COLOR_BLUE$header$COLOR_END $message');
-  pushLog(message: message);
+  pushLog(message: removeColor(message));
 }
 
 /// error print error message to console and keep log

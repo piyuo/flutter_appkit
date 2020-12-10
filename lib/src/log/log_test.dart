@@ -4,6 +4,23 @@ import 'package:libcli/app.dart' as configuration;
 
 void main() {
   group('[log]', () {
+    test('should remove color', () {
+      String message = COLOR_END + 'set locale=en_US';
+      expect(removeColor(message), 'set locale=en_US');
+      message = COLOR_RED + 'set locale=en_US';
+      expect(removeColor(message), 'set locale=en_US');
+      message = COLOR_GREEN + 'set locale=en_US';
+      expect(removeColor(message), 'set locale=en_US');
+      message = COLOR_YELLOW + 'set locale=en_US';
+      expect(removeColor(message), 'set locale=en_US');
+      message = COLOR_BLUE + 'set locale=en_US';
+      expect(removeColor(message), 'set locale=en_US');
+      message = COLOR_MAGENTA + 'set locale=en_US';
+      expect(removeColor(message), 'set locale=en_US');
+      message = COLOR_CYAN + 'set locale=en_US';
+      expect(removeColor(message), 'set locale=en_US');
+    });
+
     test('should readReduxStates', () {
       reduxStates.clear();
       reduxStates.add({'a': 0, 'b': 1});
