@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-const double _TOAST_WIDTH = 240;
+const double _TOAST_WIDTH = 280;
 
 const double _TOAST_HEIGHT = 160;
 
@@ -11,7 +11,7 @@ class Toast extends StatelessWidget {
 
   final Color backgroundColor;
 
-  final IconData? icon;
+  final Icon? icon;
 
   Toast({
     required this.message,
@@ -32,22 +32,12 @@ class Toast extends StatelessWidget {
           child: DecoratedBox(
               decoration: BoxDecoration(color: backgroundColor),
               child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
                   child: Wrap(
+                    alignment: WrapAlignment.center,
                     children: [
-                      icon != null
-                          ? SizedBox(
-                              width: _TOAST_WIDTH,
-                              child: Icon(
-                                icon,
-                                size: 38,
-                                color: foregroundColor,
-                              ))
-                          : SizedBox(),
-                      SizedBox(
-                          width: _TOAST_WIDTH,
-                          child: Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 18))),
-                      SizedBox(height: 20),
+                      icon ?? SizedBox(),
+                      Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
                     ],
                   )))),
     );

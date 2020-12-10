@@ -94,7 +94,8 @@ class DialogsPlayground extends StatelessWidget {
                       ),
                       CupertinoButton(
                         child: Text('toast with icon'),
-                        onPressed: () => provider.toast(context, 'hello world', icon: CupertinoIcons.question),
+                        onPressed: () => provider.toast(context, 'hello world',
+                            icon: Icon(CupertinoIcons.question, size: 38, color: CupertinoColors.white)),
                       ),
                       CupertinoButton(
                         key: btnMenu,

@@ -168,7 +168,7 @@ class Dialogs {
   void toast(
     BuildContext context,
     String message, {
-    IconData? icon,
+    Icon? icon,
   }) {
     showToastWidget(
       Toast(
