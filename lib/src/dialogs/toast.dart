@@ -32,7 +32,7 @@ class Toast extends StatelessWidget {
           child: DecoratedBox(
               decoration: BoxDecoration(color: backgroundColor),
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                  padding: EdgeInsets.all(20),
                   child: Wrap(
                     alignment: WrapAlignment.center,
                     children: [
