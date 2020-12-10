@@ -48,6 +48,7 @@ class Dialogs {
     String? title,
     Icon? icon,
     String? description,
+    bool emailUs = false,
   }) async {
     return showCupertinoDialog(
         context: context,
@@ -63,6 +64,12 @@ class Dialogs {
                   SizedBox(height: 20),
                   description != null
                       ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
+                      : SizedBox(),
+                  emailUs == true
+                      ? _emailUs(() {
+                          broadcast(context, EmailSupportEvent());
+                          Navigator.of(context).pop();
+                        })
                       : SizedBox(),
                 ],
               ),
@@ -88,6 +95,7 @@ class Dialogs {
     String? labelOK,
     String? labelCancel,
     String? description,
+    bool emailUs = false,
   }) async {
     var result = await showCupertinoDialog<bool>(
         context: context,
@@ -103,6 +111,12 @@ class Dialogs {
                   SizedBox(height: 20),
                   description != null
                       ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
+                      : SizedBox(),
+                  emailUs == true
+                      ? _emailUs(() {
+                          broadcast(context, EmailSupportEvent());
+                          Navigator.of(context).pop();
+                        })
                       : SizedBox(),
                 ],
               ),
@@ -126,9 +140,10 @@ class Dialogs {
     return false;
   }
 
+/*
   /// show error dialog
   ///
-  Future<void> error(
+  Future<void> error1(
     BuildContext context, {
     bool notified = false,
     String? description,
@@ -171,7 +186,7 @@ class Dialogs {
           );
         });
   }
-
+*/
   Widget _emailUs(void Function()? onPressed) {
     return Container(
         child: Row(

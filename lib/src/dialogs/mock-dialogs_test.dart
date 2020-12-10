@@ -70,11 +70,6 @@ void main() {
       await dialogs.confirm(MockBuildContext(), 'hi');
       expect(MockDialogs.didConfirm, true);
 
-      //error
-      MockDialogs.didError = false;
-      await dialogs.error(MockBuildContext());
-      expect(MockDialogs.didError, true);
-
       //toast
       MockDialogs.didToast = false;
       dialogs.toast(MockBuildContext(), 'hi');

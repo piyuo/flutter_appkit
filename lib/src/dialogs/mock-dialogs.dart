@@ -7,8 +7,6 @@ class MockDialogs extends Dialogs {
 
   static bool didConfirm = false;
 
-  static bool didError = false;
-
   static bool didToast = false;
 
   static bool didPopMenu = false;
@@ -22,6 +20,7 @@ class MockDialogs extends Dialogs {
     String? title,
     Icon? icon,
     String? description,
+    bool emailUs = false,
   }) async {
     didAlert = true;
   }
@@ -35,18 +34,10 @@ class MockDialogs extends Dialogs {
     String? labelOK,
     String? labelCancel,
     String? description,
+    bool emailUs = false,
   }) async {
     didConfirm = true;
     return true;
-  }
-
-  @override
-  Future<void> error(
-    BuildContext context, {
-    bool notified = false,
-    String? description,
-  }) async {
-    didError = true;
   }
 
   @override

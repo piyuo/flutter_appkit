@@ -61,16 +61,18 @@ class DialogsPlayground extends StatelessWidget {
                         },
                       ),
                       CupertinoButton(
-                        child: Text('error'),
-                        onPressed: () => provider.error(context),
+                        child: Text('alert description'),
+                        onPressed: () => provider.alert(context, 'error message', description: 'description'),
                       ),
                       CupertinoButton(
-                        child: Text('error notified'),
-                        onPressed: () => provider.error(context, notified: true),
+                        child: Text('alert desc emailus'),
+                        onPressed: () =>
+                            provider.alert(context, 'error message', description: 'description', emailUs: true),
                       ),
                       CupertinoButton(
-                        child: Text('error email us'),
-                        onPressed: () => provider.error(context),
+                        child: Text('alert emailus'),
+                        onPressed: () =>
+                            provider.alert(context, 'error message', description: 'description', emailUs: true),
                       ),
                       CupertinoButton(
                         child: Text('diskError'),

@@ -51,9 +51,10 @@ void main() {
       expect(find.byType(CupertinoAlertDialog), findsOneWidget);
     });
 
-    testWidgets('should error', (WidgetTester tester) async {
+    testWidgets('should alert error', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(onPressed: (context, provider) async => await provider.error(context)),
+        createSample(
+            onPressed: (context, provider) async => await provider.alert(context, 'error message', title: 'error')),
       );
       expect(find.byType(CupertinoButton), findsOneWidget);
       await tester.tap(find.byType(CupertinoButton));
