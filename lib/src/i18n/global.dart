@@ -36,8 +36,8 @@ Future<void> initGlobalTranslation(String languageCode, String countryCode) asyn
 
 void _en_US() {
   _global['errTitle'] = 'Oops, something went wrong';
-  _global['errNotified'] = 'The developer team has been notified of this issue, Please try again later';
-  _global['errTry'] = 'Please try again later';
+  _global['notified'] = 'The developer team has been notified of this issue, Please try again later';
+  _global['error'] = 'Error';
   _global['emailUs'] = 'send email to support team';
   _global['email'] = 'Email';
   _global['retry'] = 'Retry';
@@ -68,7 +68,8 @@ void _en_US() {
 
 void _zh_TW() {
   _global['errTitle'] = '糟糕，有東西出錯了';
-  _global['errMsg'] = '發生的錯誤已被記錄並且通知了我們的開發團隊，您可以稍後再重試';
+  _global['notified'] = '發生的錯誤已被記錄並且通知了我們的開發團隊，您可以稍後再重試';
+  _global['error'] = '錯誤';
   _global['emailUs'] = '發送電子郵件給我們';
   _global['errCode'] = '錯誤代碼: ';
   _global['email'] = '電子郵件';
@@ -100,7 +101,8 @@ void _zh_TW() {
 
 void _zh_CN() {
   _global['errTitle'] = '糟了，有东西出错';
-  _global['errMsg'] = '发生的错误已被记录并且通知了我们的开发团队，您可以按下方 "重试" 按钮再试一遍';
+  _global['notified'] = '发生的错误已被记录并且通知了我们的开发团队，您可以按下方 "重试" 按钮再试一遍';
+  _global['error'] = '错误';
   _global['email'] = '电子邮件';
   _global['emailUs'] = '發送电子邮件给我们';
   _global['errCode'] = '错误代码: ';

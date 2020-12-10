@@ -33,7 +33,7 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         SizedBox(height: 10),
         AutoSizeText(
-          'errNotified'.i18n_,
+          'notified'.i18n_,
           maxLines: 5,
           textAlign: TextAlign.center,
           style: TextStyle(

@@ -139,53 +139,6 @@ class Dialogs {
     return false;
   }
 
-/*
-  /// show error dialog
-  ///
-  Future<void> error1(
-    BuildContext context, {
-    bool notified = false,
-    String? description,
-  }) async {
-    return showCupertinoDialog(
-        context: context,
-        builder: (BuildContext ctx) {
-          return CupertinoAlertDialog(
-            title: Text('errTitle'.i18n_,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                )),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
-                  SizedBox(height: 10),
-                  notified
-                      ? Text('errNotified'.i18n_, style: TextStyle(fontSize: 16.0))
-                      : Text('errTry'.i18n_, style: TextStyle(fontSize: 16.0)),
-                  SizedBox(height: 20),
-                  description != null
-                      ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
-                      : SizedBox(),
-                  _emailUs(() {
-                    broadcast(context, EmailSupportEvent());
-                    Navigator.of(context).pop();
-                  }),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text('close'.i18n_),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        });
-  }
-*/
   Widget _emailUs(void Function()? onPressed) {
     return Container(
         child: Row(
