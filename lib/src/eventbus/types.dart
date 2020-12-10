@@ -7,11 +7,17 @@ class Event {}
 /// Contract need listener do something and call complete() when job is done
 ///
 class Contract extends Event {
-  bool? completed;
+  bool _completed = false;
+  bool _result = false;
+
+  get isComplete => _completed;
+
+  get OK => _result;
 
   void complete(bool value) {
-    log('contract~${this.runtimeType} completed=$value');
-    completed = value;
+    log('${this.runtimeType} result=$value');
+    _result = value;
+    _completed = true;
   }
 }
 
