@@ -21,6 +21,7 @@ class MockDialogs extends Dialogs {
     String message, {
     String? title,
     Icon? icon,
+    String? description,
   }) async {
     didAlert = true;
   }
@@ -33,6 +34,7 @@ class MockDialogs extends Dialogs {
     Icon? icon,
     String? labelOK,
     String? labelCancel,
+    String? description,
   }) async {
     didConfirm = true;
     return true;
