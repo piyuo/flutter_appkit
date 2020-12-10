@@ -12,20 +12,39 @@ class Log {
   });
 }
 
-/// addLog log to logs, logs can keep max 20 logs.
+/// pushLog push a log to logs, logs can keep max 50 logs.
 ///
-void addLog({
+void pushLog({
   required String message,
-  int level = 1,
   String stacktrace = '',
   String states = '',
 }) {
-  logs.add(Log(
-    message: message,
-    stacktrace: stacktrace,
-    states: states,
-  ));
-  if (logs.length > 100) {
-    logs.removeAt(0);
+  logs.insert(
+    0,
+    Log(
+      message: message,
+      stacktrace: stacktrace,
+      states: states,
+    ),
+  );
+  if (logs.length > 50) {
+    logs.removeLast();
   }
+}
+
+/// printLogs print all logs
+///
+String printLogs() {
+  var buffer = StringBuffer();
+  for (Log log in logs) {
+    buffer.writeln('${log.when}: ${log.message}');
+    if (log.stacktrace.isNotEmpty) {
+      buffer.writeln(log.stacktrace);
+    }
+    if (log.states.isNotEmpty) {
+      buffer.writeln(log.states);
+    }
+    buffer.writeln();
+  }
+  return buffer.toString();
 }

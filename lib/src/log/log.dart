@@ -41,7 +41,7 @@ String safeJsonEncode(Object object) {
 /// readReduxStates print all redux states to string
 ///
 String readReduxStates() {
-  var buffer = new StringBuffer();
+  var buffer = StringBuffer();
   buffer.write('[');
   for (var i = 0; i < reduxStates.length; i++) {
     var str = safeJsonEncode(reduxStates[i]);
@@ -67,7 +67,7 @@ String readReduxStates() {
 void log(String message) {
 //  if (!kReleaseMode) {}
   debugPrint('$COLOR_BLUE$header$COLOR_END $message');
-  addLog(message: message);
+  pushLog(message: message);
 }
 
 /// error print error message to console and keep log
@@ -95,7 +95,7 @@ void error(dynamic e, StackTrace? stacktrace) {
     out += '\n${COLOR_MEMORY}$states';
   }
   debugPrint(out);
-  addLog(
+  pushLog(
     message: message,
     stacktrace: stack,
     states: states,
