@@ -65,12 +65,7 @@ class Dialogs {
                   description != null
                       ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
                       : SizedBox(),
-                  emailUs == true
-                      ? _emailUs(() {
-                          broadcast(context, EmailSupportEvent());
-                          Navigator.of(context).pop();
-                        })
-                      : SizedBox(),
+                  emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
                 ],
               ),
             ),
@@ -112,11 +107,7 @@ class Dialogs {
                   description != null
                       ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
                       : SizedBox(),
-                  emailUs == true
-                      ? _emailUs(() {
-                          broadcast(context, EmailSupportEvent());
-                        })
-                      : SizedBox(),
+                  emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
                 ],
               ),
             ),

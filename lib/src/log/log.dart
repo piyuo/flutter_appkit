@@ -18,6 +18,9 @@ const COLOR_MEMORY = COLOR_MAGENTA;
 const COLOR_NETWORK = COLOR_CYAN;
 const COLOR_STATE = COLOR_GREEN;
 
+
+
+
 /// reduxStates keep all redux states
 ///
 final List<Map> reduxStates = [];
