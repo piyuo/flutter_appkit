@@ -201,13 +201,12 @@ class Dialogs {
           ),
         ),
         SizedBox(width: 5),
-        Expanded(
-            child: GestureDetector(
-                onTap: onPressed,
-                child: Text(
-                  'emailUs'.i18n_,
-                  style: TextStyle(fontSize: 14, color: CupertinoColors.activeBlue),
-                ))),
+        GestureDetector(
+            onTap: onPressed,
+            child: Text(
+              'emailUs'.i18n_,
+              style: TextStyle(fontSize: 14, color: CupertinoColors.activeBlue),
+            )),
       ],
     ));
   }
