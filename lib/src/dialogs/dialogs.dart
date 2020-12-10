@@ -137,14 +137,14 @@ class Dialogs {
               child: ListBody(
                 children: <Widget>[
                   Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
-                  description != null
-                      ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
-                      : SizedBox(),
                   SizedBox(height: 10),
                   notified
                       ? Text('errNotified'.i18n_, style: TextStyle(fontSize: 16.0))
                       : Text('errTry'.i18n_, style: TextStyle(fontSize: 16.0)),
                   SizedBox(height: 20),
+                  description != null
+                      ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
+                      : SizedBox(),
                   _emailUs(() {
                     broadcast(context, EmailSupportEvent());
                     Navigator.of(context).pop();
