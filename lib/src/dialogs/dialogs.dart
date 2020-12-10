@@ -115,7 +115,6 @@ class Dialogs {
                   emailUs == true
                       ? _emailUs(() {
                           broadcast(context, EmailSupportEvent());
-                          Navigator.of(context).pop();
                         })
                       : SizedBox(),
                 ],
