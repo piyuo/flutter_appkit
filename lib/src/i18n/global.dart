@@ -59,7 +59,7 @@ void _en_US() {
   _global['noInternet'] = 'No internet!';
   _global['noInternetDesc'] = 'Poor network connection detected, Please check your connectivity';
   _global['blocked'] = 'Internet blocked!';
-  _global['blockedDesc'] = 'Our website is blocked by your Firewall or antivirus software';
+  _global['blockedDesc'] = 'Our service is blocked by your Firewall or antivirus software';
   _global['diskError'] = 'Write failed!';
   _global['diskErrorDesc'] = 'Insufficient disk space or write access denied';
   _global['timeout'] = 'Operation timed out!';
