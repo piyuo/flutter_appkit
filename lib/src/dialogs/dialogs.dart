@@ -99,7 +99,7 @@ class Dialogs {
   }) async {
     var result = await showCupertinoDialog<bool>(
         context: context,
-        builder: (BuildContext ctx) {
+        builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: title != null ? Text(title) : null,
             content: SingleChildScrollView(
