@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
+import 'package:libcli/src/dialogs/toast.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();
@@ -13,27 +13,26 @@ void main() {
   });
 
   Widget createSample({
-    required void Function(BuildContext context, Dialogs provider) onPressed,
+    required void Function(BuildContext context) onPressed,
   }) {
     return CupertinoApp(
+      navigatorKey: dialogsNavigatorKey,
       home: DialogOverlay(
-          child: Provider(
-        create: (_) => Dialogs(),
-        child: Consumer<Dialogs>(
-          builder: (context, provider, child) => CupertinoButton(
+        child: Builder(builder: (BuildContext ctx) {
+          return CupertinoButton(
             key: keyBtn,
             child: Text('button'),
-            onPressed: () => onPressed(context, provider),
-          ),
-        ),
-      )),
+            onPressed: () => onPressed(ctx),
+          );
+        }),
+      ),
     );
   }
 
   group('[dialogs]', () {
     testWidgets('should alert', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(onPressed: (context, provider) => provider.alert(context, 'hello')),
+        createSample(onPressed: (context) => alert(context, 'hello')),
       );
       expect(find.byType(CupertinoButton), findsOneWidget);
       await tester.tap(find.byType(CupertinoButton));
@@ -43,7 +42,7 @@ void main() {
 
     testWidgets('should confirm', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(onPressed: (context, provider) async => await provider.confirm(context, 'hello')),
+        createSample(onPressed: (context) async => await confirm(context, 'hello')),
       );
       expect(find.byType(CupertinoButton), findsOneWidget);
       await tester.tap(find.byType(CupertinoButton));
@@ -53,8 +52,7 @@ void main() {
 
     testWidgets('should alert error', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(
-            onPressed: (context, provider) async => await provider.alert(context, 'error message', title: 'error')),
+        createSample(onPressed: (context) async => await alert(context, 'error message', title: 'error')),
       );
       expect(find.byType(CupertinoButton), findsOneWidget);
       await tester.tap(find.byType(CupertinoButton));
@@ -64,8 +62,8 @@ void main() {
 
     testWidgets('should pop menu', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(onPressed: (context, provider) async {
-          await provider.popMenu(context, widgetKey: keyBtn, items: [
+        createSample(onPressed: (context) async {
+          await popMenu(context, widgetKey: keyBtn, items: [
             MenuItem(
                 id: 'home',
                 text: 'Home',
@@ -84,12 +82,25 @@ void main() {
 
     testWidgets('should tooltip', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(onPressed: (context, provider) => provider.tooltip(context, 'hello', widgetKey: keyBtn)),
+        createSample(onPressed: (context) => tooltip(context, 'hello', widgetKey: keyBtn)),
       );
       expect(find.byType(CupertinoButton), findsOneWidget);
       await tester.tap(find.byType(CupertinoButton));
       await tester.pumpAndSettle();
       expect(find.byType(CustomPaint), findsWidgets);
+    });
+
+    testWidgets('should toast', (WidgetTester tester) async {
+      var dismiss;
+      await tester.pumpWidget(
+        createSample(onPressed: (context) => dismiss = toast(context, 'hello')),
+      );
+      expect(find.byType(CupertinoButton), findsOneWidget);
+      await tester.tap(find.byType(CupertinoButton));
+      await tester.pumpAndSettle();
+      //    dismiss();
+      expect(find.byType(Toast), findsWidgets);
+//      tester.pumpWidget(Placeholder());
     });
   });
 }

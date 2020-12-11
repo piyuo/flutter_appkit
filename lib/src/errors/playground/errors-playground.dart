@@ -6,7 +6,6 @@ import 'package:libcli/command.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/errors/errors.dart';
-import 'package:provider/provider.dart';
 
 class ErrorsPlayground extends StatelessWidget {
   @override
@@ -33,7 +32,7 @@ class ErrorsPlayground extends StatelessWidget {
                       return false;
                     };
                     var ok = await broadcast(context, contract);
-                    Dialogs.of(context).toast(context, ok ? 'retry' : 'cancel');
+                    toast(context, ok ? 'retry' : 'cancel');
                   }
                 }),
             CupertinoButton(
@@ -48,7 +47,7 @@ class ErrorsPlayground extends StatelessWidget {
                     return true;
                   };
                   var ok = await broadcast(context, contract);
-                  Dialogs.of(context).toast(context, ok ? 'retry' : 'cancel');
+                  toast(context, ok ? 'retry' : 'cancel');
                 }),
             CupertinoButton(
                 child: Text('internet blocked'),
@@ -62,7 +61,7 @@ class ErrorsPlayground extends StatelessWidget {
                     return false;
                   };
                   var ok = await broadcast(context, contract);
-                  Dialogs.of(context).toast(context, ok ? 'retry' : 'cancel');
+                  toast(context, ok ? 'retry' : 'cancel');
                 }),
             CupertinoButton(
                 child: Text('internal server error'),
@@ -87,14 +86,14 @@ class ErrorsPlayground extends StatelessWidget {
                   } catch (e) {
                     var ok = await broadcast(
                         context, RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
-                    Dialogs.of(context).toast(context, ok ? 'retry' : 'cancel');
+                    toast(context, ok ? 'retry' : 'cancel');
                   }
                 }),
             CupertinoButton(
                 child: Text('deadline exceeded'),
                 onPressed: () async {
                   var ok = await broadcast(context, RequestTimeoutContract(isServer: true, url: 'http://mock'));
-                  Dialogs.of(context).toast(context, ok ? 'retry' : 'cancel');
+                  toast(context, ok ? 'retry' : 'cancel');
                 }),
             CupertinoButton(
                 child: Text('slow network'),

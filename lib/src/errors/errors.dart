@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/command.dart';
@@ -40,7 +39,7 @@ void catched(dynamic e, StackTrace? stack) {
     //don't do anything, assertion only happen in development
     return;
   } else if (e is DiskErrorException) {
-    Dialogs.of(dialogsRootContext).alert(
+    alert(
       dialogsRootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
@@ -50,8 +49,7 @@ void catched(dynamic e, StackTrace? stack) {
   }
 
   //try {
-  Dialogs d = Dialogs.of(dialogsRootContext);
-  Dialogs.of(dialogsRootContext).alert(
+  alert(
     dialogsRootContext,
     'notified'.i18n_,
     icon: Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
@@ -65,9 +63,8 @@ void catched(dynamic e, StackTrace? stack) {
 @visibleForTesting
 Future<void> listened(BuildContext context, dynamic e) async {
   debugPrint('error-service listened ${e.runtimeType}');
-  var dialog = Dialogs.of(context);
   if (e is InternalServerErrorEvent) {
-    dialog.alert(
+    alert(
       context,
       '500 internal server error',
       title: 'error'.i18n_,
@@ -76,7 +73,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   }
   if (e is ServerNotReadyEvent) {
-    dialog.alert(
+    alert(
       context,
       '501 server not ready',
       title: 'error'.i18n_,
@@ -85,7 +82,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   }
   if (e is BadRequestEvent) {
-    dialog.alert(
+    alert(
       context,
       '400 bad request',
       title: 'error'.i18n_,
@@ -94,7 +91,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   }
   if (e is SlowNetworkEvent) {
-    dialog.toast(context, 'slow'.i18n_,
+    toast(context, 'slow'.i18n_,
         icon: Icon(
           CupertinoIcons.wifi,
           size: 36,
@@ -103,7 +100,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
   }
   if (e is RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
-    var result = await dialog.confirm(
+    var result = await confirm(
       context,
       'timeoutDesc'.i18n_,
       title: 'timeout'.i18n_,
@@ -117,7 +114,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
   if (e is InternetRequiredContract) {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
-        dialog.alert(
+        alert(
           context,
           'noServiceDesc'.i18n_,
           icon: Icon(CupertinoIcons.lightbulb_slash, color: CupertinoColors.systemRed, size: 38),
@@ -126,7 +123,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
           emailUs: true,
         ); //service not available
       } else {
-        dialog.alert(
+        alert(
           context,
           'blockedDesc'.i18n_,
           title: 'blocked'.i18n_,
@@ -137,7 +134,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       }
       e.complete(false);
     } else {
-      var result = await dialog.confirm(
+      var result = await confirm(
         context,
         'noInternetDesc'.i18n_,
         title: 'noInternet'.i18n_,
