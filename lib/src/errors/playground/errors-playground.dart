@@ -46,8 +46,7 @@ class ErrorsPlayground extends StatelessWidget {
                   contract.isGoogleCloudFunctionAvailable = () async {
                     return true;
                   };
-                  var ok = await broadcast(context, contract);
-                  toast(context, ok ? 'retry' : 'cancel');
+                  await broadcast(context, contract);
                 }),
             CupertinoButton(
                 child: Text('internet blocked'),
@@ -60,8 +59,7 @@ class ErrorsPlayground extends StatelessWidget {
                   contract.isGoogleCloudFunctionAvailable = () async {
                     return false;
                   };
-                  var ok = await broadcast(context, contract);
-                  toast(context, ok ? 'retry' : 'cancel');
+                  await broadcast(context, contract);
                 }),
             CupertinoButton(
                 child: Text('internal server error'),
