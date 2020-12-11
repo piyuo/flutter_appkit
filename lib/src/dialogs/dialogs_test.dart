@@ -30,7 +30,7 @@ void main() {
     );
   }
 
-  group('[dialog-provider]', () {
+  group('[dialogs]', () {
     testWidgets('should alert', (WidgetTester tester) async {
       await tester.pumpWidget(
         createSample(onPressed: (context, provider) => provider.alert(context, 'hello')),
