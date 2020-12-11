@@ -181,6 +181,7 @@ void main() {
     });
 
     testWidgets('should toast when network is slow', (WidgetTester tester) async {
+      mockToast();
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
@@ -190,7 +191,7 @@ void main() {
       expect(find.byType(CupertinoButton), findsOneWidget);
       await tester.tap(find.byType(CupertinoButton));
       await tester.pumpAndSettle();
-      expect(find.byType(Toast), findsOneWidget);
+      await expectToastAndWaitDismiss(tester);
     });
   });
 }

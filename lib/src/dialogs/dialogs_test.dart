@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
-import 'package:libcli/src/dialogs/toast.dart';
+import 'package:libcli/src/dialogs/dialogs-mock.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();
@@ -91,16 +91,14 @@ void main() {
     });
 
     testWidgets('should toast', (WidgetTester tester) async {
-      var dismiss;
+      mockToast();
       await tester.pumpWidget(
-        createSample(onPressed: (context) => dismiss = toast(context, 'hello')),
+        createSample(onPressed: (context) => toast(context, 'hello')),
       );
       expect(find.byType(CupertinoButton), findsOneWidget);
       await tester.tap(find.byType(CupertinoButton));
       await tester.pumpAndSettle();
-      //    dismiss();
-      expect(find.byType(Toast), findsWidgets);
-//      tester.pumpWidget(Placeholder());
+      await expectToastAndWaitDismiss(tester);
     });
   });
 }

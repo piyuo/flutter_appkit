@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:oktoast/oktoast.dart';
+
 import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/toast.dart';
 import 'package:libcli/src/dialogs/popup.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 import 'package:libcli/eventbus.dart';
+
+///ToastHideDuration set when toast will hide
+///
+var ToastHideDuration = Duration(seconds: 3);
 
 /// dialogsNavigatorKey used in rootContext
 ///
@@ -150,12 +155,12 @@ Widget _emailUs(void Function()? onPressed) {
 
 /// toast show toast
 ///
-Function toast(
+void toast(
   BuildContext context,
   String message, {
   Icon? icon,
 }) {
-  ToastFuture future = showToastWidget(
+  showToastWidget(
     Toast(
       icon: icon,
       message: message,
@@ -163,13 +168,8 @@ Function toast(
     ),
     context: context,
     dismissOtherToast: true,
-    duration: Duration(seconds: 0),
+    duration: ToastHideDuration,
   );
-
-  return () {
-    future.timer.cancel();
-    future.dismiss();
-  };
 }
 
 /// popMenu show menu
