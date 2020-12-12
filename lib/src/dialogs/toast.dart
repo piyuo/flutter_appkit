@@ -27,14 +27,17 @@ class Toast extends StatelessWidget {
       child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: _TOAST_WIDTH,
+            minWidth: _TOAST_WIDTH,
             maxHeight: _TOAST_HEIGHT,
           ),
           child: DecoratedBox(
               decoration: BoxDecoration(color: backgroundColor),
               child: Padding(
                   padding: EdgeInsets.all(20),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       icon ?? SizedBox(),
                       Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))

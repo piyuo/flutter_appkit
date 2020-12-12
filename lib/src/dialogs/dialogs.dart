@@ -117,56 +117,6 @@ Future<bool> alert(
   return false;
 }
 
-/*
-/// confirm show confirm dialog, return true if press ok
-///
-Future<bool> confirm(
-  BuildContext context,
-  String message, {
-  String? title,
-  Icon? icon,
-  String? labelOK,
-  String? labelCancel,
-  String? description,
-  bool emailUs = false,
-}) async {
-  var result = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: title != null ? Text(title) : null,
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                icon ?? SizedBox(),
-                SizedBox(height: 10),
-                Text(message, style: TextStyle(fontSize: 16.0)),
-                SizedBox(height: 20),
-                description != null
-                    ? Text(description, style: TextStyle(fontSize: 13.0, color: Colors.grey))
-                    : SizedBox(),
-                emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(labelCancel ?? 'cancel'.i18n_),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            FlatButton(
-              child: Text(labelOK ?? 'ok'.i18n_),
-              onPressed: () => Navigator.of(context).pop(true),
-            ),
-          ],
-        );
-      });
-  if (result == true) {
-    return true;
-  }
-  return false;
-}
-*/
 Widget _emailUs(void Function()? onPressed) {
   return Container(
       child: Row(
