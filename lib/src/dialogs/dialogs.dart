@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'package:libcli/i18n.dart';
@@ -49,10 +49,10 @@ Future<void> alert(
   String? description,
   bool emailUs = false,
 }) async {
-  return showCupertinoDialog(
+  return showDialog(
       context: context,
       builder: (BuildContext ctx) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: title != null ? Text(title) : null,
           content: SingleChildScrollView(
             child: ListBody(
@@ -62,15 +62,14 @@ Future<void> alert(
                 Text(message, style: TextStyle(fontSize: 16.0)),
                 SizedBox(height: 20),
                 description != null
-                    ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
+                    ? Text(description, style: TextStyle(fontSize: 13.0, color: Colors.grey))
                     : SizedBox(),
                 emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
               ],
             ),
           ),
           actions: <Widget>[
-            CupertinoDialogAction(
-              isDefaultAction: true,
+            FlatButton(
               child: Text('close'.i18n_),
               onPressed: () => Navigator.of(context).pop(),
             ),
@@ -91,10 +90,10 @@ Future<bool> confirm(
   String? description,
   bool emailUs = false,
 }) async {
-  var result = await showCupertinoDialog<bool>(
+  var result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: title != null ? Text(title) : null,
           content: SingleChildScrollView(
             child: ListBody(
@@ -104,19 +103,18 @@ Future<bool> confirm(
                 Text(message, style: TextStyle(fontSize: 16.0)),
                 SizedBox(height: 20),
                 description != null
-                    ? Text(description, style: TextStyle(fontSize: 13.0, color: CupertinoColors.systemGrey))
+                    ? Text(description, style: TextStyle(fontSize: 13.0, color: Colors.grey))
                     : SizedBox(),
                 emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
               ],
             ),
           ),
           actions: <Widget>[
-            CupertinoDialogAction(
+            FlatButton(
               child: Text(labelCancel ?? 'cancel'.i18n_),
               onPressed: () => Navigator.of(context).pop(false),
             ),
-            CupertinoDialogAction(
-              isDefaultAction: true,
+            FlatButton(
               child: Text(labelOK ?? 'ok'.i18n_),
               onPressed: () => Navigator.of(context).pop(true),
             ),
@@ -137,8 +135,8 @@ Widget _emailUs(void Function()? onPressed) {
       GestureDetector(
         onTap: onPressed,
         child: Icon(
-          CupertinoIcons.envelope,
-          color: CupertinoColors.activeBlue,
+          Icons.mail_outline,
+          color: Colors.blueAccent,
           size: 18,
         ),
       ),
@@ -147,7 +145,7 @@ Widget _emailUs(void Function()? onPressed) {
               onTap: onPressed,
               child: Text(
                 'emailUs'.i18n_,
-                style: TextStyle(fontSize: 14, color: CupertinoColors.activeBlue),
+                style: TextStyle(fontSize: 14, color: Colors.blueAccent),
               ))),
     ],
   ));
@@ -164,7 +162,7 @@ void toast(
     Toast(
       icon: icon,
       message: message,
-      backgroundColor: CupertinoColors.darkBackgroundGray,
+      backgroundColor: Colors.black87,
     ),
     context: context,
     dismissOtherToast: true,
@@ -197,7 +195,7 @@ void tooltip(
   String message, {
   double width = 160,
   double height = 40,
-  backgroundColor: CupertinoColors.darkBackgroundGray,
+  backgroundColor: Colors.black87,
   GlobalKey? widgetKey,
   Rect? widgetRect,
 }) {
@@ -206,7 +204,7 @@ void tooltip(
     child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(12),
-        child: Text(message, style: TextStyle(fontSize: 14, color: CupertinoColors.white))),
+        child: Text(message, style: TextStyle(fontSize: 14, color: Colors.white))),
     itemWidth: width,
     itemHeight: height,
     backgroundColor: backgroundColor,

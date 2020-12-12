@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
@@ -13,23 +13,27 @@ class DialogsPlayground extends StatelessWidget {
       children: [
         Wrap(
           children: [
-            CupertinoButton(
+            MaterialButton(
               child: Text('alert'),
               onPressed: () => alert(
                 context,
                 'hi',
               ),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('alert icon'),
               onPressed: () => alert(context, 'hello world1',
-                  icon: Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38)),
+                  icon: Icon(
+                    Icons.warning_outlined,
+                    color: Colors.redAccent,
+                    size: 38,
+                  )),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('alert title'),
               onPressed: () => alert(context, 'hello world', title: 'title'),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('confirm'),
               onPressed: () async {
                 var result = await confirm(context, 'are you ok?');
@@ -40,14 +44,14 @@ class DialogsPlayground extends StatelessWidget {
                 toast(context, 'cancel');
               },
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('confirm with icon'),
               onPressed: () async {
                 var result = await confirm(
                   context,
                   'no internet, please check your connection',
                   title: 'No Internet!',
-                  icon: Icon(CupertinoIcons.wifi_slash, color: CupertinoColors.systemRed, size: 38),
+                  icon: Icon(Icons.wifi_off_outlined, color: Colors.redAccent, size: 38),
                   labelOK: 'retry'.i18n_,
                 );
                 if (result) {
@@ -55,42 +59,41 @@ class DialogsPlayground extends StatelessWidget {
                 }
               },
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('alert description'),
               onPressed: () => alert(context, 'error message', description: 'description'),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('alert desc emailus'),
               onPressed: () => alert(context, 'error message', description: 'description', emailUs: true),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('alert emailus'),
               onPressed: () => alert(context, 'error message', description: 'description', emailUs: true),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('diskError'),
               onPressed: () => alert(
                 context,
                 'diskErrorDesc'.i18n_,
                 title: 'diskError'.i18n_,
-                icon: Icon(CupertinoIcons.floppy_disk, color: CupertinoColors.systemRed, size: 38),
+                icon: Icon(Icons.sync_problem_rounded, color: Colors.redAccent, size: 38),
               ),
             ),
-            CupertinoButton(
+            MaterialButton(
               key: btnTooltip,
               child: Text('tooltip'),
               onPressed: () => tooltip(context, 'hello world', widgetKey: btnTooltip),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('toast'),
               onPressed: () => toast(context, 'hello world'),
             ),
-            CupertinoButton(
+            MaterialButton(
               child: Text('toast with icon'),
-              onPressed: () => toast(context, 'hello world',
-                  icon: Icon(CupertinoIcons.question, size: 38, color: CupertinoColors.white)),
+              onPressed: () => toast(context, 'hello world', icon: Icon(Icons.check, size: 38, color: Colors.white)),
             ),
-            CupertinoButton(
+            MaterialButton(
               key: btnMenu,
               child: Text('menu'),
               onPressed: () async {
@@ -99,29 +102,29 @@ class DialogsPlayground extends StatelessWidget {
                       id: 'home',
                       text: 'Home',
                       widget: Icon(
-                        CupertinoIcons.home,
-                        color: CupertinoColors.white,
+                        Icons.home,
+                        color: Colors.white,
                       )),
                   MenuItem(
                       id: 'mail',
                       text: 'Mail',
                       widget: Icon(
-                        CupertinoIcons.envelope,
-                        color: CupertinoColors.white,
+                        Icons.mail_outline,
+                        color: Colors.white,
                       )),
                   MenuItem(
                       id: 'power',
                       text: 'Power',
                       widget: Icon(
-                        CupertinoIcons.power,
-                        color: CupertinoColors.white,
+                        Icons.power,
+                        color: Colors.white,
                       )),
                   MenuItem(
                       id: 'setting',
                       text: 'Setting',
                       widget: Icon(
-                        CupertinoIcons.settings,
-                        color: CupertinoColors.white,
+                        Icons.settings,
+                        color: Colors.white,
                       )),
                 ]);
                 toast(context, item.text);

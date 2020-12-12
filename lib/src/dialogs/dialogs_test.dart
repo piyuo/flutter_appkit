@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
@@ -15,11 +15,11 @@ void main() {
   Widget createSample({
     required void Function(BuildContext context) onPressed,
   }) {
-    return CupertinoApp(
+    return MaterialApp(
       navigatorKey: dialogsNavigatorKey,
       home: DialogOverlay(
         child: Builder(builder: (BuildContext ctx) {
-          return CupertinoButton(
+          return MaterialButton(
             key: keyBtn,
             child: Text('button'),
             onPressed: () => onPressed(ctx),
@@ -34,30 +34,30 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) => alert(context, 'hello')),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should confirm', (WidgetTester tester) async {
       await tester.pumpWidget(
         createSample(onPressed: (context) async => await confirm(context, 'hello')),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert error', (WidgetTester tester) async {
       await tester.pumpWidget(
         createSample(onPressed: (context) async => await alert(context, 'error message', title: 'error')),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should pop menu', (WidgetTester tester) async {
@@ -68,14 +68,14 @@ void main() {
                 id: 'home',
                 text: 'Home',
                 widget: Icon(
-                  CupertinoIcons.home,
-                  color: CupertinoColors.white,
+                  Icons.home,
+                  color: Colors.white,
                 ))
           ]);
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
       expect(find.byType(MenuItemWidget), findsOneWidget);
     });
@@ -84,8 +84,8 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) => tooltip(context, 'hello', widgetKey: keyBtn)),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
       expect(find.byType(CustomPaint), findsWidgets);
     });
@@ -95,8 +95,8 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) => toast(context, 'hello')),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
       await expectToastAndWaitDismiss(tester);
     });

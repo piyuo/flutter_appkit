@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 const double _TOAST_WIDTH = 280;
 
@@ -15,8 +15,8 @@ class Toast extends StatelessWidget {
 
   Toast({
     required this.message,
-    this.foregroundColor = CupertinoColors.white,
-    this.backgroundColor = CupertinoColors.darkBackgroundGray,
+    this.foregroundColor = Colors.white,
+    this.backgroundColor = Colors.black87,
     this.icon,
   });
 

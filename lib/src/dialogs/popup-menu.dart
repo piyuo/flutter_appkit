@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'dart:math';
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/src/dialogs/popup.dart';
 
 class MenuItem {
@@ -49,16 +49,16 @@ class PopupMenu extends Popup {
   final MenuClickCallback onClickItem;
 
   /// style
-  Color _highlightColor = CupertinoColors.black;
+  Color _highlightColor = Colors.black;
 
-  Color _lineColor = CupertinoColors.black;
+  Color _lineColor = Colors.black;
 
   PopupMenu({
     required BuildContext context,
     required this.items,
     required this.onClickItem,
     VoidCallback? onDismiss,
-    Color backgroundColor = CupertinoColors.black,
+    Color backgroundColor = Colors.black,
     Color? highlightColor,
     Color? lineColor,
     double itemWidth = 72.0,

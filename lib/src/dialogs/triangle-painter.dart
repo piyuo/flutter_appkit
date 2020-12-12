@@ -1,12 +1,12 @@
 import 'package:flutter/rendering.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class TrianglePainter extends CustomPainter {
   final Color color;
 
   bool isDown;
 
-  TrianglePainter({this.isDown = true, this.color = CupertinoColors.black});
+  TrianglePainter({this.isDown = true, this.color = Colors.black});
 
   @override
   void paint(Canvas canvas, Size size) {

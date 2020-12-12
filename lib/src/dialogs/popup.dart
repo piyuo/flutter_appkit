@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/src/dialogs/triangle-painter.dart';
 
 const arrowHeight = 10.0;
@@ -44,7 +44,7 @@ class Popup {
     required this.context,
     this.child,
     this.onDismiss,
-    this.backgroundColor = CupertinoColors.black,
+    this.backgroundColor = Colors.black,
     this.itemWidth = 72.0,
     this.itemHeight = 65.0,
   });
@@ -141,7 +141,7 @@ class Popup {
                     borderRadius: BorderRadius.circular(10.0),
                     boxShadow: [
                       BoxShadow(
-                        color: CupertinoColors.darkBackgroundGray,
+                        color: Colors.black87,
                         blurRadius: 5.0,
                       )
                     ],
