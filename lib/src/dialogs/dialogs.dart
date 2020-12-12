@@ -1,14 +1,26 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-
 import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/toast.dart';
 import 'package:libcli/src/dialogs/popup.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 import 'package:libcli/eventbus.dart';
 
-///ToastHideDuration set when toast will hide
+final keyAlertButtonTrue = UniqueKey();
+
+final keyAlertButtonFalse = UniqueKey();
+
+/// ButtonType for alert dialog
+///
+enum ButtonType {
+  close,
+  okCancel,
+  retryCancel,
+  yesNo,
+}
+
+/// ToastHideDuration set when toast will hide
 ///
 var ToastHideDuration = Duration(seconds: 3);
 
@@ -39,17 +51,20 @@ class DialogOverlay extends StatelessWidget {
   }
 }
 
-/// alert show alert dialog
+/// alert show alert dialog, return true if it's ok or yes
 ///
-Future<void> alert(
+Future<bool> alert(
   BuildContext context,
   String message, {
   String? title,
   Icon? icon,
   String? description,
   bool emailUs = false,
+  ButtonType buttonType = ButtonType.close,
+  String? labelFalse,
+  String? labelTrue,
 }) async {
-  return showDialog(
+  var result = await showDialog<bool>(
       context: context,
       builder: (BuildContext ctx) {
         return AlertDialog(
@@ -70,14 +85,39 @@ Future<void> alert(
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('close'.i18n_),
-              onPressed: () => Navigator.of(context).pop(),
+              key: keyAlertButtonFalse,
+              child: Text(labelFalse != null
+                  ? labelFalse
+                  : buttonType == ButtonType.close
+                      ? 'close'.i18n_
+                      : buttonType == ButtonType.okCancel || buttonType == ButtonType.retryCancel
+                          ? 'cancel'.i18n_
+                          : 'no'.i18n_),
+              onPressed: () => Navigator.of(context).pop(false),
             ),
+            buttonType == ButtonType.close
+                ? SizedBox()
+                : FlatButton(
+                    key: keyAlertButtonTrue,
+                    child: Text(labelTrue != null
+                        ? labelTrue
+                        : buttonType == ButtonType.okCancel
+                            ? 'ok'.i18n_
+                            : buttonType == ButtonType.retryCancel
+                                ? 'retry'.i18n_
+                                : 'yes'.i18n_),
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
           ],
         );
       });
+  if (result == true) {
+    return true;
+  }
+  return false;
 }
 
+/*
 /// confirm show confirm dialog, return true if press ok
 ///
 Future<bool> confirm(
@@ -126,7 +166,7 @@ Future<bool> confirm(
   }
   return false;
 }
-
+*/
 Widget _emailUs(void Function()? onPressed) {
   return Container(
       child: Row(

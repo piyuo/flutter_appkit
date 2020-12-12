@@ -44,6 +44,8 @@ void _en_US() {
   _global['ok'] = 'Ok';
   _global['cancel'] = 'Cancel';
   _global['close'] = 'Close';
+  _global['yes'] = 'Yes';
+  _global['no'] = 'No';
   _global['back'] = 'Back';
   _global['slow'] = 'your network is slow than usual';
   _global['required'] = '%1 is required';
@@ -77,6 +79,8 @@ void _zh_TW() {
   _global['ok'] = '確定';
   _global['cancel'] = '取消';
   _global['close'] = '關閉';
+  _global['yes'] = '是';
+  _global['no'] = '否';
   _global['back'] = '返回';
   _global['slow'] = '您的網路速度比平時慢';
   _global['required'] = '%1必須填寫';
@@ -111,6 +115,8 @@ void _zh_CN() {
   _global['cancel'] = '取消';
   _global['close'] = '关闭';
   _global['back'] = '返回';
+  _global['yes'] = '是';
+  _global['no'] = '否';
   _global['slow'] = '您的网路速度比平时慢';
   _global['required'] = '%1必须填写';
   _global['validator'] = '请输入一个有效的%1.  (范例: %2)';

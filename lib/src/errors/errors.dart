@@ -100,11 +100,11 @@ Future<void> listened(BuildContext context, dynamic e) async {
   }
   if (e is RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
-    var result = await confirm(
+    var result = await alert(
       context,
       'timeoutDesc'.i18n_,
       title: 'timeout'.i18n_,
-      labelOK: 'retry'.i18n_,
+      buttonType: ButtonType.retryCancel,
       icon: Icon(CupertinoIcons.timer, color: CupertinoColors.systemRed, size: 38),
       description: errorCode,
       emailUs: true,
@@ -134,13 +134,13 @@ Future<void> listened(BuildContext context, dynamic e) async {
       }
       e.complete(false);
     } else {
-      var result = await confirm(
+      var result = await alert(
         context,
         'noInternetDesc'.i18n_,
         title: 'noInternet'.i18n_,
         icon: Icon(CupertinoIcons.wifi_slash, color: CupertinoColors.systemRed, size: 38),
         description: e.exception?.toString(),
-        labelOK: 'retry'.i18n_,
+        buttonType: ButtonType.retryCancel,
       );
       e.complete(result);
     }

@@ -34,9 +34,9 @@ class DialogsPlayground extends StatelessWidget {
               onPressed: () => alert(context, 'hello world', title: 'title'),
             ),
             MaterialButton(
-              child: Text('confirm'),
+              child: Text('alert ok/cancel'),
               onPressed: () async {
-                var result = await confirm(context, 'are you ok?');
+                var result = await alert(context, 'are you ok?', buttonType: ButtonType.okCancel);
                 if (result == true) {
                   toast(context, 'ok');
                   return;
@@ -45,14 +45,14 @@ class DialogsPlayground extends StatelessWidget {
               },
             ),
             MaterialButton(
-              child: Text('confirm with icon'),
+              child: Text('alert yes/no with icon'),
               onPressed: () async {
-                var result = await confirm(
+                var result = await alert(
                   context,
                   'no internet, please check your connection',
                   title: 'No Internet!',
                   icon: Icon(Icons.wifi_off_outlined, color: Colors.redAccent, size: 38),
-                  labelOK: 'retry'.i18n_,
+                  buttonType: ButtonType.retryCancel,
                 );
                 if (result) {
                   toast(context, 'start retry');
