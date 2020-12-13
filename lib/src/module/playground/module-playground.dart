@@ -5,7 +5,8 @@ import 'package:libcli/src/module/playground/wrong-provider-page.dart';
 class ModulePlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+        body: Column(
       children: [
         Wrap(
           children: [
@@ -20,6 +21,6 @@ class ModulePlayground extends StatelessWidget {
           ],
         ),
       ],
-    );
+    ));
   }
 }

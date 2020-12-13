@@ -9,7 +9,8 @@ class DialogsPlayground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+        body: Column(
       children: [
         Wrap(
           children: [
@@ -133,6 +134,6 @@ class DialogsPlayground extends StatelessWidget {
           ],
         ),
       ],
-    );
+    ));
   }
 }
