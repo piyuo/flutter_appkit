@@ -97,7 +97,6 @@ class _AwaitState extends State<Await> {
         return widget.progress != null
             ? widget.progress!
             : Scaffold(
-                backgroundColor: Colors.white,
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),
