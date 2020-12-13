@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/src/module/playground/wrong-provider-page.dart';
+import 'package:libcli/src/module/playground/wrong-page.dart';
+import 'package:libcli/src/module/playground/wait-page.dart';
 
 class ModulePlayground extends StatelessWidget {
   @override
@@ -14,7 +15,15 @@ class ModulePlayground extends StatelessWidget {
               child: Text('provider with problem'),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                  return WrongProviderPage();
+                  return WrongPage();
+                }));
+              },
+            ),
+            FlatButton(
+              child: Text('provider need wait 30\'s'),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                  return WaitPage();
                 }));
               },
             ),

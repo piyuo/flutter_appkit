@@ -46,7 +46,7 @@ class AwaitErrorMessage extends StatelessWidget {
             onTap: () => broadcast(context, EmailSupportEvent()),
             child: Icon(
               Icons.mail_outline,
-              color: Colors.blueAccent,
+              color: Colors.orange[200],
               size: 38,
             )),
         SizedBox(width: 10),
@@ -56,7 +56,7 @@ class AwaitErrorMessage extends StatelessWidget {
               'emailUs'.i18n_,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.blueAccent,
+                color: Colors.orange[200],
                 fontSize: 14.0,
               ),
             )),

@@ -4,11 +4,7 @@ import 'package:libcli/module.dart';
 class WrongProvider extends AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
-    await exceptionHappen();
-  }
-
-  exceptionHappen() async {
-    throw 'load error';
+    throw Exception('load error');
   }
 }
 
@@ -22,8 +18,8 @@ class WrongWidget extends StatelessWidget {
   }
 }
 
-class WrongProviderPage extends ViewWidget<WrongProvider> {
-  WrongProviderPage() : super(i18nFilename: 'WrongProviderPage');
+class WrongPage extends ViewWidget<WrongProvider> {
+  WrongPage() : super(i18nFilename: '');
 
   @override
   createProvider(BuildContext context) => WrongProvider();

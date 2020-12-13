@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/module.dart';
@@ -94,7 +94,14 @@ class _AwaitState extends State<Await> {
       case AsyncStatus.error:
         return widget.error != null ? widget.error! : AwaitErrorMessage(onRetryPressed: () => reload(context));
       default:
-        return widget.progress != null ? widget.progress! : AwaitProgressIndicator();
+        return widget.progress != null
+            ? widget.progress!
+            : Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
     }
   }
 }
