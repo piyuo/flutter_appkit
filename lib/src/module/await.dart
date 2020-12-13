@@ -92,7 +92,7 @@ class _AwaitState extends State<Await> {
       case AsyncStatus.ready:
         return widget.child;
       case AsyncStatus.error:
-        return widget.error != null ? widget.error! : AwaitErrorMessage(onRetryPressed: () => reload(context));
+        return widget.error != null ? widget.error! : AwaitErrorMessage();
       default:
         return widget.progress != null
             ? widget.progress!

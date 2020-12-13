@@ -6,12 +6,6 @@ import 'package:libcli/eventbus.dart';
 class AwaitErrorMessage extends StatelessWidget {
   final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
 
-  final void Function() onRetryPressed;
-
-  AwaitErrorMessage({
-    required this.onRetryPressed,
-  });
-
   content(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -60,17 +54,6 @@ class AwaitErrorMessage extends StatelessWidget {
                 fontSize: 14.0,
               ),
             )),
-        SizedBox(height: 60),
-        SizedBox(
-          width: double.infinity,
-          height: 40,
-          child: FlatButton(
-            padding: EdgeInsets.all(0.0),
-            color: Colors.white,
-            child: Text('retry'.i18n_, style: TextStyle(color: Colors.redAccent)),
-            onPressed: onRetryPressed,
-          ),
-        )
       ]),
     );
   }
