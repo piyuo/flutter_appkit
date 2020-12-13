@@ -32,7 +32,7 @@ final dialogsNavigatorKey = new GlobalKey<NavigatorState>();
 ///
 BuildContext get dialogsRootContext {
   assert(dialogsNavigatorKey.currentState != null && dialogsNavigatorKey.currentState!.overlay != null,
-      'you need set navigatorKey: dialogsNavigatorKey in CupertinoApp');
+      'you need set navigatorKey: dialogsNavigatorKey in MaterialApp');
   return dialogsNavigatorKey.currentState!.overlay!.context;
 }
 

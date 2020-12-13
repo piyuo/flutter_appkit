@@ -14,7 +14,7 @@ void webConfiguration({
   config.branch = branch;
   config.appID = appID;
   config.supportEmail = supportEmail;
-  //no need for now, cause GlobalCupertinoLocalizations will load date formatting
+  //no need for now, cause GlobalLocalizations will load date formatting
 //  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
 
   Provider.debugCheckInvalidValueType = null;

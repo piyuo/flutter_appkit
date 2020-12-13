@@ -14,12 +14,12 @@ void main() {
   Widget createSample({
     required void Function(BuildContext context, Dialogs provider) onPressed,
   }) {
-    return CupertinoApp(
+    return MaterialApp(
       home: DialogOverlay(
           child: Provider(
         create: (_) => MockDialogs(),
         child: Consumer<MockDialogs>(
-          builder: (context, provider, child) => CupertinoButton(
+          builder: (context, provider, child) => FlatButton(
             key: keyBtn,
             child: Text('button'),
             onPressed: () => onPressed(context, provider),
@@ -38,12 +38,12 @@ void main() {
                     id: 'home',
                     text: 'Home',
                     widget: Icon(
-                      CupertinoIcons.add,
-                      color: CupertinoColors.white,
+                      Icons.add,
+                      color: Colors.white,
                     ))
               ])));
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
       expect(MockDialogs.didPopMenu, true);
     });
@@ -51,8 +51,8 @@ void main() {
     testWidgets('should tooltip', (WidgetTester tester) async {
       MockDialogs.didTooltip = false;
       await tester.pumpWidget(createSample(onPressed: (context, provider) => provider.tooltip(context, 'hi')));
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
       expect(MockDialogs.didTooltip, true);
     });

@@ -64,7 +64,7 @@ class MockDialogs extends Dialogs {
     String message, {
     double width = 160,
     double height = 40,
-    backgroundColor: CupertinoColors.darkBackgroundGray,
+    backgroundColor: Colors.darkBackgroundGray,
     GlobalKey? widgetKey,
     Rect? widgetRect,
   }) {
