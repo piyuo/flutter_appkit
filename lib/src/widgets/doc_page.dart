@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n.dart';
@@ -20,16 +20,16 @@ class DocPage extends ViewWidget<DocProvider> {
 class DocWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+    return Scaffold(
+        appBar: AppBar(
           //elevation: 0,
-          backgroundColor: CupertinoColors.lightBackgroundGray,
+          backgroundColor: Colors.grey[300],
           //iconTheme: IconThemeData(
           //  color: Colors.blue, //change your color here
           //),
         ),
-        backgroundColor: CupertinoColors.lightBackgroundGray,
-        child: SafeArea(
+        backgroundColor: Colors.grey[300],
+        body: SafeArea(
           right: false,
           bottom: false,
           child: Stack(children: <Widget>[
@@ -41,7 +41,7 @@ class DocWidget extends StatelessWidget {
               left: 30,
               right: 30,
               bottom: 8,
-              child: CupertinoButton(
+              child: FlatButton(
                   //color: Theme.of(context).accentColor,
                   child: Text('back'.i18n_),
                   onPressed: () {

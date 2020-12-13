@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 /// ModuleProvider provide redux and services
 ///
@@ -55,7 +55,7 @@ void switchView(
 }) {
   final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
   var navigator = Navigator.of(context);
-  final route = CupertinoPageRoute(
+  final route = MaterialPageRoute(
     builder: (ctx) => Provider.value(
       value: moduleProvider,
       builder: (context, child) => widget,

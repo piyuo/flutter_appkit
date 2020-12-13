@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:libcli/eventbus.dart';
@@ -17,8 +17,8 @@ class AwaitErrorMessage extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         Icon(
-          CupertinoIcons.exclamationmark_triangle,
-          color: CupertinoColors.white,
+          Icons.warning_outlined,
+          color: Colors.white,
           size: 120,
         ),
         SizedBox(height: 10),
@@ -27,7 +27,7 @@ class AwaitErrorMessage extends StatelessWidget {
           maxLines: 2,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: CupertinoColors.white,
+            color: Colors.white,
             fontSize: 24.0,
           ),
         ),
@@ -37,25 +37,26 @@ class AwaitErrorMessage extends StatelessWidget {
           maxLines: 5,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: CupertinoColors.white,
+            color: Colors.white,
             fontSize: 18.0,
           ),
         ),
         SizedBox(height: 40),
-        GestureDetector(
+        InkWell(
             onTap: () => broadcast(context, EmailSupportEvent()),
             child: Icon(
-              CupertinoIcons.envelope,
-              color: CupertinoColors.activeOrange,
+              Icons.mail_outline,
+              color: Colors.blueAccent,
               size: 38,
             )),
-        GestureDetector(
+        SizedBox(width: 10),
+        InkWell(
             onTap: () => broadcast(context, EmailSupportEvent()),
             child: Text(
               'emailUs'.i18n_,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: CupertinoColors.activeOrange,
+                color: Colors.blueAccent,
                 fontSize: 14.0,
               ),
             )),
@@ -63,10 +64,10 @@ class AwaitErrorMessage extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           height: 40,
-          child: CupertinoButton(
+          child: FlatButton(
             padding: EdgeInsets.all(0.0),
-            color: CupertinoColors.white,
-            child: Text('retry'.i18n_, style: TextStyle(color: CupertinoColors.systemRed)),
+            color: Colors.white,
+            child: Text('retry'.i18n_, style: TextStyle(color: Colors.redAccent)),
             onPressed: onRetryPressed,
           ),
         )
@@ -76,12 +77,12 @@ class AwaitErrorMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: backgroundColor,
       ),
       backgroundColor: backgroundColor,
-      child: SafeArea(
+      body: SafeArea(
           right: false,
           bottom: false,
           child: SingleChildScrollView(

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
@@ -12,7 +12,7 @@ void main() {
 
   group('[i18n-await]', () {
     testWidgets('should load i18n', (WidgetTester tester) async {
-      await tester.pumpWidget(CupertinoApp(
+      await tester.pumpWidget(MaterialApp(
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();

@@ -1,5 +1,5 @@
 import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
@@ -11,7 +11,7 @@ void main() {
 
   group('[i18n-extension]', () {
     testWidgets('should translate ' '.i18n(context)', (WidgetTester tester) async {
-      await tester.pumpWidget(CupertinoApp(
+      await tester.pumpWidget(MaterialApp(
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();
