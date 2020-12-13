@@ -13,14 +13,14 @@ class DialogsPlayground extends StatelessWidget {
       children: [
         Wrap(
           children: [
-            MaterialButton(
+            FlatButton(
               child: Text('alert'),
               onPressed: () => alert(
                 context,
                 'hi',
               ),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('alert icon'),
               onPressed: () => alert(context, 'hello world1',
                   icon: Icon(
@@ -29,11 +29,11 @@ class DialogsPlayground extends StatelessWidget {
                     size: 38,
                   )),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('alert title'),
               onPressed: () => alert(context, 'hello world', title: 'title'),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('alert ok/cancel'),
               onPressed: () async {
                 var result = await alert(context, 'are you ok?', buttonType: ButtonType.okCancel);
@@ -44,7 +44,7 @@ class DialogsPlayground extends StatelessWidget {
                 toast(context, 'cancel');
               },
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('alert yes/no with icon'),
               onPressed: () async {
                 var result = await alert(
@@ -59,19 +59,19 @@ class DialogsPlayground extends StatelessWidget {
                 }
               },
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('alert description'),
               onPressed: () => alert(context, 'error message', description: 'description'),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('alert desc emailus'),
               onPressed: () => alert(context, 'error message', description: 'description', emailUs: true),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('alert emailus'),
               onPressed: () => alert(context, 'error message', description: 'description', emailUs: true),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('diskError'),
               onPressed: () => alert(
                 context,
@@ -80,20 +80,20 @@ class DialogsPlayground extends StatelessWidget {
                 icon: Icon(Icons.sync_problem_rounded, color: Colors.redAccent, size: 38),
               ),
             ),
-            MaterialButton(
+            FlatButton(
               key: btnTooltip,
               child: Text('tooltip'),
               onPressed: () => tooltip(context, 'hello world', widgetKey: btnTooltip),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('toast'),
               onPressed: () => toast(context, 'hello world'),
             ),
-            MaterialButton(
+            FlatButton(
               child: Text('toast with icon'),
               onPressed: () => toast(context, 'hello world', icon: Icon(Icons.check, size: 38, color: Colors.white)),
             ),
-            MaterialButton(
+            FlatButton(
               key: btnMenu,
               child: Text('menu'),
               onPressed: () async {

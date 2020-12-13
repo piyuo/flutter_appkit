@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/command.dart';
@@ -43,7 +43,7 @@ void catched(dynamic e, StackTrace? stack) {
       dialogsRootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
-      icon: Icon(CupertinoIcons.floppy_disk, color: CupertinoColors.systemRed, size: 38),
+      icon: Icon(Icons.sync_problem_rounded, color: Colors.redAccent, size: 38),
     );
     return;
   }
@@ -52,7 +52,7 @@ void catched(dynamic e, StackTrace? stack) {
   alert(
     dialogsRootContext,
     'notified'.i18n_,
-    icon: Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
+    icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
     title: 'errTitle'.i18n_,
     emailUs: true,
     description: e.toString(),
@@ -68,7 +68,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       context,
       '500 internal server error',
       title: 'error'.i18n_,
-      icon: Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
+      icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
       emailUs: true,
     );
   }
@@ -77,7 +77,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       context,
       '501 server not ready',
       title: 'error'.i18n_,
-      icon: Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
+      icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
       emailUs: true,
     );
   }
@@ -86,16 +86,16 @@ Future<void> listened(BuildContext context, dynamic e) async {
       context,
       '400 bad request',
       title: 'error'.i18n_,
-      icon: Icon(CupertinoIcons.exclamationmark_triangle, color: CupertinoColors.systemRed, size: 38),
+      icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
       emailUs: true,
     );
   }
   if (e is SlowNetworkEvent) {
     toast(context, 'slow'.i18n_,
         icon: Icon(
-          CupertinoIcons.wifi,
+          Icons.wifi,
           size: 36,
-          color: CupertinoColors.white,
+          color: Colors.white,
         ));
   }
   if (e is RequestTimeoutContract) {
@@ -105,7 +105,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       'timeoutDesc'.i18n_,
       title: 'timeout'.i18n_,
       buttonType: ButtonType.retryCancel,
-      icon: Icon(CupertinoIcons.timer, color: CupertinoColors.systemRed, size: 38),
+      icon: Icon(Icons.timer, color: Colors.redAccent, size: 38),
       description: errorCode,
       emailUs: true,
     );
@@ -117,7 +117,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
         alert(
           context,
           'noServiceDesc'.i18n_,
-          icon: Icon(CupertinoIcons.lightbulb_slash, color: CupertinoColors.systemRed, size: 38),
+          icon: Icon(Icons.cloud_off, color: Colors.redAccent, size: 38),
           title: 'noService'.i18n_,
           description: e.exception?.toString(),
           emailUs: true,
@@ -128,7 +128,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
           'blockedDesc'.i18n_,
           title: 'blocked'.i18n_,
           description: e.exception?.toString(),
-          icon: Icon(CupertinoIcons.exclamationmark_shield, color: CupertinoColors.systemRed, size: 38),
+          icon: Icon(Icons.block_outlined, color: Colors.redAccent, size: 38),
           emailUs: true,
         );
       }
@@ -138,7 +138,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
         context,
         'noInternetDesc'.i18n_,
         title: 'noInternet'.i18n_,
-        icon: Icon(CupertinoIcons.wifi_slash, color: CupertinoColors.systemRed, size: 38),
+        icon: Icon(Icons.wifi_off_outlined, color: Colors.redAccent, size: 38),
         description: e.exception?.toString(),
         buttonType: ButtonType.retryCancel,
       );

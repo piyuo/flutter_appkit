@@ -79,6 +79,7 @@ Future<bool> alert(
                 description != null
                     ? Text(description, style: TextStyle(fontSize: 13.0, color: Colors.grey))
                     : SizedBox(),
+                SizedBox(height: 10),
                 emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
               ],
             ),

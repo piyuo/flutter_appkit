@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/command.dart';
 import 'package:libcli/eventbus.dart';
@@ -10,17 +10,17 @@ import 'package:libcli/src/errors/errors.dart';
 class ErrorsPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        child: Column(
+    return Scaffold(
+        body: Column(
       children: [
         Wrap(
           children: [
-            CupertinoButton(
+            FlatButton(
                 child: Text('throw exception'),
                 onPressed: () {
                   watch(() => throw Exception('mock exception'));
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('no internet'),
                 onPressed: () async {
                   watch(() {});
@@ -35,7 +35,7 @@ class ErrorsPlayground extends StatelessWidget {
                     toast(context, ok ? 'retry' : 'cancel');
                   }
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('service not available'),
                 onPressed: () async {
                   watch(() {});
@@ -48,7 +48,7 @@ class ErrorsPlayground extends StatelessWidget {
                   };
                   await broadcast(context, contract);
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('internet blocked'),
                 onPressed: () async {
                   watch(() {});
@@ -61,22 +61,22 @@ class ErrorsPlayground extends StatelessWidget {
                   };
                   await broadcast(context, contract);
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('internal server error'),
                 onPressed: () {
                   broadcast(context, InternalServerErrorEvent());
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('server not ready'),
                 onPressed: () {
                   broadcast(context, ServerNotReadyEvent());
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('bad request'),
                 onPressed: () {
                   broadcast(context, BadRequestEvent());
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('client timeout'),
                 onPressed: () async {
                   try {
@@ -87,18 +87,18 @@ class ErrorsPlayground extends StatelessWidget {
                     toast(context, ok ? 'retry' : 'cancel');
                   }
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('deadline exceeded'),
                 onPressed: () async {
                   var ok = await broadcast(context, RequestTimeoutContract(isServer: true, url: 'http://mock'));
                   toast(context, ok ? 'retry' : 'cancel');
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('slow network'),
                 onPressed: () {
                   broadcast(context, SlowNetworkEvent());
                 }),
-            CupertinoButton(
+            FlatButton(
                 child: Text('disk error'),
                 onPressed: () {
                   throw DiskErrorException();

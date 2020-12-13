@@ -33,7 +33,6 @@ Debug Information
     return 'mailto:${to}?Subject=${subjectUrlSafe}&body=${bodyUrlSafe}';
   }
 
-  ///todo:add exception from logs
   void launchMailTo() async {
     var url = linkMailTo;
     if (await canLaunch(url)) {

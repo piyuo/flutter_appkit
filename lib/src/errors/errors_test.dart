@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/log.dart';
@@ -20,11 +20,11 @@ void main() {
   Widget createSample({
     required void Function(BuildContext context) onPressed,
   }) {
-    return CupertinoApp(
+    return MaterialApp(
       navigatorKey: dialogsNavigatorKey,
       home: DialogOverlay(
         child: Builder(builder: (BuildContext ctx) {
-          return CupertinoButton(
+          return FlatButton(
             key: keyBtn,
             child: Text('button'),
             onPressed: () => onPressed(ctx),
@@ -41,10 +41,10 @@ void main() {
           watch(() => throw Exception('mock exception'));
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when no internet', (WidgetTester tester) async {
@@ -53,10 +53,10 @@ void main() {
           watch(() => throw SocketException('wifi off'));
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when service not available', (WidgetTester tester) async {
@@ -73,10 +73,10 @@ void main() {
           await broadcast(context, contract);
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when internet blocked', (WidgetTester tester) async {
@@ -93,10 +93,10 @@ void main() {
           await broadcast(context, contract);
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when internal server error', (WidgetTester tester) async {
@@ -106,10 +106,10 @@ void main() {
           await broadcast(context, InternalServerErrorEvent());
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when server not ready', (WidgetTester tester) async {
@@ -119,10 +119,10 @@ void main() {
           await broadcast(context, ServerNotReadyEvent());
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when bad request', (WidgetTester tester) async {
@@ -132,10 +132,10 @@ void main() {
           await broadcast(context, BadRequestEvent());
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when client timeout', (WidgetTester tester) async {
@@ -149,10 +149,10 @@ void main() {
           }
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when deadline exceeded', (WidgetTester tester) async {
@@ -162,10 +162,10 @@ void main() {
           await broadcast(context, RequestTimeoutContract(isServer: true, url: 'http://mock'));
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should alert when disk error', (WidgetTester tester) async {
@@ -174,10 +174,10 @@ void main() {
           watch(() => throw DiskErrorException());
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
 
     testWidgets('should toast when network is slow', (WidgetTester tester) async {
@@ -188,8 +188,8 @@ void main() {
           await broadcast(context, SlowNetworkEvent());
         }),
       );
-      expect(find.byType(CupertinoButton), findsOneWidget);
-      await tester.tap(find.byType(CupertinoButton));
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
       await expectToastAndWaitDismiss(tester);
     });
