@@ -25,7 +25,7 @@ class DialogsPlayground extends StatelessWidget {
               child: Text('alert icon'),
               onPressed: () => alert(context, 'hello world1',
                   icon: Icon(
-                    Icons.warning_outlined,
+                    Icons.warning_amber_rounded,
                     color: Colors.redAccent,
                     size: 38,
                   )),

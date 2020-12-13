@@ -11,7 +11,7 @@ class AwaitErrorMessage extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         Icon(
-          Icons.warning_outlined,
+          Icons.warning_amber_rounded,
           color: Colors.white,
           size: 120,
         ),

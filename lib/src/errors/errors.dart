@@ -52,7 +52,7 @@ void catched(dynamic e, StackTrace? stack) {
   alert(
     dialogsRootContext,
     'notified'.i18n_,
-    icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
+    icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
     title: 'errTitle'.i18n_,
     emailUs: true,
     description: e.toString(),
@@ -68,7 +68,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       context,
       '500 internal server error',
       title: 'error'.i18n_,
-      icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
+      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
       emailUs: true,
     );
   }
@@ -77,7 +77,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       context,
       '501 server not ready',
       title: 'error'.i18n_,
-      icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
+      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
       emailUs: true,
     );
   }
@@ -86,7 +86,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       context,
       '400 bad request',
       title: 'error'.i18n_,
-      icon: Icon(Icons.warning_outlined, color: Colors.redAccent, size: 38),
+      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
       emailUs: true,
     );
   }
