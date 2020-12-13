@@ -51,7 +51,7 @@ class Popup {
 
   void show({Rect? rect, GlobalKey? widgetKey}) {
     assert(rect != null || widgetKey != null, "need 'rect' or 'widgetKey'");
-    this._showRect = rect ?? Popup.getWidgetGlobalRect(widgetKey!);
+    this._showRect = rect ?? getWidgetGlobalRect(widgetKey!);
     this._screenSize = window.physicalSize / window.devicePixelRatio;
     calculatePosition(context);
     _entry = OverlayEntry(builder: (context) {
@@ -61,7 +61,7 @@ class Popup {
     _isShow = true;
   }
 
-  static Rect getWidgetGlobalRect(GlobalKey key) {
+  Rect getWidgetGlobalRect(GlobalKey key) {
     RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
     var offset = renderBox.localToGlobal(Offset.zero);
     return Rect.fromLTWH(offset.dx, offset.dy, renderBox.size.width, renderBox.size.height);
@@ -142,7 +142,7 @@ class Popup {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black87,
-                        blurRadius: 5.0,
+                        blurRadius: 4.0,
                       )
                     ],
                   ),

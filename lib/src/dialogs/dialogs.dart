@@ -196,7 +196,12 @@ void tooltip(
     child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(12),
-        child: Text(message, style: TextStyle(fontSize: 14, color: Colors.white))),
+        child: Text(message,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white,
+              decoration: TextDecoration.none,
+            ))),
     itemWidth: width,
     itemHeight: height,
     backgroundColor: backgroundColor,

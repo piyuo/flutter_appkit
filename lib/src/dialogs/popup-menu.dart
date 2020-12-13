@@ -25,9 +25,7 @@ class MenuItem {
     this.widget,
     this.textStyle,
     this.textAlign = TextAlign.center,
-  }) {
-    textStyle = textStyle ?? TextStyle(color: Color(0xffc5c5c5), fontSize: 10.0);
-  }
+  });
 }
 
 enum MenuType { big, oneLine }
@@ -80,7 +78,8 @@ class PopupMenu extends Popup {
     }
   }
 
-  static Rect getWidgetGlobalRect(GlobalKey key) {
+  @override
+  Rect getWidgetGlobalRect(GlobalKey key) {
     assert(key.currentContext != null);
     RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
     var offset = renderBox.localToGlobal(Offset.zero);
@@ -96,19 +95,21 @@ class PopupMenu extends Popup {
 
   @override
   double menuWidth() {
-    return itemWidth * _col;
+    return (itemWidth * _col) + 8;
   }
 
   // This height exclude the arrow
   @override
   double menuHeight() {
-    return itemHeight * _row;
+    return (itemHeight * _row) + 8;
   }
 
   @override
-  Widget popupContent() => Column(
+  Widget popupContent() => Padding(
+      padding: EdgeInsets.all(4),
+      child: Column(
         children: _createRows(),
-      );
+      ));
 
   List<Widget> _createRows() {
     List<Widget> rows = [];
@@ -276,13 +277,17 @@ class MenuItemWidgetState extends State<MenuItemWidget> {
             ? Expanded(
                 child: widget.item.widget!,
               )
-            : Container(),
+            : SizedBox(),
         Container(
           height: 22.0,
-          child: Text(
-            widget.item.text,
-            style: widget.item.textStyle,
-          ),
+          //child: Container(),
+          child: Text(widget.item.text,
+              style: widget.item.textStyle ??
+                  TextStyle(
+                    color: Colors.white70,
+                    decoration: TextDecoration.none,
+                    fontSize: 10.0,
+                  )),
         )
       ],
     );
