@@ -123,7 +123,7 @@ Widget _emailUs(void Function()? onPressed) {
       child: Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      GestureDetector(
+      InkWell(
         onTap: onPressed,
         child: Icon(
           Icons.mail_outline,
@@ -131,7 +131,8 @@ Widget _emailUs(void Function()? onPressed) {
           size: 18,
         ),
       ),
-      Expanded(
+      SizedBox(width: 10),
+      InkWell(
           child: GestureDetector(
               onTap: onPressed,
               child: Text(

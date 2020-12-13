@@ -38,7 +38,7 @@ void _en_US() {
   _global['errTitle'] = 'Oops, something went wrong';
   _global['notified'] = 'The developer team has been notified of this issue, Please try again later';
   _global['error'] = 'Error';
-  _global['emailUs'] = 'send email to support team';
+  _global['emailUs'] = 'Send email to support team';
   _global['email'] = 'Email';
   _global['retry'] = 'Retry';
   _global['ok'] = 'Ok';
