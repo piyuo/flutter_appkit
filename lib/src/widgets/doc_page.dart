@@ -10,10 +10,10 @@ class DocPage extends ViewWidget<DocProvider> {
 
   final String docName;
 
-  DocPage(
-    this.docName,
-    this.title,
-  ) : super(i18nFilename: '');
+  DocPage({
+    required this.docName,
+    this.title = '',
+  }) : super(i18nFilename: '');
 
   @protected
   createProvider(BuildContext context) => DocProvider(

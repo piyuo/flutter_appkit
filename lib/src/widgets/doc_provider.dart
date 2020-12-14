@@ -11,8 +11,8 @@ class DocProvider extends AsyncProvider {
   String md = '';
 
   DocProvider({
-    this.docName = '',
-    this.title = '',
+    required this.docName,
+    required this.title,
   });
 
   @override
