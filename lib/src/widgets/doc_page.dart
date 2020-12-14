@@ -38,7 +38,7 @@ class DocWidget extends StatelessWidget {
               bottom: false,
               child: Stack(children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 75),
+                  padding: const EdgeInsets.only(bottom: 42),
                   child: Consumer<DocProvider>(builder: (context, provider, _) => Markdown(data: provider.md)),
                 ),
                 Positioned(
