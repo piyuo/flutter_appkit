@@ -202,6 +202,7 @@ void tooltip(
         child: Text(message,
             style: TextStyle(
               fontSize: 12,
+              fontWeight: FontWeight.normal,
               color: color,
               decoration: TextDecoration.none,
             ))),
