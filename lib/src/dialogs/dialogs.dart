@@ -187,10 +187,13 @@ void tooltip(
   String message, {
   double width = 160,
   double height = 40,
-  backgroundColor: Colors.black87,
+  Color? backgroundColor,
+  Color? color,
   GlobalKey? widgetKey,
   Rect? widgetRect,
 }) {
+  backgroundColor = backgroundColor ?? Color.fromRGBO(11, 129, 255, 1);
+  color = color ?? Color.fromRGBO(242, 248, 255, 1);
   var popup = Popup(
     context: context,
     child: Container(
