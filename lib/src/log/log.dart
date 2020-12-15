@@ -69,7 +69,7 @@ String readReduxStates() {
   }
 
   buffer.write(']');
-  return buffer.toString();
+  return buffer.toString().replaceAll('\n', '');
 }
 
 /// log normal but significant events, such as start up, shut down, or a configuration change.
