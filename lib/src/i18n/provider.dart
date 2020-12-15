@@ -18,6 +18,9 @@ class I18nProvider extends AsyncProvider {
     this.package,
   });
 
+  @protected
+  String get description => '$runtimeType($fileName)';
+
   @override
   Future<void> load(BuildContext context) async {
     _translation = await getTranslation(fileName: fileName, package: package);

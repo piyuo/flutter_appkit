@@ -7,9 +7,12 @@ enum AsyncStatus { none, loading, ready, error }
 abstract class AsyncProvider with ChangeNotifier {
   AsyncProvider() {
     if (!kReleaseMode) {
-      log('${COLOR_MEMORY}$runtimeType${COLOR_END} created');
+      log('${COLOR_MEMORY}$description${COLOR_END} created');
     }
   }
+
+  @protected
+  String get description => '$runtimeType';
 
   AsyncStatus asyncStatus = AsyncStatus.none;
 
@@ -30,7 +33,7 @@ abstract class AsyncProvider with ChangeNotifier {
   @override
   void dispose() {
     if (!kReleaseMode) {
-      log('${COLOR_MEMORY}$runtimeType${COLOR_END} disposed');
+      log('${COLOR_MEMORY}$description${COLOR_END} disposed');
     }
     _disposed = true;
     super.dispose();
