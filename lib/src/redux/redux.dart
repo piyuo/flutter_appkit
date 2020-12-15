@@ -41,11 +41,13 @@ class Redux {
       var newState = await _reducer(context, state, action);
       var payload = toLogString(action);
       var diff = diffState(newState, _state);
-      if (diff != '') {
-        log('${action.runtimeType}{$payload} $diff');
+      if (diff.isEmpty) {
+        diff = 'state not change';
       } else {
-        log('${action.runtimeType}{$payload}${COLOR_STATE} state not change');
+        //remove extra ,
+        diff = diff.substring(0, diff.length - 1);
       }
+      log('${COLOR_STATE}redux${COLOR_END} ${action.runtimeType}{$payload} $diff');
       _state = newState;
       reduxNewState = null;
       return;
@@ -66,9 +68,9 @@ String diffState(Map newState, Map oldState) {
       text += diffState(newValue, oldValue);
     } else {
       if (newValue != oldValue) {
-        text += '${COLOR_STATE}$key=$newValue${COLOR_END} < $oldValue, ';
+        text += '${COLOR_STATE}$key${COLOR_END}=$newValue($oldValue), ';
       }
     }
   }
-  return text;
+  return text.replaceAll('\n', '');
 }
