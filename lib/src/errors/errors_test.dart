@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/dialogs.dart';
@@ -13,9 +12,7 @@ import 'package:libcli/command.dart';
 void main() {
   final GlobalKey keyBtn = GlobalKey();
 
-  setUp(() async {
-    initGlobalTranslation('en', 'US');
-  });
+  setUp(() async {});
 
   Widget createSample({
     required void Function(BuildContext context) onPressed,

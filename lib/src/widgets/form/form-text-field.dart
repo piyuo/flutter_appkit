@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:libcli/validator.dart';
 
-class SimpleTextField extends StatefulWidget {
+class FormTextField extends StatefulWidget {
   final TextEditingController controller;
 
   final String label;
@@ -25,7 +25,9 @@ class SimpleTextField extends StatefulWidget {
 
   final bool require;
 
-  SimpleTextField({
+  final bool enterYour;
+
+  FormTextField({
     required this.label,
     required this.controller,
     this.focusNode,
@@ -37,14 +39,15 @@ class SimpleTextField extends StatefulWidget {
     this.textInputMaxLength = 256,
     this.inputFormatters,
     this.require = false,
+    this.enterYour = false,
     Key? key,
   }) : super(key: key);
 
   @override
-  SimpleTextFieldState createState() => SimpleTextFieldState();
+  FormTextFieldState createState() => FormTextFieldState();
 }
 
-class SimpleTextFieldState extends State<SimpleTextField> {
+class FormTextFieldState extends State<FormTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(

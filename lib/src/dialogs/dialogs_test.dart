@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 import 'package:libcli/src/dialogs/dialogs-mock.dart';
@@ -8,9 +7,7 @@ import 'package:libcli/src/dialogs/dialogs-mock.dart';
 void main() {
   final GlobalKey keyBtn = GlobalKey();
 
-  setUp(() async {
-    initGlobalTranslation('en', 'US');
-  });
+  setUp(() async {});
 
   Widget createSample({
     required void Function(BuildContext context) onPressed,

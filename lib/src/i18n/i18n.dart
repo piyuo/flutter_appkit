@@ -115,7 +115,6 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
   @override
   Future<Locale> load(Locale l) async {
     locale = l;
-    initGlobalTranslation(l.languageCode, l.countryCode ?? 'US');
     //no need for now, cause GlobalLocalizations will load date formatting
     //if (initDateFormatting != null) {
     //initDateFormatting(localeToId(l));

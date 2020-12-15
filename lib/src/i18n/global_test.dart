@@ -9,8 +9,7 @@ void main() {
   setUp(() async {});
 
   group('[i18n-global]', () {
-    test('should reloadGlobalTranslation', () async {
-      await i18n.initGlobalTranslation('en', 'US');
+    test('should have global translation', () async {
       expect(i18n.globalTranslate('ok'), 'Ok');
     });
   });
