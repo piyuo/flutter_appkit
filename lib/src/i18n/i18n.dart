@@ -53,7 +53,7 @@ get currentLocaleID => localeToId(currentLocale);
 
 set locale(Locale locale) {
   _locale = locale;
-  log('${COLOR_STATE}set locale=$currentLocaleID');
+  log('${COLOR_STATE}locale${COLOR_END}=$currentLocaleID');
 }
 
 /// localeToId convert Locale(''en,'US') to 'en_US'
@@ -103,7 +103,8 @@ Locale determineLocale(List<Locale>? locales) {
       }
     }
   }
-  log('country: $userPreferCountryCode, best locale: ${localeToId(bestLocale)}');
+  //best locale: ${localeToId(bestLocale)}
+  log('${COLOR_STATE}country${COLOR_END}=$userPreferCountryCode');
   return bestLocale;
 }
 
