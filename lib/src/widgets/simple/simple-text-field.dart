@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:libcli/validator.dart';
+
+class SimpleTextField extends StatefulWidget {
+  final TextEditingController controller;
+
+  final String label;
+
+  final FocusNode? focusNode;
+
+  final TextInputAction? textInputAction;
+
+  final InputDecoration? decoration;
+
+  final TextAlign textAlign;
+
+  final TextStyle? style;
+
+  final int textInputMaxLength;
+
+  final int textInputMinLength;
+
+  final List<TextInputFormatter>? inputFormatters;
+
+  final bool require;
+
+  SimpleTextField({
+    required this.label,
+    required this.controller,
+    this.focusNode,
+    this.decoration,
+    this.textAlign = TextAlign.left,
+    this.textInputAction = TextInputAction.next,
+    this.style,
+    this.textInputMinLength = 0,
+    this.textInputMaxLength = 256,
+    this.inputFormatters,
+    this.require = false,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  SimpleTextFieldState createState() => SimpleTextFieldState();
+}
+
+class SimpleTextFieldState extends State<SimpleTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      focusNode: widget.focusNode,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      controller: widget.controller,
+      textAlign: widget.textAlign,
+      style: widget.style,
+      inputFormatters: [LengthLimitingTextInputFormatter(widget.textInputMaxLength), ...widget.inputFormatters ?? []],
+      textInputAction: widget.textInputAction,
+      validator: (String? input) {
+        return widget.require
+            ? requiredValidator(input: input, label: widget.label.toLowerCase(), enterYour: true)
+            : null;
+      },
+      decoration: widget.decoration ??
+          InputDecoration(
+            hintText: widget.label,
+            labelText: widget.label,
+          ),
+    );
+  }
+}

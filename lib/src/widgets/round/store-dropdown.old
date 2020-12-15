@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+import 'package:libcli/i18n.dart';
+
+class StoreDropdown extends StatefulWidget {
+  final TextEditingController controller;
+
+  final Map items;
+
+  final String label;
+
+  final String description;
+
+  final FocusNode focusNode;
+
+  final FocusNode nextFocusNode;
+
+  StoreDropdown({
+    this.controller,
+    @required this.items,
+    this.label,
+    this.description,
+    @required this.focusNode,
+    this.nextFocusNode,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  StoreDropdownState createState() => StoreDropdownState();
+}
+
+class StoreDropdownState extends State<StoreDropdown> {
+  bool _autovalidate = false;
+
+  set autovalidate(bool value) {
+    setState(() {
+      _autovalidate = value;
+    });
+  }
+
+  List<DropdownMenuItem<String>> itemsToMenuItem() {
+    List<DropdownMenuItem<String>> result = [];
+    widget.items.forEach((key, value) {
+      result.add(DropdownMenuItem<String>(
+        child: Text(
+          value,
+          overflow: TextOverflow.ellipsis,
+        ),
+        value: key,
+      ));
+    });
+    return result;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Material(
+          elevation: 8,
+          borderRadius: BorderRadius.circular(30.0),
+          child: Container(
+              padding: EdgeInsets.only(right: 20),
+              child: DropdownButtonFormField<String>(
+                items: itemsToMenuItem(),
+                focusNode: widget.focusNode,
+                autovalidate: _autovalidate,
+                style: TextStyle(color: Colors.grey[700]),
+                onChanged: (String value) {
+                  widget.controller.text = value;
+                },
+                validator: (text) {
+                  return text.trim().length > 0
+                      ? null
+                      : 'enterYour'
+                          .i18n_
+                          .replaceAll('%1', widget.label.toLowerCase());
+                },
+                value: widget.controller.text,
+                decoration: InputDecoration(
+                  labelText: widget.label,
+                  hintText: widget.label,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.fromLTRB(28, 0, 0, 0),
+                ),
+              ))),
+      Container(
+        padding: EdgeInsets.fromLTRB(0, 15, 0, 40),
+        child: Text(widget.description ?? '',
+            style: TextStyle(color: Colors.grey[600])),
+      ),
+    ]);
+
+    //return;
+  }
+}
