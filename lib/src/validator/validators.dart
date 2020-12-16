@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:libcli/i18n.dart';
+import 'package:libcli/log.dart';
 
 /// requiredValidator validate input string, return error message when input is empty, return null if no error
 ///
@@ -15,19 +16,27 @@ String? requiredValidator({
   int maxLength = 65535,
 }) {
   assert(minLength < maxLength, 'minLength($minLength) must small than maxLength($maxLength)');
+  String? result = null;
   if (input == null || input.isEmpty) {
     if (enterYour) {
-      return 'enterYour'.i18n_.replaceAll('%1', label);
+      result = 'enterYour'.i18n_.replaceAll('%1', label);
+    } else {
+      result = 'required'.i18n_.replaceAll('%1', label);
     }
-    return 'required'.i18n_.replaceAll('%1', label);
+  } else {
+    if (input.length < minLength) {
+      result =
+          'minLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$minLength').replaceAll('%3', '${input.length}');
+    }
+    if (input.length > maxLength) {
+      result =
+          'maxLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$maxLength').replaceAll('%3', '${input.length}');
+    }
   }
-  if (input.length < minLength) {
-    return 'minLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$minLength').replaceAll('%3', '${input.length}');
+  if (result != null) {
+    debugInfo('validation failed: $result');
   }
-  if (input.length > maxLength) {
-    return 'maxLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$maxLength').replaceAll('%3', '${input.length}');
-  }
-  return null;
+  return result;
 }
 
 /// regexpValidator validate input string using regex, return error message when input not valid, otherwise return null
@@ -46,7 +55,11 @@ String? regexpValidator({
   if (input == null) {
     return null;
   }
-  return regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', label).replaceAll('%2', example);
+  var result = regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', label).replaceAll('%2', example);
+  if (result != null) {
+    debugInfo('validation failed: $result');
+  }
+  return result;
 }
 
 /// emailRegexp regexp use to validate email

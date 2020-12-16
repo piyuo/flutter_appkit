@@ -82,7 +82,7 @@ void debugInfo(String message) {
   }
 }
 
-/// log normal but significant events, such as start up, shut down, or a configuration change.
+/// log normal but significant events , such as start up, shut down, or a configuration change.
 ///
 ///     log('something done');
 ///

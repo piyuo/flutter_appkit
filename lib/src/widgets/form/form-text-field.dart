@@ -58,16 +58,14 @@ class FormTextFieldState extends State<FormTextField> {
       style: widget.style,
       inputFormatters: [LengthLimitingTextInputFormatter(widget.textInputMaxLength), ...widget.inputFormatters ?? []],
       textInputAction: widget.textInputAction,
-      validator: (String? input) {
-        return widget.require
-            ? requiredValidator(
-                input: input,
-                label: widget.label.toLowerCase(),
-                enterYour: widget.enterYour,
-                minLength: widget.textInputMinLength,
-              )
-            : null;
-      },
+      validator: (String? input) => widget.require
+          ? requiredValidator(
+              input: input,
+              label: widget.label.toLowerCase(),
+              enterYour: widget.enterYour,
+              minLength: widget.textInputMinLength,
+            )
+          : null,
       decoration: widget.decoration ??
           InputDecoration(
             hintText: widget.label,
