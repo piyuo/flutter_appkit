@@ -72,6 +72,16 @@ String readReduxStates() {
   return buffer.toString().replaceAll('\n', '');
 }
 
+/// debugInfo only print message in development. code will be remove at release mode
+///
+///     debugInfo('something done');
+///
+void debugInfo(String message) {
+  if (!kReleaseMode) {
+    debugPrint('$COLOR_BLUE$header$COLOR_END $COLOR_WARNING$message');
+  }
+}
+
 /// log normal but significant events, such as start up, shut down, or a configuration change.
 ///
 ///     log('something done');

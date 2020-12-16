@@ -29,5 +29,9 @@ void main() {
       expect(text.isNotEmpty, true);
       logs.clear();
     });
+
+    test('should print debug info', () {
+      debugInfo('this is debug info');
+    });
   });
 }
