@@ -16,7 +16,7 @@ class WidgetsPlayground extends StatelessWidget {
   }
 
   Widget signInField(BuildContext context, WidgetsPlaygroundProvider provider) {
-    return SimpleEmailField(
+    return FormEmailField(
       controller: provider.account,
       label: 'Email or mobile number',
       suggestLabel: 'Did you mean ',

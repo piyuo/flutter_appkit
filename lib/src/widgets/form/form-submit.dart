@@ -1,10 +1,12 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum _ButtonState { initial, animate, done }
 
 typedef Future<bool> Callback();
 
-class SimpleProgressButton extends StatefulWidget {
+class FormSubmit extends StatefulWidget {
   /// smallMode set to true if you want a small button
   ///
   final bool smallMode;
@@ -47,7 +49,7 @@ class SimpleProgressButton extends StatefulWidget {
   ///
   final GlobalKey<FormState>? form;
 
-  SimpleProgressButton(
+  FormSubmit(
     this.text, {
     this.onClickStart,
     this.onClick,
@@ -61,10 +63,10 @@ class SimpleProgressButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => SimpleProgressButtonState(width);
+  State<StatefulWidget> createState() => FormSubmitState(width);
 }
 
-class SimpleProgressButtonState extends State<SimpleProgressButton> with TickerProviderStateMixin {
+class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
   double _buttonHeight = 44.0;
 
   double _circleHeight = 32.0;
@@ -75,7 +77,7 @@ class SimpleProgressButtonState extends State<SimpleProgressButton> with TickerP
 
   _ButtonState _state = _ButtonState.initial;
 
-  double _width = double.infinity;
+  double buttonWidth;
 
   GlobalKey _globalKey = GlobalKey();
 
@@ -83,9 +85,7 @@ class SimpleProgressButtonState extends State<SimpleProgressButton> with TickerP
 
   Animation? _animation;
 
-  SimpleProgressButtonState(double width) {
-    _width = width;
-  }
+  FormSubmitState(this.buttonWidth);
 
   @override
   void deactivate() {
@@ -130,7 +130,7 @@ class SimpleProgressButtonState extends State<SimpleProgressButton> with TickerP
         child: Container(
           key: _globalKey,
           height: _buttonHeight,
-          width: _width,
+          width: buttonWidth,
           child: RaisedButton(
             focusNode: widget.focusNode,
             padding: EdgeInsets.all(0.0),
@@ -178,9 +178,17 @@ class SimpleProgressButtonState extends State<SimpleProgressButton> with TickerP
     }
 
     if (widget.onClick != null) {
+      //no animation in unit test
+      if (!kReleaseMode && Platform.environment.containsKey('FLUTTER_TEST')) {
+        if (await widget.onClick!()) {
+          _onPressedSuccess();
+        }
+        return;
+      }
+
       double initialWidth = _globalKey.currentContext!.size!.width;
       _beginAnimation(() {
-        _width = initialWidth - ((initialWidth - _buttonHeight) * _animation!.value);
+        buttonWidth = initialWidth - ((initialWidth - _buttonHeight) * _animation!.value);
       });
       safeSetState(() => _state = _ButtonState.animate);
       //await new Future.delayed(const Duration(seconds: 60));
@@ -219,8 +227,8 @@ class SimpleProgressButtonState extends State<SimpleProgressButton> with TickerP
 
   reset() {
     _beginAnimation(() {
-      _width = widget.width * _animation!.value;
-      if (_width < _buttonHeight) _width = _buttonHeight;
+      buttonWidth = widget.width * _animation!.value;
+      if (buttonWidth < _buttonHeight) buttonWidth = _buttonHeight;
     });
     safeSetState(_reset);
   }
@@ -260,7 +268,7 @@ class SimpleProgressButtonState extends State<SimpleProgressButton> with TickerP
   }
 
   void _reset() {
-    _width = widget.width;
+    buttonWidth = widget.width;
     _animatingReveal = false;
     _state = _ButtonState.initial;
   }

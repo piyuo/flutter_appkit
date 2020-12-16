@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:libcli/validator.dart' as validator;
 
-class SimpleEmailField extends StatefulWidget {
+class FormEmailField extends StatefulWidget {
   final TextEditingController controller;
 
   final String label;
@@ -16,7 +16,7 @@ class SimpleEmailField extends StatefulWidget {
 
   final TextInputAction textInputAction;
 
-  SimpleEmailField({
+  FormEmailField({
     required this.controller,
     required this.label,
     required this.suggestLabel,
@@ -27,10 +27,10 @@ class SimpleEmailField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  SimpleEmailFieldState createState() => SimpleEmailFieldState();
+  FormEmailFieldState createState() => FormEmailFieldState();
 }
 
-class SimpleEmailFieldState extends State<SimpleEmailField> {
+class FormEmailFieldState extends State<FormEmailField> {
   String _suggest = '';
 
   onFocusChange() {

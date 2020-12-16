@@ -3,31 +3,75 @@ import 'package:flutter/material.dart';
 import 'package:libcli/src/widgets/form/form-email-field.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  setUp(() async {});
-
   final _keyForm = GlobalKey<FormState>();
+
   final controller = TextEditingController();
+
+  final focusNode = FocusNode();
+
+  final dummyController = TextEditingController();
+
+  final dummyFocusNode = FocusNode();
+
+  setUp(() {
+    controller.text = '';
+  });
 
   Widget testTarget() {
     return MaterialApp(
       home: Scaffold(
         body: Form(
           key: _keyForm,
-          child: SimpleEmailField(
-            controller: controller,
-            label: 'email',
-            suggestLabel: 'suggest',
+          child: Column(
+            children: [
+              FormEmailField(
+                controller: controller,
+                focusNode: focusNode,
+                label: 'email',
+                suggestLabel: 'Did you mean',
+              ),
+              TextField(
+                controller: dummyController,
+                focusNode: dummyFocusNode,
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  group('[email-field]', () {
-    testWidgets('should validate error', (WidgetTester tester) async {
+  group('[form-email-field]', () {
+    testWidgets('should pass value to controller', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
-      expect(find.byType(SimpleEmailField), findsOneWidget);
+      await tester.enterText(find.byType(FormEmailField), 'a@b.c');
+      await tester.pumpAndSettle();
+      expect(controller.text, 'a@b.c'); //email error
+    });
+
+    testWidgets('should have email empty error', (WidgetTester tester) async {
+      await tester.pumpWidget(testTarget());
+      expect(_keyForm.currentState!.validate(), false);
+      await tester.pumpAndSettle();
+      expect(find.textContaining('johndoe@domain.com'), findsOneWidget); //email error
+    });
+
+    testWidgets('should have email format error', (WidgetTester tester) async {
+      await tester.pumpWidget(testTarget());
+      await tester.enterText(find.byType(FormEmailField), 'a@b');
+      expect(_keyForm.currentState!.validate(), false);
+      await tester.pumpAndSettle();
+      expect(find.textContaining('johndoe@domain.com'), findsOneWidget); //email error
+    });
+
+    testWidgets('should have suggestion', (WidgetTester tester) async {
+      await tester.pumpWidget(testTarget());
+      focusNode.requestFocus();
+      await tester.enterText(find.byType(FormEmailField), 'a@q.cc');
+      expect(_keyForm.currentState!.validate(), true);
+      dummyFocusNode.requestFocus();
+      await tester.pumpAndSettle();
+      expect(find.byType(RichText), findsWidgets);
     });
   });
 }

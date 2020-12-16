@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 
-class SimpleDropdown extends StatefulWidget {
+class FormDropdown extends StatefulWidget {
   final TextEditingController controller;
 
   final String? label;
 
   final Map items;
 
-  SimpleDropdown({
+  FormDropdown({
     required this.controller,
     required this.items,
     this.label,
@@ -16,13 +16,13 @@ class SimpleDropdown extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  SimpleDropdownState createState() => SimpleDropdownState(items);
+  FormDropdownState createState() => FormDropdownState(items);
 }
 
-class SimpleDropdownState extends State<SimpleDropdown> {
+class FormDropdownState extends State<FormDropdown> {
   List<DropdownMenuItem<String>> menuItems = [];
 
-  SimpleDropdownState(Map items) {
+  FormDropdownState(Map items) {
     menuItems = itemsToMenuItems(items);
   }
 

@@ -60,7 +60,12 @@ class FormTextFieldState extends State<FormTextField> {
       textInputAction: widget.textInputAction,
       validator: (String? input) {
         return widget.require
-            ? requiredValidator(input: input, label: widget.label.toLowerCase(), enterYour: true)
+            ? requiredValidator(
+                input: input,
+                label: widget.label.toLowerCase(),
+                enterYour: widget.enterYour,
+                minLength: widget.textInputMinLength,
+              )
             : null;
       },
       decoration: widget.decoration ??
