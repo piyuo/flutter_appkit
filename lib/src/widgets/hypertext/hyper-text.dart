@@ -144,7 +144,7 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
       text: TextSpan(
         children: widget.children.map((_Span span) {
           var textColor = widget.color ?? Color.fromRGBO(134, 134, 139, 1);
-          var boldColor = widget.boldColor ?? Color.fromRGBO(29, 29, 31, 1);
+          var boldColor = widget.boldColor ?? Color.fromRGBO(245, 99, 0, 1);
           var color = span.bold == true ? boldColor : textColor;
           var recognizer = null;
           if (span.onTap != null || span.onTapUp != null) {
