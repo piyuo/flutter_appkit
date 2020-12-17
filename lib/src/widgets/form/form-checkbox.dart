@@ -11,9 +11,15 @@ class FormCheckbox extends StatefulWidget {
 
   final String? label;
 
+  final String? link;
+
+  final Function()? onLinkClicked;
+
   FormCheckbox({
     required this.controller,
     this.label,
+    this.link,
+    this.onLinkClicked,
     this.child,
     Key? key,
   }) : super(key: key);
@@ -23,6 +29,30 @@ class FormCheckbox extends StatefulWidget {
 }
 
 class FormCheckboxState extends State<FormCheckbox> {
+  Widget createLabel() {
+    return Row(
+      children: [
+        Text(widget.label!,
+            style: TextStyle(
+              color: Color.fromRGBO(134, 134, 139, 1),
+            )),
+        widget.link != null
+            ? InkWell(
+                child: Text(widget.link!,
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 102, 204, 1),
+                    )),
+                onTap: () {
+                  if (widget.onLinkClicked != null) {
+                    widget.onLinkClicked!();
+                  }
+                },
+              )
+            : SizedBox(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
@@ -30,13 +60,7 @@ class FormCheckboxState extends State<FormCheckbox> {
       title: widget.child != null
           ? widget.child!
           : widget.label != null
-              ? Text(
-                  widget.label!,
-                  style: TextStyle(
-                      //fontWeight: FontWeight.w600,
-                      color: Colors.grey[850],
-                      fontSize: 14.0),
-                )
+              ? createLabel()
               : null,
       value: widget.controller.value,
       onChanged: (bool? newValue) {
