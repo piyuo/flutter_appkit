@@ -52,19 +52,19 @@ void switchView(
   bool replace = false,
 }) {
   final moduleProvider = Provider.of<Module>(context, listen: false);
-/*
   final route = MaterialPageRoute(
     builder: (ctx) => Provider.value(
       value: moduleProvider,
       builder: (context, child) => widget,
     ),
   );
-*/
+
+/*
   final route = NoAnimRouteBuilder(Provider.value(
     value: moduleProvider,
     builder: (context, child) => widget,
   ));
-
+*/
   var navigator = Navigator.of(context);
   if (replace) {
     navigator.pushReplacement(route);
