@@ -36,6 +36,7 @@ class FormCheckboxState extends State<FormCheckbox> {
             style: TextStyle(
               color: Color.fromRGBO(134, 134, 139, 1),
             )),
+        SizedBox(width: 10),
         widget.link != null
             ? InkWell(
                 child: Text(widget.link!,
