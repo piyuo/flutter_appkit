@@ -19,7 +19,7 @@ void main() {
 
     test('should convert states to string', () {
       var result = stateToStr({'a': 0, 'b': 1});
-      expect(result, '[{"a":0,"b":1}');
+      expect(result, '{"a":0,"b":1}');
     });
 
     test('should return false cause state not change', () async {
