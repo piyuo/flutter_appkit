@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/widgets.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 /// Module provide redux and services
 ///
@@ -51,21 +53,22 @@ void switchView(
   Widget widget, {
   bool replace = false,
 }) {
+  var navigator = Navigator.of(context);
   final moduleProvider = Provider.of<Module>(context, listen: false);
-  final route = MaterialPageRoute(
-    builder: (ctx) => Provider.value(
-      value: moduleProvider,
-      builder: (context, child) => widget,
-    ),
-  );
-
-/*
-  final route = NoAnimRouteBuilder(Provider.value(
+  var newWidget = Provider.value(
     value: moduleProvider,
     builder: (context, child) => widget,
-  ));
-*/
-  var navigator = Navigator.of(context);
+  );
+  dynamic route = MaterialPageRoute(
+    builder: (ctx) => newWidget,
+  );
+  if (!kReleaseMode && Platform.environment.containsKey('FLUTTER_TEST')) {
+    route = NoAnimRouteBuilder(Provider.value(
+      value: moduleProvider,
+      builder: (context, child) => widget,
+    ));
+  }
+
   if (replace) {
     navigator.pushReplacement(route);
     return;
