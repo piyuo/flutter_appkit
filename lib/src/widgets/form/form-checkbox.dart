@@ -27,6 +27,7 @@ class FormCheckboxState extends State<FormCheckbox> {
   Widget build(BuildContext context) {
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.all(0),
       title: widget.child != null
           ? widget.child!
           : widget.label != null
