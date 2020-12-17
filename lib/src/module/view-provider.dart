@@ -8,7 +8,7 @@ class ViewProvider extends AsyncProvider {
   ///     var state=provider.dispatch(context,Increment(1));
   ///
   Future<Map> dispatch(BuildContext context, dynamic action) async {
-    final module = Provider.of<ModuleProvider>(context, listen: false);
+    final module = Provider.of<Module>(context, listen: false);
     return await module.dispatch(context, action);
   }
 }

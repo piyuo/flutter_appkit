@@ -15,7 +15,7 @@ void main() {
       Map newState = from(state);
       expect(reduxNewState, newState);
 
-      ModuleProvider provider = ModuleProvider(
+      Module provider = Module(
         redux: Redux(
           reducer,
           {'value': 0},
@@ -30,7 +30,7 @@ void main() {
     test('should add/remove redux to state', () async {
       reduxStates.clear();
       expect(reduxStates.length, 0);
-      ModuleProvider provider = ModuleProvider(
+      Module provider = Module(
         redux: Redux(
           reducer,
           {'value': 0},
@@ -43,7 +43,7 @@ void main() {
     });
 
     test('should dispatch reducer', () async {
-      ModuleProvider provider = ModuleProvider(
+      Module provider = Module(
         redux: Redux(
           reducer,
           {'value': 0},

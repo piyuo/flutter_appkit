@@ -1,14 +1,13 @@
-import 'package:flutter/foundation.dart';
-import 'package:libcli/redux.dart';
-import 'package:libcli/log.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/redux.dart';
+import 'package:libcli/log.dart';
 
-/// ModuleProvider provide redux and services
+/// Module provide redux and services
 ///
-class ModuleProvider extends ChangeNotifier {
-  static ModuleProvider of(BuildContext context) {
-    return Provider.of<ModuleProvider>(context, listen: false);
+class Module {
+  static Module of(BuildContext context) {
+    return Provider.of<Module>(context, listen: false);
   }
 
   /// redux instance
@@ -17,19 +16,17 @@ class ModuleProvider extends ChangeNotifier {
 
   final Map services;
 
-  ModuleProvider({
+  Module({
     required this.redux,
     required this.services,
   }) {
     reduxStates.add(redux.state);
   }
 
-  /// dispose remove  redux instances list
+  /// dispose remove redux instances list, must call this method at provider dispose
   ///
-  @override
   void dispose() {
     reduxStates.remove(redux.state);
-    super.dispose();
   }
 
   /// state return current redux state
@@ -53,7 +50,7 @@ void switchView(
   Widget widget, {
   bool replace = false,
 }) {
-  final moduleProvider = Provider.of<ModuleProvider>(context, listen: false);
+  final moduleProvider = Provider.of<Module>(context, listen: false);
   var navigator = Navigator.of(context);
   final route = MaterialPageRoute(
     builder: (ctx) => Provider.value(
