@@ -37,7 +37,7 @@ String safeJsonEncode(Object object) {
   try {
     return jsonEncode(object);
   } catch (e) {
-    debugPrint(e.toString());
+    debugInfo(e.toString());
   }
   return toLogString(object);
 }

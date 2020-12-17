@@ -13,7 +13,7 @@ Map from(Map state) {
 /// readReduxStates print all redux states to string
 ///
 String stateToStr(Map state) {
-  return safeJsonEncode(state);
+  return toLogString(state);
 }
 
 /// Redux implements redux pattern
