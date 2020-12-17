@@ -171,31 +171,27 @@ Future<MenuItem> popMenu(
 }) {
   Completer<MenuItem> completer = new Completer<MenuItem>();
   PopupMenu(
-    context: context,
     items: items,
     onClickItem: (item) {
       completer.complete(item);
     },
-  )..show(widgetKey: widgetKey);
+  )..show(context, widgetKey: widgetKey);
   return completer.future;
 }
 
 /// tooltip show tooltip
 ///
-void tooltip(
-  BuildContext context,
-  String message, {
-  double width = 160,
-  double height = 40,
-  Color? backgroundColor,
-  Color? color,
-  GlobalKey? widgetKey,
-  Rect? widgetRect,
-}) {
+void tooltip(BuildContext context, String message,
+    {double width = 160,
+    double height = 40,
+    Color? backgroundColor,
+    Color? color,
+    GlobalKey? widgetKey,
+    Rect? widgetRect,
+    Offset? widgetPosition}) {
   backgroundColor = backgroundColor ?? Color.fromRGBO(11, 129, 255, 1);
   color = color ?? Color.fromRGBO(242, 248, 255, 1);
   var popup = Popup(
-    context: context,
     child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(12),
@@ -211,5 +207,10 @@ void tooltip(
     backgroundColor: backgroundColor,
   );
 
-  popup.show(widgetKey: widgetKey, rect: widgetRect);
+  popup.show(
+    context,
+    widgetKey: widgetKey,
+    widgetRect: widgetRect,
+    widgetPosition: widgetPosition,
+  );
 }

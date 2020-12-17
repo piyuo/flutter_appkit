@@ -52,7 +52,6 @@ class PopupMenu extends Popup {
   Color _lineColor = Colors.black;
 
   PopupMenu({
-    required BuildContext context,
     required this.items,
     required this.onClickItem,
     VoidCallback? onDismiss,
@@ -63,7 +62,6 @@ class PopupMenu extends Popup {
     double itemHeight = 65.0,
     int? maxColumn,
   }) : super(
-          context: context,
           onDismiss: onDismiss,
           backgroundColor: backgroundColor,
           itemWidth: itemWidth,

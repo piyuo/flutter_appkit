@@ -58,13 +58,13 @@ class HyperText extends StatefulWidget {
   }) {
     return link(
       text,
-      onTapUp: (BuildContext context, TapUpDetails details) {
-        RenderBox renderBox = context.findRenderObject() as RenderBox;
-        var offsetTouch = details.globalPosition;
-        var offsetZero = renderBox.localToGlobal(Offset.zero);
-        var rect = Rect.fromLTWH(offsetTouch.dx, offsetZero.dy, 1, renderBox.size.height);
-        tooltip(context, tip, widgetRect: rect, width: width, height: height);
-      },
+      onTapUp: (BuildContext context, TapUpDetails details) => tooltip(
+        context,
+        tip,
+        widgetPosition: details.globalPosition,
+        width: width,
+        height: height,
+      ),
     );
   }
 

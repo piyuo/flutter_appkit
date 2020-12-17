@@ -6,8 +6,6 @@ import 'package:libcli/src/dialogs/triangle-painter.dart';
 const arrowHeight = 10.0;
 
 class Popup {
-  final BuildContext context;
-
   final Widget? child;
 
   /// backgroundColor
@@ -41,7 +39,6 @@ class Popup {
   bool _isShow = false;
 
   Popup({
-    required this.context,
     this.child,
     this.onDismiss,
     this.backgroundColor = Colors.black,
@@ -49,9 +46,16 @@ class Popup {
     this.itemHeight = 65.0,
   });
 
-  void show({Rect? rect, GlobalKey? widgetKey}) {
-    assert(rect != null || widgetKey != null, "need 'rect' or 'widgetKey'");
-    this._showRect = rect ?? getWidgetGlobalRect(widgetKey!);
+  void show(BuildContext context, {Rect? widgetRect, GlobalKey? widgetKey, Offset? widgetPosition}) {
+    assert(widgetRect != null || widgetKey != null || widgetPosition != null,
+        "need 'widgetRect' or 'widgetPosition' or 'widgetKey'");
+    if (widgetPosition != null) {
+      RenderBox renderBox = context.findRenderObject() as RenderBox;
+      var offsetZero = renderBox.localToGlobal(Offset.zero);
+      widgetRect = Rect.fromLTWH(widgetPosition.dx, offsetZero.dy, 1, renderBox.size.height);
+    }
+
+    this._showRect = widgetRect ?? getWidgetGlobalRect(widgetKey!);
     this._screenSize = window.physicalSize / window.devicePixelRatio;
     calculatePosition(context);
     _entry = OverlayEntry(builder: (context) {
