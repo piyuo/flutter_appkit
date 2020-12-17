@@ -21,18 +21,6 @@ void main() {
       expect(removeColor(message), 'set locale=en_US');
     });
 
-    test('should readReduxStates', () {
-      reduxStates.clear();
-      reduxStates.add({'a': 0, 'b': 1});
-      reduxStates.add({'c': 2, 'd': 1});
-      String s = readReduxStates();
-      expect(s, '[{"a":0,"b":1},{"c":2,"d":1}]');
-
-      reduxNewState = {'e': 0};
-      s = readReduxStates();
-      expect(s, '[{"a":0,"b":1},{"c":2,"d":1},{"e":0}]');
-      reduxStates.clear();
-    });
 
     test('should log', () async {
       configuration.appID = 'log_test';

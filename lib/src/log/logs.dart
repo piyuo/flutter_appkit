@@ -1,15 +1,12 @@
-
 List logs = [];
 
 class Log {
   final String message;
   final String stacktrace;
-  final String states;
   final DateTime when = DateTime.now();
   Log({
     required this.message,
     required this.stacktrace,
-    required this.states,
   });
 }
 
@@ -25,7 +22,6 @@ void pushLog({
     Log(
       message: message,
       stacktrace: stacktrace,
-      states: states,
     ),
   );
   if (logs.length > 50) {
@@ -41,9 +37,6 @@ String printLogs() {
     buffer.writeln('${log.when}: ${log.message}');
     if (log.stacktrace.isNotEmpty) {
       buffer.writeln(log.stacktrace);
-    }
-    if (log.states.isNotEmpty) {
-      buffer.writeln(log.states);
     }
     buffer.writeln();
   }

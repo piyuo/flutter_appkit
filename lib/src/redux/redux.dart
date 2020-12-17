@@ -7,8 +7,13 @@ import 'package:libcli/log.dart';
 typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
 
 Map from(Map state) {
-  reduxNewState = Map.from(state);
-  return reduxNewState!;
+  return Map.from(state);
+}
+
+/// readReduxStates print all redux states to string
+///
+String stateToStr(Map state) {
+  return safeJsonEncode(state);
 }
 
 /// Redux implements redux pattern
@@ -26,7 +31,9 @@ class Redux {
   ///
   ///     Redux redux = Redux(reducer, {'value':1});
   ///
-  Redux(this._reducer, this._state);
+  Redux(this._reducer, this._state) {
+    log('${COLOR_STATE}redux init${COLOR_END} ${stateToStr(_state)}');
+  }
 
   /// state get current state
   ///
@@ -37,25 +44,17 @@ class Redux {
   ///     await redux.dispatch(context, Increment(1));
   ///
   Future<void> dispatch(BuildContext context, dynamic action) async {
-    if (!kReleaseMode) {
-      var newState = await _reducer(context, state, action);
-      var payload = toLogString(action);
-      var diff = diffState(newState, _state);
-      if (diff.isEmpty) {
-        diff = 'state not change';
-      } else {
-        //remove extra ,
-        diff = diff.substring(0, diff.length - 1);
-      }
-      log('${COLOR_STATE}redux${COLOR_END} ${action.runtimeType}{$payload} $diff');
-      _state = newState;
-      reduxNewState = null;
-      return;
-    }
     var newState = await _reducer(context, state, action);
+    var payload = toLogString(action);
+    var diff = diffState(newState, _state);
+    if (diff.isEmpty) {
+      diff = 'state not change';
+    } else {
+      //remove extra ,
+      diff = diff.substring(0, diff.length - 1);
+    }
+    log('${COLOR_STATE}redux dispatch${COLOR_END} ${action.runtimeType} {$payload} $diff');
     _state = newState;
-    reduxNewState = null;
-    return;
   }
 }
 

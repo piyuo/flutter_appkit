@@ -30,14 +30,6 @@ String removeColor(String str) {
       .replaceAll(COLOR_CYAN, '');
 }
 
-/// reduxStates keep all redux states
-///
-final List<Map> reduxStates = [];
-
-/// reduxNewState keep newStat in from(), it will be null when merage to state
-///
-Map? reduxNewState = null;
-
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
 ///
 ///
@@ -48,28 +40,6 @@ String safeJsonEncode(Object object) {
     debugPrint(e.toString());
   }
   return toLogString(object);
-}
-
-/// readReduxStates print all redux states to string
-///
-String readReduxStates() {
-  var buffer = StringBuffer();
-  buffer.write('[');
-  for (var i = 0; i < reduxStates.length; i++) {
-    var str = safeJsonEncode(reduxStates[i]);
-    buffer.write(str);
-    if (i < reduxStates.length - 1) {
-      buffer.write(',');
-    }
-  }
-  if (reduxNewState != null) {
-    buffer.write(',');
-    var str = safeJsonEncode(reduxNewState!);
-    buffer.write(str);
-  }
-
-  buffer.write(']');
-  return buffer.toString().replaceAll('\n', '');
 }
 
 /// debugInfo only print message in development. code will be remove at release mode
@@ -112,15 +82,10 @@ void error(dynamic e, StackTrace? stacktrace) {
   if (stack.isNotEmpty) {
     out += '\n${COLOR_ALERT}$stack';
   }
-  String states = readReduxStates();
-  if (states != '[]') {
-    out += '\n${COLOR_MEMORY}$states';
-  }
   debugPrint(out);
   pushLog(
     message: message,
     stacktrace: stack,
-    states: states,
   );
 }
 

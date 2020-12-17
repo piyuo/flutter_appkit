@@ -22,15 +22,11 @@ class Module {
   Module({
     required this.redux,
     required this.services,
-  }) {
-    reduxStates.add(redux.state);
-  }
+  });
 
   /// dispose remove redux instances list, must call this method at provider dispose
   ///
-  void dispose() {
-    reduxStates.remove(redux.state);
-  }
+  void dispose() {}
 
   /// state return current redux state
   ///

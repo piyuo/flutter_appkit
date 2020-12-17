@@ -9,39 +9,6 @@ class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
   group('[module_provider]', () {
-    test('should set reduxNewState when use from()', () async {
-      reduxNewState = null;
-      Map state = Map();
-      Map newState = from(state);
-      expect(reduxNewState, newState);
-
-      Module provider = Module(
-        redux: Redux(
-          reducer,
-          {'value': 0},
-        ),
-        services: {},
-      );
-      await provider.dispatch(MockBuildContext(), Increment(1));
-      expect(reduxNewState, isNull);
-      reduxNewState = null;
-    });
-
-    test('should add/remove redux to state', () async {
-      reduxStates.clear();
-      expect(reduxStates.length, 0);
-      Module provider = Module(
-        redux: Redux(
-          reducer,
-          {'value': 0},
-        ),
-        services: {},
-      );
-      expect(reduxStates.length, 1);
-      provider.dispose();
-      expect(reduxStates.length, 0);
-    });
-
     test('should dispatch reducer', () async {
       Module provider = Module(
         redux: Redux(
