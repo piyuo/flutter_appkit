@@ -13,7 +13,7 @@ class FormCheckbox extends StatefulWidget {
 
   final String? link;
 
-  final Function()? onLinkClicked;
+  final Function(TapDownDetails details)? onLinkClicked;
 
   FormCheckbox({
     required this.controller,
@@ -34,18 +34,20 @@ class FormCheckboxState extends State<FormCheckbox> {
       children: [
         Text(widget.label!,
             style: TextStyle(
+              fontSize: 14,
               color: Color.fromRGBO(134, 134, 139, 1),
             )),
-        SizedBox(width: 10),
+        SizedBox(width: 5),
         widget.link != null
             ? InkWell(
                 child: Text(widget.link!,
                     style: TextStyle(
+                      fontSize: 14,
                       color: Color.fromRGBO(0, 102, 204, 1),
                     )),
-                onTap: () {
+                onTapDown: (TapDownDetails details) {
                   if (widget.onLinkClicked != null) {
-                    widget.onLinkClicked!();
+                    widget.onLinkClicked!(details);
                   }
                 },
               )
