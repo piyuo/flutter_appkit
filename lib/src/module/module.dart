@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/log.dart';
+import 'package:libcli/widgets.dart';
 
 /// Module provide redux and services
 ///
@@ -51,13 +52,20 @@ void switchView(
   bool replace = false,
 }) {
   final moduleProvider = Provider.of<Module>(context, listen: false);
-  var navigator = Navigator.of(context);
+/*
   final route = MaterialPageRoute(
     builder: (ctx) => Provider.value(
       value: moduleProvider,
       builder: (context, child) => widget,
     ),
   );
+*/
+  final route = NoAnimRouteBuilder(Provider.value(
+    value: moduleProvider,
+    builder: (context, child) => widget,
+  ));
+
+  var navigator = Navigator.of(context);
   if (replace) {
     navigator.pushReplacement(route);
     return;
