@@ -10,6 +10,8 @@ Future<Map> _mock_reducers(BuildContext context, Map oldState, dynamic action) a
 class MockRedux extends Redux {
   dynamic lastAction;
 
+  dynamic previousAction;
+
   /// MockRedux constructor with default state
   ///
   MockRedux(Map state) : super(_mock_reducers, state);
@@ -20,6 +22,7 @@ class MockRedux extends Redux {
   void logInitState() {}
 
   Future<void> dispatch(BuildContext context, dynamic action) async {
+    previousAction = lastAction;
     lastAction = action;
   }
 }
