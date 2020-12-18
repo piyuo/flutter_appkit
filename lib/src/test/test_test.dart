@@ -22,9 +22,9 @@ void main() {
     testWidgets('should find string in rich text', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(target());
-        expect(find.byWidgetPredicate((widget) => findStringInRichText(widget, 'hello')),
+        expect(find.byWidgetPredicate((widget) => containInRichText(widget, 'hello')),
             findsOneWidget); // show email address request sent
-        expect(find.byWidgetPredicate((widget) => findStringInRichText(widget, 'world')),
+        expect(find.byWidgetPredicate((widget) => containInRichText(widget, 'world')),
             findsOneWidget); // show email address request sent
       });
     });

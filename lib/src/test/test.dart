@@ -9,9 +9,9 @@ class MockBuildContext extends Mock implements BuildContext {}
 ///
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
-/// findStringInRichText return true if find contain string in rich text widget
+/// containInRichText return true if find contain string in rich text widget
 ///
-bool findStringInRichText(final Widget widget, String contain) {
+bool containInRichText(final Widget widget, String contain) {
   if (widget is RichText) {
     if (widget.text is TextSpan) {
       final buffer = StringBuffer();
