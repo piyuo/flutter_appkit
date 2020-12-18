@@ -32,6 +32,13 @@ class Redux {
   ///     Redux redux = Redux(reducer, {'value':1});
   ///
   Redux(this._reducer, this._state) {
+    logInitState();
+  }
+
+  /// logInitState
+  ///
+  @protected
+  void logInitState() {
     log('${COLOR_STATE}redux init${COLOR_END} ${stateToStr(_state)}');
   }
 

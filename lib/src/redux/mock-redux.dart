@@ -14,6 +14,11 @@ class MockRedux extends Redux {
   ///
   MockRedux(Map state) : super(_mock_reducers, state);
 
+  /// logInitState no log in mock
+  ///
+  @override
+  void logInitState() {}
+
   Future<void> dispatch(BuildContext context, dynamic action) async {
     lastAction = action;
   }
