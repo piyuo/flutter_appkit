@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/module.dart';
 
 class ViewProvider extends AsyncProvider {
