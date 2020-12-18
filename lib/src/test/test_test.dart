@@ -28,5 +28,10 @@ void main() {
             findsOneWidget); // show email address request sent
       });
     });
+
+    test('should create mock context', () async {
+      MockBuildContext context = MockBuildContext();
+      expect(context.toString(), isNotEmpty);
+    });
   });
 }

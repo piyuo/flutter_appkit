@@ -1,7 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/redux.dart';
-import 'package:libcli/log.dart';
 import 'package:libcli/widgets.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';

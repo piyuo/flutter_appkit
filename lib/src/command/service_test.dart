@@ -8,6 +8,7 @@ import 'package:libcli/mock/protobuf/string_response.pbserver.dart';
 import 'package:libcli/mock/protobuf/echo_request.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
 import 'package:libpb/pb.dart';
+import 'package:libcli/test.dart';
 
 void main() {
   setUp(() {});

@@ -3,9 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../mock/mock.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/src/eventbus/types.dart';
-import 'package:mockito/mockito.dart';
-
-class MockBuildContext extends Mock implements BuildContext {}
+import 'package:libcli/test.dart';
 
 class MyEvent extends Event {
   String value = '';

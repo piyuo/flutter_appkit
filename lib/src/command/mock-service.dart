@@ -37,8 +37,6 @@ class MockService extends Service {
   }
 }
 
-class MockBuildContext extends Mock implements BuildContext {}
-
 Request newRequest(MockClient client) {
   MockService service = MockService();
   return Request(

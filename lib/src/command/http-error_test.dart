@@ -6,6 +6,7 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart';
 import 'package:libpb/pb.dart';
 import 'package:libcli/src/command/mock-service.dart';
+import 'package:libcli/test.dart';
 
 void main() {
   var contract;

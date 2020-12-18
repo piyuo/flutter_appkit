@@ -5,7 +5,6 @@ import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/mock-dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 
-class MockBuildContext extends Mock implements BuildContext {}
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();

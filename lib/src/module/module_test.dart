@@ -2,10 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/module.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/log.dart';
-import 'package:mockito/mockito.dart';
-
-class MockBuildContext extends Mock implements BuildContext {}
+import 'package:libcli/test.dart';
 
 void main() {
   group('[module_provider]', () {
