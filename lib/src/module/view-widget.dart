@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
+
+AsyncProvider? viewWidgetProviderInstanceForTest;
 
 ///ProviderWidget is widget that build by provider model
 ///
@@ -21,10 +24,6 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
     this.package,
   });
 
-  /// onProviderCreated called when parovider is created
-  ///
-  void onProviderCreated(T provider) {}
-
   /// createProvider create provider that widget need, it will assign redux to redux provider
   ///
   T createProvider(BuildContext context);
@@ -43,7 +42,9 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
         ChangeNotifierProvider<T>(
           create: (context) {
             var p = createProvider(context);
-            onProviderCreated(p);
+            if (!kReleaseMode) {
+              viewWidgetProviderInstanceForTest = p;
+            }
             return p;
           },
         )

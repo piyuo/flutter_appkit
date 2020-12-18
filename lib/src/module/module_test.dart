@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/test.dart';
 
 void main() {
-  group('[module_provider]', () {
+  group('[module]', () {
     test('should dispatch reducer', () async {
       Module provider = Module(
         redux: Redux(
