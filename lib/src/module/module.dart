@@ -16,16 +16,9 @@ class Module {
   ///
   final Redux redux;
 
-  final Map services;
-
   Module({
     required this.redux,
-    required this.services,
   });
-
-  /// dispose remove redux instances list, must call this method at provider dispose
-  ///
-  void dispose() {}
 
   /// state return current redux state
   ///

@@ -12,12 +12,10 @@ void main() {
           reducer,
           {'value': 0},
         ),
-        services: {},
       );
       expect(provider.state['value'], 0);
       await provider.dispatch(MockBuildContext(), Increment(1));
       expect(provider.state['value'], 1);
-      provider.dispose();
     });
   });
 }
