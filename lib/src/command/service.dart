@@ -132,6 +132,6 @@ abstract class Service {
       broadcast(context, denied);
       return PbEmpty();
     }
-    return PbError()..code = 'VIOLATE_$result';
+    return PbError()..code = 'GURAD_$result';
   }
 }

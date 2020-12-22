@@ -143,7 +143,7 @@ void main() {
       response = await service.executeWithClient(MockBuildContext(), EchoAction(), client, broadcastDenied: false);
       expect(response is PbError, true);
       var error = response as PbError;
-      expect(error.code, 'VIOLATE_1');
+      expect(error.code, 'GURAD_1');
       expect(lastEvent, isNull);
     });
   });
