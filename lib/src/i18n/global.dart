@@ -25,9 +25,10 @@ Map getCurrentGlobalTranslation() {
 }
 
 Map _en_US() {
+  var tryAgain = ', Please try again later';
   return {
     'errTitle': 'Oops, something went wrong',
-    'notified': 'The developer team has been notified of this issue, Please try again later',
+    'notified': 'The developer team has been notified of this issue${tryAgain}',
     'error': 'Error',
     'emailUs': 'Send email to support team',
     'email': 'Email',
@@ -48,7 +49,7 @@ Map _en_US() {
     'minLenth': '%1 must contain at least %2 character. You entered %3 characters',
     'maxLenth': '%1 must be %2 characters or fewer. You entered %3 characters',
     'noService': 'Service Unavailable',
-    'noServiceDesc': 'This service isn\'t available right now, Please try again later',
+    'noServiceDesc': 'This service isn\'t available right now${tryAgain}',
     'noInternet': 'No internet!',
     'noInternetDesc': 'Poor network connection detected, Please check your connectivity',
     'blocked': 'Internet blocked!',
@@ -56,14 +57,16 @@ Map _en_US() {
     'diskError': 'Write failed!',
     'diskErrorDesc': 'Insufficient disk space or write access denied',
     'timeout': 'Operation timed out!',
-    'timeoutDesc': 'Your operation didn\'t complete in time, Please try again later',
+    'timeoutDesc': 'Your operation didn\'t complete in time${tryAgain}',
+    'guard': 'Too many attempts${tryAgain}',
   };
 }
 
 Map _zh_TW() {
+  var tryAgain = '，請稍後再試';
   return {
     'errTitle': '糟糕，有東西出錯了',
-    'notified': '發生的錯誤已被記錄並且通知了我們的開發團隊，您可以稍後再重試',
+    'notified': '發生的錯誤已被記錄並且通知了我們的開發團隊${tryAgain}',
     'error': '錯誤',
     'emailUs': '發送電子郵件給我們',
     'errCode': '錯誤代碼: ',
@@ -85,7 +88,7 @@ Map _zh_TW() {
     'minLenth': '%1必須至少包含 %2 個字元. 你輸入了 %3 個字元',
     'maxLenth': '%1必須是%2個或更少字元. 你輸入了 %3 個字元',
     'noService': '服務不可用',
-    'noServiceDesc': '此服務當前不可用，請稍後再試',
+    'noServiceDesc': '此服務當前不可用${tryAgain}',
     'noInternet': '無法連接到網際網路!',
     'noInternetDesc': '請檢查你的網路連線或稍後重試',
     'blocked': '我們的網站可能被封鎖了!',
@@ -93,14 +96,16 @@ Map _zh_TW() {
     'diskError': '寫入錯誤!',
     'diskErrorDesc': '請檢查是否空間不足或是權限不夠',
     'timeout': '操作已經超時!',
-    'timeoutDesc': '您的操作沒有得到伺服器回應，可能是伺服器目前忙碌中，請稍後數分鐘再試',
+    'timeoutDesc': '您的操作沒有得到伺服器回應，可能是伺服器目前忙碌中${tryAgain}',
+    'guard': '操作過於頻繁${tryAgain}',
   };
 }
 
 Map _zh_CN() {
+  var tryAgain = '，请稍后再试';
   return {
     'errTitle': '糟了，有东西出错',
-    'notified': '发生的错误已被记录并且通知了我们的开发团队，您可以按下方 "重试" 按钮再试一遍',
+    'notified': '发生的错误已被记录并且通知了我们的开发团队${tryAgain}',
     'error': '错误',
     'email': '电子邮件',
     'emailUs': '發送电子邮件给我们',
@@ -122,7 +127,7 @@ Map _zh_CN() {
     'minLenth': '%1必须至少包含 %2 个字元. 您输入了 %3 个字元',
     'maxLenth': '%1必须是%2个或更少字元. 您输入了 %3 个字元',
     'noService': '服務不可用',
-    'noServiceDesc': '服務暫時不可用，請稍候再試',
+    'noServiceDesc': '服務暫時不可用${tryAgain}',
     'noInternet': '无法连接到互联网!',
     'noInternetDesc': '请检查你的网路连线或稍后重试',
     'blocked': '我们的网站可能被封锁了!',
@@ -130,6 +135,7 @@ Map _zh_CN() {
     'diskError': '写入错误!',
     'diskErrorDesc': '请检查是否空间不足或是权限不够',
     'timeout': '操作已经超时!',
-    'timeoutDesc': '您的操作没有得到服务器回应，可能是服务器目前忙碌中，请稍后数分钟再试',
+    'timeoutDesc': '您的操作没有得到服务器回应，可能是服务器目前忙碌中${tryAgain}',
+    'guard': '操作过于频繁${tryAgain}',
   };
 }

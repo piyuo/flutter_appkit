@@ -44,6 +44,19 @@ void main() {
       expect(find.byType(AlertDialog), findsOneWidget);
     });
 
+    testWidgets('should alert when guard denied', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        createSample(onPressed: (context) async {
+          watch(() {});
+          await broadcast(context, GuardDeniedEvent());
+        }),
+      );
+      expect(find.byType(FlatButton), findsOneWidget);
+      await tester.tap(find.byType(FlatButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsOneWidget);
+    });
+
     testWidgets('should alert when no internet', (WidgetTester tester) async {
       await tester.pumpWidget(
         createSample(onPressed: (context) {

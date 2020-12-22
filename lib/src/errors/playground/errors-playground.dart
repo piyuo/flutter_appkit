@@ -21,6 +21,11 @@ class ErrorsPlayground extends StatelessWidget {
                   watch(() => throw Exception('mock exception'));
                 }),
             FlatButton(
+                child: Text('guard denied'),
+                onPressed: () {
+                  broadcast(context, GuardDeniedEvent());
+                }),
+            FlatButton(
                 child: Text('no internet'),
                 onPressed: () async {
                   watch(() {});

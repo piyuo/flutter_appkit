@@ -63,6 +63,15 @@ void catched(dynamic e, StackTrace? stack) {
 @visibleForTesting
 Future<void> listened(BuildContext context, dynamic e) async {
   debugPrint('error-service listened ${e.runtimeType}');
+  if (e is GuardDeniedEvent) {
+    alert(
+      context,
+      'guard'.i18n_,
+      title: 'error'.i18n_,
+      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
+      emailUs: true,
+    );
+  }
   if (e is InternalServerErrorEvent) {
     alert(
       context,

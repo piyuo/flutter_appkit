@@ -123,13 +123,12 @@ abstract class Service {
       return returnObj;
     }
 
-    log('${COLOR_ALERT}send ${command.runtimeType} denied${COLOR_END}');
+    var duration = result == 1 ? rule.duration1! : rule.duration2!;
+    var count = result == 1 ? rule.count1! : rule.count2!;
+    log('${COLOR_ALERT}send ${command.runtimeType} denied${COLOR_END} $count/$duration');
 
     if (broadcastDenied) {
-      var denied = GuardDeniedEvent(
-        duration: result == 1 ? rule.duration1! : rule.duration2!,
-        count: result == 1 ? rule.count1! : rule.count2!,
-      );
+      var denied = GuardDeniedEvent();
       broadcast(context, denied);
       return PbEmpty();
     }
