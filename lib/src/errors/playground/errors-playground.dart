@@ -23,6 +23,7 @@ class ErrorsPlayground extends StatelessWidget {
             FlatButton(
                 child: Text('guard denied'),
                 onPressed: () {
+                  watch(() {});
                   broadcast(context, GuardDeniedEvent());
                 }),
             FlatButton(
