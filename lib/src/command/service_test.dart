@@ -104,7 +104,10 @@ void main() {
 
       //send second time
       response = await service.executeWithClient(MockBuildContext(), EchoAction(), client);
-      expect(response is PbEmpty, true);
+      expect(response is PbError, true);
+      if (response is PbError) {
+        expect(response.code, 'GUARD_1');
+      }
       expect(lastEvent is command.GuardDeniedEvent, true);
     });
 
@@ -123,10 +126,13 @@ void main() {
       //send first time
       var response = await service.executeWithClient(MockBuildContext(), EchoAction(), client, rule: rule);
       expect(response is StringResponse, true);
+      if (response is PbError) {
+        expect(response.code, 'GUARD_1');
+      }
 
       //send second time
       response = await service.executeWithClient(MockBuildContext(), EchoAction(), client, rule: rule);
-      expect(response is PbEmpty, true);
+      expect(response is PbError, true);
       expect(lastEvent is command.GuardDeniedEvent, true);
     });
 
@@ -143,7 +149,7 @@ void main() {
       response = await service.executeWithClient(MockBuildContext(), EchoAction(), client, broadcastDenied: false);
       expect(response is PbError, true);
       var error = response as PbError;
-      expect(error.code, 'GURAD_1');
+      expect(error.code, 'GUARD_1');
       expect(lastEvent, isNull);
     });
   });

@@ -128,10 +128,8 @@ abstract class Service {
     log('${COLOR_ALERT}send ${command.runtimeType} denied${COLOR_END} $count/$duration');
 
     if (broadcastDenied) {
-      var denied = GuardDeniedEvent();
-      broadcast(context, denied);
-      return PbEmpty();
+      broadcast(context, GuardDeniedEvent());
     }
-    return PbError()..code = 'GURAD_$result';
+    return PbError()..code = 'GUARD_$result';
   }
 }
