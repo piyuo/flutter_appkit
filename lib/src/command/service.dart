@@ -3,9 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
-import 'package:libcli/command.dart';
+import 'package:libcli/eventbus.dart';
+import 'package:libcli/src/command/guard.dart';
+import 'package:libcli/src/command/url.dart';
+import 'package:libcli/src/command/http.dart';
+import 'package:libcli/src/command/events.dart';
 import 'package:libpb/pb.dart';
-//import 'package:libcli/preference.dart' as preference;
 
 /*
 /// mockCommand Initializes the value for testing
@@ -68,34 +71,68 @@ abstract class Service {
     return serviceUrl(serviceName);
   }
 
-  /// execute action to remote service, no need to handle exception, all exception contract to eventBus
+  /// execute command to remote service, no need to handle exception, all exception contract to eventBus
   ///
   ///     var response = await service.execute(EchoAction());
   ///
-  Future<PbObject> execute(BuildContext ctx, PbObject obj) async {
+  Future<PbObject> execute(
+    BuildContext ctx,
+    PbObject command, {
+    GuardRule? rule,
+    bool broadcastDenied = true,
+  }) async {
     http.Client client = http.Client();
-    return await executeWithClient(ctx, obj, client);
+    return await executeWithClient(
+      ctx,
+      command,
+      client,
+      rule: rule,
+      broadcastDenied: broadcastDenied,
+    );
   }
 
-  /// executehWithClient send action to remote service,return object if success, return null if exception happen
+  /// executehWithClient send command to remote service,return object if success, return null if exception happen
   ///
   ///     var response = await service.executehWithClient(client, EchoAction());
   ///
-  Future<PbObject> executeWithClient(BuildContext context, PbObject obj, http.Client client) async {
-    var jsonSent = toLogString(obj);
-    log('${COLOR_STATE}send ${obj.runtimeType}{$jsonSent}${COLOR_END} to $url');
-    PbObject returnObj = await post(
-        context,
-        Request(
-          service: this,
-          client: client,
-          url: url,
-          action: obj,
-          timeout: Duration(milliseconds: timeout),
-          slow: Duration(milliseconds: slow),
-        ));
-    var jsonReturn = toLogString(returnObj);
-    log('${COLOR_STATE}got ${returnObj.runtimeType}{$jsonReturn}${COLOR_END} from $url');
-    return returnObj;
+  Future<PbObject> executeWithClient(
+    BuildContext context,
+    PbObject command,
+    http.Client client, {
+    GuardRule? rule,
+    bool broadcastDenied = true,
+  }) async {
+    rule = rule ?? DefaultGuardRule;
+    var result = guardCheck(command.runtimeType, rule);
+    if (result == 0) {
+      //pass
+      var jsonSent = toLogString(command);
+      log('${COLOR_STATE}send ${command.runtimeType}{$jsonSent}${COLOR_END} to $url');
+      PbObject returnObj = await post(
+          context,
+          Request(
+            service: this,
+            client: client,
+            url: url,
+            action: command,
+            timeout: Duration(milliseconds: timeout),
+            slow: Duration(milliseconds: slow),
+          ));
+      var jsonReturn = toLogString(returnObj);
+      log('${COLOR_STATE}got ${returnObj.runtimeType}{$jsonReturn}${COLOR_END} from $url');
+      return returnObj;
+    }
+
+    log('${COLOR_ALERT}send ${command.runtimeType} denied${COLOR_END}');
+
+    if (broadcastDenied) {
+      var denied = GuardDeniedEvent(
+        duration: result == 1 ? rule.duration1! : rule.duration2!,
+        count: result == 1 ? rule.count1! : rule.count2!,
+      );
+      broadcast(context, denied);
+      return PbEmpty();
+    }
+    return PbError()..code = 'VIOLATE_$result';
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/command.dart';
-import 'package:mockito/mockito.dart';
 import 'package:libpb/pb.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
@@ -32,7 +31,12 @@ class MockService extends Service {
   }
 
   @override
-  Future<PbObject> execute(BuildContext ctx, PbObject obj) async {
+  Future<PbObject> execute(
+    BuildContext ctx,
+    PbObject obj, {
+    GuardRule? rule,
+    bool broadcastDenied = false,
+  }) async {
     return await mockExecute(ctx, obj);
   }
 }
