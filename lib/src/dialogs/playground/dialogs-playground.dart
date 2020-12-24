@@ -35,6 +35,38 @@ class DialogsPlayground extends StatelessWidget {
               onPressed: () => alert(context, 'hello world', title: 'title'),
             ),
             FlatButton(
+              child: Text('alert delete/cancel'),
+              onPressed: () async {
+                var result = await alert(
+                  context,
+                  'do you want delete this document?',
+                  buttonType: ButtonType.deleteCancel,
+                  colorTrue: Colors.red,
+                );
+                if (result == true) {
+                  toast(context, 'ok');
+                  return;
+                }
+                toast(context, 'cancel');
+              },
+            ),
+            FlatButton(
+              child: Text('alert save/cancel'),
+              onPressed: () async {
+                var result = await alert(
+                  context,
+                  'do you want save this document?',
+                  buttonType: ButtonType.deleteCancel,
+                  colorTrue: Colors.blueAccent,
+                );
+                if (result == true) {
+                  toast(context, 'ok');
+                  return;
+                }
+                toast(context, 'cancel');
+              },
+            ),
+            FlatButton(
               child: Text('alert ok/cancel'),
               onPressed: () async {
                 var result = await alert(context, 'are you ok?', buttonType: ButtonType.okCancel);
