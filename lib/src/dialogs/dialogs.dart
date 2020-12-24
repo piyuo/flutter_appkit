@@ -17,6 +17,8 @@ enum ButtonType {
   close,
   okCancel,
   retryCancel,
+  deleteCancel,
+  saveCancel,
   yesNo,
 }
 
@@ -51,6 +53,47 @@ class DialogOverlay extends StatelessWidget {
   }
 }
 
+String _trueButtonText(ButtonType buttonType, String? label) {
+  if (label != null) {
+    return label;
+  }
+  switch (buttonType) {
+    case ButtonType.okCancel:
+      return 'ok'.i18n_;
+    case ButtonType.retryCancel:
+      return 'retry'.i18n_;
+    case ButtonType.deleteCancel:
+      return 'delete'.i18n_;
+    case ButtonType.saveCancel:
+      return 'save'.i18n_;
+    case ButtonType.yesNo:
+      return 'yes'.i18n_;
+    default:
+  }
+  assert(false, 'need implement $buttonType text');
+  return '';
+}
+
+String _falseButtonText(ButtonType buttonType, String? label) {
+  if (label != null) {
+    return label;
+  }
+  switch (buttonType) {
+    case ButtonType.close:
+      return 'close'.i18n_;
+    case ButtonType.okCancel:
+    case ButtonType.retryCancel:
+    case ButtonType.deleteCancel:
+    case ButtonType.saveCancel:
+      return 'cancel'.i18n_;
+    case ButtonType.yesNo:
+      return 'no'.i18n_;
+    default:
+  }
+  assert(false, 'need implement $buttonType text');
+  return '';
+}
+
 /// alert show alert dialog, return true if it's ok or yes
 ///
 Future<bool> alert(
@@ -63,6 +106,7 @@ Future<bool> alert(
   ButtonType buttonType = ButtonType.close,
   String? labelFalse,
   String? labelTrue,
+  Color? colorTrue,
 }) async {
   var result = await showDialog<bool>(
       context: context,
@@ -87,26 +131,17 @@ Future<bool> alert(
           actions: <Widget>[
             FlatButton(
               key: keyAlertButtonFalse,
-              child: Text(labelFalse != null
-                  ? labelFalse
-                  : buttonType == ButtonType.close
-                      ? 'close'.i18n_
-                      : buttonType == ButtonType.okCancel || buttonType == ButtonType.retryCancel
-                          ? 'cancel'.i18n_
-                          : 'no'.i18n_),
+              textTheme: ButtonTextTheme.accent,
+              child: Text(_falseButtonText(buttonType, labelTrue)),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             buttonType == ButtonType.close
                 ? SizedBox()
                 : FlatButton(
                     key: keyAlertButtonTrue,
-                    child: Text(labelTrue != null
-                        ? labelTrue
-                        : buttonType == ButtonType.okCancel
-                            ? 'ok'.i18n_
-                            : buttonType == ButtonType.retryCancel
-                                ? 'retry'.i18n_
-                                : 'yes'.i18n_),
+                    color: colorTrue,
+                    textTheme: ButtonTextTheme.accent,
+                    child: Text(_trueButtonText(buttonType, labelTrue)),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
           ],
