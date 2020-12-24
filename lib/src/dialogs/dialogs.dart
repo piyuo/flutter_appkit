@@ -139,7 +139,7 @@ Future<bool> alert(
                 ? SizedBox()
                 : FlatButton(
                     key: keyAlertButtonTrue,
-                    color: colorTrue,
+                    textColor: colorTrue,
                     textTheme: ButtonTextTheme.accent,
                     child: Text(_trueButtonText(buttonType, labelTrue)),
                     onPressed: () => Navigator.of(context).pop(true),
