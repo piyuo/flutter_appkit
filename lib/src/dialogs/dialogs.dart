@@ -132,7 +132,7 @@ Future<bool> alert(
             FlatButton(
               key: keyAlertButtonFalse,
               textTheme: ButtonTextTheme.accent,
-              child: Text(_falseButtonText(buttonType, labelTrue)),
+              child: Text(_falseButtonText(buttonType, labelFalse)),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             buttonType == ButtonType.close
