@@ -56,8 +56,8 @@ class DialogsPlayground extends StatelessWidget {
                 var result = await alert(
                   context,
                   'do you want save this document?',
-                  buttonType: ButtonType.deleteCancel,
-                  colorTrue: Colors.blueAccent,
+                  buttonType: ButtonType.saveCancel,
+                  colorTrue: Colors.greenAccent,
                 );
                 if (result == true) {
                   toast(context, 'ok');
