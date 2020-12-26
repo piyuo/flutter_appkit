@@ -11,3 +11,4 @@ export 'package:libcli/src/widgets/form/form-submit.dart';
 export 'package:libcli/src/widgets/form/form-dropdown.dart';
 export 'package:libcli/src/widgets/form/form-checkbox.dart';
 export 'package:libcli/src/widgets/page-route-anim.dart';
+export 'package:libcli/src/widgets/blurry-container.dart';

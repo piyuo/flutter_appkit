@@ -1,9 +1,10 @@
+import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart';
 
-const double _DIALOG_WIDTH = 180;
+const double _DIALOG_WIDTH = 160;
 const double _DIALOG_HEIGHT = 360;
 
 final keyAlertButtonTrue = UniqueKey();
@@ -75,7 +76,7 @@ Widget? showIcon(IconData? icon, Color iconColor, bool warning, Widget? iconWidg
     return Icon(
       icon,
       color: iconColor,
-      size: 38,
+      size: 58,
     );
   }
   return null;
@@ -100,9 +101,12 @@ Future<bool> alert(
 }) async {
   var result = await showDialog<bool>(
       context: context,
+      barrierColor: Colors.transparent,
       builder: (BuildContext ctx) {
         return AlertDialog(
           //title: title != null ? Text(title) : null,
+          elevation: 0,
+          backgroundColor: Color.fromRGBO(35, 35, 38, 0.2),
           title: showIcon(icon, iconColor, warning, iconWidget),
           content: ConstrainedBox(
             constraints: BoxConstraints(
