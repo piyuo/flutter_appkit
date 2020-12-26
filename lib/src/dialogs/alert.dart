@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart';
+import 'package:libcli/widgets.dart';
 
-const double _DIALOG_WIDTH = 160;
+const double _DIALOG_WIDTH = 180;
 const double _DIALOG_HEIGHT = 360;
 
 final keyAlertButtonTrue = UniqueKey();
@@ -108,27 +109,30 @@ Future<bool> alert(
           elevation: 0,
           backgroundColor: Color.fromRGBO(35, 35, 38, 0.2),
           title: showIcon(icon, iconColor, warning, iconWidget),
-          content: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: _DIALOG_WIDTH,
-              maxHeight: _DIALOG_HEIGHT,
-            ),
-            child: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  title != null
-                      ? Text(title, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.grey))
-                      : SizedBox(),
-                  SizedBox(height: 10),
-                  Text(message, style: TextStyle(fontSize: 14.0)),
-                  SizedBox(height: 20),
-                  footer != null ? Text(footer, style: TextStyle(fontSize: 13.0, color: Colors.grey)) : SizedBox(),
-                  SizedBox(height: 10),
-                  emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
-                ],
+          content: BlurryContainer(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: _DIALOG_WIDTH,
+                maxHeight: _DIALOG_HEIGHT,
+              ),
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    title != null
+                        ? Text(title, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.grey))
+                        : SizedBox(),
+                    SizedBox(height: 10),
+                    Text(message, style: TextStyle(fontSize: 14.0)),
+                    SizedBox(height: 20),
+                    footer != null ? Text(footer, style: TextStyle(fontSize: 13.0, color: Colors.grey)) : SizedBox(),
+                    SizedBox(height: 10),
+                    emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
+                  ],
+                ),
               ),
             ),
           ),
+
           actions: <Widget>[
             RaisedButton(
               key: keyAlertButtonFalse,
