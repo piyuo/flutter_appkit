@@ -43,7 +43,7 @@ void catched(dynamic e, StackTrace? stack) {
       dialogsRootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
-      icon: Icon(Icons.sync_problem_rounded, color: Colors.redAccent, size: 38),
+      icon: Icons.sync_problem_rounded,
     );
     return;
   }
@@ -52,10 +52,10 @@ void catched(dynamic e, StackTrace? stack) {
   alert(
     dialogsRootContext,
     'notified'.i18n_,
-    icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
+    warning: true,
     title: 'errTitle'.i18n_,
+    footer: e.toString(),
     emailUs: true,
-    description: e.toString(),
   );
 //  } catch (_) {}
 }
@@ -67,8 +67,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     alert(
       context,
       'guard'.i18n_,
-      title: 'error'.i18n_,
-      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
+      warning: true,
       emailUs: true,
     );
   }
@@ -76,8 +75,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     alert(
       context,
       '500 internal server error',
-      title: 'error'.i18n_,
-      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
+      warning: true,
       emailUs: true,
     );
   }
@@ -85,8 +83,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     alert(
       context,
       '501 server not ready',
-      title: 'error'.i18n_,
-      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
+      warning: true,
       emailUs: true,
     );
   }
@@ -94,8 +91,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     alert(
       context,
       '400 bad request',
-      title: 'error'.i18n_,
-      icon: Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 38),
+      warning: true,
       emailUs: true,
     );
   }
@@ -114,8 +110,8 @@ Future<void> listened(BuildContext context, dynamic e) async {
       'timeoutDesc'.i18n_,
       title: 'timeout'.i18n_,
       buttonType: ButtonType.retryCancel,
-      icon: Icon(Icons.timer, color: Colors.redAccent, size: 38),
-      description: errorCode,
+      icon: Icons.timer,
+      footer: errorCode,
       emailUs: true,
     );
     e.complete(result);
@@ -126,9 +122,9 @@ Future<void> listened(BuildContext context, dynamic e) async {
         alert(
           context,
           'noServiceDesc'.i18n_,
-          icon: Icon(Icons.cloud_off, color: Colors.redAccent, size: 38),
+          icon: Icons.cloud_off,
           title: 'noService'.i18n_,
-          description: e.exception?.toString(),
+          footer: e.exception?.toString(),
           emailUs: true,
         ); //service not available
       } else {
@@ -136,8 +132,8 @@ Future<void> listened(BuildContext context, dynamic e) async {
           context,
           'blockedDesc'.i18n_,
           title: 'blocked'.i18n_,
-          description: e.exception?.toString(),
-          icon: Icon(Icons.block_outlined, color: Colors.redAccent, size: 38),
+          footer: e.exception?.toString(),
+          icon: Icons.block_outlined,
           emailUs: true,
         );
       }
@@ -147,8 +143,8 @@ Future<void> listened(BuildContext context, dynamic e) async {
         context,
         'noInternetDesc'.i18n_,
         title: 'noInternet'.i18n_,
-        icon: Icon(Icons.wifi_off_outlined, color: Colors.redAccent, size: 38),
-        description: e.exception?.toString(),
+        icon: Icons.wifi_off_outlined,
+        footer: e.exception?.toString(),
         buttonType: ButtonType.retryCancel,
       );
       e.complete(result);
