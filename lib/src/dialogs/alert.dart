@@ -105,50 +105,52 @@ Future<bool> alert(
       barrierColor: Colors.transparent,
       builder: (BuildContext ctx) {
         return BlurryContainer(
+            bgColor: Colors.purple,
             child: AlertDialog(
-          //title: title != null ? Text(title) : null,
-          elevation: 0,
-          backgroundColor: Color.fromRGBO(35, 35, 38, 0.2),
-          title: showIcon(icon, iconColor, warning, iconWidget),
-          content: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: _DIALOG_WIDTH,
-              maxHeight: _DIALOG_HEIGHT,
-            ),
-            child: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  title != null
-                      ? Text(title, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.grey))
-                      : SizedBox(),
-                  SizedBox(height: 10),
-                  Text(message, style: TextStyle(fontSize: 14.0)),
-                  SizedBox(height: 20),
-                  footer != null ? Text(footer, style: TextStyle(fontSize: 13.0, color: Colors.grey)) : SizedBox(),
-                  SizedBox(height: 10),
-                  emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            RaisedButton(
-              key: keyAlertButtonFalse,
-              textTheme: ButtonTextTheme.accent,
-              child: Text(_falseButtonText(buttonType, labelFalse)),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            buttonType == ButtonType.close
-                ? SizedBox()
-                : RaisedButton(
-                    key: keyAlertButtonTrue,
-                    textColor: colorTrue,
-                    textTheme: ButtonTextTheme.accent,
-                    child: Text(_trueButtonText(buttonType, labelTrue)),
-                    onPressed: () => Navigator.of(context).pop(true),
+              //title: title != null ? Text(title) : null,
+              elevation: 0,
+              backgroundColor: Color.fromRGBO(35, 35, 38, 0.2),
+              title: showIcon(icon, iconColor, warning, iconWidget),
+              content: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: _DIALOG_WIDTH,
+                  maxHeight: _DIALOG_HEIGHT,
+                ),
+                child: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      title != null
+                          ? Text(title,
+                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.grey))
+                          : SizedBox(),
+                      SizedBox(height: 10),
+                      Text(message, style: TextStyle(fontSize: 14.0)),
+                      SizedBox(height: 20),
+                      footer != null ? Text(footer, style: TextStyle(fontSize: 13.0, color: Colors.grey)) : SizedBox(),
+                      SizedBox(height: 10),
+                      emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
+                    ],
                   ),
-          ],
-        ));
+                ),
+              ),
+              actions: <Widget>[
+                RaisedButton(
+                  key: keyAlertButtonFalse,
+                  textTheme: ButtonTextTheme.accent,
+                  child: Text(_falseButtonText(buttonType, labelFalse)),
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+                buttonType == ButtonType.close
+                    ? SizedBox()
+                    : RaisedButton(
+                        key: keyAlertButtonTrue,
+                        textColor: colorTrue,
+                        textTheme: ButtonTextTheme.accent,
+                        child: Text(_trueButtonText(buttonType, labelTrue)),
+                        onPressed: () => Navigator.of(context).pop(true),
+                      ),
+              ],
+            ));
       });
   if (result == true) {
     return true;
