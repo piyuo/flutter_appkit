@@ -5,7 +5,7 @@ import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/widgets.dart';
 
-const double _DIALOG_WIDTH = 180;
+const double _DIALOG_WIDTH = 160;
 const double _DIALOG_HEIGHT = 360;
 
 final keyAlertButtonTrue = UniqueKey();
@@ -104,53 +104,58 @@ Future<bool> alert(
       context: context,
       barrierColor: Colors.transparent,
       builder: (BuildContext ctx) {
-        return BlurryContainer(
-            bgColor: Colors.purple,
-            child: AlertDialog(
-              //title: title != null ? Text(title) : null,
-              elevation: 0,
-              backgroundColor: Color.fromRGBO(35, 35, 38, 0.2),
-              title: showIcon(icon, iconColor, warning, iconWidget),
-              content: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: _DIALOG_WIDTH,
-                  maxHeight: _DIALOG_HEIGHT,
-                ),
-                child: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      title != null
-                          ? Text(title,
-                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.grey))
-                          : SizedBox(),
-                      SizedBox(height: 10),
-                      Text(message, style: TextStyle(fontSize: 14.0)),
-                      SizedBox(height: 20),
-                      footer != null ? Text(footer, style: TextStyle(fontSize: 13.0, color: Colors.grey)) : SizedBox(),
-                      SizedBox(height: 10),
-                      emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
-                    ],
-                  ),
+        return AlertDialog(
+          //title: title != null ? Text(title) : null,
+          elevation: 0,
+          actionsOverflowDirection: VerticalDirection.down,
+          backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+          title: showIcon(icon, iconColor, warning, iconWidget),
+          content: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: _DIALOG_WIDTH,
+              maxHeight: _DIALOG_HEIGHT,
+            ),
+            child: Row(children: [
+              SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    title != null
+                        ? Text(title, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.grey))
+                        : SizedBox(),
+                    SizedBox(height: 10),
+                    Text(message, style: TextStyle(fontSize: 14.0)),
+                    SizedBox(height: 20),
+                    footer != null ? Text(footer, style: TextStyle(fontSize: 13.0, color: Colors.grey)) : SizedBox(),
+                    SizedBox(height: 10),
+                    emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
+                  ],
                 ),
               ),
-              actions: <Widget>[
-                RaisedButton(
+              Container(
+                width: 300,
+                child: RaisedButton(
                   key: keyAlertButtonFalse,
                   textTheme: ButtonTextTheme.accent,
                   child: Text(_falseButtonText(buttonType, labelFalse)),
                   onPressed: () => Navigator.of(context).pop(false),
                 ),
-                buttonType == ButtonType.close
-                    ? SizedBox()
-                    : RaisedButton(
+              ),
+              buttonType == ButtonType.close
+                  ? SizedBox()
+                  : Container(
+                      width: 300,
+                      child: RaisedButton(
                         key: keyAlertButtonTrue,
                         textColor: colorTrue,
                         textTheme: ButtonTextTheme.accent,
                         child: Text(_trueButtonText(buttonType, labelTrue)),
                         onPressed: () => Navigator.of(context).pop(true),
                       ),
-              ],
-            ));
+                    ),
+            ]),
+          ),
+          actions: <Widget>[],
+        );
       });
   if (result == true) {
     return true;
