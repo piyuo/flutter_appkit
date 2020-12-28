@@ -5,8 +5,6 @@ import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/widgets/hypertext/doc_page.dart';
 
 class _Span {
-  final Key? key;
-
   final bool bold;
 
   final String text;
@@ -17,7 +15,6 @@ class _Span {
 
   _Span(
     this.text, {
-    this.key,
     this.onTap,
     this.onTapUp,
     this.bold = false,
@@ -84,7 +81,6 @@ class HyperText extends StatefulWidget {
   }) {
     children.add(_Span(
       text,
-      key: key,
       onTap: onTap,
       onTapUp: onTapUp,
     ));
