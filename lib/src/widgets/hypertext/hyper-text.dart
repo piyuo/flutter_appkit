@@ -75,7 +75,6 @@ class HyperText extends StatefulWidget {
 
   void link(
     String text, {
-    Key? key,
     Function(BuildContext)? onTap,
     Function(BuildContext, TapUpDetails)? onTapUp,
   }) {
