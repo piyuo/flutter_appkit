@@ -152,13 +152,13 @@ Future<bool?> alert(
     yes = 'ok'.i18n_;
   }
   if (buttonCancel) {
-    no = 'cancel'.i18n_;
+    cancel = 'cancel'.i18n_;
   }
   if (buttonYes) {
     yes = 'yes'.i18n_;
   }
   if (buttonNo) {
-    yes = 'no'.i18n_;
+    no = 'no'.i18n_;
   }
   if (buttonRetry) {
     yes = 'retry'.i18n_;
@@ -167,7 +167,7 @@ Future<bool?> alert(
     yes = 'save'.i18n_;
   }
   if (buttonClose) {
-    yes = 'close'.i18n_;
+    cancel = 'close'.i18n_;
   }
   if (yes == null && no == null && cancel == null) {
     cancel = 'close'.i18n_;
