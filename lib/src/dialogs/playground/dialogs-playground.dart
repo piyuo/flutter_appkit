@@ -32,7 +32,7 @@ class DialogsPlayground extends StatelessWidget {
                       ),
                     ),
                     RaisedButton(
-                      child: Text('alert icon'),
+                      child: Text('alert warning'),
                       onPressed: () => alert(context, 'hello world1', warning: true),
                     ),
                     RaisedButton(
@@ -40,81 +40,58 @@ class DialogsPlayground extends StatelessWidget {
                       onPressed: () => alert(context, 'hello world', title: 'title'),
                     ),
                     RaisedButton(
-                      child: Text('alert delete/cancel'),
+                      child: Text('alert title/footer'),
+                      onPressed: () => alert(context, 'hello world', title: 'title', footer: 'footer'),
+                    ),
+                    RaisedButton(
+                      child: Text('alert yes/no/cancel'),
                       onPressed: () async {
                         var result = await alert(
                           context,
                           'do you want delete this document?',
-                          buttonType: ButtonType.deleteCancel,
-                          colorTrue: Colors.red,
+                          yes: 'yes'.i18n_,
+                          no: 'no'.i18n_,
+                          cancel: 'cancel'.i18n_,
                         );
                         if (result == true) {
-                          toast(context, 'ok');
-                          return;
+                          toast(context, 'yes');
+                        } else if (result == false) {
+                          toast(context, 'no');
+                        } else if (result == null) {
+                          toast(context, 'cancel');
                         }
-                        toast(context, 'cancel');
-                      },
-                    ),
-                    RaisedButton(
-                      child: Text('alert save/cancel'),
-                      onPressed: () async {
-                        var result = await alert(
-                          context,
-                          'do you want save this document?',
-                          buttonType: ButtonType.saveCancel,
-                          colorTrue: Colors.greenAccent,
-                        );
-                        if (result == true) {
-                          toast(context, 'ok');
-                          return;
-                        }
-                        toast(context, 'cancel');
                       },
                     ),
                     RaisedButton(
                       child: Text('alert ok/cancel'),
                       onPressed: () async {
-                        var result = await alert(context, 'are you ok?', buttonType: ButtonType.okCancel);
-                        if (result == true) {
-                          toast(context, 'ok');
-                          return;
-                        }
-                        toast(context, 'cancel');
-                      },
-                    ),
-                    RaisedButton(
-                      child: Text('alert yes/no with icon'),
-                      onPressed: () async {
                         var result = await alert(
                           context,
-                          'no internet, please check your connection',
-                          title: 'No Internet!',
-                          icon: Icons.wifi_off_outlined,
-                          buttonType: ButtonType.retryCancel,
+                          'save this document?',
+                          yes: 'ok'.i18n_,
+                          cancel: 'cancel'.i18n_,
                         );
-                        if (result) {
-                          toast(context, 'start retry');
+                        if (result == true) {
+                          toast(context, 'ok');
+                        } else if (result == null) {
+                          toast(context, 'cancel');
                         }
                       },
                     ),
                     RaisedButton(
-                      child: Text('alert description'),
-                      onPressed: () => alert(context, 'error message', footer: 'description'),
+                      child: Text('alert warning emailus'),
+                      onPressed: () =>
+                          alert(context, 'error message', footer: 'description', emailUs: true, warning: true),
                     ),
                     RaisedButton(
-                      child: Text('alert desc emailus'),
-                      onPressed: () => alert(context, 'error message', footer: 'description', emailUs: true),
-                    ),
-                    RaisedButton(
-                      child: Text('alert emailus'),
-                      onPressed: () => alert(context, 'error message', footer: 'description', emailUs: true),
-                    ),
-                    RaisedButton(
-                      child: Text('diskError'),
+                      child: Text('alert long content'),
                       onPressed: () => alert(
                         context,
-                        'diskErrorDesc'.i18n_,
-                        title: 'diskError'.i18n_,
+                        'this is a very long content, it should cover 3 or 4 more line. we need test long messsage can read easilly',
+                        title: 'this is a very long title. it should cover 2 line',
+                        footer:
+                            'this is a very long footer, it should cover 3 or 4 more line. we need test long messsage can read easilly',
+                        emailUs: true,
                         icon: Icons.sync_problem_rounded,
                       ),
                     ),

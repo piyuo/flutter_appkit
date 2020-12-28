@@ -5,68 +5,18 @@ import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/widgets.dart';
 
-const double _DIALOG_WIDTH = 160;
-const double _DIALOG_HEIGHT = 360;
+final keyButtonYes = UniqueKey();
 
-final keyAlertButtonTrue = UniqueKey();
+final keyButtonNo = UniqueKey();
 
-final keyAlertButtonFalse = UniqueKey();
+final keyButtonCancel = UniqueKey();
 
-/// ButtonType for alert dialog
-///
-enum ButtonType {
-  close,
-  okCancel,
-  retryCancel,
-  deleteCancel,
-  saveCancel,
-  yesNo,
-}
-
-String _trueButtonText(ButtonType buttonType, String? label) {
-  if (label != null) {
-    return label;
-  }
-  switch (buttonType) {
-    case ButtonType.okCancel:
-      return 'ok'.i18n_;
-    case ButtonType.retryCancel:
-      return 'retry'.i18n_;
-    case ButtonType.deleteCancel:
-      return 'delete'.i18n_;
-    case ButtonType.saveCancel:
-      return 'save'.i18n_;
-    case ButtonType.yesNo:
-      return 'yes'.i18n_;
-    default:
-  }
-  assert(false, 'need implement $buttonType text');
-  return '';
-}
-
-String _falseButtonText(ButtonType buttonType, String? label) {
-  if (label != null) {
-    return label;
-  }
-  switch (buttonType) {
-    case ButtonType.close:
-      return 'close'.i18n_;
-    case ButtonType.okCancel:
-    case ButtonType.retryCancel:
-    case ButtonType.deleteCancel:
-    case ButtonType.saveCancel:
-      return 'cancel'.i18n_;
-    case ButtonType.yesNo:
-      return 'no'.i18n_;
-    default:
-  }
-  assert(false, 'need implement $buttonType text');
-  return '';
-}
-
-Widget? showIcon(IconData? icon, Color iconColor, bool warning, Widget? iconWidget) {
+Widget showIcon(IconData? icon, Color iconColor, bool warning, Widget? iconWidget) {
   if (iconWidget != null) {
-    return iconWidget;
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: iconWidget,
+    );
   }
 
   if (warning) {
@@ -74,116 +24,208 @@ Widget? showIcon(IconData? icon, Color iconColor, bool warning, Widget? iconWidg
   }
 
   if (icon != null) {
-    return Icon(
-      icon,
-      color: iconColor,
-      size: 58,
+    return Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: Icon(
+        icon,
+        color: iconColor,
+        size: 58,
+      ),
     );
   }
-  return null;
+  return SizedBox();
+}
+
+Widget showButton(
+  BuildContext context,
+  Key key,
+  String? text,
+  Color color,
+  Color textColor,
+  bool? value,
+) {
+  return text != null
+      ? Container(
+          margin: EdgeInsets.only(bottom: 10),
+          width: double.infinity,
+          height: 28,
+          child: RaisedButton(
+            elevation: 1,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            color: color,
+            textColor: textColor,
+            key: key,
+            child: Text(text),
+            onPressed: () => Navigator.of(context).pop(value),
+          ),
+        )
+      : SizedBox();
+}
+
+Widget showTitle(String? title) {
+  return title != null
+      ? Container(
+          padding: EdgeInsets.only(bottom: 10),
+          alignment: Alignment.center,
+          child:
+              Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600)),
+        )
+      : SizedBox();
+}
+
+Widget showMessage(String message) {
+  return Container(
+    alignment: Alignment.center,
+    padding: EdgeInsets.only(bottom: 10),
+    child: Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
+  );
+}
+
+Widget showFooter(String? footer) {
+  return footer != null
+      ? Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(footer, textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0, color: Colors.grey[600])),
+        )
+      : SizedBox();
+}
+
+Widget showEmailUs(BuildContext context, bool emailUs) {
+  var onTap = () => broadcast(context, EmailSupportEvent());
+  return emailUs
+      ? Container(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: onTap,
+                child: Icon(
+                  Icons.mail_outline,
+                  color: Colors.blueAccent,
+                  size: 18,
+                ),
+              ),
+              SizedBox(width: 10),
+              InkWell(
+                  child: GestureDetector(
+                      onTap: onTap,
+                      child: Text(
+                        'emailUs'.i18n_,
+                        style: TextStyle(fontSize: 13, color: Colors.blueAccent),
+                      ))),
+            ],
+          ))
+      : SizedBox();
 }
 
 /// alert show alert dialog, return true if it's ok or yes
 ///
-Future<bool> alert(
+Future<bool?> alert(
   BuildContext context,
   String message, {
-  bool warning = true,
+  bool warning = false,
   IconData? icon,
   Color iconColor = Colors.redAccent,
   Widget? iconWidget,
   String? title,
   String? footer,
   bool emailUs = false,
-  ButtonType buttonType = ButtonType.close,
-  String? labelFalse,
-  String? labelTrue,
-  Color? colorTrue,
+  String? yes,
+  String? no,
+  String? cancel,
+  Color? assentButtonColor,
+  Color? buttonColor,
 }) async {
-  var result = await showDialog<bool>(
+  bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+  assentButtonColor = assentButtonColor ?? Color(0xee2091eb);
+  buttonColor = buttonColor ?? (isDark ? Color(0xcc6a7073) : Color(0xeebbbcbb));
+  if (yes == null && no == null && cancel == null) {
+    cancel = 'close'.i18n_;
+  }
+  return await showDialog<bool?>(
       context: context,
-      barrierColor: Colors.transparent,
+      barrierColor: isDark ? Color.fromRGBO(25, 25, 28, 0.6) : Color.fromRGBO(230, 230, 238, 0.6),
+      barrierDismissible: false,
       builder: (BuildContext ctx) {
-        return AlertDialog(
-          //title: title != null ? Text(title) : null,
+        return Dialog(
           elevation: 0,
-          actionsOverflowDirection: VerticalDirection.down,
-          backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-          title: showIcon(icon, iconColor, warning, iconWidget),
-          content: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: _DIALOG_WIDTH,
-              maxHeight: _DIALOG_HEIGHT,
-            ),
-            child: Row(children: [
-              SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    title != null
-                        ? Text(title, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.grey))
-                        : SizedBox(),
-                    SizedBox(height: 10),
-                    Text(message, style: TextStyle(fontSize: 14.0)),
-                    SizedBox(height: 20),
-                    footer != null ? Text(footer, style: TextStyle(fontSize: 13.0, color: Colors.grey)) : SizedBox(),
-                    SizedBox(height: 10),
-                    emailUs == true ? _emailUs(() => broadcast(context, EmailSupportEvent())) : SizedBox(),
-                  ],
-                ),
+          backgroundColor: Colors.transparent,
+          child: BlurryContainer(
+            shadow: isDark
+                ? BoxShadow(
+                    color: Color(0x66000011),
+                    blurRadius: 15,
+                    spreadRadius: 8,
+                    offset: Offset(0, 15),
+                  )
+                : BoxShadow(
+                    color: Color(0x66bbbbcc),
+                    blurRadius: 15,
+                    spreadRadius: 8,
+                    offset: Offset(0, 10),
+                  ),
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: isDark ? Colors.white24 : Colors.black26),
+            backgroundColor: isDark ? Color.fromRGBO(75, 75, 78, 0.5) : Color.fromRGBO(252, 252, 255, 0.4),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: 240,
+                maxWidth: 260,
               ),
-              Container(
-                width: 300,
-                child: RaisedButton(
-                  key: keyAlertButtonFalse,
-                  textTheme: ButtonTextTheme.accent,
-                  child: Text(_falseButtonText(buttonType, labelFalse)),
-                  onPressed: () => Navigator.of(context).pop(false),
-                ),
-              ),
-              buttonType == ButtonType.close
-                  ? SizedBox()
-                  : Container(
-                      width: 300,
-                      child: RaisedButton(
-                        key: keyAlertButtonTrue,
-                        textColor: colorTrue,
-                        textTheme: ButtonTextTheme.accent,
-                        child: Text(_trueButtonText(buttonType, labelTrue)),
-                        onPressed: () => Navigator.of(context).pop(true),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  showIcon(icon, iconColor, warning, iconWidget),
+                  Container(
+                    height: 90,
+                    child: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          showTitle(title),
+                          showMessage(message),
+                          showFooter(footer),
+                        ],
                       ),
                     ),
-            ]),
+                  ),
+                  showButton(
+                    context,
+                    keyButtonYes,
+                    yes,
+                    assentButtonColor!,
+                    Colors.white,
+                    true,
+                  ),
+                  showButton(
+                    context,
+                    keyButtonNo,
+                    no,
+                    buttonColor!,
+                    isDark ? Colors.blue[50]! : Colors.black54,
+                    false,
+                  ),
+                  SizedBox(height: 10),
+                  showButton(
+                    context,
+                    keyButtonCancel,
+                    cancel,
+                    yes != null ? buttonColor : assentButtonColor,
+                    yes != null
+                        ? isDark
+                            ? Colors.blue[50]!
+                            : Colors.black54
+                        : Colors.white,
+                    null,
+                  ),
+                  showEmailUs(context, emailUs),
+                ],
+              ),
+            ),
           ),
-          actions: <Widget>[],
         );
       });
-  if (result == true) {
-    return true;
-  }
-  return false;
-}
-
-Widget _emailUs(void Function()? onPressed) {
-  return Container(
-      child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      InkWell(
-        onTap: onPressed,
-        child: Icon(
-          Icons.mail_outline,
-          color: Colors.blueAccent,
-          size: 18,
-        ),
-      ),
-      SizedBox(width: 10),
-      InkWell(
-          child: GestureDetector(
-              onTap: onPressed,
-              child: Text(
-                'emailUs'.i18n_,
-                style: TextStyle(fontSize: 14, color: Colors.blueAccent),
-              ))),
-    ],
-  ));
 }

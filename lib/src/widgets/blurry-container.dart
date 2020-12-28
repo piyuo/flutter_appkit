@@ -14,6 +14,8 @@ class BlurryContainer extends StatelessWidget {
 
   final Color? backgroundColor;
 
+  final BoxShadow? shadow;
+
   final Border? border;
 
   final BorderRadius borderRadius;
@@ -25,6 +27,7 @@ class BlurryContainer extends StatelessWidget {
     this.width,
     this.padding,
     this.backgroundColor,
+    this.shadow,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(20)),
   });
@@ -38,6 +41,7 @@ class BlurryContainer extends StatelessWidget {
           border: border,
           borderRadius: borderRadius,
           color: backgroundColor,
+          boxShadow: shadow != null ? [shadow!] : null,
         ),
         height: height,
         width: width,
