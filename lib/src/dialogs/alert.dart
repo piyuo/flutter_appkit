@@ -137,10 +137,38 @@ Future<bool?> alert(
   String? cancel,
   Color? assentButtonColor,
   Color? buttonColor,
+  bool buttonOK = false,
+  bool buttonCancel = false,
+  bool buttonYes = false,
+  bool buttonNo = false,
+  bool buttonRetry = false,
+  bool buttonSave = false,
+  bool buttonClose = false,
 }) async {
   bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
   assentButtonColor = assentButtonColor ?? Color(0xee2091eb);
   buttonColor = buttonColor ?? (isDark ? Color(0xcc6a7073) : Color(0xeebbbcbb));
+  if (buttonOK) {
+    yes = 'ok'.i18n_;
+  }
+  if (buttonCancel) {
+    no = 'cancel'.i18n_;
+  }
+  if (buttonYes) {
+    yes = 'yes'.i18n_;
+  }
+  if (buttonNo) {
+    yes = 'no'.i18n_;
+  }
+  if (buttonRetry) {
+    yes = 'retry'.i18n_;
+  }
+  if (buttonSave) {
+    yes = 'save'.i18n_;
+  }
+  if (buttonClose) {
+    yes = 'close'.i18n_;
+  }
   if (yes == null && no == null && cancel == null) {
     cancel = 'close'.i18n_;
   }

@@ -49,9 +49,9 @@ class DialogsPlayground extends StatelessWidget {
                         var result = await alert(
                           context,
                           'do you want delete this document?',
-                          yes: 'yes'.i18n_,
-                          no: 'no'.i18n_,
-                          cancel: 'cancel'.i18n_,
+                          buttonYes: true,
+                          buttonNo: true,
+                          buttonCancel: true,
                         );
                         if (result == true) {
                           toast(context, 'yes');
@@ -68,8 +68,8 @@ class DialogsPlayground extends StatelessWidget {
                         var result = await alert(
                           context,
                           'save this document?',
-                          yes: 'ok'.i18n_,
-                          cancel: 'cancel'.i18n_,
+                          buttonSave: true,
+                          buttonCancel: true,
                         );
                         if (result == true) {
                           toast(context, 'ok');
