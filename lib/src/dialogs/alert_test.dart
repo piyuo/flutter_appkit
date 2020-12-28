@@ -33,12 +33,12 @@ void main() {
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
       //tap close
-      await tester.tap(find.byKey(keyAlertButtonFalse));
+      await tester.tap(find.byKey(keyButtonCancel));
       await tester.pumpAndSettle();
       expect(
-        find.byType(AlertDialog),
+        find.byType(Dialog),
         findsNothing,
       );
     });
@@ -47,37 +47,47 @@ void main() {
       var result = null;
       await tester.pumpWidget(
         createSample(
-            onPressed: (context) async => result = await alert(context, 'hello', buttonType: ButtonType.okCancel)),
+            onPressed: (context) async => result = await alert(
+                  context,
+                  'hello',
+                  yes: 'ok',
+                  cancel: 'cancel',
+                )),
       );
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
       expect(result, null);
       //tap close
-      await tester.tap(find.byKey(keyAlertButtonFalse));
+      await tester.tap(find.byKey(keyButtonCancel));
       await tester.pumpAndSettle();
       expect(
-        find.byType(AlertDialog),
+        find.byType(Dialog),
         findsNothing,
       );
-      expect(result, false);
+      expect(result, null);
     });
 
     testWidgets('should alert with ok', (WidgetTester tester) async {
       var result = null;
       await tester.pumpWidget(
         createSample(
-            onPressed: (context) async => result = await alert(context, 'hello', buttonType: ButtonType.okCancel)),
+            onPressed: (context) async => result = await alert(
+                  context,
+                  'hello',
+                  yes: 'ok',
+                  cancel: 'cancel',
+                )),
       );
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
       //tap ok
-      await tester.tap(find.byKey(keyAlertButtonTrue));
+      await tester.tap(find.byKey(keyButtonYes));
       await tester.pumpAndSettle();
       expect(
-        find.byType(AlertDialog),
+        find.byType(Dialog),
         findsNothing,
       );
       expect(result, true);
@@ -85,12 +95,18 @@ void main() {
 
     testWidgets('should alert with yes no', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(onPressed: (context) async => await alert(context, 'hello', buttonType: ButtonType.yesNo)),
+        createSample(
+            onPressed: (context) async => await alert(
+                  context,
+                  'hello',
+                  yes: 'yes',
+                  cancel: 'no',
+                )),
       );
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert error', (WidgetTester tester) async {
@@ -100,7 +116,7 @@ void main() {
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
   });
 }

@@ -109,12 +109,13 @@ Future<void> listened(BuildContext context, dynamic e) async {
       context,
       'timeoutDesc'.i18n_,
       title: 'timeout'.i18n_,
-      buttonType: ButtonType.retryCancel,
+      yes: 'retry'.i18n_,
+      cancel: 'cancel'.i18n_,
       icon: Icons.timer,
       footer: errorCode,
       emailUs: true,
     );
-    e.complete(result);
+    e.complete(result == true);
   }
   if (e is InternetRequiredContract) {
     if (await e.isInternetConnected()) {
@@ -145,9 +146,10 @@ Future<void> listened(BuildContext context, dynamic e) async {
         title: 'noInternet'.i18n_,
         icon: Icons.wifi_off_outlined,
         footer: e.exception?.toString(),
-        buttonType: ButtonType.retryCancel,
+        yes: 'retry'.i18n_,
+        cancel: 'cancel'.i18n_,
       );
-      e.complete(result);
+      e.complete(result == true);
     }
   }
   if (e is EmailSupportEvent) {

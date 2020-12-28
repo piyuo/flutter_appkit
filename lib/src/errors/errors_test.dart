@@ -41,7 +41,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when guard denied', (WidgetTester tester) async {
@@ -54,7 +54,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when no internet', (WidgetTester tester) async {
@@ -66,7 +66,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when service not available', (WidgetTester tester) async {
@@ -86,7 +86,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when internet blocked', (WidgetTester tester) async {
@@ -106,7 +106,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when internal server error', (WidgetTester tester) async {
@@ -119,7 +119,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when server not ready', (WidgetTester tester) async {
@@ -132,7 +132,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when bad request', (WidgetTester tester) async {
@@ -145,7 +145,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when client timeout', (WidgetTester tester) async {
@@ -162,7 +162,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when deadline exceeded', (WidgetTester tester) async {
@@ -175,7 +175,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should alert when disk error', (WidgetTester tester) async {
@@ -187,7 +187,7 @@ void main() {
       expect(find.byType(FlatButton), findsOneWidget);
       await tester.tap(find.byType(FlatButton));
       await tester.pumpAndSettle();
-      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(Dialog), findsOneWidget);
     });
 
     testWidgets('should toast when network is slow', (WidgetTester tester) async {
