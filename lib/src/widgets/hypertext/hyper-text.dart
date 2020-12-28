@@ -5,6 +5,8 @@ import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/widgets/hypertext/doc_page.dart';
 
 class _Span {
+  final Key? key;
+
   final bool bold;
 
   final String text;
@@ -13,7 +15,13 @@ class _Span {
 
   final void Function(BuildContext, TapUpDetails)? onTapUp;
 
-  _Span(this.text, {this.onTap, this.onTapUp, this.bold = false});
+  _Span(
+    this.text, {
+    this.key,
+    this.onTap,
+    this.onTapUp,
+    this.bold = false,
+  });
 }
 
 class HyperText extends StatefulWidget {
@@ -68,8 +76,18 @@ class HyperText extends StatefulWidget {
     );
   }
 
-  void link(String text, {Function(BuildContext)? onTap, Function(BuildContext, TapUpDetails)? onTapUp}) {
-    children.add(_Span(text, onTap: onTap, onTapUp: onTapUp));
+  void link(
+    String text, {
+    Key? key,
+    Function(BuildContext)? onTap,
+    Function(BuildContext, TapUpDetails)? onTapUp,
+  }) {
+    children.add(_Span(
+      text,
+      key: key,
+      onTap: onTap,
+      onTapUp: onTapUp,
+    ));
   }
 
   @override
