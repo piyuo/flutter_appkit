@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/test/test.dart';
+import 'package:flutter/gestures.dart';
 
 void main() {
   setUp(() async {});
+
+  bool textSpanTapped = false;
 
   Widget target() {
     return MaterialApp(
@@ -11,7 +14,13 @@ void main() {
         text: TextSpan(
           text: 'hello',
           children: <TextSpan>[
-            TextSpan(text: 'world'),
+            TextSpan(
+              text: 'world',
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  textSpanTapped = true;
+                },
+            ),
           ],
         ),
       ),
@@ -19,17 +28,24 @@ void main() {
   }
 
   group('[test]', () {
-    testWidgets('should find string in rich text', (WidgetTester tester) async {
+    testWidgets('should find string in RichText', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(target());
-        expect(find.byWidgetPredicate((widget) => containInRichText(widget, 'hello')),
-            findsOneWidget); // show email address request sent
-        expect(find.byWidgetPredicate((widget) => containInRichText(widget, 'world')),
-            findsOneWidget); // show email address request sent
+        expect(find.byWidgetPredicate((widget) => containInRichText(widget, 'hello')), findsOneWidget);
+        expect(find.byWidgetPredicate((widget) => containInRichText(widget, 'world')), findsOneWidget);
       });
     });
 
-    test('should create mock context', () async {
+    testWidgets('should tap TextSpan', (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        await tester.pumpWidget(target());
+        textSpanTapped = false;
+        await tester.tap(richTextSpanFinder('world'));
+        expect(textSpanTapped, true);
+      });
+    });
+
+    test('should create MockBuildContext', () async {
       MockBuildContext context = MockBuildContext();
       expect(context.toString(), isNotEmpty);
     });

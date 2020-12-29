@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 /// MockBuildContext used for mock BuildContext
@@ -21,4 +23,33 @@ bool containInRichText(final Widget widget, String contain) {
     }
   }
   return false;
+}
+
+bool _findTextAndTap(InlineSpan visitor, String text) {
+  if (visitor is TextSpan && visitor.text == text && visitor.recognizer != null) {
+    var x = visitor.recognizer as TapGestureRecognizer;
+    if (x.onTap != null) {
+      x.onTap!();
+    }
+    return false;
+  }
+
+  return true;
+}
+
+bool _tapTextSpan(RichText richText, String text) {
+  final isTapped = !richText.text.visitChildren(
+    (visitor) => _findTextAndTap(visitor, text),
+  );
+  return isTapped;
+}
+
+/// RichTextSpanFinder find TextSpan in RichText to tap
+///
+///     await tester.tap(RichTextSpanFinder('Resend'));
+///
+Finder richTextSpanFinder(String text) {
+  return find.byWidgetPredicate(
+    (widget) => widget is RichText && _tapTextSpan(widget, text),
+  );
 }
