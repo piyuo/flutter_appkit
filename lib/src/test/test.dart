@@ -26,7 +26,10 @@ bool containInRichText(final Widget widget, String contain) {
 }
 
 bool _findTextAndTap(InlineSpan visitor, String text) {
-  if (visitor is TextSpan && visitor.text == text && visitor.recognizer != null) {
+  if (visitor is TextSpan &&
+      visitor.text != null &&
+      visitor.text!.toLowerCase().trim() == text.toLowerCase().trim() &&
+      visitor.recognizer != null) {
     var x = visitor.recognizer as TapGestureRecognizer;
     if (x.onTap != null) {
       x.onTap!();
