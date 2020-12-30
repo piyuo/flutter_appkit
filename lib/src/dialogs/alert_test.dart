@@ -35,7 +35,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
       //tap close
-      await tester.tap(find.byKey(keyButtonCancel));
+      await tester.tap(find.byKey(keyAlertButtonCancel));
       await tester.pumpAndSettle();
       expect(
         find.byType(Dialog),
@@ -60,7 +60,7 @@ void main() {
       expect(find.byType(Dialog), findsOneWidget);
       expect(result, null);
       //tap close
-      await tester.tap(find.byKey(keyButtonCancel));
+      await tester.tap(find.byKey(keyAlertButtonCancel));
       await tester.pumpAndSettle();
       expect(
         find.byType(Dialog),
@@ -84,7 +84,7 @@ void main() {
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
       //tap ok
-      await tester.tap(find.byKey(keyButtonYes));
+      await tester.tap(find.byKey(keyAlertButtonYes));
       await tester.pumpAndSettle();
       expect(
         find.byType(Dialog),

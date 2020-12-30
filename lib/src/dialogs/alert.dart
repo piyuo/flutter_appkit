@@ -5,11 +5,11 @@ import 'package:libcli/i18n.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/widgets.dart';
 
-final keyButtonYes = UniqueKey();
+final keyAlertButtonYes = Key('alertBtnYes');
 
-final keyButtonNo = UniqueKey();
+final keyAlertButtonNo = Key('alertBtnNo');
 
-final keyButtonCancel = UniqueKey();
+final keyAlertButtonCancel = Key('alertBtnCancel');
 
 Widget showIcon(IconData? icon, Color iconColor, bool warning, Widget? iconWidget) {
   if (iconWidget != null) {
@@ -222,7 +222,7 @@ Future<bool?> alert(
                   ),
                   showButton(
                     context,
-                    keyButtonYes,
+                    keyAlertButtonYes,
                     yes,
                     assentButtonColor!,
                     Colors.white,
@@ -230,7 +230,7 @@ Future<bool?> alert(
                   ),
                   showButton(
                     context,
-                    keyButtonNo,
+                    keyAlertButtonNo,
                     no,
                     buttonColor!,
                     isDark ? Colors.blue[50]! : Colors.black54,
@@ -239,7 +239,7 @@ Future<bool?> alert(
                   SizedBox(height: 10),
                   showButton(
                     context,
-                    keyButtonCancel,
+                    keyAlertButtonCancel,
                     cancel,
                     yes != null ? buttonColor : assentButtonColor,
                     yes != null
