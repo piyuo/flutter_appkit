@@ -2,8 +2,8 @@
 
 import 'package:libcli/command.dart' as command;
 import 'package:libpb/pb.dart';
-import 'echo_request.pb.dart';
-import 'string_response.pb.dart';
+import 'package:libcli/mock/protobuf/command-echo.pb.dart';
+import 'package:libcli/mock/protobuf/string-response.pb.dart';
 
 class SampleService extends command.Service {
   SampleService()
@@ -16,9 +16,9 @@ class SampleService extends command.Service {
   @override
   PbObject newObjectByID(int id, List<int> l) {
     switch (id) {
-      case 9001:
-        return EchoAction.fromBuffer(l);
-      case 1002:
+      case 1003:
+        return CommandEcho.fromBuffer(l);
+      case 1004:
         return StringResponse.fromBuffer(l);
     }
     throw 'failed to create object in MockService. id($id) out of range';
