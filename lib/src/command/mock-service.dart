@@ -35,7 +35,7 @@ class MockService extends Service {
     BuildContext ctx,
     PbObject obj, {
     GuardRule? rule,
-    bool broadcastDenied = false,
+    bool broadcastDenied = true,
   }) async {
     return await mockExecute(ctx, obj);
   }
