@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 import 'package:libcli/src/dialogs/dialogs-mock.dart';
+import 'package:libcli/src/dialogs/popup.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();
@@ -49,12 +50,12 @@ void main() {
 
     testWidgets('should tooltip', (WidgetTester tester) async {
       await tester.pumpWidget(
-        createSample(onPressed: (context) => tooltip(context, 'hello', widgetKey: keyBtn)),
+        createSample(onPressed: (context) => tooltip(context, 'helloTooltip', widgetKey: keyBtn)),
       );
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
-      expect(find.byType(CustomPaint), findsWidgets);
+      expect(find.textContaining('helloTooltip'), findsOneWidget);
     });
 
     testWidgets('should toast', (WidgetTester tester) async {
