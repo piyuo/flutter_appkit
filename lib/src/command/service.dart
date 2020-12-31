@@ -10,18 +10,7 @@ import 'package:libcli/src/command/http.dart';
 import 'package:libcli/src/command/events.dart';
 import 'package:libpb/pb.dart';
 
-/*
-/// mockCommand Initializes the value for testing
-///
-///     command.mockCommand({});
-///
-@visibleForTesting
-void mockCommand() {
-  // ignore:invalid_use_of_visible_for_testing_member
-  preference.mockPrefs({});
-}
-*/
-/// communicate with server with command using ajax,protobuf and command pattern
+/// Service communicate with server with command using protobuf and command pattern
 /// simplefy the network call to request and response
 ///
 abstract class Service {
