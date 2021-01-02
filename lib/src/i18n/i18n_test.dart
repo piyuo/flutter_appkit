@@ -60,29 +60,53 @@ void main() {
       });
     });
 
-    test('should convert time to string', () async {
+    test('should convert fixed time to string', () async {
       await initializeDateFormatting('en_US', null);
       locale = Locale('en', 'US');
-      var str = timeToStr(07, 30);
+      var str = fixedTimeToStr(07, 30);
       expect(str, '7:30 AM');
-      str = timeToStr(12, 0);
+      str = fixedTimeToStr(12, 0);
       expect(str, '12:00 PM');
-      str = timeToStr(0, 0);
+      str = fixedTimeToStr(0, 0);
       expect(str, '12:00 AM');
 
       await initializeDateFormatting('zh_TW', null);
       locale = Locale('zh', 'TW');
-      str = timeToStr(07, 30);
+      str = fixedTimeToStr(07, 30);
       expect(str, '上午7:30');
-      str = timeToStr(12, 00);
+      str = fixedTimeToStr(12, 00);
       expect(str, '下午12:00');
     });
 
-    test('should not have error when convert time to string', () async {
+    test('should not have error when convert fixed time to string', () async {
       await initializeDateFormatting('en_US', null);
       locale = Locale('en', 'US');
-      var str = timeToStr(25, 67);
+      var str = fixedTimeToStr(25, 67);
       expect(str, '2:07 AM');
+    });
+
+    test('should convert date to string', () async {
+      await initializeDateFormatting('en_US', null);
+      locale = Locale('en', 'US');
+      var date = new DateTime.utc(2021, 1, 2, 23, 30);
+      var str = dateToStr(date);
+      expect(str, 'Jan 2, 2021');
+
+      locale = Locale('zh', 'CN');
+      str = dateToStr(date);
+      expect(str, '2021年1月2日');
+    });
+
+    test('should convert time to string', () async {
+      await initializeDateFormatting('en_US', null);
+      locale = Locale('en', 'US');
+      var date = new DateTime.utc(2021, 1, 2, 23, 30);
+      var str = timeToStr(date);
+      expect(str, '11:30 PM');
+
+      locale = Locale('zh', 'CN');
+      str = timeToStr(date);
+      expect(str, '下午11:30');
     });
   });
 }
