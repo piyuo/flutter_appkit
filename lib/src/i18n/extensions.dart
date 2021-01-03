@@ -21,6 +21,8 @@ extension I18nLocalization on String {
 
 /// timestamp create TimpStamp and convert datetime to utc, if datetime is null use DateTime.now()
 ///
+///      var t = timestamp();
+///
 google.Timestamp timestamp({
   DateTime? datetime,
 }) {
@@ -33,11 +35,21 @@ google.Timestamp timestamp({
 extension I18nTime on google.Timestamp {
   /// local return local datetime
   ///
+  ///     var d = DateTime(2021, 1, 2, 23, 30);
+  ///     var t = timestamp();
+  ///     t.local = d;
+  ///     expect(t.local, d);
+  ///
   DateTime get local {
     return toDateTime().toLocal();
   }
 
   /// local set local datetime
+  ///
+  ///     var d = DateTime(2021, 1, 2, 23, 30);
+  ///     var t = timestamp();
+  ///     t.local = d;
+  ///     expect(t.local, d);
   ///
   void set local(DateTime d) {
     googleMixin.TimestampMixin.setFromDateTime(this, d.toUtc());
@@ -45,17 +57,23 @@ extension I18nTime on google.Timestamp {
 
   /// localDateString return local date string in current locale
   ///
+  ///     expect(t.localDateString, 'Jan 2, 2021');
+  ///
   String get localDateString {
     return dateToStr(local);
   }
 
   /// localDateTimeString return local date time string in current locale
   ///
+  ///     expect(t.localTimeString, '11:30 PM');
+  ///
   String get localDateTimeString {
     return datetimeToStr(local);
   }
 
   /// localDateString return local time string in current locale
+  ///
+  ///     expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
   ///
   String get localTimeString {
     return timeToStr(local);
