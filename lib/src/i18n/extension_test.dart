@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
+import 'package:libcli/src/i18n/extensions.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:libpb/google.dart' as google;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +19,42 @@ void main() {
       ));
       await tester.pumpAndSettle();
       expect(LocaleWidget.value, 'A');
+    });
+
+    test('should get local date', () async {
+      var date = DateTime.utc(2021, 1, 2, 23, 30);
+      var localDate = date.toLocal();
+      google.Timestamp t = google.Timestamp.fromDateTime(date);
+      expect(localDate, t.local);
+    });
+
+    test('should set local date', () async {
+      var d = DateTime(2021, 1, 2, 23, 30);
+      var t = timestamp();
+      t.local = d;
+      expect(t.local, d);
+    });
+
+    test('should create utc TimeStamp', () async {
+      var date = DateTime(2021, 1, 2, 23, 30);
+      google.Timestamp t = timestamp(datetime: date);
+      expect(date, t.local);
+    });
+
+    test('should convert to local string', () async {
+      await initializeDateFormatting('en_US', null);
+      var date = DateTime(2021, 1, 2, 23, 30);
+      google.Timestamp t = timestamp(datetime: date);
+
+      locale = Locale('en', 'US');
+      expect(t.localDateString, 'Jan 2, 2021');
+      expect(t.localTimeString, '11:30 PM');
+      expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
+
+      locale = Locale('zh', 'CN');
+      expect(t.localDateString, '2021年1月2日');
+      expect(t.localTimeString, '下午11:30');
+      expect(t.localDateTimeString, '2021年1月2日 下午11:30');
     });
   });
 }

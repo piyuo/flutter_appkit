@@ -1,11 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/src/i18n/provider.dart';
-import 'package:libcli/src/i18n/global.dart';
 
 const en_US = 'en_US';
 const zh_CN = 'zh_CN';
@@ -124,81 +120,4 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
 
   @override
   bool shouldReload(I18nDelegate old) => false;
-}
-
-//This will allow you to add `.i18n` to your strings
-extension Localization on String {
-  String get i18n_ {
-    return globalTranslate(this);
-  }
-
-  String i18n(BuildContext context) {
-    var provider = Provider.of<I18nProvider>(context, listen: false);
-    return provider.translate(this);
-  }
-}
-
-/// initDateFormatting will set by configuration
-///
-///     i18n.initDateFormatting();
-///
-//Function initDateFormatting;
-
-/// withLocale run function in Intl zone
-///
-withLocale(Function() function) {
-  Intl.withLocale(currentLocaleID, function);
-}
-
-/// timeToStr convert hour and minute to local string
-///
-///      var str = timeToStr(07, 30);
-///      expect(str, '7:30 AM');
-///
-String fixedTimeToStr(int hour, int minute) {
-  var date = DateTime.utc(2001, 1, 1, hour, minute);
-  var str = '';
-  withLocale(() {
-    str = DateFormat.jm().format(date);
-  });
-  return str;
-}
-
-/// dateToStr convert date to local string
-///
-///     var str = dateToStr(date);
-///     expect(str, 'Jan 2, 2021');
-///
-String dateToStr(DateTime date) {
-  var str = '';
-  withLocale(() {
-    str = DateFormat.yMMMd().format(date);
-  });
-  return str;
-}
-
-/// datetimeToStr convert date and time to local string
-///
-///      var str = datetimeToStr(date);
-///      expect(str, 'Jan 2, 2021 11:30 PM');
-///
-String datetimeToStr(DateTime date) {
-  var str = '';
-  withLocale(() {
-    str = DateFormat.yMMMd().add_jm().format(date);
-  });
-  return str;
-}
-
-/// timeToStr convert time to local string
-///
-///     var str = timeToStr(date);
-///     expect(str, '11:30 PM');
-///
-String timeToStr(DateTime date) {
-  var str = '';
-  withLocale(() {
-    str = DateFormat.jm().format(date);
-  });
-  return str;
 }
