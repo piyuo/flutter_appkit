@@ -88,5 +88,17 @@ void main() {
       str = timeToStr(date);
       expect(str, '下午11:30');
     });
+
+    test('should convert date time to string', () async {
+      await initializeDateFormatting('en_US', null);
+      locale = Locale('en', 'US');
+      var date = new DateTime.utc(2021, 1, 2, 23, 30);
+      var str = datetimeToStr(date);
+      expect(str, 'Jan 2, 2021 11:30 PM');
+
+      locale = Locale('zh', 'CN');
+      str = datetimeToStr(date);
+      expect(str, '2021年1月2日 下午11:30');
+    });
   });
 }
