@@ -13,12 +13,14 @@ void main() {
   mockI18n(Locale('en', 'US'), '{"a": "A"}');
 
   group('[i18n-extension]', () {
-    testWidgets('should translate ' '.i18n(context)', (WidgetTester tester) async {
+    testWidgets('should translate', (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();
       expect(LocaleWidget.value, 'A');
+      expect(LocaleWidget.i18nValue, 'A');
+      expect(LocaleWidget.i18n_Value, 'OK');
     });
 
     test('should get local date', () async {
@@ -61,10 +63,14 @@ void main() {
 
 class LocaleWidget extends StatelessWidget {
   static String value = '';
+  static String i18nValue = '';
+  static String i18n_Value = '';
 
   @override
   Widget build(BuildContext context) {
     value = 'a'.i18n(context);
+    i18nValue = i18n(context, 'a');
+    i18n_Value = i18n_('ok');
     return Text(value);
   }
 }

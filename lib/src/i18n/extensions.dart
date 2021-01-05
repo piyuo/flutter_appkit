@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/i18n/global.dart';
+import 'package:libcli/src/i18n/global-dict.dart';
 import 'package:libcli/src/i18n/time.dart';
 import 'package:libpb/google.dart' as google;
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as googleMixin;
@@ -9,14 +9,41 @@ import 'package:libcli/src/i18n/provider.dart';
 /// I18nLocalization add localization function to string
 ///
 extension I18nLocalization on String {
+  /// i18n_ translate const string defined in global dict, don't use this method on string variable
+  ///
+  ///   'ERROR'.i18n_; // OK
+  ///
+  ///   var err='ERROR';
+  ///   err.i18n_; // Not OK
+  ///
   String get i18n_ {
     return globalTranslate(this);
   }
 
+  /// i18n translate const string, don't use this method on string variable
+  ///
+  ///   'ERROR'.i18n(context); // OK
+  ///
+  ///   var err='ERROR';
+  ///   err.i18n(context); // Not OK
+  ///
   String i18n(BuildContext context) {
     var provider = Provider.of<I18nProvider>(context, listen: false);
     return provider.translate(this);
   }
+}
+
+/// i18n_ translate str base on current locale
+///
+String i18n_(String str) {
+  return globalTranslate(str);
+}
+
+/// i18n translate str base on current locale
+///
+String i18n(BuildContext context, String str) {
+  var provider = Provider.of<I18nProvider>(context, listen: false);
+  return provider.translate(str);
 }
 
 /// timestamp create TimpStamp and convert datetime to utc, if datetime is null use DateTime.now()

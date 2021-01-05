@@ -33,7 +33,7 @@ Map _en_US() {
     'emailUs': 'Send email to support team',
     'email': 'Email',
     'retry': 'Retry',
-    'ok': 'Ok',
+    'ok': 'OK',
     'cancel': 'Cancel',
     'close': 'Close',
     'yes': 'Yes',

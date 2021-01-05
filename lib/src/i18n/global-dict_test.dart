@@ -10,7 +10,7 @@ void main() {
 
   group('[i18n-global]', () {
     test('should have global translation', () async {
-      expect(i18n.globalTranslate('ok'), 'Ok');
+      expect(i18n.globalTranslate('ok'), 'OK');
     });
   });
 }
