@@ -22,6 +22,7 @@ class DocProvider extends AsyncProvider {
     if (testMode) {
       // don't load document in testMode, cause some big document cause pumpAndSettle timed out
       debugInfo('fake load asset:docs/${docName}_${currentLocaleID}.md');
+      return;
     }
     md = await asset.loadString(
       assetName: 'docs/${docName}_${currentLocaleID}.md',
