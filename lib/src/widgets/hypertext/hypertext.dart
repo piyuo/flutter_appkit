@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:libcli/dialogs.dart';
+import 'package:libcli/src/widgets/page-route.dart';
 import 'package:libcli/src/widgets/hypertext/doc_page.dart';
 
 class _Span {
@@ -48,9 +49,9 @@ class HyperText extends StatefulWidget {
     return link(
       text,
       onTap: (BuildContext context) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return DocPage(docName: docName, title: text);
-        }));
+        var route = safeTestMaterialRoute(DocPage(docName: docName, title: text));
+
+        Navigator.of(context).push(route);
       },
     );
   }

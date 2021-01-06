@@ -2,8 +2,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/redux.dart';
 import 'package:libcli/widgets.dart';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 
 /// Module provide redux and services
 ///
@@ -47,16 +45,8 @@ void switchView(
     value: moduleProvider,
     builder: (context, child) => widget,
   );
-  dynamic route = MaterialPageRoute(
-    builder: (ctx) => newWidget,
-  );
-  if (!kReleaseMode && Platform.environment.containsKey('FLUTTER_TEST')) {
-    route = NoAnimRouteBuilder(Provider.value(
-      value: moduleProvider,
-      builder: (context, child) => widget,
-    ));
-  }
 
+  var route = safeTestMaterialRoute(newWidget);
   if (replace) {
     navigator.pushReplacement(route);
     return;

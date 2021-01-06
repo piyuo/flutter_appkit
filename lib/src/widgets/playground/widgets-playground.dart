@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/src/widgets/playground/widgets-playground-provider.dart';
-import 'package:libcli/src/widgets/hypertext/hyper-text.dart';
+import 'package:libcli/src/widgets/hypertext/hypertext.dart';
 import 'package:libcli/src/widgets/form/form-email-field.dart';
 import 'package:provider/provider.dart';
 
