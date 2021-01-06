@@ -49,9 +49,11 @@ class HyperText extends StatefulWidget {
     return link(
       text,
       onTap: (BuildContext context) {
-        var route = safeTestMaterialRoute(DocPage(docName: docName, title: text));
-
-        Navigator.of(context).push(route);
+        Navigator.of(context).push(
+          safeTestMaterialRoute(
+            DocPage(docName: docName, title: text),
+          ),
+        );
       },
     );
   }
