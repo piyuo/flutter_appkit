@@ -12,6 +12,10 @@ const BRANCH_BETA = 'beta';
 ///
 const BRANCH_STABLE = 'stable';
 
+/// BRANCH_DEBUG is a a branch that always direct remove service url to http://localhost:8080
+///
+const BRANCH_DEBUG = 'debug';
+
 /// branch used in command pattern, determine which branch to use, default is master branch
 ///
 String branch = '';
