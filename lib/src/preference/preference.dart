@@ -194,7 +194,7 @@ Future<void> setMap(String key, Map<String, dynamic> map) async {
 ///     pref.mockPrefs({});
 ///
 @visibleForTesting
-void mockPrefs(Map<String, dynamic> values) {
+void mockPrefs(Map<String, Object> values) {
   // ignore:invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues(values);
 }

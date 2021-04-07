@@ -59,7 +59,8 @@ Future<PbObject> doPost(BuildContext context, Request r) async {
   try {
     var headers = await doRequestHeaders();
     Uint8List bytes = encode(r.action);
-    var resp = await r.client.post(r.url, headers: headers, body: bytes).timeout(r.timeout);
+    var uri = Uri.parse(r.url);
+    var resp = await r.client.post(uri, headers: headers, body: bytes).timeout(r.timeout);
     await doResponseHeaders(resp.headers);
 
     if (resp.statusCode == 200) {
@@ -71,7 +72,7 @@ Future<PbObject> doPost(BuildContext context, Request r) async {
     switch (resp.statusCode) {
       case 500: //internal server error
         return await giveup(context, InternalServerErrorEvent()); //body is err id
-      case 501: //the remote servie is not properly setup
+      case 501: //the remote service is not properly setup
         return await giveup(context, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
         log('${COLOR_WARNING}504 deadline exceeded when connect ${r.url},error:${resp.body}');

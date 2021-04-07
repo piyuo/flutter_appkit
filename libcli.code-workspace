@@ -35,7 +35,7 @@
         ],
         "breadcrumbs.enabled": true,
         "dart.allowTestsOutsideTestFolder": true,
-        "dart.flutterAdditionalArgs": [
+        "dart.flutterAdditionalArgsNeedRemove": [
             "--enable-experiment=non-nullable",
             "--no-sound-null-safety"
         ],
