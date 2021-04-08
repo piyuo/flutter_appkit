@@ -5,6 +5,22 @@ import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/widgets/page-route.dart';
 import 'package:libcli/src/widgets/hypertext/doc_page.dart';
 
+/// _testMode true should return success, false return error, otherwise behave normal
+///
+bool testMode = false;
+
+// testModeAlwaySuccess will let every function success
+//
+void testModeAlwaySuccess() {
+  testMode = true;
+}
+
+// TestModeBackNormal stop test mode and back to normal
+//
+void testModeBackNormal() {
+  testMode = false;
+}
+
 class _Span {
   final bool bold;
 
