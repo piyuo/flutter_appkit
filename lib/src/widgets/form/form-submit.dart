@@ -179,7 +179,7 @@ class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
 
     if (widget.onClick != null) {
       //no animation in unit test
-      if (!kReleaseMode && Platform.environment.containsKey('FLUTTER_TEST')) {
+      if (!kReleaseMode) {
         if (await widget.onClick!()) {
           _onPressedSuccess();
         }

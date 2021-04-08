@@ -3,7 +3,7 @@ import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/test.dart';
+import 'package:libcli/test.dart' as test;
 
 class DocProvider extends AsyncProvider {
   final String title;
@@ -19,8 +19,8 @@ class DocProvider extends AsyncProvider {
 
   @override
   Future<void> load(BuildContext context) async {
-    if (testMode) {
-      // don't load document in testMode, cause some big document cause pumpAndSettle timed out
+    if (test.TestMode) {
+      // don't load document in testMode, cause some big document cause pumpAndSettle() timed out
       debugInfo('fake load asset:docs/${docName}_${currentLocaleID}.md');
       return;
     }
