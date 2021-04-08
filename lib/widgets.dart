@@ -1,5 +1,6 @@
 library widgets;
 
+export 'package:libcli/src/widgets/test.dart';
 export 'package:libcli/src/widgets/align-center.dart';
 export 'package:libcli/src/widgets/pixel-ratio.dart';
 export 'package:libcli/src/widgets/hypertext/hypertext.dart';

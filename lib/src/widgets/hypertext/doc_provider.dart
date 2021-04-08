@@ -4,7 +4,7 @@ import 'package:libcli/module.dart';
 import 'package:libcli/i18n.dart';
 import 'package:libcli/log.dart';
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/src/widgets/hypertext/hypertext.dart' as hypertext;
+import 'package:libcli/src/widgets/test.dart' as test;
 
 class DocProvider extends AsyncProvider {
   final String title;
@@ -20,7 +20,7 @@ class DocProvider extends AsyncProvider {
 
   @override
   Future<void> load(BuildContext context) async {
-    if (!kReleaseMode && hypertext.testMode != 0) {
+    if (!kReleaseMode && !test.isTestModeNone()) {
       // don't load document in testMode, cause some big document cause pumpAndSettle() timed out
       debugInfo('fake load asset:docs/${docName}_${currentLocaleID}.md');
       return;
