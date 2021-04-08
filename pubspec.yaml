@@ -1,11 +1,10 @@
 name: libcli
 description: piyuo.com client library.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/piyuo/libcli
 
 environment:
-    sdk: '>=2.12.0-29.7.beta <3.0.0'
-    #flutter: '>=1.22.4 <2.0.0'
+    sdk: '>=2.12.2 <3.0.0'
 
 dependencies:
     flutter:
