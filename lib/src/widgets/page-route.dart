@@ -1,10 +1,32 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/test.dart' as test;
+
+/// _testMode true should return success, false return error, otherwise behave normal
+///
+int _testMode = 0;
+
+// testModeAlwaySuccess will let every function success
+//
+void testModeAlwaySuccess() {
+  _testMode = 1;
+}
+
+// testModeAlwaySuccess will let every function fail
+//
+void testModeAlwayFail() {
+  _testMode = -1;
+}
+
+// TestModeBackNormal stop test mode and back to normal
+//
+void testModeBackNormal() {
+  _testMode = 0;
+}
 
 /// safeTestMaterialRoute return no animation route when testing
 ///
 Route safeTestMaterialRoute(Widget widget) {
-  if (test.TestMode) {
+  if (!kReleaseMode && _testMode != 0) {
     return NoAnimRouteBuilder(widget);
   }
   return MaterialPageRoute(
