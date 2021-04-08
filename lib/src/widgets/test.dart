@@ -10,7 +10,7 @@ void testModeSuccess() {
 
 /// testModeAlwayFail will let every function fail
 ///
-void testModeAlwayFail() {
+void testModeFail() {
   _testMode = -1;
 }
 
