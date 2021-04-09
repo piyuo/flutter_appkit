@@ -36,7 +36,7 @@ String userPreferCountryCode = 'US';
 void mockI18n(Locale locale, String map) {
   _locale = locale;
   // ignore:invalid_use_of_visible_for_testing_member
-  asset.mock(map);
+  asset.mockAsset(map);
 }
 
 get currentLocale => _locale;
