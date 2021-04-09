@@ -60,13 +60,9 @@ Future<Map> loadMap({required String assetName, BuildContext? context, String? p
   return json.decode(text);
 }
 
-/// mockAssetsByString Initializes the value for testing
+/// mock a text to asset
 ///
-///     Future<String> _mockLoadAssets(String assetName,
-///       {BuildContext context, String package}) async {
-///       return 'hi';
-///     }
-///     assets.mock((_mockLoadAssets));
+///     assets.mock('hi');
 ///
 @visibleForTesting
 void mock(String text) {

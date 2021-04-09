@@ -41,9 +41,9 @@ void main() {
       expect(text, isEmpty);
     });
 
-    test('should use test mode return', () async {
+    test('should use mock text', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      mock("hi");
+      mock('hi');
       String text = await loadString(assetName: 'test/test.json');
       expect(text, 'hi');
     });
