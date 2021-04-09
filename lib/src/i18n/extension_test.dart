@@ -2,7 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/src/i18n/extensions.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libpb/google.dart' as google;
@@ -10,7 +10,7 @@ import 'package:libpb/google.dart' as google;
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   // ignore: invalid_use_of_visible_for_testing_member
-  mockI18n(Locale('en', 'US'), '{"a": "A"}');
+  mock(Locale('en', 'US'), '{"a": "A"}');
 
   group('[i18n-extension]', () {
     testWidgets('should translate', (WidgetTester tester) async {

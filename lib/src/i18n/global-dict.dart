@@ -1,5 +1,5 @@
 import 'package:libcli/log.dart';
-import 'package:libcli/src/i18n/i18n.dart' as i18n;
+import 'package:libcli/src/i18n/delegate.dart';
 
 /// globalTranslate translate from global localization
 ///
@@ -15,10 +15,10 @@ String globalTranslate(String key) {
 /// getCurrentGlobalTranslation return global translation base on current locale
 ///
 Map getCurrentGlobalTranslation() {
-  switch (i18n.currentLocaleID) {
-    case i18n.zh_TW:
+  switch (currentLocaleID) {
+    case zh_TW:
       return _zh_TW();
-    case i18n.zh_CN:
+    case zh_CN:
       return _zh_CN();
   }
   return _en_US();

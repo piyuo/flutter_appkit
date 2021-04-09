@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'package:libcli/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart';
 
 TextEditingValue currencyFormatter(TextEditingValue oldValue, TextEditingValue newValue) {
   if (newValue.selection.baseOffset == 0) {

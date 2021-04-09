@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart';
 
 class FormDropdown extends StatefulWidget {
   final TextEditingController controller;

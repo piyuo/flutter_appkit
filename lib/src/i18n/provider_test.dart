@@ -2,13 +2,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart';
 import 'mock-provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   // ignore: invalid_use_of_visible_for_testing_member
-  mockI18n(Locale('en', 'US'), '{"a": "A"}');
+  mock(Locale('en', 'US'), '{"a": "A"}');
 
   setUp(() async {});
 

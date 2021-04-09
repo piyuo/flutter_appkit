@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:libcli/src/i18n/time.dart';
-import 'package:libcli/src/i18n/i18n.dart';
+import 'package:libcli/src/i18n/delegate.dart';
 
 void main() {
   setUp(() async {});

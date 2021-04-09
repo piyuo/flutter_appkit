@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/command.dart';
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/src/i18n/i18n.dart' as i18n;
 import 'package:libcli/app.dart' as config;
 
 void main() {

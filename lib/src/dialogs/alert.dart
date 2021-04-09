@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/eventbus.dart';
 import 'package:libcli/widgets.dart';
 

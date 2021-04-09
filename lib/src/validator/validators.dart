@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:libcli/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/log.dart';
 
 /// requiredValidator validate input string, return error message when input is empty, return null if no error
