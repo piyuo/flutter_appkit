@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/command.dart' as command;
+import 'package:libcli/src/command/protobuf.dart';
 import 'package:libcli/app.dart' as config;
 import 'package:libcli/src/command/mock-service.dart';
 import 'package:libcli/src/command/guard.dart';
@@ -30,7 +30,7 @@ void main() {
       var client = MockClient((request) async {
         StringResponse sr = StringResponse();
         sr.value = 'hi';
-        List<int> bytes = command.encode(sr);
+        List<int> bytes = encode(sr);
         return http.Response.bytes(bytes, 200);
       });
       SampleService service = SampleService();
@@ -95,7 +95,7 @@ void main() {
 
     test('should failed on default guard rule 1', () async {
       var client = MockClient((request) async {
-        return http.Response.bytes(command.encode(StringResponse()..value = 'hi'), 200);
+        return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
       });
       SampleService service = SampleService();
       //send first time
@@ -108,12 +108,12 @@ void main() {
       if (response is PbError) {
         expect(response.code, 'GUARD_1');
       }
-      expect(lastEvent is command.GuardDeniedEvent, true);
+      expect(lastEvent is GuardDeniedEvent, true);
     });
 
     test('should failed on default guard rule 2', () async {
       var client = MockClient((request) async {
-        return http.Response.bytes(command.encode(StringResponse()..value = 'hi'), 200);
+        return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
       });
       SampleService service = SampleService();
       var rule = GuardRule(
@@ -133,12 +133,12 @@ void main() {
       //send second time
       response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client, rule: rule);
       expect(response is PbError, true);
-      expect(lastEvent is command.GuardDeniedEvent, true);
+      expect(lastEvent is GuardDeniedEvent, true);
     });
 
     test('should not broadcast guard denied', () async {
       var client = MockClient((request) async {
-        return http.Response.bytes(command.encode(StringResponse()..value = 'hi'), 200);
+        return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
       });
       SampleService service = SampleService();
       //send first time

@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/command.dart';
+import 'package:libcli/src/command/service.dart';
+import 'package:libcli/src/command/http.dart';
+import 'package:libcli/src/command/guard.dart';
 import 'package:libpb/pb.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service

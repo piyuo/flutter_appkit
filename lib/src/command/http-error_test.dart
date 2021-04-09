@@ -3,10 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/command.dart';
 import 'package:libpb/pb.dart';
 import 'package:libcli/src/command/mock-service.dart';
 import 'package:libcli/test.dart';
+import 'package:libcli/src/command/events.dart';
+import 'package:libcli/src/command/http.dart';
 
 void main() {
   var contract;

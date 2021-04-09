@@ -7,7 +7,7 @@ import 'package:libcli/log.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/errors/errors.dart';
-import 'package:libcli/command.dart';
+import 'package:libcli/src/command/command.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();
