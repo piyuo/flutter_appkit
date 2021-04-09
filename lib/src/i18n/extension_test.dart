@@ -2,10 +2,11 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/src/i18n/i18n.dart';
-import 'package:libcli/src/i18n/extensions.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libpb/google.dart' as google;
+import 'package:libcli/src/i18n/delegate.dart';
+import 'package:libcli/src/i18n/extensions.dart';
+import 'package:libcli/src/i18n/provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
