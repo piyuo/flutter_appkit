@@ -16,7 +16,7 @@ import 'dart:convert';
 Future<String> Function({required String assetName, BuildContext? context, String? package}) loadString = _loadString;
 
 Future<String> _loadString({required String assetName, BuildContext? context, String? package}) async {
-  String path = package != null ? 'packages/$package/assets/$assetName' : 'assets/$assetName';
+  String path = package != null ? 'packages/$package/asset/$assetName' : 'asset/$assetName';
   log('load asset $path');
 
   try {
