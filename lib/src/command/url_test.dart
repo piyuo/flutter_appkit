@@ -5,7 +5,7 @@ import 'package:libcli/app.dart' as config;
 
 void main() {
   group('[command_url_test]', () {
-    test('should use defult url', () async {
+    test('should use default url', () async {
       config.branch = config.BRANCH_MASTER;
       expect(serviceUrl('mock'), 'https://mock-us-master.piyuo.com/?q');
     });
