@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/module.dart';
 import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/log.dart';
-import 'package:libcli/asset.dart' as asset;
+import 'package:libcli/src/asset/asset.dart' as asset;
 import 'package:flutter/foundation.dart';
 
 class I18nProvider extends AsyncProvider {
@@ -32,7 +32,7 @@ class I18nProvider extends AsyncProvider {
       if (kReleaseMode) {
         return key;
       } else {
-        log('${COLOR_ALERT}missing $key in assets/i18n/${fileName}_${currentLocaleID}.json');
+        log('${COLOR_ALERT}missing $key in asset/i18n/${fileName}_${currentLocaleID}.json');
         return '!!! $key not found';
       }
     }

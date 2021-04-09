@@ -69,7 +69,7 @@ Future<Map> loadMap({required String assetName, BuildContext? context, String? p
 ///     assets.mock((_mockLoadAssets));
 ///
 @visibleForTesting
-void mockAsset(String text) {
+void mock(String text) {
   Future<String> _loadStringMock({required String assetName, BuildContext? context, String? package}) async {
     return text;
   }
@@ -82,6 +82,6 @@ void mockAsset(String text) {
 ///     assets.mockDone();
 ///
 @visibleForTesting
-void mockAssetDone() {
+void mockDone() {
   loadString = _loadString;
 }

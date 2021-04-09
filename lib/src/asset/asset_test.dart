@@ -6,7 +6,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() async {
     // ignore: invalid_use_of_visible_for_testing_member
-    mockAssetDone();
+    mockDone();
   });
 
   group('[asset]', () {
@@ -18,7 +18,7 @@ void main() {
 
     test('should load json', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      mockAsset('');
+      mock('');
       String j = await loadJson(assetName: 'mock');
       var obj = json.decode(j);
       expect(obj is Map, true);
@@ -26,7 +26,7 @@ void main() {
 
     test('should load map', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      mockAsset('{}');
+      mock('{}');
       Map map = await loadMap(assetName: '');
       expect(map, isEmpty);
     });
@@ -43,7 +43,7 @@ void main() {
 
     test('should use test mode return', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      mockAsset("hi");
+      mock("hi");
       String text = await loadString(assetName: 'test/test.json');
       expect(text, 'hi');
     });
