@@ -60,19 +60,6 @@ Future<Map> loadMap({required String assetName, BuildContext? context, String? p
   return json.decode(text);
 }
 
-/// mockAssets Initializes the value for testing
-///
-///     Future<String> _mockLoadAssets(String assetName,
-///       {BuildContext context, String package}) async {
-///       return 'hi';
-///     }
-///     assets.mock((_mockLoadAssets));
-///
-@visibleForTesting
-mockAssets(Future<String> Function({required String assetName, BuildContext? context, String? package}) func) {
-  loadString = func;
-}
-
 /// mockAssetsByString Initializes the value for testing
 ///
 ///     Future<String> _mockLoadAssets(String assetName,
@@ -82,19 +69,19 @@ mockAssets(Future<String> Function({required String assetName, BuildContext? con
 ///     assets.mock((_mockLoadAssets));
 ///
 @visibleForTesting
-mockAssetsByString(String text) {
-  Future<String> _mockLoadAssets({required String assetName, BuildContext? context, String? package}) async {
+void mock(String text) {
+  Future<String> _loadStringMock({required String assetName, BuildContext? context, String? package}) async {
     return text;
   }
 
-  mockAssets((_mockLoadAssets));
+  loadString = _loadStringMock;
 }
 
-/// mockAssetsStop stop mock
+/// mockDone stop mock
 ///
-///     assets.mockStop();
+///     assets.mockDone();
 ///
 @visibleForTesting
-mockAssetsStop() {
+void mockDone() {
   loadString = _loadString;
 }

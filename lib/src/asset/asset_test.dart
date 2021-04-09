@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/widgets.dart';
 import 'package:libcli/src/asset/asset.dart';
 import 'dart:convert';
 
@@ -7,7 +6,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() async {
     // ignore: invalid_use_of_visible_for_testing_member
-    mockAssetsStop();
+    mockDone();
   });
 
   group('[asset]', () {
@@ -19,7 +18,7 @@ void main() {
 
     test('should load json', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      mockAssetsByString('');
+      mock('');
       String j = await loadJson(assetName: 'mock');
       var obj = json.decode(j);
       expect(obj is Map, true);
@@ -27,7 +26,7 @@ void main() {
 
     test('should load map', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      mockAssetsByString('{}');
+      mock('{}');
       Map map = await loadMap(assetName: '');
       expect(map, isEmpty);
     });
@@ -42,14 +41,9 @@ void main() {
       expect(text, isEmpty);
     });
 
-    test('should mock', () async {
-      Future<String> _mockLoadAssets({required String assetName, BuildContext? context, String? package}) async {
-        return 'hi';
-      }
-
+    test('should use test mode return', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      mockAssets((_mockLoadAssets));
-
+      mock("hi");
       String text = await loadString(assetName: 'test/test.json');
       expect(text, 'hi');
     });
