@@ -20,7 +20,7 @@ class DocProvider extends AsyncProvider {
 
   @override
   Future<void> load(BuildContext context) async {
-    if (!kReleaseMode && !test.isTestModeNone()) {
+    if (!kReleaseMode && test.isMock()) {
       // don't load document in testMode, cause some big document cause pumpAndSettle() timed out
       debugInfo('fake load asset:docs/${docName}_${currentLocaleID}.md');
       return;

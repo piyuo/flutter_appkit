@@ -5,7 +5,7 @@ import 'package:libcli/src/widgets/test.dart' as test;
 /// safeTestMaterialRoute return no animation route when testing
 ///
 Route safeTestMaterialRoute(Widget widget) {
-  if (!kReleaseMode && !test.isTestModeNone()) {
+  if (!kReleaseMode && test.isMock()) {
     return NoAnimRouteBuilder(widget);
   }
   return MaterialPageRoute(

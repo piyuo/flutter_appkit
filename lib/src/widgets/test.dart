@@ -1,39 +1,39 @@
-/// _testMode true should return success, false return error, otherwise behave normal
+/// _resultMock 1 success, -1 fail, 0 no mock
 ///
-int _testMode = 0;
+int _resultMock = 0;
 
-/// testModeSuccess will let every function success
+/// mockSuccess will let every function success
 ///
-void testModeSuccess() {
-  _testMode = 1;
+void mockSuccess() {
+  _resultMock = 1;
 }
 
-/// testModeAlwayFail will let every function fail
+/// mockFail will let every function fail
 ///
-void testModeFail() {
-  _testMode = -1;
+void mockFail() {
+  _resultMock = -1;
 }
 
-/// testModeNone stop test mode and back to normal
+/// mockDone stop mock
 ///
-void testModeNone() {
-  _testMode = 0;
+void mockDone() {
+  _resultMock = 0;
 }
 
-/// isTestModeSuccess will let every function success
+/// isMockSuccess return true if mock success
 ///
-bool isTestModeSuccess() {
-  return _testMode == 1;
+bool isMockSuccess() {
+  return _resultMock == 1;
 }
 
-/// isTestModeFail will let every function fail
+/// isMockFail return true if mock fail
 ///
-bool isTestModeFail() {
-  return _testMode == -1;
+bool isMockFail() {
+  return _resultMock == -1;
 }
 
-/// isTestModeNone stop test mode and back to normal
+/// isMock return true if is in mock mode
 ///
-bool isTestModeNone() {
-  return _testMode == 0;
+bool isMock() {
+  return _resultMock != 0;
 }
