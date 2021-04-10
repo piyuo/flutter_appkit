@@ -1,4 +1,4 @@
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 
 /// Event
 ///

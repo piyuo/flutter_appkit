@@ -1,4 +1,4 @@
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 
 /// BRANCH_MASTER is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 ///

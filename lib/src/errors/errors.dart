@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/src/command/command.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/src/errors/error-email.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 import 'package:libcli/src/command/command.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/dialogs.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 import 'package:libcli/module.dart';
 
 /// Await load provider in list

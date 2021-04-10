@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/errors/errors.dart';

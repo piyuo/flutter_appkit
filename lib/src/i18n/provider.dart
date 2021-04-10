@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 import 'package:libcli/src/asset/asset.dart' as asset;
 import 'package:libcli/src/i18n/main.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'package:libcli/src/i18n/i18n.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/log.dart';
 
 /// requiredValidator validate input string, return error message when input is empty, return null if no error
 ///
@@ -34,7 +34,7 @@ String? requiredValidator({
     }
   }
   if (result != null) {
-    debugInfo('validation failed: $result');
+    debug('validation failed: $result');
   }
   return result;
 }
@@ -57,7 +57,7 @@ String? regexpValidator({
   }
   var result = regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', label).replaceAll('%2', example);
   if (result != null) {
-    debugInfo('validation failed: $result');
+    debug('validation failed: $result');
   }
   return result;
 }

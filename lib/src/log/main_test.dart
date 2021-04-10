@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/main.dart';
 import 'package:libcli/app.dart' as configuration;
 
 void main() {
@@ -20,7 +20,6 @@ void main() {
       message = COLOR_CYAN + 'set locale=en_US';
       expect(removeColor(message), 'set locale=en_US');
     });
-
 
     test('should log', () async {
       configuration.appID = 'log_test';

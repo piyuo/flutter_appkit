@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/logs.dart';
-import 'package:libcli/log.dart';
+import 'package:libcli/src/log/main.dart';
 
 void main() {
   setUp(() async {});
@@ -31,7 +31,7 @@ void main() {
     });
 
     test('should print debug info', () {
-      debugInfo('this is debug info');
+      debug('this is debug info');
     });
   });
 }
