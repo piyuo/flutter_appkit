@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/eventbus/types.dart';
 
 /// latestEvent is used for testing purpose
@@ -71,9 +71,9 @@ Subscription listen<T>(
   Future<void> Function(BuildContext, dynamic) func,
 ) {
   if (T == dynamic) {
-    log('listen all event');
+    log.log('listen all event');
   } else {
-    log('listen $T');
+    log.log('listen $T');
   }
 
   var listener = Listener(eventType: T, callback: func);
@@ -82,22 +82,22 @@ Subscription listen<T>(
   return sub;
 }
 
-/// brodcast a new event or contract on the event bus with the specified [event].
+/// broadcast a new event or contract on the event bus with the specified [event].
 ///
 ///     eventbus.listen<MockEventA>((BuildContext ctx,event) {
 ///       type = event.runtimeType;
 ///     });
-///     eventbus.brodcast(ctx,MockEventA('a1'));
+///     eventbus.broadcast(ctx,MockEventA('a1'));
 ///
 Future<bool> broadcast(BuildContext context, Event event) async {
   latest = event;
-  log('brodcast ${event.runtimeType}');
+  log.log('broadcast ${event.runtimeType}');
 
   for (var listener in _listeners) {
     try {
       await listener.listen(context, event);
     } catch (e, s) {
-      error(e, s);
+      log.error(e, s);
     }
     if (event is Contract && event.isComplete) {
       break;
@@ -106,7 +106,7 @@ Future<bool> broadcast(BuildContext context, Event event) async {
 
   if (event is Contract) {
     if (event.isComplete == false) {
-      log('${COLOR_ALERT}caught no listener for ${event.runtimeType}');
+      log.log('${log.COLOR_ALERT}caught no listener for ${event.runtimeType}');
       event.complete(false);
     }
     return event.OK;

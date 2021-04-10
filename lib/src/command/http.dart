@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http-header.dart';
@@ -68,14 +68,14 @@ Future<PbObject> doPost(BuildContext context, Request r) async {
     }
 
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
-    log('${COLOR_WARNING}caught $msg');
+    log.log('${log.COLOR_WARNING}caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
         return await giveup(context, InternalServerErrorEvent()); //body is err id
       case 501: //the remote service is not properly setup
         return await giveup(context, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
-        log('${COLOR_WARNING}504 deadline exceeded when connect ${r.url},error:${resp.body}');
+        log.log('${log.COLOR_WARNING}504 deadline exceeded when connect ${r.url},error:${resp.body}');
         return await retry(
           context,
           contract: RequestTimeoutContract(
@@ -106,13 +106,13 @@ Future<PbObject> doPost(BuildContext context, Request r) async {
       case 400: //bad request
         return await giveup(context, BadRequestEvent()); //body is err id
     }
-    //unknow status code
+    //unknown status code
     throw Exception('unknown $msg');
   } on SocketException catch (e) {
-    log('${COLOR_WARNING}failed to connect ${r.url} cause $e');
+    log.log('${log.COLOR_WARNING}failed to connect ${r.url} cause $e');
     return await retry(context, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
   } on TimeoutException catch (e) {
-    log('${COLOR_WARNING}connection timeout ${r.url} cause $e');
+    log.log('${log.COLOR_WARNING}connection timeout ${r.url} cause $e');
     return await retry(context,
         contract: RequestTimeoutContract(isServer: false, exception: e, url: r.url), request: r);
   }
@@ -144,7 +144,7 @@ Future<PbObject> retry(
   required Request request,
 }) async {
   if (await eventbus.broadcast(context, contract)) {
-    log('try again');
+    log.log('try again');
     return await doPost(context, request);
   }
   return PbObject.empty;

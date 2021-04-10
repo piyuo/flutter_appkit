@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/src/app/configuration.dart' as config;
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 
 /// webConfiguration set configuration to web application
 ///
@@ -10,7 +10,7 @@ void webConfiguration({
   required String appID,
   required String supportEmail,
 }) {
-  log('web configuration, branch=$branch, appID=$appID, supportEmail=$supportEmail');
+  log.log('web configuration, branch=$branch, appID=$appID, supportEmail=$supportEmail');
   config.branch = branch;
   config.appID = appID;
   config.supportEmail = supportEmail;

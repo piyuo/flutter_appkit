@@ -1,4 +1,4 @@
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/i18n/main.dart';
 
 /// globalTranslate translate from global localization
@@ -6,7 +6,7 @@ import 'package:libcli/src/i18n/main.dart';
 String globalTranslate(String key) {
   var value = getCurrentGlobalTranslation()[key];
   if (value == null) {
-    log('${COLOR_ALERT}missing $key in i18n global');
+    log.log('${log.COLOR_ALERT}missing $key in i18n global');
     return '!!! $key not found';
   }
   return value;
@@ -48,8 +48,8 @@ Map _en_US() {
     'domain': 'domain name',
     'url': 'url',
     'enterYour': 'Enter your %1',
-    'minLenth': '%1 must contain at least %2 character. You entered %3 characters',
-    'maxLenth': '%1 must be %2 characters or fewer. You entered %3 characters',
+    'minLength': '%1 must contain at least %2 character. You entered %3 characters',
+    'maxLength': '%1 must be %2 characters or fewer. You entered %3 characters',
     'noService': 'Service Unavailable',
     'noServiceDesc': 'This service isn\'t available right now${tryAgain}',
     'noInternet': 'No internet!',
@@ -89,8 +89,8 @@ Map _zh_TW() {
     'domain': '域名',
     'url': '網址',
     'enterYour': '輸入你的%1',
-    'minLenth': '%1必須至少包含 %2 個字元. 你輸入了 %3 個字元',
-    'maxLenth': '%1必須是%2個或更少字元. 你輸入了 %3 個字元',
+    'minLength': '%1必須至少包含 %2 個字元. 你輸入了 %3 個字元',
+    'maxLength': '%1必須是%2個或更少字元. 你輸入了 %3 個字元',
     'noService': '服務不可用',
     'noServiceDesc': '此服務當前不可用${tryAgain}',
     'noInternet': '無法連接到網際網路!',
@@ -130,8 +130,8 @@ Map _zh_CN() {
     'domain': '域名',
     'url': '网址',
     'enterYour': '输入你的%1',
-    'minLenth': '%1必须至少包含 %2 个字元. 您输入了 %3 个字元',
-    'maxLenth': '%1必须是%2个或更少字元. 您输入了 %3 个字元',
+    'minLength': '%1必须至少包含 %2 个字元. 您输入了 %3 个字元',
+    'maxLength': '%1必须是%2个或更少字元. 您输入了 %3 个字元',
     'noService': '服務不可用',
     'noServiceDesc': '服務暫時不可用${tryAgain}',
     'noInternet': '无法连接到互联网!',

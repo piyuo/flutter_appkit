@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/redux.dart';
 import 'package:flutter/widgets.dart';
 
@@ -18,11 +18,11 @@ class HistoryRedux {
   /// ,
   int _index = 0;
 
-  ///_states is entiry state's hisotry and length is limit to historyLength
+  ///_states is entirely state's history and length is limit to historyLength
   ///
   List<Map> _states = [];
 
-  /// HistoryRedux constructor with default hisotry length, reducer and state
+  /// HistoryRedux constructor with default history length, reducer and state
   ///
   ///     HistoryRedux redux =HistoryRedux(reducer, {},historyLength:10);
   ///
@@ -69,13 +69,13 @@ class HistoryRedux {
       if (kReleaseMode) {
         _index--;
       } else {
-        var jOld = toLogString(state);
+        var jOld = log.toLogString(state);
         _index--;
-        var jNew = toLogString(state);
-        log('${COLOR_STATE}undo $jNew ${COLOR_END}<= $jOld');
+        var jNew = log.toLogString(state);
+        log.log('${log.COLOR_STATE}undo $jNew ${log.COLOR_END}<= $jOld');
       }
     } else {
-      log('nothing to undo');
+      log.log('nothing to undo');
     }
   }
 
@@ -88,13 +88,13 @@ class HistoryRedux {
       if (kReleaseMode) {
         _index++;
       } else {
-        var jOld = toLogString(state);
+        var jOld = log.toLogString(state);
         _index++;
-        var jNew = toLogString(state);
-        log('${COLOR_STATE}redo $jNew ${COLOR_END}<= $jOld');
+        var jNew = log.toLogString(state);
+        log.log('${log.COLOR_STATE}redo $jNew ${log.COLOR_END}<= $jOld');
       }
     } else {
-      log('nothing to undo');
+      log.log('nothing to undo');
     }
   }
 
@@ -106,11 +106,11 @@ class HistoryRedux {
     if (kReleaseMode) {
       _setState(await _reducer(ctx, state, action));
     } else {
-      var jOld = toLogString(state);
+      var jOld = log.toLogString(state);
       var newState = await _reducer(ctx, state, action);
-      var jNew = toLogString(newState);
-      var payload = toLogString(action);
-      log('${COLOR_STATE}action: ${action.runtimeType}{$payload}, state: $jNew ${COLOR_END}<= $jOld');
+      var jNew = log.toLogString(newState);
+      var payload = log.toLogString(action);
+      log.log('${log.COLOR_STATE}action: ${action.runtimeType}{$payload}, state: $jNew ${log.COLOR_END}<= $jOld');
       _setState(newState);
     }
     return state;

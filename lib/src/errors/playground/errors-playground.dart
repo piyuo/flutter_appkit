@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/command/command.dart';
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialogs.dart';
@@ -108,7 +108,7 @@ class ErrorsPlayground extends StatelessWidget {
             TextButton(
                 child: Text('disk error'),
                 onPressed: () {
-                  throw DiskErrorException();
+                  throw log.DiskErrorException();
                 }),
           ],
         ),

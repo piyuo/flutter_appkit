@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 
 /// requiredValidator validate input string, return error message when input is empty, return null if no error
 ///
@@ -26,15 +26,15 @@ String? requiredValidator({
   } else {
     if (input.length < minLength) {
       result =
-          'minLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$minLength').replaceAll('%3', '${input.length}');
+          'minLength'.i18n_.replaceAll('%1', label).replaceAll('%2', '$minLength').replaceAll('%3', '${input.length}');
     }
     if (input.length > maxLength) {
       result =
-          'maxLenth'.i18n_.replaceAll('%1', label).replaceAll('%2', '$maxLength').replaceAll('%3', '${input.length}');
+          'maxLength'.i18n_.replaceAll('%1', label).replaceAll('%2', '$maxLength').replaceAll('%3', '${input.length}');
     }
   }
   if (result != null) {
-    debug('validation failed: $result');
+    log.debug('validation failed: $result');
   }
   return result;
 }
@@ -57,7 +57,7 @@ String? regexpValidator({
   }
   var result = regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', label).replaceAll('%2', example);
   if (result != null) {
-    debug('validation failed: $result');
+    log.debug('validation failed: $result');
   }
   return result;
 }

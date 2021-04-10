@@ -21,6 +21,7 @@
             "hubapi",
             "hubindex",
             "injectable",
+            "microtask",
             "oauth",
             "piyuo",
             "plkdev",

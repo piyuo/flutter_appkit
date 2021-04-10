@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/module.dart';
 
 /// Await load provider in list
@@ -64,7 +64,7 @@ class _AwaitState extends State<Await> {
   void reload(BuildContext context) {
     widget.list.forEach((provider) {
       if (provider.asyncStatus == AsyncStatus.error) {
-        log('reload ${provider.runtimeType}');
+        log.log('reload ${provider.runtimeType}');
         provider.asyncStatus = AsyncStatus.none;
       }
 
@@ -75,7 +75,7 @@ class _AwaitState extends State<Await> {
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
           }).catchError((e, s) async {
-            error(e, s);
+            log.error(e, s);
             provider.asyncStatus = AsyncStatus.error;
             provider.notifyListeners();
           });

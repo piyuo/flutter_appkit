@@ -1,8 +1,8 @@
 import 'dart:html' as html;
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 
 void webRedirect(String url) {
-  log('redirect: $url');
+  log.log('redirect: $url');
   html.window.location.href = url;
 }
 

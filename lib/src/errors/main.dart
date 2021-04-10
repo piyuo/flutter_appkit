@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/command.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
 import 'package:libcli/src/errors/error-email.dart';
 
@@ -34,11 +34,11 @@ void watch(Function suspect) {
 
 @visibleForTesting
 void catched(dynamic e, StackTrace? stack) {
-  error(e, stack);
+  log.error(e, stack);
   if (e is AssertionError) {
     //don't do anything, assertion only happen in development
     return;
-  } else if (e is DiskErrorException) {
+  } else if (e is log.DiskErrorException) {
     alert(
       dialogsRootContext,
       'diskErrorDesc'.i18n_,

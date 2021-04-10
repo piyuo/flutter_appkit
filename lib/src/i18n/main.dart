@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/asset/asset.dart' as asset;
 
 const en_US = 'en_US';
@@ -67,7 +67,7 @@ get currentLocaleID => localeToId(currentLocale);
 
 set locale(Locale locale) {
   _locale = locale;
-  log('${COLOR_STATE}locale${COLOR_END}=$currentLocaleID');
+  log.log('${log.COLOR_STATE}locale${log.COLOR_END}=$currentLocaleID');
 }
 
 /// localeToId convert Locale(''en,'US') to 'en_US'
@@ -118,6 +118,6 @@ Locale determineLocale(List<Locale>? locales) {
     }
   }
   //best locale: ${localeToId(bestLocale)}
-  log('${COLOR_STATE}country${COLOR_END}=$userPreferCountryCode');
+  log.log('${log.COLOR_STATE}country${log.COLOR_END}=$userPreferCountryCode');
   return bestLocale;
 }

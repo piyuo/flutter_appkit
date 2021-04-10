@@ -1,4 +1,4 @@
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 
 /// BRANCH_MASTER is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 ///
@@ -37,6 +37,6 @@ String supportEmail = 'support@piyuo.com';
 String _userID = '';
 String get userID => _userID;
 set userID(String value) {
-  log('${COLOR_STATE}set userID=$value');
+  log.log('${log.COLOR_STATE}set userID=$value');
   _userID = value;
 }

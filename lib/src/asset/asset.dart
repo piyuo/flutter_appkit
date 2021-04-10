@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
@@ -17,7 +17,7 @@ Future<String> Function({required String assetName, BuildContext? context, Strin
 
 Future<String> _loadString({required String assetName, BuildContext? context, String? package}) async {
   String path = package != null ? 'packages/$package/asset/$assetName' : 'asset/$assetName';
-  log('load asset $path');
+  log.log('load asset $path');
 
   try {
     if (context != null) {
@@ -26,7 +26,7 @@ Future<String> _loadString({required String assetName, BuildContext? context, St
     }
     return await rootBundle.loadString(path);
   } catch (e, s) {
-    error(e, s);
+    log.error(e, s);
   }
   return '';
 }

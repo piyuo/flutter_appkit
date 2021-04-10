@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 
 /// _instance provide SharedPreferences instance
 ///
@@ -23,7 +23,7 @@ Future<SharedPreferences> _get() async {
 ///
 Future<bool> remove(String key) async {
   assert(key.length > 0);
-  log('${COLOR_STATE}remove $key');
+  log.log('${log.COLOR_STATE}remove $key');
   return (await _get()).remove(key);
 }
 
@@ -34,7 +34,7 @@ Future<bool> remove(String key) async {
 Future<bool> getBool(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getBool(key) ?? false;
-  log('get $key=$value');
+  log.log('get $key=$value');
   return value;
 }
 
@@ -44,10 +44,10 @@ Future<bool> getBool(String key) async {
 ///
 setBool(String key, bool value) async {
   assert(key.length > 0);
-  log('${COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
-    throw DiskErrorException();
+    throw log.DiskErrorException();
   }
 }
 
@@ -58,7 +58,7 @@ setBool(String key, bool value) async {
 Future<int> getInt(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getInt(key) ?? 0;
-  log('get $key=$value');
+  log.log('get $key=$value');
   return value;
 }
 
@@ -68,10 +68,10 @@ Future<int> getInt(String key) async {
 ///
 setInt(String key, int value) async {
   assert(key.length > 0);
-  log('${COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
-    throw DiskErrorException();
+    throw log.DiskErrorException();
   }
 }
 
@@ -82,7 +82,7 @@ setInt(String key, int value) async {
 Future<double> getDouble(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getDouble(key) ?? 0;
-  log('get $key=$value');
+  log.log('get $key=$value');
   return value;
 }
 
@@ -92,10 +92,10 @@ Future<double> getDouble(String key) async {
 ///
 setDouble(String key, double value) async {
   assert(key.length > 0);
-  log('${COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
-    throw DiskErrorException();
+    throw log.DiskErrorException();
   }
 }
 
@@ -106,7 +106,7 @@ setDouble(String key, double value) async {
 Future<String> getString(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getString(key) ?? '';
-  log('get $key=$value');
+  log.log('get $key=$value');
   return value;
 }
 
@@ -116,10 +116,10 @@ Future<String> getString(String key) async {
 ///
 setString(String key, String value) async {
   assert(key.length > 0);
-  log('${COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
-    throw DiskErrorException();
+    throw log.DiskErrorException();
   }
 }
 
@@ -135,7 +135,7 @@ Future<DateTime> getDateTime(String key) async {
   return DateTime.fromMicrosecondsSinceEpoch(0);
 }
 
-/// setDateTime set datatime value to preference, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// setDateTime set datetime value to preference, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
 ///     await pref.setString('k','value');
 ///
@@ -154,7 +154,7 @@ setDateTime(String key, DateTime value) async {
 Future<List<String>> getStringList(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getStringList(key) ?? [];
-  log('get $key=$value');
+  log.log('get $key=$value');
   return value;
 }
 
@@ -164,10 +164,10 @@ Future<List<String>> getStringList(String key) async {
 ///
 setStringList(String key, List<String> value) async {
   assert(key.length > 0);
-  log('${COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setStringList(key, value));
   if (!result) {
-    throw DiskErrorException();
+    throw log.DiskErrorException();
   }
 }
 

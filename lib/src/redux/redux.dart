@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 
 /// Redux reducer implementation
 ///
@@ -13,7 +13,7 @@ Map from(Map state) {
 /// readReduxStates print all redux states to string
 ///
 String stateToStr(Map state) {
-  return toLogString(state);
+  return log.toLogString(state);
 }
 
 /// Redux implements redux pattern
@@ -39,7 +39,7 @@ class Redux {
   ///
   @protected
   void logInitState() {
-    log('${COLOR_STATE}redux init${COLOR_END} ${stateToStr(_state)}');
+    log.log('${log.COLOR_STATE}redux init${log.COLOR_END} ${stateToStr(_state)}');
   }
 
   /// state get current state
@@ -52,7 +52,7 @@ class Redux {
   ///
   Future<void> dispatch(BuildContext context, dynamic action) async {
     var newState = await _reducer(context, state, action);
-    var payload = toLogString(action);
+    var payload = log.toLogString(action);
     var diff = diffState(newState, _state);
     if (diff.isEmpty) {
       diff = 'state not change';
@@ -60,7 +60,7 @@ class Redux {
       //remove extra ,
       diff = diff.substring(0, diff.length - 1);
     }
-    log('${COLOR_STATE}redux dispatch${COLOR_END} ${action.runtimeType} {$payload} $diff');
+    log.log('${log.COLOR_STATE}redux dispatch${log.COLOR_END} ${action.runtimeType} {$payload} $diff');
     _state = newState;
   }
 }
@@ -74,7 +74,7 @@ String diffState(Map newState, Map oldState) {
       text += diffState(newValue, oldValue);
     } else {
       if (newValue != oldValue) {
-        text += '${COLOR_STATE}$key${COLOR_END}=$newValue($oldValue), ';
+        text += '${log.COLOR_STATE}$key${log.COLOR_END}=$newValue($oldValue), ';
       }
     }
   }

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/guard.dart';
 import 'package:libcli/src/command/url.dart';
@@ -11,10 +11,10 @@ import 'package:libcli/src/command/events.dart';
 import 'package:libpb/pb.dart';
 
 /// Service communicate with server with command using protobuf and command pattern
-/// simplefy the network call to request and response
+/// simplify the network call to request and response
 ///
 abstract class Service {
-  /// debugPort used debug local service, service url will chnage to http://localhost:$debugPort
+  /// debugPort used debug local service, service url will change to http://localhost:$debugPort
   ///
   int? debugPort;
 
@@ -95,8 +95,8 @@ abstract class Service {
     var result = guardCheck(command.runtimeType, rule);
     if (result == 0) {
       //pass
-      var jsonSent = toLogString(command);
-      log('${COLOR_STATE}send ${command.runtimeType}{$jsonSent}${COLOR_END} to $url');
+      var jsonSent = log.toLogString(command);
+      log.log('${log.COLOR_STATE}send ${command.runtimeType}{$jsonSent}${log.COLOR_END} to $url');
       PbObject returnObj = await post(
           context,
           Request(
@@ -107,14 +107,14 @@ abstract class Service {
             timeout: Duration(milliseconds: timeout),
             slow: Duration(milliseconds: slow),
           ));
-      var jsonReturn = toLogString(returnObj);
-      log('${COLOR_STATE}got ${returnObj.runtimeType}{$jsonReturn}${COLOR_END} from $url');
+      var jsonReturn = log.toLogString(returnObj);
+      log.log('${log.COLOR_STATE}got ${returnObj.runtimeType}{$jsonReturn}${log.COLOR_END} from $url');
       return returnObj;
     }
 
     var duration = result == 1 ? rule.duration1! : rule.duration2!;
     var count = result == 1 ? rule.count1! : rule.count2!;
-    log('${COLOR_ALERT}send ${command.runtimeType} denied${COLOR_END} $count/$duration');
+    log.log('${log.COLOR_ALERT}send ${command.runtimeType} denied${log.COLOR_END} $count/$duration');
 
     if (broadcastDenied) {
       eventbus.broadcast(context, GuardDeniedEvent());

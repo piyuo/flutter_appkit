@@ -1,14 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/log/log.dart';
-//import 'dart:io';
+import 'package:libcli/src/log/log.dart' as log;
 
 enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
   AsyncProvider() {
     if (!kReleaseMode) {
-      log('${COLOR_MEMORY}$description${COLOR_END} created');
+      log.log('${log.COLOR_MEMORY}$description${log.COLOR_END} created');
     }
   }
 
@@ -34,7 +33,7 @@ abstract class AsyncProvider with ChangeNotifier {
   @override
   void dispose() {
     if (!kReleaseMode) {
-      log('${COLOR_MEMORY}$description${COLOR_END} disposed');
+      log.log('${log.COLOR_MEMORY}$description${log.COLOR_END} disposed');
     }
     _disposed = true;
     super.dispose();

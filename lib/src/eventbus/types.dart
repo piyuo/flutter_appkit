@@ -1,4 +1,4 @@
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 
 /// Event
 ///
@@ -15,7 +15,7 @@ class Contract extends Event {
   get OK => _result;
 
   void complete(bool value) {
-    log('${this.runtimeType} result=$value');
+    log.log('${this.runtimeType} result=$value');
     _result = value;
     _completed = true;
   }
