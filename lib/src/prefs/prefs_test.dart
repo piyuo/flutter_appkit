@@ -1,87 +1,87 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/preference.dart' as preferences;
+import 'package:libcli/src/prefs/prefs.dart';
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
-  preferences.mockPrefs({});
+  mock({});
   setUp(() async {});
 
   group('[preference]', () {
     test('should remove', () async {
-      await preferences.setBool('k', true);
-      var result = await preferences.getBool('k');
+      await setBool('k', true);
+      var result = await getBool('k');
       expect(result, true);
 
-      await preferences.remove('k');
-      result = await preferences.getBool('k');
+      await remove('k');
+      result = await getBool('k');
       expect(result, false);
     });
 
     test('should get/set bool', () async {
-      await preferences.setBool('k', true);
-      var result = await preferences.getBool('k');
+      await setBool('k', true);
+      var result = await getBool('k');
       expect(result, true);
 
-      await preferences.setBool('k', false);
-      result = await preferences.getBool('k');
+      await setBool('k', false);
+      result = await getBool('k');
       expect(result, false);
     });
 
     test('should get false when no data', () async {
-      var result = await preferences.getBool('na');
+      var result = await getBool('na');
       expect(result, false);
     });
 
     test('should get/set Int', () async {
-      await preferences.setInt('k', 1);
-      var result = await preferences.getInt('k');
+      await setInt('k', 1);
+      var result = await getInt('k');
       expect(result, 1);
     });
 
     test('should get 0 when no data', () async {
-      var result = await preferences.getInt('na');
+      var result = await getInt('na');
       expect(result, 0);
     });
 
     test('should get/set double', () async {
-      await preferences.setDouble('k', 1.1);
-      var result = await preferences.getDouble('k');
+      await setDouble('k', 1.1);
+      var result = await getDouble('k');
       expect(result, 1.1);
     });
 
     test('should get 0 when no data', () async {
-      var result = await preferences.getDouble('na');
+      var result = await getDouble('na');
       expect(result, 0);
     });
 
     test('should get/set string', () async {
-      await preferences.setString('k', 'a');
-      var result = await preferences.getString('k');
+      await setString('k', 'a');
+      var result = await getString('k');
       expect(result, 'a');
     });
 
     test('should get/set datetime', () async {
       var now = DateTime.now();
       var short = now.toString().toString().substring(0, 16);
-      await preferences.setDateTime('k', now);
-      var result = await preferences.getDateTime('k');
+      await setDateTime('k', now);
+      var result = await getDateTime('k');
       expect(result.toString().substring(0, 16), short);
     });
 
     test('should get empty string when no data', () async {
-      var result = await preferences.getString('na');
+      var result = await getString('na');
       expect(result, '');
     });
 
     test('should get/set string list', () async {
       var list = ['a', 'b', 'c'];
-      await preferences.setStringList('k', list);
-      var result = await preferences.getStringList('k');
+      await setStringList('k', list);
+      var result = await getStringList('k');
       expect(result[1], 'b');
     });
 
     test('should get empty list when no data', () async {
-      var result = await preferences.getStringList('na');
+      var result = await getStringList('na');
       expect(result, []);
     });
 
@@ -90,8 +90,8 @@ void main() {
       map['a'] = 1;
       map['b'] = 2;
 
-      await preferences.setMap('k', map);
-      var result = await preferences.getMap('k');
+      await setMap('k', map);
+      var result = await getMap('k');
       expect(result['b'], 2);
     });
   });
