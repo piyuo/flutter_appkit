@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/src/redux/redux.dart';
-import 'package:libcli/widgets.dart';
+import 'package:libcli/src/widgets/widgets.dart';
 
 /// Module provide redux and services
 ///

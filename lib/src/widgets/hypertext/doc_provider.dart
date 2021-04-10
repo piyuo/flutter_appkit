@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/module/module.dart';
+import 'package:libcli/src/module/module.dart' as module;
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
 import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/asset/asset.dart' as asset;
 import 'package:libcli/src/widgets/test.dart' as test;
 
-class DocProvider extends AsyncProvider {
+class DocProvider extends module.AsyncProvider {
   final String title;
 
   final String docName;
