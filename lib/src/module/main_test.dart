@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/redux.dart';
+import 'package:libcli/src/redux/redux.dart';
 import 'package:libcli/src/module/main.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/test.dart';

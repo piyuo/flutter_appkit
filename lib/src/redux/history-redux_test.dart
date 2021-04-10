@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/redux.dart';
+import 'package:libcli/src/redux/history-redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/test.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/redux/redux.dart';
+import 'package:libcli/src/redux/main.dart';
 
 Future<Map> _mock_reducers(BuildContext context, Map oldState, dynamic action) async {
   return oldState;

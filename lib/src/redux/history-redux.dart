@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/log.dart' as log;
-import 'package:libcli/redux.dart';
+import 'package:libcli/src/redux/main.dart';
 import 'package:flutter/widgets.dart';
 
 /// HistoryRedux implements redux pattern and have ability to undo and redo
