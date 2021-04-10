@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../mock/mock.dart';
 import 'package:libcli/src/eventbus/main.dart';
 import 'package:libcli/src/eventbus/types.dart';
-import 'package:libcli/test.dart';
+import 'package:libcli/src/test/test.dart';
 
 class MyEvent extends Event {
   String value = '';

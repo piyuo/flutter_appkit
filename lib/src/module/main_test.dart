@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/redux/redux.dart';
 import 'package:libcli/src/module/main.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/test.dart';
+import 'package:libcli/src/test/test.dart';
 
 void main() {
   group('[module]', () {
