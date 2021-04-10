@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/src/test/test.dart';
+import 'package:libcli/src/mocking/mocking.dart' as mocking;
 import '../../mock/mock.dart';
 import 'package:libcli/src/command/mock-service.dart';
 import 'package:libpb/pb.dart';
@@ -105,7 +105,7 @@ void main() {
       });
 
       await post(
-          MockBuildContext(),
+          mocking.MockBuildContext(),
           Request(
             service: MockService(),
             client: client,
@@ -123,7 +123,7 @@ void main() {
       });
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await post(
-          MockBuildContext(),
+          mocking.MockBuildContext(),
           Request(
             service: MockService(),
             client: client,

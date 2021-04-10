@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:libcli/src/test/mock-navigator.dart';
+import 'package:libcli/src/mocking/mock-navigator.dart';
 
 void main() {
   setUp(() async {});

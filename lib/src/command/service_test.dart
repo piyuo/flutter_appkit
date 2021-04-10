@@ -11,7 +11,7 @@ import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
 import 'package:libpb/pb.dart';
-import 'package:libcli/src/test/test.dart';
+import 'package:libcli/src/mocking/mocking.dart' as mocking;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 
 void main() {
@@ -34,7 +34,8 @@ void main() {
         return http.Response.bytes(bytes, 200);
       });
       SampleService service = SampleService();
-      var response = await service.executeWithClient(MockBuildContext(), CommandEcho()..value = 'hello', client);
+      var response =
+          await service.executeWithClient(mocking.MockBuildContext(), CommandEcho()..value = 'hello', client);
       expect(response is StringResponse, true);
       if (response is StringResponse) {
         expect(response.value, 'hi');
@@ -46,7 +47,7 @@ void main() {
         return http.Response('', 501);
       });
       MockService service = MockService();
-      var response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client);
+      var response = await service.executeWithClient(mocking.MockBuildContext(), CommandEcho(), client);
       expect(response is PbEmpty, true);
     });
 
@@ -58,7 +59,7 @@ void main() {
         };
       CommandEcho action = new CommandEcho();
       expect(() async {
-        await service.execute(MockBuildContext(), action);
+        await service.execute(mocking.MockBuildContext(), action);
       }, throwsException);
     });
 
@@ -69,7 +70,7 @@ void main() {
         };
 
       CommandEcho action = new CommandEcho();
-      var response = await service.execute(MockBuildContext(), action);
+      var response = await service.execute(mocking.MockBuildContext(), action);
       expect(response is StringResponse, true);
       if (response is StringResponse) {
         expect(response.value, 'hi');
@@ -83,7 +84,7 @@ void main() {
         };
 
       CommandEcho action = new CommandEcho();
-      var response = await service.execute(MockBuildContext(), action);
+      var response = await service.execute(mocking.MockBuildContext(), action);
       expect(response is StringResponse, true);
     });
 
@@ -99,11 +100,11 @@ void main() {
       });
       SampleService service = SampleService();
       //send first time
-      var response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client);
+      var response = await service.executeWithClient(mocking.MockBuildContext(), CommandEcho(), client);
       expect(response is StringResponse, true);
 
       //send second time
-      response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client);
+      response = await service.executeWithClient(mocking.MockBuildContext(), CommandEcho(), client);
       expect(response is PbError, true);
       if (response is PbError) {
         expect(response.code, 'GUARD_1');
@@ -124,14 +125,14 @@ void main() {
       );
 
       //send first time
-      var response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client, rule: rule);
+      var response = await service.executeWithClient(mocking.MockBuildContext(), CommandEcho(), client, rule: rule);
       expect(response is StringResponse, true);
       if (response is PbError) {
         expect(response.code, 'GUARD_1');
       }
 
       //send second time
-      response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client, rule: rule);
+      response = await service.executeWithClient(mocking.MockBuildContext(), CommandEcho(), client, rule: rule);
       expect(response is PbError, true);
       expect(lastEvent is GuardDeniedEvent, true);
     });
@@ -142,11 +143,12 @@ void main() {
       });
       SampleService service = SampleService();
       //send first time
-      var response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client);
+      var response = await service.executeWithClient(mocking.MockBuildContext(), CommandEcho(), client);
       expect(response is StringResponse, true);
 
       //send second time
-      response = await service.executeWithClient(MockBuildContext(), CommandEcho(), client, broadcastDenied: false);
+      response =
+          await service.executeWithClient(mocking.MockBuildContext(), CommandEcho(), client, broadcastDenied: false);
       expect(response is PbError, true);
       var error = response as PbError;
       expect(error.code, 'GUARD_1');

@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/redux/redux.dart';
 import 'package:libcli/src/module/main.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/test/test.dart';
+import 'package:libcli/src/mocking/mocking.dart' as mocking;
 
 void main() {
   group('[module]', () {
@@ -14,7 +14,7 @@ void main() {
         ),
       );
       expect(provider.state['value'], 0);
-      await provider.dispatch(MockBuildContext(), Increment(1));
+      await provider.dispatch(mocking.MockBuildContext(), Increment(1));
       expect(provider.state['value'], 1);
     });
   });

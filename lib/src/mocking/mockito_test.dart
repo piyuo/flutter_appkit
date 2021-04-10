@@ -1,10 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/test/mockito.dart';
 import 'package:mockito/mockito.dart';
+
+class Cat {
+  String sound() => "Meow";
+
+  void mew(String route) {
+    print('hi');
+  }
+}
 
 class MockCat extends Mock implements Cat {
   @override
   void mew(String? route) {
+    // ignore: invalid_use_of_visible_for_testing_member
     super.noSuchMethod(Invocation.method(#mew, [route]));
   }
 }

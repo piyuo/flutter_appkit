@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/redux/main.dart';
 import 'package:libcli/src/redux/map.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/test/test.dart';
+import 'package:libcli/src/mocking/mocking.dart' as mocking;
 
 void main() {
   setUp(() async {});
@@ -11,7 +11,7 @@ void main() {
     test('should dispatch and return true because state change', () async {
       Redux redux = Redux(reducer, {'value': 0});
       expect(redux.state['value'], 0);
-      await redux.dispatch(MockBuildContext(), Increment(1));
+      await redux.dispatch(mocking.MockBuildContext(), Increment(1));
       expect(redux.state['value'], 1);
     });
 
@@ -22,7 +22,7 @@ void main() {
 
     test('should return false cause state not change', () async {
       Redux redux = Redux(reducer, {'value': 0});
-      await redux.dispatch(MockBuildContext(), DoNothing());
+      await redux.dispatch(mocking.MockBuildContext(), DoNothing());
       expect(redux.state['value'], 0);
     });
 
@@ -31,7 +31,7 @@ void main() {
         'value': 0,
         'child': {'text': 'hi'}
       });
-      await redux.dispatch(MockBuildContext(), Change());
+      await redux.dispatch(mocking.MockBuildContext(), Change());
       expect(redux.state['value'], 2);
     });
   });

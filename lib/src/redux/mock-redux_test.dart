@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/redux/mock-redux.dart';
-import 'package:libcli/src/test/test.dart';
+import 'package:libcli/src/mocking/mocking.dart' as mocking;
 
 void main() {
   setUp(() async {});
@@ -8,7 +8,7 @@ void main() {
   group('[mock-redux]', () {
     test('should record last action', () async {
       MockRedux redux = MockRedux({});
-      await redux.dispatch(MockBuildContext(), Increment(1));
+      await redux.dispatch(mocking.MockBuildContext(), Increment(1));
       expect(redux.lastAction is Increment, true);
     });
   });

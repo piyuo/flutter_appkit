@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../mock/mock.dart';
 import 'package:libcli/src/eventbus/main.dart';
 import 'package:libcli/src/eventbus/types.dart';
-import 'package:libcli/src/test/test.dart';
+import 'package:libcli/src/mocking/mocking.dart' as mocking;
 
 class MyEvent extends Event {
   String value = '';
@@ -55,7 +55,7 @@ main() {
         var my = event as MyEvent;
         listened = my.value;
       });
-      await broadcast(MockBuildContext(), MyEvent()..value = 'hi');
+      await broadcast(mocking.MockBuildContext(), MyEvent()..value = 'hi');
       expect(listened, 'hi');
     });
 
@@ -64,7 +64,7 @@ main() {
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(MockBuildContext(), MyEvent());
+      await broadcast(mocking.MockBuildContext(), MyEvent());
       expect(eventType, MyEvent);
     });
 
@@ -73,7 +73,7 @@ main() {
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(MockBuildContext(), MyEvent2());
+      await broadcast(mocking.MockBuildContext(), MyEvent2());
       expect(eventType, null);
     });
 
@@ -82,9 +82,9 @@ main() {
       listen((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(MockBuildContext(), MyEvent());
+      await broadcast(mocking.MockBuildContext(), MyEvent());
       expect(eventType, MyEvent);
-      await broadcast(MockBuildContext(), MyEvent2());
+      await broadcast(mocking.MockBuildContext(), MyEvent2());
       expect(eventType, MyEvent2);
     });
 

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libpb/pb.dart';
 import 'package:libcli/src/command/mock-service.dart';
-import 'package:libcli/src/test/test.dart';
+import 'package:libcli/src/mocking/mocking.dart' as mocking;
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http.dart';
 
@@ -32,7 +32,7 @@ void main() {
         throw Exception('mock');
       }));
       expect(() async {
-        await doPost(MockBuildContext(), req);
+        await doPost(mocking.MockBuildContext(), req);
       }, throwsException);
     });
 
@@ -44,7 +44,7 @@ void main() {
       var req = newRequest(client);
 
       req.timeout = const Duration(milliseconds: 1);
-      var obj = await doPost(MockBuildContext(), req);
+      var obj = await doPost(mocking.MockBuildContext(), req);
       expect(obj is PbEmpty, true);
       expect(contract is RequestTimeoutContract, true);
     });
