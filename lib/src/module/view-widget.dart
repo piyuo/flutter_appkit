@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/module.dart';
+import 'package:libcli/src/module/async-provider.dart';
+import 'package:libcli/src/module/await.dart';
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
 
 AsyncProvider? viewWidgetProviderInstanceForTest;
@@ -13,7 +14,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
   ///
   final String i18nFilename;
 
-  /// package set if i18nfile is in other package
+  /// package set if i18n file is in other package
   ///
   final String? package;
 

@@ -10,7 +10,7 @@ class ModulePlayground extends StatelessWidget {
       children: [
         Wrap(
           children: [
-            FlatButton(
+            TextButton(
               child: Text('provider with problem'),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) {
@@ -18,7 +18,7 @@ class ModulePlayground extends StatelessWidget {
                 }));
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text('provider need wait 30\'s'),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) {

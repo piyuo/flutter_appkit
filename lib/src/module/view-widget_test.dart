@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/module.dart';
+import 'package:libcli/src/module/view-provider.dart';
+import 'package:libcli/src/module/view-provider.dart';
+import 'package:libcli/src/module/view-widget.dart';
 
 class SampleViewModel extends ViewProvider {}
 

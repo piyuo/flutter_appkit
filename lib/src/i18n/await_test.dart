@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/module.dart';
+import 'package:libcli/src/module/module.dart';
 import 'package:libcli/src/i18n/main.dart';
 import 'package:libcli/src/i18n/provider.dart';
 import 'mock-provider.dart';

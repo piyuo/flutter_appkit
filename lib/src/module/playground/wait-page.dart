@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/module.dart';
+import 'package:libcli/src/module/async-provider.dart';
+import 'package:libcli/src/module/view-widget.dart';
 
 class WaitProvider extends AsyncProvider {
   @override

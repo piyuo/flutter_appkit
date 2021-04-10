@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/module.dart';
+import 'package:libcli/src/module/async-provider.dart';
 import 'package:flutter/widgets.dart';
 
 class MockProvider extends AsyncProvider {

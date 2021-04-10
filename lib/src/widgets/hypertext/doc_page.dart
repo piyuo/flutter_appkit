@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
-import 'package:libcli/module.dart';
+import 'package:libcli/src/module/module.dart';
 import 'package:libcli/src/widgets/hypertext/doc_provider.dart';
 
 class DocPage extends ViewWidget<DocProvider> {
