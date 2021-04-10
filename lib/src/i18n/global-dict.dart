@@ -1,5 +1,5 @@
 import 'package:libcli/log.dart';
-import 'package:libcli/src/i18n/delegate.dart';
+import 'package:libcli/src/i18n/main.dart';
 
 /// globalTranslate translate from global localization
 ///

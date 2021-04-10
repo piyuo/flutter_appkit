@@ -2,7 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/src/i18n/delegate.dart';
+import 'package:libcli/src/i18n/main.dart';
 import 'package:libcli/src/i18n/mock-provider.dart';
 import 'package:libcli/src/i18n/provider.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/i18n/delegate.dart';
+import 'package:libcli/src/i18n/main.dart';
 import 'package:flutter/widgets.dart';
 
 void main() {
