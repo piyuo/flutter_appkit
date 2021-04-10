@@ -1,25 +1,25 @@
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/utils.dart' as utils;
 
 /// GuardDeniedEvent happen command send too frequently, need let user know they should wait for a while
 ///
-class GuardDeniedEvent extends Event {}
+class GuardDeniedEvent extends eventbus.Event {}
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
 ///
-class InternalServerErrorEvent extends Event {}
+class InternalServerErrorEvent extends eventbus.Event {}
 
 /// ServerNotReadyEvent happen when [service return 501 the remote servie is not properly setup], need let user know their network is slow than usual
 ///
-class ServerNotReadyEvent extends Event {}
+class ServerNotReadyEvent extends eventbus.Event {}
 
 /// BadRequestEvent happen when [service return 400 bad request], need let user know their network is slow than usual
 ///
-class BadRequestEvent extends Event {}
+class BadRequestEvent extends eventbus.Event {}
 
 /// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
 ///
-class RequestTimeoutContract extends Contract {
+class RequestTimeoutContract extends eventbus.Contract {
   final String url;
   final bool isServer;
   final dynamic exception;
@@ -38,15 +38,15 @@ class RequestTimeoutContract extends Contract {
 
 /// SlowNetworkEvent happen when command [execute longer than usual]
 ///
-class SlowNetworkEvent extends Event {}
+class SlowNetworkEvent extends eventbus.Event {}
 
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
 ///
-class ERefuseSignin extends Event {}
+class ERefuseSignin extends eventbus.Event {}
 
 ///InternetRequiredContract happen when [SocketException] [internet not connected], listener need let user connect to the internet then report back
 ///
-class InternetRequiredContract extends Contract {
+class InternetRequiredContract extends eventbus.Contract {
   final dynamic exception;
   final String url;
   InternetRequiredContract({
@@ -60,12 +60,12 @@ class InternetRequiredContract extends Contract {
 
 ///CAccessTokenRequired  happen when [service need access token], listener need let user sign in or use refresh token to get access token
 ///
-class CAccessTokenRequired extends Contract {}
+class CAccessTokenRequired extends eventbus.Contract {}
 
 ///CAccessTokenExpired happen when [access token expired], listener need let user sign in or use refresh token to get access token
 ///
-class CAccessTokenExpired extends Contract {}
+class CAccessTokenExpired extends eventbus.Contract {}
 
 ///CPaymentTokenRequired happen when [service need payment token], listener need let user sign in immedately
 ///
-class CPaymentTokenRequired extends Contract {}
+class CPaymentTokenRequired extends eventbus.Contract {}

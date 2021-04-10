@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/command/command.dart' as command;
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/errors/main.dart';
-import 'package:libcli/src/command/command.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();
@@ -21,7 +21,7 @@ void main() {
       navigatorKey: dialogsNavigatorKey,
       home: DialogOverlay(
         child: Builder(builder: (BuildContext ctx) {
-          return FlatButton(
+          return TextButton(
             key: keyBtn,
             child: Text('button'),
             onPressed: () => onPressed(ctx),
@@ -38,8 +38,8 @@ void main() {
           watch(() => throw Exception('mock exception'));
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -48,11 +48,11 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await broadcast(context, GuardDeniedEvent());
+          await eventbus.broadcast(context, command.GuardDeniedEvent());
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -63,8 +63,8 @@ void main() {
           watch(() => throw SocketException('wifi off'));
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -73,18 +73,18 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          var contract = InternetRequiredContract(url: 'http://mock');
+          var contract = command.InternetRequiredContract(url: 'http://mock');
           contract.isInternetConnected = () async {
             return true;
           };
           contract.isGoogleCloudFunctionAvailable = () async {
             return true;
           };
-          await broadcast(context, contract);
+          await eventbus.broadcast(context, contract);
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -93,18 +93,18 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          var contract = InternetRequiredContract(url: 'http://mock');
+          var contract = command.InternetRequiredContract(url: 'http://mock');
           contract.isInternetConnected = () async {
             return true;
           };
           contract.isGoogleCloudFunctionAvailable = () async {
             return false;
           };
-          await broadcast(context, contract);
+          await eventbus.broadcast(context, contract);
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -113,11 +113,11 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await broadcast(context, InternalServerErrorEvent());
+          await eventbus.broadcast(context, command.InternalServerErrorEvent());
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -126,11 +126,11 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await broadcast(context, ServerNotReadyEvent());
+          await eventbus.broadcast(context, command.ServerNotReadyEvent());
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -139,11 +139,11 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await broadcast(context, BadRequestEvent());
+          await eventbus.broadcast(context, command.BadRequestEvent());
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -155,12 +155,13 @@ void main() {
           try {
             throw TimeoutException('client timeout');
           } catch (e) {
-            await broadcast(context, RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
+            await eventbus.broadcast(
+                context, command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
           }
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -169,11 +170,11 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await broadcast(context, RequestTimeoutContract(isServer: true, url: 'http://mock'));
+          await eventbus.broadcast(context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -181,11 +182,11 @@ void main() {
     testWidgets('should alert when disk error', (WidgetTester tester) async {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
-          watch(() => throw DiskErrorException());
+          watch(() => throw log.DiskErrorException());
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
     });
@@ -195,11 +196,11 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await broadcast(context, SlowNetworkEvent());
+          await eventbus.broadcast(context, command.SlowNetworkEvent());
         }),
       );
-      expect(find.byType(FlatButton), findsOneWidget);
-      await tester.tap(find.byType(FlatButton));
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
       await expectToastAndWaitDismiss(tester);
     });

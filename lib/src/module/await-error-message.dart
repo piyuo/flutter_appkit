@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/src/i18n/i18n.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 
 class AwaitErrorMessage extends StatelessWidget {
   final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
@@ -37,7 +37,7 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         SizedBox(height: 40),
         InkWell(
-            onTap: () => broadcast(context, EmailSupportEvent()),
+            onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
             child: Icon(
               Icons.mail_outline,
               color: Colors.orange[200],
@@ -45,7 +45,7 @@ class AwaitErrorMessage extends StatelessWidget {
             )),
         SizedBox(width: 10),
         InkWell(
-            onTap: () => broadcast(context, EmailSupportEvent()),
+            onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
             child: Text(
               'emailUs'.i18n_,
               textAlign: TextAlign.center,

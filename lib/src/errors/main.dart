@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/dialogs.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/command.dart';
 import 'package:libcli/src/log/log.dart';
 import 'package:libcli/src/i18n/i18n.dart';
@@ -28,7 +28,7 @@ void watch(Function suspect) {
           ));
 
   if (subscribed == null) {
-    subscribed = listen(listened);
+    subscribed = eventbus.listen(listened);
   }
 }
 
@@ -152,7 +152,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       e.complete(result == true);
     }
   }
-  if (e is EmailSupportEvent) {
+  if (e is eventbus.EmailSupportEvent) {
     ErrorEmail()..launchMailTo();
   }
 }

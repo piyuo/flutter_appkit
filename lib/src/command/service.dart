@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/src/log/log.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/guard.dart';
 import 'package:libcli/src/command/url.dart';
 import 'package:libcli/src/command/http.dart';
@@ -117,7 +117,7 @@ abstract class Service {
     log('${COLOR_ALERT}send ${command.runtimeType} denied${COLOR_END} $count/$duration');
 
     if (broadcastDenied) {
-      broadcast(context, GuardDeniedEvent());
+      eventbus.broadcast(context, GuardDeniedEvent());
     }
     return PbError()..code = 'GUARD_$result';
   }

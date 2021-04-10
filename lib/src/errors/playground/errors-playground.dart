@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/src/log/log.dart';
 import 'package:libcli/src/command/command.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/errors/main.dart';
 
@@ -15,18 +15,18 @@ class ErrorsPlayground extends StatelessWidget {
       children: [
         Wrap(
           children: [
-            FlatButton(
+            TextButton(
                 child: Text('throw exception'),
                 onPressed: () {
                   watch(() => throw Exception('mock exception'));
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('guard denied'),
                 onPressed: () {
                   watch(() {});
-                  broadcast(context, GuardDeniedEvent());
+                  eventbus.broadcast(context, GuardDeniedEvent());
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('no internet'),
                 onPressed: () async {
                   watch(() {});
@@ -37,11 +37,11 @@ class ErrorsPlayground extends StatelessWidget {
                     contract.isInternetConnected = () async {
                       return false;
                     };
-                    var ok = await broadcast(context, contract);
+                    var ok = await eventbus.broadcast(context, contract);
                     toast(context, ok ? 'retry' : 'cancel');
                   }
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('service not available'),
                 onPressed: () async {
                   watch(() {});
@@ -52,9 +52,9 @@ class ErrorsPlayground extends StatelessWidget {
                   contract.isGoogleCloudFunctionAvailable = () async {
                     return true;
                   };
-                  await broadcast(context, contract);
+                  await eventbus.broadcast(context, contract);
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('internet blocked'),
                 onPressed: () async {
                   watch(() {});
@@ -65,46 +65,47 @@ class ErrorsPlayground extends StatelessWidget {
                   contract.isGoogleCloudFunctionAvailable = () async {
                     return false;
                   };
-                  await broadcast(context, contract);
+                  await eventbus.broadcast(context, contract);
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('internal server error'),
                 onPressed: () {
-                  broadcast(context, InternalServerErrorEvent());
+                  eventbus.broadcast(context, InternalServerErrorEvent());
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('server not ready'),
                 onPressed: () {
-                  broadcast(context, ServerNotReadyEvent());
+                  eventbus.broadcast(context, ServerNotReadyEvent());
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('bad request'),
                 onPressed: () {
-                  broadcast(context, BadRequestEvent());
+                  eventbus.broadcast(context, BadRequestEvent());
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('client timeout'),
                 onPressed: () async {
                   try {
                     throw TimeoutException('client timeout');
                   } catch (e) {
-                    var ok = await broadcast(
+                    var ok = await eventbus.broadcast(
                         context, RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
                     toast(context, ok ? 'retry' : 'cancel');
                   }
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('deadline exceeded'),
                 onPressed: () async {
-                  var ok = await broadcast(context, RequestTimeoutContract(isServer: true, url: 'http://mock'));
+                  var ok =
+                      await eventbus.broadcast(context, RequestTimeoutContract(isServer: true, url: 'http://mock'));
                   toast(context, ok ? 'retry' : 'cancel');
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('slow network'),
                 onPressed: () {
-                  broadcast(context, SlowNetworkEvent());
+                  eventbus.broadcast(context, SlowNetworkEvent());
                 }),
-            FlatButton(
+            TextButton(
                 child: Text('disk error'),
                 onPressed: () {
                   throw DiskErrorException();

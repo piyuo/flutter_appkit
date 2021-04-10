@@ -12,11 +12,11 @@ import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
 import 'package:libpb/pb.dart';
 import 'package:libcli/test.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 
 void main() {
   var lastEvent;
-  listen<GuardDeniedEvent>((BuildContext ctx, event) async {
+  eventbus.listen<GuardDeniedEvent>((BuildContext ctx, event) async {
     lastEvent = event;
   });
 

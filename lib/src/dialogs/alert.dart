@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/src/i18n/i18n.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/widgets.dart';
 
 final keyAlertButtonYes = Key('alertBtnYes');
@@ -92,7 +92,7 @@ Widget showFooter(String? footer) {
 }
 
 Widget showEmailUs(BuildContext context, bool emailUs) {
-  var onTap = () => broadcast(context, EmailSupportEvent());
+  var onTap = () => eventbus.broadcast(context, eventbus.EmailSupportEvent());
   return emailUs
       ? Container(
           padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
