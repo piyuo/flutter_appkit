@@ -12,7 +12,7 @@ main() {
       listen<MockContract>((_, event) {
         throw 'fail';
       });
-      var value = await broadcast(mocking.MockBuildContext(), MockContract('c'));
+      var value = await broadcast(mocking.Context(), MockContract('c'));
       expect(value, false);
     });
   });
@@ -23,7 +23,7 @@ main() {
       text = event.text;
       event.complete(true);
     });
-    var value = await broadcast(mocking.MockBuildContext(), MockContract('c'));
+    var value = await broadcast(mocking.Context(), MockContract('c'));
     expect(value, true);
     expect(text, 'c');
   });
@@ -31,7 +31,7 @@ main() {
   test('should have no error if no listener', () async {
     var ex = null;
     try {
-      await broadcast(mocking.MockBuildContext(), MockContract('c'));
+      await broadcast(mocking.Context(), MockContract('c'));
     } catch (e) {
       ex = e;
     }

@@ -32,7 +32,7 @@ void main() {
         throw Exception('mock');
       }));
       expect(() async {
-        await doPost(mocking.MockBuildContext(), req);
+        await doPost(mocking.Context(), req);
       }, throwsException);
     });
 
@@ -44,7 +44,7 @@ void main() {
       var req = newRequest(client);
 
       req.timeout = const Duration(milliseconds: 1);
-      var obj = await doPost(mocking.MockBuildContext(), req);
+      var obj = await doPost(mocking.Context(), req);
       expect(obj is PbEmpty, true);
       expect(contract is RequestTimeoutContract, true);
     });

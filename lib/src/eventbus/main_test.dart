@@ -55,7 +55,7 @@ main() {
         var my = event as MyEvent;
         listened = my.value;
       });
-      await broadcast(mocking.MockBuildContext(), MyEvent()..value = 'hi');
+      await broadcast(mocking.Context(), MyEvent()..value = 'hi');
       expect(listened, 'hi');
     });
 
@@ -64,7 +64,7 @@ main() {
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(mocking.MockBuildContext(), MyEvent());
+      await broadcast(mocking.Context(), MyEvent());
       expect(eventType, MyEvent);
     });
 
@@ -73,7 +73,7 @@ main() {
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(mocking.MockBuildContext(), MyEvent2());
+      await broadcast(mocking.Context(), MyEvent2());
       expect(eventType, null);
     });
 
@@ -82,9 +82,9 @@ main() {
       listen((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(mocking.MockBuildContext(), MyEvent());
+      await broadcast(mocking.Context(), MyEvent());
       expect(eventType, MyEvent);
-      await broadcast(mocking.MockBuildContext(), MyEvent2());
+      await broadcast(mocking.Context(), MyEvent2());
       expect(eventType, MyEvent2);
     });
 

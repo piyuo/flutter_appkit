@@ -14,7 +14,7 @@ void main() {
         ),
       );
       expect(provider.state['value'], 0);
-      await provider.dispatch(mocking.MockBuildContext(), Increment(1));
+      await provider.dispatch(mocking.Context(), Increment(1));
       expect(provider.state['value'], 1);
     });
   });

@@ -8,7 +8,7 @@ void main() {
   group('[mock-redux]', () {
     test('should record last action', () async {
       MockRedux redux = MockRedux({});
-      await redux.dispatch(mocking.MockBuildContext(), Increment(1));
+      await redux.dispatch(mocking.Context(), Increment(1));
       expect(redux.lastAction is Increment, true);
     });
   });

@@ -105,7 +105,7 @@ void main() {
       });
 
       await post(
-          mocking.MockBuildContext(),
+          mocking.Context(),
           Request(
             service: MockService(),
             client: client,
@@ -123,7 +123,7 @@ void main() {
       });
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await post(
-          mocking.MockBuildContext(),
+          mocking.Context(),
           Request(
             service: MockService(),
             client: client,
