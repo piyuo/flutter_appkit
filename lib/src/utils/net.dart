@@ -1,6 +1,6 @@
 import 'dart:io';
 
-/// lookup a url, return true if url can be lookup
+/// _lookup return true if url can be lookup
 ///
 ///     bool result = tools._lookup('baidu.com');
 Future<bool> _lookup(String url) async {
@@ -22,9 +22,9 @@ Future<bool> isInternetConnected() async {
   return _lookup('starbucks.com');
 }
 
-/// isGoogleCloudFunctionAvailable check google clound function can be connect
+/// isGoogleCloudFunctionAvailable check google cloud function can be connect
 ///
-///     bool result = await tools.isGoogleCloundFunctionAvailable();
+///     bool result = await tools.isGoogleCloudFunctionAvailable();
 Future<bool> isGoogleCloudFunctionAvailable() async {
   return _lookup('www.cloudfunctions.net');
 }
