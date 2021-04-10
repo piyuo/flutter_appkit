@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:libcli/validator.dart';
+import 'package:libcli/src/validator/validator.dart' as validator;
 
 class FormTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -59,7 +59,7 @@ class FormTextFieldState extends State<FormTextField> {
       inputFormatters: [LengthLimitingTextInputFormatter(widget.textInputMaxLength), ...widget.inputFormatters ?? []],
       textInputAction: widget.textInputAction,
       validator: (String? input) => widget.require
-          ? requiredValidator(
+          ? validator.requiredValidator(
               input: input,
               label: widget.label.toLowerCase(),
               enterYour: widget.enterYour,

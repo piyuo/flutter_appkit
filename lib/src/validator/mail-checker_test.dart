@@ -1,21 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/validator.dart' as validator;
+import 'package:libcli/src/validator/mail-checker.dart';
 
 void main() {
   setUp(() async {});
 
   group('[mail_checker]', () {
     test('should suggest correct domain', () async {
-      var suggest = validator.MailChecker(email: "me@hotwail.com").suggest();
+      var suggest = MailChecker(email: "me@hotwail.com").suggest();
       expect(suggest!.full, "me@hotmail.com");
 
-      suggest = validator.MailChecker(email: "me@qql.com").suggest();
+      suggest = MailChecker(email: "me@qql.com").suggest();
       expect(suggest!.full, "me@qq.com");
 
-      suggest = validator.MailChecker(email: "").suggest();
+      suggest = MailChecker(email: "").suggest();
       expect(suggest, null);
 
-      suggest = validator.MailChecker(email: "a").suggest();
+      suggest = MailChecker(email: "a").suggest();
       expect(suggest, null);
     });
   });
