@@ -4,7 +4,7 @@ import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/command.dart';
 import 'package:libcli/src/log/log.dart';
-import 'package:libcli/src/i18n/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart' as i18n;
 import 'package:libcli/src/errors/error-email.dart';
 
 var subscribed = null;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
 import 'package:libcli/src/dialogs/alert.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';

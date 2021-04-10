@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/src/i18n/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart' as i18n;
 
 AsyncProvider? viewWidgetProviderInstanceForTest;
 
@@ -36,8 +36,8 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<I18nProvider>(
-          create: (context) => I18nProvider(fileName: i18nFilename, package: package),
+        ChangeNotifierProvider<i18n.I18nProvider>(
+          create: (context) => i18n.I18nProvider(fileName: i18nFilename, package: package),
         ),
         ChangeNotifierProvider<T>(
           create: (context) {
@@ -49,7 +49,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
           },
         )
       ],
-      child: Consumer2<I18nProvider, T>(
+      child: Consumer2<i18n.I18nProvider, T>(
           builder: (context, i18n, provider, child) => Await(
                 list: [i18n, provider],
                 child: createWidget(context),

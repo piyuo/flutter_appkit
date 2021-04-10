@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/src/i18n/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart' as i18n;
 import 'package:libcli/src/log/log.dart';
 import 'package:libcli/src/asset/asset.dart' as asset;
 import 'package:libcli/src/widgets/test.dart' as test;
@@ -22,11 +22,11 @@ class DocProvider extends AsyncProvider {
   Future<void> load(BuildContext context) async {
     if (!kReleaseMode && test.isMock()) {
       // don't load document in testMode, cause some big document cause pumpAndSettle() timed out
-      debug('fake load asset:docs/${docName}_${currentLocaleID}.md');
+      debug('fake load asset:docs/${docName}_${i18n.currentLocaleID}.md');
       return;
     }
     md = await asset.loadString(
-      assetName: 'docs/${docName}_${currentLocaleID}.md',
+      assetName: 'docs/${docName}_${i18n.currentLocaleID}.md',
     );
   }
 }

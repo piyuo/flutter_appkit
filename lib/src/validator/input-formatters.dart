@@ -3,14 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'package:libcli/src/i18n/i18n.dart';
+import 'package:libcli/src/i18n/i18n.dart' as i18n;
 
 TextEditingValue currencyFormatter(TextEditingValue oldValue, TextEditingValue newValue) {
   if (newValue.selection.baseOffset == 0) {
     return newValue;
   }
   double value = double.parse(newValue.text);
-  final formatter = NumberFormat.simpleCurrency(locale: currentLocaleID);
+  final formatter = NumberFormat.simpleCurrency(locale: i18n.currentLocaleID);
   String newText = formatter.format(value);
   return newValue.copyWith(text: newText, selection: new TextSelection.collapsed(offset: newText.length));
 //      selection: new TextSelection.collapsed());
