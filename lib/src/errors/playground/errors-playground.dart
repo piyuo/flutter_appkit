@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/src/log/log.dart' as log;
-import 'package:libcli/src/command/command.dart';
+import 'package:libcli/src/command/command.dart' as command;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/errors/main.dart';
@@ -24,7 +24,7 @@ class ErrorsPlayground extends StatelessWidget {
                 child: Text('guard denied'),
                 onPressed: () {
                   watch(() {});
-                  eventbus.broadcast(context, GuardDeniedEvent());
+                  eventbus.broadcast(context, command.GuardDeniedEvent());
                 }),
             TextButton(
                 child: Text('no internet'),
@@ -33,7 +33,7 @@ class ErrorsPlayground extends StatelessWidget {
                   try {
                     throw SocketException('wifi off');
                   } catch (e) {
-                    var contract = InternetRequiredContract(exception: e, url: 'http://mock');
+                    var contract = command.InternetRequiredContract(exception: e, url: 'http://mock');
                     contract.isInternetConnected = () async {
                       return false;
                     };
@@ -45,7 +45,7 @@ class ErrorsPlayground extends StatelessWidget {
                 child: Text('service not available'),
                 onPressed: () async {
                   watch(() {});
-                  var contract = InternetRequiredContract(url: 'http://mock');
+                  var contract = command.InternetRequiredContract(url: 'http://mock');
                   contract.isInternetConnected = () async {
                     return true;
                   };
@@ -58,7 +58,7 @@ class ErrorsPlayground extends StatelessWidget {
                 child: Text('internet blocked'),
                 onPressed: () async {
                   watch(() {});
-                  var contract = InternetRequiredContract(url: 'http://mock');
+                  var contract = command.InternetRequiredContract(url: 'http://mock');
                   contract.isInternetConnected = () async {
                     return true;
                   };
@@ -70,17 +70,17 @@ class ErrorsPlayground extends StatelessWidget {
             TextButton(
                 child: Text('internal server error'),
                 onPressed: () {
-                  eventbus.broadcast(context, InternalServerErrorEvent());
+                  eventbus.broadcast(context, command.InternalServerErrorEvent());
                 }),
             TextButton(
                 child: Text('server not ready'),
                 onPressed: () {
-                  eventbus.broadcast(context, ServerNotReadyEvent());
+                  eventbus.broadcast(context, command.ServerNotReadyEvent());
                 }),
             TextButton(
                 child: Text('bad request'),
                 onPressed: () {
-                  eventbus.broadcast(context, BadRequestEvent());
+                  eventbus.broadcast(context, command.BadRequestEvent());
                 }),
             TextButton(
                 child: Text('client timeout'),
@@ -89,21 +89,21 @@ class ErrorsPlayground extends StatelessWidget {
                     throw TimeoutException('client timeout');
                   } catch (e) {
                     var ok = await eventbus.broadcast(
-                        context, RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
+                        context, command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
                     toast(context, ok ? 'retry' : 'cancel');
                   }
                 }),
             TextButton(
                 child: Text('deadline exceeded'),
                 onPressed: () async {
-                  var ok =
-                      await eventbus.broadcast(context, RequestTimeoutContract(isServer: true, url: 'http://mock'));
+                  var ok = await eventbus.broadcast(
+                      context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
                   toast(context, ok ? 'retry' : 'cancel');
                 }),
             TextButton(
                 child: Text('slow network'),
                 onPressed: () {
-                  eventbus.broadcast(context, SlowNetworkEvent());
+                  eventbus.broadcast(context, command.SlowNetworkEvent());
                 }),
             TextButton(
                 child: Text('disk error'),

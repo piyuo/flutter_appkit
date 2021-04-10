@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/src/command/command.dart';
+import 'package:libcli/src/command/command.dart' as command;
 import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
 import 'package:libcli/src/errors/error-email.dart';
@@ -63,7 +63,7 @@ void catched(dynamic e, StackTrace? stack) {
 @visibleForTesting
 Future<void> listened(BuildContext context, dynamic e) async {
   debugPrint('error-service listened ${e.runtimeType}');
-  if (e is GuardDeniedEvent) {
+  if (e is command.GuardDeniedEvent) {
     alert(
       context,
       'guard'.i18n_,
@@ -71,7 +71,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
   }
-  if (e is InternalServerErrorEvent) {
+  if (e is command.InternalServerErrorEvent) {
     alert(
       context,
       '500 internal server error',
@@ -79,7 +79,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
   }
-  if (e is ServerNotReadyEvent) {
+  if (e is command.ServerNotReadyEvent) {
     alert(
       context,
       '501 server not ready',
@@ -87,7 +87,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
   }
-  if (e is BadRequestEvent) {
+  if (e is command.BadRequestEvent) {
     alert(
       context,
       '400 bad request',
@@ -95,7 +95,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
   }
-  if (e is SlowNetworkEvent) {
+  if (e is command.SlowNetworkEvent) {
     toast(context, 'slow'.i18n_,
         icon: Icon(
           Icons.wifi,
@@ -103,7 +103,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
           color: Colors.white,
         ));
   }
-  if (e is RequestTimeoutContract) {
+  if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await alert(
       context,
@@ -117,7 +117,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
     e.complete(result == true);
   }
-  if (e is InternetRequiredContract) {
+  if (e is command.InternetRequiredContract) {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         alert(
