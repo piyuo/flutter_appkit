@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'dart:convert';
 import 'package:libcli/app.dart';
-import 'package:libcli/src/log/log.dart';
+import 'package:libcli/src/log/log.dart' as log;
 import 'package:url_launcher/url_launcher.dart';
 
 class ErrorEmail {
@@ -18,7 +18,7 @@ Debug Information
 ''';
 
   String get encodedLogs {
-    String logs = printLogs();
+    String logs = log.printLogs();
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
     return stringToBase64.encode(logs);
   }

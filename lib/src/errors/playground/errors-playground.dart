@@ -5,7 +5,7 @@ import 'package:libcli/src/log/log.dart';
 import 'package:libcli/src/command/command.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/dialogs.dart';
-import 'package:libcli/src/errors/errors.dart';
+import 'package:libcli/src/errors/main.dart';
 
 class ErrorsPlayground extends StatelessWidget {
   @override

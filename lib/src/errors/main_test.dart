@@ -6,7 +6,7 @@ import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/src/log/log.dart';
 import 'package:libcli/dialogs.dart';
 import 'package:libcli/src/dialogs/dialogs.dart';
-import 'package:libcli/src/errors/errors.dart';
+import 'package:libcli/src/errors/main.dart';
 import 'package:libcli/src/command/command.dart';
 
 void main() {
