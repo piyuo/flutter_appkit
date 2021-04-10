@@ -12,7 +12,7 @@ import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
 import 'package:libpb/pb.dart';
 import 'package:libcli/test.dart';
-import 'package:libcli/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart';
 
 void main() {
   var lastEvent;

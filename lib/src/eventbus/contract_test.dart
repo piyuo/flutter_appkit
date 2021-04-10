@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/eventbus/types.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/main.dart';
 import 'package:libcli/test.dart';
 
 main() {
@@ -10,7 +10,7 @@ main() {
   group('[eventbus/contract]', () {
     test('should handle error', () async {
       listen<MockContract>((_, event) {
-        throw 'unhandle exception';
+        throw 'fail';
       });
       var value = await broadcast(MockBuildContext(), MockContract('c'));
       expect(value, false);

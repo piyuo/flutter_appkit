@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../../mock/mock.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/main.dart';
 import 'package:libcli/src/eventbus/types.dart';
 import 'package:libcli/test.dart';
 
@@ -91,7 +91,7 @@ main() {
     testWidgets('should isolate error', (WidgetTester tester) async {
       var eventType;
       listen<MyEvent>((_, event) async {
-        throw 'unhandle exception';
+        throw 'fail';
       });
       listen<MyEvent>((_, event) async {
         eventType = event.runtimeType;

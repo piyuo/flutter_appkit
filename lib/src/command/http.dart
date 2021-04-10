@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart';
-import 'package:libcli/eventbus.dart';
+import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http-header.dart';
 import 'package:libcli/src/command/protobuf.dart';
