@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/main.dart';
 import 'package:libcli/src/dialogs/alert.dart';
 
 void main() {

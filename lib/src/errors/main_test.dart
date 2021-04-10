@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:libcli/src/command/command.dart' as command;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/log/log.dart' as log;
-import 'package:libcli/dialogs.dart';
-import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/dialogs.dart' as dialogs;
+import 'package:libcli/src/dialogs/main.dart';
 import 'package:libcli/src/errors/main.dart';
 
 void main() {
@@ -192,7 +192,7 @@ void main() {
     });
 
     testWidgets('should toast when network is slow', (WidgetTester tester) async {
-      mockToast();
+      dialogs.mockToast();
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
@@ -202,7 +202,7 @@ void main() {
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
-      await expectToastAndWaitDismiss(tester);
+      await dialogs.expectToastAndWaitDismiss(tester);
     });
   });
 }

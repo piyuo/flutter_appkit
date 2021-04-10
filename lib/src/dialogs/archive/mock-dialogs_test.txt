@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:mockito/mockito.dart';
-import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/dialogs.dart' as dialogs;
 import 'package:libcli/src/dialogs/mock-dialogs.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 

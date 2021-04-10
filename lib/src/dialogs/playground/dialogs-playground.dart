@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/main.dart';
 import 'package:libcli/src/dialogs/alert.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
 
@@ -23,26 +23,26 @@ class DialogsPlayground extends StatelessWidget {
               children: [
                 Wrap(
                   children: [
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert'),
                       onPressed: () => alert(
                         context,
                         'hi',
                       ),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert warning'),
                       onPressed: () => alert(context, 'hello world1', warning: true),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert title'),
                       onPressed: () => alert(context, 'hello world', title: 'title'),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert title/footer'),
                       onPressed: () => alert(context, 'hello world', title: 'title', footer: 'footer'),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert yes/no/cancel'),
                       onPressed: () async {
                         var result = await alert(
@@ -61,7 +61,7 @@ class DialogsPlayground extends StatelessWidget {
                         }
                       },
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert ok/cancel'),
                       onPressed: () async {
                         var result = await alert(
@@ -77,12 +77,12 @@ class DialogsPlayground extends StatelessWidget {
                         }
                       },
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert warning emailus'),
                       onPressed: () =>
                           alert(context, 'error message', footer: 'description', emailUs: true, warning: true),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('alert long content'),
                       onPressed: () => alert(
                         context,
@@ -94,21 +94,21 @@ class DialogsPlayground extends StatelessWidget {
                         icon: Icons.sync_problem_rounded,
                       ),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       key: btnTooltip,
                       child: Text('tooltip'),
                       onPressed: () => tooltip(context, 'hello world', widgetKey: btnTooltip),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('toast'),
                       onPressed: () => toast(context, 'hello world'),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text('toast with icon'),
                       onPressed: () =>
                           toast(context, 'hello world', icon: Icon(Icons.check, size: 38, color: Colors.white)),
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       key: btnMenu,
                       child: Text('menu'),
                       onPressed: () async {

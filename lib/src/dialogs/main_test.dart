@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/main.dart';
 import 'package:libcli/src/dialogs/popup-menu.dart';
-import 'package:libcli/src/dialogs/dialogs-mock.dart';
-import 'package:libcli/src/dialogs/popup.dart';
+import 'package:libcli/src/dialogs/mock.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();

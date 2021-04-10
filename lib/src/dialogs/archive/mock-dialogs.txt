@@ -1,4 +1,4 @@
-import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/dialogs.dart' as dialogs;
 import 'package:libcli/src/dialogs/popup-menu.dart';
 
 class MockDialogs extends Dialogs {

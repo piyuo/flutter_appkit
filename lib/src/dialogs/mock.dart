@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:libcli/src/dialogs/toast.dart';
-import 'package:libcli/src/dialogs/dialogs.dart';
+import 'package:libcli/src/dialogs/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// mockToast set duration minimum

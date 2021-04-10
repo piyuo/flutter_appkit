@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/dialogs.dart';
+import 'package:libcli/src/dialogs/dialogs.dart' as dialogs;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/command.dart' as command;
 import 'package:libcli/src/log/log.dart' as log;
@@ -39,8 +39,8 @@ void catched(dynamic e, StackTrace? stack) {
     //don't do anything, assertion only happen in development
     return;
   } else if (e is log.DiskErrorException) {
-    alert(
-      dialogsRootContext,
+    dialogs.alert(
+      dialogs.dialogsRootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
       icon: Icons.sync_problem_rounded,
@@ -49,8 +49,8 @@ void catched(dynamic e, StackTrace? stack) {
   }
 
   //try {
-  alert(
-    dialogsRootContext,
+  dialogs.alert(
+    dialogs.dialogsRootContext,
     'notified'.i18n_,
     warning: true,
     title: 'errTitle'.i18n_,
@@ -64,7 +64,7 @@ void catched(dynamic e, StackTrace? stack) {
 Future<void> listened(BuildContext context, dynamic e) async {
   debugPrint('error-service listened ${e.runtimeType}');
   if (e is command.GuardDeniedEvent) {
-    alert(
+    dialogs.alert(
       context,
       'guard'.i18n_,
       warning: true,
@@ -72,7 +72,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   }
   if (e is command.InternalServerErrorEvent) {
-    alert(
+    dialogs.alert(
       context,
       '500 internal server error',
       warning: true,
@@ -80,7 +80,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   }
   if (e is command.ServerNotReadyEvent) {
-    alert(
+    dialogs.alert(
       context,
       '501 server not ready',
       warning: true,
@@ -88,7 +88,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   }
   if (e is command.BadRequestEvent) {
-    alert(
+    dialogs.alert(
       context,
       '400 bad request',
       warning: true,
@@ -96,7 +96,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   }
   if (e is command.SlowNetworkEvent) {
-    toast(context, 'slow'.i18n_,
+    dialogs.toast(context, 'slow'.i18n_,
         icon: Icon(
           Icons.wifi,
           size: 36,
@@ -105,7 +105,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
   }
   if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
-    var result = await alert(
+    var result = await dialogs.alert(
       context,
       'timeoutDesc'.i18n_,
       title: 'timeout'.i18n_,
@@ -120,7 +120,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
   if (e is command.InternetRequiredContract) {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
-        alert(
+        dialogs.alert(
           context,
           'noServiceDesc'.i18n_,
           icon: Icons.cloud_off,
@@ -129,7 +129,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
           emailUs: true,
         ); //service not available
       } else {
-        alert(
+        dialogs.alert(
           context,
           'blockedDesc'.i18n_,
           title: 'blocked'.i18n_,
@@ -140,7 +140,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       }
       e.complete(false);
     } else {
-      var result = await alert(
+      var result = await dialogs.alert(
         context,
         'noInternetDesc'.i18n_,
         title: 'noInternet'.i18n_,
