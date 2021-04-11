@@ -1,3 +1,6 @@
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:libcli/src/app/configuration.dart' as config;
 import 'package:libcli/src/log/log.dart' as log;
 
 /// BRANCH_MASTER is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -39,4 +42,21 @@ String get userID => _userID;
 set userID(String value) {
   log.log('${log.COLOR_STATE}set userID=$value');
   _userID = value;
+}
+
+/// nativeConfiguration set configuration to native application
+///
+void configuration({
+  required String branch,
+  required String appID,
+  required String supportEmail,
+}) {
+  log.log('branch=$branch, appID=$appID, supportEmail=$supportEmail');
+  config.branch = branch;
+  config.appID = appID;
+  config.supportEmail = supportEmail;
+  //no need for now, cause GlobalLocalizations will load date formatting
+//  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
+  Provider.debugCheckInvalidValueType = null;
+  WidgetsFlutterBinding.ensureInitialized();
 }
