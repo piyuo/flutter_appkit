@@ -6,20 +6,10 @@ void webRedirect(String url) {
   html.window.location.href = url;
 }
 
-Uri webUri() {
+Uri uri() {
   return Uri.parse(html.window.location.href);
 }
 
-String webUriPath() {
-  return webUri().path;
-}
-
-String webUriName() {
-  Uri uri = webUri();
-  return uri.pathSegments[uri.pathSegments.length - 1];
-}
-
-Map<String, String> webArguments() {
-  Uri uri = Uri.parse(html.window.location.href);
-  return uri.queryParameters;
+Map<String, String> query() {
+  return uri().queryParameters;
 }
