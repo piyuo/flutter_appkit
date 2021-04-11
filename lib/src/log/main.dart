@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/logs.dart';
-import 'package:libcli/app.dart' as configuration;
+import 'package:libcli/src/app/app.dart' as configuration;
 
 const _b = '\u001b[';
 const COLOR_END = _b + '0m';

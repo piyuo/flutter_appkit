@@ -1,5 +1,5 @@
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
-import 'package:libcli/app.dart' as configuration;
+import 'package:libcli/src/app/app.dart' as configuration;
 import 'package:flutter/foundation.dart';
 
 /// serviceMark

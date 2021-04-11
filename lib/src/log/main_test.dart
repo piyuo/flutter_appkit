@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/main.dart';
-import 'package:libcli/app.dart' as configuration;
+import 'package:libcli/src/app/app.dart' as configuration;
 
 void main() {
   group('[log]', () {

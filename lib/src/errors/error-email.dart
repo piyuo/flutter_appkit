@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'dart:convert';
-import 'package:libcli/app.dart';
+import 'package:libcli/src/app/app.dart';
 import 'package:libcli/src/log/log.dart' as log;
 import 'package:url_launcher/url_launcher.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/src/command/protobuf.dart';
-import 'package:libcli/app.dart' as config;
+import 'package:libcli/src/app/app.dart' as config;
 import 'package:libcli/src/command/mock-service.dart';
 import 'package:libcli/src/command/guard.dart';
 import 'package:libcli/src/command/events.dart';
