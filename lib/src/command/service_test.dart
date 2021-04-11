@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/src/command/protobuf.dart';
-import 'package:libcli/src/app/app.dart' as config;
+import 'package:libcli/src/application/application.dart' as application;
 import 'package:libcli/src/command/mock-service.dart';
 import 'package:libcli/src/command/guard.dart';
 import 'package:libcli/src/command/events.dart';
@@ -51,7 +51,7 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
-      config.branch = config.BRANCH_MASTER;
+      application.branch = application.BRANCH_MASTER;
       var service = MockService()
         ..mockExecute = (ctx, action) async {
           throw Exception('mock');

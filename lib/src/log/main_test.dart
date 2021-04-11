@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/main.dart';
-import 'package:libcli/src/app/app.dart' as configuration;
+import 'package:libcli/src/application/application.dart' as application;
 
 void main() {
   group('[log]', () {
@@ -22,14 +22,14 @@ void main() {
     });
 
     test('should log', () async {
-      configuration.appID = 'log_test';
-      configuration.userID = 'developer';
+      application.name = 'log_test';
+      application.userID = 'developer';
       log('hi');
     });
 
     test('should error', () async {
-      configuration.appID = 'log_test';
-      configuration.userID = 'developer';
+      application.name = 'log_test';
+      application.userID = 'developer';
       try {
         throw Exception('my error');
       } catch (e, s) {
@@ -38,8 +38,8 @@ void main() {
     });
 
     test('should create head', () {
-      configuration.appID = 'piyuo-web-index';
-      configuration.userID = '111-222';
+      application.name = 'piyuo-web-index';
+      application.userID = '111-222';
       // ignore: invalid_use_of_visible_for_testing_member
       expect(header, '111-222@piyuo-web-index:');
     });

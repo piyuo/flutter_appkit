@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/src/app/configuration.dart' as config;
 import 'package:libcli/src/log/log.dart' as log;
 
 /// BRANCH_MASTER is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -27,12 +26,12 @@ String branch = '';
 ///
 ///     configuration.appID='piyuo-web-index'
 ///
-String appID = '';
+String name = '';
 
 /// supportEmail
 ///
 ///     vars.supportEmail='anyone@piyuo.com'
-String supportEmail = 'support@piyuo.com';
+String email = 'support@piyuo.com';
 
 /// user identity
 ///
@@ -44,17 +43,17 @@ set userID(String value) {
   _userID = value;
 }
 
-/// nativeConfiguration set configuration to native application
+/// config application
 ///
-void configuration({
-  required String branch,
-  required String appID,
-  required String supportEmail,
+void config({
+  required String appBranch,
+  required String appName,
+  required String appEmail,
 }) {
-  log.log('branch=$branch, appID=$appID, supportEmail=$supportEmail');
-  config.branch = branch;
-  config.appID = appID;
-  config.supportEmail = supportEmail;
+  log.log('branch=$appBranch, name=$appName, email=$appEmail');
+  branch = appBranch;
+  name = appName;
+  email = appEmail;
   //no need for now, cause GlobalLocalizations will load date formatting
 //  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
   Provider.debugCheckInvalidValueType = null;

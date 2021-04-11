@@ -1,5 +1,5 @@
 import 'package:libcli/src/i18n/i18n.dart' as i18n;
-import 'package:libcli/src/app/app.dart' as configuration;
+import 'package:libcli/src/application/application.dart' as application;
 import 'package:flutter/foundation.dart';
 
 /// serviceMark
@@ -16,12 +16,12 @@ String serviceRegion = '';
 ///
 String serviceUrl(String funcName) {
   if (!kReleaseMode) {
-    if (configuration.branch == configuration.BRANCH_DEBUG) {
+    if (application.branch == application.BRANCH_DEBUG) {
       return 'http://localhost:8080/?q';
     }
   }
 
-  String branch = '-' + configuration.branch;
+  String branch = '-' + application.branch;
   if (branch == '-stable') {
     branch = '';
   }
