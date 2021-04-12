@@ -43,9 +43,9 @@ set userID(String value) {
   _userID = value;
 }
 
-/// config application
+/// init config
 ///
-void config({
+void init({
   required String appBranch,
   required String appName,
   required String appEmail,
