@@ -10,7 +10,7 @@ import 'package:libcli/src/command/events.dart';
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
-import 'package:libpb/pb.dart';
+import 'package:libpb/src/pb/pb.dart' as pb;
 import 'package:libcli/src/mocking/mocking.dart' as mocking;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 
@@ -47,7 +47,7 @@ void main() {
       });
       MockService service = MockService();
       var response = await service.executeWithClient(mocking.Context(), CommandEcho(), client);
-      expect(response is PbEmpty, true);
+      expect(response is pb.Empty, true);
     });
 
     test('should return null when send wrong action to test server', () async {
@@ -104,8 +104,8 @@ void main() {
 
       //send second time
       response = await service.executeWithClient(mocking.Context(), CommandEcho(), client);
-      expect(response is PbError, true);
-      if (response is PbError) {
+      expect(response is pb.Error, true);
+      if (response is pb.Error) {
         expect(response.code, 'GUARD_1');
       }
       expect(lastEvent is GuardDeniedEvent, true);
@@ -126,13 +126,13 @@ void main() {
       //send first time
       var response = await service.executeWithClient(mocking.Context(), CommandEcho(), client, rule: rule);
       expect(response is StringResponse, true);
-      if (response is PbError) {
+      if (response is pb.Error) {
         expect(response.code, 'GUARD_1');
       }
 
       //send second time
       response = await service.executeWithClient(mocking.Context(), CommandEcho(), client, rule: rule);
-      expect(response is PbError, true);
+      expect(response is pb.Error, true);
       expect(lastEvent is GuardDeniedEvent, true);
     });
 
@@ -147,8 +147,8 @@ void main() {
 
       //send second time
       response = await service.executeWithClient(mocking.Context(), CommandEcho(), client, broadcastDenied: false);
-      expect(response is PbError, true);
-      var error = response as PbError;
+      expect(response is pb.Error, true);
+      var error = response as pb.Error;
       expect(error.code, 'GUARD_1');
       expect(lastEvent, isNull);
     });

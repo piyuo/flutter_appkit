@@ -8,7 +8,7 @@ import 'package:libcli/src/command/guard.dart';
 import 'package:libcli/src/command/url.dart';
 import 'package:libcli/src/command/http.dart';
 import 'package:libcli/src/command/events.dart';
-import 'package:libpb/pb.dart';
+import 'package:libpb/src/pb/pb.dart' as pb;
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -45,7 +45,7 @@ abstract class Service {
 
   /// find object by id
   ///
-  PbObject newObjectByID(int id, List<int> bytes);
+  pb.Object newObjectByID(int id, List<int> bytes);
 
   /// url return remote service url
   ///
@@ -64,9 +64,9 @@ abstract class Service {
   ///
   ///     var response = await service.execute(EchoAction());
   ///
-  Future<PbObject> execute(
+  Future<pb.Object> execute(
     BuildContext ctx,
-    PbObject command, {
+    pb.Object command, {
     GuardRule? rule,
     bool broadcastDenied = true,
   }) async {
@@ -84,9 +84,9 @@ abstract class Service {
   ///
   ///     var response = await service.executehWithClient(client, EchoAction());
   ///
-  Future<PbObject> executeWithClient(
+  Future<pb.Object> executeWithClient(
     BuildContext context,
-    PbObject command,
+    pb.Object command,
     http.Client client, {
     GuardRule? rule,
     bool broadcastDenied = true,
@@ -97,7 +97,7 @@ abstract class Service {
       //pass
       var jsonSent = log.toLogString(command);
       log.log('${log.COLOR_STATE}send ${command.runtimeType}{$jsonSent}${log.COLOR_END} to $url');
-      PbObject returnObj = await post(
+      pb.Object returnObj = await post(
           context,
           Request(
             service: this,
@@ -119,6 +119,6 @@ abstract class Service {
     if (broadcastDenied) {
       eventbus.broadcast(context, GuardDeniedEvent());
     }
-    return PbError()..code = 'GUARD_$result';
+    return pb.Error()..code = 'GUARD_$result';
   }
 }

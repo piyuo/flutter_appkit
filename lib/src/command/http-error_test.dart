@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
-import 'package:libpb/pb.dart';
+import 'package:libpb/src/pb/pb.dart' as pb;
 import 'package:libcli/src/command/mock-service.dart';
 import 'package:libcli/src/mocking/mocking.dart' as mocking;
 import 'package:libcli/src/command/events.dart';
@@ -45,7 +45,7 @@ void main() {
 
       req.timeout = const Duration(milliseconds: 1);
       var obj = await doPost(mocking.Context(), req);
-      expect(obj is PbEmpty, true);
+      expect(obj is pb.Empty, true);
       expect(contract is RequestTimeoutContract, true);
     });
   });

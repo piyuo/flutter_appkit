@@ -9,14 +9,14 @@ import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http-header.dart';
 import 'package:libcli/src/command/protobuf.dart';
 import 'package:libcli/src/command/service.dart';
-import 'package:libpb/pb.dart';
+import 'package:libpb/src/pb/pb.dart' as pb;
 
 ///Request for post()
 class Request {
   final Service service;
   final http.Client client;
   final String url;
-  final PbObject action;
+  final pb.Object action;
   Duration timeout;
   Duration slow;
   Request({
@@ -31,8 +31,8 @@ class Request {
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
 ///
-Future<PbObject> post(BuildContext ctx, Request request) async {
-  Completer<PbObject> completer = new Completer<PbObject>();
+Future<pb.Object> post(BuildContext ctx, Request request) async {
+  Completer<pb.Object> completer = new Completer<pb.Object>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
       eventbus.broadcast(ctx, SlowNetworkEvent());
@@ -55,7 +55,7 @@ Future<PbObject> post(BuildContext ctx, Request request) async {
 ///     req.timeout = 9000;
 ///     var bytes = await commandHttp.doPost(req);
 ///
-Future<PbObject> doPost(BuildContext context, Request r) async {
+Future<pb.Object> doPost(BuildContext context, Request r) async {
   try {
     var headers = await doRequestHeaders();
     Uint8List bytes = encode(r.action);
@@ -129,16 +129,16 @@ Future<PbObject> doPost(BuildContext context, Request r) async {
 ///
 ///     commandHttp.giveup(ctx,BadRequestEvent());
 ///
-Future<PbObject> giveup(BuildContext ctx, dynamic e) async {
+Future<pb.Object> giveup(BuildContext ctx, dynamic e) async {
   eventbus.broadcast(ctx, e);
-  return PbObject.empty;
+  return pb.Object.empty;
 }
 
 /// retry use contract, return empty proto object is contract failed
 ///
 ///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 ///
-Future<PbObject> retry(
+Future<pb.Object> retry(
   BuildContext context, {
   required eventbus.Contract contract,
   required Request request,
@@ -147,5 +147,5 @@ Future<PbObject> retry(
     log.log('try again');
     return await doPost(context, request);
   }
-  return PbObject.empty;
+  return pb.Object.empty;
 }

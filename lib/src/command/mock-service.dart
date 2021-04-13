@@ -5,11 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/src/command/service.dart';
 import 'package:libcli/src/command/http.dart';
 import 'package:libcli/src/command/guard.dart';
-import 'package:libpb/pb.dart';
+import 'package:libpb/src/pb/pb.dart' as pb;
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
-typedef Future<PbObject> MockExecute(BuildContext ctx, PbObject obj);
+typedef Future<pb.Object> MockExecute(BuildContext ctx, pb.Object obj);
 
 /// MockService let you mock service with your own execute function
 ///
@@ -17,7 +17,7 @@ class MockService extends Service {
   /// mockExecute mock execute function
   ///
   MockExecute mockExecute = (_, action) async {
-    return PbOK();
+    return pb.OK();
   };
 
   MockService()
@@ -28,14 +28,14 @@ class MockService extends Service {
         );
 
   @override
-  PbObject newObjectByID(int id, List<int> l) {
-    return PbOK();
+  pb.Object newObjectByID(int id, List<int> l) {
+    return pb.OK();
   }
 
   @override
-  Future<PbObject> execute(
+  Future<pb.Object> execute(
     BuildContext ctx,
-    PbObject obj, {
+    pb.Object obj, {
     GuardRule? rule,
     bool broadcastDenied = true,
   }) async {
@@ -48,7 +48,7 @@ Request newRequest(MockClient client) {
   return Request(
     service: service,
     client: client,
-    action: PbString(),
+    action: pb.String(),
     url: 'http://mock',
     timeout: Duration(milliseconds: 9000),
     slow: Duration(milliseconds: 9000),

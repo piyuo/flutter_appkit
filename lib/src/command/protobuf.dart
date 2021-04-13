@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 import 'package:libcli/src/command/service.dart';
-import 'package:libpb/pb.dart';
+import 'package:libpb/src/pb/pb.dart' as pb;
 
 /// encode protobuf object into bytes
 ///
 ///     EchoAction echoAction = EchoAction();
 ///     echoAction.text = 'hi';
 ///     List<int> bytes = commandProtobuf.encode(echoAction);
-Uint8List encode(PbObject obj) {
+Uint8List encode(pb.Object obj) {
   Uint8List bytes = obj.writeToBuffer();
   Uint8List list = Uint8List(bytes.length + 2);
   list.setRange(0, bytes.length, bytes);
@@ -22,14 +22,14 @@ Uint8List encode(PbObject obj) {
 ///     EchoAction decodeAction = commandProtobuf.decode(bytes, service);
 ///     expect(decodeAction.text, 'hi');
 ///
-PbObject decode(List<int> bytes, Service service) {
+pb.Object decode(List<int> bytes, Service service) {
   List<int> protoBytes = bytes.sublist(0, bytes.length - 2);
   Uint8List idBytes = Uint8List.fromList(bytes.sublist(bytes.length - 2, bytes.length));
   final id = idBytes.buffer.asByteData().getInt16(0, Endian.little);
 
-  PbObject obj;
+  pb.Object obj;
   if (id <= 1000) {
-    obj = sharedObjectByID(id, protoBytes);
+    obj = pb.pbObjectByID(id, protoBytes);
   } else {
     obj = service.newObjectByID(id, protoBytes);
   }
