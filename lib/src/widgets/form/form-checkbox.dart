@@ -11,10 +11,13 @@ class FormCheckbox extends StatefulWidget {
 
   final String? label;
 
+  final double size;
+
   FormCheckbox({
     required this.controller,
     this.label,
     this.child,
+    this.size = 24,
     Key? key,
   }) : super(key: key);
 
@@ -25,24 +28,22 @@ class FormCheckbox extends StatefulWidget {
 class FormCheckboxState extends State<FormCheckbox> {
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      controlAffinity: ListTileControlAffinity.leading,
-      contentPadding: EdgeInsets.all(0),
-      title: widget.child != null
-          ? widget.child!
-          : widget.label != null
-              ? Text(widget.label!,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color.fromRGBO(134, 134, 139, 1),
-                  ))
-              : null,
-      value: widget.controller.value,
-      onChanged: (bool? newValue) {
-        setState(() {
-          widget.controller.value = newValue ?? false;
-        });
-      },
-    );
+    return Transform.scale(
+        scale: widget.size / Checkbox.width,
+        child: CheckboxListTile(
+          controlAffinity: ListTileControlAffinity.leading,
+          contentPadding: EdgeInsets.all(0),
+          title: widget.child != null
+              ? widget.child!
+              : widget.label != null
+                  ? Text(widget.label!, style: Theme.of(context).primaryTextTheme.bodyText1)
+                  : null,
+          value: widget.controller.value,
+          onChanged: (bool? newValue) {
+            setState(() {
+              widget.controller.value = newValue ?? false;
+            });
+          },
+        ));
   }
 }

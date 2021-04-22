@@ -200,6 +200,7 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
             text: span.text,
             recognizer: recognizer,
             style: TextStyle(
+              fontSize: 16,
               decoration: span.onTap != null || span.onTapUp != null ? TextDecoration.underline : null,
               color: color,
               fontWeight: span.bold == true ? FontWeight.w600 : FontWeight.normal,
