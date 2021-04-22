@@ -45,7 +45,7 @@ Widget h3(String text, {Color? color}) {
 
 Widget p() {
   return SizedBox(
-    height: 36,
+    height: 48,
   );
 }
 
