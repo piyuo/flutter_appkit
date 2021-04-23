@@ -97,11 +97,15 @@ class HyperText extends StatefulWidget {
     Function(BuildContext)? onTap,
     Function(BuildContext, TapUpDetails)? onTapUp,
   }) {
+    if (!children.isEmpty) {
+      children.add(_Span(" "));
+    }
     children.add(_Span(
       text,
       onTap: onTap,
       onTapUp: onTapUp,
     ));
+    children.add(_Span(" "));
   }
 
   @override
@@ -171,12 +175,13 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    var bColor = isDark ? Colors.white : Colors.black;
     return RichText(
       text: TextSpan(
         children: widget.children.map((_Span span) {
           var textColor = widget.color ?? Color.fromRGBO(134, 134, 139, 1);
-          var boldColor = widget.boldColor ?? Color.fromRGBO(245, 99, 0, 1);
+          var boldColor = widget.boldColor ?? bColor;
           var color = span.bold == true ? boldColor : textColor;
           var recognizer = null;
           if (span.onTap != null || span.onTapUp != null) {
