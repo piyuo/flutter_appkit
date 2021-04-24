@@ -48,12 +48,15 @@ Widget showButton(
       ? Container(
           margin: EdgeInsets.only(bottom: 10),
           width: double.infinity,
-          height: 28,
-          child: RaisedButton(
-            elevation: 1,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-            color: color,
-            textColor: textColor,
+          height: 42,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all(1),
+              shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0)))),
+              backgroundColor: MaterialStateProperty.all(color),
+              textStyle: MaterialStateProperty.all(TextStyle(color: color)),
+            ),
             key: key,
             child: Text(text),
             onPressed: () => Navigator.of(context).pop(value),
