@@ -38,17 +38,23 @@ class DocWidget extends StatelessWidget {
               bottom: false,
               child: Stack(children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 42),
+                  padding: const EdgeInsets.only(bottom: 62),
                   child: Consumer<DocProvider>(builder: (context, provider, _) => Markdown(data: provider.md)),
                 ),
                 Positioned(
                   left: 30,
                   right: 30,
                   bottom: 8,
-                  child: Container(
+                  child: Align(
                       alignment: Alignment.center,
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         child: Text('back'.i18n_),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.cyan[700]),
+                            padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40, 20, 40, 20)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                            )),
                         onPressed: () => Navigator.pop(context),
                       )),
                 )
