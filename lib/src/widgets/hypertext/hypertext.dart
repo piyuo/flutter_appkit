@@ -177,6 +177,7 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
     super.build(context);
     bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     var bColor = isDark ? Colors.white : Colors.black;
+    var linkColor = isDark ? Colors.lightBlue[300]! : Colors.lightBlue[800]!;
     return RichText(
       text: TextSpan(
         children: widget.children.map((_Span span) {
@@ -185,7 +186,7 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
           var color = span.bold == true ? boldColor : textColor;
           var recognizer = null;
           if (span.onTap != null || span.onTapUp != null) {
-            color = widget.linkColor ?? Color.fromRGBO(0, 102, 204, 1);
+            color = widget.linkColor ?? linkColor;
             recognizer = TapGestureRecognizer()
               ..onTapCancel = _handleTapCancel
               ..onTapUp = (TapUpDetails details) {
