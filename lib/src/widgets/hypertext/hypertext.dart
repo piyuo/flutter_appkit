@@ -77,8 +77,8 @@ class HyperText extends StatefulWidget {
   void tip(
     String text,
     String tip, {
-    double width = 180,
-    double height = 120,
+    double width = 240,
+    double height = 180,
   }) {
     return link(
       text,

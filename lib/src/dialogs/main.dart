@@ -75,22 +75,22 @@ Future<MenuItem> popMenu(
 /// tooltip show tooltip
 ///
 void tooltip(BuildContext context, String message,
-    {double width = 160,
-    double height = 40,
+    {double width = 180,
+    double height = 60,
     Color? backgroundColor,
     Color? color,
     GlobalKey? widgetKey,
     Rect? widgetRect,
     Offset? widgetPosition}) {
-  backgroundColor = backgroundColor ?? Color.fromRGBO(11, 129, 255, 1);
+  backgroundColor = backgroundColor ?? Colors.lightBlue[800]!;
   color = color ?? Color.fromRGBO(242, 248, 255, 1);
   var popup = Popup(
     child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(16),
         child: Text(message,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 16,
               fontWeight: FontWeight.normal,
               color: color,
               decoration: TextDecoration.none,
