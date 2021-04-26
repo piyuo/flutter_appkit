@@ -11,10 +11,13 @@ class FormCheckbox extends StatefulWidget {
 
   final double width;
 
+  final TextStyle? textStyle;
+
   FormCheckbox({
     required this.controller,
     this.label = '',
     this.width = 24,
+    this.textStyle,
     Key? key,
   }) : super(key: key);
 
@@ -44,7 +47,7 @@ class FormCheckboxState extends State<FormCheckbox> {
         },
         child: Text(
           widget.label,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: widget.textStyle ?? Theme.of(context).textTheme.bodyText1,
         ),
       ),
     ]);
