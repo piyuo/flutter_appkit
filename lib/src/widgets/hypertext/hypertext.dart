@@ -47,10 +47,13 @@ class HyperText extends StatefulWidget {
 
   final Color? linkColor;
 
+  final double? fontSize;
+
   HyperText({
     this.color,
     this.boldColor,
     this.linkColor,
+    this.fontSize = 16,
   });
 
   void span(String text) {
@@ -206,7 +209,7 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
             text: span.text,
             recognizer: recognizer,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: widget.fontSize,
               decoration: span.onTap != null || span.onTapUp != null ? TextDecoration.underline : null,
               color: color,
               fontWeight: span.bold == true ? FontWeight.w600 : FontWeight.normal,

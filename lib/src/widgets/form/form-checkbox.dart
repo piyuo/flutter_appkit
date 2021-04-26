@@ -7,17 +7,14 @@ import 'package:libcli/src/widgets/controller/bool-editing-controller.dart';
 class FormCheckbox extends StatefulWidget {
   final BoolEditingController controller;
 
-  final Widget? child;
+  final String label;
 
-  final String? label;
-
-  final double size;
+  final double width;
 
   FormCheckbox({
     required this.controller,
-    this.label,
-    this.child,
-    this.size = 24,
+    this.label = '',
+    this.width = 24,
     Key? key,
   }) : super(key: key);
 
@@ -28,22 +25,83 @@ class FormCheckbox extends StatefulWidget {
 class FormCheckboxState extends State<FormCheckbox> {
   @override
   Widget build(BuildContext context) {
-    return Transform.scale(
-        scale: widget.size / Checkbox.width,
-        child: CheckboxListTile(
-          controlAffinity: ListTileControlAffinity.leading,
-          contentPadding: EdgeInsets.all(0),
-          title: widget.child != null
-              ? widget.child!
-              : widget.label != null
-                  ? Text(widget.label!, style: Theme.of(context).primaryTextTheme.bodyText1)
-                  : null,
-          value: widget.controller.value,
-          onChanged: (bool? newValue) {
-            setState(() {
-              widget.controller.value = newValue ?? false;
-            });
-          },
-        ));
+    return Row(children: [
+      RoundCheckbox(
+        width: widget.width,
+        value: widget.controller.value,
+        onChanged: (bool? newValue) {
+          setState(() {
+            widget.controller.value = newValue ?? false;
+          });
+        },
+      ),
+      SizedBox(width: 12),
+      InkWell(
+        onTap: () {
+          setState(() {
+            widget.controller.value = !widget.controller.value;
+          });
+        },
+        child: Text(
+          widget.label,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ),
+    ]);
+  }
+}
+
+class RoundCheckbox extends StatelessWidget {
+  final bool value;
+  final ValueChanged<bool?> onChanged;
+  final Color? activeColor;
+  final Color? checkColor;
+  final bool tristate;
+  final MaterialTapTargetSize? materialTapTargetSize;
+  final double width;
+
+  RoundCheckbox({
+    Key? key,
+    required this.value,
+    this.tristate = false,
+    required this.onChanged,
+    this.width = 18,
+    this.activeColor,
+    this.checkColor,
+    this.materialTapTargetSize,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      clipBehavior: Clip.hardEdge,
+      borderRadius: BorderRadius.all(Radius.circular(6)),
+      child: SizedBox(
+        width: width,
+        height: width,
+        child: Container(
+          decoration: new BoxDecoration(
+            border: Border.all(
+                width: 1, color: Theme.of(context).unselectedWidgetColor), //?? Theme.of(context).disabledColor
+            borderRadius: new BorderRadius.circular(6),
+          ),
+          child: Theme(
+            data: ThemeData(
+              unselectedWidgetColor: Colors.transparent,
+            ),
+            child: Transform.scale(
+              scale: width / Checkbox.width,
+              child: Checkbox(
+                value: value,
+                tristate: tristate,
+                onChanged: onChanged,
+                fillColor: Theme.of(context).checkboxTheme.fillColor,
+                materialTapTargetSize: materialTapTargetSize,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
