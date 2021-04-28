@@ -44,7 +44,7 @@ class CheckState extends State<Check> {
               });
             },
           ),
-          SizedBox(width: 12),
+          SizedBox(width: 8),
           Text(
             widget.label,
             style: widget.textStyle ?? Theme.of(context).textTheme.bodyText1,
