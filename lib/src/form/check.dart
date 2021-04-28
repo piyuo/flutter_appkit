@@ -28,29 +28,28 @@ class Check extends StatefulWidget {
 class CheckState extends State<Check> {
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      RoundCheckbox(
-        width: widget.width,
-        value: widget.controller.value,
-        onChanged: (bool? newValue) {
-          setState(() {
-            widget.controller.value = newValue ?? false;
-          });
-        },
-      ),
-      SizedBox(width: 12),
-      InkWell(
+    return InkWell(
         onTap: () {
           setState(() {
             widget.controller.value = !widget.controller.value;
           });
         },
-        child: Text(
-          widget.label,
-          style: widget.textStyle ?? Theme.of(context).textTheme.bodyText1,
-        ),
-      ),
-    ]);
+        child: Row(children: [
+          RoundCheckbox(
+            width: widget.width,
+            value: widget.controller.value,
+            onChanged: (bool? newValue) {
+              setState(() {
+                widget.controller.value = newValue ?? false;
+              });
+            },
+          ),
+          SizedBox(width: 12),
+          Text(
+            widget.label,
+            style: widget.textStyle ?? Theme.of(context).textTheme.bodyText1,
+          ),
+        ]));
   }
 }
 
