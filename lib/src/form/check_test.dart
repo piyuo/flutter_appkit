@@ -12,7 +12,7 @@ void main() {
     controller.value = false;
   });
 
-  Widget testTarget() {
+  Widget app() {
     return MaterialApp(
       home: Scaffold(
         body: Form(
@@ -31,7 +31,7 @@ void main() {
 
   group('[checkbox]', () {
     testWidgets('should pass value to controller', (WidgetTester tester) async {
-      await tester.pumpWidget(testTarget());
+      await tester.pumpWidget(app());
       expect(controller.value, false); // first item value
       await tester.tap(find.byType(Check));
       await tester.pumpAndSettle();

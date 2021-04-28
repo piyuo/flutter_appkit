@@ -97,7 +97,7 @@ class RoundCheckbox extends StatelessWidget {
               child: Checkbox(
                 value: value,
                 tristate: tristate,
-                onChanged: onChanged,
+                onChanged: this.onChanged,
                 fillColor: Theme.of(context).checkboxTheme.fillColor,
                 materialTapTargetSize: materialTapTargetSize,
               ),
