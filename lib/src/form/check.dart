@@ -4,7 +4,7 @@ import 'package:libcli/src/widgets/controller/bool-editing-controller.dart';
 /// FormCheckbox is checkbox on form, do not use HyperText or RichText as it's child. it will conflict
 /// https://api.flutter.dev/flutter/material/CheckboxListTile-class.html
 ///
-class FormCheckbox extends StatefulWidget {
+class Check extends StatefulWidget {
   final BoolEditingController controller;
 
   final String label;
@@ -13,7 +13,7 @@ class FormCheckbox extends StatefulWidget {
 
   final TextStyle? textStyle;
 
-  FormCheckbox({
+  Check({
     required this.controller,
     this.label = '',
     this.width = 24,
@@ -22,10 +22,10 @@ class FormCheckbox extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  FormCheckboxState createState() => FormCheckboxState();
+  CheckState createState() => CheckState();
 }
 
-class FormCheckboxState extends State<FormCheckbox> {
+class CheckState extends State<Check> {
   @override
   Widget build(BuildContext context) {
     return Row(children: [

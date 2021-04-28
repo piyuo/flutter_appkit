@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/widgets/form/form-checkbox.dart';
+import 'check.dart';
 import 'package:libcli/src/widgets/controller/bool-editing-controller.dart';
 
 void main() {
@@ -19,7 +19,7 @@ void main() {
           key: _keyForm,
           child: Column(
             children: [
-              FormCheckbox(
+              Check(
                 controller: controller,
               ),
             ],
@@ -29,11 +29,11 @@ void main() {
     );
   }
 
-  group('[form-checkbox]', () {
+  group('[checkbox]', () {
     testWidgets('should pass value to controller', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
       expect(controller.value, false); // first item value
-      await tester.tap(find.byType(FormCheckbox));
+      await tester.tap(find.byType(Check));
       await tester.pumpAndSettle();
       expect(controller.value, true); // second item value
     });

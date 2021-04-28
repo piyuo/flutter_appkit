@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/widgets/form/form-submit.dart';
+import 'animate-button.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
@@ -18,7 +18,7 @@ void main() {
           key: _keyForm,
           child: Column(
             children: [
-              FormSubmit(
+              AnimateButton(
                 'submit',
                 onClick: () async => clicked = true,
               ),
@@ -29,10 +29,10 @@ void main() {
     );
   }
 
-  group('[form-submit]', () {
+  group('[animate-button]', () {
     testWidgets('should click', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
-      await tester.tap(find.byType(FormSubmit));
+      await tester.tap(find.byType(AnimateButton));
       await tester.pumpAndSettle();
       expect(clicked, true); // second item value
     });

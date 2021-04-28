@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/widgets/form/form-dropdown.dart';
+import 'dropdown.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
@@ -18,7 +18,7 @@ void main() {
           key: _keyForm,
           child: Column(
             children: [
-              FormDropdown(
+              Dropdown(
                 controller: controller,
                 items: {
                   "": "item0",
@@ -32,12 +32,12 @@ void main() {
     );
   }
 
-  group('[form-dropdown]', () {
+  group('[dropdown]', () {
     testWidgets('should pass value to controller', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
       expect(controller.text, ''); // first item value
       expect(find.text('item1'), findsOneWidget); // one in FromDropdown items
-      await tester.tap(find.byType(FormDropdown));
+      await tester.tap(find.byType(Dropdown));
       await tester.pumpAndSettle();
       expect(find.text('item1'), findsWidgets); // one in items, one in popup menu
       await tester.tap(find.text('item1').last);

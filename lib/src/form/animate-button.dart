@@ -5,10 +5,10 @@ enum _ButtonState { initial, animate, done }
 
 typedef Future<bool> Callback();
 
-class FormSubmit extends StatefulWidget {
-  /// smallMode set to true if you want a small button
+class AnimateButton extends StatefulWidget {
+  /// sizeLevel is button size level, default is 1
   ///
-  final bool smallMode;
+  final double sizeLevel;
 
   /// text is button text
   ///
@@ -48,31 +48,31 @@ class FormSubmit extends StatefulWidget {
   ///
   final GlobalKey<FormState>? form;
 
-  FormSubmit(
+  AnimateButton(
     this.text, {
     this.onClickStart,
     this.onClick,
     this.onClickSuccess,
     this.backgroundColor,
-    this.width = double.infinity,
+    this.width = 200,
     this.focusNode,
     this.form,
-    this.smallMode = false,
+    this.sizeLevel = 1,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => FormSubmitState(width);
+  State<StatefulWidget> createState() => AnimateButtonState(width);
 }
 
-class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
+class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMixin {
   double _buttonHeight = 44.0;
 
   double _circleHeight = 32.0;
 
   bool _disposed = false;
 
-  bool _isPressed = false, _animatingReveal = false;
+  bool _animatingReveal = false;
 
   _ButtonState _state = _ButtonState.initial;
 
@@ -84,7 +84,7 @@ class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
 
   Animation? _animation;
 
-  FormSubmitState(this.buttonWidth);
+  AnimateButtonState(this.buttonWidth);
 
   @override
   void deactivate() {
@@ -118,10 +118,8 @@ class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.smallMode) {
-      _buttonHeight = 32.0;
-      _circleHeight = 18.0;
-    }
+    _buttonHeight = 32.0;
+    _circleHeight = 18.0;
     return PhysicalModel(
         color: backgroundColor(context),
         elevation: _calculateElevation(),
@@ -130,18 +128,17 @@ class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
           key: _globalKey,
           height: _buttonHeight,
           width: buttonWidth,
-          child: RaisedButton(
+          child: ElevatedButton(
             focusNode: widget.focusNode,
-            padding: EdgeInsets.all(0.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(backgroundColor(context)),
+              padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25 * widget.sizeLevel),
+              )),
             ),
-            color: backgroundColor(context),
             child: _buildButtonChild(),
             onPressed: () => _animateButton(),
-            onHighlightChanged: (isPressed) {
-              safeSetState(() => _isPressed = isPressed);
-            },
           ),
         ));
   }
@@ -177,7 +174,7 @@ class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
     }
 
     if (widget.onClick != null) {
-      //no animation in unit test
+      // no animation in unit test
       if (!kReleaseMode) {
         if (await widget.onClick!()) {
           _onPressedSuccess();
@@ -262,7 +259,7 @@ class FormSubmitState extends State<FormSubmit> with TickerProviderStateMixin {
     if (_animatingReveal) {
       return 0.0;
     } else {
-      return _isPressed ? 6.0 : 4.0;
+      return 4.0;
     }
   }
 

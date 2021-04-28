@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/widgets/form/form-email-field.dart';
+import 'email-edit.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
@@ -24,7 +24,7 @@ void main() {
           key: _keyForm,
           child: Column(
             children: [
-              FormEmailField(
+              EmailEdit(
                 controller: controller,
                 focusNode: focusNode,
                 label: 'email',
@@ -41,10 +41,10 @@ void main() {
     );
   }
 
-  group('[form-email-field]', () {
+  group('[email-field]', () {
     testWidgets('should pass value to controller', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
-      await tester.enterText(find.byType(FormEmailField), 'a@b.c');
+      await tester.enterText(find.byType(EmailEdit), 'a@b.c');
       await tester.pumpAndSettle();
       expect(controller.text, 'a@b.c'); //email error
     });
@@ -58,7 +58,7 @@ void main() {
 
     testWidgets('should have email format error', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
-      await tester.enterText(find.byType(FormEmailField), 'a@b');
+      await tester.enterText(find.byType(EmailEdit), 'a@b');
       expect(_keyForm.currentState!.validate(), false);
       await tester.pumpAndSettle();
       expect(find.textContaining('johndoe@domain.com'), findsOneWidget); //email error
@@ -67,7 +67,7 @@ void main() {
     testWidgets('should have suggestion', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
       focusNode.requestFocus();
-      await tester.enterText(find.byType(FormEmailField), 'a@q.cc');
+      await tester.enterText(find.byType(EmailEdit), 'a@q.cc');
       expect(_keyForm.currentState!.validate(), true);
       dummyFocusNode.requestFocus();
       await tester.pumpAndSettle();

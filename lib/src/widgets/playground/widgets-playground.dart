@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/src/widgets/playground/widgets-playground-provider.dart';
 import 'package:libcli/src/widgets/hypertext/hypertext.dart';
-import 'package:libcli/src/widgets/form/form-email-field.dart';
 import 'package:provider/provider.dart';
 
 class WidgetsPlayground extends StatelessWidget {
@@ -15,15 +14,6 @@ class WidgetsPlayground extends StatelessWidget {
       ..doc('privacy', 'privacy');
   }
 
-  Widget signInField(BuildContext context, WidgetsPlaygroundProvider provider) {
-    return FormEmailField(
-      controller: provider.account,
-      label: 'Email or mobile number',
-      suggestLabel: 'Did you mean ',
-      focusNode: provider.focusEmail,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Provider(
@@ -35,7 +25,6 @@ class WidgetsPlayground extends StatelessWidget {
             Wrap(
               children: [
                 hyperText(context),
-                signInField(context, provider),
               ],
             ),
           ],
