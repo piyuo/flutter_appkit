@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:libcli/src/dialogs/dialogs.dart' as dialogs;
+import 'package:libcli/src/dialog/dialog.dart' as dialog;
 import 'package:libcli/src/widgets/page-route.dart';
 import 'package:libcli/src/widgets/hypertext/doc_page.dart';
 
@@ -88,7 +88,7 @@ class HyperText extends StatefulWidget {
   }) {
     return link(
       text,
-      onTapUp: (BuildContext context, TapUpDetails details) => dialogs.tooltip(
+      onTapUp: (BuildContext context, TapUpDetails details) => dialog.tip(
         context,
         tip,
         widgetPosition: details.globalPosition,

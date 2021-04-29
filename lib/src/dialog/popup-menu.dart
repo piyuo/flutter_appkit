@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialogs/popup.dart';
+import 'popup.dart';
 
 class MenuItem {
   final String id;

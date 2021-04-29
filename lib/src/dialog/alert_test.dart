@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialogs/main.dart';
-import 'package:libcli/src/dialogs/alert.dart';
+import 'main.dart';
+import 'alert.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();
@@ -12,16 +12,14 @@ void main() {
     required void Function(BuildContext context) onPressed,
   }) {
     return MaterialApp(
-      navigatorKey: dialogsNavigatorKey,
-      home: DialogOverlay(
-        child: Builder(builder: (BuildContext ctx) {
-          return MaterialButton(
-            key: keyBtn,
-            child: Text('button'),
-            onPressed: () => onPressed(ctx),
-          );
-        }),
-      ),
+      navigatorKey: NavigatorKey,
+      home: Builder(builder: (BuildContext ctx) {
+        return MaterialButton(
+          key: keyBtn,
+          child: Text('button'),
+          onPressed: () => onPressed(ctx),
+        );
+      }),
     );
   }
 

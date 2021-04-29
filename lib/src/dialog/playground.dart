@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialogs/main.dart';
-import 'package:libcli/src/dialogs/alert.dart';
-import 'package:libcli/src/dialogs/popup-menu.dart';
+import 'tooltip.dart';
+import 'alert.dart';
+import 'popup-menu.dart';
+import 'toast.dart';
+import 'slide.dart';
 
-class DialogsPlayground extends StatelessWidget {
+class Playground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
   final GlobalKey btnTooltip = GlobalKey();
 
@@ -11,15 +13,17 @@ class DialogsPlayground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
-                end: Alignment(0.8, 0.0), // 10% of the width, so there are ten blinds.
+                end: Alignment(1, 1), // 10% of the width, so there are ten blinds.
                 colors: [const Color(0xffee0000), const Color(0xffeeee00)], // red to yellow
                 tileMode: TileMode.repeated, // repeats the gradient over the canvas
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Wrap(
                   children: [
@@ -53,11 +57,11 @@ class DialogsPlayground extends StatelessWidget {
                           buttonCancel: true,
                         );
                         if (result == true) {
-                          toast(context, 'yes');
+                          ok(context, 'yes');
                         } else if (result == false) {
-                          toast(context, 'no');
+                          ok(context, 'no');
                         } else if (result == null) {
-                          toast(context, 'cancel');
+                          ok(context, 'cancel');
                         }
                       },
                     ),
@@ -71,14 +75,14 @@ class DialogsPlayground extends StatelessWidget {
                           buttonCancel: true,
                         );
                         if (result == true) {
-                          toast(context, 'ok');
+                          ok(context, 'ok');
                         } else if (result == null) {
-                          toast(context, 'cancel');
+                          ok(context, 'cancel');
                         }
                       },
                     ),
                     ElevatedButton(
-                      child: Text('alert warning emailus'),
+                      child: Text('alert warning email us'),
                       onPressed: () =>
                           alert(context, 'error message', footer: 'description', emailUs: true, warning: true),
                     ),
@@ -86,33 +90,31 @@ class DialogsPlayground extends StatelessWidget {
                       child: Text('alert long content'),
                       onPressed: () => alert(
                         context,
-                        'this is a very long content, it should cover 3 or 4 more line. we need test long messsage can read easilly',
+                        'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily',
                         title: 'this is a very long title. it should cover 2 line',
                         footer:
-                            'this is a very long footer, it should cover 3 or 4 more line. we need test long messsage can read easilly',
+                            'this is a very long footer, it should cover 3 or 4 more line. we need test long message can read easily',
                         emailUs: true,
                         icon: Icons.sync_problem_rounded,
                       ),
                     ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Text('tooltip'),
+                SizedBox(height: 20),
+                Wrap(
+                  children: [
                     ElevatedButton(
                       key: btnTooltip,
                       child: Text('tooltip'),
-                      onPressed: () => tooltip(context, 'hello world', widgetKey: btnTooltip),
-                    ),
-                    ElevatedButton(
-                      child: Text('toast'),
-                      onPressed: () => toast(context, 'hello world'),
-                    ),
-                    ElevatedButton(
-                      child: Text('toast with icon'),
-                      onPressed: () =>
-                          toast(context, 'hello world', icon: Icon(Icons.check, size: 38, color: Colors.white)),
+                      onPressed: () => tip(context, 'hello world', widgetKey: btnTooltip),
                     ),
                     ElevatedButton(
                       key: btnMenu,
-                      child: Text('menu'),
+                      child: Text('tool'),
                       onPressed: () async {
-                        var item = await popMenu(context, widgetKey: btnMenu, items: [
+                        var item = await tool(context, widgetKey: btnMenu, items: [
                           MenuItem(
                               id: 'home',
                               text: 'Home',
@@ -142,11 +144,63 @@ class DialogsPlayground extends StatelessWidget {
                                 color: Colors.white,
                               )),
                         ]);
-                        toast(context, item.text);
+                        ok(context, item.text);
                       },
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
+                Text('loading'),
+                SizedBox(height: 20),
+                Wrap(children: [
+                  ElevatedButton(
+                    child: Text('loading'),
+                    onPressed: () => loading(context),
+                  ),
+                  ElevatedButton(
+                    child: Text('progress'),
+                    onPressed: () async {
+                      for (int i = 0; i <= 10; i++) {
+                        await progress(context, i / 10);
+                        await Future.delayed(Duration(milliseconds: 500));
+                      }
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text('dismiss'),
+                    onPressed: () => dismiss(),
+                  ),
+                  ElevatedButton(
+                    child: Text('toast'),
+                    onPressed: () => ok(context, 'add item to cart'),
+                  ),
+                  ElevatedButton(
+                    child: Text('fail'),
+                    onPressed: () => wrong(context, 'item already exist'),
+                  ),
+                  ElevatedButton(
+                    child: Text('info'),
+                    onPressed: () => info(context,
+                        text: 'network is slow than usual',
+                        widget: Icon(
+                          Icons.wifi,
+                          size: 68,
+                          color: Theme.of(context).accentColor,
+                        )),
+                  ),
+                ]),
+                SizedBox(height: 20),
+                Text('slide'),
+                SizedBox(height: 20),
+                Wrap(children: [
+                  ElevatedButton(
+                    child: Text('slide'),
+                    onPressed: () => slide(
+                      context,
+                      Container(height: 300, child: Text('hi')),
+                    ),
+                  ),
+                ]),
               ],
             )));
   }

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:libcli/src/log/log.dart' as log;
 import 'package:libcli/src/command/command.dart' as command;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/src/dialogs/dialogs.dart' as dialogs;
-import 'package:libcli/src/errors/main.dart';
+import 'package:libcli/src/dialog/dialog.dart' as dialog;
+import 'main.dart';
 
 class ErrorsPlayground extends StatelessWidget {
   @override
@@ -38,7 +38,7 @@ class ErrorsPlayground extends StatelessWidget {
                       return false;
                     };
                     var ok = await eventbus.broadcast(context, contract);
-                    dialogs.toast(context, ok ? 'retry' : 'cancel');
+                    dialog.info(context, text: ok ? 'retry' : 'cancel');
                   }
                 }),
             TextButton(
@@ -90,7 +90,7 @@ class ErrorsPlayground extends StatelessWidget {
                   } catch (e) {
                     var ok = await eventbus.broadcast(
                         context, command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
-                    dialogs.toast(context, ok ? 'retry' : 'cancel');
+                    dialog.info(context, text: ok ? 'retry' : 'cancel');
                   }
                 }),
             TextButton(
@@ -98,7 +98,7 @@ class ErrorsPlayground extends StatelessWidget {
                 onPressed: () async {
                   var ok = await eventbus.broadcast(
                       context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
-                  dialogs.toast(context, ok ? 'retry' : 'cancel');
+                  dialog.info(context, text: ok ? 'retry' : 'cancel');
                 }),
             TextButton(
                 child: Text('slow network'),

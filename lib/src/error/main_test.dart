@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:libcli/src/command/command.dart' as command;
 import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/src/log/log.dart' as log;
-import 'package:libcli/src/dialogs/dialogs.dart' as dialogs;
-import 'package:libcli/src/dialogs/main.dart';
-import 'package:libcli/src/errors/main.dart';
+import 'package:libcli/src/dialog/dialog.dart' as dialog;
+import 'package:libcli/src/dialog/test.dart';
+import 'main.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();
@@ -18,20 +18,19 @@ void main() {
     required void Function(BuildContext context) onPressed,
   }) {
     return MaterialApp(
-      navigatorKey: dialogsNavigatorKey,
-      home: DialogOverlay(
-        child: Builder(builder: (BuildContext ctx) {
-          return TextButton(
-            key: keyBtn,
-            child: Text('button'),
-            onPressed: () => onPressed(ctx),
-          );
-        }),
-      ),
+      navigatorKey: dialog.NavigatorKey,
+      builder: dialog.init(),
+      home: Builder(builder: (BuildContext ctx) {
+        return TextButton(
+          key: keyBtn,
+          child: Text('button'),
+          onPressed: () => onPressed(ctx),
+        );
+      }),
     );
   }
 
-  group('[errors]', () {
+  group('[error]', () {
     testWidgets('should alert when catch exception', (WidgetTester tester) async {
       await tester.pumpWidget(
         createSample(onPressed: (context) {
@@ -192,7 +191,6 @@ void main() {
     });
 
     testWidgets('should toast when network is slow', (WidgetTester tester) async {
-      dialogs.mockToast();
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
@@ -202,7 +200,7 @@ void main() {
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
-      await dialogs.expectToastAndWaitDismiss(tester);
+      await expectToast();
     });
   });
 }
