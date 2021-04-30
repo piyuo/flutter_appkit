@@ -13,8 +13,8 @@ void applyTheme(BuildContext context, bool strong) {
     color = isDark ? Colors.black : Colors.white;
   }
   EasyLoading.instance
-    ..indicatorSize = 68.0
-    ..radius = 10.0
+    ..indicatorSize = 140.0
+    ..radius = 26.0
     ..backgroundColor = isDark ? Colors.white.withOpacity(0.8) : Colors.black.withOpacity(0.8)
     ..indicatorType = EasyLoadingIndicatorType.fadingCircle
     ..loadingStyle = EasyLoadingStyle.custom
@@ -27,8 +27,8 @@ void applyTheme(BuildContext context, bool strong) {
   double width = mediaQuery.size.width;
   if (width > 600) {
     EasyLoading.instance
-      ..indicatorSize = 136.0
-      ..radius = 20.0
+      ..indicatorSize = 160.0
+      ..radius = 28.0
       ..progressWidth = 12
       ..textStyle = TextStyle(fontSize: 24, color: color, fontWeight: FontWeight.bold);
   }
@@ -36,9 +36,10 @@ void applyTheme(BuildContext context, bool strong) {
 
 /// loading show loading toast
 ///
-Future<void> loading(BuildContext context) {
+Future<void> loading(BuildContext context, {String? text}) {
   applyTheme(context, false);
   return EasyLoading.show(
+    status: text,
     maskType: EasyLoadingMaskType.clear,
   );
 }

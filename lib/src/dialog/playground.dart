@@ -155,7 +155,19 @@ class Playground extends StatelessWidget {
                 Wrap(children: [
                   ElevatedButton(
                     child: Text('loading'),
-                    onPressed: () => loading(context),
+                    onPressed: () async {
+                      loading(context);
+                      await Future.delayed(Duration(seconds: 3));
+                      dismiss();
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text('loading text'),
+                    onPressed: () async {
+                      loading(context, text: 'loading');
+                      await Future.delayed(Duration(seconds: 3));
+                      dismiss();
+                    },
                   ),
                   ElevatedButton(
                     child: Text('progress'),
@@ -187,6 +199,16 @@ class Playground extends StatelessWidget {
                           size: 68,
                           color: Theme.of(context).accentColor,
                         )),
+                  ),
+                  ElevatedButton(
+                    child: Text('slow network'),
+                    onPressed: () async {
+                      loading(context);
+                      await Future.delayed(Duration(seconds: 3));
+                      loading(context, text: 'network is slow');
+                      await Future.delayed(Duration(seconds: 3));
+                      dismiss();
+                    },
                   ),
                 ]),
                 SizedBox(height: 20),
