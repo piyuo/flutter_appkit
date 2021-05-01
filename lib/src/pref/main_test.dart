@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/prefs/main.dart';
+import 'main.dart';
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
   mock({});
   setUp(() async {});
 
-  group('[preference]', () {
+  group('[pref]', () {
     test('should remove', () async {
       await setBool('k', true);
       var result = await getBool('k');
