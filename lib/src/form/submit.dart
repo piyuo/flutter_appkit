@@ -41,6 +41,12 @@ class SubmitState extends State<Submit> {
   SubmitState();
 
   @override
+  @mustCallSuper
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       focusNode: widget.focusNode,

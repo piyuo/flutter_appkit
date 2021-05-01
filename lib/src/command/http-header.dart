@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:libcli/src/i18n/i18n.dart' as i18n;
+import 'package:libcli/src/i18n.dart' as i18n;
 
 Future<Map<String, String>> doRequestHeaders() async {
   Map<String, String> headers = {

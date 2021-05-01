@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/src/module/async-provider.dart';
 import 'package:libcli/src/module/await.dart';
-import 'package:libcli/src/i18n/i18n.dart' as i18n;
+import 'package:libcli/src/i18n.dart' as i18n;
 
 AsyncProvider? viewWidgetProviderInstanceForTest;
 
