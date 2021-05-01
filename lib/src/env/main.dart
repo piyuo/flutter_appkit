@@ -46,14 +46,14 @@ set userID(String value) {
 /// init config
 ///
 void init({
-  required String appBranch,
-  required String appName,
-  required String appEmail,
+  required String branch,
+  required String name,
+  required String email,
 }) {
-  log.log('branch=$appBranch, name=$appName, email=$appEmail');
-  branch = appBranch;
-  name = appName;
-  email = appEmail;
+  log.log('branch=$branch, name=$name, email=$email');
+  branch = branch;
+  name = name;
+  email = email;
   //no need for now, cause GlobalLocalizations will load date formatting
 //  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
   Provider.debugCheckInvalidValueType = null;
