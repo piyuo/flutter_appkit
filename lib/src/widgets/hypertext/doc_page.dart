@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:libcli/src/i18n.dart' as i18n;
+import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/src/module/module.dart' as module;
 import 'package:libcli/src/widgets/hypertext/doc_provider.dart';
 

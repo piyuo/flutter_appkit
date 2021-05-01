@@ -1,4 +1,4 @@
-import 'package:libcli/src/i18n.dart' as i18n;
+import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/src/application/application.dart' as application;
 import 'package:flutter/foundation.dart';
 
