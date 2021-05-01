@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'dart:convert';
-import 'package:libcli/src/application/application.dart' as application;
+import 'package:libcli/env.dart' as env;
 import 'package:libcli/src/log/log.dart' as log;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,9 +9,9 @@ class ErrorEmail {
 
   String _body = '''
 
-Application:\n    ${application.name}
+Application:\n    ${env.name}
 
-Account:\n    ${application.userID}
+Account:\n    ${env.userID}
 
 Debug Information
 ------------------------------------------------
@@ -23,7 +23,7 @@ Debug Information
     return stringToBase64.encode(logs);
   }
 
-  String get to => application.email;
+  String get to => env.email;
 
   String get subjectUrlSafe => Uri.encodeComponent(_subject);
 

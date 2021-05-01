@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/logs.dart';
-import 'package:libcli/src/application/application.dart' as application;
+import 'package:libcli/env.dart' as env;
 
 const _b = '\u001b[';
 const COLOR_END = _b + '0m';
@@ -95,8 +95,8 @@ void error(dynamic e, StackTrace? stacktrace) {
 ///
 @visibleForTesting
 String get header {
-  var user = application.userID.isEmpty ? '' : application.userID + '@';
-  var head = user + application.name;
+  var user = env.userID.isEmpty ? '' : env.userID + '@';
+  var head = user + env.name;
   if (head.isNotEmpty) {
     head += ':';
   }
