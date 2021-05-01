@@ -20,7 +20,7 @@ Future<void> expectNoToast() async {
   expect(find.byType(EasyLoadingContainer), findsNothing);
 }
 
-class Playground extends StatelessWidget {
+class DialogPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
   final GlobalKey btnTooltip = GlobalKey();
 
