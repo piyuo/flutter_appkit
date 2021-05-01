@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
-import 'package:libcli/src/validator/validator.dart' as validator;
+import 'package:libcli/validator.dart' as validator;
 
 class EmailEdit extends StatefulWidget {
   final TextEditingController controller;

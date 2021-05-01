@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/widgets/test.dart';
+import 'test.dart';
 
 /// safeTestMaterialRoute return no animation route when testing
 ///

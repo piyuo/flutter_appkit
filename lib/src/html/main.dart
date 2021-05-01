@@ -1,5 +1,5 @@
 import 'dart:html' as html;
-import 'package:libcli/src/log/log.dart' as log;
+import 'package:libcli/log.dart' as log;
 
 void redirect(String url) {
   log.log('redirect: $url');

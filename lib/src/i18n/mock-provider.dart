@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/module/module.dart';
+import 'package:libcli/module.dart';
 
 class MockProvider extends AsyncProvider {
   @override

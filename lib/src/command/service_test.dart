@@ -11,8 +11,8 @@ import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
 import 'package:libpb/src/pb/pb.dart' as pb;
-import 'package:libcli/src/mocking/mocking.dart' as mocking;
-import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/mocking.dart' as mocking;
+import 'package:libcli/eventbus.dart' as eventbus;
 
 void main() {
   var lastEvent;

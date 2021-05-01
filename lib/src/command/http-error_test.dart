@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libpb/src/pb/pb.dart' as pb;
 import 'package:libcli/src/command/mock-service.dart';
-import 'package:libcli/src/mocking/mocking.dart' as mocking;
+import 'package:libcli/mocking.dart' as mocking;
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http.dart';
 

@@ -1,4 +1,4 @@
-import 'package:libcli/src/log/log.dart' as log;
+import 'package:libcli/log.dart' as log;
 import 'package:libcli/src/i18n/main.dart';
 
 /// globalTranslate translate from global localization

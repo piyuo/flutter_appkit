@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'dart:convert';
 import 'package:libcli/env.dart' as env;
-import 'package:libcli/src/log/log.dart' as log;
+import 'package:libcli/log.dart' as log;
 import 'package:url_launcher/url_launcher.dart';
 
 class ErrorEmail {

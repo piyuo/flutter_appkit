@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/redux/mock-redux.dart';
-import 'package:libcli/src/mocking/mocking.dart' as mocking;
+import 'package:libcli/mocking.dart' as mocking;
 
 void main() {
   setUp(() async {});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/src/widgets/playground/widgets-playground-provider.dart';
-import 'package:libcli/src/widgets/hypertext/hypertext.dart';
+import 'playground-provider.dart';
+import 'hypertext/hypertext.dart';
 import 'package:provider/provider.dart';
 
 class WidgetsPlayground extends StatelessWidget {

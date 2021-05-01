@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/asset/asset.dart';
+import 'package:libcli/src/asset/main.dart';
 import 'dart:convert';
 
 void main() {

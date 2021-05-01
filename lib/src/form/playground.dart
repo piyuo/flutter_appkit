@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'form.dart' as form;
-import 'package:libcli/src/widgets/widgets.dart' as widgets;
+import '../../form.dart' as form;
+import 'package:libcli/ui.dart' as ui;
 
 class Playground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
 
   final GlobalKey btnTooltip = GlobalKey();
 
-  final checkController = widgets.BoolEditingController();
+  final checkController = ui.BoolEditingController();
 
   final dropdownController = TextEditingController();
 

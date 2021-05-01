@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:libcli/src/validator/validator.dart' as validator;
+import 'package:libcli/validator.dart' as validator;
 
 class TextEdit extends StatefulWidget {
   final TextEditingController controller;

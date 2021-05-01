@@ -2,10 +2,10 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/command/command.dart' as command;
-import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/src/log/log.dart' as log;
-import 'package:libcli/src/dialog/dialog.dart' as dialog;
+import 'package:libcli/command.dart' as command;
+import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/log.dart' as log;
+import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/src/dialog/test.dart';
 import 'main.dart';
 

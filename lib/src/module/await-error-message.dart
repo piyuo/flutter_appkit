@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus.dart' as eventbus;
 
 class AwaitErrorMessage extends StatelessWidget {
   final backgroundColor = Color.fromRGBO(203, 29, 57, 1);

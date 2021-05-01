@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/module/module.dart';
-import 'package:libcli/src/log/log.dart' as log;
-import 'package:libcli/src/asset/asset.dart' as asset;
+import 'package:libcli/module.dart';
+import 'package:libcli/log.dart' as log;
+import 'package:libcli/src/asset/main.dart' as asset;
 import 'package:libcli/src/i18n/main.dart';
 
 class I18nProvider extends AsyncProvider {

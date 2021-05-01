@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/src/widgets/widgets.dart' as widgets;
+import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/ui.dart' as ui;
 
 final keyAlertButtonYes = Key('alertBtnYes');
 
@@ -183,7 +183,7 @@ Future<bool?> alert(
         return Dialog(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          child: widgets.BlurryContainer(
+          child: ui.BlurryContainer(
             shadow: isDark
                 ? BoxShadow(
                     color: Color(0x66000011),

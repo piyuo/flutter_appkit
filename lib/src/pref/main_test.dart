@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/prefs/prefs.dart';
+import 'package:libcli/src/prefs/main.dart';
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member

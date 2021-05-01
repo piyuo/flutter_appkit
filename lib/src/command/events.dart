@@ -1,5 +1,5 @@
-import 'package:libcli/src/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/src/utils/utils.dart' as utils;
+import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/util.dart' as utils;
 
 /// GuardDeniedEvent happen command send too frequently, need let user know they should wait for a while
 ///

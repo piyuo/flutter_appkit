@@ -1,9 +1,9 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:libcli/src/dialog/dialog.dart' as dialog;
-import 'package:libcli/src/widgets/page-route.dart';
-import 'package:libcli/src/widgets/hypertext/doc_page.dart';
+import 'package:libcli/dialog.dart' as dialog;
+import '../page-route.dart';
+import 'doc_page.dart';
 
 /// _testMode true should return success, false return error, otherwise behave normal
 ///

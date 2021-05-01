@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'check.dart';
-import 'package:libcli/src/widgets/controller/bool-editing-controller.dart';
+import 'package:libcli/ui.dart' as ui;
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
 
-  final controller = BoolEditingController();
+  final controller = ui.BoolEditingController();
 
   setUp(() {
     controller.value = false;

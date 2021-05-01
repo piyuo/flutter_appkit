@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/log/log.dart' as log;
+import 'package:libcli/log.dart' as log;
 import 'package:libcli/src/redux/main.dart';
 import 'package:flutter/widgets.dart';
 
