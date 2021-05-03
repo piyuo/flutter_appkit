@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../../mock/mock.dart';
-import 'package:libcli/src/eventbus/main.dart';
-import 'package:libcli/src/eventbus/types.dart';
 import 'package:libcli/mocking.dart' as mocking;
+import 'eventbus.dart';
+import 'types.dart';
 
 class MyEvent extends Event {
   String value = '';
@@ -18,34 +17,30 @@ main() {
     clearListeners();
   });
 
-  group('[eventbus/eventbus]', () {
-    testWidgets('should remove all listeners', (WidgetTester tester) async {
-      await tester.inWidget((ctx) {
-        listen<String>((BuildContext ctx, event) async {
-          expect(event, 'hi');
-        });
-        // ignore: invalid_use_of_visible_for_testing_member
-        expect(getListenerCount(), 1);
-        clearListeners();
-        // ignore: invalid_use_of_visible_for_testing_member
-        expect(getListenerCount(), 0);
+  group('[eventbus]', () {
+    test('should remove all listeners', () async {
+      listen<String>((BuildContext ctx, event) async {
+        expect(event, 'hi');
       });
+      // ignore: invalid_use_of_visible_for_testing_member
+      expect(getListenerCount(), 1);
+      clearListeners();
+      // ignore: invalid_use_of_visible_for_testing_member
+      expect(getListenerCount(), 0);
     });
 
-    testWidgets('should safe cancel subscription', (WidgetTester tester) async {
-      await tester.inWidget((ctx) {
-        var sub = listen<String>((BuildContext ctx, event) async {
-          expect(event, 'hi');
-        });
-        // ignore: invalid_use_of_visible_for_testing_member
-        expect(getListenerCount(), 1);
-        sub.cancel();
-        // ignore: invalid_use_of_visible_for_testing_member
-        expect(getListenerCount(), 0);
-        sub.cancel();
-        // ignore: invalid_use_of_visible_for_testing_member
-        expect(getListenerCount(), 0);
+    test('should safe cancel subscription', () async {
+      var sub = listen<String>((BuildContext ctx, event) async {
+        expect(event, 'hi');
       });
+      // ignore: invalid_use_of_visible_for_testing_member
+      expect(getListenerCount(), 1);
+      sub.cancel();
+      // ignore: invalid_use_of_visible_for_testing_member
+      expect(getListenerCount(), 0);
+      sub.cancel();
+      // ignore: invalid_use_of_visible_for_testing_member
+      expect(getListenerCount(), 0);
     });
 
     test('should broadcast', () async {
@@ -88,7 +83,7 @@ main() {
       expect(eventType, MyEvent2);
     });
 
-    testWidgets('should isolate error', (WidgetTester tester) async {
+    test('should isolate error', () async {
       var eventType;
       listen<MyEvent>((_, event) async {
         throw 'fail';
@@ -96,24 +91,18 @@ main() {
       listen<MyEvent>((_, event) async {
         eventType = event.runtimeType;
       });
-
-      await tester.inWidget((ctx) async {
-        await broadcast(ctx, MyEvent());
-        expect(eventType, MyEvent);
-      });
+      await broadcast(mocking.Context(), MyEvent());
+      expect(eventType, MyEvent);
     });
 
-    testWidgets('should unsubscribe', (WidgetTester tester) async {
+    test('should unsubscribe', () async {
       var eventType;
       var sub = listen<MyEvent>((_, event) async {
         eventType = event.runtimeType;
       });
-
-      await tester.inWidget((ctx) async {
-        sub.cancel();
-        await broadcast(ctx, MyEvent());
-        expect(eventType, null);
-      });
+      sub.cancel();
+      await broadcast(mocking.Context(), MyEvent());
+      expect(eventType, null);
     });
   });
 }

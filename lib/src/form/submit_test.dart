@@ -1,29 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'submit.dart';
+import 'package:libcli/test.dart' as test;
+import 'package:libcli/dialog.dart' as dialog;
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
 
-  bool clicked = false;
+  setUp(() {});
 
-  setUp(() {
-    clicked = false;
-  });
-
-  Widget app() {
+  Widget app(Widget widget) {
     return MaterialApp(
+      builder: dialog.init(),
       home: Scaffold(
         body: Form(
           key: _keyForm,
-          child: Column(
-            children: [
-              Submit(
-                'submit',
-                onClick: () async => clicked = true,
-              ),
-            ],
-          ),
+          child: widget,
         ),
       ),
     );
@@ -31,10 +23,34 @@ void main() {
 
   group('[submit]', () {
     testWidgets('should click', (WidgetTester tester) async {
-      await tester.pumpWidget(app());
+      bool clicked = false;
+      var widget = Submit(
+        'submit',
+        onClick: () {
+          clicked = true;
+        },
+      );
+      await tester.pumpWidget(app(widget));
       await tester.tap(find.byType(Submit));
       await tester.pumpAndSettle();
       expect(clicked, true); // second item value
+    });
+
+    testWidgets('should show loading', (WidgetTester tester) async {
+      var widget = Submit(
+        'submit',
+        showLoading: const Duration(milliseconds: 10),
+        onClick: () async {
+          await Future.delayed(Duration(milliseconds: 100));
+        },
+      );
+      await tester.pumpWidget(app(widget));
+      test.expectNoToast();
+      await tester.tap(find.byType(Submit));
+      await tester.pump(Duration(milliseconds: 50));
+      test.expectToast();
+      //wait for click finish
+      await tester.pump(Duration(milliseconds: 101));
     });
   });
 }

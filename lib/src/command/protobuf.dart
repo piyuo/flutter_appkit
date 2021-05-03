@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:libcli/src/command/service.dart';
+import 'service.dart';
 import 'package:libpb/src/pb/pb.dart' as pb;
 
 /// encode protobuf object into bytes

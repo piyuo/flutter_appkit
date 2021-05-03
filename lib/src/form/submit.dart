@@ -1,5 +1,7 @@
+//import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/dialog.dart' as dialog;
 
 class Submit extends StatefulWidget {
   /// sizeLevel is button size level, default is 1
@@ -22,12 +24,17 @@ class Submit extends StatefulWidget {
   ///
   final GlobalKey<FormState>? form;
 
+  /// showLoading is not null will show loading toast after duration
+  ///
+  final Duration? showLoading;
+
   Submit(
     this.text, {
     required this.onClick,
     this.focusNode,
     this.form,
     this.sizeLevel = 1,
+    this.showLoading = const Duration(seconds: 1),
     Key? key,
   }) : super(key: key);
 
@@ -36,15 +43,32 @@ class Submit extends StatefulWidget {
 }
 
 class SubmitState extends State<Submit> {
-  bool _disabled = false;
+  bool _pressed = false;
 
-  SubmitState();
-
+/*
+  Timer? _timer;
+  void startTimer() {
+    if (_timer == null && widget.showLoading != null) {
+      dialog.loading(context);
+      _timer = Timer(widget.showLoading!, () {
+        if (_pressed) {}
+      });
+    }
+  }
+  void stopTimer() {
+    if (_timer != null) {
+      dialog.dismiss();
+      _timer!.cancel();
+      _timer = null;
+    }
+  }
   @override
   @mustCallSuper
   void dispose() {
+    stopTimer();
     super.dispose();
   }
+*/
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +76,7 @@ class SubmitState extends State<Submit> {
       focusNode: widget.focusNode,
       style: ButtonStyle(
         backgroundColor:
-            MaterialStateProperty.all(_disabled ? Theme.of(context).disabledColor : Theme.of(context).primaryColor),
+            MaterialStateProperty.all(_pressed ? Theme.of(context).disabledColor : Theme.of(context).primaryColor),
         padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(
             36 * widget.sizeLevel, 26 * widget.sizeLevel, 36 * widget.sizeLevel, 26 * widget.sizeLevel)),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -61,7 +85,7 @@ class SubmitState extends State<Submit> {
       ),
       child: Text(widget.text, style: TextStyle(fontSize: 18 * widget.sizeLevel, fontWeight: FontWeight.bold)),
       onPressed: () async {
-        if (_disabled) {
+        if (_pressed) {
           return;
         }
 
@@ -69,9 +93,14 @@ class SubmitState extends State<Submit> {
           return;
         }
 
-        setState(() => _disabled = true);
-        await widget.onClick();
-        setState(() => _disabled = false);
+        dialog.loading(context);
+        setState(() => _pressed = true);
+        try {
+          await widget.onClick();
+        } finally {
+          setState(() => _pressed = false);
+          dialog.dismiss();
+        }
       },
     );
   }

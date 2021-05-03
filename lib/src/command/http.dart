@@ -5,11 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/src/command/events.dart';
-import 'package:libcli/src/command/http-header.dart';
-import 'package:libcli/src/command/protobuf.dart';
-import 'package:libcli/src/command/service.dart';
 import 'package:libpb/src/pb/pb.dart' as pb;
+import 'events.dart';
+import 'http-header.dart';
+import 'protobuf.dart';
+import 'service.dart';
 
 ///Request for post()
 class Request {

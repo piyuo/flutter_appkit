@@ -6,5 +6,3 @@ export 'package:libcli/src/command/protobuf.dart';
 export 'package:libcli/src/command/url.dart';
 export 'package:libcli/src/command/events.dart';
 export 'package:libcli/src/command/guard.dart';
-//for test
-export 'package:libcli/src/command/mock-service.dart';

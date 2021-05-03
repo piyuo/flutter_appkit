@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/eventbus/types.dart';
-import 'package:libcli/src/eventbus/main.dart';
 import 'package:libcli/mocking.dart' as mocking;
+import 'types.dart';
+import 'eventbus.dart';
 
 main() {
   setUp(() async {

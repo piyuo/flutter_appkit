@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/src/eventbus/types.dart';
+import 'types.dart';
 
 /// latestEvent is used for testing purpose
 ///
