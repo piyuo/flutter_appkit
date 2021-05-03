@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/src/module/async-provider.dart';
 import 'package:libcli/src/module/await.dart';
-import 'package:libcli/i18n.dart' as i18n;
 
 AsyncProvider? viewWidgetProviderInstanceForTest;
 
@@ -51,8 +51,8 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
         )
       ],
       child: Consumer2<i18n.I18nProvider, T>(
-          builder: (context, i18n, provider, child) => Await(
-                list: [i18n, provider],
+          builder: (context, i18nProvider, provider, child) => Await(
+                list: [i18nProvider, provider],
                 child: createWidget(context),
               )),
     );

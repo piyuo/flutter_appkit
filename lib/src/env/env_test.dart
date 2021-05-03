@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'main.dart';
+import 'package:libcli/src/env/env.dart';
 
 void main() {
   group('[configuration]', () {

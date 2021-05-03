@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/src/asset/main.dart' as asset;
+import 'package:libcli/asset.dart' as asset;
 
 const en_US = 'en_US';
 const zh_CN = 'zh_CN';

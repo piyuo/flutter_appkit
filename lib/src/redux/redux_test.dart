@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/redux/main.dart';
+import 'package:libcli/src/redux/redux.dart';
 import 'package:libcli/src/redux/map.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/mocking.dart' as mocking;

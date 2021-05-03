@@ -5,9 +5,9 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/dialog.dart' as dialog;
-import 'main.dart';
+import 'package:libcli/src/error/error.dart';
 
-class ErrorsPlayground extends StatelessWidget {
+class ErrorPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

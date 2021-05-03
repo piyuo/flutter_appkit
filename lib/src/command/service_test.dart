@@ -2,17 +2,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'protobuf.dart';
+import 'package:libpb/src/pb/pb.dart' as pb;
 import 'package:libcli/env.dart' as env;
-import 'test.dart';
-import 'guard.dart';
-import 'events.dart';
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
-import 'package:libpb/src/pb/pb.dart' as pb;
 import 'package:libcli/mocking.dart' as mocking;
 import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/src/command/test.dart';
+import 'package:libcli/src/command/guard.dart';
+import 'package:libcli/src/command/events.dart';
+import 'package:libcli/src/command/protobuf.dart';
 
 void main() {
   var lastEvent;

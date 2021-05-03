@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/module.dart' as module;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/src/asset/main.dart' as asset;
+import 'package:libcli/src/asset/asset.dart' as asset;
 import '../test.dart' as test;
 
 class DocProvider extends module.AsyncProvider {

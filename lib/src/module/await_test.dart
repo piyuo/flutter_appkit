@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'mock-provider.dart';
-import 'mock_views.dart';
+import 'package:libcli/src/module/mock-provider.dart';
+import 'package:libcli/src/module/mock_views.dart';
 import 'package:libcli/src/module/await.dart';
 
 void main() {

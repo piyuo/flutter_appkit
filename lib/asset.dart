@@ -1,3 +1,3 @@
 library asset;
 
-export 'package:libcli/src/asset/main.dart';
+export 'package:libcli/src/asset/asset.dart';

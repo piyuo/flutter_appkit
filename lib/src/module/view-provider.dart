@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:libcli/src/module/async-provider.dart';
-import 'package:libcli/src/module/main.dart';
+import 'package:libcli/src/module/module.dart';
 
 class ViewProvider extends AsyncProvider {
   /// dispatch action and change state

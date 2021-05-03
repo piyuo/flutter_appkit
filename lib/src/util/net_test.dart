@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'net.dart';
+import 'package:libcli/src/util/net.dart';
 
 void main() {
   group('[utils/net]', () {

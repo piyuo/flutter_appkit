@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'guard.dart';
+import 'package:libcli/src/command/guard.dart';
 
 void main() {
   setUp(() async {

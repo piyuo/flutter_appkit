@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/mocking.dart' as mocking;
-import 'eventbus.dart';
-import 'types.dart';
+import 'package:libcli/src/eventbus/eventbus.dart';
+import 'package:libcli/src/eventbus/types.dart';
 
 class MyEvent extends Event {
   String value = '';

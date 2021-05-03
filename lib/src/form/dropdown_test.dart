@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'dropdown.dart';
+import 'package:libcli/src/form/dropdown.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();

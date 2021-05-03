@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:libcli/src/i18n/main.dart';
+import 'package:libcli/src/i18n/i18n.dart';
 
 /// initDateFormatting will set by configuration
 ///

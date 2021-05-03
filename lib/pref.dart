@@ -1,3 +1,3 @@
 library pref;
 
-export 'package:libcli/src/pref/main.dart';
+export 'package:libcli/src/pref/pref.dart';

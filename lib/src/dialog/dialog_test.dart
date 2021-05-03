@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
-import 'main.dart';
+import 'package:libcli/src/dialog/dialog.dart';
 
 void main() {
   setUp(() async {});

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/validator/main.dart';
+import 'package:libcli/src/validator/validator.dart';
 
 void main() {
   setUp(() async {});

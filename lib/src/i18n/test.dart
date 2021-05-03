@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'dart:async';
+import 'package:libcli/module.dart' as module;
 
 class MockWaitView extends StatelessWidget {
   static int count = 0;
@@ -25,5 +27,12 @@ class MockOkView extends StatelessWidget {
   Widget build(BuildContext context) {
     count++;
     return Text('');
+  }
+}
+
+class MockProvider extends module.AsyncProvider {
+  @override
+  Future<void> load(BuildContext context) async {
+    await Future.delayed(Duration(milliseconds: 1), () {});
   }
 }

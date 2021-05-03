@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'triangle-painter.dart';
+import 'package:libcli/src/dialog/triangle-painter.dart';
 
 const arrowHeight = 10.0;
 

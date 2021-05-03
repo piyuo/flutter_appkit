@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:convert';
-import 'main.dart';
+import 'package:libcli/src/asset/asset.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'id.dart';
+import 'package:libcli/src/util/id.dart';
 
 void main() {
   group('[utils/id]', () {
