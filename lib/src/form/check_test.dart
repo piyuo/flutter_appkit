@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/form/check.dart';
 import 'package:libcli/ui.dart' as ui;
+import 'check.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();

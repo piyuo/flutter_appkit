@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialog/popup.dart';
-import 'package:libcli/src/dialog/popup-menu.dart';
+import 'popup.dart';
+import 'popup-menu.dart';
 
 /// tool show tool menu
 ///

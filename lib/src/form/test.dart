@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/ui.dart' as ui;
-import 'package:libcli/src/form/text-edit.dart';
-import 'package:libcli/src/form/email-edit.dart';
-import 'package:libcli/src/form/submit.dart';
-import 'package:libcli/src/form/animate-button.dart';
-import 'package:libcli/src/form/check.dart';
-import 'package:libcli/src/form/dropdown.dart';
-import 'package:libcli/src/form/tags.dart';
+import 'text-edit.dart';
+import 'email-edit.dart';
+import 'submit.dart';
+import 'animate-button.dart';
+import 'check.dart';
+import 'dropdown.dart';
+import 'tags.dart';
 
 class FormPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();

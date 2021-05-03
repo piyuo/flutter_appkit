@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/dialog/dialog.dart';
+import 'dialog.dart';
 
 void main() {
   setUp(() async {});

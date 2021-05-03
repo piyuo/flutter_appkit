@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_easyloading/src/widgets/container.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialog/tooltip.dart';
-import 'package:libcli/src/dialog/alert.dart';
-import 'package:libcli/src/dialog/popup-menu.dart';
-import 'package:libcli/src/dialog/toast.dart';
-import 'package:libcli/src/dialog/slide.dart';
+import 'tooltip.dart';
+import 'alert.dart';
+import 'popup-menu.dart';
+import 'toast.dart';
+import 'slide.dart';
 
 /// expectToast expect toast exist
 ///

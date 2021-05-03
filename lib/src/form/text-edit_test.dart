@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/form/text-edit.dart';
+import 'text-edit.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();

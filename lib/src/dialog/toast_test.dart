@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialog/toast.dart';
-import 'package:libcli/src/dialog/dialog.dart';
-import 'package:libcli/src/dialog/test.dart';
+import 'toast.dart';
+import 'dialog.dart';
+import 'test.dart';
 
 void main() {
   setUp(() async {});

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/dialog/tooltip.dart';
-import 'package:libcli/src/dialog/popup-menu.dart';
+import 'tooltip.dart';
+import 'popup-menu.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();

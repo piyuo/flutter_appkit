@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/test.dart' as test;
 import 'package:libcli/dialog.dart' as dialog;
-import 'package:libcli/src/form/submit.dart';
+import 'submit.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();

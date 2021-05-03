@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/src/form/animate-button.dart';
+import 'animate-button.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
