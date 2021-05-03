@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/test.dart' as test;
 import 'package:libcli/dialog.dart' as dialog;
 import 'submit.dart';
 
@@ -45,10 +44,10 @@ void main() {
         },
       );
       await tester.pumpWidget(app(widget));
-      test.expectNoToast();
+      dialog.expectNoToast();
       await tester.tap(find.byType(Submit));
       await tester.pump(Duration(milliseconds: 50));
-      test.expectToast();
+      dialog.expectToast();
       //wait for click finish
       await tester.pump(Duration(milliseconds: 101));
     });

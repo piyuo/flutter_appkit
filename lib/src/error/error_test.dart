@@ -6,7 +6,6 @@ import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/dialog.dart' as dialog;
-import 'package:libcli/test.dart' as test;
 import 'package:libcli/src/error/error.dart';
 
 void main() {
@@ -200,7 +199,7 @@ void main() {
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
-      await test.expectToast();
+      await dialog.expectToast();
     });
   });
 }
