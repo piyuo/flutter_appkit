@@ -1,24 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/mocking.dart' as mocking;
 import 'package:flutter/widgets.dart';
 import 'package:libcli/src/redux/redux.dart';
-
-void main() {
-  setUp(() async {});
-
-  group('[mock-redux]', () {
-    test('should record last action', () async {
-      MockRedux redux = MockRedux({});
-      await redux.dispatch(mocking.Context(), Increment(1));
-      expect(redux.lastAction is Increment, true);
-    });
-  });
-}
-
-class Increment {
-  final int value;
-  Increment(this.value);
-}
 
 Future<Map> _mock_reducers(BuildContext context, Map oldState, dynamic action) async {
   return oldState;
