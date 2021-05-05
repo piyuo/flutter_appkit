@@ -7,7 +7,7 @@ library for flutter projects
 clone source code to local.
 
 ```bash
-git clone git@github.com:piyuo/fl-libcli.git
+git clone git@github.com:piyuo/libcli.git
 ```
 
 ## Project

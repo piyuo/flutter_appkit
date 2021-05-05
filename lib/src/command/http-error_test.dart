@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libpb/src/pb/pb.dart' as pb;
+import 'package:libpb/pb.dart' as pb;
 import 'package:libcli/mocking.dart' as mocking;
 import 'package:libcli/src/command/test.dart';
 import 'package:libcli/src/command/events.dart';

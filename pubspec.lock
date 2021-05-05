@@ -204,7 +204,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.2"
+    version: "0.13.3"
   http_parser:
     dependency: transitive
     description:
@@ -231,7 +231,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: afd3223ecd4288cc46002b6c4a63e241b2bfc6a9
+      resolved-ref: ebc31bb655f715f78aa41af298cd473722d812af
       url: "git@github.com:piyuo/libpb.git"
     source: git
     version: "0.0.17"
