@@ -46,7 +46,7 @@ Future<void> loading(BuildContext context, {String? text}) {
 
 /// progress show progress toast
 ///
-Future<void> progress(BuildContext context, double value) {
+Future<void> progress(BuildContext context, double value, {String? text}) {
   applyTheme(context, false);
   if (value >= 1) {
     dismiss();
@@ -54,7 +54,7 @@ Future<void> progress(BuildContext context, double value) {
 
   return EasyLoading.showProgress(
     value,
-    status: (value * 100).round().toString() + ' %',
+    status: text ?? (value * 100).round().toString() + ' %',
     maskType: EasyLoadingMaskType.clear,
   );
 }

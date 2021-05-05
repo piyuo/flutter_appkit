@@ -14,6 +14,7 @@ class DialogPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         body: Container(
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -176,6 +177,19 @@ class DialogPlayground extends StatelessWidget {
                     onPressed: () async {
                       for (int i = 0; i <= 10; i++) {
                         await progress(context, i / 10);
+                        await Future.delayed(Duration(milliseconds: 500));
+                      }
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text('progress text'),
+                    onPressed: () async {
+                      for (int i = 0; i <= 10; i++) {
+                        String text = 'preparing';
+                        if (i > 5) {
+                          text = 'creating';
+                        }
+                        await progress(context, i / 10, text: text);
                         await Future.delayed(Duration(milliseconds: 500));
                       }
                     },
