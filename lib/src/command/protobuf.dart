@@ -7,6 +7,7 @@ import 'package:libpb/pb.dart' as pb;
 ///     EchoAction echoAction = EchoAction();
 ///     echoAction.text = 'hi';
 ///     List<int> bytes = commandProtobuf.encode(echoAction);
+///
 Uint8List encode(pb.Object obj) {
   Uint8List bytes = obj.writeToBuffer();
   Uint8List list = Uint8List(bytes.length + 2);

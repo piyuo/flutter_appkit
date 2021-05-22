@@ -11,12 +11,12 @@ import 'package:libcli/mocking.dart' as mocking;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/test.dart';
 import 'package:libcli/src/command/guard.dart';
-import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/protobuf.dart';
+import 'package:libcli/src/command/firewall.dart';
 
 void main() {
   var lastEvent;
-  eventbus.listen<GuardDeniedEvent>((BuildContext ctx, event) async {
+  eventbus.listen<FirewallBlockEvent>((BuildContext ctx, event) async {
     lastEvent = event;
   });
 
@@ -93,25 +93,21 @@ void main() {
       expect(service.url, 'http://localhost:3001');
     });
 
-    test('should failed on default guard rule 1', () async {
+    test('should block by firewall', () async {
       var client = MockClient((request) async {
         return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
       });
       SampleService service = SampleService();
-      //send first time
-      var response = await service.executeWithClient(mocking.Context(), CommandEcho(), client);
-      expect(response is StringResponse, true);
 
-      //send second time
-      response = await service.executeWithClient(mocking.Context(), CommandEcho(), client);
-      expect(response is pb.Error, true);
-      if (response is pb.Error) {
-        expect(response.code, 'GUARD_1');
-      }
-      expect(lastEvent is GuardDeniedEvent, true);
+      final cmd = CommandEcho(value: 'firewallBlock');
+      mockFirewallInFlight(cmd.jsonString);
+
+      var response = await service.executeWithClient(mocking.Context(), cmd, client);
+      expect(response is FirewallBlock, true);
+      expect(lastEvent is FirewallBlockEvent, true);
     });
 
-    test('should failed on default guard rule 2', () async {
+    /*test('should failed on default guard rule 2', () async {
       var client = MockClient((request) async {
         return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
       });
@@ -151,6 +147,6 @@ void main() {
       var error = response as pb.Error;
       expect(error.code, 'GUARD_1');
       expect(lastEvent, isNull);
-    });
+    });*/
   });
 }

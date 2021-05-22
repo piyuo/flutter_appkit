@@ -5,10 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:libpb/pb.dart' as pb;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/src/command/guard.dart';
+import 'package:libcli/src/command/firewall.dart';
 import 'package:libcli/src/command/url.dart';
 import 'package:libcli/src/command/http.dart';
-import 'package:libcli/src/command/events.dart';
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -67,36 +66,34 @@ abstract class Service {
   Future<pb.Object> execute(
     BuildContext ctx,
     pb.Object command, {
-    GuardRule? rule,
-    bool broadcastDenied = true,
+    bool ignoreFirewall = false,
   }) async {
     http.Client client = http.Client();
     return await executeWithClient(
       ctx,
       command,
       client,
-      rule: rule,
-      broadcastDenied: broadcastDenied,
+      ignoreFirewall: ignoreFirewall,
     );
   }
 
-  /// executehWithClient send command to remote service,return object if success, return null if exception happen
+  /// executeWithClient send command to remote service,return object if success, return null if exception happen
   ///
-  ///     var response = await service.executehWithClient(client, EchoAction());
+  ///     var response = await service.executeWithClient(client, EchoAction());
   ///
   Future<pb.Object> executeWithClient(
     BuildContext context,
     pb.Object command,
     http.Client client, {
-    GuardRule? rule,
-    bool broadcastDenied = true,
+    bool ignoreFirewall = false,
   }) async {
-    rule = rule ?? DefaultGuardRule;
-    var result = guardCheck(command.runtimeType, rule);
-    if (result == 0) {
-      //pass
-      var jsonSent = log.toLogString(command);
-      log.log('${log.COLOR_STATE}send ${command.runtimeType}{$jsonSent}${log.COLOR_END} to $url');
+    final commandJSON = command.jsonString;
+    dynamic result = FirewallPass;
+    if (!ignoreFirewall) {
+      result = firewall(commandJSON);
+    }
+    if (result is FirewallPass) {
+      log.log('${log.COLOR_STATE}send $commandJSON${log.COLOR_END} to $url');
       pb.Object returnObj = await post(
           context,
           Request(
@@ -107,18 +104,17 @@ abstract class Service {
             timeout: Duration(milliseconds: timeout),
             slow: Duration(milliseconds: slow),
           ));
-      var jsonReturn = log.toLogString(returnObj);
-      log.log('${log.COLOR_STATE}got ${returnObj.runtimeType}{$jsonReturn}${log.COLOR_END} from $url');
+      if (!ignoreFirewall) {
+        firewallPostComplete(commandJSON, returnObj);
+      }
+      log.log('${log.COLOR_STATE}got ${returnObj.jsonString}${log.COLOR_END} ');
       return returnObj;
+    } else if (result is FirewallBlock) {
+      log.log('${log.COLOR_ALERT}block ${command.jsonString} ');
+      eventbus.broadcast(context, FirewallBlockEvent());
     }
-
-    var duration = result == 1 ? rule.duration1! : rule.duration2!;
-    var count = result == 1 ? rule.count1! : rule.count2!;
-    log.log('${log.COLOR_ALERT}send ${command.runtimeType} denied${log.COLOR_END} $count/$duration');
-
-    if (broadcastDenied) {
-      eventbus.broadcast(context, GuardDeniedEvent());
-    }
-    return pb.Error()..code = 'GUARD_$result';
+    //cached object
+    log.log('${log.COLOR_ALERT}return cache ${result.jsonString} ');
+    return result;
   }
 }

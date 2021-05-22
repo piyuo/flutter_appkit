@@ -39,7 +39,7 @@ String safeJsonEncode(Object object) {
   } catch (e) {
     debug(e.toString());
   }
-  return toLogString(object);
+  return toString(object);
 }
 
 /// debug only print message in development. code will be remove at release mode
@@ -188,11 +188,11 @@ bool isLineUsable(String line) {
   return true;
 }
 
-/// toLogString encode object into string
+/// toString encode object into string
 ///
-///     toLogString(state);
+///     toString(state);
 ///
-String toLogString(dynamic value) {
+String toString(dynamic value) {
   if (value != null) {
     var text = value.toString().replaceAll('\n', '');
     if (text.indexOf('Instance of') == -1) {

@@ -63,10 +63,10 @@ void catched(dynamic e, StackTrace? stack) {
 @visibleForTesting
 Future<void> listened(BuildContext context, dynamic e) async {
   debugPrint('error-service listened ${e.runtimeType}');
-  if (e is command.GuardDeniedEvent) {
+  if (e is command.FirewallBlockEvent) {
     dialog.alert(
       context,
-      'guard'.i18n_,
+      'firewallBlock'.i18n_,
       warning: true,
       emailUs: true,
     );

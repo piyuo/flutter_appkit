@@ -24,7 +24,7 @@ class ErrorPlayground extends StatelessWidget {
                 child: Text('guard denied'),
                 onPressed: () {
                   watch(() {});
-                  eventbus.broadcast(context, command.GuardDeniedEvent());
+                  eventbus.broadcast(context, command.FirewallBlockEvent());
                 }),
             TextButton(
                 child: Text('no internet'),

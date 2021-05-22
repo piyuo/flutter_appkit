@@ -64,8 +64,8 @@ void main() {
     });
 
     test('should turn object into string', () async {
-      String str = toLogString(MockObject);
-      expect(str.length, greaterThan(0));
+      String str = toString(MockObject);
+      expect(str, isNotEmpty);
     });
   });
 }

@@ -60,7 +60,7 @@ Map _en_US() {
     'diskErrorDesc': 'Insufficient disk space or write access denied',
     'timeout': 'Operation timed out!',
     'timeoutDesc': 'Your operation didn\'t complete in time${tryAgain}',
-    'guard': 'Too many attempts${tryAgain}',
+    'firewallBlock': 'Too many attempts${tryAgain}',
   };
 }
 
@@ -101,7 +101,7 @@ Map _zh_TW() {
     'diskErrorDesc': '請檢查是否空間不足或是權限不夠',
     'timeout': '操作已經超時!',
     'timeoutDesc': '您的操作沒有得到伺服器回應，可能是伺服器目前忙碌中${tryAgain}',
-    'guard': '操作過於頻繁${tryAgain}',
+    'firewallBlock': '操作過於頻繁${tryAgain}',
   };
 }
 
@@ -142,6 +142,6 @@ Map _zh_CN() {
     'diskErrorDesc': '请检查是否空间不足或是权限不够',
     'timeout': '操作已经超时!',
     'timeoutDesc': '您的操作没有得到服务器回应，可能是服务器目前忙碌中${tryAgain}',
-    'guard': '操作过于频繁${tryAgain}',
+    'firewallBlock': '操作过于频繁${tryAgain}',
   };
 }

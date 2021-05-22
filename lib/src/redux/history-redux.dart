@@ -69,9 +69,9 @@ class HistoryRedux {
       if (kReleaseMode) {
         _index--;
       } else {
-        var jOld = log.toLogString(state);
+        var jOld = log.toString(state);
         _index--;
-        var jNew = log.toLogString(state);
+        var jNew = log.toString(state);
         log.log('${log.COLOR_STATE}undo $jNew ${log.COLOR_END}<= $jOld');
       }
     } else {
@@ -88,9 +88,9 @@ class HistoryRedux {
       if (kReleaseMode) {
         _index++;
       } else {
-        var jOld = log.toLogString(state);
+        var jOld = log.toString(state);
         _index++;
-        var jNew = log.toLogString(state);
+        var jNew = log.toString(state);
         log.log('${log.COLOR_STATE}redo $jNew ${log.COLOR_END}<= $jOld');
       }
     } else {
@@ -106,10 +106,10 @@ class HistoryRedux {
     if (kReleaseMode) {
       _setState(await _reducer(ctx, state, action));
     } else {
-      var jOld = log.toLogString(state);
+      var jOld = log.toString(state);
       var newState = await _reducer(ctx, state, action);
-      var jNew = log.toLogString(newState);
-      var payload = log.toLogString(action);
+      var jNew = log.toString(newState);
+      var payload = log.toString(action);
       log.log('${log.COLOR_STATE}action: ${action.runtimeType}{$payload}, state: $jNew ${log.COLOR_END}<= $jOld');
       _setState(newState);
     }

@@ -46,7 +46,7 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.GuardDeniedEvent());
+          await eventbus.broadcast(context, command.FirewallBlockEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);

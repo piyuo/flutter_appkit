@@ -1,10 +1,6 @@
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/util.dart' as utils;
 
-/// GuardDeniedEvent happen command send too frequently, need let user know they should wait for a while
-///
-class GuardDeniedEvent extends eventbus.Event {}
-
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
 ///
 class InternalServerErrorEvent extends eventbus.Event {}

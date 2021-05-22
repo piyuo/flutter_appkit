@@ -13,7 +13,7 @@ Map from(Map state) {
 /// readReduxStates print all redux states to string
 ///
 String stateToStr(Map state) {
-  return log.toLogString(state);
+  return log.toString(state);
 }
 
 /// Redux implements redux pattern
@@ -52,7 +52,7 @@ class Redux {
   ///
   Future<void> dispatch(BuildContext context, dynamic action) async {
     var newState = await _reducer(context, state, action);
-    var payload = log.toLogString(action);
+    var payload = log.toString(action);
     var diff = diffState(newState, _state);
     if (diff.isEmpty) {
       diff = 'state not change';

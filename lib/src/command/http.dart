@@ -131,7 +131,7 @@ Future<pb.Object> doPost(BuildContext context, Request r) async {
 ///
 Future<pb.Object> giveup(BuildContext ctx, dynamic e) async {
   eventbus.broadcast(ctx, e);
-  return pb.Object.empty;
+  return pb.empty;
 }
 
 /// retry use contract, return empty proto object is contract failed
@@ -147,5 +147,5 @@ Future<pb.Object> retry(
     log.log('try again');
     return await doPost(context, request);
   }
-  return pb.Object.empty;
+  return pb.empty;
 }

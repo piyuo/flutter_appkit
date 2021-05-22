@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'cache.dart' as cache;
+import 'package:libcli/src/cache/cache.dart' as cache;
 
 void main() {
   group('[cache]', () {
@@ -15,12 +15,16 @@ void main() {
       expect(cache.get("key1"), isNull);
     });
 
-    test('should remove expired entry', () async {
-      cache.expiredCheck = Duration(milliseconds: 500);
-      cache.set("expired1", "value1", expire: Duration(milliseconds: 400));
-      await Future.delayed(Duration(milliseconds: 950));
-      expect(cache.get("expired1"), isNull);
-      cache.expiredCheck = const Duration(minutes: 3);
+    test('should no error when delete not exists entry', () async {
+      cache.delete("not-exists");
+    });
+
+    test('should count key begin with A', () async {
+      cache.set("A1", "");
+      cache.set("A2", "");
+      cache.set("B1", "");
+      expect(cache.beginWith("A"), 2);
+      expect(cache.beginWith("B"), 1);
     });
   });
 }
