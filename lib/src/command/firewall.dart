@@ -13,7 +13,10 @@ class FirewallPass extends pb.Empty {}
 
 /// FirewallBlock is firewall return result
 ///
-class FirewallBlock extends pb.Empty {}
+class FirewallBlock extends pb.Empty {
+  String reason;
+  FirewallBlock(this.reason);
+}
 
 /// CacheKeyLastRequest is cache key that identify last request
 const CacheKeyLastRequest = "CMD_LAST_REQUEST";
@@ -57,7 +60,7 @@ pb.Object firewall(String cmdJSON) {
         return response;
       } else {
         // IN_FLIGHT
-        return FirewallBlock();
+        return FirewallBlock("IN_FLIGHT");
       }
     }
   }
@@ -65,7 +68,7 @@ pb.Object firewall(String cmdJSON) {
   // check OVERFLOW
   final currentCount = cache.beginWith(CacheKeyCall);
   if (currentCount >= MaxAllowPostCount) {
-    return FirewallBlock();
+    return FirewallBlock("OVERFLOW");
   }
 
   // track last command
@@ -80,8 +83,15 @@ pb.Object firewall(String cmdJSON) {
 
 /// firewallPostComplete must be call when post complete
 ///
-void firewallPostComplete(String cmdJSON, pb.Object response) {
+void firewallPostComplete(String cmdJSON, pb.Object? response) {
   if (firewallDisable) {
+    return;
+  }
+
+  if (response == null) {
+    // something wrong with post, just delete cache
+    cache.delete(CacheKeyLastRequest);
+    cache.delete(CacheKeyLastResponse);
     return;
   }
   // update request cache time, make sure request and response will expire at the same time

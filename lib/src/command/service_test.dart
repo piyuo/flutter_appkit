@@ -4,13 +4,12 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libpb/pb.dart' as pb;
 import 'package:libcli/env.dart' as env;
+import 'package:libcli/mocking.dart' as mocking;
+import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample_service.pb.dart';
-import 'package:libcli/mocking.dart' as mocking;
-import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/src/command/test.dart';
-import 'package:libcli/src/command/guard.dart';
 import 'package:libcli/src/command/protobuf.dart';
 import 'package:libcli/src/command/firewall.dart';
 
@@ -22,7 +21,6 @@ void main() {
 
   setUp(() {
     lastEvent = null;
-    guardRecords = [];
   });
 
   group('[command]', () {
@@ -107,46 +105,22 @@ void main() {
       expect(lastEvent is FirewallBlockEvent, true);
     });
 
-    /*test('should failed on default guard rule 2', () async {
+    test('should get from cache if same command send twice', () async {
+      var execCount = 0;
       var client = MockClient((request) async {
+        execCount++;
         return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
       });
       SampleService service = SampleService();
-      var rule = GuardRule(
-        duration1: Duration.zero,
-        count1: 0,
-        duration2: Duration(seconds: 5),
-        count2: 1,
-      );
 
-      //send first time
-      var response = await service.executeWithClient(mocking.Context(), CommandEcho(), client, rule: rule);
+      final cmd1 = CommandEcho(value: 'twin');
+      final cmd2 = CommandEcho(value: 'twin');
+
+      var response = await service.executeWithClient(mocking.Context(), cmd1, client);
+      var response2 = await service.executeWithClient(mocking.Context(), cmd2, client);
       expect(response is StringResponse, true);
-      if (response is pb.Error) {
-        expect(response.code, 'GUARD_1');
-      }
-
-      //send second time
-      response = await service.executeWithClient(mocking.Context(), CommandEcho(), client, rule: rule);
-      expect(response is pb.Error, true);
-      expect(lastEvent is GuardDeniedEvent, true);
+      expect(response, response2);
+      expect(execCount, 1);
     });
-
-    test('should not broadcast guard denied', () async {
-      var client = MockClient((request) async {
-        return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
-      });
-      SampleService service = SampleService();
-      //send first time
-      var response = await service.executeWithClient(mocking.Context(), CommandEcho(), client);
-      expect(response is StringResponse, true);
-
-      //send second time
-      response = await service.executeWithClient(mocking.Context(), CommandEcho(), client, broadcastDenied: false);
-      expect(response is pb.Error, true);
-      var error = response as pb.Error;
-      expect(error.code, 'GUARD_1');
-      expect(lastEvent, isNull);
-    });*/
   });
 }

@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:libpb/pb.dart' as pb;
 import 'package:libcli/src/command/service.dart';
 import 'package:libcli/src/command/http.dart';
-import 'package:libcli/src/command/guard.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
@@ -36,7 +35,6 @@ class MockService extends Service {
   Future<pb.Object> execute(
     BuildContext ctx,
     pb.Object obj, {
-    GuardRule? rule,
     bool ignoreFirewall = false,
   }) async {
     return await mockExecute(ctx, obj);
