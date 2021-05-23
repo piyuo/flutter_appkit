@@ -5,7 +5,7 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/dialog.dart' as dialog;
-import 'package:libcli/src/error/error.dart';
+import 'error.dart';
 
 class ErrorPlayground extends StatelessWidget {
   @override
@@ -15,18 +15,28 @@ class ErrorPlayground extends StatelessWidget {
       children: [
         Wrap(
           children: [
-            TextButton(
+            ElevatedButton(
                 child: Text('throw exception'),
                 onPressed: () {
                   watch(() => throw Exception('mock exception'));
                 }),
-            TextButton(
-                child: Text('guard denied'),
+            ElevatedButton(
+                child: Text('throw exception twice'),
+                onPressed: () {
+                  watch(() {
+                    Future.delayed(Duration(seconds: 3), () {
+                      throw Exception('second exception');
+                    });
+                    throw Exception('first exception');
+                  });
+                }),
+            ElevatedButton(
+                child: Text('firewall block'),
                 onPressed: () {
                   watch(() {});
                   eventbus.broadcast(context, command.FirewallBlockEvent());
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('no internet'),
                 onPressed: () async {
                   watch(() {});
@@ -41,7 +51,7 @@ class ErrorPlayground extends StatelessWidget {
                     dialog.info(context, text: ok ? 'retry' : 'cancel');
                   }
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('service not available'),
                 onPressed: () async {
                   watch(() {});
@@ -54,7 +64,7 @@ class ErrorPlayground extends StatelessWidget {
                   };
                   await eventbus.broadcast(context, contract);
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('internet blocked'),
                 onPressed: () async {
                   watch(() {});
@@ -67,22 +77,22 @@ class ErrorPlayground extends StatelessWidget {
                   };
                   await eventbus.broadcast(context, contract);
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('internal server error'),
                 onPressed: () {
                   eventbus.broadcast(context, command.InternalServerErrorEvent());
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('server not ready'),
                 onPressed: () {
                   eventbus.broadcast(context, command.ServerNotReadyEvent());
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('bad request'),
                 onPressed: () {
                   eventbus.broadcast(context, command.BadRequestEvent());
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('client timeout'),
                 onPressed: () async {
                   try {
@@ -93,19 +103,19 @@ class ErrorPlayground extends StatelessWidget {
                     dialog.info(context, text: ok ? 'retry' : 'cancel');
                   }
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('deadline exceeded'),
                 onPressed: () async {
                   var ok = await eventbus.broadcast(
                       context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
                   dialog.info(context, text: ok ? 'retry' : 'cancel');
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('slow network'),
                 onPressed: () {
                   eventbus.broadcast(context, command.SlowNetworkEvent());
                 }),
-            TextButton(
+            ElevatedButton(
                 child: Text('disk error'),
                 onPressed: () {
                   throw log.DiskErrorException();

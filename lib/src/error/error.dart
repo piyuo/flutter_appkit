@@ -9,12 +9,16 @@ import 'package:libcli/src/error/error-email.dart';
 
 var subscribed = null;
 
+var showCatchedAlert = false;
+
+dynamic showEventAlert = null;
+
 /// watch global exception
 ///
 ///      errorHandler.watch(suspect);
 ///
 void watch(Function suspect) {
-  FlutterError.onError = (FlutterErrorDetails details) => catched(
+  FlutterError.onError = (FlutterErrorDetails details) async => await catched(
         details.exception,
         details.stack,
       );
@@ -22,7 +26,7 @@ void watch(Function suspect) {
   runZonedGuarded<Future<void>>(() async {
     suspect();
   },
-      (Object e, StackTrace stack) => catched(
+      (Object e, StackTrace stack) async => await catched(
             e,
             stack,
           ));
@@ -33,23 +37,31 @@ void watch(Function suspect) {
 }
 
 @visibleForTesting
-void catched(dynamic e, StackTrace? stack) {
+Future<void> catched(dynamic e, StackTrace? stack) async {
   log.error(e, stack);
   if (e is AssertionError) {
     //don't do anything, assertion only happen in development
     return;
-  } else if (e is log.DiskErrorException) {
-    dialog.alert(
+  }
+
+  if (showCatchedAlert) {
+    // error already show
+    return;
+  }
+  showCatchedAlert = true;
+
+  if (e is log.DiskErrorException) {
+    await dialog.alert(
       dialog.RootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
       icon: Icons.sync_problem_rounded,
     );
+    showCatchedAlert = false;
     return;
   }
 
-  //try {
-  dialog.alert(
+  await dialog.alert(
     dialog.RootContext,
     'notified'.i18n_,
     warning: true,
@@ -57,7 +69,7 @@ void catched(dynamic e, StackTrace? stack) {
     footer: e.toString(),
     emailUs: true,
   );
-//  } catch (_) {}
+  showCatchedAlert = false;
 }
 
 @visibleForTesting
@@ -70,32 +82,28 @@ Future<void> listened(BuildContext context, dynamic e) async {
       warning: true,
       emailUs: true,
     );
-  }
-  if (e is command.InternalServerErrorEvent) {
+  } else if (e is command.InternalServerErrorEvent) {
     dialog.alert(
       context,
       '500 internal server error',
       warning: true,
       emailUs: true,
     );
-  }
-  if (e is command.ServerNotReadyEvent) {
+  } else if (e is command.ServerNotReadyEvent) {
     dialog.alert(
       context,
       '501 server not ready',
       warning: true,
       emailUs: true,
     );
-  }
-  if (e is command.BadRequestEvent) {
+  } else if (e is command.BadRequestEvent) {
     dialog.alert(
       context,
       '400 bad request',
       warning: true,
       emailUs: true,
     );
-  }
-  if (e is command.SlowNetworkEvent) {
+  } else if (e is command.SlowNetworkEvent) {
     dialog.info(context,
         text: 'slow'.i18n_,
         widget: Icon(
@@ -103,8 +111,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
           size: 68,
           color: Colors.white,
         ));
-  }
-  if (e is command.RequestTimeoutContract) {
+  } else if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.alert(
       context,
@@ -117,8 +124,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
     e.complete(result == true);
-  }
-  if (e is command.InternetRequiredContract) {
+  } else if (e is command.InternetRequiredContract) {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.alert(
@@ -152,8 +158,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       );
       e.complete(result == true);
     }
-  }
-  if (e is eventbus.EmailSupportEvent) {
+  } else if (e is eventbus.EmailSupportEvent) {
     ErrorEmail()..launchMailTo();
   }
 }
