@@ -11,7 +11,9 @@ import 'package:libcli/src/error/error.dart';
 void main() {
   final GlobalKey keyBtn = GlobalKey();
 
-  setUp(() async {});
+  setUp(() async {
+    showCatchedAlert = false;
+  });
 
   Widget createSample({
     required void Function(BuildContext context) onPressed,
@@ -42,7 +44,8 @@ void main() {
       expect(find.byType(Dialog), findsOneWidget);
     });
 
-    testWidgets('should alert when guard denied', (WidgetTester tester) async {
+    testWidgets('should alert when firewall block', (WidgetTester tester) async {
+      tester.binding.window.textScaleFactorTestValue = 0.5; // test font is bigger than real device, need scale down
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
@@ -56,6 +59,7 @@ void main() {
     });
 
     testWidgets('should alert when no internet', (WidgetTester tester) async {
+      tester.binding.window.textScaleFactorTestValue = 0.5; // test font is bigger than real device, need scale down
       await tester.pumpWidget(
         createSample(onPressed: (context) {
           watch(() => throw SocketException('wifi off'));
@@ -178,6 +182,7 @@ void main() {
     });
 
     testWidgets('should alert when disk error', (WidgetTester tester) async {
+      tester.binding.window.textScaleFactorTestValue = 0.5; // test font is bigger than real device, need scale down
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() => throw log.DiskErrorException());
