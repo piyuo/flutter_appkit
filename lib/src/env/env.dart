@@ -45,8 +45,8 @@ set userID(String value) {
 
 /// init config
 ///
-void init({
-  required String currentBranch,
+void init(
+  String currentBranch, {
   String currentName = "",
   String currentEmail = "",
 }) {
