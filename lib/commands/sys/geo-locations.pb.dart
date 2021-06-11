@@ -14,7 +14,7 @@ import 'geo-location.pb.dart' as $0;
 
 class GeoLocations extends pb.Object {
   $core.int mapIdXXX() {
-    return 1010;
+    return 1005;
   }
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GeoLocations', createEmptyInstance: create)
     ..pc<$0.GeoLocation>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'result', $pb.PbFieldType.PM, subBuilder: $0.GeoLocation.create)
