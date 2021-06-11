@@ -47,8 +47,8 @@ set userID(String value) {
 ///
 void init({
   required String currentBranch,
-  required String currentName,
-  required String currentEmail,
+  String currentName = "",
+  String currentEmail = "",
 }) {
   log.log('branch=$branch, name=$name, email=$email');
   branch = currentBranch;
