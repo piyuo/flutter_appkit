@@ -226,15 +226,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-  libpb:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "47c665f576c48d1a34592b76993ea8a0a73ae881"
-      url: "git@github.com:piyuo/libpb.git"
-    source: git
-    version: "0.0.17"
   logging:
     dependency: transitive
     description:

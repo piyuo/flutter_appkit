@@ -4,14 +4,11 @@ version: 0.1.2
 homepage: https://github.com/piyuo/libcli
 
 environment:
-    sdk: '>=2.12.2 <3.0.0'
+    sdk: ">=2.12.2 <3.0.0"
 
 dependencies:
     flutter:
         sdk: flutter
-    libpb:
-        git:
-            url: git@github.com:piyuo/libpb.git
     http: ^0.13.1
     protobuf: ^2.0.0
     shared_preferences: ^2.0.5

@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'service.dart';
-import 'package:libpb/pb.dart' as pb;
+import 'package:libcli/pb.dart' as pb;
 
 /// encode protobuf object into bytes
 ///
@@ -30,7 +30,7 @@ pb.Object decode(List<int> bytes, Service service) {
 
   pb.Object obj;
   if (id <= 1000) {
-    obj = pb.pbObjectByID(id, protoBytes);
+    obj = pb.typesObjectByID(id, protoBytes);
   } else {
     obj = service.newObjectByID(id, protoBytes);
   }

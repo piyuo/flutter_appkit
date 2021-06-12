@@ -1,6 +1,6 @@
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/cache.dart' as cache;
-import 'package:libpb/pb.dart' as pb;
+import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/identifier.dart' as identifier;
 
 /// FirewallBlockEvent happen when command send has been block by command service internal firewall
