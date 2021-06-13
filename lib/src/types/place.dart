@@ -23,6 +23,6 @@ class Place {
   bool get isEmpty => latlng.isEmpty;
 }
 
-class PlaceNotifier extends ValueNotifier<Place> {
-  PlaceNotifier({Place? value}) : super(value ?? Place.empty);
+class PlaceController extends ValueNotifier<Place> {
+  PlaceController({Place? value}) : super(value ?? Place.empty);
 }

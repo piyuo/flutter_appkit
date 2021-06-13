@@ -5,7 +5,7 @@ import 'package:libcli/types.dart' as types;
 /// https://api.flutter.dev/flutter/material/CheckboxListTile-class.html
 ///
 class Check extends StatefulWidget {
-  final types.BoolNotifier controller;
+  final types.BoolController controller;
 
   final String label;
 

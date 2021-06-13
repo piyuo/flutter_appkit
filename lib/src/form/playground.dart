@@ -13,7 +13,7 @@ class FormPlayground extends StatelessWidget {
 
   final GlobalKey btnTooltip = GlobalKey();
 
-  final checkController = types.BoolNotifier();
+  final checkController = types.BoolController();
 
   final dropdownController = TextEditingController();
 
