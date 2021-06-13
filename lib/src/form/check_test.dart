@@ -6,7 +6,7 @@ import 'check.dart';
 void main() {
   final _keyForm = GlobalKey<FormState>();
 
-  final controller = types.BoolController();
+  final controller = types.BoolNotifier();
 
   setUp(() {
     controller.value = false;
