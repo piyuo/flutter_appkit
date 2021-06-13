@@ -1,3 +1,5 @@
+/// Latlng represent latitude and longitude
+///
 class LatLng {
   LatLng(
     this.lat,
