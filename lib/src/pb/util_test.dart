@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/pb/types/types.dart' as types;
+import 'package:libcli/src/pb/simple/types.dart' as types;
 import 'package:libcli/src/pb/util.dart';
 
 void main() {

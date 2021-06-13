@@ -1,4 +1,4 @@
-import 'package:libcli/src/pb/types/types.dart' as types;
+import 'package:libcli/src/pb/simple/types.dart' as types;
 
 /// isOK return true if obj is OK
 ///

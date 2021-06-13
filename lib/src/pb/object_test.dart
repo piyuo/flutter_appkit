@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/pb/types/error.pb.dart';
+import 'package:libcli/src/pb/simple/error.pb.dart';
 
 void main() {
   group('[object]', () {
