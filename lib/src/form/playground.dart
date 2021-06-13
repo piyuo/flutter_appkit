@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/ui.dart' as ui;
+import 'package:libcli/types.dart' as types;
 import 'text-edit.dart';
 import 'email-edit.dart';
 import 'submit.dart';
@@ -13,7 +14,7 @@ class FormPlayground extends StatelessWidget {
 
   final GlobalKey btnTooltip = GlobalKey();
 
-  final checkController = ui.BoolEditingController();
+  final checkController = types.BoolController();
 
   final dropdownController = TextEditingController();
 
