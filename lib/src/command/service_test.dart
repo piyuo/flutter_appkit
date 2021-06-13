@@ -7,8 +7,8 @@ import 'package:libcli/env.dart' as env;
 import 'package:libcli/mocking.dart' as mocking;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
-import 'package:libcli/mock/protobuf/command-echo.pbserver.dart';
-import 'package:libcli/mock/protobuf/sample_service.pb.dart';
+import 'package:libcli/mock/protobuf/cmd-echo.pbserver.dart';
+import 'package:libcli/mock/protobuf/sample-service.pb.dart';
 import 'package:libcli/src/command/test.dart';
 import 'package:libcli/src/command/protobuf.dart';
 import 'package:libcli/src/command/firewall.dart';
@@ -32,7 +32,7 @@ void main() {
         return http.Response.bytes(bytes, 200);
       });
       SampleService service = SampleService();
-      var response = await service.executeWithClient(mocking.Context(), CommandEcho()..value = 'hello', client);
+      var response = await service.executeWithClient(mocking.Context(), CmdEcho()..value = 'hello', client);
       expect(response is StringResponse, true);
       if (response is StringResponse) {
         expect(response.value, 'hi');
@@ -44,7 +44,7 @@ void main() {
         return http.Response('', 501);
       });
       MockService service = MockService();
-      var response = await service.executeWithClient(mocking.Context(), CommandEcho(), client);
+      var response = await service.executeWithClient(mocking.Context(), CmdEcho(), client);
       expect(response is pb.Empty, true);
     });
 
@@ -54,7 +54,7 @@ void main() {
         ..mockExecute = (ctx, action) async {
           throw Exception('mock');
         };
-      CommandEcho action = new CommandEcho();
+      CmdEcho action = new CmdEcho();
       expect(() async {
         await service.execute(mocking.Context(), action);
       }, throwsException);
@@ -66,7 +66,7 @@ void main() {
           return StringResponse()..value = 'hi';
         };
 
-      CommandEcho action = new CommandEcho();
+      CmdEcho action = new CmdEcho();
       var response = await service.execute(mocking.Context(), action);
       expect(response is StringResponse, true);
       if (response is StringResponse) {
@@ -80,7 +80,7 @@ void main() {
           return StringResponse()..value = 'hi';
         };
 
-      CommandEcho action = new CommandEcho();
+      CmdEcho action = new CmdEcho();
       var response = await service.execute(mocking.Context(), action);
       expect(response is StringResponse, true);
     });
@@ -97,7 +97,7 @@ void main() {
       });
       SampleService service = SampleService();
 
-      final cmd = CommandEcho(value: 'firewallBlock');
+      final cmd = CmdEcho(value: 'firewallBlock');
       mockFirewallInFlight(cmd.jsonString);
 
       var response = await service.executeWithClient(mocking.Context(), cmd, client);
@@ -113,8 +113,8 @@ void main() {
       });
       SampleService service = SampleService();
 
-      final cmd1 = CommandEcho(value: 'twin');
-      final cmd2 = CommandEcho(value: 'twin');
+      final cmd1 = CmdEcho(value: 'twin');
+      final cmd2 = CmdEcho(value: 'twin');
 
       var response = await service.executeWithClient(mocking.Context(), cmd1, client);
       var response2 = await service.executeWithClient(mocking.Context(), cmd2, client);

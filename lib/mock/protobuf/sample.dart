@@ -1,5 +1,5 @@
 library sample;
 
-export 'sample_service.pb.dart';
-export 'command-echo.pb.dart';
+export 'sample-service.pb.dart';
+export 'cmd-echo.pb.dart';
 export 'string-response.pb.dart';

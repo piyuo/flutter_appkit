@@ -5,12 +5,13 @@ import 'package:libcli/pb.dart' as pb;
 import 'string-response.pb.dart';
 
 class SampleService extends Service {
+
   /// init sample service with predefine remote url
   /// remote url is defined in "service project/proto/.proto.json"
   /// For example:
   ///
   ///     SampleService service = SampleService();
-  SampleService() : super(serviceName: 'sample', timeout: 20000, slow: 10000);
+  SampleService(): super(serviceName: 'sample',timeout: 20000,slow: 10000);
 
   @override
   pb.Object newObjectByID(int id, List<int> l) {
