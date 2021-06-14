@@ -10,7 +10,7 @@ abstract class Object extends $pb.GeneratedMessage {
   ///     final text = jsonString;
   ///
   String get jsonString {
-    var text = toString().replaceAll('\n', '');
+    var text = toString();
     return '$runtimeType{$text}';
   }
 }
