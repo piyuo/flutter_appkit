@@ -1,5 +1,6 @@
 import 'package:location/location.dart';
 import 'package:libcli/types.dart' as types;
+import 'package:libcli/i18n.dart' as i18n;
 
 /// deviceLatLng return device location info, return empty if can't not get device location (user not allow)
 ///
@@ -28,4 +29,16 @@ Future<types.LatLng> deviceLatLng() async {
 
   _locationData = await location.getLocation();
   return types.LatLng(_locationData.latitude!, _locationData.longitude!);
+}
+
+/// countryLatLng return default location info by country
+///
+types.LatLng countryLatLng() {
+  switch (i18n.currentCountryCode) {
+    case 'CN':
+      return types.LatLng(31.237988, 121.490218);
+    case 'TW':
+      return types.LatLng(25.033092, 121.564289);
+  }
+  return types.LatLng(40.759678, -73.984920);
 }
