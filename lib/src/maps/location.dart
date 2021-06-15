@@ -1,9 +1,9 @@
 import 'package:location/location.dart';
 import 'package:libcli/types.dart' as types;
 
-/// return user current location, return empty if user not give his location
+/// location return user current location, return empty if user not give his location
 ///
-Future<types.LatLng> current() async {
+Future<types.LatLng> location() async {
   Location location = new Location();
 
   bool _serviceEnabled;
