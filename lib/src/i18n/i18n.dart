@@ -63,6 +63,9 @@ get currentLanguageCode => currentLocale.languageCode;
 
 get currentCountryCode => currentLocale.countryCode;
 
+/// isCN return true if country is china, we may need show different map or import different service cause china's firewall
+get isCN => currentLocale.countryCode == "CN";
+
 get currentLocaleID => localeToId(currentLocale);
 
 set locale(Locale locale) {
