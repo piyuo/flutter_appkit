@@ -5,6 +5,7 @@ void main() {
   setUp(() async {});
 
   group('[validators]', () {
+/*
     test('should check input is required', () async {
       //show error on null input
       String? error = requiredValidator(input: null, label: 'title');
@@ -26,7 +27,7 @@ void main() {
       error = requiredValidator(input: '1234', label: 'title', minLength: 3, maxLength: 5);
       expect(error, isNull);
     });
-
+*/
     test('should validate using regex', () async {
       RegExp regexp = RegExp(r"^[A-Za-z]");
       String? error = regexpValidator(input: '1', regexp: regexp, label: 'title', example: 'A-z');

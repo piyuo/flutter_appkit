@@ -58,14 +58,7 @@ class TextEditState extends State<TextEdit> {
       style: widget.style,
       inputFormatters: [LengthLimitingTextInputFormatter(widget.textInputMaxLength), ...widget.inputFormatters ?? []],
       textInputAction: widget.textInputAction,
-      validator: (String? input) => widget.require
-          ? validator.requiredValidator(
-              input: input,
-              label: widget.label.toLowerCase(),
-              enterYour: widget.enterYour,
-              minLength: widget.textInputMinLength,
-            )
-          : null,
+      validator: (String? input) => null,
       decoration: widget.decoration ??
           InputDecoration(
             hintText: widget.label,

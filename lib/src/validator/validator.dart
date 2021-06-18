@@ -2,6 +2,7 @@ import 'dart:core';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/log.dart' as log;
 
+/*
 /// requiredValidator validate input string, return error message when input is empty, return null if no error
 ///
 ///  use title to set error message title
@@ -38,7 +39,7 @@ String? requiredValidator({
   }
   return result;
 }
-
+*/
 /// regexpValidator validate input string using regex, return error message when input not valid, otherwise return null
 ///
 ///  use  title and example to set proper error message
