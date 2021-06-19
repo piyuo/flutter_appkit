@@ -2,35 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:libcli/validator.dart' as validator;
+import 'package:libcli/i18n.dart' as i18n;
+import 'field.dart';
 
-class EmailEdit extends StatefulWidget {
+class EmailField extends Field {
+  /// controller is input value controller
   final TextEditingController controller;
 
-  final String label;
-
-  final String suggestLabel;
-
-  final FocusNode? focusNode;
-
-  final FocusNode? nextFocusNode;
-
+  /// textInputAction control keyboard text input action
   final TextInputAction textInputAction;
 
-  EmailEdit({
+  EmailField({
     required this.controller,
-    required this.label,
-    required this.suggestLabel,
-    this.focusNode,
-    this.nextFocusNode,
     this.textInputAction = TextInputAction.next,
+    String? label,
+    String? hint,
+    String? required,
+    FormFieldValidator<String>? validator,
+    FocusNode? focusNode,
     Key? key,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+          label: label,
+          hint: hint,
+          required: required,
+          validator: validator,
+          focusNode: focusNode,
+        );
 
   @override
-  EmailEditState createState() => EmailEditState();
+  bool isEmpty() => controller.text.isEmpty;
+
+  @override
+  String? defaultValidator(String? text) {
+    var result = super.defaultValidator(text);
+    if (result != null) {
+      return result;
+    }
+    if (text!.length > 96) {
+      return 'maxLength'.i18n_.replaceAll('%1', label ?? '').replaceAll('%2', '96').replaceAll('%3', '${text.length}');
+    }
+    return null;
+  }
+
+  @override
+  EmailFieldState createState() => EmailFieldState();
 }
 
-class EmailEditState extends State<EmailEdit> {
+class EmailFieldState extends State<EmailField> {
+  /// _suggest is email address suggestion
   String _suggest = '';
 
   onFocusChange() {
@@ -102,7 +122,7 @@ class EmailEditState extends State<EmailEdit> {
                     text: TextSpan(
                   children: [
                     TextSpan(
-                      text: widget.suggestLabel,
+                      text: 'youMean'.i18n_,
                       style: TextStyle(
                         color: Colors.yellow[900],
                       ),

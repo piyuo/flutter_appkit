@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'dropdown.dart';
+import 'dropdown-field.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
@@ -18,7 +18,7 @@ void main() {
           key: _keyForm,
           child: Column(
             children: [
-              Dropdown(
+              DropdownField(
                 controller: controller,
                 items: {
                   "": "item0",
@@ -37,7 +37,7 @@ void main() {
       await tester.pumpWidget(testTarget());
       expect(controller.text, ''); // first item value
       expect(find.text('item1'), findsOneWidget); // one in FromDropdown items
-      await tester.tap(find.byType(Dropdown));
+      await tester.tap(find.byType(DropdownField));
       await tester.pumpAndSettle();
       expect(find.text('item1'), findsWidgets); // one in items, one in popup menu
       await tester.tap(find.text('item1').last);

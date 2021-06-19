@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'text-edit.dart';
+import 'input-field.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
@@ -16,19 +16,19 @@ void main() {
       home: Scaffold(
         body: Form(
           key: _keyForm,
-          child: TextEdit(
+          child: InputField(
             controller: controller,
             label: 'name',
-            textInputMaxLength: 10,
-            textInputMinLength: 2,
-            require: true,
+            maxLength: 10,
+            minLength: 2,
+            required: 'required',
           ),
         ),
       ),
     );
   }
 
-  group('[form-text-field]', () {
+  group('[input-field]', () {
     testWidgets('should pass value to controller', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
       await tester.enterText(find.byType(TextField), 'hi');
@@ -45,14 +45,14 @@ void main() {
 
     testWidgets('should not exceed max length', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
-      await tester.enterText(find.byType(TextEdit), '12345678901');
+      await tester.enterText(find.byType(InputField), '12345678901');
       await tester.pumpAndSettle();
       expect(controller.text, '1234567890'); //email error
     });
 
     testWidgets('should have min length error', (WidgetTester tester) async {
       await tester.pumpWidget(testTarget());
-      await tester.enterText(find.byType(TextEdit), '1');
+      await tester.enterText(find.byType(InputField), '1');
       await tester.pumpAndSettle();
       expect(find.textContaining('at least'), findsOneWidget); //email error
     });
