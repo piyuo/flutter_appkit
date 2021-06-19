@@ -22,11 +22,11 @@ class DocProvider extends module.AsyncProvider {
   Future<void> load(BuildContext context) async {
     if (!kReleaseMode && test.isMock()) {
       // don't load document in testMode, cause some big document cause pumpAndSettle() timed out
-      log.debug('fake load asset:docs/${docName}_${i18n.currentLocaleID}.md');
+      log.debug('fake load asset:docs/${docName}_${i18n.localeString}.md');
       return;
     }
     md = await asset.loadString(
-      assetName: 'docs/${docName}_${i18n.currentLocaleID}.md',
+      assetName: 'docs/${docName}_${i18n.localeString}.md',
     );
   }
 }

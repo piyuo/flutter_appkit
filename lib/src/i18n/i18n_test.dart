@@ -6,25 +6,34 @@ void main() {
   setUp(() async {});
 
   group('[i18n]', () {
-    test('should set/get global variable', () async {
+    test('should set/get locale', () async {
+      locale = Locale('zh', 'CN');
+      expect(localeString, 'zh_CN');
       locale = Locale('en', 'US');
-      expect(currentLocaleID, 'en_US');
+      expect(localeString, 'en_US');
     });
 
-    test('should convert locale to id', () async {
-      expect(localeToId(Locale('en', 'US')), 'en_US');
+    test('should convert locale to string', () async {
+      final str = localeToString(Locale('en', 'US'));
+      expect('en_US', str);
+      final l = stringToLocale(str);
+      expect(l.languageCode, 'en');
+      expect(l.countryCode, 'US');
     });
 
     test('should determine locale', () async {
       List<Locale> emptyList = [];
       Locale loc = determineLocale(emptyList);
-      expect(localeToId(loc), 'en_US');
-      expect(userPreferCountryCode, 'US');
+      expect(
+        localeToString(loc),
+        'en_US',
+      );
+      expect(country, 'US');
 
       List<Locale> list = [Locale('zh', 'TW'), Locale('en', 'CA')];
       loc = determineLocale(list);
-      expect(localeToId(loc), 'zh_TW');
-      expect(userPreferCountryCode, 'TW');
+      expect(localeToString(loc), 'zh_TW');
+      expect(country, 'TW');
     });
   });
 }

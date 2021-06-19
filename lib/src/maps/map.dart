@@ -73,7 +73,7 @@ Map platformMap(
   }
 
   // use amap in china
-  if (i18n.isCN) {
+  if (i18n.isCountryCN) {
     return MapAMap(controller, key: key);
   }
 

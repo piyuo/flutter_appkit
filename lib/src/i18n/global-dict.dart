@@ -15,7 +15,7 @@ String globalTranslate(String key) {
 /// getCurrentGlobalTranslation return global translation base on current locale
 ///
 Map getCurrentGlobalTranslation() {
-  switch (currentLocaleID) {
+  switch (localeString) {
     case zh_TW:
       return _zh_TW();
     case zh_CN:

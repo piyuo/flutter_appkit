@@ -12,7 +12,7 @@ Future<Map<String, String>> doRequestHeaders() async {
   //  log('$accessToken=$accessToken');
   //  headers['Cookie'] = accessToken;
   // }
-  headers['Accept-Language'] = i18n.currentLocaleID;
+  headers['Accept-Language'] = i18n.localeString;
   return headers;
 }
 

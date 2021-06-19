@@ -37,7 +37,7 @@ String serviceUrl(String funcName) {
 /// determineRegion return datacenter region base on user prefer country in user locale
 ///
 String determineRegion() {
-  return mapping(i18n.userPreferCountryCode);
+  return mapping(i18n.country);
 }
 
 /// country code world map
