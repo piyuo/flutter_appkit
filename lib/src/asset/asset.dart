@@ -60,7 +60,7 @@ Future<Map> loadMap({required String assetName, BuildContext? context, String? p
   return json.decode(text);
 }
 
-/// mock a text to asset
+/// mock a text to asset, only use for test
 ///
 ///     assets.mock('hi');
 ///

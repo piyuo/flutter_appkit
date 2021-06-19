@@ -83,12 +83,12 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
 ///
 ///     mock(Locale('en', 'US'), '{"title": "mock"}');
 ///
-@visibleForTesting
-void mock(Locale locale, String map) {
-  _locale = locale;
-  // ignore:invalid_use_of_visible_for_testing_member
-  asset.mock(map);
-}
+//@visibleForTesting
+//void mock(Locale locale, String map) {
+//  _locale = locale;
+// ignore:invalid_use_of_visible_for_testing_member
+//  asset.mock(map);
+//}
 
 /// askSupportedLocales ask what kind of locales we support
 ///

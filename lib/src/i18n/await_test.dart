@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/src/i18n/provider.dart';
 import 'package:libcli/src/i18n/test.dart';
+import 'package:libcli/asset.dart' as asset;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  // ignore: invalid_use_of_visible_for_testing_member
-  mock(Locale('en', 'US'), '{"a": "A"}');
+
+  setUp(() async {
+    // ignore: invalid_use_of_visible_for_testing_member
+    asset.mock('{"a": "A"}');
+  });
+
+  tearDown(() async {
+    // ignore: invalid_use_of_visible_for_testing_member
+    asset.mockDone();
+  });
 
   group('[i18n-await]', () {
     testWidgets('should load i18n', (WidgetTester tester) async {
