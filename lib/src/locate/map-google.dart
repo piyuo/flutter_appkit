@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:libcli/identifier.dart' as identifier;
-import 'package:libcli/maps.dart' as maps;
 import 'map.dart';
+import 'location.dart';
 
 /// MapGoogle need setup Key
 ///
@@ -87,7 +87,7 @@ class MapGoogleState extends State<MapGoogle> {
   Widget build(BuildContext context) {
     var l = widget.controller.value.latlng;
     if (l.isEmpty) {
-      l = maps.countryLatLng();
+      l = countryLatLng();
     }
     return GoogleMap(
       myLocationEnabled: false,

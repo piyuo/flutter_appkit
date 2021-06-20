@@ -3,6 +3,7 @@ import 'package:libcli/types.dart' as types;
 import 'package:libcli/i18n.dart' as i18n;
 
 /// deviceLatLng return device location info, return empty if can't not get device location (user not allow)
+/// this function is slow, it may takes few seconds to complete
 ///
 Future<types.LatLng> deviceLatLng() async {
   Location location = new Location();

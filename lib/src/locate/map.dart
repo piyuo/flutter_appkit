@@ -2,11 +2,11 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:libcli/types.dart' as types;
-import 'package:libcli/maps.dart' as maps;
 import 'package:libcli/i18n.dart' as i18n;
 import 'map-google.dart';
 import 'map-apple.dart';
 import 'map-amap.dart';
+import 'location.dart';
 
 /// MapValue represent how to show map
 class MapValue {
@@ -43,7 +43,7 @@ abstract class Map extends StatefulWidget {
   types.LatLng get currentLatLng {
     var l = controller.value.latlng;
     if (l.isEmpty) {
-      l = maps.countryLatLng();
+      l = countryLatLng();
     }
     return l;
   }
