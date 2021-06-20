@@ -85,6 +85,27 @@ class MapGoogleState extends State<MapGoogle> {
 
   @override
   Widget build(BuildContext context) {
+    return widget.controller.value.latlng.isEmpty
+        ? Container(color: Colors.grey[300])
+        : GoogleMap(
+            myLocationEnabled: false,
+            myLocationButtonEnabled: false,
+            mapType: MapType.normal,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                widget.controller.value.latlng.lat,
+                widget.controller.value.latlng.lng,
+              ),
+              zoom: 18,
+            ),
+            markers: _markers,
+            onMapCreated: (GoogleMapController controller) {
+              _googleController.complete(controller);
+            },
+          );
+  }
+}
+/*
     var l = widget.controller.value.latlng;
     if (l.isEmpty) {
       l = countryLatLng();
@@ -102,5 +123,5 @@ class MapGoogleState extends State<MapGoogle> {
         _googleController.complete(controller);
       },
     );
-  }
-}
+
+*/
