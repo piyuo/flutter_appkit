@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:libcli/identifier.dart' as identifier;
 import 'map.dart';
-import 'location.dart';
 
 /// MapGoogle need setup Key
 ///
@@ -85,7 +84,8 @@ class MapGoogleState extends State<MapGoogle> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.controller.value.latlng.isEmpty
+    final l = widget.controller.value.latlng;
+    return l.isEmpty
         ? Container(color: Colors.grey[300])
         : GoogleMap(
             myLocationEnabled: false,
@@ -93,8 +93,8 @@ class MapGoogleState extends State<MapGoogle> {
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
               target: LatLng(
-                widget.controller.value.latlng.lat,
-                widget.controller.value.latlng.lng,
+                l.lat,
+                l.lng,
               ),
               zoom: 18,
             ),
@@ -105,23 +105,3 @@ class MapGoogleState extends State<MapGoogle> {
           );
   }
 }
-/*
-    var l = widget.controller.value.latlng;
-    if (l.isEmpty) {
-      l = countryLatLng();
-    }
-    return GoogleMap(
-      myLocationEnabled: false,
-      myLocationButtonEnabled: false,
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-        target: LatLng(l.lat, l.lng),
-        zoom: 18,
-      ),
-      markers: _markers,
-      onMapCreated: (GoogleMapController controller) {
-        _googleController.complete(controller);
-      },
-    );
-
-*/

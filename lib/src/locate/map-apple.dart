@@ -64,17 +64,19 @@ class MapAppleState extends State<MapApple> {
   @override
   Widget build(BuildContext context) {
     final l = widget.controller.value.latlng;
-    return AppleMap(
-      myLocationEnabled: false,
-      myLocationButtonEnabled: false,
-      annotations: _markers,
-      onMapCreated: (AppleMapController controller) {
-        _appleController = controller;
-      },
-      initialCameraPosition: CameraPosition(
-        target: LatLng(l.lat, l.lng),
-        zoom: 18,
-      ),
-    );
+    return l.isEmpty
+        ? Container(color: Colors.grey[300])
+        : AppleMap(
+            myLocationEnabled: false,
+            myLocationButtonEnabled: false,
+            annotations: _markers,
+            onMapCreated: (AppleMapController controller) {
+              _appleController = controller;
+            },
+            initialCameraPosition: CameraPosition(
+              target: LatLng(l.lat, l.lng),
+              zoom: 18,
+            ),
+          );
   }
 }

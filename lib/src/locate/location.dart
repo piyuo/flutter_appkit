@@ -31,15 +31,3 @@ Future<types.LatLng> deviceLatLng() async {
   _locationData = await location.getLocation();
   return types.LatLng(_locationData.latitude!, _locationData.longitude!);
 }
-
-/// countryLatLng return default location info by country
-///
-types.LatLng countryLatLng() {
-  switch (i18n.country) {
-    case i18n.CN:
-      return types.LatLng(31.237988, 121.490218);
-    case i18n.TW:
-      return types.LatLng(25.033092, 121.564289);
-  }
-  return types.LatLng(40.759678, -73.984920);
-}

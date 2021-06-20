@@ -6,7 +6,6 @@ import 'package:libcli/i18n.dart' as i18n;
 import 'map-google.dart';
 import 'map-apple.dart';
 import 'map-amap.dart';
-import 'location.dart';
 
 /// MapValue represent how to show map
 class MapValue {
@@ -40,13 +39,7 @@ abstract class Map extends StatefulWidget {
   final MapValueController controller;
 
   /// controller control map value
-  types.LatLng get currentLatLng {
-    var l = controller.value.latlng;
-    if (l.isEmpty) {
-      l = countryLatLng();
-    }
-    return l;
-  }
+  types.LatLng get currentLatLng => controller.value.latlng;
 
   /// showMarker true mean
   bool get showMarker {

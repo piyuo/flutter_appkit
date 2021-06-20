@@ -75,15 +75,17 @@ class MapAMapState extends State<MapAMap> {
   @override
   Widget build(BuildContext context) {
     final l = widget.controller.value.latlng;
-    return AMapWidget(
-      markers: _markers,
-      onMapCreated: (AMapController controller) {
-        _amapController = controller;
-      },
-      initialCameraPosition: CameraPosition(
-        target: LatLng(l.lat, l.lng),
-        zoom: 18,
-      ),
-    );
+    return l.isEmpty
+        ? Container(color: Colors.grey[300])
+        : AMapWidget(
+            markers: _markers,
+            onMapCreated: (AMapController controller) {
+              _amapController = controller;
+            },
+            initialCameraPosition: CameraPosition(
+              target: LatLng(l.lat, l.lng),
+              zoom: 18,
+            ),
+          );
   }
 }
