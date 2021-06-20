@@ -21,17 +21,15 @@ String serviceUrl(String funcName) {
     }
   }
 
-  String branch = '-' + env.branch;
-  if (branch == '-stable') {
-    branch = '';
+  if (env.branch == env.BRANCH_STABLE) {
+    String region = serviceRegion;
+    if (region.isEmpty) {
+      region = determineRegion();
+    }
+    return 'https://$funcName-${region.toLowerCase()}.$baseDomain/?q';
   }
-  String region = serviceRegion;
-  if (region.isEmpty) {
-    region = determineRegion();
-  }
-
-  // add /?q query string to avoid cache by cloud flare
-  return 'https://$funcName-${region.toLowerCase()}$branch.$baseDomain/?q';
+  // always use US when not in stable branch
+  return 'https://$funcName-us-${env.branch}.$baseDomain/?q';
 }
 
 /// determineRegion return datacenter region base on user prefer country in user locale
