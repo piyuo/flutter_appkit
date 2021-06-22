@@ -41,7 +41,8 @@ flutter:
     uses-material-design: true
     assets:
         - asset/test/
-        - packages/libcli/asset/i18n/mock.json
+        - packages/libcli/asset/i18n/
+    #    - packages/libcli/asset/i18n/mock.json
     # To add assets to your package, add an assets section, like this:
     # assets:
     #  - images/a_dot_burr.jpeg

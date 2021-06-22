@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/asset.dart' as asset;
 
 const US = 'US';
 const CN = 'CN';

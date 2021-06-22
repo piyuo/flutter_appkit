@@ -39,14 +39,14 @@ String i18n_(String str) {
   return globalTranslate(str);
 }
 
-/// i18n translate str base on current locale
+/// i18n translate string base on current locale
 ///
 String i18n(BuildContext context, String str) {
   var provider = Provider.of<I18nProvider>(context, listen: false);
   return provider.translate(str);
 }
 
-/// timestamp create TimpStamp and convert datetime to utc, if datetime is null use DateTime.now()
+/// timestamp create TimeStamp and convert datetime to utc, if datetime is null use DateTime.now()
 ///
 ///      var t = timestamp();
 ///
