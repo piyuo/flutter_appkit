@@ -1,0 +1,88 @@
+import 'package:flutter/widgets.dart';
+import "package:google_maps_webservice/places.dart";
+import 'types.dart' as types;
+import 'geo-service.dart';
+
+class PlaceGoogle extends Place {
+  PlaceGoogle(String language) : super(language: language);
+
+  static final googleAPI = new GoogleMapsPlaces(apiKey: "AIzaSyAKrFnuaf4Ic98KpjxzQaX3DxBYlLQW-2o");
+
+  @override
+  Future<List<types.Suggestion>> suggestions(BuildContext ctx, String input, types.Coordinates coordinates) async {
+    Location? loc = null;
+    if (!coordinates.isEmpty) {
+      loc = Location(lat: coordinates.lat, lng: coordinates.lng);
+    }
+    PlacesAutocompleteResponse response = await googleAPI.autocomplete(
+      input,
+      location: loc,
+      sessionToken: sessionToken,
+      types: ['address'],
+      language: language,
+    );
+    if (response.isOkay) {
+      return response.predictions
+          .map<types.Suggestion>((Prediction p) => types.Suggestion(
+                id: p.placeId!,
+                name: p.description!,
+              ))
+          .toList();
+    }
+    return [];
+  }
+
+  Future<types.Location> locationFrom(BuildContext ctx, types.Suggestion suggestion) async {
+    PlacesDetailsResponse response = await googleAPI.getDetailsByPlaceId(
+      suggestion.id,
+      sessionToken: sessionToken,
+      language: language,
+      fields: ['id', 'place_id', 'name', 'address_component', 'formatted_address', 'geometry', 'utc_offset', 'photo'],
+    );
+
+    if (response.isOkay) {
+      final components = response.result.addressComponents;
+      final geometry = response.result.geometry!;
+
+      // build result
+      final loc = types.Location(
+        address: response.result.formattedAddress!,
+        coordinates: types.Coordinates(
+          geometry.location.lat,
+          geometry.location.lng,
+        ),
+      );
+      components.forEach((c) {
+        final List type = c.types;
+        if (type.contains('street_number')) {
+          loc.streetNumber = c.longName;
+        }
+        if (type.contains('route')) {
+          loc.route = c.longName;
+        }
+        if (type.contains('locality')) {
+          loc.locality = c.shortName;
+          loc.localityLong = c.longName;
+        }
+        if (type.contains('postal_code')) {
+          loc.postalCode = c.longName;
+        }
+      });
+      return loc;
+    }
+    return types.Location.empty;
+  }
+
+  Future<String> addressFrom(BuildContext ctx, types.Coordinates c) async {
+    PlacesSearchResponse response = await googleAPI.searchNearbyWithRadius(
+      Location(lat: c.lat, lng: c.lng),
+      5,
+    );
+
+    if (response.isOkay && response.results.length > 0) {
+      final firstResult = response.results[0];
+      return firstResult.name;
+    }
+    return '';
+  }
+}
