@@ -18,6 +18,11 @@ class FormPlayground extends StatelessWidget {
 
   final dropdownController = TextEditingController();
 
+  final Map dropdownItems = {
+    "aa": "11",
+    "bb": "2",
+  };
+
   final clickController = TextEditingController();
 
   final checkController = types.BoolController();
@@ -27,11 +32,6 @@ class FormPlayground extends StatelessWidget {
   final emailFocusNode = FocusNode();
 
   final _keyForm = GlobalKey<FormState>();
-
-  final Map dropdownItems = {
-    "aa": "11",
-    "bb": "2",
-  };
 
   FormPlayground() {
 //    clickController.text = 'click text';

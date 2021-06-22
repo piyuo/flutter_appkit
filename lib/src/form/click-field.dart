@@ -39,14 +39,14 @@ class ClickFieldState extends State<ClickField> {
         setState(() => widget.controller.text = text);
       },
       child: InputDecorator(
+        isEmpty: widget.controller.text.isEmpty,
         decoration: InputDecoration(
-          labelStyle: widget.controller.text.isEmpty ? TextStyle(fontSize: 21) : null,
           labelText: widget.label,
           suffixIcon: Icon(
             Icons.arrow_forward_ios,
           ),
         ).applyDefaults(Theme.of(context).inputDecorationTheme),
-        child: Text(widget.controller.text),
+        child: Text(widget.controller.text, style: Theme.of(context).textTheme.bodyText1),
       ),
     );
   }
