@@ -41,7 +41,7 @@ flutter:
     uses-material-design: true
     assets:
         - asset/test/
-        - packages/libcli/asset/i18n/place_en_US.json
+        - packages/libcli/asset/i18n/
     #    - packages/libcli/asset/i18n/mock.json
     # To add assets to your package, add an assets section, like this:
     # assets:
