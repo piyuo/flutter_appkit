@@ -7,3 +7,4 @@ export 'package:libcli/src/dialog/popup-menu.dart';
 export 'package:libcli/src/dialog/tooltip.dart';
 export 'package:libcli/src/dialog/toast.dart';
 export 'package:libcli/src/dialog/test.dart';
+export 'package:libcli/src/dialog/route.dart';

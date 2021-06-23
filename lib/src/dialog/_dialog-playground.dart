@@ -6,6 +6,7 @@ import 'alert.dart';
 import 'popup-menu.dart';
 import 'toast.dart';
 import 'slide.dart';
+import 'route.dart';
 
 class DialogPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -236,6 +237,34 @@ class DialogPlayground extends StatelessWidget {
                     onPressed: () => slide(
                       context,
                       Container(height: 300, child: Text('hi')),
+                    ),
+                  ),
+                ]),
+                SizedBox(height: 20),
+                Text('route or dialog'),
+                SizedBox(height: 20),
+                Wrap(children: [
+                  ElevatedButton(
+                    child: Text('normal'),
+                    onPressed: () => routeOrDialog(
+                      context,
+                      Container(color: Colors.blue),
+                    ),
+                  ),
+                  ElevatedButton(
+                    child: Text('route'),
+                    onPressed: () => routeOrDialog(
+                      context,
+                      Container(color: Colors.blue),
+                      min: Size(300, 400),
+                    ),
+                  ),
+                  ElevatedButton(
+                    child: Text('dialog'),
+                    onPressed: () => routeOrDialog(
+                      context,
+                      Container(color: Colors.blue),
+                      min: Size(3000, 4000),
                     ),
                   ),
                 ]),
