@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/module.dart';
-import 'package:libcli/src/i18n/provider.dart';
+import 'package:libcli/src/i18n/i18n-provider.dart';
 import 'package:libcli/src/i18n/test.dart';
 import 'package:libcli/asset.dart' as asset;
 

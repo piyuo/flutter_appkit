@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:libcli/src/pb/google/google.dart' as google;
 import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/src/i18n/extensions.dart';
-import 'package:libcli/src/i18n/provider.dart';
+import 'package:libcli/src/i18n/i18n-provider.dart';
 import 'package:libcli/asset.dart' as asset;
 
 void main() {
