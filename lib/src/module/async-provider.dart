@@ -19,7 +19,7 @@ abstract class AsyncProvider with ChangeNotifier {
   /// prevent notifyListeners after dispose
   bool _disposed = false;
 
-  /// load happen when Await  initState()
+  /// load happen when Await initState()
   ///
   Future<void> load(BuildContext context) async {}
 

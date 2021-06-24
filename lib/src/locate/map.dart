@@ -7,72 +7,92 @@ import 'map-google.dart';
 import 'map-apple.dart';
 import 'map-amap.dart';
 
-/// MapValue represent how to show map
-class MapValue {
-  MapValue({
-    required this.latlng,
-    required this.showMarker,
-  });
+/// MapProviderImpl is interface for map implementation
+abstract class MapProviderImpl {
+  types.LatLng latlng = types.LatLng.empty;
 
-  final types.LatLng latlng;
+  bool showMarker = false;
 
-  final bool showMarker;
-
-  static MapValue empty = MapValue(
-    showMarker: false,
-    latlng: types.LatLng.empty,
-  );
-
-  bool get isEmpty => latlng.isEmpty;
-}
-
-/// MapValueController
-class MapValueController extends ValueNotifier<MapValue> {
-  MapValueController({MapValue? value}) : super(value ?? MapValue.empty);
-}
-
-/// Map is abstract map
-abstract class Map extends StatefulWidget {
-  Map(this.controller, {Key? key}) : super(key: key);
-
-  /// controller control map value
-  final MapValueController controller;
-
-  /// controller control map value
-  types.LatLng get currentLatLng => controller.value.latlng;
-
-  /// showMarker true mean
-  bool get showMarker {
-    return controller.value.showMarker;
+  Future<void> setValue(types.LatLng l, bool show) async {
+    latlng = l;
+    showMarker = show;
   }
 }
 
+/// MapProvider control map
+class MapProvider with ChangeNotifier {
+  MapProvider(this.impl);
+
+  // impl is map implementation
+  MapProviderImpl impl;
+
+  Future<void> setValue(types.LatLng l, bool show) async {
+    impl.setValue(l, show);
+    notifyListeners();
+  }
+
+  types.LatLng get latlng {
+    return impl.latlng;
+  }
+
+  bool get showMarker {
+    return impl.showMarker;
+  }
+}
+
+/// Map is abstract map
+abstract class Map extends StatelessWidget {}
+
 /// platformMap return map by platform, web:google map, ios: apple map, cn: amap
 ///
-///     map.platformMap(widget.mapController)
+///     map.platformMap(platformMapProvider)
 ///
-Map platformMap(
-  MapValueController controller, {
-  Key? key,
-}) {
+Map platformMap() {
   if (kIsWeb) {
     // only google map support web
-    return MapGoogle(controller, key: key);
+    return MapGoogle();
   }
 
   // always use apple map on ios, cause apple demand it
   if (Platform.isIOS) {
-    return MapApple(controller, key: key);
+    return MapApple();
   }
 
   // use amap in china
   if (i18n.isCountryCN) {
-    return MapAMap(controller, key: key);
+    return MapAMap();
   }
 
 //change android locale will result CERTIFICATE_VERIFY_FAILED, so we just do test in en_US
-//  return MapAMap(controller, key: key);
+//  return MapAMap();
 
   // everything else use google map
-  return MapGoogle(controller, key: key);
+  return MapGoogle();
+}
+
+/// platformMapProvider return map provider by platform, web:google map, ios: apple map, cn: amap
+///
+///     map.platformMapProvider()
+///
+MapProvider platformMapProvider() {
+  if (kIsWeb) {
+    // only google map support web
+    return MapProvider(GoogleImpl());
+  }
+
+  // always use apple map on ios, cause apple demand it
+  if (Platform.isIOS) {
+    return MapProvider(AppleImpl());
+  }
+
+  // use amap in china
+  if (i18n.isCountryCN) {
+    return MapProvider(AmapImpl());
+  }
+
+//change android locale will result CERTIFICATE_VERIFY_FAILED, so we just do test in en_US
+//  return MapAMap();
+
+  // everything else use google map
+  return MapProvider(GoogleImpl());
 }

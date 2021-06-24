@@ -1,59 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:apple_maps_flutter/apple_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:libcli/types.dart' as types;
 import 'package:libcli/identifier.dart' as identifier;
 import 'map.dart';
 
-/// MapApple run ios apple map, no key required
-class MapApple extends Map {
-  MapApple(
-    MapValueController controller, {
-    Key? key,
-  }) : super(controller, key: key);
-
-  @override
-  State<MapApple> createState() => MapAppleState();
-}
-
-class MapAppleState extends State<MapApple> {
-  AppleMapController? _appleController;
+/// AppleImpl is apple map implementation
+class AppleImpl extends MapProviderImpl {
+  AppleMapController? _controller;
 
   Set<Annotation> _markers = {};
 
   @override
-  void initState() {
-    super.initState();
-    widget.controller.addListener(onValueChange);
+  Future<void> setValue(types.LatLng latlngValue, bool showMarkerValue) async {
+    await super.setValue(latlngValue, showMarkerValue);
     resetMarker();
-  }
 
-  /// resetMarker reset marker position
-  void resetMarker() {
-    final l = widget.currentLatLng;
-    _markers.clear();
-    if (widget.showMarker) {
-      _markers.add(
-        Annotation(
-            annotationId: AnnotationId(identifier.uuid()), // marker id must be unique
-            position: LatLng(
-              l.lat,
-              l.lng,
-            )),
-      );
-    }
-  }
-
-  /// onValueChange happen when user change value
-  void onValueChange() async {
-    setState(() {
-      resetMarker();
-    });
-
-    final l = widget.controller.value.latlng;
-    if (_appleController != null) {
-      _appleController!.moveCamera(
+    if (_controller != null) {
+      _controller!.moveCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
-            target: LatLng(l.lat, l.lng),
+            target: LatLng(latlng.lat, latlng.lng),
             zoom: 18,
           ),
         ),
@@ -61,22 +28,42 @@ class MapAppleState extends State<MapApple> {
     }
   }
 
+  /// resetMarker reset marker position
+  void resetMarker() {
+    _markers.clear();
+    if (showMarker) {
+      _markers.add(
+        Annotation(
+            annotationId: AnnotationId(identifier.uuid()), // marker id must be unique
+            position: LatLng(
+              latlng.lat,
+              latlng.lng,
+            )),
+      );
+    }
+  }
+}
+
+/// MapApple run ios apple map, no key required
+class MapApple extends Map {
   @override
   Widget build(BuildContext context) {
-    final l = widget.controller.value.latlng;
-    return l.isEmpty
-        ? Container(color: Colors.grey[300])
-        : AppleMap(
-            myLocationEnabled: false,
-            myLocationButtonEnabled: false,
-            annotations: _markers,
-            onMapCreated: (AppleMapController controller) {
-              _appleController = controller;
-            },
-            initialCameraPosition: CameraPosition(
-              target: LatLng(l.lat, l.lng),
-              zoom: 18,
-            ),
-          );
+    return Consumer<MapProvider>(builder: (context, mapProvider, child) {
+      final impl = mapProvider.impl as AppleImpl;
+      return mapProvider.latlng.isEmpty
+          ? Container(color: Colors.grey[300])
+          : AppleMap(
+              myLocationEnabled: false,
+              myLocationButtonEnabled: false,
+              annotations: impl._markers,
+              onMapCreated: (AppleMapController controller) {
+                impl._controller = controller;
+              },
+              initialCameraPosition: CameraPosition(
+                target: LatLng(mapProvider.latlng.lat, mapProvider.latlng.lng),
+                zoom: 18,
+              ),
+            );
+    });
   }
 }

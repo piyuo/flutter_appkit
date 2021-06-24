@@ -1,7 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
 import 'package:amap_flutter_base/amap_flutter_base.dart';
+import 'package:libcli/types.dart' as types;
 import 'map.dart';
+
+/// AmapImpl is amap implementation
+class AmapImpl extends MapProviderImpl {
+  AMapController? _controller;
+
+  Set<Marker> _markers = {};
+
+  @override
+  Future<void> setValue(types.LatLng latlngValue, bool showMarkerValue) async {
+    await super.setValue(latlngValue, showMarkerValue);
+    resetMarker();
+
+    if (_controller != null) {
+      _controller!.moveCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(latlng.lat, latlng.lng),
+            zoom: 18,
+          ),
+        ),
+      );
+    }
+  }
+
+  /// resetMarker reset marker position
+  void resetMarker() {
+    _markers.clear();
+    if (showMarker) {
+      _markers.add(
+        Marker(
+            infoWindowEnable: false,
+            position: LatLng(
+              latlng.lat,
+              latlng.lng,
+            )),
+      );
+    }
+  }
+}
 
 /// AMapApiKey is amap.com key, you need generate android key
 ///  here is how to get sha1 for amap android key
@@ -16,76 +57,22 @@ import 'map.dart';
 ///     <meta-data android:name="com.google.android.geo.API_KEY"
 ///                android:value="YOUR KEY HERE"/>
 class MapAMap extends Map {
-  MapAMap(
-    MapValueController controller, {
-    Key? key,
-  }) : super(controller, key: key);
-
-  @override
-  State<MapAMap> createState() => MapAMapState();
-}
-
-class MapAMapState extends State<MapAMap> {
-  AMapController? _amapController;
-
-  Set<Marker> _markers = {};
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controller.addListener(onValueChange);
-    resetMarker();
-  }
-
-  /// resetMarker reset marker position
-  void resetMarker() {
-    final l = widget.currentLatLng;
-    _markers.clear();
-    if (widget.showMarker) {
-      _markers.add(
-        Marker(
-            infoWindowEnable: false,
-            position: LatLng(
-              l.lat,
-              l.lng,
-            )),
-      );
-    }
-  }
-
-  /// onValueChange happen when user change value
-  void onValueChange() async {
-    setState(() {
-      resetMarker();
-    });
-
-    final l = widget.controller.value.latlng;
-    if (_amapController != null) {
-      _amapController!.moveCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(l.lat, l.lng),
-            zoom: 18,
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final l = widget.controller.value.latlng;
-    return l.isEmpty
-        ? Container(color: Colors.grey[300])
-        : AMapWidget(
-            markers: _markers,
-            onMapCreated: (AMapController controller) {
-              _amapController = controller;
-            },
-            initialCameraPosition: CameraPosition(
-              target: LatLng(l.lat, l.lng),
-              zoom: 18,
-            ),
-          );
+    return Consumer<MapProvider>(builder: (context, mapProvider, child) {
+      final impl = mapProvider.impl as AmapImpl;
+      return mapProvider.latlng.isEmpty
+          ? Container(color: Colors.grey[300])
+          : AMapWidget(
+              markers: impl._markers,
+              onMapCreated: (AMapController controller) {
+                impl._controller = controller;
+              },
+              initialCameraPosition: CameraPosition(
+                target: LatLng(mapProvider.latlng.lat, mapProvider.latlng.lng),
+                zoom: 18,
+              ),
+            );
+    });
   }
 }
