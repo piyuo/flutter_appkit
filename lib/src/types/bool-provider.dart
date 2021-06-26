@@ -3,11 +3,12 @@ import 'package:flutter/widgets.dart';
 /// BoolProvider control bool value
 class BoolProvider with ChangeNotifier {
   void setValue(bool value) {
-    _value = value;
+    boolValue = value;
     notifyListeners();
   }
 
-  bool _value = false;
+  @protected
+  bool boolValue = false;
 
-  bool get value => _value;
+  bool get value => boolValue;
 }
