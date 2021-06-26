@@ -21,7 +21,7 @@ void main() {
             label: 'name',
             maxLength: 10,
             minLength: 2,
-            required: 'required',
+            require: 'required',
           ),
         ),
       ),

@@ -27,7 +27,7 @@ class ClickField extends Field {
   }) : super(
           key: key,
           label: label,
-          required: required,
+          require: required,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
         );

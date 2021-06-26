@@ -27,13 +27,13 @@ class InputField extends Field {
     this.formatters,
     String? label,
     String? hint,
-    String? required,
+    String? require,
     FormFieldValidator<String>? validator,
     FocusNode? focusNode,
   }) : super(
           label: label,
           hint: hint,
-          required: required,
+          require: require,
           validator: validator,
           focusNode: focusNode,
         );

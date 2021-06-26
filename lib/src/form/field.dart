@@ -4,7 +4,7 @@ abstract class Field extends StatelessWidget {
   Field({
     this.label,
     this.hint,
-    this.required,
+    this.require,
     this.validator,
     this.focusNode,
     this.nextFocusNode,
@@ -18,7 +18,7 @@ abstract class Field extends StatelessWidget {
   final String? hint;
 
   // required set to string will trigger validator and will show when value is empty
-  final String? required;
+  final String? require;
 
   // validator can set custom validator
   final FormFieldValidator<String>? validator;
@@ -34,9 +34,9 @@ abstract class Field extends StatelessWidget {
     if (validator != null) {
       return validator!(text);
     }
-    if (required != null) {
+    if (require != null) {
       if (text == null || text.trim().isEmpty) {
-        return required;
+        return require;
       }
     }
     return null;

@@ -13,12 +13,12 @@ class DropdownField extends Field {
     required this.controller,
     required this.items,
     String? label,
-    String? required,
+    String? require,
     FormFieldValidator<String>? validator,
     FocusNode? focusNode,
   }) : super(
           label: label,
-          required: required,
+          require: require,
           validator: validator,
           focusNode: focusNode,
         ) {}

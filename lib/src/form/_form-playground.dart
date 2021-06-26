@@ -52,14 +52,14 @@ class FormPlayground extends StatelessWidget {
                   controller: textController,
                   label: 'input field label',
                   hint: 'please input text',
-                  required: 'input is required',
+                  require: 'input is required',
                 ),
                 br(),
                 DropdownField(
                   controller: dropdownController,
                   items: dropdownItems,
                   label: 'dropdown field label',
-                  required: 'you must select 1 item',
+                  require: 'you must select 1 item',
                 ),
                 p(),
                 ClickField(

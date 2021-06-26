@@ -70,14 +70,14 @@ class EmailField extends Field {
     this.textInputAction = TextInputAction.next,
     String? label,
     String? hint,
-    String? required,
+    String? require,
     FormFieldValidator<String>? validator,
     Key? key,
   }) : super(
           key: key,
           label: label,
           hint: hint,
-          required: required,
+          require: require,
           validator: validator,
           focusNode: focusNode,
         );
