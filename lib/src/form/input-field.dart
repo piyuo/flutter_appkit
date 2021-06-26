@@ -30,9 +30,7 @@ class InputField extends Field {
     String? required,
     FormFieldValidator<String>? validator,
     FocusNode? focusNode,
-    Key? key,
   }) : super(
-          key: key,
           label: label,
           hint: hint,
           required: required,
