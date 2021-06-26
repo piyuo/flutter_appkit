@@ -20,14 +20,14 @@ class ClickField extends Field {
     required this.controller,
     required this.onClicked,
     String? label,
-    String? required,
+    String? require,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
     Key? key,
   }) : super(
           key: key,
           label: label,
-          require: required,
+          require: require,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
         );

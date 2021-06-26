@@ -68,7 +68,7 @@ class FormPlayground extends StatelessWidget {
                   onClicked: (String text) async {
                     return "hello";
                   },
-                  required: 'you must click to set value',
+                  require: 'you must click to set value',
                 ),
                 br(),
                 EmailField(
