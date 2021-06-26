@@ -204,25 +204,16 @@ Future<bool?> alert(
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: 240,
-                maxWidth: 260,
+                maxWidth: 320,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   showIcon(icon, iconColor, warning, iconWidget),
-                  Container(
-                    height: 90,
-                    child: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          showTitle(title),
-                          showMessage(message),
-                          showFooter(footer),
-                        ],
-                      ),
-                    ),
-                  ),
+                  showTitle(title),
+                  showMessage(message),
+                  showFooter(footer),
                   showButton(
                     context,
                     keyAlertButtonYes,
