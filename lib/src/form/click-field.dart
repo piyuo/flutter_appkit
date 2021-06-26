@@ -52,7 +52,7 @@ class ClickField extends Field {
             final result = defaultValidator(text);
             pClickField.setError(result);
             controller.text = text;
-            if (nextFocusNode != null) {
+            if (result == null && nextFocusNode != null) {
               nextFocusNode!.requestFocus();
             }
           },
