@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'field.dart';
 
+/// InputField for input simple text
 class InputField extends Field {
   /// controller is input value controller
   final TextEditingController controller;
@@ -66,20 +67,15 @@ class InputField extends Field {
   }
 
   @override
-  InputFieldState createState() => InputFieldState();
-}
-
-class InputFieldState extends State<InputField> {
-  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      focusNode: widget.focusNode,
+      focusNode: focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      controller: widget.controller,
-      inputFormatters: [LengthLimitingTextInputFormatter(widget.maxLength), ...widget.formatters ?? []],
-      textInputAction: widget.textInputAction,
-      validator: widget.defaultValidator,
-      decoration: widget.defaultDecoration,
+      controller: controller,
+      inputFormatters: [LengthLimitingTextInputFormatter(maxLength), ...formatters ?? []],
+      textInputAction: textInputAction,
+      validator: defaultValidator,
+      decoration: defaultDecoration,
     );
   }
 }

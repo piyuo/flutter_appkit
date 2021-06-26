@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/types.dart' as types;
 
-/// FormCheckbox is checkbox on form, do not use HyperText or RichText as it's child. it will conflict
+/// Check is checkbox on form, do not use HyperText or RichText as it's child. it will conflict
 /// https://api.flutter.dev/flutter/material/CheckboxListTile-class.html
 ///
-class Check extends StatefulWidget {
+class Check extends StatelessWidget {
+  Check({
+    required this.controller,
+    this.label = '',
+    this.width = 24,
+    this.textStyle,
+  });
+
   final types.BoolController controller;
 
   final String label;
@@ -13,47 +20,47 @@ class Check extends StatefulWidget {
 
   final TextStyle? textStyle;
 
-  Check({
-    required this.controller,
-    this.label = '',
-    this.width = 24,
-    this.textStyle,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  CheckState createState() => CheckState();
-}
-
-class CheckState extends State<Check> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          setState(() {
-            widget.controller.value = !widget.controller.value;
-          });
-        },
-        child: Row(children: [
-          RoundCheckbox(
-            width: widget.width,
-            value: widget.controller.value,
-            onChanged: (bool? newValue) {
-              setState(() {
-                widget.controller.value = newValue ?? false;
-              });
+    return types.requireRedraw(
+      builder: (context, pRedraw, child) {
+        return InkWell(
+            onTap: () {
+              controller.value = !controller.value;
+              pRedraw.redraw();
             },
-          ),
-          SizedBox(width: 8),
-          Text(
-            widget.label,
-            style: widget.textStyle ?? Theme.of(context).textTheme.bodyText1,
-          ),
-        ]));
+            child: Row(children: [
+              RoundCheckbox(
+                width: width,
+                value: controller.value,
+                onChanged: (bool? newValue) {
+                  controller.value = newValue!;
+                  pRedraw.redraw();
+                },
+              ),
+              SizedBox(width: 8),
+              Text(
+                label,
+                style: textStyle ?? Theme.of(context).textTheme.bodyText1,
+              ),
+            ]));
+      },
+    );
   }
 }
 
+/// RoundCheckbox create a round checkbox
 class RoundCheckbox extends StatelessWidget {
+  RoundCheckbox({
+    required this.value,
+    required this.onChanged,
+    this.tristate = false,
+    this.width = 18,
+    this.activeColor,
+    this.checkColor,
+    this.materialTapTargetSize,
+  });
+
   final bool value;
   final ValueChanged<bool?> onChanged;
   final Color? activeColor;
@@ -61,17 +68,6 @@ class RoundCheckbox extends StatelessWidget {
   final bool tristate;
   final MaterialTapTargetSize? materialTapTargetSize;
   final double width;
-
-  RoundCheckbox({
-    Key? key,
-    required this.value,
-    this.tristate = false,
-    required this.onChanged,
-    this.width = 18,
-    this.activeColor,
-    this.checkColor,
-    this.materialTapTargetSize,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +92,7 @@ class RoundCheckbox extends StatelessWidget {
               child: Checkbox(
                 value: value,
                 tristate: tristate,
-                onChanged: this.onChanged,
+                onChanged: onChanged,
                 fillColor: Theme.of(context).checkboxTheme.fillColor,
                 materialTapTargetSize: materialTapTargetSize,
               ),

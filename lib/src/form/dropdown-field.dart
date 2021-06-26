@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
 
+/// DropdownField for simple dropdown selection
 class DropdownField extends Field {
   /// controller is dropdown value controller
   final TextEditingController controller;
@@ -15,9 +16,7 @@ class DropdownField extends Field {
     String? required,
     FormFieldValidator<String>? validator,
     FocusNode? focusNode,
-    Key? key,
   }) : super(
-          key: key,
           label: label,
           required: required,
           validator: validator,
@@ -28,14 +27,9 @@ class DropdownField extends Field {
   bool isEmpty() => controller.text.isEmpty;
 
   @override
-  DropdownFieldState createState() => DropdownFieldState();
-}
-
-class DropdownFieldState extends State<DropdownField> {
-  @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      items: widget.items.entries
+      items: items.entries
           .map((entry) => DropdownMenuItem<String>(
                 child: Text(
                   entry.value,
@@ -46,15 +40,14 @@ class DropdownFieldState extends State<DropdownField> {
               ))
           .toList(),
       isExpanded: true,
-      focusNode: widget.focusNode,
+      focusNode: focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (String? value) {
-        value = value ?? '';
-        setState(() => widget.controller.text = value!);
+        controller.text = value ?? '';
       },
-      value: widget.controller.text.isEmpty ? null : widget.controller.text,
-      validator: widget.defaultValidator,
-      decoration: widget.defaultDecoration,
+      value: controller.text.isEmpty ? null : controller.text,
+      validator: defaultValidator,
+      decoration: defaultDecoration,
     );
   }
 }

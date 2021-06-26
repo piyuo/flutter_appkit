@@ -50,7 +50,7 @@ class FormPlayground extends StatelessWidget {
               children: [
                 InputField(
                   controller: textController,
-                  label: 'input field field',
+                  label: 'input field label',
                   hint: 'please input text',
                   required: 'input is required',
                 ),
@@ -58,13 +58,13 @@ class FormPlayground extends StatelessWidget {
                 DropdownField(
                   controller: dropdownController,
                   items: dropdownItems,
-                  label: 'dropdown label',
+                  label: 'dropdown field label',
                   required: 'you must select 1 item',
                 ),
                 p(),
                 ClickField(
                   controller: clickController,
-                  label: 'dropdown label',
+                  label: 'click field label',
                   onClicked: (String text) async {
                     return "hello";
                   },
@@ -90,13 +90,6 @@ class FormPlayground extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 20),
-                AnimateButton(
-                  'animate button',
-                  onClick: () async {
-                    await Future.delayed(Duration(seconds: 5));
-                    return true;
-                  },
-                ),
                 SizedBox(height: 20),
                 Submit(
                   'Submit long waiting form',
@@ -111,6 +104,13 @@ class FormPlayground extends StatelessWidget {
                   sizeLevel: 0.8,
                   onClick: () async {
                     await Future.delayed(Duration(seconds: 1));
+                  },
+                ),
+                AnimateButton(
+                  'animate button',
+                  onClick: () async {
+                    await Future.delayed(Duration(seconds: 5));
+                    return true;
                   },
                 ),
               ],

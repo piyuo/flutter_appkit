@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 
-abstract class Field extends StatefulWidget {
+abstract class Field extends StatelessWidget {
+  Field({
+    this.label,
+    this.hint,
+    this.required,
+    this.validator,
+    this.focusNode,
+    this.nextFocusNode,
+    Key? key,
+  }) : super(key: key) {}
+
   /// label will show when value is not empty
   final String? label;
 
@@ -15,14 +25,7 @@ abstract class Field extends StatefulWidget {
 
   final FocusNode? focusNode;
 
-  Field({
-    this.label,
-    this.hint,
-    this.required,
-    this.validator,
-    this.focusNode,
-    Key? key,
-  }) : super(key: key) {}
+  final FocusNode? nextFocusNode;
 
   /// you need override this method to provide is value empty
   bool isEmpty();

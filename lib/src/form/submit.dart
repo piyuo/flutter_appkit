@@ -1,9 +1,20 @@
 //import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/dialog.dart' as dialog;
 
-class Submit extends StatefulWidget {
+/// SubmitProvider provide submit state
+class SubmitProvider extends ChangeNotifier {
+  bool _pressed = false;
+
+  void setPressed(bool pressed) {
+    _pressed = pressed;
+    notifyListeners();
+  }
+}
+
+class Submit extends StatelessWidget {
   /// sizeLevel is button size level, default is 1
   ///
   final double sizeLevel;
@@ -35,73 +46,48 @@ class Submit extends StatefulWidget {
     this.form,
     this.sizeLevel = 1,
     this.showLoading = const Duration(seconds: 1),
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => SubmitState();
-}
-
-class SubmitState extends State<Submit> {
-  bool _pressed = false;
-
-/*
-  Timer? _timer;
-  void startTimer() {
-    if (_timer == null && widget.showLoading != null) {
-      dialog.loading(context);
-      _timer = Timer(widget.showLoading!, () {
-        if (_pressed) {}
-      });
-    }
-  }
-  void stopTimer() {
-    if (_timer != null) {
-      dialog.dismiss();
-      _timer!.cancel();
-      _timer = null;
-    }
-  }
-  @override
-  @mustCallSuper
-  void dispose() {
-    stopTimer();
-    super.dispose();
-  }
-*/
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      focusNode: widget.focusNode,
-      style: ButtonStyle(
-        backgroundColor:
-            MaterialStateProperty.all(_pressed ? Theme.of(context).disabledColor : Theme.of(context).primaryColor),
-        padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(
-            36 * widget.sizeLevel, 26 * widget.sizeLevel, 36 * widget.sizeLevel, 26 * widget.sizeLevel)),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(34 * widget.sizeLevel),
-        )),
-      ),
-      child: Text(widget.text, style: TextStyle(fontSize: 18 * widget.sizeLevel, fontWeight: FontWeight.bold)),
-      onPressed: () async {
-        if (_pressed) {
-          return;
-        }
+    return ChangeNotifierProvider<SubmitProvider>(
+      create: (context) => SubmitProvider(),
+      child: Consumer<SubmitProvider>(builder: (context, pSubmit, child) {
+        return ElevatedButton(
+          focusNode: focusNode,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+                pSubmit._pressed ? Theme.of(context).disabledColor : Theme.of(context).primaryColor),
+            elevation: MaterialStateProperty.all(pSubmit._pressed ? 1 : 6),
+            padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+              vertical: 14 * sizeLevel,
+              horizontal: 28 * sizeLevel,
+            )),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(28 * sizeLevel),
+            )),
+          ),
+          child: Text(text, style: TextStyle(fontSize: 20 * sizeLevel, fontWeight: FontWeight.bold)),
+          onPressed: () async {
+            if (pSubmit._pressed) {
+              return;
+            }
 
-        if (widget.form != null && !widget.form!.currentState!.validate()) {
-          return;
-        }
+            if (form != null && !form!.currentState!.validate()) {
+              return;
+            }
 
-        dialog.loading(context);
-        setState(() => _pressed = true);
-        try {
-          await widget.onClick();
-        } finally {
-          setState(() => _pressed = false);
-          dialog.dismiss();
-        }
-      },
+            dialog.loading(context);
+            pSubmit.setPressed(true);
+            try {
+              await onClick();
+            } finally {
+              pSubmit.setPressed(false);
+              dialog.dismiss();
+            }
+          },
+        );
+      }),
     );
   }
 }

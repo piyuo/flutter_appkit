@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
+import 'package:provider/provider.dart';
 
 typedef ClickFiledCallback = Future<String> Function(String text);
+
+/// ClickFieldProvider control place field
+class ClickFieldProvider extends ChangeNotifier {
+  String? _error = null;
+
+  void setError(String? error) {
+    _error = error;
+    notifyListeners();
+  }
+}
 
 /// ClickFiled show read only text, user must click to change value
 class ClickField extends Field {
@@ -11,12 +22,14 @@ class ClickField extends Field {
     String? label,
     String? required,
     FocusNode? focusNode,
+    FocusNode? nextFocusNode,
     Key? key,
   }) : super(
           key: key,
           label: label,
           required: required,
           focusNode: focusNode,
+          nextFocusNode: nextFocusNode,
         );
 
   /// controller is dropdown value controller
@@ -29,41 +42,41 @@ class ClickField extends Field {
   bool isEmpty() => controller.text.isEmpty;
 
   @override
-  ClickFieldState createState() => ClickFieldState();
-}
-
-class ClickFieldState extends State<ClickField> {
-  String? _error = null;
-  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        final text = await widget.onClicked(widget.controller.text);
-        final result = widget.defaultValidator(text);
-        setState(() {
-          _error = result;
-          widget.controller.text = text;
-        });
-      },
-      child: InputDecorator(
-        isEmpty: widget.controller.text.isEmpty,
-        decoration: InputDecoration(
-          labelText: widget.label,
-          errorText: _error,
-          suffixIcon: Icon(
-            Icons.arrow_forward_ios,
-          ),
-        ).applyDefaults(Theme.of(context).inputDecorationTheme),
-        child: ClickFormField(
-          validator: (String? text) {
-            final result = widget.defaultValidator(widget.controller.text);
-            setState(() => _error = result);
-            return result;
+    return ChangeNotifierProvider<ClickFieldProvider>(
+      create: (context) => ClickFieldProvider(),
+      child: Consumer<ClickFieldProvider>(builder: (context, pClickField, child) {
+        return InkWell(
+          onTap: () async {
+            final text = await onClicked(controller.text);
+            final result = defaultValidator(text);
+            pClickField.setError(result);
+            controller.text = text;
+            if (nextFocusNode != null) {
+              nextFocusNode!.requestFocus();
+            }
           },
-          controller: widget.controller,
-          style: Theme.of(context).textTheme.bodyText1,
-        ),
-      ),
+          child: InputDecorator(
+            isEmpty: controller.text.isEmpty,
+            decoration: InputDecoration(
+              labelText: label,
+              errorText: pClickField._error,
+              suffixIcon: Icon(
+                Icons.arrow_forward_ios,
+              ),
+            ).applyDefaults(Theme.of(context).inputDecorationTheme),
+            child: ClickFormField(
+              validator: (String? text) {
+                final result = defaultValidator(controller.text);
+                pClickField.setError(result);
+                return result;
+              },
+              controller: controller,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+        );
+      }),
     );
   }
 }

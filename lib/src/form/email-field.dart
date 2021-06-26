@@ -1,10 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/validator.dart' as validator;
 import 'package:libcli/i18n.dart' as i18n;
 import 'field.dart';
 
+/// ClickFieldProvider control place field
+class EmailFieldProvider extends ChangeNotifier {
+  EmailFieldProvider(this.focusNode, this.textController) {
+    focusNode.addListener(onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    focusNode.removeListener(onFocusChange);
+    super.dispose();
+  }
+
+  /// _suggest is email address suggestion
+  String _suggest = '';
+
+  /// focusNode must be set on email field
+  final FocusNode focusNode;
+
+  /// controller control input value
+  final TextEditingController textController;
+
+  onFocusChange() {
+    if (!focusNode.hasFocus) {
+      _makeSuggestion();
+    }
+  }
+
+  void _makeSuggestion() {
+    _suggest = '';
+    if (!textController.text.isEmpty) {
+      var suggest = validator.MailChecker(email: textController.text).suggest();
+      if (suggest != null) {
+        _suggest = suggest.full;
+      }
+    }
+    notifyListeners();
+  }
+
+  _correctFromSuggestion() {
+    textController.text = _suggest;
+    _suggest = '';
+    notifyListeners();
+  }
+
+  void setSuggest(String suggest) {
+    _suggest = suggest;
+    notifyListeners();
+  }
+}
+
+/// EmailField is for email address input
 class EmailField extends Field {
   /// controller is input value controller
   final TextEditingController controller;
@@ -14,12 +66,12 @@ class EmailField extends Field {
 
   EmailField({
     required this.controller,
+    required FocusNode focusNode,
     this.textInputAction = TextInputAction.next,
     String? label,
     String? hint,
     String? required,
     FormFieldValidator<String>? validator,
-    FocusNode? focusNode,
     Key? key,
   }) : super(
           key: key,
@@ -46,96 +98,52 @@ class EmailField extends Field {
   }
 
   @override
-  EmailFieldState createState() => EmailFieldState();
-}
-
-class EmailFieldState extends State<EmailField> {
-  /// _suggest is email address suggestion
-  String _suggest = '';
-
-  onFocusChange() {
-    if (widget.focusNode != null && !widget.focusNode!.hasFocus) {
-      _makeSuggestion();
-    }
-  }
-
-  void _makeSuggestion() {
-    setState(() {
-      _suggest = '';
-      if (!widget.controller.text.isEmpty) {
-        var suggest = validator.MailChecker(email: widget.controller.text).suggest();
-        if (suggest != null) {
-          _suggest = suggest.full;
-        }
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.focusNode != null) {
-      widget.focusNode!.addListener(onFocusChange);
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    if (widget.focusNode != null) {
-      widget.focusNode!.removeListener(onFocusChange);
-    }
-  }
-
-  _correctFromSuggestion() {
-    setState(() {
-      widget.controller.text = _suggest;
-      _suggest = '';
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        TextFormField(
-          controller: widget.controller,
-          focusNode: widget.focusNode,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(64),
-          ],
-          keyboardType: TextInputType.emailAddress,
-          validator: (text) => validator.emailValidator(text),
-          textInputAction: widget.textInputAction,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          decoration: InputDecoration(
-            errorMaxLines: 2,
-            hintText: widget.label,
-            labelText: widget.label,
-          ),
-        ),
-        _suggest.isEmpty
-            ? SizedBox()
-            : Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                    text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'youMean'.i18n_,
-                      style: TextStyle(
-                        color: Colors.yellow[900],
-                      ),
-                    ),
-                    TextSpan(
-                      text: _suggest,
-                      style: TextStyle(color: Colors.blue),
-                      recognizer: new TapGestureRecognizer()..onTap = _correctFromSuggestion,
-                    )
-                  ],
-                )),
+    return ChangeNotifierProvider<EmailFieldProvider>(
+      create: (context) => EmailFieldProvider(focusNode!, controller),
+      child: Consumer<EmailFieldProvider>(builder: (context, pEmailField, child) {
+        return Column(
+          children: <Widget>[
+            TextFormField(
+              controller: controller,
+              focusNode: focusNode,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(64),
+              ],
+              keyboardType: TextInputType.emailAddress,
+              validator: (text) => validator.emailValidator(text),
+              textInputAction: textInputAction,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                errorMaxLines: 2,
+                hintText: label,
+                labelText: label,
               ),
-      ],
+            ),
+            pEmailField._suggest.isEmpty
+                ? SizedBox()
+                : Align(
+                    alignment: Alignment.centerLeft,
+                    child: RichText(
+                        text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'youMean'.i18n_,
+                          style: TextStyle(
+                            color: Colors.yellow[900],
+                          ),
+                        ),
+                        TextSpan(
+                          text: pEmailField._suggest,
+                          style: TextStyle(color: Colors.blue),
+                          recognizer: new TapGestureRecognizer()..onTap = pEmailField._correctFromSuggestion,
+                        )
+                      ],
+                    )),
+                  ),
+          ],
+        );
+      }),
     );
   }
 }
