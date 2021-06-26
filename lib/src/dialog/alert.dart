@@ -147,6 +147,7 @@ Future<bool?> alert(
   bool buttonRetry = false,
   bool buttonSave = false,
   bool buttonClose = false,
+  bool scrollContent = false,
 }) async {
   bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
   assentButtonColor = assentButtonColor ?? Color(0xee2091eb);
@@ -211,9 +212,24 @@ Future<bool?> alert(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   showIcon(icon, iconColor, warning, iconWidget),
-                  showTitle(title),
-                  showMessage(message),
-                  showFooter(footer),
+                  scrollContent
+                      ? Container(
+                          height: 90,
+                          child: SingleChildScrollView(
+                            child: ListBody(
+                              children: <Widget>[
+                                showTitle(title),
+                                showMessage(message),
+                                showFooter(footer),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Column(children: [
+                          showTitle(title),
+                          showMessage(message),
+                          showFooter(footer),
+                        ]),
                   showButton(
                     context,
                     keyAlertButtonYes,

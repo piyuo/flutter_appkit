@@ -98,6 +98,7 @@ class DialogPlayground extends StatelessWidget {
                           footer:
                               'this is a very long footer, it should cover 3 or 4 more line. we need test long message can read easily',
                           emailUs: true,
+                          scrollContent: true,
                           icon: Icons.sync_problem_rounded,
                         ),
                       ),
