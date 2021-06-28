@@ -71,8 +71,8 @@ String mapUrl(String address, types.LatLng latlng) {
   switch (mapType()) {
     case MapType.amap: // amap is lng first
       return 'https://uri.amap.com/marker?position=${latlng.lng},${latlng.lat}&name=$adr&callnative=1';
-    case MapType.apple:
-      return 'http://maps.apple.com/?address=$adr&z=18';
+//    case MapType.apple: // apple map is not accurate in china
+//      return 'http://maps.apple.com/?address=$adr&z=18';
     default:
       return 'https://maps.google.com/?q=$adr&z=18';
   }
