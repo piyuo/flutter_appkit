@@ -1,10 +1,10 @@
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/src/i18n/i18n.dart';
 
-/// globalTranslate translate from global localization
+/// predefine get predefine text in current locale
 ///
-String globalTranslate(String key) {
-  var value = getCurrentGlobalTranslation()[key];
+String predefine(String key) {
+  var value = _dict[key];
   if (value == null) {
     log.log('${log.COLOR_ALERT}missing $key in i18n global');
     return '!!! $key not found';
@@ -12,19 +12,25 @@ String globalTranslate(String key) {
   return value;
 }
 
-/// getCurrentGlobalTranslation return global translation base on current locale
+/// replace get predefine text in current locale and replace text
 ///
-Map getCurrentGlobalTranslation() {
-  switch (localeString) {
-    case zh_TW:
-      return _zh_TW();
-    case zh_CN:
-      return _zh_CN();
-  }
-  return _en_US();
+String replace(String key, String from, String to) {
+  return predefine(key).replaceAll(from, to);
 }
 
-Map _en_US() {
+/// getCurrentGlobalTranslation return global translation base on current locale
+///
+Map get _dict {
+  switch (localeString) {
+    case zh_TW:
+      return _zhTW;
+    case zh_CN:
+      return _zhCN;
+  }
+  return _enUS;
+}
+
+Map get _enUS {
   var tryAgain = ', Please try again later';
   return {
     'errTitle': 'Oops, something went wrong',
@@ -65,7 +71,7 @@ Map _en_US() {
   };
 }
 
-Map _zh_TW() {
+Map get _zhTW {
   var tryAgain = '，請稍後再試';
   return {
     'errTitle': '糟糕，有東西出錯了',
@@ -107,7 +113,7 @@ Map _zh_TW() {
   };
 }
 
-Map _zh_CN() {
+Map get _zhCN {
   var tryAgain = '，请稍后再试';
   return {
     'errTitle': '糟了，有东西出错',

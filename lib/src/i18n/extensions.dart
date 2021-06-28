@@ -3,7 +3,7 @@ import 'package:libcli/src/pb/google/google.dart' as google;
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as googleMixin;
 import 'package:provider/provider.dart';
 import 'package:libcli/src/i18n/i18n-provider.dart';
-import 'package:libcli/src/i18n/global-dict.dart';
+import 'package:libcli/src/i18n/predefine.dart';
 import 'package:libcli/src/i18n/time.dart';
 
 /// I18nLocalization add localization function to string
@@ -17,7 +17,7 @@ extension I18nLocalization on String {
   ///   err.i18n_; // Not OK
   ///
   String get i18n_ {
-    return globalTranslate(this);
+    return predefine(this);
   }
 
   /// i18n translate const string, don't use this method on string variable
@@ -36,7 +36,7 @@ extension I18nLocalization on String {
 /// i18n_ translate str base on current locale
 ///
 String i18n_(String str) {
-  return globalTranslate(str);
+  return predefine(str);
 }
 
 /// i18n translate string base on current locale
