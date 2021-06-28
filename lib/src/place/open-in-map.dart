@@ -7,11 +7,15 @@ import 'package:libcli/locate.dart' as locate;
 class OpenInMap extends StatelessWidget {
   OpenInMap({
     required this.latlng,
+    required this.address,
     required this.label,
   });
 
   /// latlng is the lat/lng need to open in map
   final types.LatLng latlng;
+
+  /// address is the address need to open in map
+  final String address;
 
   /// label like 'open in external map'
   final String label;
@@ -20,8 +24,8 @@ class OpenInMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () async {
-          var url = locate.mapUrl(latlng);
-          await launch(
+          var url = locate.mapUrl(address, latlng);
+          launch(
             url,
             forceSafariVC: false,
           );

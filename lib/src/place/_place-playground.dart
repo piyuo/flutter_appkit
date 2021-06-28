@@ -84,7 +84,8 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                     form.p(),
                     OpenInMap(
                       label: 'open in external map',
-                      latlng: types.LatLng(31.198633, 121.361520),
+                      address: '成都市锦江区人民南路二段80号 邮政编码: 610012',
+                      latlng: types.LatLng(104.06534639982326, 30.648558245938407),
                     ),
                     form.p(),
                     form.Submit(
