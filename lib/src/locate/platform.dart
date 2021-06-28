@@ -1,0 +1,93 @@
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/types.dart' as types;
+import 'map-google.dart';
+import 'map-apple.dart';
+import 'map-amap.dart';
+import 'map.dart';
+
+enum MapType { google, apple, amap }
+
+MapType mapType() {
+  if (kIsWeb) {
+    // only google map support web
+    return MapType.google;
+  }
+
+  // always use apple map on ios, cause apple demand it
+  if (Platform.isIOS) {
+    return MapType.apple;
+  }
+
+  // use amap in china, cause google map may not work in china
+  if (i18n.isCountryCN) {
+    return MapType.amap;
+  }
+
+  //debug
+  // return MapType.amap;
+
+  // everything else use google map
+  return MapType.google;
+}
+
+/// map return map by platform, web:google map, ios: apple map, cn: amap
+///
+///     map(provider)
+///
+Map map() {
+  switch (mapType()) {
+    case MapType.apple:
+      return MapApple();
+    case MapType.amap:
+      return MapAMap();
+    default:
+      return MapGoogle();
+  }
+}
+
+/// map return map by platform, web:google map, ios: apple map, cn: amap
+///
+///     mapProvider()
+///
+MapProvider mapProvider() {
+  switch (mapType()) {
+    case MapType.apple:
+      return MapProvider(AppleImpl());
+    case MapType.amap:
+      return MapProvider(AmapImpl());
+    default:
+      return MapProvider(GoogleImpl());
+  }
+}
+
+/// mapUrl return url by platform, web:google map, ios: apple map, cn: amap
+///
+///     mapUrl(latlng)
+///
+String mapUrl(types.LatLng latlng) {
+  switch (mapType()) {
+    case MapType.apple:
+      return 'http://maps.apple.com/?q=${latlng.lat},${latlng.lng}&z=18';
+    case MapType.amap: // amap is lng first
+      return 'https://uri.amap.com/marker?position=${latlng.lng},${latlng.lat}&callnative=1';
+    default:
+      return 'http://maps.google.com/maps?z=18&${latlng.lat},${latlng.lng}';
+  }
+}
+
+/// mapUrl return url by platform, web:google map, ios: apple map, cn: amap
+///
+///     mapUrl(latlng)
+///
+String mapOpen(types.LatLng latlng) {
+  switch (mapType()) {
+    case MapType.apple:
+      return 'http://maps.apple.com/?q=${latlng.lat},${latlng.lng}&z=18';
+    case MapType.amap: // amap is lng first
+      return 'https://uri.amap.com/marker?position=${latlng.lng},${latlng.lat}&callnative=1';
+    default:
+      return 'http://maps.google.com/maps?z=18&${latlng.lat},${latlng.lng}';
+  }
+}
