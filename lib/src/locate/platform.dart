@@ -66,28 +66,14 @@ MapProvider mapProvider() {
 ///
 ///     mapUrl(latlng)
 ///
-String mapUrl(types.LatLng latlng) {
+String mapUrl(String address, types.LatLng latlng) {
+  String adr = Uri.encodeComponent(address);
   switch (mapType()) {
     case MapType.apple:
-      return 'http://maps.apple.com/?q=${latlng.lat},${latlng.lng}&z=18';
+      return 'http://maps.apple.com/?address=$adr&z=18';
     case MapType.amap: // amap is lng first
-      return 'https://uri.amap.com/marker?position=${latlng.lng},${latlng.lat}&callnative=1';
+      return 'https://uri.amap.com/marker?position=${latlng.lng},${latlng.lat}&name=$adr&callnative=1';
     default:
-      return 'http://maps.google.com/maps?z=18&${latlng.lat},${latlng.lng}';
-  }
-}
-
-/// mapUrl return url by platform, web:google map, ios: apple map, cn: amap
-///
-///     mapUrl(latlng)
-///
-String mapOpen(types.LatLng latlng) {
-  switch (mapType()) {
-    case MapType.apple:
-      return 'http://maps.apple.com/?q=${latlng.lat},${latlng.lng}&z=18';
-    case MapType.amap: // amap is lng first
-      return 'https://uri.amap.com/marker?position=${latlng.lng},${latlng.lat}&callnative=1';
-    default:
-      return 'http://maps.google.com/maps?z=18&${latlng.lat},${latlng.lng}';
+      return 'https://maps.google.com/?q=$adr&z=18';
   }
 }
