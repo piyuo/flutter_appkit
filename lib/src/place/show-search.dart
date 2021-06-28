@@ -123,7 +123,7 @@ class ShowSearchProvider with ChangeNotifier {
   }
 
   /// _mapProvider control map value
-  locate.MapProvider _mapProvider = locate.platformMapProvider();
+  locate.MapProvider _mapProvider = locate.mapProvider();
 
   /// _confirmProvider control confirm button
   late final ConfirmButtonProvider _confirmButtonProvider;

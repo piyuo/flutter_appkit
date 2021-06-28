@@ -33,7 +33,7 @@ class SearchView extends StatelessWidget {
     return Consumer2<i18n.I18nProvider, SearchViewProvider>(
         builder: (context, i18nProvider, searchViewProvider, child) => Stack(
               children: <Widget>[
-                locate.platformMap(),
+                locate.map(),
                 Consumer<MyLocationButtonProvider>(
                   builder: (context, myLocationButtonProvider, child) => myLocationButtonProvider.visible
                       ? Align(

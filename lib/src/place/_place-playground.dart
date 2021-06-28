@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'place-field.dart';
 import 'package:libcli/types.dart' as types;
 import 'package:libcli/env.dart' as env;
 import 'package:libcli/form.dart' as form;
 import 'package:libcli/i18n.dart' as i18n;
+import 'place-field.dart';
+import 'open-in-map.dart';
 
 class PlacePlayground extends StatefulWidget {
   @override
@@ -79,6 +80,11 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                       controller: address2Controller,
                       focusNode: address2Focus,
                       hint: '(Optional) Floor/Room/Building number',
+                    ),
+                    form.p(),
+                    OpenInMap(
+                      label: 'open in external map',
+                      latlng: types.LatLng(31.198633, 121.361520),
                     ),
                     form.p(),
                     form.Submit(
