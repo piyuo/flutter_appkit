@@ -19,12 +19,16 @@ class InputField extends Field {
 
   final List<TextInputFormatter>? formatters;
 
+  /// decoration allow custom decoration
+  final InputDecoration? decoration;
+
   InputField({
     required this.controller,
     this.textInputAction = TextInputAction.next,
     this.minLength = 0,
     this.maxLength = 256,
     this.formatters,
+    this.decoration,
     String? label,
     String? hint,
     String? require,
@@ -73,7 +77,7 @@ class InputField extends Field {
       inputFormatters: [LengthLimitingTextInputFormatter(maxLength), ...formatters ?? []],
       textInputAction: textInputAction,
       validator: defaultValidator,
-      decoration: defaultDecoration,
+      decoration: decoration ?? defaultDecoration,
     );
   }
 }
