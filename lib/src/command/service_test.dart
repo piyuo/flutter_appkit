@@ -49,6 +49,7 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
+      // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.BRANCH_MASTER;
       var service = MockService()
         ..mockExecute = (ctx, action) async {

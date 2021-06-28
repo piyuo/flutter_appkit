@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'location.dart';
 
 void main() {
   group('[location]', () {

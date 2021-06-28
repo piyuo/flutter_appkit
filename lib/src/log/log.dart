@@ -96,7 +96,7 @@ void error(dynamic e, StackTrace? stacktrace) {
 @visibleForTesting
 String get header {
   var user = env.userID.isEmpty ? '' : env.userID + '@';
-  var head = user + env.name;
+  var head = user + env.appName;
   if (head.isNotEmpty) {
     head += ':';
   }

@@ -1,13 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/env.dart' as env;
 import 'package:libcli/mocking.dart' as mocking;
 import 'package:libcli/types.dart' as types;
 import 'geo-client.dart';
 
 void main() {
-  setUp(() async {
-    env.init(env.BRANCH_MASTER);
-  });
+  setUp(() async {});
 
   group('[geo-client]', () {
     test('should return empty list when no input in auto complete', () async {

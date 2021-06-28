@@ -9,7 +9,7 @@ class ErrorEmail {
 
   String _body = '''
 
-Application:\n    ${env.name}
+Application:\n    ${env.appName}
 
 Account:\n    ${env.userID}
 
@@ -23,7 +23,7 @@ Debug Information
     return stringToBase64.encode(logs);
   }
 
-  String get to => env.email;
+  String get to => env.serviceEmail;
 
   String get subjectUrlSafe => Uri.encodeComponent(_subject);
 

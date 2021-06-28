@@ -18,20 +18,35 @@ const BRANCH_STABLE = 'stable';
 ///
 const BRANCH_DEBUG = 'debug';
 
+/// _branch used in command pattern, determine which branch to use, default is master branch
+///
+String _branch = BRANCH_MASTER;
+
 /// branch used in command pattern, determine which branch to use, default is master branch
 ///
-String branch = '';
+String get branch => _branch;
 
-/// application identity
-///
-///     configuration.appID='piyuo-web-index'
-///
-String name = '';
+@visibleForTesting
+set branch(String value) => _branch = value;
 
-/// supportEmail
+/// _appName is application name, used in log
 ///
-///     vars.supportEmail='anyone@piyuo.com'
-String email = 'support@piyuo.com';
+String _appName = '';
+
+/// appName is application name, used in log
+///
+String get appName => _appName;
+
+@visibleForTesting
+set appName(String value) => _appName = value;
+
+/// _serviceEmail is service email, alert dialog will guide user to send email
+///
+String _serviceEmail = '';
+
+/// serviceEmail is service email, alert dialog will guide user to send email
+///
+String get serviceEmail => _serviceEmail;
 
 /// user identity
 ///
@@ -45,15 +60,15 @@ set userID(String value) {
 
 /// init config
 ///
-void init(
-  String currentBranch, {
-  String currentName = "",
-  String currentEmail = "",
+void init({
+  required String appName,
+  String branch = BRANCH_MASTER,
+  String serviceEmail = 'support@piyuo.com',
 }) {
-  log.log('branch=$branch, name=$name, email=$email');
-  branch = currentBranch;
-  name = currentName;
-  email = currentEmail;
+  log.log('appName=$appName, branch=$branch, serviceEmail=$serviceEmail');
+  _branch = branch;
+  _appName = appName;
+  _serviceEmail = serviceEmail;
   //no need for now, cause GlobalLocalizations will load date formatting
 //  i18n.initDateFormatting = (String localeID) => initializeDateFormatting(localeID, null);
   Provider.debugCheckInvalidValueType = null;

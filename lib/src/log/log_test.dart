@@ -22,13 +22,15 @@ void main() {
     });
 
     test('should log', () async {
-      env.name = 'log_test';
+      // ignore: invalid_use_of_visible_for_testing_member
+      env.appName = 'log_test';
       env.userID = 'developer';
       log('hi');
     });
 
     test('should error', () async {
-      env.name = 'log_test';
+      // ignore: invalid_use_of_visible_for_testing_member
+      env.appName = 'log_test';
       env.userID = 'developer';
       try {
         throw Exception('my error');
@@ -38,7 +40,8 @@ void main() {
     });
 
     test('should create head', () {
-      env.name = 'piyuo-web-index';
+      // ignore: invalid_use_of_visible_for_testing_member
+      env.appName = 'piyuo-web-index';
       env.userID = '111-222';
       // ignore: invalid_use_of_visible_for_testing_member
       expect(header, '111-222@piyuo-web-index:');

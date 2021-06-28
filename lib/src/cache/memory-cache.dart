@@ -46,7 +46,7 @@ class MemoryCache {
 
   /// get the value associated with [key].
   ///
-  dynamic? get(dynamic key) {
+  dynamic get(dynamic key) {
     if (_cache.containsKey(key) && _isExpired(key)) {
       _cache.remove(key);
       return null;

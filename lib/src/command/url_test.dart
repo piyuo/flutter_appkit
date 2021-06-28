@@ -6,23 +6,27 @@ import 'package:libcli/src/command/url.dart';
 void main() {
   group('[command_url_test]', () {
     test('should use default url', () async {
+      // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.BRANCH_MASTER;
       expect(serviceUrl('mock'), 'https://mock-us-master.piyuo.com/?q');
     });
 
     test('should use stable url', () async {
+      // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.BRANCH_STABLE;
       serviceRegion = 'US';
       expect(serviceUrl('mock'), 'https://mock-us.piyuo.com/?q');
     });
 
     test('should use master url', () async {
+      // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.BRANCH_MASTER;
       serviceRegion = 'US';
       expect(serviceUrl('mock'), 'https://mock-us-master.piyuo.com/?q');
     });
 
     test('should use beta url', () async {
+      // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.BRANCH_BETA;
       i18n.country = i18n.US;
       serviceRegion = '';
@@ -31,6 +35,7 @@ void main() {
     });
 
     test('should use service country', () async {
+      // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.BRANCH_BETA;
       i18n.country = i18n.TW;
       serviceRegion = i18n.US;

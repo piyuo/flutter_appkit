@@ -14,7 +14,7 @@ void set(dynamic key, dynamic value, {Duration? expire}) => _cache.set(key, valu
 ///
 ///     cache.set("key1", "value1");
 ///
-dynamic? get(dynamic key) => _cache.get(key);
+dynamic get(dynamic key) => _cache.get(key);
 
 /// Returns true if any of the key exists in cache
 ///

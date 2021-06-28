@@ -32,7 +32,7 @@ String serviceUrl(String funcName) {
   return 'https://$funcName-us-${env.branch}.$baseDomain/?q';
 }
 
-/// determineRegion return datacenter region base on user prefer country in user locale
+/// determineRegion return data center region base on user prefer country in user locale
 ///
 String determineRegion() {
   return mapping(i18n.country);
