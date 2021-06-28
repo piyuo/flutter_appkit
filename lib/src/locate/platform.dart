@@ -69,10 +69,10 @@ MapProvider mapProvider() {
 String mapUrl(String address, types.LatLng latlng) {
   String adr = Uri.encodeComponent(address);
   switch (mapType()) {
-    case MapType.apple:
-      return 'http://maps.apple.com/?q=${latlng.lat},${latlng.lng}&z=18';
     case MapType.amap: // amap is lng first
       return 'https://uri.amap.com/marker?position=${latlng.lng},${latlng.lat}&name=$adr&callnative=1';
+    case MapType.apple:
+      return 'http://maps.apple.com/?address=$adr&z=18';
     default:
       return 'https://maps.google.com/?q=$adr&z=18';
   }
