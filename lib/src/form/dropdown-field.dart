@@ -16,12 +16,14 @@ class DropdownField extends Field {
     String? require,
     FormFieldValidator<String>? validator,
     FocusNode? focusNode,
+    FocusNode? nextFocusNode,
   }) : super(
           label: label,
           require: require,
           validator: validator,
           focusNode: focusNode,
-        ) {}
+          nextFocusNode: nextFocusNode,
+        );
 
   @override
   bool isEmpty() => controller.text.isEmpty;
@@ -44,6 +46,9 @@ class DropdownField extends Field {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: (String? value) {
         controller.text = value ?? '';
+        if (nextFocusNode != null) {
+          nextFocusNode!.requestFocus();
+        }
       },
       value: controller.text.isEmpty ? null : controller.text,
       validator: defaultValidator,

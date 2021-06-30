@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/types.dart' as types;
 import 'input-field.dart';
 import 'email-field.dart';
@@ -8,6 +9,31 @@ import 'check.dart';
 import 'dropdown-field.dart';
 import 'tags.dart';
 import 'click-field.dart';
+
+class FormPlaygroundProvider extends ChangeNotifier {
+  @override
+  dispose() {
+    inputFocus.dispose();
+    dropdownFocus.dispose();
+    clickFocus.dispose();
+    emailFocus.dispose();
+    checkFocus.dispose();
+    submitFocus.dispose();
+    super.dispose();
+  }
+
+  final inputFocus = FocusNode();
+
+  final dropdownFocus = FocusNode();
+
+  final clickFocus = FocusNode(debugLabel: 'clickFocus');
+
+  final emailFocus = FocusNode();
+
+  final checkFocus = FocusNode();
+
+  final submitFocus = FocusNode();
+}
 
 class FormPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -29,95 +55,99 @@ class FormPlayground extends StatelessWidget {
 
   final emailController = TextEditingController();
 
-  final emailFocusNode = FocusNode();
-
   final _keyForm = GlobalKey<FormState>();
-
-  FormPlayground() {
-//    clickController.text = 'click text';
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Form(
-            key: _keyForm,
-            child: Column(
-              children: [
-                InputField(
-                  controller: textController,
-                  label: 'input field label',
-                  hint: 'please input text',
-                  require: 'input is required',
+    return ChangeNotifierProvider<FormPlaygroundProvider>(
+      create: (context) => FormPlaygroundProvider(),
+      child: Consumer<FormPlaygroundProvider>(builder: (context, pFormPlayground, child) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Form(
+                key: _keyForm,
+                child: Column(
+                  children: [
+                    InputField(
+                      controller: textController,
+                      label: 'input field label',
+                      hint: 'please input text',
+                      require: 'input is required',
+                      focusNode: pFormPlayground.inputFocus,
+                    ),
+                    br(),
+                    DropdownField(
+                      controller: dropdownController,
+                      items: dropdownItems,
+                      label: 'dropdown field label',
+                      require: 'you must select 1 item',
+                      focusNode: pFormPlayground.dropdownFocus,
+                      nextFocusNode: pFormPlayground.clickFocus,
+                    ),
+                    br(),
+                    ClickField(
+                      controller: clickController,
+                      label: 'click field label',
+                      onClicked: (String text) async {
+                        return "hello";
+                      },
+                      require: 'you must click to set value',
+                      focusNode: pFormPlayground.clickFocus,
+                      nextFocusNode: pFormPlayground.emailFocus,
+                    ),
+                    br(),
+                    EmailField(
+                      controller: emailController,
+                      label: 'email field',
+                      focusNode: pFormPlayground.emailFocus,
+                    ),
+                    SizedBox(height: 20),
+                    Check(
+                      controller: checkController,
+                      label: 'my check',
+                    ),
+                    SizedBox(height: 20),
+                    Submit(
+                      'Submit form',
+                      form: _keyForm,
+                      onClick: () async {
+                        //await Future.delayed(Duration(seconds: 1));
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    Submit(
+                      'Submit long waiting form',
+                      onClick: () async {
+                        await Future.delayed(Duration(seconds: 5));
+                        return true;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    Submit(
+                      'Select',
+                      sizeLevel: 0.8,
+                      onClick: () async {
+                        await Future.delayed(Duration(seconds: 1));
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    AnimateButton(
+                      'animate button',
+                      onClick: () async {
+                        await Future.delayed(Duration(seconds: 5));
+                        return true;
+                      },
+                    ),
+                  ],
                 ),
-                br(),
-                DropdownField(
-                  controller: dropdownController,
-                  items: dropdownItems,
-                  label: 'dropdown field label',
-                  require: 'you must select 1 item',
-                ),
-                p(),
-                ClickField(
-                  controller: clickController,
-                  label: 'click field label',
-                  onClicked: (String text) async {
-                    return "hello";
-                  },
-                  require: 'you must click to set value',
-                ),
-                br(),
-                EmailField(
-                  controller: emailController,
-                  label: 'email field',
-                  focusNode: emailFocusNode,
-                ),
-                SizedBox(height: 20),
-                Check(
-                  controller: checkController,
-                  label: 'my check',
-                ),
-                SizedBox(height: 20),
-                Submit(
-                  'Submit form',
-                  form: _keyForm,
-                  onClick: () async {
-                    //await Future.delayed(Duration(seconds: 1));
-                  },
-                ),
-                SizedBox(height: 20),
-                SizedBox(height: 20),
-                Submit(
-                  'Submit long waiting form',
-                  onClick: () async {
-                    await Future.delayed(Duration(seconds: 5));
-                    return true;
-                  },
-                ),
-                SizedBox(height: 20),
-                Submit(
-                  'Select',
-                  sizeLevel: 0.8,
-                  onClick: () async {
-                    await Future.delayed(Duration(seconds: 1));
-                  },
-                ),
-                AnimateButton(
-                  'animate button',
-                  onClick: () async {
-                    await Future.delayed(Duration(seconds: 5));
-                    return true;
-                  },
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

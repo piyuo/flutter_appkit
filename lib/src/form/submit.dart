@@ -60,14 +60,14 @@ class Submit extends StatelessWidget {
                 pSubmit._pressed ? Theme.of(context).disabledColor : Theme.of(context).primaryColor),
             elevation: MaterialStateProperty.all(pSubmit._pressed ? 1 : 6),
             padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-              vertical: 14 * sizeLevel,
-              horizontal: 28 * sizeLevel,
+              vertical: 16 * sizeLevel,
+              horizontal: 34 * sizeLevel,
             )),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(28 * sizeLevel),
             )),
           ),
-          child: Text(text, style: TextStyle(fontSize: 20 * sizeLevel, fontWeight: FontWeight.bold)),
+          child: Text(text, style: TextStyle(fontSize: 18 * sizeLevel, fontWeight: FontWeight.bold)),
           onPressed: () async {
             if (pSubmit._pressed) {
               return;

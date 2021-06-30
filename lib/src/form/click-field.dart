@@ -8,8 +8,12 @@ typedef ClickFiledCallback = Future<String> Function(String text);
 class ClickFieldProvider extends ChangeNotifier {
   String? _error = null;
 
-  void setError(String? error) {
+  void _setError(String? error) {
     _error = error;
+    notifyListeners();
+  }
+
+  void _setFocus(bool hasFocus) {
     notifyListeners();
   }
 }
@@ -30,7 +34,7 @@ class ClickField extends Field {
           require: require,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
-        );
+        ) {}
 
   /// controller is dropdown value controller
   final TextEditingController controller;
@@ -43,38 +47,51 @@ class ClickField extends Field {
 
   @override
   Widget build(BuildContext context) {
+    final _onClick = (ClickFieldProvider provider) async {
+      final text = await onClicked(controller.text);
+      final result = defaultValidator(text);
+      provider._setError(result);
+      controller.text = text;
+      if (result == null && nextFocusNode != null) {
+        nextFocusNode!.requestFocus();
+      }
+    };
+
     return ChangeNotifierProvider<ClickFieldProvider>(
       create: (context) => ClickFieldProvider(),
       child: Consumer<ClickFieldProvider>(builder: (context, pClickField, child) {
-        return InkWell(
-          onTap: () async {
-            final text = await onClicked(controller.text);
-            final result = defaultValidator(text);
-            pClickField.setError(result);
-            controller.text = text;
-            if (result == null && nextFocusNode != null) {
-              nextFocusNode!.requestFocus();
-            }
-          },
-          child: InputDecorator(
-            isEmpty: controller.text.isEmpty,
-            decoration: InputDecoration(
-              labelText: label,
-              errorText: pClickField._error,
-              suffixIcon: Icon(
-                Icons.arrow_forward_ios,
+        return Focus(
+          focusNode: focusNode,
+          child: InkWell(
+            onTap: () => _onClick(pClickField),
+            child: InputDecorator(
+              isFocused: focusNode != null ? focusNode!.hasFocus : false,
+              isEmpty: controller.text.isEmpty,
+              decoration: InputDecoration(
+                labelText: label,
+                hintText: 'my hint',
+                errorText: pClickField._error,
+                suffixIcon: Icon(
+                  Icons.arrow_forward_ios,
+                ),
+              ).applyDefaults(Theme.of(context).inputDecorationTheme),
+              child: ClickFormField(
+                validator: (String? text) {
+                  final result = defaultValidator(controller.text);
+                  pClickField._setError(result);
+                  return result;
+                },
+                controller: controller,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
-            ).applyDefaults(Theme.of(context).inputDecorationTheme),
-            child: ClickFormField(
-              validator: (String? text) {
-                final result = defaultValidator(controller.text);
-                pClickField.setError(result);
-                return result;
-              },
-              controller: controller,
-              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
+          onFocusChange: (hasFocus) {
+            if (hasFocus) {
+              _onClick(pClickField);
+            }
+            pClickField._setFocus(hasFocus);
+          },
         );
       }),
     );
