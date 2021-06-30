@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:libcli/types.dart' as types;
 
 class Place {
@@ -21,8 +20,4 @@ class Place {
   );
 
   bool get isEmpty => latlng.isEmpty;
-}
-
-class PlaceController extends ValueNotifier<Place> {
-  PlaceController({Place? value}) : super(value ?? Place.empty);
 }
