@@ -22,7 +22,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
     i18n.zh_TW: "Taiwan",
   };
 
-  final addressController = types.PlaceController();
+  final addressController = PlaceFieldProvider(types.Place.empty);
 
   final address2Controller = TextEditingController();
 
@@ -31,7 +31,6 @@ class PlacePlaygroundState extends State<PlacePlayground> {
   final FocusNode address2Focus = FocusNode();
 
   PlacePlaygroundState() {
-    // ignore: invalid_use_of_visible_for_testing_member
     env.branch = env.BRANCH_MASTER;
   }
 

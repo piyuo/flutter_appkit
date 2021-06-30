@@ -9,16 +9,20 @@ import 'show-search.dart';
 
 /// PlaceFieldProvider control place field
 class PlaceFieldProvider extends ChangeNotifier {
+  PlaceFieldProvider(this.place);
+
+  types.Place place;
+
   /// _textController for the click field
   final TextEditingController _textController = TextEditingController();
 
   /// _onClicked trigger when user click
-  Future<String> _onClicked(BuildContext context, String text, types.PlaceController placeController) async {
-    final place = await dialog.routeOrDialog(
+  Future<String> _onClicked(BuildContext context, String text) async {
+    final newPlace = await dialog.routeOrDialog(
       context,
       MultiProvider(providers: [
         ChangeNotifierProvider<ShowSearchProvider>(
-          create: (context) => ShowSearchProvider(context, placeController.value),
+          create: (context) => ShowSearchProvider(context, place),
         ),
         ChangeNotifierProvider(
             create: (_) => i18n.I18nProvider(
@@ -28,10 +32,11 @@ class PlaceFieldProvider extends ChangeNotifier {
       ], child: ShowSearch()),
     );
 
-    if (place != null) {
-      placeController.value = place;
+    if (newPlace != null) {
+      place = newPlace;
     }
-    return placeController.value.address;
+    notifyListeners();
+    return place.address;
   }
 }
 
@@ -51,15 +56,15 @@ class PlaceField extends form.Field {
         );
 
   /// controller is place value controller
-  final types.PlaceController controller;
+  final PlaceFieldProvider controller;
 
   @override
-  bool isEmpty() => controller.value.isEmpty;
+  bool isEmpty() => controller.place.isEmpty;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<PlaceFieldProvider>(
-      create: (context) => PlaceFieldProvider(),
+    return ChangeNotifierProvider<PlaceFieldProvider>.value(
+      value: controller,
       child: Consumer<PlaceFieldProvider>(builder: (context, placeFieldProvider, child) {
         return form.ClickField(
           controller: placeFieldProvider._textController,
@@ -67,7 +72,7 @@ class PlaceField extends form.Field {
           nextFocusNode: nextFocusNode,
           label: label,
           require: require,
-          onClicked: (text) => placeFieldProvider._onClicked(context, text, controller),
+          onClicked: (text) => placeFieldProvider._onClicked(context, text),
         );
       }),
     );
