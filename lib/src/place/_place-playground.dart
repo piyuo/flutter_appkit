@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/types.dart' as types;
-import 'package:libcli/env.dart' as env;
 import 'package:libcli/form.dart' as form;
 import 'package:libcli/i18n.dart' as i18n;
 import 'place-field.dart';
@@ -22,17 +21,13 @@ class PlacePlaygroundState extends State<PlacePlayground> {
     i18n.zh_TW: "Taiwan",
   };
 
-  final addressController = PlaceFieldProvider(types.Place.empty);
+  final addressController = PlaceFieldProvider();
 
   final address2Controller = TextEditingController();
 
   final FocusNode addressFocus = FocusNode();
 
   final FocusNode address2Focus = FocusNode();
-
-  PlacePlaygroundState() {
-    env.branch = env.BRANCH_MASTER;
-  }
 
   @override
   void initState() {

@@ -9,9 +9,9 @@ import 'show-search.dart';
 
 /// PlaceFieldProvider control place field
 class PlaceFieldProvider extends ChangeNotifier {
-  PlaceFieldProvider(this.place);
+  PlaceFieldProvider();
 
-  types.Place place;
+  types.Place place = types.Place.empty;
 
   /// _textController for the click field
   final TextEditingController _textController = TextEditingController();
