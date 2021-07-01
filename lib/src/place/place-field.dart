@@ -39,6 +39,12 @@ class PlaceFieldProvider extends ChangeNotifier {
     return _place.address;
   }
 
+  /// place return current place
+  types.Place get place {
+    return _place;
+  }
+
+  /// setPlace set current place
   void setPlace(types.Place place) {
     _place = place;
     _textController.text = place.address;
