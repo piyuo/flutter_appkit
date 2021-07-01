@@ -172,15 +172,15 @@ class ShowSearchProvider with ChangeNotifier {
     if (_selectedLocation == null) {
       return;
     }
-    types.Place p = types.Place(
+    Navigator.of(context).pop(types.Place(
       address: _selectedLocation!.address,
       latlng: types.LatLng(
         _selectedLocation!.lat,
         _selectedLocation!.lng,
       ),
       tags: _selectedLocation!.tags,
-    );
-    Navigator.of(context).pop(p);
+      country: _selectedLocation!.country,
+    ));
   }
 }
 
