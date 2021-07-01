@@ -5,26 +5,13 @@ import 'field.dart';
 
 /// InputField for input simple text
 class InputField extends Field {
-  /// controller is input value controller
-  final TextEditingController controller;
-
-  /// textInputAction control keyboard text input action
-  final TextInputAction? textInputAction;
-
-  /// maxLength specified max input length
-  final int maxLength;
-
-  /// maxLength specified min input length
-  final int minLength;
-
-  final List<TextInputFormatter>? formatters;
-
   InputField({
     required this.controller,
     this.textInputAction = TextInputAction.next,
     this.minLength = 0,
     this.maxLength = 256,
     this.formatters,
+    this.decoration,
     String? label,
     String? hint,
     String? require,
@@ -37,6 +24,23 @@ class InputField extends Field {
           validator: validator,
           focusNode: focusNode,
         );
+
+  /// controller is input value controller
+  final TextEditingController controller;
+
+  /// textInputAction control keyboard text input action
+  final TextInputAction? textInputAction;
+
+  /// maxLength specified max input length
+  final int maxLength;
+
+  /// maxLength specified min input length
+  final int minLength;
+
+  /// decoration use for custom decoration
+  final InputDecoration? decoration;
+
+  final List<TextInputFormatter>? formatters;
 
   @override
   bool isEmpty() => controller.text.isEmpty;
@@ -73,7 +77,7 @@ class InputField extends Field {
       inputFormatters: [LengthLimitingTextInputFormatter(maxLength), ...formatters ?? []],
       textInputAction: textInputAction,
       validator: defaultValidator,
-      decoration: defaultDecoration,
+      decoration: decoration ?? defaultDecoration,
     );
   }
 }
