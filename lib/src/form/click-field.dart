@@ -84,7 +84,7 @@ class ClickField extends Field {
                   return result;
                 },
                 controller: controller,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
           ),
