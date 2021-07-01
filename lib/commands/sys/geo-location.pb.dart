@@ -19,6 +19,7 @@ class GeoLocation extends pb.Object {
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lng', $pb.PbFieldType.OD)
     ..pPS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'tags')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'country')
     ..hasRequiredFields = false
   ;
 
@@ -28,6 +29,7 @@ class GeoLocation extends pb.Object {
     $core.double? lat,
     $core.double? lng,
     $core.Iterable<$core.String>? tags,
+    $core.String? country,
   }) {
     final _result = create();
     if (address != null) {
@@ -41,6 +43,9 @@ class GeoLocation extends pb.Object {
     }
     if (tags != null) {
       _result.tags.addAll(tags);
+    }
+    if (country != null) {
+      _result.country = country;
     }
     return _result;
   }
@@ -94,5 +99,14 @@ class GeoLocation extends pb.Object {
 
   @$pb.TagNumber(4)
   $core.List<$core.String> get tags => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.String get country => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set country($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCountry() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCountry() => clearField(5);
 }
 
