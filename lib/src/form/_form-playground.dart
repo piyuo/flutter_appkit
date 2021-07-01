@@ -91,6 +91,7 @@ class FormPlayground extends StatelessWidget {
                     ClickField(
                       controller: clickController,
                       label: 'click field label',
+                      hint: 'click here to set value',
                       onClicked: (String text) async {
                         return "hello";
                       },

@@ -24,6 +24,7 @@ class ClickField extends Field {
     required this.controller,
     required this.onClicked,
     String? label,
+    String? hint,
     String? require,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
@@ -31,6 +32,7 @@ class ClickField extends Field {
   }) : super(
           key: key,
           label: label,
+          hint: hint,
           require: require,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
@@ -69,7 +71,7 @@ class ClickField extends Field {
               isEmpty: controller.text.isEmpty,
               decoration: InputDecoration(
                 labelText: label,
-                hintText: 'my hint',
+                hintText: hint,
                 errorText: pClickField._error,
                 suffixIcon: Icon(
                   Icons.arrow_forward_ios,
@@ -87,9 +89,6 @@ class ClickField extends Field {
             ),
           ),
           onFocusChange: (hasFocus) {
-            if (hasFocus) {
-              _onClick(pClickField);
-            }
             pClickField._setFocus(hasFocus);
           },
         );
