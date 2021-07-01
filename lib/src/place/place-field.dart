@@ -9,9 +9,8 @@ import 'show-search.dart';
 
 /// PlaceFieldProvider control place field
 class PlaceFieldProvider extends ChangeNotifier {
-  PlaceFieldProvider();
-
-  types.Place place = types.Place.empty;
+  /// _place is current place
+  types.Place _place = types.Place.empty;
 
   /// _textController for the click field
   final TextEditingController _textController = TextEditingController();
@@ -22,7 +21,7 @@ class PlaceFieldProvider extends ChangeNotifier {
       context,
       MultiProvider(providers: [
         ChangeNotifierProvider<ShowSearchProvider>(
-          create: (context) => ShowSearchProvider(context, place),
+          create: (context) => ShowSearchProvider(context, _place),
         ),
         ChangeNotifierProvider(
             create: (_) => i18n.I18nProvider(
@@ -33,10 +32,17 @@ class PlaceFieldProvider extends ChangeNotifier {
     );
 
     if (newPlace != null) {
-      place = newPlace;
+      _place = newPlace;
     }
+    _textController.text = _place.address;
     notifyListeners();
-    return place.address;
+    return _place.address;
+  }
+
+  void setPlace(types.Place place) {
+    _place = place;
+    _textController.text = place.address;
+    notifyListeners();
   }
 }
 
@@ -59,7 +65,7 @@ class PlaceField extends form.Field {
   final PlaceFieldProvider controller;
 
   @override
-  bool isEmpty() => controller.place.isEmpty;
+  bool isEmpty() => controller._place.isEmpty;
 
   @override
   Widget build(BuildContext context) {
