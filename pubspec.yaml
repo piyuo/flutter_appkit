@@ -20,9 +20,9 @@ dependencies:
     flutter_easyloading: ^3.0.0
     flutter_markdown: ^0.6.1
     location: ^4.1.1
-    apple_maps_flutter: ^1.0.0
+    apple_maps_flutter: ^1.0.1
     google_maps_flutter: ^2.0.6
-    google_maps_flutter_web: ^0.3.0
+    google_maps_flutter_web: ^0.3.0+2
     amap_flutter_map: ^2.0.1
 
 dependency_overrides:
