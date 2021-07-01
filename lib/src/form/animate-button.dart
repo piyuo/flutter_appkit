@@ -112,7 +112,7 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
       case _ButtonState.done:
         return Colors.green[400]!;
       default:
-        return widget.backgroundColor ?? Theme.of(context).primaryColor;
+        return widget.backgroundColor ?? Colors.blue;
     }
   }
 

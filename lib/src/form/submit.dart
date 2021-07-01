@@ -56,8 +56,7 @@ class Submit extends StatelessWidget {
         return ElevatedButton(
           focusNode: focusNode,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                pSubmit._pressed ? Theme.of(context).disabledColor : Theme.of(context).primaryColor),
+            backgroundColor: MaterialStateProperty.all(pSubmit._pressed ? Theme.of(context).disabledColor : null),
             elevation: MaterialStateProperty.all(pSubmit._pressed ? 1 : 6),
             padding: MaterialStateProperty.all(EdgeInsets.symmetric(
               vertical: 16 * sizeLevel,
