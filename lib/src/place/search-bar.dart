@@ -34,9 +34,14 @@ class SearchBarProvider with ChangeNotifier {
   void setValue(String address, List<sys.GeoLocation> locations) {
     _options = locations.map((sys.GeoLocation location) => location.address).toList();
     _isOptionsSuggestion = false;
+    if (address.isNotEmpty && _addressEditingController.text == address) {
+      address = ''; // use empty address so dropdown menu will show
+    }
     _lastInputAddress = address;
     _addressEditingController.text = address;
     _autoCompleteEditingController.text = address;
+    _autoCompleteFocus.requestFocus();
+    onUserTyping(address);
     notifyListeners();
   }
 

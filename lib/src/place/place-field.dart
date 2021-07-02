@@ -17,6 +17,13 @@ class PlaceFieldProvider extends ChangeNotifier {
 
   /// _onClicked trigger when user click
   Future<String> _onClicked(BuildContext context, String text) async {
+/*
+deviceLatLng might not return when use ios simulator custom location. define your location in simulator file
+    locate.deviceLatLng().then((latlng) {
+      print(latlng.lat);
+    });
+    return '';
+*/
     final newPlace = await dialog.routeOrDialog(
       context,
       MultiProvider(providers: [
