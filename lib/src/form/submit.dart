@@ -6,10 +6,17 @@ import 'package:libcli/dialog.dart' as dialog;
 
 /// SubmitProvider provide submit state
 class SubmitProvider extends ChangeNotifier {
+  /// _pressed is true when button is pressed
   bool _pressed = false;
 
-  void setPressed(bool pressed) {
+  /// _setPressed set button pressed
+  void _setPressed(bool pressed) {
     _pressed = pressed;
+    notifyListeners();
+  }
+
+  /// _validateFail trigger when form validation fail
+  void _validateFail() {
     notifyListeners();
   }
 }
@@ -74,15 +81,16 @@ class Submit extends StatelessWidget {
             }
 
             if (form != null && !form!.currentState!.validate()) {
+              pSubmit._validateFail();
               return;
             }
 
             dialog.loading(context);
-            pSubmit.setPressed(true);
+            pSubmit._setPressed(true);
             try {
               await onClick();
             } finally {
-              pSubmit.setPressed(false);
+              pSubmit._setPressed(false);
               dialog.dismiss();
             }
           },
