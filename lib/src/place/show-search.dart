@@ -37,7 +37,7 @@ class ShowSearchProvider with ChangeNotifier {
           inputString,
           _deviceLatLng,
         );
-        _suggestions = Map.fromIterable(list, key: (i) => i.text, value: (i) => i);
+        _suggestions = Map.fromIterable(list, key: (i) => i.label, value: (i) => i);
         return list.map((sys.GeoSuggestion suggestion) => suggestion.text).toList();
       },
       onUserSelected: (String text, bool suggestionOrLocation) async {
