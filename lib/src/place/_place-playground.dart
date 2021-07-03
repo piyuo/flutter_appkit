@@ -99,7 +99,8 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                         ),
                         form.p(),
                         form.Submit(
-                          'Submit form',
+                          key: Key('submit'),
+                          label: 'Submit form',
                           form: _keyForm,
                           onClick: () async {},
                         ),
