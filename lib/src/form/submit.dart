@@ -21,7 +21,7 @@ class Submit extends StatelessWidget {
 
   /// text is button text
   ///
-  final String text;
+  final String label;
 
   /// onClick called when onClickStart() return true, return true if click are success
   ///
@@ -39,14 +39,15 @@ class Submit extends StatelessWidget {
   ///
   final Duration? showLoading;
 
-  Submit(
-    this.text, {
+  Submit({
+    required Key key, // all submit must have key, it's important for test and identify field
+    required this.label,
     required this.onClick,
     this.focusNode,
     this.form,
     this.sizeLevel = 1,
     this.showLoading = const Duration(seconds: 1),
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class Submit extends StatelessWidget {
               borderRadius: BorderRadius.circular(28 * sizeLevel),
             )),
           ),
-          child: Text(text, style: TextStyle(fontSize: 18 * sizeLevel, fontWeight: FontWeight.bold)),
+          child: Text(label, style: TextStyle(fontSize: 18 * sizeLevel, fontWeight: FontWeight.bold)),
           onPressed: () async {
             if (pSubmit._pressed) {
               return;

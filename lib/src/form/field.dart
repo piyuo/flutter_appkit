@@ -9,7 +9,7 @@ abstract class Field extends StatelessWidget {
     this.validator,
     this.focusNode,
     this.nextFocusNode,
-  }) : super(key: key) {}
+  }) : super(key: key);
 
   /// label will show when value is not empty
   final String? label;

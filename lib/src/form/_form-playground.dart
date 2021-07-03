@@ -116,7 +116,8 @@ class FormPlayground extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     Submit(
-                      'Submit form',
+                      key: Key('submitForm'),
+                      label: 'Submit form',
                       form: _keyForm,
                       onClick: () async {
                         //await Future.delayed(Duration(seconds: 1));
@@ -124,7 +125,8 @@ class FormPlayground extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     Submit(
-                      'Submit long waiting form',
+                      key: Key('submitLong'),
+                      label: 'Submit long waiting form',
                       onClick: () async {
                         await Future.delayed(Duration(seconds: 5));
                         return true;
@@ -132,7 +134,8 @@ class FormPlayground extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     Submit(
-                      'Select',
+                      key: Key('submitSelect'),
+                      label: 'Select',
                       sizeLevel: 0.8,
                       onClick: () async {
                         await Future.delayed(Duration(seconds: 1));
