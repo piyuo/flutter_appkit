@@ -21,6 +21,7 @@ class ClickFieldProvider extends ChangeNotifier {
 /// ClickFiled show read only text, user must click to change value
 class ClickField extends Field {
   ClickField({
+    required Key key,
     required this.controller,
     required this.onClicked,
     String? label,
@@ -28,7 +29,6 @@ class ClickField extends Field {
     String? require,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
-    Key? key,
   }) : super(
           key: key,
           label: label,

@@ -72,6 +72,7 @@ class FormPlayground extends StatelessWidget {
                 child: Column(
                   children: [
                     InputField(
+                      key: Key('test-input'),
                       controller: textController,
                       label: 'input field label',
                       hint: 'please input text',
@@ -80,6 +81,7 @@ class FormPlayground extends StatelessWidget {
                     ),
                     br(),
                     DropdownField(
+                      key: Key('test-dropdown'),
                       controller: dropdownController,
                       items: dropdownItems,
                       label: 'dropdown field label',
@@ -89,6 +91,7 @@ class FormPlayground extends StatelessWidget {
                     ),
                     br(),
                     ClickField(
+                      key: Key('test-click'),
                       controller: clickController,
                       label: 'click field label',
                       hint: 'click here to set value',
@@ -101,6 +104,7 @@ class FormPlayground extends StatelessWidget {
                     ),
                     br(),
                     EmailField(
+                      key: Key('test-email'),
                       controller: emailController,
                       label: 'email field',
                       focusNode: pFormPlayground.emailFocus,

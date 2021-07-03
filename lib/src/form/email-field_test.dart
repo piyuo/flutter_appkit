@@ -25,6 +25,7 @@ void main() {
           child: Column(
             children: [
               EmailField(
+                key: Key('test-email'),
                 controller: controller,
                 focusNode: focusNode,
                 label: 'email',

@@ -6,6 +6,7 @@ import 'field.dart';
 /// InputField for input simple text
 class InputField extends Field {
   InputField({
+    required Key key,
     required this.controller,
     this.textInputAction = TextInputAction.next,
     this.minLength = 0,
@@ -18,6 +19,7 @@ class InputField extends Field {
     FormFieldValidator<String>? validator,
     FocusNode? focusNode,
   }) : super(
+          key: key,
           label: label,
           hint: hint,
           require: require,

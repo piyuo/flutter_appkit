@@ -12,6 +12,7 @@ class DropdownField extends Field {
   DropdownField({
     required this.controller,
     required this.items,
+    required Key key,
     String? label,
     String? require,
     FormFieldValidator<String>? validator,
@@ -23,6 +24,7 @@ class DropdownField extends Field {
           validator: validator,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
+          key: key,
         );
 
   @override

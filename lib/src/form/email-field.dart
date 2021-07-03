@@ -65,6 +65,7 @@ class EmailField extends Field {
   final TextInputAction textInputAction;
 
   EmailField({
+    required Key key,
     required this.controller,
     required FocusNode focusNode,
     this.textInputAction = TextInputAction.next,
@@ -72,7 +73,6 @@ class EmailField extends Field {
     String? hint,
     String? require,
     FormFieldValidator<String>? validator,
-    Key? key,
   }) : super(
           key: key,
           label: label,

@@ -19,6 +19,7 @@ void main() {
           child: Column(
             children: [
               DropdownField(
+                key: Key('test-dropdown'),
                 controller: controller,
                 items: {
                   "": "item0",
