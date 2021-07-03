@@ -71,12 +71,14 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                     child: Column(
                       children: <Widget>[
                         form.DropdownField(
+                          key: Key('test-dropdown'),
                           controller: countryController,
                           items: countryItems,
                           label: 'Country',
                         ),
                         form.p(),
                         PlaceField(
+                          key: Key('test-place'),
                           controller: addressController,
                           label: 'Address',
                           focusNode: addressFocus,
@@ -84,6 +86,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                           require: 'you must input address!',
                         ),
                         form.InputField(
+                          key: Key('test-place2'),
                           controller: address2Controller,
                           focusNode: address2Focus,
                           hint: '(Optional) Floor/Room/Building number',
@@ -101,10 +104,12 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                           onClick: () async {},
                         ),
                         PlaceField(
+                          key: Key('test-place-value'),
                           controller: addressWithValueController,
                           label: 'Address with value',
                         ),
                         form.InputField(
+                          key: Key('test-place2-value'),
                           controller: addressWithValue2Controller,
                         ),
                       ],

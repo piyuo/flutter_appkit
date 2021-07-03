@@ -62,12 +62,14 @@ deviceLatLng might not return when use ios simulator custom location. define you
 /// PlaceField let user set his place, it contain address, lat/lng and address tags
 class PlaceField extends form.Field {
   PlaceField({
+    required Key key,
     required this.controller,
     String? label,
     String? require,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
   }) : super(
+          key: key,
           label: label,
           require: require,
           focusNode: focusNode,
@@ -86,6 +88,7 @@ class PlaceField extends form.Field {
       value: controller,
       child: Consumer<PlaceFieldProvider>(builder: (context, placeFieldProvider, child) {
         return form.ClickField(
+          key: key!,
           controller: placeFieldProvider._textController,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
