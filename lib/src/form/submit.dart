@@ -14,11 +14,6 @@ class SubmitProvider extends ChangeNotifier {
     _pressed = pressed;
     notifyListeners();
   }
-
-  /// _validateFail trigger when form validation fail
-  void _validateFail() {
-    notifyListeners();
-  }
 }
 
 class Submit extends StatelessWidget {
@@ -81,7 +76,6 @@ class Submit extends StatelessWidget {
             }
 
             if (form != null && !form!.currentState!.validate()) {
-              pSubmit._validateFail();
               return;
             }
 
