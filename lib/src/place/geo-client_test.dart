@@ -9,7 +9,7 @@ void main() {
   group('[geo-client]', () {
     test('should return empty list when no input in auto complete', () async {
       final geoClient = GeoClient();
-      final list = await geoClient.autoComplete(mocking.Context(), '', types.LatLng.empty);
+      final list = await geoClient.autoComplete(mocking.Context(), '2141 spectrum', types.LatLng.empty);
       expect(list, isEmpty);
     });
 
