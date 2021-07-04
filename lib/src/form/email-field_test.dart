@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'email-field.dart';
+import 'submit.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();
@@ -34,6 +35,12 @@ void main() {
                 controller: dummyController,
                 focusNode: dummyFocusNode,
               ),
+              Submit(
+                key: Key('submit'),
+                label: 'submit',
+                form: _keyForm,
+                onClick: () {},
+              ),
             ],
           ),
         ),
@@ -47,6 +54,13 @@ void main() {
       await tester.enterText(find.byType(EmailField), 'a@b.c');
       await tester.pumpAndSettle();
       expect(controller.text, 'a@b.c'); //email error
+    });
+
+    testWidgets('should have email empty error when click submit', (WidgetTester tester) async {
+      await tester.pumpWidget(testTarget());
+      await tester.tap(find.byType(Submit));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('johndoe@domain.com'), findsOneWidget); //email error
     });
 
     testWidgets('should have email empty error', (WidgetTester tester) async {
