@@ -4,16 +4,15 @@ import 'package:libcli/i18n.dart' as i18n;
 Future<Map<String, String>> doRequestHeaders() async {
   Map<String, String> headers = {
     'Content-Type': 'multipart/form-data',
-    'accept': '',
+    'Accept-Language': i18n.localeString,
+    //'accept': '',
   };
-
+  return headers;
   //var accessToken = await services.getAccessToken();
   //if (accessToken.length > 0) {
   //  log('$accessToken=$accessToken');
   //  headers['Cookie'] = accessToken;
   // }
-  headers['Accept-Language'] = i18n.localeString;
-  return headers;
 }
 
 Future<void> doResponseHeaders(Map<String, String> headers) async {
