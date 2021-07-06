@@ -21,6 +21,11 @@ void main() {
       expect(l.countryCode, 'US');
     });
 
+    test('should convert locale to http accept language header', () async {
+      final l = localeToAcceptLanguage(Locale('en', 'US'));
+      expect(l, 'en-US');
+    });
+
     test('should determine locale', () async {
       List<Locale> emptyList = [];
       Locale loc = determineLocale(emptyList);

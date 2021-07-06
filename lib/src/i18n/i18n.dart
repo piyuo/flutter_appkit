@@ -37,6 +37,14 @@ String localeToString(Locale value) {
   return '${value.languageCode}_${value.countryCode}';
 }
 
+/// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
+///
+/// var id = localeToAcceptLanguage(Locale('en','US'));
+///
+String localeToAcceptLanguage(Locale value) {
+  return '${value.languageCode}-${value.countryCode}';
+}
+
 /// stringToLocale 'en_US' to Locale(''en,'US')
 ///
 Locale stringToLocale(String value) {
