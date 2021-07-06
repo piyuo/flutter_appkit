@@ -3,7 +3,7 @@ import 'package:libcli/i18n.dart' as i18n;
 
 Future<Map<String, String>> doRequestHeaders() async {
   Map<String, String> headers = {
-//    'Content-Type': 'multipart/form-data',
+    'Content-Type': 'multipart/form-data',
 //    'Accept-Language': i18n.localeString,
     //'accept': '',
   };
