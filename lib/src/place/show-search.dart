@@ -6,6 +6,7 @@ import 'package:libcli/locate.dart' as locate;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/module.dart' as module;
+import 'package:libcli/util.dart' as util;
 import 'search-bar.dart';
 import 'search-view.dart';
 import 'geo-client.dart';
@@ -92,11 +93,9 @@ class ShowSearchProvider with ChangeNotifier {
       onClickConfirm: () => _clickConfirm(context),
     );
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      if (!place.isEmpty) {
-        _mapProvider.setValue(place.latlng, true);
-      }
-    });
+    if (!place.isEmpty) {
+      _mapProvider.setValue(place.latlng, true);
+    }
     _barProvider.setValue(place.address, []);
 
     locate.deviceLatLng().then((latlng) {
