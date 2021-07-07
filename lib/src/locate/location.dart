@@ -1,5 +1,6 @@
 import 'package:location/location.dart';
 import 'package:libcli/types.dart' as types;
+import 'package:libcli/log.dart' as log;
 
 /// deviceLatLng return device location info, return empty if can't not get device location (user not allow)
 /// this function is slow, it may takes few seconds to complete
@@ -27,6 +28,11 @@ Future<types.LatLng> deviceLatLng() async {
     }
   }
 
-  _locationData = await location.getLocation();
-  return types.LatLng(_locationData.latitude!, _locationData.longitude!);
+  try {
+    _locationData = await location.getLocation();
+    return types.LatLng(_locationData.latitude!, _locationData.longitude!);
+  } catch (e, s) {
+    log.error(e, s);
+  }
+  return types.LatLng.empty;
 }
