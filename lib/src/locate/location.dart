@@ -6,7 +6,7 @@ import 'package:libcli/log.dart' as log;
 /// deviceLatLng return device location info, return empty if can't not get device location (user not allow)
 /// this function is slow, it may takes few seconds to complete
 ///
-Future<types.LatLng> deviceLatLngLocation() async {
+Future<types.LatLng> deviceLatLng() async {
   Location location = new Location();
 
   bool _serviceEnabled;
