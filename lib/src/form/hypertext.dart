@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:libcli/dialog.dart' as dialog;
-import '../page-route.dart';
-import 'doc_page.dart';
+import 'package:libcli/ui.dart' as ui;
+import 'hypertext-doc-page.dart';
 
 /// _testMode true should return success, false return error, otherwise behave normal
 ///
@@ -38,7 +38,7 @@ class _Span {
   });
 }
 
-class HyperText extends StatefulWidget {
+class Hypertext extends StatefulWidget {
   final List<_Span> children = [];
 
   final Color? color;
@@ -49,14 +49,11 @@ class HyperText extends StatefulWidget {
 
   final double? fontSize;
 
-  final double? linkFontSize;
-
-  HyperText({
+  Hypertext({
     this.color,
     this.boldColor,
     this.linkColor,
     this.fontSize = 16,
-    this.linkFontSize = 16,
   });
 
   void span(String text) {
@@ -72,7 +69,7 @@ class HyperText extends StatefulWidget {
       text,
       onTap: (BuildContext context) {
         Navigator.of(context).push(
-          safeTestMaterialRoute(
+          ui.safeTestMaterialRoute(
             DocPage(docName: docName, title: text),
           ),
         );
@@ -118,7 +115,7 @@ class HyperText extends StatefulWidget {
   HyperTextState createState() => HyperTextState();
 }
 
-class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin {
+class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin {
   Set<InkSplash?> _splashes = HashSet<InkSplash?>();
 
   InkSplash? _currentSplash;
@@ -137,17 +134,13 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
         textDirection: TextDirection.ltr,
         containedInkWell: true,
         referenceBox: referenceBox,
-        //rectCallback: () => referenceBox.paintBounds,
         position: referenceBox.globalToLocal(details.globalPosition),
-        //position: details.globalPosition,
-        //position: Offset.zero,
         color: theme.splashColor,
         onRemoved: () {
           assert(_splashes.contains(splash));
           _splashes.remove(splash);
           if (_currentSplash == splash) _currentSplash = null;
           updateKeepAlive();
-          // else we're probably in deactivate()
         });
     _splashes.add(splash);
     _currentSplash = splash;
@@ -212,7 +205,7 @@ class HyperTextState extends State<HyperText> with AutomaticKeepAliveClientMixin
             text: span.text,
             recognizer: recognizer,
             style: TextStyle(
-              fontSize: (span.onTap != null || span.onTapUp != null) ? widget.linkFontSize : widget.fontSize,
+              fontSize: widget.fontSize,
               decoration: span.onTap != null || span.onTapUp != null ? TextDecoration.underline : null,
               color: color,
               fontWeight: span.bold == true ? FontWeight.w600 : FontWeight.normal,

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/module.dart' as module;
-import 'doc_provider.dart';
+import 'hypertext-doc-provider.dart';
 
 class DocPage extends module.ViewWidget<DocProvider> {
   final String title;

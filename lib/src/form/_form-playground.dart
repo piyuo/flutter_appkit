@@ -9,6 +9,7 @@ import 'check.dart';
 import 'dropdown-field.dart';
 import 'tags.dart';
 import 'click-field.dart';
+import 'hypertext.dart';
 
 class FormPlaygroundProvider extends ChangeNotifier {
   @override
@@ -71,6 +72,18 @@ class FormPlayground extends StatelessWidget {
                 key: _keyForm,
                 child: Column(
                   children: [
+                    Hypertext()
+                      ..span('link')
+                      ..doc('privacy', 'privacy')
+                      ..span('and')
+                      ..doc('terms', 'terms'),
+                    p(),
+                    Hypertext(fontSize: 13)
+                      ..span('link')
+                      ..doc('privacy', 'privacy')
+                      ..span('and')
+                      ..doc('terms', 'terms'),
+                    p(),
                     InputField(
                       key: Key('test-input'),
                       controller: textController,
@@ -149,6 +162,7 @@ class FormPlayground extends StatelessWidget {
                         return true;
                       },
                     ),
+                    p(),
                   ],
                 ),
               ),
