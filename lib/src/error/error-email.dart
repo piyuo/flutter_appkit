@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:convert';
 import 'package:libcli/env.dart' as env;
 import 'package:libcli/log.dart' as log;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:libcli/util.dart' as util;
 
 class ErrorEmail {
   String _subject = 'Report an error';
@@ -23,23 +23,11 @@ Debug Information
     return stringToBase64.encode(logs);
   }
 
-  String get to => env.serviceEmail;
-
-  String get subjectUrlSafe => Uri.encodeComponent(_subject);
-
-  String get bodyUrlSafe => Uri.encodeComponent(_body.trim()).replaceAll('\n', '%0D%0A') + encodedLogs;
-
-  String get linkMailTo {
-    return 'mailto:${to}?Subject=${subjectUrlSafe}&body=${bodyUrlSafe}';
-  }
-
   void launchMailTo() async {
-    var url = linkMailTo;
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-      );
-    }
+    util.openMailTo(
+      env.serviceEmail,
+      _subject,
+      _body.replaceAll('\n', '%0D%0A') + encodedLogs,
+    );
   }
 }
