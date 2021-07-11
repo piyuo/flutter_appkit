@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/ui.dart' as ui;
+import 'package:libcli/util.dart' as util;
 import 'hypertext-doc-page.dart';
 
 /// _testMode true should return success, false return error, otherwise behave normal
@@ -100,6 +101,15 @@ class Hypertext extends StatefulWidget {
     Function(BuildContext)? onTap,
     Function(BuildContext, TapUpDetails)? onTapUp,
   }) {
+    if (onTap == null) {
+      onTap = (context) {
+        if (!text.startsWith('http')) {
+          text = 'http://' + text;
+        }
+        util.openUrl(text);
+      };
+    }
+
     if (!children.isEmpty) {
       children.add(_Span(" "));
     }

@@ -72,11 +72,7 @@ class FormPlayground extends StatelessWidget {
                 key: _keyForm,
                 child: Column(
                   children: [
-                    Hypertext()
-                      ..span('link')
-                      ..doc('privacy', 'privacy')
-                      ..span('and')
-                      ..doc('terms', 'terms'),
+                    Hypertext()..link('starbucks.com'),
                     p(),
                     Hypertext(fontSize: 13)
                       ..span('link')

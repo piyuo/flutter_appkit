@@ -38,9 +38,6 @@ Future<bool> isGoogleCloudFunctionAvailable() async {
 ///     bool result = await openUrl('https://www.starbucks.com');
 ///
 Future<void> openUrl(String url) async {
-  if (!url.startsWith('http')) {
-    url = 'http://' + url;
-  }
   await launch(
     url,
     forceSafariVC: false,
@@ -49,7 +46,7 @@ Future<void> openUrl(String url) async {
 
 /// openUrl open external url
 ///
-///     bool result = await openMailTo('service@piyuo.com','my subject','my body');
+///     bool result = await openMailTo('service@piyuo.com','my subject','my');
 ///
 Future<void> openMailTo(String to, String subject, String body) async {
   to = Uri.encodeComponent(to);
