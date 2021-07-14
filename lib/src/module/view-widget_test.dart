@@ -12,7 +12,7 @@ class SampleViewWidget extends ViewWidget<SampleViewModel> {
   @override
   Widget createWidget(BuildContext context) => Container();
 
-  SampleViewWidget() : super(i18nFilename: '');
+  SampleViewWidget() : super(i18nFile: '');
 }
 
 void main() {

@@ -50,7 +50,7 @@ class WaitWidget extends StatelessWidget {
 }
 
 class WaitPage extends ViewWidget<WaitProvider> {
-  WaitPage() : super(i18nFilename: '');
+  WaitPage() : super(i18nFile: '');
 
   @override
   createProvider(BuildContext context) => WaitProvider();
@@ -76,7 +76,7 @@ class WrongWidget extends StatelessWidget {
 }
 
 class WrongPage extends ViewWidget<WrongProvider> {
-  WrongPage() : super(i18nFilename: '');
+  WrongPage() : super(i18nFile: '');
 
   @override
   createProvider(BuildContext context) => WrongProvider();

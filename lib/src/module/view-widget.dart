@@ -10,19 +10,29 @@ AsyncProvider? viewWidgetProviderInstanceForTest;
 ///ProviderWidget is widget that build by provider model
 ///
 abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
-  /// i18nFilename is language file that widget need
+  /// i18nFile is language file that widget need
   ///
-  final String i18nFilename;
+  final String i18nFile;
 
-  /// package set if i18n file is in other package
+  /// i18nPackage need set if i18n file is in other package
   ///
-  final String? package;
+  final String? i18nPackage;
+
+  /// i18nFile2 is language file that widget need
+  ///
+  final String? i18nFile2;
+
+  /// i18nPackage2 need set if i18n file is in other package
+  ///
+  final String? i18nPackage2;
 
   /// ProviderWidget
   ///
   ViewWidget({
-    required this.i18nFilename,
-    this.package,
+    required this.i18nFile,
+    this.i18nPackage,
+    this.i18nFile2,
+    this.i18nPackage2,
   });
 
   /// createProvider create provider that widget need, it will assign redux to redux provider
@@ -38,7 +48,12 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<i18n.I18nProvider>(
-          create: (context) => i18n.I18nProvider(fileName: i18nFilename, package: package),
+          create: (context) => i18n.I18nProvider(
+            fileName: i18nFile,
+            package: i18nPackage,
+            fileName2: i18nFile2,
+            package2: i18nPackage2,
+          ),
         ),
         ChangeNotifierProvider<T>(
           create: (context) {

@@ -13,7 +13,7 @@ class DocPage extends module.ViewWidget<DocProvider> {
   DocPage({
     required this.docName,
     this.title = '',
-  }) : super(i18nFilename: '');
+  }) : super(i18nFile: '');
 
   @protected
   createProvider(BuildContext context) => DocProvider(
