@@ -55,3 +55,11 @@ String mapping(String region) {
   }
   return 'US';
 }
+
+/// setServiceRegionByCountryCode force specified region by country code
+///
+///     setServiceRegionByCountryCode('KR');
+///
+void setServiceRegionByCountryCode(String countryCode) {
+  serviceRegion = mapping(countryCode);
+}

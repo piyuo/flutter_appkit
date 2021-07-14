@@ -41,5 +41,15 @@ void main() {
       serviceRegion = i18n.US;
       expect(serviceUrl('mock'), 'https://mock-us-beta.piyuo.com/?q');
     });
+
+    test('should force region', () async {
+      setServiceRegionByCountryCode('KR');
+      expect(serviceRegion, 'JP');
+      setServiceRegionByCountryCode('DE');
+      expect(serviceRegion, 'BE');
+      setServiceRegionByCountryCode('NotExists');
+      expect(serviceRegion, 'US');
+      serviceRegion = '';
+    });
   });
 }
