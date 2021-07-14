@@ -33,11 +33,6 @@ void main() {
       expect(translation['a'], 'A');
     });
 
-    test('should get empty map when filename is empty', () async {
-      var translation = await getTranslation(fileName: '');
-      expect(translation.isEmpty, true);
-    });
-
     testWidgets('should load', (WidgetTester tester) async {
       locale = Locale('en', 'US');
       await tester.pumpWidget(MaterialApp(

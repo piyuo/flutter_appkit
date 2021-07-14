@@ -63,9 +63,7 @@ Future<Map> getTranslation({
   String? fileName2,
   String? package2,
 }) async {
-  if (fileName.isEmpty) {
-    return {};
-  }
+  assert(fileName.isNotEmpty, 'need at least one language file');
   Map map = await asset.loadMap(assetName: 'i18n/${fileName}_${localeString}.json', package: package);
   if (fileName2 != null && fileName2.isNotEmpty) {
     Map map2 = await asset.loadMap(assetName: 'i18n/${fileName2}_${localeString}.json', package: package2);
