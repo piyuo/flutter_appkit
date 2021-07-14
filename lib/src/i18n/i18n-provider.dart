@@ -7,15 +7,25 @@ import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/src/i18n/i18n.dart';
 
 class I18nProvider extends module.AsyncProvider {
+  /// fileName is i18n language fileName
   final String fileName;
 
+  /// package is i18n language package
   final String? package;
+
+  /// fileName2 is second i18n language fileName, this usually a shared file between views in page
+  final String? fileName2;
+
+  /// package2 is second i18n language package, this usually a shared file between views in page
+  final String? package2;
 
   Map _translation = {};
 
   I18nProvider({
     required this.fileName,
     this.package,
+    this.fileName2,
+    this.package2,
   });
 
   @protected
@@ -23,7 +33,12 @@ class I18nProvider extends module.AsyncProvider {
 
   @override
   Future<void> load(BuildContext context) async {
-    _translation = await getTranslation(fileName: fileName, package: package);
+    _translation = await getTranslation(
+      fileName: fileName,
+      package: package,
+      fileName2: fileName2,
+      package2: package2,
+    );
   }
 
   String translate(String key) {
@@ -42,9 +57,19 @@ class I18nProvider extends module.AsyncProvider {
 
 /// getTranslation load translation from assets/i18n
 ///
-Future<Map> getTranslation({required String fileName, String? package}) async {
+Future<Map> getTranslation({
+  required String fileName,
+  String? package,
+  String? fileName2,
+  String? package2,
+}) async {
   if (fileName.isEmpty) {
     return {};
   }
-  return await asset.loadMap(assetName: 'i18n/${fileName}_${localeString}.json', package: package);
+  Map map = await asset.loadMap(assetName: 'i18n/${fileName}_${localeString}.json', package: package);
+  if (fileName2 != null && fileName2.isNotEmpty) {
+    Map map2 = await asset.loadMap(assetName: 'i18n/${fileName2}_${localeString}.json', package: package2);
+    map.addAll(map2);
+  }
+  return map;
 }

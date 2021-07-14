@@ -21,8 +21,14 @@ void main() {
   });
 
   group('[i18n-provider]', () {
-    test('should getTranslation', () async {
+    test('should get translation', () async {
       var translation = await getTranslation(fileName: 'any');
+      expect(translation.isEmpty, false);
+      expect(translation['a'], 'A');
+    });
+
+    test('should get translation on file2', () async {
+      var translation = await getTranslation(fileName: 'any', fileName2: 'any');
       expect(translation.isEmpty, false);
       expect(translation['a'], 'A');
     });
