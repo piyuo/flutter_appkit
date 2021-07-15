@@ -58,17 +58,26 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
       )
     ];
     if (i18nFile != null) {
-      providers.add(
-        ChangeNotifierProvider<i18n.I18nProvider>(
-          create: (context) => i18n.I18nProvider(
-            fileName: i18nFile!,
-            package: i18nPackage,
-            fileName2: i18nFile2,
-            package2: i18nPackage2,
-          ),
-        ),
+      return MultiProvider(
+        providers: providers,
+        child: Consumer<T>(
+            builder: (context, provider, child) => Await(
+                  list: [provider],
+                  child: createWidget(context),
+                )),
       );
     }
+
+    providers.add(
+      ChangeNotifierProvider<i18n.I18nProvider>(
+        create: (context) => i18n.I18nProvider(
+          fileName: i18nFile!,
+          package: i18nPackage,
+          fileName2: i18nFile2,
+          package2: i18nPackage2,
+        ),
+      ),
+    );
 
     return MultiProvider(
       providers: providers,
