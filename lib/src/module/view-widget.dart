@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/src/module/async-provider.dart';
@@ -12,7 +13,7 @@ AsyncProvider? viewWidgetProviderInstanceForTest;
 abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
   /// i18nFile is language file that widget need
   ///
-  final String i18nFile;
+  final String? i18nFile;
 
   /// i18nPackage need set if i18n file is in other package
   ///
@@ -29,7 +30,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
   /// ProviderWidget
   ///
   ViewWidget({
-    required this.i18nFile,
+    this.i18nFile,
     this.i18nPackage,
     this.i18nFile2,
     this.i18nPackage2,
@@ -45,26 +46,32 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
+    List<SingleChildWidget> providers = [
+      ChangeNotifierProvider<T>(
+        create: (context) {
+          var p = createProvider(context);
+          if (!kReleaseMode) {
+            viewWidgetProviderInstanceForTest = p;
+          }
+          return p;
+        },
+      )
+    ];
+    if (i18nFile != null) {
+      providers.add(
         ChangeNotifierProvider<i18n.I18nProvider>(
           create: (context) => i18n.I18nProvider(
-            fileName: i18nFile,
+            fileName: i18nFile!,
             package: i18nPackage,
             fileName2: i18nFile2,
             package2: i18nPackage2,
           ),
         ),
-        ChangeNotifierProvider<T>(
-          create: (context) {
-            var p = createProvider(context);
-            if (!kReleaseMode) {
-              viewWidgetProviderInstanceForTest = p;
-            }
-            return p;
-          },
-        )
-      ],
+      );
+    }
+
+    return MultiProvider(
+      providers: providers,
       child: Consumer2<i18n.I18nProvider, T>(
           builder: (context, i18nProvider, provider, child) => Await(
                 list: [i18nProvider, provider],
