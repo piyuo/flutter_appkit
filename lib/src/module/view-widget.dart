@@ -57,7 +57,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
         },
       )
     ];
-    if (i18nFile != null) {
+    if (i18nFile == null) {
       return MultiProvider(
         providers: providers,
         child: Consumer<T>(
