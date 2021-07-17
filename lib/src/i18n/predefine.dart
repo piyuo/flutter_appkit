@@ -67,7 +67,10 @@ Map get _enUS {
     'diskErrorDesc': 'Insufficient disk space or write access denied',
     'timeout': 'Operation timed out!',
     'timeoutDesc': 'Your operation didn\'t complete in time${tryAgain}',
-    'firewallBlock': 'Too many attempts${tryAgain}',
+    'BLOCK_SHORT': 'Processing Request. Please Wait',
+    'BLOCK_LONG': 'Too many failed attempts, Please try again tomorrow',
+    'IN_FLIGHT': 'Please wait while we are processing your request',
+    'OVERFLOW': 'Too many attempts${tryAgain}',
   };
 }
 
@@ -109,7 +112,10 @@ Map get _zhTW {
     'diskErrorDesc': '請檢查是否空間不足或是權限不夠',
     'timeout': '操作已經超時!',
     'timeoutDesc': '您的操作沒有得到伺服器回應，可能是伺服器目前忙碌中${tryAgain}',
-    'firewallBlock': '操作過於頻繁${tryAgain}',
+    'BLOCK_SHORT': '處理中，請稍候',
+    'BLOCK_LONG': '您嚐試了太多失敗的請求, 請明天再試',
+    'IN_FLIGHT': '請求正在處理中，請稍候',
+    'OVERFLOW': '操作過於頻繁${tryAgain}',
   };
 }
 
@@ -151,6 +157,9 @@ Map get _zhCN {
     'diskErrorDesc': '请检查是否空间不足或是权限不够',
     'timeout': '操作已经超时!',
     'timeoutDesc': '您的操作没有得到服务器回应，可能是服务器目前忙碌中${tryAgain}',
-    'firewallBlock': '操作过于频繁${tryAgain}',
+    'BLOCK_SHORT': '处理中，请稍候',
+    'BLOCK_LONG': '您嚐试了太多失败的请求, 请明天再试',
+    'IN_FLIGHT': '请求正在处理中，请稍候',
+    'OVERFLOW': '操作过于频繁${tryAgain}',
   };
 }

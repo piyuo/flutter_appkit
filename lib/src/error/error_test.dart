@@ -50,7 +50,7 @@ void main() {
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.FirewallBlockEvent());
+          await eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);

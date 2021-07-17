@@ -35,7 +35,7 @@ class ErrorPlayground extends StatelessWidget {
                   child: Text('firewall block'),
                   onPressed: () {
                     watch(() {});
-                    eventbus.broadcast(context, command.FirewallBlockEvent());
+                    eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
                   }),
               ElevatedButton(
                   child: Text('no internet'),

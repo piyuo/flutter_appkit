@@ -9,7 +9,7 @@ void main() {
       expect(isOK(types.OK()), true);
     });
 
-    test('should able test PbError', () {
+    test('should able test error', () {
       expect(
           isError(
             types.Error()..code = 'a',

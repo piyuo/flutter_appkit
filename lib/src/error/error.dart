@@ -78,7 +78,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
   if (e is command.FirewallBlockEvent) {
     dialog.alert(
       context,
-      'firewallBlock'.i18n_,
+      e.reason.i18n_, // reason need predefine in i18n
       warning: true,
       emailUs: true,
     );

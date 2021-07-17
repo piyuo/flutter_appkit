@@ -90,7 +90,7 @@ abstract class Service {
     final commandJSON = command.jsonString;
     dynamic result = FirewallPass;
     if (!ignoreFirewall) {
-      result = firewall(commandJSON);
+      result = firewallBegin(commandJSON);
     }
     if (result is FirewallPass) {
       log.log('${log.COLOR_STATE}send $commandJSON${log.COLOR_END} to $url');
@@ -109,7 +109,7 @@ abstract class Service {
         return returnObj;
       } finally {
         if (!ignoreFirewall) {
-          firewallPostComplete(commandJSON, returnObj);
+          firewallEnd(commandJSON, returnObj);
         }
         if (returnObj != null) {
           log.log('${log.COLOR_STATE}got ${returnObj.jsonString}${log.COLOR_END}');
@@ -119,7 +119,7 @@ abstract class Service {
       }
     } else if (result is FirewallBlock) {
       log.log('${log.COLOR_ALERT}block ${result.reason} ${command.jsonString}${log.COLOR_END}');
-      eventbus.broadcast(context, FirewallBlockEvent());
+      eventbus.broadcast(context, FirewallBlockEvent(result.reason));
       return result;
     }
     //cached object
