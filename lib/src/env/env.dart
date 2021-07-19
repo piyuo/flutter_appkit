@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/log.dart' as log;
+import 'package:url_strategy/url_strategy.dart';
 
 /// BRANCH_MASTER is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 ///
@@ -65,6 +66,7 @@ void init({
   String branch = BRANCH_MASTER,
   String serviceEmail = 'support@piyuo.com',
 }) {
+  setPathUrlStrategy(); //remove the leading hash (#) from the URL
   log.log('appName=$appName, branch=$branch, serviceEmail=$serviceEmail');
   _branch = branch;
   _appName = appName;
