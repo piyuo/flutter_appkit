@@ -1,0 +1,28 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+import 'package:flutter/widgets.dart';
+
+@immutable
+class _CustomIconsData extends IconData {
+  const _CustomIconsData(int codePoint)
+      : super(
+          codePoint,
+          fontFamily: 'CustomIcons',
+        );
+}
+
+@immutable
+class CustomIcons {
+  CustomIcons._();
+
+  
+  static const IconData alarmOn = _CustomIconsData(0xe000);
+  static const IconData cloudOff = _CustomIconsData(0xe001);
+  static const IconData email = _CustomIconsData(0xe002);
+  static const IconData errorOutline = _CustomIconsData(0xe003);
+  static const IconData expandMore = _CustomIconsData(0xe004);
+  static const IconData navigateNext = _CustomIconsData(0xe005);
+  static const IconData priorityHigh = _CustomIconsData(0xe006);
+  static const IconData wifiOff = _CustomIconsData(0xe007);
+  static const IconData wifi = _CustomIconsData(0xe008);
+}
