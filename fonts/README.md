@@ -22,5 +22,5 @@ add to path $HOME/.pub-cache/bin to .zshrc
 ## usage
 
 ```bash
-icon_font_generator --from=fonts/icons --class-name=CustomIcons --out-font=fonts/custom-icons.ttf --out-flutter=lib/src/icons/icons.dart
+icon_font_generator --package=libcli --from=fonts/icons --class-name=CustomIcons --out-font=fonts/custom-icons.ttf --out-flutter=lib/src/icons/icons.dart
 ```

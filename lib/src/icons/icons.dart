@@ -8,6 +8,7 @@ class _CustomIconsData extends IconData {
       : super(
           codePoint,
           fontFamily: 'CustomIcons',
+          fontPackage: 'libcli',
         );
 }
 
