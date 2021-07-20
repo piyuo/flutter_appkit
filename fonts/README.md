@@ -4,7 +4,7 @@ svg icons font
 
 ## reference
 
-find new icon
+find new icon, download svg
 <https://fonts.google.com/icons>
 
 ## install
