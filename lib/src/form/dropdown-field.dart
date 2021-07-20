@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
-import 'package:libcli/icons.dart';
+import 'package:libcli/custom-icons.dart';
 
 /// DropdownField for simple dropdown selection
 class DropdownField extends Field {

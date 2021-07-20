@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/icons.dart';
+import 'package:libcli/custom-icons.dart';
 
 typedef ClickFiledCallback = Future<String> Function(String text);
 

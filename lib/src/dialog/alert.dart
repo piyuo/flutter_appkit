@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/ui.dart' as ui;
-import 'package:libcli/icons.dart';
+import 'package:libcli/custom-icons.dart';
 
 final keyAlertButtonYes = Key('alertBtnYes');
 
