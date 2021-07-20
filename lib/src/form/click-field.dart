@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
 import 'package:provider/provider.dart';
+import 'package:libcli/icons.dart';
 
 typedef ClickFiledCallback = Future<String> Function(String text);
 
@@ -74,7 +75,7 @@ class ClickField extends Field {
                 hintText: hint,
                 errorText: pClickField._error,
                 suffixIcon: Icon(
-                  Icons.arrow_forward_ios,
+                  CustomIcons.navigateNext,
                 ),
               ).applyDefaults(Theme.of(context).inputDecorationTheme),
               child: ClickFormField(

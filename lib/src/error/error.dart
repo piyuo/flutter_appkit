@@ -6,6 +6,7 @@ import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/src/error/error-email.dart';
+import 'package:libcli/icons.dart';
 
 var subscribed = null;
 
@@ -55,7 +56,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
       dialog.RootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
-      icon: Icons.sync_problem_rounded,
+      icon: CustomIcons.priorityHigh,
     );
     showCatchedAlert = false;
     return;
@@ -107,7 +108,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     dialog.info(context,
         text: 'slow'.i18n_,
         widget: Icon(
-          Icons.wifi,
+          CustomIcons.wifi,
           size: 68,
           color: Colors.white,
         ));
@@ -119,7 +120,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       title: 'timeout'.i18n_,
       yes: 'retry'.i18n_,
       cancel: 'cancel'.i18n_,
-      icon: Icons.timer,
+      icon: CustomIcons.alarmOn,
       footer: errorCode,
       emailUs: true,
     );
@@ -130,7 +131,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
         dialog.alert(
           context,
           'noServiceDesc'.i18n_,
-          icon: Icons.cloud_off,
+          icon: CustomIcons.cloudOff,
           title: 'noService'.i18n_,
           footer: e.exception?.toString(),
           emailUs: true,
@@ -141,7 +142,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
           'blockedDesc'.i18n_,
           title: 'blocked'.i18n_,
           footer: e.exception?.toString(),
-          icon: Icons.block_outlined,
+          icon: CustomIcons.cloudOff,
           emailUs: true,
         );
       }
@@ -151,7 +152,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
         context,
         'noInternetDesc'.i18n_,
         title: 'noInternet'.i18n_,
-        icon: Icons.wifi_off_outlined,
+        icon: CustomIcons.wifiOff,
         footer: e.exception?.toString(),
         yes: 'retry'.i18n_,
         cancel: 'cancel'.i18n_,

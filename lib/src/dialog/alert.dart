@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/ui.dart' as ui;
+import 'package:libcli/icons.dart';
 
 final keyAlertButtonYes = Key('alertBtnYes');
 
@@ -20,7 +21,7 @@ Widget showIcon(IconData? icon, Color iconColor, bool warning, Widget? iconWidge
   }
 
   if (warning) {
-    icon = Icons.warning_amber_rounded;
+    icon = CustomIcons.errorOutline;
   }
 
   if (icon != null) {
@@ -105,7 +106,7 @@ Widget showEmailUs(BuildContext context, bool emailUs) {
               InkWell(
                 onTap: onTap,
                 child: Icon(
-                  Icons.mail_outline,
+                  CustomIcons.email,
                   color: Colors.blueAccent,
                   size: 18,
                 ),
@@ -130,7 +131,7 @@ Future<bool?> alert(
   String message, {
   bool warning = false,
   IconData? icon,
-  Color iconColor = Colors.redAccent,
+  Color iconColor = Colors.yellow,
   Widget? iconWidget,
   String? title,
   String? footer,
