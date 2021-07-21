@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/custom-icons.dart';
 
-class TopBar extends StatelessWidget with PreferredSizeWidget {
-  TopBar({
+class Bar extends StatelessWidget with PreferredSizeWidget {
+  Bar({
     this.titleSpacing,
     this.title,
     this.elevation,
