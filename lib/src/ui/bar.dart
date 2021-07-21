@@ -6,6 +6,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     this.titleSpacing,
     this.title,
     this.elevation,
+    this.centerTitle,
   });
 
   final Widget? title;
@@ -13,6 +14,8 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
   final double? titleSpacing;
 
   final double? elevation;
+
+  final bool? centerTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
       titleSpacing: titleSpacing,
       title: title,
       elevation: elevation,
+      centerTitle: centerTitle,
     );
   }
 
