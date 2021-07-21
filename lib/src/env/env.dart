@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/log.dart' as log;
@@ -66,7 +67,9 @@ void init({
   String branch = BRANCH_MASTER,
   String serviceEmail = 'support@piyuo.com',
 }) {
-  setPathUrlStrategy(); //remove the leading hash (#) from the URL
+  if (kReleaseMode) {
+    setPathUrlStrategy(); //remove the leading hash (#) from the URL
+  }
   log.log('appName=$appName, branch=$branch, serviceEmail=$serviceEmail');
   _branch = branch;
   _appName = appName;
