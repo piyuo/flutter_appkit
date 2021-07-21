@@ -19,11 +19,11 @@ dependencies:
     auto_size_text: ^3.0.0-nullsafety.0
     flutter_easyloading: ^3.0.0
     flutter_markdown: ^0.6.1
-    location: ^4.3.0
+    location: ^4.3.0 # device lat lng
     apple_maps_flutter: ^1.0.1
     google_maps_flutter: ^2.0.6
     google_maps_flutter_web: ^0.3.0+2
-    amap_flutter_map: ^2.0.1
+    amap_flutter_map: ^2.0.1 # 高德地圖
     url_strategy: ^0.2.0 # remove hash tag in url
 
 dependency_overrides:
