@@ -207,6 +207,12 @@ class ShowSearch extends StatelessWidget {
             ),
           ],
           child: Scaffold(
+            /*appBar: TopBar(
+              titleSpacing: 0,
+              title: SearchBar(),
+              elevation: 0,
+            ),*/
+
             appBar: AppBar(
               automaticallyImplyLeading: false,
               titleSpacing: 0,

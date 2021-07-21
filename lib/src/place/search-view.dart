@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/locate.dart' as locate;
 import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/custom-icons.dart';
 import 'search-confirm.dart';
 import 'show-search.dart';
 
@@ -52,7 +53,7 @@ class SearchView extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Icon(
-                                    Icons.my_location,
+                                    CustomIcons.myLocation,
                                     color: Colors.black,
                                   ),
                                   SizedBox(width: 10),

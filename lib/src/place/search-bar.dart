@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/util.dart' as util;
 import 'package:libcli/commands/sys/sys.dart' as sys;
 import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/custom-icons.dart';
 import 'search-confirm.dart';
 import 'show-search.dart';
 
@@ -148,7 +149,7 @@ class SearchBar extends StatelessWidget {
         builder: (context, i18nProvider, searchBarProvider, confirmButtonProvider, child) => LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) => Container(
                 color: theme.appBarTheme.backgroundColor,
-                height: 55,
+                height: kToolbarHeight,
                 child: Stack(
                   children: [
                     // background
@@ -157,6 +158,7 @@ class SearchBar extends StatelessWidget {
                             right: confirmButtonProvider.visible ? _confirmButtonWidth : 0), // for confirm button
                         padding: EdgeInsets.fromLTRB(40, 0, 8, 0),
                         alignment: Alignment.center,
+                        height: kToolbarHeight - 3,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             color: isDark ? Colors.grey[850] : Colors.grey[200],
@@ -244,14 +246,19 @@ class SearchBar extends StatelessWidget {
                     // back
                     Container(
                       alignment: Alignment.centerLeft,
-                      child: BackButton(),
+                      child: IconButton(
+                        padding: EdgeInsets.all(0),
+                        icon: Icon(CustomIcons.arrowBackIosNew),
+                        onPressed: Navigator.of(context).pop,
+                      ),
                     ),
                     // search
                     Positioned(
                       left: 54,
                       top: 16,
                       child: Icon(
-                        Icons.search,
+                        CustomIcons.search,
+                        size: 48,
                         color: isDark ? Colors.white60 : Colors.black26,
                       ),
                     ),
