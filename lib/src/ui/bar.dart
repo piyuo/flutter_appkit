@@ -30,7 +30,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     );
   }
 
-  Widget _buildLeadingWidget(BuildContext context) {
+  Widget? _buildLeadingWidget(BuildContext context) {
     final ScaffoldState scaffold = Scaffold.of(context);
     final parentRoute = ModalRoute.of(context);
 
@@ -61,8 +61,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
         }
       }
     }
-
-    return leading!;
+    return leading;
   }
 
   @override
