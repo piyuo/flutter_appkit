@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:html' as html;
 import 'package:libcli/log.dart' as log;
+import 'package:libcli/env.dart' as env;
 
 /// uri return browser window.location.href
 ///
@@ -21,10 +22,6 @@ Map<String, String> query() {
   return uri().queryParameters;
 }
 
-/// RouterBuilder used in web to build a route
-///
-typedef Widget RouteBuilder(BuildContext context, Map<String, String> arguments);
-
 /// routeToUrl convert RouteSettings to url string
 ///
 ///     String url = routeToURL(settings);
@@ -42,7 +39,7 @@ String routeToURL(RouteSettings settings) {
 ///
 ///     String url = routing(settings,builder);
 ///
-Route<dynamic>? routing(RouteSettings settings, RouteBuilder builder) {
+Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
   if (settings.name != '/') {
     String url = routeToURL(settings);
     redirect(url);
