@@ -22,6 +22,12 @@ Map<String, String> query() {
   return uri().queryParameters;
 }
 
+/// goBack loads the previous URL in the history list
+///
+void goBack() {
+  html.window..history.back();
+}
+
 /// routeToUrl convert RouteSettings to url string
 ///
 ///     String url = routeToURL(settings);
