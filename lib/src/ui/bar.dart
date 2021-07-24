@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/custom-icons.dart';
 
@@ -7,6 +8,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     this.title,
     this.elevation,
     this.centerTitle,
+    this.backToRoot,
   });
 
   final Widget? title;
@@ -16,6 +18,9 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
   final double? elevation;
 
   final bool? centerTitle;
+
+  /// backToRoot is true will show back button to go back to /index.html in web mode
+  final bool? backToRoot;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +64,12 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
             onPressed: Navigator.of(context).pop,
           );
         }
+      } else if (kIsWeb && backToRoot == true) {
+        leading = IconButton(
+          padding: EdgeInsets.all(0),
+          icon: Icon(CustomIcons.arrowBackIosNew),
+          onPressed: () => Navigator.of(context).pushNamed('/'),
+        );
       }
     }
     return leading;
