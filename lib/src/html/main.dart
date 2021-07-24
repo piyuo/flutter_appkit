@@ -46,7 +46,7 @@ String routeToURL(RouteSettings settings) {
 ///     String url = routing(settings,builder);
 ///
 Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
-  if (settings.name != '/') {
+  if (settings.name != '/' && settings.name != '/index.html') {
     String url = routeToURL(settings);
     redirect(url);
     return MaterialPageRoute(
