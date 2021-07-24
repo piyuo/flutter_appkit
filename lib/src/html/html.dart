@@ -47,6 +47,7 @@ String routeToURL(RouteSettings settings) {
 ///
 Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
   if (settings.name != '/' && settings.name != '/index.html') {
+    //redirect to other page
     String url = routeToURL(settings);
     redirect(url);
     return MaterialPageRoute(
@@ -54,6 +55,9 @@ Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
         body: Container(),
       ),
     );
+  } else if (settings.name == 'gotoRoot') {
+    // goto web site Root
+    redirect('/');
   }
   return MaterialPageRoute(builder: (context) => builder(context, query()));
 }

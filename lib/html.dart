@@ -1,3 +1,3 @@
 library html;
 
-export 'package:libcli/src/html/main.dart';
+export 'package:libcli/src/html/html.dart';
