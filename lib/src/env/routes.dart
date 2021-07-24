@@ -2,10 +2,13 @@ import 'package:flutter/widgets.dart';
 
 /// routeToUrl convert RouteSettings to url string
 ///
-///     String url = routeToStr(settings);
+///     String url = routeToURL(settings);
 ///
-String routeToStr(RouteSettings settings) {
-  Map<String, dynamic> map = settings.arguments as Map<String, dynamic>;
+String routeToURL(RouteSettings settings) {
+  Map<String, dynamic>? map = null;
+  if (settings.arguments != null) {
+    map = settings.arguments as Map<String, dynamic>;
+  }
   Uri uri = Uri(path: settings.name, queryParameters: map);
   return uri.toString();
 }
