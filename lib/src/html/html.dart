@@ -46,21 +46,29 @@ String routeToURL(RouteSettings settings) {
 ///     String url = routing(settings,builder);
 ///
 Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
-  if (settings.name != '/' && settings.name != '/index.html') {
-    //redirect to other page
-    String url = routeToURL(settings);
-    redirect(url);
-    return MaterialPageRoute(
-      builder: (_) => Scaffold(
-        body: Container(),
-      ),
-    );
-  } else if (settings.name == 'gotoRoot') {
+  if (settings.name == 'gotoRoot') {
     // goto web site Root
-    redirect('/');
+    return _redirectRoute('/');
   }
-  return MaterialPageRoute(builder: (context) => builder(context, query()));
+  if (settings.name == '/' || settings.name == '/index.html') {
+    // show page
+    return MaterialPageRoute(builder: (context) => builder(context, query()));
+  }
+  //redirect to other page
+  String url = routeToURL(settings);
+  return _redirectRoute(url);
 }
+
+/// _redirectRoute redirect to other page
+Route<dynamic>? _redirectRoute(String url) {
+  redirect(url);
+  return MaterialPageRoute(
+    builder: (_) => Scaffold(
+      body: Container(),
+    ),
+  );
+}
+
 
 /*
 RouteSettings _current;
