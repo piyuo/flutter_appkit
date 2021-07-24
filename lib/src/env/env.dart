@@ -72,7 +72,7 @@ void init({
   String serviceEmail = 'support@piyuo.com',
 }) {
   if (kReleaseMode) {
-    setPathUrlStrategy(); //remove the leading hash (#) from the URL
+//    setPathUrlStrategy(); //remove the leading hash (#) from the URL
   }
   log.log('appName=$appName, branch=$branch, serviceEmail=$serviceEmail');
   _branch = branch;
