@@ -68,7 +68,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
         leading = IconButton(
           padding: EdgeInsets.all(0),
           icon: Icon(CustomIcons.arrowBackIosNew),
-          onPressed: () => Navigator.of(context).pushNamed('/'),
+          onPressed: () => Navigator.of(context).pushNamed('gotoRoot'),
         );
       }
     }
