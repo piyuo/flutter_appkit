@@ -46,6 +46,8 @@ String routeToURL(RouteSettings settings) {
 ///     String url = routing(settings,builder);
 ///
 Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
+  log.log('${log.COLOR_MAGENTA}routing${log.COLOR_END} => ${settings.name}');
+
   if (settings.name == 'gotoRoot') {
     // goto web site Root
     return _redirectRoute('/');
