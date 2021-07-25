@@ -8,9 +8,9 @@ const en_US = 'en_' + US;
 const zh_CN = 'zh_' + CN;
 const zh_TW = 'zh_' + TW;
 
-/// supportLocales define supported locale
+/// _supportedLocales define supported locale
 //https://www.oracle.com/technical-resources/articles/javase/locale.html
-const _supportLocales = [
+const _supportedLocales = [
   en_US,
   zh_CN,
   zh_TW,
@@ -67,9 +67,9 @@ set country(String value) {
 /// isCountryCN return true if country is china, we may need show different map or import different service cause china's firewall
 get isCountryCN => _country == CN;
 
-class I18nDelegate extends LocalizationsDelegate<Locale> {
+class LocaleDelegate extends LocalizationsDelegate<Locale> {
   @override
-  bool isSupported(Locale locale) => isSupportedLocale(locale);
+  bool isSupported(Locale locale) => isLocaleSupported(locale);
 
   @override
   Future<Locale> load(Locale l) async {
@@ -82,7 +82,7 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
   }
 
   @override
-  bool shouldReload(I18nDelegate old) => false;
+  bool shouldReload(LocaleDelegate old) => false;
 }
 
 /// mock a locale
@@ -99,16 +99,15 @@ class I18nDelegate extends LocalizationsDelegate<Locale> {
 /// askSupportedLocales ask what kind of locales we support
 ///
 List<Locale> askSupportedLocales() {
-  return _supportLocales.map((id) => stringToLocale(id)).toList();
+  return _supportedLocales.map((id) => stringToLocale(id)).toList();
 }
 
-/// isSupportedLocale check locale is supported?
+/// isLocaleSupported check locale is supported
 ///
 ///
-bool isSupportedLocale(Locale locale) {
+bool isLocaleSupported(Locale locale) {
   var id = localeToString(locale);
-  var result = _supportLocales.contains(id);
-  return result;
+  return _supportedLocales.contains(id);
 }
 
 /// determineLocale select best locale for user and save user country to vars
@@ -123,7 +122,7 @@ Locale determineLocale(List<Locale>? locales) {
     bestLocale = locales[0];
     _country = bestLocale.countryCode ?? US;
     for (var locale in locales) {
-      if (isSupportedLocale(locale)) {
+      if (isLocaleSupported(locale)) {
         bestLocale = locale;
         break;
       }
