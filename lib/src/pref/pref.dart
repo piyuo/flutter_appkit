@@ -4,6 +4,9 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log.dart' as log;
 
+/// _expirationExt is for setStringWithExpiration, we need extra expiration time
+const expirationExt = '_EXP';
+
 /// _instance provide SharedPreferences instance
 ///
 var _instance;
@@ -123,27 +126,49 @@ setString(String key, String value) async {
   }
 }
 
+/// getStringWithExp return string value from preferences and check expiration date
+///
+///     final str = await getStringWithExp('k');
+///
+Future<String> getStringWithExp(String key) async {
+  var exp = await getDateTime(key + expirationExt);
+  if (exp != null) {
+    final now = DateTime.now();
+    if (exp.isBefore(now)) {
+      return '';
+    }
+  }
+  return await getString(key);
+}
+
+/// setStringWithExp set string value to preferences with a expiration date
+///
+///     await setStringWithExp('k', 'a', exp);
+///
+setStringWithExp(String key, String value, DateTime expire) async {
+  await setDateTime(key + expirationExt, expire);
+  await setString(key, value);
+}
+
 /// getDateTime return datetime value from preferences. return 1970/01/01 Epoch if not exist
 ///
-///     var result = await pref.getString('k');
+///     var result = await pref.getDateTime('k');
 ///
-Future<DateTime> getDateTime(String key) async {
+Future<DateTime?> getDateTime(String key) async {
   var value = await getString(key);
   if (value.length > 0) {
     return DateTime.parse(value);
   }
-  return DateTime.fromMicrosecondsSinceEpoch(0);
+  return null;
 }
 
 /// setDateTime set datetime value to preference, If [value] is null, this is equivalent to calling [remove()] on the [key].
 ///
-///     await pref.setString('k','value');
+///     await pref.setDateTime('k', DateTime.now());
 ///
 setDateTime(String key, DateTime value) async {
   assert(key.length > 0);
-  //var formatter = new DateFormat('yyyy-MM-dd HH:mm');
-  //formatter.format(value);
-  String formatted = value.toString().substring(0, 16);
+  String formatted = value.toString().substring(0, 19);
   return await setString(key, formatted);
 }
 

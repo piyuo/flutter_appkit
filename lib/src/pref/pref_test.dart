@@ -60,12 +60,32 @@ void main() {
       expect(result, 'a');
     });
 
+    test('should get/set string with expiration time', () async {
+      var now = DateTime.now();
+      var exp = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second);
+      exp = exp.add(Duration(seconds: 1));
+      await setStringWithExp('k', 'a', exp);
+
+      // check exp key
+      var expInPref = await getDateTime('k' + expirationExt);
+      expect(exp, expInPref);
+      final str = await getStringWithExp('k');
+      expect(str, 'a');
+
+      // let key expired
+      await Future.delayed(Duration(seconds: 1));
+      final str2 = await getStringWithExp('k');
+      expect(str2, '');
+    });
+
     test('should get/set datetime', () async {
       var now = DateTime.now();
-      var short = now.toString().toString().substring(0, 16);
-      await setDateTime('k', now);
+      var shortStr = now.toString().toString().substring(0, 19);
+      final value = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second);
+      await setDateTime('k', value);
       var result = await getDateTime('k');
-      expect(result.toString().substring(0, 16), short);
+      expect(result.toString().substring(0, 19), shortStr);
+      expect(result, value);
     });
 
     test('should get empty string when no data', () async {
