@@ -50,7 +50,7 @@ void error(dynamic e, StackTrace? stacktrace) {
   } catch (_) {
     message = e.runtimeType.toString();
   }
-  var out = 'header caught $message';
+  var out = '$header caught $message';
   String stack = stacktrace == null ? '' : beautyStack(stacktrace);
   if (stack.isNotEmpty) {
     out += '\n$stack';
