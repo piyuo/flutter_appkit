@@ -20,6 +20,15 @@ Future<SharedPreferences> _get() async {
   return _instance;
 }
 
+/// containsKey return true if key exists
+///
+///     bool found = await pref.containsKey('k');
+///
+Future<bool> containsKey(String key) async {
+  assert(key.length > 0);
+  return (await _get()).containsKey(key);
+}
+
 /// remove value from preferences
 ///
 ///     var result = await pref.remove('k');
@@ -45,7 +54,7 @@ Future<bool> getBool(String key) async {
 ///
 ///     await pref.setBool('k',true);
 ///
-setBool(String key, bool value) async {
+Future<void> setBool(String key, bool value) async {
   assert(key.length > 0);
   log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setBool(key, value));
@@ -69,7 +78,7 @@ Future<int> getInt(String key) async {
 ///
 ///     await pref.setInt('k',1);
 ///
-setInt(String key, int value) async {
+Future<void> setInt(String key, int value) async {
   assert(key.length > 0);
   log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setInt(key, value));
@@ -93,7 +102,7 @@ Future<double> getDouble(String key) async {
 ///
 ///     await pref.setDouble('k',1);
 ///
-setDouble(String key, double value) async {
+Future<void> setDouble(String key, double value) async {
   assert(key.length > 0);
   log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setDouble(key, value));
@@ -117,7 +126,7 @@ Future<String> getString(String key) async {
 ///
 ///     await pref.setString('k','value');
 ///
-setString(String key, String value) async {
+Future<void> setString(String key, String value) async {
   assert(key.length > 0);
   log.log('${log.COLOR_STATE}set $key=$value');
   var result = (await (await _get()).setString(key, value));
@@ -135,6 +144,9 @@ Future<String> getStringWithExp(String key) async {
   if (exp != null) {
     final now = DateTime.now();
     if (exp.isBefore(now)) {
+      //expired
+      remove(key);
+      remove(key + expirationExt);
       return '';
     }
   }
@@ -145,7 +157,7 @@ Future<String> getStringWithExp(String key) async {
 ///
 ///     await setStringWithExp('k', 'a', exp);
 ///
-setStringWithExp(String key, String value, DateTime expire) async {
+Future<void> setStringWithExp(String key, String value, DateTime expire) async {
   await setDateTime(key + expirationExt, expire);
   await setString(key, value);
 }

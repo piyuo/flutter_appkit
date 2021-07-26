@@ -7,6 +7,14 @@ void main() {
   setUp(() async {});
 
   group('[pref]', () {
+    test('should check contains key', () async {
+      var found = await containsKey('k');
+      expect(found, false);
+      await setBool('k', true);
+      found = await containsKey('k');
+      expect(found, true);
+    });
+
     test('should remove', () async {
       await setBool('k', true);
       var result = await getBool('k');
@@ -71,11 +79,16 @@ void main() {
       expect(exp, expInPref);
       final str = await getStringWithExp('k');
       expect(str, 'a');
+      expect(await containsKey('k'), true);
+      expect(await containsKey('k' + expirationExt), true);
 
       // let key expired
       await Future.delayed(Duration(seconds: 1));
       final str2 = await getStringWithExp('k');
       expect(str2, '');
+
+      expect(await containsKey('k'), false);
+      expect(await containsKey('k' + expirationExt), false);
     });
 
     test('should get/set datetime', () async {
