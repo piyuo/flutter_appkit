@@ -107,7 +107,7 @@ Future<bool> setLocale(
       await pref.setStringWithExp(PREF_LOCALE_KEY, localeStr, tomorrow);
     }
     log.log('${log.COLOR_STATE}locale${log.COLOR_END}=$localeStr');
-    eventbus.broadcast(context, I18nChangedEvent());
+    await eventbus.broadcast(context, I18nChangedEvent());
     return true;
   }
   return false;
