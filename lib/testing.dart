@@ -1,4 +1,4 @@
-library test;
+library testing;
 
 export 'package:libcli/src/testing/test.dart';
 export 'package:libcli/src/testing/richtext.dart';
