@@ -75,7 +75,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
 
 @visibleForTesting
 Future<void> listened(BuildContext context, dynamic e) async {
-  debugPrint('error-service listened ${e.runtimeType}');
+//  debugPrint('error-service listened ${e.runtimeType}');
   if (e is command.FirewallBlockEvent) {
     dialog.alert(
       context,
