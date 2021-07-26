@@ -80,7 +80,7 @@ Future<void> setBool(String key, bool value) async {
 Future<int> getInt(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getInt(key) ?? 0;
-  log.log('[pref] get  $key=$value');
+  log.log('[pref] get $key=$value');
   return value;
 }
 
