@@ -46,7 +46,7 @@ Future<bool> remove(String key) async {
 Future<bool> getBool(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getBool(key) ?? false;
-  log.log('get $key=$value');
+  log.log('pref get $key=$value');
   return value;
 }
 
@@ -56,7 +56,7 @@ Future<bool> getBool(String key) async {
 ///
 Future<void> setBool(String key, bool value) async {
   assert(key.length > 0);
-  log.log('${log.COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}pref set $key=$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
     throw log.DiskErrorException();
@@ -70,7 +70,7 @@ Future<void> setBool(String key, bool value) async {
 Future<int> getInt(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getInt(key) ?? 0;
-  log.log('get $key=$value');
+  log.log('pref get  $key=$value');
   return value;
 }
 
@@ -80,7 +80,7 @@ Future<int> getInt(String key) async {
 ///
 Future<void> setInt(String key, int value) async {
   assert(key.length > 0);
-  log.log('${log.COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}pref set $key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
     throw log.DiskErrorException();
@@ -94,7 +94,7 @@ Future<void> setInt(String key, int value) async {
 Future<double> getDouble(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getDouble(key) ?? 0;
-  log.log('get $key=$value');
+  log.log('pref get  $key=$value');
   return value;
 }
 
@@ -104,7 +104,7 @@ Future<double> getDouble(String key) async {
 ///
 Future<void> setDouble(String key, double value) async {
   assert(key.length > 0);
-  log.log('${log.COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}pref set $key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
     throw log.DiskErrorException();
@@ -118,7 +118,7 @@ Future<void> setDouble(String key, double value) async {
 Future<String> getString(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getString(key) ?? '';
-  log.log('get $key=$value');
+  log.log('pref get  $key=$value');
   return value;
 }
 
@@ -128,7 +128,7 @@ Future<String> getString(String key) async {
 ///
 Future<void> setString(String key, String value) async {
   assert(key.length > 0);
-  log.log('${log.COLOR_STATE}set $key=$value');
+  log.log('${log.COLOR_STATE}pref set $key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
     throw log.DiskErrorException();
@@ -191,7 +191,7 @@ setDateTime(String key, DateTime value) async {
 Future<List<String>> getStringList(String key) async {
   assert(key.length > 0);
   var value = (await _get()).getStringList(key) ?? [];
-  log.log('get $key=$value');
+  log.log('pref get $key=$value');
   return value;
 }
 
