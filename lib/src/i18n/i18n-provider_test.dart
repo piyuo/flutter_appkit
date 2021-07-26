@@ -6,6 +6,7 @@ import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/src/i18n/i18n-provider.dart';
 import 'package:libcli/src/i18n/test.dart';
 import 'package:libcli/asset.dart' as asset;
+import 'package:libcli/testing.dart' as testing;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ void main() {
     });
 
     testWidgets('should load', (WidgetTester tester) async {
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       await tester.pumpWidget(MaterialApp(
         home: TestWidget(),
       ));

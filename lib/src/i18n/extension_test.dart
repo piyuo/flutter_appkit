@@ -8,6 +8,7 @@ import 'package:libcli/src/i18n/i18n.dart';
 import 'package:libcli/src/i18n/extensions.dart';
 import 'package:libcli/src/i18n/i18n-provider.dart';
 import 'package:libcli/asset.dart' as asset;
+import 'package:libcli/testing.dart' as testing;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -58,12 +59,12 @@ void main() {
       var date = DateTime(2021, 1, 2, 23, 30);
       google.Timestamp t = timestamp(datetime: date);
 
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       expect(t.localDateString, 'Jan 2, 2021');
       expect(t.localTimeString, '11:30 PM');
       expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
 
-      setLocale(Locale('zh', 'CN'));
+      setLocale(testing.Context(), Locale('zh', 'CN'));
       expect(t.localDateString, '2021年1月2日');
       expect(t.localTimeString, '下午11:30');
       expect(t.localDateTimeString, '2021年1月2日 下午11:30');

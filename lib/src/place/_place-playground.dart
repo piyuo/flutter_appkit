@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/types.dart' as types;
 import 'package:libcli/form.dart' as form;
 import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/testing.dart' as testing;
 import 'place-field.dart';
 import 'open-in-map.dart';
 
@@ -55,7 +56,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
 
   /// _onCountryChanged happen when user change country
   void _onCountryChanged() {
-    i18n.setLocale(i18n.stringToLocale(countryController.text));
+    i18n.setLocale(context, i18n.stringToLocale(countryController.text));
     i18n.country = i18n.locale.countryCode!;
   }
 

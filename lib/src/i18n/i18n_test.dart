@@ -1,15 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/src/i18n/i18n.dart';
+import 'package:libcli/testing.dart' as testing;
 
 void main() {
   setUp(() async {});
 
   group('[i18n]', () {
     test('should set/get locale', () async {
-      setLocale(Locale('zh', 'CN'));
+      setLocale(testing.Context(), Locale('zh', 'CN'));
       expect(localeString, 'zh_CN');
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       expect(localeString, 'en_US');
     });
 

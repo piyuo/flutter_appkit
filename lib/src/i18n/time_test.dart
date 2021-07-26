@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:libcli/src/i18n/time.dart';
 import 'package:libcli/src/i18n/i18n.dart';
+import 'package:libcli/testing.dart' as testing;
 
 void main() {
   setUp(() async {});
@@ -26,14 +27,14 @@ void main() {
     test('should with locale', () async {
       await initializeDateFormatting('en_US', null);
       var date = new DateTime.utc(1989, 11, 9, 23, 30);
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       withLocale(() {
         var str3 = new DateFormat.jm().format(date);
         expect(str3, '11:30 PM');
       });
 
       await initializeDateFormatting('zh_TW', null);
-      setLocale(Locale('zh', 'TW'));
+      setLocale(testing.Context(), Locale('zh', 'TW'));
       withLocale(() {
         var str3 = new DateFormat.jm().format(date);
         expect(str3, '下午11:30');
@@ -42,7 +43,7 @@ void main() {
 
     test('should convert fixed time to string', () async {
       await initializeDateFormatting('en_US', null);
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       var str = fixedTimeToStr(07, 30);
       expect(str, '7:30 AM');
       str = fixedTimeToStr(12, 0);
@@ -51,7 +52,7 @@ void main() {
       expect(str, '12:00 AM');
 
       await initializeDateFormatting('zh_TW', null);
-      setLocale(Locale('zh', 'TW'));
+      setLocale(testing.Context(), Locale('zh', 'TW'));
       str = fixedTimeToStr(07, 30);
       expect(str, '上午7:30');
       str = fixedTimeToStr(12, 00);
@@ -60,43 +61,43 @@ void main() {
 
     test('should not have error when convert fixed time to string', () async {
       await initializeDateFormatting('en_US', null);
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       var str = fixedTimeToStr(25, 67);
       expect(str, '2:07 AM');
     });
 
     test('should convert date to string', () async {
       await initializeDateFormatting('en_US', null);
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       var date = new DateTime.utc(2021, 1, 2, 23, 30);
       var str = dateToStr(date);
       expect(str, 'Jan 2, 2021');
 
-      setLocale(Locale('zh', 'CN'));
+      setLocale(testing.Context(), Locale('zh', 'CN'));
       str = dateToStr(date);
       expect(str, '2021年1月2日');
     });
 
     test('should convert time to string', () async {
       await initializeDateFormatting('en_US', null);
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       var date = new DateTime.utc(2021, 1, 2, 23, 30);
       var str = timeToStr(date);
       expect(str, '11:30 PM');
 
-      setLocale(Locale('zh', 'CN'));
+      setLocale(testing.Context(), Locale('zh', 'CN'));
       str = timeToStr(date);
       expect(str, '下午11:30');
     });
 
     test('should convert date time to string', () async {
       await initializeDateFormatting('en_US', null);
-      setLocale(Locale('en', 'US'));
+      setLocale(testing.Context(), Locale('en', 'US'));
       var date = new DateTime.utc(2021, 1, 2, 23, 30);
       var str = datetimeToStr(date);
       expect(str, 'Jan 2, 2021 11:30 PM');
 
-      setLocale(Locale('zh', 'CN'));
+      setLocale(testing.Context(), Locale('zh', 'CN'));
       str = datetimeToStr(date);
       expect(str, '2021年1月2日 下午11:30');
     });

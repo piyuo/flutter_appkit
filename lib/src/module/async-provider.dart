@@ -6,9 +6,7 @@ enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
   AsyncProvider() {
-    if (!kReleaseMode) {
-      log.log('${log.COLOR_MEMORY}$description${log.COLOR_END} created');
-    }
+    log.log('${log.COLOR_MEMORY}$description${log.COLOR_END} created');
   }
 
   @protected
@@ -37,5 +35,10 @@ abstract class AsyncProvider with ChangeNotifier {
     }
     _disposed = true;
     super.dispose();
+  }
+
+  /// resetStatus reset async status and force provider to load again
+  void resetStatus() {
+    asyncStatus = AsyncStatus.none;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/module.dart' as module;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/asset.dart' as asset;
+import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/src/i18n/i18n.dart';
 
 class I18nProvider extends module.AsyncProvider {
@@ -21,6 +22,9 @@ class I18nProvider extends module.AsyncProvider {
 
   Map _translation = {};
 
+  /// i18nChangedSubscription is subscription for  i18n changed event
+  eventbus.Subscription? i18nChangedSubscription = null;
+
   I18nProvider({
     required this.fileName,
     this.package,
@@ -33,12 +37,25 @@ class I18nProvider extends module.AsyncProvider {
 
   @override
   Future<void> load(BuildContext context) async {
+    i18nChangedSubscription = eventbus.listen<I18nChangedEvent>((_, e) async {
+      resetStatus();
+    });
+
     _translation = await getTranslation(
       fileName: fileName,
       package: package,
       fileName2: fileName2,
       package2: package2,
     );
+  }
+
+  @override
+  void dispose() {
+    if (i18nChangedSubscription != null) {
+      i18nChangedSubscription!.cancel();
+      i18nChangedSubscription = null;
+    }
+    super.dispose();
   }
 
   String translate(String key) {

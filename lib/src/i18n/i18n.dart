@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/pref.dart' as pref;
+import 'package:libcli/eventbus.dart' as eventbus;
 
 const PREF_LOCALE_KEY = 'LOCALE';
 const US = 'US';
@@ -24,6 +25,8 @@ Locale _locale = Locale('en', US);
 String get localeString => localeToString(_locale);
 
 Locale get locale => _locale;
+
+class I18nChangedEvent extends eventbus.Event {}
 
 /// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
 ///
@@ -92,6 +95,7 @@ class LocaleDelegate extends LocalizationsDelegate<Locale> {
 
 /// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours
 Future<bool> setLocale(
+  BuildContext context,
   Locale value, {
   bool remember: false,
 }) async {
@@ -103,6 +107,7 @@ Future<bool> setLocale(
       await pref.setStringWithExp(PREF_LOCALE_KEY, localeStr, tomorrow);
     }
     log.log('${log.COLOR_STATE}locale${log.COLOR_END}=$localeStr');
+    eventbus.broadcast(context, I18nChangedEvent());
     return true;
   }
   return false;
