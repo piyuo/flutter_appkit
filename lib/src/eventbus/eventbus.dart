@@ -106,7 +106,7 @@ Future<bool> broadcast(BuildContext context, Event event) async {
 
   if (event is Contract) {
     if (event.isComplete == false) {
-      log.log('${log.COLOR_ALERT}caught no listener for ${event.runtimeType}');
+      log.log('caught no listener for ${event.runtimeType}');
       event.complete(false);
     }
     return event.OK;

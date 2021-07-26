@@ -6,7 +6,7 @@ import 'package:libcli/src/i18n/i18n.dart';
 String predefine(String key) {
   var value = _dict[key];
   if (value == null) {
-    log.log('${log.COLOR_ALERT}missing $key in i18n global');
+    log.log('missing $key in i18n global');
     return '!! $key not found';
   }
   return value;

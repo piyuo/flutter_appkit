@@ -6,7 +6,7 @@ enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
   AsyncProvider() {
-    log.log('${log.COLOR_MEMORY}$description${log.COLOR_END} created');
+    log.log('$description created');
   }
 
   @protected
@@ -31,7 +31,7 @@ abstract class AsyncProvider with ChangeNotifier {
   @override
   void dispose() {
     if (!kReleaseMode) {
-      log.log('${log.COLOR_MEMORY}$description${log.COLOR_END} disposed');
+      log.log('$description disposed');
     }
     _disposed = true;
     super.dispose();

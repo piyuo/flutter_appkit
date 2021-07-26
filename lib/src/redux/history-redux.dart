@@ -72,7 +72,7 @@ class HistoryRedux {
         var jOld = log.toString(state);
         _index--;
         var jNew = log.toString(state);
-        log.log('${log.COLOR_STATE}undo $jNew ${log.COLOR_END}<= $jOld');
+        log.log('undo $jNew <= $jOld');
       }
     } else {
       log.log('nothing to undo');
@@ -91,7 +91,7 @@ class HistoryRedux {
         var jOld = log.toString(state);
         _index++;
         var jNew = log.toString(state);
-        log.log('${log.COLOR_STATE}redo $jNew ${log.COLOR_END}<= $jOld');
+        log.log('redo $jNew <= $jOld');
       }
     } else {
       log.log('nothing to undo');
@@ -110,7 +110,7 @@ class HistoryRedux {
       var newState = await _reducer(ctx, state, action);
       var jNew = log.toString(newState);
       var payload = log.toString(action);
-      log.log('${log.COLOR_STATE}action: ${action.runtimeType}{$payload}, state: $jNew ${log.COLOR_END}<= $jOld');
+      log.log('action: ${action.runtimeType}{$payload}, state: $jNew <= $jOld');
       _setState(newState);
     }
     return state;

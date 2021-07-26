@@ -60,7 +60,7 @@ String get country => _country;
 
 set country(String value) {
   _country = value;
-  log.log('${log.COLOR_STATE}country${log.COLOR_END}=$value');
+  log.log('country=$value');
 }
 
 /// isCountryCN return true if country is china, we may need show different map or import different service cause china's firewall
@@ -85,7 +85,7 @@ class LocaleDelegate extends LocalizationsDelegate<Locale> {
       //initDateFormatting(localeToId(l));
       //}
     }
-    log.log('${log.COLOR_STATE}locale${log.COLOR_END}=${localeToString(_locale)}');
+    log.log('locale=${localeToString(_locale)}');
     return _locale;
   }
 
@@ -106,7 +106,7 @@ Future<bool> setLocale(
       final tomorrow = DateTime.now().add(Duration(hours: 24));
       await pref.setStringWithExp(PREF_LOCALE_KEY, localeStr, tomorrow);
     }
-    log.log('${log.COLOR_STATE}locale${log.COLOR_END}=$localeStr');
+    log.log('locale=$localeStr');
     await eventbus.broadcast(context, I18nChangedEvent());
     return true;
   }
@@ -157,6 +157,6 @@ Locale determineLocale(List<Locale>? locales) {
     }
   }
   //best locale: ${localeToId(bestLocale)}
-  log.log('${log.COLOR_STATE}country${log.COLOR_END}=$_country');
+  log.log('country=$_country');
   return bestLocale;
 }

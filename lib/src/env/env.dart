@@ -60,7 +60,7 @@ typedef Widget RouteBuilder(BuildContext context, Map<String, String> arguments)
 String _userID = '';
 String get userID => _userID;
 set userID(String value) {
-  log.log('${log.COLOR_STATE}set userID=$value');
+  log.log('set userID=$value');
   _userID = value;
 }
 

@@ -4,23 +4,6 @@ import 'package:libcli/env.dart' as env;
 
 void main() {
   group('[log]', () {
-    test('should remove color', () {
-      String message = COLOR_END + 'set locale=en_US';
-      expect(removeColor(message), 'set locale=en_US');
-      message = COLOR_RED + 'set locale=en_US';
-      expect(removeColor(message), 'set locale=en_US');
-      message = COLOR_GREEN + 'set locale=en_US';
-      expect(removeColor(message), 'set locale=en_US');
-      message = COLOR_YELLOW + 'set locale=en_US';
-      expect(removeColor(message), 'set locale=en_US');
-      message = COLOR_BLUE + 'set locale=en_US';
-      expect(removeColor(message), 'set locale=en_US');
-      message = COLOR_MAGENTA + 'set locale=en_US';
-      expect(removeColor(message), 'set locale=en_US');
-      message = COLOR_CYAN + 'set locale=en_US';
-      expect(removeColor(message), 'set locale=en_US');
-    });
-
     test('should log', () async {
       // ignore: invalid_use_of_visible_for_testing_member
       env.appName = 'log_test';

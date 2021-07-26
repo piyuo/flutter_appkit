@@ -3,33 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/logs.dart';
 import 'package:libcli/env.dart' as env;
 
-const _b = '\u001b[';
-const COLOR_END = _b + '0m';
-const COLOR_RED = _b + '31m';
-const COLOR_GREEN = _b + '32m';
-const COLOR_YELLOW = _b + '33m';
-const COLOR_BLUE = _b + '34m';
-const COLOR_MAGENTA = _b + '35m';
-const COLOR_CYAN = _b + '36m';
-
-const COLOR_ALERT = COLOR_RED;
-const COLOR_WARNING = COLOR_YELLOW;
-const COLOR_MEMORY = COLOR_CYAN;
-const COLOR_NETWORK = COLOR_MAGENTA;
-const COLOR_STATE = COLOR_GREEN;
-
-//removeColor
-String removeColor(String str) {
-  return str
-      .replaceAll(COLOR_END, '')
-      .replaceAll(COLOR_RED, '')
-      .replaceAll(COLOR_GREEN, '')
-      .replaceAll(COLOR_YELLOW, '')
-      .replaceAll(COLOR_BLUE, '')
-      .replaceAll(COLOR_MAGENTA, '')
-      .replaceAll(COLOR_CYAN, '');
-}
-
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
 ///
 ///
@@ -48,7 +21,7 @@ String safeJsonEncode(Object object) {
 ///
 void debug(String message) {
   if (!kReleaseMode) {
-    debugPrint('$COLOR_BLUE$header$COLOR_END $COLOR_WARNING$message');
+    debugPrint('header $message');
   }
 }
 
@@ -58,8 +31,8 @@ void debug(String message) {
 ///
 void log(String message) {
 //  if (!kReleaseMode) {}
-  debugPrint('$COLOR_BLUE$header$COLOR_END $message');
-  pushLog(message: removeColor(message));
+  debugPrint('header $message');
+  pushLog(message: message);
 }
 
 /// error print error message to console and keep log
@@ -77,10 +50,10 @@ void error(dynamic e, StackTrace? stacktrace) {
   } catch (_) {
     message = e.runtimeType.toString();
   }
-  var out = '$COLOR_BLUE$header$COLOR_END ${COLOR_ALERT}caught $message';
+  var out = 'header caught $message';
   String stack = stacktrace == null ? '' : beautyStack(stacktrace);
   if (stack.isNotEmpty) {
-    out += '\n${COLOR_ALERT}$stack';
+    out += '\n$stack';
   }
   debugPrint(out);
   pushLog(

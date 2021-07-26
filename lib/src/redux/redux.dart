@@ -39,7 +39,7 @@ class Redux {
   ///
   @protected
   void logInitState() {
-    log.log('${log.COLOR_STATE}redux init${log.COLOR_END} ${stateToStr(_state)}');
+    log.log('redux init ${stateToStr(_state)}');
   }
 
   /// state get current state
@@ -60,7 +60,7 @@ class Redux {
       //remove extra ,
       diff = diff.substring(0, diff.length - 1);
     }
-    log.log('${log.COLOR_STATE}redux dispatch${log.COLOR_END} ${action.runtimeType} {$payload} $diff');
+    log.log('redux dispatch ${action.runtimeType} {$payload} $diff');
     _state = newState;
   }
 }
@@ -74,7 +74,7 @@ String diffState(Map newState, Map oldState) {
       text += diffState(newValue, oldValue);
     } else {
       if (newValue != oldValue) {
-        text += '${log.COLOR_STATE}$key${log.COLOR_END}=$newValue($oldValue), ';
+        text += '$key=$newValue($oldValue), ';
       }
     }
   }
