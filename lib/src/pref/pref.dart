@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log.dart' as log;
+import 'package:libcli/env.dart' as env;
 
 /// _expirationExt is for setStringWithExpiration, we need extra expiration time
 const expirationExt = '_EXP';
@@ -18,6 +19,16 @@ Future<SharedPreferences> _get() async {
     _instance = await SharedPreferences.getInstance();
   }
   return _instance;
+}
+
+/// mock Initializes the value for testing
+///
+///     prefs.mock({});
+///
+@visibleForTesting
+void mock(Map<String, Object> values) {
+  // ignore:invalid_use_of_visible_for_testing_member
+  SharedPreferences.setMockInitialValues(values);
 }
 
 /// containsKey return true if key exists
@@ -224,14 +235,4 @@ Future<Map<String, dynamic>> getMap(String key) async {
 Future<void> setMap(String key, Map<String, dynamic> map) async {
   String j = json.encode(map);
   return await setString(key, j);
-}
-
-/// mock Initializes the value for testing
-///
-///     prefs.mock({});
-///
-@visibleForTesting
-void mock(Map<String, Object> values) {
-  // ignore:invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues(values);
 }
