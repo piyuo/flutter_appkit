@@ -52,7 +52,7 @@ class TestWidget extends StatelessWidget {
       ],
       child: Consumer2<MockProvider, I18nProvider>(
           builder: (context, mock, i18n, child) => Await(
-                list: [mock, i18n],
+                [mock, i18n],
                 child: widget(i18n),
               )),
     );

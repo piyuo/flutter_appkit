@@ -62,7 +62,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
         providers: providers,
         child: Consumer<T>(
             builder: (context, provider, child) => Await(
-                  list: [provider],
+                  [provider],
                   child: createWidget(context),
                 )),
       );
@@ -83,7 +83,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
       providers: providers,
       child: Consumer2<i18n.I18nProvider, T>(
           builder: (context, i18nProvider, provider, child) => Await(
-                list: [i18nProvider, provider],
+                [i18nProvider, provider],
                 child: createWidget(context),
               )),
     );

@@ -32,7 +32,7 @@ class TestWidget extends StatelessWidget {
       ],
       child: Consumer<MockProvider>(
           builder: (context, ctrl, child) => Await(
-                list: [ctrl],
+                [ctrl],
                 progress: MockWaitView(),
                 error: MockErrorView(),
                 child: MockOkView(),

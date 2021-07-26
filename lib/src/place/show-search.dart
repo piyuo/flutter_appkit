@@ -187,7 +187,7 @@ class ShowSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<ShowSearchProvider, i18n.I18nProvider>(
       builder: (context, showSearchProvider, i18nProvider, child) => module.Await(
-        list: [i18nProvider],
+        [i18nProvider],
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider.value(

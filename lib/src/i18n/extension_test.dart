@@ -96,7 +96,7 @@ class TestWidget extends StatelessWidget {
       ],
       child: Consumer<I18nProvider>(
           builder: (context, i18n, child) => Await(
-                list: [i18n],
+                [i18n],
                 child: LocaleWidget(),
               )),
     );
