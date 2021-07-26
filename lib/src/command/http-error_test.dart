@@ -4,7 +4,7 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/pb.dart' as pb;
-import 'package:libcli/mocking.dart' as mocking;
+import 'package:libcli/test.dart' as mocking;
 import 'package:libcli/src/command/test.dart';
 import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/redux.dart';
-import 'package:libcli/mocking.dart' as mocking;
+import 'package:libcli/test.dart' as mocking;
 import 'package:libcli/src/module/module.dart';
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/mocking.dart' as mocking;
+import 'package:libcli/test.dart' as mocking;
 import 'package:libcli/src/redux/test.dart';
 
 void main() {

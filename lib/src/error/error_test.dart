@@ -6,7 +6,7 @@ import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/dialog.dart' as dialog;
-import 'package:libcli/mocking.dart' as mocking;
+import 'package:libcli/test.dart' as mocking;
 import 'package:libcli/src/error/error.dart';
 
 void main() {
