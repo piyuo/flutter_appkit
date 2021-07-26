@@ -4,7 +4,7 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/env.dart' as env;
-import 'package:libcli/test.dart' as mocking;
+import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/cmd-echo.pbserver.dart';
@@ -32,7 +32,7 @@ void main() {
         return http.Response.bytes(bytes, 200);
       });
       SampleService service = SampleService();
-      var response = await service.executeWithClient(mocking.Context(), CmdEcho()..value = 'hello', client);
+      var response = await service.executeWithClient(testing.Context(), CmdEcho()..value = 'hello', client);
       expect(response is StringResponse, true);
       if (response is StringResponse) {
         expect(response.value, 'hi');
@@ -44,7 +44,7 @@ void main() {
         return http.Response('', 501);
       });
       MockService service = MockService();
-      var response = await service.executeWithClient(mocking.Context(), CmdEcho(), client);
+      var response = await service.executeWithClient(testing.Context(), CmdEcho(), client);
       expect(response is pb.Empty, true);
     });
 
@@ -57,7 +57,7 @@ void main() {
         };
       CmdEcho action = new CmdEcho();
       expect(() async {
-        await service.execute(mocking.Context(), action);
+        await service.execute(testing.Context(), action);
       }, throwsException);
     });
 
@@ -68,7 +68,7 @@ void main() {
         };
 
       CmdEcho action = new CmdEcho();
-      var response = await service.execute(mocking.Context(), action);
+      var response = await service.execute(testing.Context(), action);
       expect(response is StringResponse, true);
       if (response is StringResponse) {
         expect(response.value, 'hi');
@@ -82,7 +82,7 @@ void main() {
         };
 
       CmdEcho action = new CmdEcho();
-      var response = await service.execute(mocking.Context(), action);
+      var response = await service.execute(testing.Context(), action);
       expect(response is StringResponse, true);
     });
 
@@ -101,7 +101,7 @@ void main() {
       final cmd = CmdEcho(value: 'firewallBlock');
       mockFirewallInFlight(cmd.jsonString);
 
-      var response = await service.executeWithClient(mocking.Context(), cmd, client);
+      var response = await service.executeWithClient(testing.Context(), cmd, client);
       expect(response is FirewallBlock, true);
       expect(lastEvent is FirewallBlockEvent, true);
     });
@@ -117,8 +117,8 @@ void main() {
       final cmd1 = CmdEcho(value: 'twin');
       final cmd2 = CmdEcho(value: 'twin');
 
-      var response = await service.executeWithClient(mocking.Context(), cmd1, client);
-      var response2 = await service.executeWithClient(mocking.Context(), cmd2, client);
+      var response = await service.executeWithClient(testing.Context(), cmd1, client);
+      var response2 = await service.executeWithClient(testing.Context(), cmd2, client);
       expect(response is StringResponse, true);
       expect(response, response2);
       expect(execCount, 1);

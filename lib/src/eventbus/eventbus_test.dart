@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/test.dart' as mocking;
+import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/src/eventbus/eventbus.dart';
 import 'package:libcli/src/eventbus/types.dart';
 
@@ -50,7 +50,7 @@ main() {
         var my = event as MyEvent;
         listened = my.value;
       });
-      await broadcast(mocking.Context(), MyEvent()..value = 'hi');
+      await broadcast(testing.Context(), MyEvent()..value = 'hi');
       expect(listened, 'hi');
     });
 
@@ -59,7 +59,7 @@ main() {
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(mocking.Context(), MyEvent());
+      await broadcast(testing.Context(), MyEvent());
       expect(eventType, MyEvent);
     });
 
@@ -68,7 +68,7 @@ main() {
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(mocking.Context(), MyEvent2());
+      await broadcast(testing.Context(), MyEvent2());
       expect(eventType, null);
     });
 
@@ -77,9 +77,9 @@ main() {
       listen((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(mocking.Context(), MyEvent());
+      await broadcast(testing.Context(), MyEvent());
       expect(eventType, MyEvent);
-      await broadcast(mocking.Context(), MyEvent2());
+      await broadcast(testing.Context(), MyEvent2());
       expect(eventType, MyEvent2);
     });
 
@@ -91,7 +91,7 @@ main() {
       listen<MyEvent>((_, event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(mocking.Context(), MyEvent());
+      await broadcast(testing.Context(), MyEvent());
       expect(eventType, MyEvent);
     });
 
@@ -101,7 +101,7 @@ main() {
         eventType = event.runtimeType;
       });
       sub.cancel();
-      await broadcast(mocking.Context(), MyEvent());
+      await broadcast(testing.Context(), MyEvent());
       expect(eventType, null);
     });
   });

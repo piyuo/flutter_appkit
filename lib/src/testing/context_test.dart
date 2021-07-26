@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/test/context.dart';
+import 'package:libcli/src/testing/context.dart';
 
 void main() {
   setUp(() async {});

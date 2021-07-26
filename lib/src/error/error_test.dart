@@ -6,7 +6,7 @@ import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/dialog.dart' as dialog;
-import 'package:libcli/test.dart' as mocking;
+import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/src/error/error.dart';
 
 void main() {
@@ -46,7 +46,7 @@ void main() {
     });
 
     testWidgets('should alert when firewall block', (WidgetTester tester) async {
-      mocking.useTestFont(tester);
+      testing.useTestFont(tester);
       await tester.pumpWidget(
         createSample(onPressed: (context) async {
           watch(() {});
@@ -60,7 +60,7 @@ void main() {
     });
 
     testWidgets('should alert when no internet', (WidgetTester tester) async {
-      mocking.useTestFont(tester);
+      testing.useTestFont(tester);
       await tester.pumpWidget(
         createSample(onPressed: (context) {
           watch(() => throw SocketException('wifi off'));

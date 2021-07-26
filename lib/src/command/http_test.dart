@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/test.dart' as mocking;
+import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/src/command/test.dart';
 import 'package:libcli/src/command/events.dart';
@@ -29,55 +29,55 @@ void main() {
   group('[command-http]', () {
     test('should return object', () async {
       var req = newRequest(statusMock(200));
-      var obj = await doPost(mocking.Context(), req);
+      var obj = await doPost(testing.Context(), req);
       expect(obj is pb.OK, true);
     });
 
     test('should handle 500, internal server error', () async {
       var req = newRequest(statusMock(500));
-      var response = await doPost(mocking.Context(), req);
+      var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(eventHappening is InternalServerErrorEvent, true);
     });
 
     test('should handle 501, service is not properly setup', () async {
       var req = newRequest(statusMock(501));
-      var response = await doPost(mocking.Context(), req);
+      var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(eventHappening is ServerNotReadyEvent, true);
     });
 
     test('should handle 504, service context deadline exceeded', () async {
       var req = newRequest(statusMock(504));
-      var response = await doPost(mocking.Context(), req);
+      var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is RequestTimeoutContract, true);
     });
 
     test('should retry 511 and ok, access token required', () async {
       var req = newRequest(statusMock(511));
-      var response = await doPost(mocking.Context(), req);
+      var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is CAccessTokenRequired, true);
     });
 
     test('should retry 412 and ok, access token expired', () async {
       var req = newRequest(statusMock(412));
-      var response = await doPost(mocking.Context(), req);
+      var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is CAccessTokenExpired, true);
     });
 
     test('should retry 402 and ok, payment token expired', () async {
       var req = newRequest(statusMock(402));
-      var response = await doPost(mocking.Context(), req);
+      var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is CPaymentTokenRequired, true);
     });
 
     test('should handle unknown status', () async {
       var req = newRequest(statusMock(101));
-      expect(() async => {await doPost(mocking.Context(), req)}, throwsException);
+      expect(() async => {await doPost(testing.Context(), req)}, throwsException);
     });
 
     test('should broadcast slow network', () async {
@@ -87,7 +87,7 @@ void main() {
       });
 
       await post(
-          mocking.Context(),
+          testing.Context(),
           Request(
             service: MockService(),
             client: client,
@@ -105,7 +105,7 @@ void main() {
       });
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await post(
-          mocking.Context(),
+          testing.Context(),
           Request(
             service: MockService(),
             client: client,
@@ -118,7 +118,7 @@ void main() {
     });
 
     test('should giveup', () async {
-      giveup(mocking.Context(), BadRequestEvent());
+      giveup(testing.Context(), BadRequestEvent());
       expect(eventHappening.runtimeType, BadRequestEvent);
     });
   });

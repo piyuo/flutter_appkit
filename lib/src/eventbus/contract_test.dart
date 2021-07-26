@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/test.dart' as mocking;
+import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/src/eventbus/types.dart';
 import 'package:libcli/src/eventbus/eventbus.dart';
 
@@ -12,7 +12,7 @@ main() {
       listen<MockContract>((_, event) {
         throw 'fail';
       });
-      var value = await broadcast(mocking.Context(), MockContract('c'));
+      var value = await broadcast(testing.Context(), MockContract('c'));
       expect(value, false);
     });
   });
@@ -23,7 +23,7 @@ main() {
       text = event.text;
       event.complete(true);
     });
-    var value = await broadcast(mocking.Context(), MockContract('c'));
+    var value = await broadcast(testing.Context(), MockContract('c'));
     expect(value, true);
     expect(text, 'c');
   });
@@ -31,7 +31,7 @@ main() {
   test('should have no error if no listener', () async {
     var ex = null;
     try {
-      await broadcast(mocking.Context(), MockContract('c'));
+      await broadcast(testing.Context(), MockContract('c'));
     } catch (e) {
       ex = e;
     }

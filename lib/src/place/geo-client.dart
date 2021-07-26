@@ -53,7 +53,7 @@ class GeoClient {
 
   /// getLocation return location on suggestion id
   ///
-  ///     final locations = await geoClient.reverseGeocoding(mocking.Context(), types.LatLng(33.7338518, -117.7403496));
+  ///     final locations = await geoClient.reverseGeocoding(testing.Context(), types.LatLng(33.7338518, -117.7403496));
   ///
   Future<List<sys.GeoLocation>> reverseGeocoding(BuildContext ctx, types.LatLng l) async {
     var response = await sysService.execute(
