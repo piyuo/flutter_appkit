@@ -58,7 +58,7 @@ String? regexpValidator({
   }
   var result = regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', label).replaceAll('%2', example);
   if (result != null) {
-    log.debug('validation failed: $result');
+    log.debug('[validator] failed $result');
   }
   return result;
 }

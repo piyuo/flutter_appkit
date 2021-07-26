@@ -17,7 +17,7 @@ Future<String> Function({required String assetName, BuildContext? context, Strin
 
 Future<String> _loadString({required String assetName, BuildContext? context, String? package}) async {
   String path = package != null ? 'packages/$package/asset/$assetName' : 'asset/$assetName';
-  log.log('load asset $path');
+  log.log('[asset] load $path');
 
   try {
     if (context != null) {

@@ -6,7 +6,7 @@ enum AsyncStatus { none, loading, ready, error }
 
 abstract class AsyncProvider with ChangeNotifier {
   AsyncProvider() {
-    log.log('$description created');
+    log.log('[async] $description created');
   }
 
   @protected
@@ -31,7 +31,7 @@ abstract class AsyncProvider with ChangeNotifier {
   @override
   void dispose() {
     if (!kReleaseMode) {
-      log.log('$description disposed');
+      log.log('[async] $description disposed');
     }
     _disposed = true;
     super.dispose();

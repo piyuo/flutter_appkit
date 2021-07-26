@@ -68,14 +68,14 @@ Future<pb.Object> doPost(BuildContext context, Request r) async {
     }
 
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
-    log.log('caught $msg');
+    log.log('[http] caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
         return await giveup(context, InternalServerErrorEvent()); //body is err id
       case 501: //the remote service is not properly setup
         return await giveup(context, ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
-        log.log('504 deadline exceeded when connect ${r.url},error:${resp.body}');
+        log.log('[http] caught 504 deadline exceeded ${r.url}, body:${resp.body}');
         return await retry(
           context,
           contract: RequestTimeoutContract(
@@ -109,10 +109,10 @@ Future<pb.Object> doPost(BuildContext context, Request r) async {
     //unknown status code
     throw Exception('unknown $msg');
   } on SocketException catch (e) {
-    log.log('failed to connect ${r.url} cause $e');
+    log.log('[http] failed to connect ${r.url} cause $e');
     return await retry(context, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
   } on TimeoutException catch (e) {
-    log.log('connection timeout ${r.url} cause $e');
+    log.log('[http] connect timeout ${r.url} cause $e');
     return await retry(context,
         contract: RequestTimeoutContract(isServer: false, exception: e, url: r.url), request: r);
   }
@@ -144,7 +144,7 @@ Future<pb.Object> retry(
   required Request request,
 }) async {
   if (await eventbus.broadcast(context, contract)) {
-    log.log('try again');
+    log.log('[http] try again');
     return await doPost(context, request);
   }
   return pb.empty;

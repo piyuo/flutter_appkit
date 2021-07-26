@@ -71,9 +71,9 @@ Subscription listen<T>(
   Future<void> Function(BuildContext, dynamic) func,
 ) {
   if (T == dynamic) {
-    log.log('listen all event');
+    log.log('[eventbus] listen all event');
   } else {
-    log.log('listen $T');
+    log.log('[eventbus] listen $T');
   }
 
   var listener = Listener(eventType: T, callback: func);
@@ -91,7 +91,7 @@ Subscription listen<T>(
 ///
 Future<bool> broadcast(BuildContext context, Event event) async {
   latest = event;
-  log.log('broadcast ${event.runtimeType}');
+  log.log('[eventbus] broadcast ${event.runtimeType}');
 
   for (var listener in _listeners) {
     try {
@@ -106,7 +106,7 @@ Future<bool> broadcast(BuildContext context, Event event) async {
 
   if (event is Contract) {
     if (event.isComplete == false) {
-      log.log('caught no listener for ${event.runtimeType}');
+      log.log('[eventbus] caught no listener for ${event.runtimeType}');
       event.complete(false);
     }
     return event.OK;

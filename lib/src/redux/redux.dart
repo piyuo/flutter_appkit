@@ -39,7 +39,7 @@ class Redux {
   ///
   @protected
   void logInitState() {
-    log.log('redux init ${stateToStr(_state)}');
+    log.log('[redux] init ${stateToStr(_state)}');
   }
 
   /// state get current state
@@ -60,7 +60,7 @@ class Redux {
       //remove extra ,
       diff = diff.substring(0, diff.length - 1);
     }
-    log.log('redux dispatch ${action.runtimeType} {$payload} $diff');
+    log.log('[redux] dispatch ${action.runtimeType} {$payload} $diff');
     _state = newState;
   }
 }

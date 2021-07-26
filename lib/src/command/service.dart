@@ -93,7 +93,7 @@ abstract class Service {
       result = firewallBegin(commandJSON);
     }
     if (result is FirewallPass) {
-      log.log('send $commandJSON to $url');
+      log.log('[command] send $commandJSON to $url');
       pb.Object? returnObj = null;
       try {
         returnObj = await post(
@@ -112,19 +112,19 @@ abstract class Service {
           firewallEnd(commandJSON, returnObj);
         }
         if (returnObj != null) {
-          log.log('got ${returnObj.jsonString}');
+          log.log('[command] got ${returnObj.jsonString}');
         } else {
-          log.log('failed to send');
+          log.log('[command] failed to send');
         }
       }
     } else if (result is FirewallBlock) {
-      log.log('block ${result.reason} ${command.jsonString}');
+      log.log('[command] block ${result.reason} ${command.jsonString}');
       eventbus.broadcast(context, FirewallBlockEvent(result.reason));
       return result;
     }
     //cached object
-    log.log('send $commandJSON to $url');
-    log.log('return cache ${result.jsonString}');
+    log.log('[command] send $commandJSON to $url');
+    log.log('[command] return cache ${result.jsonString}');
     return result;
   }
 }

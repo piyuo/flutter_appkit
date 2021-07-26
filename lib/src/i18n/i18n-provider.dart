@@ -68,8 +68,8 @@ class I18nProvider extends module.AsyncProvider {
       if (kReleaseMode) {
         return key;
       } else {
-        log.log('missing "$key" in asset/i18n/${fileName}_${localeString}.json');
-        return '!!! $key not found';
+        log.log('[i18n] missing "$key" in asset/i18n/${fileName}_${localeString}.json');
+        return '!! $key not found';
       }
     }
     return value;

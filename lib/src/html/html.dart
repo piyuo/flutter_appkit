@@ -12,7 +12,7 @@ Uri uri() {
 /// redirect set window.location.href
 ///
 void redirect(String url) {
-  log.log('redirect: $url');
+  log.log('[html] redirect: $url');
   html.window.location.href = url;
 }
 
@@ -46,7 +46,7 @@ String routeToURL(RouteSettings settings) {
 ///     String url = routing(settings,builder);
 ///
 Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
-  log.log('got routing=${settings.name}');
+  log.log('[html] got routing=${settings.name}');
 
   if (settings.name == 'gotoRoot') {
     // goto web site Root

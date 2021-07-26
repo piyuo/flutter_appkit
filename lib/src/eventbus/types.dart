@@ -15,7 +15,7 @@ class Contract extends Event {
   get OK => _result;
 
   void complete(bool value) {
-    log.log('${this.runtimeType} result=$value');
+    log.log('[contract] ${this.runtimeType} result=$value');
     _result = value;
     _completed = true;
   }

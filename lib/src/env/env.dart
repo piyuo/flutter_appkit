@@ -60,7 +60,7 @@ typedef Widget RouteBuilder(BuildContext context, Map<String, String> arguments)
 String _userID = '';
 String get userID => _userID;
 set userID(String value) {
-  log.log('set userID=$value');
+  log.log('[env] set userID=$value');
   _userID = value;
 }
 
@@ -74,7 +74,7 @@ void init({
   if (kReleaseMode) {
     setPathUrlStrategy(); //remove the leading hash (#) from the URL
   }
-  log.log('appName=$appName, branch=$branch, serviceEmail=$serviceEmail');
+  log.log('[env] appName=$appName, branch=$branch, serviceEmail=$serviceEmail');
   _branch = branch;
   _appName = appName;
   _serviceEmail = serviceEmail;
