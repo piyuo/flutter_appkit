@@ -21,7 +21,7 @@ String safeJsonEncode(Object object) {
 ///
 void debug(String message) {
   if (!kReleaseMode) {
-    debugPrint('header $message');
+    debugPrint('$header $message');
   }
 }
 
@@ -31,7 +31,7 @@ void debug(String message) {
 ///
 void log(String message) {
 //  if (!kReleaseMode) {}
-  debugPrint('header $message');
+  debugPrint('$header $message');
   pushLog(message: message);
 }
 
