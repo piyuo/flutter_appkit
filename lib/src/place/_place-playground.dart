@@ -55,7 +55,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
 
   /// _onCountryChanged happen when user change country
   void _onCountryChanged() {
-    i18n.locale = i18n.stringToLocale(countryController.text);
+    i18n.setLocale(i18n.stringToLocale(countryController.text));
     i18n.country = i18n.locale.countryCode!;
   }
 

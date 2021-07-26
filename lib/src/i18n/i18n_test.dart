@@ -7,9 +7,9 @@ void main() {
 
   group('[i18n]', () {
     test('should set/get locale', () async {
-      locale = Locale('zh', 'CN');
+      setLocale(Locale('zh', 'CN'));
       expect(localeString, 'zh_CN');
-      locale = Locale('en', 'US');
+      setLocale(Locale('en', 'US'));
       expect(localeString, 'en_US');
     });
 

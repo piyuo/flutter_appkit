@@ -34,7 +34,7 @@ void main() {
     });
 
     testWidgets('should load', (WidgetTester tester) async {
-      locale = Locale('en', 'US');
+      setLocale(Locale('en', 'US'));
       await tester.pumpWidget(MaterialApp(
         home: TestWidget(),
       ));

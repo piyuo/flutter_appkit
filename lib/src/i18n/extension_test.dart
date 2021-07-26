@@ -58,12 +58,12 @@ void main() {
       var date = DateTime(2021, 1, 2, 23, 30);
       google.Timestamp t = timestamp(datetime: date);
 
-      locale = Locale('en', 'US');
+      setLocale(Locale('en', 'US'));
       expect(t.localDateString, 'Jan 2, 2021');
       expect(t.localTimeString, '11:30 PM');
       expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
 
-      locale = Locale('zh', 'CN');
+      setLocale(Locale('zh', 'CN'));
       expect(t.localDateString, '2021年1月2日');
       expect(t.localTimeString, '下午11:30');
       expect(t.localDateTimeString, '2021年1月2日 下午11:30');

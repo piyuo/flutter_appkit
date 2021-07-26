@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:libcli/log.dart' as log;
+import 'package:libcli/pref.dart' as pref;
 
+const PREF_LOCALE_KEY = 'LOCALE';
 const US = 'US';
 const CN = 'CN';
 const TW = 'TW';
@@ -19,14 +21,16 @@ const _supportedLocales = [
 /// _locale is current locale, it set by determineLocale()
 Locale _locale = Locale('en', US);
 
-Locale get locale => _locale;
-
 String get localeString => localeToString(_locale);
 
-set locale(Locale value) {
-  _locale = value;
-  final str = localeToString(value);
-  log.log('${log.COLOR_STATE}locale${log.COLOR_END}=$str');
+Locale get locale => _locale;
+
+/// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
+///
+/// var id = localeToAcceptLanguage(Locale('en','US'));
+///
+String localeToAcceptLanguage(Locale value) {
+  return '${value.languageCode}-${value.countryCode}';
 }
 
 /// localeToString convert Locale(''en,'US') to 'en_US'
@@ -35,14 +39,6 @@ set locale(Locale value) {
 ///
 String localeToString(Locale value) {
   return '${value.languageCode}_${value.countryCode}';
-}
-
-/// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
-///
-/// var id = localeToAcceptLanguage(Locale('en','US'));
-///
-String localeToAcceptLanguage(Locale value) {
-  return '${value.languageCode}-${value.countryCode}';
 }
 
 /// stringToLocale 'en_US' to Locale(''en,'US')
@@ -68,21 +64,46 @@ set country(String value) {
 get isCountryCN => _country == CN;
 
 class LocaleDelegate extends LocalizationsDelegate<Locale> {
+  bool _isChanged = false;
+
   @override
   bool isSupported(Locale locale) => isLocaleSupported(locale);
 
   @override
-  Future<Locale> load(Locale l) async {
-    locale = l;
+  Future<Locale> load(Locale newLocale) async {
+    // check pref first
+    final preferLocaleStr = await pref.getStringWithExp(PREF_LOCALE_KEY);
+    if (preferLocaleStr.isNotEmpty) {
+      _locale = stringToLocale(preferLocaleStr);
+      return _locale;
+    }
+
+    _locale = newLocale;
     //no need for now, cause GlobalLocalizations will load date formatting
     //if (initDateFormatting != null) {
     //initDateFormatting(localeToId(l));
     //}
-    return l;
+    return _locale;
   }
 
   @override
-  bool shouldReload(LocaleDelegate old) => false;
+  bool shouldReload(LocaleDelegate old) => _isChanged;
+}
+
+/// setLocale override locale, we always use system locale but if user choose override it will effect for 24 hours
+Future<void> setLocale(
+  Locale value, {
+  bool remember: false,
+}) async {
+  if (value.countryCode != _locale.countryCode || value.languageCode != _locale.languageCode) {
+    _locale = value;
+    final localeStr = localeToString(value);
+    if (remember) {
+      final tomorrow = DateTime.now().add(Duration(hours: 24));
+      await pref.setStringWithExp(PREF_LOCALE_KEY, localeStr, tomorrow);
+    }
+    log.log('${log.COLOR_STATE}locale${log.COLOR_END}=$localeStr');
+  }
 }
 
 /// mock a locale
