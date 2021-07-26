@@ -38,9 +38,13 @@ class I18nProvider extends module.AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
     i18nChangedSubscription = eventbus.listen<I18nChangedEvent>((_, e) async {
-      resetStatus();
+      await _loadTranslation();
+      notifyListeners();
     });
+    await _loadTranslation();
+  }
 
+  Future<void> _loadTranslation() async {
     _translation = await getTranslation(
       fileName: fileName,
       package: package,
