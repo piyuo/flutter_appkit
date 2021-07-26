@@ -75,14 +75,14 @@ class LocaleDelegate extends LocalizationsDelegate<Locale> {
     final preferLocaleStr = await pref.getStringWithExp(PREF_LOCALE_KEY);
     if (preferLocaleStr.isNotEmpty) {
       _locale = stringToLocale(preferLocaleStr);
-      return _locale;
+    } else {
+      _locale = newLocale;
+      //no need for now, cause GlobalLocalizations will load date formatting
+      //if (initDateFormatting != null) {
+      //initDateFormatting(localeToId(l));
+      //}
     }
-
-    _locale = newLocale;
-    //no need for now, cause GlobalLocalizations will load date formatting
-    //if (initDateFormatting != null) {
-    //initDateFormatting(localeToId(l));
-    //}
+    log.log('${log.COLOR_STATE}locale${log.COLOR_END}=${localeToString(_locale)}');
     return _locale;
   }
 
