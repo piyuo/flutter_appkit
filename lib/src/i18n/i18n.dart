@@ -90,8 +90,8 @@ class LocaleDelegate extends LocalizationsDelegate<Locale> {
   bool shouldReload(LocaleDelegate old) => _isChanged;
 }
 
-/// setLocale override locale, we always use system locale but if user choose override it will effect for 24 hours
-Future<void> setLocale(
+/// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours
+Future<bool> setLocale(
   Locale value, {
   bool remember: false,
 }) async {
@@ -103,7 +103,9 @@ Future<void> setLocale(
       await pref.setStringWithExp(PREF_LOCALE_KEY, localeStr, tomorrow);
     }
     log.log('${log.COLOR_STATE}locale${log.COLOR_END}=$localeStr');
+    return true;
   }
+  return false;
 }
 
 /// mock a locale
