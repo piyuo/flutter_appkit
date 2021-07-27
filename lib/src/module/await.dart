@@ -47,13 +47,17 @@ class _AwaitState extends State<Await> {
   /// status return wait if there is a provider need wait, return error if provider is error
   ///
   AsyncStatus status() {
+    log.log('[await] status');
     for (var p in widget.list) {
       if (p.asyncStatus == AsyncStatus.loading || p.asyncStatus == AsyncStatus.none) {
+        log.log('[await] loading');
         return AsyncStatus.loading;
       } else if (p.asyncStatus == AsyncStatus.error) {
+        log.log('[await] error');
         return AsyncStatus.error;
       }
     }
+    log.log('[await] ready');
     return AsyncStatus.ready;
   }
 
@@ -72,6 +76,7 @@ class _AwaitState extends State<Await> {
           provider.load(context).then((_) {
             provider.asyncStatus = AsyncStatus.ready;
             provider.notifyListeners();
+            log.log('[await] ${provider.runtimeType} loaded');
           }).catchError((e, s) async {
             log.error(e, s);
             provider.asyncStatus = AsyncStatus.error;
