@@ -33,7 +33,8 @@ class CustomIcons {
   static const IconData navigateNext = _CustomIconsData(0xe00d);
   static const IconData priorityHigh = _CustomIconsData(0xe00e);
   static const IconData search = _CustomIconsData(0xe00f);
-  static const IconData settings = _CustomIconsData(0xe010);
-  static const IconData wifiOff = _CustomIconsData(0xe011);
-  static const IconData wifi = _CustomIconsData(0xe012);
+  static const IconData settingsAccessibility = _CustomIconsData(0xe010);
+  static const IconData settings = _CustomIconsData(0xe011);
+  static const IconData wifiOff = _CustomIconsData(0xe012);
+  static const IconData wifi = _CustomIconsData(0xe013);
 }
