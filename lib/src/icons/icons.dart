@@ -26,12 +26,14 @@ class CustomIcons {
   static const IconData email = _CustomIconsData(0xe006);
   static const IconData errorOutline = _CustomIconsData(0xe007);
   static const IconData expandMore = _CustomIconsData(0xe008);
-  static const IconData menu = _CustomIconsData(0xe009);
-  static const IconData myLocation = _CustomIconsData(0xe00a);
-  static const IconData navigateNext = _CustomIconsData(0xe00b);
-  static const IconData priorityHigh = _CustomIconsData(0xe00c);
-  static const IconData search = _CustomIconsData(0xe00d);
-  static const IconData settings = _CustomIconsData(0xe00e);
-  static const IconData wifiOff = _CustomIconsData(0xe00f);
-  static const IconData wifi = _CustomIconsData(0xe010);
+  static const IconData home = _CustomIconsData(0xe009);
+  static const IconData logout = _CustomIconsData(0xe00a);
+  static const IconData menu = _CustomIconsData(0xe00b);
+  static const IconData myLocation = _CustomIconsData(0xe00c);
+  static const IconData navigateNext = _CustomIconsData(0xe00d);
+  static const IconData priorityHigh = _CustomIconsData(0xe00e);
+  static const IconData search = _CustomIconsData(0xe00f);
+  static const IconData settings = _CustomIconsData(0xe010);
+  static const IconData wifiOff = _CustomIconsData(0xe011);
+  static const IconData wifi = _CustomIconsData(0xe012);
 }
