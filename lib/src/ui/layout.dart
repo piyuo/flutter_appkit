@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-///  isPortraitLayout return true if window width should use portrait layout
-bool isPortraitLayout(double windowWidth) {
+///  _isPortraitLayout return true if window width should use portrait layout
+bool _isPortraitLayout(double windowWidth) {
   return windowWidth < 600 ? true : false;
 }
 
@@ -19,7 +19,7 @@ class Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      if (isMobileLayout(constraints.maxWidth)) {
+      if (_isPortraitLayout(constraints.maxWidth)) {
         return portrait(context);
       }
       return landscape(context);
