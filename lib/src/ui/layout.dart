@@ -1,28 +1,27 @@
-import 'package:flutter/material.dart';
+enum Layout { mobile, tablet, desktop }
 
-///  _isPortraitLayout return true if window width should use portrait layout
-bool _isPortraitLayout(double windowWidth) {
-  return windowWidth < 600 ? true : false;
+///  layout return current layout is mobile, tablet, desktop
+Layout layout(double windowWidth) {
+  if (windowWidth < 600) {
+    return Layout.mobile;
+  }
+  if (windowWidth < 1200) {
+    return Layout.tablet;
+  }
+  return Layout.desktop;
 }
 
-///  Layout can help to choose desktop or mobile layout
-class Layout extends StatelessWidget {
-  Layout({
-    required this.landscape,
-    required this.portrait,
-  });
+///  isMobileLayout return true if use mobile layout
+bool isMobileLayout(double windowWidth) {
+  return layout(windowWidth) == Layout.mobile;
+}
 
-  final Widget Function(BuildContext) landscape;
+///  isTabletLayout return true if use mobile layout
+bool isTabletLayout(double windowWidth) {
+  return layout(windowWidth) == Layout.tablet;
+}
 
-  final Widget Function(BuildContext) portrait;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      if (_isPortraitLayout(constraints.maxWidth)) {
-        return portrait(context);
-      }
-      return landscape(context);
-    });
-  }
+///  isDesktopLayout return true if use mobile layout
+bool isDesktopLayout(double windowWidth) {
+  return layout(windowWidth) == Layout.desktop;
 }
