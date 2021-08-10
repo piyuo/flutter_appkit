@@ -18,7 +18,7 @@ class CustomIcons {
 
   
   static const IconData accountCircle = _CustomIconsData(0xe000);
-  static const IconData alarmOn = _CustomIconsData(0xe001);
+  static const IconData alarm = _CustomIconsData(0xe001);
   static const IconData arrowBackIosNew = _CustomIconsData(0xe002);
   static const IconData cardGiftcard = _CustomIconsData(0xe003);
   static const IconData checkCircle = _CustomIconsData(0xe004);
