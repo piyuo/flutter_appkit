@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+typedef Color ThemeColorBuilder(bool isDark);
+
+typedef Widget ThemeWidgetBuilder(bool isDark);
+
 /// UIBuildContext add color function to BuildContext
 ///
 extension UIBuildContext on BuildContext {
@@ -11,28 +15,9 @@ extension UIBuildContext on BuildContext {
 
   /// themeColor return right color base on light theme or dark theme
   ///
-  Color themeColor({
-    required Color dark,
-    required Color light,
-  }) {
-    return isDark ? dark : light;
-  }
+  Color themeColor(ThemeColorBuilder builder) => builder(isDark);
 
   /// themeWidget return right widget base on light theme or dark theme
   ///
-  Widget themeWidget({
-    required Widget dark,
-    required Widget light,
-  }) {
-    return isDark ? dark : light;
-  }
-
-  /// themeShadow return right shadow base on light theme or dark theme
-  ///
-  BoxShadow themeShadow({
-    required BoxShadow dark,
-    required BoxShadow light,
-  }) {
-    return isDark ? dark : light;
-  }
+  Widget themeWidget(ThemeWidgetBuilder builder) => builder(isDark);
 }

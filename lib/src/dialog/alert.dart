@@ -140,11 +140,7 @@ Future<bool?> alert(
   bool scrollContent = false,
 }) async {
   assentButtonColor = assentButtonColor ?? Color(0xee2091eb);
-  buttonColor = buttonColor ??
-      context.themeColor(
-        dark: Color(0xcc6a7073),
-        light: Color(0xeebbbcbb),
-      );
+  buttonColor = buttonColor ?? context.themeColor((isDark) => isDark ? Color(0xcc6a7073) : Color(0xeebbbcbb));
   if (buttonOK) {
     yes = 'ok'.i18n_;
   }
@@ -171,10 +167,8 @@ Future<bool?> alert(
   }
   return await showDialog<bool?>(
       context: context,
-      barrierColor: context.themeColor(
-        dark: Color.fromRGBO(25, 25, 28, 0.6),
-        light: Color.fromRGBO(230, 230, 238, 0.6),
-      ),
+      barrierColor:
+          context.themeColor((isDark) => isDark ? Color.fromRGBO(25, 25, 28, 0.6) : Color.fromRGBO(230, 230, 238, 0.6)),
       barrierDismissible: false,
       builder: (BuildContext ctx) {
         if (warning) {
@@ -185,10 +179,7 @@ Future<bool?> alert(
           backgroundColor: Colors.transparent,
           child: ui.BlurryContainer(
             shadow: BoxShadow(
-              color: context.themeColor(
-                dark: Color(0x66000011),
-                light: Color(0x66bbbbcc),
-              ),
+              color: context.themeColor((isDark) => isDark ? Color(0x66000011) : Color(0x66bbbbcc)),
               blurRadius: 15,
               spreadRadius: 8,
               offset: Offset(0, 10),
@@ -196,12 +187,10 @@ Future<bool?> alert(
             padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: context.themeColor(dark: Colors.white24, light: Colors.black26),
+              color: context.themeColor((isDark) => isDark ? Colors.white24 : Colors.black26),
             ),
-            backgroundColor: context.themeColor(
-              dark: Color.fromRGBO(75, 75, 78, 0.5),
-              light: Color.fromRGBO(252, 252, 255, 0.4),
-            ),
+            backgroundColor: context
+                .themeColor((isDark) => isDark ? Color.fromRGBO(75, 75, 78, 0.5) : Color.fromRGBO(252, 252, 255, 0.4)),
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: 240,
@@ -243,10 +232,7 @@ Future<bool?> alert(
                     keyAlertButtonNo,
                     no,
                     buttonColor!,
-                    context.themeColor(
-                      dark: Colors.blue[50]!,
-                      light: Colors.black54,
-                    ),
+                    context.themeColor((isDark) => isDark ? Colors.blue[50]! : Colors.black54),
                     false,
                   ),
                   SizedBox(height: 10),
@@ -256,10 +242,7 @@ Future<bool?> alert(
                     cancel,
                     yes != null ? buttonColor : assentButtonColor,
                     yes != null
-                        ? context.themeColor(
-                            dark: Colors.blue[50]!,
-                            light: Colors.black54,
-                          )
+                        ? context.themeColor((isDark) => isDark ? Colors.blue[50]! : Colors.black54)
                         : Colors.white,
                     null,
                   ),
