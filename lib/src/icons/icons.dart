@@ -48,6 +48,7 @@ class CustomIcons {
   static const IconData settingsAccessibility = _CustomIconsData(0xe01c);
   static const IconData settings = _CustomIconsData(0xe01d);
   static const IconData shoppingCart = _CustomIconsData(0xe01e);
-  static const IconData wifiOff = _CustomIconsData(0xe01f);
-  static const IconData wifi = _CustomIconsData(0xe020);
+  static const IconData takeOut = _CustomIconsData(0xe01f);
+  static const IconData wifiOff = _CustomIconsData(0xe020);
+  static const IconData wifi = _CustomIconsData(0xe021);
 }
