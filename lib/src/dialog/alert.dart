@@ -13,25 +13,14 @@ final keyAlertButtonNo = Key('alertBtnNo');
 
 final keyAlertButtonCancel = Key('alertBtnCancel');
 
-Widget showIcon(IconData? icon, Color iconColor, bool warning, Widget? iconWidget) {
-  if (iconWidget != null) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 20),
-      child: iconWidget,
-    );
-  }
-
-  if (warning) {
-    icon = CustomIcons.errorOutline;
-  }
-
+Widget showIcon(IconData? icon, Color iconColor) {
   if (icon != null) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(bottom: 10),
       child: Icon(
         icon,
         color: iconColor,
-        size: 58,
+        size: 64,
       ),
     );
   }
@@ -70,19 +59,19 @@ Widget showButton(
 Widget showTitle(String? title) {
   return title != null
       ? Container(
-          padding: EdgeInsets.only(bottom: 10),
           alignment: Alignment.center,
+          padding: EdgeInsets.only(bottom: 20),
           child:
-              Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600)),
+              Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
         )
       : SizedBox();
 }
 
-Widget showMessage(String message) {
+Widget showMessage(String message, bool titleExists) {
   return Container(
     alignment: Alignment.center,
-    padding: EdgeInsets.only(bottom: 10),
-    child: Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
+    padding: titleExists ? EdgeInsets.only(bottom: 30) : EdgeInsets.symmetric(vertical: 30),
+    child: Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0)),
   );
 }
 
@@ -91,7 +80,7 @@ Widget showFooter(String? footer) {
       ? Container(
           alignment: Alignment.center,
           padding: EdgeInsets.only(bottom: 10),
-          child: Text(footer, textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0, color: Colors.grey[600])),
+          child: Text(footer, textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
         )
       : SizedBox();
 }
@@ -118,7 +107,7 @@ Widget showEmailUs(BuildContext context, bool emailUs) {
                       onTap: onTap,
                       child: Text(
                         'emailUs'.i18n_,
-                        style: TextStyle(fontSize: 13, color: Colors.blueAccent),
+                        style: TextStyle(fontSize: 16, color: Colors.blueAccent),
                       ))),
             ],
           ))
@@ -132,8 +121,7 @@ Future<bool?> alert(
   String message, {
   bool warning = false,
   IconData? icon,
-  Color iconColor = Colors.yellow,
-  Widget? iconWidget,
+  Color iconColor = const Color.fromRGBO(239, 91, 93, 1),
   String? title,
   String? footer,
   bool emailUs = false,
@@ -189,23 +177,22 @@ Future<bool?> alert(
       ),
       barrierDismissible: false,
       builder: (BuildContext ctx) {
+        if (warning) {
+          icon = CustomIcons.errorOutline;
+        }
         return Dialog(
           elevation: 0,
           backgroundColor: Colors.transparent,
           child: ui.BlurryContainer(
-            shadow: context.themeShadow(
-                dark: BoxShadow(
-                  color: Color(0x66000011),
-                  blurRadius: 15,
-                  spreadRadius: 8,
-                  offset: Offset(0, 15),
-                ),
-                light: BoxShadow(
-                  color: Color(0x66bbbbcc),
-                  blurRadius: 15,
-                  spreadRadius: 8,
-                  offset: Offset(0, 10),
-                )),
+            shadow: BoxShadow(
+              color: context.themeColor(
+                dark: Color(0x66000011),
+                light: Color(0x66bbbbcc),
+              ),
+              blurRadius: 15,
+              spreadRadius: 8,
+              offset: Offset(0, 10),
+            ),
             padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
@@ -224,15 +211,15 @@ Future<bool?> alert(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  showIcon(icon, iconColor, warning, iconWidget),
+                  showIcon(icon, iconColor),
                   scrollContent
                       ? Container(
-                          height: 90,
+                          height: 200,
                           child: SingleChildScrollView(
                             child: ListBody(
                               children: <Widget>[
                                 showTitle(title),
-                                showMessage(message),
+                                showMessage(message, title != null || icon != null || warning),
                                 showFooter(footer),
                               ],
                             ),
@@ -240,7 +227,7 @@ Future<bool?> alert(
                         )
                       : Column(children: [
                           showTitle(title),
-                          showMessage(message),
+                          showMessage(message, title != null || icon != null || warning),
                           showFooter(footer),
                         ]),
                   showButton(

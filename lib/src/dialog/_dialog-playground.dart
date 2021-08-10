@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/custom-icons.dart';
 import 'tooltip.dart';
 import 'alert.dart';
 import 'popup-menu.dart';
@@ -99,7 +100,7 @@ class DialogPlayground extends StatelessWidget {
                               'this is a very long footer, it should cover 3 or 4 more line. we need test long message can read easily',
                           emailUs: true,
                           scrollContent: true,
-                          icon: Icons.sync_problem_rounded,
+                          icon: CustomIcons.alarm,
                         ),
                       ),
                     ],
@@ -123,28 +124,28 @@ class DialogPlayground extends StatelessWidget {
                                 id: 'home',
                                 text: 'Home',
                                 widget: Icon(
-                                  Icons.home,
+                                  CustomIcons.alarm,
                                   color: Colors.white,
                                 )),
                             MenuItem(
                                 id: 'mail',
                                 text: 'Mail',
                                 widget: Icon(
-                                  Icons.mail_outline,
+                                  CustomIcons.alarm,
                                   color: Colors.white,
                                 )),
                             MenuItem(
                                 id: 'power',
                                 text: 'Power',
                                 widget: Icon(
-                                  Icons.power,
+                                  CustomIcons.alarm,
                                   color: Colors.white,
                                 )),
                             MenuItem(
                                 id: 'setting',
                                 text: 'Setting',
                                 widget: Icon(
-                                  Icons.settings,
+                                  CustomIcons.settings,
                                   color: Colors.white,
                                 )),
                           ]);
@@ -212,7 +213,7 @@ class DialogPlayground extends StatelessWidget {
                       onPressed: () => info(context,
                           text: 'network is slow than usual',
                           widget: Icon(
-                            Icons.wifi,
+                            CustomIcons.wifi,
                             size: 68,
                             color: Theme.of(context).accentColor,
                           )),
