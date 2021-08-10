@@ -43,15 +43,16 @@ class CustomIcons {
   static const IconData person = _CustomIconsData(0xe017);
   static const IconData place = _CustomIconsData(0xe018);
   static const IconData priorityHigh = _CustomIconsData(0xe019);
-  static const IconData receiptLong = _CustomIconsData(0xe01a);
-  static const IconData schedule = _CustomIconsData(0xe01b);
-  static const IconData search = _CustomIconsData(0xe01c);
-  static const IconData sentimentDissatisfied = _CustomIconsData(0xe01d);
-  static const IconData sentimentSatisfied = _CustomIconsData(0xe01e);
-  static const IconData settingsAccessibility = _CustomIconsData(0xe01f);
-  static const IconData settings = _CustomIconsData(0xe020);
-  static const IconData shoppingCart = _CustomIconsData(0xe021);
-  static const IconData takeoutDining = _CustomIconsData(0xe022);
-  static const IconData wifiOff = _CustomIconsData(0xe023);
-  static const IconData wifi = _CustomIconsData(0xe024);
+  static const IconData qrCode = _CustomIconsData(0xe01a);
+  static const IconData receiptLong = _CustomIconsData(0xe01b);
+  static const IconData schedule = _CustomIconsData(0xe01c);
+  static const IconData search = _CustomIconsData(0xe01d);
+  static const IconData sentimentDissatisfied = _CustomIconsData(0xe01e);
+  static const IconData sentimentSatisfied = _CustomIconsData(0xe01f);
+  static const IconData settingsAccessibility = _CustomIconsData(0xe020);
+  static const IconData settings = _CustomIconsData(0xe021);
+  static const IconData shoppingCart = _CustomIconsData(0xe022);
+  static const IconData takeoutDining = _CustomIconsData(0xe023);
+  static const IconData wifiOff = _CustomIconsData(0xe024);
+  static const IconData wifi = _CustomIconsData(0xe025);
 }
