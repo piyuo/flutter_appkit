@@ -120,7 +120,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       title: 'timeout'.i18n_,
       yes: 'retry'.i18n_,
       cancel: 'cancel'.i18n_,
-      icon: CustomIcons.alarmOn,
+      icon: CustomIcons.alarm,
       footer: errorCode,
       emailUs: true,
     );
