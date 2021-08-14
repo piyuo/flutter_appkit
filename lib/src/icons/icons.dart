@@ -58,7 +58,7 @@ class CustomIcons {
   static const IconData sentimentSatisfied = _CustomIconsData(0xe026);
   static const IconData settingsAccessibility = _CustomIconsData(0xe027);
   static const IconData settings = _CustomIconsData(0xe028);
-  static const IconData shoppingBagBlack = _CustomIconsData(0xe029);
+  static const IconData shoppingBag = _CustomIconsData(0xe029);
   static const IconData shoppingCart = _CustomIconsData(0xe02a);
   static const IconData takeoutDining = _CustomIconsData(0xe02b);
   static const IconData wifiOff = _CustomIconsData(0xe02c);
