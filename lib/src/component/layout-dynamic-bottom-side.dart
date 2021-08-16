@@ -6,9 +6,9 @@ class LayoutDynamicBottomSide extends StatelessWidget {
     required this.centerBuilder,
     required this.sideBuilder,
     required this.bottomBuilder,
-    this.showBottomWhenWidth: 900,
+    this.showBottomWhenWidth: 600,
     this.maxWidth: 1920,
-    this.leftWidthOnBottom: 200,
+    this.leftWidthOnBottom: 130,
     this.leftWidthOnSide: 300,
   });
 
