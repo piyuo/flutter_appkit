@@ -25,20 +25,16 @@ class ComponentPlayground extends StatelessWidget {
 
   Widget _layoutDynamicBottomSide() {
     return LayoutDynamicBottomSide(
-      bottomConstraint: 900,
-      maxWidth: 1200,
-      leftWidthOnBottom: 200,
-      leftWidthOnSide: 300,
-      left: Container(
+      leftBuilder: () => Container(
         color: Colors.red,
         width: 200,
       ),
-      center: Container(color: Colors.yellow),
-      side: Container(
+      centerBuilder: (width) => width > 600 ? Container(color: Colors.yellow) : Container(color: Colors.yellow),
+      sideBuilder: () => Container(
         color: Colors.blue,
         width: 300,
       ),
-      bottom: Container(
+      bottomBuilder: () => Container(
         color: Colors.green,
         height: 100,
       ),
