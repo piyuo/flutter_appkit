@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/custom-icons.dart';
 import 'package:libcli/play.dart' as play;
-import 'layout-dynamic-bottom-side.dart';
+import 'dynamic-bottom-side.dart';
 
 class ComponentPlayground extends StatelessWidget {
   @override
@@ -24,7 +24,7 @@ class ComponentPlayground extends StatelessWidget {
   }
 
   Widget _layoutDynamicBottomSide() {
-    return LayoutDynamicBottomSide(
+    return DynamicBottomSide(
       leftBuilder: () => Container(
         color: Colors.red,
         width: 200,

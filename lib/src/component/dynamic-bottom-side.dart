@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LayoutDynamicBottomSide extends StatelessWidget {
-  LayoutDynamicBottomSide({
+class DynamicBottomSide extends StatelessWidget {
+  DynamicBottomSide({
     required this.leftBuilder,
     required this.centerBuilder,
     required this.sideBuilder,
