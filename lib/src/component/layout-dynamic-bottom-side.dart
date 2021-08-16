@@ -28,7 +28,7 @@ class LayoutDynamicBottomSide extends StatelessWidget {
   final Widget Function() leftBuilder;
 
   /// centerBuilder build center widget
-  final Widget Function(double width) centerBuilder;
+  final Widget Function() centerBuilder;
 
   /// sideBuilder build side widget
   final Widget Function() sideBuilder;
@@ -58,7 +58,7 @@ class LayoutDynamicBottomSide extends StatelessWidget {
                       child: leftBuilder(),
                     ),
                     Expanded(
-                      child: centerBuilder(constraints.maxWidth),
+                      child: centerBuilder(),
                     ),
                     bottomVisible ? SizedBox() : sideBuilder(),
                   ],

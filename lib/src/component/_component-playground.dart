@@ -29,7 +29,7 @@ class ComponentPlayground extends StatelessWidget {
         color: Colors.red,
         width: 200,
       ),
-      centerBuilder: (width) => width > 600 ? Container(color: Colors.yellow) : Container(color: Colors.yellow),
+      centerBuilder: () => Container(color: Colors.yellow),
       sideBuilder: () => Container(
         color: Colors.blue,
         width: 300,
