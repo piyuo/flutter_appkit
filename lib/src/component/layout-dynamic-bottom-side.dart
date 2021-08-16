@@ -8,6 +8,8 @@ class LayoutDynamicBottomSide extends StatelessWidget {
     required this.bottom,
     this.bottomConstraint: 900,
     this.maxWidth: 1920,
+    this.leftWidthOnBottom: 200,
+    this.leftWidthOnSide: 300,
   });
 
   /// bottomConstraint will show bottom when layout is smaller than bottomConstraint
@@ -15,6 +17,12 @@ class LayoutDynamicBottomSide extends StatelessWidget {
 
   ///  maxWidth set layout max width
   final double maxWidth;
+
+  ///  leftWidthOnBottom set left width when bottom is shown
+  final double leftWidthOnBottom;
+
+  ///  leftWidthOnSide set left width when side is shown
+  final double leftWidthOnSide;
 
   /// left widget
   final Widget left;
@@ -31,7 +39,7 @@ class LayoutDynamicBottomSide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      var showBottom = constraints.maxWidth < bottomConstraint;
+      var bottomVisible = constraints.maxWidth < bottomConstraint;
       return Align(
         alignment: Alignment.center,
         child: Container(
@@ -45,15 +53,18 @@ class LayoutDynamicBottomSide extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    left,
+                    SizedBox(
+                      width: bottomVisible ? leftWidthOnBottom : leftWidthOnSide,
+                      child: left,
+                    ),
                     Expanded(
                       child: center,
                     ),
-                    showBottom ? SizedBox() : side,
+                    bottomVisible ? SizedBox() : side,
                   ],
                 ),
               ),
-              showBottom
+              bottomVisible
                   ? Positioned(
                       left: 0,
                       right: 0,

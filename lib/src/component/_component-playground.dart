@@ -27,6 +27,8 @@ class ComponentPlayground extends StatelessWidget {
     return LayoutDynamicBottomSide(
       bottomConstraint: 900,
       maxWidth: 1200,
+      leftWidthOnBottom: 200,
+      leftWidthOnSide: 300,
       left: Container(
         color: Colors.red,
         width: 200,
