@@ -1,3 +1,4 @@
 library component;
 
 export 'package:libcli/src/component/dynamic-bottom-side.dart';
+export 'package:libcli/src/component/fitted-grid.dart';

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/custom-icons.dart';
 import 'package:libcli/play.dart' as play;
 import 'dynamic-bottom-side.dart';
+import 'fitted-grid.dart';
 
 class ComponentPlayground extends StatelessWidget {
   @override
@@ -16,6 +17,11 @@ class ComponentPlayground extends StatelessWidget {
               context,
               text: 'layout-dynamic-bottom-side',
               child: _layoutDynamicBottomSide(),
+            ),
+            play.example(
+              context,
+              text: 'fitted-grid',
+              child: _fittedGrid(),
             ),
           ],
         ),
@@ -38,6 +44,38 @@ class ComponentPlayground extends StatelessWidget {
         color: Colors.green,
         height: 100,
       ),
+    );
+  }
+
+  Widget _fittedGrid() {
+    return FittedGrid(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 80,
+          color: Colors.red,
+        ),
+        Fitted(
+          child: Container(
+            color: Colors.blue,
+          ),
+        ),
+        Fitted(
+          child: Container(
+            color: Colors.yellow,
+          ),
+        ),
+        Fitted(
+          child: Container(
+            color: Colors.green,
+          ),
+        ),
+        Fitted(
+          child: Container(
+            color: Colors.orange,
+          ),
+        ),
+      ],
     );
   }
 }
