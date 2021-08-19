@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/custom-icons.dart';
 import 'package:libcli/play.dart' as play;
 import 'dynamic-bottom-side.dart';
-import 'fitted-grid.dart';
+import 'wrapped-list-view.dart';
 
 class ComponentPlayground extends StatelessWidget {
   @override
@@ -20,8 +20,8 @@ class ComponentPlayground extends StatelessWidget {
             ),
             play.example(
               context,
-              text: 'fitted-grid',
-              child: _fittedGrid(),
+              text: 'wrapped-list-view',
+              child: _wrappedListView(),
             ),
           ],
         ),
@@ -47,33 +47,50 @@ class ComponentPlayground extends StatelessWidget {
     );
   }
 
-  Widget _fittedGrid() {
-    return FittedGrid(
+  Widget _wrappedListView() {
+    return WrappedListView(
       children: [
-        Container(
-          width: double.infinity,
-          height: 80,
-          color: Colors.red,
-        ),
-        Fitted(
-          child: Container(
-            color: Colors.blue,
+        Wrapped(
+          title: Container(
+            width: double.infinity,
+            height: 80,
+            color: Colors.red,
           ),
+          children: [
+            Container(
+              color: Colors.blue,
+            ),
+            Container(
+              color: Colors.yellow,
+            ),
+            Container(
+              color: Colors.green,
+            ),
+            Container(
+              color: Colors.orange,
+            ),
+          ],
         ),
-        Fitted(
-          child: Container(
+        Wrapped(
+          title: Container(
+            width: double.infinity,
+            height: 80,
             color: Colors.yellow,
           ),
-        ),
-        Fitted(
-          child: Container(
-            color: Colors.green,
-          ),
-        ),
-        Fitted(
-          child: Container(
-            color: Colors.orange,
-          ),
+          children: [
+            Container(
+              color: Colors.green,
+            ),
+            Container(
+              color: Colors.yellow,
+            ),
+            Container(
+              color: Colors.orange,
+            ),
+            Container(
+              color: Colors.black,
+            ),
+          ],
         ),
       ],
     );
