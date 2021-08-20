@@ -1,3 +1,3 @@
 library theme;
 
-export 'package:libcli/src/theme/extensions.dart';
+export 'package:libcli/src/delta/extensions.dart';

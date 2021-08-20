@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:libcli/dialog.dart' as dialog;
-import 'package:libcli/ui.dart' as ui;
+import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/util.dart' as util;
 import 'hypertext-doc-page.dart';
 
@@ -70,7 +70,7 @@ class Hypertext extends StatefulWidget {
       text,
       onTap: (BuildContext context) {
         Navigator.of(context).push(
-          ui.safeTestMaterialRoute(
+          delta.safeTestMaterialRoute(
             DocPage(docName: docName, title: text),
           ),
         );

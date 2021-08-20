@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/ui.dart' as ui;
 import 'package:libcli/theme.dart';
-import 'package:libcli/custom-icons.dart';
+import 'package:libcli/delta.dart' as delta;
 
 final keyAlertButtonYes = Key('alertBtnYes');
 
@@ -96,7 +95,7 @@ Widget showEmailUs(BuildContext context, bool emailUs) {
               InkWell(
                 onTap: onTap,
                 child: Icon(
-                  CustomIcons.email,
+                  delta.CustomIcons.email,
                   color: Colors.blueAccent,
                   size: 18,
                 ),
@@ -172,12 +171,12 @@ Future<bool?> alert(
       barrierDismissible: false,
       builder: (BuildContext ctx) {
         if (warning) {
-          icon = CustomIcons.errorOutline;
+          icon = delta.CustomIcons.errorOutline;
         }
         return Dialog(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          child: ui.BlurryContainer(
+          child: delta.BlurryContainer(
             shadow: BoxShadow(
               color: context.themeColor((isDark) => isDark ? Color(0x66000011) : Color(0x66bbbbcc)),
               blurRadius: 15,

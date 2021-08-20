@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/custom-icons.dart';
 import 'package:libcli/play.dart' as play;
 import 'dynamic-bottom-side.dart';
 import 'wrapped-list-view.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
-import 'package:libcli/custom-icons.dart';
+import 'package:libcli/delta.dart' as delta;
 
 /// DropdownField for simple dropdown selection
 class DropdownField extends Field {
@@ -45,7 +45,7 @@ class DropdownField extends Field {
               ))
           .toList(),
       icon: Icon(
-        CustomIcons.expandMore,
+        delta.CustomIcons.expandMore,
       ),
       isExpanded: true,
       focusNode: focusNode,

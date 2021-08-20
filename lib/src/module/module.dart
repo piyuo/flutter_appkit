@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/redux.dart';
-import 'package:libcli/ui.dart';
+import 'package:libcli/delta.dart';
 
 /// Module provide redux and services
 ///

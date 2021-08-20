@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/custom-icons.dart';
+import 'custom-icons.dart';
 
 class Bar extends StatelessWidget with PreferredSizeWidget {
   Bar({
