@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dynamic-bottom-side.dart';
 import 'wrapped-list-view.dart';
-import 'web-image.dart';
 import 'play.dart';
+import 'slideshow.dart';
 
 class CustomPlayground extends StatelessWidget {
   @override
@@ -11,6 +11,11 @@ class CustomPlayground extends StatelessWidget {
       body: SafeArea(
         child: Wrap(
           children: [
+            SizedBox(
+              width: double.infinity,
+              height: 400,
+              child: _slideshow(context),
+            ),
             example(
               context,
               text: 'layout-dynamic-bottom-side',
@@ -23,8 +28,8 @@ class CustomPlayground extends StatelessWidget {
             ),
             example(
               context,
-              text: 'web-image',
-              child: _webImage(),
+              text: 'slideshow',
+              child: _slideshow(context),
             ),
           ],
         ),
@@ -99,26 +104,13 @@ class CustomPlayground extends StatelessWidget {
     );
   }
 
-  Widget _webImage() {
-    return Container(
-        color: Colors.white,
-        height: double.infinity,
-        child: Row(
-          children: [
-            WebImage(
-              url:
-                  'https://www.apple.com/v/iphone-12/g/images/overview/design/design_compare_skinny__fhvbipafz2my_large.jpg',
-              width: 300,
-              height: 300,
-//              borderColor: Colors.red,
-            ),
-            SizedBox(width: 20),
-            WebImage(
-              url: 'https://not-really-exists',
-              width: 300,
-              height: 300,
-            ),
-          ],
-        ));
+  Widget _slideshow(BuildContext context) {
+    return Slideshow(
+      urls: [
+        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
+        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-2?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617741434000',
+        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-3?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617741419000',
+      ],
+    );
   }
 }

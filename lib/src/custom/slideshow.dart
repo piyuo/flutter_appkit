@@ -14,18 +14,27 @@ class SlideshowProvider with ChangeNotifier {
   }
 }
 
+/// Slideshow must set height and imageWidth to make image show perfectly
 class Slideshow extends StatelessWidget {
-  double _slideshowHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height * 38.2 / 100;
-  }
+  /// Slideshow must set height and imageWidth to make image show perfectly
+  ///
+  ///     Slideshow(
+  ///    urls: [
+  ///      'https://image',
+  ///    ],
+  ///  )
+  ///
+  Slideshow({
+    required this.urls,
+    this.imageWidth = 300,
+    this.height = 300,
+  });
 
-  final List<String> imgList = [
-    'asset/images/0.webp',
-    'asset/images/1.webp',
-    'asset/images/2.webp',
-    'asset/images/3.webp',
-    'asset/images/4.webp',
-  ];
+  final double imageWidth;
+
+  final double height;
+
+  final List<String> urls;
 
   @override
   Widget build(BuildContext context) {
@@ -38,33 +47,26 @@ class Slideshow extends StatelessWidget {
               builder: (BuildContext context, BoxConstraints constraints) => CarouselSlider(
                 carouselController: _model.controller,
                 options: CarouselOptions(
-                  viewportFraction: delta.isMobileLayout(constraints.maxWidth) ? 1 : 600 / constraints.maxWidth,
-                  height: _slideshowHeight(context),
+                  viewportFraction: delta.isMobileLayout(constraints.maxWidth) ? 1 : imageWidth / constraints.maxWidth,
+                  height: height,
                   autoPlay: true,
                   onPageChanged: (index, _) => _model.onPageChanged(index),
                 ),
-                items: imgList
-                    .map((i) => Padding(
+                items: urls
+                    .map((url) => Padding(
                           padding: delta.isMobileLayout(constraints.maxWidth)
                               ? EdgeInsets.zero
                               : EdgeInsets.symmetric(horizontal: 8),
-                          child: Image(
-                            image: AssetImage(i),
-                            width: delta.isDesktopLayout(constraints.maxWidth) ? 1024 : constraints.maxWidth,
-                            fit: BoxFit.cover,
+                          child: delta.WebImage(
+                            url,
                           ),
-                          /*child: Image.network(
-                                    imgList[i],
-                                    width: constraints.maxWidth,
-                                    fit: BoxFit.cover,
-                                  ),*/
                         ))
                     .toList(),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: imgList.asMap().entries.map((entry) {
+              children: urls.asMap().entries.map((entry) {
                 return GestureDetector(
                   onTap: () => _model.controller.animateToPage(entry.key),
                   child: Container(

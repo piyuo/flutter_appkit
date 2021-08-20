@@ -14,7 +14,10 @@ void _show(BuildContext context, Widget child) {
       MaterialPageRoute(
         builder: (_) => Scaffold(
           appBar: Bar(),
-          body: child,
+          body: Padding(
+            padding: EdgeInsets.all(20),
+            child: child,
+          ),
         ),
       ));
 }
