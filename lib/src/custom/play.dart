@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/component.dart' as component;
+import 'bar.dart';
 
-Widget button(BuildContext context, String text, void Function() callback) {
+Widget _button(BuildContext context, String text, void Function() callback) {
   return Padding(
     padding: EdgeInsets.all(10),
     child: ElevatedButton(child: Text(text), onPressed: callback),
   );
 }
 
-void show(BuildContext context, Widget child) {
+void _show(BuildContext context, Widget child) {
   Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => Scaffold(
-          appBar: component.Bar(),
+          appBar: Bar(),
           body: child,
         ),
       ));
@@ -26,5 +26,5 @@ Widget example(
 }) {
   assert(text != null);
   assert(child != null);
-  return button(context, text!, () => show(context, child!));
+  return _button(context, text!, () => _show(context, child!));
 }

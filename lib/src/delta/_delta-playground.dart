@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../component/bar.dart';
+import 'package:libcli/custom.dart' as custom;
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -8,7 +8,7 @@ class DeltaPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Bar(
+      appBar: custom.Bar(
         title: Text('bar'),
         backToRoot: true,
       ),

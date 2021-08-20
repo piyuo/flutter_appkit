@@ -1,30 +1,27 @@
-import 'dart:async';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart' as delta;
-import 'package:libcli/play.dart' as play;
 import 'dynamic-bottom-side.dart';
 import 'wrapped-list-view.dart';
 import 'web-image.dart';
+import 'play.dart';
 
-class ComponentPlayground extends StatelessWidget {
+class CustomPlayground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Wrap(
           children: [
-            play.example(
+            example(
               context,
               text: 'layout-dynamic-bottom-side',
               child: _layoutDynamicBottomSide(),
             ),
-            play.example(
+            example(
               context,
               text: 'wrapped-list-view',
               child: _wrappedListView(),
             ),
-            play.example(
+            example(
               context,
               text: 'web-image',
               child: _webImage(),
