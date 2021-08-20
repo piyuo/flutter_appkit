@@ -6,7 +6,7 @@ class Wrapped {
     required this.title,
     required this.children,
     this.childHeight = 120,
-    this.childWidth = 340,
+    this.childWidth = 320,
   }) {}
 
   final double childHeight;

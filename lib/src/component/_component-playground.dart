@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/play.dart' as play;
 import 'dynamic-bottom-side.dart';
 import 'wrapped-list-view.dart';
+import 'web-image.dart';
 
 class ComponentPlayground extends StatelessWidget {
   @override
@@ -21,6 +23,11 @@ class ComponentPlayground extends StatelessWidget {
               context,
               text: 'wrapped-list-view',
               child: _wrappedListView(),
+            ),
+            play.example(
+              context,
+              text: 'web-image',
+              child: _webImage(),
             ),
           ],
         ),
@@ -93,5 +100,28 @@ class ComponentPlayground extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _webImage() {
+    return Container(
+        color: Colors.white,
+        height: double.infinity,
+        child: Row(
+          children: [
+            WebImage(
+              url:
+                  'https://www.apple.com/v/iphone-12/g/images/overview/design/design_compare_skinny__fhvbipafz2my_large.jpg',
+              width: 300,
+              height: 300,
+//              borderColor: Colors.red,
+            ),
+            SizedBox(width: 20),
+            WebImage(
+              url: 'https://not-really-exists',
+              width: 300,
+              height: 300,
+            ),
+          ],
+        ));
   }
 }

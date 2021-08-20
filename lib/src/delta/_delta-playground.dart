@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bar.dart';
+import '../component/bar.dart';
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();

@@ -25,6 +25,8 @@ dependencies:
     google_maps_flutter_web: ^0.3.0+2
     amap_flutter_map: ^2.0.1 # 高德地圖
     url_strategy: ^0.2.0 # remove hash tag in url
+    extended_image: ^4.1.0
+    carousel_slider: ^4.0.0
 
 dependency_overrides:
 
