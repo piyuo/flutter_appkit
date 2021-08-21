@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// ThemeColor use with context.themeColor, it will return color base on theme
-class ThemeColor {
-  ThemeColor({
-    required this.dark,
-    required this.light,
-  });
-
-  final Color dark;
-
-  final Color light;
-}
-
 ///typedef Widget ThemeWidgetBuilder(bool isDark);
 
 /// UIBuildContext add color function to BuildContext
@@ -25,9 +13,13 @@ extension DeltaBuildContext on BuildContext {
 
   /// themeColor return right color base on light theme or dark theme
   ///
-  ///     context.themeColor(ThemeColor(dark:Colors.red,light:COlors.blue));
+  ///     context.themeColor(dark:Colors.red,light:COlors.blue);
   ///
-  Color themeColor(ThemeColor tc) => isDark ? tc.dark : tc.light;
+  Color themeColor({
+    Color dark = Colors.white,
+    Color light: Colors.black,
+  }) =>
+      isDark ? dark : light;
 
   /// themeWidget return right widget base on light theme or dark theme
   ///

@@ -34,18 +34,18 @@ class WebImage extends StatelessWidget {
       decoration: BoxDecoration(
         border: border,
         borderRadius: radius,
-        color: context.themeColor(delta.ThemeColor(
+        color: context.themeColor(
           dark: Colors.grey[850]!,
           light: Colors.grey[200]!,
-        )),
+        ),
       ),
       child: FittedBox(
           child: Icon(
         icon,
-        color: context.themeColor(delta.ThemeColor(
+        color: context.themeColor(
           dark: Colors.grey[800]!,
           light: Colors.grey[300]!,
-        )),
+        ),
       )),
     );
   }

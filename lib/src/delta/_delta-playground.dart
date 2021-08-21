@@ -27,10 +27,10 @@ class DeltaPlayground extends StatelessWidget {
 
   Widget _webImage(BuildContext context) {
     return Container(
-        color: context.themeColor(ThemeColor(
+        color: context.themeColor(
           light: Colors.white,
           dark: Colors.black87,
-        )),
+        ),
         height: double.infinity,
         child: Row(
           children: [
