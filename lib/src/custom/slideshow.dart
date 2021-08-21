@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:libcli/delta.dart' as delta;
-import 'package:libcli/theme.dart';
 import 'package:provider/provider.dart';
 
 class SlideshowProvider with ChangeNotifier {
@@ -75,7 +74,7 @@ class Slideshow extends StatelessWidget {
                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: context.themeColor(ThemeColor(
+                      color: context.themeColor(delta.ThemeColor(
                         dark: Color.fromRGBO(234, 234, 237, _model.current == entry.key ? 0.9 : 0.4),
                         light: Color.fromRGBO(38, 38, 40, _model.current == entry.key ? 0.9 : 0.4),
                       )),
