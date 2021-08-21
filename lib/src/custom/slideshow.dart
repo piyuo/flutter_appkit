@@ -74,10 +74,10 @@ class Slideshow extends StatelessWidget {
                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: context.themeColor(delta.ThemeColor(
+                      color: context.themeColor(
                         dark: Color.fromRGBO(234, 234, 237, _model.current == entry.key ? 0.9 : 0.4),
                         light: Color.fromRGBO(38, 38, 40, _model.current == entry.key ? 0.9 : 0.4),
-                      )),
+                      ),
                     ),
                   ),
                 );
