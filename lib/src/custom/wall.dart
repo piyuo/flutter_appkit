@@ -8,17 +8,17 @@ class Tile extends StatelessWidget {
   /// Tile basic unit is 16
   Tile({
     required this.builder,
-    this.crossAxisCellCount = 16,
-    this.mainAxisCellCount = 16,
+    this.x = 16,
+    this.y = 16,
     this.cardView = true,
     this.onTap,
   });
 
   /// The number of cells occupied in the cross axis.
-  final int crossAxisCellCount;
+  final int x;
 
   /// The number of cells occupied in the main axis.
-  final double mainAxisCellCount;
+  final double y;
 
   /// builder to build tile content
   final WidgetBuilder builder;
@@ -94,11 +94,11 @@ class Wall extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) => tiles[index],
         staggeredTileBuilder: (int index) {
           var entry = tiles[index];
-          int cross = entry.crossAxisCellCount;
+          int cross = entry.x;
           if (cross == -1) {
             cross = crossAxisCount;
           }
-          return StaggeredTile.count(cross, entry.mainAxisCellCount);
+          return StaggeredTile.count(cross, entry.y);
         },
       );
 

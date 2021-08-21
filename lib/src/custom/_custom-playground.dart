@@ -147,13 +147,13 @@ class CustomPlayground extends StatelessWidget {
           onTap: () => print('2'),
         ),
         Tile(
-          crossAxisCellCount: 8,
-          mainAxisCellCount: 16,
+          x: 8,
+          y: 16,
           builder: (_) => SizedBox(),
         ),
         Tile(
-          crossAxisCellCount: 16,
-          mainAxisCellCount: 8,
+          x: 16,
+          y: 8,
           builder: (_) => SizedBox(),
         ),
       ],
