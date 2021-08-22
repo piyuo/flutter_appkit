@@ -282,7 +282,7 @@ Widget listItem({
                   )
                 : SizedBox(),
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,7 +291,6 @@ Widget listItem({
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
                       )),
                   Text(text1,
                       maxLines: 1,
