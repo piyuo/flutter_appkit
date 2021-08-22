@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:libcli/delta.dart' as delta;
+import 'package:auto_size_text/auto_size_text.dart';
 
 final double elevation = 8;
 
@@ -8,8 +9,8 @@ class Tile extends StatelessWidget {
   /// Tile basic unit is 16
   Tile({
     required this.builder,
-    this.x = 16,
-    this.y = 16,
+    this.x = 8,
+    this.y = 8,
     this.cardView = true,
     this.onTap,
   });
@@ -69,7 +70,7 @@ class Wall extends StatelessWidget {
 
   int _determineCrossAxisCount(double windowWidth) {
     // -100 make sure when layout change, tile will be big enough
-    switch (delta.deviceLayout(windowWidth - 0)) {
+    switch (delta.deviceLayout(windowWidth - 200)) {
       case delta.DeviceLayout.phone:
         return 16;
       case delta.DeviceLayout.tablet:
@@ -109,4 +110,244 @@ class Wall extends StatelessWidget {
       return grid;
     });
   }
+}
+
+/// buttonTile create button style tile
+Tile buttonTile(
+  IconData icon, {
+  Color? iconColor,
+  int x: 8,
+  double y: 8,
+  String text = '',
+  String description = '',
+  void Function()? onTap,
+}) {
+  return Tile(
+      x: x,
+      y: y,
+      onTap: onTap,
+      builder: (BuildContext context) {
+        iconColor = iconColor ?? Theme.of(context).primaryColor;
+        return Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    flex: 55,
+                    child: FittedBox(
+                      child: Icon(icon, color: iconColor),
+                    )),
+                Expanded(
+                  flex: 45,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      text.length > 0
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: AutoSizeText(
+                                text,
+                                maxLines: 1,
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              ))
+                          : SizedBox(),
+                      description.length > 0
+                          ? AutoSizeText(description,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ))
+                          : SizedBox(),
+                    ],
+                  ),
+                ),
+              ],
+            ));
+      });
+}
+
+Tile imageTile(
+  String url, {
+  int x: 16,
+  double y: 16,
+  void Function()? onTap,
+}) {
+  return Tile(
+    x: x,
+    y: y,
+    onTap: onTap,
+    builder: (BuildContext context) => delta.WebImage(url),
+  );
+}
+
+Tile linkTile({
+  int x: 8,
+  double y: 4,
+  String? text,
+  String? description,
+  void Function()? onTap,
+  Decoration? decoration,
+  bool next = false,
+  IconData? icon,
+  Color? iconColor,
+  Color? color,
+}) {
+  return Tile(
+    x: x,
+    y: y,
+    onTap: onTap,
+    builder: (BuildContext context) => Container(
+      decoration: decoration,
+      padding: EdgeInsets.only(left: 20),
+      child: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              text != null
+                  ? AutoSizeText(text,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: color,
+                      ))
+                  : SizedBox(),
+              SizedBox(height: 5),
+              description != null
+                  ? Row(
+                      children: [
+                        AutoSizeText(description, style: TextStyle(color: color ?? Colors.grey, fontSize: 16)),
+                        next ? Icon(delta.CustomIcons.navigateNext, color: color ?? Colors.grey, size: 26) : SizedBox(),
+                      ],
+                    )
+                  : SizedBox(),
+            ],
+          ),
+          icon != null
+              ? Positioned(
+                  top: 0,
+                  right: 20,
+                  bottom: 0,
+                  child: Icon(icon, color: iconColor, size: 48),
+                )
+              : SizedBox(),
+        ],
+      ),
+    ),
+  );
+}
+
+final shape = RoundedRectangleBorder(
+  borderRadius: BorderRadius.all(
+    Radius.circular(10),
+  ),
+  //side: BorderSide(width: 5, color: Colors.green),
+);
+
+Widget listTitle(String title) {
+  return Expanded(
+    flex: 20,
+    child: Container(
+      alignment: Alignment.center,
+      child: Text(title,
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          )),
+    ),
+  );
+}
+
+Widget listItem({
+  String? imageUrl,
+  String title = '',
+  String text1 = '',
+  String text2 = '',
+}) {
+  return Expanded(
+      flex: 20,
+      child: Card(
+        margin: EdgeInsets.only(bottom: 20),
+        elevation: elevation,
+        shape: shape,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Row(
+          children: [
+            imageUrl != null
+                ? delta.WebImage(
+                    imageUrl,
+                  )
+                : SizedBox(),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      )),
+                  Text(text1,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                      )),
+                  Text(text2,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ));
+}
+
+Tile listTile({
+  List<Widget> children = const <Widget>[],
+  int x: 16,
+  double y: 16,
+  void Function()? onTap,
+}) {
+  return Tile(
+      x: x,
+      y: y,
+      cardView: false,
+      builder: (BuildContext context) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: children,
+          ));
+}
+
+Tile tileBanner(
+  String imageName,
+  String text, {
+  int x: 16,
+  double y: 4,
+  void Function()? onTap,
+}) {
+  return Tile(
+      x: x,
+      y: y,
+      cardView: false,
+      builder: (BuildContext context) => Row(
+            children: [
+              Image(
+                image: AssetImage(imageName),
+                //      width: ui.isDesktopLayout(constraints.maxWidth) ? 1024 : constraints.maxWidth,
+                fit: BoxFit.cover,
+              ),
+              Text(text, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ],
+          ));
 }

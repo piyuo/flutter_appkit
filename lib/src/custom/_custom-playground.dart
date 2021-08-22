@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libcli/delta.dart' as delta;
 import 'dynamic-bottom-side.dart';
 import 'wrapped-list-view.dart';
 import 'play.dart';
@@ -125,34 +126,88 @@ class CustomPlayground extends StatelessWidget {
   Widget _wall(BuildContext context) {
     return Wall(
       tiles: [
+        listTile(
+          children: [
+            listTitle('Popular'),
+            listItem(
+              imageUrl:
+                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
+              title: 'iMac 1',
+              text1: 'first M1 iMac',
+              text2: '\$999',
+            ),
+            listItem(
+              imageUrl:
+                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
+              title: 'iMac 1',
+              text1: 'first M1 iMac',
+              text2: '\$999',
+            ),
+            listItem(
+              imageUrl:
+                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
+              title: 'iMac 1',
+              text1: 'first M1 iMac',
+              text2: '\$999',
+            ),
+          ],
+        ),
+        buttonTile(
+          delta.CustomIcons.takeoutDining,
+          text: 'Take out',
+          description: 'my take out order',
+          iconColor: Colors.red[700],
+        ),
+        buttonTile(
+          delta.CustomIcons.deliveryDining,
+          text: 'Dine in',
+          description: 'my dine in order',
+          iconColor: Colors.blue[700],
+        ),
+        buttonTile(
+          delta.CustomIcons.qrCode,
+          x: 6,
+          y: 4,
+          description: 'QR Code',
+          iconColor: Colors.grey,
+        ),
+        linkTile(
+          x: 10,
+          text: 'Coupon',
+          description: 'check your coupon',
+          next: true,
+          color: Colors.black,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.green[300]!,
+                Colors.yellow[200]!,
+              ],
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp,
+            ),
+          ),
+          icon: delta.CustomIcons.place,
+          iconColor: Colors.red,
+        ),
+        imageTile(
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
+          x: 16,
+          y: 16,
+        ),
         Tile(
           builder: (_) => SizedBox(),
           onTap: () => print('1'),
         ),
         Tile(
-          builder: (_) => Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.green[300]!,
-                  Colors.yellow[200]!,
-                ],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp,
-              ),
-            ),
-          ),
-          onTap: () => print('2'),
-        ),
-        Tile(
           x: 8,
-          y: 16,
+          y: 4,
           builder: (_) => SizedBox(),
         ),
         Tile(
-          x: 16,
+          x: 4,
           y: 8,
           builder: (_) => SizedBox(),
         ),
