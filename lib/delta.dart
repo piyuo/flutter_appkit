@@ -9,3 +9,4 @@ export 'package:libcli/src/delta/device.dart';
 export 'package:libcli/src/delta/custom-icons.dart';
 export 'package:libcli/src/delta/extensions.dart';
 export 'package:libcli/src/delta/web-image.dart';
+export 'package:libcli/src/delta/search-bar.dart';
