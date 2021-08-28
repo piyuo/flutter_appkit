@@ -21,7 +21,15 @@ extension DeltaBuildContext on BuildContext {
   }) =>
       isDark ? dark : light;
 
-  /// themeWidget return right widget base on light theme or dark theme
+  /// invertColor return white on dark, black on light
   ///
-  ///Widget themeWidget(ThemeWidgetBuilder builder) => builder(isDark);
+  ///     context.invertColor();
+  ///
+  Color get invertColor => isDark ? Colors.white : Colors.black;
+
+  /// invertColor return white on light, black on dark
+  ///
+  ///     context.sameColor();
+  ///
+  Color get sameColor => isDark ? Colors.black : Colors.white;
 }
