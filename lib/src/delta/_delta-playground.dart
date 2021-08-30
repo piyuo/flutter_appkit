@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/custom.dart' as custom;
+import 'custom-icons.dart';
 import 'extensions.dart';
 import 'web-image.dart';
 import 'search-bar.dart';
+import 'listing.dart';
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
   final GlobalKey btnTooltip = GlobalKey();
+
+  final _listingController = ValueNotifier<int>(1);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class DeltaPlayground extends StatelessWidget {
             SizedBox(
               width: double.infinity,
 //              height: 400,
-              child: _searchBar(context),
+              child: _listing(context),
             ),
             custom.example(
               context,
@@ -28,6 +32,11 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'search-bar',
               child: _searchBar(context),
+            ),
+            custom.example(
+              context,
+              text: 'listing',
+              child: _listing(context),
             ),
           ],
         ),
@@ -143,5 +152,84 @@ class DeltaPlayground extends StatelessWidget {
             isDense: false,
           ),
         ]));
+  }
+
+  Widget _listing(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+            width: 300,
+            height: 300,
+            child: Listing<int>(
+              controller: _listingController,
+              shape: Shape.roundRight,
+              selectedTileColor: Colors.green[400],
+              selectedFontColor: Colors.grey[100],
+              fontColor: Colors.green[600],
+              items: [
+                ListingItem(key: 1, title: 'item 1'),
+                ListingItem(key: 2, title: 'item 2', icon: CustomIcons.cardGiftcard),
+                ListingItem(key: 3, title: 'item 3', icon: CustomIcons.cardGiftcard),
+                ListingItem(key: 4, title: 'item 4', icon: CustomIcons.cardGiftcard),
+                ListingItem(key: 5, title: 'item 5', icon: CustomIcons.cardGiftcard),
+                ListingItem(key: 6, title: 'item 6', icon: CustomIcons.cardGiftcard),
+                ListingItem(key: 7, title: 'item 7'),
+                ListingItem(key: 8, title: 'item 8'),
+                ListingItem(key: 9, title: 'item 9'),
+                ListingItem(key: 0, title: 'item 0'),
+              ],
+              tileBuilder: (BuildContext context, int key, String text, bool selected) {
+                return key == 1
+                    ? Container(
+                        height: 100,
+                        color: Colors.blue,
+                        child: Center(
+                          child: Text(
+                            text,
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ))
+                    : null;
+              },
+              onItemTap: (context, int key) {
+                print('$key pressed');
+              },
+            )),
+        SizedBox(
+            width: 300,
+            height: 300,
+            child: Listing<int>(
+              controller: _listingController,
+              dense: true,
+              padding: EdgeInsets.zero,
+              shape: Shape.round,
+              items: [
+                ListingItem(key: 1, title: 'item 1'),
+                ListingItem(key: 2, title: 'item 2'),
+                ListingItem(key: 3, title: 'item 3'),
+                ListingItem(key: 4, title: 'item 4'),
+                ListingItem(key: 5, title: 'item 5'),
+                ListingItem(key: 6, title: 'item 6'),
+              ],
+              itemBuilder: (BuildContext context, int key, String text, bool selected) {
+                return key == 5
+                    ? Text(
+                        text,
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : null;
+              },
+              onItemTap: (context, int key) {
+                print('$key pressed');
+              },
+            )),
+        Expanded(
+          child: Container(
+            color: Colors.yellow,
+            height: 300,
+          ),
+        ),
+      ],
+    );
   }
 }
