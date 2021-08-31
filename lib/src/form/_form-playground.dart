@@ -5,7 +5,6 @@ import 'input-field.dart';
 import 'email-field.dart';
 import 'submit.dart';
 import 'animate-button.dart';
-import 'check.dart';
 import 'dropdown-field.dart';
 import 'tags.dart';
 import 'click-field.dart';
@@ -117,11 +116,6 @@ class FormPlayground extends StatelessWidget {
                       controller: emailController,
                       label: 'email field',
                       focusNode: pFormPlayground.emailFocus,
-                    ),
-                    SizedBox(height: 20),
-                    Check(
-                      controller: checkController,
-                      label: 'my check',
                     ),
                     SizedBox(height: 20),
                     Submit(
