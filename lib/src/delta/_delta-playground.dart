@@ -5,12 +5,15 @@ import 'extensions.dart';
 import 'web-image.dart';
 import 'search-bar.dart';
 import 'listing.dart';
+import 'check.dart';
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
   final GlobalKey btnTooltip = GlobalKey();
 
   final _listingController = ValueNotifier<int>(1);
+
+  final _checkBoxController = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class DeltaPlayground extends StatelessWidget {
             SizedBox(
               width: double.infinity,
 //              height: 400,
-              child: _listing(context),
+              child: _roundCheckBox(context),
             ),
             custom.example(
               context,
@@ -37,6 +40,11 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'listing',
               child: _listing(context),
+            ),
+            custom.example(
+              context,
+              text: 'round-check-box',
+              child: _roundCheckBox(context),
             ),
           ],
         ),
@@ -231,5 +239,36 @@ class DeltaPlayground extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _roundCheckBox(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Check(
+              label: 'Remember me',
+              controller: _checkBoxController,
+            ),
+            SizedBox(width: 20),
+            Check(
+              controller: _checkBoxController,
+            ),
+            SizedBox(width: 20),
+            Check(
+              checkColor: Colors.red,
+              fillColor: Colors.green,
+              controller: _checkBoxController,
+            ),
+            SizedBox(width: 20),
+            Check(
+              disabled: true,
+              label: 'disabled',
+              checkColor: Colors.red,
+              fillColor: Colors.green,
+              controller: _checkBoxController,
+            ),
+          ],
+        ));
   }
 }
