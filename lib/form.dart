@@ -2,7 +2,6 @@ library form;
 
 export 'package:libcli/src/form/submit.dart';
 export 'package:libcli/src/form/animate-button.dart';
-export 'package:libcli/src/form/check.dart';
 export 'package:libcli/src/form/dropdown-field.dart';
 export 'package:libcli/src/form/email-field.dart';
 export 'package:libcli/src/form/input-field.dart';

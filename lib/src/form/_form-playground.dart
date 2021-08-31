@@ -51,8 +51,6 @@ class FormPlayground extends StatelessWidget {
 
   final clickController = TextEditingController();
 
-  final checkController = types.BoolController();
-
   final emailController = TextEditingController();
 
   final _keyForm = GlobalKey<FormState>();
