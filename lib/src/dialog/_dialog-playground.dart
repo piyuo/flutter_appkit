@@ -2,22 +2,25 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta.dart';
-import 'tooltip.dart';
 import 'alert.dart';
-import 'popup-menu.dart';
 import 'toast.dart';
 import 'slide.dart';
 import 'route.dart';
+import 'popup.dart';
+import 'show-more.dart';
 
 class DialogPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
-  final GlobalKey btnTooltip = GlobalKey();
-
+  final GlobalKey btnShowMore = GlobalKey();
+  final GlobalKey btnShowMoreOffset = GlobalKey();
+  final GlobalKey btnShowMoreText = GlobalKey();
+  final GlobalKey btnPopup = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Container(
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -111,46 +114,69 @@ class DialogPlayground extends StatelessWidget {
                   Wrap(
                     children: [
                       ElevatedButton(
-                        key: btnTooltip,
-                        child: Text('tooltip'),
-                        onPressed: () => tip(context, 'hello world', widgetKey: btnTooltip),
+                        key: btnPopup,
+                        child: Text('popup'),
+                        onPressed: () {
+                          var rect = getWidgetGlobalRect(btnPopup);
+                          popup(context,
+                              rect: Rect.fromLTWH(rect.left, rect.bottom, rect.width, 200),
+                              child: Container(
+                                color: Colors.green,
+                                child: Center(
+                                    child: InkWell(
+                                  onTap: () => print('hello'),
+                                  child: Text(
+                                    'hello',
+                                    style: TextStyle(fontSize: 22),
+                                  ),
+                                )),
+                              ));
+                        },
                       ),
                       ElevatedButton(
-                        key: btnMenu,
-                        child: Text('tool'),
-                        onPressed: () async {
-                          var item = await tool(context, widgetKey: btnMenu, items: [
-                            MenuItem(
-                                id: 'home',
-                                text: 'Home',
-                                widget: Icon(
-                                  CustomIcons.alarm,
-                                  color: Colors.white,
-                                )),
-                            MenuItem(
-                                id: 'mail',
-                                text: 'Mail',
-                                widget: Icon(
-                                  CustomIcons.alarm,
-                                  color: Colors.white,
-                                )),
-                            MenuItem(
-                                id: 'power',
-                                text: 'Power',
-                                widget: Icon(
-                                  CustomIcons.alarm,
-                                  color: Colors.white,
-                                )),
-                            MenuItem(
-                                id: 'setting',
-                                text: 'Setting',
-                                widget: Icon(
-                                  CustomIcons.settings,
-                                  color: Colors.white,
-                                )),
-                          ]);
-                          ok(context, item.text);
+                        key: btnShowMore,
+                        child: Text('show more'),
+                        onPressed: () => showMore(
+                          context,
+                          targetKey: btnShowMore,
+                          child: Container(
+                              alignment: Alignment.center,
+                              child: Text('hello world',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                    decoration: TextDecoration.none,
+                                  ))),
+                        ),
+                      ),
+                      ElevatedButton(
+                        key: btnShowMoreOffset,
+                        child: Text('show more offset'),
+                        onPressed: () {
+                          var rect = getWidgetGlobalRect(btnShowMoreOffset);
+                          showMore(
+                            context,
+                            width: rect.width,
+                            targetOffset: Offset(rect.left, rect.top),
+                            child: Container(
+                                alignment: Alignment.center,
+                                child: Text('hello world',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                      decoration: TextDecoration.none,
+                                    ))),
+                          );
                         },
+                      ),
+                      ElevatedButton(
+                        key: btnShowMoreText,
+                        child: Text('show more text'),
+                        onPressed: () => showMoreText(
+                          context,
+                          targetKey: btnShowMoreText,
+                          text: 'hello world',
+                        ),
                       ),
                     ],
                   ),
