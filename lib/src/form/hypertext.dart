@@ -89,7 +89,7 @@ class Hypertext extends StatefulWidget {
       onTapUp: (BuildContext context, TapUpDetails details) => dialog.showMoreText(
         context,
         text: tip,
-        widgetPosition: details.globalPosition,
+        targetOffset: details.globalPosition,
         width: width,
         height: height,
       ),
