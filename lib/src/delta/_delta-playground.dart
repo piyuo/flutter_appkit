@@ -6,6 +6,7 @@ import 'web-image.dart';
 import 'search-bar.dart';
 import 'listing.dart';
 import 'check.dart';
+import 'hypertext.dart';
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -24,7 +25,7 @@ class DeltaPlayground extends StatelessWidget {
             SizedBox(
               width: double.infinity,
 //              height: 400,
-              child: _roundCheckBox(context),
+              child: _hypertext(context),
             ),
             custom.example(
               context,
@@ -45,6 +46,11 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'round-check-box',
               child: _roundCheckBox(context),
+            ),
+            custom.example(
+              context,
+              text: 'hypertext',
+              child: _hypertext(context),
             ),
           ],
         ),
@@ -270,5 +276,16 @@ class DeltaPlayground extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  Widget _hypertext(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Hypertext(fontSize: 13)
+        ..span('click to print to console')
+        ..action('privacy', onTap: (_, __) => print('hello world'))
+        ..span('click to open url')
+        ..link('starbucks', url: 'https://www.starbucks.com'),
+    );
   }
 }
