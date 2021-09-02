@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/types.dart' as types;
 import 'input-field.dart';
 import 'email-field.dart';
 import 'submit.dart';
@@ -8,7 +7,6 @@ import 'animate-button.dart';
 import 'dropdown-field.dart';
 import 'tags.dart';
 import 'click-field.dart';
-import 'hypertext.dart';
 
 class FormPlaygroundProvider extends ChangeNotifier {
   @override
@@ -69,14 +67,6 @@ class FormPlayground extends StatelessWidget {
                 key: _keyForm,
                 child: Column(
                   children: [
-                    Hypertext()..link('starbucks.com'),
-                    p(),
-                    Hypertext(fontSize: 13)
-                      ..span('link')
-                      ..doc('privacy', 'privacy')
-                      ..span('and')
-                      ..doc('terms', 'terms'),
-                    p(),
                     InputField(
                       key: Key('test-input'),
                       controller: textController,
