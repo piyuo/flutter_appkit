@@ -51,7 +51,7 @@ class Popup {
   /// _overlay contain child
   OverlayEntry? _overlay;
 
-  /// show child in rect position
+  /// show child in rect
   void show(
     BuildContext context, {
     required Widget child,

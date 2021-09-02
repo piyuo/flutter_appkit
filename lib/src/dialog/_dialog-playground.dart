@@ -8,6 +8,7 @@ import 'slide.dart';
 import 'route.dart';
 import 'popup.dart';
 import 'show-more.dart';
+import 'hypertext.extension.dart';
 
 class DialogPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -136,9 +137,10 @@ class DialogPlayground extends StatelessWidget {
                       ElevatedButton(
                         key: btnShowMore,
                         child: Text('show more'),
-                        onPressed: () => showMore(
+                        onPressed: () => targetShowMore(
                           context,
                           targetKey: btnShowMore,
+                          size: Size(180, 180),
                           child: Container(
                               alignment: Alignment.center,
                               child: Text('hello world',
@@ -156,8 +158,8 @@ class DialogPlayground extends StatelessWidget {
                           var rect = getWidgetGlobalRect(btnShowMoreOffset);
                           showMore(
                             context,
-                            width: rect.width,
-                            targetOffset: Offset(rect.left, rect.top),
+                            size: Size(180, 120),
+                            targetRect: rect,
                             child: Container(
                                 alignment: Alignment.center,
                                 child: Text('hello world',
@@ -172,12 +174,20 @@ class DialogPlayground extends StatelessWidget {
                       ElevatedButton(
                         key: btnShowMoreText,
                         child: Text('show more text'),
-                        onPressed: () => showMoreText(
-                          context,
-                          targetKey: btnShowMoreText,
-                          text: 'hello world',
-                        ),
+                        onPressed: () {
+                          var rect = getWidgetGlobalRect(btnShowMoreText);
+                          showMoreText(
+                            context,
+                            targetRect: rect,
+                            size: Size(180, 120),
+                            text: 'hello world',
+                          );
+                        },
                       ),
+                      Hypertext(fontSize: 13)
+                        ..moreText('more text', content: 'hello world')
+                        ..span('click to open url')
+                        ..link('starbucks', url: 'https://www.starbucks.com'),
                     ],
                   ),
                   SizedBox(height: 20),
