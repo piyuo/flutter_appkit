@@ -5,7 +5,7 @@ import 'package:libcli/types.dart' as types;
 import 'package:libcli/locate.dart' as locate;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/module.dart' as module;
+import 'package:libcli/delta.dart' as delta;
 import 'search-bar.dart';
 import 'search-view.dart';
 import 'geo-client.dart';
@@ -186,7 +186,7 @@ class ShowSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<ShowSearchProvider, i18n.I18nProvider>(
-      builder: (context, showSearchProvider, i18nProvider, child) => module.Await(
+      builder: (context, showSearchProvider, i18nProvider, child) => delta.Await(
         [i18nProvider],
         child: MultiProvider(
           providers: [
