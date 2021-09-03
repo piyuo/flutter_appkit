@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta.dart' as delta;
-import 'popup.dart';
 import 'triangle-painter.dart';
 
 const arrowHeight = 12.0;
@@ -9,14 +8,14 @@ const arrowWidth = 24.0;
 
 /// targetShowMore show small popup below or above target
 ///
-Popup targetShowMore(
+delta.Popup targetShowMore(
   BuildContext context, {
   required Widget child,
   required Size size, // size is child size
   required GlobalKey targetKey,
   Color? backgroundColor,
 }) {
-  Rect targetRect = getWidgetGlobalRect(targetKey);
+  Rect targetRect = delta.getWidgetGlobalRect(targetKey);
   return showMore(
     context,
     child: child,
@@ -28,7 +27,7 @@ Popup targetShowMore(
 
 /// showMore show small popup below or above rect
 ///
-Popup showMore(
+delta.Popup showMore(
   BuildContext context, {
   required Widget child,
   required Size size, // size is child size
@@ -63,7 +62,7 @@ Popup showMore(
     triangleInBottom = true;
   }
 
-  return Popup()
+  return delta.Popup()
     ..showWidget(
       context,
       child: Stack(

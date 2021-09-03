@@ -6,7 +6,6 @@ import 'alert.dart';
 import 'toast.dart';
 import 'slide.dart';
 import 'route.dart';
-import 'popup.dart';
 import 'show-more.dart';
 import 'hypertext.extension.dart';
 
@@ -15,7 +14,6 @@ class DialogPlayground extends StatelessWidget {
   final GlobalKey btnShowMore = GlobalKey();
   final GlobalKey btnShowMoreOffset = GlobalKey();
   final GlobalKey btnShowMoreText = GlobalKey();
-  final GlobalKey btnPopup = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,26 +112,6 @@ class DialogPlayground extends StatelessWidget {
                   SizedBox(height: 20),
                   Wrap(
                     children: [
-                      ElevatedButton(
-                        key: btnPopup,
-                        child: Text('popup'),
-                        onPressed: () {
-                          var rect = getWidgetGlobalRect(btnPopup);
-                          popup(context,
-                              rect: Rect.fromLTWH(rect.left, rect.bottom, rect.width, 200),
-                              child: Container(
-                                color: Colors.green,
-                                child: Center(
-                                    child: InkWell(
-                                  onTap: () => print('hello'),
-                                  child: Text(
-                                    'hello',
-                                    style: TextStyle(fontSize: 22),
-                                  ),
-                                )),
-                              ));
-                        },
-                      ),
                       ElevatedButton(
                         key: btnShowMore,
                         child: Text('show more'),
