@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'extensions.dart';
 
 class ListingItem<T> {
-  ListingItem({
-    required this.key,
-    required this.title,
+  ListingItem(
+    this.key, {
+    this.title,
     this.icon,
     this.subtitle,
   });
@@ -13,8 +13,8 @@ class ListingItem<T> {
   /// key is item key
   final T key;
 
-  /// title is item title
-  final String title;
+  /// title is item title, use key to display if title not set
+  final String? title;
 
   /// subtitle is item subtitle
   final String? subtitle;
@@ -24,6 +24,8 @@ class ListingItem<T> {
 }
 
 enum Shape { round, roundRight }
+
+typedef Widget? ItemBuilder<T>(BuildContext context, T key, String title, bool selected);
 
 class Listing<T> extends StatelessWidget {
   Listing({
@@ -62,10 +64,10 @@ class Listing<T> extends StatelessWidget {
   final void Function(BuildContext, T) onItemTap;
 
   /// itemBuilder build item in tile
-  final Widget? Function(BuildContext, T, String, bool)? itemBuilder;
+  final ItemBuilder<T>? itemBuilder;
 
   /// tileBuilder build tile to replace default tile
-  final Widget? Function(BuildContext, T, String, bool)? tileBuilder;
+  final ItemBuilder<T>? tileBuilder;
 
   /// controller is for item selection control
   final ValueNotifier<T>? controller;
@@ -81,15 +83,15 @@ class Listing<T> extends StatelessWidget {
         );
   }
 
-  Widget _buildItem(BuildContext context, T key, String text, bool selected) {
+  Widget _buildItem(BuildContext context, T key, String? text, bool selected) {
     if (itemBuilder != null) {
-      Widget? widget = itemBuilder!(context, key, text, selected);
+      Widget? widget = itemBuilder!(context, key, text ?? key.toString(), selected);
       if (widget != null) {
         return widget;
       }
     }
 
-    return Text(text,
+    return Text(text ?? key.toString(),
         style: TextStyle(
           fontSize: 18,
           color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
@@ -112,7 +114,7 @@ class Listing<T> extends StatelessWidget {
               final title = items[i].title;
               final selected = controller != null ? controller!.value == items[i].key : false;
               if (tileBuilder != null) {
-                Widget? widget = tileBuilder!(context, key, title, selected);
+                Widget? widget = tileBuilder!(context, key, title ?? key.toString(), selected);
                 if (widget != null) {
                   return widget;
                 }
