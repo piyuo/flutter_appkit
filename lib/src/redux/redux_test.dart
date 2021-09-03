@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/redux/redux.dart';
-import 'package:libcli/src/redux/map.dart';
+import 'package:libcli/types.dart' as types;
 import 'package:flutter/widgets.dart';
 import 'package:libcli/testing.dart' as testing;
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/redux/map.dart';
+import 'map.dart';
 
 void main() {
   setUp(() async {});
