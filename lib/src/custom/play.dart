@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bar.dart';
+import '../delta/bar.dart';
 
 Widget _button(BuildContext context, String text, void Function() callback) {
   return Padding(

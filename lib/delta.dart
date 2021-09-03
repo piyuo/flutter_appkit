@@ -12,3 +12,4 @@ export 'package:libcli/src/delta/web-image.dart';
 export 'package:libcli/src/delta/search-bar.dart';
 export 'package:libcli/src/delta/listing.dart';
 export 'package:libcli/src/delta/hypertext.dart';
+export 'package:libcli/src/delta/bar.dart';
