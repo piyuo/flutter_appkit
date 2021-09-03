@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/redux.dart';
 import 'package:libcli/testing.dart' as testing;
 import 'module.dart';
+import 'redux.dart';
 
 void main() {
   group('[module]', () {

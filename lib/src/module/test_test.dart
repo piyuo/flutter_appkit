@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing.dart' as testing;
-import 'package:libcli/src/redux/test.dart';
+import 'test.dart';
 
 void main() {
   setUp(() async {});
