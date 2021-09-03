@@ -61,7 +61,7 @@ class Hypertext extends StatefulWidget {
 
   void link(
     String text, {
-    required String? url,
+    String? url,
   }) {
     url = url ?? text;
     return action(
