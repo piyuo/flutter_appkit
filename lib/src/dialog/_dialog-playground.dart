@@ -186,8 +186,7 @@ class DialogPlayground extends StatelessWidget {
                       ),
                       Hypertext(fontSize: 13)
                         ..moreText('more text', content: 'hello world')
-                        ..span('click to open url')
-                        ..link('starbucks', url: 'https://www.starbucks.com'),
+                        ..moreDoc('more on doc', docName: 'privacy')
                     ],
                   ),
                   SizedBox(height: 20),

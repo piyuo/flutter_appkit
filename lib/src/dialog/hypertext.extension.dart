@@ -29,7 +29,10 @@ extension HypertextDialog on delta.Hypertext {
     );
   }
 
-  void moreDoc(String text, String docName) {
+  void moreDoc(
+    String text, {
+    required String docName,
+  }) {
     return action(
       text,
       onTap: (BuildContext context, _) {
@@ -51,7 +54,7 @@ class _DocPage extends module.ViewWidget<_DocProvider> {
   _DocPage({
     required this.docName,
     this.title = '',
-  }) : super(i18nFile: '');
+  });
 
   @protected
   createProvider(BuildContext context) => _DocProvider(
@@ -68,7 +71,7 @@ class DocWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<_DocProvider>(
         builder: (context, provider, child) => Scaffold(
-            appBar: AppBar(
+            appBar: delta.Bar(
               title: Text(provider.title),
             ),
             body: SafeArea(
@@ -88,7 +91,6 @@ class DocWidget extends StatelessWidget {
                       child: ElevatedButton(
                         child: Text('back'.i18n_),
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.cyan[700]),
                             padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40, 20, 40, 20)),
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
