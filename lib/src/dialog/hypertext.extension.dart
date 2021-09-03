@@ -103,7 +103,7 @@ class DocWidget extends StatelessWidget {
   }
 }
 
-class _DocProvider extends module.AsyncProvider {
+class _DocProvider extends delta.AsyncProvider {
   final String title;
 
   final String docName;

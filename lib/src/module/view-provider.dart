@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/module/async-provider.dart';
-import 'package:libcli/src/module/module.dart';
+import 'package:libcli/delta.dart' as delta;
+import 'module.dart';
 
-class ViewProvider extends AsyncProvider {
+class ViewProvider extends delta.AsyncProvider {
   /// dispatch action and change state
   ///
   ///     var state=provider.dispatch(context,Increment(1));

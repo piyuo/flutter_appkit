@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/custom.dart' as custom;
 import 'custom-icons.dart';
 import 'extensions.dart';
@@ -7,6 +8,8 @@ import 'search-bar.dart';
 import 'listing.dart';
 import 'check.dart';
 import 'hypertext.dart';
+import 'async-provider.dart';
+import 'await.dart';
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -25,7 +28,7 @@ class DeltaPlayground extends StatelessWidget {
             SizedBox(
               width: double.infinity,
 //              height: 400,
-              child: _hypertext(context),
+              child: _awaitError(context),
             ),
             custom.example(
               context,
@@ -51,6 +54,16 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'hypertext',
               child: _hypertext(context),
+            ),
+            custom.example(
+              context,
+              text: 'await wait',
+              child: _awaitWait(context),
+            ),
+            custom.example(
+              context,
+              text: 'await error',
+              child: _awaitError(context),
             ),
           ],
         ),
@@ -287,5 +300,67 @@ class DeltaPlayground extends StatelessWidget {
         ..span('click to open url')
         ..link('starbucks', url: 'https://www.starbucks.com'),
     );
+  }
+
+  Widget _awaitError(BuildContext context) {
+    return TextButton(
+      child: Text('provider with problem'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return WrongPage();
+        }));
+      },
+    );
+  }
+
+  Widget _awaitWait(BuildContext context) {
+    return TextButton(
+      child: Text('provider need wait 30\'s'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return WaitPage();
+        }));
+      },
+    );
+  }
+}
+
+class WaitProvider extends AsyncProvider {
+  @override
+  Future<void> load(BuildContext context) async {
+    await Future.delayed(Duration(seconds: 30));
+  }
+}
+
+class WaitPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<WaitProvider>(
+        create: (context) => WaitProvider(),
+        child: Consumer<WaitProvider>(
+            builder: (context, provide, child) => Await(
+                  [provide],
+                  child: Container(),
+                )));
+  }
+}
+
+class WrongProvider extends AsyncProvider {
+  @override
+  Future<void> load(BuildContext context) async {
+    throw Exception('load error');
+  }
+}
+
+class WrongPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<WrongProvider>(
+        create: (context) => WrongProvider(),
+        child: Consumer<WrongProvider>(
+            builder: (context, provide, child) => Await(
+                  [provide],
+                  child: Container(),
+                )));
   }
 }

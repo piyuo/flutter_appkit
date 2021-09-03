@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/module.dart';
+import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/src/i18n/i18n-provider.dart';
 import 'package:libcli/src/i18n/test.dart';
 import 'package:libcli/asset.dart' as asset;
@@ -51,7 +51,7 @@ class TestWidget extends StatelessWidget {
         ),
       ],
       child: Consumer2<MockProvider, I18nProvider>(
-          builder: (context, mock, i18n, child) => Await(
+          builder: (context, mock, i18n, child) => delta.Await(
                 [mock, i18n],
                 child: widget(i18n),
               )),

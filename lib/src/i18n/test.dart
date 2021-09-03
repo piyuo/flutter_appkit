@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'dart:async';
-import 'package:libcli/module.dart' as module;
+import 'package:libcli/delta.dart' as delta;
 
 class MockWaitView extends StatelessWidget {
   static int count = 0;
@@ -30,7 +30,7 @@ class MockOkView extends StatelessWidget {
   }
 }
 
-class MockProvider extends module.AsyncProvider {
+class MockProvider extends delta.AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
     await Future.delayed(Duration(milliseconds: 1), () {});

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/src/module/mock-provider.dart';
-import 'package:libcli/src/module/mock_views.dart';
-import 'package:libcli/src/module/await.dart';
+import 'async-provider.dart';
+import 'await.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -38,5 +37,40 @@ class TestWidget extends StatelessWidget {
                 child: MockOkView(),
               )),
     );
+  }
+}
+
+class MockWaitView extends StatelessWidget {
+  static int count = 0;
+  @override
+  Widget build(BuildContext context) {
+    count++;
+    return Text('');
+  }
+}
+
+class MockErrorView extends StatelessWidget {
+  static int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    count++;
+    return Text('');
+  }
+}
+
+class MockOkView extends StatelessWidget {
+  static int count = 0;
+  @override
+  Widget build(BuildContext context) {
+    count++;
+    return Text('');
+  }
+}
+
+class MockProvider extends AsyncProvider {
+  @override
+  Future<void> load(BuildContext context) async {
+    await Future.delayed(Duration(milliseconds: 1), () {});
   }
 }

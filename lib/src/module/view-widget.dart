@@ -2,15 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
+import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/src/module/async-provider.dart';
-import 'package:libcli/src/module/await.dart';
 
-AsyncProvider? viewWidgetProviderInstanceForTest;
+delta.AsyncProvider? viewWidgetProviderInstanceForTest;
 
 ///ProviderWidget is widget that build by provider model
 ///
-abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
+abstract class ViewWidget<T extends delta.AsyncProvider> extends StatelessWidget {
   /// i18nFile is language file that widget need
   ///
   final String? i18nFile;
@@ -61,7 +60,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
       return MultiProvider(
         providers: providers,
         child: Consumer<T>(
-            builder: (context, provider, child) => Await(
+            builder: (context, provider, child) => delta.Await(
                   [provider],
                   child: createWidget(context),
                 )),
@@ -82,7 +81,7 @@ abstract class ViewWidget<T extends AsyncProvider> extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       child: Consumer2<i18n.I18nProvider, T>(
-          builder: (context, i18nProvider, provider, child) => Await(
+          builder: (context, i18nProvider, provider, child) => delta.Await(
                 [i18nProvider, provider],
                 child: createWidget(context),
               )),

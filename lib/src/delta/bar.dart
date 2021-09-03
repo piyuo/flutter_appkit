@@ -9,6 +9,8 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     this.elevation,
     this.centerTitle,
     this.backToRoot,
+    this.backgroundColor,
+    this.iconColor,
   });
 
   final Widget? title;
@@ -19,12 +21,17 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
 
   final bool? centerTitle;
 
+  final Color? backgroundColor;
+
+  final Color? iconColor;
+
   /// backToRoot is true will show back button to go back to /index.html in web mode
   final bool? backToRoot;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: backgroundColor,
       toolbarHeight: kToolbarHeight,
       automaticallyImplyLeading: false,
       leading: _buildLeadingWidget(context),
@@ -46,6 +53,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     Widget? leading = null;
     if (hasDrawer) {
       leading = IconButton(
+        color: iconColor,
         icon: const Icon(delta.CustomIcons.menu),
         onPressed: Scaffold.of(context).openDrawer,
         tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
@@ -54,11 +62,12 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
       if (canPop) {
         if (useCloseButton) {
           leading = IconButton(
-              color: Theme.of(context).colorScheme.onBackground,
+              color: iconColor ?? Theme.of(context).colorScheme.onBackground,
               icon: Icon(delta.CustomIcons.close),
               onPressed: () => Navigator.of(context).maybePop());
         } else {
           leading = IconButton(
+            color: iconColor,
             padding: EdgeInsets.all(0),
             icon: Icon(delta.CustomIcons.arrowBackIosNew),
             onPressed: Navigator.of(context).pop,
@@ -66,6 +75,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
         }
       } else if (kIsWeb && backToRoot == true) {
         leading = IconButton(
+          color: iconColor,
           padding: EdgeInsets.all(0),
           icon: Icon(delta.CustomIcons.arrowBackIosNew),
           onPressed: () => Navigator.of(context).pushNamed('gotoRoot'),
