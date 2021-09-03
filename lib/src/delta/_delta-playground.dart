@@ -10,6 +10,7 @@ import 'check.dart';
 import 'hypertext.dart';
 import 'async-provider.dart';
 import 'await.dart';
+import 'popup.dart';
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -28,7 +29,7 @@ class DeltaPlayground extends StatelessWidget {
             SizedBox(
               width: double.infinity,
 //              height: 400,
-              child: _awaitError(context),
+              child: _popup(context),
             ),
             custom.example(
               context,
@@ -39,11 +40,6 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'search-bar',
               child: _searchBar(context),
-            ),
-            custom.example(
-              context,
-              text: 'listing',
-              child: _listing(context),
             ),
             custom.example(
               context,
@@ -64,6 +60,16 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'await error',
               child: _awaitError(context),
+            ),
+            custom.example(
+              context,
+              text: 'popup',
+              child: _popup(context),
+            ),
+            custom.example(
+              context,
+              text: 'listing',
+              child: _listing(context),
             ),
           ],
         ),
@@ -181,6 +187,70 @@ class DeltaPlayground extends StatelessWidget {
         ]));
   }
 
+  Widget _roundCheckBox(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Check(
+              label: 'Remember me',
+              controller: _checkBoxController,
+            ),
+            SizedBox(width: 20),
+            Check(
+              controller: _checkBoxController,
+            ),
+            SizedBox(width: 20),
+            Check(
+              checkColor: Colors.red,
+              fillColor: Colors.green,
+              controller: _checkBoxController,
+            ),
+            SizedBox(width: 20),
+            Check(
+              disabled: true,
+              label: 'disabled',
+              checkColor: Colors.red,
+              fillColor: Colors.green,
+              controller: _checkBoxController,
+            ),
+          ],
+        ));
+  }
+
+  Widget _hypertext(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Hypertext(fontSize: 13)
+        ..span('click to print to console')
+        ..action('privacy', onTap: (_, __) => print('hello world'))
+        ..span('click to open url')
+        ..link('starbucks', url: 'https://www.starbucks.com'),
+    );
+  }
+
+  Widget _awaitError(BuildContext context) {
+    return TextButton(
+      child: Text('provider with problem'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return WrongPage();
+        }));
+      },
+    );
+  }
+
+  Widget _awaitWait(BuildContext context) {
+    return TextButton(
+      child: Text('provider need wait 30\'s'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return WaitPage();
+        }));
+      },
+    );
+  }
+
   Widget _listing(BuildContext context) {
     return Row(
       children: [
@@ -260,66 +330,26 @@ class DeltaPlayground extends StatelessWidget {
     );
   }
 
-  Widget _roundCheckBox(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Check(
-              label: 'Remember me',
-              controller: _checkBoxController,
-            ),
-            SizedBox(width: 20),
-            Check(
-              controller: _checkBoxController,
-            ),
-            SizedBox(width: 20),
-            Check(
-              checkColor: Colors.red,
-              fillColor: Colors.green,
-              controller: _checkBoxController,
-            ),
-            SizedBox(width: 20),
-            Check(
-              disabled: true,
-              label: 'disabled',
-              checkColor: Colors.red,
-              fillColor: Colors.green,
-              controller: _checkBoxController,
-            ),
-          ],
-        ));
-  }
-
-  Widget _hypertext(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20),
-      child: Hypertext(fontSize: 13)
-        ..span('click to print to console')
-        ..action('privacy', onTap: (_, __) => print('hello world'))
-        ..span('click to open url')
-        ..link('starbucks', url: 'https://www.starbucks.com'),
-    );
-  }
-
-  Widget _awaitError(BuildContext context) {
-    return TextButton(
-      child: Text('provider with problem'),
+  Widget _popup(BuildContext context) {
+    final GlobalKey btnPopup = GlobalKey();
+    return ElevatedButton(
+      key: btnPopup,
+      child: Text('popup'),
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return WrongPage();
-        }));
-      },
-    );
-  }
-
-  Widget _awaitWait(BuildContext context) {
-    return TextButton(
-      child: Text('provider need wait 30\'s'),
-      onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return WaitPage();
-        }));
+        var rect = getWidgetGlobalRect(btnPopup);
+        popup(context,
+            rect: Rect.fromLTWH(rect.left, rect.bottom, rect.width, 200),
+            child: Container(
+              color: Colors.green,
+              child: Center(
+                  child: InkWell(
+                onTap: () => print('hello'),
+                child: Text(
+                  'hello',
+                  style: TextStyle(fontSize: 22),
+                ),
+              )),
+            ));
       },
     );
   }

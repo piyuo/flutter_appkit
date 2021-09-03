@@ -15,3 +15,4 @@ export 'package:libcli/src/delta/hypertext.dart';
 export 'package:libcli/src/delta/bar.dart';
 export 'package:libcli/src/delta/async-provider.dart';
 export 'package:libcli/src/delta/await.dart';
+export 'package:libcli/src/delta/popup.dart';
