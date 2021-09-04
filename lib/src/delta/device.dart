@@ -1,4 +1,10 @@
 import 'package:flutter/widgets.dart';
+import 'dart:ui';
+import 'package:flutter/material.dart';
+
+Size screenSize() {
+  return window.physicalSize / window.devicePixelRatio;
+}
 
 enum DeviceLayout { phone, tablet, desktop }
 

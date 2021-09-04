@@ -57,7 +57,7 @@ class Listing<T> extends StatelessWidget {
   /// fontColor is font default color
   final Color? fontColor;
 
-  /// itemCount is list item count
+  /// items keep all list item
   final List<ListingItem> items;
 
   /// onItemTap called when user select a item
@@ -70,7 +70,7 @@ class Listing<T> extends StatelessWidget {
   final ItemBuilder<T>? tileBuilder;
 
   /// controller is for item selection control
-  final ValueNotifier<T>? controller;
+  final ValueNotifier<T?>? controller;
 
   /// padding default is 5
   final EdgeInsetsGeometry? padding;
@@ -172,7 +172,7 @@ class ListingProvider<T> with ChangeNotifier {
   });
 
   /// controller is for item selection control
-  final ValueNotifier<T>? controller;
+  final ValueNotifier<T?>? controller;
 
   void itemSelected(context, T key) {
     if (controller != null) {

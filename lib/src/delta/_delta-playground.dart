@@ -11,10 +11,12 @@ import 'hypertext.dart';
 import 'async-provider.dart';
 import 'await.dart';
 import 'popup.dart';
+import 'menu.dart';
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
   final GlobalKey btnTooltip = GlobalKey();
+  final GlobalKey btnMenuOnBottom = GlobalKey();
 
   final _listingController = ValueNotifier<int>(1);
 
@@ -27,9 +29,9 @@ class DeltaPlayground extends StatelessWidget {
         child: Wrap(
           children: [
             SizedBox(
-              width: double.infinity,
+//              width: double.infinity,
 //              height: 400,
-              child: _listing(context),
+              child: _menu(context),
             ),
             custom.example(
               context,
@@ -70,6 +72,16 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'listing',
               child: _listing(context),
+            ),
+            custom.example(
+              context,
+              text: 'menu',
+              child: _menu(context),
+            ),
+            custom.example(
+              context,
+              text: 'menu on bottom',
+              child: _menuOnBottom(context),
             ),
           ],
         ),
@@ -352,6 +364,50 @@ class DeltaPlayground extends StatelessWidget {
             ));
       },
     );
+  }
+
+  Widget _menu(BuildContext context) {
+    return Container(
+        width: 240,
+        child: ElevatedButton(
+          key: btnMenu,
+          child: Text('menu'),
+          onPressed: () async {
+            int? i = await menu<int>(
+              context,
+              target: btnMenu,
+              items: [
+                ListingItem(1, title: 'item 1'),
+                ListingItem(2, title: 'item 2'),
+                ListingItem(3, title: 'item 3'),
+              ],
+            );
+            print(i != null ? 'select item $i' : 'not select');
+          },
+        ));
+  }
+
+  Widget _menuOnBottom(BuildContext context) {
+    return Container(
+        alignment: Alignment.bottomLeft,
+        height: 500,
+        width: 240,
+        child: ElevatedButton(
+          key: btnMenuOnBottom,
+          child: Text('menu on bottom'),
+          onPressed: () async {
+            int? i = await menu<int>(
+              context,
+              target: btnMenuOnBottom,
+              items: [
+                ListingItem(1, title: 'item 1'),
+                ListingItem(2, title: 'item 2'),
+                ListingItem(3, title: 'item 3'),
+              ],
+            );
+            print(i != null ? 'select item $i' : 'not select');
+          },
+        ));
   }
 }
 
