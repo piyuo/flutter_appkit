@@ -31,7 +31,7 @@ class DeltaPlayground extends StatelessWidget {
             SizedBox(
 //              width: double.infinity,
 //              height: 400,
-              child: _menu(context),
+              child: _searchBar(context),
             ),
             custom.example(
               context,
