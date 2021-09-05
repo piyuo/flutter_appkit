@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta.dart' as delta;
 import 'dynamic-bottom-side.dart';
@@ -5,8 +6,11 @@ import 'wrapped-list-view.dart';
 import 'play.dart';
 import 'slideshow.dart';
 import 'wall.dart';
+import 'side-panel.dart';
 
 class CustomPlayground extends StatelessWidget {
+  final sidePanelProvider = SidePanelProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,11 +18,11 @@ class CustomPlayground extends StatelessWidget {
         child: SingleChildScrollView(
           child: Wrap(
             children: [
-              SizedBox(
+/*              SizedBox(
                 width: double.infinity,
 //              height: 400,
-                child: _wall(context),
-              ),
+                child: _sidePanel(context),
+              ),*/
               example(
                 context,
                 text: 'layout-dynamic-bottom-side',
@@ -38,6 +42,11 @@ class CustomPlayground extends StatelessWidget {
                 context,
                 text: 'wall',
                 child: _wall(context),
+              ),
+              example(
+                context,
+                text: 'side panel',
+                child: _sidePanel(context),
               ),
             ],
           ),
@@ -213,5 +222,50 @@ class CustomPlayground extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _sidePanel(BuildContext context) {
+    return ChangeNotifierProvider<SidePanelProvider>.value(
+        value: sidePanelProvider,
+        child: Column(
+          children: [
+            ElevatedButton(
+                child: Text('toggle'),
+                onPressed: () {
+                  sidePanelProvider.setOpen(!sidePanelProvider.opened);
+                }),
+            Expanded(
+              child: SidePanel(
+                autoHide: true,
+                sideWidth: 250,
+                sideWidget: Container(
+                  height: double.infinity,
+//                  color: Colors.green,
+                  child: Text(
+                    'side widget',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ),
+                mainWidget: Scaffold(
+                    appBar: delta.Bar(),
+                    body: Container(
+                      color: Colors.white,
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                              child: Text('test'),
+                              onPressed: () {
+                                print('hello');
+                              }),
+                          Text('hello'),
+                        ],
+                      ),
+                    )),
+              ),
+            ),
+          ],
+        ));
   }
 }
