@@ -12,6 +12,9 @@ import 'async-provider.dart';
 import 'await.dart';
 import 'popup.dart';
 import 'menu.dart';
+import 'pull-refresh.dart';
+
+var _pullRefreshCount = 8;
 
 class DeltaPlayground extends StatelessWidget {
   final GlobalKey btnMenu = GlobalKey();
@@ -29,9 +32,9 @@ class DeltaPlayground extends StatelessWidget {
         child: Wrap(
           children: [
             SizedBox(
-//              width: double.infinity,
-//              height: 400,
-              child: _searchBar(context),
+              width: double.infinity,
+              height: 400,
+              child: _pullRefresh(context),
             ),
             custom.example(
               context,
@@ -82,6 +85,11 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'menu on bottom',
               child: _menuOnBottom(context),
+            ),
+            custom.example(
+              context,
+              text: 'pull refresh',
+              child: _pullRefresh(context),
             ),
           ],
         ),
@@ -408,6 +416,27 @@ class DeltaPlayground extends StatelessWidget {
             print(i != null ? 'select item $i' : 'not select');
           },
         ));
+  }
+
+  Widget _pullRefresh(BuildContext context) {
+    return PullRefresh(onPullRefresh: (BuildContext context) async {
+      await Future.delayed(Duration(seconds: 1));
+      _pullRefreshCount--;
+      return true;
+    }, onLoadMore: (BuildContext context) async {
+      await Future.delayed(Duration(seconds: 1));
+      _pullRefreshCount++;
+      return true;
+    }, itemCount: (BuildContext context) {
+      return _pullRefreshCount;
+    }, itemBuilder: (BuildContext context, int index) {
+      return Container(
+        height: double.infinity,
+        color: Colors.blue[100],
+        padding: EdgeInsets.all(20),
+        child: Text('item $index'),
+      );
+    });
   }
 }
 
