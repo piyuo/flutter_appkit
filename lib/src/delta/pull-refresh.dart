@@ -41,7 +41,7 @@ class PullRefresh extends StatelessWidget {
         create: (context) => PullRefreshProvider(),
         child: Consumer<PullRefreshProvider>(builder: (context, provide, child) {
           return EasyRefresh.custom(
-            scrollDirection: Axis.horizontal,
+            scrollDirection: scrollDirection,
             header: MaterialHeader(),
             footer: MaterialFooter(),
             onRefresh: () async {
