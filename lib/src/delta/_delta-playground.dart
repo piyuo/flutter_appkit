@@ -419,24 +419,29 @@ class DeltaPlayground extends StatelessWidget {
   }
 
   Widget _pullRefresh(BuildContext context) {
-    return PullRefresh(onPullRefresh: (BuildContext context) async {
-      await Future.delayed(Duration(seconds: 1));
-      _pullRefreshCount--;
-      return true;
-    }, onLoadMore: (BuildContext context) async {
-      await Future.delayed(Duration(seconds: 1));
-      _pullRefreshCount++;
-      return true;
-    }, itemCount: (BuildContext context) {
-      return _pullRefreshCount;
-    }, itemBuilder: (BuildContext context, int index) {
-      return Container(
-        height: double.infinity,
-        color: Colors.blue[100],
-        padding: EdgeInsets.all(20),
-        child: Text('item $index'),
-      );
-    });
+    return PullRefresh(
+        scrollDirection: Axis.horizontal,
+        onPullRefresh: (BuildContext context) async {
+          await Future.delayed(Duration(seconds: 1));
+          _pullRefreshCount--;
+          return true;
+        },
+        onLoadMore: (BuildContext context) async {
+          await Future.delayed(Duration(seconds: 1));
+          _pullRefreshCount++;
+          return true;
+        },
+        itemCount: (BuildContext context) {
+          return _pullRefreshCount;
+        },
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            height: double.infinity,
+            color: Colors.blue[100],
+            padding: EdgeInsets.fromLTRB(80, 20, 80, 20),
+            child: Text('item $index'),
+          );
+        });
   }
 }
 
