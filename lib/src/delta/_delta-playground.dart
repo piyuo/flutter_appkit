@@ -32,9 +32,9 @@ class DeltaPlayground extends StatelessWidget {
         child: Wrap(
           children: [
             SizedBox(
-              width: double.infinity,
+              width: 800,
               height: 400,
-              child: _pullRefresh(context),
+              child: _pullRefreshVertical(context),
             ),
             custom.example(
               context,
@@ -90,6 +90,11 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'pull refresh',
               child: _pullRefresh(context),
+            ),
+            custom.example(
+              context,
+              text: 'pull refresh vertical',
+              child: _pullRefreshVertical(context),
             ),
           ],
         ),
@@ -436,12 +441,29 @@ class DeltaPlayground extends StatelessWidget {
         },
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            height: double.infinity,
+            //height: double.infinity,
             color: Colors.blue[100],
             padding: EdgeInsets.fromLTRB(80, 20, 80, 20),
             child: Text('item $index'),
           );
         });
+  }
+
+  Widget _pullRefreshVertical(BuildContext context) {
+    return PullRefresh(onPullRefresh: (BuildContext context) async {
+      return true;
+    }, onLoadMore: (BuildContext context) async {
+      return true;
+    }, itemCount: (BuildContext context) {
+      return _pullRefreshCount;
+    }, itemBuilder: (BuildContext context, int index) {
+      return Container(
+        //height: double.infinity,
+        color: Colors.blue[100],
+        padding: EdgeInsets.fromLTRB(80, 20, 80, 20),
+        child: Text('item $index'),
+      );
+    });
   }
 }
 

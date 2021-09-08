@@ -40,8 +40,7 @@ class PullRefresh extends StatelessWidget {
     return ChangeNotifierProvider<PullRefreshProvider>(
         create: (context) => PullRefreshProvider(),
         child: Consumer<PullRefreshProvider>(builder: (context, provide, child) {
-          return EasyRefresh.custom(
-            scrollDirection: scrollDirection,
+          return EasyRefresh(
             header: MaterialHeader(),
             footer: MaterialFooter(),
             onRefresh: () async {
@@ -54,14 +53,12 @@ class PullRefresh extends StatelessWidget {
                 provide.refresh();
               }
             },
-            slivers: <Widget>[
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  itemBuilder,
-                  childCount: itemCount(context),
-                ),
-              ),
-            ],
+            child: ListView.builder(
+              scrollDirection: scrollDirection,
+              //             shrinkWrap: true,
+              itemBuilder: itemBuilder,
+              itemCount: itemCount(context),
+            ),
           );
         }));
   }
