@@ -32,9 +32,8 @@ class DeltaPlayground extends StatelessWidget {
         child: Wrap(
           children: [
             SizedBox(
-              width: 800,
-              height: 400,
-              child: _pullRefreshVertical(context),
+              height: 300,
+              child: _pullRefresh(context),
             ),
             custom.example(
               context,
@@ -441,9 +440,10 @@ class DeltaPlayground extends StatelessWidget {
         },
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            //height: double.infinity,
-            color: Colors.blue[100],
-            padding: EdgeInsets.fromLTRB(80, 20, 80, 20),
+            width: 100,
+            height: 100,
+            color: index % 2 == 0 ? Colors.yellow[100] : Colors.blue[100],
+            margin: EdgeInsets.all(0),
             child: Text('item $index'),
           );
         });
