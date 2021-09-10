@@ -7,6 +7,7 @@ import 'play.dart';
 import 'slideshow.dart';
 import 'wall.dart';
 import 'side-panel.dart';
+import 'story-line.dart';
 
 class CustomPlayground extends StatelessWidget {
   final sidePanelProvider = SidePanelProvider();
@@ -18,11 +19,13 @@ class CustomPlayground extends StatelessWidget {
         child: SingleChildScrollView(
           child: Wrap(
             children: [
-/*              SizedBox(
-                width: double.infinity,
-//              height: 400,
-                child: _sidePanel(context),
-              ),*/
+              Column(
+                children: [
+                  _storyLine(context),
+                  _storyLine(context),
+                  _storyLine(context),
+                ],
+              ),
               example(
                 context,
                 text: 'layout-dynamic-bottom-side',
@@ -47,6 +50,11 @@ class CustomPlayground extends StatelessWidget {
                 context,
                 text: 'side panel',
                 child: _sidePanel(context),
+              ),
+              example(
+                context,
+                text: 'story line',
+                child: _storyLine(context),
               ),
             ],
           ),
@@ -267,5 +275,47 @@ class CustomPlayground extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  Widget _storyLine(BuildContext context) {
+    return StoryLine(
+        title: 'Notification',
+        subtitle: 'open',
+        onPullRefresh: (BuildContext context) async {
+          await Future.delayed(Duration(seconds: 1));
+          return true;
+        },
+        onLoadMore: (BuildContext context) async {
+          await Future.delayed(Duration(seconds: 1));
+          return true;
+        },
+        stories: [
+          SimpleStory(
+            utcDate: DateTime.now().toUtc(),
+            icon: delta.CustomIcons.takeoutDining,
+            text: 'you have new takeout order',
+            title: 'pork rice, beef noddle and more ...',
+            color: Colors.red[700]!,
+          ),
+          SimpleStory(
+            utcDate: DateTime.now().toUtc(),
+            icon: delta.CustomIcons.bookmark,
+            text: 'Someone asking question about',
+            title: 'Pork Rice',
+            color: Colors.blue[700]!,
+          ),
+          SimpleStory(
+            utcDate: DateTime.now().toUtc(),
+            icon: delta.CustomIcons.cardGiftcard,
+            text: 'Order delivered',
+            title: 'pork rice, beef noodle and more',
+            color: Colors.green[700]!,
+          ),
+          //Story(utcDate: DateTime.now().add(Duration(hours: -1)).toUtc(), key: 'order2'),
+          //Story(utcDate: DateTime.now().add(Duration(hours: -1)).toUtc(), key: 'order3'),
+          //Story(utcDate: DateTime.now().add(Duration(hours: -1)).toUtc(), key: 'order4'),
+          //Story(utcDate: DateTime.now().add(Duration(days: -1)).toUtc(), key: 'order5'),
+        ],
+        builder: SimpleStory.builder);
   }
 }

@@ -6,3 +6,4 @@ export 'package:libcli/src/custom/wrapped-list-view.dart';
 export 'package:libcli/src/custom/slideshow.dart';
 export 'package:libcli/src/custom/wall.dart';
 export 'package:libcli/src/custom/side-panel.dart';
+export 'package:libcli/src/custom/story-line.dart';
