@@ -246,9 +246,19 @@ class CustomPlayground extends StatelessWidget {
               child: SidePanel(
                 autoHide: true,
                 sideWidth: 250,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment(1, 1), // 10% of the width, so there are ten blinds.
+                    colors: [
+                      Colors.green[100]!,
+                      Colors.green[900]!,
+                    ], // red to yellow
+                    tileMode: TileMode.repeated, // repeats the gradient over the canvas
+                  ),
+                ),
                 sideWidget: Container(
                   height: double.infinity,
-//                  color: Colors.green,
                   child: Text(
                     'side widget',
                     style: TextStyle(fontSize: 24),

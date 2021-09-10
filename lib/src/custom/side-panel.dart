@@ -19,6 +19,7 @@ class SidePanel extends StatelessWidget {
     required this.sideWidth,
     this.autoHide = false,
     this.roundCorner = true,
+    this.decoration,
   });
 
   /// sideWidget is the widget place on the side
@@ -35,6 +36,9 @@ class SidePanel extends StatelessWidget {
 
   /// roundCorner is true will show round corner on main widget
   final bool roundCorner;
+
+  /// decoration to paint behind the panel
+  final Decoration? decoration;
 
   Widget buildMainWidget(BuildContext context, bool isOpen) {
     return roundCorner && isOpen
@@ -54,17 +58,7 @@ class SidePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<SidePanelProvider>(builder: (context, provide, child) {
       return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment(1, 1), // 10% of the width, so there are ten blinds.
-              colors: [
-                Colors.green[100]!,
-                Colors.green[900]!,
-              ], // red to yellow
-              tileMode: TileMode.repeated, // repeats the gradient over the canvas
-            ),
-          ),
+          decoration: decoration,
           child: Stack(
             children: [
               AnimatedPositioned(
