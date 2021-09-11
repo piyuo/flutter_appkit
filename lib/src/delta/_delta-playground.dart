@@ -33,7 +33,7 @@ class DeltaPlayground extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _pullRefresh(context),
+              child: _listing(context),
             ),
             custom.example(
               context,
@@ -287,9 +287,13 @@ class DeltaPlayground extends StatelessWidget {
               selectedTileColor: Colors.green[400],
               selectedFontColor: Colors.grey[100],
               fontColor: Colors.green[600],
+              physics: const NeverScrollableScrollPhysics(),
               items: [
                 ListingItem(1, title: 'item 1'),
                 ListingItem(2, title: 'item 2', icon: CustomIcons.cardGiftcard),
+                Divider(
+                  height: 1,
+                ),
                 ListingItem(3, title: 'item 3', icon: CustomIcons.cardGiftcard),
                 ListingItem(4, title: 'item 4', icon: CustomIcons.cardGiftcard),
                 ListingItem(5, title: 'item 5', icon: CustomIcons.cardGiftcard),

@@ -40,6 +40,7 @@ class Listing<T> extends StatelessWidget {
     this.fontColor,
     this.dense = false,
     this.padding,
+    this.physics,
   });
 
   /// dense
@@ -58,7 +59,7 @@ class Listing<T> extends StatelessWidget {
   final Color? fontColor;
 
   /// items keep all list item
-  final List<ListingItem> items;
+  final List<dynamic> items;
 
   /// onItemTap called when user select a item
   final void Function(BuildContext, T) onItemTap;
@@ -75,10 +76,13 @@ class Listing<T> extends StatelessWidget {
   /// padding default is 5
   final EdgeInsetsGeometry? padding;
 
+  /// physics is list view physics
+  final ScrollPhysics? physics;
+
   Color _fontColor(BuildContext context) {
     return fontColor ??
         context.themeColor(
-          light: Colors.grey[700]!,
+          light: Colors.grey[800]!,
           dark: Colors.grey[200]!,
         );
   }
@@ -98,6 +102,56 @@ class Listing<T> extends StatelessWidget {
         ));
   }
 
+  Widget _buildWidget(BuildContext context, ListingItem<T> item, Function()? onTap) {
+    final key = item.key;
+    final title = item.title;
+    final selected = controller != null ? controller!.value == item.key : false;
+    if (tileBuilder != null) {
+      Widget? widget = tileBuilder!(context, key, title ?? key.toString(), selected);
+      if (widget != null) {
+        return widget;
+      }
+    }
+
+    return ListTile(
+      dense: dense,
+      shape: shape != null
+          ? RoundedRectangleBorder(
+              borderRadius: shape == Shape.round
+                  ? BorderRadius.all(
+                      Radius.circular(25),
+                    )
+                  : BorderRadius.only(
+                      topRight: Radius.circular(25),
+                      bottomRight: Radius.circular(25),
+                    ))
+          : null,
+      selected: selected,
+      selectedTileColor: selectedTileColor ??
+          context.themeColor(
+            light: Colors.grey[300]!,
+            dark: Colors.grey[700]!,
+          ),
+      onTap: onTap,
+      minLeadingWidth: 0,
+      contentPadding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+      leading: item.icon != null
+          ? Icon(
+              item.icon,
+              size: 24,
+              color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
+            )
+          : null,
+      title: _buildItem(
+        context,
+        key,
+        title,
+        selected,
+      ),
+      subtitle: item.subtitle != null ? Text(item.subtitle!) : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ListingProvider>(
@@ -106,60 +160,27 @@ class Listing<T> extends StatelessWidget {
             ),
         child: Consumer<ListingProvider>(builder: (context, model, child) {
           return ListView.builder(
+            physics: physics,
             itemCount: items.length,
             shrinkWrap: true,
             padding: padding ?? EdgeInsets.symmetric(horizontal: 5),
             itemBuilder: (BuildContext context, int i) {
-              final key = items[i].key;
-              final title = items[i].title;
-              final selected = controller != null ? controller!.value == items[i].key : false;
-              if (tileBuilder != null) {
-                Widget? widget = tileBuilder!(context, key, title ?? key.toString(), selected);
-                if (widget != null) {
-                  return widget;
-                }
-              }
-
-              return ListTile(
-                dense: dense,
-                shape: shape != null
-                    ? RoundedRectangleBorder(
-                        borderRadius: shape == Shape.round
-                            ? BorderRadius.all(
-                                Radius.circular(25),
-                              )
-                            : BorderRadius.only(
-                                topRight: Radius.circular(25),
-                                bottomRight: Radius.circular(25),
-                              ))
-                    : null,
-                selected: selected,
-                selectedTileColor: selectedTileColor ??
-                    context.themeColor(
-                      light: Colors.grey[300]!,
-                      dark: Colors.grey[700]!,
-                    ),
-                onTap: () {
-                  model.itemSelected(context, key);
-                  onItemTap(context, key);
-                },
-                minLeadingWidth: 0,
-                contentPadding: EdgeInsets.fromLTRB(25, 0, 0, 0),
-                leading: items[i].icon != null
-                    ? Icon(
-                        items[i].icon,
-                        size: 24,
-                        color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
-                      )
-                    : null,
-                title: _buildItem(
+              final item = items[i];
+              if (item is ListingItem<T>) {
+                return _buildWidget(
                   context,
-                  key,
-                  title,
-                  selected,
-                ),
-                subtitle: items[i].subtitle != null ? Text(items[i].subtitle!) : null,
-              );
+                  item,
+                  () {
+                    model.itemSelected(context, item.key);
+                    onItemTap(context, item.key);
+                  },
+                );
+              }
+              if (item is Widget) {
+                return item;
+              }
+              assert(false, 'you can only place ListingItem or Widget in items');
+              return SizedBox();
             },
           );
         }));
