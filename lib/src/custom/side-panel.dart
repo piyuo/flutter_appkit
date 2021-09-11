@@ -10,6 +10,11 @@ class SidePanelProvider with ChangeNotifier {
     opened = isOpen;
     notifyListeners();
   }
+
+  void toggle() {
+    opened = !opened;
+    notifyListeners();
+  }
 }
 
 class SidePanel extends StatelessWidget {
@@ -54,39 +59,51 @@ class SidePanel extends StatelessWidget {
         : mainWidget;
   }
 
+  Widget buildSideWidget(BuildContext context) {
+    return sideWidget;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<SidePanelProvider>(builder: (context, provide, child) {
-      return Container(
-          decoration: decoration,
-          child: Stack(
-            children: [
-              AnimatedPositioned(
-                left: provide.opened ? 0 : -sideWidth,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                duration: const Duration(milliseconds: 100),
-                child: Row(
-                  children: [
-                    SizedBox(width: sideWidth, child: sideWidget),
-                    Expanded(
-                      child: provide.opened & autoHide
-                          ? GestureDetector(
-                              onTap: () {
-                                provide.setOpen(false);
-                              },
-                              child: AbsorbPointer(
-                                child: buildMainWidget(context, provide.opened),
-                              ),
-                            )
-                          : buildMainWidget(context, provide.opened),
-                    ),
-                  ],
+      return SafeArea(
+        bottom: false,
+        left: false,
+        right: false,
+        child: Container(
+            decoration: decoration,
+            child: Stack(
+              children: [
+                AnimatedPositioned(
+                  left: provide.opened ? 0 : -sideWidth,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  duration: const Duration(milliseconds: 100),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: sideWidth,
+                        child: buildSideWidget(context),
+                      ),
+                      Expanded(
+                        child: provide.opened & autoHide
+                            ? GestureDetector(
+                                onTap: () {
+                                  provide.setOpen(false);
+                                },
+                                child: AbsorbPointer(
+                                  child: buildMainWidget(context, provide.opened),
+                                ),
+                              )
+                            : buildMainWidget(context, provide.opened),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ));
+              ],
+            )),
+      );
     });
   }
 }
