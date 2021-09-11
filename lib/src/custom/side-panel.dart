@@ -23,7 +23,6 @@ class SidePanel extends StatelessWidget {
     required this.mainWidget,
     required this.sideWidth,
     this.autoHide = false,
-    this.roundCorner = true,
     this.decoration,
   });
 
@@ -39,27 +38,23 @@ class SidePanel extends StatelessWidget {
   /// autoHide is true will auto hide side panel when user click main widget
   final bool autoHide;
 
-  /// roundCorner is true will show round corner on main widget
-  final bool roundCorner;
-
   /// decoration to paint behind the panel
   final Decoration? decoration;
 
-  Widget buildMainWidget(BuildContext context, bool isOpen) {
-    return roundCorner && isOpen
+  Widget _buildMainWidget(BuildContext context, bool isOpen) {
+    return isOpen
         ? Material(
             clipBehavior: Clip.antiAlias,
             elevation: 4,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
-              bottomLeft: Radius.circular(25),
             )),
             child: mainWidget)
         : mainWidget;
   }
 
-  Widget buildSideWidget(BuildContext context) {
+  Widget _buildSideWidget(BuildContext context) {
     return sideWidget;
   }
 
@@ -84,7 +79,7 @@ class SidePanel extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: sideWidth,
-                        child: buildSideWidget(context),
+                        child: _buildSideWidget(context),
                       ),
                       Expanded(
                         child: provide.opened & autoHide
@@ -93,10 +88,10 @@ class SidePanel extends StatelessWidget {
                                   provide.setOpen(false);
                                 },
                                 child: AbsorbPointer(
-                                  child: buildMainWidget(context, provide.opened),
+                                  child: _buildMainWidget(context, provide.opened),
                                 ),
                               )
-                            : buildMainWidget(context, provide.opened),
+                            : _buildMainWidget(context, provide.opened),
                       ),
                     ],
                   ),
