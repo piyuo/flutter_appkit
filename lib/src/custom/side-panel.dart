@@ -54,10 +54,6 @@ class SidePanel extends StatelessWidget {
         : mainWidget;
   }
 
-  Widget _buildSideWidget(BuildContext context) {
-    return sideWidget;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<SidePanelProvider>(builder: (context, provide, child) {
@@ -76,10 +72,11 @@ class SidePanel extends StatelessWidget {
                   bottom: 0,
                   duration: const Duration(milliseconds: 100),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         width: sideWidth,
-                        child: _buildSideWidget(context),
+                        child: sideWidget,
                       ),
                       Expanded(
                         child: provide.opened & autoHide
