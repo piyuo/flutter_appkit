@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:libcli/delta.dart' as delta;
 
 class SidePanelProvider with ChangeNotifier {
-  SidePanelProvider();
+  SidePanelProvider() {
+    opened = !delta.isPhone();
+  }
+  late bool opened;
 
-  bool opened = false;
-
-  void setOpen(bool isOpen) {
-    opened = isOpen;
+  void setOpen(bool open) {
+    opened = open;
     notifyListeners();
   }
 
-  void toggle() {
-    opened = !opened;
-    notifyListeners();
-  }
+  void toggle() => setOpen(!opened);
 }
 
 class SidePanel extends StatelessWidget {

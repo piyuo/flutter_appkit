@@ -264,23 +264,21 @@ class CustomPlayground extends StatelessWidget {
                     style: TextStyle(fontSize: 24),
                   ),
                 ),
-                mainWidget: Scaffold(
-                    appBar: delta.Bar(),
-                    body: Container(
-                      color: Colors.white,
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Column(
-                        children: [
-                          ElevatedButton(
-                              child: Text('test'),
-                              onPressed: () {
-                                print('hello');
-                              }),
-                          Text('hello'),
-                        ],
-                      ),
-                    )),
+                mainWidget: Container(
+                  color: Colors.white,
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                          child: Text('test'),
+                          onPressed: () {
+                            print('hello');
+                          }),
+                      Text('hello'),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
