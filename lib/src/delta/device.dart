@@ -21,17 +21,32 @@ DeviceLayout deviceLayout(double windowWidth) {
   return DeviceLayout.desktop;
 }
 
-///  isMobileLayout return true if use mobile layout
-bool isMobileLayout(double windowWidth) {
+///  isPhone return true if use phone layout
+bool isPhone() {
+  return isPhoneLayout(screenSize().width);
+}
+
+///  isPhoneLayout return true if use phone layout
+bool isPhoneLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.phone;
 }
 
-///  isTabletLayout return true if use mobile layout
+///  isTablet return true if use tablet layout
+bool isTablet() {
+  return isTabletLayout(screenSize().width);
+}
+
+///  isTabletLayout return true if use tablet layout
 bool isTabletLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.tablet;
 }
 
-///  isDesktopLayout return true if use mobile layout
+///  isDesktop return true if use desktop layout
+bool isDesktop() {
+  return isDesktopLayout(screenSize().width);
+}
+
+///  isDesktopLayout return true if use desktop layout
 bool isDesktopLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.desktop;
 }
@@ -79,7 +94,7 @@ class DeviceOrientationBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      if (isMobileLayout(constraints.maxWidth)) {
+      if (isPhoneLayout(constraints.maxWidth)) {
         return portrait(context);
       }
       return landscape(context);
