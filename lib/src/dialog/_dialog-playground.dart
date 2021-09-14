@@ -7,6 +7,7 @@ import 'toast.dart';
 import 'slide.dart';
 import 'route.dart';
 import 'show-more.dart';
+import 'banner.dart';
 import 'hypertext.extension.dart';
 
 class DialogPlayground extends StatelessWidget {
@@ -251,6 +252,13 @@ class DialogPlayground extends StatelessWidget {
                       onPressed: () => slide(
                         context,
                         Container(height: 300, child: Text('hi')),
+                      ),
+                    ),
+                    ElevatedButton(
+                      child: Text('banner'),
+                      onPressed: () => banner(
+                        context,
+                        'this record has been deleted',
                       ),
                     ),
                   ]),
