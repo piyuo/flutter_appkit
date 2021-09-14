@@ -44,8 +44,6 @@ Future<void> loading(BuildContext context, {String? text}) {
   );
 }
 
-/// progress show progress toast
-///
 Future<void> progress(BuildContext context, double value, {String? text}) {
   applyTheme(context, false);
   if (value >= 1) {

@@ -11,13 +11,14 @@ class AlignCenter extends StatelessWidget {
 
   final AlignmentGeometry? alignment;
 
-  AlignCenter({
+  const AlignCenter({
     required this.child,
     this.width,
     this.height,
     this.padding,
     this.alignment,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
