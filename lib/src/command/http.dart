@@ -32,7 +32,7 @@ class Request {
 /// post call doPost() and broadcast network slow if request time is longer than slow
 ///
 Future<pb.Object> post(BuildContext ctx, Request request) async {
-  Completer<pb.Object> completer = new Completer<pb.Object>();
+  Completer<pb.Object> completer = Completer<pb.Object>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
       eventbus.broadcast(ctx, SlowNetworkEvent());
@@ -120,12 +120,12 @@ Future<pb.Object> doPost(BuildContext context, Request r) async {
   //catch (e, s) {
   //handle exception here to get better stack trace
   //log.error( '$e, url: ${r.url}', s);
-  //log.sendToGlobalExceptionHanlder(context, e, s);
+  //log.sendToGlobalExceptionHandler(context, e, s);
   //return null;
   //}
 }
 
-/// giveup brodcast event then return null
+/// giveup broadcast event then return null
 ///
 ///     commandHttp.giveup(ctx,BadRequestEvent());
 ///

@@ -6,7 +6,7 @@ import 'package:libcli/pb.dart' as pb;
 
 void main() {
   setUp(() async {
-    CacheDuration = const Duration(seconds: 1);
+    cacheDuration = const Duration(seconds: 1);
   });
 
   group('[command-firewall]', () {
@@ -40,15 +40,15 @@ void main() {
     });
 
     test('should block when command overflow', () async {
-      MaxAllowPostDuration = const Duration(milliseconds: 900);
-      for (int i = 0; i < MaxAllowPostCount; i++) {
+      maxAllowPostDuration = const Duration(milliseconds: 900);
+      for (int i = 0; i < maxAllowPostCount; i++) {
         final cmdID = "not-overflow-" + identifier.randomNumber(5);
         final cmd = pb.Error()..code = cmdID;
         firewallBegin(cmd.jsonString) is FirewallPass;
         firewallEnd(cmd.jsonString, pb.Error()); // set complete
       }
       final countBeforeExpire = cache.length;
-      expect(countBeforeExpire >= MaxAllowPostCount, true);
+      expect(countBeforeExpire >= maxAllowPostCount, true);
       final cmdID2 = "overflow-" + identifier.randomNumber(5);
       final cmd2 = pb.Error()..code = cmdID2;
       expect(firewallBegin(cmd2.jsonString) is FirewallBlock, true);
@@ -58,7 +58,7 @@ void main() {
 
     test('should block when server request BLOCK_SHORT', () async {
       // set block short to 0.5s
-      BlockShortDuration = const Duration(milliseconds: 500);
+      blockShortDuration = const Duration(milliseconds: 500);
 
       expect(firewallBegin('short') is FirewallPass, true);
 
@@ -78,7 +78,7 @@ void main() {
 
     test('should block when server request BLOCK_LONG', () async {
       // set block short to 0.5s
-      BlockLongDuration = const Duration(milliseconds: 500);
+      blockLongDuration = const Duration(milliseconds: 500);
 
       expect(firewallBegin('long') is FirewallPass, true);
 

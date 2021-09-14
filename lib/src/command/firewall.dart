@@ -43,13 +43,13 @@ const CacheKeyLastResponse = "CMD_LAST_RESPONSE";
 const CacheKeyCall = "CMD_CALL_";
 
 /// CacheDuration is the time we cache last response
-var CacheDuration = const Duration(seconds: 30);
+var cacheDuration = const Duration(seconds: 30);
 
 /// MaxAllowPostDuration is firewall monitor duration
-var MaxAllowPostDuration = const Duration(minutes: 8);
+var maxAllowPostDuration = const Duration(minutes: 8);
 
 /// MaxAllowPostCount max allow post count in MaxAllowPostDuration
-const MaxAllowPostCount = 96;
+const maxAllowPostCount = 96;
 
 /// firewallDisable set to true will disable firewall
 bool firewallDisable = false;
@@ -58,10 +58,10 @@ bool firewallDisable = false;
 const CacheKeyBlock = "CMD_BLOCK_";
 
 /// BlockShortDuration define time of short duration
-var BlockShortDuration = const Duration(minutes: 1);
+var blockShortDuration = const Duration(minutes: 1);
 
 /// BlockLongDuration define time of long duration
-var BlockLongDuration = const Duration(days: 1);
+var blockLongDuration = const Duration(days: 1);
 
 /// firewall return true if command is allowed
 ///   1. it will block "IN_FLIGHT", stop send second command when same first command is not finish
@@ -99,16 +99,16 @@ pb.Object firewallBegin(String cmdJSON) {
 
   // check OVERFLOW
   final currentCount = cache.beginWith(CacheKeyCall);
-  if (currentCount >= MaxAllowPostCount) {
+  if (currentCount >= maxAllowPostCount) {
     return FirewallBlock(OVERFLOW);
   }
 
   // track last command
-  cache.set(CacheKeyLastRequest, cmdJSON, expire: CacheDuration);
+  cache.set(CacheKeyLastRequest, cmdJSON, expire: cacheDuration);
   cache.delete(CacheKeyLastResponse);
 
   // add call count for OVERFLOW detection
-  cache.set(CacheKeyCall + identifier.randomNumber(6), null, expire: MaxAllowPostDuration);
+  cache.set(CacheKeyCall + identifier.randomNumber(6), null, expire: maxAllowPostDuration);
   return FirewallPass();
 }
 
@@ -126,21 +126,21 @@ void firewallEnd(String cmdJSON, pb.Object? response) {
     return;
   }
   // update request cache time, make sure request and response will expire at the same time
-  cache.set(CacheKeyLastRequest, cmdJSON, expire: CacheDuration);
-  cache.set(CacheKeyLastResponse, response, expire: CacheDuration);
+  cache.set(CacheKeyLastRequest, cmdJSON, expire: cacheDuration);
+  cache.set(CacheKeyLastResponse, response, expire: cacheDuration);
 
   // check block by server
   if (response is pb.Error) {
     if (response.code == BLOCK_SHORT) {
-      cache.set(CacheKeyBlock + cmdJSON, BLOCK_SHORT, expire: BlockShortDuration);
+      cache.set(CacheKeyBlock + cmdJSON, BLOCK_SHORT, expire: blockShortDuration);
     }
     if (response.code == BLOCK_LONG) {
-      cache.set(CacheKeyBlock + cmdJSON, BLOCK_LONG, expire: BlockLongDuration);
+      cache.set(CacheKeyBlock + cmdJSON, BLOCK_LONG, expire: blockLongDuration);
     }
   }
 }
 
 void mockFirewallInFlight(String cmdJSON) {
-  cache.set(CacheKeyLastRequest, cmdJSON, expire: CacheDuration);
+  cache.set(CacheKeyLastRequest, cmdJSON, expire: cacheDuration);
   cache.delete(CacheKeyLastResponse);
 }

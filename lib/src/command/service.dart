@@ -39,7 +39,7 @@ abstract class Service {
     required this.slow,
     this.debugPort,
   }) {
-    assert(serviceName.length > 0, 'must have service name');
+    assert(serviceName.isNotEmpty, 'must have service name');
   }
 
   /// find object by id
@@ -94,7 +94,7 @@ abstract class Service {
     }
     if (result is FirewallPass) {
       log.log('[command] send $commandJSON to $url');
-      pb.Object? returnObj = null;
+      pb.Object? returnObj;
       try {
         returnObj = await post(
             context,

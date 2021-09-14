@@ -8,18 +8,16 @@ import 'package:libcli/src/command/http.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///
-typedef Future<pb.Object> MockExecute(BuildContext ctx, pb.Object obj);
+typedef MockExecute = Future<pb.Object> Function(BuildContext ctx, pb.Object obj);
 
 /// MockService let you mock service with your own execute function
 ///
 class MockService extends Service {
   /// mockExecute mock execute function
   ///
-  MockExecute mockExecute = (_, action) async {
-    return pb.OK();
-  };
+  final MockExecute? mockExecute;
 
-  MockService()
+  MockService({this.mockExecute})
       : super(
           serviceName: 'mock',
           timeout: -1,
@@ -37,7 +35,11 @@ class MockService extends Service {
     pb.Object obj, {
     bool ignoreFirewall = false,
   }) async {
-    return await mockExecute(ctx, obj);
+    var f = mockExecute ??
+        (_, action) async {
+          return pb.OK();
+        };
+    return await f(ctx, obj);
   }
 }
 
@@ -48,7 +50,7 @@ Request newRequest(MockClient client) {
     client: client,
     action: pb.String(),
     url: 'http://mock',
-    timeout: Duration(milliseconds: 9000),
-    slow: Duration(milliseconds: 9000),
+    timeout: const Duration(milliseconds: 9000),
+    slow: const Duration(milliseconds: 9000),
   );
 }

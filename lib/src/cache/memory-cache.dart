@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'dart:async';
-import 'dart:collection';
 import 'package:clock/clock.dart';
 
 class MemoryCache {
@@ -82,7 +81,7 @@ class MemoryCache {
 
 class _MemoryCacheEntry {
   /// _obj is cached object
-  final _obj;
+  final dynamic _obj;
 
   /// _created is entry create time
   final DateTime _created;

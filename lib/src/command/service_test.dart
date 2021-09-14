@@ -14,7 +14,7 @@ import 'package:libcli/src/command/protobuf.dart';
 import 'package:libcli/src/command/firewall.dart';
 
 void main() {
-  var lastEvent;
+  dynamic lastEvent;
   eventbus.listen<FirewallBlockEvent>((BuildContext ctx, event) async {
     lastEvent = event;
   });
@@ -51,23 +51,21 @@ void main() {
     test('should return null when send wrong action to test server', () async {
       // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.BRANCH_MASTER;
-      var service = MockService()
-        ..mockExecute = (ctx, action) async {
-          throw Exception('mock');
-        };
-      CmdEcho action = new CmdEcho();
+      var service = MockService(mockExecute: (ctx, action) async {
+        throw Exception('mock');
+      });
+      CmdEcho action = CmdEcho();
       expect(() async {
         await service.execute(testing.Context(), action);
       }, throwsException);
     });
 
     test('should mock execute', () async {
-      var service = MockService()
-        ..mockExecute = (ctx, action) async {
-          return StringResponse()..value = 'hi';
-        };
+      var service = MockService(mockExecute: (ctx, action) async {
+        return StringResponse()..value = 'hi';
+      });
 
-      CmdEcho action = new CmdEcho();
+      CmdEcho action = CmdEcho();
       var response = await service.execute(testing.Context(), action);
       expect(response is StringResponse, true);
       if (response is StringResponse) {
@@ -76,12 +74,11 @@ void main() {
     });
 
     test('should use shared object', () async {
-      var service = MockService()
-        ..mockExecute = (ctx, action) async {
-          return StringResponse()..value = 'hi';
-        };
+      var service = MockService(mockExecute: (ctx, action) async {
+        return StringResponse()..value = 'hi';
+      });
 
-      CmdEcho action = new CmdEcho();
+      CmdEcho action = CmdEcho();
       var response = await service.execute(testing.Context(), action);
       expect(response is StringResponse, true);
     });

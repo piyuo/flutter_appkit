@@ -10,7 +10,7 @@ import 'package:libcli/src/command/events.dart';
 import 'package:libcli/src/command/http.dart';
 
 void main() {
-  var contract;
+  dynamic contract;
 
   setUp(() async {
     contract = null;

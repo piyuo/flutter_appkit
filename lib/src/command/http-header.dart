@@ -17,7 +17,7 @@ Future<Map<String, String>> doRequestHeaders() async {
 
 Future<void> doResponseHeaders(Map<String, String> headers) async {
   var c = headers['set-cookie'];
-  if (c != null && c.length > 0) {
+  if (c != null && c.isNotEmpty) {
     //log('refresh accessToken=$c');
     // services.setAccessToken(c);
   }
