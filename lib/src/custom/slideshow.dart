@@ -23,11 +23,12 @@ class Slideshow extends StatelessWidget {
   ///    ],
   ///  )
   ///
-  Slideshow({
+  const Slideshow({
+    Key? key,
     required this.urls,
     this.imageWidth = 300,
     this.height = 300,
-  });
+  }) : super(key: key);
 
   final double imageWidth;
 
@@ -55,7 +56,7 @@ class Slideshow extends StatelessWidget {
                     .map((url) => Padding(
                           padding: delta.isPhoneLayout(constraints.maxWidth)
                               ? EdgeInsets.zero
-                              : EdgeInsets.symmetric(horizontal: 8),
+                              : const EdgeInsets.symmetric(horizontal: 8),
                           child: delta.WebImage(
                             url,
                           ),
@@ -71,7 +72,7 @@ class Slideshow extends StatelessWidget {
                   child: Container(
                     width: 12.0,
                     height: 12.0,
-                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: context.themeColor(

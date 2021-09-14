@@ -25,7 +25,7 @@ void main() {
       home: Builder(builder: (BuildContext ctx) {
         return TextButton(
           key: keyBtn,
-          child: Text('button'),
+          child: const Text('button'),
           onPressed: () => onPressed(ctx),
         );
       }),
@@ -63,7 +63,7 @@ void main() {
       testing.useTestFont(tester);
       await tester.pumpWidget(
         createSample(onPressed: (context) {
-          watch(() => throw SocketException('wifi off'));
+          watch(() => throw const SocketException('wifi off'));
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);

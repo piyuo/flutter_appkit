@@ -117,7 +117,7 @@ class DeltaPlayground extends StatelessWidget {
                 'https://www.apple.com/v/iphone-12/g/images/overview/design/design_compare_skinny__fhvbipafz2my_large.jpg',
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             SizedBox(
               width: 300,
               height: 300,
@@ -133,28 +133,28 @@ class DeltaPlayground extends StatelessWidget {
     var controller1 = TextEditingController();
     var focusNode1 = FocusNode();
     return Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(children: [
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: ElevatedButton(
-                child: Text('set text'),
+                child: const Text('set text'),
                 onPressed: () {
                   controller1.text = 'hello world';
                 }),
           ),
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: ElevatedButton(
-                child: Text('show suggestion'),
+                child: const Text('show suggestion'),
                 onPressed: () {
                   focusNode1.requestFocus();
                 }),
           ),
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: ElevatedButton(
-                child: Text('hide suggestion'),
+                child: const Text('hide suggestion'),
                 onPressed: () {
                   focusNode1.unfocus();
                 }),
@@ -179,15 +179,15 @@ class DeltaPlayground extends StatelessWidget {
               ];
             },
             onSuggestionChanged: (text) => print('1. $text selected'),
-            onTextChanged: (text) => print('1. text changed: $text'),
+            onTextChanged: (text) => debugPrint('1. text changed: $text'),
           ),
-          SizedBox(height: 20),
-          Text('no suggestion'),
+          const SizedBox(height: 20),
+          const Text('no suggestion'),
           SearchBar(
             controller: TextEditingController(),
-            onTextChanged: (text) => print('2.text changed: $text'),
+            onTextChanged: (text) => debugPrint('2.text changed: $text'),
           ),
-          Text('text not empty suggestion'),
+          const Text('text not empty suggestion'),
           SearchBar(
             controller: TextEditingController(),
             suggestionBuilder: (text) async {
@@ -201,9 +201,9 @@ class DeltaPlayground extends StatelessWidget {
                 'cc',
               ];
             },
-            onTextChanged: (text) => print('3.text changed: $text'),
+            onTextChanged: (text) => debugPrint('3.text changed: $text'),
           ),
-          Text('not dense'),
+          const Text('not dense'),
           SearchBar(
             controller: TextEditingController(text: 'search now'),
             isDense: false,
@@ -213,24 +213,24 @@ class DeltaPlayground extends StatelessWidget {
 
   Widget _roundCheckBox(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Row(
           children: [
             Check(
               label: 'Remember me',
               controller: _checkBoxController,
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Check(
               controller: _checkBoxController,
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Check(
               checkColor: Colors.red,
               fillColor: Colors.green,
               controller: _checkBoxController,
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Check(
               disabled: true,
               label: 'disabled',
@@ -247,7 +247,7 @@ class DeltaPlayground extends StatelessWidget {
       padding: EdgeInsets.all(20),
       child: Hypertext(fontSize: 13)
         ..span('click to print to console')
-        ..action('privacy', onTap: (_, __) => print('hello world'))
+        ..action('privacy', onTap: (_, __) => debugPrint('hello world'))
         ..span('click to open url')
         ..link('starbucks', url: 'https://www.starbucks.com'),
     );
@@ -255,7 +255,7 @@ class DeltaPlayground extends StatelessWidget {
 
   Widget _awaitError(BuildContext context) {
     return TextButton(
-      child: Text('provider with problem'),
+      child: const Text('provider with problem'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
           return WrongPage();
@@ -266,7 +266,7 @@ class DeltaPlayground extends StatelessWidget {
 
   Widget _awaitWait(BuildContext context) {
     return TextButton(
-      child: Text('provider need wait 30\'s'),
+      child: const Text('provider need wait 30\'s'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
           return WaitPage();
@@ -291,7 +291,7 @@ class DeltaPlayground extends StatelessWidget {
               items: [
                 ListingItem(1, title: 'item 1'),
                 ListingItem(2, title: 'item 2', icon: CustomIcons.cardGiftcard),
-                Divider(
+                const Divider(
                   height: 1,
                 ),
                 ListingItem(3, title: 'item 3', icon: CustomIcons.cardGiftcard),
@@ -311,13 +311,13 @@ class DeltaPlayground extends StatelessWidget {
                         child: Center(
                           child: Text(
                             text,
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                         ))
                     : null;
               },
               onItemTap: (context, int key) {
-                print('$key pressed');
+                debugPrint('$key pressed');
               },
             )),
         SizedBox(
@@ -340,12 +340,12 @@ class DeltaPlayground extends StatelessWidget {
                 return key == 5
                     ? Text(
                         text,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       )
                     : null;
               },
               onItemTap: (context, int key) {
-                print('$key pressed');
+                debugPrint('$key pressed');
               },
             )),
         Expanded(
@@ -362,7 +362,7 @@ class DeltaPlayground extends StatelessWidget {
     final GlobalKey btnPopup = GlobalKey();
     return ElevatedButton(
       key: btnPopup,
-      child: Text('popup'),
+      child: const Text('popup'),
       onPressed: () {
         var rect = getWidgetGlobalRect(btnPopup);
         popup(context,
@@ -371,8 +371,8 @@ class DeltaPlayground extends StatelessWidget {
               color: Colors.green,
               child: Center(
                   child: InkWell(
-                onTap: () => print('hello'),
-                child: Text(
+                onTap: () => debugPrint('hello'),
+                child: const Text(
                   'hello',
                   style: TextStyle(fontSize: 22),
                 ),
@@ -387,7 +387,7 @@ class DeltaPlayground extends StatelessWidget {
         width: 240,
         child: ElevatedButton(
           key: btnMenu,
-          child: Text('menu'),
+          child: const Text('menu'),
           onPressed: () async {
             int? i = await menu<int>(
               context,
@@ -398,7 +398,7 @@ class DeltaPlayground extends StatelessWidget {
                 ListingItem(3, title: 'item 3'),
               ],
             );
-            print(i != null ? 'select item $i' : 'not select');
+            debugPrint(i != null ? 'select item $i' : 'not select');
           },
         ));
   }
@@ -410,7 +410,7 @@ class DeltaPlayground extends StatelessWidget {
         width: 240,
         child: ElevatedButton(
           key: btnMenuOnBottom,
-          child: Text('menu on bottom'),
+          child: const Text('menu on bottom'),
           onPressed: () async {
             int? i = await menu<int>(
               context,
@@ -421,7 +421,7 @@ class DeltaPlayground extends StatelessWidget {
                 ListingItem(3, title: 'item 3'),
               ],
             );
-            print(i != null ? 'select item $i' : 'not select');
+            debugPrint(i != null ? 'select item $i' : 'not select');
           },
         ));
   }
@@ -430,12 +430,12 @@ class DeltaPlayground extends StatelessWidget {
     return PullRefresh(
         scrollDirection: Axis.horizontal,
         onPullRefresh: (BuildContext context) async {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
           _pullRefreshCount--;
           return true;
         },
         onLoadMore: (BuildContext context) async {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
           _pullRefreshCount++;
           return true;
         },
@@ -447,7 +447,7 @@ class DeltaPlayground extends StatelessWidget {
             width: 100,
             height: 100,
             color: index % 2 == 0 ? Colors.yellow[100] : Colors.blue[100],
-            margin: EdgeInsets.all(0),
+            margin: const EdgeInsets.all(0),
             child: Text('item $index'),
           );
         });
@@ -464,7 +464,7 @@ class DeltaPlayground extends StatelessWidget {
       return Container(
         //height: double.infinity,
         color: Colors.blue[100],
-        padding: EdgeInsets.fromLTRB(80, 20, 80, 20),
+        padding: const EdgeInsets.fromLTRB(80, 20, 80, 20),
         child: Text('item $index'),
       );
     });
@@ -474,11 +474,13 @@ class DeltaPlayground extends StatelessWidget {
 class WaitProvider extends AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
-    await Future.delayed(Duration(seconds: 30));
+    await Future.delayed(const Duration(seconds: 30));
   }
 }
 
 class WaitPage extends StatelessWidget {
+  const WaitPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<WaitProvider>(
@@ -499,6 +501,8 @@ class WrongProvider extends AsyncProvider {
 }
 
 class WrongPage extends StatelessWidget {
+  const WrongPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<WrongProvider>(

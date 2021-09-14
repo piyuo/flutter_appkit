@@ -3,17 +3,18 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:libcli/delta.dart' as delta;
 import 'package:auto_size_text/auto_size_text.dart';
 
-final double elevation = 8;
+const double elevation = 8;
 
 class Tile extends StatelessWidget {
   /// Tile basic unit is 16
-  Tile({
+  const Tile({
     required this.builder,
     this.x = 8,
     this.y = 8,
     this.cardView = true,
     this.onTap,
-  });
+    Key? key,
+  }) : super(key: key);
 
   /// The number of cells occupied in the cross axis.
   final int x;
@@ -33,7 +34,7 @@ class Tile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var borderColor = Theme.of(context).primaryColor.withOpacity(0.9);
-    final shape = RoundedRectangleBorder(
+    const shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(10),
       ),
@@ -62,9 +63,10 @@ class Tile extends StatelessWidget {
 
 class Wall extends StatelessWidget {
   /// Wall is use 16 unit as single tile, wall size is 16 on phone, 32 on table, 64 on desktop
-  Wall({
+  const Wall({
     required this.tiles,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final List<Tile> tiles;
 
@@ -88,7 +90,7 @@ class Wall extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         mainAxisSpacing: 10.0,
         crossAxisSpacing: 10.0,
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         shrinkWrap: true,
         controller: ScrollController(), // override default controller, we don't wall scroll
         itemCount: tiles.length,
@@ -116,8 +118,8 @@ class Wall extends StatelessWidget {
 Tile buttonTile(
   IconData icon, {
   Color? iconColor,
-  int x: 8,
-  double y: 8,
+  int x = 8,
+  double y = 8,
   String text = '',
   String description = '',
   void Function()? onTap,
@@ -129,7 +131,7 @@ Tile buttonTile(
       builder: (BuildContext context) {
         iconColor = iconColor ?? Theme.of(context).primaryColor;
         return Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -143,23 +145,23 @@ Tile buttonTile(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      text.length > 0
+                      text.isNotEmpty
                           ? Padding(
-                              padding: EdgeInsets.only(bottom: 5),
+                              padding: const EdgeInsets.only(bottom: 5),
                               child: AutoSizeText(
                                 text,
                                 maxLines: 1,
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                               ))
-                          : SizedBox(),
-                      description.length > 0
+                          : const SizedBox(),
+                      description.isNotEmpty
                           ? AutoSizeText(description,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
                               ))
-                          : SizedBox(),
+                          : const SizedBox(),
                     ],
                   ),
                 ),
@@ -200,7 +202,7 @@ Tile linkTile({
     onTap: onTap,
     builder: (BuildContext context) => Container(
       decoration: decoration,
-      padding: EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(left: 20),
       child: Stack(
         children: [
           Column(
@@ -214,16 +216,18 @@ Tile linkTile({
                         fontWeight: FontWeight.bold,
                         color: color,
                       ))
-                  : SizedBox(),
-              SizedBox(height: 5),
+                  : const SizedBox(),
+              const SizedBox(height: 5),
               description != null
                   ? Row(
                       children: [
                         AutoSizeText(description, style: TextStyle(color: color ?? Colors.grey, fontSize: 16)),
-                        next ? Icon(delta.CustomIcons.navigateNext, color: color ?? Colors.grey, size: 26) : SizedBox(),
+                        next
+                            ? Icon(delta.CustomIcons.navigateNext, color: color ?? Colors.grey, size: 26)
+                            : const SizedBox(),
                       ],
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
           icon != null
@@ -233,14 +237,14 @@ Tile linkTile({
                   bottom: 0,
                   child: Icon(icon, color: iconColor, size: 48),
                 )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
     ),
   );
 }
 
-final shape = RoundedRectangleBorder(
+const shape = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
     Radius.circular(10),
   ),
@@ -253,7 +257,7 @@ Widget listTitle(String title) {
     child: Container(
       alignment: Alignment.center,
       child: Text(title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
           )),
@@ -270,7 +274,7 @@ Widget listItem({
   return Expanded(
       flex: 20,
       child: Card(
-        margin: EdgeInsets.only(bottom: 20),
+        margin: const EdgeInsets.only(bottom: 20),
         elevation: elevation,
         shape: shape,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -280,27 +284,27 @@ Widget listItem({
                 ? delta.WebImage(
                     imageUrl,
                   )
-                : SizedBox(),
+                : const SizedBox(),
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       )),
                   Text(text1,
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
                       )),
                   Text(text2,
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
                       )),
@@ -314,8 +318,8 @@ Widget listItem({
 
 Tile listTile({
   List<Widget> children = const <Widget>[],
-  int x: 16,
-  double y: 16,
+  int x = 16,
+  double y = 16,
   void Function()? onTap,
 }) {
   return Tile(
@@ -331,8 +335,8 @@ Tile listTile({
 Tile tileBanner(
   String imageName,
   String text, {
-  int x: 16,
-  double y: 4,
+  int x = 16,
+  double y = 4,
   void Function()? onTap,
 }) {
   return Tile(
@@ -346,7 +350,7 @@ Tile tileBanner(
                 //      width: ui.isDesktopLayout(constraints.maxWidth) ? 1024 : constraints.maxWidth,
                 fit: BoxFit.cover,
               ),
-              Text(text, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ],
           ));
 }

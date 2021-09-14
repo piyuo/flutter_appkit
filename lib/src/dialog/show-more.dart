@@ -77,7 +77,7 @@ delta.Popup showMore(
                 child: Material(
                   color: backgroundColor,
                   elevation: 10,
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
                     ),
@@ -90,7 +90,7 @@ delta.Popup showMore(
             left: targetRect.left + targetRect.width / 2.0 - arrowWidth / 2,
             top: triangleInBottom ? dy + size.height : dy - arrowHeight,
             child: CustomPaint(
-              size: Size(arrowWidth, arrowHeight),
+              size: const Size(arrowWidth, arrowHeight),
               painter: TrianglePainter(isDown: triangleInBottom, color: backgroundColor),
             ),
           ),

@@ -62,13 +62,13 @@ class FormPlayground extends StatelessWidget {
           appBar: AppBar(),
           body: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Form(
                 key: _keyForm,
                 child: Column(
                   children: [
                     InputField(
-                      key: Key('test-input'),
+                      key: const Key('test-input'),
                       controller: textController,
                       label: 'input field label',
                       hint: 'please input text',
@@ -77,7 +77,7 @@ class FormPlayground extends StatelessWidget {
                     ),
                     br(),
                     DropdownField(
-                      key: Key('test-dropdown'),
+                      key: const Key('test-dropdown'),
                       controller: dropdownController,
                       items: dropdownItems,
                       label: 'dropdown field label',
@@ -87,7 +87,7 @@ class FormPlayground extends StatelessWidget {
                     ),
                     br(),
                     ClickField(
-                      key: Key('test-click'),
+                      key: const Key('test-click'),
                       controller: clickController,
                       label: 'click field label',
                       hint: 'click here to set value',
@@ -100,43 +100,43 @@ class FormPlayground extends StatelessWidget {
                     ),
                     br(),
                     EmailField(
-                      key: Key('test-email'),
+                      key: const Key('test-email'),
                       controller: emailController,
                       label: 'email field',
                       focusNode: pFormPlayground.emailFocus,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Submit(
-                      key: Key('submitForm'),
+                      key: const Key('submitForm'),
                       label: 'Submit form',
                       form: _keyForm,
                       onClick: () async {
                         //await Future.delayed(Duration(seconds: 1));
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Submit(
-                      key: Key('submitLong'),
+                      key: const Key('submitLong'),
                       label: 'Submit long waiting form',
                       onClick: () async {
-                        await Future.delayed(Duration(seconds: 5));
+                        await Future.delayed(const Duration(seconds: 5));
                         return true;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Submit(
-                      key: Key('submitSelect'),
+                      key: const Key('submitSelect'),
                       label: 'Select',
                       sizeLevel: 0.8,
                       onClick: () async {
-                        await Future.delayed(Duration(seconds: 1));
+                        await Future.delayed(const Duration(seconds: 1));
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     AnimateButton(
                       'animate button',
                       onClick: () async {
-                        await Future.delayed(Duration(seconds: 5));
+                        await Future.delayed(const Duration(seconds: 5));
                         return true;
                       },
                     ),

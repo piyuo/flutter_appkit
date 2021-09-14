@@ -73,7 +73,7 @@ class SearchBar extends StatelessWidget {
                         keyboardType: keyboardType,
                         textInputAction: TextInputAction.search,
                         maxLines: 1,
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                         decoration: InputDecoration(
                           isDense: isDense,
                           prefixIcon: Icon(
@@ -102,7 +102,7 @@ class SearchBar extends StatelessWidget {
                           border: OutlineInputBorder(
                             gapPadding: 0,
                             borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Colors.grey,
                             ),
                           ),
@@ -110,11 +110,11 @@ class SearchBar extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             gapPadding: 0,
                             borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Colors.grey,
                             ),
                           ),
-                          contentPadding: EdgeInsets.only(left: 0, bottom: 10, top: 12, right: 0),
+                          contentPadding: const EdgeInsets.only(left: 0, bottom: 10, top: 12, right: 0),
                           hintText: hint,
                         ),
                         controller: model._innerController,
@@ -139,7 +139,7 @@ class SearchBar extends StatelessWidget {
                             child: Material(
                                 clipBehavior: Clip.antiAlias,
                                 elevation: 5.0,
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(15),
                                   bottomRight: Radius.circular(15),
                                 ),
@@ -166,7 +166,7 @@ class SearchBar extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                                         child: Text(
                                           option,
                                           maxLines: 1,

@@ -41,7 +41,7 @@ class Submit extends StatelessWidget {
   ///
   final Duration? showLoading;
 
-  Submit({
+  const Submit({
     required Key key, // all submit must have key, it's important for test and identify field
     required this.label,
     required this.onClick,

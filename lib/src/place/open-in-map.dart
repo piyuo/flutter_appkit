@@ -5,11 +5,12 @@ import 'package:libcli/locate.dart' as locate;
 
 /// PlaceField let user set his place, it contain address, lat/lng and address tags
 class OpenInMap extends StatelessWidget {
-  OpenInMap({
+  const OpenInMap({
+    Key? key,
     required this.latlng,
     required this.address,
     required this.label,
-  });
+  }) : super(key: key);
 
   /// latlng is the lat/lng need to open in map
   final types.LatLng latlng;

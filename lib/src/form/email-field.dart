@@ -64,7 +64,7 @@ class EmailField extends Field {
   /// textInputAction control keyboard text input action
   final TextInputAction textInputAction;
 
-  EmailField({
+  const EmailField({
     required Key key,
     required this.controller,
     required FocusNode focusNode,
@@ -121,7 +121,7 @@ class EmailField extends Field {
               ),
             ),
             pEmailField._suggest.isEmpty
-                ? SizedBox()
+                ? const SizedBox()
                 : Align(
                     alignment: Alignment.centerLeft,
                     child: RichText(
@@ -135,8 +135,8 @@ class EmailField extends Field {
                         ),
                         TextSpan(
                           text: pEmailField._suggest,
-                          style: TextStyle(color: Colors.blue),
-                          recognizer: new TapGestureRecognizer()..onTap = pEmailField._correctFromSuggestion,
+                          style: const TextStyle(color: Colors.blue),
+                          recognizer: TapGestureRecognizer()..onTap = pEmailField._correctFromSuggestion,
                         )
                       ],
                     )),

@@ -27,12 +27,13 @@ class Await extends StatefulWidget {
   ///
   /// show child view when provider successfully load
   ///
-  Await(
+  const Await(
     this.list, {
+    Key? key,
     required this.child,
     this.progress,
     this.error,
-  });
+  }) : super(key: key);
 
   @override
   _AwaitState createState() => _AwaitState();
@@ -97,7 +98,7 @@ class _AwaitState extends State<Await> {
       case AsyncStatus.ready:
         return widget.child;
       case AsyncStatus.error:
-        return widget.error != null ? widget.error! : AwaitErrorMessage();
+        return widget.error != null ? widget.error! : const AwaitErrorMessage();
       default:
         return widget.progress != null
             ? widget.progress!
@@ -118,38 +119,40 @@ class _AwaitState extends State<Await> {
 }
 
 class AwaitErrorMessage extends StatelessWidget {
-  final backgroundColor = Color.fromRGBO(203, 29, 57, 1);
+  final backgroundColor = const Color.fromRGBO(203, 29, 57, 1);
+
+  const AwaitErrorMessage({Key? key}) : super(key: key);
 
   content(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        Icon(
+        const Icon(
           CustomIcons.errorOutline,
           color: Colors.white,
           size: 120,
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         AutoSizeText(
           'errTitle'.i18n_,
           maxLines: 2,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.white,
             fontSize: 24.0,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         AutoSizeText(
           'notified'.i18n_,
           maxLines: 5,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18.0,
           ),
         ),
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
         InkWell(
             onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
             child: Icon(
@@ -157,7 +160,7 @@ class AwaitErrorMessage extends StatelessWidget {
               color: Colors.orange[200],
               size: 38,
             )),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         InkWell(
             onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
             child: Text(
@@ -186,9 +189,9 @@ class AwaitErrorMessage extends StatelessWidget {
           child: SingleChildScrollView(
               child: Center(
             child: Container(
-                padding: EdgeInsets.all(40),
-                child:
-                    ConstrainedBox(constraints: BoxConstraints(minWidth: 300, maxWidth: 360), child: content(context))),
+                padding: const EdgeInsets.all(40),
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(minWidth: 300, maxWidth: 360), child: content(context))),
           ))),
     );
   }

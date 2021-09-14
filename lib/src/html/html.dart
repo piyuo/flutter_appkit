@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
+import 'package:flutter/material.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/env.dart' as env;
 
@@ -25,7 +26,8 @@ Map<String, String> query() {
 /// goBack loads the previous URL in the history list
 ///
 void goBack() {
-  html.window..history.back();
+  var window = html.window;
+  window.history.back();
 }
 
 /// routeToUrl convert RouteSettings to url string
@@ -98,55 +100,5 @@ Map<String, String> query() {
 
 typedef String Path();
 
-/// path return current path
-///
-///   /js/tryit?filename=tryjs
-///   current.path(); //
-Path path;
-
-// /js/tryit.asp
-
-//tryit
-typedef String Name();
-Name name;
-
-//filename=tryjs_loc_href
-typedef Map<String, String> Arguments();
-Arguments arguments;
-
-import 'package:piyuo/src/path.dart' as routes;
-import 'package:piyuo/src/dialog/playground/dialog-playground.dart';
-import 'package:piyuo/src/services/playground/services-playground.dart';
-import 'package:piyuo/src/routes/current.dart' as current;
-//import 'package:piyuo/src/view/logo_view.dart';
-import 'package:piyuo/src/pages/signup/signup.dart';
-import 'package:piyuo/src/pages/signup/play/signup-play.dart';
-
-//import 'package:piyuo/src/admin/products/list_page.dart';
-///import 'package:piyuo/src/admin/products/item_page.dart';
-
-RouteSettings _setting;
-
-void setCurrent(RouteSettings setting) {
-  _setting = setting;
-  current.name = () => _setting.name;
-
-  routes.key = key;
-  routes.query = query;
-  return route;
-}
-
-String _name() {
-  return _current.name;
-}
-
-String key() {
-  var list = _current.name.split('/');
-  return list[list.length - 1];
-}
-
-Map<String, String> query() {
-  return _current.arguments;
-}
 
 */

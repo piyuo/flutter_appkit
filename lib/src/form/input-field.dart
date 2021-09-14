@@ -5,7 +5,7 @@ import 'field.dart';
 
 /// InputField for input simple text
 class InputField extends Field {
-  InputField({
+  const InputField({
     required Key key,
     required this.controller,
     this.textInputAction = TextInputAction.next,

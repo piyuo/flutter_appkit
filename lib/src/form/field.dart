@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class Field extends StatelessWidget {
-  Field({
+  const Field({
     required Key key, // all field must have key, it's important for test and identify field
     this.label,
     this.hint,

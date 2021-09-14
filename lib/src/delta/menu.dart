@@ -50,7 +50,7 @@ Future<T?> menu<T>(
   }
 
   final listingController = ValueNotifier<T?>(null);
-  Popup? pop = null;
+  Popup? pop;
   pop = popup(
     context,
     rect: Rect.fromLTWH(left, top, width, height),
@@ -59,13 +59,13 @@ Future<T?> menu<T>(
       height: height,
       child: Material(
         elevation: 10,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Listing<T>(
             controller: listingController,
             dense: true,

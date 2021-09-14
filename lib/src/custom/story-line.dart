@@ -18,7 +18,7 @@ class Story {
 }
 
 class StoryLine extends StatelessWidget {
-  StoryLine({
+  const StoryLine({
     required this.stories,
     required this.builder,
     required this.onPullRefresh,
@@ -26,7 +26,8 @@ class StoryLine extends StatelessWidget {
     required this.title,
     this.subtitle = '',
     this.height = 300,
-  });
+    Key? key,
+  }) : super(key: key);
 
   /// title is story line title
   final String title;
@@ -64,7 +65,7 @@ class StoryLine extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[900],
                   )),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Text(subtitle,
                   style: TextStyle(
                     fontSize: 24,
@@ -77,11 +78,11 @@ class StoryLine extends StatelessWidget {
             child: delta.PullRefresh(
               scrollDirection: Axis.horizontal,
               onPullRefresh: (BuildContext context) async {
-                await Future.delayed(Duration(seconds: 1));
+                await Future.delayed(const Duration(seconds: 1));
                 return true;
               },
               onLoadMore: (BuildContext context) async {
-                await Future.delayed(Duration(seconds: 1));
+                await Future.delayed(const Duration(seconds: 1));
                 return true;
               },
               itemCount: (BuildContext context) {
@@ -130,7 +131,7 @@ class SimpleStory extends Story {
   static Widget builder(BuildContext context, Story story) {
     return story is SimpleStory
         ? Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
             width: 250,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -142,10 +143,10 @@ class SimpleStory extends Story {
                         color: story.color,
                         size: 54,
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
                 Text.rich(TextSpan(
                     text: story.text,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -162,6 +163,6 @@ class SimpleStory extends Story {
               ],
             ),
           )
-        : SizedBox();
+        : const SizedBox();
   }
 }

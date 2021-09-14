@@ -3,7 +3,7 @@ import '../delta/bar.dart';
 
 Widget _button(BuildContext context, String text, void Function() callback) {
   return Padding(
-    padding: EdgeInsets.all(10),
+    padding: const EdgeInsets.all(10),
     child: ElevatedButton(child: Text(text), onPressed: callback),
   );
 }
@@ -15,7 +15,7 @@ void _show(BuildContext context, Widget child) {
         builder: (_) => Scaffold(
           appBar: Bar(),
           body: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: child,
           ),
         ),

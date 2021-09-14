@@ -17,13 +17,14 @@ class SidePanelProvider with ChangeNotifier {
 }
 
 class SidePanel extends StatelessWidget {
-  SidePanel({
+  const SidePanel({
     required this.sideWidget,
     required this.mainWidget,
     required this.sideWidth,
     this.autoHide = false,
     this.decoration,
-  });
+    Key? key,
+  }) : super(key: key);
 
   /// sideWidget is the widget place on the side
   final Widget sideWidget;
@@ -45,7 +46,7 @@ class SidePanel extends StatelessWidget {
         ? Material(
             clipBehavior: Clip.antiAlias,
             elevation: 4,
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
             )),

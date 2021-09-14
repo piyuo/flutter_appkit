@@ -156,7 +156,7 @@ class SearchBar extends StatelessWidget {
                     Container(
                         margin: EdgeInsets.only(
                             right: confirmButtonProvider.visible ? _confirmButtonWidth : 0), // for confirm button
-                        padding: EdgeInsets.fromLTRB(40, 0, 8, 0),
+                        padding: const EdgeInsets.fromLTRB(40, 0, 8, 0),
                         alignment: Alignment.center,
                         height: kToolbarHeight - 3,
                         child: DecoratedBox(
@@ -164,7 +164,7 @@ class SearchBar extends StatelessWidget {
                             color: isDark ? Colors.grey[850] : Colors.grey[200],
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: SizedBox(
+                          child: const SizedBox(
                             width: double.infinity,
                             height: 38,
                           ),
@@ -183,8 +183,8 @@ class SearchBar extends StatelessWidget {
                           keyboardType: TextInputType.streetAddress,
                           textInputAction: TextInputAction.search,
                           maxLines: 1,
-                          style: TextStyle(fontSize: 18),
-                          decoration: new InputDecoration(
+                          style: const TextStyle(fontSize: 18),
+                          decoration: InputDecoration(
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
@@ -213,7 +213,7 @@ class SearchBar extends StatelessWidget {
                                 width: constraints.maxWidth,
                                 height: 52 * options.length.toDouble(),
                                 child: ListView.builder(
-                                  padding: EdgeInsets.all(0),
+                                  padding: const EdgeInsets.all(0),
                                   itemCount: options.length,
                                   itemBuilder: (BuildContext context, int index) {
                                     final String option = options.elementAt(index);
@@ -229,7 +229,7 @@ class SearchBar extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                                         child: Text(
                                           option,
                                           maxLines: 1,
@@ -247,8 +247,8 @@ class SearchBar extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: IconButton(
-                        padding: EdgeInsets.all(0),
-                        icon: Icon(delta.CustomIcons.arrowBackIosNew),
+                        padding: const EdgeInsets.all(0),
+                        icon: const Icon(delta.CustomIcons.arrowBackIosNew),
                         onPressed: Navigator.of(context).pop,
                       ),
                     ),
@@ -274,7 +274,7 @@ class SearchBar extends StatelessWidget {
                                   searchBarProvider._confirmFocus, searchBarProvider.onClickConfirm),
                             ),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
 
                     /*
             Positioned(

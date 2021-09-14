@@ -25,13 +25,13 @@ void main() {
 
   group('[i18n-extension]', () {
     testWidgets('should translate', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(const MaterialApp(
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();
       expect(LocaleWidget.value, 'A');
       expect(LocaleWidget.i18nValue, 'A');
-      expect(LocaleWidget.i18n_Value, 'OK');
+      expect(LocaleWidget._i18nValue, 'OK');
     });
 
     test('should get local date', () async {
@@ -59,12 +59,12 @@ void main() {
       var date = DateTime(2021, 1, 2, 23, 30);
       google.Timestamp t = timestamp(datetime: date);
 
-      setLocale(testing.Context(), Locale('en', 'US'));
+      setLocale(testing.Context(), const Locale('en', 'US'));
       expect(t.localDateString, 'Jan 2, 2021');
       expect(t.localTimeString, '11:30 PM');
       expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
 
-      setLocale(testing.Context(), Locale('zh', 'CN'));
+      setLocale(testing.Context(), const Locale('zh', 'CN'));
       expect(t.localDateString, '2021年1月2日');
       expect(t.localTimeString, '下午11:30');
       expect(t.localDateTimeString, '2021年1月2日 下午11:30');
@@ -75,18 +75,22 @@ void main() {
 class LocaleWidget extends StatelessWidget {
   static String value = '';
   static String i18nValue = '';
-  static String i18n_Value = '';
+  static String _i18nValue = '';
+
+  const LocaleWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     value = 'a'.i18n(context);
     i18nValue = i18n(context, 'a');
-    i18n_Value = i18n_('ok');
+    _i18nValue = i18n_('ok');
     return Text(value);
   }
 }
 
 class TestWidget extends StatelessWidget {
+  const TestWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -98,7 +102,7 @@ class TestWidget extends StatelessWidget {
       child: Consumer<I18nProvider>(
           builder: (context, i18n, child) => delta.Await(
                 [i18n],
-                child: LocaleWidget(),
+                child: const LocaleWidget(),
               )),
     );
   }

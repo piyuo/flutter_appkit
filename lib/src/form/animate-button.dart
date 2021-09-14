@@ -48,7 +48,7 @@ class AnimateButton extends StatefulWidget {
   ///
   final GlobalKey<FormState>? form;
 
-  AnimateButton(
+  const AnimateButton(
     this.text, {
     this.onClickStart,
     this.onClick,
@@ -132,7 +132,7 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
             focusNode: widget.focusNode,
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(backgroundColor(context)),
-              padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+              padding: MaterialStateProperty.all(const EdgeInsets.all(0)),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25 * widget.sizeLevel),
               )),
@@ -235,19 +235,19 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
         widget.text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: Colors.white, fontSize: 16.0),
+        style: const TextStyle(color: Colors.white, fontSize: 16.0),
       );
     } else if (_state == _ButtonState.animate) {
       return SizedBox(
         height: _circleHeight,
         width: _circleHeight,
-        child: CircularProgressIndicator(
+        child: const CircularProgressIndicator(
           value: null,
           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
         ),
       );
     } else {
-      return Icon(
+      return const Icon(
         Icons.check,
         color: Colors.white,
         size: 32,

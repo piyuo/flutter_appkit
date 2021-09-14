@@ -183,6 +183,8 @@ class ShowSearchProvider with ChangeNotifier {
 }
 
 class ShowSearch extends StatelessWidget {
+  const ShowSearch({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<ShowSearchProvider, i18n.I18nProvider>(
@@ -220,7 +222,7 @@ class ShowSearch extends StatelessWidget {
               elevation: 0,
             ),
             body: Column(
-              children: <Widget>[
+              children: const <Widget>[
                 Expanded(
                   child: SearchView(),
                 ),

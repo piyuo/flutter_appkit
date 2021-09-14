@@ -29,6 +29,8 @@ class SearchViewProvider with ChangeNotifier {
 
 /// SearchView manage map / my location button / confirm button
 class SearchView extends StatelessWidget {
+  const SearchView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<i18n.I18nProvider, SearchViewProvider>(
@@ -40,26 +42,26 @@ class SearchView extends StatelessWidget {
                       ? Align(
                           alignment: Alignment.topCenter,
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 elevation: MaterialStateProperty.all(8),
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
                                 backgroundColor: MaterialStateProperty.all(Colors.white),
-                                padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                                padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(20, 10, 20, 10)),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Icon(
+                                  const Icon(
                                     delta.CustomIcons.myLocation,
                                     color: Colors.black,
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Text(
                                     i18nProvider.translate('myLoc'),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.black,
                                     ),
@@ -70,7 +72,7 @@ class SearchView extends StatelessWidget {
                             ),
                           ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ),
                 Consumer<ConfirmButtonProvider>(
                   builder: (context, confirmButtonProvider, child) => confirmButtonProvider.visible
@@ -85,7 +87,7 @@ class SearchView extends StatelessWidget {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
                                   child: Text(
                                     i18nProvider.translate('correct'),
                                     style: TextStyle(fontSize: 24, color: Colors.grey[900]),
@@ -97,7 +99,7 @@ class SearchView extends StatelessWidget {
                             ),
                           ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ),
               ],
             ));

@@ -20,7 +20,7 @@ const _supportedLocales = [
 ];
 
 /// _locale is current locale, it set by determineLocale()
-Locale _locale = Locale('en', US);
+Locale _locale = const Locale('en', US);
 
 String get localeString => localeToString(_locale);
 
@@ -103,7 +103,7 @@ Future<bool> setLocale(
     _locale = value;
     final localeStr = localeToString(value);
     if (remember) {
-      final tomorrow = DateTime.now().add(Duration(hours: 24));
+      final tomorrow = DateTime.now().add(const Duration(hours: 24));
       await pref.setStringWithExp(PREF_LOCALE_KEY, localeStr, tomorrow);
     }
     log.log('[i18n] locale=$localeStr');
@@ -145,8 +145,8 @@ bool isLocaleSupported(Locale locale) {
 /// The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
 ///
 Locale determineLocale(List<Locale>? locales) {
-  Locale bestLocale = Locale('en', US);
-  if (locales != null && locales.length > 0) {
+  Locale bestLocale = const Locale('en', US);
+  if (locales != null && locales.isNotEmpty) {
     bestLocale = locales[0];
     _country = bestLocale.countryCode ?? US;
     for (var locale in locales) {

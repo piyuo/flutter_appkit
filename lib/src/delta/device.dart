@@ -53,11 +53,12 @@ bool isDesktopLayout(double windowWidth) {
 
 ///  DeviceLayoutBuilder help choose device layout
 class DeviceLayoutBuilder extends StatelessWidget {
-  DeviceLayoutBuilder({
+  const DeviceLayoutBuilder({
     required this.phone,
     required this.tablet,
     required this.desktop,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final WidgetBuilder phone;
 
@@ -82,10 +83,11 @@ class DeviceLayoutBuilder extends StatelessWidget {
 
 ///  DeviceOrientationBuilder help choose orientation layout
 class DeviceOrientationBuilder extends StatelessWidget {
-  DeviceOrientationBuilder({
+  const DeviceOrientationBuilder({
+    Key? key,
     required this.landscape,
     required this.portrait,
-  });
+  }) : super(key: key);
 
   final WidgetBuilder landscape;
 

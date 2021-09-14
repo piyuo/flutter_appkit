@@ -19,9 +19,9 @@ void main() {
           child: Column(
             children: [
               DropdownField(
-                key: Key('test-dropdown'),
+                key: const Key('test-dropdown'),
                 controller: controller,
-                items: {
+                items: const {
                   "": "item0",
                   "1": "item1",
                 },

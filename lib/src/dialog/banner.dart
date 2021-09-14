@@ -25,7 +25,7 @@ Future<void> banner(
         TextButton(
           child: Text(
             'close'.i18n_,
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
           onPressed: () {
             timer.cancel();

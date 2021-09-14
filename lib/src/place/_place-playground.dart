@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:libcli/types.dart' as types;
 import 'package:libcli/form.dart' as form;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/testing.dart' as testing;
 import 'place-field.dart';
 import 'open-in-map.dart';
 
 class PlacePlayground extends StatefulWidget {
+  const PlacePlayground({Key? key}) : super(key: key);
+
   @override
   PlacePlaygroundState createState() => PlacePlaygroundState();
 }
@@ -68,18 +69,18 @@ class PlacePlaygroundState extends State<PlacePlayground> {
             key: _keyForm,
             child: SingleChildScrollView(
                 child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       children: <Widget>[
                         form.DropdownField(
-                          key: Key('test-dropdown'),
+                          key: const Key('test-dropdown'),
                           controller: countryController,
                           items: countryItems,
                           label: 'Country',
                         ),
                         form.p(),
                         PlaceField(
-                          key: Key('test-place'),
+                          key: const Key('test-place'),
                           controller: addressController,
                           label: 'Address',
                           focusNode: addressFocus,
@@ -87,7 +88,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                           require: 'you must input address!',
                         ),
                         form.InputField(
-                          key: Key('test-place2'),
+                          key: const Key('test-place2'),
                           controller: address2Controller,
                           focusNode: address2Focus,
                           hint: '(Optional) Floor/Room/Building number',
@@ -100,18 +101,18 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                         ),
                         form.p(),
                         form.Submit(
-                          key: Key('submit'),
+                          key: const Key('submit'),
                           label: 'Submit form',
                           form: _keyForm,
                           onClick: () async {},
                         ),
                         PlaceField(
-                          key: Key('test-place-value'),
+                          key: const Key('test-place-value'),
                           controller: addressWithValueController,
                           label: 'Address with value',
                         ),
                         form.InputField(
-                          key: Key('test-place2-value'),
+                          key: const Key('test-place2-value'),
                           controller: addressWithValue2Controller,
                         ),
                       ],

@@ -35,4 +35,6 @@ class MapProvider with ChangeNotifier {
 }
 
 /// Map is abstract map
-abstract class Map extends StatelessWidget {}
+abstract class Map extends StatelessWidget {
+  const Map({Key? key}) : super(key: key);
+}

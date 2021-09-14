@@ -16,7 +16,7 @@ void main() {
       home: Builder(builder: (BuildContext ctx) {
         return MaterialButton(
           key: keyBtn,
-          child: Text('button'),
+          child: const Text('button'),
           onPressed: () => onPressed(ctx),
         );
       }),
@@ -42,7 +42,7 @@ void main() {
     });
 
     testWidgets('should alert with cancel', (WidgetTester tester) async {
-      var result = null;
+      bool? result;
       await tester.pumpWidget(
         createSample(
             onPressed: (context) async => result = await alert(
@@ -68,7 +68,7 @@ void main() {
     });
 
     testWidgets('should alert with ok', (WidgetTester tester) async {
-      var result = null;
+      bool? result;
       await tester.pumpWidget(
         createSample(
             onPressed: (context) async => result = await alert(

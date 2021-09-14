@@ -21,7 +21,7 @@ void main() {
 
   group('[i18n-await]', () {
     testWidgets('should load i18n', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(const MaterialApp(
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();
@@ -34,9 +34,11 @@ void main() {
 class TestWidget extends StatelessWidget {
   static I18nProvider? i18n;
 
+  const TestWidget({Key? key}) : super(key: key);
+
   Widget widget(I18nProvider value) {
     i18n = value;
-    return Text('');
+    return const Text('');
   }
 
   @override

@@ -17,12 +17,12 @@ void main() {
     });
 
     test('should remove expired entry', () async {
-      MemoryCache cache = MemoryCache();
-      cache.expiredCheck = Duration(milliseconds: 500);
-      cache.set("expired1", "value1", expire: Duration(milliseconds: 400));
-      await Future.delayed(Duration(milliseconds: 950));
+      MemoryCache cache = MemoryCache(
+        expiredCheck: const Duration(milliseconds: 500),
+      );
+      cache.set("expired1", "value1", expire: const Duration(milliseconds: 400));
+      await Future.delayed(const Duration(milliseconds: 950));
       expect(cache.get("expired1"), isNull);
-      cache.expiredCheck = const Duration(minutes: 3);
     });
 
     test('should no error when delete not exists entry', () async {

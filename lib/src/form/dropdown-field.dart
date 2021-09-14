@@ -10,7 +10,7 @@ class DropdownField extends Field {
   /// items is items user can select
   final Map items;
 
-  DropdownField({
+  const DropdownField({
     required this.controller,
     required this.items,
     required Key key,
@@ -44,7 +44,7 @@ class DropdownField extends Field {
                 value: entry.key,
               ))
           .toList(),
-      icon: Icon(
+      icon: const Icon(
         delta.CustomIcons.expandMore,
       ),
       isExpanded: true,

@@ -11,10 +11,10 @@ class MemoryCache {
   final int maxCacheLimit;
 
   /// _expiredCheck check expired entry every 3 minutes
-  var expiredCheck;
+  final Duration expiredCheck;
 
   /// _cache is the internal cache
-  final _cache = LinkedHashMap<dynamic, dynamic>();
+  final _cache = <dynamic, dynamic>{};
 
   MemoryCache({
     this.maxCacheLimit = 240,
@@ -33,7 +33,7 @@ class MemoryCache {
     dynamic value, {
     Duration? expire,
   }) {
-    expire = expire ?? Duration(minutes: 5);
+    expire = expire ?? const Duration(minutes: 5);
     // make sure it be the last one in cache
     if (_cache.containsKey(key)) {
       _cache.remove(key);

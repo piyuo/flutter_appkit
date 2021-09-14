@@ -6,7 +6,7 @@ import 'package:libcli/pb.dart' as pb;
 
 void main() {
   setUp(() async {
-    CacheDuration = Duration(seconds: 1);
+    CacheDuration = const Duration(seconds: 1);
   });
 
   group('[command-firewall]', () {
@@ -35,12 +35,12 @@ void main() {
       if (response is pb.Error) {
         expect(response.code, 'hi');
       }
-      await Future.delayed(Duration(milliseconds: 1001)); // expire the cache
+      await Future.delayed(const Duration(milliseconds: 1001)); // expire the cache
       expect(firewallBegin(cmd.jsonString) is FirewallPass, true);
     });
 
     test('should block when command overflow', () async {
-      MaxAllowPostDuration = Duration(milliseconds: 900);
+      MaxAllowPostDuration = const Duration(milliseconds: 900);
       for (int i = 0; i < MaxAllowPostCount; i++) {
         final cmdID = "not-overflow-" + identifier.randomNumber(5);
         final cmd = pb.Error()..code = cmdID;
@@ -52,13 +52,13 @@ void main() {
       final cmdID2 = "overflow-" + identifier.randomNumber(5);
       final cmd2 = pb.Error()..code = cmdID2;
       expect(firewallBegin(cmd2.jsonString) is FirewallBlock, true);
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       expect(firewallBegin(cmd2.jsonString) is FirewallPass, true);
     });
 
     test('should block when server request BLOCK_SHORT', () async {
       // set block short to 0.5s
-      BlockShortDuration = Duration(milliseconds: 500);
+      BlockShortDuration = const Duration(milliseconds: 500);
 
       expect(firewallBegin('short') is FirewallPass, true);
 
@@ -72,13 +72,13 @@ void main() {
       expect(firewallBegin('short') is FirewallBlock, true);
 
       // wait 1 seconds should pass short duration
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       expect(firewallBegin('short') is FirewallPass, true);
     });
 
     test('should block when server request BLOCK_LONG', () async {
       // set block short to 0.5s
-      BlockLongDuration = Duration(milliseconds: 500);
+      BlockLongDuration = const Duration(milliseconds: 500);
 
       expect(firewallBegin('long') is FirewallPass, true);
 
@@ -92,7 +92,7 @@ void main() {
       expect(firewallBegin('long') is FirewallBlock, true);
 
       // wait 1 seconds should pass short duration
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       expect(firewallBegin('long') is FirewallPass, true);
     });
   });

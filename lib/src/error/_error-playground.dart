@@ -17,32 +17,32 @@ class ErrorPlayground extends StatelessWidget {
           Wrap(
             children: [
               ElevatedButton(
-                  child: Text('throw exception'),
+                  child: const Text('throw exception'),
                   onPressed: () {
                     watch(() => throw Exception('mock exception'));
                   }),
               ElevatedButton(
-                  child: Text('throw exception twice'),
+                  child: const Text('throw exception twice'),
                   onPressed: () {
                     watch(() {
-                      Future.delayed(Duration(seconds: 3), () {
+                      Future.delayed(const Duration(seconds: 3), () {
                         throw Exception('second exception');
                       });
                       throw Exception('first exception');
                     });
                   }),
               ElevatedButton(
-                  child: Text('firewall block'),
+                  child: const Text('firewall block'),
                   onPressed: () {
                     watch(() {});
                     eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
                   }),
               ElevatedButton(
-                  child: Text('no internet'),
+                  child: const Text('no internet'),
                   onPressed: () async {
                     watch(() {});
                     try {
-                      throw SocketException('wifi off');
+                      throw const SocketException('wifi off');
                     } catch (e) {
                       var contract = command.InternetRequiredContract(exception: e, url: 'http://mock');
                       contract.isInternetConnected = () async {
@@ -53,7 +53,7 @@ class ErrorPlayground extends StatelessWidget {
                     }
                   }),
               ElevatedButton(
-                  child: Text('service not available'),
+                  child: const Text('service not available'),
                   onPressed: () async {
                     watch(() {});
                     var contract = command.InternetRequiredContract(url: 'http://mock');
@@ -66,7 +66,7 @@ class ErrorPlayground extends StatelessWidget {
                     await eventbus.broadcast(context, contract);
                   }),
               ElevatedButton(
-                  child: Text('internet blocked'),
+                  child: const Text('internet blocked'),
                   onPressed: () async {
                     watch(() {});
                     var contract = command.InternetRequiredContract(url: 'http://mock');
@@ -79,22 +79,22 @@ class ErrorPlayground extends StatelessWidget {
                     await eventbus.broadcast(context, contract);
                   }),
               ElevatedButton(
-                  child: Text('internal server error'),
+                  child: const Text('internal server error'),
                   onPressed: () {
                     eventbus.broadcast(context, command.InternalServerErrorEvent());
                   }),
               ElevatedButton(
-                  child: Text('server not ready'),
+                  child: const Text('server not ready'),
                   onPressed: () {
                     eventbus.broadcast(context, command.ServerNotReadyEvent());
                   }),
               ElevatedButton(
-                  child: Text('bad request'),
+                  child: const Text('bad request'),
                   onPressed: () {
                     eventbus.broadcast(context, command.BadRequestEvent());
                   }),
               ElevatedButton(
-                  child: Text('client timeout'),
+                  child: const Text('client timeout'),
                   onPressed: () async {
                     try {
                       throw TimeoutException('client timeout');
@@ -105,19 +105,19 @@ class ErrorPlayground extends StatelessWidget {
                     }
                   }),
               ElevatedButton(
-                  child: Text('deadline exceeded'),
+                  child: const Text('deadline exceeded'),
                   onPressed: () async {
                     var ok = await eventbus.broadcast(
                         context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
                     dialog.info(context, text: ok ? 'retry' : 'cancel');
                   }),
               ElevatedButton(
-                  child: Text('slow network'),
+                  child: const Text('slow network'),
                   onPressed: () {
                     eventbus.broadcast(context, command.SlowNetworkEvent());
                   }),
               ElevatedButton(
-                  child: Text('disk error'),
+                  child: const Text('disk error'),
                   onPressed: () {
                     throw log.DiskErrorException();
                   }),

@@ -45,11 +45,12 @@ class Hypertext extends StatefulWidget {
   final double? fontSize;
 
   Hypertext({
+    Key? key,
     this.color,
     this.boldColor,
     this.linkColor,
     this.fontSize = 16,
-  });
+  }) : super(key: key);
 
   void span(String text) {
     children.add(_Span(text));

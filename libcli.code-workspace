@@ -32,7 +32,8 @@
             "protobuf",
             "protoc",
             "src",
-            "styl"
+            "styl",
+            "unfocus"
         ],
         "breadcrumbs.enabled": true,
         "dart.allowTestsOutsideTestFolder": true,

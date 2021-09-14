@@ -24,7 +24,7 @@ void main() {
     testWidgets('should click', (WidgetTester tester) async {
       bool clicked = false;
       var widget = Submit(
-        key: Key('submit'),
+        key: const Key('submit'),
         label: 'submit',
         onClick: () {
           clicked = true;
@@ -38,20 +38,20 @@ void main() {
 
     testWidgets('should show loading', (WidgetTester tester) async {
       var widget = Submit(
-        key: Key('submit'),
+        key: const Key('submit'),
         label: 'submit',
         showLoading: const Duration(milliseconds: 10),
         onClick: () async {
-          await Future.delayed(Duration(milliseconds: 100));
+          await Future.delayed(const Duration(milliseconds: 100));
         },
       );
       await tester.pumpWidget(app(widget));
       dialog.expectNoToast();
-      await tester.tap(find.byKey(Key('submit')));
-      await tester.pump(Duration(milliseconds: 50));
+      await tester.tap(find.byKey(const Key('submit')));
+      await tester.pump(const Duration(milliseconds: 50));
       dialog.expectToast();
       //wait for click finish
-      await tester.pump(Duration(milliseconds: 101));
+      await tester.pump(const Duration(milliseconds: 101));
     });
   });
 }

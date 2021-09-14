@@ -93,8 +93,8 @@ void main() {
             client: client,
             action: pb.String(),
             url: 'http://mock',
-            timeout: Duration(milliseconds: 500),
-            slow: Duration(milliseconds: 1),
+            timeout: const Duration(milliseconds: 500),
+            slow: const Duration(milliseconds: 1),
           ));
       expect(eventHappening.runtimeType, SlowNetworkEvent);
     });
@@ -111,8 +111,8 @@ void main() {
             client: client,
             action: pb.String(),
             url: 'http://mock',
-            timeout: Duration(milliseconds: 500),
-            slow: Duration(milliseconds: 3000),
+            timeout: const Duration(milliseconds: 500),
+            slow: const Duration(milliseconds: 3000),
           ));
       expect(eventHappening, null);
     });

@@ -215,18 +215,18 @@ class CustomPlayground extends StatelessWidget {
           y: 16,
         ),
         Tile(
-          builder: (_) => SizedBox(),
+          builder: (_) => const SizedBox(),
           onTap: () => print('1'),
         ),
         Tile(
           x: 8,
           y: 4,
-          builder: (_) => SizedBox(),
+          builder: (_) => const SizedBox(),
         ),
         Tile(
           x: 4,
           y: 8,
-          builder: (_) => SizedBox(),
+          builder: (_) => const SizedBox(),
         ),
       ],
     );
@@ -238,7 +238,7 @@ class CustomPlayground extends StatelessWidget {
         child: Column(
           children: [
             ElevatedButton(
-                child: Text('toggle'),
+                child: const Text('toggle'),
                 onPressed: () {
                   sidePanelProvider.setOpen(!sidePanelProvider.opened);
                 }),
@@ -249,7 +249,7 @@ class CustomPlayground extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
-                    end: Alignment(1, 1), // 10% of the width, so there are ten blinds.
+                    end: const Alignment(1, 1), // 10% of the width, so there are ten blinds.
                     colors: [
                       Colors.green[100]!,
                       Colors.green[900]!,
@@ -259,7 +259,7 @@ class CustomPlayground extends StatelessWidget {
                 ),
                 sideWidget: Container(
                   height: double.infinity,
-                  child: Text(
+                  child: const Text(
                     'side widget',
                     style: TextStyle(fontSize: 24),
                   ),
@@ -271,11 +271,11 @@ class CustomPlayground extends StatelessWidget {
                   child: Column(
                     children: [
                       ElevatedButton(
-                          child: Text('test'),
+                          child: const Text('test'),
                           onPressed: () {
-                            print('hello');
+                            //print('hello');
                           }),
-                      Text('hello'),
+                      const Text('hello'),
                     ],
                   ),
                 ),

@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 /// https://api.flutter.dev/flutter/material/CheckboxListTile-class.html
 ///
 class Check extends StatelessWidget {
-  Check({
+  const Check({
+    Key? key,
     required this.controller,
     this.label,
     this.size = 24,
@@ -13,7 +14,7 @@ class Check extends StatelessWidget {
     this.checkColor,
     this.fillColor,
     this.disabled,
-  });
+  }) : super(key: key);
 
   final ValueNotifier<bool> controller;
 
@@ -35,7 +36,7 @@ class Check extends StatelessWidget {
         : Theme.of(context).textTheme.bodyText1!;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       child: Text(
         label!,
         style: textStyle ?? style,
@@ -53,15 +54,15 @@ class Check extends StatelessWidget {
           return Row(children: [
             ClipRRect(
               clipBehavior: Clip.hardEdge,
-              borderRadius: BorderRadius.all(Radius.circular(6)),
+              borderRadius: const BorderRadius.all(Radius.circular(6)),
               child: SizedBox(
                 width: 24,
                 height: 24,
                 child: Container(
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border.all(
                         width: 1, color: Theme.of(context).unselectedWidgetColor), //?? Theme.of(context).disabledColor
-                    borderRadius: new BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(6),
                   ),
                   child: Theme(
                     data: ThemeData(
@@ -70,7 +71,7 @@ class Check extends StatelessWidget {
                     child: Transform.scale(
                       scale: 24 / Checkbox.width,
                       child: Checkbox(
-                        checkColor: checkColor != null ? checkColor : null,
+                        checkColor: checkColor,
                         fillColor: disabled == true
                             ? MaterialStateProperty.all(Colors.grey)
                             : fillColor != null
@@ -90,7 +91,7 @@ class Check extends StatelessWidget {
                 ? disabled == true
                     ? _text(context)
                     : InkWell(onTap: () => model.setValue(!controller.value), child: _text(context))
-                : SizedBox(),
+                : const SizedBox(),
           ]);
         }));
   }

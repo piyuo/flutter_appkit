@@ -35,8 +35,8 @@ void main() {
     });
 
     testWidgets('should load', (WidgetTester tester) async {
-      setLocale(testing.Context(), Locale('en', 'US'));
-      await tester.pumpWidget(MaterialApp(
+      setLocale(testing.Context(), const Locale('en', 'US'));
+      await tester.pumpWidget(const MaterialApp(
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();
@@ -48,9 +48,11 @@ void main() {
 class TestWidget extends StatelessWidget {
   static I18nProvider? i18nProvider;
 
+  const TestWidget({Key? key}) : super(key: key);
+
   Widget widget(I18nProvider value) {
     i18nProvider = value;
-    return Text('');
+    return const Text('');
   }
 
   @override

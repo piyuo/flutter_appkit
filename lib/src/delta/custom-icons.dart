@@ -14,9 +14,8 @@ class _CustomIconsData extends IconData {
 
 @immutable
 class CustomIcons {
-  CustomIcons._();
+  const CustomIcons._();
 
-  
   static const IconData accessTime = _CustomIconsData(0xe000);
   static const IconData accountCircle = _CustomIconsData(0xe001);
   static const IconData addCircle = _CustomIconsData(0xe002);

@@ -91,7 +91,7 @@ class DocWidget extends StatelessWidget {
                       child: ElevatedButton(
                         child: Text('back'.i18n_),
                         style: ButtonStyle(
-                            padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40, 20, 40, 20)),
+                            padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(40, 20, 40, 20)),
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                             )),

@@ -28,7 +28,8 @@ enum Shape { round, roundRight }
 typedef Widget? ItemBuilder<T>(BuildContext context, T key, String title, bool selected);
 
 class Listing<T> extends StatelessWidget {
-  Listing({
+  const Listing({
+    Key? key,
     required this.items,
     required this.onItemTap,
     this.itemBuilder,
@@ -41,7 +42,7 @@ class Listing<T> extends StatelessWidget {
     this.dense = false,
     this.padding,
     this.physics,
-  });
+  }) : super(key: key);
 
   /// dense
   final bool dense;
@@ -118,10 +119,10 @@ class Listing<T> extends StatelessWidget {
       shape: shape != null
           ? RoundedRectangleBorder(
               borderRadius: shape == Shape.round
-                  ? BorderRadius.all(
+                  ? const BorderRadius.all(
                       Radius.circular(25),
                     )
-                  : BorderRadius.only(
+                  : const BorderRadius.only(
                       topRight: Radius.circular(25),
                       bottomRight: Radius.circular(25),
                     ))
@@ -134,7 +135,7 @@ class Listing<T> extends StatelessWidget {
           ),
       onTap: onTap,
       minLeadingWidth: 0,
-      contentPadding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+      contentPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
       leading: item.icon != null
           ? Icon(
               item.icon,
@@ -163,7 +164,7 @@ class Listing<T> extends StatelessWidget {
             physics: physics,
             itemCount: items.length,
             shrinkWrap: true,
-            padding: padding ?? EdgeInsets.symmetric(horizontal: 5),
+            padding: padding ?? const EdgeInsets.symmetric(horizontal: 5),
             itemBuilder: (BuildContext context, int i) {
               final item = items[i];
               if (item is ListingItem<T>) {
@@ -180,7 +181,7 @@ class Listing<T> extends StatelessWidget {
                 return item;
               }
               assert(false, 'you can only place ListingItem or Widget in items');
-              return SizedBox();
+              return const SizedBox();
             },
           );
         }));

@@ -29,7 +29,7 @@ void main() {
           child: Column(
             children: [
               PlaceField(
-                key: Key('test-place'),
+                key: const Key('test-place'),
                 controller: placeController,
                 label: 'Address',
                 focusNode: placeFocus,
@@ -37,13 +37,13 @@ void main() {
                 require: 'you must input address!',
               ),
               form.InputField(
-                key: Key('test-place2'),
+                key: const Key('test-place2'),
                 controller: place2Controller,
                 focusNode: place2Focus,
                 hint: '(Optional) Floor/Room/Building number',
               ),
               form.Submit(
-                key: Key('submit'),
+                key: const Key('submit'),
                 label: 'submit',
                 form: _keyForm,
                 onClick: () {},

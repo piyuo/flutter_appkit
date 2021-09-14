@@ -14,7 +14,7 @@ void main() {
       builder: init(),
       home: Builder(builder: (BuildContext ctx) {
         return MaterialButton(
-          child: Text('button'),
+          child: const Text('button'),
           onPressed: () => onPressed(ctx),
         );
       }),
@@ -27,7 +27,7 @@ void main() {
         sampleApp(onPressed: (context) async => await loading(context)),
       );
       await tester.tap(find.byType(MaterialButton));
-      await tester.pump(new Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
       dismiss();
@@ -40,7 +40,7 @@ void main() {
         sampleApp(onPressed: (context) async => await progress(context, 0)),
       );
       await tester.tap(find.byType(MaterialButton));
-      await tester.pump(new Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
       dismiss();
@@ -54,14 +54,14 @@ void main() {
             onPressed: (context) async => await info(context,
                 autoHide: const Duration(milliseconds: 50),
                 text: 'network is slow than usual',
-                widget: Icon(
+                widget: const Icon(
                   Icons.wifi,
                   size: 36,
-                  color: Theme.of(context).accentColor,
+                  color: Colors.red,
                 ))),
       );
       await tester.tap(find.byType(MaterialButton));
-      await tester.pump(new Duration(milliseconds: 20));
+      await tester.pump(const Duration(milliseconds: 20));
       expectToast();
 
       dismiss();
@@ -74,7 +74,7 @@ void main() {
         sampleApp(onPressed: (context) async => await ok(context, 'hi')),
       );
       await tester.tap(find.byType(MaterialButton));
-      await tester.pump(new Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
       dismiss();
@@ -87,7 +87,7 @@ void main() {
         sampleApp(onPressed: (context) async => await wrong(context, 'something wrong')),
       );
       await tester.tap(find.byType(MaterialButton));
-      await tester.pump(new Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
       dismiss();

@@ -17,7 +17,7 @@ void main() {
         body: Form(
           key: _keyForm,
           child: InputField(
-            key: Key('test-input'),
+            key: const Key('test-input'),
             controller: controller,
             label: 'name',
             maxLength: 10,

@@ -4,6 +4,7 @@ import 'package:libcli/delta.dart' as delta;
 
 class Bar extends StatelessWidget with PreferredSizeWidget {
   Bar({
+    Key? key,
     this.titleSpacing,
     this.title,
     this.elevation,
@@ -11,7 +12,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     this.backToRoot,
     this.backgroundColor,
     this.iconColor,
-  });
+  }) : super(key: key);
 
   final Widget? title;
 
@@ -50,41 +51,39 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     final bool hasDrawer = scaffold.hasDrawer;
     final bool useCloseButton = parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
 
-    Widget? leading = null;
     if (hasDrawer) {
-      leading = IconButton(
+      return IconButton(
         color: iconColor,
         icon: const Icon(delta.CustomIcons.menu),
         onPressed: Scaffold.of(context).openDrawer,
         tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
       );
-    } else {
-      if (canPop) {
-        if (useCloseButton) {
-          leading = IconButton(
-              color: iconColor ?? Theme.of(context).colorScheme.onBackground,
-              icon: Icon(delta.CustomIcons.close),
-              onPressed: () => Navigator.of(context).maybePop());
-        } else {
-          leading = IconButton(
-            color: iconColor,
-            padding: EdgeInsets.all(0),
-            icon: Icon(delta.CustomIcons.arrowBackIosNew),
-            onPressed: Navigator.of(context).pop,
-          );
-        }
-      } else if (kIsWeb && backToRoot == true) {
-        leading = IconButton(
-          color: iconColor,
-          padding: EdgeInsets.all(0),
-          icon: Icon(delta.CustomIcons.arrowBackIosNew),
-          onPressed: () => Navigator.of(context).pushNamed('gotoRoot'),
-        );
-      }
     }
-    return leading;
+    if (canPop) {
+      if (useCloseButton) {
+        return IconButton(
+            color: iconColor ?? Theme.of(context).colorScheme.onBackground,
+            icon: const Icon(delta.CustomIcons.close),
+            onPressed: () => Navigator.of(context).maybePop());
+      }
+      return IconButton(
+        color: iconColor,
+        padding: const EdgeInsets.all(0),
+        icon: const Icon(delta.CustomIcons.arrowBackIosNew),
+        onPressed: Navigator.of(context).pop,
+      );
+    } else if (kIsWeb && backToRoot == true) {
+      return IconButton(
+        color: iconColor,
+        padding: const EdgeInsets.all(0),
+        icon: const Icon(delta.CustomIcons.arrowBackIosNew),
+        onPressed: () => Navigator.of(context).pushNamed('gotoRoot'),
+      );
+    }
+
+    return null;
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

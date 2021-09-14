@@ -26,7 +26,7 @@ void main() {
           child: Column(
             children: [
               EmailField(
-                key: Key('test-email'),
+                key: const Key('test-email'),
                 controller: controller,
                 focusNode: focusNode,
                 label: 'email',
@@ -36,7 +36,7 @@ void main() {
                 focusNode: dummyFocusNode,
               ),
               Submit(
-                key: Key('submit'),
+                key: const Key('submit'),
                 label: 'submit',
                 form: _keyForm,
                 onClick: () {},

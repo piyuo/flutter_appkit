@@ -60,7 +60,7 @@ class DynamicBottomSide extends StatelessWidget {
                     Expanded(
                       child: centerBuilder(),
                     ),
-                    bottomVisible ? SizedBox() : sideBuilder(),
+                    bottomVisible ? const SizedBox() : sideBuilder(),
                   ],
                 ),
               ),
@@ -71,7 +71,7 @@ class DynamicBottomSide extends StatelessWidget {
                       bottom: 0,
                       child: bottomBuilder(),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
         ),

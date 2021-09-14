@@ -5,16 +5,16 @@ import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/delta.dart' as delta;
 
-final keyAlertButtonYes = Key('alertBtnYes');
+const keyAlertButtonYes = Key('alertBtnYes');
 
-final keyAlertButtonNo = Key('alertBtnNo');
+const keyAlertButtonNo = Key('alertBtnNo');
 
-final keyAlertButtonCancel = Key('alertBtnCancel');
+const keyAlertButtonCancel = Key('alertBtnCancel');
 
 Widget showIcon(IconData? icon, Color iconColor) {
   if (icon != null) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Icon(
         icon,
         color: iconColor,
@@ -22,7 +22,7 @@ Widget showIcon(IconData? icon, Color iconColor) {
       ),
     );
   }
-  return SizedBox();
+  return const SizedBox();
 }
 
 Widget showButton(
@@ -35,14 +35,14 @@ Widget showButton(
 ) {
   return text != null
       ? Container(
-          margin: EdgeInsets.only(bottom: 10),
+          margin: const EdgeInsets.only(bottom: 10),
           width: double.infinity,
           height: 42,
           child: ElevatedButton(
             style: ButtonStyle(
               elevation: MaterialStateProperty.all(1),
               shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0)))),
+                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0)))),
               backgroundColor: MaterialStateProperty.all(color),
               textStyle: MaterialStateProperty.all(TextStyle(color: color)),
             ),
@@ -51,25 +51,25 @@ Widget showButton(
             onPressed: () => Navigator.of(context).pop(value),
           ),
         )
-      : SizedBox();
+      : const SizedBox();
 }
 
 Widget showTitle(String? title) {
   return title != null
       ? Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(bottom: 20),
-          child:
-              Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Text(title,
+              textAlign: TextAlign.center, style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
         )
-      : SizedBox();
+      : const SizedBox();
 }
 
 Widget showMessage(String message, bool titleExists) {
   return Container(
     alignment: Alignment.center,
-    padding: titleExists ? EdgeInsets.only(bottom: 30) : EdgeInsets.symmetric(vertical: 30),
-    child: Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0)),
+    padding: titleExists ? const EdgeInsets.only(bottom: 30) : const EdgeInsets.symmetric(vertical: 30),
+    child: Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17.0)),
   );
 }
 
@@ -77,39 +77,39 @@ Widget showFooter(String? footer) {
   return footer != null
       ? Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 10),
           child: Text(footer, textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
         )
-      : SizedBox();
+      : const SizedBox();
 }
 
 Widget showEmailUs(BuildContext context, bool emailUs) {
   var onTap = () => eventbus.broadcast(context, eventbus.EmailSupportEvent());
   return emailUs
       ? Container(
-          padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               InkWell(
                 onTap: onTap,
-                child: Icon(
+                child: const Icon(
                   delta.CustomIcons.email,
                   color: Colors.blueAccent,
                   size: 18,
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               InkWell(
                   child: GestureDetector(
                       onTap: onTap,
                       child: Text(
                         'emailUs'.i18n_,
-                        style: TextStyle(fontSize: 16, color: Colors.blueAccent),
+                        style: const TextStyle(fontSize: 16, color: Colors.blueAccent),
                       ))),
             ],
           ))
-      : SizedBox();
+      : const SizedBox();
 }
 
 /// alert show alert dialog, return true if it's ok or yes
@@ -137,8 +137,8 @@ Future<bool?> alert(
   bool buttonClose = false,
   bool scrollContent = false,
 }) async {
-  assentButtonColor = assentButtonColor ?? Color(0xee2091eb);
-  buttonColor = buttonColor ?? context.themeColor(dark: Color(0xcc6a7073), light: Color(0xeebbbcbb));
+  assentButtonColor = assentButtonColor ?? const Color(0xee2091eb);
+  buttonColor = buttonColor ?? context.themeColor(dark: const Color(0xcc6a7073), light: const Color(0xeebbbcbb));
   if (buttonOK) {
     yes = 'ok'.i18n_;
   }
@@ -165,8 +165,8 @@ Future<bool?> alert(
   }
   return await showDialog<bool?>(
       context: context,
-      barrierColor:
-          context.themeColor(dark: Color.fromRGBO(25, 25, 28, 0.6), light: Color.fromRGBO(230, 230, 238, 0.6)),
+      barrierColor: context.themeColor(
+          dark: const Color.fromRGBO(25, 25, 28, 0.6), light: const Color.fromRGBO(230, 230, 238, 0.6)),
       barrierDismissible: false,
       builder: (BuildContext ctx) {
         if (warning) {
@@ -177,20 +177,20 @@ Future<bool?> alert(
           backgroundColor: Colors.transparent,
           child: delta.BlurryContainer(
             shadow: BoxShadow(
-              color: context.themeColor(dark: Color(0x66000011), light: Color(0x66bbbbcc)),
+              color: context.themeColor(dark: const Color(0x66000011), light: const Color(0x66bbbbcc)),
               blurRadius: 15,
               spreadRadius: 8,
-              offset: Offset(0, 10),
+              offset: const Offset(0, 10),
             ),
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: context.themeColor(dark: Colors.white24, light: Colors.black26),
             ),
-            backgroundColor:
-                context.themeColor(dark: Color.fromRGBO(75, 75, 78, 0.5), light: Color.fromRGBO(252, 252, 255, 0.4)),
+            backgroundColor: context.themeColor(
+                dark: const Color.fromRGBO(75, 75, 78, 0.5), light: const Color.fromRGBO(252, 252, 255, 0.4)),
             child: ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 minWidth: 240,
                 maxWidth: 320,
               ),
@@ -200,7 +200,7 @@ Future<bool?> alert(
                 children: [
                   showIcon(icon, iconColor),
                   scrollContent
-                      ? Container(
+                      ? SizedBox(
                           height: 200,
                           child: SingleChildScrollView(
                             child: ListBody(
@@ -233,7 +233,7 @@ Future<bool?> alert(
                     context.themeColor(dark: Colors.blue[50]!, light: Colors.black54),
                     false,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   showButton(
                     context,
                     keyAlertButtonCancel,

@@ -15,17 +15,19 @@ class DialogPlayground extends StatelessWidget {
   final GlobalKey btnShowMore = GlobalKey();
   final GlobalKey btnShowMoreOffset = GlobalKey();
   final GlobalKey btnShowMoreText = GlobalKey();
+
+  DialogPlayground({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment(1, 1), // 10% of the width, so there are ten blinds.
-                  colors: [const Color(0xffee0000), const Color(0xffeeee00)], // red to yellow
+                  colors: [Color(0xffee0000), Color(0xffeeee00)], // red to yellow
                   tileMode: TileMode.repeated, // repeats the gradient over the canvas
                 ),
               ),
@@ -35,26 +37,26 @@ class DialogPlayground extends StatelessWidget {
                   Wrap(
                     children: [
                       ElevatedButton(
-                        child: Text('alert'),
+                        child: const Text('alert'),
                         onPressed: () => alert(
                           context,
                           'hi',
                         ),
                       ),
                       ElevatedButton(
-                        child: Text('alert warning'),
+                        child: const Text('alert warning'),
                         onPressed: () => alert(context, 'hello world1', warning: true),
                       ),
                       ElevatedButton(
-                        child: Text('alert title'),
+                        child: const Text('alert title'),
                         onPressed: () => alert(context, 'hello world', title: 'title'),
                       ),
                       ElevatedButton(
-                        child: Text('alert title/footer'),
+                        child: const Text('alert title/footer'),
                         onPressed: () => alert(context, 'hello world', title: 'title', footer: 'footer'),
                       ),
                       ElevatedButton(
-                        child: Text('alert yes/no/cancel'),
+                        child: const Text('alert yes/no/cancel'),
                         onPressed: () async {
                           var result = await alert(
                             context,
@@ -73,7 +75,7 @@ class DialogPlayground extends StatelessWidget {
                         },
                       ),
                       ElevatedButton(
-                        child: Text('alert ok/cancel'),
+                        child: const Text('alert ok/cancel'),
                         onPressed: () async {
                           var result = await alert(
                             context,
@@ -89,12 +91,12 @@ class DialogPlayground extends StatelessWidget {
                         },
                       ),
                       ElevatedButton(
-                        child: Text('alert warning email us'),
+                        child: const Text('alert warning email us'),
                         onPressed: () =>
                             alert(context, 'error message', footer: 'description', emailUs: true, warning: true),
                       ),
                       ElevatedButton(
-                        child: Text('alert long content'),
+                        child: const Text('alert long content'),
                         onPressed: () => alert(
                           context,
                           'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily',
@@ -108,21 +110,21 @@ class DialogPlayground extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Text('tooltip'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  const Text('tooltip'),
+                  const SizedBox(height: 20),
                   Wrap(
                     children: [
                       ElevatedButton(
                         key: btnShowMore,
-                        child: Text('show more'),
+                        child: const Text('show more'),
                         onPressed: () => targetShowMore(
                           context,
                           targetKey: btnShowMore,
-                          size: Size(180, 180),
+                          size: const Size(180, 180),
                           child: Container(
                               alignment: Alignment.center,
-                              child: Text('hello world',
+                              child: const Text('hello world',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.normal,
@@ -132,16 +134,16 @@ class DialogPlayground extends StatelessWidget {
                       ),
                       ElevatedButton(
                         key: btnShowMoreOffset,
-                        child: Text('show more offset'),
+                        child: const Text('show more offset'),
                         onPressed: () {
                           var rect = getWidgetGlobalRect(btnShowMoreOffset);
                           showMore(
                             context,
-                            size: Size(180, 120),
+                            size: const Size(180, 120),
                             targetRect: rect,
                             child: Container(
                                 alignment: Alignment.center,
-                                child: Text('hello world',
+                                child: const Text('hello world',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.normal,
@@ -152,13 +154,13 @@ class DialogPlayground extends StatelessWidget {
                       ),
                       ElevatedButton(
                         key: btnShowMoreText,
-                        child: Text('show more text'),
+                        child: const Text('show more text'),
                         onPressed: () {
                           var rect = getWidgetGlobalRect(btnShowMoreText);
                           showMoreText(
                             context,
                             targetRect: rect,
-                            size: Size(180, 120),
+                            size: const Size(180, 120),
                             text: 'hello world',
                           );
                         },
@@ -168,37 +170,37 @@ class DialogPlayground extends StatelessWidget {
                         ..moreDoc('more on doc', docName: 'privacy')
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Text('loading'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  const Text('loading'),
+                  const SizedBox(height: 20),
                   Wrap(children: [
                     ElevatedButton(
-                      child: Text('loading'),
+                      child: const Text('loading'),
                       onPressed: () async {
                         loading(context);
-                        await Future.delayed(Duration(seconds: 3));
+                        await Future.delayed(const Duration(seconds: 3));
                         dismiss();
                       },
                     ),
                     ElevatedButton(
-                      child: Text('loading text'),
+                      child: const Text('loading text'),
                       onPressed: () async {
                         loading(context, text: 'loading');
-                        await Future.delayed(Duration(seconds: 3));
+                        await Future.delayed(const Duration(seconds: 3));
                         dismiss();
                       },
                     ),
                     ElevatedButton(
-                      child: Text('progress'),
+                      child: const Text('progress'),
                       onPressed: () async {
                         for (int i = 0; i <= 10; i++) {
                           await progress(context, i / 10);
-                          await Future.delayed(Duration(milliseconds: 500));
+                          await Future.delayed(const Duration(milliseconds: 500));
                         }
                       },
                     ),
                     ElevatedButton(
-                      child: Text('progress text'),
+                      child: const Text('progress text'),
                       onPressed: () async {
                         for (int i = 0; i <= 10; i++) {
                           String text = 'preparing';
@@ -206,87 +208,87 @@ class DialogPlayground extends StatelessWidget {
                             text = 'creating';
                           }
                           await progress(context, i / 10, text: text);
-                          await Future.delayed(Duration(milliseconds: 500));
+                          await Future.delayed(const Duration(milliseconds: 500));
                         }
                       },
                     ),
                     ElevatedButton(
-                      child: Text('dismiss'),
+                      child: const Text('dismiss'),
                       onPressed: () => dismiss(),
                     ),
                     ElevatedButton(
-                      child: Text('toast'),
+                      child: const Text('toast'),
                       onPressed: () => ok(context, 'add item to cart'),
                     ),
                     ElevatedButton(
-                      child: Text('fail'),
+                      child: const Text('fail'),
                       onPressed: () => wrong(context, 'item already exist'),
                     ),
                     ElevatedButton(
-                      child: Text('info'),
+                      child: const Text('info'),
                       onPressed: () => info(context,
                           text: 'network is slow than usual',
-                          widget: Icon(
+                          widget: const Icon(
                             CustomIcons.wifi,
                             size: 68,
-                            color: Theme.of(context).accentColor,
+                            color: Colors.blue,
                           )),
                     ),
                     ElevatedButton(
-                      child: Text('slow network'),
+                      child: const Text('slow network'),
                       onPressed: () async {
                         loading(context);
-                        await Future.delayed(Duration(seconds: 3));
+                        await Future.delayed(const Duration(seconds: 3));
                         loading(context, text: 'network is slow');
-                        await Future.delayed(Duration(seconds: 3));
+                        await Future.delayed(const Duration(seconds: 3));
                         dismiss();
                       },
                     ),
                   ]),
-                  SizedBox(height: 20),
-                  Text('slide'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  const Text('slide'),
+                  const SizedBox(height: 20),
                   Wrap(children: [
                     ElevatedButton(
-                      child: Text('slide'),
+                      child: const Text('slide'),
                       onPressed: () => slide(
                         context,
-                        Container(height: 300, child: Text('hi')),
+                        const SizedBox(height: 300, child: Text('hi')),
                       ),
                     ),
                     ElevatedButton(
-                      child: Text('banner'),
+                      child: const Text('banner'),
                       onPressed: () => banner(
                         context,
                         'this record has been deleted',
                       ),
                     ),
                   ]),
-                  SizedBox(height: 20),
-                  Text('route or dialog'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  const Text('route or dialog'),
+                  const SizedBox(height: 20),
                   Wrap(children: [
                     ElevatedButton(
-                      child: Text('normal'),
+                      child: const Text('normal'),
                       onPressed: () => routeOrDialog(
                         context,
                         Container(color: Colors.blue),
                       ),
                     ),
                     ElevatedButton(
-                      child: Text('route'),
+                      child: const Text('route'),
                       onPressed: () => routeOrDialog(
                         context,
                         Container(color: Colors.blue),
-                        min: Size(300, 400),
+                        min: const Size(300, 400),
                       ),
                     ),
                     ElevatedButton(
-                      child: Text('dialog'),
+                      child: const Text('dialog'),
                       onPressed: () => routeOrDialog(
                         context,
                         Container(color: Colors.blue),
-                        min: Size(3000, 4000),
+                        min: const Size(3000, 4000),
                       ),
                     ),
                   ]),

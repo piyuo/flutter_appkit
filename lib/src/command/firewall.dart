@@ -43,10 +43,10 @@ const CacheKeyLastResponse = "CMD_LAST_RESPONSE";
 const CacheKeyCall = "CMD_CALL_";
 
 /// CacheDuration is the time we cache last response
-var CacheDuration = Duration(seconds: 30);
+var CacheDuration = const Duration(seconds: 30);
 
 /// MaxAllowPostDuration is firewall monitor duration
-var MaxAllowPostDuration = Duration(minutes: 8);
+var MaxAllowPostDuration = const Duration(minutes: 8);
 
 /// MaxAllowPostCount max allow post count in MaxAllowPostDuration
 const MaxAllowPostCount = 96;
@@ -58,10 +58,10 @@ bool firewallDisable = false;
 const CacheKeyBlock = "CMD_BLOCK_";
 
 /// BlockShortDuration define time of short duration
-var BlockShortDuration = Duration(minutes: 1);
+var BlockShortDuration = const Duration(minutes: 1);
 
 /// BlockLongDuration define time of long duration
-var BlockLongDuration = Duration(days: 1);
+var BlockLongDuration = const Duration(days: 1);
 
 /// firewall return true if command is allowed
 ///   1. it will block "IN_FLIGHT", stop send second command when same first command is not finish

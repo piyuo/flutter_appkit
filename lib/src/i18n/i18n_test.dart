@@ -8,14 +8,14 @@ void main() {
 
   group('[i18n]', () {
     test('should set/get locale', () async {
-      setLocale(testing.Context(), Locale('zh', 'CN'));
+      setLocale(testing.Context(), const Locale('zh', 'CN'));
       expect(localeString, 'zh_CN');
-      setLocale(testing.Context(), Locale('en', 'US'));
+      setLocale(testing.Context(), const Locale('en', 'US'));
       expect(localeString, 'en_US');
     });
 
     test('should convert locale to string', () async {
-      final str = localeToString(Locale('en', 'US'));
+      final str = localeToString(const Locale('en', 'US'));
       expect('en_US', str);
       final l = stringToLocale(str);
       expect(l.languageCode, 'en');
@@ -23,7 +23,7 @@ void main() {
     });
 
     test('should convert locale to http accept language header', () async {
-      final l = localeToAcceptLanguage(Locale('en', 'US'));
+      final l = localeToAcceptLanguage(const Locale('en', 'US'));
       expect(l, 'en-US');
     });
 
@@ -36,7 +36,7 @@ void main() {
       );
       expect(country, 'US');
 
-      List<Locale> list = [Locale('zh', 'TW'), Locale('en', 'CA')];
+      List<Locale> list = [const Locale('zh', 'TW'), const Locale('en', 'CA')];
       loc = determineLocale(list);
       expect(localeToString(loc), 'zh_TW');
       expect(country, 'TW');

@@ -41,7 +41,7 @@ Future<String> _loadString({required String assetName, BuildContext? context, St
 ///
 Future<String> loadJson({required String assetName, BuildContext? context, String? package}) async {
   String json = await loadString(assetName: assetName, context: context, package: package);
-  if (json.length > 0) {
+  if (json.isNotEmpty) {
     return json;
   }
   return '{}';

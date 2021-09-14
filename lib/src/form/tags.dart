@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 Widget p() {
-  return SizedBox(
+  return const SizedBox(
     height: 48,
   );
 }
 
 Widget br() {
-  return SizedBox(
+  return const SizedBox(
     height: 24,
   );
 }

@@ -14,7 +14,7 @@ void main() {
       home: Builder(builder: (BuildContext ctx) {
         return MaterialButton(
           key: keyBtn,
-          child: Text('button'),
+          child: const Text('button'),
           onPressed: () => onPressed(ctx),
         );
       }),
@@ -31,7 +31,7 @@ void main() {
                 rect: Rect.fromLTWH(rect.left, rect.bottom, rect.width, 200),
                 child: Container(
                   color: Colors.green,
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'hello',
                       style: TextStyle(fontSize: 22),

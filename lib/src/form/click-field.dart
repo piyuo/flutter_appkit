@@ -74,7 +74,7 @@ class ClickField extends Field {
                 labelText: label,
                 hintText: hint,
                 errorText: pClickField._error,
-                suffixIcon: Icon(
+                suffixIcon: const Icon(
                   delta.CustomIcons.navigateNext,
                 ),
               ).applyDefaults(Theme.of(context).inputDecorationTheme),

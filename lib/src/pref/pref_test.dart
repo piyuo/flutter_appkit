@@ -71,7 +71,7 @@ void main() {
     test('should get/set string with expiration time', () async {
       var now = DateTime.now();
       var exp = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second);
-      exp = exp.add(Duration(seconds: 1));
+      exp = exp.add(const Duration(seconds: 1));
       await setStringWithExp('k', 'a', exp);
 
       // check exp key
@@ -83,7 +83,7 @@ void main() {
       expect(await containsKey('k' + expirationExt), true);
 
       // let key expired
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       final str2 = await getStringWithExp('k');
       expect(str2, '');
 

@@ -107,7 +107,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
   } else if (e is command.SlowNetworkEvent) {
     dialog.info(context,
         text: 'slow'.i18n_,
-        widget: Icon(
+        widget: const Icon(
           delta.CustomIcons.wifi,
           size: 68,
           color: Colors.white,
