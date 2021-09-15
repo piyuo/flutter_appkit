@@ -68,6 +68,8 @@ class GoogleImpl extends MapProviderImpl {
 /// </head>
 ///
 class MapGoogle extends Map {
+  const MapGoogle({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<MapProvider>(builder: (context, mapProvider, child) {

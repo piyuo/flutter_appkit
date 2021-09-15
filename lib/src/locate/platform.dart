@@ -39,11 +39,11 @@ MapType mapType() {
 Map map() {
   switch (mapType()) {
     case MapType.apple:
-      return MapApple();
+      return const MapApple();
     case MapType.amap:
-      return MapAMap();
+      return const MapAMap();
     default:
-      return MapGoogle();
+      return const MapGoogle();
   }
 }
 
