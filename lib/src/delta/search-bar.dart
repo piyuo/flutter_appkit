@@ -6,10 +6,11 @@ import 'package:libcli/types.dart' as types;
 import 'custom-icons.dart';
 import 'extensions.dart';
 
-typedef Future<List<String>> SuggestionBuilder(String text);
+typedef SuggestionBuilder = Future<List<String>> Function(String text);
 
 class SearchBar extends StatelessWidget {
-  SearchBar({
+  const SearchBar({
+    Key? key,
     required this.controller,
     this.suggestionBuilder,
     this.onSuggestionChanged,
@@ -18,7 +19,7 @@ class SearchBar extends StatelessWidget {
     this.isDense = true,
     this.keyboardType,
     this.focusNode,
-  });
+  }) : super(key: key);
 
   /// controller is text editing controller for search bar
   final TextEditingController controller;

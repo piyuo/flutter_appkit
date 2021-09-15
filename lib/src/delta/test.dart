@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 /// _resultMock 1 success, -1 fail, 0 no mock
 ///
 int _resultMock = 0;

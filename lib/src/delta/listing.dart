@@ -25,7 +25,7 @@ class ListingItem<T> {
 
 enum Shape { round, roundRight }
 
-typedef Widget? ItemBuilder<T>(BuildContext context, T key, String title, bool selected);
+typedef ItemBuilder<T> = Widget? Function(BuildContext context, T key, String title, bool selected);
 
 class Listing<T> extends StatelessWidget {
   const Listing({

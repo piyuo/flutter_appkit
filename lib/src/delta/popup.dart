@@ -58,7 +58,7 @@ class Popup {
     Rect? rect,
   }) {
     final screenSize = window.physicalSize / window.devicePixelRatio;
-    rect = rect ?? Rect.fromLTWH(0, 0, 100, 100);
+    rect = rect ?? const Rect.fromLTWH(0, 0, 100, 100);
     double left = rect.left;
     double top = rect.top;
     double width = rect.width;

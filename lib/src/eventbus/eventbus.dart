@@ -35,7 +35,7 @@ class Listener {
 /// Subscription use for remove listener from _listeners
 ///
 class Subscription {
-  Listener _listener;
+  final Listener _listener;
 
   Subscription(this._listener);
 
@@ -109,7 +109,7 @@ Future<bool> broadcast(BuildContext context, Event event) async {
       log.log('[eventbus] caught no listener for ${event.runtimeType}');
       event.complete(false);
     }
-    return event.OK;
+    return event.ok;
   }
   return false;
 }

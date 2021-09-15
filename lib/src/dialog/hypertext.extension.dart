@@ -51,22 +51,24 @@ class _DocPage extends module.ViewWidget<_DocProvider> {
 
   final String docName;
 
-  _DocPage({
+  const _DocPage({
     required this.docName,
     this.title = '',
   });
 
-  @protected
+  @override
   createProvider(BuildContext context) => _DocProvider(
         docName: docName,
         title: title,
       );
 
   @override
-  Widget createWidget(BuildContext context) => DocWidget();
+  Widget createWidget(BuildContext context) => const DocWidget();
 }
 
 class DocWidget extends StatelessWidget {
+  const DocWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<_DocProvider>(

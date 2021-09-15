@@ -6,13 +6,14 @@ import 'package:extended_image/extended_image.dart';
 /// WebImage display image from url,display loading and failed place holder and cache image for period of time
 /// you can use SizedBox() to set width and height
 class WebImage extends StatelessWidget {
-  WebImage(
+  const WebImage(
     this.url, {
+    Key? key,
     this.cacheMaxAge = const Duration(days: 365),
     this.borderColor,
     this.borderWidth = 1,
     this.borderRadius = 25,
-  });
+  }) : super(key: key);
 
   final String url;
 

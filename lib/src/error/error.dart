@@ -8,11 +8,9 @@ import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/src/error/error-email.dart';
 import 'package:libcli/delta.dart' as delta;
 
-var subscribed = null;
+eventbus.Subscription? subscribed;
 
 var showCatchedAlert = false;
-
-dynamic showEventAlert = null;
 
 /// watch global exception
 ///
@@ -32,9 +30,7 @@ void watch(Function suspect) {
             stack,
           ));
 
-  if (subscribed == null) {
-    subscribed = eventbus.listen(listened);
-  }
+  subscribed ??= eventbus.listen(listened);
 }
 
 @visibleForTesting
@@ -53,7 +49,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
 
   if (e is log.DiskErrorException) {
     await dialog.alert(
-      dialog.RootContext,
+      dialog.rootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
       icon: delta.CustomIcons.priorityHigh,
@@ -63,7 +59,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   }
 
   await dialog.alert(
-    dialog.RootContext,
+    dialog.rootContext,
     'notified'.i18n_,
     warning: true,
     title: 'errTitle'.i18n_,
@@ -160,6 +156,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       e.complete(result == true);
     }
   } else if (e is eventbus.EmailSupportEvent) {
-    ErrorEmail()..launchMailTo();
+    final em = ErrorEmail();
+    em.launchMailTo();
   }
 }

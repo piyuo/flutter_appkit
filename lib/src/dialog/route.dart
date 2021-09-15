@@ -16,7 +16,7 @@ Future<T?> routeOrDialog<T>(
     // show dialog
     return await showDialog<T>(
         context: ctx,
-        barrierColor: isDark ? Color.fromRGBO(25, 25, 28, 0.6) : Color.fromRGBO(230, 230, 238, 0.6),
+        barrierColor: isDark ? const Color.fromRGBO(25, 25, 28, 0.6) : const Color.fromRGBO(230, 230, 238, 0.6),
         barrierDismissible: true,
         builder: (BuildContext ctx) {
           return Dialog(

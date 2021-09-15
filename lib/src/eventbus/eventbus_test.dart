@@ -55,7 +55,7 @@ main() {
     });
 
     test('should listen on type', () async {
-      var eventType = null;
+      dynamic eventType;
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
@@ -64,7 +64,7 @@ main() {
     });
 
     test('should not listened', () async {
-      var eventType = null;
+      dynamic eventType;
       listen<MyEvent>((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
@@ -73,7 +73,7 @@ main() {
     });
 
     test('should listen all', () async {
-      var eventType = null;
+      dynamic eventType;
       listen((BuildContext ctx, event) async {
         eventType = event.runtimeType;
       });
@@ -84,7 +84,7 @@ main() {
     });
 
     test('should isolate error', () async {
-      var eventType;
+      dynamic eventType;
       listen<MyEvent>((_, event) async {
         throw 'fail';
       });
@@ -96,7 +96,7 @@ main() {
     });
 
     test('should unsubscribe', () async {
-      var eventType;
+      dynamic eventType;
       var sub = listen<MyEvent>((_, event) async {
         eventType = event.runtimeType;
       });

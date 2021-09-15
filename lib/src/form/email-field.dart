@@ -35,7 +35,7 @@ class EmailFieldProvider extends ChangeNotifier {
 
   void _makeSuggestion() {
     _suggest = '';
-    if (!textController.text.isEmpty) {
+    if (textController.text.isNotEmpty) {
       var suggest = validator.MailChecker(email: textController.text).suggest();
       if (suggest != null) {
         _suggest = suggest.full;

@@ -52,7 +52,7 @@ String get serviceEmail => _serviceEmail;
 
 /// RouterBuilder used in web to build a route
 ///
-typedef Widget RouteBuilder(BuildContext context, Map<String, String> arguments);
+typedef RouteBuilder = Widget Function(BuildContext context, Map<String, String> arguments);
 
 /// user identity
 ///

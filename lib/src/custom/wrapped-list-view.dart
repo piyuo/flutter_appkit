@@ -7,7 +7,7 @@ class Wrapped {
     required this.children,
     this.childHeight = 120,
     this.childWidth = 320,
-  }) {}
+  });
 
   final double childHeight;
 
@@ -50,9 +50,10 @@ class Wrapped {
 
 /// WrappedListView is wrap items in list view
 class WrappedListView extends StatelessWidget {
-  WrappedListView({
+  const WrappedListView({
+    Key? key,
     required this.children,
-  });
+  }) : super(key: key);
 
   final List<Wrapped> children;
 
@@ -74,7 +75,7 @@ class WrappedListView extends StatelessWidget {
       base += count;
     }
     assert(false, 'item not found. maybe wrong item count');
-    return SizedBox();
+    return const SizedBox();
   }
 
   @override

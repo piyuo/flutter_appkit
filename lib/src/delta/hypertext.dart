@@ -80,7 +80,7 @@ class Hypertext extends StatefulWidget {
     String text, {
     Function(BuildContext, TapUpDetails)? onTap,
   }) {
-    if (!children.isEmpty) {
+    if (children.isNotEmpty) {
       children.add(_Span(" "));
     }
     children.add(_Span(
@@ -95,7 +95,7 @@ class Hypertext extends StatefulWidget {
 }
 
 class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin {
-  Set<InkSplash?> _splashes = HashSet<InkSplash?>();
+  final Set<InkSplash?> _splashes = HashSet<InkSplash?>();
 
   InkSplash? _currentSplash;
 
@@ -159,10 +159,10 @@ class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin
     return RichText(
       text: TextSpan(
         children: widget.children.map((_Span span) {
-          var textColor = widget.color ?? Color.fromRGBO(134, 134, 139, 1);
+          var textColor = widget.color ?? const Color.fromRGBO(134, 134, 139, 1);
           var boldColor = widget.boldColor ?? bColor;
           var color = span.bold == true ? boldColor : textColor;
-          var recognizer = null;
+          TapGestureRecognizer? recognizer;
           if (span.onTap != null) {
             color = widget.linkColor ?? linkColor;
             recognizer = TapGestureRecognizer()

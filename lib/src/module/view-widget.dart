@@ -28,12 +28,13 @@ abstract class ViewWidget<T extends delta.AsyncProvider> extends StatelessWidget
 
   /// ProviderWidget
   ///
-  ViewWidget({
+  const ViewWidget({
+    Key? key,
     this.i18nFile,
     this.i18nPackage,
     this.i18nFile2,
     this.i18nPackage2,
-  });
+  }) : super(key: key);
 
   /// createProvider create provider that widget need, it will assign redux to redux provider
   ///

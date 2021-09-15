@@ -29,7 +29,7 @@ main() {
   });
 
   test('should have no error if no listener', () async {
-    var ex = null;
+    dynamic ex;
     try {
       await broadcast(testing.Context(), MockContract('c'));
     } catch (e) {

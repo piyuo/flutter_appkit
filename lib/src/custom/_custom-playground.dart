@@ -12,6 +12,8 @@ import 'story-line.dart';
 class CustomPlayground extends StatelessWidget {
   final sidePanelProvider = SidePanelProvider();
 
+  CustomPlayground({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +133,7 @@ class CustomPlayground extends StatelessWidget {
   }
 
   Widget _slideshow(BuildContext context) {
-    return Slideshow(
+    return const Slideshow(
       urls: [
         'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
         'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-2?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617741434000',
@@ -202,7 +204,7 @@ class CustomPlayground extends StatelessWidget {
               ],
               begin: const FractionalOffset(0.0, 0.0),
               end: const FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
+              stops: const [0.0, 1.0],
               tileMode: TileMode.clamp,
             ),
           ),
@@ -216,7 +218,7 @@ class CustomPlayground extends StatelessWidget {
         ),
         Tile(
           builder: (_) => const SizedBox(),
-          onTap: () => print('1'),
+          onTap: () => debugPrint('1'),
         ),
         Tile(
           x: 8,
@@ -257,9 +259,9 @@ class CustomPlayground extends StatelessWidget {
                     tileMode: TileMode.repeated, // repeats the gradient over the canvas
                   ),
                 ),
-                sideWidget: Container(
+                sideWidget: const SizedBox(
                   height: double.infinity,
-                  child: const Text(
+                  child: Text(
                     'side widget',
                     style: TextStyle(fontSize: 24),
                   ),
@@ -290,11 +292,11 @@ class CustomPlayground extends StatelessWidget {
         title: 'Notification',
         subtitle: 'open',
         onPullRefresh: (BuildContext context) async {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
           return true;
         },
         onLoadMore: (BuildContext context) async {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
           return true;
         },
         stories: [

@@ -34,6 +34,8 @@ class FormPlaygroundProvider extends ChangeNotifier {
 }
 
 class FormPlayground extends StatelessWidget {
+  FormPlayground({Key? key}) : super(key: key);
+
   final GlobalKey btnMenu = GlobalKey();
 
   final GlobalKey btnTooltip = GlobalKey();

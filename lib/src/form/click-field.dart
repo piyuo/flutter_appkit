@@ -7,7 +7,7 @@ typedef ClickFiledCallback = Future<String> Function(String text);
 
 /// ClickFieldProvider control place field
 class ClickFieldProvider extends ChangeNotifier {
-  String? _error = null;
+  String? _error;
 
   void _setError(String? error) {
     _error = error;
@@ -21,7 +21,7 @@ class ClickFieldProvider extends ChangeNotifier {
 
 /// ClickFiled show read only text, user must click to change value
 class ClickField extends Field {
-  ClickField({
+  const ClickField({
     required Key key,
     required this.controller,
     required this.onClicked,
@@ -37,7 +37,7 @@ class ClickField extends Field {
           require: require,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
-        ) {}
+        );
 
   /// controller is dropdown value controller
   final TextEditingController controller;
@@ -50,23 +50,21 @@ class ClickField extends Field {
 
   @override
   Widget build(BuildContext context) {
-    final _onClick = (ClickFieldProvider provider) async {
-      final text = await onClicked(controller.text);
-      final result = defaultValidator(text);
-      provider._setError(result);
-      controller.text = text;
-      if (result == null && nextFocusNode != null) {
-        nextFocusNode!.requestFocus();
-      }
-    };
-
     return ChangeNotifierProvider<ClickFieldProvider>(
       create: (context) => ClickFieldProvider(),
       child: Consumer<ClickFieldProvider>(builder: (context, pClickField, child) {
         return Focus(
           focusNode: focusNode,
           child: InkWell(
-            onTap: () => _onClick(pClickField),
+            onTap: () async {
+              final text = await onClicked(controller.text);
+              final result = defaultValidator(text);
+              pClickField._setError(result);
+              controller.text = text;
+              if (result == null && nextFocusNode != null) {
+                nextFocusNode!.requestFocus();
+              }
+            },
             child: InputDecorator(
               isFocused: focusNode != null ? focusNode!.hasFocus : false,
               isEmpty: controller.text.isEmpty,
@@ -101,10 +99,12 @@ class ClickField extends Field {
 /// ClickFormField to handle validator event
 class ClickFormField extends FormField<String> {
   ClickFormField({
+    Key? key,
     required FormFieldValidator<String> validator,
     required TextEditingController controller,
     TextStyle? style,
   }) : super(
+          key: key,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
           builder: (FormFieldState<String> state) {

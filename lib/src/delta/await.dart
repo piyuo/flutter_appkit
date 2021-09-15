@@ -67,7 +67,7 @@ class _AwaitState extends State<Await> {
   /// reload provider in list, but skip ready provider
   ///
   void reload(BuildContext context) {
-    widget.list.forEach((provider) {
+    for (var provider in widget.list) {
       if (provider.asyncStatus == AsyncStatus.error) {
         log.log('[await] reload ${provider.runtimeType}');
         provider.asyncStatus = AsyncStatus.none;
@@ -87,7 +87,7 @@ class _AwaitState extends State<Await> {
           });
         });
       }
-    });
+    }
   }
 
   /// build widget

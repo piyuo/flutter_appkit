@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 enum _ButtonState { initial, animate, done }
 
-typedef Future<bool> Callback();
+typedef Callback = Future<bool> Function();
 
 class AnimateButton extends StatefulWidget {
   /// sizeLevel is button size level, default is 1
@@ -62,7 +62,7 @@ class AnimateButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => AnimateButtonState(width);
+  State<StatefulWidget> createState() => AnimateButtonState();
 }
 
 class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMixin {
@@ -76,20 +76,18 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
 
   _ButtonState _state = _ButtonState.initial;
 
-  double buttonWidth;
+  double? buttonWidth;
 
-  GlobalKey _globalKey = GlobalKey();
+  final GlobalKey _globalKey = GlobalKey();
 
   AnimationController? _controller;
 
   Animation? _animation;
 
-  AnimateButtonState(this.buttonWidth);
-
   @override
-  void deactivate() {
-    //_reset();
-    super.deactivate();
+  void initState() {
+    super.initState();
+    buttonWidth = widget.width;
   }
 
   @override
@@ -124,7 +122,7 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
         color: backgroundColor(context),
         elevation: _calculateElevation(),
         borderRadius: BorderRadius.circular(25.0),
-        child: Container(
+        child: SizedBox(
           key: _globalKey,
           height: _buttonHeight,
           width: buttonWidth,
@@ -153,7 +151,7 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
 
   _beginAnimation(Function() tick) {
     _disposeAnimation();
-    _controller = AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+    _controller = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller as Animation<double>)
       ..addListener(() => safeSetState(tick));
     _controller!.forward();
@@ -195,15 +193,15 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
             _animatingReveal = true;
           });
           //delay 0.7 second to display check icon
-          await new Future.delayed(const Duration(milliseconds: 500));
+          await Future.delayed(const Duration(milliseconds: 500));
           _onPressedSuccess();
           //delay 2 seconds then put button to initial state
-          await new Future.delayed(const Duration(seconds: 2));
+          await Future.delayed(const Duration(seconds: 2));
         }
         reset();
-      } on Exception catch (e) {
+      } on Exception {
         reset();
-        throw e;
+        rethrow;
       }
     }
   }
@@ -215,16 +213,16 @@ class AnimateButtonState extends State<AnimateButton> with TickerProviderStateMi
       if (widget.onClickSuccess != null) {
         widget.onClickSuccess!();
       }
-    } on Exception catch (e) {
+    } on Exception {
       safeSetState(_reset);
-      throw e;
+      rethrow;
     }
   }
 
   reset() {
     _beginAnimation(() {
       buttonWidth = widget.width * _animation!.value;
-      if (buttonWidth < _buttonHeight) buttonWidth = _buttonHeight;
+      if (buttonWidth! < _buttonHeight) buttonWidth = _buttonHeight;
     });
     safeSetState(_reset);
   }

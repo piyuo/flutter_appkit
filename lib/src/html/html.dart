@@ -35,7 +35,7 @@ void goBack() {
 ///     String url = routeToURL(settings);
 ///
 String routeToURL(RouteSettings settings) {
-  Map<String, dynamic>? map = null;
+  Map<String, dynamic>? map;
   if (settings.arguments != null) {
     map = settings.arguments as Map<String, dynamic>;
   }

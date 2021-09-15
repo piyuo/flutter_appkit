@@ -20,7 +20,7 @@ void main() {
     required void Function(BuildContext context) onPressed,
   }) {
     return MaterialApp(
-      navigatorKey: dialog.NavigatorKey,
+      navigatorKey: dialog.navigatorKey,
       builder: dialog.init(),
       home: Builder(builder: (BuildContext ctx) {
         return TextButton(

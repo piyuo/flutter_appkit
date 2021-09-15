@@ -10,7 +10,7 @@ void main() {
 
   group('[await]', () {
     testWidgets('should wait then ready', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(const MaterialApp(
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();
@@ -21,6 +21,8 @@ void main() {
 }
 
 class TestWidget extends StatelessWidget {
+  const TestWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -32,9 +34,9 @@ class TestWidget extends StatelessWidget {
       child: Consumer<MockProvider>(
           builder: (context, ctrl, child) => Await(
                 [ctrl],
-                progress: MockWaitView(),
-                error: MockErrorView(),
-                child: MockOkView(),
+                progress: const MockWaitView(),
+                error: const MockErrorView(),
+                child: const MockOkView(),
               )),
     );
   }

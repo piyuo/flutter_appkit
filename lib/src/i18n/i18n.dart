@@ -97,7 +97,7 @@ class LocaleDelegate extends LocalizationsDelegate<Locale> {
 Future<bool> setLocale(
   BuildContext context,
   Locale value, {
-  bool remember: false,
+  bool remember = false,
 }) async {
   if (value.countryCode != _locale.countryCode || value.languageCode != _locale.languageCode) {
     _locale = value;

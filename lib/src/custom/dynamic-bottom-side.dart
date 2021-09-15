@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class DynamicBottomSide extends StatelessWidget {
-  DynamicBottomSide({
+  const DynamicBottomSide({
+    Key? key,
     required this.leftBuilder,
     required this.centerBuilder,
     required this.sideBuilder,
     required this.bottomBuilder,
-    this.showBottomWhenWidth: 600,
-    this.maxWidth: 1920,
-    this.leftWidthOnBottom: 130,
-    this.leftWidthOnSide: 300,
-  });
+    this.showBottomWhenWidth = 600,
+    this.maxWidth = 1920,
+    this.leftWidthOnBottom = 130,
+    this.leftWidthOnSide = 300,
+  }) : super(key: key);
 
   /// bottomConstraint will show bottom when layout is smaller than bottomConstraint
   final double showBottomWhenWidth;

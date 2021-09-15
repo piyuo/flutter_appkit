@@ -172,8 +172,8 @@ Tile buttonTile(
 
 Tile imageTile(
   String url, {
-  int x: 16,
-  double y: 16,
+  int x = 16,
+  double y = 16,
   void Function()? onTap,
 }) {
   return Tile(
@@ -185,8 +185,8 @@ Tile imageTile(
 }
 
 Tile linkTile({
-  int x: 8,
-  double y: 4,
+  int x = 8,
+  double y = 4,
   String? text,
   String? description,
   void Function()? onTap,

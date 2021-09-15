@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
-typedef Future<bool> PullRefreshLoader(BuildContext context);
+typedef PullRefreshLoader = Future<bool> Function(BuildContext context);
 
 class PullRefreshProvider with ChangeNotifier {
   PullRefreshProvider();
@@ -13,13 +13,14 @@ class PullRefreshProvider with ChangeNotifier {
 }
 
 class PullRefresh extends StatelessWidget {
-  PullRefresh({
+  const PullRefresh({
+    Key? key,
     this.scrollDirection = Axis.vertical,
     required this.onPullRefresh,
     required this.onLoadMore,
     required this.itemBuilder,
     required this.itemCount,
-  });
+  }) : super(key: key);
 
   final Axis scrollDirection;
 

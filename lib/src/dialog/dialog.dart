@@ -4,14 +4,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 /// NavigatorKey used in rootContext
 ///
-final NavigatorKey = GlobalKey<NavigatorState>();
+final navigatorKey = GlobalKey<NavigatorState>();
 
 /// RootContext return context from navigatorKey
 ///
-BuildContext get RootContext {
-  assert(NavigatorKey.currentState != null && NavigatorKey.currentState!.overlay != null,
+BuildContext get rootContext {
+  assert(navigatorKey.currentState != null && navigatorKey.currentState!.overlay != null,
       'you need set navigatorKey: dialogsNavigatorKey in MaterialApp');
-  return NavigatorKey.currentState!.overlay!.context;
+  return navigatorKey.currentState!.overlay!.context;
 }
 
 /// init loading

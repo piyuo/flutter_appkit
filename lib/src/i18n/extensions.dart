@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:libcli/src/pb/google/google.dart' as google;
-import 'package:protobuf/src/protobuf/mixins/well_known.dart' as googleMixin;
+// ignore: implementation_imports
+import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';
 import 'package:libcli/src/i18n/i18n-provider.dart';
 import 'package:libcli/src/i18n/predefine.dart';
@@ -78,8 +79,8 @@ extension I18nTime on google.Timestamp {
   ///     t.local = d;
   ///     expect(t.local, d);
   ///
-  void set local(DateTime d) {
-    googleMixin.TimestampMixin.setFromDateTime(this, d.toUtc());
+  set local(DateTime d) {
+    google_mixin.TimestampMixin.setFromDateTime(this, d.toUtc());
   }
 
   /// localDateString return local date string in current locale

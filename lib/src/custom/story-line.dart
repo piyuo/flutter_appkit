@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta.dart' as delta;
 
-typedef Widget StoryBuilder(BuildContext context, Story story);
+typedef StoryBuilder = Widget Function(BuildContext context, Story story);
 
-double FIRST_ITEM_SPACE = 50;
+double firstItemSpace = 50;
 
 class StoryLineProvider with ChangeNotifier {
   StoryLineProvider();
@@ -57,7 +57,7 @@ class StoryLine extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(FIRST_ITEM_SPACE, 20, 0, 20),
+            padding: EdgeInsets.fromLTRB(firstItemSpace, 20, 0, 20),
             child: Row(children: [
               Text(title,
                   style: TextStyle(
@@ -92,7 +92,7 @@ class StoryLine extends StatelessWidget {
                 final story = stories[index];
                 return Card(
                   margin: EdgeInsets.only(
-                    left: index == 0 ? FIRST_ITEM_SPACE : 15,
+                    left: index == 0 ? firstItemSpace : 15,
                     bottom: 20,
                   ),
                   elevation: 5,

@@ -25,6 +25,8 @@ class DeltaPlayground extends StatelessWidget {
 
   final _checkBoxController = ValueNotifier<bool>(false);
 
+  DeltaPlayground({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +111,7 @@ class DeltaPlayground extends StatelessWidget {
         ),
         height: double.infinity,
         child: Row(
-          children: [
+          children: const [
             SizedBox(
               width: 300,
               height: 300,
@@ -117,7 +119,7 @@ class DeltaPlayground extends StatelessWidget {
                 'https://www.apple.com/v/iphone-12/g/images/overview/design/design_compare_skinny__fhvbipafz2my_large.jpg',
               ),
             ),
-            const SizedBox(width: 20),
+            SizedBox(width: 20),
             SizedBox(
               width: 300,
               height: 300,
@@ -178,7 +180,7 @@ class DeltaPlayground extends StatelessWidget {
                 'cc',
               ];
             },
-            onSuggestionChanged: (text) => print('1. $text selected'),
+            onSuggestionChanged: (text) => debugPrint('1. $text selected'),
             onTextChanged: (text) => debugPrint('1. text changed: $text'),
           ),
           const SizedBox(height: 20),
@@ -244,7 +246,7 @@ class DeltaPlayground extends StatelessWidget {
 
   Widget _hypertext(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Hypertext(fontSize: 13)
         ..span('click to print to console')
         ..action('privacy', onTap: (_, __) => debugPrint('hello world'))
@@ -258,7 +260,7 @@ class DeltaPlayground extends StatelessWidget {
       child: const Text('provider with problem'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return WrongPage();
+          return const WrongPage();
         }));
       },
     );
@@ -269,7 +271,7 @@ class DeltaPlayground extends StatelessWidget {
       child: const Text('provider need wait 30\'s'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return WaitPage();
+          return const WaitPage();
         }));
       },
     );
@@ -383,7 +385,7 @@ class DeltaPlayground extends StatelessWidget {
   }
 
   Widget _menu(BuildContext context) {
-    return Container(
+    return SizedBox(
         width: 240,
         child: ElevatedButton(
           key: btnMenu,

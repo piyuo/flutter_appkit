@@ -5,9 +5,9 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/util.dart' as util;
 
 class ErrorEmail {
-  String _subject = 'Report an error';
+  final String _subject = 'Report an error';
 
-  String _body = '''
+  final String _body = '''
 
 Application:\n    ${env.appName}
 

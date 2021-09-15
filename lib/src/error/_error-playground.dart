@@ -8,6 +8,8 @@ import 'package:libcli/dialog.dart' as dialog;
 import 'error.dart';
 
 class ErrorPlayground extends StatelessWidget {
+  const ErrorPlayground({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

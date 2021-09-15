@@ -17,7 +17,7 @@ extension DeltaBuildContext on BuildContext {
   ///
   Color themeColor({
     Color dark = Colors.white,
-    Color light: Colors.black,
+    Color light = Colors.black,
   }) =>
       isDark ? dark : light;
 

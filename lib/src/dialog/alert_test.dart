@@ -12,7 +12,7 @@ void main() {
     required void Function(BuildContext context) onPressed,
   }) {
     return MaterialApp(
-      navigatorKey: NavigatorKey,
+      navigatorKey: navigatorKey,
       home: Builder(builder: (BuildContext ctx) {
         return MaterialButton(
           key: keyBtn,

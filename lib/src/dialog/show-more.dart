@@ -113,7 +113,7 @@ void showMoreText(
     size: size,
     child: Center(
         child: Text(text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
               decoration: TextDecoration.none,

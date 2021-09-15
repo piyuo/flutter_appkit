@@ -84,7 +84,6 @@ Widget showFooter(String? footer) {
 }
 
 Widget showEmailUs(BuildContext context, bool emailUs) {
-  var onTap = () => eventbus.broadcast(context, eventbus.EmailSupportEvent());
   return emailUs
       ? Container(
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -92,7 +91,7 @@ Widget showEmailUs(BuildContext context, bool emailUs) {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               InkWell(
-                onTap: onTap,
+                onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
                 child: const Icon(
                   delta.CustomIcons.email,
                   color: Colors.blueAccent,
@@ -102,7 +101,7 @@ Widget showEmailUs(BuildContext context, bool emailUs) {
               const SizedBox(width: 10),
               InkWell(
                   child: GestureDetector(
-                      onTap: onTap,
+                      onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
                       child: Text(
                         'emailUs'.i18n_,
                         style: const TextStyle(fontSize: 16, color: Colors.blueAccent),
