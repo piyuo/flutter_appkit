@@ -9,15 +9,13 @@ const expirationExt = '_EXP';
 
 /// _instance provide SharedPreferences instance
 ///
-var _instance;
+SharedPreferences? _instance;
 
 /// _get lazy loading SharedPreferences instance
 ///
 Future<SharedPreferences> _get() async {
-  if (_instance == null) {
-    _instance = await SharedPreferences.getInstance();
-  }
-  return _instance;
+  _instance ??= await SharedPreferences.getInstance();
+  return _instance!;
 }
 
 /// mock Initializes the value for testing
@@ -35,7 +33,7 @@ void mock(Map<String, Object> values) {
 ///     bool found = await pref.containsKey('k');
 ///
 Future<bool> containsKey(String key) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   return (await _get()).containsKey(key);
 }
 
@@ -44,7 +42,7 @@ Future<bool> containsKey(String key) async {
 ///     var result = await pref.remove('k');
 ///
 Future<bool> remove(String key) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   log.log('[pref] remove $key');
   return (await _get()).remove(key);
 }
@@ -54,7 +52,7 @@ Future<bool> remove(String key) async {
 ///     var result = await pref.getBool('k');
 ///
 Future<bool> getBool(String key) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   var value = (await _get()).getBool(key) ?? false;
   log.log('[pref] get $key=$value');
   return value;
@@ -65,7 +63,7 @@ Future<bool> getBool(String key) async {
 ///     await pref.setBool('k',true);
 ///
 Future<void> setBool(String key, bool value) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   log.log('[pref] set $key=$value');
   var result = (await (await _get()).setBool(key, value));
   if (!result) {
@@ -78,7 +76,7 @@ Future<void> setBool(String key, bool value) async {
 ///     var result = await pref.getInt('k');
 ///
 Future<int> getInt(String key) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   var value = (await _get()).getInt(key) ?? 0;
   log.log('[pref] get $key=$value');
   return value;
@@ -89,7 +87,7 @@ Future<int> getInt(String key) async {
 ///     await pref.setInt('k',1);
 ///
 Future<void> setInt(String key, int value) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   log.log('[pref] set $key=$value');
   var result = (await (await _get()).setInt(key, value));
   if (!result) {
@@ -102,7 +100,7 @@ Future<void> setInt(String key, int value) async {
 ///     var result = await pref.getDouble('k');
 ///
 Future<double> getDouble(String key) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   var value = (await _get()).getDouble(key) ?? 0;
   log.log('[pref] get $key=$value');
   return value;
@@ -113,7 +111,7 @@ Future<double> getDouble(String key) async {
 ///     await pref.setDouble('k',1);
 ///
 Future<void> setDouble(String key, double value) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   log.log('[pref] set $key=$value');
   var result = (await (await _get()).setDouble(key, value));
   if (!result) {
@@ -126,7 +124,7 @@ Future<void> setDouble(String key, double value) async {
 ///     var result = await pref.getString('k');
 ///
 Future<String> getString(String key) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   var value = (await _get()).getString(key) ?? '';
   log.log('[pref] get $key=$value');
   return value;
@@ -137,7 +135,7 @@ Future<String> getString(String key) async {
 ///     await pref.setString('k','value');
 ///
 Future<void> setString(String key, String value) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   log.log('[pref] set $key=$value');
   var result = (await (await _get()).setString(key, value));
   if (!result) {
@@ -178,7 +176,7 @@ Future<void> setStringWithExp(String key, String value, DateTime expire) async {
 ///
 Future<DateTime?> getDateTime(String key) async {
   var value = await getString(key);
-  if (value.length > 0) {
+  if (value.isNotEmpty) {
     return DateTime.parse(value);
   }
   return null;
@@ -189,7 +187,7 @@ Future<DateTime?> getDateTime(String key) async {
 ///     await pref.setDateTime('k', DateTime.now());
 ///
 setDateTime(String key, DateTime value) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   String formatted = value.toString().substring(0, 19);
   return await setString(key, formatted);
 }
@@ -199,7 +197,7 @@ setDateTime(String key, DateTime value) async {
 ///     var result = await pref.getStringList('k');
 ///
 Future<List<String>> getStringList(String key) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   var value = (await _get()).getStringList(key) ?? [];
   log.log('[pref] get $key=$value');
   return value;
@@ -210,7 +208,7 @@ Future<List<String>> getStringList(String key) async {
 ///     await pref.setStringList('k',list);
 ///
 setStringList(String key, List<String> value) async {
-  assert(key.length > 0);
+  assert(key.isNotEmpty);
   log.log('[pref] set $key=$value');
   var result = (await (await _get()).setStringList(key, value));
   if (!result) {

@@ -67,8 +67,6 @@ set country(String value) {
 get isCountryCN => _country == CN;
 
 class LocaleDelegate extends LocalizationsDelegate<Locale> {
-  bool _isChanged = false;
-
   @override
   bool isSupported(Locale locale) => isLocaleSupported(locale);
 
@@ -90,7 +88,7 @@ class LocaleDelegate extends LocalizationsDelegate<Locale> {
   }
 
   @override
-  bool shouldReload(LocaleDelegate old) => _isChanged;
+  bool shouldReload(LocaleDelegate old) => false;
 }
 
 /// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours

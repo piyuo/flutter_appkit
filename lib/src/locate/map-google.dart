@@ -8,9 +8,9 @@ import 'map.dart';
 
 /// GoogleImpl is google map implementation
 class GoogleImpl extends MapProviderImpl {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
 
   @override
   Future<void> setValue(types.LatLng latlngValue, bool showMarkerValue) async {

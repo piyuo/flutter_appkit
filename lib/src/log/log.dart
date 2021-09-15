@@ -112,7 +112,7 @@ String beautyLine(String l) {
 String _beautyLine(String l) {
   l = l
       .replaceAll('<anonymous closure>', '')
-      .replaceAll(new RegExp(r"\s+\b|\b\s"), ' '); // convert spaces to _ for stack driver format
+      .replaceAll(RegExp(r"\s+\b|\b\s"), ' '); // convert spaces to _ for stack driver format
 
   if (l.startsWith('#')) {
     var i = l.indexOf(' ');
@@ -168,7 +168,7 @@ bool isLineUsable(String line) {
 String toString(dynamic value) {
   if (value != null) {
     var text = value.toString().replaceAll('\n', '');
-    if (text.indexOf('Instance of') == -1) {
+    if (!text.contains('Instance of')) {
       return text;
     }
   }

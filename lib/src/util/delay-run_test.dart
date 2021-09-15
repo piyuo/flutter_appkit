@@ -14,7 +14,7 @@ void main() {
         result++;
       });
       expect(result, 0);
-      await Future.delayed(Duration(milliseconds: 900));
+      await Future.delayed(const Duration(milliseconds: 900));
       expect(result, 1); // only 1, cause fist run was canceled
     });
   });

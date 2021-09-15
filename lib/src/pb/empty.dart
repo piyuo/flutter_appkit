@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'dart:core' as $core;
 import 'package:libcli/src/pb/object.dart';

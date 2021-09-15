@@ -20,7 +20,7 @@ class HistoryRedux {
 
   ///_states is entirely state's history and length is limit to historyLength
   ///
-  List<Map> _states = [];
+  final List<Map> _states = [];
 
   /// HistoryRedux constructor with default history length, reducer and state
   ///

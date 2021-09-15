@@ -1,6 +1,6 @@
 import 'package:protobuf/protobuf.dart' as $pb;
 
-/// PbObject is data transfer object that use ptotobuf format
+/// PbObject is data transfer object that use protobuf format
 ///
 abstract class Object extends $pb.GeneratedMessage {
   int mapIdXXX();

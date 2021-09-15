@@ -12,7 +12,7 @@ Future<bool> _lookup(String url) async {
       return true;
     }
   } catch (e) {
-    print(e);
+//    print(e);
   }
   return false;
 }
@@ -52,6 +52,6 @@ Future<void> openMailTo(String to, String subject, String body) async {
   to = Uri.encodeComponent(to);
   subject = Uri.encodeComponent(subject.trim());
   body = Uri.encodeComponent(body.trim());
-  final url = 'mailto:${to}?Subject=${subject}&body=${body}';
+  final url = 'mailto:$to?Subject=$subject&body=$body';
   await openUrl(url);
 }

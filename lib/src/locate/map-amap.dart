@@ -9,7 +9,7 @@ import 'map.dart';
 class AmapImpl extends MapProviderImpl {
   AMapController? _controller;
 
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
 
   @override
   Future<void> setValue(types.LatLng latlngValue, bool showMarkerValue) async {
@@ -49,7 +49,7 @@ class AmapImpl extends MapProviderImpl {
 /// https://stackoverflow.com/questions/15727912/sha-1-fingerprint-of-keystore-certificate
 ///
 /// in android/app/src/build.gradle
-/// add implementation 'com.amap.api:3dmap:latest.integration'
+/// add implementation 'com.amap.api:3d map:latest.integration'
 ///
 /// android/app/src/main/AndroidManifest.xml
 /// <manifest ...
@@ -57,6 +57,8 @@ class AmapImpl extends MapProviderImpl {
 ///     <meta-data android:name="com.google.android.geo.API_KEY"
 ///                android:value="YOUR KEY HERE"/>
 class MapAMap extends Map {
+  const MapAMap({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<MapProvider>(builder: (context, mapProvider, child) {

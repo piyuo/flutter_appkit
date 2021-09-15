@@ -37,6 +37,7 @@ class ShowSearchProvider with ChangeNotifier {
           inputString,
           _deviceLatLng,
         );
+        // ignore: prefer_for_elements_to_map_fromiterable
         _suggestions = Map.fromIterable(list, key: (i) => i.text, value: (i) => i);
         return list.map((sys.GeoSuggestion suggestion) => suggestion.text).toList();
       },
@@ -63,12 +64,13 @@ class ShowSearchProvider with ChangeNotifier {
       confirmButtonProvider: _confirmButtonProvider,
       myLocationButtonProvider: _myLocationButtonProvider,
       onClickMyLocation: (ctx) async {
-        if (_locations.length == 0) {
+        if (_locations.isEmpty) {
           final list = await _geoClient.reverseGeocoding(ctx, _deviceLatLng);
+          // ignore: prefer_for_elements_to_map_fromiterable
           _locations = Map.fromIterable(list, key: (i) => i.address, value: (i) => i);
         }
 
-        if (_locations.length == 0) {
+        if (_locations.isEmpty) {
           var provider = Provider.of<i18n.I18nProvider>(ctx, listen: false);
           var text = provider.translate('myLocFail');
           dialog.alert(context, text);
@@ -121,7 +123,7 @@ class ShowSearchProvider with ChangeNotifier {
   }
 
   /// _mapProvider control map value
-  locate.MapProvider _mapProvider = locate.mapProvider();
+  final locate.MapProvider _mapProvider = locate.mapProvider();
 
   /// _confirmProvider control confirm button
   late final ConfirmButtonProvider _confirmButtonProvider;
@@ -218,7 +220,7 @@ class ShowSearch extends StatelessWidget {
             appBar: AppBar(
               automaticallyImplyLeading: false,
               titleSpacing: 0,
-              title: SearchBar(),
+              title: const SearchBar(),
               elevation: 0,
             ),
             body: Column(

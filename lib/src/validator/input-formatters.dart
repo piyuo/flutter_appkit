@@ -11,6 +11,6 @@ TextEditingValue currencyFormatter(TextEditingValue oldValue, TextEditingValue n
   double value = double.parse(newValue.text);
   final formatter = NumberFormat.simpleCurrency(locale: i18n.localeString);
   String newText = formatter.format(value);
-  return newValue.copyWith(text: newText, selection: new TextSelection.collapsed(offset: newText.length));
+  return newValue.copyWith(text: newText, selection: TextSelection.collapsed(offset: newText.length));
 //      selection: new TextSelection.collapsed());
 }

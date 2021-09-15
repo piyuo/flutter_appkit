@@ -6,18 +6,18 @@ import 'view-widget.dart';
 class SampleViewModel extends ViewProvider {}
 
 class SampleViewWidget extends ViewWidget<SampleViewModel> {
-  @protected
+  @override
   createProvider(BuildContext context) => SampleViewModel();
 
   @override
   Widget createWidget(BuildContext context) => Container();
 
-  SampleViewWidget() : super(i18nFile: '');
+  const SampleViewWidget({Key? key}) : super(key: key, i18nFile: '');
 }
 
 void main() {
   Widget target() {
-    return MaterialApp(
+    return const MaterialApp(
       home: SampleViewWidget(),
     );
   }

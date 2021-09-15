@@ -119,7 +119,7 @@ void main() {
     });
 
     test('should get/set map', () async {
-      Map<String, dynamic> map = Map<String, dynamic>();
+      Map<String, dynamic> map = <String, dynamic>{};
       map['a'] = 1;
       map['b'] = 2;
 

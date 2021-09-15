@@ -7,7 +7,7 @@ import 'package:libcli/log.dart' as log;
 /// this function is slow, it may takes few seconds to complete
 ///
 Future<types.LatLng> deviceLatLng() async {
-  Location location = new Location();
+  Location location = Location();
 
   bool _serviceEnabled;
   PermissionStatus _permissionGranted;

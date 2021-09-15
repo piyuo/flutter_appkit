@@ -1,1 +1,1 @@
-typedef void StringCallback(String text);
+typedef StringCallback = void Function(String text);

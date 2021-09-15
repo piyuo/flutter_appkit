@@ -9,7 +9,7 @@ import 'map.dart';
 class AppleImpl extends MapProviderImpl {
   AppleMapController? _controller;
 
-  Set<Annotation> _markers = {};
+  final Set<Annotation> _markers = {};
 
   @override
   Future<void> setValue(types.LatLng latlngValue, bool showMarkerValue) async {
@@ -46,6 +46,8 @@ class AppleImpl extends MapProviderImpl {
 
 /// MapApple run ios apple map, no key required
 class MapApple extends Map {
+  const MapApple({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<MapProvider>(builder: (context, mapProvider, child) {

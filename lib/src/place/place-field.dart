@@ -29,7 +29,7 @@ class PlaceFieldProvider extends ChangeNotifier {
                   fileName: 'place',
                   package: 'libcli',
                 )),
-      ], child: ShowSearch()),
+      ], child: const ShowSearch()),
     );
 
     if (newPlace != null) {
@@ -55,7 +55,7 @@ class PlaceFieldProvider extends ChangeNotifier {
 
 /// PlaceField let user set his place, it contain address, lat/lng and address tags
 class PlaceField extends form.Field {
-  PlaceField({
+  const PlaceField({
     required Key key,
     required this.controller,
     String? label,

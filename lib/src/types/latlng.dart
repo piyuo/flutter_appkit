@@ -14,8 +14,8 @@ class LatLng {
 
   bool get isEmpty => lat == 0;
 
-  /// Equals return true if value is equal
-  bool Equals(LatLng value) {
+  /// equals return true if value is equal
+  bool equals(LatLng value) {
     return lat == value.lat && lng == value.lng;
   }
 }

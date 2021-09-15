@@ -1,17 +1,15 @@
-/**
- * MailChecker Class, based on excellent work here: <https://github.com/Kicksend/mailcheck>
- *
- * Ported to Dart (minor changes from JS version) by [Ryan Smith](http://github.com/rwsmith)
- *
- * MailChecker *suggests* the correct domain and TLD of an email address (in case a user entered in something mis-spelled).
- *
- * Example usage:
- *     MailChecker m = new MailChecker("me@hotwail.com"); //note mis-spelling
- *     print(m.simpleSuggest()); //will return me@hotmail.com
- *
- *     MailChecker m = new MailChecker("me@hotmail.com"); //note proper spelling
- *     print(m.simpleSuggest()); //will return empty string
- */
+/// MailChecker Class, based on excellent work here: <https://github.com/Kicksend/mailcheck>
+///
+/// Ported to Dart (minor changes from JS version) by [Ryan Smith](http://github.com/rwsmith)
+///
+/// MailChecker *suggests* the correct domain and TLD of an email address (in case a user entered in something mis-spelled).
+///
+/// Example usage:
+///     MailChecker m = new MailChecker("me@hotwail.com"); //note mis-spelling
+///     print(m.simpleSuggest()); //will return me@hotmail.com
+///
+///     MailChecker m = new MailChecker("me@hotmail.com"); //note proper spelling
+///     print(m.simpleSuggest()); //will return empty string
 class MailChecker {
   /// The default list of domains to match against. Modify, if needed, after creating a `MailCheck` object, and before calling [suggest()] or [simpleSuggest()].
   List<String> domains = [
@@ -57,11 +55,9 @@ class MailChecker {
 
   final int threshold;
 
-  /**
-   * Parameter String [email] is the email address you want to check
-   *
-   * Optional int [threshold] to adjust the threshold - minimum distance to assume match. It is suggested you leave [threshold] at the default value.
-   */
+  /// Parameter String [email] is the email address you want to check
+  ///
+  /// Optional int [threshold] to adjust the threshold - minimum distance to assume match. It is suggested you leave [threshold] at the default value.
   MailChecker({
     required this.email,
     this.threshold = 3,
@@ -70,10 +66,12 @@ class MailChecker {
   MailCheckerEmail? _splitEmail() {
     //Creates a MailCheckerEmail object from this.emailStr
     List<String> parts = email.split("@");
-    if (parts.length < 2) //Invalid email
+    if (parts.length < 2) {
       return null;
-    for (String i in parts) //Also invalid..
+    }
+    for (String i in parts) {
       if (i == "") return null;
+    }
     String domain = parts.removeLast(); //equivalent to parts.pop()
     List<String> domainParts = domain.split(".");
     String tld = "";
@@ -94,49 +92,46 @@ class MailChecker {
       }
     }
 
-    return new MailCheckerEmail(parts.join("@"), domain, tld);
+    return MailCheckerEmail(parts.join("@"), domain, tld);
   }
 
-  /**
-   * Similiar to [suggest()] method, returns the full suggestion (such as me@hotmail.com).
-   *
-   *  If no suggestions are available, an empty string is returned. This means that email is either perfect, or, there is no possible suggestion.
-   *
-   * An example scenario:
-   *
-   * * If a non-empty string is returned, offer the user a chance to change to the suggestion provided.
-   *
-   * * If an empty string is returned, allow the application to continue normally (do not offer to change to suggestion)
-   *
-   */
+  /// Similar to [suggest()] method, returns the full suggestion (such as me@hotmail.com).
+  ///
+  ///  If no suggestions are available, an empty string is returned. This means that email is either perfect, or, there is no possible suggestion.
+  ///
+  /// An example scenario:
+  ///
+  /// * If a non-empty string is returned, offer the user a chance to change to the suggestion provided.
+  ///
+  /// * If an empty string is returned, allow the application to continue normally (do not offer to change to suggestion)
+  ///
   String simpleSuggest() {
     MailCheckerSuggestion? s = suggest();
     if (s == null) return "";
     return s.full;
   }
 
-  /**
-   * Returns a MailCheckerSuggestion object, containing the suggested attributes of the suggestion
-   *
-   * Most users are likely more interested in the [simpleSuggest()] method
-   *
-   * A MailCheckerSuggestion has three attributes that contain the data of the suggestion:
-   *
-   * Assume the email address provided is `me@hotwail.com` (note mis-spelling) and suggested change is `me@hotmail.com`
-   *
-   * * [address]: part before @ sign, ie: `me` in `me@hotmail.com`
-   *
-   * * [domain]: part after @ sign, ie: `hotmail.com` in `me@hotmail.com`
-   *
-   * * [full]: the full suggestion, ie: if user supplies `me@hotwail.com`, full suggestion would be `me@hotmail.com`
-   */
+  /// Returns a MailCheckerSuggestion object, containing the suggested attributes of the suggestion
+  ///
+  /// Most users are likely more interested in the [simpleSuggest()] method
+  ///
+  /// A MailCheckerSuggestion has three attributes that contain the data of the suggestion:
+  ///
+  /// Assume the email address provided is `me@hotwail.com` (note mis-spelling) and suggested change is `me@hotmail.com`
+  ///
+  /// * [address]: part before @ sign, ie: `me` in `me@hotmail.com`
+  ///
+  /// * [domain]: part after @ sign, ie: `hotmail.com` in `me@hotmail.com`
+  ///
+  /// * [full]: the full suggestion, ie: if user supplies `me@hotwail.com`, full suggestion would be `me@hotmail.com`
   MailCheckerSuggestion? suggest() {
     MailCheckerEmail? emailParts = _splitEmail();
     if (emailParts != null) {
       String? closestDomain = _findClosestDomain(emailParts.domain, domains);
       if (closestDomain != null) {
-        if (closestDomain != emailParts.domain) //we have a close match
-          return new MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
+        if (closestDomain != emailParts.domain) {
+          return MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
+        }
       } else {
         //not a close match...mis-spell tld?
         String? closestTopLevelDomain = _findClosestDomain(emailParts.topLevelDomain, topLevelDomains);
@@ -144,7 +139,7 @@ class MailChecker {
           //May be mis-spelled TLD
           String domain = emailParts.domain;
           closestDomain = domain.substring(0, domain.lastIndexOf(emailParts.topLevelDomain)) + closestTopLevelDomain;
-          return new MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
+          return MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
         }
       }
     }
@@ -156,10 +151,11 @@ class MailChecker {
     //If it cannot, it will return null
     double dist = 0.0;
     double minDist = 99.0;
-    String? closestDomain = null;
+    String? closestDomain;
     for (int i = 0; i < domains.length; i++) {
-      if (domain == domains[i]) //found exact match
+      if (domain == domains[i]) {
         return domain;
+      }
       dist = _sift3Distance(domain, domains[i]);
       if (dist < minDist) {
         minDist = dist;
@@ -167,24 +163,25 @@ class MailChecker {
       }
     }
 
-    if (minDist <= threshold && closestDomain != null)
+    if (minDist <= threshold && closestDomain != null) {
       return closestDomain;
-    else
+    } else {
       return null;
+    }
   }
 
   double _sift3Distance(String? s1, String? s2) {
     //Sift3 Distance method
     // Uses sift3: http://siderite.blogspot.com/2007/04/super-fast-and-accurate-string-distance.html
-    if (s1 == null || s1.length == 0) {
-      if (s2 == null || s2.length == 0) {
+    if (s1 == null || s1.isEmpty) {
+      if (s2 == null || s2.isEmpty) {
         return 0.0;
       } else {
         return s2.length.toDouble();
       }
     }
 
-    if (s2 == null || s2.length == 0) {
+    if (s2 == null || s2.isEmpty) {
       return s1.length.toDouble();
     }
 
@@ -216,16 +213,14 @@ class MailChecker {
   }
 }
 
-/**
- * A class you should not have to create with new keyword. It is used by [MailChecker], and stores three attributes:
- *
- * *[address]: part before @ sign (`me` in `me@hotmail.com`)
- *
- * *[domain]: part after @ sign (`hotmail.com` in `me@hotmail.com`)
- *
- * *[topLevelDomain] (`com` in `me@hotmail.com`)
- *
- */
+/// A class you should not have to create with new keyword. It is used by [MailChecker], and stores three attributes:
+///
+/// *[address]: part before @ sign (`me` in `me@hotmail.com`)
+///
+/// *[domain]: part after @ sign (`hotmail.com` in `me@hotmail.com`)
+///
+/// *[topLevelDomain] (`com` in `me@hotmail.com`)
+///
 class MailCheckerEmail {
   final String address; //before @ sign
   final String domain; //after @ sign
@@ -233,18 +228,17 @@ class MailCheckerEmail {
 
   const MailCheckerEmail(this.address, this.domain, this.topLevelDomain);
 
+  @override
   String toString() => address + " " + domain + " " + topLevelDomain;
 }
 
-/**
- * A class you should not have to create with new keyword. It is returned by [MailChecker.suggest] and has three attributes:
- *
- * *[address]: The suggested address (does not change)
- *
- * *[domain]: The suggested domain
- *
- * *[full]: The full suggested string, use [MailChecker().simpleSuggest()] to access this
- */
+/// A class you should not have to create with new keyword. It is returned by [MailChecker.suggest] and has three attributes:
+///
+/// *[address]: The suggested address (does not change)
+///
+/// *[domain]: The suggested domain
+///
+/// *[full]: The full suggested string, use [MailChecker().simpleSuggest()] to access this
 class MailCheckerSuggestion {
   final String address;
   final String domain;

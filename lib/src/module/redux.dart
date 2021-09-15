@@ -4,7 +4,7 @@ import 'package:libcli/log.dart' as log;
 
 /// Redux reducer implementation
 ///
-typedef Future<Map> Reducer(BuildContext context, Map state, dynamic action);
+typedef Reducer = Future<Map> Function(BuildContext context, Map state, dynamic action);
 
 Map from(Map state) {
   return Map.from(state);

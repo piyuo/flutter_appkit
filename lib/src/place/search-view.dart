@@ -12,7 +12,7 @@ class SearchViewProvider with ChangeNotifier {
     required this.confirmButtonProvider,
     required this.onClickMyLocation,
     required this.onClickConfirm,
-  }) {}
+  });
 
   /// myLocationButtonProvider control my location button visibility
   final MyLocationButtonProvider myLocationButtonProvider;

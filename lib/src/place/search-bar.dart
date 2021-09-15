@@ -141,6 +141,8 @@ class SearchBarProvider with ChangeNotifier {
 }
 
 class SearchBar extends StatelessWidget {
+  const SearchBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
