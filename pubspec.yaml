@@ -1,5 +1,10 @@
 name: libcli
 description: piyuo.com client library.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
 version: 0.1.2
 homepage: https://github.com/piyuo/libcli
 
@@ -29,7 +34,7 @@ dependencies:
     carousel_slider: ^4.0.0
     flutter_staggered_grid_view: ^0.4.0
     flutter_easyrefresh: ^2.2.1
-    localstore: ^1.2.0
+    localstorage: ^4.0.0+1
 
 dependency_overrides:
 

@@ -6,16 +6,13 @@ void main() {
 
   group('[db]', () {
     test('should get/set obj', () async {
-      collection('todo').doc('t1').set({'title': 'Todo title', 'done': false});
-      final t1 = await collection('todo').doc('t1').get();
-      expect(t1, isNotNull);
-      expect(t1!['title'], 'Todo title');
-      expect(t1['done'], false);
-
-      // not stable now
-      //await collection('todo').doc('t1').delete();
-      //final t2 = await collection('todo').doc('t1').get();
-      //expect(t2, isNull);
+      await set('item1', {'cleaning': 'done'});
+      var item1 = await get('item1');
+      expect(item1!['cleaning'], 'done');
+      await delete('item1');
+      var title2 = await get('item1');
+      expect(title2, isNull);
+      await clear();
     });
   });
 }
