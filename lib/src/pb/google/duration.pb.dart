@@ -11,6 +11,7 @@ import 'package:libcli/pb.dart' as pb;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
+// ignore: implementation_imports
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as $mixin;
 
 class Duration extends $pb.GeneratedMessage with $mixin.DurationMixin {

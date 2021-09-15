@@ -10,6 +10,7 @@ import 'package:libcli/pb.dart' as pb;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+// ignore: implementation_imports
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as $mixin;
 
 import 'struct.pbenum.dart';
