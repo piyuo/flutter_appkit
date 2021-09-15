@@ -7,7 +7,7 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/testing.dart' as testing;
-import 'package:libcli/src/error/error.dart';
+import 'error.dart';
 
 void main() {
   final GlobalKey keyBtn = GlobalKey();

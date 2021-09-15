@@ -5,8 +5,8 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/src/error/error-email.dart';
 import 'package:libcli/delta.dart' as delta;
+import 'error-email.dart';
 
 eventbus.Subscription? subscribed;
 
