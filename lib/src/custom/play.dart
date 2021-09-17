@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../delta/bar.dart';
 
 Widget _button(BuildContext context, String text, void Function() callback) {
   return Padding(
@@ -13,7 +12,7 @@ void _show(BuildContext context, Widget child) {
       context,
       MaterialPageRoute(
         builder: (_) => Scaffold(
-          appBar: Bar(),
+          appBar: AppBar(),
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: child,

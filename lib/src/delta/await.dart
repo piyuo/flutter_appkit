@@ -4,8 +4,6 @@ import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'async-provider.dart';
-import 'custom-icons.dart';
-import 'bar.dart';
 import 'extensions.dart';
 
 /// Await load provider in list
@@ -105,7 +103,7 @@ class _AwaitState extends State<Await> {
             : Scaffold(
                 body: Center(
                   child: Icon(
-                    CustomIcons.accessTime,
+                    Icons.access_time,
                     size: 128,
                     color: context.themeColor(
                       light: Colors.grey[300]!,
@@ -128,7 +126,7 @@ class AwaitErrorMessage extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         const Icon(
-          CustomIcons.errorOutline,
+          Icons.error_outline,
           color: Colors.white,
           size: 120,
         ),
@@ -156,7 +154,7 @@ class AwaitErrorMessage extends StatelessWidget {
         InkWell(
             onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
             child: Icon(
-              CustomIcons.email,
+              Icons.email,
               color: Colors.orange[200],
               size: 38,
             )),
@@ -178,9 +176,9 @@ class AwaitErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Bar(
+      appBar: AppBar(
         backgroundColor: backgroundColor,
-        iconColor: Colors.white,
+        foregroundColor: Colors.white,
       ),
       backgroundColor: backgroundColor,
       body: SafeArea(

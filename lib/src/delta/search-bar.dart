@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/util.dart' as util;
 import 'package:libcli/types.dart' as types;
-import 'custom-icons.dart';
 import 'extensions.dart';
 
 typedef SuggestionBuilder = Future<List<String>> Function(String text);
@@ -78,7 +77,7 @@ class SearchBar extends StatelessWidget {
                         decoration: InputDecoration(
                           isDense: isDense,
                           prefixIcon: Icon(
-                            CustomIcons.search,
+                            Icons.search,
                             size: 24,
                             color: context.themeColor(light: Colors.grey[900]!, dark: Colors.grey[200]!),
                           ),
@@ -91,7 +90,7 @@ class SearchBar extends StatelessWidget {
                               borderRadius: BorderRadius.circular(25.0),
                               onTap: () => model._innerController.text = '',
                               child: Icon(
-                                CustomIcons.close,
+                                Icons.close,
                                 size: 24,
                                 color: context.themeColor(light: Colors.grey[900]!, dark: Colors.grey[200]!),
                               ),

@@ -73,7 +73,7 @@ class DocWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<_DocProvider>(
         builder: (context, provider, child) => Scaffold(
-            appBar: delta.Bar(
+            appBar: AppBar(
               title: Text(provider.title),
             ),
             body: SafeArea(

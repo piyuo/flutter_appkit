@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/custom.dart' as custom;
-import 'custom-icons.dart';
 import 'extensions.dart';
 import 'web-image.dart';
 import 'search-bar.dart';
@@ -292,14 +291,14 @@ class DeltaPlayground extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               items: [
                 ListingItem(1, title: 'item 1'),
-                ListingItem(2, title: 'item 2', icon: CustomIcons.cardGiftcard),
+                ListingItem(2, title: 'item 2', icon: Icons.card_giftcard),
                 const Divider(
                   height: 1,
                 ),
-                ListingItem(3, title: 'item 3', icon: CustomIcons.cardGiftcard),
-                ListingItem(4, title: 'item 4', icon: CustomIcons.cardGiftcard),
-                ListingItem(5, title: 'item 5', icon: CustomIcons.cardGiftcard),
-                ListingItem(6, title: 'item 6', icon: CustomIcons.cardGiftcard),
+                ListingItem(3, title: 'item 3', icon: Icons.card_giftcard),
+                ListingItem(4, title: 'item 4', icon: Icons.card_giftcard),
+                ListingItem(5, title: 'item 5', icon: Icons.card_giftcard),
+                ListingItem(6, title: 'item 6', icon: Icons.card_giftcard),
                 ListingItem(7, title: 'item 7'),
                 ListingItem(8, title: 'item 8'),
                 ListingItem(9, title: 'item 9'),
