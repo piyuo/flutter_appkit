@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart' as delta;
 
 class Bar extends StatelessWidget with PreferredSizeWidget {
   Bar({
@@ -54,7 +53,7 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
     if (hasDrawer) {
       return IconButton(
         color: iconColor,
-        icon: const Icon(delta.CustomIcons.menu),
+        icon: const Icon(Icons.menu),
         onPressed: Scaffold.of(context).openDrawer,
         tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
       );
@@ -63,20 +62,20 @@ class Bar extends StatelessWidget with PreferredSizeWidget {
       if (useCloseButton) {
         return IconButton(
             color: iconColor ?? Theme.of(context).colorScheme.onBackground,
-            icon: const Icon(delta.CustomIcons.close),
+            icon: const Icon(Icons.close),
             onPressed: () => Navigator.of(context).maybePop());
       }
       return IconButton(
         color: iconColor,
         padding: const EdgeInsets.all(0),
-        icon: const Icon(delta.CustomIcons.arrowBackIosNew),
+        icon: const Icon(Icons.arrow_back_ios_new),
         onPressed: Navigator.of(context).pop,
       );
     } else if (kIsWeb && backToRoot == true) {
       return IconButton(
         color: iconColor,
         padding: const EdgeInsets.all(0),
-        icon: const Icon(delta.CustomIcons.arrowBackIosNew),
+        icon: const Icon(Icons.arrow_back_ios_new),
         onPressed: () => Navigator.of(context).pushNamed('gotoRoot'),
       );
     }

@@ -222,9 +222,7 @@ Tile linkTile({
                   ? Row(
                       children: [
                         AutoSizeText(description, style: TextStyle(color: color ?? Colors.grey, fontSize: 16)),
-                        next
-                            ? Icon(delta.CustomIcons.navigateNext, color: color ?? Colors.grey, size: 26)
-                            : const SizedBox(),
+                        next ? Icon(Icons.navigate_next, color: color ?? Colors.grey, size: 26) : const SizedBox(),
                       ],
                     )
                   : const SizedBox(),

@@ -7,6 +7,7 @@ import 'animate-button.dart';
 import 'dropdown-field.dart';
 import 'tags.dart';
 import 'click-field.dart';
+import 'date-field.dart';
 
 class FormPlaygroundProvider extends ChangeNotifier {
   @override
@@ -15,6 +16,7 @@ class FormPlaygroundProvider extends ChangeNotifier {
     dropdownFocus.dispose();
     clickFocus.dispose();
     emailFocus.dispose();
+    dateFocus.dispose();
     checkFocus.dispose();
     submitFocus.dispose();
     super.dispose();
@@ -27,6 +29,8 @@ class FormPlaygroundProvider extends ChangeNotifier {
   final clickFocus = FocusNode(debugLabel: 'clickFocus');
 
   final emailFocus = FocusNode();
+
+  final dateFocus = FocusNode();
 
   final checkFocus = FocusNode();
 
@@ -106,6 +110,13 @@ class FormPlayground extends StatelessWidget {
                       controller: emailController,
                       label: 'email field',
                       focusNode: pFormPlayground.emailFocus,
+                    ),
+                    const SizedBox(height: 20),
+                    DateField(
+                      key: const Key('test-date'),
+                      controller: emailController,
+                      label: 'date field',
+                      focusNode: pFormPlayground.dateFocus,
                     ),
                     const SizedBox(height: 20),
                     Submit(

@@ -105,7 +105,7 @@ class DialogPlayground extends StatelessWidget {
                               'this is a very long footer, it should cover 3 or 4 more line. we need test long message can read easily',
                           emailUs: true,
                           scrollContent: true,
-                          icon: CustomIcons.alarm,
+                          icon: Icons.alarm,
                         ),
                       ),
                     ],
@@ -229,7 +229,7 @@ class DialogPlayground extends StatelessWidget {
                       onPressed: () => info(context,
                           text: 'network is slow than usual',
                           widget: const Icon(
-                            CustomIcons.wifi,
+                            Icons.wifi,
                             size: 68,
                             color: Colors.blue,
                           )),

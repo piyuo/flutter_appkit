@@ -93,7 +93,7 @@ Widget showEmailUs(BuildContext context, bool emailUs) {
               InkWell(
                 onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
                 child: const Icon(
-                  delta.CustomIcons.email,
+                  Icons.email,
                   color: Colors.blueAccent,
                   size: 18,
                 ),
@@ -169,7 +169,7 @@ Future<bool?> alert(
       barrierDismissible: false,
       builder: (BuildContext ctx) {
         if (warning) {
-          icon = delta.CustomIcons.errorOutline;
+          icon = Icons.error_outline;
         }
         return Dialog(
           elevation: 0,

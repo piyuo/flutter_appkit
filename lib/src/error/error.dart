@@ -5,7 +5,6 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/delta.dart' as delta;
 import 'error-email.dart';
 
 eventbus.Subscription? subscribed;
@@ -52,7 +51,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
       dialog.rootContext,
       'diskErrorDesc'.i18n_,
       title: 'diskError'.i18n_,
-      icon: delta.CustomIcons.priorityHigh,
+      icon: Icons.priority_high,
     );
     showCatchedAlert = false;
     return;
@@ -104,7 +103,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     dialog.info(context,
         text: 'slow'.i18n_,
         widget: const Icon(
-          delta.CustomIcons.wifi,
+          Icons.wifi,
           size: 68,
           color: Colors.white,
         ));
@@ -116,7 +115,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       title: 'timeout'.i18n_,
       yes: 'retry'.i18n_,
       cancel: 'cancel'.i18n_,
-      icon: delta.CustomIcons.alarm,
+      icon: Icons.alarm,
       footer: errorCode,
       emailUs: true,
     );
@@ -127,7 +126,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
         dialog.alert(
           context,
           'noServiceDesc'.i18n_,
-          icon: delta.CustomIcons.cloudOff,
+          icon: Icons.cloud_off,
           title: 'noService'.i18n_,
           footer: e.exception?.toString(),
           emailUs: true,
@@ -138,7 +137,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
           'blockedDesc'.i18n_,
           title: 'blocked'.i18n_,
           footer: e.exception?.toString(),
-          icon: delta.CustomIcons.cloudOff,
+          icon: Icons.cloud_off,
           emailUs: true,
         );
       }
@@ -148,7 +147,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
         context,
         'noInternetDesc'.i18n_,
         title: 'noInternet'.i18n_,
-        icon: delta.CustomIcons.wifiOff,
+        icon: Icons.wifi_off,
         footer: e.exception?.toString(),
         yes: 'retry'.i18n_,
         cancel: 'cancel'.i18n_,

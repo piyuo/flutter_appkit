@@ -1,6 +1,5 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart' as delta;
 import 'dynamic-bottom-side.dart';
 import 'wrapped-list-view.dart';
 import 'play.dart';
@@ -172,19 +171,19 @@ class CustomPlayground extends StatelessWidget {
           ],
         ),
         buttonTile(
-          delta.CustomIcons.takeoutDining,
+          Icons.takeout_dining,
           text: 'Take out',
           description: 'my take out order',
           iconColor: Colors.red[700],
         ),
         buttonTile(
-          delta.CustomIcons.deliveryDining,
+          Icons.delivery_dining,
           text: 'Dine in',
           description: 'my dine in order',
           iconColor: Colors.blue[700],
         ),
         buttonTile(
-          delta.CustomIcons.qrCode,
+          Icons.qr_code,
           x: 6,
           y: 4,
           description: 'QR Code',
@@ -208,7 +207,7 @@ class CustomPlayground extends StatelessWidget {
               tileMode: TileMode.clamp,
             ),
           ),
-          icon: delta.CustomIcons.place,
+          icon: Icons.place,
           iconColor: Colors.red,
         ),
         imageTile(
@@ -302,21 +301,21 @@ class CustomPlayground extends StatelessWidget {
         stories: [
           SimpleStory(
             utcDate: DateTime.now().toUtc(),
-            icon: delta.CustomIcons.takeoutDining,
+            icon: Icons.takeout_dining,
             text: 'you have new takeout order',
             title: 'pork rice, beef noddle and more ...',
             color: Colors.red[700]!,
           ),
           SimpleStory(
             utcDate: DateTime.now().toUtc(),
-            icon: delta.CustomIcons.bookmark,
+            icon: Icons.bookmark,
             text: 'Someone asking question about',
             title: 'Pork Rice',
             color: Colors.blue[700]!,
           ),
           SimpleStory(
             utcDate: DateTime.now().toUtc(),
-            icon: delta.CustomIcons.cardGiftcard,
+            icon: Icons.card_giftcard,
             text: 'Order delivered',
             title: 'pork rice, beef noodle and more',
             color: Colors.green[700]!,

@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/util.dart' as util;
 import 'package:libcli/commands/sys/sys.dart' as sys;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/delta.dart' as delta;
 import 'search-confirm.dart';
 import 'show-search.dart';
 
@@ -250,7 +249,7 @@ class SearchBar extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: IconButton(
                         padding: const EdgeInsets.all(0),
-                        icon: const Icon(delta.CustomIcons.arrowBackIosNew),
+                        icon: const Icon(Icons.arrow_back_ios_new),
                         onPressed: Navigator.of(context).pop,
                       ),
                     ),
@@ -259,7 +258,7 @@ class SearchBar extends StatelessWidget {
                       left: 54,
                       top: 16,
                       child: Icon(
-                        delta.CustomIcons.search,
+                        Icons.search,
                         size: 48,
                         color: isDark ? Colors.white60 : Colors.black26,
                       ),

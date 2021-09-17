@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/delta.dart' as delta;
 
 typedef ClickFiledCallback = Future<String> Function(String text);
 
@@ -73,7 +72,7 @@ class ClickField extends Field {
                 hintText: hint,
                 errorText: pClickField._error,
                 suffixIcon: const Icon(
-                  delta.CustomIcons.navigateNext,
+                  Icons.navigate_next,
                 ),
               ).applyDefaults(Theme.of(context).inputDecorationTheme),
               child: ClickFormField(

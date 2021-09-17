@@ -6,10 +6,10 @@ import 'popup.dart';
 import 'listing.dart';
 import 'device.dart';
 
-const ITEM_HEIGHT = 40.0;
+const itemHeight = 40.0;
 
 double _menuHeight(int itemCount) {
-  var menuHeight = itemCount * ITEM_HEIGHT;
+  var menuHeight = itemCount * itemHeight;
   final screenHeight = screenSize().height;
   if (menuHeight > screenHeight * 2 / 3) {
     menuHeight = screenHeight * 2 / 3;

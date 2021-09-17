@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/locate.dart' as locate;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/delta.dart' as delta;
 import 'search-confirm.dart';
 import 'show-search.dart';
 
@@ -55,7 +54,7 @@ class SearchView extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   const Icon(
-                                    delta.CustomIcons.myLocation,
+                                    Icons.my_location,
                                     color: Colors.black,
                                   ),
                                   const SizedBox(width: 10),

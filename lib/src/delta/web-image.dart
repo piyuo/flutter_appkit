@@ -69,14 +69,14 @@ class WebImage extends StatelessWidget {
           switch (state.extendedImageLoadState) {
             case LoadState.loading:
               log.debug('[web-image] download $url');
-              return _image(context, delta.CustomIcons.image, border, radius);
+              return _image(context, Icons.image, border, radius);
 
             case LoadState.completed:
               return null;
 
             case LoadState.failed:
               log.log('[web-image] missing $url');
-              return _image(context, delta.CustomIcons.brokenImage, border, radius);
+              return _image(context, Icons.broken_image, border, radius);
           }
         },
       ),
