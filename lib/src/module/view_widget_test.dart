@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'view-provider.dart';
-import 'view-widget.dart';
+import 'view_provider.dart';
+import 'view_widget.dart';
 
 class SampleViewModel extends ViewProvider {}
 

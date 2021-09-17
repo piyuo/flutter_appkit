@@ -22,9 +22,9 @@ String replace(String key, String from, String to) {
 ///
 Map get _dict {
   switch (localeString) {
-    case zh_TW:
+    case zhTW:
       return _zhTW;
-    case zh_CN:
+    case zhCN:
       return _zhCN;
   }
   return _enUS;

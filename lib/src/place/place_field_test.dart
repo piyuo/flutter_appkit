@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/form.dart' as form;
 import 'package:libcli/asset.dart' as asset;
-import 'place-field.dart';
-import 'show-search.dart';
+import 'place_field.dart';
+import 'show_search.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();

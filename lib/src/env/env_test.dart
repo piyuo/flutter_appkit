@@ -6,14 +6,14 @@ void main() {
     test('should set/get variable', () {
       init(
         appName: 'appName',
-        branch: BRANCH_MASTER,
+        branch: branchMaster,
         serviceEmail: 'serviceEmail',
       );
       userID = '1-2';
       expect(userID, '1-2');
       expect(appName, 'appName');
       expect(serviceEmail, 'serviceEmail');
-      expect(branch, BRANCH_MASTER);
+      expect(branch, branchMaster);
     });
   });
 }

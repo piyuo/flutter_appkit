@@ -7,9 +7,9 @@ abstract class MapProviderImpl {
 
   bool showMarker = false;
 
-  Future<void> setValue(types.LatLng l, bool show) async {
-    latlng = l;
-    showMarker = show;
+  Future<void> setValue(types.LatLng latlng, bool showMarker) async {
+    latlng = latlng;
+    showMarker = showMarker;
   }
 }
 
@@ -20,8 +20,8 @@ class MapProvider with ChangeNotifier {
   // impl is map implementation
   MapProviderImpl impl;
 
-  Future<void> setValue(types.LatLng l, bool show) async {
-    impl.setValue(l, show);
+  Future<void> setValue(types.LatLng latlng, bool showMarker) async {
+    impl.setValue(latlng, showMarker);
     notifyListeners();
   }
 

@@ -2,9 +2,9 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/types.dart' as types;
-import 'map-google.dart';
-import 'map-apple.dart';
-import 'map-amap.dart';
+import 'map_google.dart';
+import 'map_apple.dart';
+import 'map_amap.dart';
 import 'map.dart';
 
 enum MapType { google, apple, amap }

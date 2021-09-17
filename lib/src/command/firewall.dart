@@ -21,26 +21,26 @@ class FirewallBlock extends pb.Empty {
   FirewallBlock(this.reason);
 }
 
-/// BLOCK_SHORT is server request to block this command for short period of time
-const BLOCK_SHORT = 'BLOCK_SHORT';
+/// blockShort is server request to block this command for short period of time
+const blockShort = 'BLOCK_SHORT';
 
-/// BLOCK_LONG is server request to block this command for long period of time
-const BLOCK_LONG = 'BLOCK_LONG';
+/// blockLong is server request to block this command for long period of time
+const blockLong = 'BLOCK_LONG';
 
-/// IN_FLIGHT is previous command still in flight
-const IN_FLIGHT = 'IN_FLIGHT';
+/// inFlight is previous command still in flight
+const inFlight = 'IN_FLIGHT';
 
-/// OVERFLOW is command run too many times
-const OVERFLOW = 'OVERFLOW';
+/// overflow is command run too many times
+const overflow = 'OVERFLOW';
 
-/// CacheKeyLastRequest is cache key that identify last request
-const CacheKeyLastRequest = "CMD_LAST_REQUEST";
+/// cacheKeyLastRequest is cache key that identify last request
+const cacheKeyLastRequest = "CMD_LAST_REQUEST";
 
-/// CacheKeyLastResponse is cache key that identify last response
-const CacheKeyLastResponse = "CMD_LAST_RESPONSE";
+/// cacheKeyLastResponse is cache key that identify last response
+const cacheKeyLastResponse = "CMD_LAST_RESPONSE";
 
-/// CacheKeyCall is cache key that use to count overflow
-const CacheKeyCall = "CMD_CALL_";
+/// cacheKeyCall is cache key that use to count overflow
+const cacheKeyCall = "CMD_CALL_";
 
 /// CacheDuration is the time we cache last response
 var cacheDuration = const Duration(seconds: 30);
@@ -54,8 +54,8 @@ const maxAllowPostCount = 96;
 /// firewallDisable set to true will disable firewall
 bool firewallDisable = false;
 
-/// CacheKeyBlock is cache key for block command
-const CacheKeyBlock = "CMD_BLOCK_";
+/// cacheKeyBlock is cache key for block command
+const cacheKeyBlock = "CMD_BLOCK_";
 
 /// BlockShortDuration define time of short duration
 var blockShortDuration = const Duration(minutes: 1);
@@ -76,39 +76,39 @@ pb.Object firewallBegin(String cmdJSON) {
   }
 
   // check block by server
-  var blocked = cache.get(CacheKeyBlock + cmdJSON);
+  var blocked = cache.get(cacheKeyBlock + cmdJSON);
   if (blocked != null) {
     return FirewallBlock(blocked);
   }
 
   // check IN_FLIGHT/LAST_RESPONSE
-  var lastReq = cache.get(CacheKeyLastRequest);
+  var lastReq = cache.get(cacheKeyLastRequest);
   if (lastReq != null && lastReq is String) {
     // hit cache
     if (lastReq == cmdJSON) {
-      final response = cache.get(CacheKeyLastResponse);
+      final response = cache.get(cacheKeyLastResponse);
       if (response != null) {
         // LAST_RESPONSE
         return response;
       } else {
         // IN_FLIGHT
-        return FirewallBlock(IN_FLIGHT);
+        return FirewallBlock(inFlight);
       }
     }
   }
 
   // check OVERFLOW
-  final currentCount = cache.beginWith(CacheKeyCall);
+  final currentCount = cache.beginWith(cacheKeyCall);
   if (currentCount >= maxAllowPostCount) {
-    return FirewallBlock(OVERFLOW);
+    return FirewallBlock(overflow);
   }
 
   // track last command
-  cache.set(CacheKeyLastRequest, cmdJSON, expire: cacheDuration);
-  cache.delete(CacheKeyLastResponse);
+  cache.set(cacheKeyLastRequest, cmdJSON, expire: cacheDuration);
+  cache.delete(cacheKeyLastResponse);
 
   // add call count for OVERFLOW detection
-  cache.set(CacheKeyCall + identifier.randomNumber(6), null, expire: maxAllowPostDuration);
+  cache.set(cacheKeyCall + identifier.randomNumber(6), null, expire: maxAllowPostDuration);
   return FirewallPass();
 }
 
@@ -121,26 +121,26 @@ void firewallEnd(String cmdJSON, pb.Object? response) {
 
   if (response == null) {
     // something wrong with post, just delete cache
-    cache.delete(CacheKeyLastRequest);
-    cache.delete(CacheKeyLastResponse);
+    cache.delete(cacheKeyLastRequest);
+    cache.delete(cacheKeyLastResponse);
     return;
   }
   // update request cache time, make sure request and response will expire at the same time
-  cache.set(CacheKeyLastRequest, cmdJSON, expire: cacheDuration);
-  cache.set(CacheKeyLastResponse, response, expire: cacheDuration);
+  cache.set(cacheKeyLastRequest, cmdJSON, expire: cacheDuration);
+  cache.set(cacheKeyLastResponse, response, expire: cacheDuration);
 
   // check block by server
   if (response is pb.Error) {
-    if (response.code == BLOCK_SHORT) {
-      cache.set(CacheKeyBlock + cmdJSON, BLOCK_SHORT, expire: blockShortDuration);
+    if (response.code == blockShort) {
+      cache.set(cacheKeyBlock + cmdJSON, blockShort, expire: blockShortDuration);
     }
-    if (response.code == BLOCK_LONG) {
-      cache.set(CacheKeyBlock + cmdJSON, BLOCK_LONG, expire: blockLongDuration);
+    if (response.code == blockLong) {
+      cache.set(cacheKeyBlock + cmdJSON, blockLong, expire: blockLongDuration);
     }
   }
 }
 
 void mockFirewallInFlight(String cmdJSON) {
-  cache.set(CacheKeyLastRequest, cmdJSON, expire: cacheDuration);
-  cache.delete(CacheKeyLastResponse);
+  cache.set(cacheKeyLastRequest, cmdJSON, expire: cacheDuration);
+  cache.delete(cacheKeyLastResponse);
 }

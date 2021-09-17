@@ -3,7 +3,7 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'async-provider.dart';
+import 'async_provider.dart';
 import 'extensions.dart';
 
 /// Await load provider in list

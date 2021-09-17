@@ -13,8 +13,8 @@ class GoogleImpl extends MapProviderImpl {
   final Set<Marker> _markers = {};
 
   @override
-  Future<void> setValue(types.LatLng latlngValue, bool showMarkerValue) async {
-    await super.setValue(latlngValue, showMarkerValue);
+  Future<void> setValue(types.LatLng latlng, bool showMarker) async {
+    await super.setValue(latlng, showMarker);
     resetMarker();
 
     final GoogleMapController futureController = await _controller.future;

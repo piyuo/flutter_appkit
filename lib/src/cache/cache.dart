@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:libcli/src/cache/memory-cache.dart';
+import 'package:libcli/src/cache/memory_cache.dart';
 
 /// _cache is the internal cache
 final _cache = MemoryCache();

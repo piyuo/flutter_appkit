@@ -7,18 +7,18 @@ import 'number.pb.dart';
 import 'ok.pb.dart';
 import 'string.pb.dart';
 
-  pb.Object simpleObjectByID(int id, List<int> l) {
+  pb.Object simpleObjectByID(int id, List<int> bytes) {
     switch (id) {
       case 1:
-        return Bool.fromBuffer(l);
+        return Bool.fromBuffer(bytes);
       case 2:
-        return Error.fromBuffer(l);
+        return Error.fromBuffer(bytes);
       case 4:
-        return Number.fromBuffer(l);
+        return Number.fromBuffer(bytes);
       case 5:
-        return OK.fromBuffer(l);
+        return OK.fromBuffer(bytes);
       case 6:
-        return String.fromBuffer(l);
+        return String.fromBuffer(bytes);
     }
     throw Exception('failed to create object in simpleObjectByID. id($id) out of range');
 }

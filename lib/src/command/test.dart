@@ -25,21 +25,21 @@ class MockService extends Service {
         );
 
   @override
-  pb.Object newObjectByID(int id, List<int> l) {
+  pb.Object newObjectByID(int id, List<int> bytes) {
     return pb.OK();
   }
 
   @override
   Future<pb.Object> execute(
     BuildContext ctx,
-    pb.Object obj, {
+    pb.Object command, {
     bool ignoreFirewall = false,
   }) async {
     var f = mockExecute ??
         (_, action) async {
           return pb.OK();
         };
-    return await f(ctx, obj);
+    return await f(ctx, command);
   }
 }
 

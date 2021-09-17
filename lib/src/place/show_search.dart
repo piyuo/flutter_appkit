@@ -6,9 +6,9 @@ import 'package:libcli/locate.dart' as locate;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/delta.dart' as delta;
-import 'search-bar.dart';
-import 'search-view.dart';
-import 'geo-client.dart';
+import 'search_bar.dart';
+import 'search_view.dart';
+import 'geo_client.dart';
 
 /// ConfirmButtonProvider control confirm button is visibility
 class ConfirmButtonProvider extends types.BoolProvider {

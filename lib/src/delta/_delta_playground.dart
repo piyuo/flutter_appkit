@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/custom.dart' as custom;
 import 'extensions.dart';
-import 'web-image.dart';
-import 'search-bar.dart';
+import 'web_image.dart';
+import 'search_bar.dart';
 import 'listing.dart';
 import 'check.dart';
 import 'hypertext.dart';
-import 'async-provider.dart';
+import 'async_provider.dart';
 import 'await.dart';
 import 'popup.dart';
 import 'menu.dart';
-import 'pull-refresh.dart';
+import 'pull_refresh.dart';
 
 var _pullRefreshCount = 8;
 

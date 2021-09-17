@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/locate.dart' as locate;
 import 'package:libcli/i18n.dart' as i18n;
-import 'search-confirm.dart';
-import 'show-search.dart';
+import 'search_confirm.dart';
+import 'show_search.dart';
 
 class SearchViewProvider with ChangeNotifier {
   SearchViewProvider({

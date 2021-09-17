@@ -14,10 +14,10 @@ class SampleService extends Service {
   SampleService(): super(serviceName: 'sample',timeout: 20000,slow: 10000);
 
   @override
-  pb.Object newObjectByID(int id, List<int> l) {
+  pb.Object newObjectByID(int id, List<int> bytes) {
     switch (id) {
       case 1002:
-        return StringResponse.fromBuffer(l);
+        return StringResponse.fromBuffer(bytes);
     }
     throw Exception('failed to create object in SampleService. id($id) out of range');
   }

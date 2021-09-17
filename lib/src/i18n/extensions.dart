@@ -3,7 +3,7 @@ import 'package:libcli/src/pb/google/google.dart' as google;
 // ignore: implementation_imports
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';
-import 'package:libcli/src/i18n/i18n-provider.dart';
+import 'package:libcli/src/i18n/i18n_provider.dart';
 import 'package:libcli/src/i18n/predefine.dart';
 import 'package:libcli/src/i18n/time.dart';
 

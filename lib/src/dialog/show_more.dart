@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta.dart' as delta;
-import 'triangle-painter.dart';
+import 'triangle_painter.dart';
 
 const arrowHeight = 12.0;
 const arrowWidth = 24.0;

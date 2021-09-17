@@ -6,7 +6,7 @@ import 'alert.dart';
 import 'toast.dart';
 import 'slide.dart';
 import 'route.dart';
-import 'show-more.dart';
+import 'show_more.dart';
 import 'banner.dart';
 import 'hypertext.extension.dart';
 

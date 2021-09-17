@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'input-field.dart';
+import 'input_field.dart';
 
 void main() {
   final _keyForm = GlobalKey<FormState>();

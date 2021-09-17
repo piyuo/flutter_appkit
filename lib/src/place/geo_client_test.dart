@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/types.dart' as types;
-import 'geo-client.dart';
+import 'geo_client.dart';
 
 void main() {
   setUp(() async {});

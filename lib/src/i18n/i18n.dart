@@ -3,24 +3,24 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/pref.dart' as pref;
 import 'package:libcli/eventbus.dart' as eventbus;
 
-const PREF_LOCALE_KEY = 'LOCALE';
-const US = 'US';
-const CN = 'CN';
-const TW = 'TW';
-const en_US = 'en_' + US;
-const zh_CN = 'zh_' + CN;
-const zh_TW = 'zh_' + TW;
+const prefLocaleKey = 'LOCALE';
+const us = 'US';
+const cn = 'CN';
+const tw = 'TW';
+const enUS = 'en_' + us;
+const zhCN = 'zh_' + cn;
+const zhTW = 'zh_' + tw;
 
 /// _supportedLocales define supported locale
 //https://www.oracle.com/technical-resources/articles/javase/locale.html
 const _supportedLocales = [
-  en_US,
-  zh_CN,
-  zh_TW,
+  enUS,
+  zhCN,
+  zhTW,
 ];
 
 /// _locale is current locale, it set by determineLocale()
-Locale _locale = const Locale('en', US);
+Locale _locale = const Locale('en', us);
 
 String get localeString => localeToString(_locale);
 
@@ -54,7 +54,7 @@ Locale stringToLocale(String value) {
 
 /// _country is current country, it set by first country code in determineLocale(), it mean user's default country
 ///
-String _country = US;
+String _country = us;
 
 String get country => _country;
 
@@ -64,20 +64,20 @@ set country(String value) {
 }
 
 /// isCountryCN return true if country is china, we may need show different map or import different service cause china's firewall
-get isCountryCN => _country == CN;
+get isCountryCN => _country == cn;
 
 class LocaleDelegate extends LocalizationsDelegate<Locale> {
   @override
   bool isSupported(Locale locale) => isLocaleSupported(locale);
 
   @override
-  Future<Locale> load(Locale newLocale) async {
+  Future<Locale> load(Locale locale) async {
     // check pref first
-    final preferLocaleStr = await pref.getStringWithExp(PREF_LOCALE_KEY);
+    final preferLocaleStr = await pref.getStringWithExp(prefLocaleKey);
     if (preferLocaleStr.isNotEmpty) {
       _locale = stringToLocale(preferLocaleStr);
     } else {
-      _locale = newLocale;
+      _locale = locale;
       //no need for now, cause GlobalLocalizations will load date formatting
       //if (initDateFormatting != null) {
       //initDateFormatting(localeToId(l));
@@ -102,7 +102,7 @@ Future<bool> setLocale(
     final localeStr = localeToString(value);
     if (remember) {
       final tomorrow = DateTime.now().add(const Duration(hours: 24));
-      await pref.setStringWithExp(PREF_LOCALE_KEY, localeStr, tomorrow);
+      await pref.setStringWithExp(prefLocaleKey, localeStr, tomorrow);
     }
     log.log('[i18n] locale=$localeStr');
     await eventbus.broadcast(context, I18nChangedEvent());
@@ -143,10 +143,10 @@ bool isLocaleSupported(Locale locale) {
 /// The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
 ///
 Locale determineLocale(List<Locale>? locales) {
-  Locale bestLocale = const Locale('en', US);
+  Locale bestLocale = const Locale('en', us);
   if (locales != null && locales.isNotEmpty) {
     bestLocale = locales[0];
-    _country = bestLocale.countryCode ?? US;
+    _country = bestLocale.countryCode ?? us;
     for (var locale in locales) {
       if (isLocaleSupported(locale)) {
         bestLocale = locale;

@@ -1,12 +1,12 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'dynamic-bottom-side.dart';
-import 'wrapped-list-view.dart';
+import 'dynamic_bottom_side.dart';
+import 'wrapped_list_view.dart';
 import 'play.dart';
 import 'slideshow.dart';
 import 'wall.dart';
-import 'side-panel.dart';
-import 'story-line.dart';
+import 'side_panel.dart';
+import 'story_line.dart';
 
 class CustomPlayground extends StatelessWidget {
   final sidePanelProvider = SidePanelProvider();

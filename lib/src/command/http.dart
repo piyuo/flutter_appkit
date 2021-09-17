@@ -7,7 +7,7 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/src/command/events.dart';
-import 'package:libcli/src/command/http-header.dart';
+import 'package:libcli/src/command/http_header.dart';
 import 'package:libcli/src/command/protobuf.dart';
 import 'package:libcli/src/command/service.dart';
 

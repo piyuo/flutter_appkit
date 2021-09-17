@@ -63,10 +63,10 @@ void main() {
       expect(firewallBegin('short') is FirewallPass, true);
 
       // server request block short duration
-      firewallEnd('short', pb.Error()..code = BLOCK_SHORT); // set complete
+      firewallEnd('short', pb.Error()..code = blockShort); // set complete
       var result = firewallBegin('short');
       expect(result is FirewallBlock, true);
-      expect((result as FirewallBlock).reason, BLOCK_SHORT);
+      expect((result as FirewallBlock).reason, blockShort);
 
       //try again, still block
       expect(firewallBegin('short') is FirewallBlock, true);
@@ -83,10 +83,10 @@ void main() {
       expect(firewallBegin('long') is FirewallPass, true);
 
       // server request block long duration
-      firewallEnd('long', pb.Error()..code = BLOCK_LONG); // set complete
+      firewallEnd('long', pb.Error()..code = blockLong); // set complete
       var result = firewallBegin('long');
       expect(result is FirewallBlock, true);
-      expect((result as FirewallBlock).reason, BLOCK_LONG);
+      expect((result as FirewallBlock).reason, blockLong);
 
       //try again, still block
       expect(firewallBegin('long') is FirewallBlock, true);

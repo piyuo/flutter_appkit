@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:libcli/types.dart' as types;
 import 'package:libcli/form.dart' as form;
 import 'package:libcli/i18n.dart' as i18n;
-import 'place-field.dart';
-import 'open-in-map.dart';
+import 'place_field.dart';
+import 'open_in_map.dart';
 
 class PlacePlayground extends StatefulWidget {
   const PlacePlayground({Key? key}) : super(key: key);
@@ -18,9 +18,9 @@ class PlacePlaygroundState extends State<PlacePlayground> {
   final _keyForm = GlobalKey<FormState>();
 
   final Map countryItems = {
-    i18n.en_US: "United States",
-    i18n.zh_CN: "China",
-    i18n.zh_TW: "Taiwan",
+    i18n.enUS: "United States",
+    i18n.zhCN: "China",
+    i18n.zhTW: "Taiwan",
   };
 
   final addressController = PlaceFieldProvider();

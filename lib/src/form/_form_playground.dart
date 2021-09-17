@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'input-field.dart';
-import 'email-field.dart';
+import 'input_field.dart';
+import 'email_field.dart';
 import 'submit.dart';
-import 'animate-button.dart';
-import 'dropdown-field.dart';
+import 'animate_button.dart';
+import 'dropdown_field.dart';
 import 'tags.dart';
-import 'click-field.dart';
-import 'date-field.dart';
+import 'click_field.dart';
+import 'date_field.dart';
 
 class FormPlaygroundProvider extends ChangeNotifier {
   @override

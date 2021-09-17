@@ -17,16 +17,16 @@ class SysService extends Service {
   SysService(): super(serviceName: 'sys',timeout: 20000,slow: 10000);
 
   @override
-  pb.Object newObjectByID(int id, List<int> l) {
+  pb.Object newObjectByID(int id, List<int> bytes) {
     switch (id) {
       case 1004:
-        return GeoLocation.fromBuffer(l);
+        return GeoLocation.fromBuffer(bytes);
       case 1005:
-        return GeoLocations.fromBuffer(l);
+        return GeoLocations.fromBuffer(bytes);
       case 1006:
-        return GeoSuggestion.fromBuffer(l);
+        return GeoSuggestion.fromBuffer(bytes);
       case 1007:
-        return GeoSuggestions.fromBuffer(l);
+        return GeoSuggestions.fromBuffer(bytes);
     }
     throw Exception('failed to create object in SysService. id($id) out of range');
   }

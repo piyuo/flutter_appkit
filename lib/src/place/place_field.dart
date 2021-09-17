@@ -5,7 +5,7 @@ import 'package:libcli/form.dart' as form;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
 
-import 'show-search.dart';
+import 'show_search.dart';
 
 /// PlaceFieldProvider control place field
 class PlaceFieldProvider extends ChangeNotifier {

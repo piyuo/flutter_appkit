@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/cache/memory-cache.dart';
+import 'package:libcli/src/cache/memory_cache.dart';
 
 void main() {
   group('[memory-cache]', () {
