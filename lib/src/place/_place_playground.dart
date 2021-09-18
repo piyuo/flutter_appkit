@@ -18,9 +18,9 @@ class PlacePlaygroundState extends State<PlacePlayground> {
   final _keyForm = GlobalKey<FormState>();
 
   final Map countryItems = {
-    i18n.enUS: "United States",
-    i18n.zhCN: "China",
-    i18n.zhTW: "Taiwan",
+    'en_US': "United States",
+    'zh_CN': "China",
+    'zh_TW': "Taiwan",
   };
 
   final addressController = PlaceFieldProvider();
@@ -37,7 +37,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
 
   @override
   void initState() {
-    countryController.text = i18n.localeString;
+    countryController.text = i18n.localeName;
     countryController.addListener(_onCountryChanged);
     addressWithValueController.setPlace(types.Place(
       address: '2141 spectrum, irvine, CA 92618',
@@ -57,8 +57,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
 
   /// _onCountryChanged happen when user change country
   void _onCountryChanged() {
-    i18n.setLocale(context, i18n.stringToLocale(countryController.text));
-    i18n.country = i18n.locale.countryCode!;
+    i18n.setLocale(countryController.text);
   }
 
   @override

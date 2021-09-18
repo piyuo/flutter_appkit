@@ -21,10 +21,10 @@ String replace(String key, String from, String to) {
 /// getCurrentGlobalTranslation return global translation base on current locale
 ///
 Map get _dict {
-  switch (localeString) {
-    case zhTW:
+  switch (localeName) {
+    case 'zh_TW':
       return _zhTW;
-    case zhCN:
+    case 'zh_CN':
       return _zhCN;
   }
   return _enUS;

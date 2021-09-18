@@ -68,7 +68,7 @@ class I18nProvider extends delta.AsyncProvider {
       if (kReleaseMode) {
         return key;
       } else {
-        log.log('[i18n] missing "$key" in asset/i18n/${fileName}_$localeString.json');
+        log.log('[i18n] missing "$key" in asset/i18n/${fileName}_$localeName.json');
         return '!! $key not found';
       }
     }
@@ -85,9 +85,9 @@ Future<Map> getTranslation({
   String? package2,
 }) async {
   assert(fileName.isNotEmpty, 'need at least one language file');
-  Map map = await asset.loadMap(assetName: 'i18n/${fileName}_$localeString.json', package: package);
+  Map map = await asset.loadMap(assetName: 'i18n/${fileName}_$localeName.json', package: package);
   if (fileName2 != null && fileName2.isNotEmpty) {
-    Map map2 = await asset.loadMap(assetName: 'i18n/${fileName2}_$localeString.json', package: package2);
+    Map map2 = await asset.loadMap(assetName: 'i18n/${fileName2}_$localeName.json', package: package2);
     map.addAll(map2);
   }
   return map;

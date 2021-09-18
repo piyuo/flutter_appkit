@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/testing.dart' as testing;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libcli/src/pb/google/google.dart' as google;
 import 'package:libcli/src/i18n/i18n.dart';
@@ -59,12 +58,12 @@ void main() {
       var date = DateTime(2021, 1, 2, 23, 30);
       google.Timestamp t = timestamp(datetime: date);
 
-      setLocale(testing.Context(), const Locale('en', 'US'));
+      setLocale('en_US');
       expect(t.localDateString, 'Jan 2, 2021');
       expect(t.localTimeString, '11:30 PM');
       expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
 
-      setLocale(testing.Context(), const Locale('zh', 'CN'));
+      setLocale('zh_CN');
       expect(t.localDateString, '2021年1月2日');
       expect(t.localTimeString, '下午11:30');
       expect(t.localDateTimeString, '2021年1月2日 下午11:30');

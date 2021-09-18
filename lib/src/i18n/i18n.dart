@@ -1,16 +1,17 @@
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/pref.dart' as pref;
 import 'package:libcli/eventbus.dart' as eventbus;
 
-const prefLocaleKey = 'LOCALE';
+const prefLocaleKey = 'locale';
+/*
 const us = 'US';
 const cn = 'CN';
 const tw = 'TW';
 const enUS = 'en_' + us;
 const zhCN = 'zh_' + cn;
 const zhTW = 'zh_' + tw;
-
 /// _supportedLocales define supported locale
 //https://www.oracle.com/technical-resources/articles/javase/locale.html
 const _supportedLocales = [
@@ -18,13 +19,36 @@ const _supportedLocales = [
   zhCN,
   zhTW,
 ];
+*/
+/// localeName return current locale name
+String get localeName => Intl.defaultLocale ?? 'en_US';
 
-/// _locale is current locale, it set by determineLocale()
-Locale _locale = const Locale('en', us);
+/// locale is current locale, it set by Intl.defaultLocale
+Locale get locale => stringToLocale(localeName);
 
-String get localeString => localeToString(_locale);
+/// countryCode is current locale country code
+String get countryCode => locale.countryCode ?? 'US';
 
-Locale get locale => _locale;
+/// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours
+Future<bool> setLocale(
+  String newLocaleName, {
+  BuildContext? context,
+  bool remember = false,
+}) async {
+  if (newLocaleName != localeName) {
+    Intl.defaultLocale = newLocaleName;
+    if (remember) {
+      final tomorrow = DateTime.now().add(const Duration(hours: 24));
+      await pref.setStringWithExp(prefLocaleKey, newLocaleName, tomorrow);
+    }
+    log.log('[i18n] locale=$newLocaleName');
+    if (context != null) {
+      await eventbus.broadcast(context, I18nChangedEvent());
+    }
+    return true;
+  }
+  return false;
+}
 
 class I18nChangedEvent extends eventbus.Event {}
 
@@ -36,6 +60,7 @@ String localeToAcceptLanguage(Locale value) {
   return '${value.languageCode}-${value.countryCode}';
 }
 
+/*
 /// localeToString convert Locale(''en,'US') to 'en_US'
 ///
 /// var id = localeToId(Locale('en','US'));
@@ -43,7 +68,7 @@ String localeToAcceptLanguage(Locale value) {
 String localeToString(Locale value) {
   return '${value.languageCode}_${value.countryCode}';
 }
-
+*/
 /// stringToLocale 'en_US' to Locale(''en,'US')
 ///
 Locale stringToLocale(String value) {
@@ -52,9 +77,10 @@ Locale stringToLocale(String value) {
   return Locale(ids[0]);
 }
 
+/*
 /// _country is current country, it set by first country code in determineLocale(), it mean user's default country
 ///
-String _country = us;
+String _country = 'US';
 
 String get country => _country;
 
@@ -62,55 +88,31 @@ set country(String value) {
   _country = value;
   log.log('[i18n] country=$value');
 }
-
 /// isCountryCN return true if country is china, we may need show different map or import different service cause china's firewall
-get isCountryCN => _country == cn;
+get isCountryCN => _country == 'CN';
+*/
 
 class LocaleDelegate extends LocalizationsDelegate<Locale> {
   @override
-  bool isSupported(Locale locale) => isLocaleSupported(locale);
+  bool isSupported(Locale locale) => ['en', 'zh'].contains(locale.languageCode); //isLocaleSupported(locale);
 
   @override
   Future<Locale> load(Locale locale) async {
     // check pref first
     final preferLocaleStr = await pref.getStringWithExp(prefLocaleKey);
-    if (preferLocaleStr.isNotEmpty) {
-      _locale = stringToLocale(preferLocaleStr);
-    } else {
-      _locale = locale;
-      //no need for now, cause GlobalLocalizations will load date formatting
-      //if (initDateFormatting != null) {
-      //initDateFormatting(localeToId(l));
-      //}
-    }
-    log.log('[i18n] init ${localeToString(_locale)}');
-    return _locale;
+    Intl.defaultLocale = preferLocaleStr.isNotEmpty ? preferLocaleStr : Intl.defaultLocale = locale.toString();
+    //no need for now, cause GlobalLocalizations will load date formatting
+    //if (initDateFormatting != null) {
+    //initDateFormatting(localeToId(l));
+    //}
+    log.log('[i18n] init ${Intl.defaultLocale}');
+    return stringToLocale(Intl.defaultLocale!);
   }
 
   @override
   bool shouldReload(LocaleDelegate old) => false;
 }
-
-/// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours
-Future<bool> setLocale(
-  BuildContext context,
-  Locale value, {
-  bool remember = false,
-}) async {
-  if (value.countryCode != _locale.countryCode || value.languageCode != _locale.languageCode) {
-    _locale = value;
-    final localeStr = localeToString(value);
-    if (remember) {
-      final tomorrow = DateTime.now().add(const Duration(hours: 24));
-      await pref.setStringWithExp(prefLocaleKey, localeStr, tomorrow);
-    }
-    log.log('[i18n] locale=$localeStr');
-    await eventbus.broadcast(context, I18nChangedEvent());
-    return true;
-  }
-  return false;
-}
-
+/*
 /// mock a locale
 ///
 ///     mock(Locale('en', 'US'), '{"title": "mock"}');
@@ -158,3 +160,4 @@ Locale determineLocale(List<Locale>? locales) {
   log.log('[i18n] country=$_country');
   return bestLocale;
 }
+*/

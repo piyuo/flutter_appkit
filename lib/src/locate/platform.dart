@@ -21,7 +21,7 @@ MapType mapType() {
   }
 
   // use amap in china, cause google map may not work in china
-  if (i18n.isCountryCN) {
+  if (i18n.countryCode == 'CN') {
     return MapType.amap;
   }
 
@@ -70,7 +70,7 @@ String mapUrl(String address, types.LatLng latlng) {
   String adr = Uri.encodeComponent(address);
   var t = mapType();
   if (t == MapType.apple) {
-    if (i18n.isCountryCN) {
+    if (i18n.countryCode == 'CN') {
       t = MapType.amap;
     } else {
       t = MapType.google;

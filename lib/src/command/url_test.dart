@@ -28,7 +28,7 @@ void main() {
     test('should use beta url', () async {
       // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.branchBeta;
-      i18n.country = i18n.us;
+      i18n.setLocale('en_US');
       serviceRegion = '';
       //TW using JP data center
       expect(serviceUrl('mock'), 'https://mock-us-beta.piyuo.com/?q');
@@ -37,8 +37,8 @@ void main() {
     test('should use service country', () async {
       // ignore: invalid_use_of_visible_for_testing_member
       env.branch = env.branchBeta;
-      i18n.country = i18n.tw;
-      serviceRegion = i18n.us;
+      i18n.setLocale('zh_TW');
+      serviceRegion = 'US';
       expect(serviceUrl('mock'), 'https://mock-us-beta.piyuo.com/?q');
     });
 

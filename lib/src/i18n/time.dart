@@ -10,7 +10,7 @@ import 'package:libcli/src/i18n/i18n.dart';
 /// withLocale run function in Intl zone
 ///
 withLocale(Function() function) {
-  Intl.withLocale(localeString, function);
+  Intl.withLocale(localeName, function);
 }
 
 /// timeToStr convert hour and minute to local string

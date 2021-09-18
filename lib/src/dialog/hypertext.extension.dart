@@ -120,7 +120,7 @@ class _DocProvider extends delta.AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
     md = await asset.loadString(
-      assetName: 'docs/${docName}_${i18n.localeString}.md',
+      assetName: 'docs/${docName}_${i18n.localeName}.md',
     );
   }
 }
