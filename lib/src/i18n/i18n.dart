@@ -94,7 +94,11 @@ get isCountryCN => _country == 'CN';
 
 class LocaleDelegate extends LocalizationsDelegate<Locale> {
   @override
-  bool isSupported(Locale locale) => ['en', 'zh'].contains(locale.languageCode); //isLocaleSupported(locale);
+  bool isSupported(Locale locale) {
+    return (locale.languageCode == 'en' && locale.countryCode == 'US') ||
+        (locale.languageCode == 'zh' && locale.countryCode == 'CN') ||
+        (locale.languageCode == 'zh' && locale.countryCode == 'TW');
+  }
 
   @override
   Future<Locale> load(Locale locale) async {
