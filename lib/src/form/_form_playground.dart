@@ -48,6 +48,8 @@ class FormPlayground extends StatelessWidget {
 
   final dropdownController = TextEditingController();
 
+  final dateController = ValueNotifier<DateTime?>(null);
+
   final Map dropdownItems = {
     "aa": "11",
     "bb": "2",
@@ -114,9 +116,10 @@ class FormPlayground extends StatelessWidget {
                     const SizedBox(height: 20),
                     DateField(
                       key: const Key('test-date'),
-                      controller: emailController,
+                      controller: dateController,
                       label: 'date field',
                       focusNode: pFormPlayground.dateFocus,
+                      require: 'you must select a date',
                     ),
                     const SizedBox(height: 20),
                     Submit(
