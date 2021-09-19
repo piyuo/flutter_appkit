@@ -101,6 +101,20 @@ void main() {
       expect(str, '2021年1月2日');
     });
 
+    test('should parse string to date', () async {
+      await changeDateFormatting('en_US');
+      final date = parseDate('January 2, 2021');
+      expect(date.year, 2021);
+      expect(date.month, 1);
+      expect(date.day, 2);
+
+      await changeDateFormatting('zh_CN');
+      final date2 = parseDate('2021年1月2日');
+      expect(date2.year, 2021);
+      expect(date2.month, 1);
+      expect(date2.day, 2);
+    });
+
     test('should convert time to string', () async {
       await changeDateFormatting('en_US');
       var date = DateTime.utc(2021, 1, 2, 23, 30);

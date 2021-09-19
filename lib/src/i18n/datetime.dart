@@ -78,6 +78,15 @@ String formatDate(DateTime date) {
   return dateFormat.format(date);
 }
 
+/// parseDate parse string to date
+///
+///     final date = parseDate('January 2, 2021');
+///     expect(date.year, 2021);
+///
+DateTime parseDate(String date) {
+  return dateFormat.parse(date);
+}
+
 /// formatDateTime convert date and time to local string
 ///
 ///      var str = datetimeToStr(date);
