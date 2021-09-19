@@ -5,7 +5,7 @@ import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';
 import 'package:libcli/src/i18n/i18n_provider.dart';
 import 'package:libcli/src/i18n/predefine.dart';
-import 'package:libcli/src/i18n/time.dart';
+import 'package:libcli/src/i18n/datetime.dart';
 
 /// I18nLocalization add localization function to string
 ///
@@ -88,7 +88,7 @@ extension I18nTime on google.Timestamp {
   ///     expect(t.localDateString, 'Jan 2, 2021');
   ///
   String get localDateString {
-    return dateToStr(local);
+    return formatDate(local);
   }
 
   /// localDateTimeString return local date time string in current locale
@@ -96,7 +96,7 @@ extension I18nTime on google.Timestamp {
   ///     expect(t.localTimeString, '11:30 PM');
   ///
   String get localDateTimeString {
-    return datetimeToStr(local);
+    return formatDateTime(local);
   }
 
   /// localDateString return local time string in current locale
@@ -104,6 +104,6 @@ extension I18nTime on google.Timestamp {
   ///     expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
   ///
   String get localTimeString {
-    return timeToStr(local);
+    return formatTime(local);
   }
 }

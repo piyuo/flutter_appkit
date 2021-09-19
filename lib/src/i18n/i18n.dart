@@ -37,6 +37,7 @@ Future<bool> setLocale(
 }) async {
   if (newLocaleName != localeName) {
     Intl.defaultLocale = newLocaleName;
+
     if (remember) {
       final tomorrow = DateTime.now().add(const Duration(hours: 24));
       await pref.setStringWithExp(prefLocaleKey, newLocaleName, tomorrow);
