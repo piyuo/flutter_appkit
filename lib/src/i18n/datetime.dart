@@ -4,7 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 /// changeDateFormatting change locale and load date formatting resource
 ///
-///
+///     await changeDateFormatting('en_US');
 ///
 Future<void> changeDateFormatting(String locale) async {
   Intl.defaultLocale = locale;
