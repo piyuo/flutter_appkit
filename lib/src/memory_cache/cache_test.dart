@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'cache.dart' as cache;
 
 void main() {
-  group('[cache]', () {
+  group('[memory_cache]', () {
     test('should get/set obj', () {
       var len = cache.length;
       expect(cache.get("key1"), isNull);
