@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/cache/cache.dart' as cache;
+import 'cache.dart' as cache;
 
 void main() {
   group('[cache]', () {

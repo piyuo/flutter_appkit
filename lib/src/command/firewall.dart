@@ -1,5 +1,5 @@
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/cache.dart' as cache;
+import 'package:libcli/memory_cache.dart' as cache;
 import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/identifier.dart' as identifier;
 

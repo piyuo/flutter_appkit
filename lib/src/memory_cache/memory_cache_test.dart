@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/cache/memory_cache.dart';
+import 'memory_cache.dart';
 
 void main() {
-  group('[memory-cache]', () {
+  group('[memory_cache]', () {
     test('should get/set obj', () {
       MemoryCache cache = MemoryCache();
       var len = cache.length;
