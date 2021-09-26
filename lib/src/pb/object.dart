@@ -19,4 +19,11 @@ abstract class Object extends $pb.GeneratedMessage {
   ///     final text = toJson();
   ///
   String toJson() => writeToJson();
+
+  /// fromJsonMap return object in json format map
+  ///
+  ///     final jsonMap = json.decode(jText) as Map<String, dynamic>;
+  ///     final obj2 = Error()..fromJsonMap(jsonMap);
+  ///
+  void fromJsonMap(Map<String, dynamic> json) => mergeFromJsonMap(json);
 }

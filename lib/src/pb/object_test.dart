@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/pb/simple/error.pb.dart';
+import 'dart:convert';
 
 void main() {
   group('[object]', () {
@@ -13,7 +14,8 @@ void main() {
       final jText = obj.toJson();
       expect(jText, isNotEmpty);
 
-      final obj2 = Error.fromJson(jText);
+      final jsonMap = json.decode(jText) as Map<String, dynamic>;
+      final obj2 = Error()..fromJsonMap(jsonMap);
       expect(obj2.code, 'hi');
     });
   });
