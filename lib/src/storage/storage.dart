@@ -1,30 +1,19 @@
 import 'package:localstorage/localstorage.dart';
 
-class Storage {
-  /// Storage name like 'db.json'
-  Storage(String name) {
-    _storage = LocalStorage(name);
-  }
+final _storage = LocalStorage('app.json');
 
-  late LocalStorage _storage;
+Future<void> setItem(String key, Map<String, dynamic> value) async {
+  await _storage.setItem(key, value);
+}
 
-  void dispose() {
-    _storage.dispose();
-  }
+Future<Map<String, dynamic>?> getItem(String key) async {
+  return await _storage.getItem(key);
+}
 
-  Future<void> set(String key, Map<String, dynamic> value) async {
-    _storage.setItem(key, value);
-  }
+Future<void> delete(String key) async {
+  await _storage.deleteItem(key);
+}
 
-  Future<Map<String, dynamic>?> get(String key) async {
-    return _storage.getItem(key);
-  }
-
-  Future<void> delete(String key) async {
-    _storage.deleteItem(key);
-  }
-
-  Future<void> clear() async {
-    _storage.clear();
-  }
+Future<void> clear() async {
+  await _storage.clear();
 }
