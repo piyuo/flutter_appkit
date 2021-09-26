@@ -7,5 +7,14 @@ void main() {
       final obj = Error()..code = 'hi';
       expect(obj.jsonString, isNotEmpty);
     });
+
+    test('should to json', () {
+      final obj = Error()..code = 'hi';
+      final jText = obj.toJson();
+      expect(jText, isNotEmpty);
+
+      final obj2 = Error.fromJson(jText);
+      expect(obj2.code, 'hi');
+    });
   });
 }

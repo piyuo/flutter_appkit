@@ -13,4 +13,10 @@ abstract class Object extends $pb.GeneratedMessage {
     var text = toString();
     return '$runtimeType{$text}';
   }
+
+  /// toJson return object in json format string
+  ///
+  ///     final text = toJson();
+  ///
+  String toJson() => writeToJson();
 }

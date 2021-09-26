@@ -1,9 +1,10 @@
-import 'storage.dart';
+import 'package:localstorage/localstorage.dart';
 
-final Storage _storage = Storage('db.json');
-
+final _storage = LocalStorage('app.json');
+/*
 Future<void> set(String key, Map<String, dynamic> value) async {
-  _storage.set(key, value);
+  String
+  _storage.setItem(key, value);
 }
 
 Future<Map<String, dynamic>?> get(String key) async {
@@ -17,3 +18,4 @@ Future<void> delete(String key) async {
 Future<void> clear() async {
   _storage.clear();
 }
+*/
