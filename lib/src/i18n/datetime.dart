@@ -89,7 +89,7 @@ DateTime parseDate(String date) {
 
 /// formatDateTime convert date and time to local string
 ///
-///      var str = datetimeToStr(date);
+///      var str = formatDateTime(date);
 ///      expect(str, 'January 2, 2021 11:30 PM');
 ///
 String formatDateTime(DateTime date) {
@@ -103,4 +103,31 @@ String formatDateTime(DateTime date) {
 ///
 String formatTime(DateTime date) {
   return timeFormat.format(date);
+}
+
+/// standardDateFormat return internal use standard date format like '1999-01-11 23:22:02'
+DateFormat get standardDateFormat {
+  return DateFormat("yyyy-MM-dd HH:mm:ss");
+}
+
+/// formatStandardDate convert date time to standard date format
+///
+///      var str = formatStandardDate(date);
+///      expect(str, '2021-01-02 23:30:00Z');
+///
+String formatStandardDate(DateTime date) {
+  return standardDateFormat.format(date) + (date.isUtc ? 'Z' : '');
+}
+
+/// parseStandardDate parse standard date format string to date
+///
+///     final date = parseStandardDate('2021-01-02 23:30:00Z');
+///     expect(date.year, 2021);
+///
+DateTime parseStandardDate(String date) {
+  if (date[date.length - 1] == 'Z') {
+    date = date.substring(0, date.length - 1);
+    return standardDateFormat.parseUTC(date);
+  }
+  return standardDateFormat.parse(date);
 }

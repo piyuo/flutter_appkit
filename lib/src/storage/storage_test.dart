@@ -6,11 +6,11 @@ void main() {
 
   group('[storage]', () {
     test('should set/get item', () async {
-      await setItem('item1', {'cleaning': 'done'});
-      var item1 = await getItem('item1');
+      await set('item1', {'cleaning': 'done'});
+      var item1 = await get('item1');
       expect(item1!['cleaning'], 'done');
       await delete('item1');
-      var title2 = await getItem('item1');
+      var title2 = await get('item1');
       expect(title2, isNull);
       await clear();
     });
