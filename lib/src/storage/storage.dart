@@ -2,6 +2,26 @@ import 'package:localstorage/localstorage.dart';
 
 final _storage = LocalStorage('app.json');
 
+/// setStringList save string list to local storage
+///
+///     await setStringList('item1', ['cleaning', 'done']});
+///
+Future<void> setStringList(String key, List<String> value) async {
+  await _storage.setItem(key, {'l': value});
+}
+
+/// getStringList return string list from storage
+///
+///     final list = await getStringList('item1');
+///
+Future<List<String>?> getStringList(String key) async {
+  final record = await _storage.getItem(key);
+  if (record != null) {
+    return record['l'];
+  }
+  return record;
+}
+
 /// setJSON save json object to local storage
 ///
 ///     await setJSON('item1', {'cleaning': 'done'});

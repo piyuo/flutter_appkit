@@ -99,16 +99,21 @@ Future<List<Registry>> _loadRegistries() async {
 }
 
 /// add string to cache
-Future<bool> add(String key, String base64Str, {Duration? expire}) async {
+Future<bool> save(String key, List<String> base64List, {Duration? expire}) async {
   DateTime? expired;
   if (expire != null) {
     expired = DateTime.now().add(expire).toUtc();
   }
 
+  int totalLength = 0;
+  for (final base64Str in base64List) {
+    totalLength += base64Str.length;
+  }
+
   Registry registry = Registry(
     key: key,
     expired: expired,
-    length: base64Str.length,
+    length: totalLength,
   );
 
   final registries = await _loadRegistries();
@@ -117,33 +122,24 @@ Future<bool> add(String key, String base64Str, {Duration? expire}) async {
   }
   registries.add(registry);
   await _saveRegistries();
-  await storage.setJSON(registry.storageKey, {'b': base64Str});
+  for (var i = 0; i < base64List.length; i++) {
+    final base64Str = base64List[i];
+    await storage.setString('$registry.storageKey$i', base64Str);
+  }
   return true;
 }
 
 /// get string from cache
-Future<String?> get(String key) async {
-  final registries = await _loadRegistries();
-
+Future<String?> load(String key) async {
+  await _loadRegistries();
   Registry? registry = _registryByKey(key);
   if (registry == null) {
     return null;
   }
-
   if (registry.expired != null && registry.expired!.isBefore(DateTime.now().toUtc())) {
     _delete(registry);
     await _saveRegistries();
     return null;
   }
-/*
-//  return await storage.get(registry.storageKey);
-  ;
-  if (registry.length > maxCachedSize || !await _prepareSpace(registry.length)) {
-    return false;
-  }
-  await storage.set(registry.storageKey, {'b': b64});
-  registries.add(registry);
-  await _saveRegistries();
-  return true;
-*/
+  return await storage.getString(registry.storageKey);
 }
