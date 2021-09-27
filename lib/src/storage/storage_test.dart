@@ -5,13 +5,23 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('[storage]', () {
-    test('should set/get item', () async {
-      await set('item1', {'cleaning': 'done'});
-      var item1 = await get('item1');
+    test('should set/get JSON', () async {
+      await setJSON('item1', {'cleaning': 'done'});
+      var item1 = await getJSON('item1');
       expect(item1!['cleaning'], 'done');
       await delete('item1');
-      var title2 = await get('item1');
-      expect(title2, isNull);
+      var item2 = await getJSON('item1');
+      expect(item2, isNull);
+      await clear();
+    });
+
+    test('should set/get string', () async {
+      await setString('item1', 'hi');
+      var str1 = await getString('item1');
+      expect(str1, 'hi');
+      await delete('item1');
+      var str2 = await getString('item1');
+      expect(str2, isNull);
       await clear();
     });
   });

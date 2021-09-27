@@ -1,6 +1,8 @@
 import 'dart:core';
 import 'package:libcli/i18n.dart' as i18n;
 
+const String _cached_key = 'disk_cache_';
+
 class Registry {
   Registry({
     this.key = '',
@@ -13,6 +15,8 @@ class Registry {
   int length;
 
   DateTime? expired;
+
+  String get storageKey => _cached_key + key;
 
   Map<String, dynamic>? toJsonMap() {
     final result = {
