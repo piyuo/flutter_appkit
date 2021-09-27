@@ -4,20 +4,39 @@ import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/storage.dart' as storage;
 import 'registries.dart';
 
-/*
-
-/// set the value, this is a FIFO cache, set the same key will make that key the latest key in [_cache]. the default expire duration is 5 minutes
+/// add to the cache, this is a FIFO cache, return true if success save to cache, it will not save if object's base64 string exceed maxCachedSize
 ///
-///     cache.set("key1", "value1");
+///     cache.add("key1", object);
 ///
-Future<void> add(String key, pb.Object obj, {Duration? expire}) async {
-  final registries = loadRegistries();
-  DateTime? expired = null;
-  if (expire != null) {
-    expired = DateTime.now().add(expire!);
-  }
+Future<bool> add(String key, pb.Object obj, {Duration? expire}) async {
+  final list = [obj.toBase64()];
+  return await saveToCache(key, list, expire: expire);
 }
-*/
+
+/// addList to the cache, this is a FIFO cache, return true if success save to cache, it will not save if object's base64 string exceed maxCachedSize
+///
+///     cache.addList("key1", list);
+///
+Future<bool> addList(String key, List<pb.Object> objList, {Duration? expire}) async {
+  final list = <String>[];
+  for (final obj in objList) {
+    list.add(obj.toBase64());
+  }
+  return await saveToCache(key, list, expire: expire);
+}
+
+/// get object from cache. obj can be a empty object
+///
+///     cache.add("key1", object);
+///
+Future<bool> get(String key, pb.Object obj) async {
+  final list = await loadFromCache(key);
+  if (list == null || list.isEmpty) {
+    return false;
+  }
+  obj.fromBase64(list[0]);
+  return true;
+}
 
 /// _cache is the internal cache
 final _cache = MemoryCache();

@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:libcli/storage.dart' as storage;
-import 'package:libcli/pb.dart' as pb;
 import 'registry.dart';
 
 const String _cached_key = 'disk_cache';
@@ -98,8 +97,8 @@ Future<List<Registry>> _loadRegistries() async {
   return _registries!;
 }
 
-/// add string to cache
-Future<bool> save(String key, List<String> base64List, {Duration? expire}) async {
+/// saveToCache string list to cache
+Future<bool> saveToCache(String key, List<String> base64List, {Duration? expire}) async {
   DateTime? expired;
   if (expire != null) {
     expired = DateTime.now().add(expire).toUtc();
@@ -121,16 +120,13 @@ Future<bool> save(String key, List<String> base64List, {Duration? expire}) async
     return false;
   }
   registries.add(registry);
+  await storage.setStringList(registry.storageKey, base64List);
   await _saveRegistries();
-  for (var i = 0; i < base64List.length; i++) {
-    final base64Str = base64List[i];
-    await storage.setString('$registry.storageKey$i', base64Str);
-  }
   return true;
 }
 
-/// get string from cache
-Future<String?> load(String key) async {
+/// loadFromCache string list from cache
+Future<List<String>?> loadFromCache(String key) async {
   await _loadRegistries();
   Registry? registry = _registryByKey(key);
   if (registry == null) {
@@ -141,5 +137,11 @@ Future<String?> load(String key) async {
     await _saveRegistries();
     return null;
   }
-  return await storage.getString(registry.storageKey);
+  return await storage.getStringList(registry.storageKey);
+}
+
+/// contains return true if key exists
+Future<bool> contains(String key) async {
+  await _loadRegistries();
+  return _registryByKey(key) != null;
 }

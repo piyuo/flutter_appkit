@@ -46,3 +46,5 @@ abstract class Object extends $pb.GeneratedMessage {
     mergeFromBuffer(bytes);
   }
 }
+
+typedef ObjectBuilder<T> = T Function();
