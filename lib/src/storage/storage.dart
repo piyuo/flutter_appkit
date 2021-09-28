@@ -1,4 +1,5 @@
 import 'package:localstorage/localstorage.dart';
+import 'package:libcli/log.dart' as log;
 
 final _storage = LocalStorage('app.json');
 
@@ -7,6 +8,7 @@ final _storage = LocalStorage('app.json');
 ///     await setStringList('item1', ['cleaning', 'done']});
 ///
 Future<void> setStringList(String key, List<String> value) async {
+  log.debug('storage set list $key');
   await _storage.setItem(key, {'l': value});
 }
 
@@ -27,6 +29,7 @@ Future<List<String>?> getStringList(String key) async {
 ///     await setJSON('item1', {'cleaning': 'done'});
 ///
 Future<void> setJSON(String key, Map<String, dynamic> value) async {
+  log.debug('storage set json $key');
   await _storage.setItem(key, value);
 }
 
@@ -43,6 +46,7 @@ Future<Map<String, dynamic>?> getJSON(String key) async {
 ///     await setString('item1', 'hi');
 ///
 Future<void> setString(String key, String value) async {
+  log.debug('storage set  $key $value');
   await _storage.setItem(key, {'s': value});
 }
 
@@ -63,6 +67,7 @@ Future<String?> getString(String key) async {
 ///     await delete('item1');
 ///
 Future<void> delete(String key) async {
+  log.debug('storage delete $key');
   await _storage.deleteItem(key);
 }
 
@@ -71,5 +76,6 @@ Future<void> delete(String key) async {
 ///     await clear();
 ///
 Future<void> clear() async {
+  log.debug('storage clear');
   await _storage.clear();
 }

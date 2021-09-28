@@ -1,39 +1,43 @@
 import 'dart:core';
 import 'package:libcli/i18n.dart' as i18n;
-
-const String _cached_key = 'disk_cache_';
+import 'registries.dart';
 
 class Registry {
   Registry({
-    this.key = '',
-    this.expired,
-    this.length = 0,
+    required this.key,
+    required this.size,
+    required this.expired,
   });
 
+  /// key must be unique in entire cache
   String key;
 
-  int length;
+  /// cachedLength is cached string length
+  int size;
 
-  DateTime? expired;
+  /// expired date, every registry must have a expired date
+  DateTime expired;
 
-  String get storageKey => _cached_key + key;
+  /// storageKey is key use to storage
+  String get storageKey => cached_key + '_' + key;
 
+  /// toJsonMap convert registry to json map
   Map<String, dynamic>? toJsonMap() {
-    final result = {
+    return {
       'k': key,
-      'l': length,
+      'l': size,
+      'e': i18n.formatStandardDate(expired),
     };
-    if (expired != null) {
-      result['e'] = i18n.formatStandardDate(expired!);
-    }
-    return result;
   }
 
+  /// Registry.fromJson factory constructor for JSON
+  factory Registry.fromJson(Map<String, dynamic> map) =>
+      Registry(key: '', size: 0, expired: DateTime.fromMicrosecondsSinceEpoch(0))..fromJsonMap(map);
+
+  /// fromJsonMap load json map and set to registry
   void fromJsonMap(Map<String, dynamic> map) {
     key = map['k'];
-    length = map['l'];
-    if (map.keys.contains('e')) {
-      expired = i18n.parseStandardDate(map['e']);
-    }
+    size = map['l'];
+    expired = i18n.parseStandardDate(map['e']);
   }
 }

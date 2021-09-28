@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'i18n.dart';
+import 'dart:math';
 
 /// numberFormat return current number format
 NumberFormat get numberFormat {
@@ -49,4 +50,15 @@ String formatNumber(dynamic value) {
 ///
 String formatPercentage(dynamic value) {
   return NumberFormat.percentPattern(localeName).format(value);
+}
+
+/// formatBytes format value to computer size like bytes, KB, MB, GB, TB
+///
+///     expect(formatSize(.99), '99%');
+///
+String formatBytes(int bytes, int decimals) {
+  if (bytes <= 0) return "0 B";
+  const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  var i = (log(bytes) / log(1024)).floor();
+  return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + ' ' + suffixes[i];
 }

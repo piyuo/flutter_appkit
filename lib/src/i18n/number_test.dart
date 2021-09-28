@@ -26,5 +26,13 @@ void main() {
       expect(formatNumber(-1000.99), '-1,000.99');
       expect(formatPercentage(.99), '99%');
     });
+
+    test('should format bytes', () async {
+      expect(formatBytes(10, 0), '10 B');
+      expect(formatBytes(2 * 1024 + 8, 2), '2.01 KB');
+      expect(formatBytes(2 * 1024 * 1024, 2), '2.00 MB');
+      expect(formatBytes(2 * 1024 * 1024 * 1024, 2), '2.00 GB');
+      expect(formatBytes(2 * 1024 * 1024 * 1024 * 1024, 2), '2.00 TB');
+    });
   });
 }
