@@ -59,9 +59,9 @@ void main() {
       google.Timestamp t = timestamp(datetime: date);
 
       setLocale('en_US');
-      expect(t.localDateString, 'Jan 2, 2021');
+      expect(t.localDateString, 'January 2, 2021');
       expect(t.localTimeString, '11:30 PM');
-      expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
+      expect(t.localDateTimeString, 'January 2, 2021 11:30 PM');
 
       setLocale('zh_CN');
       expect(t.localDateString, '2021年1月2日');
