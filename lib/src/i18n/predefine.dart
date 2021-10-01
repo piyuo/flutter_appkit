@@ -72,6 +72,11 @@ Map get _enUS {
     'OVERFLOW': 'Too many attempts, Please try again later',
     'pagingMany': 'of many',
     'pagingCount': 'of %1',
+    'loading': 'loading...',
+    'tapRetry': 'Tap to retry',
+    'noData': 'No data',
+    'refresh': 'Refresh',
+    'archive': 'Archive',
   };
 }
 
@@ -118,6 +123,11 @@ Map get _zhTW {
     'OVERFLOW': '操作過於頻繁，請稍後再試',
     'pagingMany': '共很多',
     'pagingCount': '共 %1 筆',
+    'loading': '讀取中...',
+    'tapRetry': '按此處重試',
+    'noData': '無資料',
+    'refresh': '更新',
+    'archive': '封存',
   };
 }
 
@@ -164,5 +174,10 @@ Map get _zhCN {
     'OVERFLOW': '操作过于频繁，请稍后再试',
     'pagingMany': '共很多',
     'pagingCount': '共 %1 笔',
+    'loading': '读取中...',
+    'tapRetry': '按此处重试',
+    'noData': '无资料',
+    'refresh': '更新',
+    'archive': '封存',
   };
 }
