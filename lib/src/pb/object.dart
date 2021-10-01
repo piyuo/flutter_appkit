@@ -4,11 +4,12 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// PbObject is data transfer object that use protobuf format
 ///
 abstract class Object extends $pb.GeneratedMessage implements Comparable<Object> {
+  /// mapIdXXX return map id let service create object by id
   int mapIdXXX();
 
   /// compareTo other object, must implement if using data source
   @override
-  int compareTo(Object other) => 0;
+  int compareTo(Object other) => -1;
 
   /// jsonString return object in json format string
   ///

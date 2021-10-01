@@ -11,9 +11,8 @@ import 'package:libcli/pb.dart' as pb;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class GeoLocation extends pb.Object {
-  $core.int mapIdXXX() {
-    return 1004;
-  }
+  $core.int mapIdXXX() => 1004;
+
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GeoLocation', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'address')
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)

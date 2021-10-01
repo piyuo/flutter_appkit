@@ -13,9 +13,8 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'geo-suggestion.pb.dart' as $0;
 
 class GeoSuggestions extends pb.Object {
-  $core.int mapIdXXX() {
-    return 1007;
-  }
+  $core.int mapIdXXX() => 1007;
+
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GeoSuggestions', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionToken', protoName: 'sessionToken')
     ..pc<$0.GeoSuggestion>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'result', $pb.PbFieldType.PM, subBuilder: $0.GeoSuggestion.create)

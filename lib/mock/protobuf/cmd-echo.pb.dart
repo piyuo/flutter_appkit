@@ -11,9 +11,8 @@ import 'package:libcli/pb.dart' as pb;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class CmdEcho extends pb.Object {
-  $core.int mapIdXXX() {
-    return 1001;
-  }
+  $core.int mapIdXXX() => 1001;
+  
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CmdEcho', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')
     ..hasRequiredFields = false
