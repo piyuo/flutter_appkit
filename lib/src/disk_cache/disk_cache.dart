@@ -132,11 +132,10 @@ Future<List<Registry>> _loadRegistries() async {
 /// add json to cache, return registry if success
 Future<Registry?> add(
   String key,
-  Map<String, dynamic> serializableJSON,
-  Duration expire,
-) async {
-  final cacheContent = json.encode(serializableJSON);
-
+  Map<String, dynamic> serializable, {
+  Duration expire = const Duration(days: 31),
+}) async {
+  final cacheContent = json.encode(serializable);
   Registry registry = Registry(
     key: key,
     expired: DateTime.now().add(expire).toUtc(),
@@ -154,7 +153,7 @@ Future<Registry?> add(
   }
   registries.add(registry);
   log.debug('disk_cache add ${registry.key} (${i18n.formatBytes(registry.size, 0)})');
-  await storage.setJSON(registry.storageKey, serializableJSON);
+  await storage.setJSON(registry.storageKey, serializable);
   await _saveRegistries();
   return registry;
 }
