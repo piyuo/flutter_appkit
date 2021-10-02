@@ -1,67 +1,181 @@
 import 'dart:core';
-import 'package:libcli/pb.dart' as pb;
-import 'registries.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:libcli/storage.dart' as storage;
+import 'package:libcli/log.dart' as log;
+import 'package:libcli/i18n.dart' as i18n;
+import 'registry.dart';
 
-/// add to the cache, this is a FIFO cache, return true if success save to cache, it will not save if object's base64 string exceed maxCachedSize
-///
-///     final obj = pb.Error()..code = 'hi';
-///     var result = await add('key1', obj);
-///
-Future<bool> add(
-  String key,
-  pb.Object obj, {
-  Duration expire = const Duration(days: 31),
-}) async {
-  final list = [obj.toBase64()];
-  return (await saveToCache(key, list, expire)) != null;
+const String cached_key = 'disk_cache';
+
+const String _items = 'i';
+
+/// _registries keep track all registry and cache object
+List<Registry>? _registries;
+
+/// mockRegistries reveal registries for testing
+@visibleForTesting
+set mockRegistries(List<Registry>? value) => _registries = value;
+
+/// mockRegistries reveal registries for testing
+@visibleForTesting
+List<Registry> get mockRegistries => _registries!;
+
+/// maxCachedSize allow in cache
+var maxCachedSize = maxCachedSizeForBrowser;
+
+/// maxCachedSizeForBrowser is max cache size for browser
+const maxCachedSizeForBrowser = 4 * 1024 * 1024; // 4M
+
+/// maxCachedSizeForNative is max cache size for native app
+const maxCachedSizeForNative = 100 * 1024 * 1024; // 100M
+
+/// cachedSize return current cached size
+@visibleForTesting
+int cachedSize() {
+  assert(_registries != null, 'call _loadRegistries() first');
+  int result = 0;
+  for (var registry in _registries!) {
+    result += registry.size;
+  }
+  return result;
 }
 
-/// get object from cache. obj can be a empty object
-///
-///     final obj2 = await get<pb.Error>('key1', pb.Error());
-///
-Future<T?> get<T extends pb.Object>(String key, T obj) async {
-  final list = await loadFromCache(key);
-  if (list == null || list.isEmpty) {
+/// deleteRegistry registry from cache
+@visibleForTesting
+Future<void> deleteRegistry(Registry registry) async {
+  log.debug('disk_cache delete ${registry.key}');
+  _registries!.remove(registry);
+  await storage.delete(registry.storageKey);
+}
+
+/// containsRegistryKey return true if key exists
+@visibleForTesting
+Future<bool> containsRegistryKey(String key) async {
+  return registryByKey(key) != null;
+}
+
+/// cleanExpired  clean expired registry
+@visibleForTesting
+Future<void> cleanExpired() async {
+  for (var i = _registries!.length - 1; i >= 0; i--) {
+    final registry = _registries![i];
+    if (registry.expired.isBefore(DateTime.now().toUtc())) {
+      await deleteRegistry(registry);
+    }
+  }
+}
+
+/// removeOldest remove oldest item from registries, return true if remove success
+@visibleForTesting
+Future<bool> removeOldest() async {
+  if (_registries!.isNotEmpty) {
+    final first = _registries![0];
+    await deleteRegistry(first);
+    return true;
+  }
+  return false;
+}
+
+/// prepareSpace return true if space is available
+@visibleForTesting
+Future<bool> prepareSpace(int requiredSize) async {
+  await cleanExpired();
+  for (var i = 0; i < 1000; i++) {
+    if (cachedSize() + requiredSize < maxCachedSize) {
+      return true;
+    }
+    if (!await removeOldest()) {
+      //nothing to delete
+      break;
+    }
+  }
+  return false;
+}
+
+/// registryByKey return registry by key
+@visibleForTesting
+Registry? registryByKey(String key) {
+  for (var registry in _registries!) {
+    if (registry.key == key) {
+      return registry;
+    }
+  }
+  return null;
+}
+
+/// _saveRegistries save registries to local storage and make sure it's length small than max length
+Future<void> _saveRegistries() async {
+  _registries ??= [];
+  final items = [];
+  for (var registry in _registries!) {
+    items.add(registry.toJsonMap());
+  }
+  await storage.setJSON(cached_key, {_items: items});
+}
+
+Future<List<Registry>> _loadRegistries() async {
+  if (_registries == null) {
+    _registries = [];
+    final record = await storage.getJSON(cached_key);
+    if (record != null) {
+      var items = record[_items];
+      for (var json in items!) {
+        final registry = Registry.fromJson(json);
+        _registries!.add(registry);
+      }
+    }
+  }
+  return _registries!;
+}
+
+/// saveToCache string list to cache, return registry if success
+Future<Registry?> saveToCache(
+  String key,
+  Map<String, dynamic> serializableJSON,
+  Duration expire,
+) async {
+  final cacheContent = json.encode(serializableJSON);
+
+  Registry registry = Registry(
+    key: key,
+    expired: DateTime.now().add(expire).toUtc(),
+    size: cacheContent.length * 2,
+  );
+
+  final registries = await _loadRegistries();
+  if (registry.size > maxCachedSize || !await prepareSpace(registry.size)) {
     return null;
   }
-  obj.fromBase64(list[0]);
-  return obj;
-}
 
-/// addList to the cache, this is a FIFO cache, return true if success save to cache, it will not save if object's base64 string exceed maxCachedSize
-///
-///      final obj1 = pb.Error()..code = '1';
-///      final obj2 = pb.Error()..code = '2';
-///      final list = [obj1, obj2];
-///      var result = await addList('key1', list);
-///
-Future<bool> addList(
-  String key,
-  List<pb.Object> objList, {
-  Duration expire = const Duration(days: 31),
-}) async {
-  final list = <String>[];
-  for (final obj in objList) {
-    list.add(obj.toBase64());
+  final duplicate = registryByKey(registry.key);
+  if (duplicate != null) {
+    deleteRegistry(duplicate);
   }
-  return (await saveToCache(key, list, expire)) != null;
+  registries.add(registry);
+  log.debug('disk_cache add ${registry.key} (${i18n.formatBytes(registry.size, 0)})');
+  await storage.setJSON(registry.storageKey, serializableJSON);
+  await _saveRegistries();
+  return registry;
 }
 
-/// get object list from cache.
-///
-///     final list2 = await getList<pb.Error>('key1', () => pb.Error());
-///
-Future<List<T>?> getList<T extends pb.Object>(String key, pb.ObjectBuilder builder) async {
-  final strList = await loadFromCache(key);
-  if (strList == null || strList.isEmpty) {
+/// loadFromCache string list from cache
+Future<Map<String, dynamic>?> loadFromCache(String key) async {
+  await _loadRegistries();
+  Registry? registry = registryByKey(key);
+  if (registry == null) {
     return null;
   }
-  final list = <T>[];
-  for (final str in strList) {
-    final obj = builder();
-    obj.fromBase64(str);
-    list.add(obj);
+  if (registry.expired.isBefore(DateTime.now().toUtc())) {
+    deleteRegistry(registry);
+    await _saveRegistries();
+    return null;
   }
-  return list;
+  return await storage.getJSON(registry.storageKey);
+}
+
+/// cachedItem return cached item
+@visibleForTesting
+Future<Map<String, dynamic>?> cachedItem(Registry registry) async {
+  return await storage.getJSON(registry.storageKey);
 }
