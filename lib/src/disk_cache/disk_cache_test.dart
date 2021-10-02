@@ -26,7 +26,7 @@ void main() {
     });
 
     test('should delete from cache', () async {
-      final result = await saveToCache('1', {'k': 'v'}, const Duration(days: 1));
+      final result = await add('1', {'k': 'v'}, const Duration(days: 1));
       expect(result, isNotNull);
       expect(await containsRegistryKey('1'), true);
       final r = registryByKey('1');
@@ -40,9 +40,9 @@ void main() {
     });
 
     test('should remove oldest registry and cache item', () async {
-      final r1 = await saveToCache('1', {'k1': 'v1'}, const Duration(days: 1));
-      final r2 = await saveToCache('2', {'k2': 'v2'}, const Duration(days: 1));
-      final r3 = await saveToCache('3', {'k3': 'v3'}, const Duration(days: 1));
+      final r1 = await add('1', {'k1': 'v1'}, const Duration(days: 1));
+      final r2 = await add('2', {'k2': 'v2'}, const Duration(days: 1));
+      final r3 = await add('3', {'k3': 'v3'}, const Duration(days: 1));
       expect((await cachedItem(r1!))!['k1'], 'v1');
       expect((await cachedItem(r2!))!['k2'], 'v2');
       expect((await cachedItem(r3!))!['k3'], 'v3');
@@ -56,7 +56,7 @@ void main() {
     });
 
     test('should prepare space', () async {
-      final r1 = await saveToCache('1', {'k': 'v'}, const Duration(days: 1));
+      final r1 = await add('1', {'k': 'v'}, const Duration(days: 1));
       expect(await cachedItem(r1!), isNotNull);
       expect(await containsRegistryKey(r1.key), true);
 
@@ -67,15 +67,15 @@ void main() {
     });
 
     test('should clean expired', () async {
-      final r1 = await saveToCache('1', {'k1': 'v1'}, const Duration(days: -1));
+      final r1 = await add('1', {'k1': 'v1'}, const Duration(days: -1));
       expect(await cachedItem(r1!), isNotNull);
       expect(await containsRegistryKey(r1.key), true);
 
-      final r2 = await saveToCache('2', {'k2': 'v2'}, const Duration(days: 1));
+      final r2 = await add('2', {'k2': 'v2'}, const Duration(days: 1));
       expect(await cachedItem(r2!), isNotNull);
       expect(await containsRegistryKey(r2.key), true);
 
-      final r3 = await saveToCache('3', {'k3': 'v3'}, const Duration(days: -1));
+      final r3 = await add('3', {'k3': 'v3'}, const Duration(days: -1));
       expect(await cachedItem(r3!), isNotNull);
       expect(await containsRegistryKey(r3.key), true);
 
@@ -90,21 +90,21 @@ void main() {
     });
 
     test('should save to cache and read from cache', () async {
-      final result = await saveToCache('1', {'k': 'v'}, const Duration(days: 1));
+      final result = await add('1', {'k': 'v'}, const Duration(days: 1));
       expect(result, isNotNull);
       mockRegistries = null;
 
-      final list = await loadFromCache('1');
+      final list = await get('1');
       expect(list, isNotNull);
       expect(list!['k'], 'v');
     });
 
     test('should update cache width new one', () async {
-      final result = await saveToCache('1', {'k': 'v'}, const Duration(days: 1));
+      final result = await add('1', {'k': 'v'}, const Duration(days: 1));
       expect(result, isNotNull);
-      final result2 = await saveToCache('2', {'k2': 'v2'}, const Duration(days: 1));
+      final result2 = await add('2', {'k2': 'v2'}, const Duration(days: 1));
       expect(result2, isNotNull);
-      final result3 = await saveToCache('1', {'k': 'v'}, const Duration(days: 1));
+      final result3 = await add('1', {'k': 'v'}, const Duration(days: 1));
       expect(result3, isNotNull);
 
       expect(mockRegistries.length, 2);
@@ -116,7 +116,7 @@ void main() {
 
     test('should cache fast', () async {
       for (var i = 0; i < 100; i++) {
-        final result = await saveToCache('$i', {'$i': '$i'}, const Duration(days: 1));
+        final result = await add('$i', {'$i': '$i'}, const Duration(days: 1));
         expect(result, isNotNull);
       }
     });

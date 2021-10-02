@@ -129,8 +129,8 @@ Future<List<Registry>> _loadRegistries() async {
   return _registries!;
 }
 
-/// saveToCache string list to cache, return registry if success
-Future<Registry?> saveToCache(
+/// add json to cache, return registry if success
+Future<Registry?> add(
   String key,
   Map<String, dynamic> serializableJSON,
   Duration expire,
@@ -159,8 +159,8 @@ Future<Registry?> saveToCache(
   return registry;
 }
 
-/// loadFromCache string list from cache
-Future<Map<String, dynamic>?> loadFromCache(String key) async {
+/// get json from cache
+Future<Map<String, dynamic>?> get(String key) async {
   await _loadRegistries();
   Registry? registry = registryByKey(key);
   if (registry == null) {
