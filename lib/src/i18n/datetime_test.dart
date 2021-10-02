@@ -136,23 +136,5 @@ void main() {
       str = formatDateTime(date);
       expect(str, '2021年1月2日 下午11:30');
     });
-
-    test('should use standard format', () async {
-      // utc
-      var date = DateTime(2021, 1, 2, 23, 30);
-      var str = formatStandardDate(date);
-      expect(str, '2021-01-02 23:30:00');
-      var date2 = parseStandardDate(str);
-      expect(date2, date);
-    });
-
-    test('should use utc standard format', () async {
-      // utc
-      var date = DateTime.utc(2021, 1, 2, 23, 30);
-      var str = formatStandardDate(date);
-      expect(str, '2021-01-02 23:30:00Z');
-      var date2 = parseStandardDate(str);
-      expect(date2, date);
-    });
   });
 }

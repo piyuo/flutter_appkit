@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/pb.dart' as i18n;
 import 'registries.dart';
 
 class Registry {
@@ -26,7 +26,7 @@ class Registry {
     return {
       'k': key,
       'l': size,
-      'e': i18n.formatStandardDate(expired),
+      'e': i18n.formatDate(expired),
     };
   }
 
@@ -38,6 +38,6 @@ class Registry {
   void fromJsonMap(Map<String, dynamic> map) {
     key = map['k'];
     size = map['l'];
-    expired = i18n.parseStandardDate(map['e']);
+    expired = i18n.parseDate(map['e']);
   }
 }

@@ -16,6 +16,19 @@ Future<bool> add(
   return (await saveToCache(key, list, expire)) != null;
 }
 
+/// get object from cache. obj can be a empty object
+///
+///     final obj2 = await get<pb.Error>('key1', pb.Error());
+///
+Future<T?> get<T extends pb.Object>(String key, T obj) async {
+  final list = await loadFromCache(key);
+  if (list == null || list.isEmpty) {
+    return null;
+  }
+  obj.fromBase64(list[0]);
+  return obj;
+}
+
 /// addList to the cache, this is a FIFO cache, return true if success save to cache, it will not save if object's base64 string exceed maxCachedSize
 ///
 ///      final obj1 = pb.Error()..code = '1';
@@ -33,19 +46,6 @@ Future<bool> addList(
     list.add(obj.toBase64());
   }
   return (await saveToCache(key, list, expire)) != null;
-}
-
-/// get object from cache. obj can be a empty object
-///
-///     final obj2 = await get<pb.Error>('key1', pb.Error());
-///
-Future<T?> get<T extends pb.Object>(String key, T obj) async {
-  final list = await loadFromCache(key);
-  if (list == null || list.isEmpty) {
-    return null;
-  }
-  obj.fromBase64(list[0]);
-  return obj;
 }
 
 /// get object list from cache.
