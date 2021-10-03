@@ -135,6 +135,7 @@ Future<Registry?> add(
   Map<String, dynamic> serializable, {
   Duration expire = const Duration(days: 31),
 }) async {
+  assert(key.isNotEmpty, 'key must not empty');
   final cacheContent = json.encode(serializable);
   Registry registry = Registry(
     key: key,
@@ -149,12 +150,18 @@ Future<Registry?> add(
 
   final duplicate = registryByKey(registry.key);
   if (duplicate != null) {
-    deleteRegistry(duplicate);
+    await deleteRegistry(duplicate);
   }
   registries.add(registry);
   log.debug('disk_cache add ${registry.key} (${i18n.formatBytes(registry.size, 0)})');
-  await storage.setJSON(registry.storageKey, serializable);
-  await _saveRegistries();
+  try {
+    await storage.setJSON(registry.storageKey, serializable);
+    await _saveRegistries();
+  } catch (e, s) {
+    // something wrong,maybe disk full, the size limit may not correct
+    await removeOldest();
+    log.error(e, s);
+  }
   return registry;
 }
 
@@ -166,7 +173,7 @@ Future<Map<String, dynamic>?> get(String key) async {
     return null;
   }
   if (registry.expired.isBefore(DateTime.now().toUtc())) {
-    deleteRegistry(registry);
+    await deleteRegistry(registry);
     await _saveRegistries();
     return null;
   }
