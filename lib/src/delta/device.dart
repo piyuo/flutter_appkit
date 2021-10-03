@@ -2,9 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-Size screenSize() {
-  return window.physicalSize / window.devicePixelRatio;
-}
+Size get screenSize => window.physicalSize / window.devicePixelRatio;
 
 enum DeviceLayout { phone, tablet, desktop }
 
@@ -22,9 +20,7 @@ DeviceLayout deviceLayout(double windowWidth) {
 }
 
 ///  isPhone return true if use phone layout
-bool isPhone() {
-  return isPhoneLayout(screenSize().width);
-}
+bool get isPhone => isPhoneLayout(screenSize.width);
 
 ///  isPhoneLayout return true if use phone layout
 bool isPhoneLayout(double windowWidth) {
@@ -32,19 +28,15 @@ bool isPhoneLayout(double windowWidth) {
 }
 
 ///  isTablet return true if use tablet layout
-bool isTablet() {
-  return isTabletLayout(screenSize().width);
-}
+bool get isTablet => isTabletLayout(screenSize.width);
 
 ///  isTabletLayout return true if use tablet layout
 bool isTabletLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.tablet;
 }
 
-///  isDesktop return true if use desktop layout
-bool isDesktop() {
-  return isDesktopLayout(screenSize().width);
-}
+/// isDesktop return true if use desktop layout
+bool get isDesktop => isDesktopLayout(screenSize.width);
 
 ///  isDesktopLayout return true if use desktop layout
 bool isDesktopLayout(double windowWidth) {
