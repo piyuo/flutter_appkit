@@ -11,6 +11,7 @@ import 'async_provider.dart';
 import 'await.dart';
 import 'popup.dart';
 import 'menu.dart';
+import 'await_on_tap.dart';
 import 'pull_refresh.dart';
 
 var _pullRefreshCount = 8;
@@ -33,22 +34,27 @@ class DeltaPlayground extends StatelessWidget {
         child: Wrap(
           children: [
             SizedBox(
-              height: 300,
-              child: _listing(context),
+//              height: 300,
+              child: _awaitOnTap(context),
             ),
             custom.example(
               context,
-              text: 'web-image',
+              text: 'await on tap',
+              child: _awaitOnTap(context),
+            ),
+            custom.example(
+              context,
+              text: 'web_image',
               child: _webImage(context),
             ),
             custom.example(
               context,
-              text: 'search-bar',
+              text: 'search_bar',
               child: _searchBar(context),
             ),
             custom.example(
               context,
-              text: 'round-check-box',
+              text: 'round_check_box',
               child: _roundCheckBox(context),
             ),
             custom.example(
@@ -99,6 +105,19 @@ class DeltaPlayground extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _awaitOnTap(BuildContext context) {
+    return AwaitOnTap(
+      child: Row(children: const [
+        Icon(Icons.menu),
+        Text('hello'),
+      ]),
+      onAwaitTap: () async {
+        await Future.delayed(const Duration(seconds: 2));
+        debugPrint('clicked');
+      },
     );
   }
 

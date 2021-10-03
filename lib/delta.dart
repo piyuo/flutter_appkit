@@ -16,3 +16,4 @@ export 'package:libcli/src/delta/await.dart';
 export 'package:libcli/src/delta/popup.dart';
 export 'package:libcli/src/delta/menu.dart';
 export 'package:libcli/src/delta/pull_refresh.dart';
+export 'package:libcli/src/delta/await_on_tap.dart';
