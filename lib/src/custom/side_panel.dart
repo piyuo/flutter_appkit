@@ -4,7 +4,7 @@ import 'package:libcli/delta.dart' as delta;
 
 class SidePanelProvider with ChangeNotifier {
   SidePanelProvider() {
-    opened = !delta.isPhone();
+    opened = !delta.isPhone;
   }
   late bool opened;
 

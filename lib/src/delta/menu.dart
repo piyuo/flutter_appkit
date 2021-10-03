@@ -10,7 +10,7 @@ const itemHeight = 40.0;
 
 double _menuHeight(int itemCount) {
   var menuHeight = itemCount * itemHeight;
-  final screenHeight = screenSize().height;
+  final screenHeight = screenSize.height;
   if (menuHeight > screenHeight * 2 / 3) {
     menuHeight = screenHeight * 2 / 3;
   }
