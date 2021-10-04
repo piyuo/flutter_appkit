@@ -6,7 +6,7 @@ class TapBreaker with ChangeNotifier {
   bool _running = false;
 
   /// link add break on callback, if one callback is running the others will be disable
-  GestureTapCallback? link(Future Function()? callback) {
+  GestureTapCallback? link(Future<dynamic> Function()? callback) {
     if (_running || callback == null) {
       return null;
     }
