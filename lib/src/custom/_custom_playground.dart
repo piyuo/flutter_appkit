@@ -292,11 +292,9 @@ class CustomPlayground extends StatelessWidget {
         subtitle: 'open',
         onPullRefresh: (BuildContext context) async {
           await Future.delayed(const Duration(seconds: 1));
-          return true;
         },
         onLoadMore: (BuildContext context) async {
           await Future.delayed(const Duration(seconds: 1));
-          return true;
         },
         stories: [
           SimpleStory(

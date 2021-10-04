@@ -79,11 +79,9 @@ class StoryLine extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               onPullRefresh: (BuildContext context) async {
                 await Future.delayed(const Duration(seconds: 1));
-                return true;
               },
               onLoadMore: (BuildContext context) async {
                 await Future.delayed(const Duration(seconds: 1));
-                return true;
               },
               itemCount: (BuildContext context) {
                 return stories.length;
