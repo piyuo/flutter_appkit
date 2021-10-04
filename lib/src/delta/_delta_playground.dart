@@ -13,6 +13,7 @@ import 'popup.dart';
 import 'menu.dart';
 import 'await_on_tap.dart';
 import 'pull_refresh.dart';
+import 'tap_breaker.dart';
 
 var _pullRefreshCount = 8;
 
@@ -35,12 +36,17 @@ class DeltaPlayground extends StatelessWidget {
           children: [
             SizedBox(
 //              height: 300,
-              child: _awaitOnTap(context),
+              child: _tapBreaker(context),
             ),
             custom.example(
               context,
               text: 'await on tap',
               child: _awaitOnTap(context),
+            ),
+            custom.example(
+              context,
+              text: 'tap breaker',
+              child: _tapBreaker(context),
             ),
             custom.example(
               context,
@@ -119,6 +125,29 @@ class DeltaPlayground extends StatelessWidget {
         debugPrint('clicked');
       },
     );
+  }
+
+  Widget _tapBreaker(BuildContext context) {
+    return ChangeNotifierProvider<TapBreaker>(
+        create: (context) => TapBreaker(),
+        child: Consumer<TapBreaker>(builder: (context, breaker, child) {
+          return Row(children: [
+            ElevatedButton(
+              child: const Text('break 1'),
+              onPressed: breaker.link(() async {
+                await Future.delayed(const Duration(seconds: 2));
+                debugPrint('break 1');
+              }),
+            ),
+            ElevatedButton(
+              child: const Text('button2'),
+              onPressed: breaker.link(() async {
+                await Future.delayed(const Duration(seconds: 2));
+                debugPrint('click 2');
+              }),
+            ),
+          ]);
+        }));
   }
 
   Widget _webImage(BuildContext context) {

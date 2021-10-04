@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'extensions.dart';
 
 /// AwaitOnTap use await to execute on tap function and prevent other tap
 class AwaitOnTap extends StatefulWidget {
