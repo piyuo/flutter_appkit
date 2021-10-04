@@ -6,8 +6,14 @@ import 'extensions.dart';
 typedef PullRefreshLoader = Future<void> Function(BuildContext context);
 
 class PullRefreshProvider with ChangeNotifier {
-  void refresh() {
-    notifyListeners();
+  /// _busy is true if in refresh or load more
+  bool _busy = false;
+
+  void setBusy(bool busy) {
+    if (_busy != busy) {
+      _busy = busy;
+      notifyListeners();
+    }
   }
 }
 
@@ -53,14 +59,30 @@ class PullRefresh extends StatelessWidget {
                 : MaterialFooter(),
             onRefresh: onPullRefresh != null
                 ? () async {
-                    await onPullRefresh!(context);
-                    provide.refresh();
+                    if (provide._busy) {
+                      return;
+                    }
+
+                    provide.setBusy(true);
+                    try {
+                      await onPullRefresh!(context);
+                    } finally {
+                      provide.setBusy(false);
+                    }
                   }
                 : null,
             onLoad: onLoadMore != null
                 ? () async {
-                    await onLoadMore!(context);
-                    provide.refresh();
+                    if (provide._busy) {
+                      return;
+                    }
+
+                    provide.setBusy(true);
+                    try {
+                      await onLoadMore!(context);
+                    } finally {
+                      provide.setBusy(false);
+                    }
                   }
                 : null,
             child: ListView.builder(
