@@ -481,12 +481,10 @@ class DeltaPlayground extends StatelessWidget {
         onPullRefresh: (BuildContext context) async {
           await Future.delayed(const Duration(seconds: 1));
           _pullRefreshCount--;
-          return true;
         },
         onLoadMore: (BuildContext context) async {
           await Future.delayed(const Duration(seconds: 1));
           _pullRefreshCount++;
-          return true;
         },
         itemCount: (BuildContext context) {
           return _pullRefreshCount;
@@ -504,9 +502,11 @@ class DeltaPlayground extends StatelessWidget {
 
   Widget _pullRefreshVertical(BuildContext context) {
     return PullRefresh(onPullRefresh: (BuildContext context) async {
-      return true;
+      await Future.delayed(const Duration(seconds: 1));
+      _pullRefreshCount--;
     }, onLoadMore: (BuildContext context) async {
-      return true;
+      await Future.delayed(const Duration(seconds: 1));
+      _pullRefreshCount++;
     }, itemCount: (BuildContext context) {
       return _pullRefreshCount;
     }, itemBuilder: (BuildContext context, int index) {

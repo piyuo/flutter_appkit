@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
-typedef PullRefreshLoader = Future<bool> Function(BuildContext context);
+typedef PullRefreshLoader = Future<void> Function(BuildContext context);
 
 class PullRefreshProvider with ChangeNotifier {
-  PullRefreshProvider();
-
   void refresh() {
     notifyListeners();
   }
@@ -45,14 +43,12 @@ class PullRefresh extends StatelessWidget {
             header: MaterialHeader(),
             footer: MaterialFooter(),
             onRefresh: () async {
-              if (await onPullRefresh(context)) {
-                provide.refresh();
-              }
+              await onPullRefresh(context);
+              provide.refresh();
             },
             onLoad: () async {
-              if (await onLoadMore(context)) {
-                provide.refresh();
-              }
+              await onLoadMore(context);
+              provide.refresh();
             },
             child: ListView.builder(
               scrollDirection: scrollDirection,
