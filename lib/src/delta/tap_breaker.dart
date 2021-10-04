@@ -12,8 +12,8 @@ class TapBreaker with ChangeNotifier {
     }
   }
 
-  /// link add break on callback, if one callback is running the others will be disable
-  GestureTapCallback? link(Future Function()? callback) {
+  /// linkVoidFunc add break on callback, if one callback is running the others will be disable
+  void Function()? linkVoidFunc<T>(Future Function()? callback) {
     if (_busy || callback == null) {
       return null;
     }
@@ -28,8 +28,8 @@ class TapBreaker with ChangeNotifier {
     };
   }
 
-  /// linkValueChanged add break on callback, if one callback is running the others will be disable
-  ValueChanged<T?>? linkValueChanged<T>(Future Function(T? value)? callback) {
+  /// linkValueFunc add break on callback, if one callback is running the others will be disable
+  ValueChanged<T?>? linkValueFunc<T>(Future Function(T? value)? callback) {
     if (_busy || callback == null) {
       return null;
     }
@@ -37,6 +37,21 @@ class TapBreaker with ChangeNotifier {
       setBusy(true);
       try {
         await callback(value);
+      } finally {
+        setBusy(false);
+      }
+    };
+  }
+
+  /// linkContextFunc add break on callback, if one callback is running the others will be disable
+  void Function(BuildContext)? linkContextFunc<T>(Future<void> Function(BuildContext)? callback) {
+    if (_busy || callback == null) {
+      return null;
+    }
+    return (BuildContext context) async {
+      setBusy(true);
+      try {
+        await callback(context);
       } finally {
         setBusy(false);
       }
