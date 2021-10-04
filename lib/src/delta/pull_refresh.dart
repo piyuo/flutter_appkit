@@ -13,20 +13,20 @@ class PullRefreshProvider with ChangeNotifier {
 class PullRefresh extends StatelessWidget {
   const PullRefresh({
     Key? key,
-    this.scrollDirection = Axis.vertical,
-    required this.onPullRefresh,
-    required this.onLoadMore,
     required this.itemBuilder,
     required this.itemCount,
+    this.scrollDirection = Axis.vertical,
+    this.onPullRefresh,
+    this.onLoadMore,
   }) : super(key: key);
 
   final Axis scrollDirection;
 
   /// onPullRefresh mean pull to refresh, return true if count change
-  final PullRefreshLoader onPullRefresh;
+  final PullRefreshLoader? onPullRefresh;
 
   /// onLoadMore mean scroll down to load more, return true if count change
-  final PullRefreshLoader onLoadMore;
+  final PullRefreshLoader? onLoadMore;
 
   /// itemBuilder build widget
   final Widget Function(BuildContext context, int index) itemBuilder;
@@ -42,14 +42,18 @@ class PullRefresh extends StatelessWidget {
           return EasyRefresh(
             header: MaterialHeader(),
             footer: MaterialFooter(),
-            onRefresh: () async {
-              await onPullRefresh(context);
-              provide.refresh();
-            },
-            onLoad: () async {
-              await onLoadMore(context);
-              provide.refresh();
-            },
+            onRefresh: onPullRefresh != null
+                ? () async {
+                    await onPullRefresh!(context);
+                    provide.refresh();
+                  }
+                : null,
+            onLoad: onLoadMore != null
+                ? () async {
+                    await onLoadMore!(context);
+                    provide.refresh();
+                  }
+                : null,
             child: ListView.builder(
               scrollDirection: scrollDirection,
               //             shrinkWrap: true,
