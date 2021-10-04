@@ -43,8 +43,8 @@ class TapBreaker with ChangeNotifier {
     };
   }
 
-  /// linkContextFunc add break on callback, if one callback is running the others will be disable
-  void Function(BuildContext)? linkContextFunc<T>(Future<void> Function(BuildContext)? callback) {
+  /// linkFutureContextFunc add break on callback, if one callback is running the others will be disable
+  Future<void> Function(BuildContext)? linkFutureContextFunc<T>(Future<void> Function(BuildContext)? callback) {
     if (_busy || callback == null) {
       return null;
     }
