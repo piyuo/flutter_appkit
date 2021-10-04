@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'extensions.dart';
 
 typedef PullRefreshLoader = Future<void> Function(BuildContext context);
 
@@ -40,8 +41,16 @@ class PullRefresh extends StatelessWidget {
         create: (context) => PullRefreshProvider(),
         child: Consumer<PullRefreshProvider>(builder: (context, provide, child) {
           return EasyRefresh(
-            header: MaterialHeader(),
-            footer: MaterialFooter(),
+            header: scrollDirection == Axis.vertical
+                ? BallPulseHeader(
+                    color: context.themeColor(light: Colors.grey),
+                  )
+                : MaterialHeader(),
+            footer: scrollDirection == Axis.vertical
+                ? BallPulseFooter(
+                    color: context.themeColor(light: Colors.grey[400]!, dark: Colors.grey[600]!),
+                  )
+                : MaterialFooter(),
             onRefresh: onPullRefresh != null
                 ? () async {
                     await onPullRefresh!(context);
