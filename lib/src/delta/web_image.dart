@@ -63,12 +63,7 @@ class WebImage extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: provide.isError(url)
-                //? _icon(context, Icons.broken_image)
-                ? Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: _icon(context, Icons.broken_image),
-                  )
+                ? _icon(context, Icons.broken_image)
                 : ExtendedImage.network(
                     url,
                     fit: BoxFit.cover,
@@ -80,7 +75,11 @@ class WebImage extends StatelessWidget {
                     loadStateChanged: (ExtendedImageState state) {
                       switch (state.extendedImageLoadState) {
                         case LoadState.loading:
-                          return _icon(context, Icons.image);
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: _icon(context, Icons.image),
+                          );
 
                         case LoadState.completed:
                           return null;
