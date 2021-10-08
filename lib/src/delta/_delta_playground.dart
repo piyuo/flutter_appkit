@@ -163,8 +163,7 @@ class DeltaPlayground extends StatelessWidget {
               width: 300,
               height: 300,
               child: WebImage(
-                'https://www.apple.com/v/iphone-12/g/images/overview/design/design_compare_skinny__fhvbipafz2my_large.jpg',
-              ),
+                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000'),
             ),
             SizedBox(width: 20),
             SizedBox(
