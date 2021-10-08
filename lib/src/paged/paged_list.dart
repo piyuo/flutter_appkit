@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/delta.dart' as delta;
 import 'paged_data_source.dart';
 import 'types.dart';
