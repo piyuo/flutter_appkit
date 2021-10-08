@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/pb/simple/error.pb.dart';
-import 'dart:convert';
 import 'json.dart';
 
 void main() {

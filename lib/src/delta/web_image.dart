@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class WebImageProvider with ChangeNotifier {
   bool _error = false;
@@ -62,7 +63,12 @@ class WebImage extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: provide.isError(url)
-                ? _icon(context, Icons.broken_image)
+                //? _icon(context, Icons.broken_image)
+                ? Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: _icon(context, Icons.broken_image),
+                  )
                 : ExtendedImage.network(
                     url,
                     fit: BoxFit.cover,
