@@ -8,14 +8,11 @@ class WebImageProvider with ChangeNotifier {
   bool _error = false;
   String _url = '';
 
-  /// setError to avoid load image again and again
   void setError(String url, bool error) {
     _error = error;
     _url = url;
-    Future.microtask(() => notifyListeners());
   }
 
-  /// isError return true if failed to load image
   bool isError(String url) {
     return _url == url && _error;
   }
@@ -27,30 +24,47 @@ class WebImage extends StatelessWidget {
   const WebImage(
     this.url, {
     Key? key,
-    this.cacheMaxAge = const Duration(days: 360),
+    this.cacheMaxAge = const Duration(days: 365),
+    this.borderColor,
+    this.borderWidth = 1,
     this.borderRadius = 25,
   }) : super(key: key);
 
-  /// url is image url
   final String url;
 
-  /// cacheMaxAge is image cache age, default is 360 days
   final Duration cacheMaxAge;
+
+  final Color? borderColor;
+
+  final double borderWidth;
 
   final double borderRadius;
 
   Widget _icon(
     BuildContext context,
     IconData? icon,
+    Border? border,
+    BorderRadius radius,
   ) {
-    return FittedBox(
-        child: Icon(
-      icon,
-      color: context.themeColor(
-        dark: Colors.grey[800]!,
-        light: Colors.grey[400]!,
+    return Container(color: Colors.red);
+    return Container(
+      decoration: BoxDecoration(
+//        border: border,
+        //       borderRadius: radius,
+        color: context.themeColor(
+          dark: Colors.grey[850]!,
+          light: Colors.grey[200]!,
+        ),
       ),
-    ));
+      child: FittedBox(
+          child: Icon(
+        icon,
+        color: context.themeColor(
+          dark: Colors.grey[800]!,
+          light: Colors.grey[400]!,
+        ),
+      )),
+    );
   }
 
   @override
@@ -58,23 +72,27 @@ class WebImage extends StatelessWidget {
     return ChangeNotifierProvider<WebImageProvider>(
         create: (context) => WebImageProvider(),
         child: Consumer<WebImageProvider>(builder: (context, provide, child) {
+          var border = borderColor != null ? Border.all(color: borderColor!, width: borderWidth) : null;
           var radius = BorderRadius.all(Radius.circular(borderRadius));
+
           return ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: provide.isError(url)
-                ? _icon(context, Icons.broken_image)
+                ? _icon(context, Icons.broken_image, border, radius)
                 : ExtendedImage.network(
                     url,
                     fit: BoxFit.cover,
                     cache: true,
                     cacheMaxAge: cacheMaxAge,
+                    border: border,
                     borderRadius: radius,
                     isAntiAlias: true,
                     retries: 0,
                     loadStateChanged: (ExtendedImageState state) {
                       switch (state.extendedImageLoadState) {
                         case LoadState.loading:
-                          return _icon(context, Icons.image);
+                          log.debug('[web-image] download $url');
+                          return _icon(context, Icons.image, border, radius);
 
                         case LoadState.completed:
                           return null;
@@ -82,7 +100,7 @@ class WebImage extends StatelessWidget {
                         case LoadState.failed:
                           log.log('[web-image] missing $url');
                           provide.setError(url, true);
-                          return _icon(context, Icons.broken_image);
+                          return _icon(context, Icons.broken_image, border, radius);
                       }
                     },
                   ),
