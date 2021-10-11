@@ -21,7 +21,7 @@ String lookup(
     result = enUS(key);
   }
   if (result == null) {
-    log.log('[l10n] missing $key in $name');
+    log.log('[l10n] missing $key in [$name]');
     return '!! $key not found';
   }
   return result;
