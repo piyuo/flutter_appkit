@@ -66,13 +66,8 @@ String? enUS(String key) => {
       'BLOCK_LONG': 'Too many failed attempts, Please try again tomorrow',
       'IN_FLIGHT': 'Please wait while we are processing your request',
       'OVERFLOW': 'Too many attempts, Please try again later',
-      'pagingMany': 'of many',
-      'pagingCount': 'of %1',
       'loading': 'loading...',
       'tapRetry': 'Tap to retry',
-      'noData': 'No data',
-      'refresh': 'Refresh',
-      'archive': 'Archive',
     }[key];
 
 String? zhTW(String key) => {
@@ -115,13 +110,8 @@ String? zhTW(String key) => {
       'BLOCK_LONG': '您嚐試了太多失敗的請求, 請明天再試',
       'IN_FLIGHT': '請求正在處理中，請稍候',
       'OVERFLOW': '操作過於頻繁，請稍後再試',
-      'pagingMany': '共很多',
-      'pagingCount': '共 %1 筆',
       'loading': '讀取中...',
       'tapRetry': '按此處重試',
-      'noData': '無資料',
-      'refresh': '更新',
-      'archive': '封存',
     }[key];
 
 String? zhCN(String key) => {
@@ -164,11 +154,6 @@ String? zhCN(String key) => {
       'BLOCK_LONG': '您嚐试了太多失败的请求, 请明天再试',
       'IN_FLIGHT': '请求正在处理中，请稍候',
       'OVERFLOW': '操作过于频繁，请稍后再试',
-      'pagingMany': '共很多',
-      'pagingCount': '共 %1 笔',
       'loading': '读取中...',
       'tapRetry': '按此处重试',
-      'noData': '无资料',
-      'refresh': '更新',
-      'archive': '封存',
     }[key];
