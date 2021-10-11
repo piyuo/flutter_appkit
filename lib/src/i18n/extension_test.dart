@@ -5,9 +5,9 @@ import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/asset.dart' as asset;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libcli/src/pb/google/google.dart' as google;
-import 'package:libcli/src/i18n/i18n.dart';
-import 'package:libcli/src/i18n/extensions.dart';
-import 'package:libcli/src/i18n/i18n_provider.dart';
+import 'i18n.dart';
+import 'extensions.dart';
+import 'i18n_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -28,9 +28,9 @@ void main() {
         home: TestWidget(),
       ));
       await tester.pumpAndSettle();
-      expect(LocaleWidget.value, 'A');
-      expect(LocaleWidget.i18nValue, 'A');
-      expect(LocaleWidget._i18nValue, 'OK');
+//      expect(LocaleWidget.value, 'A');
+//      expect(LocaleWidget.i18nValue, 'A');
+      expect(L10nWidget.value, 'OK');
     });
 
     test('should get local date', () async {
@@ -71,18 +71,14 @@ void main() {
   });
 }
 
-class LocaleWidget extends StatelessWidget {
+class L10nWidget extends StatelessWidget {
   static String value = '';
-  static String i18nValue = '';
-  static String _i18nValue = '';
 
-  const LocaleWidget({Key? key}) : super(key: key);
+  const L10nWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    value = 'a'.i18n(context);
-    i18nValue = i18n(context, 'a');
-    _i18nValue = i18n_('ok');
+    value = 'ok'.i18n_;
     return Text(value);
   }
 }
@@ -101,7 +97,7 @@ class TestWidget extends StatelessWidget {
       child: Consumer<I18nProvider>(
           builder: (context, i18n, child) => delta.Await(
                 [i18n],
-                child: const LocaleWidget(),
+                child: const L10nWidget(),
               )),
     );
   }

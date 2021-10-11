@@ -14,7 +14,6 @@ import 'menu.dart';
 import 'await_on_tap.dart';
 import 'pull_refresh.dart';
 import 'tap_breaker.dart';
-import 'image_picker.dart';
 
 var _pullRefreshCount = 8;
 
@@ -37,12 +36,7 @@ class DeltaPlayground extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _pickImage(context),
-            ),
-            custom.example(
-              context,
-              text: 'pick image',
-              child: _pickImage(context),
+              child: _awaitOnTap(context),
             ),
             custom.example(
               context,
@@ -117,31 +111,6 @@ class DeltaPlayground extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _pickImage(BuildContext context) {
-    return ElevatedButton(
-      child: const Text('pick image'),
-      onPressed: () async {
-        final file = await pickImage(
-          context,
-          fileSizeMax: 1 * 1024 * 1024,
-        );
-        if (file == DeviceFile.notSelect) {
-          debugPrint('did not select file');
-          return;
-        }
-        if (file == DeviceFile.mimeNotAccept) {
-          debugPrint('mime not accept');
-          return;
-        }
-        if (file == DeviceFile.tooBig) {
-          debugPrint('file is too big');
-          return;
-        }
-        debugPrint('${file.mimeType} ${file.length} ${file.name}');
-      },
     );
   }
 

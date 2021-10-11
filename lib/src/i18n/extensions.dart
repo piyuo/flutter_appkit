@@ -4,7 +4,7 @@ import 'package:libcli/src/pb/google/google.dart' as google;
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';
 import 'package:libcli/src/i18n/i18n_provider.dart';
-import 'package:libcli/src/i18n/predefine.dart';
+import 'package:libcli/src/i18n/l10n.dart';
 import 'package:libcli/src/i18n/datetime.dart';
 
 /// I18nLocalization add localization function to string
@@ -17,9 +17,13 @@ extension I18nLocalization on String {
   ///   var err='ERROR';
   ///   err.i18n_; // Not OK
   ///
-  String get i18n_ {
-    return predefine(this);
-  }
+  String get i18n_ => lookup(
+        this,
+        '_',
+        enUS,
+        zhTW: zhTW,
+        zhCN: zhCN,
+      );
 
   /// i18n translate const string, don't use this method on string variable
   ///
@@ -32,12 +36,6 @@ extension I18nLocalization on String {
     var provider = Provider.of<I18nProvider>(context, listen: false);
     return provider.translate(this);
   }
-}
-
-/// i18n_ translate str base on current locale
-///
-String i18n_(String str) {
-  return predefine(str);
 }
 
 /// i18n translate string base on current locale

@@ -18,4 +18,3 @@ export 'package:libcli/src/delta/menu.dart';
 export 'package:libcli/src/delta/pull_refresh.dart';
 export 'package:libcli/src/delta/await_on_tap.dart';
 export 'package:libcli/src/delta/tap_breaker.dart';
-export 'package:libcli/src/delta/image_picker.dart';

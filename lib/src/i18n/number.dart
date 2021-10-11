@@ -54,7 +54,7 @@ String formatPercentage(dynamic value) {
 
 /// formatBytes format value to computer size like bytes, KB, MB, GB, TB
 ///
-///     expect(formatSize(.99), '99%');
+///     expect(formatBytes(2 * 1024 * 1024, 2), '2.00 MB');
 ///
 String formatBytes(int bytes, int decimals) {
   if (bytes <= 0) return "0 B";
