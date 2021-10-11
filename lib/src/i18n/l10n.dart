@@ -73,7 +73,6 @@ String? enUS(String key) => {
       'noData': 'No data',
       'refresh': 'Refresh',
       'archive': 'Archive',
-      'upload': 'Upload',
     }[key];
 
 String? zhTW(String key) => {
@@ -123,7 +122,6 @@ String? zhTW(String key) => {
       'noData': '無資料',
       'refresh': '更新',
       'archive': '封存',
-      'upload': '上傳',
     }[key];
 
 String? zhCN(String key) => {
@@ -173,5 +171,4 @@ String? zhCN(String key) => {
       'noData': '无资料',
       'refresh': '更新',
       'archive': '封存',
-      'upload': '上传',
     }[key];
