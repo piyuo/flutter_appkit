@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n.dart' as dart;
 import 'types.dart';
+import 'l10n.dart';
 
 class PagedDataSource<T> extends ChangeNotifier {
   PagedDataSource({
@@ -382,9 +382,9 @@ class PagedDataSource<T> extends ChangeNotifier {
     int start = _pageIndex * _rowsPerPage;
     int end = start + getRowCountByPage(_pageIndex);
     if (status == PagedDataSourceStatus.end) {
-      return '${start + 1} - $end ' + 'pagingCount'.i18n_.replaceAll('%1', _rows.length.toString());
+      return '${start + 1} - $end ' + 'pagingCount'.l10n.replaceAll('%1', _rows.length.toString());
     }
-    return '${start + 1} - $end ' + 'pagingMany'.i18n_;
+    return '${start + 1} - $end ' + 'pagingMany'.l10n;
   }
 
   /// selectAll select all row

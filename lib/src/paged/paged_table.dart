@@ -5,6 +5,7 @@ import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/i18n.dart' as i18n;
 import 'paged_data_source.dart';
 import 'types.dart';
+import 'l10n.dart';
 
 class PagedTable<T> extends StatelessWidget {
   const PagedTable({
@@ -150,7 +151,7 @@ class PagedTable<T> extends StatelessWidget {
       case PagedDataSourceStatus.load:
       case PagedDataSourceStatus.end:
         if (provide.isEmpty) {
-          return buildInfo(Text('noData'.i18n_));
+          return buildInfo(Text('noData'.l10n));
         }
         break;
     }
@@ -322,7 +323,7 @@ class PagedTable<T> extends StatelessWidget {
     if (dataSource.supportRefresh && dataSource.selectedRowsIsEmpty) {
       _actions.add(
         IconButton(
-          tooltip: 'refresh'.i18n_,
+          tooltip: 'refresh'.l10n,
           onPressed: breaker.linkVoidFunc(() => dataSource.refreshNewRow(context)),
           icon: const Icon(Icons.refresh_rounded),
         ),
