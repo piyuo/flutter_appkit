@@ -7,24 +7,31 @@ import 'image_pick.dart';
 import 'image_drop.dart';
 import 'file.dart';
 
-class SingleImageProvider with ChangeNotifier {
-  SingleImageProvider({
+/// ImageUploadController upload single image through uploader
+class ImageUploadController with ChangeNotifier {
+  ImageUploadController({
     required this.uploader,
   });
 
+  /// uploader upload file to remote
   final Uploader uploader;
 
+  /// dragging is true if user is dragging
   bool dragging = false;
 
+  /// busy to upload
   bool busy = false;
 
+  /// _dropController is drop zone controller
   DropzoneViewController? _dropController;
-  setDropController(DropzoneViewController dropController) {
-    _dropController = dropController;
-  }
 
+  /// setDropController set drop zone controller
+  void setDropController(DropzoneViewController dropController) => _dropController = dropController;
+
+  /// isEmpty return true if uploader is empty
   bool get isEmpty => uploader.isEmpty;
 
+  /// firstFile is first file in uploader
   String? get firstFile {
     if (uploader.isNotEmpty) {
       return uploader.filenames[0];
@@ -32,13 +39,15 @@ class SingleImageProvider with ChangeNotifier {
     return null;
   }
 
+  /// pickImage pick image from device and upload
   Future<void> pickImage(BuildContext context) async {
     final picked = await imagePick(context);
     if (picked != null) {
-      _startUpload(context, picked);
+      startUpload(context, picked);
     }
   }
 
+  /// dropImage accept dropped image and upload
   Future<void> dropImage(BuildContext context, dynamic file) async {
     dragging = false;
     if (_dropController == null) {
@@ -47,15 +56,19 @@ class SingleImageProvider with ChangeNotifier {
     }
 
     final dropped = await imageDrop(context, _dropController!, file);
-    _startUpload(context, dropped);
+    startUpload(context, dropped);
   }
 
-  /// _startUpload start upload file to cloud
-  Future<void> _startUpload(BuildContext context, File file) async {
+  /// onUpload upload image though uploader, child may override this method
+  Future<String?> onUpload(BuildContext context, File file, String? replaceFilename) =>
+      uploader.upload(context, file, replaceFilename);
+
+  /// startUpload start upload file to cloud
+  Future<void> startUpload(BuildContext context, File file) async {
     busy = true;
     notifyListeners();
     try {
-      String? error = await uploader.upload(context, file, firstFile);
+      String? error = await onUpload(context, file, firstFile);
       if (error != null) {
         dialog.alert(context, error);
         return;
@@ -66,12 +79,7 @@ class SingleImageProvider with ChangeNotifier {
     }
   }
 
-  void error(BuildContext context, String? value) {
-    if (value != null) {
-      dialog.alert(context, value);
-    }
-  }
-
+  /// setDragging set dragging to true
   void setDragging(BuildContext context, bool value) {
     if (dragging != value) {
       dragging = value;

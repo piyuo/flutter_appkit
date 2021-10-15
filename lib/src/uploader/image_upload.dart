@@ -2,15 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/delta.dart' as delta;
-import 'uploader.dart';
-import 'single_image_uploader_provider.dart';
+import 'package:libcli/dialog.dart' as dialog;
+import 'image_upload_controller.dart';
 import 'l10n.dart';
 
-class SingleImageUploader extends StatelessWidget {
-  const SingleImageUploader({
-    required this.uploader,
+class ImageUpload extends StatelessWidget {
+  const ImageUpload({
+    required this.controller,
     required this.imageRoot,
     this.width = 240,
     this.height = 240,
@@ -27,8 +26,8 @@ class SingleImageUploader extends StatelessWidget {
   /// width is image uploader height
   final double height;
 
-  /// uploader to upload file
-  final Uploader uploader;
+  /// controller control pick or dropped image and upload to cloud
+  final ImageUploadController controller;
 
   /// description can show description on bottom of image  uploader
   final String? description;
@@ -36,7 +35,6 @@ class SingleImageUploader extends StatelessWidget {
   /// _buildDropzone create a dropzone to support browser drop file
   Widget _buildDropzone(
     BuildContext context, {
-    required SingleImageProvider provide,
     required Widget child,
   }) {
     final mediaQuerySize = MediaQuery.of(context).size;
@@ -50,18 +48,20 @@ class SingleImageUploader extends StatelessWidget {
           height: mediaQuerySize.height,
           width: mediaQuerySize.width,
           child: DropzoneView(
-            mime: uploader.acceptMIME,
+            mime: controller.uploader.acceptMIME,
             operation: DragOperation.copy,
-            onCreated: (DropzoneViewController ctrl) => provide.setDropController(ctrl),
-            onError: (String? ev) => provide.error(context, ev),
-            onDrop: (dynamic ev) async => await provide.dropImage(context, ev),
-            onHover: () => provide.setDragging(context, true),
-            onLeave: () => provide.setDragging(context, false),
+            onCreated: (DropzoneViewController ctrl) => controller.setDropController(ctrl),
+            onError: (String? ev) {
+              if (ev != null) dialog.alert(context, ev);
+            },
+            onDrop: (dynamic ev) async => await controller.dropImage(context, ev),
+            onHover: () => controller.setDragging(context, true),
+            onLeave: () => controller.setDragging(context, false),
           ),
         ),
         child,
-        if (provide.dragging) _buildDragging(context, provide),
-        if (provide.dragging)
+        if (controller.dragging) _buildDragging(context),
+        if (controller.dragging)
           Positioned(
               left: 0,
               top: 0,
@@ -94,7 +94,6 @@ class SingleImageUploader extends StatelessWidget {
   /// _buildCard build a uploader card
   Widget _buildCard(
     BuildContext context, {
-    required SingleImageProvider provide,
     required Widget child,
     required Color color,
   }) {
@@ -108,7 +107,7 @@ class SingleImageUploader extends StatelessWidget {
           color: color,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: provide.dragging
+        boxShadow: controller.dragging
             ? [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -121,7 +120,7 @@ class SingleImageUploader extends StatelessWidget {
       ),
       child: DottedBorder(
         color: Colors.black12,
-        strokeWidth: provide.dragging ? 0 : 4,
+        strokeWidth: controller.dragging ? 0 : 4,
         borderType: BorderType.RRect,
         dashPattern: const <double>[15, 10],
         radius: const Radius.circular(20),
@@ -132,13 +131,12 @@ class SingleImageUploader extends StatelessWidget {
   }
 
   /// _buildBusy create a busy loading icon
-  Widget _buildBusy(BuildContext context, SingleImageProvider provide) {
+  Widget _buildBusy(BuildContext context) {
     return _buildCard(context,
         color: context.themeColor(
           light: Colors.grey[200]!,
           dark: Colors.grey[800]!,
         ),
-        provide: provide,
         child: const Padding(
             padding: EdgeInsets.all(0),
             child: CircularProgressIndicator(
@@ -149,11 +147,10 @@ class SingleImageUploader extends StatelessWidget {
   }
 
   /// _buildDragging create dragging icon
-  Widget _buildDragging(BuildContext context, SingleImageProvider provide) {
+  Widget _buildDragging(BuildContext context) {
     return _buildCard(
       context,
       color: Colors.blue[400]!,
-      provide: provide,
       child: const Icon(
         Icons.add,
         size: 128,
@@ -163,7 +160,7 @@ class SingleImageUploader extends StatelessWidget {
   }
 
   /// _buildChangeUpload create a uploader ui to change image
-  Widget _buildChangeUpload(BuildContext context, SingleImageProvider provide) {
+  Widget _buildChangeUpload(BuildContext context) {
     return SizedBox(
         width: width,
         height: height,
@@ -173,7 +170,7 @@ class SingleImageUploader extends StatelessWidget {
               width: width,
               height: height,
               child: delta.WebImage(
-                imageRoot + provide.firstFile!,
+                imageRoot + controller.firstFile!,
               ),
             ),
             Positioned(
@@ -183,7 +180,7 @@ class SingleImageUploader extends StatelessWidget {
                 child: const Icon(Icons.file_upload_rounded, size: 42),
                 //padding: EdgeInsets.zero,
                 tooltip: 'upload'.l10n,
-                onPressed: () => provide.pickImage(context),
+                onPressed: () => controller.pickImage(context),
               ),
             ),
           ],
@@ -191,30 +188,29 @@ class SingleImageUploader extends StatelessWidget {
   }
 
   /// _buildNewUpload create a uploader ui to upload new image
-  Widget _buildNewUpload(BuildContext context, SingleImageProvider provide) {
-    final iconColor = provide.dragging ? Colors.white : Colors.grey[400];
+  Widget _buildNewUpload(BuildContext context) {
+    final iconColor = controller.dragging ? Colors.white : Colors.grey[400];
     return _buildCard(context,
         color: context.themeColor(
           light: Colors.grey[200]!,
           dark: Colors.grey[800]!,
         ),
-        provide: provide,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InkWell(
-                onTap: () => provide.pickImage(context),
+                onTap: () => controller.pickImage(context),
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Icon(
-                    provide.dragging ? Icons.add : Icons.file_upload_rounded,
+                    controller.dragging ? Icons.add : Icons.file_upload_rounded,
                     size: 52,
                     color: iconColor,
                   ),
                 )),
-            if (!provide.dragging)
+            if (!controller.dragging)
               InkWell(
-                  onTap: () => provide.pickImage(context),
+                  onTap: () => controller.pickImage(context),
                   child: RichText(
                       text: TextSpan(
                     children: [
@@ -235,8 +231,8 @@ class SingleImageUploader extends StatelessWidget {
                       )
                     ],
                   ))),
-            if (!provide.dragging) const SizedBox(height: 10),
-            if (!provide.dragging && description != null)
+            if (!controller.dragging) const SizedBox(height: 10),
+            if (!controller.dragging && description != null)
               Text(
                 description!,
                 style: const TextStyle(
@@ -249,30 +245,23 @@ class SingleImageUploader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SingleImageProvider>(
-        create: (context) => SingleImageProvider(
-              uploader: uploader,
-            ),
-        child: Consumer<SingleImageProvider>(builder: (context, provide, child) {
-          if (provide.busy) {
-            return _buildBusy(context, provide);
-          }
-          final child = provide.dragging
-              ? const SizedBox()
-              : provide.isEmpty
-                  ? _buildNewUpload(context, provide)
-                  : _buildChangeUpload(context, provide);
-          return SizedBox(
-            width: width,
-            height: height,
-            child: kIsWeb
-                ? _buildDropzone(
-                    context,
-                    provide: provide,
-                    child: child,
-                  )
-                : child,
-          );
-        }));
+    if (controller.busy) {
+      return _buildBusy(context);
+    }
+    final child = controller.dragging
+        ? const SizedBox()
+        : controller.isEmpty
+            ? _buildNewUpload(context)
+            : _buildChangeUpload(context);
+    return SizedBox(
+      width: width,
+      height: height,
+      child: kIsWeb
+          ? _buildDropzone(
+              context,
+              child: child,
+            )
+          : child,
+    );
   }
 }

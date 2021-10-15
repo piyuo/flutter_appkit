@@ -15,7 +15,7 @@ class Uploader with ChangeNotifier {
     required this.uploadFunc,
     this.deleteFunc,
     this.fileSizeMax = 5 * 1024 * 1024, // max 5MB
-    this.acceptMIME = const ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+    this.acceptMIME = const ['image/png', 'image/jpeg', 'image/gif'],
   });
   //, 'image/x-icon'
 
