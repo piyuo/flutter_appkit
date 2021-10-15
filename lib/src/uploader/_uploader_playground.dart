@@ -38,7 +38,7 @@ class UploaderPlayground extends StatelessWidget {
 //                'iphone-card-40-iphone13problue-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948813000',
               ],
               uploadFunc: (context, bytes, deleteFilename) async {
-                await Future.delayed(Duration(seconds: 2));
+                await Future.delayed(const Duration(seconds: 2));
                 return 'iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
               },
             ),

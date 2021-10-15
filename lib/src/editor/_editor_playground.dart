@@ -6,6 +6,8 @@ import 'package:libcli/custom.dart' as custom;
 import 'package:libcli/delta.dart' as delta;
 import 'rich_editor.dart';
 import 'rich_editor_provider.dart';
+import 'image_editor.dart';
+import 'image_editor_dialog.dart';
 
 class EditorPlayground extends StatelessWidget {
   const EditorPlayground({Key? key}) : super(key: key);
@@ -18,12 +20,17 @@ class EditorPlayground extends StatelessWidget {
           child: Wrap(
             children: [
               Container(
-                child: _richEditor(),
+                child: _imageEditor(),
               ),
               custom.example(
                 context,
                 text: 'rich editor',
                 child: _richEditor(),
+              ),
+              custom.example(
+                context,
+                text: 'image editor',
+                child: _imageEditor(),
               ),
             ],
           ),
@@ -55,5 +62,40 @@ class EditorPlayground extends StatelessWidget {
             ]));
       }),
     );
+  }
+
+  Widget _imageEditor() {
+    return ChangeNotifierProvider<ImageEditorProvider>(
+        create: (context) => ImageEditorProvider(
+              url:
+                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000',
+            ),
+        child: Consumer<ImageEditorProvider>(builder: (context, provide, child) {
+          return Column(children: [
+            SizedBox(
+                width: 400,
+                height: 400,
+                child: ImageEditor(
+                  controller: provide,
+                )),
+            ElevatedButton(
+                child: const Text('test crop'),
+                onPressed: () async {
+                  final bytes = await provide.crop();
+                  provide.setBytes(bytes);
+                }),
+            ElevatedButton(
+                child: const Text('image editor dialog'),
+                onPressed: () async {
+                  final bytes = await showImageEditor(
+                    context,
+                    url: 'https://www.apple.com/v/watch/ao/images/overview/series-7/hero_s7__ep2maoos292e_large.jpg',
+                  );
+                  if (bytes != null) {
+                    provide.setBytes(bytes);
+                  }
+                }),
+          ]);
+        }));
   }
 }
