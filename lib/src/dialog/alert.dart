@@ -11,7 +11,7 @@ const keyAlertButtonNo = Key('alertBtnNo');
 
 const keyAlertButtonCancel = Key('alertBtnCancel');
 
-Widget showIcon(IconData? icon, Color iconColor) {
+Widget _showIcon(IconData? icon, Color iconColor) {
   if (icon != null) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -25,7 +25,7 @@ Widget showIcon(IconData? icon, Color iconColor) {
   return const SizedBox();
 }
 
-Widget showButton(
+Widget _showButton(
   BuildContext context,
   Key key,
   String? text,
@@ -54,7 +54,7 @@ Widget showButton(
       : const SizedBox();
 }
 
-Widget showTitle(String? title) {
+Widget _showTitle(String? title) {
   return title != null
       ? Container(
           alignment: Alignment.center,
@@ -65,7 +65,7 @@ Widget showTitle(String? title) {
       : const SizedBox();
 }
 
-Widget showMessage(String message, bool titleExists) {
+Widget _showMessage(String message, bool titleExists) {
   return Container(
     alignment: Alignment.center,
     padding: titleExists ? const EdgeInsets.only(bottom: 30) : const EdgeInsets.symmetric(vertical: 30),
@@ -73,7 +73,7 @@ Widget showMessage(String message, bool titleExists) {
   );
 }
 
-Widget showFooter(String? footer) {
+Widget _showFooter(String? footer) {
   return footer != null
       ? Container(
           alignment: Alignment.center,
@@ -83,7 +83,7 @@ Widget showFooter(String? footer) {
       : const SizedBox();
 }
 
-Widget showEmailUs(BuildContext context, bool emailUs) {
+Widget _showEmailUs(BuildContext context, bool emailUs) {
   return emailUs
       ? Container(
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -197,26 +197,26 @@ Future<bool?> alert(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  showIcon(icon, iconColor),
+                  _showIcon(icon, iconColor),
                   scrollContent
                       ? SizedBox(
                           height: 200,
                           child: SingleChildScrollView(
                             child: ListBody(
                               children: <Widget>[
-                                showTitle(title),
-                                showMessage(message, title != null || icon != null || warning),
-                                showFooter(footer),
+                                _showTitle(title),
+                                _showMessage(message, title != null || icon != null || warning),
+                                _showFooter(footer),
                               ],
                             ),
                           ),
                         )
                       : Column(children: [
-                          showTitle(title),
-                          showMessage(message, title != null || icon != null || warning),
-                          showFooter(footer),
+                          _showTitle(title),
+                          _showMessage(message, title != null || icon != null || warning),
+                          _showFooter(footer),
                         ]),
-                  showButton(
+                  _showButton(
                     context,
                     keyAlertButtonYes,
                     yes,
@@ -224,7 +224,7 @@ Future<bool?> alert(
                     Colors.white,
                     true,
                   ),
-                  showButton(
+                  _showButton(
                     context,
                     keyAlertButtonNo,
                     no,
@@ -233,7 +233,7 @@ Future<bool?> alert(
                     false,
                   ),
                   const SizedBox(height: 10),
-                  showButton(
+                  _showButton(
                     context,
                     keyAlertButtonCancel,
                     cancel,
@@ -241,11 +241,33 @@ Future<bool?> alert(
                     yes != null ? context.themeColor(dark: Colors.blue[50]!, light: Colors.black54) : Colors.white,
                     null,
                   ),
-                  showEmailUs(context, emailUs),
+                  _showEmailUs(context, emailUs),
                 ],
               ),
             ),
           ),
         );
       });
+}
+
+/// confirm show on/cancel dialog, return true if it's ok
+///
+Future<bool?> confirm(
+  BuildContext context,
+  String message, {
+  IconData? icon,
+  Color iconColor = const Color.fromRGBO(239, 91, 93, 1),
+  String? title,
+  bool buttonOK = true,
+  bool buttonCancel = true,
+}) async {
+  return alert(
+    context,
+    message,
+    icon: icon,
+    iconColor: iconColor,
+    title: title,
+    buttonOK: buttonOK,
+    buttonCancel: buttonCancel,
+  );
 }

@@ -10,13 +10,13 @@ import 'show_more.dart';
 import 'banner.dart';
 import 'hypertext.extension.dart';
 
-class DialogPlayground extends StatelessWidget {
-  final GlobalKey btnMenu = GlobalKey();
-  final GlobalKey btnShowMore = GlobalKey();
-  final GlobalKey btnShowMoreOffset = GlobalKey();
-  final GlobalKey btnShowMoreText = GlobalKey();
+final GlobalKey btnMenu = GlobalKey();
+final GlobalKey btnShowMore = GlobalKey();
+final GlobalKey btnShowMoreOffset = GlobalKey();
+final GlobalKey btnShowMoreText = GlobalKey();
 
-  DialogPlayground({Key? key}) : super(key: key);
+class DialogPlayground extends StatelessWidget {
+  const DialogPlayground({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,13 +75,11 @@ class DialogPlayground extends StatelessWidget {
                         },
                       ),
                       ElevatedButton(
-                        child: const Text('alert ok/cancel'),
+                        child: const Text('confirm'),
                         onPressed: () async {
-                          var result = await alert(
+                          var result = await confirm(
                             context,
                             'save this document?',
-                            buttonSave: true,
-                            buttonCancel: true,
                           );
                           if (result == true) {
                             ok(context, 'ok');
