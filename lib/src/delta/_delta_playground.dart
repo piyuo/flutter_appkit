@@ -14,6 +14,7 @@ import 'menu.dart';
 import 'await_on_tap.dart';
 import 'pull_refresh.dart';
 import 'tap_breaker.dart';
+import 'permission.dart';
 
 var _pullRefreshCount = 8;
 
@@ -36,7 +37,7 @@ class DeltaPlayground extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _webImageProvider(context),
+              child: _getCameraPermission(context),
             ),
             custom.example(
               context,
@@ -112,6 +113,11 @@ class DeltaPlayground extends StatelessWidget {
               context,
               text: 'pull refresh vertical',
               child: _pullRefreshVertical(context),
+            ),
+            custom.example(
+              context,
+              text: 'get camera permission',
+              child: _getCameraPermission(context),
             ),
           ],
         ),
@@ -534,6 +540,15 @@ class DeltaPlayground extends StatelessWidget {
         child: Text('item $index'),
       );
     });
+  }
+
+  Widget _getCameraPermission(BuildContext context) {
+    return OutlinedButton(
+        child: const Text('get permission'),
+        onPressed: () async {
+          var result = await checkCameraPermission(context);
+          debugPrint(result ? 'got permission' : 'denied');
+        });
   }
 }
 
