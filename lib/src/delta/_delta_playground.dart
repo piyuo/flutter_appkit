@@ -17,16 +17,16 @@ import 'tap_breaker.dart';
 
 var _pullRefreshCount = 8;
 
+final GlobalKey btnMenu = GlobalKey();
+final GlobalKey btnTooltip = GlobalKey();
+final GlobalKey btnMenuOnBottom = GlobalKey();
+
+final _listingController = ValueNotifier<int>(1);
+
+final _checkBoxController = ValueNotifier<bool>(false);
+
 class DeltaPlayground extends StatelessWidget {
-  final GlobalKey btnMenu = GlobalKey();
-  final GlobalKey btnTooltip = GlobalKey();
-  final GlobalKey btnMenuOnBottom = GlobalKey();
-
-  final _listingController = ValueNotifier<int>(1);
-
-  final _checkBoxController = ValueNotifier<bool>(false);
-
-  DeltaPlayground({Key? key}) : super(key: key);
+  const DeltaPlayground({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class DeltaPlayground extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _awaitOnTap(context),
+              child: _webImageProvider(context),
             ),
             custom.example(
               context,
@@ -50,8 +50,13 @@ class DeltaPlayground extends StatelessWidget {
             ),
             custom.example(
               context,
-              text: 'web_image',
+              text: 'web image',
               child: _webImage(context),
+            ),
+            custom.example(
+              context,
+              text: 'web image provider',
+              child: _webImageProvider(context),
             ),
             custom.example(
               context,
@@ -175,6 +180,19 @@ class DeltaPlayground extends StatelessWidget {
             )
           ],
         ));
+  }
+
+  Widget _webImageProvider(BuildContext context) {
+    final imageProvider = webImageProvider(
+        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000');
+
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.green,
+          image: DecorationImage(
+            image: imageProvider,
+          )),
+    );
   }
 
   Widget _searchBar(BuildContext context) {

@@ -5,7 +5,17 @@ import 'package:libcli/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
 import 'package:shimmer/shimmer.dart';
 
-class WebImageProvider with ChangeNotifier {
+ImageProvider webImageProvider(
+  String url, {
+  Duration cacheMaxAge = const Duration(days: 360),
+}) {
+  return ExtendedNetworkImageProvider(
+    url,
+    cacheMaxAge: cacheMaxAge,
+  );
+}
+
+class WebImageController with ChangeNotifier {
   bool _error = false;
   String _url = '';
 
@@ -56,9 +66,9 @@ class WebImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WebImageProvider>(
-        create: (context) => WebImageProvider(),
-        child: Consumer<WebImageProvider>(builder: (context, provide, child) {
+    return ChangeNotifierProvider<WebImageController>(
+        create: (context) => WebImageController(),
+        child: Consumer<WebImageController>(builder: (context, provide, child) {
           var radius = BorderRadius.all(Radius.circular(borderRadius));
           return ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
