@@ -22,19 +22,13 @@ String? _enUS(String key) => {
     }[key];
 
 String? _zhTW(String key) => {
-      'save': '保存',
-      'resize': '變更圖片大小',
-      'flip': '翻轉',
-      'rl': '向左旋轉',
-      'rr': '向右旋轉',
-      'reset': '重置圖片',
+      'webCamera': '網頁模式不支援相機，請安裝我們的原生 APP',
+      'appSetting': '我們需要權限存取相機, 您想去設定頁面開啟相機權限嗎?',
+      'gotoSetting': '去設定頁面',
     }[key];
 
 String? _zhCN(String key) => {
-      'save': '保存',
-      'resize': '变更图片大小',
-      'flip': '翻转',
-      'rl': '向左旋转',
-      'rr': '向右旋转',
-      'reset': '重置图片',
+      'webCamera': '网页模式不支援相机，请安装我们的原生 APP',
+      'appSetting': '我们需要权限存取相机, 您想去设定页面开启相机权限吗?',
+      'gotoSetting': '去设定页面',
     }[key];
