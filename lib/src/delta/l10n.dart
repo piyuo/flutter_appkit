@@ -8,7 +8,7 @@ extension L10nLocalization on String {
   ///   'ERROR'.i18n_; // OK
   String get l10n => i18n.lookup(
         this,
-        'editor',
+        'delta',
         _enUS,
         zhTW: _zhTW,
         zhCN: _zhCN,
