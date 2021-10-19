@@ -11,12 +11,6 @@ Future<void> changeDateFormatting(String locale) async {
   await initializeDateFormatting(locale, null);
 }
 
-/// withLocale run function in Intl zone
-///
-withLocale(Function() function) {
-  Intl.withLocale(localeName, function);
-}
-
 /// dateFormat return current date format
 ///
 DateFormat get dateFormat {

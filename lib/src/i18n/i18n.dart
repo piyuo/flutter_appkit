@@ -29,6 +29,12 @@ Locale get locale => stringToLocale(localeName);
 /// countryCode is current locale country code
 String get countryCode => locale.countryCode ?? 'US';
 
+/// withLocale run function in Intl zone
+///
+withLocale(String newLocaleName, Function() function) {
+  Intl.withLocale(newLocaleName, function);
+}
+
 /// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours
 Future<bool> setLocale(
   String newLocaleName, {

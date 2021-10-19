@@ -54,15 +54,13 @@ void main() {
     test('should with locale', () async {
       await changeDateFormatting('en_US');
       var date = DateTime.utc(1989, 11, 9, 23, 30);
-      setLocale('en_US');
-      withLocale(() {
+      withLocale('en_US', () {
         var str3 = DateFormat.jm().format(date);
         expect(str3, '11:30 PM');
       });
 
       await changeDateFormatting('zh_TW');
-      setLocale('zh_TW');
-      withLocale(() {
+      withLocale('zh_TW', () {
         var str3 = DateFormat.jm().format(date);
         expect(str3, '下午11:30');
       });
