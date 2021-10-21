@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'dart:convert';
-import 'package:libcli/env.dart' as env;
+import 'package:libcli/env/env.dart' as env;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/util.dart' as util;
 

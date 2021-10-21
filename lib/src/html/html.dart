@@ -2,7 +2,7 @@
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/env.dart' as env;
+import 'package:libcli/env/env.dart' as env;
 
 /// uri return browser window.location.href
 ///

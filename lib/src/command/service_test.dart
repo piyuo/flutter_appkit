@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/pb.dart' as pb;
-import 'package:libcli/env.dart' as env;
+import 'package:libcli/env/env.dart' as env;
 import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
