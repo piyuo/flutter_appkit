@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart' as delta;
 import '../src/env.dart';
 
 main() {
@@ -10,9 +9,9 @@ main() {
     routes: (String name) {
       switch (name) {
         case '/':
-          return delta.NoAnimRouteBuilder(const EnvExample(color: Colors.blue));
+          return const EnvExample(color: Colors.blue);
         case '/new_route':
-          return delta.NoAnimRouteBuilder(const EnvExample(color: Colors.red));
+          return const EnvExample(color: Colors.red);
       }
     },
   );

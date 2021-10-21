@@ -6,6 +6,7 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/error.dart' as error;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/page_route/page_route.dart' as page_route;
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -71,7 +72,7 @@ set userID(String value) {
 /// start application
 void start({
   required String appName,
-  required Route? Function(String name) routes,
+  required Widget? Function(String name) routes,
   String backendBranch = branchMaster,
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
@@ -116,9 +117,15 @@ void start({
               // for web with url route, return null to skip default route
               return null;
             }
-            Route? route = routes(name);
-            if (route != null) {
-              return route;
+            Widget? widget = routes(name);
+            if (widget != null) {
+              if (kIsWeb || name == '/') {
+                return delta.NoAnimRouteBuilder(widget);
+              }
+              return MaterialPageRoute(
+                builder: (_) => widget,
+                settings: settings,
+              );
             }
             return MaterialPageRoute(
                 builder: (_) => Scaffold(
