@@ -18,7 +18,7 @@ import '../src/tap_breaker.dart';
 import '../src/permission.dart';
 
 main() => app.start(
-      appName: 'audio',
+      appName: 'delta',
       routes: (_) => const DeltaExample(),
     );
 
