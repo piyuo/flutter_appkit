@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog.dart' as dialog;
 import 'image_upload_controller.dart';
 import 'l10n.dart';

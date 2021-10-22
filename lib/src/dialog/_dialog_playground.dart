@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'alert.dart';
 import 'toast.dart';
 import 'slide.dart';
@@ -134,7 +134,7 @@ class DialogPlayground extends StatelessWidget {
                         key: btnShowMoreOffset,
                         child: const Text('show more offset'),
                         onPressed: () {
-                          var rect = getWidgetGlobalRect(btnShowMoreOffset);
+                          var rect = delta.getWidgetGlobalRect(btnShowMoreOffset);
                           showMore(
                             context,
                             size: const Size(180, 120),
@@ -154,7 +154,7 @@ class DialogPlayground extends StatelessWidget {
                         key: btnShowMoreText,
                         child: const Text('show more text'),
                         onPressed: () {
-                          var rect = getWidgetGlobalRect(btnShowMoreText);
+                          var rect = delta.getWidgetGlobalRect(btnShowMoreText);
                           showMoreText(
                             context,
                             targetRect: rect,
@@ -163,7 +163,7 @@ class DialogPlayground extends StatelessWidget {
                           );
                         },
                       ),
-                      Hypertext(fontSize: 13)
+                      delta.Hypertext(fontSize: 13)
                         ..moreText('more text', content: 'hello world')
                         ..moreDoc('more on doc', docName: 'privacy')
                     ],

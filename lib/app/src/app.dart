@@ -9,7 +9,7 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/error.dart' as error;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'page_route.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things

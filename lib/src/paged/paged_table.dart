@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n.dart' as i18n;
 import 'paged_data_source.dart';
 import 'types.dart';

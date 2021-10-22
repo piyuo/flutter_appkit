@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'barcode_scanner.dart';
 import 'l10n.dart';
 

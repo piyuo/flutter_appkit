@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/delta.dart' as delta;
 import 'package:libcli/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
 import 'package:shimmer/shimmer.dart';
+import 'extensions.dart';
 
 ImageProvider webImageProvider(
   String url, {

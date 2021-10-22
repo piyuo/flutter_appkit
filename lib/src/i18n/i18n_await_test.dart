@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/src/i18n/i18n_provider.dart';
 import 'package:libcli/src/i18n/test.dart';
 import 'package:libcli/asset.dart' as asset;

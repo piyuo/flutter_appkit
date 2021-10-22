@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 
 const keyAlertButtonYes = Key('alertBtnYes');
 

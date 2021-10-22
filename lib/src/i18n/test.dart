@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'dart:async';
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 
 class MockWaitView extends StatelessWidget {
   static int count = 0;

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'rich_editor.dart';
 import 'rich_editor_provider.dart';
 import 'image_editor.dart';

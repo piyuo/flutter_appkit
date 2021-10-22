@@ -3,11 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/app/app.dart' as app;
 import 'package:provider/provider.dart';
-import 'audio.dart';
+import '../src/audio.dart';
 
-class AudioPlayground extends StatelessWidget {
-  const AudioPlayground({Key? key}) : super(key: key);
+main() => app.start(
+      appName: 'audio',
+      routes: (_) => const AudioExample(),
+    );
+
+class AudioExample extends StatelessWidget {
+  const AudioExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

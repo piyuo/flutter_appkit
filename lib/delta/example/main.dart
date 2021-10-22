@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'extensions.dart';
-import 'web_image.dart';
-import 'search_bar.dart';
-import 'listing.dart';
-import 'check.dart';
-import 'hypertext.dart';
-import 'async_provider.dart';
-import 'await.dart';
-import 'popup.dart';
-import 'menu.dart';
-import 'await_on_tap.dart';
-import 'pull_refresh.dart';
-import 'tap_breaker.dart';
-import 'permission.dart';
+import 'package:libcli/app/app.dart' as app;
+import '../src/extensions.dart';
+import '../src/web_image.dart';
+import '../src/search_bar.dart';
+import '../src/listing.dart';
+import '../src/check.dart';
+import '../src/hypertext.dart';
+import '../src/async_provider.dart';
+import '../src/await.dart';
+import '../src/popup.dart';
+import '../src/menu.dart';
+import '../src/await_on_tap.dart';
+import '../src/pull_refresh.dart';
+import '../src/tap_breaker.dart';
+import '../src/permission.dart';
+
+main() => app.start(
+      appName: 'audio',
+      routes: (_) => const DeltaExample(),
+    );
 
 var _pullRefreshCount = 8;
 
@@ -26,8 +32,8 @@ final _listingController = ValueNotifier<int>(1);
 
 final _checkBoxController = ValueNotifier<bool>(false);
 
-class DeltaPlayground extends StatelessWidget {
-  const DeltaPlayground({Key? key}) : super(key: key);
+class DeltaExample extends StatelessWidget {
+  const DeltaExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

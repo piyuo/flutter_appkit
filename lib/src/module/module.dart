@@ -1,6 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'redux.dart';
 
 /// Module provide redux and services
@@ -46,7 +46,7 @@ void switchView(
     builder: (context, child) => widget,
   );
 
-  var route = safeTestMaterialRoute(newWidget);
+  var route = delta.safeTestMaterialRoute(newWidget);
   if (replace) {
     navigator.pushReplacement(route);
     return;

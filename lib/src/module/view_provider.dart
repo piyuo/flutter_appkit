@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'module.dart';
 
 class ViewProvider extends delta.AsyncProvider {

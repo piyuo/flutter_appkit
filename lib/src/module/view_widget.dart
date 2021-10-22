@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n.dart' as i18n;
 
 delta.AsyncProvider? viewWidgetProviderInstanceForTest;

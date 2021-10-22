@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/delta.dart' as delta;
+import 'package:libcli/delta/delta.dart' as delta;
 
 typedef StoryBuilder = Widget Function(BuildContext context, Story story);
 
