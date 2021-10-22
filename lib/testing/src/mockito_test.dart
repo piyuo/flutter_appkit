@@ -18,15 +18,15 @@ class MockCat extends Mock implements Cat {
 }
 
 void main() {
-  setUp(() async {});
+  group('[testing.mockito]', () {
+    test('should test cat', () async {
+      // Create mock object.
+      var cat = MockCat(); // Interact with the mock object.
 
-  test('should test cat', () async {
-    // Create mock object.
-    var cat = MockCat(); // Interact with the mock object.
+      cat.mew('hello');
 
-    cat.mew('hello');
-
-    // Verify the interaction.
-    verify(cat.mew(any));
+      // Verify the interaction.
+      verify(cat.mew(any));
+    });
   });
 }

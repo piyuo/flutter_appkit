@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/testing.dart' as testing;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/types.dart' as types;
 import 'geo_client.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/testing/richtext.dart';
 import 'package:flutter/gestures.dart';
+import 'richtext.dart';
 
 void main() {
   setUp(() async {});
@@ -27,7 +27,7 @@ void main() {
     );
   }
 
-  group('[test]', () {
+  group('[testing.richtext]', () {
     testWidgets('should find string in RichText', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(target());

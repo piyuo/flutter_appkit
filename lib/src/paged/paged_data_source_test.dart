@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'paged_data_source.dart';
-import 'package:libcli/testing.dart' as testing;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'types.dart';
 
 void main() {

@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/testing/context.dart';
+import 'context.dart';
 
 void main() {
   setUp(() async {});
 
-  group('[mocking]', () {
+  group('[testing.context]', () {
     test('should create mock BuildContext', () async {
       Context ctx = Context();
       expect(ctx, isNotNull);

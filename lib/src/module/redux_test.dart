@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/types.dart' as types;
 import 'package:flutter/widgets.dart';
-import 'package:libcli/testing.dart' as testing;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'redux.dart';
 
 void main() {
