@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/custom.dart' as custom;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/delta.dart' as delta;
 import 'rich_editor.dart';
 import 'rich_editor_provider.dart';
@@ -22,12 +22,12 @@ class EditorPlayground extends StatelessWidget {
               Container(
                 child: _imageEditor(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'rich editor',
                 child: _richEditor(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'image editor',
                 child: _imageEditor(),

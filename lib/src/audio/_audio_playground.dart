@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
-import 'package:libcli/custom.dart' as custom;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:provider/provider.dart';
 import 'audio.dart';
@@ -19,7 +19,7 @@ class AudioPlayground extends StatelessWidget {
               Container(
                 child: _playAudio(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'play audio',
                 child: _playAudio(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/custom.dart' as custom;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'extensions.dart';
 import 'web_image.dart';
 import 'search_bar.dart';
@@ -39,82 +39,82 @@ class DeltaPlayground extends StatelessWidget {
               height: 300,
               child: _getCameraPermission(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'await on tap',
               child: _awaitOnTap(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'tap breaker',
               child: _tapBreaker(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'web image',
               child: _webImage(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'web image provider',
               child: _webImageProvider(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'search_bar',
               child: _searchBar(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'round_check_box',
               child: _roundCheckBox(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'hypertext',
               child: _hypertext(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'await wait',
               child: _awaitWait(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'await error',
               child: _awaitError(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'popup',
               child: _popup(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'listing',
               child: _listing(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'menu',
               child: _menu(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'menu on bottom',
               child: _menuOnBottom(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'pull refresh',
               child: _pullRefresh(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'pull refresh vertical',
               child: _pullRefreshVertical(context),
             ),
-            custom.example(
+            testing.example(
               context,
               text: 'get camera permission',
               child: _getCameraPermission(context),

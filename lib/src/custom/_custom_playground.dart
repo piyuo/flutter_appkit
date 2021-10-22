@@ -2,7 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'dynamic_bottom_side.dart';
 import 'wrapped_list_view.dart';
-import 'play.dart';
+import '../../testing/src/example.dart';
 import 'slideshow.dart';
 import 'wall.dart';
 import 'side_panel.dart';

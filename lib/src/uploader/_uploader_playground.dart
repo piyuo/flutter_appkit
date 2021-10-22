@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/custom.dart' as custom;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'uploader.dart';
 import 'image_upload.dart';
 import 'image_upload_controller.dart';
@@ -21,17 +21,17 @@ class UploaderPlayground extends StatelessWidget {
               Container(
                 child: _editImage(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'new image upload',
                 child: _newImageUpload(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'change image upload',
                 child: _changeImageUpload(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'edit image',
                 child: _editImage(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/custom.dart' as custom;
+import 'package:libcli/testing/testing.dart' as testing;
 import '../src/app.dart';
 import '../src/page_route.dart' as page_route;
 import '../src/back_button.dart';
@@ -34,7 +34,7 @@ class AppExample extends StatelessWidget {
           height: 200,
           child: _pushNewRoute(context),
         ),
-        custom.example(
+        testing.example(
           context,
           text: 'page route',
           child: _pushNewRoute(context),

@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
-import 'package:libcli/custom.dart' as custom;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'qr_code.dart';
 import 'barcode_scanner.dart';
 import 'barcode_scanner_dialog.dart';
@@ -21,17 +21,17 @@ class BarcodePlayground extends StatelessWidget {
                 height: 300,
                 child: _showBarcodeScanner(context),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'QR code',
                 child: _qrCode(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'barcode scanner',
                 child: _barcodeScanner(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'show scanner dialog',
                 child: _showBarcodeScanner(context),

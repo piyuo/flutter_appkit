@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/custom.dart' as custom;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/storage.dart' as storage;
 import 'paged_data_source.dart';
@@ -27,22 +27,22 @@ class PagedPlayground extends StatelessWidget {
                 height: 300,
                 child: _simpleList(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'clear storage',
                 child: _clearStorage(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'simple table',
                 child: _simpleTable(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'object table',
                 child: _simpleObjectTable(),
               ),
-              custom.example(
+              testing.example(
                 context,
                 text: 'simple list',
                 child: _simpleList(),

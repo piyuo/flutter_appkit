@@ -1,6 +1,5 @@
 library custom;
 
-export 'package:libcli/src/custom/play.dart';
 export 'package:libcli/src/custom/dynamic_bottom_side.dart';
 export 'package:libcli/src/custom/wrapped_list_view.dart';
 export 'package:libcli/src/custom/slideshow.dart';
