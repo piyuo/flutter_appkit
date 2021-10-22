@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/pb.dart' as pb;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/eventbus.dart' as eventbus;
-import 'package:libcli/src/command/firewall.dart';
-import 'package:libcli/src/command/url.dart';
-import 'package:libcli/src/command/http.dart';
+import 'firewall.dart';
+import 'url.dart';
+import 'http.dart';
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response

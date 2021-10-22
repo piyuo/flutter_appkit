@@ -9,9 +9,9 @@ import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/cmd-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample-service.pb.dart';
-import 'package:libcli/src/command/test.dart';
-import 'package:libcli/src/command/protobuf.dart';
-import 'package:libcli/src/command/firewall.dart';
+import 'test.dart';
+import 'protobuf.dart';
+import 'firewall.dart';
 
 void main() {
   dynamic lastEvent;

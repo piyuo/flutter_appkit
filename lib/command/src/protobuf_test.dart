@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/mock/protobuf/sample-service.pb.dart';
 import 'package:libcli/mock/protobuf/cmd-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
-import 'package:libcli/src/command/protobuf.dart';
+import 'protobuf.dart';
 
 void main() {
   var service = SampleService();

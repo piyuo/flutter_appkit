@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/app/app.dart' as app;
-import 'package:libcli/src/command/url.dart';
+import 'url.dart';
 
 void main() {
   group('[command_url_test]', () {

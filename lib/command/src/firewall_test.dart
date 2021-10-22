@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/command/firewall.dart';
 import 'package:libcli/identifier.dart' as identifier;
 import 'package:libcli/memory_cache.dart' as cache;
 import 'package:libcli/pb.dart' as pb;
+import 'firewall.dart';
 
 void main() {
   setUp(() async {
