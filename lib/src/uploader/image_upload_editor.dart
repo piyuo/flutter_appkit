@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/editor.dart' as editor;
+import 'package:libcli/editor/editor.dart' as editor;
 import 'uploader.dart';
 import 'image_upload_controller.dart';
 import 'file.dart';

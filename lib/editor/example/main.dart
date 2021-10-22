@@ -1,16 +1,20 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'rich_editor.dart';
-import 'rich_editor_provider.dart';
-import 'image_editor.dart';
-import 'image_editor_dialog.dart';
+import '../src/rich_editor.dart';
+import '../src/rich_editor_provider.dart';
+import '../src/image_editor.dart';
+import '../src/image_editor_dialog.dart';
 
-class EditorPlayground extends StatelessWidget {
-  const EditorPlayground({Key? key}) : super(key: key);
+main() => app.start(
+      appName: 'editor example',
+      routes: (_) => const EditorExample(),
+    );
+
+class EditorExample extends StatelessWidget {
+  const EditorExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
