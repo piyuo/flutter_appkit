@@ -5,10 +5,16 @@ import 'package:libcli/log.dart' as log;
 import 'package:libcli/command.dart' as command;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/dialog.dart' as dialog;
-import 'error.dart';
+import 'package:libcli/app/app.dart' as app;
+import '../error.dart';
 
-class ErrorPlayground extends StatelessWidget {
-  const ErrorPlayground({Key? key}) : super(key: key);
+main() => app.start(
+      appName: 'error',
+      routes: (_) => const ErrorExample(),
+    );
+
+class ErrorExample extends StatelessWidget {
+  const ErrorExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
