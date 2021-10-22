@@ -4,7 +4,7 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/pb.dart' as pb;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'test.dart';
 import 'events.dart';
 import 'http.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/asset.dart' as asset;
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:libcli/src/pb/google/google.dart' as google;
+import 'package:libcli/pb/google.dart' as google;
 import 'i18n.dart';
 import 'extensions.dart';
 import 'i18n_provider.dart';

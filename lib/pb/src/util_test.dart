@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/pb/simple/types.dart' as types;
-import 'package:libcli/src/pb/util.dart';
+import 'simple/types.dart' as types;
+import 'util.dart';
 
 void main() {
   group('[util]', () {

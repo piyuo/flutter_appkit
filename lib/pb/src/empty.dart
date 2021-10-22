@@ -2,7 +2,7 @@
 
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'dart:core' as $core;
-import 'package:libcli/src/pb/object.dart';
+import 'object.dart';
 
 /// empty is an empty proto object
 ///

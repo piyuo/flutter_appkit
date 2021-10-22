@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/pb.dart' as pb;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'service.dart';
 import 'http.dart';
 

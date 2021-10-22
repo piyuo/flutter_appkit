@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/pb.dart' as pb;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/storage.dart' as storage;
 import 'paged_data_source.dart';
 import 'paged_object_source.dart';

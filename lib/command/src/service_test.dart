@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/pb.dart' as pb;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/eventbus.dart' as eventbus;

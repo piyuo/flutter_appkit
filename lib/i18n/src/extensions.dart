@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/pb/google/google.dart' as google;
+import 'package:libcli/pb/google.dart' as google;
 // ignore: implementation_imports
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';

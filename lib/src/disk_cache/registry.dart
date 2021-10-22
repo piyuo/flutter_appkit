@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:libcli/pb.dart' as i18n;
+import 'package:libcli/pb/pb.dart' as i18n;
 import 'disk_cache.dart';
 
 class Registry {
