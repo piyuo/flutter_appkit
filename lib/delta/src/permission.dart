@@ -2,7 +2,7 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:libcli/dialog.dart' as dialog;
+import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'l10n.dart';
 
 Future<bool> checkCameraPermission(BuildContext context) async {

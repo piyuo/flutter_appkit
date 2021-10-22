@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/types.dart' as types;
 import 'package:libcli/form.dart' as form;
-import 'package:libcli/dialog.dart' as dialog;
+import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
 
 import 'show_search.dart';

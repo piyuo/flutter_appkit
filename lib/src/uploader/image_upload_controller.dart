@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
-import 'package:libcli/dialog.dart' as dialog;
+import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'uploader.dart';
 import 'image_pick.dart';
 import 'image_drop.dart';

@@ -18,7 +18,7 @@ import '../src/tap_breaker.dart';
 import '../src/permission.dart';
 
 main() => app.start(
-      appName: 'delta',
+      appName: 'delta example',
       routes: (_) => const DeltaExample(),
     );
 

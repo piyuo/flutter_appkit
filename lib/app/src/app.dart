@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/error/error.dart' as error;
-import 'package:libcli/dialog.dart' as dialog;
+import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'page_route.dart';

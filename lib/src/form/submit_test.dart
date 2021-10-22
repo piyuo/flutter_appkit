@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/dialog.dart' as dialog;
+import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'submit.dart';
 
 void main() {

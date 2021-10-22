@@ -2,21 +2,27 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'alert.dart';
-import 'toast.dart';
-import 'slide.dart';
-import 'route.dart';
-import 'show_more.dart';
-import 'banner.dart';
-import 'hypertext.extension.dart';
+import 'package:libcli/app/app.dart' as app;
+import '../src/alert.dart';
+import '../src/toast.dart';
+import '../src/slide.dart';
+import '../src/route.dart';
+import '../src/show_more.dart';
+import '../src/banner.dart';
+import '../src/hypertext.extension.dart';
+
+main() => app.start(
+      appName: 'dialog example',
+      routes: (_) => const DialogExample(),
+    );
 
 final GlobalKey btnMenu = GlobalKey();
 final GlobalKey btnShowMore = GlobalKey();
 final GlobalKey btnShowMoreOffset = GlobalKey();
 final GlobalKey btnShowMoreText = GlobalKey();
 
-class DialogPlayground extends StatelessWidget {
-  const DialogPlayground({Key? key}) : super(key: key);
+class DialogExample extends StatelessWidget {
+  const DialogExample({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
