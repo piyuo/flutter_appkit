@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/asset.dart' as asset;
-import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'i18n.dart';
 
 class I18nProvider extends delta.AsyncProvider {

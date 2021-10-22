@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'test.dart';

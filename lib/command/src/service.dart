@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'firewall.dart';
 import 'url.dart';
 import 'http.dart';

@@ -1,4 +1,4 @@
-import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/util.dart' as utils;
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/src/eventbus/types.dart';
-import 'package:libcli/src/eventbus/eventbus.dart';
+import 'types.dart';
+import 'eventbus.dart';
 
 main() {
   setUp(() async {

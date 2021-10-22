@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/eventbus.dart' as eventbus;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
 import 'package:libcli/mock/protobuf/cmd-echo.pbserver.dart';
 import 'package:libcli/mock/protobuf/sample-service.pb.dart';
