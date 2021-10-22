@@ -1,17 +1,23 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'dynamic_bottom_side.dart';
-import 'wrapped_list_view.dart';
-import '../../testing/src/example.dart';
-import 'slideshow.dart';
-import 'wall.dart';
-import 'side_panel.dart';
-import 'story_line.dart';
+import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/testing/testing.dart' as testing;
+import '../src/dynamic_bottom_side.dart';
+import '../src/wrapped_list_view.dart';
+import '../src/slideshow.dart';
+import '../src/wall.dart';
+import '../src/side_panel.dart';
+import '../src/story_line.dart';
 
-class CustomPlayground extends StatelessWidget {
-  final sidePanelProvider = SidePanelProvider();
+main() => app.start(
+      appName: 'layout example',
+      routes: (_) => const LayoutExample(),
+    );
 
-  CustomPlayground({Key? key}) : super(key: key);
+final sidePanelProvider = SidePanelProvider();
+
+class LayoutExample extends StatelessWidget {
+  const LayoutExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,32 +33,32 @@ class CustomPlayground extends StatelessWidget {
                   _storyLine(context),
                 ],
               ),
-              example(
+              testing.example(
                 context,
                 text: 'layout-dynamic-bottom-side',
                 child: _layoutDynamicBottomSide(),
               ),
-              example(
+              testing.example(
                 context,
                 text: 'wrapped-list-view',
                 child: _wrappedListView(),
               ),
-              example(
+              testing.example(
                 context,
                 text: 'slideshow',
                 child: _slideshow(context),
               ),
-              example(
+              testing.example(
                 context,
                 text: 'wall',
                 child: _wall(context),
               ),
-              example(
+              testing.example(
                 context,
                 text: 'side panel',
                 child: _sidePanel(context),
               ),
-              example(
+              testing.example(
                 context,
                 text: 'story line',
                 child: _storyLine(context),
