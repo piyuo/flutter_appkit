@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
-import 'package:libcli/src/i18n/i18n.dart';
+import 'i18n.dart';
 
 void main() {
   setUp(() async {});

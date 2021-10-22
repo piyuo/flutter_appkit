@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/storage.dart' as storage;
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'registry.dart';
 
 const String cached_key = 'disk_cache';

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// banner show a simple text banner
 ///

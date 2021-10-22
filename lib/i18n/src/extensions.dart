@@ -3,9 +3,9 @@ import 'package:libcli/src/pb/google/google.dart' as google;
 // ignore: implementation_imports
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';
-import 'package:libcli/src/i18n/i18n_provider.dart';
-import 'package:libcli/src/i18n/l10n.dart';
-import 'package:libcli/src/i18n/datetime.dart';
+import 'i18n_provider.dart';
+import 'l10n.dart';
+import 'datetime.dart';
 
 /// I18nLocalization add localization function to string
 ///

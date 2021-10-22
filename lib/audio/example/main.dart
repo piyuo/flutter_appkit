@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/app/app.dart' as app;
 import 'package:provider/provider.dart';
 import '../src/audio.dart';

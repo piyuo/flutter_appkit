@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
-import 'package:libcli/src/i18n/i18n.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'i18n.dart';
 
 /// changeDateFormatting change locale and load date formatting resource
 ///

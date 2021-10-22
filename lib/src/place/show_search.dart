@@ -4,7 +4,7 @@ import 'package:libcli/commands/sys/sys.dart' as sys;
 import 'package:libcli/types.dart' as types;
 import 'package:libcli/locate.dart' as locate;
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'search_bar.dart';
 import 'search_view.dart';

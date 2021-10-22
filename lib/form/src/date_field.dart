@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'field.dart';
 
 /// DateField for input date

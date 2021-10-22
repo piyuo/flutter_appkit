@@ -1,4 +1,4 @@
-import 'package:libcli/i18n.dart' as i18n;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// I10nLocalization add localization function to string
 ///

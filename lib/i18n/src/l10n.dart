@@ -1,5 +1,5 @@
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/src/i18n/i18n.dart';
+import 'i18n.dart';
 
 /// DictBuilder define dict builder for l10n
 typedef DictBuilder = String? Function(String key);
