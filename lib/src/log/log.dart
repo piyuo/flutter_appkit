@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/src/log/logs.dart';
-import 'package:libcli/env/env.dart' as env;
+import 'package:libcli/app/app.dart' as app;
 
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
 ///
@@ -68,8 +68,8 @@ void error(dynamic e, StackTrace? stacktrace) {
 ///
 @visibleForTesting
 String get header {
-  var user = env.userID.isEmpty ? '' : env.userID + '@';
-  var head = user + env.appName;
+  var user = app.userID.isEmpty ? '' : app.userID + '@';
+  var head = user + app.appName;
   if (head.isNotEmpty) {
     head += ':';
   }

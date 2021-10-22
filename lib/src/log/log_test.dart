@@ -1,20 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/src/log/log.dart';
-import 'package:libcli/env/env.dart' as env;
+import 'package:libcli/app/app.dart' as app;
 
 void main() {
   group('[log]', () {
     test('should log', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.appName = 'log_test';
-      env.userID = 'developer';
+      app.appName = 'log_test';
+      app.userID = 'developer';
       log('hi');
     });
 
     test('should error', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.appName = 'log_test';
-      env.userID = 'developer';
+      app.appName = 'log_test';
+      app.userID = 'developer';
       try {
         throw Exception('my error');
       } catch (e, s) {
@@ -24,8 +24,8 @@ void main() {
 
     test('should create head', () {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.appName = 'piyuo-web-index';
-      env.userID = '111-222';
+      app.appName = 'piyuo-web-index';
+      app.userID = '111-222';
       // ignore: invalid_use_of_visible_for_testing_member
       expect(header, '111-222@piyuo-web-index:');
     });

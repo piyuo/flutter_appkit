@@ -1,37 +1,25 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
-
 import 'package:flutter/material.dart';
 import 'package:libcli/custom.dart' as custom;
-import 'package:libcli/delta.dart' as delta;
+import '../src/app.dart';
 import '../src/page_route.dart' as page_route;
 import '../src/back_button.dart';
 
 main() {
-  page_route.init();
-  runApp(MaterialApp(
-    onGenerateRoute: (RouteSettings settings) {
-      switch (page_route.listen(settings)) {
-        case '': // for web with url route, return null to skip default route
-          return null;
+  start(
+    appName: 'app example',
+    routes: (String name) {
+      switch (name) {
         case '/':
-          return delta.NoAnimRouteBuilder(const PageRoutePlayground(color: Colors.blue));
+          return const AppExample(color: Colors.blue);
         case '/new_route':
-          return delta.NoAnimRouteBuilder(const PageRoutePlayground(color: Colors.red));
-
-        default:
-          return MaterialPageRoute(
-              builder: (_) => Scaffold(
-                    body: Center(
-                      child: Text('No route defined for ${settings.name}'),
-                    ),
-                  ));
+          return const AppExample(color: Colors.red);
       }
     },
-  ));
+  );
 }
 
-class PageRoutePlayground extends StatelessWidget {
-  const PageRoutePlayground({
+class AppExample extends StatelessWidget {
+  const AppExample({
     required this.color,
     Key? key,
   }) : super(key: key);

@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'dart:convert';
-import 'package:libcli/env/env.dart' as env;
+import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/util.dart' as util;
 
@@ -9,9 +9,9 @@ class ErrorEmail {
 
   final String _body = '''
 
-Application:\n    ${env.appName}
+Application:\n    ${app.appName}
 
-Account:\n    ${env.userID}
+Account:\n    ${app.userID}
 
 Debug Information
 ------------------------------------------------
@@ -25,7 +25,7 @@ Debug Information
 
   void launchMailTo() async {
     util.openMailTo(
-      env.serviceEmail,
+      app.serviceEmail,
       _subject,
       _body.replaceAll('\n', '%0D%0A') + encodedLogs,
     );

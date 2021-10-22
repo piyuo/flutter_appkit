@@ -2,7 +2,7 @@
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:libcli/log.dart' as log;
-import 'package:libcli/env/env.dart' as env;
+import 'package:libcli/app/app.dart' as app;
 
 /// uri return browser window.location.href
 ///
@@ -47,7 +47,7 @@ String routeToURL(RouteSettings settings) {
 ///
 ///     String url = routing(settings,builder);
 ///
-Route<dynamic>? routing(RouteSettings settings, env.RouteBuilder builder) {
+Route<dynamic>? routing(RouteSettings settings, app.RouteBuilder builder) {
   log.log('[html] got routing=${settings.name}');
 
   if (settings.name == 'gotoRoot') {

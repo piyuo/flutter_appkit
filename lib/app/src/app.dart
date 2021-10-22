@@ -1,13 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nested/nested.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:libcli/log.dart' as log;
 import 'package:libcli/error.dart' as error;
 import 'package:libcli/dialog.dart' as dialog;
 import 'package:libcli/i18n.dart' as i18n;
 import 'package:libcli/delta.dart' as delta;
-import 'package:libcli/page_route/page_route.dart' as page_route;
+import 'page_route.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 ///
@@ -73,6 +76,7 @@ set userID(String value) {
 void start({
   required String appName,
   required Widget? Function(String name) routes,
+  List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
@@ -87,53 +91,61 @@ void start({
   //WidgetsFlutterBinding.ensureInitialized();
 
   //routes
-  page_route.init();
+  if (kIsWeb) {
+    setPathUrlStrategy(); //remove the leading hash (#) from the URL
+  }
 
+  Widget app = MaterialApp(
+    navigatorKey: dialog.navigatorKey,
+    builder: dialog.init(),
+    debugShowCheckedModeBanner: false,
+    theme: theme,
+    darkTheme: darkTheme,
+    //locale: localeModel.locale,
+    //localeListResolutionCallback: (locales, supportedLocales) {
+    //  return i18n.determineLocale(locales);
+    //},
+    localizationsDelegates: [
+      i18n.LocaleDelegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+    ],
+    supportedLocales: const [
+      Locale('en', 'US'),
+      Locale('zh', 'CN'),
+      Locale('zh', 'TW'),
+    ],
+    onGenerateRoute: (RouteSettings settings) {
+      String name = listenRoute(settings);
+      if (name == '') {
+        // for web with url route, return null to skip default route
+        return null;
+      }
+      Widget? widget = routes(name);
+      if (widget != null) {
+        if (kIsWeb || name == '/') {
+          return delta.NoAnimRouteBuilder(widget);
+        }
+        return MaterialPageRoute(
+          builder: (_) => widget,
+          settings: settings,
+        );
+      }
+      return MaterialPageRoute(
+          builder: (_) => Scaffold(
+                body: Center(
+                  child: Text('404! ${settings.name} not found'),
+                ),
+              ));
+    },
+  );
+
+  if (providers != null) {
+    app = MultiProvider(
+      providers: providers,
+      child: app,
+    );
+  }
   // run app
-  error.watch(() => runApp(
-        MaterialApp(
-          navigatorKey: dialog.navigatorKey,
-          builder: dialog.init(),
-          debugShowCheckedModeBanner: false,
-          theme: theme,
-          darkTheme: darkTheme,
-          //locale: localeModel.locale,
-          //localeListResolutionCallback: (locales, supportedLocales) {
-          //  return i18n.determineLocale(locales);
-          //},
-          localizationsDelegates: [
-            i18n.LocaleDelegate(),
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', 'US'),
-            Locale('zh', 'CN'),
-            Locale('zh', 'TW'),
-          ],
-          onGenerateRoute: (RouteSettings settings) {
-            String name = page_route.listen(settings);
-            if (name == '') {
-              // for web with url route, return null to skip default route
-              return null;
-            }
-            Widget? widget = routes(name);
-            if (widget != null) {
-              if (kIsWeb || name == '/') {
-                return delta.NoAnimRouteBuilder(widget);
-              }
-              return MaterialPageRoute(
-                builder: (_) => widget,
-                settings: settings,
-              );
-            }
-            return MaterialPageRoute(
-                builder: (_) => Scaffold(
-                      body: Center(
-                        child: Text('404! ${settings.name} not found'),
-                      ),
-                    ));
-          },
-        ),
-      ));
+  error.watch(() => runApp(app));
 }

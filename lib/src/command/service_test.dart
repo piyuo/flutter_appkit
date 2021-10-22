@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/pb.dart' as pb;
-import 'package:libcli/env/env.dart' as env;
+import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing.dart' as testing;
 import 'package:libcli/eventbus.dart' as eventbus;
 import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
@@ -50,7 +50,7 @@ void main() {
 
     test('should return null when send wrong action to test server', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.branch = env.branchMaster;
+      app.branch = app.branchMaster;
       var service = MockService(mockExecute: (ctx, action) async {
         throw Exception('mock');
       });

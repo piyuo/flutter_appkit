@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/log.dart' as log;
-import 'package:url_strategy/url_strategy.dart';
 import 'package:universal_html/html.dart' as html;
 
 const openBy = 'by';
@@ -10,13 +9,8 @@ const newTab = 'tab'; // open by new window
 
 Map<String, String> _args = {};
 
-///
-void init() {
-  setPathUrlStrategy(); //remove the leading hash (#) from the URL
-}
-
-/// listen route change and return correct route name
-String listen(RouteSettings settings) {
+/// listenRoute route change and return correct route name
+String listenRoute(RouteSettings settings) {
   if (kIsWeb && settings.name == '/' && html.window.location.href.contains('?')) {
     return '';
   }

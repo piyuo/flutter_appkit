@@ -1,5 +1,5 @@
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/env/env.dart' as env;
+import 'package:libcli/app/app.dart' as app;
 import 'package:flutter/foundation.dart';
 
 /// serviceMark
@@ -16,12 +16,12 @@ String serviceRegion = '';
 ///
 String serviceUrl(String funcName) {
   if (!kReleaseMode) {
-    if (env.branch == env.branchDebug) {
+    if (app.branch == app.branchDebug) {
       return 'http://localhost:8080/?q';
     }
   }
 
-  if (env.branch == env.branchStable) {
+  if (app.branch == app.branchStable) {
     String region = serviceRegion;
     if (region.isEmpty) {
       region = determineRegion();
@@ -29,7 +29,7 @@ String serviceUrl(String funcName) {
     return 'https://$funcName-${region.toLowerCase()}.$baseDomain/?q';
   }
   // always use US when not in stable branch
-  return 'https://$funcName-us-${env.branch}.$baseDomain/?q';
+  return 'https://$funcName-us-${app.branch}.$baseDomain/?q';
 }
 
 /// determineRegion return data center region base on user prefer country in user locale

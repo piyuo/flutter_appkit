@@ -1,33 +1,33 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/i18n.dart' as i18n;
-import 'package:libcli/env/env.dart' as env;
+import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/src/command/url.dart';
 
 void main() {
   group('[command_url_test]', () {
     test('should use default url', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.branch = env.branchMaster;
+      app.branch = app.branchMaster;
       expect(serviceUrl('mock'), 'https://mock-us-master.piyuo.com/?q');
     });
 
     test('should use stable url', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.branch = env.branchStable;
+      app.branch = app.branchStable;
       serviceRegion = 'US';
       expect(serviceUrl('mock'), 'https://mock-us.piyuo.com/?q');
     });
 
     test('should use master url', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.branch = env.branchMaster;
+      app.branch = app.branchMaster;
       serviceRegion = 'US';
       expect(serviceUrl('mock'), 'https://mock-us-master.piyuo.com/?q');
     });
 
     test('should use beta url', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.branch = env.branchBeta;
+      app.branch = app.branchBeta;
       i18n.setLocale('en_US');
       serviceRegion = '';
       //TW using JP data center
@@ -36,7 +36,7 @@ void main() {
 
     test('should use service country', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      env.branch = env.branchBeta;
+      app.branch = app.branchBeta;
       i18n.setLocale('zh_TW');
       serviceRegion = 'US';
       expect(serviceUrl('mock'), 'https://mock-us-beta.piyuo.com/?q');
