@@ -1,13 +1,19 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
+import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'qr_code.dart';
-import 'barcode_scanner.dart';
-import 'barcode_scanner_dialog.dart';
+import '../src/qr_code.dart';
+import '../src/barcode_scanner.dart';
+import '../src/barcode_scanner_dialog.dart';
 
-class BarcodePlayground extends StatelessWidget {
-  const BarcodePlayground({Key? key}) : super(key: key);
+main() => app.start(
+      appName: 'barcode example',
+      routes: (_) => const BarcodeExample(),
+    );
+
+class BarcodeExample extends StatelessWidget {
+  const BarcodeExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
