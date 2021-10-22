@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/types.dart' as types;
-import 'package:libcli/form.dart' as form;
+import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/i18n.dart' as i18n;
 import 'place_field.dart';
 import 'open_in_map.dart';

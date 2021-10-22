@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/form.dart' as form;
+import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/asset.dart' as asset;
 import 'place_field.dart';
 import 'show_search.dart';

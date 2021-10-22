@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'input_field.dart';
-import 'email_field.dart';
-import 'submit.dart';
-import 'animate_button.dart';
-import 'dropdown_field.dart';
-import 'tags.dart';
-import 'click_field.dart';
-import 'date_field.dart';
+import 'package:libcli/app/app.dart' as app;
+import '../src/input_field.dart';
+import '../src/email_field.dart';
+import '../src/submit.dart';
+import '../src/animate_button.dart';
+import '../src/dropdown_field.dart';
+import '../src/tags.dart';
+import '../src/click_field.dart';
+import '../src/date_field.dart';
 
-class FormPlaygroundProvider extends ChangeNotifier {
+main() => app.start(
+      appName: 'form example',
+      routes: (_) => const FormExample(),
+    );
+
+class FormExampleProvider extends ChangeNotifier {
   @override
   dispose() {
     inputFocus.dispose();
@@ -37,35 +43,35 @@ class FormPlaygroundProvider extends ChangeNotifier {
   final submitFocus = FocusNode();
 }
 
-class FormPlayground extends StatelessWidget {
-  FormPlayground({Key? key}) : super(key: key);
+final GlobalKey btnMenu = GlobalKey();
 
-  final GlobalKey btnMenu = GlobalKey();
+final GlobalKey btnTooltip = GlobalKey();
 
-  final GlobalKey btnTooltip = GlobalKey();
+final textController = TextEditingController();
 
-  final textController = TextEditingController();
+final dropdownController = TextEditingController();
 
-  final dropdownController = TextEditingController();
+final dateController = ValueNotifier<DateTime?>(null);
 
-  final dateController = ValueNotifier<DateTime?>(null);
+final Map dropdownItems = {
+  "aa": "11",
+  "bb": "2",
+};
 
-  final Map dropdownItems = {
-    "aa": "11",
-    "bb": "2",
-  };
+final clickController = TextEditingController();
 
-  final clickController = TextEditingController();
+final emailController = TextEditingController();
 
-  final emailController = TextEditingController();
+final _keyForm = GlobalKey<FormState>();
 
-  final _keyForm = GlobalKey<FormState>();
+class FormExample extends StatelessWidget {
+  const FormExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<FormPlaygroundProvider>(
-      create: (context) => FormPlaygroundProvider(),
-      child: Consumer<FormPlaygroundProvider>(builder: (context, pFormPlayground, child) {
+    return ChangeNotifierProvider<FormExampleProvider>(
+      create: (context) => FormExampleProvider(),
+      child: Consumer<FormExampleProvider>(builder: (context, pFormPlayground, child) {
         return Scaffold(
           appBar: AppBar(),
           body: SingleChildScrollView(
