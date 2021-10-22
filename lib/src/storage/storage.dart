@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log/log.dart' as log;
 
 /// _storage can only support 1 operation at the same time, be careful with async function
 final _storage = LocalStorage('app.json');

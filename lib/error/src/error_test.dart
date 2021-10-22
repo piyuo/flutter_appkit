@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'error.dart';

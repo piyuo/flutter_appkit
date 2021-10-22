@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log/log.dart' as log;
 
 /// _expirationExt is for setStringWithExpiration, we need extra expiration time
 const expirationExt = '_EXP';

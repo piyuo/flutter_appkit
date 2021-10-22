@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/asset.dart' as asset;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'i18n.dart';

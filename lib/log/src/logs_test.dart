@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/log/logs.dart';
-import 'package:libcli/src/log/log.dart';
+import 'logs.dart';
+import 'log.dart';
 
 void main() {
   setUp(() async {});

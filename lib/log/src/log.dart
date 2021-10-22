@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:libcli/src/log/logs.dart';
 import 'package:libcli/app/app.dart' as app;
+import 'logs.dart';
 
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
 ///

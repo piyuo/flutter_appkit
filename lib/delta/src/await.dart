@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:auto_size_text/auto_size_text.dart';

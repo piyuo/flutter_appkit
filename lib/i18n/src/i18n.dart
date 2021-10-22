@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:libcli/log.dart' as log;
+import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/pref.dart' as pref;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 
