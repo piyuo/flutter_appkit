@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/validator.dart' as validator;
+import 'package:libcli/validator/validator.dart' as validator;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'field.dart';
 

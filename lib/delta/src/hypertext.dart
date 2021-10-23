@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:libcli/util.dart' as util;
+import 'package:libcli/util/util.dart' as util;
 
 /// _testMode true should return success, false return error, otherwise behave normal
 ///

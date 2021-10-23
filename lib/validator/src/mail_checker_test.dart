@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/validator/mail_checker.dart';
+import 'mail_checker.dart';
 
 void main() {
   setUp(() async {});

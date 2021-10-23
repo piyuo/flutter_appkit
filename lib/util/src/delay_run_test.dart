@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/util/delay_run.dart';
+import 'delay_run.dart';
 
 void main() {
   group('[utils/delay-run]', () {

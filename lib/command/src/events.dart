@@ -1,5 +1,5 @@
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/util.dart' as utils;
+import 'package:libcli/util/util.dart' as util;
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
 ///
@@ -50,8 +50,8 @@ class InternetRequiredContract extends eventbus.Contract {
     required this.url,
   });
 
-  Future<bool> Function() isInternetConnected = utils.isInternetConnected;
-  Future<bool> Function() isGoogleCloudFunctionAvailable = utils.isGoogleCloudFunctionAvailable;
+  Future<bool> Function() isInternetConnected = util.isInternetConnected;
+  Future<bool> Function() isGoogleCloudFunctionAvailable = util.isGoogleCloudFunctionAvailable;
 }
 
 ///CAccessTokenRequired  happen when [service need access token], listener need let user sign in or use refresh token to get access token
