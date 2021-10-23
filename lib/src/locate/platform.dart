@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/types.dart' as types;
+import 'package:libcli/types/types.dart' as types;
 import 'map_google.dart';
 import 'map_apple.dart';
 import 'map_amap.dart';

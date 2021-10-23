@@ -1,8 +1,0 @@
-library types;
-
-export 'package:libcli/src/types/place.dart';
-export 'package:libcli/src/types/latlng.dart';
-export 'package:libcli/src/types/bool_provider.dart';
-export 'package:libcli/src/types/redraw_provider.dart';
-export 'package:libcli/src/types/function.dart';
-export 'package:libcli/src/types/map.dart';

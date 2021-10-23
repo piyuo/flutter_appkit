@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/types.dart' as types;
+import 'package:libcli/types/types.dart' as types;
 
 /// MapProviderImpl is interface for map implementation
 abstract class MapProviderImpl {

@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nested/nested.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/pref.dart' as pref;
+import 'package:libcli/pref/pref.dart' as pref;
 import 'navigator.dart';
 
 var mockNavigator = NavigatorMock();

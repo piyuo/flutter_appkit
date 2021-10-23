@@ -1,4 +1,4 @@
-import 'package:libcli/types.dart' as types;
+import 'latlng.dart';
 
 /// Place is geographic location
 class Place {
@@ -13,7 +13,7 @@ class Place {
   final String address;
 
   // latlng is this place coordinate
-  final types.LatLng latlng;
+  final LatLng latlng;
 
   /// tags is a list of tag about this place like 'SPECTRUM', 'IRVINE', 'CA', 'US'
   final List<String> tags;
@@ -24,7 +24,7 @@ class Place {
   /// empty instance of place
   static Place empty = Place(
     address: '',
-    latlng: types.LatLng.empty,
+    latlng: LatLng.empty,
     tags: [],
     country: '',
   );

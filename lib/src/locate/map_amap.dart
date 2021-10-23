@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
 import 'package:amap_flutter_base/amap_flutter_base.dart';
-import 'package:libcli/types.dart' as types;
+import 'package:libcli/types/types.dart' as types;
 import 'map.dart';
 
 /// AmapImpl is amap implementation

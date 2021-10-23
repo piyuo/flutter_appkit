@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:libcli/commands/sys/sys.dart' as sys;
-import 'package:libcli/types.dart' as types;
+import 'package:libcli/types/types.dart' as types;
 
 /// GeoClient use sys service to get geographic information
 class GeoClient {
