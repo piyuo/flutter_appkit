@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'events.dart';
-import 'http_header.dart';
-import 'protobuf.dart';
-import 'service.dart';
+import 'package:libcli/command/src/events.dart';
+import 'package:libcli/command/src/http_header.dart';
+import 'package:libcli/command/src/protobuf.dart';
+import 'package:libcli/command/src/service.dart';
 
 ///Request for post()
 class Request {

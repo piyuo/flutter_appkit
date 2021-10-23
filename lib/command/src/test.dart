@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'service.dart';
-import 'http.dart';
+import 'package:libcli/command/src/service.dart';
+import 'package:libcli/command/src/http.dart';
 
 /// MockExecuteFunc used in test for mock execute function in service
 ///

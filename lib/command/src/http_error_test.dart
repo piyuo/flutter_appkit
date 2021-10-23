@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'test.dart';
-import 'events.dart';
-import 'http.dart';
+import 'package:libcli/command/src/test.dart';
+import 'package:libcli/command/src/events.dart';
+import 'package:libcli/command/src/http.dart';
 
 void main() {
   dynamic contract;
