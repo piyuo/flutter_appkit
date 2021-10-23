@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/disk_cache.dart' as disk_cache;
+import 'package:libcli/disk_cache/disk_cache.dart' as disk_cache;
 import 'paged_data_source.dart';
 import 'types.dart';
 
