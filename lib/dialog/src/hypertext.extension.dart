@@ -4,7 +4,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/module.dart' as module;
+import 'package:libcli/module/module.dart' as module;
 import 'package:libcli/assets/assets.dart' as asset;
 import 'show_more.dart';
 
