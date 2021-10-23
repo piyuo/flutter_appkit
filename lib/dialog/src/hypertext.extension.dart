@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/module.dart' as module;
-import 'package:libcli/asset.dart' as asset;
+import 'package:libcli/assets/assets.dart' as asset;
 import 'show_more.dart';
 
 /// I18nLocalization add localization function to string

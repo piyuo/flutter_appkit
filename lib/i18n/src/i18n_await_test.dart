@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'i18n_provider.dart';
 import 'test.dart';
-import 'package:libcli/asset.dart' as asset;
+import 'package:libcli/assets/assets.dart' as asset;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
