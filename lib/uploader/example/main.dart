@@ -3,13 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'uploader.dart';
-import 'image_upload.dart';
-import 'image_upload_controller.dart';
-import 'image_upload_editor.dart';
+import 'package:libcli/app/app.dart' as app;
+import '../src/uploader.dart';
+import '../src/image_upload.dart';
+import '../src/image_upload_controller.dart';
+import '../src/image_upload_editor.dart';
 
-class UploaderPlayground extends StatelessWidget {
-  const UploaderPlayground({Key? key}) : super(key: key);
+main() => app.start(
+      appName: 'uploader example',
+      routes: (_) => const UploaderExample(),
+    );
+
+class UploaderExample extends StatelessWidget {
+  const UploaderExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

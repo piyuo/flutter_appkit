@@ -1,7 +1,7 @@
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/memory_cache/memory_cache.dart' as cache;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/identifier.dart' as identifier;
+import 'package:libcli/uid/uid.dart' as uid;
 
 /// FirewallBlockEvent happen when command send has been block by command service internal firewall
 ///
@@ -108,7 +108,7 @@ pb.Object firewallBegin(String cmdJSON) {
   cache.delete(cacheKeyLastResponse);
 
   // add call count for OVERFLOW detection
-  cache.set(cacheKeyCall + identifier.randomNumber(6), null, expire: maxAllowPostDuration);
+  cache.set(cacheKeyCall + uid.randomNumber(6), null, expire: maxAllowPostDuration);
   return FirewallPass();
 }
 

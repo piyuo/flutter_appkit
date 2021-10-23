@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/identifier/identifier.dart';
+import 'uid.dart';
 
 void main() {
-  group('[identifier]', () {
+  group('[uid]', () {
     test('should generate uuid', () {
       String i = uuid();
       expect(i, isNotEmpty);

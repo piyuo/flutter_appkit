@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:libcli/types/types.dart' as types;
-import 'package:libcli/locate.dart' as locate;
+import 'package:libcli/locate/locate.dart' as locate;
 
 /// PlaceField let user set his place, it contain address, lat/lng and address tags
 class OpenInMap extends StatelessWidget {

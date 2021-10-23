@@ -4,17 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/storage.dart' as storage;
-import 'paged_data_source.dart';
-import 'paged_object_source.dart';
-import 'paged_table.dart';
-import 'paged_list.dart';
-import 'types.dart';
+import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/storage/storage.dart' as storage;
+import '../src/paged_data_source.dart';
+import '../src/paged_object_source.dart';
+import '../src/paged_table.dart';
+import '../src/paged_list.dart';
+import '../src/types.dart';
+
+main() => app.start(
+      appName: 'paged example',
+      routes: (_) => const PagedExample(),
+    );
 
 int refreshCount = 0;
 
-class PagedPlayground extends StatelessWidget {
-  const PagedPlayground({Key? key}) : super(key: key);
+class PagedExample extends StatelessWidget {
+  const PagedExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

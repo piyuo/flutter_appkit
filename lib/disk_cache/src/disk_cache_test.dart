@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/storage.dart' as storage;
+import 'package:libcli/storage/storage.dart' as storage;
 import 'disk_cache.dart';
 import 'registry.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/identifier.dart' as identifier;
+import 'package:libcli/uid/uid.dart' as uid;
 import 'package:libcli/memory_cache/memory_cache.dart' as cache;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'firewall.dart';
@@ -11,14 +11,14 @@ void main() {
 
   group('[command-firewall]', () {
     test('should pass firewall', () async {
-      final cmd = pb.Error()..code = "pass-" + identifier.randomNumber(5);
+      final cmd = pb.Error()..code = "pass-" + uid.randomNumber(5);
       final response = firewallBegin(cmd.jsonString);
       expect(response is FirewallPass, true);
     });
 
     test('should block IN_FLIGHT', () async {
-      final cmd = pb.Error()..code = "flight-" + identifier.randomNumber(5);
-      final cmd2 = pb.Error()..code = "not-flight-" + identifier.randomNumber(5);
+      final cmd = pb.Error()..code = "flight-" + uid.randomNumber(5);
+      final cmd2 = pb.Error()..code = "not-flight-" + uid.randomNumber(5);
       expect(firewallBegin(cmd.jsonString) is FirewallPass, true);
       expect(firewallBegin(cmd.jsonString) is FirewallBlock, true); // check again
       expect(firewallBegin(cmd2.jsonString) is FirewallPass, true); // other command will pass
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('should get response from cache', () async {
-      final cmd = pb.Error()..code = "cache-" + identifier.randomNumber(5);
+      final cmd = pb.Error()..code = "cache-" + uid.randomNumber(5);
       expect(firewallBegin(cmd.jsonString) is FirewallPass, true);
       firewallEnd(cmd.jsonString, pb.Error()..code = 'hi');
       final response = firewallBegin(cmd.jsonString);
@@ -42,14 +42,14 @@ void main() {
     test('should block when command overflow', () async {
       maxAllowPostDuration = const Duration(milliseconds: 900);
       for (int i = 0; i < maxAllowPostCount; i++) {
-        final cmdID = "not-overflow-" + identifier.randomNumber(5);
+        final cmdID = "not-overflow-" + uid.randomNumber(5);
         final cmd = pb.Error()..code = cmdID;
         firewallBegin(cmd.jsonString) is FirewallPass;
         firewallEnd(cmd.jsonString, pb.Error()); // set complete
       }
       final countBeforeExpire = cache.length;
       expect(countBeforeExpire >= maxAllowPostCount, true);
-      final cmdID2 = "overflow-" + identifier.randomNumber(5);
+      final cmdID2 = "overflow-" + uid.randomNumber(5);
       final cmd2 = pb.Error()..code = cmdID2;
       expect(firewallBegin(cmd2.jsonString) is FirewallBlock, true);
       await Future.delayed(const Duration(seconds: 1));
