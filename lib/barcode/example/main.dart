@@ -50,7 +50,9 @@ class BarcodeExample extends StatelessWidget {
   }
 
   Widget _qrCode() {
-    return const QRCode();
+    return const QRCode(
+      data: 'http://cacake.piyuo.com/location=12348234234s',
+    );
   }
 
   Widget _barcodeScanner() {
