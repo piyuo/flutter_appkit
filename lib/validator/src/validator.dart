@@ -123,7 +123,7 @@ String? subDomainNameValidator(String? input) {
   );
 }
 
-/// nameRegexp regexp use to validate name, charchter and space only
+/// nameRegexp regexp use to validate name, character and space only
 ///
 RegExp noSymbolRegexp() {
   return RegExp(r"""^[^*|\":<>[\]{}`\\()';!@#%^*?&$.~,\-_=+\/]+$""");
@@ -159,4 +159,10 @@ String? urlValidator(String? input) {
     label: 'url'.i18n_,
     example: 'http://www.domain.com',
   );
+}
+
+/// chineseOrJapaneseRegexp regexp use to check chinese or japanese character exists
+///
+RegExp chineseOrJapaneseRegexp() {
+  return RegExp(r"(?:[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f])");
 }

@@ -104,5 +104,12 @@ void main() {
       error = urlValidator('http://www.ggg.com');
       expect(error, isNull);
     });
+
+    test('should check chinese or japanese character', () async {
+      final r = chineseOrJapaneseRegexp();
+      expect(r.hasMatch('abc'), false);
+      expect(r.hasMatch('ab中文c'), true);
+      expect(r.hasMatch('abバッテリーc'), true);
+    });
   });
 }
