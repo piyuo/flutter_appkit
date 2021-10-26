@@ -16,6 +16,7 @@ import '../src/await_on_tap.dart';
 import '../src/pull_refresh.dart';
 import '../src/tap_breaker.dart';
 import '../src/permission.dart';
+import '../src/status_light.dart';
 
 main() => app.start(
       appName: 'delta example',
@@ -43,7 +44,7 @@ class DeltaExample extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _getCameraPermission(context),
+              child: _statusLight(context),
             ),
             testing.example(
               context,
@@ -124,6 +125,11 @@ class DeltaExample extends StatelessWidget {
               context,
               text: 'get camera permission',
               child: _getCameraPermission(context),
+            ),
+            testing.example(
+              context,
+              text: 'status light',
+              child: _statusLight(context),
             ),
           ],
         ),
@@ -555,6 +561,16 @@ class DeltaExample extends StatelessWidget {
           var result = await checkCameraPermission(context);
           debugPrint(result ? 'got permission' : 'denied');
         });
+  }
+
+  Widget _statusLight(BuildContext context) {
+    return Row(children: const [
+      StatusLight(status: 1, tooltip: 'connected'),
+      SizedBox(width: 20),
+      StatusLight(status: 0, tooltip: 'connecting..'),
+      SizedBox(width: 20),
+      StatusLight(status: -1, tooltip: 'failed to connect'),
+    ]);
   }
 }
 
