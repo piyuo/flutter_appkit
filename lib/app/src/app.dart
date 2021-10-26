@@ -99,8 +99,8 @@ void start({
     navigatorKey: dialog.navigatorKey,
     builder: dialog.init(),
     debugShowCheckedModeBanner: false,
-    theme: theme,
-    darkTheme: darkTheme,
+    theme: theme ?? ThemeData(brightness: Brightness.light),
+    darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
     //locale: localeModel.locale,
     //localeListResolutionCallback: (locales, supportedLocales) {
     //  return i18n.determineLocale(locales);
