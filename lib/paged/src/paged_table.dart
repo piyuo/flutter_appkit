@@ -323,7 +323,7 @@ class PagedTable<T> extends StatelessWidget {
     if (dataSource.supportRefresh && dataSource.selectedRowsIsEmpty) {
       _actions.add(
         IconButton(
-          tooltip: 'refresh'.l10n,
+          tooltip: 'refresh'.i18n_,
           onPressed: breaker.linkVoidFunc(() => dataSource.refreshNewRow(context)),
           icon: const Icon(Icons.refresh_rounded),
         ),

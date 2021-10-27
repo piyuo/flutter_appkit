@@ -19,7 +19,6 @@ String? _enUS(String key) => {
       'pagingMany': 'of many',
       'pagingCount': 'of %1',
       'noData': 'No data',
-      'refresh': 'Refresh',
       'archive': 'Archive',
     }[key];
 
@@ -27,7 +26,6 @@ String? _zhTW(String key) => {
       'pagingMany': '共很多',
       'pagingCount': '共 %1 筆',
       'noData': '無資料',
-      'refresh': '更新',
       'archive': '封存',
     }[key];
 
@@ -35,6 +33,5 @@ String? _zhCN(String key) => {
       'pagingMany': '共很多',
       'pagingCount': '共 %1 笔',
       'noData': '无资料',
-      'refresh': '更新',
       'archive': '封存',
     }[key];
