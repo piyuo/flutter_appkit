@@ -88,7 +88,7 @@ class Listing<T> extends StatelessWidget {
         );
   }
 
-  Widget _buildItem(BuildContext context, T key, String? text, bool selected) {
+  Widget _buildText(BuildContext context, T key, String? text, bool selected) {
     if (itemBuilder != null) {
       Widget? widget = itemBuilder!(context, key, text ?? key.toString(), selected);
       if (widget != null) {
@@ -105,10 +105,10 @@ class Listing<T> extends StatelessWidget {
 
   Widget _buildWidget(BuildContext context, ListingItem<T> item, Function()? onTap) {
     final key = item.key;
-    final title = item.text;
+    final text = item.text;
     final selected = controller.value == item.key;
     if (tileBuilder != null) {
-      Widget? widget = tileBuilder!(context, key, title ?? key.toString(), selected);
+      Widget? widget = tileBuilder!(context, key, text ?? key.toString(), selected);
       if (widget != null) {
         return widget;
       }
@@ -143,10 +143,10 @@ class Listing<T> extends StatelessWidget {
               color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
             )
           : null,
-      title: _buildItem(
+      title: _buildText(
         context,
         key,
-        title,
+        text,
         selected,
       ),
       subtitle: item.title != null ? Text(item.title!) : null,
