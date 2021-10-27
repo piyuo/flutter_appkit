@@ -7,3 +7,4 @@ export 'src/toast.dart';
 export 'src/test.dart';
 export 'src/route.dart';
 export 'src/hypertext.extension.dart';
+export 'src/single_selection.dart';

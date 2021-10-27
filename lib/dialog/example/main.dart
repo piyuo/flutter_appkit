@@ -10,6 +10,7 @@ import '../src/route.dart';
 import '../src/show_more.dart';
 import '../src/banner.dart';
 import '../src/hypertext.extension.dart';
+import '../src/single_selection.dart';
 
 main() => app.start(
       appName: 'dialog example',
@@ -294,6 +295,32 @@ class DialogExample extends StatelessWidget {
                         Container(color: Colors.blue),
                         min: const Size(3000, 4000),
                       ),
+                    ),
+                  ]),
+                  const SizedBox(height: 20),
+                  const Text('selection'),
+                  const SizedBox(height: 20),
+                  Wrap(children: [
+                    ElevatedButton(
+                      child: const Text('single selection'),
+                      onPressed: () async {
+                        final result = await singleSelection<String>(
+                          context,
+                          title: 'select a bluetooth printer',
+                          items: {
+                            '1': 'printer 1',
+                            '2': 'printer 2',
+                          },
+                          onRefresh: (BuildContext context) async {
+                            return {
+                              '1': 'printer 1',
+                              '2': 'printer 2',
+                              '3': 'printer 3',
+                            };
+                          },
+                        );
+                        debugPrint(result);
+                      },
                     ),
                   ]),
                 ],
