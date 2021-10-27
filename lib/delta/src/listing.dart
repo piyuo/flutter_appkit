@@ -5,19 +5,19 @@ import 'extensions.dart';
 class ListingItem<T> {
   ListingItem(
     this.key, {
-    this.title,
+    this.text,
     this.icon,
-    this.subtitle,
+    this.title,
   });
 
   /// key is item key
   final T key;
 
-  /// title is item title, use key to display if title not set
-  final String? title;
+  /// text is item text, use key to display if text not set
+  final String? text;
 
-  /// subtitle is item subtitle
-  final String? subtitle;
+  /// title is item title
+  final String? title;
 
   /// icon is item icon
   final IconData? icon;
@@ -29,20 +29,23 @@ typedef ItemBuilder<T> = Widget? Function(BuildContext context, T key, String ti
 
 class Listing<T> extends StatelessWidget {
   const Listing({
-    Key? key,
     required this.items,
-    required this.onItemTap,
+    required this.controller,
+    this.onItemTap,
     this.itemBuilder,
     this.tileBuilder,
     this.shape,
-    this.controller,
     this.selectedTileColor,
     this.selectedFontColor,
     this.fontColor,
     this.dense = false,
     this.padding,
     this.physics,
+    Key? key,
   }) : super(key: key);
+
+  /// controller is for item selection control
+  final ValueNotifier<T?> controller;
 
   /// dense
   final bool dense;
@@ -63,16 +66,13 @@ class Listing<T> extends StatelessWidget {
   final List<dynamic> items;
 
   /// onItemTap called when user select a item
-  final void Function(BuildContext, T) onItemTap;
+  final void Function(BuildContext, T)? onItemTap;
 
   /// itemBuilder build item in tile
   final ItemBuilder<T>? itemBuilder;
 
   /// tileBuilder build tile to replace default tile
   final ItemBuilder<T>? tileBuilder;
-
-  /// controller is for item selection control
-  final ValueNotifier<T?>? controller;
 
   /// padding default is 5
   final EdgeInsetsGeometry? padding;
@@ -105,8 +105,8 @@ class Listing<T> extends StatelessWidget {
 
   Widget _buildWidget(BuildContext context, ListingItem<T> item, Function()? onTap) {
     final key = item.key;
-    final title = item.title;
-    final selected = controller != null ? controller!.value == item.key : false;
+    final title = item.text;
+    final selected = controller.value == item.key;
     if (tileBuilder != null) {
       Widget? widget = tileBuilder!(context, key, title ?? key.toString(), selected);
       if (widget != null) {
@@ -149,7 +149,7 @@ class Listing<T> extends StatelessWidget {
         title,
         selected,
       ),
-      subtitle: item.subtitle != null ? Text(item.subtitle!) : null,
+      subtitle: item.title != null ? Text(item.title!) : null,
     );
   }
 
@@ -173,7 +173,9 @@ class Listing<T> extends StatelessWidget {
                   item,
                   () {
                     model.itemSelected(context, item.key);
-                    onItemTap(context, item.key);
+                    if (onItemTap != null) {
+                      onItemTap!(context, item.key);
+                    }
                   },
                 );
               }

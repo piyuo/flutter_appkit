@@ -38,13 +38,14 @@ class DeltaExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _listingController.addListener(() => debugPrint(_listingController.value.toString()));
     return Scaffold(
       body: SafeArea(
         child: Wrap(
           children: [
             SizedBox(
               height: 300,
-              child: _statusLight(context),
+              child: _listing(context),
             ),
             testing.example(
               context,
@@ -367,25 +368,54 @@ class DeltaExample extends StatelessWidget {
             height: 300,
             child: Listing<int>(
               controller: _listingController,
+              items: [
+                ListingItem(1, text: 'item 1'),
+                ListingItem(7, text: 'item 7'),
+                ListingItem(8, text: 'item 8'),
+                ListingItem(9, text: 'item 9'),
+                ListingItem(0, text: 'item 0'),
+              ],
+              /*tileBuilder: (BuildContext context, int key, String text, bool selected) {
+                return key == 1
+                    ? Container(
+                        height: 100,
+                        color: Colors.blue,
+                        child: Center(
+                          child: Text(
+                            text,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ))
+                    : null;
+              },*/
+              onItemTap: (context, int key) {
+                debugPrint('$key pressed');
+              },
+            )),
+        SizedBox(
+            width: 300,
+            height: 300,
+            child: Listing<int>(
+              controller: _listingController,
               shape: Shape.roundRight,
               selectedTileColor: Colors.green[400],
               selectedFontColor: Colors.grey[100],
               fontColor: Colors.green[600],
               physics: const NeverScrollableScrollPhysics(),
               items: [
-                ListingItem(1, title: 'item 1'),
-                ListingItem(2, title: 'item 2', icon: Icons.card_giftcard),
+                ListingItem(1, text: 'item 1'),
+                ListingItem(2, text: 'item 2', icon: Icons.card_giftcard),
                 const Divider(
                   height: 1,
                 ),
-                ListingItem(3, title: 'item 3', icon: Icons.card_giftcard),
-                ListingItem(4, title: 'item 4', icon: Icons.card_giftcard),
-                ListingItem(5, title: 'item 5', icon: Icons.card_giftcard),
-                ListingItem(6, title: 'item 6', icon: Icons.card_giftcard),
-                ListingItem(7, title: 'item 7'),
-                ListingItem(8, title: 'item 8'),
-                ListingItem(9, title: 'item 9'),
-                ListingItem(0, title: 'item 0'),
+                ListingItem(3, text: 'item 3', icon: Icons.card_giftcard),
+                ListingItem(4, text: 'item 4', icon: Icons.card_giftcard),
+                ListingItem(5, text: 'item 5', icon: Icons.card_giftcard),
+                ListingItem(6, text: 'item 6', icon: Icons.card_giftcard),
+                ListingItem(7, text: 'item 7'),
+                ListingItem(8, text: 'item 8'),
+                ListingItem(9, text: 'item 9'),
+                ListingItem(0, text: 'item 0'),
               ],
               tileBuilder: (BuildContext context, int key, String text, bool selected) {
                 return key == 1
@@ -413,12 +443,12 @@ class DeltaExample extends StatelessWidget {
               padding: EdgeInsets.zero,
               shape: Shape.round,
               items: [
-                ListingItem(1, title: 'item 1'),
-                ListingItem(2, title: 'item 2'),
-                ListingItem(3, title: 'item 3'),
-                ListingItem(4, title: 'item 4'),
-                ListingItem(5, title: 'item 5'),
-                ListingItem(6, title: 'item 6'),
+                ListingItem(1, text: 'item 1'),
+                ListingItem(2, text: 'item 2'),
+                ListingItem(3, text: 'item 3'),
+                ListingItem(4, text: 'item 4'),
+                ListingItem(5, text: 'item 5'),
+                ListingItem(6, text: 'item 6'),
               ],
               itemBuilder: (BuildContext context, int key, String text, bool selected) {
                 return key == 5
@@ -477,9 +507,9 @@ class DeltaExample extends StatelessWidget {
               context,
               target: btnMenu,
               items: [
-                ListingItem(1, title: 'item 1'),
-                ListingItem(2, title: 'item 2'),
-                ListingItem(3, title: 'item 3'),
+                ListingItem(1, text: 'item 1'),
+                ListingItem(2, text: 'item 2'),
+                ListingItem(3, text: 'item 3'),
               ],
             );
             debugPrint(i != null ? 'select item $i' : 'not select');
@@ -500,9 +530,9 @@ class DeltaExample extends StatelessWidget {
               context,
               target: btnMenuOnBottom,
               items: [
-                ListingItem(1, title: 'item 1'),
-                ListingItem(2, title: 'item 2'),
-                ListingItem(3, title: 'item 3'),
+                ListingItem(1, text: 'item 1'),
+                ListingItem(2, text: 'item 2'),
+                ListingItem(3, text: 'item 3'),
               ],
             );
             debugPrint(i != null ? 'select item $i' : 'not select');
