@@ -57,7 +57,7 @@ class ErrorExample extends StatelessWidget {
                         return false;
                       };
                       var ok = await eventbus.broadcast(context, contract);
-                      dialog.info(context, text: ok ? 'retry' : 'cancel');
+                      dialog.toastInfo(context, text: ok ? 'retry' : 'cancel');
                     }
                   }),
               ElevatedButton(
@@ -109,7 +109,7 @@ class ErrorExample extends StatelessWidget {
                     } catch (e) {
                       var ok = await eventbus.broadcast(
                           context, command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
-                      dialog.info(context, text: ok ? 'retry' : 'cancel');
+                      dialog.toastInfo(context, text: ok ? 'retry' : 'cancel');
                     }
                   }),
               ElevatedButton(
@@ -117,7 +117,7 @@ class ErrorExample extends StatelessWidget {
                   onPressed: () async {
                     var ok = await eventbus.broadcast(
                         context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
-                    dialog.info(context, text: ok ? 'retry' : 'cancel');
+                    dialog.toastInfo(context, text: ok ? 'retry' : 'cancel');
                   }),
               ElevatedButton(
                   child: const Text('slow network'),

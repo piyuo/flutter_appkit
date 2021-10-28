@@ -2,26 +2,30 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/foundation.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 
-/// applyTheme before show toast
+/// _applyTheme apply theme before show toast
 ///
-void applyTheme(BuildContext context, bool strong) {
+void _applyTheme(
+  BuildContext context, {
+  EasyLoadingIndicatorType indicatorType = EasyLoadingIndicatorType.fadingCircle,
+}) {
   var mediaQuery = MediaQuery.of(context);
-  var isDark = mediaQuery.platformBrightness == Brightness.dark;
-  var color = isDark ? Colors.black87 : Colors.white70;
-  if (strong) {
-    color = isDark ? Colors.black : Colors.white;
-  }
+  var color = context.themeColor(light: Colors.black, dark: Colors.white);
+
   EasyLoading.instance
     ..indicatorSize = 140.0
     ..radius = 26.0
-    ..backgroundColor = isDark ? Colors.white.withOpacity(0.8) : Colors.black.withOpacity(0.8)
-    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..backgroundColor = context.themeColor(
+      light: Colors.white.withOpacity(0.8),
+      dark: Colors.black.withOpacity(0.8),
+    )
+    ..indicatorType = indicatorType
     ..loadingStyle = EasyLoadingStyle.custom
     ..indicatorColor = color
     ..textColor = color
     ..progressWidth = 8
-    ..progressColor = isDark ? Colors.black : Colors.white
+    ..progressColor = color
     ..textStyle = TextStyle(fontSize: 18, color: color);
 
   double width = mediaQuery.size.width;
@@ -34,23 +38,97 @@ void applyTheme(BuildContext context, bool strong) {
   }
 }
 
-/// loading show loading toast
+/// toastBluetoothSearching show bluetooth searching toast
 ///
-Future<void> loading(BuildContext context, {String? text}) {
-  applyTheme(context, false);
-  return EasyLoading.show(
+Future<void> toastBluetoothSearching(
+  BuildContext context, {
+  String? text,
+}) async {
+  _applyTheme(context);
+  await toastWidget(
+      context,
+      Container(
+        margin: const EdgeInsets.all(20),
+        width: 200,
+        height: 200,
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Expanded(
+            child: Center(
+              child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.blue[600]!,
+                    ),
+                    color: Colors.blue[600],
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: const Icon(
+                    Icons.bluetooth,
+                    size: 90,
+                    color: Colors.white,
+                  )),
+            ),
+          ),
+          if (text != null)
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
+                child: Text(text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: context.themeColor(
+                        light: Colors.grey[800]!,
+                        dark: Colors.grey[300]!,
+                      ),
+                    ))),
+          LinearProgressIndicator(
+            backgroundColor: Colors.grey[300]!,
+            color: Colors.grey[500]!,
+          ),
+        ]),
+      ));
+}
+
+/// toastWidget toast a widget
+///
+Future<void> toastWidget(
+  BuildContext context,
+  Widget child,
+) async {
+  _applyTheme(context);
+  return await EasyLoading.show(
+      maskType: EasyLoadingMaskType.clear,
+      indicator: Column(children: [
+        child,
+      ]));
+}
+
+/// toastLoading show loading toast
+///
+Future<void> toastLoading(
+  BuildContext context, {
+  String? text,
+  bool searching = false,
+}) async {
+  _applyTheme(
+    context,
+    indicatorType: searching ? EasyLoadingIndicatorType.threeBounce : EasyLoadingIndicatorType.fadingCircle,
+  );
+  return await EasyLoading.show(
     status: text,
     maskType: EasyLoadingMaskType.clear,
   );
 }
 
-Future<void> progress(BuildContext context, double value, {String? text}) {
-  applyTheme(context, false);
+Future<void> toastProgress(BuildContext context, double value, {String? text}) async {
+  _applyTheme(context);
   if (value >= 1) {
     dismiss();
   }
 
-  return EasyLoading.showProgress(
+  return await EasyLoading.showProgress(
     value,
     status: text ?? (value * 100).round().toString() + ' %',
     maskType: EasyLoadingMaskType.clear,
@@ -59,9 +137,9 @@ Future<void> progress(BuildContext context, double value, {String? text}) {
 
 /// info
 ///
-Future<void> info(BuildContext context,
-    {String? text, Widget? widget, Duration autoHide = const Duration(milliseconds: 2000)}) {
-  applyTheme(context, true);
+Future<void> toastInfo(BuildContext context,
+    {String? text, Widget? widget, Duration autoHide = const Duration(milliseconds: 2000)}) async {
+  _applyTheme(context);
 
   if (kReleaseMode) {
     // only auto hide in release mode, cause timer will break test
@@ -70,34 +148,34 @@ Future<void> info(BuildContext context,
     });
   }
 
-  return EasyLoading.show(
+  return await EasyLoading.show(
     status: text,
     indicator: widget,
     dismissOnTap: true,
   );
 }
 
-/// ok show ok toast
+/// toastOK show ok toast
 ///
-Future<void> ok(BuildContext context, String text) {
-  applyTheme(context, true);
-  return EasyLoading.showSuccess(
+Future<void> toastOK(BuildContext context, String text) async {
+  _applyTheme(context);
+  return await EasyLoading.showSuccess(
     text,
     maskType: EasyLoadingMaskType.none,
     dismissOnTap: true,
   );
 }
 
-/// wrong show wrong toast
+/// toastError show error toast
 ///
-Future<void> wrong(BuildContext context, String text) {
-  applyTheme(context, true);
+Future<void> toastError(BuildContext context, String text) async {
+  _applyTheme(context);
   EasyLoading.instance
     ..backgroundColor = Colors.red[700]
     ..loadingStyle = EasyLoadingStyle.custom
     ..indicatorColor = Colors.white
     ..textColor = Colors.white;
-  return EasyLoading.showError(
+  return await EasyLoading.showError(
     text,
     maskType: EasyLoadingMaskType.none,
     duration: const Duration(seconds: 5),

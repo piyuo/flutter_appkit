@@ -100,7 +100,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
   } else if (e is command.SlowNetworkEvent) {
-    dialog.info(context,
+    dialog.toastInfo(context,
         text: 'slow'.i18n_,
         widget: const Icon(
           Icons.wifi,

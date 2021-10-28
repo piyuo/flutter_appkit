@@ -79,7 +79,7 @@ class Submit extends StatelessWidget {
               return;
             }
 
-            dialog.loading(context);
+            dialog.toastLoading(context);
             pSubmit._setPressed(true);
             try {
               await onClick();
