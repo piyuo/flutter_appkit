@@ -2,26 +2,53 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-/// NavigatorKey used in rootContext
+/// DialogProvider for show dialog, must set navigatorKey and initToast to app
 ///
-final navigatorKey = GlobalKey<NavigatorState>();
+///      Provider(
+///      create: (_) => DialogProvider(),
+///      child: Consumer<DialogProvider>(
+///        builder: (context, dialogProvider, _) => MaterialApp(
+///         navigatorKey: dialogProvider.navigatorKey,
+///         ...),
+///      ),
+///    )
+class DialogProvider {
+  DialogProvider() {
+    _instance = this;
+  }
 
-/// RootContext return context from navigatorKey
-///
-BuildContext get rootContext {
-  assert(navigatorKey.currentState != null && navigatorKey.currentState!.overlay != null,
-      'you need set navigatorKey: dialogsNavigatorKey in MaterialApp');
-  return navigatorKey.currentState!.overlay!.context;
+  /// NavigatorKey used in rootContext
+  ///
+  final navigatorKey = GlobalKey<NavigatorState>();
+
+  static late DialogProvider? _instance;
+
+  /// initToast initialize toast
+  ///
+  Widget Function(BuildContext, Widget?) init() {
+    return initToast();
+  }
 }
 
-/// init loading
+/// initToast initialize toast
 ///
-Widget Function(BuildContext, Widget?) init() {
+@visibleForTesting
+Widget Function(BuildContext, Widget?) initToast() {
   return EasyLoading.init(builder: (ctx, w) {
     return MaxScaleTextWidget(
       child: w!,
     );
   });
+}
+
+/// RootContext return context from navigatorKey
+///
+BuildContext get rootContext {
+  assert(DialogProvider._instance != null, 'please initialize DialogProvider before App()');
+  final nKey = DialogProvider._instance!.navigatorKey;
+  assert(nKey.currentState != null && nKey.currentState!.overlay != null,
+      'please set navigatorKey: dialogProvider.navigatorKey in MaterialApp');
+  return nKey.currentState!.overlay!.context;
 }
 
 /// prevent user set scale too big, the layout may not show correctly

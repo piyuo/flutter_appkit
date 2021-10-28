@@ -95,57 +95,57 @@ void start({
     setPathUrlStrategy(); //remove the leading hash (#) from the URL
   }
 
-  Widget app = MaterialApp(
-    navigatorKey: dialog.navigatorKey,
-    builder: dialog.init(),
-    debugShowCheckedModeBanner: false,
-    theme: theme ?? ThemeData(brightness: Brightness.light),
-    darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
-    //locale: localeModel.locale,
-    //localeListResolutionCallback: (locales, supportedLocales) {
-    //  return i18n.determineLocale(locales);
-    //},
-    localizationsDelegates: [
-      i18n.LocaleDelegate(),
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ],
-    supportedLocales: const [
-      Locale('en', 'US'),
-      Locale('zh', 'CN'),
-      Locale('zh', 'TW'),
-    ],
-    onGenerateRoute: (RouteSettings settings) {
-      String name = listenRoute(settings);
-      if (name == '') {
-        // for web with url route, return null to skip default route
-        return null;
-      }
-      Widget? widget = routes(name);
-      if (widget != null) {
-        if (kIsWeb || name == '/') {
-          return delta.NoAnimRouteBuilder(widget);
-        }
-        return MaterialPageRoute(
-          builder: (_) => widget,
-          settings: settings,
-        );
-      }
-      return MaterialPageRoute(
-          builder: (_) => Scaffold(
-                body: Center(
-                  child: Text('404! ${settings.name} not found'),
-                ),
-              ));
-    },
-  );
-
-  if (providers != null) {
-    app = MultiProvider(
-      providers: providers,
-      child: app,
-    );
-  }
   // run app
-  error.watch(() => runApp(app));
+  error.watch(() => runApp(MultiProvider(
+        providers: [
+          Provider(create: (_) => dialog.DialogProvider()),
+          if (providers != null) ...providers,
+        ],
+        child: Consumer<dialog.DialogProvider>(
+          builder: (context, dialogProvider, _) => MaterialApp(
+            navigatorKey: dialogProvider.navigatorKey,
+            builder: dialogProvider.init(),
+            debugShowCheckedModeBanner: false,
+            theme: theme ?? ThemeData(brightness: Brightness.light),
+            darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
+            //locale: localeModel.locale,
+            //localeListResolutionCallback: (locales, supportedLocales) {
+            //  return i18n.determineLocale(locales);
+            //},
+            localizationsDelegates: [
+              i18n.LocaleDelegate(),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('zh', 'CN'),
+              Locale('zh', 'TW'),
+            ],
+            onGenerateRoute: (RouteSettings settings) {
+              String name = listenRoute(settings);
+              if (name == '') {
+                // for web with url route, return null to skip default route
+                return null;
+              }
+              Widget? widget = routes(name);
+              if (widget != null) {
+                if (kIsWeb || name == '/') {
+                  return delta.NoAnimRouteBuilder(widget);
+                }
+                return MaterialPageRoute(
+                  builder: (_) => widget,
+                  settings: settings,
+                );
+              }
+              return MaterialPageRoute(
+                  builder: (_) => Scaffold(
+                        body: Center(
+                          child: Text('404! ${settings.name} not found'),
+                        ),
+                      ));
+            },
+          ),
+        ),
+      )));
 }

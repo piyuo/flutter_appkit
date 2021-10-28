@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
@@ -22,10 +24,8 @@ main() {
       listen<String>((BuildContext ctx, event) async {
         expect(event, 'hi');
       });
-      // ignore: invalid_use_of_visible_for_testing_member
       expect(getListenerCount(), 1);
       clearListeners();
-      // ignore: invalid_use_of_visible_for_testing_member
       expect(getListenerCount(), 0);
     });
 
@@ -33,13 +33,10 @@ main() {
       var sub = listen<String>((BuildContext ctx, event) async {
         expect(event, 'hi');
       });
-      // ignore: invalid_use_of_visible_for_testing_member
       expect(getListenerCount(), 1);
       sub.cancel();
-      // ignore: invalid_use_of_visible_for_testing_member
       expect(getListenerCount(), 0);
       sub.cancel();
-      // ignore: invalid_use_of_visible_for_testing_member
       expect(getListenerCount(), 0);
     });
 

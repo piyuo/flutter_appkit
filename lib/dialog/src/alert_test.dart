@@ -1,6 +1,8 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'dialog.dart';
+import 'package:libcli/testing/testing.dart' as testing;
 import 'alert.dart';
 
 void main() {
@@ -11,23 +13,21 @@ void main() {
   Widget createSample({
     required void Function(BuildContext context) onPressed,
   }) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      home: Builder(builder: (BuildContext ctx) {
-        return MaterialButton(
-          key: keyBtn,
-          child: const Text('button'),
-          onPressed: () => onPressed(ctx),
-        );
-      }),
-    );
+    return Builder(
+        builder: (BuildContext context) => MaterialButton(
+              key: keyBtn,
+              child: const Text('button'),
+              onPressed: () => onPressed(context),
+            ));
   }
 
-  group('[alert]', () {
+  group('[dialog.alert]', () {
     testWidgets('should alert with close', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) => alert(context, 'hello')),
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) => alert(context, 'hello')),
       );
+
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
@@ -43,8 +43,9 @@ void main() {
 
     testWidgets('should alert with cancel', (WidgetTester tester) async {
       bool? result;
-      await tester.pumpWidget(
-        createSample(
+      await testing.mockApp(
+        tester,
+        child: createSample(
             onPressed: (context) async => result = await alert(
                   context,
                   'hello',
@@ -52,6 +53,7 @@ void main() {
                   cancel: 'cancel',
                 )),
       );
+
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
@@ -69,8 +71,9 @@ void main() {
 
     testWidgets('should alert with ok', (WidgetTester tester) async {
       bool? result;
-      await tester.pumpWidget(
-        createSample(
+      await testing.mockApp(
+        tester,
+        child: createSample(
             onPressed: (context) async => result = await alert(
                   context,
                   'hello',
@@ -92,8 +95,9 @@ void main() {
     });
 
     testWidgets('should alert with yes no', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(
+      await testing.mockApp(
+        tester,
+        child: createSample(
             onPressed: (context) async => await alert(
                   context,
                   'hello',
@@ -101,6 +105,7 @@ void main() {
                   cancel: 'no',
                 )),
       );
+
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
@@ -108,9 +113,11 @@ void main() {
     });
 
     testWidgets('should alert error', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async => await alert(context, 'error message', title: 'error')),
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async => await alert(context, 'error message', title: 'error')),
       );
+
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,26 +21,23 @@ void main() {
   Widget createSample({
     required void Function(BuildContext context) onPressed,
   }) {
-    return MaterialApp(
-      navigatorKey: dialog.navigatorKey,
-      builder: dialog.init(),
-      home: Builder(builder: (BuildContext ctx) {
-        return TextButton(
-          key: keyBtn,
-          child: const Text('button'),
-          onPressed: () => onPressed(ctx),
-        );
-      }),
-    );
+    return Builder(
+        builder: (BuildContext context) => TextButton(
+              key: keyBtn,
+              child: const Text('button'),
+              onPressed: () => onPressed(context),
+            ));
   }
 
   group('[error]', () {
     testWidgets('should alert when catch exception', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) {
           watch(() => throw Exception('mock exception'));
         }),
       );
+
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
@@ -46,13 +45,14 @@ void main() {
     });
 
     testWidgets('should alert when firewall block', (WidgetTester tester) async {
-      testing.useTestFont(tester);
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
         }),
       );
+
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
@@ -60,12 +60,13 @@ void main() {
     });
 
     testWidgets('should alert when no internet', (WidgetTester tester) async {
-      testing.useTestFont(tester);
-      await tester.pumpWidget(
-        createSample(onPressed: (context) {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) {
           watch(() => throw const SocketException('wifi off'));
         }),
       );
+
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
@@ -73,8 +74,9 @@ void main() {
     });
 
     testWidgets('should alert when service not available', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           var contract = command.InternetRequiredContract(url: 'http://mock');
           contract.isInternetConnected = () async {
@@ -86,6 +88,7 @@ void main() {
           await eventbus.broadcast(context, contract);
         }),
       );
+
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
@@ -93,8 +96,9 @@ void main() {
     });
 
     testWidgets('should alert when internet blocked', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           var contract = command.InternetRequiredContract(url: 'http://mock');
           contract.isInternetConnected = () async {
@@ -106,6 +110,7 @@ void main() {
           await eventbus.broadcast(context, contract);
         }),
       );
+
       expect(find.byType(TextButton), findsOneWidget);
       await tester.tap(find.byType(TextButton));
       await tester.pumpAndSettle();
@@ -113,8 +118,9 @@ void main() {
     });
 
     testWidgets('should alert when internal server error', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.InternalServerErrorEvent());
         }),
@@ -126,8 +132,9 @@ void main() {
     });
 
     testWidgets('should alert when server not ready', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.ServerNotReadyEvent());
         }),
@@ -139,8 +146,9 @@ void main() {
     });
 
     testWidgets('should alert when bad request', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.BadRequestEvent());
         }),
@@ -152,8 +160,9 @@ void main() {
     });
 
     testWidgets('should alert when client timeout', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           try {
             throw TimeoutException('client timeout');
@@ -170,8 +179,9 @@ void main() {
     });
 
     testWidgets('should alert when deadline exceeded', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
         }),
@@ -183,9 +193,9 @@ void main() {
     });
 
     testWidgets('should alert when disk error', (WidgetTester tester) async {
-      tester.binding.window.textScaleFactorTestValue = 0.5; // test font is bigger than real device, need scale down
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() => throw log.DiskErrorException());
         }),
       );
@@ -196,8 +206,9 @@ void main() {
     });
 
     testWidgets('should toast when network is slow', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createSample(onPressed: (context) async {
+      await testing.mockApp(
+        tester,
+        child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.SlowNetworkEvent());
         }),

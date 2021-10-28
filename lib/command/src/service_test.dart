@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
@@ -49,7 +51,6 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
-      // ignore: invalid_use_of_visible_for_testing_member
       app.branch = app.branchMaster;
       var service = MockService(mockExecute: (ctx, action) async {
         throw Exception('mock');

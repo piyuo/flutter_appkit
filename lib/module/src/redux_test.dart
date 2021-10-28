@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/types/types.dart' as types;
 import 'package:flutter/widgets.dart';
