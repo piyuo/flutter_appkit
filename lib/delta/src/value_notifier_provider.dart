@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ValueNotifierProvider<T> with ChangeNotifier {
   ValueNotifierProvider({
-    required this.valueNotifier,
+    this.valueNotifier,
   });
 
   /// controller is for item selection control

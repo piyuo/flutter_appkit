@@ -24,7 +24,6 @@ class ListingItem<T> {
   final IconData? icon;
 }
 
-/// Shape is tile shape
 enum Shape { round, roundRight }
 
 typedef ItemBuilder<T> = Widget? Function(BuildContext context, T key, String title, bool selected);
@@ -32,7 +31,7 @@ typedef ItemBuilder<T> = Widget? Function(BuildContext context, T key, String ti
 class Listing<T> extends StatelessWidget {
   const Listing({
     required this.items,
-    required this.controller,
+    this.controller,
     this.onItemTap,
     this.itemBuilder,
     this.tileBuilder,
@@ -47,8 +46,8 @@ class Listing<T> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// controller is for item selection control
-  final ValueNotifier<T?> controller;
+  /// controller is for item selection control, if must be set if you want show selected color
+  final ValueNotifier<T?>? controller;
 
   /// dense
   final bool dense;
@@ -112,7 +111,7 @@ class Listing<T> extends StatelessWidget {
   Widget _buildWidget(BuildContext context, ListingItem<T> item, Function()? onTap) {
     final key = item.key;
     final text = item.text;
-    final selected = controller.value == item.key;
+    final selected = controller == null ? false : controller!.value == item.key;
     if (tileBuilder != null) {
       Widget? widget = tileBuilder!(context, key, text ?? key.toString(), selected);
       if (widget != null) {

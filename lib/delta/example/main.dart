@@ -17,6 +17,7 @@ import '../src/pull_refresh.dart';
 import '../src/tap_breaker.dart';
 import '../src/permission.dart';
 import '../src/status_light.dart';
+import '../src/indicator.dart';
 
 main() => app.start(
       appName: 'delta example',
@@ -45,12 +46,17 @@ class DeltaExample extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _listing(context),
+              child: _indicator(context),
             ),
             testing.example(
               context,
               text: 'await on tap',
               child: _awaitOnTap(context),
+            ),
+            testing.example(
+              context,
+              text: 'indicator',
+              child: _indicator(context),
             ),
             testing.example(
               context,
@@ -367,7 +373,6 @@ class DeltaExample extends StatelessWidget {
             width: 300,
             height: 300,
             child: Listing<int>(
-              controller: _listingController,
               dividerColor: Colors.grey,
               items: [
                 ListingItem(1, text: 'item 1'),
@@ -588,6 +593,16 @@ class DeltaExample extends StatelessWidget {
       StatusLight(status: 0, tooltip: 'connecting..'),
       SizedBox(width: 20),
       StatusLight(status: -1, tooltip: 'failed to connect'),
+    ]);
+  }
+
+  Widget _indicator(BuildContext context) {
+    return Column(children: [
+      SizedBox(width: 100, height: 20, child: ballPulseIndicator()),
+      SizedBox(width: 100, height: 20, child: ballSyncIndicator()),
+      SizedBox(width: 100, height: 100, child: ballScaleIndicator()),
+      SizedBox(width: 100, height: 50, child: lineScaleIndicator()),
+      SizedBox(width: 100, height: 100, child: lineSpinIndicator()),
     ]);
   }
 }
