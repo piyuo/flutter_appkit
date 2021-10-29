@@ -258,14 +258,6 @@ class DialogExample extends StatelessWidget {
                             dismiss();
                           },
                         ),
-                        ElevatedButton(
-                          child: const Text('bluetooth'),
-                          onPressed: () async {
-                            toastBluetoothSearching(context, text: 'searching paired bluetooth printer');
-                            await Future.delayed(const Duration(seconds: 3));
-                            dismiss();
-                          },
-                        ),
                       ]),
                       const SizedBox(height: 20),
                       const Text('slide'),
@@ -321,21 +313,11 @@ class DialogExample extends StatelessWidget {
                         ElevatedButton(
                           child: const Text('single selection'),
                           onPressed: () async {
-                            final result = await singleSelection<String>(
-                              context,
-                              title: 'select a bluetooth printer',
-                              items: {
-                                '1': 'printer 1',
-                                '2': 'printer 2',
-                              },
-                              onRefresh: (BuildContext context) async {
-                                return {
-                                  '1': 'printer 1',
-                                  '2': 'printer 2',
-                                  '3': 'printer 3',
-                                };
-                              },
-                            );
+                            final result =
+                                await singleSelection<String>(context, title: 'select a bluetooth printer', items: {
+                              '1': 'printer 1',
+                              '2': 'printer 2',
+                            });
                             debugPrint(result);
                           },
                         ),

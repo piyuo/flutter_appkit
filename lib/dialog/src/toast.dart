@@ -38,59 +38,6 @@ void _applyTheme(
   }
 }
 
-/// toastBluetoothSearching show bluetooth searching toast
-///
-Future<void> toastBluetoothSearching(
-  BuildContext context, {
-  String? text,
-}) async {
-  _applyTheme(context);
-  await toastWidget(
-      context,
-      Container(
-        margin: const EdgeInsets.all(20),
-        width: 200,
-        height: 200,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Expanded(
-            child: Center(
-              child: Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.blue[600]!,
-                    ),
-                    color: Colors.blue[600],
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: const Icon(
-                    Icons.bluetooth,
-                    size: 90,
-                    color: Colors.white,
-                  )),
-            ),
-          ),
-          if (text != null)
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
-                child: Text(text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: context.themeColor(
-                        light: Colors.grey[800]!,
-                        dark: Colors.grey[300]!,
-                      ),
-                    ))),
-          LinearProgressIndicator(
-            backgroundColor: Colors.grey[300]!,
-            color: Colors.grey[500]!,
-          ),
-        ]),
-      ));
-}
-
 /// toastWidget toast a widget
 ///
 Future<void> toastWidget(
