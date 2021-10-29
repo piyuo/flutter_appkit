@@ -24,6 +24,7 @@ class ListingItem<T> {
   final IconData? icon;
 }
 
+/// Shape is tile shape
 enum Shape { round, roundRight }
 
 typedef ItemBuilder<T> = Widget? Function(BuildContext context, T key, String title, bool selected);
