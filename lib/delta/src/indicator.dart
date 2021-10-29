@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
-List<Color> get _kDefaultRainbowColors => [
+List<Color> get kDefaultRainbowColors => [
       Colors.red,
       Colors.orange,
       Colors.yellow,
@@ -15,13 +15,13 @@ List<Color> get _kDefaultRainbowColors => [
 
 Widget ballPulseIndicator() => LoadingIndicator(
       indicatorType: Indicator.ballPulse,
-      colors: _kDefaultRainbowColors,
+      colors: kDefaultRainbowColors,
       strokeWidth: 4.0,
     );
 
 Widget ballSyncIndicator() => LoadingIndicator(
       indicatorType: Indicator.ballPulseSync,
-      colors: _kDefaultRainbowColors,
+      colors: kDefaultRainbowColors,
       strokeWidth: 4.0,
     );
 
@@ -37,12 +37,12 @@ Widget ballScaleIndicator() => LoadingIndicator(
 
 Widget lineScaleIndicator() => LoadingIndicator(
       indicatorType: Indicator.lineScalePulseOut,
-      colors: _kDefaultRainbowColors,
+      colors: kDefaultRainbowColors,
       strokeWidth: 4.0,
     );
 
 Widget lineSpinIndicator() => LoadingIndicator(
       indicatorType: Indicator.lineSpinFadeLoader,
-      colors: _kDefaultRainbowColors,
+      colors: kDefaultRainbowColors,
       strokeWidth: 4.0,
     );

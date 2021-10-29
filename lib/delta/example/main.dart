@@ -18,6 +18,7 @@ import '../src/tap_breaker.dart';
 import '../src/permission.dart';
 import '../src/status_light.dart';
 import '../src/indicator.dart';
+import '../src/refresh_button.dart';
 
 main() => app.start(
       appName: 'delta example',
@@ -46,12 +47,17 @@ class DeltaExample extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _indicator(context),
+              child: _refreshButton(context),
             ),
             testing.example(
               context,
               text: 'await on tap',
               child: _awaitOnTap(context),
+            ),
+            testing.example(
+              context,
+              text: 'refresh button',
+              child: _refreshButton(context),
             ),
             testing.example(
               context,
@@ -604,6 +610,14 @@ class DeltaExample extends StatelessWidget {
       SizedBox(width: 100, height: 50, child: lineScaleIndicator()),
       SizedBox(width: 100, height: 100, child: lineSpinIndicator()),
     ]);
+  }
+
+  Widget _refreshButton(BuildContext context) {
+    return RefreshButton(
+        iconSize: 48,
+        onRefresh: (BuildContext context) async {
+          await Future.delayed(const Duration(seconds: 5));
+        });
   }
 }
 
