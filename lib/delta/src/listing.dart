@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'extensions.dart';
+import 'value_notifier_provider.dart';
 
 class ListingItem<T> {
   ListingItem(
@@ -41,6 +42,7 @@ class Listing<T> extends StatelessWidget {
     this.dense = false,
     this.padding,
     this.physics,
+    this.dividerColor,
     Key? key,
   }) : super(key: key);
 
@@ -80,6 +82,9 @@ class Listing<T> extends StatelessWidget {
   /// physics is list view physics
   final ScrollPhysics? physics;
 
+  /// dividerColor set divider with color in each ListTile
+  final Color? dividerColor;
+
   Color _fontColor(BuildContext context) {
     return fontColor ??
         context.themeColor(
@@ -114,7 +119,7 @@ class Listing<T> extends StatelessWidget {
       }
     }
 
-    return ListTile(
+    Widget tile = ListTile(
       dense: dense,
       shape: shape != null
           ? RoundedRectangleBorder(
@@ -151,20 +156,26 @@ class Listing<T> extends StatelessWidget {
       ),
       subtitle: item.title != null ? Text(item.title!) : null,
     );
+
+    if (dividerColor != null) {}
+
+    return tile;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ListingProvider>(
-        create: (context) => ListingProvider<T>(
-              controller: controller,
+    return ChangeNotifierProvider<ValueNotifierProvider>(
+        create: (context) => ValueNotifierProvider<T>(
+              valueNotifier: controller,
             ),
-        child: Consumer<ListingProvider>(builder: (context, model, child) {
-          return ListView.builder(
+        child: Consumer<ValueNotifierProvider>(builder: (context, model, child) {
+          return ListView.separated(
             physics: physics,
             itemCount: items.length,
             shrinkWrap: true,
             padding: padding ?? const EdgeInsets.symmetric(horizontal: 5),
+            separatorBuilder: (BuildContext context, int i) =>
+                dividerColor != null ? Divider(color: dividerColor!, height: 1) : const SizedBox(),
             itemBuilder: (BuildContext context, int i) {
               final item = items[i];
               if (item is ListingItem<T>) {
@@ -172,7 +183,7 @@ class Listing<T> extends StatelessWidget {
                   context,
                   item,
                   () {
-                    model.itemSelected(context, item.key);
+                    model.setValue(context, item.key);
                     if (onItemTap != null) {
                       onItemTap!(context, item.key);
                     }
@@ -187,21 +198,5 @@ class Listing<T> extends StatelessWidget {
             },
           );
         }));
-  }
-}
-
-class ListingProvider<T> with ChangeNotifier {
-  ListingProvider({
-    required this.controller,
-  });
-
-  /// controller is for item selection control
-  final ValueNotifier<T?>? controller;
-
-  void itemSelected(context, T key) {
-    if (controller != null) {
-      controller!.value = key;
-      notifyListeners();
-    }
   }
 }

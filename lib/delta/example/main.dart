@@ -368,6 +368,7 @@ class DeltaExample extends StatelessWidget {
             height: 300,
             child: Listing<int>(
               controller: _listingController,
+              dividerColor: Colors.grey,
               items: [
                 ListingItem(1, text: 'item 1'),
                 ListingItem(7, text: 'item 7'),
@@ -375,19 +376,6 @@ class DeltaExample extends StatelessWidget {
                 ListingItem(9, text: 'item 9'),
                 ListingItem(0, text: 'item 0'),
               ],
-              /*tileBuilder: (BuildContext context, int key, String text, bool selected) {
-                return key == 1
-                    ? Container(
-                        height: 100,
-                        color: Colors.blue,
-                        child: Center(
-                          child: Text(
-                            text,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        ))
-                    : null;
-              },*/
               onItemTap: (context, int key) {
                 debugPrint('$key pressed');
               },
