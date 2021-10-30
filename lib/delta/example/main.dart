@@ -81,6 +81,11 @@ class DeltaExample extends StatelessWidget {
             ),
             testing.example(
               context,
+              text: 'web image data',
+              child: _webImageData(context),
+            ),
+            testing.example(
+              context,
               text: 'search_bar',
               child: _searchBar(context),
             ),
@@ -223,6 +228,23 @@ class DeltaExample extends StatelessWidget {
           image: DecorationImage(
             image: imageProvider,
           )),
+    );
+  }
+
+  Widget _webImageData(BuildContext context) {
+    const url =
+        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
+
+    return OutlinedButton(
+      child: const Text('load image'),
+      onPressed: () async {
+        final bytes = await webImageData(url);
+        if (bytes != null) {
+          debugPrint('${bytes.length} loaded');
+          return;
+        }
+        debugPrint('image not exists');
+      },
     );
   }
 

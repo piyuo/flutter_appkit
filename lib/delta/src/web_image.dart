@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
 import 'package:provider/provider.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'extensions.dart';
+import 'package:flutter/foundation.dart';
 
+/// webImageData get binary image data from url
+Future<Uint8List?> webImageData(String url) async {
+  return await getNetworkImageData(url);
+}
+
+/// webImageProvider get image provider from url
 ImageProvider webImageProvider(
   String url, {
   Duration cacheMaxAge = const Duration(days: 360),
@@ -15,7 +23,8 @@ ImageProvider webImageProvider(
   );
 }
 
-class WebImageController with ChangeNotifier {
+/// _WebImageController is a controller for web image
+class _WebImageController with ChangeNotifier {
   bool _error = false;
   String _url = '';
 
@@ -66,9 +75,9 @@ class WebImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WebImageController>(
-        create: (context) => WebImageController(),
-        child: Consumer<WebImageController>(builder: (context, provide, child) {
+    return ChangeNotifierProvider<_WebImageController>(
+        create: (context) => _WebImageController(),
+        child: Consumer<_WebImageController>(builder: (context, provide, child) {
           var radius = BorderRadius.all(Radius.circular(borderRadius));
           return ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
