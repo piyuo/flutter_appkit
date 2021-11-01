@@ -3,46 +3,57 @@
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
-List<Color> get kDefaultRainbowColors => [
-      Colors.red,
-      Colors.orange,
-      Colors.yellow,
-      Colors.green,
-      Colors.blue,
-      Colors.indigo,
-      Colors.purple,
-    ];
+const List<Color> kDefaultRainbowColors = [
+  Colors.red,
+  Colors.orange,
+  Colors.yellow,
+  Colors.green,
+  Colors.blue,
+  Colors.indigo,
+  Colors.purple,
+];
 
-Widget ballPulseIndicator() => LoadingIndicator(
+Widget ballPulseIndicator({
+  List<Color> colors = kDefaultRainbowColors,
+}) =>
+    LoadingIndicator(
       indicatorType: Indicator.ballPulse,
-      colors: kDefaultRainbowColors,
+      colors: colors,
       strokeWidth: 4.0,
     );
 
-Widget ballSyncIndicator() => LoadingIndicator(
+Widget ballSyncIndicator({
+  List<Color> colors = kDefaultRainbowColors,
+}) =>
+    const LoadingIndicator(
       indicatorType: Indicator.ballPulseSync,
       colors: kDefaultRainbowColors,
       strokeWidth: 4.0,
     );
 
-Widget ballScaleIndicator() => LoadingIndicator(
+Widget ballScaleIndicator({
+  List<Color> colors = kDefaultRainbowColors,
+}) =>
+    LoadingIndicator(
       indicatorType: Indicator.ballScaleMultiple,
-      colors: [
-        Colors.blue[300]!,
-        Colors.blue,
-        Colors.blue[800]!,
-      ],
+      colors: colors,
       strokeWidth: 4.0,
     );
 
-Widget lineScaleIndicator() => LoadingIndicator(
+Widget lineScaleIndicator({
+  List<Color> colors = kDefaultRainbowColors,
+}) =>
+    LoadingIndicator(
       indicatorType: Indicator.lineScalePulseOut,
-      colors: kDefaultRainbowColors,
+      colors: colors,
       strokeWidth: 4.0,
     );
 
-Widget lineSpinIndicator() => LoadingIndicator(
+Widget lineSpinIndicator({
+  List<Color> colors = kDefaultRainbowColors,
+}) =>
+    LoadingIndicator(
       indicatorType: Indicator.lineSpinFadeLoader,
-      colors: kDefaultRainbowColors,
+      colors: colors,
       strokeWidth: 4.0,
     );
