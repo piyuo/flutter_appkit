@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class Field extends StatelessWidget {
+abstract class Field<T> extends StatelessWidget {
   const Field({
     required Key key, // all field must have key, it's important for test and identify field
     this.label,
@@ -21,7 +21,7 @@ abstract class Field extends StatelessWidget {
   final String? require;
 
   // validator can set custom validator
-  final FormFieldValidator<String>? validator;
+  final FormFieldValidator<T>? validator;
 
   final FocusNode? focusNode;
 
@@ -30,14 +30,14 @@ abstract class Field extends StatelessWidget {
   /// you need override this method to provide is value empty
   bool isEmpty();
 
-  String? defaultValidator(String? text) {
-    if (validator != null) {
-      return validator!(text);
+  /// validate value return error message if value is not validate
+  String? validate(T? value) {
+    if (require != null && value == null) {
+      return require;
     }
-    if (require != null) {
-      if (text == null || text.trim().isEmpty) {
-        return require;
-      }
+
+    if (validator != null) {
+      return validator!(value);
     }
     return null;
   }

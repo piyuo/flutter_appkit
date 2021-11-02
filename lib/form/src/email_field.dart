@@ -57,7 +57,7 @@ class EmailFieldProvider extends ChangeNotifier {
 }
 
 /// EmailField is for email address input
-class EmailField extends Field {
+class EmailField extends Field<String> {
   /// controller is input value controller
   final TextEditingController controller;
 
@@ -86,13 +86,17 @@ class EmailField extends Field {
   bool isEmpty() => controller.text.isEmpty;
 
   @override
-  String? defaultValidator(String? text) {
-    var result = super.defaultValidator(text);
+  String? validate(String? value) {
+    var result = super.validate(value);
     if (result != null) {
       return result;
     }
-    if (text!.length > 96) {
-      return 'maxLength'.i18n_.replaceAll('%1', label ?? '').replaceAll('%2', '96').replaceAll('%3', '${text.length}');
+    if (require != null && (value == null || value.isEmpty)) {
+      return require;
+    }
+
+    if (value != null && value.length > 96) {
+      return 'maxLength'.i18n_.replaceAll('%1', label ?? '').replaceAll('%2', '96').replaceAll('%3', '${value.length}');
     }
     return null;
   }

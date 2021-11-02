@@ -49,14 +49,9 @@ final GlobalKey btnTooltip = GlobalKey();
 
 final textController = TextEditingController();
 
-final dropdownController = TextEditingController();
+final dropdownController = ValueNotifier<int>(0);
 
 final dateController = ValueNotifier<DateTime?>(null);
-
-final Map dropdownItems = {
-  "aa": "11",
-  "bb": "2",
-};
 
 final clickController = TextEditingController();
 
@@ -93,7 +88,10 @@ class FormExample extends StatelessWidget {
                     DropdownField(
                       key: const Key('test-dropdown'),
                       controller: dropdownController,
-                      items: dropdownItems,
+                      items: const {
+                        0: "000",
+                        1: "111",
+                      },
                       label: 'dropdown field label',
                       require: 'you must select 1 item',
                       focusNode: pFormPlayground.dropdownFocus,

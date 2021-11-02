@@ -5,7 +5,7 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'field.dart';
 
 /// DateField for input date
-class DateField extends Field {
+class DateField extends Field<String> {
   const DateField({
     required Key key,
     required this.controller,
@@ -46,7 +46,7 @@ class DateField extends Field {
       firstDate: firstDate ?? DateTime(1951),
       lastDate: lastDate ?? DateTime(2050),
       dateLabelText: label,
-      validator: defaultValidator,
+      validator: validate,
       autovalidate: true,
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       /*

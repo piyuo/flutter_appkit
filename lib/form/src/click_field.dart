@@ -57,7 +57,7 @@ class ClickField extends Field {
           child: InkWell(
             onTap: () async {
               final text = await onClicked(controller.text);
-              final result = defaultValidator(text);
+              final result = validate(text);
               pClickField._setError(result);
               controller.text = text;
               if (result == null && nextFocusNode != null) {
@@ -77,7 +77,7 @@ class ClickField extends Field {
               ).applyDefaults(Theme.of(context).inputDecorationTheme),
               child: ClickFormField(
                 validator: (String? text) {
-                  final result = defaultValidator(controller.text);
+                  final result = validate(controller.text);
                   pClickField._setError(result);
                   return result;
                 },

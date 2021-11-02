@@ -4,7 +4,7 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'field.dart';
 
 /// InputField for input simple text
-class InputField extends Field {
+class InputField extends Field<String> {
   const InputField({
     required Key key,
     required this.controller,
@@ -48,24 +48,30 @@ class InputField extends Field {
   bool isEmpty() => controller.text.isEmpty;
 
   @override
-  String? defaultValidator(String? text) {
-    var result = super.defaultValidator(text);
+  String? validate(String? value) {
+    var result = super.validate(value);
     if (result != null) {
       return result;
     }
-    if (text!.length < minLength) {
-      return 'minLength'
-          .i18n_
-          .replaceAll('%1', label ?? '')
-          .replaceAll('%2', '$minLength')
-          .replaceAll('%3', '${text.length}');
+    if (require != null && (value == null || value.isEmpty)) {
+      return require;
     }
-    if (text.length > maxLength) {
-      return 'maxLength'
-          .i18n_
-          .replaceAll('%1', label ?? '')
-          .replaceAll('%2', '$maxLength')
-          .replaceAll('%3', '${text.length}');
+
+    if (value != null) {
+      if (value.length < minLength) {
+        return 'minLength'
+            .i18n_
+            .replaceAll('%1', label ?? '')
+            .replaceAll('%2', '$minLength')
+            .replaceAll('%3', '${value.length}');
+      }
+      if (value.length > maxLength) {
+        return 'maxLength'
+            .i18n_
+            .replaceAll('%1', label ?? '')
+            .replaceAll('%2', '$maxLength')
+            .replaceAll('%3', '${value.length}');
+      }
     }
     return null;
   }
@@ -78,7 +84,7 @@ class InputField extends Field {
       controller: controller,
       inputFormatters: [LengthLimitingTextInputFormatter(maxLength), ...formatters ?? []],
       textInputAction: textInputAction,
-      validator: defaultValidator,
+      validator: validate,
       decoration: decoration ?? defaultDecoration,
     );
   }
