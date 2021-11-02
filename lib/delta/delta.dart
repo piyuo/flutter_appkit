@@ -23,3 +23,4 @@ export 'src/status_light.dart';
 export 'src/value_notifier_provider.dart';
 export 'src/indicator.dart';
 export 'src/refresh_button.dart';
+export 'src/switching.dart';
