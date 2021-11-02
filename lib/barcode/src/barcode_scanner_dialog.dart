@@ -6,7 +6,7 @@ import 'l10n.dart';
 
 /// showQRcodeScanner return scanned QR code or null if not scanned
 Future<String?> showQRcodeScanner(BuildContext context) async {
-  if (await delta.checkCameraPermission(context)) {
+  if (await delta.askCameraPermission(context)) {
     return Navigator.push<String?>(
         context,
         MaterialPageRoute(

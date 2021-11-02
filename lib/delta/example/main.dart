@@ -47,7 +47,7 @@ class DeltaExample extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _refreshButton(context),
+              child: _askPermission(context),
             ),
             testing.example(
               context,
@@ -141,8 +141,8 @@ class DeltaExample extends StatelessWidget {
             ),
             testing.example(
               context,
-              text: 'get camera permission',
-              child: _getCameraPermission(context),
+              text: 'ask permission',
+              child: _askPermission(context),
             ),
             testing.example(
               context,
@@ -605,13 +605,47 @@ class DeltaExample extends StatelessWidget {
     });
   }
 
-  Widget _getCameraPermission(BuildContext context) {
-    return OutlinedButton(
-        child: const Text('get permission'),
-        onPressed: () async {
-          var result = await checkCameraPermission(context);
-          debugPrint(result ? 'got permission' : 'denied');
-        });
+  Widget _askPermission(BuildContext context) {
+    return Column(
+      children: [
+        OutlinedButton(
+            child: const Text('bluetooth permission'),
+            onPressed: () async {
+              var result = await askBluetoothPermission(context);
+              debugPrint(result ? 'got permission' : 'denied');
+            }),
+        OutlinedButton(
+            child: const Text('camera permission'),
+            onPressed: () async {
+              var result = await askCameraPermission(context);
+              debugPrint(result ? 'got permission' : 'denied');
+            }),
+        OutlinedButton(
+            child: const Text('photo permission'),
+            onPressed: () async {
+              var result = await askPhotoPermission(context);
+              debugPrint(result ? 'got permission' : 'denied');
+            }),
+        OutlinedButton(
+            child: const Text('location permission'),
+            onPressed: () async {
+              var result = await askLocationPermission(context);
+              debugPrint(result ? 'got permission' : 'denied');
+            }),
+        OutlinedButton(
+            child: const Text('notification permission'),
+            onPressed: () async {
+              var result = await askNotificationPermission(context);
+              debugPrint(result ? 'got permission' : 'denied');
+            }),
+        OutlinedButton(
+            child: const Text('microphone permission'),
+            onPressed: () async {
+              var result = await askMicrophonePermission(context);
+              debugPrint(result ? 'got permission' : 'denied');
+            }),
+      ],
+    );
   }
 
   Widget _statusLight(BuildContext context) {
