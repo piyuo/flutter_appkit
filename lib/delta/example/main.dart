@@ -402,6 +402,7 @@ class DeltaExample extends StatelessWidget {
             height: 300,
             child: Listing<int>(
               dividerColor: Colors.grey,
+              controller: ValueNotifier<int>(0),
               items: [
                 ListingItem(1, text: 'item 1'),
                 ListingItem(7, text: 'item 7'),

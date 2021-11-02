@@ -31,7 +31,7 @@ typedef ItemBuilder<T> = Widget? Function(BuildContext context, T key, String ti
 class Listing<T> extends StatelessWidget {
   const Listing({
     required this.items,
-    this.controller,
+    required this.controller,
     this.onItemTap,
     this.itemBuilder,
     this.tileBuilder,
@@ -47,7 +47,7 @@ class Listing<T> extends StatelessWidget {
   }) : super(key: key);
 
   /// controller is for item selection control, if must be set if you want show selected color
-  final ValueNotifier<T?>? controller;
+  final ValueNotifier<T?> controller;
 
   /// dense
   final bool dense;
@@ -111,7 +111,7 @@ class Listing<T> extends StatelessWidget {
   Widget _buildWidget(BuildContext context, ListingItem<T> item, Function()? onTap) {
     final key = item.key;
     final text = item.text;
-    final selected = controller == null ? false : controller!.value == item.key;
+    final selected = controller.value == item.key;
     if (tileBuilder != null) {
       Widget? widget = tileBuilder!(context, key, text ?? key.toString(), selected);
       if (widget != null) {
@@ -165,9 +165,7 @@ class Listing<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ValueNotifierProvider>(
-        create: (context) => ValueNotifierProvider<T>(
-              valueNotifier: controller,
-            ),
+        create: (context) => ValueNotifierProvider<T>(controller),
         child: Consumer<ValueNotifierProvider>(builder: (context, model, child) {
           return ListView.separated(
             physics: physics,
