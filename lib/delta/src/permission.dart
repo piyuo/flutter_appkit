@@ -8,7 +8,7 @@ import 'l10n.dart';
 /// askBluetoothPermission return true if user grant bluetooth permission
 Future<bool> askBluetoothPermission(BuildContext context) => askPermission(
       context,
-      permission: Permission.bluetooth,
+      permission: Permission.bluetoothConnect,
       name: 'bluetooth'.l10n,
       icon: Icons.bluetooth,
       iconColor: Colors.blue,
@@ -88,7 +88,9 @@ Future<bool> askPermission(
     return true;
   }
 
-  if (await permission.request().isGranted) {
+  final request = await permission.request();
+  final granted = request.isGranted;
+  if (granted) {
     return true;
   }
 
@@ -106,3 +108,8 @@ Future<bool> askPermission(
   }
   return false;
 }
+
+/// openAppPermission open the app settings page.
+///
+/// Returns [true] if the app settings page could be opened, otherwise [false].
+Future openAppPermission() => openAppSettings();
