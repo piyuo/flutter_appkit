@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'value_notifier_provider.dart';
 
 /// Check is checkbox control, do not use HyperText or RichText as it's child. it will conflict
 /// https://api.flutter.dev/flutter/material/CheckboxListTile-class.html
@@ -46,11 +47,11 @@ class Check extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CheckProvider>(
-        create: (context) => CheckProvider(
-              controller: controller,
+    return ChangeNotifierProvider<ValueNotifierProvider>(
+        create: (context) => ValueNotifierProvider(
+              controller,
             ),
-        child: Consumer<CheckProvider>(builder: (context, model, child) {
+        child: Consumer<ValueNotifierProvider>(builder: (context, model, child) {
           return Row(children: [
             ClipRRect(
               clipBehavior: Clip.hardEdge,
@@ -79,7 +80,7 @@ class Check extends StatelessWidget {
                                 : Theme.of(context).checkboxTheme.fillColor,
                         value: controller.value,
                         tristate: false,
-                        onChanged: disabled == true ? null : model.setValue,
+                        onChanged: disabled == true ? null : (value) => model.setValue(context, value),
                         //            materialTapTargetSize: materialTapTargetSize,
                       ),
                     ),
@@ -90,23 +91,9 @@ class Check extends StatelessWidget {
             label != null
                 ? disabled == true
                     ? _text(context)
-                    : InkWell(onTap: () => model.setValue(!controller.value), child: _text(context))
+                    : InkWell(onTap: () => model.setValue(context, controller.value), child: _text(context))
                 : const SizedBox(),
           ]);
         }));
-  }
-}
-
-class CheckProvider with ChangeNotifier {
-  CheckProvider({
-    required this.controller,
-  });
-
-  /// controller control checkbox value
-  final ValueNotifier<bool> controller;
-
-  void setValue(bool? newValue) {
-    controller.value = newValue ?? false;
-    notifyListeners();
   }
 }
