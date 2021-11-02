@@ -5,8 +5,8 @@ import 'value_notifier_provider.dart';
 
 /// Switch control
 ///
-class Switch extends StatelessWidget {
-  const Switch({
+class Switching extends StatelessWidget {
+  const Switching({
     Key? key,
     required this.controller,
     this.disabled,
@@ -26,7 +26,7 @@ class Switch extends StatelessWidget {
               onChanged: disabled == true
                   ? null
                   : (value) {
-                      model.valueNotifier.value = value;
+                      model.setValue(context, value);
                     });
         }));
   }

@@ -19,6 +19,7 @@ import '../src/permission.dart';
 import '../src/status_light.dart';
 import '../src/indicator.dart';
 import '../src/refresh_button.dart';
+import '../src/switching.dart';
 
 main() => app.start(
       appName: 'delta example',
@@ -35,6 +36,8 @@ final _listingController = ValueNotifier<int>(1);
 
 final _checkBoxController = ValueNotifier<bool>(false);
 
+final _switchController = ValueNotifier<bool>(false);
+
 class DeltaExample extends StatelessWidget {
   const DeltaExample({Key? key}) : super(key: key);
 
@@ -47,7 +50,7 @@ class DeltaExample extends StatelessWidget {
           children: [
             SizedBox(
               height: 300,
-              child: _askPermission(context),
+              child: _switching(context),
             ),
             testing.example(
               context,
@@ -148,6 +151,11 @@ class DeltaExample extends StatelessWidget {
               context,
               text: 'status light',
               child: _statusLight(context),
+            ),
+            testing.example(
+              context,
+              text: 'switch',
+              child: _switching(context),
             ),
           ],
         ),
@@ -392,6 +400,10 @@ class DeltaExample extends StatelessWidget {
         }));
       },
     );
+  }
+
+  Widget _switching(BuildContext context) {
+    return Switching(controller: _switchController);
   }
 
   Widget _listing(BuildContext context) {
