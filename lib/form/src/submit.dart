@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 
+/// kSubmitWidth is submit button default width
+const double kSubmitWidth = 240;
+
 /// SubmitProvider provide submit state
 class SubmitProvider extends ChangeNotifier {
   /// _pressed is true when button is pressed
@@ -23,7 +26,7 @@ class Submit extends StatelessWidget {
     required this.onClick,
     this.focusNode,
     this.form,
-    this.width = 240,
+    this.width = kSubmitWidth,
     this.fontSize = 18,
     this.padding = const EdgeInsets.all(16),
     this.showLoading = const Duration(seconds: 1),
