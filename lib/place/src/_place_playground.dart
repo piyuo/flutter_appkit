@@ -99,7 +99,7 @@ class PlacePlaygroundState extends State<PlacePlayground> {
                           latlng: types.LatLng(104.06534639982326, 30.648558245938407),
                         ),
                         form.p(),
-                        form.Submit(
+                        form.Button(
                           key: const Key('submit'),
                           label: 'Submit form',
                           form: _keyForm,

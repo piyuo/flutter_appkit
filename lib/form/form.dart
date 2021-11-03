@@ -1,6 +1,6 @@
 library form;
 
-export 'src/submit.dart';
+export 'src/button.dart';
 export 'src/animate_button.dart';
 export 'src/dropdown_field.dart';
 export 'src/email_field.dart';

@@ -119,7 +119,7 @@ class FormExample extends StatelessWidget {
                       require: 'you must select a date',
                     ),
                     const SizedBox(height: 20),
-                    Submit(
+                    Button(
                       width: 240,
                       key: const Key('submitForm'),
                       label: 'Submit form',
@@ -131,15 +131,19 @@ class FormExample extends StatelessWidget {
                     const SizedBox(height: 20),
                     Separator(height: 2, color: Colors.red[200]!),
                     const SizedBox(height: 20),
-                    Submit(
+                    Button(
+                      elevation: 0,
+                      color: Colors.red[400]!,
                       key: const Key('submitLong'),
-                      label: 'Submit long waiting form',
+                      label: 'Submit very long waiting form',
                       onClick: () async {
                         await Future.delayed(const Duration(seconds: 5));
                       },
                     ),
                     const SizedBox(height: 20),
-                    Submit(
+                    Button(
+                      elevation: 0,
+                      color: Colors.green[400]!,
                       key: const Key('submitSelect'),
                       label: 'Select',
                       onClick: () async {
