@@ -17,9 +17,16 @@ void _applyTheme(
     ..indicatorSize = 140.0
     ..radius = 26.0
     ..backgroundColor = context.themeColor(
-      light: Colors.white.withOpacity(0.8),
+      light: Colors.white.withOpacity(0.9),
       dark: Colors.black.withOpacity(0.8),
     )
+    ..boxShadow = const [
+      BoxShadow(
+        color: Colors.black54,
+        blurRadius: 15.0,
+        offset: Offset(3, 4),
+      ),
+    ]
     ..indicatorType = indicatorType
     ..loadingStyle = EasyLoadingStyle.custom
     ..indicatorColor = color
@@ -31,10 +38,15 @@ void _applyTheme(
   double width = mediaQuery.size.width;
   if (width > 600) {
     EasyLoading.instance
-      ..indicatorSize = 160.0
+      ..indicatorSize = 140.0
       ..radius = 28.0
       ..progressWidth = 12
-      ..textStyle = TextStyle(fontSize: 24, color: color, fontWeight: FontWeight.bold);
+      ..textPadding = const EdgeInsets.symmetric(vertical: 10, horizontal: 20)
+      ..textStyle = TextStyle(
+        fontSize: 24,
+        color: color,
+        fontWeight: FontWeight.bold,
+      );
   }
 }
 
