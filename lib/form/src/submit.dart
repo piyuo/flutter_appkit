@@ -17,9 +17,29 @@ class SubmitProvider extends ChangeNotifier {
 }
 
 class Submit extends StatelessWidget {
-  /// sizeLevel is button size level, default is 1
+  const Submit({
+    required Key key, // all submit must have key, it's important for test and identify field
+    required this.label,
+    required this.onClick,
+    this.focusNode,
+    this.form,
+    this.width = 240,
+    this.fontSize = 18,
+    this.padding = const EdgeInsets.all(16),
+    this.showLoading = const Duration(seconds: 1),
+  }) : super(key: key);
+
+  /// width is button fixed width
   ///
-  final double sizeLevel;
+  final double? width;
+
+  /// padding is button padding
+  ///
+  final EdgeInsets padding;
+
+  /// fontSize is button font size
+  ///
+  final double fontSize;
 
   /// text is button text
   ///
@@ -27,7 +47,7 @@ class Submit extends StatelessWidget {
 
   /// onClick called when onClickStart() return true, return true if click are success
   ///
-  final Function() onClick;
+  final Future<void> Function() onClick;
 
   /// focusNode is focusNode set to button
   ///
@@ -41,37 +61,33 @@ class Submit extends StatelessWidget {
   ///
   final Duration? showLoading;
 
-  const Submit({
-    required Key key, // all submit must have key, it's important for test and identify field
-    required this.label,
-    required this.onClick,
-    this.focusNode,
-    this.form,
-    this.sizeLevel = 1,
-    this.showLoading = const Duration(seconds: 1),
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SubmitProvider>(
       create: (context) => SubmitProvider(),
-      child: Consumer<SubmitProvider>(builder: (context, pSubmit, child) {
+      child: Consumer<SubmitProvider>(builder: (context, provide, child) {
         return ElevatedButton(
           focusNode: focusNode,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(pSubmit._pressed ? Theme.of(context).disabledColor : null),
-            elevation: MaterialStateProperty.all(pSubmit._pressed ? 1 : 6),
-            padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-              vertical: 16 * sizeLevel,
-              horizontal: 34 * sizeLevel,
-            )),
+            backgroundColor: MaterialStateProperty.all(provide._pressed ? Theme.of(context).disabledColor : null),
+            elevation: MaterialStateProperty.all(provide._pressed ? 1 : 6),
+            fixedSize: width != null ? MaterialStateProperty.all(Size(width!, 42)) : null,
+            padding: MaterialStateProperty.all(padding),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(28 * sizeLevel),
+              borderRadius: BorderRadius.circular(25),
             )),
           ),
-          child: Text(label, style: TextStyle(fontSize: 18 * sizeLevel, fontWeight: FontWeight.bold)),
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           onPressed: () async {
-            if (pSubmit._pressed) {
+            if (provide._pressed) {
               return;
             }
 
@@ -80,11 +96,11 @@ class Submit extends StatelessWidget {
             }
 
             dialog.toastLoading(context);
-            pSubmit._setPressed(true);
+            provide._setPressed(true);
             try {
               await onClick();
             } finally {
-              pSubmit._setPressed(false);
+              provide._setPressed(false);
               dialog.dismiss();
             }
           },

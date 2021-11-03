@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/app/app.dart' as app;
-import '../src/input_field.dart';
-import '../src/email_field.dart';
-import '../src/submit.dart';
-import '../src/animate_button.dart';
-import '../src/dropdown_field.dart';
-import '../src/tags.dart';
-import '../src/click_field.dart';
-import '../src/date_field.dart';
+import '../form.dart';
 
 main() => app.start(
       appName: 'form example',
@@ -127,6 +120,7 @@ class FormExample extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Submit(
+                      width: 240,
                       key: const Key('submitForm'),
                       label: 'Submit form',
                       form: _keyForm,
@@ -135,19 +129,19 @@ class FormExample extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20),
+                    Separator(height: 2, color: Colors.red[200]!),
+                    const SizedBox(height: 20),
                     Submit(
                       key: const Key('submitLong'),
                       label: 'Submit long waiting form',
                       onClick: () async {
                         await Future.delayed(const Duration(seconds: 5));
-                        return true;
                       },
                     ),
                     const SizedBox(height: 20),
                     Submit(
                       key: const Key('submitSelect'),
                       label: 'Select',
-                      sizeLevel: 0.8,
                       onClick: () async {
                         await Future.delayed(const Duration(seconds: 1));
                       },

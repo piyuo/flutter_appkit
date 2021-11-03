@@ -16,7 +16,7 @@ void main() {
           child: Submit(
             key: const Key('submit'),
             label: 'submit',
-            onClick: () {
+            onClick: () async {
               clicked = true;
             },
           ));
