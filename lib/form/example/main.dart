@@ -123,9 +123,9 @@ class FormExample extends StatelessWidget {
                       width: 240,
                       key: const Key('submitForm'),
                       label: 'Submit form',
-                      form: _keyForm,
+                      //form: _keyForm,
                       onClick: () async {
-                        //await Future.delayed(Duration(seconds: 1));
+                        await Future.delayed(const Duration(seconds: 5));
                       },
                     ),
                     const SizedBox(height: 20),

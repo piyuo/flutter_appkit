@@ -75,7 +75,7 @@ class _ButtonState extends State<Button> {
     final style = ButtonStyle(
       side: widget.color != null
           ? MaterialStateProperty.all(BorderSide(
-              color: widget.color!,
+              color: _pressed ? Colors.transparent : widget.color!,
               style: BorderStyle.solid,
               width: 1,
             ))
@@ -96,7 +96,7 @@ class _ButtonState extends State<Button> {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        color: widget.color,
+        color: _pressed ? Colors.grey : widget.color,
         fontSize: widget.fontSize,
       ),
     );
