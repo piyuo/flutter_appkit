@@ -7,7 +7,7 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 const double kButtonWidth = 240;
 
 /// kButtonHeight is default button height
-const double kButtonHeight = 42;
+const double kButtonHeight = 52;
 
 class Button extends StatefulWidget {
   const Button({
