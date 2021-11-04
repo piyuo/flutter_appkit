@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'field.dart';
 import 'package:provider/provider.dart';
 
-typedef ClickFiledCallback = Future<String> Function(String text);
-
-/// ClickFieldProvider control place field
-class ClickFieldProvider extends ChangeNotifier {
+/// _ClickFieldProvider control place field
+class _ClickFieldProvider extends ChangeNotifier {
   String? _error;
 
   void _setError(String? error) {
@@ -13,101 +11,86 @@ class ClickFieldProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _setFocus(bool hasFocus) {
+  void _refresh() {
     notifyListeners();
   }
 }
 
 /// ClickFiled show read only text, user must click to change value
-class ClickField extends Field {
+class ClickField<T> extends Field<T> {
   const ClickField({
     required Key key,
     required this.controller,
     required this.onClicked,
+    required this.valueToString,
+    FormFieldValidator<T>? validator,
     String? label,
-    String? hint,
     String? require,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
   }) : super(
           key: key,
+          validator: validator,
           label: label,
-          hint: hint,
           require: require,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
         );
 
   /// controller is dropdown value controller
-  final TextEditingController controller;
+  final ValueNotifier controller;
 
   /// onClicked must return new string result
-  final ClickFiledCallback onClicked;
+  final Future<T> Function(T? value) onClicked;
 
-  @override
-  bool isEmpty() => controller.text.isEmpty;
+  /// valueToString convert value to string
+  final String Function(T? value) valueToString;
+
+  /// superValidate use field validate
+  String? superValidate(T? value) => super.validate(value);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ClickFieldProvider>(
-      create: (context) => ClickFieldProvider(),
-      child: Consumer<ClickFieldProvider>(builder: (context, pClickField, child) {
+    return ChangeNotifierProvider<_ClickFieldProvider>(
+      create: (context) => _ClickFieldProvider(),
+      child: Consumer<_ClickFieldProvider>(builder: (context, provide, child) {
         return Focus(
           focusNode: focusNode,
           child: InkWell(
             onTap: () async {
-              final text = await onClicked(controller.text);
-              final result = validate(text);
-              pClickField._setError(result);
-              controller.text = text;
-              if (result == null && nextFocusNode != null) {
+              controller.value = await onClicked(controller.value);
+              provide._refresh();
+              if (nextFocusNode != null) {
                 nextFocusNode!.requestFocus();
               }
             },
             child: InputDecorator(
               isFocused: focusNode != null ? focusNode!.hasFocus : false,
-              isEmpty: controller.text.isEmpty,
+              isEmpty: controller.value == null,
               decoration: InputDecoration(
                 labelText: label,
-                hintText: hint,
-                errorText: pClickField._error,
+                errorText: provide._error,
                 suffixIcon: const Icon(
                   Icons.navigate_next,
                 ),
               ).applyDefaults(Theme.of(context).inputDecorationTheme),
-              child: ClickFormField(
-                validator: (String? text) {
-                  final result = validate(controller.text);
-                  pClickField._setError(result);
-                  return result;
+              child: FormField<T>(
+                key: key,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (T? value) {
+                  provide._setError(superValidate(value));
                 },
-                controller: controller,
-                style: Theme.of(context).textTheme.subtitle1,
+                builder: (FormFieldState<T> state) {
+                  return Text(valueToString(controller.value), style: Theme.of(context).textTheme.subtitle1);
+                },
               ),
             ),
           ),
           onFocusChange: (hasFocus) {
-            pClickField._setFocus(hasFocus);
+            provide._refresh();
           },
         );
       }),
     );
   }
-}
-
-/// ClickFormField to handle validator event
-class ClickFormField extends FormField<String> {
-  ClickFormField({
-    Key? key,
-    required FormFieldValidator<String> validator,
-    required TextEditingController controller,
-    TextStyle? style,
-  }) : super(
-          key: key,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: validator,
-          builder: (FormFieldState<String> state) {
-            return Text(controller.text, style: style);
-          },
-        );
 }

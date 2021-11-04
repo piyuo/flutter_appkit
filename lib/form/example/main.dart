@@ -46,7 +46,7 @@ final dropdownController = ValueNotifier<int>(0);
 
 final dateController = ValueNotifier<DateTime?>(null);
 
-final clickController = TextEditingController();
+final clickController = ValueNotifier<String?>(null);
 
 final emailController = TextEditingController();
 
@@ -91,14 +91,14 @@ class FormExample extends StatelessWidget {
                       nextFocusNode: pFormPlayground.clickFocus,
                     ),
                     br(),
-                    ClickField(
+                    ClickField<String>(
                       key: const Key('test-click'),
                       controller: clickController,
                       label: 'click field label',
-                      hint: 'click here to set value',
-                      onClicked: (String text) async {
+                      onClicked: (String? text) async {
                         return "hello";
                       },
+                      valueToString: (String? value) => value ?? '',
                       require: 'you must click to set value',
                       focusNode: pFormPlayground.clickFocus,
                       nextFocusNode: pFormPlayground.emailFocus,
@@ -123,7 +123,7 @@ class FormExample extends StatelessWidget {
                       width: 240,
                       key: const Key('submitForm'),
                       label: 'Submit form',
-                      //form: _keyForm,
+                      form: _keyForm,
                       onClick: () async {
                         await Future.delayed(const Duration(seconds: 5));
                       },

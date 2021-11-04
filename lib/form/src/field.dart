@@ -27,9 +27,6 @@ abstract class Field<T> extends StatelessWidget {
 
   final FocusNode? nextFocusNode;
 
-  /// you need override this method to provide is value empty
-  bool isEmpty();
-
   /// validate value return error message if value is not validate
   String? validate(T? value) {
     if (require != null && value == null) {

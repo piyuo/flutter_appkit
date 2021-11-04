@@ -45,9 +45,6 @@ class InputField extends Field<String> {
   final List<TextInputFormatter>? formatters;
 
   @override
-  bool isEmpty() => controller.text.isEmpty;
-
-  @override
   String? validate(String? value) {
     var result = super.validate(value);
     if (result != null) {

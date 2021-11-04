@@ -35,9 +35,6 @@ class DateField extends Field<String> {
   final DateTime? lastDate;
 
   @override
-  bool isEmpty() => controller.value == null;
-
-  @override
   Widget build(BuildContext context) {
     return DateTimePicker(
       type: DateTimePickerType.date,

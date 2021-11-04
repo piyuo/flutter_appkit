@@ -83,9 +83,6 @@ class EmailField extends Field<String> {
         );
 
   @override
-  bool isEmpty() => controller.text.isEmpty;
-
-  @override
   String? validate(String? value) {
     var result = super.validate(value);
     if (result != null) {
