@@ -38,10 +38,10 @@ class ClickField<T> extends Field<T> {
         );
 
   /// controller is dropdown value controller
-  final ValueNotifier controller;
+  final ValueNotifier<T?> controller;
 
   /// onClicked must return new string result
-  final Future<T> Function(T? value) onClicked;
+  final Future<T?> Function(T? value) onClicked;
 
   /// valueToString convert value to string
   final String Function(T? value) valueToString;
