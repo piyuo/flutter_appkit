@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'place_field.dart';
-import 'open_in_map.dart';
+import 'package:libcli/app/app.dart' as app;
+import '../src/place_field.dart';
+import '../src/open_in_map.dart';
 
-class PlacePlayground extends StatefulWidget {
-  const PlacePlayground({Key? key}) : super(key: key);
+main() => app.start(
+      appName: 'place example',
+      routes: (_) => const PlaceExample(),
+    );
+
+class PlaceExample extends StatefulWidget {
+  const PlaceExample({Key? key}) : super(key: key);
 
   @override
-  PlacePlaygroundState createState() => PlacePlaygroundState();
+  PlaceExampleState createState() => PlaceExampleState();
 }
 
-class PlacePlaygroundState extends State<PlacePlayground> {
+class PlaceExampleState extends State<PlaceExample> {
   final countryController = TextEditingController();
 
   final _keyForm = GlobalKey<FormState>();
@@ -23,11 +29,11 @@ class PlacePlaygroundState extends State<PlacePlayground> {
     'zh_TW': "Taiwan",
   };
 
-  final addressController = PlaceFieldProvider();
+  final addressController = ValueNotifier<types.Place>(types.Place.empty);
 
   final address2Controller = TextEditingController();
 
-  final addressWithValueController = PlaceFieldProvider();
+  final addressWithValueController = ValueNotifier<types.Place>(types.Place.empty);
 
   final addressWithValue2Controller = TextEditingController();
 
@@ -39,12 +45,12 @@ class PlacePlaygroundState extends State<PlacePlayground> {
   void initState() {
     countryController.text = i18n.localeName;
     countryController.addListener(_onCountryChanged);
-    addressWithValueController.setPlace(types.Place(
+    addressWithValueController.value = types.Place(
       address: '2141 spectrum, irvine, CA 92618',
       latlng: types.LatLng(33.65352503793474, -117.75017169525502),
       tags: ['spectrum', 'irvine', 'CA'],
       country: 'US',
-    ));
+    );
     addressWithValue2Controller.text = 'room 1';
     super.initState();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/form/form.dart' as form;
+import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/assets/assets.dart' as asset;
 import 'place_field.dart';
 import 'show_search.dart';
@@ -8,7 +9,7 @@ import 'show_search.dart';
 void main() {
   final _keyForm = GlobalKey<FormState>();
 
-  final placeController = PlaceFieldProvider();
+  final placeController = ValueNotifier<types.Place?>(null);
 
   final place2Controller = TextEditingController();
 
