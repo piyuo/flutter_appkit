@@ -233,3 +233,21 @@ Future<void> setMap(String key, Map<String, dynamic> map) async {
   String j = json.encode(map);
   return await setString(key, j);
 }
+
+/// getMapList return map list from data
+///
+///     var result = await pref.getMapList('k');
+///
+Future<List<Map<String, dynamic>>> getMapList(String key) async {
+  var list = await getStringList(key);
+  return list.map((e) => json.decode(e) as Map<String, dynamic>).toList();
+}
+
+/// setMapList set string map list to data, If [value] is null, this is equivalent to calling [remove()] on the [key].
+///
+///     await pref.setMapList('k',list);
+///
+Future<void> setMapList(String key, List<Map<String, dynamic>> mapList) async {
+  List<String> list = mapList.map((e) => json.encode(e)).toList();
+  return await setStringList(key, list);
+}

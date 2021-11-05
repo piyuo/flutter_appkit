@@ -127,5 +127,26 @@ void main() {
       var result = await getMap('k');
       expect(result['b'], 2);
     });
+
+    test('should get/set map list', () async {
+      Map<String, dynamic> map1 = <String, dynamic>{};
+      map1['a'] = 1;
+      map1['b'] = 2;
+
+      Map<String, dynamic> map2 = <String, dynamic>{};
+      map2['a'] = 'a';
+      map2['b'] = 'b';
+
+      var list = <Map<String, dynamic>>[];
+      list.add(map1);
+      list.add(map2);
+
+      await setMapList('k', list);
+      var result = await getMapList('k');
+      expect(result[0]['a'], 1);
+      expect(result[1]['a'], 'a');
+      expect(result[0]['b'], 2);
+      expect(result[1]['b'], 'b');
+    });
   });
 }
