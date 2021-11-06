@@ -6,7 +6,7 @@ import 'types.dart';
 /// latestEvent is used for testing purpose
 ///
 @visibleForTesting
-Event latest = Event();
+Event? latest;
 
 /// Listener
 class Listener {
