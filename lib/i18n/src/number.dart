@@ -8,8 +8,13 @@ NumberFormat get numberFormat {
 }
 
 /// numberFormat return current currency format
-NumberFormat get currencyFormat {
-  return NumberFormat.simpleCurrency(locale: localeName);
+NumberFormat currencyFormat({
+  int? decimalDigits,
+}) {
+  return NumberFormat.simpleCurrency(
+    locale: localeName,
+    decimalDigits: decimalDigits,
+  );
 }
 
 /// numberFormat return current currency symbol
@@ -17,7 +22,7 @@ NumberFormat get currencyFormat {
 ///     expect(currencySymbol, '\$');
 ///
 String get currencySymbol {
-  return currencyFormat.currencySymbol;
+  return currencyFormat().currencySymbol;
 }
 
 /// currencyName return current currency name
@@ -25,15 +30,18 @@ String get currencySymbol {
 ///     expect(currencyName, 'USD');
 ///
 String get currencyName {
-  return currencyFormat.currencyName ?? '';
+  return currencyFormat().currencyName ?? '';
 }
 
 /// formatCurrency format value to currency format
 ///
 ///     expect(formatCurrency(10.99), '\$10.99');
 ///
-String formatCurrency(dynamic value) {
-  return currencyFormat.format(value);
+String formatCurrency(
+  dynamic value, {
+  int? decimalDigits,
+}) {
+  return currencyFormat(decimalDigits: decimalDigits).format(value);
 }
 
 /// formatNumber format value to number format
