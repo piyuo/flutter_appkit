@@ -28,11 +28,11 @@ String get currencyName {
   return currencyFormat.currencyName ?? '';
 }
 
-/// formatMoney format value to currency format
+/// formatCurrency format value to currency format
 ///
-///     expect(formatMoney(10.99), '\$10.99');
+///     expect(formatCurrency(10.99), '\$10.99');
 ///
-String formatMoney(dynamic value) {
+String formatCurrency(dynamic value) {
   return currencyFormat.format(value);
 }
 

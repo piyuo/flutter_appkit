@@ -10,7 +10,7 @@ void main() {
       expect(numberFormat, isNotNull);
       expect(currencySymbol, '\$');
       expect(currencyName, 'USD');
-      expect(formatMoney(10.99), '\$10.99');
+      expect(formatCurrency(10.99), '\$10.99');
       expect(formatNumber(1000.99), '1,000.99');
       expect(formatNumber(-1000.99), '-1,000.99');
       expect(formatPercentage(.99), '99%');
@@ -21,7 +21,7 @@ void main() {
       expect(numberFormat, isNotNull);
       expect(currencySymbol, '¥');
       expect(currencyName, 'CNY');
-      expect(formatMoney(10.99), '¥10.99');
+      expect(formatCurrency(10.99), '¥10.99');
       expect(formatNumber(1000.99), '1,000.99');
       expect(formatNumber(-1000.99), '-1,000.99');
       expect(formatPercentage(.99), '99%');
