@@ -13,10 +13,12 @@ void _show(BuildContext context, Widget child) {
       MaterialPageRoute(
         builder: (_) => Scaffold(
           appBar: AppBar(),
-          body: Padding(
+          body: SafeArea(
+              child: SingleChildScrollView(
+                  child: Padding(
             padding: const EdgeInsets.all(20),
             child: child,
-          ),
+          ))),
         ),
       ));
 }
