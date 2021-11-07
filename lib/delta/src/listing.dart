@@ -26,14 +26,14 @@ class ListingItem<T> {
 
 enum Shape { round, roundRight }
 
-typedef ItemBuilder<T> = Widget? Function(BuildContext context, T key, String title, bool selected);
+typedef ListingBuilder<T, V> = Widget? Function(BuildContext context, T key, V item, bool selected);
 
 class Listing<T> extends StatelessWidget {
   const Listing({
     required this.items,
     required this.controller,
     this.onItemTap,
-    this.itemBuilder,
+    this.textBuilder,
     this.tileBuilder,
     this.shape,
     this.selectedTileColor,
@@ -70,11 +70,11 @@ class Listing<T> extends StatelessWidget {
   /// onItemTap called when user select a item
   final void Function(BuildContext, T)? onItemTap;
 
-  /// itemBuilder build item in tile
-  final ItemBuilder<T>? itemBuilder;
+  /// textBuilder only build text inside tile
+  final ListingBuilder<T, String>? textBuilder;
 
-  /// tileBuilder build tile to replace default tile
-  final ItemBuilder<T>? tileBuilder;
+  /// tileBuilder build tile to replace default
+  final ListingBuilder<T, dynamic>? tileBuilder;
 
   /// padding default is 5
   final EdgeInsetsGeometry? padding;
@@ -94,8 +94,8 @@ class Listing<T> extends StatelessWidget {
   }
 
   Widget _buildText(BuildContext context, T key, String? text, bool selected) {
-    if (itemBuilder != null) {
-      Widget? widget = itemBuilder!(context, key, text ?? key.toString(), selected);
+    if (textBuilder != null) {
+      Widget? widget = textBuilder!(context, key, text ?? key.toString(), selected);
       if (widget != null) {
         return widget;
       }
@@ -108,18 +108,22 @@ class Listing<T> extends StatelessWidget {
         ));
   }
 
-  Widget _buildWidget(BuildContext context, ListingItem<T> item, Function()? onTap) {
+  Widget _buildTile(
+    BuildContext context,
+    ListingItem<T> item, {
+    Function()? onTap,
+  }) {
     final key = item.key;
     final text = item.text;
     final selected = controller.value == item.key;
     if (tileBuilder != null) {
-      Widget? widget = tileBuilder!(context, key, text ?? key.toString(), selected);
+      Widget? widget = tileBuilder!(context, key, item, selected);
       if (widget != null) {
         return widget;
       }
     }
 
-    Widget tile = ListTile(
+    return ListTile(
       dense: dense,
       shape: shape != null
           ? RoundedRectangleBorder(
@@ -156,10 +160,6 @@ class Listing<T> extends StatelessWidget {
       ),
       subtitle: item.title != null ? Text(item.title!) : null,
     );
-
-    if (dividerColor != null) {}
-
-    return tile;
   }
 
   @override
@@ -177,10 +177,10 @@ class Listing<T> extends StatelessWidget {
             itemBuilder: (BuildContext context, int i) {
               final item = items[i];
               if (item is ListingItem<T>) {
-                return _buildWidget(
+                return _buildTile(
                   context,
                   item,
-                  () {
+                  onTap: () {
                     model.setValue(context, item.key);
                     if (onItemTap != null) {
                       onItemTap!(context, item.key);

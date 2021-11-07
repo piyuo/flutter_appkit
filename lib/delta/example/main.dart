@@ -451,14 +451,14 @@ class DeltaExample extends StatelessWidget {
                 ListingItem(9, text: 'item 9'),
                 ListingItem(0, text: 'item 0'),
               ],
-              tileBuilder: (BuildContext context, int key, String text, bool selected) {
+              tileBuilder: (BuildContext context, int key, dynamic item, bool selected) {
                 return key == 1
                     ? Container(
                         height: 100,
                         color: Colors.blue,
                         child: Center(
                           child: Text(
-                            text,
+                            item is ListingItem ? item.text ?? '' : '',
                             style: const TextStyle(color: Colors.red),
                           ),
                         ))
@@ -484,7 +484,7 @@ class DeltaExample extends StatelessWidget {
                 ListingItem(5, text: 'item 5'),
                 ListingItem(6, text: 'item 6'),
               ],
-              itemBuilder: (BuildContext context, int key, String text, bool selected) {
+              textBuilder: (BuildContext context, int key, String text, bool selected) {
                 return key == 5
                     ? Text(
                         text,
