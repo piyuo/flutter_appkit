@@ -2,39 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
-import '../src/extensions.dart';
-import '../src/web_image.dart';
-import '../src/search_bar.dart';
-import '../src/listing.dart';
-import '../src/check.dart';
-import '../src/hypertext.dart';
-import '../src/async_provider.dart';
-import '../src/await.dart';
-import '../src/popup.dart';
-import '../src/menu.dart';
-import '../src/await_on_tap.dart';
-import '../src/pull_refresh.dart';
-import '../src/tap_breaker.dart';
-import '../src/permission.dart';
-import '../src/status_light.dart';
-import '../src/indicator.dart';
-import '../src/refresh_button.dart';
-import '../src/switching.dart';
 
-main() => app.start(
-      appName: 'delta example',
-      routes: (_) => const DeltaExample(),
-    );
+import '../delta.dart';
+
+main() {
+  _checkController.addListener(() {
+    debugPrint('check controller:${_checkController.value}');
+  });
+  _listingController.addListener(
+    () => debugPrint(_listingController.value.toString()),
+  );
+
+  app.start(
+    appName: 'delta example',
+    routes: (_) => const DeltaExample(),
+  );
+}
 
 var _pullRefreshCount = 8;
 
 final GlobalKey btnMenu = GlobalKey();
+
 final GlobalKey btnTooltip = GlobalKey();
+
 final GlobalKey btnMenuOnBottom = GlobalKey();
 
 final _listingController = ValueNotifier<int>(1);
 
-final _checkBoxController = ValueNotifier<bool>(false);
+final _checkListController = ValueNotifier<List<int>>([]);
+
+final _checkController = ValueNotifier<bool>(false);
 
 final _switchController = ValueNotifier<bool>(false);
 
@@ -43,124 +40,133 @@ class DeltaExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _listingController.addListener(() => debugPrint(_listingController.value.toString()));
-    return Scaffold(
-      body: SafeArea(
-        child: Wrap(
-          children: [
-            SizedBox(
-              height: 300,
-              child: _switching(context),
-            ),
-            testing.example(
-              context,
-              text: 'await on tap',
-              child: _awaitOnTap(context),
-            ),
-            testing.example(
-              context,
-              text: 'refresh button',
-              child: _refreshButton(context),
-            ),
-            testing.example(
-              context,
-              text: 'indicator',
-              child: _indicator(context),
-            ),
-            testing.example(
-              context,
-              text: 'tap breaker',
-              child: _tapBreaker(context),
-            ),
-            testing.example(
-              context,
-              text: 'web image',
-              child: _webImage(context),
-            ),
-            testing.example(
-              context,
-              text: 'web image provider',
-              child: _webImageProvider(context),
-            ),
-            testing.example(
-              context,
-              text: 'web image data',
-              child: _webImageData(context),
-            ),
-            testing.example(
-              context,
-              text: 'search_bar',
-              child: _searchBar(context),
-            ),
-            testing.example(
-              context,
-              text: 'round_check_box',
-              child: _roundCheckBox(context),
-            ),
-            testing.example(
-              context,
-              text: 'hypertext',
-              child: _hypertext(context),
-            ),
-            testing.example(
-              context,
-              text: 'await wait',
-              child: _awaitWait(context),
-            ),
-            testing.example(
-              context,
-              text: 'await error',
-              child: _awaitError(context),
-            ),
-            testing.example(
-              context,
-              text: 'popup',
-              child: _popup(context),
-            ),
-            testing.example(
-              context,
-              text: 'listing',
-              child: _listing(context),
-            ),
-            testing.example(
-              context,
-              text: 'menu',
-              child: _menu(context),
-            ),
-            testing.example(
-              context,
-              text: 'menu on bottom',
-              child: _menuOnBottom(context),
-            ),
-            testing.example(
-              context,
-              text: 'pull refresh',
-              child: _pullRefresh(context),
-            ),
-            testing.example(
-              context,
-              text: 'pull refresh vertical',
-              child: _pullRefreshVertical(context),
-            ),
-            testing.example(
-              context,
-              text: 'ask permission',
-              child: _askPermission(context),
-            ),
-            testing.example(
-              context,
-              text: 'status light',
-              child: _statusLight(context),
-            ),
-            testing.example(
-              context,
-              text: 'switch',
-              child: _switching(context),
-            ),
-          ],
-        ),
-      ),
-    );
+    return ChangeNotifierProvider.value(
+        value: _checkController,
+        child: Consumer<ValueNotifier<bool>>(
+            builder: (context, model, child) => Scaffold(
+                  body: SafeArea(
+                    child: Wrap(
+                      children: [
+                        SizedBox(
+                          height: 400,
+                          child: _checkList(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'await on tap',
+                          child: _awaitOnTap(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'refresh button',
+                          child: _refreshButton(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'indicator',
+                          child: _indicator(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'tap breaker',
+                          child: _tapBreaker(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'web image',
+                          child: _webImage(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'web image provider',
+                          child: _webImageProvider(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'web image data',
+                          child: _webImageData(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'search_bar',
+                          child: _searchBar(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'checkbox',
+                          child: _checkbox(context, model),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'hypertext',
+                          child: _hypertext(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'await wait',
+                          child: _awaitWait(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'await error',
+                          child: _awaitError(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'popup',
+                          child: _popup(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'listing',
+                          child: _listing(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'check list',
+                          child: _checkList(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'menu',
+                          child: _menu(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'menu on bottom',
+                          child: _menuOnBottom(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'pull refresh',
+                          child: _pullRefresh(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'pull refresh vertical',
+                          child: _pullRefreshVertical(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'ask permission',
+                          child: _askPermission(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'status light',
+                          child: _statusLight(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'switch',
+                          child: _switching(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                )));
+
+    ;
   }
 
   Widget _awaitOnTap(BuildContext context) {
@@ -338,24 +344,40 @@ class DeltaExample extends StatelessWidget {
         ]));
   }
 
-  Widget _roundCheckBox(BuildContext context) {
+  Widget _checkbox(BuildContext context, ValueNotifier model) {
     return Padding(
         padding: const EdgeInsets.all(20),
-        child: Row(
+        child: Column(
           children: [
+            const Text('RoundCheckbox', style: TextStyle(fontWeight: FontWeight.bold)),
+            RoundCheckbox(
+              checked: model.value,
+              onChanged: (v) => model.value = v,
+            ),
+            const SizedBox(height: 20),
+            const Text('CheckboxLabel', style: TextStyle(fontWeight: FontWeight.bold)),
+            CheckboxLabel(
+              label: 'checkbox label',
+              checked: model.value,
+              onChanged: (v) => model.value = v,
+            ),
+            const Text('disabled', style: TextStyle(fontWeight: FontWeight.bold)),
+            CheckboxLabel(
+              label: 'disabled checkbox',
+              checked: model.value,
+            ),
+            const SizedBox(height: 20),
+            const Text('check', style: TextStyle(fontWeight: FontWeight.bold)),
             Check(
               label: 'Remember me',
-              controller: _checkBoxController,
+              controller: _checkController,
             ),
             const SizedBox(width: 20),
-            Check(
-              controller: _checkBoxController,
-            ),
-            const SizedBox(width: 20),
+            const Text('style', style: TextStyle(fontWeight: FontWeight.bold)),
             Check(
               checkColor: Colors.red,
               fillColor: Colors.green,
-              controller: _checkBoxController,
+              controller: _checkController,
             ),
             const SizedBox(width: 20),
             Check(
@@ -363,7 +385,7 @@ class DeltaExample extends StatelessWidget {
               label: 'disabled',
               checkColor: Colors.red,
               fillColor: Colors.green,
-              controller: _checkBoxController,
+              controller: _checkController,
             ),
           ],
         ));
@@ -406,6 +428,34 @@ class DeltaExample extends StatelessWidget {
     return Switching(controller: _switchController);
   }
 
+  Widget _checkList(BuildContext context) {
+    return CheckList(
+      selectedTileColor: Colors.grey[300],
+      checkboxColor: Colors.grey,
+      controller: _checkListController,
+      onTap: (int key) {
+        debugPrint('item $key tapped');
+      },
+      items: [
+        ListItem(
+          1,
+          text: 'item 1',
+          icon: Icons.print,
+        ),
+        ListItem(
+          2,
+          text: 'item 2',
+          icon: Icons.access_alarms_sharp,
+        ),
+        ListItem(
+          3,
+          text: 'item 3',
+          icon: Icons.air,
+        ),
+      ],
+    );
+  }
+
   Widget _listing(BuildContext context) {
     return Row(
       children: [
@@ -416,11 +466,11 @@ class DeltaExample extends StatelessWidget {
               dividerColor: Colors.grey,
               controller: ValueNotifier<int>(0),
               items: [
-                ListingItem(1, text: 'item 1'),
-                ListingItem(7, text: 'item 7'),
-                ListingItem(8, text: 'item 8'),
-                ListingItem(9, text: 'item 9'),
-                ListingItem(0, text: 'item 0'),
+                ListItem(1, text: 'item 1'),
+                ListItem(7, text: 'item 7'),
+                ListItem(8, text: 'item 8'),
+                ListItem(9, text: 'item 9'),
+                ListItem(0, text: 'item 0'),
               ],
               onItemTap: (context, int key) {
                 debugPrint('$key pressed');
@@ -437,19 +487,19 @@ class DeltaExample extends StatelessWidget {
               fontColor: Colors.green[600],
               physics: const NeverScrollableScrollPhysics(),
               items: [
-                ListingItem(1, text: 'item 1'),
-                ListingItem(2, text: 'item 2', icon: Icons.card_giftcard),
+                ListItem(1, text: 'item 1'),
+                ListItem(2, text: 'item 2', icon: Icons.card_giftcard),
                 const Divider(
                   height: 1,
                 ),
-                ListingItem(3, text: 'item 3', icon: Icons.card_giftcard),
-                ListingItem(4, text: 'item 4', icon: Icons.card_giftcard),
-                ListingItem(5, text: 'item 5', icon: Icons.card_giftcard),
-                ListingItem(6, text: 'item 6', icon: Icons.card_giftcard),
-                ListingItem(7, text: 'item 7'),
-                ListingItem(8, text: 'item 8'),
-                ListingItem(9, text: 'item 9'),
-                ListingItem(0, text: 'item 0'),
+                ListItem(3, text: 'item 3', icon: Icons.card_giftcard),
+                ListItem(4, text: 'item 4', icon: Icons.card_giftcard),
+                ListItem(5, text: 'item 5', icon: Icons.card_giftcard),
+                ListItem(6, text: 'item 6', icon: Icons.card_giftcard),
+                ListItem(7, text: 'item 7'),
+                ListItem(8, text: 'item 8'),
+                ListItem(9, text: 'item 9'),
+                ListItem(0, text: 'item 0'),
               ],
               tileBuilder: (BuildContext context, int key, dynamic item, bool selected) {
                 return key == 1
@@ -458,7 +508,7 @@ class DeltaExample extends StatelessWidget {
                         color: Colors.blue,
                         child: Center(
                           child: Text(
-                            item is ListingItem ? item.text ?? '' : '',
+                            item is ListItem ? item.text ?? '' : '',
                             style: const TextStyle(color: Colors.red),
                           ),
                         ))
@@ -477,12 +527,12 @@ class DeltaExample extends StatelessWidget {
               padding: EdgeInsets.zero,
               shape: Shape.round,
               items: [
-                ListingItem(1, text: 'item 1'),
-                ListingItem(2, text: 'item 2'),
-                ListingItem(3, text: 'item 3'),
-                ListingItem(4, text: 'item 4'),
-                ListingItem(5, text: 'item 5'),
-                ListingItem(6, text: 'item 6'),
+                ListItem(1, text: 'item 1'),
+                ListItem(2, text: 'item 2'),
+                ListItem(3, text: 'item 3'),
+                ListItem(4, text: 'item 4'),
+                ListItem(5, text: 'item 5'),
+                ListItem(6, text: 'item 6'),
               ],
               textBuilder: (BuildContext context, int key, String text, bool selected) {
                 return key == 5
@@ -541,9 +591,9 @@ class DeltaExample extends StatelessWidget {
               context,
               target: btnMenu,
               items: [
-                ListingItem(1, text: 'item 1'),
-                ListingItem(2, text: 'item 2'),
-                ListingItem(3, text: 'item 3'),
+                ListItem(1, text: 'item 1'),
+                ListItem(2, text: 'item 2'),
+                ListItem(3, text: 'item 3'),
               ],
             );
             debugPrint(i != null ? 'select item $i' : 'not select');
@@ -564,9 +614,9 @@ class DeltaExample extends StatelessWidget {
               context,
               target: btnMenuOnBottom,
               items: [
-                ListingItem(1, text: 'item 1'),
-                ListingItem(2, text: 'item 2'),
-                ListingItem(3, text: 'item 3'),
+                ListItem(1, text: 'item 1'),
+                ListItem(2, text: 'item 2'),
+                ListItem(3, text: 'item 3'),
               ],
             );
             debugPrint(i != null ? 'select item $i' : 'not select');

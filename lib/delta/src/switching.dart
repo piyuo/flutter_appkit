@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'value_notifier_provider.dart';
 
 /// Switch control
 ///
@@ -9,24 +8,21 @@ class Switching extends StatelessWidget {
   const Switching({
     Key? key,
     required this.controller,
-    this.disabled,
   }) : super(key: key);
 
-  final ValueNotifier<bool> controller;
-
-  final bool? disabled;
+  final ValueNotifier<bool>? controller;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ValueNotifierProvider>(
-        create: (context) => ValueNotifierProvider(controller),
-        child: Consumer<ValueNotifierProvider>(builder: (context, model, child) {
+    return ChangeNotifierProvider.value(
+        value: controller,
+        child: Consumer<ValueNotifier<bool>?>(builder: (context, _, __) {
           return CupertinoSwitch(
-              value: model.valueNotifier.value,
-              onChanged: disabled == true
+              value: controller == null ? false : controller!.value,
+              onChanged: controller == null
                   ? null
                   : (value) {
-                      model.setValue(context, value);
+                      controller!.value = value;
                     });
         }));
   }

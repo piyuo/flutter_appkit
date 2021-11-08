@@ -1,0 +1,180 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'extensions.dart';
+import 'list_item.dart';
+import 'round_checkbox.dart';
+
+class CheckList<T> extends StatelessWidget {
+  const CheckList({
+    required this.items,
+    required this.controller,
+    this.onItemTap,
+    this.itemBuilder,
+    this.selectedTileColor,
+    this.selectedFontColor,
+    this.fontColor,
+    this.dense = false,
+    this.padding,
+    this.physics,
+    this.dividerColor,
+    this.onTap,
+    this.checkboxColor,
+    Key? key,
+  }) : super(key: key);
+
+  /// controller keep selected item keys
+  final ValueNotifier<List<T>> controller;
+
+  /// onTap triggered when user click on item
+  final Function(T key)? onTap;
+
+  /// dense
+  final bool dense;
+
+  /// checkColor is checkbox color
+  final Color? checkboxColor;
+
+  /// selectedTileColor is item tile selected color
+  final Color? selectedTileColor;
+
+  /// selectedFontColor is item font selected color
+  final Color? selectedFontColor;
+
+  /// fontColor is font default color
+  final Color? fontColor;
+
+  /// items keep all list item
+  final List<ListItem<T>> items;
+
+  /// onItemTap called when user select a item
+  final void Function(BuildContext, T)? onItemTap;
+
+  /// textBuilder only build text inside tile
+  final ListItemBuilder<T, ListItem>? itemBuilder;
+
+  /// padding default is 5
+  final EdgeInsetsGeometry? padding;
+
+  /// physics is list view physics
+  final ScrollPhysics? physics;
+
+  /// dividerColor set divider with color in each ListTile
+  final Color? dividerColor;
+
+  Color _fontColor(BuildContext context) {
+    return fontColor ??
+        context.themeColor(
+          light: Colors.grey[800]!,
+          dark: Colors.grey[200]!,
+        );
+  }
+
+  Widget _buildItem(BuildContext context, ListItem<T> item, bool selected) {
+    if (itemBuilder != null) {
+      Widget? widget = itemBuilder!(context, item.key, item, selected);
+      if (widget != null) {
+        return widget;
+      }
+    }
+
+    return Row(
+      children: [
+        if (item.icon != null)
+          Padding(
+              padding: const EdgeInsets.only(right: 14),
+              child: Icon(
+                item.icon,
+                color: selected ? selectedFontColor : _fontColor(context),
+              )),
+        Text(item.text ?? key.toString(),
+            style: TextStyle(
+              fontSize: 18,
+              color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
+            ))
+      ],
+    );
+  }
+
+  /// isSelected return true if item is selected
+  bool isSelected(T key) => controller.value.contains(key);
+
+  /// setSelected set item selected
+  void setSelected(T key, bool value) {
+    var list = <T>[...controller.value];
+    if (value) {
+      if (!list.contains(key)) {
+        list.add(key);
+      }
+    } else {
+      if (list.contains(key)) {
+        list.remove(key);
+      }
+    }
+    controller.value = list;
+  }
+
+  Widget _buildTile(
+    BuildContext context,
+    ListItem<T> item,
+  ) {
+    final key = item.key;
+    bool isItemSelected = isSelected(key);
+
+    return ListTile(
+      dense: dense,
+      selected: isItemSelected,
+      selectedTileColor: selectedTileColor ??
+          context.themeColor(
+            light: Colors.grey[300]!,
+            dark: Colors.grey[700]!,
+          ),
+      contentPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+      leading: RoundCheckbox(
+        fillColor: checkboxColor,
+        checked: isItemSelected,
+        onChanged: (bool value) => setSelected(key, value),
+      ),
+      onTap: () {
+        if (onTap != null) {
+          onTap!(key);
+        }
+      },
+      trailing: onTap != null
+          ? Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Icon(
+                Icons.arrow_forward_ios,
+                size: 24,
+                color: checkboxColor,
+              ))
+          : null,
+      title: _buildItem(
+        context,
+        item,
+        isItemSelected,
+      ),
+      subtitle: item.title != null ? Text(item.title!) : null,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+        value: controller,
+        child: Consumer<ValueNotifier<List<T>>>(builder: (context, _, __) {
+          return ListView.separated(
+            physics: physics,
+            itemCount: items.length,
+            shrinkWrap: true,
+            padding: padding ?? const EdgeInsets.symmetric(horizontal: 5),
+            separatorBuilder: (BuildContext context, int i) =>
+                dividerColor != null ? Divider(color: dividerColor!, height: 1) : const SizedBox(),
+            itemBuilder: (BuildContext context, int i) {
+              final item = items[i];
+              return _buildTile(context, item);
+            },
+          );
+        }));
+  }
+}

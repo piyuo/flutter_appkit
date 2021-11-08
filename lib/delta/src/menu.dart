@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'popup.dart';
 import 'listing.dart';
 import 'device.dart';
+import 'list_item.dart';
 
 const itemHeight = 40.0;
 
@@ -22,7 +23,7 @@ double _menuHeight(int itemCount) {
 ///
 Future<T?> menu<T>(
   BuildContext context, {
-  required List<ListingItem> items,
+  required List<ListItem> items,
   GlobalKey? target,
   double targetPadding = 3,
   double? left,

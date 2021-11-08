@@ -1,32 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'extensions.dart';
-import 'value_notifier_provider.dart';
-
-class ListingItem<T> {
-  ListingItem(
-    this.key, {
-    this.text,
-    this.icon,
-    this.title,
-  });
-
-  /// key is item key
-  final T key;
-
-  /// text is item text, use key to display if text not set
-  final String? text;
-
-  /// title is item title
-  final String? title;
-
-  /// icon is item icon
-  final IconData? icon;
-}
+import 'list_item.dart';
 
 enum Shape { round, roundRight }
-
-typedef ListingBuilder<T, V> = Widget? Function(BuildContext context, T key, V item, bool selected);
 
 class Listing<T> extends StatelessWidget {
   const Listing({
@@ -71,10 +48,10 @@ class Listing<T> extends StatelessWidget {
   final void Function(BuildContext, T)? onItemTap;
 
   /// textBuilder only build text inside tile
-  final ListingBuilder<T, String>? textBuilder;
+  final ListItemBuilder<T, String>? textBuilder;
 
   /// tileBuilder build tile to replace default
-  final ListingBuilder<T, dynamic>? tileBuilder;
+  final ListItemBuilder<T, dynamic>? tileBuilder;
 
   /// padding default is 5
   final EdgeInsetsGeometry? padding;
@@ -110,7 +87,7 @@ class Listing<T> extends StatelessWidget {
 
   Widget _buildTile(
     BuildContext context,
-    ListingItem<T> item, {
+    ListItem<T> item, {
     Function()? onTap,
   }) {
     final key = item.key;
@@ -164,9 +141,9 @@ class Listing<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ValueNotifierProvider>(
-        create: (context) => ValueNotifierProvider<T>(controller),
-        child: Consumer<ValueNotifierProvider>(builder: (context, model, child) {
+    return ChangeNotifierProvider.value(
+        value: controller,
+        child: Consumer<ValueNotifier<T?>>(builder: (context, model, child) {
           return ListView.separated(
             physics: physics,
             itemCount: items.length,
@@ -176,12 +153,12 @@ class Listing<T> extends StatelessWidget {
                 dividerColor != null ? Divider(color: dividerColor!, height: 1) : const SizedBox(),
             itemBuilder: (BuildContext context, int i) {
               final item = items[i];
-              if (item is ListingItem<T>) {
+              if (item is ListItem<T>) {
                 return _buildTile(
                   context,
                   item,
                   onTap: () {
-                    model.setValue(context, item.key);
+                    model.value = item.key;
                     if (onItemTap != null) {
                       onItemTap!(context, item.key);
                     }
