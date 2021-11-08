@@ -142,7 +142,7 @@ class CheckList<T> extends StatelessWidget {
               child: Icon(
                 Icons.arrow_forward_ios,
                 size: 24,
-                color: checkboxColor,
+                color: checkboxColor ?? Colors.grey,
               ))
           : null,
       title: _buildItem(
