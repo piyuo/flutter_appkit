@@ -55,7 +55,7 @@ class _SingleSelectionState<T> extends State<SingleSelection<T>> {
             selectedFontColor: Colors.white,
             dividerColor: context.themeColor(light: Colors.grey[300]!, dark: Colors.grey[800]!),
             controller: widget.controller,
-            items: widget.items.entries.map((entry) => delta.ListItem(entry.key, text: entry.value)).toList(),
+            items: widget.items.entries.map((entry) => delta.ListItem(entry.key, title: entry.value)).toList(),
             onItemTap: (BuildContext context, T value) {
               Navigator.pop(context, value);
             },

@@ -439,18 +439,21 @@ class DeltaExample extends StatelessWidget {
       items: [
         ListItem(
           1,
-          text: 'item 1',
+          title: 'item 1',
           icon: Icons.print,
+          iconColor: Colors.green,
         ),
         ListItem(
           2,
-          text: 'item 2',
+          title: 'item 2',
           icon: Icons.access_alarms_sharp,
+          iconColor: Colors.green,
         ),
         ListItem(
           3,
-          text: 'item 3',
+          title: 'item 3',
           icon: Icons.air,
+          iconColor: Colors.grey,
         ),
       ],
     );
@@ -466,11 +469,11 @@ class DeltaExample extends StatelessWidget {
               dividerColor: Colors.grey,
               controller: ValueNotifier<int>(0),
               items: [
-                ListItem(1, text: 'item 1'),
-                ListItem(7, text: 'item 7'),
-                ListItem(8, text: 'item 8'),
-                ListItem(9, text: 'item 9'),
-                ListItem(0, text: 'item 0'),
+                ListItem(1, title: 'item 1'),
+                ListItem(7, title: 'item 7'),
+                ListItem(8, title: 'item 8'),
+                ListItem(9, title: 'item 9'),
+                ListItem(0, title: 'item 0'),
               ],
               onItemTap: (context, int key) {
                 debugPrint('$key pressed');
@@ -487,19 +490,19 @@ class DeltaExample extends StatelessWidget {
               fontColor: Colors.green[600],
               physics: const NeverScrollableScrollPhysics(),
               items: [
-                ListItem(1, text: 'item 1'),
-                ListItem(2, text: 'item 2', icon: Icons.card_giftcard),
+                ListItem(1, title: 'item 1'),
+                ListItem(2, title: 'item 2', icon: Icons.card_giftcard),
                 const Divider(
                   height: 1,
                 ),
-                ListItem(3, text: 'item 3', icon: Icons.card_giftcard),
-                ListItem(4, text: 'item 4', icon: Icons.card_giftcard),
-                ListItem(5, text: 'item 5', icon: Icons.card_giftcard),
-                ListItem(6, text: 'item 6', icon: Icons.card_giftcard),
-                ListItem(7, text: 'item 7'),
-                ListItem(8, text: 'item 8'),
-                ListItem(9, text: 'item 9'),
-                ListItem(0, text: 'item 0'),
+                ListItem(3, title: 'item 3', icon: Icons.card_giftcard, iconColor: Colors.red),
+                ListItem(4, title: 'item 4', icon: Icons.card_giftcard),
+                ListItem(5, title: 'item 5', icon: Icons.card_giftcard),
+                ListItem(6, title: 'item 6', icon: Icons.card_giftcard),
+                ListItem(7, title: 'item 7'),
+                ListItem(8, title: 'item 8'),
+                ListItem(9, title: 'item 9'),
+                ListItem(0, title: 'item 0'),
               ],
               tileBuilder: (BuildContext context, int key, dynamic item, bool selected) {
                 return key == 1
@@ -508,7 +511,7 @@ class DeltaExample extends StatelessWidget {
                         color: Colors.blue,
                         child: Center(
                           child: Text(
-                            item is ListItem ? item.text ?? '' : '',
+                            item is ListItem ? item.title ?? '' : '',
                             style: const TextStyle(color: Colors.red),
                           ),
                         ))
@@ -527,12 +530,12 @@ class DeltaExample extends StatelessWidget {
               padding: EdgeInsets.zero,
               shape: Shape.round,
               items: [
-                ListItem(1, text: 'item 1'),
-                ListItem(2, text: 'item 2'),
-                ListItem(3, text: 'item 3'),
-                ListItem(4, text: 'item 4'),
-                ListItem(5, text: 'item 5'),
-                ListItem(6, text: 'item 6'),
+                ListItem(1, title: 'item 1'),
+                ListItem(2, title: 'item 2'),
+                ListItem(3, title: 'item 3'),
+                ListItem(4, title: 'item 4'),
+                ListItem(5, title: 'item 5'),
+                ListItem(6, title: 'item 6'),
               ],
               textBuilder: (BuildContext context, int key, String text, bool selected) {
                 return key == 5
@@ -591,9 +594,9 @@ class DeltaExample extends StatelessWidget {
               context,
               target: btnMenu,
               items: [
-                ListItem(1, text: 'item 1'),
-                ListItem(2, text: 'item 2'),
-                ListItem(3, text: 'item 3'),
+                ListItem(1, title: 'item 1'),
+                ListItem(2, title: 'item 2'),
+                ListItem(3, title: 'item 3'),
               ],
             );
             debugPrint(i != null ? 'select item $i' : 'not select');
@@ -614,9 +617,9 @@ class DeltaExample extends StatelessWidget {
               context,
               target: btnMenuOnBottom,
               items: [
-                ListItem(1, text: 'item 1'),
-                ListItem(2, text: 'item 2'),
-                ListItem(3, text: 'item 3'),
+                ListItem(1, title: 'item 1'),
+                ListItem(2, title: 'item 2'),
+                ListItem(3, title: 'item 3'),
               ],
             );
             debugPrint(i != null ? 'select item $i' : 'not select');

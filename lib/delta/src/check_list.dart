@@ -13,13 +13,13 @@ class CheckList<T> extends StatelessWidget {
     this.itemBuilder,
     this.selectedTileColor,
     this.selectedFontColor,
+    this.dividerColor,
+    this.checkboxColor,
     this.fontColor,
     this.dense = false,
     this.padding,
     this.physics,
-    this.dividerColor,
     this.onTap,
-    this.checkboxColor,
     Key? key,
   }) : super(key: key);
 
@@ -44,6 +44,9 @@ class CheckList<T> extends StatelessWidget {
   /// fontColor is font default color
   final Color? fontColor;
 
+  /// dividerColor set divider with color in each ListTile
+  final Color? dividerColor;
+
   /// items keep all list item
   final List<ListItem<T>> items;
 
@@ -58,9 +61,6 @@ class CheckList<T> extends StatelessWidget {
 
   /// physics is list view physics
   final ScrollPhysics? physics;
-
-  /// dividerColor set divider with color in each ListTile
-  final Color? dividerColor;
 
   Color _fontColor(BuildContext context) {
     return fontColor ??
@@ -85,9 +85,9 @@ class CheckList<T> extends StatelessWidget {
               padding: const EdgeInsets.only(right: 14),
               child: Icon(
                 item.icon,
-                color: selected ? selectedFontColor : _fontColor(context),
+                color: item.iconColor ?? (selected ? selectedFontColor : _fontColor(context)),
               )),
-        Text(item.text ?? key.toString(),
+        Text(item.title ?? key.toString(),
             style: TextStyle(
               fontSize: 18,
               color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
@@ -154,7 +154,7 @@ class CheckList<T> extends StatelessWidget {
         item,
         isItemSelected,
       ),
-      subtitle: item.title != null ? Text(item.title!) : null,
+      subtitle: item.subtitle != null ? Text(item.subtitle!) : null,
     );
   }
 

@@ -3,22 +3,26 @@ import 'package:flutter/material.dart';
 class ListItem<T> {
   ListItem(
     this.key, {
-    this.text,
-    this.icon,
     this.title,
+    this.subtitle,
+    this.icon,
+    this.iconColor,
   });
 
   /// key is item key
   final T key;
 
-  /// text is item text, use key to display if text not set
-  final String? text;
-
-  /// title is item title
+  /// title for the item
   final String? title;
+
+  /// subtitle for the item
+  final String? subtitle;
 
   /// icon is item icon
   final IconData? icon;
+
+  /// iconColor set color of icon
+  final Color? iconColor;
 }
 
 /// ListItemBuilder build custom item ui

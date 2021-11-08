@@ -91,7 +91,7 @@ class Listing<T> extends StatelessWidget {
     Function()? onTap,
   }) {
     final key = item.key;
-    final text = item.text;
+    final text = item.title;
     final selected = controller.value == item.key;
     if (tileBuilder != null) {
       Widget? widget = tileBuilder!(context, key, item, selected);
@@ -126,7 +126,7 @@ class Listing<T> extends StatelessWidget {
           ? Icon(
               item.icon,
               size: 24,
-              color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
+              color: item.iconColor ?? (selected ? selectedFontColor ?? context.invertColor : _fontColor(context)),
             )
           : null,
       title: _buildText(
@@ -135,7 +135,7 @@ class Listing<T> extends StatelessWidget {
         text,
         selected,
       ),
-      subtitle: item.title != null ? Text(item.title!) : null,
+      subtitle: item.subtitle != null ? Text(item.subtitle!) : null,
     );
   }
 
