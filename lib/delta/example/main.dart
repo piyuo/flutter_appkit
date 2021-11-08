@@ -433,7 +433,7 @@ class DeltaExample extends StatelessWidget {
       selectedTileColor: Colors.grey[300],
       checkboxColor: Colors.grey,
       controller: _checkListController,
-      onTap: (int key) {
+      onItemTap: (int key) {
         debugPrint('item $key tapped');
       },
       items: [

@@ -19,15 +19,11 @@ class CheckList<T> extends StatelessWidget {
     this.dense = false,
     this.padding,
     this.physics,
-    this.onTap,
     Key? key,
   }) : super(key: key);
 
   /// controller keep selected item keys
   final ValueNotifier<List<T>> controller;
-
-  /// onTap triggered when user click on item
-  final Function(T key)? onTap;
 
   /// dense
   final bool dense;
@@ -51,7 +47,7 @@ class CheckList<T> extends StatelessWidget {
   final List<ListItem<T>> items;
 
   /// onItemTap called when user select a item
-  final void Function(BuildContext, T)? onItemTap;
+  final void Function(T)? onItemTap;
 
   /// textBuilder only build text inside tile
   final ListItemBuilder<T, ListItem>? itemBuilder;
@@ -136,11 +132,11 @@ class CheckList<T> extends StatelessWidget {
         onChanged: (bool value) => setSelected(key, value),
       ),
       onTap: () {
-        if (onTap != null) {
-          onTap!(key);
+        if (onItemTap != null) {
+          onItemTap!(key);
         }
       },
-      trailing: onTap != null
+      trailing: onItemTap != null
           ? Padding(
               padding: const EdgeInsets.only(right: 20),
               child: Icon(
