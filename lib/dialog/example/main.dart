@@ -3,14 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/app/app.dart' as app;
-import '../src/alert.dart';
-import '../src/toast.dart';
-import '../src/slide.dart';
-import '../src/route.dart';
-import '../src/show_more.dart';
-import '../src/banner.dart';
-import '../src/hypertext.extension.dart';
-import '../src/single_selection.dart';
+import 'package:libcli/uid/uid.dart' as uid;
+import '../dialog.dart';
 
 main() => app.start(
       appName: 'dialog example',
@@ -21,6 +15,12 @@ final GlobalKey btnMenu = GlobalKey();
 final GlobalKey btnShowMore = GlobalKey();
 final GlobalKey btnShowMoreOffset = GlobalKey();
 final GlobalKey btnShowMoreText = GlobalKey();
+
+final printers = [
+  delta.ListItem<String>('1', title: 'Printer 1', icon: Icons.print, iconColor: Colors.green),
+  delta.ListItem<String>('2', title: 'Printer 2', icon: Icons.print, iconColor: Colors.green),
+  delta.ListItem<String>('3', title: 'Printer 3', icon: Icons.print, subtitle: 'offline'),
+];
 
 class DialogExample extends StatelessWidget {
   const DialogExample({Key? key}) : super(key: key);
@@ -314,11 +314,46 @@ class DialogExample extends StatelessWidget {
                           child: const Text('single selection'),
                           onPressed: () async {
                             final result =
-                                await singleSelection<String>(context, title: 'select a bluetooth printer', items: {
+                                await showSingleSelection<String>(context, title: 'select a bluetooth printer', items: {
                               '1': 'printer 1',
                               '2': 'printer 2',
                             });
                             debugPrint(result);
+                          },
+                        ),
+                        ElevatedButton(
+                          child: const Text('check list dialog'),
+                          onPressed: () async {
+                            await showCheckList<String>(
+                              context,
+                              title: 'printers',
+                              items: printers,
+                              hint: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.fromLTRB(0, 200, 0, 200),
+                                child: const Text('Tap on button to add printer'),
+                              ),
+                              onRefresh: () async => [...printers],
+                              onDelete: (List<String> keys) async {
+                                for (int i = printers.length - 1; i >= 0; i--) {
+                                  if (keys.contains(printers[i].key)) {
+                                    printers.removeAt(i);
+                                  }
+                                }
+                              },
+                              onItemTap: (String key) async {
+                                if (printers.isNotEmpty) {
+                                  printers.removeAt(0);
+                                }
+                              },
+                              onNewItem: () async {
+                                final id = uid.randomNumber(5);
+                                printers.add(
+                                  delta.ListItem<String>(id,
+                                      title: 'Printer $id', icon: Icons.print, iconColor: Colors.green),
+                                );
+                              },
+                            );
                           },
                         ),
                       ]),

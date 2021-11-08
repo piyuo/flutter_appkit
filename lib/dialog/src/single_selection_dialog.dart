@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import '../src/route.dart';
 
-/// selection show a string select dialog
+/// showSingleSelection show a string select dialog
 ///
-Future<T?> showListEditor<T>(
+Future<T?> showSingleSelection<T>(
   BuildContext context, {
   required Map<T, String> items,
   String? title,
