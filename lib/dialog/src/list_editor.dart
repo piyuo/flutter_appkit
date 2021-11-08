@@ -5,7 +5,7 @@ import '../src/route.dart';
 
 /// selection show a string select dialog
 ///
-Future<T?> singleSelection<T>(
+Future<T?> showListEditor<T>(
   BuildContext context, {
   required Map<T, String> items,
   String? title,
