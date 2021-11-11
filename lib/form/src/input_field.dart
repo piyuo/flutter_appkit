@@ -4,10 +4,10 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'field.dart';
 
 /// InputField for input simple text
-class InputField extends Field<String> {
+class InputField extends Field<TextEditingValue> {
   const InputField({
     required Key key,
-    required this.controller,
+    required TextEditingController controller,
     this.textInputAction = TextInputAction.next,
     this.minLength = 0,
     this.maxLength = 256,
@@ -16,19 +16,17 @@ class InputField extends Field<String> {
     String? label,
     String? hint,
     String? require,
-    FormFieldValidator<String>? validator,
+    FormFieldValidator<TextEditingValue>? validator,
     FocusNode? focusNode,
   }) : super(
           key: key,
+          controller: controller,
           label: label,
           hint: hint,
           require: require,
           validator: validator,
           focusNode: focusNode,
         );
-
-  /// controller is input value controller
-  final TextEditingController controller;
 
   /// textInputAction control keyboard text input action
   final TextInputAction? textInputAction;
@@ -45,29 +43,29 @@ class InputField extends Field<String> {
   final List<TextInputFormatter>? formatters;
 
   @override
-  String? validate(String? value) {
+  String? validate(TextEditingValue? value) {
     var result = super.validate(value);
     if (result != null) {
       return result;
     }
-    if (require != null && (value == null || value.isEmpty)) {
+    if (require != null && (value == null || value.text.isEmpty)) {
       return require;
     }
 
     if (value != null) {
-      if (value.length < minLength) {
+      if (value.text.length < minLength) {
         return 'minLength'
             .i18n_
             .replaceAll('%1', label ?? '')
             .replaceAll('%2', '$minLength')
-            .replaceAll('%3', '${value.length}');
+            .replaceAll('%3', '${value.text.length}');
       }
-      if (value.length > maxLength) {
+      if (value.text.length > maxLength) {
         return 'maxLength'
             .i18n_
             .replaceAll('%1', label ?? '')
             .replaceAll('%2', '$maxLength')
-            .replaceAll('%3', '${value.length}');
+            .replaceAll('%3', '${value.text.length}');
       }
     }
     return null;
@@ -78,11 +76,15 @@ class InputField extends Field<String> {
     return TextFormField(
       focusNode: focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      controller: controller,
+      controller: controller as TextEditingController,
       inputFormatters: [LengthLimitingTextInputFormatter(maxLength), ...formatters ?? []],
       textInputAction: textInputAction,
-      validator: validate,
-      decoration: decoration ?? defaultDecoration,
+      validator: (value) => validate(controller.value),
+      decoration: decoration ??
+          InputDecoration(
+            labelText: label,
+            hintText: hint,
+          ),
     );
   }
 }

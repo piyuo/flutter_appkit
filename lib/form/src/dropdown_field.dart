@@ -3,14 +3,8 @@ import 'field.dart';
 
 /// DropdownField for simple dropdown selection
 class DropdownField<T> extends Field<T> {
-  /// controller is dropdown value controller
-  final ValueNotifier<T?> controller;
-
-  /// items is items user can select
-  final Map items;
-
   const DropdownField({
-    required this.controller,
+    required ValueNotifier<T?> controller,
     required this.items,
     required Key key,
     String? label,
@@ -20,6 +14,7 @@ class DropdownField<T> extends Field<T> {
     FocusNode? nextFocusNode,
   }) : super(
           label: label,
+          controller: controller,
           require: require,
           validator: validator,
           focusNode: focusNode,
@@ -27,8 +22,8 @@ class DropdownField<T> extends Field<T> {
           key: key,
         );
 
-  @override
-  bool isEmpty() => controller.value == null;
+  /// items is items user can select
+  final Map items;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +52,10 @@ class DropdownField<T> extends Field<T> {
       },
       value: controller.value,
       validator: validate,
-      decoration: defaultDecoration,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+      ),
     );
   }
 }

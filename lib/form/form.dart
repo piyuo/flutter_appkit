@@ -10,3 +10,4 @@ export 'src/tags.dart';
 export 'src/field.dart';
 export 'src/separator.dart';
 export 'src/date_field.dart';
+export 'src/custom_field.dart';

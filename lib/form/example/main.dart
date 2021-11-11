@@ -27,9 +27,15 @@ class FormExampleProvider extends ChangeNotifier {
 
   final clickFocus = FocusNode(debugLabel: 'clickFocus');
 
+  final clickValueFocus = FocusNode();
+
   final emailFocus = FocusNode();
 
   final dateFocus = FocusNode();
+
+  final datetimeFocus = FocusNode();
+
+  final timeFocus = FocusNode();
 
   final checkFocus = FocusNode();
 
@@ -47,6 +53,8 @@ final dropdownController = ValueNotifier<int>(0);
 final dateController = ValueNotifier<DateTime?>(null);
 
 final clickController = ValueNotifier<String?>(null);
+
+final clickValueController = ValueNotifier<String?>('hello');
 
 final emailController = TextEditingController();
 
@@ -69,6 +77,31 @@ class FormExample extends StatelessWidget {
                 key: _keyForm,
                 child: Column(
                   children: [
+                    ClickField<String>(
+                      key: const Key('test-click'),
+                      controller: clickController,
+                      label: 'click field label',
+                      onClicked: (String? text) async {
+                        return "hello";
+                      },
+                      valueToString: (String? value) => value ?? '',
+                      require: 'you must click to set value',
+                      focusNode: pFormPlayground.clickFocus,
+                      nextFocusNode: pFormPlayground.emailFocus,
+                    ),
+                    br(),
+                    ClickField<String>(
+                      key: const Key('test-click-value'),
+                      controller: clickValueController,
+                      label: 'click value field',
+                      onClicked: (String? text) async {
+                        return "hello";
+                      },
+                      valueToString: (String? value) => value ?? '',
+                      focusNode: pFormPlayground.clickValueFocus,
+                      require: 'you must click to set value',
+                    ),
+                    br(),
                     InputField(
                       key: const Key('test-input'),
                       controller: textController,
@@ -91,26 +124,13 @@ class FormExample extends StatelessWidget {
                       nextFocusNode: pFormPlayground.clickFocus,
                     ),
                     br(),
-                    ClickField<String>(
-                      key: const Key('test-click'),
-                      controller: clickController,
-                      label: 'click field label',
-                      onClicked: (String? text) async {
-                        return "hello";
-                      },
-                      valueToString: (String? value) => value ?? '',
-                      require: 'you must click to set value',
-                      focusNode: pFormPlayground.clickFocus,
-                      nextFocusNode: pFormPlayground.emailFocus,
-                    ),
-                    br(),
                     EmailField(
                       key: const Key('test-email'),
                       controller: emailController,
                       label: 'email field',
                       focusNode: pFormPlayground.emailFocus,
                     ),
-                    const SizedBox(height: 20),
+                    br(),
                     DateField(
                       key: const Key('test-date'),
                       controller: dateController,
@@ -118,19 +138,38 @@ class FormExample extends StatelessWidget {
                       focusNode: pFormPlayground.dateFocus,
                       require: 'you must select a date',
                     ),
-                    const SizedBox(height: 20),
+                    br(),
+                    DateField(
+                      key: const Key('test-datetime'),
+                      controller: dateController,
+                      label: 'datetime field',
+                      mode: DateFieldMode.datetime,
+                      focusNode: pFormPlayground.datetimeFocus,
+                      require: 'you must select a date',
+                    ),
+                    br(),
+                    DateField(
+                      key: const Key('test-ime'),
+                      controller: dateController,
+                      label: 'time field',
+                      mode: DateFieldMode.time,
+                      focusNode: pFormPlayground.timeFocus,
+                      require: 'you must select a date',
+                    ),
+                    br(),
                     Button(
                       width: 240,
                       key: const Key('submitForm'),
                       label: 'Submit form',
                       form: _keyForm,
                       onClick: () async {
+                        debugPrint('form submitted');
                         await Future.delayed(const Duration(seconds: 5));
                       },
                     ),
-                    const SizedBox(height: 20),
+                    br(),
                     Separator(height: 2, color: Colors.red[200]!),
-                    const SizedBox(height: 20),
+                    br(),
                     Button(
                       elevation: 0,
                       color: Colors.red[400]!,
@@ -140,7 +179,7 @@ class FormExample extends StatelessWidget {
                         await Future.delayed(const Duration(seconds: 5));
                       },
                     ),
-                    const SizedBox(height: 20),
+                    br(),
                     Button(
                       elevation: 0,
                       color: Colors.green[400]!,
@@ -150,7 +189,7 @@ class FormExample extends StatelessWidget {
                         await Future.delayed(const Duration(seconds: 1));
                       },
                     ),
-                    const SizedBox(height: 20),
+                    br(),
                     AnimateButton(
                       'animate button',
                       onClick: () async {

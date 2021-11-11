@@ -1,26 +1,12 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
-import 'package:provider/provider.dart';
-
-/// _ClickFieldProvider control place field
-class _ClickFieldProvider extends ChangeNotifier {
-  String? _error;
-
-  void _setError(String? error) {
-    _error = error;
-    notifyListeners();
-  }
-
-  void _refresh() {
-    notifyListeners();
-  }
-}
+import 'custom_field.dart';
 
 /// ClickFiled show read only text, user must click to change value
 class ClickField<T> extends Field<T> {
   const ClickField({
     required Key key,
-    required this.controller,
+    required ValueNotifier<T?> controller,
     required this.onClicked,
     required this.valueToString,
     FormFieldValidator<T>? validator,
@@ -30,6 +16,7 @@ class ClickField<T> extends Field<T> {
     FocusNode? nextFocusNode,
   }) : super(
           key: key,
+          controller: controller,
           validator: validator,
           label: label,
           require: require,
@@ -37,60 +24,30 @@ class ClickField<T> extends Field<T> {
           nextFocusNode: nextFocusNode,
         );
 
-  /// controller is dropdown value controller
-  final ValueNotifier<T?> controller;
-
-  /// onClicked must return new string result
+  /// onClicked return new result
   final Future<T?> Function(T? value) onClicked;
 
   /// valueToString convert value to string
-  final String Function(T? value) valueToString;
+  final String Function(T?) valueToString;
 
   /// superValidate use field validate
   String? superValidate(T? value) => super.validate(value);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<_ClickFieldProvider>(
-      create: (context) => _ClickFieldProvider(),
-      child: Consumer<_ClickFieldProvider>(builder: (context, provide, child) {
-        return Focus(
-          focusNode: focusNode,
-          child: InkWell(
-            onTap: () async {
-              controller.value = await onClicked(controller.value);
-              provide._refresh();
-              if (nextFocusNode != null) {
-                nextFocusNode!.requestFocus();
-              }
-            },
-            child: InputDecorator(
-              isFocused: focusNode != null ? focusNode!.hasFocus : false,
-              isEmpty: controller.value == null,
-              decoration: InputDecoration(
-                labelText: label,
-                errorText: provide._error,
-                suffixIcon: const Icon(
-                  Icons.navigate_next,
-                ),
-              ).applyDefaults(Theme.of(context).inputDecorationTheme),
-              child: FormField<T>(
-                key: key,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (T? value) {
-                  provide._setError(superValidate(value));
-                },
-                builder: (FormFieldState<T> state) {
-                  return Text(valueToString(controller.value), style: Theme.of(context).textTheme.subtitle1);
-                },
-              ),
-            ),
-          ),
-          onFocusChange: (hasFocus) {
-            provide._refresh();
-          },
-        );
-      }),
+    return CustomField<T>(
+      label: label,
+      focusNode: focusNode,
+      nextFocusNode: nextFocusNode,
+      controller: controller,
+      valueToString: valueToString,
+      validator: (T? value) => super.validate(value),
+      suffixIcon: const Icon(
+        Icons.navigate_next,
+      ),
+      onTap: () async {
+        controller.value = await onClicked(controller.value);
+      },
     );
   }
 }

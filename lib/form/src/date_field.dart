@@ -1,32 +1,31 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:date_field/date_field.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'field.dart';
 
+enum DateFieldMode { time, date, datetime }
+
 /// DateField for input date
-class DateField extends Field<String> {
+class DateField extends Field<DateTime> {
   const DateField({
     required Key key,
-    required this.controller,
+    required ValueNotifier<DateTime?> controller,
     this.firstDate,
     this.lastDate,
     String? label,
-    String? hint,
     String? require,
-    FormFieldValidator<String>? validator,
+    FormFieldValidator<DateTime>? validator,
+    this.mode = DateFieldMode.date,
     FocusNode? focusNode,
   }) : super(
           key: key,
+          controller: controller,
           label: label,
-          hint: hint,
           require: require,
           validator: validator,
           focusNode: focusNode,
         );
-
-  /// controller is input value controller
-  final ValueNotifier<DateTime?> controller;
 
   /// firstDate define first date
   final DateTime? firstDate;
@@ -34,31 +33,46 @@ class DateField extends Field<String> {
   /// lastDate define last date
   final DateTime? lastDate;
 
+  final DateFieldMode mode;
+
+  DateTimeFieldPickerMode get _mode {
+    switch (mode) {
+      case DateFieldMode.time:
+        return DateTimeFieldPickerMode.time;
+      case DateFieldMode.date:
+        return DateTimeFieldPickerMode.date;
+      case DateFieldMode.datetime:
+        return DateTimeFieldPickerMode.dateAndTime;
+    }
+  }
+
+  DateFormat get _format {
+    switch (mode) {
+      case DateFieldMode.time:
+        return i18n.timeFormat;
+      case DateFieldMode.date:
+        return i18n.dateFormat;
+      case DateFieldMode.datetime:
+        return i18n.dateTimeFormat;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DateTimePicker(
-      type: DateTimePickerType.date,
-      dateMask: i18n.datePattern,
-      initialValue: controller.value != null ? i18n.formatDate(controller.value!.toLocal()) : '',
-      firstDate: firstDate ?? DateTime(1951),
-      lastDate: lastDate ?? DateTime(2050),
-      dateLabelText: label,
-      validator: validate,
-      autovalidate: true,
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      /*
-      selectableDayPredicate: (date) {
-        // Disable weekend days to select from the calendar
-        //if (date.weekday == 6 || date.weekday == 7) {
-        //  return false;
-        //}
-
-        return true;
-      },*/
-      onChanged: (val) {
-        controller.value = DateFormat('yyyy-MM-dd', null).parse(val).toUtc();
-        debugPrint(val);
-      },
+    return DateTimeFormField(
+      mode: _mode,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      dateFormat: _format,
+      initialValue: controller.value,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      validator: (value) => super.validate(value),
+      decoration: InputDecoration(
+        labelText: label,
+        suffixIcon: const Icon(
+          Icons.expand_more,
+        ),
+      ).applyDefaults(Theme.of(context).inputDecorationTheme),
     );
   }
 }

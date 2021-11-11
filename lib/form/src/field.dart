@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 abstract class Field<T> extends StatelessWidget {
   const Field({
     required Key key, // all field must have key, it's important for test and identify field
+    required this.controller, // all field must have key, it's important for test and identify field
     this.label,
     this.hint,
     this.require,
@@ -10,6 +11,9 @@ abstract class Field<T> extends StatelessWidget {
     this.focusNode,
     this.nextFocusNode,
   }) : super(key: key);
+
+  /// controller is field value controller
+  final ValueNotifier<T?> controller;
 
   /// label will show when value is not empty
   final String? label;
@@ -29,8 +33,13 @@ abstract class Field<T> extends StatelessWidget {
 
   /// validate value return error message if value is not validate
   String? validate(T? value) {
-    if (require != null && value == null) {
-      return require;
+    if (require != null) {
+      if (value == null) {
+        return require;
+      }
+      if (value is String && value.isEmpty) {
+        return require;
+      }
     }
 
     if (validator != null) {
@@ -38,9 +47,4 @@ abstract class Field<T> extends StatelessWidget {
     }
     return null;
   }
-
-  InputDecoration get defaultDecoration => InputDecoration(
-        labelText: label,
-        hintText: hint,
-      );
 }

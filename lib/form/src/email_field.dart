@@ -57,24 +57,22 @@ class EmailFieldProvider extends ChangeNotifier {
 }
 
 /// EmailField is for email address input
-class EmailField extends Field<String> {
-  /// controller is input value controller
-  final TextEditingController controller;
-
+class EmailField extends Field<TextEditingValue> {
   /// textInputAction control keyboard text input action
   final TextInputAction textInputAction;
 
   const EmailField({
     required Key key,
-    required this.controller,
+    required TextEditingController controller,
     required FocusNode focusNode,
     this.textInputAction = TextInputAction.next,
     String? label,
     String? hint,
     String? require,
-    FormFieldValidator<String>? validator,
+    FormFieldValidator<TextEditingValue>? validator,
   }) : super(
           key: key,
+          controller: controller,
           label: label,
           hint: hint,
           require: require,
@@ -83,17 +81,21 @@ class EmailField extends Field<String> {
         );
 
   @override
-  String? validate(String? value) {
+  String? validate(TextEditingValue? value) {
     var result = super.validate(value);
     if (result != null) {
       return result;
     }
-    if (require != null && (value == null || value.isEmpty)) {
+    if (require != null && (value == null || value.text.isEmpty)) {
       return require;
     }
 
-    if (value != null && value.length > 96) {
-      return 'maxLength'.i18n_.replaceAll('%1', label ?? '').replaceAll('%2', '96').replaceAll('%3', '${value.length}');
+    if (value != null && value.text.length > 96) {
+      return 'maxLength'
+          .i18n_
+          .replaceAll('%1', label ?? '')
+          .replaceAll('%2', '96')
+          .replaceAll('%3', '${value.text.length}');
     }
     return null;
   }
@@ -101,12 +103,12 @@ class EmailField extends Field<String> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<EmailFieldProvider>(
-      create: (context) => EmailFieldProvider(focusNode!, controller),
+      create: (context) => EmailFieldProvider(focusNode!, controller as TextEditingController),
       child: Consumer<EmailFieldProvider>(builder: (context, pEmailField, child) {
         return Column(
           children: <Widget>[
             TextFormField(
-              controller: controller,
+              controller: controller as TextEditingController,
               focusNode: focusNode,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(64),

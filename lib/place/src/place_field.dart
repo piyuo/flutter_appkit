@@ -11,21 +11,19 @@ import 'show_search.dart';
 class PlaceField extends form.Field<types.Place> {
   const PlaceField({
     required Key key,
-    required this.controller,
+    required ValueNotifier<types.Place?> controller,
     String? label,
     String? require,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
   }) : super(
           key: key,
+          controller: controller,
           label: label,
           require: require,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
         );
-
-  /// controller is place value controller
-  final ValueNotifier<types.Place?> controller;
 
   @override
   Widget build(BuildContext context) {
