@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'indicator.dart';
 import 'extensions.dart';
 
 /// RefreshButton show animation when refreshing

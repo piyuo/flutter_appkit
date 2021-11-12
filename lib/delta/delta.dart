@@ -28,3 +28,4 @@ export 'src/check.dart';
 export 'src/checkbox_label.dart';
 export 'src/check_list.dart';
 export 'src/round_checkbox.dart';
+export 'src/slide_segment.dart';

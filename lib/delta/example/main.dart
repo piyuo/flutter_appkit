@@ -35,6 +35,8 @@ final _checkController = ValueNotifier<bool>(false);
 
 final _switchController = ValueNotifier<bool>(false);
 
+final _segmentController = ValueNotifier<int>(0);
+
 class DeltaExample extends StatelessWidget {
   const DeltaExample({Key? key}) : super(key: key);
 
@@ -49,7 +51,7 @@ class DeltaExample extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 400,
-                          child: _checkList(context),
+                          child: _segment(context),
                         ),
                         testing.example(
                           context,
@@ -161,12 +163,15 @@ class DeltaExample extends StatelessWidget {
                           text: 'switch',
                           child: _switching(context),
                         ),
+                        testing.example(
+                          context,
+                          text: 'segment',
+                          child: _segment(context),
+                        ),
                       ],
                     ),
                   ),
                 )));
-
-    ;
   }
 
   Widget _awaitOnTap(BuildContext context) {
@@ -426,6 +431,13 @@ class DeltaExample extends StatelessWidget {
 
   Widget _switching(BuildContext context) {
     return Switching(controller: _switchController);
+  }
+
+  Widget _segment(BuildContext context) {
+    return SlideSegment<int>(controller: _segmentController, children: const {
+      0: Text('Network Printer'),
+      1: Text('Bluetooth Printer'),
+    });
   }
 
   Widget _checkList(BuildContext context) {
