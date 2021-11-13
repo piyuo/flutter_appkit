@@ -16,6 +16,7 @@ class InputField extends Field<TextEditingValue> {
     String? label,
     String? hint,
     String? require,
+    this.readOnly = false,
     FormFieldValidator<TextEditingValue>? validator,
     FocusNode? focusNode,
   }) : super(
@@ -41,6 +42,9 @@ class InputField extends Field<TextEditingValue> {
   final InputDecoration? decoration;
 
   final List<TextInputFormatter>? formatters;
+
+  /// readOnly set input field readOnly
+  final bool readOnly;
 
   @override
   String? validate(TextEditingValue? value) {
@@ -74,6 +78,7 @@ class InputField extends Field<TextEditingValue> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       focusNode: focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller as TextEditingController,

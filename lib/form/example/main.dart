@@ -12,6 +12,7 @@ class FormExampleProvider extends ChangeNotifier {
   @override
   dispose() {
     inputFocus.dispose();
+    input2Focus.dispose();
     dropdownFocus.dispose();
     clickFocus.dispose();
     emailFocus.dispose();
@@ -22,6 +23,8 @@ class FormExampleProvider extends ChangeNotifier {
   }
 
   final inputFocus = FocusNode();
+
+  final input2Focus = FocusNode();
 
   final dropdownFocus = FocusNode();
 
@@ -109,6 +112,30 @@ class FormExample extends StatelessWidget {
                       hint: 'please input text',
                       require: 'input is required',
                       focusNode: pFormPlayground.inputFocus,
+                    ),
+                    br(),
+                    InputField(
+                      key: const Key('test-input2'),
+                      decoration: InputDecoration(
+                        labelText: 'input field label',
+                        hintText: 'please input text',
+                        suffixIcon: ElevatedButton.icon(
+                            style: const ButtonStyle(visualDensity: VisualDensity.compact),
+                            icon: const Icon(Icons.bluetooth),
+                            label: const Text('Search'),
+                            onPressed: () {
+                              textController.text = 'searched';
+                            }),
+/*                        suffixIcon: IconButton(
+                            icon: const Icon(Icons.search),
+                            onPressed: () {
+                              textController.text = 'searched';
+                            }),*/
+                      ),
+                      readOnly: true,
+                      controller: textController,
+                      require: 'input is required',
+                      focusNode: pFormPlayground.input2Focus,
                     ),
                     br(),
                     DropdownField(
