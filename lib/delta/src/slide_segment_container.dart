@@ -12,6 +12,7 @@ class SlideSegmentContainer extends StatefulWidget {
     required this.segments,
     required this.controller,
     this.height = 200,
+    this.padding,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +28,8 @@ class SlideSegmentContainer extends StatefulWidget {
   /// height is container height;
   final double height;
 
+  final EdgeInsetsGeometry? padding;
+
   @override
   _SlideSegmentContainerState createState() => _SlideSegmentContainerState();
 }
@@ -39,10 +42,12 @@ class _SlideSegmentContainerState extends State<SlideSegmentContainer> {
         controller: widget.controller,
         children: widget.segments.asMap(),
       ),
-      SwipeContainer(
-        controller: widget.controller,
-        children: widget.children,
-      )
+      Padding(
+          padding: widget.padding ?? EdgeInsets.zero,
+          child: SwipeContainer(
+            controller: widget.controller,
+            children: widget.children,
+          ))
     ]);
   }
 }
