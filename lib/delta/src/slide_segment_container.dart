@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'slide_segment.dart';
+import 'swipe_container.dart';
+
+/// SlideSegmentContainer provides a segmented control container
+///
+class SlideSegmentContainer extends StatefulWidget {
+  const SlideSegmentContainer({
+    required this.children,
+    required this.segments,
+    required this.controller,
+    this.height = 200,
+    Key? key,
+  }) : super(key: key);
+
+  /// children is children widget
+  final List<Widget> children;
+
+  /// segments is segment control widget
+  final List<Widget> segments;
+
+  /// controller is dropdown value controller
+  final ValueNotifier<int?> controller;
+
+  /// height is container height;
+  final double height;
+
+  @override
+  _SlideSegmentContainerState createState() => _SlideSegmentContainerState();
+}
+
+class _SlideSegmentContainerState extends State<SlideSegmentContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      SlideSegment<int>(
+        controller: widget.controller,
+        children: widget.segments.asMap(),
+      ),
+      SwipeContainer(
+        controller: widget.controller,
+        children: widget.children,
+      )
+    ]);
+  }
+}

@@ -13,6 +13,14 @@ main() {
     () => debugPrint(_listingController.value.toString()),
   );
 
+  _segmentController.addListener(
+    () => _swipeController.value = _segmentController.value,
+  );
+
+  _swipeController.addListener(
+    () => _segmentController.value = _swipeController.value,
+  );
+
   app.start(
     appName: 'delta example',
     routes: (_) => const DeltaExample(),
@@ -36,6 +44,8 @@ final _checkController = ValueNotifier<bool>(false);
 final _switchController = ValueNotifier<bool>(false);
 
 final _segmentController = ValueNotifier<int>(0);
+
+final _swipeController = ValueNotifier<int>(0);
 
 class DeltaExample extends StatelessWidget {
   const DeltaExample({Key? key}) : super(key: key);
@@ -434,10 +444,23 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _segment(BuildContext context) {
-    return SlideSegment<int>(controller: _segmentController, children: const {
-      0: Text('Network Printer'),
-      1: Text('Bluetooth Printer'),
-    });
+    return Column(children: [
+      SlideSegment<int>(controller: _segmentController, children: const {
+        0: Text('Network Printer'),
+        1: Text('Bluetooth Printer'),
+      }),
+      SwipeContainer(controller: _swipeController, children: const [
+        Text('Network Setting'),
+        Text('Bluetooth Setting'),
+      ]),
+      SlideSegmentContainer(controller: _swipeController, segments: const [
+        Text('Network Printer'),
+        Text('Bluetooth Printer'),
+      ], children: const [
+        Text('Network Setting'),
+        Text('Bluetooth Setting'),
+      ])
+    ]);
   }
 
   Widget _checkList(BuildContext context) {
