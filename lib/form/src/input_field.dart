@@ -18,6 +18,7 @@ class InputField extends Field<TextEditingValue> {
     String? require,
     this.readOnly = false,
     FormFieldValidator<TextEditingValue>? validator,
+    this.keyboardType,
     FocusNode? focusNode,
   }) : super(
           key: key,
@@ -45,6 +46,8 @@ class InputField extends Field<TextEditingValue> {
 
   /// readOnly set input field readOnly
   final bool readOnly;
+
+  final TextInputType? keyboardType;
 
   @override
   String? validate(TextEditingValue? value) {
@@ -85,6 +88,7 @@ class InputField extends Field<TextEditingValue> {
       inputFormatters: [LengthLimitingTextInputFormatter(maxLength), ...formatters ?? []],
       textInputAction: textInputAction,
       validator: (value) => validate(controller.value),
+      keyboardType: keyboardType,
       decoration: decoration ??
           InputDecoration(
             labelText: label,
