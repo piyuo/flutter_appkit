@@ -14,3 +14,6 @@ TextEditingValue currencyFormatter(TextEditingValue oldValue, TextEditingValue n
   return newValue.copyWith(text: newText, selection: TextSelection.collapsed(offset: newText.length));
 //      selection: new TextSelection.collapsed());
 }
+
+// decimalNumberFormatter only accept 0-9 and .
+FilteringTextInputFormatter get decimalNumberFormatter => FilteringTextInputFormatter.allow(RegExp(r"[0-9.]"));
