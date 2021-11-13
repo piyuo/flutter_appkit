@@ -45,6 +45,7 @@ class _SlideSegmentContainerState extends State<SlideSegmentContainer> {
       Padding(
           padding: widget.padding ?? EdgeInsets.zero,
           child: SwipeContainer(
+            height: widget.height,
             controller: widget.controller,
             children: widget.children,
           ))
