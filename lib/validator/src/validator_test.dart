@@ -106,10 +106,18 @@ void main() {
     });
 
     test('should check chinese or japanese character', () async {
-      final r = chineseOrJapaneseRegexp();
+      final r = chineseOrJapaneseRegexp;
       expect(r.hasMatch('abc'), false);
       expect(r.hasMatch('ab中文c'), true);
       expect(r.hasMatch('abバッテリーc'), true);
+    });
+
+    test('should check ip address', () async {
+      final r = ipAddressRegexp;
+      expect(r.hasMatch('1.1.1.1'), true);
+      expect(r.hasMatch('abc'), false);
+      expect(r.hasMatch('192.168.1.1'), true);
+      expect(r.hasMatch('192.168.1.a'), false);
     });
   });
 }

@@ -68,9 +68,7 @@ String? regexpValidator({
 /// Stop Validating Email Addresses With Regex
 /// https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
 ///
-RegExp emailRegexp() {
-  return RegExp(r".+@.+\..+");
-}
+RegExp get emailRegexp => RegExp(r".+@.+\..+");
 
 /// emailValidator validate input string is email, return error message when input not valid, other return null
 ///
@@ -79,7 +77,7 @@ RegExp emailRegexp() {
 String? emailValidator(String? input) {
   return regexpValidator(
     input: input,
-    regexp: emailRegexp(),
+    regexp: emailRegexp,
     label: 'emailAdr'.i18n_,
     example: 'johndoe@domain.com',
   );
@@ -87,9 +85,7 @@ String? emailValidator(String? input) {
 
 /// domainNameRegexp regexp use to validate domain name
 ///
-RegExp domainNameRegexp() {
-  return RegExp(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]");
-}
+RegExp get domainNameRegexp => RegExp(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]");
 
 /// domainNameValidator validate input string is domain name, return error message when input not valid, other return null
 ///
@@ -98,7 +94,7 @@ RegExp domainNameRegexp() {
 String? domainNameValidator(String? input) {
   return regexpValidator(
     input: input,
-    regexp: domainNameRegexp(),
+    regexp: domainNameRegexp,
     label: 'domain'.i18n_,
     example: 'www.domain.com',
   );
@@ -106,9 +102,7 @@ String? domainNameValidator(String? input) {
 
 /// subDomainNameRegexp regexp use to validate domain name
 ///
-RegExp subDomainNameRegexp() {
-  return RegExp(r"^[a-zA-Z0-9-]*[a-zA-Z0-9]$");
-}
+RegExp get subDomainNameRegexp => RegExp(r"^[a-zA-Z0-9-]*[a-zA-Z0-9]$");
 
 /// domainNameValidator validate input string is domain name, return error message when input not valid, other return null
 ///
@@ -117,7 +111,7 @@ RegExp subDomainNameRegexp() {
 String? subDomainNameValidator(String? input) {
   return regexpValidator(
     input: input,
-    regexp: subDomainNameRegexp(),
+    regexp: subDomainNameRegexp,
     label: 'domain'.i18n_,
     example: 'your-name',
   );
@@ -125,9 +119,7 @@ String? subDomainNameValidator(String? input) {
 
 /// nameRegexp regexp use to validate name, character and space only
 ///
-RegExp noSymbolRegexp() {
-  return RegExp(r"""^[^*|\":<>[\]{}`\\()';!@#%^*?&$.~,\-_=+\/]+$""");
-}
+RegExp get noSymbolRegexp => RegExp(r"""^[^*|\":<>[\]{}`\\()';!@#%^*?&$.~,\-_=+\/]+$""");
 
 /// nameValidator validate input string is character and space only, return error message when input not valid, other return null
 ///
@@ -136,7 +128,7 @@ RegExp noSymbolRegexp() {
 String? noSymbolValidator(String? input) {
   return regexpValidator(
     input: input,
-    regexp: noSymbolRegexp(),
+    regexp: noSymbolRegexp,
     label: 'domain'.i18n_,
     example: 'your-name',
   );
@@ -144,9 +136,7 @@ String? noSymbolValidator(String? input) {
 
 /// urlRegexp regexp use to validate url
 ///
-RegExp urlRegexp() {
-  return RegExp(r"^(https?)://[^\s/$.?#].[^\s]*$");
-}
+RegExp get urlRegexp => RegExp(r"^(https?)://[^\s/$.?#].[^\s]*$");
 
 /// urlValidator validate input string is url, return error message when input not valid, other return null
 ///
@@ -155,7 +145,7 @@ RegExp urlRegexp() {
 String? urlValidator(String? input) {
   return regexpValidator(
     input: input,
-    regexp: urlRegexp(),
+    regexp: urlRegexp,
     label: 'url'.i18n_,
     example: 'http://www.domain.com',
   );
@@ -163,6 +153,9 @@ String? urlValidator(String? input) {
 
 /// chineseOrJapaneseRegexp regexp use to check chinese or japanese character exists
 ///
-RegExp chineseOrJapaneseRegexp() {
-  return RegExp(r"(?:[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f])");
-}
+RegExp get chineseOrJapaneseRegexp =>
+    RegExp(r"(?:[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f])");
+
+/// ipAddressRegexp regexp use to check ip address
+///
+RegExp get ipAddressRegexp => RegExp(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$");
