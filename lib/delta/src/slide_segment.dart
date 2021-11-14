@@ -47,10 +47,9 @@ class _SlideSegmentState<T> extends State<SlideSegment> {
     return CupertinoSlidingSegmentedControl<T>(
         groupValue: widget.controller.value,
         children: widget.children as Map<T, Widget>,
-        onValueChanged: (value) async {
-          if (widget.onBeforeChange != null && await widget.onBeforeChange!(value)) {
-            widget.controller.value = value;
-          }
+        onValueChanged: (value) {
+          widget.onBeforeChange?.call(value);
+          widget.controller.value = value;
         });
   }
 }
