@@ -26,7 +26,7 @@ class SlideSegmentContainer extends StatefulWidget {
   /// controller is dropdown value controller
   final ValueNotifier<int?> controller;
 
-  final Future<void> Function(int?)? onBeforeChange;
+  final void Function(int?)? onBeforeChange;
 
   /// height is container height;
   final double height;

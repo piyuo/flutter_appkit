@@ -18,7 +18,13 @@ class SlideSegment<T> extends StatefulWidget {
   /// controller is dropdown value controller
   final ValueNotifier<T?> controller;
 
-  final Future<void> Function(T?)? onBeforeChange;
+  final void Function(T?)? onBeforeChange;
+
+  void notifyBeforeChange(value) {
+    if (onBeforeChange != null) {
+      onBeforeChange!(value);
+    }
+  }
 
   @override
   _SlideSegmentState createState() => _SlideSegmentState<T>();
@@ -48,7 +54,7 @@ class _SlideSegmentState<T> extends State<SlideSegment> {
         groupValue: widget.controller.value,
         children: widget.children as Map<T, Widget>,
         onValueChanged: (value) {
-          widget.onBeforeChange?.call(value);
+          widget.notifyBeforeChange(value);
           widget.controller.value = value;
         });
   }

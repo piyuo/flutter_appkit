@@ -445,21 +445,33 @@ class DeltaExample extends StatelessWidget {
 
   Widget _segment(BuildContext context) {
     return Column(children: [
-      SlideSegment<int>(controller: _segmentController, children: const {
-        0: Text('Network Printer'),
-        1: Text('Bluetooth Printer'),
-      }),
+      SlideSegment<int>(
+        onBeforeChange: (index) {
+          debugPrint('before change: $index');
+        },
+        controller: _segmentController,
+        children: const {
+          0: Text('Network Printer'),
+          1: Text('Bluetooth Printer'),
+        },
+      ),
       SwipeContainer(controller: _swipeController, children: const [
         Text('Network Setting'),
         Text('Bluetooth Setting'),
       ]),
-      SlideSegmentContainer(controller: _swipeController, segments: const [
-        Text('Network Printer'),
-        Text('Bluetooth Printer'),
-      ], children: const [
-        Text('Network Setting'),
-        Text('Bluetooth Setting'),
-      ])
+      SlideSegmentContainer(
+          onBeforeChange: (int? index) {
+            debugPrint('before change: $index');
+          },
+          controller: _swipeController,
+          segments: const [
+            Text('Network Printer'),
+            Text('Bluetooth Printer'),
+          ],
+          children: const [
+            Text('Network Setting'),
+            Text('Bluetooth Setting'),
+          ])
     ]);
   }
 
