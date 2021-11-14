@@ -11,6 +11,7 @@ class SlideSegmentContainer extends StatefulWidget {
     required this.children,
     required this.segments,
     required this.controller,
+    this.onBeforeChange,
     this.height = 100,
     this.padding,
     Key? key,
@@ -24,6 +25,8 @@ class SlideSegmentContainer extends StatefulWidget {
 
   /// controller is dropdown value controller
   final ValueNotifier<int?> controller;
+
+  final Future<bool> Function(int?)? onBeforeChange;
 
   /// height is container height;
   final double height;
@@ -41,6 +44,7 @@ class _SlideSegmentContainerState extends State<SlideSegmentContainer> {
       SlideSegment<int>(
         controller: widget.controller,
         children: widget.segments.asMap(),
+        onBeforeChange: widget.onBeforeChange,
       ),
       Padding(
           padding: widget.padding ?? EdgeInsets.zero,
