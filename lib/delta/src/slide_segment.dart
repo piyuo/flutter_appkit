@@ -8,6 +8,7 @@ class SlideSegment<T> extends StatefulWidget {
   const SlideSegment({
     required this.children,
     required this.controller,
+    this.onBeforeChange,
     Key? key,
   }) : super(key: key);
 
@@ -16,6 +17,8 @@ class SlideSegment<T> extends StatefulWidget {
 
   /// controller is dropdown value controller
   final ValueNotifier<T?> controller;
+
+  final Future<bool> Function(T?)? onBeforeChange;
 
   @override
   _SlideSegmentState createState() => _SlideSegmentState<T>();
@@ -44,8 +47,10 @@ class _SlideSegmentState<T> extends State<SlideSegment> {
     return CupertinoSlidingSegmentedControl<T>(
         groupValue: widget.controller.value,
         children: widget.children as Map<T, Widget>,
-        onValueChanged: (value) {
-          widget.controller.value = value;
+        onValueChanged: (value) async {
+          if (widget.onBeforeChange != null && await widget.onBeforeChange!(value)) {
+            widget.controller.value = value;
+          }
         });
   }
 }

@@ -11,7 +11,7 @@ class SlideSegmentContainer extends StatefulWidget {
     required this.children,
     required this.segments,
     required this.controller,
-    this.height = 200,
+    this.height = 100,
     this.padding,
     Key? key,
   }) : super(key: key);
