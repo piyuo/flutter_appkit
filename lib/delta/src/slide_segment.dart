@@ -18,7 +18,7 @@ class SlideSegment<T> extends StatefulWidget {
   /// controller is dropdown value controller
   final ValueNotifier<T?> controller;
 
-  final Future<bool> Function(T?)? onBeforeChange;
+  final Future<void> Function(T?)? onBeforeChange;
 
   @override
   _SlideSegmentState createState() => _SlideSegmentState<T>();
