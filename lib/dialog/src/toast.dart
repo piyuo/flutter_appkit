@@ -11,18 +11,18 @@ void _applyTheme(
   EasyLoadingIndicatorType indicatorType = EasyLoadingIndicatorType.fadingCircle,
 }) {
   var mediaQuery = MediaQuery.of(context);
-  var color = context.themeColor(light: Colors.black, dark: Colors.white);
+  var color = context.themeColor(light: Colors.white, dark: Colors.black);
 
   EasyLoading.instance
     ..indicatorSize = 140.0
     ..radius = 26.0
     ..backgroundColor = context.themeColor(
-      light: Colors.white.withOpacity(0.9),
-      dark: Colors.black.withOpacity(0.8),
+      light: Colors.black.withOpacity(0.7),
+      dark: Colors.white.withOpacity(0.7),
     )
     ..boxShadow = const [
       BoxShadow(
-        color: Colors.black54,
+        color: Colors.black26,
         blurRadius: 15.0,
         offset: Offset(3, 4),
       ),
@@ -69,11 +69,26 @@ Future<void> toastWidget(
 Future<void> toastLoading(
   BuildContext context, {
   String? text,
-  bool searching = false,
 }) async {
   _applyTheme(
     context,
-    indicatorType: searching ? EasyLoadingIndicatorType.threeBounce : EasyLoadingIndicatorType.fadingCircle,
+    indicatorType: EasyLoadingIndicatorType.fadingCircle,
+  );
+  return await EasyLoading.show(
+    status: text,
+    maskType: EasyLoadingMaskType.clear,
+  );
+}
+
+/// toastSearching show search toast
+///
+Future<void> toastSearching(
+  BuildContext context, {
+  String? text,
+}) async {
+  _applyTheme(
+    context,
+    indicatorType: EasyLoadingIndicatorType.threeBounce,
   );
   return await EasyLoading.show(
     status: text,

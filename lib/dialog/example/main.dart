@@ -183,7 +183,7 @@ class DialogExample extends StatelessWidget {
                         ElevatedButton(
                           child: const Text('searching'),
                           onPressed: () async {
-                            toastLoading(context, text: 'Searching ...', searching: true);
+                            toastSearching(context, text: 'Searching ...');
                             await Future.delayed(const Duration(seconds: 3));
                             dismiss();
                           },
