@@ -16,7 +16,6 @@ extension L10nLocalization on String {
 }
 
 String? _enUS(String key) => {
-      'notSupport': 'Web mode does not support %1, Please install our native app',
       'permission': 'This app requires access to the %1 , do you want allow it in app setting?',
       'bluetooth': 'bluetooth',
       'camera': 'camera',
@@ -28,7 +27,6 @@ String? _enUS(String key) => {
     }[key];
 
 String? _zhTW(String key) => {
-      'notSupport': '網頁模式不支援%1，請安裝我們的原生 APP',
       'permission': '我們需要權限存取%1, 您想去設定頁面開啟相機權限嗎?',
       'bluetooth': '藍芽',
       'camera': '相機',
@@ -40,7 +38,6 @@ String? _zhTW(String key) => {
     }[key];
 
 String? _zhCN(String key) => {
-      'notSupport': '网页模式不支援%1，请安装我们的原生 APP',
       'permission': '我们需要权限存取%1, 您想去设定页面开启相机权限吗?',
       'bluetooth': '蓝芽',
       'camera': '相机',

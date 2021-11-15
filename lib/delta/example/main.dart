@@ -47,6 +47,8 @@ final _segmentController = ValueNotifier<int>(0);
 
 final _swipeController = ValueNotifier<int>(0);
 
+final _busyController = ValueNotifier<bool>(false);
+
 class DeltaExample extends StatelessWidget {
   const DeltaExample({Key? key}) : super(key: key);
 
@@ -61,7 +63,7 @@ class DeltaExample extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 400,
-                          child: _segment(context),
+                          child: _indicator(context),
                         ),
                         testing.example(
                           context,
@@ -725,6 +727,15 @@ class DeltaExample extends StatelessWidget {
 
   Widget _indicator(BuildContext context) {
     return Column(children: [
+      Busy(
+        controller: _busyController,
+      ),
+      OutlinedButton(
+        child: const Text('toggle busy'),
+        onPressed: () {
+          _busyController.value = !_busyController.value;
+        },
+      ),
       SizedBox(width: 100, height: 20, child: ballPulseIndicator()),
       SizedBox(width: 100, height: 20, child: ballSyncIndicator()),
       SizedBox(width: 100, height: 100, child: ballScaleIndicator()),
