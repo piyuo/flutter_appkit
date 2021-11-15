@@ -4,7 +4,7 @@ import 'toast.dart';
 
 /// loading show loading dialog when callback running
 ///
-void loading(
+Future<void> loading(
   BuildContext context,
   Future<void> Function() callback,
 ) async {
