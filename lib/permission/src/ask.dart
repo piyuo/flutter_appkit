@@ -1,0 +1,54 @@
+import 'dart:core';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
+import 'l10n.dart';
+
+/// askPermission return true if user grant permission
+Future<bool> ask(
+  BuildContext context, {
+  required Permission permission,
+  required String name,
+  required IconData icon,
+}) async {
+  try {
+    var status = await permission.status;
+    if (status.isGranted) {
+      return true;
+    }
+  } catch (e) {
+    if (e is MissingPluginException) {
+      return false;
+    }
+    rethrow;
+  }
+
+  final request = await permission.request();
+  final granted = request.isGranted;
+  if (granted) {
+    return true;
+  }
+
+  final gotoSetting = await dialog.alert(
+    context,
+    'permission'.l10n.replaceAll('%1', name),
+    icon: icon,
+    iconColor: context.themeColor(
+      light: Colors.grey[900]!,
+      dark: Colors.grey[100]!,
+    ),
+    yes: 'gotoSetting'.l10n,
+    buttonCancel: true,
+  );
+  if (gotoSetting == true) {
+    openAppSettings();
+  }
+  return false;
+}
+
+/// openSettings open the app settings page.
+///
+/// Returns [true] if the app settings page could be opened, otherwise [false].
+Future<bool> openSettings() => openAppSettings();

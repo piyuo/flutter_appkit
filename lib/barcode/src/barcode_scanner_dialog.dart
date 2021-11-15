@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/permission/permission.dart' as permission;
 import 'barcode_scanner.dart';
 import 'l10n.dart';
 
 /// showQRcodeScanner return scanned QR code or null if not scanned
 Future<String?> showQRcodeScanner(BuildContext context) async {
-  if (await delta.askCameraPermission(context)) {
+  if (await permission.camera(context)) {
     return Navigator.push<String?>(
         context,
         MaterialPageRoute(
