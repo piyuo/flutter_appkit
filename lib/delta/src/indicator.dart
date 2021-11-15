@@ -49,11 +49,11 @@ Widget lineScaleIndicator({
       strokeWidth: 4.0,
     );
 
-Widget lineSpinIndicator({
+Widget ballSpinIndicator({
   List<Color> colors = kDefaultRainbowColors,
 }) =>
     LoadingIndicator(
-      indicatorType: Indicator.lineSpinFadeLoader,
+      indicatorType: Indicator.ballSpinFadeLoader,
       colors: colors,
       strokeWidth: 4.0,
     );

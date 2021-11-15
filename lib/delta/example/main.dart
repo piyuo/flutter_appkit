@@ -740,7 +740,7 @@ class DeltaExample extends StatelessWidget {
       SizedBox(width: 100, height: 20, child: ballSyncIndicator()),
       SizedBox(width: 100, height: 100, child: ballScaleIndicator()),
       SizedBox(width: 100, height: 50, child: lineScaleIndicator()),
-      SizedBox(width: 100, height: 100, child: lineSpinIndicator()),
+      SizedBox(width: 100, height: 100, child: ballSpinIndicator()),
     ]);
   }
 
