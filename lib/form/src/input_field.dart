@@ -11,7 +11,7 @@ class InputField extends Field<TextEditingValue> {
     this.textInputAction = TextInputAction.next,
     this.minLength = 0,
     this.maxLength = 256,
-    this.formatters,
+    this.inputFormatters,
     this.decoration,
     String? label,
     String? hint,
@@ -42,7 +42,7 @@ class InputField extends Field<TextEditingValue> {
   /// decoration use for custom decoration
   final InputDecoration? decoration;
 
-  final List<TextInputFormatter>? formatters;
+  final List<TextInputFormatter>? inputFormatters;
 
   /// readOnly set input field readOnly
   final bool readOnly;
@@ -55,9 +55,6 @@ class InputField extends Field<TextEditingValue> {
     if (result != null) {
       return result;
     }
-    if (require != null && (value == null || value.text.isEmpty)) {
-      return require;
-    }
 
     if (value != null) {
       if (value.text.length < minLength) {
@@ -65,13 +62,6 @@ class InputField extends Field<TextEditingValue> {
             .i18n_
             .replaceAll('%1', label ?? '')
             .replaceAll('%2', '$minLength')
-            .replaceAll('%3', '${value.text.length}');
-      }
-      if (value.text.length > maxLength) {
-        return 'maxLength'
-            .i18n_
-            .replaceAll('%1', label ?? '')
-            .replaceAll('%2', '$maxLength')
             .replaceAll('%3', '${value.text.length}');
       }
     }
@@ -85,7 +75,10 @@ class InputField extends Field<TextEditingValue> {
       focusNode: focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller as TextEditingController,
-      inputFormatters: [LengthLimitingTextInputFormatter(maxLength), ...formatters ?? []],
+      inputFormatters: [
+        if (maxLength > 0) LengthLimitingTextInputFormatter(maxLength),
+        if (inputFormatters != null) ...inputFormatters!,
+      ],
       textInputAction: textInputAction,
       validator: (value) => validate(controller.value),
       keyboardType: keyboardType,

@@ -36,8 +36,9 @@ abstract class Field<T> extends StatelessWidget {
     if (require != null) {
       if (value == null) {
         return require;
-      }
-      if (value is String && value.isEmpty) {
+      } else if (value is String && value.isEmpty) {
+        return require;
+      } else if (value is TextEditingValue && value.text.isEmpty) {
         return require;
       }
     }
