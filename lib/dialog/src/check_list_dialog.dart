@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import '../src/route.dart';
 
 /// showCheckList show a check list dialog
@@ -46,6 +47,7 @@ class CheckListDialog<T> extends StatelessWidget {
     this.checkboxColor,
     this.fontColor,
     this.onItemTap,
+    this.itemBuilder,
     Key? key,
   }) : super(key: key);
 
@@ -87,6 +89,9 @@ class CheckListDialog<T> extends StatelessWidget {
   /// hint will show when items is empty
   final Widget? hint;
 
+  /// itemBuilder build custom item widget
+  final delta.ListItemBuilder<T, delta.ListItem>? itemBuilder;
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -110,9 +115,9 @@ class CheckListDialog<T> extends StatelessWidget {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.white),
+                      child: Text(
+                        'delete'.i18n_,
+                        style: const TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
                         await onDelete!(selection.value);
@@ -126,7 +131,7 @@ class CheckListDialog<T> extends StatelessWidget {
               ],
             ),
             floatingActionButton: FloatingActionButton(
-              tooltip: 'Add',
+              tooltip: 'create'.i18n_,
               onPressed: onNewItem == null
                   ? null
                   : () async {
@@ -151,6 +156,7 @@ class CheckListDialog<T> extends StatelessWidget {
                         },
                       )
                     : delta.CheckList<T>(
+                        itemBuilder: itemBuilder,
                         selectedTileColor: selectedTileColor,
                         selectedFontColor: selectedFontColor,
                         dividerColor: dividerColor,
