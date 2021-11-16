@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'extensions.dart';
 
+enum LightStatus { green, yellow, red }
+
 /// StatusLight show green/yellow/red status light
 class StatusLight extends StatelessWidget {
   const StatusLight({
     Key? key,
-    this.status = 1,
+    this.status = LightStatus.green,
     this.iconSize = 16,
     this.onPressed,
     this.tooltip,
     this.label,
   }) : super(key: key);
 
-  /// status 1 green light, 0 yellow light, -1 red light
-  final int status;
+  /// status of status light
+  final LightStatus status;
 
   /// onPressed call when user press status light
   final VoidCallback? onPressed;
@@ -35,9 +37,9 @@ class StatusLight extends StatelessWidget {
           iconSize: iconSize,
           icon: Icon(
             Icons.circle,
-            color: status == 1
+            color: status == LightStatus.green
                 ? context.themeColor(light: Colors.green[600]!, dark: Colors.green[400]!)
-                : status == 0
+                : status == LightStatus.yellow
                     ? context.themeColor(light: Colors.yellow[600]!, dark: Colors.yellow[400]!)
                     : context.themeColor(light: Colors.red[600]!, dark: Colors.red[400]!),
           ),
