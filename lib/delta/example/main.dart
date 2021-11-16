@@ -63,7 +63,7 @@ class DeltaExample extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 400,
-                          child: _indicator(context),
+                          child: _error(context),
                         ),
                         testing.example(
                           context,
@@ -174,6 +174,11 @@ class DeltaExample extends StatelessWidget {
                           context,
                           text: 'segment',
                           child: _segment(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'error',
+                          child: _error(context),
                         ),
                       ],
                     ),
@@ -472,6 +477,22 @@ class DeltaExample extends StatelessWidget {
     ]);
   }
 
+  Widget _error(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(children: [
+          Separator(height: 2, color: Colors.red[200]!),
+          const SizedBox(height: 30),
+          const ErrorLabel(
+            message: 'An error message is information displayed when an unforeseen problem occurs',
+          ),
+          const SizedBox(height: 30),
+          const ErrorBox(
+              message:
+                  'An error message is information displayed when an unforeseen problem occurs, usually on a computer or other device. On modern operating systems with graphical, error messages are often displayed using dialog boxes. Error messages are used when user intervention is required, to indicate that a desired operation has failed, or to relay important warnings (such as warning a computer user that they are almost out of hard disk space). Error messages are seen widely throughout computing, and are part of every operating system or computer hardware device. Proper design of error messages is an important topic in usability and other fields of human–computer interaction'),
+        ]));
+  }
+
   Widget _checkList(BuildContext context) {
     return CheckList(
 //      selectedTileColor: Colors.grey[300],
@@ -717,11 +738,11 @@ class DeltaExample extends StatelessWidget {
 
   Widget _statusLight(BuildContext context) {
     return Row(children: const [
-      StatusLight(status: 1, tooltip: 'connected'),
+      StatusLight(status: 1, tooltip: 'connected', label: 'connected'),
       SizedBox(width: 20),
-      StatusLight(status: 0, tooltip: 'connecting..'),
+      StatusLight(status: 0, tooltip: 'connecting..', label: 'connecting..'),
       SizedBox(width: 20),
-      StatusLight(status: -1, tooltip: 'failed to connect'),
+      StatusLight(status: -1, tooltip: 'failed to connect', label: 'failed to connect'),
     ]);
   }
 

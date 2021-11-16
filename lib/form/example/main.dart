@@ -195,8 +195,6 @@ class FormExample extends StatelessWidget {
                       },
                     ),
                     br(),
-                    Separator(height: 2, color: Colors.red[200]!),
-                    br(),
                     Button(
                       elevation: 0,
                       color: Colors.red[400]!,
