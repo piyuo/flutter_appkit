@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/pref/pref.dart' as pref;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
@@ -8,6 +9,10 @@ class L10nProvider with ChangeNotifier {
   void setLocale(BuildContext context, Locale localeName) {
     setLocale(context, localeName);
     notifyListeners();
+  }
+
+  static L10nProvider of(BuildContext context) {
+    return Provider.of<L10nProvider>(context, listen: false);
   }
 }
 
