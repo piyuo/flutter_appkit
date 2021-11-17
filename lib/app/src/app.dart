@@ -99,30 +99,19 @@ void start({
   error.watch(() => runApp(MultiProvider(
         providers: [
           Provider(create: (_) => dialog.DialogProvider()),
+          ChangeNotifierProvider(create: (_) => i18n.L10nProvider()),
           if (providers != null) ...providers,
         ],
-        child: Consumer<dialog.DialogProvider>(
-          builder: (context, dialogProvider, _) => MaterialApp(
+        child: Consumer2<dialog.DialogProvider, i18n.L10nProvider>(
+          builder: (context, dialogProvider, l10n, __) => MaterialApp(
             navigatorKey: dialogProvider.navigatorKey,
             builder: dialogProvider.init(),
             debugShowCheckedModeBanner: false,
             theme: theme ?? ThemeData(brightness: Brightness.light),
             darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
-            //locale: localeModel.locale,
-            //localeListResolutionCallback: (locales, supportedLocales) {
-            //  return i18n.determineLocale(locales);
-            //},
-            localizationsDelegates: [
-              i18n.LocaleDelegate(),
-              i18n.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en', 'US'),
-              Locale('zh', 'CN'),
-              Locale('zh', 'TW'),
-            ],
+            locale: l10n.currentLocale,
+            localizationsDelegates: l10n.localizationsDelegates,
+            supportedLocales: l10n.supportedLocales,
             onGenerateRoute: (RouteSettings settings) {
               String name = listenRoute(settings);
               if (name == '') {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import '../src/app.dart';
 import '../src/page_route.dart' as page_route;
 import '../src/back_button.dart';
@@ -18,7 +19,7 @@ main() {
   );
 }
 
-class AppExample extends StatelessWidget {
+class AppExample extends StatefulWidget {
   const AppExample({
     required this.color,
     Key? key,
@@ -27,17 +28,27 @@ class AppExample extends StatelessWidget {
   final Color color;
 
   @override
+  State<StatefulWidget> createState() => AppExampleState();
+}
+
+class AppExampleState extends State<AppExample> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
           height: 200,
-          child: _pushNewRoute(context),
+          child: _localization(context),
         ),
         testing.example(
           context,
           text: 'page route',
           child: _pushNewRoute(context),
+        ),
+        testing.example(
+          context,
+          text: 'localization',
+          child: _localization(context),
         ),
       ],
     );
@@ -46,7 +57,7 @@ class AppExample extends StatelessWidget {
   Widget _pushNewRoute(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: color,
+        backgroundColor: widget.color,
         leading: backButton(context),
       ),
       body: SafeArea(
@@ -70,6 +81,35 @@ class AppExample extends StatelessWidget {
               }),
         ])),
       ),
+    );
+  }
+
+  Widget _localization(BuildContext context) {
+    return Column(
+      children: [
+        Text(context.i18n.ok),
+        OutlinedButton(
+            child: const Text('change locale to en'),
+            onPressed: () {
+              setState(() {
+                i18n.L10nProvider.of(context).currentLocale = const Locale('en');
+              });
+            }),
+        OutlinedButton(
+            child: const Text('change locale to zh'),
+            onPressed: () {
+              setState(() {
+                i18n.L10nProvider.of(context).currentLocale = const Locale('zh');
+              });
+            }),
+        OutlinedButton(
+            child: const Text('change locale to zh_TW'),
+            onPressed: () {
+              setState(() {
+                i18n.L10nProvider.of(context).currentLocale = const Locale('zh', 'TW');
+              });
+            }),
+      ],
     );
   }
 }
