@@ -6,8 +6,10 @@ import 'package:libcli/pref/pref.dart' as pref;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 
 class L10nProvider with ChangeNotifier {
-  set locale(String newLocale) {
-    setLocale(newLocale);
+  Locale get currentLocale => locale;
+
+  set currentLocale(Locale newLocale) {
+    setLocale(newLocale.toString());
     notifyListeners();
   }
 
