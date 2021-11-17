@@ -4,6 +4,13 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/pref/pref.dart' as pref;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 
+class L10nProvider with ChangeNotifier {
+  void setLocale(BuildContext context, Locale localeName) {
+    setLocale(context, localeName);
+    notifyListeners();
+  }
+}
+
 const prefLocaleKey = 'locale';
 /*
 const us = 'US';
