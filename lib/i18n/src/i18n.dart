@@ -30,22 +30,11 @@ class L10nProvider with ChangeNotifier {
   ];
 }
 
+/// of return type [AppLocalizations]
+AppLocalizations of(BuildContext context) => AppLocalizations.of(context);
+
 const prefLocaleKey = 'locale';
-/*
-const us = 'US';
-const cn = 'CN';
-const tw = 'TW';
-const enUS = 'en_' + us;
-const zhCN = 'zh_' + cn;
-const zhTW = 'zh_' + tw;
-/// _supportedLocales define supported locale
-//https://www.oracle.com/technical-resources/articles/javase/locale.html
-const _supportedLocales = [
-  enUS,
-  zhCN,
-  zhTW,
-];
-*/
+
 /// localeName return current locale name
 String get localeName => Intl.defaultLocale ?? 'en_US';
 
