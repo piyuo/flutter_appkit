@@ -1,5 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'i18n.dart';
+
+import '../gen/app_localizations.dart';
+
+LocalizationsDelegate get delegate => AppLocalizations.delegate;
+
+AppLocalizations? of(BuildContext context) => AppLocalizations.of(context);
 
 /// DictBuilder define dict builder for l10n
 typedef DictBuilder = String? Function(String key);

@@ -17,7 +17,7 @@ using project libcli.code-workspace
 ## l10n
 
 ```bash
-flutter gen-l10n
+flutter gen-l10n --output-dir lib/i18n/gen --no-synthetic-package
 ```
 
 ### Test
