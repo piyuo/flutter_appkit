@@ -10,6 +10,7 @@ import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/localization/localization.dart' as localization;
 import 'page_route.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -114,6 +115,7 @@ void start({
             //},
             localizationsDelegates: [
               i18n.LocaleDelegate(),
+              localization.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
             ],

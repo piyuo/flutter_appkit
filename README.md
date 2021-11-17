@@ -14,6 +14,12 @@ git clone git@github.com:piyuo/libcli.git
 
 using project libcli.code-workspace
 
+## l10n
+
+```bash
+flutter gen-l10n
+```
+
 ### Test
 
 unit test
