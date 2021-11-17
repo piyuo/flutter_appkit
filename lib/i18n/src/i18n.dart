@@ -30,8 +30,13 @@ class L10nProvider with ChangeNotifier {
   ];
 }
 
-/// of return type [AppLocalizations]
-AppLocalizations of(BuildContext context) => AppLocalizations.of(context);
+extension I18nBuildContext on BuildContext {
+  /// i18n return AppLocalizations of current context
+  ///
+  ///     context.i18n;
+  ///
+  AppLocalizations get i18n => AppLocalizations.of(this);
+}
 
 const prefLocaleKey = 'locale';
 
