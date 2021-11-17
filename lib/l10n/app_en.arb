@@ -1,3 +1,13 @@
 {
-    "hello":"hello"
+    "retry":"Retry",
+    "ok":"OK",
+    "cancel":"Cancel",
+    "close":"Close",
+    "yes":"Yes",
+    "no":"No",
+    "create":"Add",
+    "delete":"Delete",
+    "save":"Save",
+    "back":"Back",
+    "hello":"Hello"
 }
