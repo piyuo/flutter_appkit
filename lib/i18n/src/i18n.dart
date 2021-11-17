@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/pref/pref.dart' as pref;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import '../gen/app_localizations.dart';
 
 class L10nProvider with ChangeNotifier {
   Locale get currentLocale => locale;
@@ -16,6 +19,15 @@ class L10nProvider with ChangeNotifier {
   static L10nProvider of(BuildContext context) {
     return Provider.of<L10nProvider>(context, listen: false);
   }
+
+  Iterable<Locale> supportedLocales = AppLocalizations.supportedLocales;
+
+  Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates = [
+    LocaleDelegate(),
+    AppLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 }
 
 const prefLocaleKey = 'locale';
@@ -81,15 +93,6 @@ String localeToAcceptLanguage(Locale value) {
   return '${value.languageCode}-${value.countryCode}';
 }
 
-/*
-/// localeToString convert Locale(''en,'US') to 'en_US'
-///
-/// var id = localeToId(Locale('en','US'));
-///
-String localeToString(Locale value) {
-  return '${value.languageCode}_${value.countryCode}';
-}
-*/
 /// stringToLocale 'en_US' to Locale(''en,'US')
 ///
 Locale stringToLocale(String value) {
