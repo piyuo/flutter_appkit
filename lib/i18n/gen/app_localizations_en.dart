@@ -8,6 +8,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get searchButtonText => 'Search';
+
+  @override
   String get loadingLabel => 'Loading...';
 
   @override
@@ -189,6 +192,120 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get uploadImageNotValid => 'not a valid image. Only JPG, PNG, GIF and WEBP files are allowed';
+
+  @override
+  String get ticketTypeReceipt => 'Receipt';
+
+  @override
+  String get ticketTypeCopy => 'Receipt Copy';
+
+  @override
+  String get ticketTypeOrder => 'Order';
+
+  @override
+  String get ticketOrderTakeout => 'Take Out';
+
+  @override
+  String get ticketOrderDelivery => 'Delivery';
+
+  @override
+  String get ticketOrderDineIn => 'Dine in';
+
+  @override
+  String get ticketItemCount => 'Item Count: %1';
+
+  @override
+  String get ticketPickup => 'Pickup';
+
+  @override
+  String get ticketSubtotal => 'Subtotal';
+
+  @override
+  String get ticketTax => 'Tax';
+
+  @override
+  String get ticketService => 'Service';
+
+  @override
+  String get ticketTip => 'Tip';
+
+  @override
+  String get ticketPaperSize => 'Paper Size';
+
+  @override
+  String get ticket58mm => '58 mm';
+
+  @override
+  String get ticket80mm => '80 mm';
+
+  @override
+  String get errorPrint => 'Failed to Print on %1';
+
+  @override
+  String get networkPrinter => 'Network Printer';
+
+  @override
+  String get bluetoothPrinter => 'Bluetooth Printer';
+
+  @override
+  String get printerList => 'Printer List';
+
+  @override
+  String get printerName => 'Printer Name';
+
+  @override
+  String get printerExists => '%1 already been used. please try another name';
+
+  @override
+  String get printerHint => 'Give printer a name (e.g. Kitchen)';
+
+  @override
+  String get printerNeedIP => 'Please input the printer IP address';
+
+  @override
+  String get printerNeedBT => 'Please select a Bluetooth Printer';
+
+  @override
+  String get printerIP => 'Printer\"s IP Address';
+
+  @override
+  String get printerIPHint => 'e.g. 192.168.1.2';
+
+  @override
+  String get printerFindIP => 'How to Print Printer\"s IP Address';
+
+  @override
+  String get bluetoothPrinterNotSupport => 'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';
+
+  @override
+  String get bluetoothPrinterHint => 'Click Search to select bluetooth device';
+
+  @override
+  String get printTestPage => 'Print Test Page';
+
+  @override
+  String get printAutoLabel => 'Automatically print when receive';
+
+  @override
+  String get errorConnect => 'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
+
+  @override
+  String get errorTimeout => 'Printer connection timeout, make sure printer is turned on';
+
+  @override
+  String get errorPrinterNotSelected => 'Printer not selected';
+
+  @override
+  String get errorEmptyTicket => 'Ticket is empty';
+
+  @override
+  String get errorAnotherPrinting => 'Another print in progress';
+
+  @override
+  String get errorScanInProgress => 'Printer scanning in progress';
+
+  @override
+  String get errorUnknown => 'Unknown error';
 
   @override
   String get hello => 'Hello';

@@ -95,6 +95,12 @@ abstract class AppLocalizations {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @searchButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchButtonText;
+
   /// No description provided for @loadingLabel.
   ///
   /// In en, this message translates to:
@@ -460,6 +466,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'not a valid image. Only JPG, PNG, GIF and WEBP files are allowed'**
   String get uploadImageNotValid;
+
+  /// No description provided for @ticketTypeReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt'**
+  String get ticketTypeReceipt;
+
+  /// No description provided for @ticketTypeCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt Copy'**
+  String get ticketTypeCopy;
+
+  /// No description provided for @ticketTypeOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get ticketTypeOrder;
+
+  /// No description provided for @ticketOrderTakeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Out'**
+  String get ticketOrderTakeout;
+
+  /// No description provided for @ticketOrderDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get ticketOrderDelivery;
+
+  /// No description provided for @ticketOrderDineIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Dine in'**
+  String get ticketOrderDineIn;
+
+  /// No description provided for @ticketItemCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Item Count: %1'**
+  String get ticketItemCount;
+
+  /// No description provided for @ticketPickup.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup'**
+  String get ticketPickup;
+
+  /// No description provided for @ticketSubtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get ticketSubtotal;
+
+  /// No description provided for @ticketTax.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax'**
+  String get ticketTax;
+
+  /// No description provided for @ticketService.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get ticketService;
+
+  /// No description provided for @ticketTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip'**
+  String get ticketTip;
+
+  /// No description provided for @ticketPaperSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Paper Size'**
+  String get ticketPaperSize;
+
+  /// No description provided for @ticket58mm.
+  ///
+  /// In en, this message translates to:
+  /// **'58 mm'**
+  String get ticket58mm;
+
+  /// No description provided for @ticket80mm.
+  ///
+  /// In en, this message translates to:
+  /// **'80 mm'**
+  String get ticket80mm;
+
+  /// No description provided for @errorPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to Print on %1'**
+  String get errorPrint;
+
+  /// No description provided for @networkPrinter.
+  ///
+  /// In en, this message translates to:
+  /// **'Network Printer'**
+  String get networkPrinter;
+
+  /// No description provided for @bluetoothPrinter.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth Printer'**
+  String get bluetoothPrinter;
+
+  /// No description provided for @printerList.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer List'**
+  String get printerList;
+
+  /// No description provided for @printerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer Name'**
+  String get printerName;
+
+  /// No description provided for @printerExists.
+  ///
+  /// In en, this message translates to:
+  /// **'%1 already been used. please try another name'**
+  String get printerExists;
+
+  /// No description provided for @printerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Give printer a name (e.g. Kitchen)'**
+  String get printerHint;
+
+  /// No description provided for @printerNeedIP.
+  ///
+  /// In en, this message translates to:
+  /// **'Please input the printer IP address'**
+  String get printerNeedIP;
+
+  /// No description provided for @printerNeedBT.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a Bluetooth Printer'**
+  String get printerNeedBT;
+
+  /// No description provided for @printerIP.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer\"s IP Address'**
+  String get printerIP;
+
+  /// No description provided for @printerIPHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 192.168.1.2'**
+  String get printerIPHint;
+
+  /// No description provided for @printerFindIP.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Print Printer\"s IP Address'**
+  String get printerFindIP;
+
+  /// No description provided for @bluetoothPrinterNotSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings'**
+  String get bluetoothPrinterNotSupport;
+
+  /// No description provided for @bluetoothPrinterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Click Search to select bluetooth device'**
+  String get bluetoothPrinterHint;
+
+  /// No description provided for @printTestPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Print Test Page'**
+  String get printTestPage;
+
+  /// No description provided for @printAutoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically print when receive'**
+  String get printAutoLabel;
+
+  /// No description provided for @errorConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct'**
+  String get errorConnect;
+
+  /// No description provided for @errorTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer connection timeout, make sure printer is turned on'**
+  String get errorTimeout;
+
+  /// No description provided for @errorPrinterNotSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer not selected'**
+  String get errorPrinterNotSelected;
+
+  /// No description provided for @errorEmptyTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket is empty'**
+  String get errorEmptyTicket;
+
+  /// No description provided for @errorAnotherPrinting.
+  ///
+  /// In en, this message translates to:
+  /// **'Another print in progress'**
+  String get errorAnotherPrinting;
+
+  /// No description provided for @errorScanInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer scanning in progress'**
+  String get errorScanInProgress;
+
+  /// No description provided for @errorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get errorUnknown;
 
   /// No description provided for @hello.
   ///
