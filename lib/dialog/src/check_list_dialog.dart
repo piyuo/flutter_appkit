@@ -116,7 +116,7 @@ class CheckListDialog<T> extends StatelessWidget {
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                       ),
                       child: Text(
-                        'delete'.i18n_,
+                        context.i18n.deleteButtonText,
                         style: const TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
@@ -131,7 +131,7 @@ class CheckListDialog<T> extends StatelessWidget {
               ],
             ),
             floatingActionButton: FloatingActionButton(
-              tooltip: 'create'.i18n_,
+              tooltip: context.i18n.addButtonText,
               onPressed: onNewItem == null
                   ? null
                   : () async {

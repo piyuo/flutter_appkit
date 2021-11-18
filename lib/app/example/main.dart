@@ -87,7 +87,7 @@ class AppExampleState extends State<AppExample> {
   Widget _localization(BuildContext context) {
     return Column(
       children: [
-        Text(context.i18n.ok),
+        Text(context.i18n.okButtonText),
         OutlinedButton(
             child: const Text('change locale to en'),
             onPressed: () {

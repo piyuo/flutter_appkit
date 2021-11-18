@@ -81,8 +81,8 @@ class EmailField extends Field<TextEditingValue> {
         );
 
   @override
-  String? validate(TextEditingValue? value) {
-    var result = super.validate(value);
+  String? validate(BuildContext context, TextEditingValue? value) {
+    var result = super.validate(context, value);
     if (result != null) {
       return result;
     }
@@ -91,8 +91,7 @@ class EmailField extends Field<TextEditingValue> {
     }
 
     if (value != null && value.text.length > 96) {
-      return 'maxLength'
-          .i18n_
+      return context.i18n.fieldTextTooLong
           .replaceAll('%1', label ?? '')
           .replaceAll('%2', '96')
           .replaceAll('%3', '${value.text.length}');
@@ -114,7 +113,7 @@ class EmailField extends Field<TextEditingValue> {
                 LengthLimitingTextInputFormatter(64),
               ],
               keyboardType: TextInputType.emailAddress,
-              validator: (text) => validator.emailValidator(text),
+              validator: (text) => validator.emailValidator(context, text),
               textInputAction: textInputAction,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
@@ -131,7 +130,7 @@ class EmailField extends Field<TextEditingValue> {
                         text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'youMean'.i18n_,
+                          text: context.i18n.fieldHintYouMean,
                           style: TextStyle(
                             color: Colors.yellow[900],
                           ),

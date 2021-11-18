@@ -47,7 +47,7 @@ class _RefreshButtonState extends State<RefreshButton> {
           });
         }
       },
-      tooltip: 'refresh'.i18n_,
+      tooltip: context.i18n.refreshButtonText,
     );
   }
 }

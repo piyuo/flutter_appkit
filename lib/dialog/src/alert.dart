@@ -103,7 +103,7 @@ Widget _showEmailUs(BuildContext context, bool emailUs) {
                   child: GestureDetector(
                       onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
                       child: Text(
-                        'emailUs'.i18n_,
+                        context.i18n.errorEmailUsLink,
                         style: const TextStyle(fontSize: 16, color: Colors.blueAccent),
                       ))),
             ],
@@ -139,28 +139,28 @@ Future<bool?> alert(
   assentButtonColor = assentButtonColor ?? const Color(0xee2091eb);
   buttonColor = buttonColor ?? context.themeColor(dark: const Color(0xcc6a7073), light: const Color(0xeebbbcbb));
   if (buttonOK) {
-    yes = 'ok'.i18n_;
+    yes = context.i18n.okButtonText;
   }
   if (buttonCancel) {
-    cancel = 'cancel'.i18n_;
+    cancel = context.i18n.cancelButtonText;
   }
   if (buttonYes) {
-    yes = 'yes'.i18n_;
+    yes = context.i18n.yesButtonText;
   }
   if (buttonNo) {
-    no = 'no'.i18n_;
+    no = context.i18n.noButtonText;
   }
   if (buttonRetry) {
-    yes = 'retry'.i18n_;
+    yes = context.i18n.retryButtonText;
   }
   if (buttonSave) {
-    yes = 'save'.i18n_;
+    yes = context.i18n.saveButtonText;
   }
   if (buttonClose) {
-    cancel = 'close'.i18n_;
+    cancel = context.i18n.closeButtonText;
   }
   if (yes == null && no == null && cancel == null) {
-    cancel = 'close'.i18n_;
+    cancel = context.i18n.closeButtonText;
   }
   return await showDialog<bool?>(
       context: context,

@@ -78,7 +78,7 @@ class L10nWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    value = 'ok'.i18n_;
+    value = context.i18n.okButtonText;
     return Text(value);
   }
 }

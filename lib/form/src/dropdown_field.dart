@@ -51,7 +51,7 @@ class DropdownField<T> extends Field<T> {
         }
       },
       value: controller.value,
-      validator: validate,
+      validator: (value) => validate(context, value),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,

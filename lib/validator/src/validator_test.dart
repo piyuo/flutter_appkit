@@ -1,4 +1,7 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/testing/testing.dart' as testing;
 import 'validator.dart';
 
 void main() {
@@ -30,45 +33,45 @@ void main() {
 */
     test('should validate using regex', () async {
       RegExp regexp = RegExp(r"^[A-Za-z]");
-      String? error = regexpValidator(input: '1', regexp: regexp, label: 'title', example: 'A-z');
+      String? error = regexpValidator(testing.Context(), input: '1', regexp: regexp, label: 'title', example: 'A-z');
       expect(error, isNotEmpty);
-      error = regexpValidator(input: 'A', regexp: regexp, label: 'title', example: 'A-z');
+      error = regexpValidator(testing.Context(), input: 'A', regexp: regexp, label: 'title', example: 'A-z');
       expect(error, isNull);
     });
 
     test('should validate email', () async {
-      String? error = emailValidator('1');
+      String? error = emailValidator(testing.Context(), '1');
       expect(error, isNotEmpty);
-      error = emailValidator('johndoe@domain.com');
+      error = emailValidator(testing.Context(), 'johndoe@domain.com');
       expect(error, isNull);
     });
 
     test('should validate domain name', () async {
-      String? error = domainNameValidator('a');
+      String? error = domainNameValidator(testing.Context(), 'a');
       expect(error, isNotEmpty);
-      error = domainNameValidator('www.g.com');
+      error = domainNameValidator(testing.Context(), 'www.g.com');
       expect(error, isNull);
     });
 
     test('should validate sub domain name', () async {
-      String? error = subDomainNameValidator('a');
+      String? error = subDomainNameValidator(testing.Context(), 'a');
       expect(error, isNull);
-      error = subDomainNameValidator('ab-cde');
+      error = subDomainNameValidator(testing.Context(), 'ab-cde');
       expect(error, isNull);
-      error = subDomainNameValidator('ab_cde');
+      error = subDomainNameValidator(testing.Context(), 'ab_cde');
       expect(error, isNotEmpty);
-      error = subDomainNameValidator('www.g.com');
+      error = subDomainNameValidator(testing.Context(), 'www.g.com');
       expect(error, isNotEmpty);
-      error = subDomainNameValidator('a@');
+      error = subDomainNameValidator(testing.Context(), 'a@');
       expect(error, isNotEmpty);
-      error = subDomainNameValidator('a.');
+      error = subDomainNameValidator(testing.Context(), 'a.');
       expect(error, isNotEmpty);
-      error = subDomainNameValidator('中');
+      error = subDomainNameValidator(testing.Context(), '中');
       expect(error, isNotEmpty);
-      error = subDomainNameValidator('123');
+      error = subDomainNameValidator(testing.Context(), '123');
       expect(error, isNull);
     });
-
+/*
     test('should validate name', () async {
       String? error = noSymbolValidator('abcde');
       expect(error, isNull);
@@ -97,11 +100,11 @@ void main() {
       error = noSymbolValidator('/');
       expect(error, isNotEmpty);
     });
-
+*/
     test('should validate url', () async {
-      String? error = urlValidator('www.g.com');
+      String? error = urlValidator(testing.Context(), 'www.g.com');
       expect(error, isNotEmpty);
-      error = urlValidator('http://www.ggg.com');
+      error = urlValidator(testing.Context(), 'http://www.ggg.com');
       expect(error, isNull);
     });
 

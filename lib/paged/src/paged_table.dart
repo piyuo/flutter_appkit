@@ -5,7 +5,6 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'paged_data_source.dart';
 import 'types.dart';
-import 'l10n.dart';
 
 class PagedTable<T> extends StatelessWidget {
   const PagedTable({
@@ -127,7 +126,7 @@ class PagedTable<T> extends StatelessWidget {
     switch (provide.status) {
       case PagedDataSourceStatus.notLoad:
         return provide.isBusy
-            ? buildInfo(Text('loading'.i18n_))
+            ? buildInfo(Text(context.i18n.loadingLabel))
             : buildInfo(
                 InkWell(
                   child: SizedBox(
@@ -140,8 +139,8 @@ class PagedTable<T> extends StatelessWidget {
                           Icons.error_outline,
                           size: 54,
                         ),
-                        Text('errTitle'.i18n_),
-                        Text('tapRetry'.i18n_),
+                        Text(context.i18n.errorTitle),
+                        Text(context.i18n.tapToRetryButtonText),
                       ],
                     ),
                   ),
@@ -151,7 +150,7 @@ class PagedTable<T> extends StatelessWidget {
       case PagedDataSourceStatus.load:
       case PagedDataSourceStatus.end:
         if (provide.isEmpty) {
-          return buildInfo(Text('noData'.l10n));
+          return buildInfo(Text(context.i18n.noDataLabel));
         }
         break;
     }
@@ -208,7 +207,7 @@ class PagedTable<T> extends StatelessWidget {
                 color: Colors.grey[500]!,
               ),
             )
-          : Text(dataSource.pagingInfo),
+          : Text(dataSource.pagingInfo(context)),
     ];
 
     final pageWidgets = <Widget>[
@@ -308,11 +307,11 @@ class PagedTable<T> extends StatelessWidget {
       _actions.add(!dataSource.selectedRowsIsEmpty
           ? ElevatedButton(
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[600])),
-              child: Text('delete'.i18n_),
+              child: Text(context.i18n.deleteButtonText),
               onPressed: breaker.linkVoidFunc(() => dataSource.deleteSelected(context)),
             )
           : IconButton(
-              tooltip: 'delete'.i18n_,
+              tooltip: context.i18n.deleteButtonText,
               onPressed: null,
               icon: const Icon(
                 Icons.delete,
@@ -323,7 +322,7 @@ class PagedTable<T> extends StatelessWidget {
     if (dataSource.supportRefresh && dataSource.selectedRowsIsEmpty) {
       _actions.add(
         IconButton(
-          tooltip: 'refresh'.i18n_,
+          tooltip: context.i18n.refreshButtonText,
           onPressed: breaker.linkVoidFunc(() => dataSource.refreshNewRow(context)),
           icon: const Icon(Icons.refresh_rounded),
         ),

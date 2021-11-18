@@ -24,7 +24,7 @@ Future<void> banner(
       actions: <Widget>[
         TextButton(
           child: Text(
-            'close'.i18n_,
+            context.i18n.closeButtonText,
             style: const TextStyle(color: Colors.black),
           ),
           onPressed: () {

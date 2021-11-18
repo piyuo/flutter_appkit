@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/permission/permission.dart' as permission;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'barcode_scanner.dart';
-import 'l10n.dart';
 
 /// showQRcodeScanner return scanned QR code or null if not scanned
 Future<String?> showQRcodeScanner(BuildContext context) async {
@@ -29,7 +29,7 @@ class BarcodeScannerDialog extends StatelessWidget {
           color: Colors.grey[400]!,
         ),
         centerTitle: true,
-        title: Text('scanQR'.l10n,
+        title: Text(context.i18n.scanQRButtonText,
             style: TextStyle(
               color: Colors.grey[400],
             )),

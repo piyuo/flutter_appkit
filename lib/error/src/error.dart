@@ -49,8 +49,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   if (e is log.DiskErrorException) {
     await dialog.alert(
       dialog.rootContext,
-      'diskErrorDesc'.i18n_,
-      title: 'diskError'.i18n_,
+      dialog.rootContext.i18n.errorDiskErrorMessage,
       icon: Icons.priority_high,
     );
     showCatchedAlert = false;
@@ -59,13 +58,24 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
 
   await dialog.alert(
     dialog.rootContext,
-    'notified'.i18n_,
+    dialog.rootContext.i18n.errorNotified,
     warning: true,
-    title: 'errTitle'.i18n_,
     footer: e.toString(),
     emailUs: true,
   );
   showCatchedAlert = false;
+}
+
+String firewallBlockMessage(BuildContext context, String reason) {
+  switch (reason) {
+    case command.blockShort:
+      return context.i18n.errorFirewallBlockShort;
+    case command.blockLong:
+      return context.i18n.errorFirewallBlockLong;
+    case command.inFlight:
+      return context.i18n.errorFirewallInFlight;
+  }
+  return context.i18n.errorFirewallOverflow;
 }
 
 @visibleForTesting
@@ -74,7 +84,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
   if (e is command.FirewallBlockEvent) {
     dialog.alert(
       context,
-      e.reason.i18n_, // reason need predefine in i18n
+      firewallBlockMessage(context, e.reason),
       warning: true,
       emailUs: true,
     );
@@ -101,7 +111,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
     );
   } else if (e is command.SlowNetworkEvent) {
     dialog.toastInfo(context,
-        text: 'slow'.i18n_,
+        text: context.i18n.errorNetworkSlowMessage,
         widget: const Icon(
           Icons.wifi,
           size: 68,
@@ -111,10 +121,9 @@ Future<void> listened(BuildContext context, dynamic e) async {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.alert(
       context,
-      'timeoutDesc'.i18n_,
-      title: 'timeout'.i18n_,
-      yes: 'retry'.i18n_,
-      cancel: 'cancel'.i18n_,
+      context.i18n.errorNetworkTimeoutMessage,
+      yes: context.i18n.retryButtonText,
+      cancel: context.i18n.cancelButtonText,
       icon: Icons.alarm,
       footer: errorCode,
       emailUs: true,
@@ -125,17 +134,15 @@ Future<void> listened(BuildContext context, dynamic e) async {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.alert(
           context,
-          'noServiceDesc'.i18n_,
+          context.i18n.errorNetworkNoServiceMessage,
           icon: Icons.cloud_off,
-          title: 'noService'.i18n_,
           footer: e.exception?.toString(),
           emailUs: true,
         ); //service not available
       } else {
         dialog.alert(
           context,
-          'blockedDesc'.i18n_,
-          title: 'blocked'.i18n_,
+          context.i18n.errorNetworkBlockedMessage,
           footer: e.exception?.toString(),
           icon: Icons.cloud_off,
           emailUs: true,
@@ -145,12 +152,11 @@ Future<void> listened(BuildContext context, dynamic e) async {
     } else {
       var result = await dialog.alert(
         context,
-        'noInternetDesc'.i18n_,
-        title: 'noInternet'.i18n_,
+        context.i18n.errorNetworkNoInternetMessage,
         icon: Icons.wifi_off,
         footer: e.exception?.toString(),
-        yes: 'retry'.i18n_,
-        cancel: 'cancel'.i18n_,
+        yes: context.i18n.retryButtonText,
+        cancel: context.i18n.cancelButtonText,
       );
       e.complete(result == true);
     }

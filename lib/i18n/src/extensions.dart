@@ -4,27 +4,11 @@ import 'package:libcli/pb/google.dart' as google;
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';
 import 'i18n_provider.dart';
-import 'l10n.dart';
 import 'datetime.dart';
 
 /// I18nLocalization add localization function to string
 ///
 extension I18nLocalization on String {
-  /// i18n_ translate const string defined in global dict, don't use this method on string variable
-  ///
-  ///   'ERROR'.i18n_; // OK
-  ///
-  ///   var err='ERROR';
-  ///   err.i18n_; // Not OK
-  ///
-  String get i18n_ => lookup(
-        this,
-        '_',
-        enUS,
-        zhTW: zhTW,
-        zhCN: zhCN,
-      );
-
   /// i18n translate const string, don't use this method on string variable
   ///
   ///   'ERROR'.i18n(context); // OK

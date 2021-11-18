@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'l10n.dart';
+import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// askPermission return true if user grant permission
 Future<bool> ask(
@@ -33,13 +33,13 @@ Future<bool> ask(
 
   final gotoSetting = await dialog.alert(
     context,
-    'permission'.l10n.replaceAll('%1', name),
+    context.i18n.permissionAsk.replaceAll('%1', name),
     icon: icon,
     iconColor: context.themeColor(
       light: Colors.grey[900]!,
       dark: Colors.grey[100]!,
     ),
-    yes: 'gotoSetting'.l10n,
+    yes: context.i18n.permissionGotoSetting,
     buttonCancel: true,
   );
   if (gotoSetting == true) {

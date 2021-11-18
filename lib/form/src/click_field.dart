@@ -31,7 +31,7 @@ class ClickField<T> extends Field<T> {
   final String Function(T?) valueToString;
 
   /// superValidate use field validate
-  String? superValidate(T? value) => super.validate(value);
+  String? superValidate(BuildContext context, T? value) => super.validate(context, value);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class ClickField<T> extends Field<T> {
       nextFocusNode: nextFocusNode,
       controller: controller,
       valueToString: valueToString,
-      validator: (T? value) => super.validate(value),
+      validator: (T? value) => super.validate(context, value),
       suffixIcon: const Icon(
         Icons.navigate_next,
       ),

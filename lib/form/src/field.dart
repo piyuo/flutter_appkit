@@ -32,7 +32,7 @@ abstract class Field<T> extends StatelessWidget {
   final FocusNode? nextFocusNode;
 
   /// validate value return error message if value is not validate
-  String? validate(T? value) {
+  String? validate(BuildContext context, T? value) {
     if (require != null) {
       if (value == null) {
         return require;

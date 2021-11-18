@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'image_editor.dart';
-import 'l10n.dart';
 
 Future<Uint8List?> showImageEditor(
   BuildContext context, {
@@ -70,13 +70,13 @@ class ImageEditorDialog extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: TextButton(
-                  child: Text('save'.l10n),
+                  child: Text(context.i18n.imageSaveButtonText),
                   onPressed: onSave,
                 ),
               )
             ],
             titleSpacing: 0,
-            title: Text('resize'.l10n),
+            title: Text(context.i18n.imageResizeButtonText),
             elevation: 0,
           ),
           body: Stack(
@@ -97,17 +97,19 @@ class ImageEditorDialog extends StatelessWidget {
                     child: Card(
                       elevation: 5,
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        _iconButton(Icons.flip, 'flip'.l10n, () => provide.flip()),
-                        _iconButton(Icons.rotate_left, 'rl'.l10n, () => provide.rotate(right: false)),
-                        _iconButton(Icons.rotate_right, 'rr'.l10n, () => provide.rotate(right: true)),
-                        _iconButton(Icons.restore, 'reset'.l10n, () => provide.reset()),
+                        _iconButton(Icons.flip, context.i18n.imageFlipButtonText, () => provide.flip()),
+                        _iconButton(Icons.rotate_left, context.i18n.imageRotateLeftButtonText,
+                            () => provide.rotate(right: false)),
+                        _iconButton(Icons.rotate_right, context.i18n.imageRotateRightButtonText,
+                            () => provide.rotate(right: true)),
+                        _iconButton(Icons.restore, context.i18n.imageResetButtonText, () => provide.reset()),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)))),
-                            child: Text('save'.l10n),
+                            child: Text(context.i18n.imageSaveButtonText),
                             onPressed: onSave,
                           ),
                         )

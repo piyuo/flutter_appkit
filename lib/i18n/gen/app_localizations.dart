@@ -95,65 +95,371 @@ abstract class AppLocalizations {
     Locale('zh', 'TW')
   ];
 
-  /// No description provided for @retry.
+  /// No description provided for @loadingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loadingLabel;
+
+  /// No description provided for @tapToRetryButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to retry'**
+  String get tapToRetryButtonText;
+
+  /// No description provided for @refreshButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refreshButtonText;
+
+  /// No description provided for @retryButtonText.
   ///
   /// In en, this message translates to:
   /// **'Retry'**
-  String get retry;
+  String get retryButtonText;
 
-  /// No description provided for @ok.
+  /// No description provided for @okButtonText.
   ///
   /// In en, this message translates to:
   /// **'OK'**
-  String get ok;
+  String get okButtonText;
 
-  /// No description provided for @cancel.
+  /// No description provided for @cancelButtonText.
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
-  String get cancel;
+  String get cancelButtonText;
 
-  /// No description provided for @close.
+  /// No description provided for @closeButtonText.
   ///
   /// In en, this message translates to:
   /// **'Close'**
-  String get close;
+  String get closeButtonText;
 
-  /// No description provided for @yes.
+  /// No description provided for @yesButtonText.
   ///
   /// In en, this message translates to:
   /// **'Yes'**
-  String get yes;
+  String get yesButtonText;
 
-  /// No description provided for @no.
+  /// No description provided for @noButtonText.
   ///
   /// In en, this message translates to:
   /// **'No'**
-  String get no;
+  String get noButtonText;
 
-  /// No description provided for @create.
+  /// No description provided for @addButtonText.
   ///
   /// In en, this message translates to:
   /// **'Add'**
-  String get create;
+  String get addButtonText;
 
-  /// No description provided for @delete.
+  /// No description provided for @deleteButtonText.
   ///
   /// In en, this message translates to:
   /// **'Delete'**
-  String get delete;
+  String get deleteButtonText;
 
-  /// No description provided for @save.
+  /// No description provided for @saveButtonText.
   ///
   /// In en, this message translates to:
   /// **'Save'**
-  String get save;
+  String get saveButtonText;
 
-  /// No description provided for @back.
+  /// No description provided for @backButtonText.
   ///
   /// In en, this message translates to:
   /// **'Back'**
-  String get back;
+  String get backButtonText;
+
+  /// No description provided for @errorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get errorTitle;
+
+  /// No description provided for @errorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops, something went wrong'**
+  String get errorMessage;
+
+  /// No description provided for @errorNotified.
+  ///
+  /// In en, this message translates to:
+  /// **'The developer team has been notified of this issue, Please try again later'**
+  String get errorNotified;
+
+  /// No description provided for @errorEmailUsLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send email to support team'**
+  String get errorEmailUsLink;
+
+  /// No description provided for @errorNetworkSlowMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'your network is slow than usual'**
+  String get errorNetworkSlowMessage;
+
+  /// No description provided for @errorNetworkNoServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This service isn\'t available right now, Please try again later'**
+  String get errorNetworkNoServiceMessage;
+
+  /// No description provided for @errorNetworkNoInternetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor network connection detected, Please check your connectivity'**
+  String get errorNetworkNoInternetMessage;
+
+  /// No description provided for @errorNetworkBlockedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Our service is blocked by your Firewall or antivirus software'**
+  String get errorNetworkBlockedMessage;
+
+  /// No description provided for @errorNetworkTimeoutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your operation didn\'t complete in time, Please try again later'**
+  String get errorNetworkTimeoutMessage;
+
+  /// No description provided for @errorDiskErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Write failed!, Insufficient disk space or write access denied'**
+  String get errorDiskErrorMessage;
+
+  /// No description provided for @errorFirewallBlockShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing Request. Please Wait'**
+  String get errorFirewallBlockShort;
+
+  /// No description provided for @errorFirewallBlockLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many failed attempts, Please try again tomorrow'**
+  String get errorFirewallBlockLong;
+
+  /// No description provided for @errorFirewallInFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait while we are processing your request'**
+  String get errorFirewallInFlight;
+
+  /// No description provided for @errorFirewallOverflow.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts, Please try again later'**
+  String get errorFirewallOverflow;
+
+  /// No description provided for @emailField.
+  ///
+  /// In en, this message translates to:
+  /// **'email address'**
+  String get emailField;
+
+  /// No description provided for @domainField.
+  ///
+  /// In en, this message translates to:
+  /// **'domain name'**
+  String get domainField;
+
+  /// No description provided for @urlField.
+  ///
+  /// In en, this message translates to:
+  /// **'url'**
+  String get urlField;
+
+  /// No description provided for @fieldHintYouMean.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you mean: '**
+  String get fieldHintYouMean;
+
+  /// No description provided for @fieldEnterYour.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your %1'**
+  String get fieldEnterYour;
+
+  /// No description provided for @fieldValueRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'%1 is required'**
+  String get fieldValueRequired;
+
+  /// No description provided for @fieldValueInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid %1.  (Example: %2)'**
+  String get fieldValueInvalid;
+
+  /// No description provided for @fieldTextTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'%1 must contain at least %2 character. You entered %3 characters'**
+  String get fieldTextTooShort;
+
+  /// No description provided for @fieldTextTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'%1 must be %2 characters or fewer. You entered %3 characters'**
+  String get fieldTextTooLong;
+
+  /// No description provided for @scanQRButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR code'**
+  String get scanQRButtonText;
+
+  /// No description provided for @pagingMany.
+  ///
+  /// In en, this message translates to:
+  /// **'of many'**
+  String get pagingMany;
+
+  /// No description provided for @pagingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'of %1'**
+  String get pagingCount;
+
+  /// No description provided for @noDataLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No data'**
+  String get noDataLabel;
+
+  /// No description provided for @archiveButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveButtonText;
+
+  /// No description provided for @imageSaveButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get imageSaveButtonText;
+
+  /// No description provided for @imageResizeButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Resize Image'**
+  String get imageResizeButtonText;
+
+  /// No description provided for @imageFlipButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip'**
+  String get imageFlipButtonText;
+
+  /// No description provided for @imageRotateLeftButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate Left'**
+  String get imageRotateLeftButtonText;
+
+  /// No description provided for @imageRotateRightButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate Right'**
+  String get imageRotateRightButtonText;
+
+  /// No description provided for @imageResetButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get imageResetButtonText;
+
+  /// No description provided for @permissionAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'This app requires access to the %1 , do you want allow it in app setting?'**
+  String get permissionAsk;
+
+  /// No description provided for @permissionBluetooth.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth'**
+  String get permissionBluetooth;
+
+  /// No description provided for @permissionCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get permissionCamera;
+
+  /// No description provided for @permissionLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get permissionLocation;
+
+  /// No description provided for @permissionPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get permissionPhoto;
+
+  /// No description provided for @permissionNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get permissionNotification;
+
+  /// No description provided for @permissionMic.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone'**
+  String get permissionMic;
+
+  /// No description provided for @permissionGotoSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to setting'**
+  String get permissionGotoSetting;
+
+  /// No description provided for @uploadDrop.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop your image here, or '**
+  String get uploadDrop;
+
+  /// No description provided for @uploadBrowse.
+  ///
+  /// In en, this message translates to:
+  /// **'tap to browse'**
+  String get uploadBrowse;
+
+  /// No description provided for @uploadDropHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop files here'**
+  String get uploadDropHere;
+
+  /// No description provided for @uploadButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get uploadButtonText;
+
+  /// No description provided for @uploadImageTooBig.
+  ///
+  /// In en, this message translates to:
+  /// **'image file is too big. your image size is %1, try sending a file smaller than %2'**
+  String get uploadImageTooBig;
+
+  /// No description provided for @uploadImageNotValid.
+  ///
+  /// In en, this message translates to:
+  /// **'not a valid image. Only JPG, PNG, GIF and WEBP files are allowed'**
+  String get uploadImageNotValid;
 
   /// No description provided for @hello.
   ///

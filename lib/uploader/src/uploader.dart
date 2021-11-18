@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'file.dart';
-import 'l10n.dart';
 
 typedef UploadFunc = Future<String?> Function(BuildContext context, Uint8List bytes, String? deleteFilename);
 
@@ -39,15 +38,15 @@ class Uploader with ChangeNotifier {
   }
 
   /// validate file, return null if OK, return error message if something wrong
-  Future<String?> validate(File file) async {
+  Future<String?> validate(BuildContext context, File file) async {
     final fileSize = await file.getFileSize();
     final yourSize = i18n.formatBytes(fileSize, 1);
     if (fileSize > fileSizeMax) {
       final limit = i18n.formatBytes(fileSizeMax, 1);
-      return 'tooBig'.l10n.replaceAll('%1', yourSize).replaceAll('%2', limit);
+      return context.i18n.uploadImageTooBig.replaceAll('%1', yourSize).replaceAll('%2', limit);
     }
     if (!acceptMIME.contains(file.mimeType)) {
-      return 'notValid'.l10n;
+      return context.i18n.uploadImageNotValid;
     }
 
     debugPrint('upload ${file.mimeType} $yourSize');
@@ -55,7 +54,7 @@ class Uploader with ChangeNotifier {
   }
 
   Future<String?> upload(BuildContext context, File file, String? deleteFilename) async {
-    final error = await validate(file);
+    final error = await validate(context, file);
     if (error != null) {
       return error;
     }

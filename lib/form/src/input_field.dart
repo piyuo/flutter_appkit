@@ -50,16 +50,15 @@ class InputField extends Field<TextEditingValue> {
   final TextInputType? keyboardType;
 
   @override
-  String? validate(TextEditingValue? value) {
-    var result = super.validate(value);
+  String? validate(BuildContext context, TextEditingValue? value) {
+    var result = super.validate(context, value);
     if (result != null) {
       return result;
     }
 
     if (value != null) {
       if (value.text.length < minLength) {
-        return 'minLength'
-            .i18n_
+        return context.i18n.fieldTextTooShort
             .replaceAll('%1', label ?? '')
             .replaceAll('%2', '$minLength')
             .replaceAll('%3', '${value.text.length}');
@@ -80,7 +79,7 @@ class InputField extends Field<TextEditingValue> {
         if (inputFormatters != null) ...inputFormatters!,
       ],
       textInputAction: textInputAction,
-      validator: (value) => validate(controller.value),
+      validator: (value) => validate(context, controller.value),
       keyboardType: keyboardType,
       decoration: decoration ??
           InputDecoration(

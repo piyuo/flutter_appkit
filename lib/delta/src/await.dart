@@ -130,7 +130,7 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         AutoSizeText(
-          'errTitle'.i18n_,
+          context.i18n.errorTitle,
           maxLines: 2,
           style: const TextStyle(
             fontWeight: FontWeight.w600,
@@ -140,7 +140,7 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         AutoSizeText(
-          'notified'.i18n_,
+          context.i18n.errorNotified,
           maxLines: 5,
           textAlign: TextAlign.center,
           style: const TextStyle(
@@ -160,7 +160,7 @@ class AwaitErrorMessage extends StatelessWidget {
         InkWell(
             onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
             child: Text(
-              'emailUs'.i18n_,
+              context.i18n.errorEmailUsLink,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.orange[200],

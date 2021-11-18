@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/log/log.dart' as log;
+import 'package:flutter/material.dart';
 
 /*
 /// requiredValidator validate input string, return error message when input is empty, return null if no error
@@ -47,7 +48,8 @@ String? requiredValidator({
 ///     RegExp regexp = RegExp(r"^[A-Za-z]");
 ///     String error = regexpValidator(nameField.value, regexp, 'title', 'A-z')
 ///
-String? regexpValidator({
+String? regexpValidator(
+  BuildContext context, {
   String? input,
   required RegExp regexp,
   required String label,
@@ -56,7 +58,8 @@ String? regexpValidator({
   if (input == null) {
     return null;
   }
-  var result = regexp.hasMatch(input) ? null : 'valid'.i18n_.replaceAll('%1', label).replaceAll('%2', example);
+  var result =
+      regexp.hasMatch(input) ? null : context.i18n.fieldValueInvalid.replaceAll('%1', label).replaceAll('%2', example);
   if (result != null) {
     log.debug('[validator] failed $result');
   }
@@ -72,13 +75,14 @@ RegExp get emailRegexp => RegExp(r".+@.+\..+");
 
 /// emailValidator validate input string is email, return error message when input not valid, other return null
 ///
-///     String error = emailValidator('johndoe@domain.com');
+///     String error = emailValidator(context,'johndoe@domain.com');
 ///
-String? emailValidator(String? input) {
+String? emailValidator(BuildContext context, String? input) {
   return regexpValidator(
+    context,
     input: input,
     regexp: emailRegexp,
-    label: 'emailAdr'.i18n_,
+    label: context.i18n.emailField,
     example: 'johndoe@domain.com',
   );
 }
@@ -89,14 +93,15 @@ RegExp get domainNameRegexp => RegExp(r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\
 
 /// domainNameValidator validate input string is domain name, return error message when input not valid, other return null
 ///
-///     String error = domainNameValidator('johndoe@domain.com');
+///     String error = domainNameValidator(context,'johndoe@domain.com');
 ///
-String? domainNameValidator(String? input) {
+String? domainNameValidator(BuildContext context, String? input) {
   return regexpValidator(
+    context,
     input: input,
     regexp: domainNameRegexp,
-    label: 'domain'.i18n_,
-    example: 'www.domain.com',
+    label: context.i18n.domainField,
+    example: 'domain.com',
   );
 }
 
@@ -106,14 +111,15 @@ RegExp get subDomainNameRegexp => RegExp(r"^[a-zA-Z0-9-]*[a-zA-Z0-9]$");
 
 /// domainNameValidator validate input string is domain name, return error message when input not valid, other return null
 ///
-///     String error = domainNameValidator('johndoe@domain.com');
+///     String error = domainNameValidator(context,'johndoe@domain.com');
 ///
-String? subDomainNameValidator(String? input) {
+String? subDomainNameValidator(BuildContext context, String? input) {
   return regexpValidator(
+    context,
     input: input,
     regexp: subDomainNameRegexp,
-    label: 'domain'.i18n_,
-    example: 'your-name',
+    label: context.i18n.domainField,
+    example: 'domain.com',
   );
 }
 
@@ -121,6 +127,7 @@ String? subDomainNameValidator(String? input) {
 ///
 RegExp get noSymbolRegexp => RegExp(r"""^[^*|\":<>[\]{}`\\()';!@#%^*?&$.~,\-_=+\/]+$""");
 
+/*
 /// nameValidator validate input string is character and space only, return error message when input not valid, other return null
 ///
 ///     String error = domainNameValidator('johndoe@domain.com');
@@ -133,7 +140,7 @@ String? noSymbolValidator(String? input) {
     example: 'your-name',
   );
 }
-
+*/
 /// urlRegexp regexp use to validate url
 ///
 RegExp get urlRegexp => RegExp(r"^(https?)://[^\s/$.?#].[^\s]*$");
@@ -142,11 +149,12 @@ RegExp get urlRegexp => RegExp(r"^(https?)://[^\s/$.?#].[^\s]*$");
 ///
 ///     String error = urlValidator('http://www.g.com');
 ///
-String? urlValidator(String? input) {
+String? urlValidator(BuildContext context, String? input) {
   return regexpValidator(
+    context,
     input: input,
     regexp: urlRegexp,
-    label: 'url'.i18n_,
+    label: context.i18n.urlField,
     example: 'http://www.domain.com',
   );
 }

@@ -4,8 +4,8 @@ import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'image_upload_controller.dart';
-import 'l10n.dart';
 
 class ImageUpload extends StatelessWidget {
   const ImageUpload({
@@ -79,7 +79,7 @@ class ImageUpload extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 20),
-                        child: Text('drop'.l10n,
+                        child: Text(context.i18n.uploadDrop,
                             style: const TextStyle(
                               fontSize: 64,
                               color: Colors.black38,
@@ -179,7 +179,7 @@ class ImageUpload extends StatelessWidget {
               child: FloatingActionButton(
                 child: const Icon(Icons.file_upload_rounded, size: 42),
                 //padding: EdgeInsets.zero,
-                tooltip: 'upload'.l10n,
+                tooltip: context.i18n.uploadButtonText,
                 onPressed: () => controller.pickImage(context),
               ),
             ),
@@ -215,14 +215,14 @@ class ImageUpload extends StatelessWidget {
                       text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'dropImg'.l10n,
+                        text: context.i18n.uploadDrop,
                         style: TextStyle(
                           color: context.themeColor(light: Colors.grey[600]!, dark: Colors.grey[400]!),
                           fontSize: 14,
                         ),
                       ),
                       TextSpan(
-                        text: 'tap'.l10n,
+                        text: context.i18n.uploadBrowse,
                         style: TextStyle(
                           color: Colors.blue[600]!,
                           fontSize: 14,

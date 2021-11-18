@@ -66,7 +66,7 @@ class DateField extends Field<DateTime> {
       initialValue: controller.value,
       firstDate: firstDate,
       lastDate: lastDate,
-      validator: (value) => super.validate(value),
+      validator: (value) => super.validate(context, value),
       decoration: InputDecoration(
         labelText: label,
         suffixIcon: const Icon(
