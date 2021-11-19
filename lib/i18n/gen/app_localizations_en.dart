@@ -254,10 +254,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get printerName => 'Printer Name';
 
   @override
-  String get printerExists => '%1 already been used. please try another name';
+  String get printerNameExists => '%1 already been used. please try another name';
 
   @override
-  String get printerHint => 'Give printer a name (e.g. Kitchen)';
+  String get printerNameHint => 'Give printer a name (e.g. Kitchen)';
 
   @override
   String get printerNeedIP => 'Please input the printer IP address';
@@ -272,7 +272,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get printerIPHint => 'e.g. 192.168.1.2';
 
   @override
-  String get printerIPNotValid => '%1 is not a valid IP. (Example: %2)';
+  String get printerIPNotValid => '%1 is not a valid IP. (Example: 192.168.1.2)';
 
   @override
   String get printerFindIP => 'How to Print Printer\"s IP Address';

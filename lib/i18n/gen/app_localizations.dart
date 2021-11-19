@@ -587,17 +587,17 @@ abstract class AppLocalizations {
   /// **'Printer Name'**
   String get printerName;
 
-  /// No description provided for @printerExists.
+  /// No description provided for @printerNameExists.
   ///
   /// In en, this message translates to:
   /// **'%1 already been used. please try another name'**
-  String get printerExists;
+  String get printerNameExists;
 
-  /// No description provided for @printerHint.
+  /// No description provided for @printerNameHint.
   ///
   /// In en, this message translates to:
   /// **'Give printer a name (e.g. Kitchen)'**
-  String get printerHint;
+  String get printerNameHint;
 
   /// No description provided for @printerNeedIP.
   ///
@@ -626,7 +626,7 @@ abstract class AppLocalizations {
   /// No description provided for @printerIPNotValid.
   ///
   /// In en, this message translates to:
-  /// **'%1 is not a valid IP. (Example: %2)'**
+  /// **'%1 is not a valid IP. (Example: 192.168.1.2)'**
   String get printerIPNotValid;
 
   /// No description provided for @printerFindIP.
