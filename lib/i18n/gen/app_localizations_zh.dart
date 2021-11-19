@@ -272,6 +272,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get printerIPHint => 'e.g. 192.168.1.2';
 
   @override
+  String get printerIPNotValid => '%1 is not a valid IP. (Example: %2)';
+
+  @override
   String get printerFindIP => 'How to Print Printer\"s IP Address';
 
   @override
@@ -578,6 +581,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get printerIPHint => 'e.g. 192.168.1.2';
+
+  @override
+  String get printerIPNotValid => '%1 is not a valid IP. (Example: %2)';
 
   @override
   String get printerFindIP => 'How to Print Printer\"s IP Address';

@@ -623,6 +623,12 @@ abstract class AppLocalizations {
   /// **'e.g. 192.168.1.2'**
   String get printerIPHint;
 
+  /// No description provided for @printerIPNotValid.
+  ///
+  /// In en, this message translates to:
+  /// **'%1 is not a valid IP. (Example: %2)'**
+  String get printerIPNotValid;
+
   /// No description provided for @printerFindIP.
   ///
   /// In en, this message translates to:
