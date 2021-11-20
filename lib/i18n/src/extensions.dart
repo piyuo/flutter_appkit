@@ -9,6 +9,7 @@ import 'datetime.dart';
 /// I18nLocalization add localization function to string
 ///
 extension I18nLocalization on String {
+  /*
   /// i18n translate const string, don't use this method on string variable
   ///
   ///   'ERROR'.i18n(context); // OK
@@ -20,6 +21,7 @@ extension I18nLocalization on String {
     var provider = Provider.of<I18nProvider>(context, listen: false);
     return provider.translate(this);
   }
+  */
 }
 
 /// i18n translate string base on current locale
