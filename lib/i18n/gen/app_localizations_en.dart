@@ -230,6 +230,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ticketTip => 'Tip';
 
   @override
+  String get ticketTotal => 'Total';
+
+  @override
   String get ticketPaperSize => 'Paper Size';
 
   @override

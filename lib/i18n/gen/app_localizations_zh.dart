@@ -230,6 +230,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ticketTip => 'Tip';
 
   @override
+  String get ticketTotal => '总计';
+
+  @override
   String get ticketPaperSize => 'Paper Size';
 
   @override
@@ -539,6 +542,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get ticketTip => 'Tip';
+
+  @override
+  String get ticketTotal => '總計';
 
   @override
   String get ticketPaperSize => 'Paper Size';

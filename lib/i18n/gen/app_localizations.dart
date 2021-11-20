@@ -539,6 +539,12 @@ abstract class AppLocalizations {
   /// **'Tip'**
   String get ticketTip;
 
+  /// No description provided for @ticketTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get ticketTotal;
+
   /// No description provided for @ticketPaperSize.
   ///
   /// In en, this message translates to:
