@@ -194,46 +194,46 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uploadImageNotValid => '图片格式不支持. 请选择 JPG, PNG, GIF 以及 WEBP 格式的图片';
 
   @override
-  String get ticketTypeReceipt => 'Receipt';
+  String get ticketTypeReceipt => '收据';
 
   @override
-  String get ticketTypeCopy => 'Receipt Copy';
+  String get ticketTypeCopy => '收据副本';
 
   @override
-  String get ticketTypeOrder => 'Order';
+  String get ticketTypeOrder => '订单';
 
   @override
-  String get ticketOrderTakeout => 'Take Out';
+  String get ticketOrderTakeout => '自取';
 
   @override
-  String get ticketOrderDelivery => 'Delivery';
+  String get ticketOrderDelivery => '外送';
 
   @override
-  String get ticketOrderDineIn => 'Dine in';
+  String get ticketOrderDineIn => '内用';
 
   @override
-  String get ticketItemCount => 'Item Count: %1';
+  String get ticketItemCount => '总数量: %1';
 
   @override
-  String get ticketPickup => 'Pickup';
+  String get ticketPickup => '取餐';
 
   @override
-  String get ticketSubtotal => 'Subtotal';
+  String get ticketSubtotal => '小计';
 
   @override
-  String get ticketTax => 'Tax';
+  String get ticketTax => '税';
 
   @override
-  String get ticketService => 'Service';
+  String get ticketService => '服务费';
 
   @override
-  String get ticketTip => 'Tip';
+  String get ticketTip => '小费';
 
   @override
   String get ticketTotal => '总计';
 
   @override
-  String get ticketPaperSize => 'Paper Size';
+  String get ticketPaperSize => '纸张大小';
 
   @override
   String get ticket58mm => '58 mm';
@@ -242,76 +242,109 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ticket80mm => '80 mm';
 
   @override
-  String get errorPrint => 'Failed to Print on %1';
+  String get errorPrint => '无法打印到%1';
 
   @override
-  String get networkPrinter => 'Network Printer';
+  String get networkPrinter => '网路打印机';
 
   @override
-  String get bluetoothPrinter => 'Bluetooth Printer';
+  String get bluetoothPrinter => '蓝芽打印机';
 
   @override
-  String get printerList => 'Printer List';
+  String get printerList => '打印机列表';
 
   @override
-  String get printerName => 'Printer Name';
+  String get printerName => '打印机名称';
 
   @override
-  String get printerNameExists => '%1 already been used. please try another name';
+  String get printerNameExists => '%1 这名称已被使用. 请换一个名称';
 
   @override
-  String get printerNameHint => 'Give printer a name (e.g. Kitchen)';
+  String get printerNameHint => '请给此打印机一个名称 (例如. 厨房)';
 
   @override
-  String get printerNeedIP => 'Please input the printer IP address';
+  String get printerNeedIP => '请输入打印机的IP地址';
 
   @override
-  String get printerNeedBT => 'Please select a Bluetooth Printer';
+  String get printerNeedBT => '请选择一个蓝芽打印机';
 
   @override
-  String get printerIP => 'Printer\"s IP Address';
+  String get printerIP => '打印机IP地址';
 
   @override
-  String get printerIPHint => 'e.g. 192.168.1.2';
+  String get printerIPHint => '例如. 192.168.1.2';
 
   @override
-  String get printerIPNotValid => '%1 is not a valid IP. (Example: 192.168.1.2)';
+  String get printerIPNotValid => '%1 不是有效的IP地址格式. (范例格式: 192.168.1.2)';
 
   @override
-  String get printerFindIP => 'How to Print Printer\"s IP Address';
+  String get printerFindIP => '如何获取打印机的IP地址';
 
   @override
-  String get bluetoothPrinterNotSupport => 'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';
+  String get bluetoothPrinterNotSupport => '蓝芽引表机仅可在 iPhone 或是 Android 装置上使用. 您也必须在 App 设定内给予我们权限存取';
 
   @override
-  String get bluetoothPrinterHint => 'Click Search to select bluetooth device';
+  String get bluetoothPrinterHint => '按此处选择蓝芽打印机';
 
   @override
-  String get printTestPage => 'Print Test Page';
+  String get printTestPage => '打印测试单据';
 
   @override
-  String get printAutoLabel => 'Automatically print when receive';
+  String get printAutoLabel => '当收到以下单据时自动打印';
 
   @override
-  String get errorConnect => 'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
+  String get errorConnect => '无法连线到打印机，请确认打印机电源已开启，有连接到网路上，而且IP地址是正确的';
 
   @override
-  String get errorTimeout => 'Printer connection timeout, make sure printer is turned on';
+  String get errorTimeout => '打印机连接超时，请确认打印机电源已开启';
 
   @override
-  String get errorPrinterNotSelected => 'Printer not selected';
+  String get errorPrinterNotSelected => '打印机尚未选择';
 
   @override
-  String get errorEmptyTicket => 'Ticket is empty';
+  String get errorEmptyTicket => '无法打印，因为单据内容为空';
 
   @override
-  String get errorAnotherPrinting => 'Another print in progress';
+  String get errorAnotherPrinting => '无法打印，因为引表机正在打印';
 
   @override
-  String get errorScanInProgress => 'Printer scanning in progress';
+  String get errorScanInProgress => '无法打印，因为正在扫描蓝芽打印机';
 
   @override
-  String get errorUnknown => 'Unknown error';
+  String get errorUnknown => '无法打印，未知的错误';
+
+  @override
+  String get testTicketTitle => 'piyuo.com';
+
+  @override
+  String get testTicketAddress => '测试用收据';
+
+  @override
+  String get testTicketCustomerName => '顾客 1\'';
+
+  @override
+  String get testTicketNotes => '不用免洗餐具';
+
+  @override
+  String get testTicketProductName1 => '餐点 1';
+
+  @override
+  String get testTicketProductItem1 => '大份';
+
+  @override
+  String get testTicketProductItem2 => '大辣';
+
+  @override
+  String get testTicketProductName2 => '餐点 2';
+
+  @override
+  String get testTicketProductName3 => '餐点 3';
+
+  @override
+  String get testTicketQRCode => '请扫码查看订单';
+
+  @override
+  String get testTicketMessage => '谢谢惠顾! 欢迎下次再来!';
 
   @override
   String get hello => '您好';
@@ -508,46 +541,46 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get uploadImageNotValid => '圖片格式不支援. 請選擇 JPG, PNG, GIF 以及 WEBP 格式的圖片';
 
   @override
-  String get ticketTypeReceipt => 'Receipt';
+  String get ticketTypeReceipt => '收據';
 
   @override
-  String get ticketTypeCopy => 'Receipt Copy';
+  String get ticketTypeCopy => '收據副本';
 
   @override
-  String get ticketTypeOrder => 'Order';
+  String get ticketTypeOrder => '訂單';
 
   @override
-  String get ticketOrderTakeout => 'Take Out';
+  String get ticketOrderTakeout => '自取';
 
   @override
-  String get ticketOrderDelivery => 'Delivery';
+  String get ticketOrderDelivery => '外送';
 
   @override
-  String get ticketOrderDineIn => 'Dine in';
+  String get ticketOrderDineIn => '內用';
 
   @override
-  String get ticketItemCount => 'Item Count: %1';
+  String get ticketItemCount => '總數量: %1';
 
   @override
-  String get ticketPickup => 'Pickup';
+  String get ticketPickup => '取餐';
 
   @override
-  String get ticketSubtotal => 'Subtotal';
+  String get ticketSubtotal => '小計';
 
   @override
-  String get ticketTax => 'Tax';
+  String get ticketTax => '税';
 
   @override
-  String get ticketService => 'Service';
+  String get ticketService => '服務費';
 
   @override
-  String get ticketTip => 'Tip';
+  String get ticketTip => '小費';
 
   @override
   String get ticketTotal => '總計';
 
   @override
-  String get ticketPaperSize => 'Paper Size';
+  String get ticketPaperSize => '紙張大小';
 
   @override
   String get ticket58mm => '58 mm';
@@ -556,76 +589,109 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get ticket80mm => '80 mm';
 
   @override
-  String get errorPrint => 'Failed to Print on %1';
+  String get errorPrint => '無法列印到%1';
 
   @override
-  String get networkPrinter => 'Network Printer';
+  String get networkPrinter => '網路印表機';
 
   @override
-  String get bluetoothPrinter => 'Bluetooth Printer';
+  String get bluetoothPrinter => '藍芽印表機';
 
   @override
-  String get printerList => 'Printer List';
+  String get printerList => '印表機列表';
 
   @override
-  String get printerName => 'Printer Name';
+  String get printerName => '印表機名稱';
 
   @override
-  String get printerNameExists => '%1 already been used. please try another name';
+  String get printerNameExists => '%1 這名稱已被使用. 請換一個名稱';
 
   @override
-  String get printerNameHint => 'Give printer a name (e.g. Kitchen)';
+  String get printerNameHint => '請給此印表機一個名稱 (例如. 廚房)';
 
   @override
-  String get printerNeedIP => 'Please input the printer IP address';
+  String get printerNeedIP => '請輸入印表機的IP地址';
 
   @override
-  String get printerNeedBT => 'Please select a Bluetooth Printer';
+  String get printerNeedBT => '請選擇一個藍芽印表機';
 
   @override
-  String get printerIP => 'Printer\"s IP Address';
+  String get printerIP => '印表機IP地址';
 
   @override
-  String get printerIPHint => 'e.g. 192.168.1.2';
+  String get printerIPHint => '例如. 192.168.1.2';
 
   @override
-  String get printerIPNotValid => '%1 is not a valid IP. (Example: 192.168.1.2)';
+  String get printerIPNotValid => '%1 不是有效的IP地址格式. (範例格式: 192.168.1.2)';
 
   @override
-  String get printerFindIP => 'How to Print Printer\"s IP Address';
+  String get printerFindIP => '如何獲取印表機的IP地址';
 
   @override
-  String get bluetoothPrinterNotSupport => 'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';
+  String get bluetoothPrinterNotSupport => '藍芽引表機僅可在 iPhone 或是 Android 裝置上使用. 您也必須在 App 設定內給予我們權限存取';
 
   @override
-  String get bluetoothPrinterHint => 'Click Search to select bluetooth device';
+  String get bluetoothPrinterHint => '按此處選擇藍芽印表機';
 
   @override
-  String get printTestPage => 'Print Test Page';
+  String get printTestPage => '列印測試單據';
 
   @override
-  String get printAutoLabel => 'Automatically print when receive';
+  String get printAutoLabel => '當收到以下單據時自動列印';
 
   @override
-  String get errorConnect => 'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
+  String get errorConnect => '無法連線到印表機，請確認印表機電源已開啟，有連接到網路上，而且IP地址是正確的';
 
   @override
-  String get errorTimeout => 'Printer connection timeout, make sure printer is turned on';
+  String get errorTimeout => '印表機連接超時，請確認印表機電源已開啟';
 
   @override
-  String get errorPrinterNotSelected => 'Printer not selected';
+  String get errorPrinterNotSelected => '印表機尚未選擇';
 
   @override
-  String get errorEmptyTicket => 'Ticket is empty';
+  String get errorEmptyTicket => '無法列印，因為單據內容為空';
 
   @override
-  String get errorAnotherPrinting => 'Another print in progress';
+  String get errorAnotherPrinting => '無法列印，因為引表機正在列印';
 
   @override
-  String get errorScanInProgress => 'Printer scanning in progress';
+  String get errorScanInProgress => '無法列印，因為正在掃描藍芽印表機';
 
   @override
-  String get errorUnknown => 'Unknown error';
+  String get errorUnknown => '無法列印，未知的錯誤';
+
+  @override
+  String get testTicketTitle => 'piyuo.com';
+
+  @override
+  String get testTicketAddress => '測試用收據';
+
+  @override
+  String get testTicketCustomerName => '顧客 1\'';
+
+  @override
+  String get testTicketNotes => '不用免洗餐具';
+
+  @override
+  String get testTicketProductName1 => '餐點 1';
+
+  @override
+  String get testTicketProductItem1 => '大份';
+
+  @override
+  String get testTicketProductItem2 => '大辣';
+
+  @override
+  String get testTicketProductName2 => '餐點 2';
+
+  @override
+  String get testTicketProductName3 => '餐點 3';
+
+  @override
+  String get testTicketQRCode => '請掃碼查看訂單';
+
+  @override
+  String get testTicketMessage => '謝謝惠顧! 歡迎下次再來!';
 
   @override
   String get hello => '您好';

@@ -314,5 +314,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorUnknown => 'Unknown error';
 
   @override
+  String get testTicketTitle => 'piyuo.com';
+
+  @override
+  String get testTicketAddress => 'Test Receipt';
+
+  @override
+  String get testTicketCustomerName => 'Customer 1';
+
+  @override
+  String get testTicketNotes => 'The tableware of chopsticks, forks and so on';
+
+  @override
+  String get testTicketProductName1 => 'Product 1';
+
+  @override
+  String get testTicketProductItem1 => 'Extra Large';
+
+  @override
+  String get testTicketProductItem2 => 'Honey BBQ Sauce';
+
+  @override
+  String get testTicketProductName2 => 'Product 2';
+
+  @override
+  String get testTicketProductName3 => 'product 3';
+
+  @override
+  String get testTicketQRCode => 'Scan QR code to see order online';
+
+  @override
+  String get testTicketMessage => 'Thank your!';
+
+  @override
   String get hello => 'Hello';
 }

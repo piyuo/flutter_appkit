@@ -103,5 +103,16 @@
     "errorAnotherPrinting": "Another print in progress",
     "errorScanInProgress": "Printer scanning in progress",
     "errorUnknown": "Unknown error",
+    "testTicketTitle": "piyuo.com",
+    "testTicketAddress": "Test Receipt",
+    "testTicketCustomerName": "Customer 1",
+    "testTicketNotes": "The tableware of chopsticks, forks and so on",
+    "testTicketProductName1": "Product 1",
+    "testTicketProductItem1": "Extra Large",
+    "testTicketProductItem2": "Honey BBQ Sauce",
+    "testTicketProductName2": "Product 2",
+    "testTicketProductName3": "product 3",
+    "testTicketQRCode": "Scan QR code to see order online",
+    "testTicketMessage": "Thank your!",
     "hello":"Hello"
 }

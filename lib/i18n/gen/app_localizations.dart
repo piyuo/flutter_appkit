@@ -707,6 +707,72 @@ abstract class AppLocalizations {
   /// **'Unknown error'**
   String get errorUnknown;
 
+  /// No description provided for @testTicketTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'piyuo.com'**
+  String get testTicketTitle;
+
+  /// No description provided for @testTicketAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Receipt'**
+  String get testTicketAddress;
+
+  /// No description provided for @testTicketCustomerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer 1'**
+  String get testTicketCustomerName;
+
+  /// No description provided for @testTicketNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'The tableware of chopsticks, forks and so on'**
+  String get testTicketNotes;
+
+  /// No description provided for @testTicketProductName1.
+  ///
+  /// In en, this message translates to:
+  /// **'Product 1'**
+  String get testTicketProductName1;
+
+  /// No description provided for @testTicketProductItem1.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra Large'**
+  String get testTicketProductItem1;
+
+  /// No description provided for @testTicketProductItem2.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey BBQ Sauce'**
+  String get testTicketProductItem2;
+
+  /// No description provided for @testTicketProductName2.
+  ///
+  /// In en, this message translates to:
+  /// **'Product 2'**
+  String get testTicketProductName2;
+
+  /// No description provided for @testTicketProductName3.
+  ///
+  /// In en, this message translates to:
+  /// **'product 3'**
+  String get testTicketProductName3;
+
+  /// No description provided for @testTicketQRCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR code to see order online'**
+  String get testTicketQRCode;
+
+  /// No description provided for @testTicketMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank your!'**
+  String get testTicketMessage;
+
   /// No description provided for @hello.
   ///
   /// In en, this message translates to:
