@@ -90,7 +90,7 @@ class PlaceExampleState extends State<PlaceExample> {
                           label: 'Address',
                           focusNode: addressFocus,
                           nextFocusNode: address2Focus,
-                          require: 'you must input address!',
+                          requiredField: true,
                         ),
                         form.InputField(
                           key: const Key('test-place2'),

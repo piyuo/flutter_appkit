@@ -35,7 +35,7 @@ void main() {
                 label: 'Address',
                 focusNode: placeFocus,
                 nextFocusNode: place2Focus,
-                require: 'you must input address!',
+                requiredField: true,
               ),
               form.InputField(
                 key: const Key('test-place2'),

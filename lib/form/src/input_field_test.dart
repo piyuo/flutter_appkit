@@ -22,7 +22,7 @@ void main() {
             label: 'name',
             maxLength: 10,
             minLength: 2,
-            require: 'required',
+            requiredField: true,
           ),
         ),
       ),

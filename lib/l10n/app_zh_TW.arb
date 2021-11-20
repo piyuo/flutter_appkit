@@ -32,7 +32,7 @@
     "urlField": "網址",
     "fieldHintYouMean": "您想輸入的是: ",
     "fieldEnterYour": "輸入你的%1",
-    "fieldValueRequired": "%1必須填寫",
+    "fieldRequired": "這個欄位必須填寫",
     "fieldValueInvalid": "請輸入一個有效的%1. (範例: %2)",
     "fieldTextTooShort": "%1必須至少包含 %2 個字元. 你輸入了 %3 個字元",
     "fieldTextTooLong": "%1必須是%2個或更少字元. 你輸入了 %3 個字元",

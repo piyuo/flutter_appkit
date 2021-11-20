@@ -107,7 +107,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldEnterYour => 'Enter your %1';
 
   @override
-  String get fieldValueRequired => '%1 is required';
+  String get fieldRequired => 'This Field is required.';
 
   @override
   String get fieldValueInvalid => 'Please enter a valid %1.  (Example: %2)';

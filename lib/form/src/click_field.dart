@@ -11,7 +11,7 @@ class ClickField<T> extends Field<T> {
     required this.valueToString,
     FormFieldValidator<T>? validator,
     String? label,
-    String? require,
+    bool requiredField = false,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
   }) : super(
@@ -19,7 +19,7 @@ class ClickField<T> extends Field<T> {
           controller: controller,
           validator: validator,
           label: label,
-          require: require,
+          requiredField: requiredField,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
         );

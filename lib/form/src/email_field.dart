@@ -68,14 +68,14 @@ class EmailField extends Field<TextEditingValue> {
     this.textInputAction = TextInputAction.next,
     String? label,
     String? hint,
-    String? require,
+    bool requiredField = false,
     FormFieldValidator<TextEditingValue>? validator,
   }) : super(
           key: key,
           controller: controller,
           label: label,
           hint: hint,
-          require: require,
+          requiredField: requiredField,
           validator: validator,
           focusNode: focusNode,
         );
@@ -85,9 +85,6 @@ class EmailField extends Field<TextEditingValue> {
     var result = super.validate(context, value);
     if (result != null) {
       return result;
-    }
-    if (require != null && (value == null || value.text.isEmpty)) {
-      return require;
     }
 
     if (value != null && value.text.length > 96) {

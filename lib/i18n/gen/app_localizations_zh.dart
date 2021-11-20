@@ -107,7 +107,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fieldEnterYour => 'E输入你的%1';
 
   @override
-  String get fieldValueRequired => '%1必须填写';
+  String get fieldRequired => '这个栏位必须填写';
 
   @override
   String get fieldValueInvalid => '请输入一个有效的%1. (范例: %2)';
@@ -418,7 +418,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get fieldEnterYour => '輸入你的%1';
 
   @override
-  String get fieldValueRequired => '%1必須填寫';
+  String get fieldRequired => '這個欄位必須填寫';
 
   @override
   String get fieldValueInvalid => '請輸入一個有效的%1. (範例: %2)';

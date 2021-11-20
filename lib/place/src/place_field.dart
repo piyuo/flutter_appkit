@@ -13,14 +13,14 @@ class PlaceField extends form.Field<types.Place> {
     required Key key,
     required ValueNotifier<types.Place?> controller,
     String? label,
-    String? require,
+    bool requiredField = false,
     FocusNode? focusNode,
     FocusNode? nextFocusNode,
   }) : super(
           key: key,
           controller: controller,
           label: label,
-          require: require,
+          requiredField: requiredField,
           focusNode: focusNode,
           nextFocusNode: nextFocusNode,
         );
@@ -33,7 +33,7 @@ class PlaceField extends form.Field<types.Place> {
       focusNode: focusNode,
       nextFocusNode: nextFocusNode,
       label: label,
-      require: require,
+      requiredField: requiredField,
       onClicked: (types.Place? place) async {
         // deviceLatLng might not return when use ios simulator custom location. define your location in simulator file
         final newPlace = await dialog.routeOrDialog(

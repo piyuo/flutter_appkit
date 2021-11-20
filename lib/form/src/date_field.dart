@@ -14,7 +14,7 @@ class DateField extends Field<DateTime> {
     this.firstDate,
     this.lastDate,
     String? label,
-    String? require,
+    bool requiredField = false,
     FormFieldValidator<DateTime>? validator,
     this.mode = DateFieldMode.date,
     FocusNode? focusNode,
@@ -22,7 +22,7 @@ class DateField extends Field<DateTime> {
           key: key,
           controller: controller,
           label: label,
-          require: require,
+          requiredField: requiredField,
           validator: validator,
           focusNode: focusNode,
         );

@@ -15,7 +15,7 @@ class InputField extends Field<TextEditingValue> {
     this.decoration,
     String? label,
     String? hint,
-    String? require,
+    bool requiredField = false,
     this.readOnly = false,
     FormFieldValidator<TextEditingValue>? validator,
     this.keyboardType,
@@ -25,7 +25,7 @@ class InputField extends Field<TextEditingValue> {
           controller: controller,
           label: label,
           hint: hint,
-          require: require,
+          requiredField: requiredField,
           validator: validator,
           focusNode: focusNode,
         );

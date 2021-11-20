@@ -293,11 +293,11 @@ abstract class AppLocalizations {
   /// **'Enter your %1'**
   String get fieldEnterYour;
 
-  /// No description provided for @fieldValueRequired.
+  /// No description provided for @fieldRequired.
   ///
   /// In en, this message translates to:
-  /// **'%1 is required'**
-  String get fieldValueRequired;
+  /// **'This Field is required.'**
+  String get fieldRequired;
 
   /// No description provided for @fieldValueInvalid.
   ///
