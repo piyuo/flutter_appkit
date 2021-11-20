@@ -1,11 +1,11 @@
 
 
 
-import 'app_localizations.dart';
+import 'lib_localizations.dart';
 
 /// The translations for Chinese (`zh`).
-class AppLocalizationsZh extends AppLocalizations {
-  AppLocalizationsZh([String locale = 'zh']) : super(locale);
+class LibLocalizationsZh extends LibLocalizations {
+  LibLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
   String get searchButtonText => '搜寻';
@@ -351,8 +351,8 @@ class AppLocalizationsZh extends AppLocalizations {
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
-class AppLocalizationsZhTw extends AppLocalizationsZh {
-  AppLocalizationsZhTw(): super('zh_TW');
+class LibLocalizationsZhTw extends LibLocalizationsZh {
+  LibLocalizationsZhTw(): super('zh_TW');
 
   @override
   String get searchButtonText => '搜尋';

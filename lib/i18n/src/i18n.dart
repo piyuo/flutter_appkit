@@ -6,7 +6,7 @@ import 'package:libcli/pref/pref.dart' as pref;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import '../gen/app_localizations.dart';
+import '../gen/lib_localizations.dart';
 
 class L10nProvider with ChangeNotifier {
   Locale get currentLocale => locale;
@@ -20,11 +20,11 @@ class L10nProvider with ChangeNotifier {
     return Provider.of<L10nProvider>(context, listen: false);
   }
 
-  Iterable<Locale> supportedLocales = AppLocalizations.supportedLocales;
+  Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
 
   Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates = [
     LocaleDelegate(),
-    AppLocalizations.delegate,
+    LibLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
   ];
@@ -35,7 +35,7 @@ extension I18nBuildContext on BuildContext {
   ///
   ///     context.i18n;
   ///
-  AppLocalizations get i18n => AppLocalizations.of(this);
+  LibLocalizations get i18n => LibLocalizations.of(this);
 }
 
 const prefLocaleKey = 'locale';

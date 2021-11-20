@@ -1,11 +1,11 @@
 
 
 
-import 'app_localizations.dart';
+import 'lib_localizations.dart';
 
 /// The translations for English (`en`).
-class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([String locale = 'en']) : super(locale);
+class LibLocalizationsEn extends LibLocalizations {
+  LibLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
   String get searchButtonText => 'Search';
