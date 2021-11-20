@@ -30,6 +30,27 @@ class L10nProvider with ChangeNotifier {
   ];
 }
 
+extension I18nString on String {
+  /// replace1 replace %1 to value
+  ///
+  ///     str.replace1('value1');
+  ///
+  String replace1(String value) => replaceAll('%1', value);
+
+  /// replace2 replace %1 to value1 and %2 to value2
+  ///
+  ///     str.replace2('value1','value2');
+  ///
+  String replace2(String value1, String value2) => replaceAll('%1', value1).replaceAll('%2', value2);
+
+  /// replace2 replace %1 to value1 and %2 to value2 and %3 to value3
+  ///
+  ///     str.replace3('value1','value2','value3');
+  ///
+  String replace3(String value1, String value2, String value3) =>
+      replaceAll('%1', value1).replaceAll('%2', value2).replaceAll('%3', value3);
+}
+
 extension I18nBuildContext on BuildContext {
   /// i18n return AppLocalizations of current context
   ///
