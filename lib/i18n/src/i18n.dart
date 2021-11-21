@@ -22,7 +22,7 @@ class L10nProvider with ChangeNotifier {
 
   Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
 
-  Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates = [
+  Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
     LocaleDelegate(),
     LibLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
