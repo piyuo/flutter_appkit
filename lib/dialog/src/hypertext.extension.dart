@@ -4,7 +4,6 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/module/module.dart' as module;
 import 'package:libcli/assets/assets.dart' as asset;
 import 'show_more.dart';
 
@@ -46,62 +45,55 @@ extension HypertextDialog on delta.Hypertext {
   }
 }
 
-class _DocPage extends module.ViewWidget<_DocProvider> {
+class _DocPage extends StatelessWidget {
+  const _DocPage({
+    required this.docName,
+    this.title = '',
+    Key? key,
+  }) : super(key: key);
+
   final String title;
 
   final String docName;
 
-  const _DocPage({
-    required this.docName,
-    this.title = '',
-  });
-
-  @override
-  createProvider(BuildContext context) => _DocProvider(
-        docName: docName,
-        title: title,
-      );
-
-  @override
-  Widget createWidget(BuildContext context) => const DocWidget();
-}
-
-class DocWidget extends StatelessWidget {
-  const DocWidget({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Consumer<_DocProvider>(
-        builder: (context, provider, child) => Scaffold(
-            appBar: AppBar(
-              title: Text(provider.title),
+    return ChangeNotifierProvider<_DocProvider>(
+        create: (context) => _DocProvider(
+              docName: docName,
+              title: title,
             ),
-            body: SafeArea(
-              right: false,
-              bottom: false,
-              child: Stack(children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 62),
-                  child: Consumer<_DocProvider>(builder: (context, provider, _) => Markdown(data: provider.md)),
+        child: Consumer<_DocProvider>(
+            builder: (context, provider, child) => Scaffold(
+                appBar: AppBar(
+                  title: Text(provider.title),
                 ),
-                Positioned(
-                  left: 30,
-                  right: 30,
-                  bottom: 8,
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        child: Text(context.i18n.backButtonText),
-                        style: ButtonStyle(
-                            padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(40, 20, 40, 20)),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                            )),
-                        onPressed: () => Navigator.pop(context),
-                      )),
-                )
-              ]),
-            )));
+                body: SafeArea(
+                  right: false,
+                  bottom: false,
+                  child: Stack(children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 62),
+                      child: Consumer<_DocProvider>(builder: (context, provider, _) => Markdown(data: provider.md)),
+                    ),
+                    Positioned(
+                      left: 30,
+                      right: 30,
+                      bottom: 8,
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: ElevatedButton(
+                            child: Text(context.i18n.backButtonText),
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(40, 20, 40, 20)),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                                )),
+                            onPressed: () => Navigator.pop(context),
+                          )),
+                    )
+                  ]),
+                ))));
   }
 }
 

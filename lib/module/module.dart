@@ -1,6 +1,5 @@
 library module;
 
-export 'src/view_widget.dart';
 export 'src/view_provider.dart';
 export 'src/module.dart';
 export 'src/redux.dart';
