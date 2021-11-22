@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'redux.dart';
 
+/// return [Module] from context
+Module of(BuildContext context) {
+  return Provider.of<Module>(context, listen: false);
+}
+
 /// Module provide redux and services
 ///
 class Module {
-  static Module of(BuildContext context) {
-    return Provider.of<Module>(context, listen: false);
-  }
-
   /// redux instance
   ///
   final Redux redux;
