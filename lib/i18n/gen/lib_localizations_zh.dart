@@ -8,6 +8,9 @@ class LibLocalizationsZh extends LibLocalizations {
   LibLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get confirmButtonText => '确认';
+
+  @override
   String get searchButtonText => '搜寻';
 
   @override
@@ -347,12 +350,30 @@ class LibLocalizationsZh extends LibLocalizations {
   String get testTicketMessage => '谢谢惠顾! 欢迎下次再来!';
 
   @override
+  String get placeEnterAddress => '请输入你的地址';
+
+  @override
+  String get placeConfirmAddress => '确认地址';
+
+  @override
+  String get placeMyLocation => '我的位址';
+
+  @override
+  String get placeIsAddressCorrect => '你的地址有正确的显示在地图中吗?';
+
+  @override
+  String get placeErrorLocateYourAddress => '无法取得你的地址，请在 App setting 中给我们存取位置的权限';
+
+  @override
   String get hello => '您好';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class LibLocalizationsZhTw extends LibLocalizationsZh {
   LibLocalizationsZhTw(): super('zh_TW');
+
+  @override
+  String get confirmButtonText => '確認';
 
   @override
   String get searchButtonText => '搜尋';
@@ -692,6 +713,21 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get testTicketMessage => '謝謝惠顧! 歡迎下次再來!';
+
+  @override
+  String get placeEnterAddress => '請輸入你的地址';
+
+  @override
+  String get placeConfirmAddress => '確認地址';
+
+  @override
+  String get placeMyLocation => '我的位址';
+
+  @override
+  String get placeIsAddressCorrect => '你的地址有正確的顯示在地圖中嗎?';
+
+  @override
+  String get placeErrorLocateYourAddress => '無法取得你的地址，請在 App setting 中給我們存取位置的權限';
 
   @override
   String get hello => '您好';

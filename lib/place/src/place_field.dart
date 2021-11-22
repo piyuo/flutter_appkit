@@ -38,16 +38,10 @@ class PlaceField extends form.Field<types.Place> {
         // deviceLatLng might not return when use ios simulator custom location. define your location in simulator file
         final newPlace = await dialog.routeOrDialog(
           context,
-          MultiProvider(providers: [
-            ChangeNotifierProvider<ShowSearchProvider>(
-              create: (context) => ShowSearchProvider(context, place ?? types.Place.empty),
-            ),
-            ChangeNotifierProvider(
-                create: (_) => i18n.I18nProvider(
-                      fileName: 'place',
-                      package: 'libcli',
-                    )),
-          ], child: const ShowSearch()),
+          ChangeNotifierProvider<ShowSearchProvider>(
+            create: (context) => ShowSearchProvider(context, place ?? types.Place.empty),
+            child: const ShowSearch(),
+          ),
         );
 
         if (newPlace != null) {

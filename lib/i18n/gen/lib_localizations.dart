@@ -95,6 +95,12 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @confirmButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmButtonText;
+
   /// No description provided for @searchButtonText.
   ///
   /// In en, this message translates to:
@@ -772,6 +778,36 @@ abstract class LibLocalizations {
   /// In en, this message translates to:
   /// **'Thank your!'**
   String get testTicketMessage;
+
+  /// No description provided for @placeEnterAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your address'**
+  String get placeEnterAddress;
+
+  /// No description provided for @placeConfirmAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm address'**
+  String get placeConfirmAddress;
+
+  /// No description provided for @placeMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My Location'**
+  String get placeMyLocation;
+
+  /// No description provided for @placeIsAddressCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'is your address on map correct?'**
+  String get placeIsAddressCorrect;
+
+  /// No description provided for @placeErrorLocateYourAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Fail to locate your address'**
+  String get placeErrorLocateYourAddress;
 
   /// No description provided for @hello.
   ///

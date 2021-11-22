@@ -146,8 +146,8 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    return Consumer3<i18n.I18nProvider, SearchBarProvider, ConfirmButtonProvider>(
-        builder: (context, i18nProvider, searchBarProvider, confirmButtonProvider, child) => LayoutBuilder(
+    return Consumer2<SearchBarProvider, ConfirmButtonProvider>(
+        builder: (context, searchBarProvider, confirmButtonProvider, child) => LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) => Container(
                 color: theme.appBarTheme.backgroundColor,
                 height: kToolbarHeight,
@@ -196,7 +196,7 @@ class SearchBar extends StatelessWidget {
                                 bottom: 10,
                                 top: 16,
                                 right: 22 + (confirmButtonProvider.visible ? _confirmButtonWidth : 0)),
-                            hintText: i18nProvider.translate('enterAddr'),
+                            hintText: context.i18n.placeEnterAddress,
                           ),
                           controller: searchBarProvider._addressEditingController,
                           focusNode: focusNode,
@@ -271,7 +271,7 @@ class SearchBar extends StatelessWidget {
                             child: Container(
                               height: 55,
                               alignment: Alignment.center,
-                              child: confirmButton(context, 65, 34, 12, i18nProvider.translate('confirm'),
+                              child: confirmButton(context, 65, 34, 12, context.i18n.placeConfirmAddress,
                                   searchBarProvider._confirmFocus, searchBarProvider.onClickConfirm),
                             ),
                           )

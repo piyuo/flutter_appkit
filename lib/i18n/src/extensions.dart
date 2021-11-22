@@ -3,7 +3,6 @@ import 'package:libcli/pb/google.dart' as google;
 // ignore: implementation_imports
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:provider/provider.dart';
-import 'i18n_provider.dart';
 import 'datetime.dart';
 
 /// I18nLocalization add localization function to string
@@ -22,13 +21,6 @@ extension I18nLocalization on String {
     return provider.translate(this);
   }
   */
-}
-
-/// i18n translate string base on current locale
-///
-String i18n(BuildContext context, String str) {
-  var provider = Provider.of<I18nProvider>(context, listen: false);
-  return provider.translate(str);
 }
 
 /// timestamp create TimeStamp and convert datetime to utc, if datetime is null use DateTime.now()

@@ -1,4 +1,5 @@
 {
+    "confirmButtonText": "確認",
     "searchButtonText": "搜尋",
     "loadingLabel": "讀取中...",
     "tapToRetryButtonText": "按此處重試",
@@ -114,5 +115,10 @@
     "testTicketProductName3": "餐點 3",
     "testTicketQRCode": "請掃碼查看訂單",
     "testTicketMessage": "謝謝惠顧! 歡迎下次再來!",
+    "placeEnterAddress": "請輸入你的地址",
+    "placeConfirmAddress": "確認地址",
+    "placeMyLocation": "我的位址",
+    "placeIsAddressCorrect": "你的地址有正確的顯示在地圖中嗎?",
+    "placeErrorLocateYourAddress": "無法取得你的地址，請在 App setting 中給我們存取位置的權限",
     "hello":"您好"
 }

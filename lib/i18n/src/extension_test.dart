@@ -1,13 +1,10 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/assets/assets.dart' as asset;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libcli/pb/google.dart' as google;
 import 'i18n.dart';
 import 'extensions.dart';
-import 'i18n_provider.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -23,16 +20,6 @@ void main() {
   });
 
   group('[i18n-extension]', () {
-    testWidgets('should translate', (WidgetTester tester) async {
-      await tester.pumpWidget(const MaterialApp(
-        home: TestWidget(),
-      ));
-      await tester.pumpAndSettle();
-//      expect(LocaleWidget.value, 'A');
-//      expect(LocaleWidget.i18nValue, 'A');
-      expect(L10nWidget.value, 'OK');
-    });
-
     test('should get local date', () async {
       var date = DateTime.utc(2021, 1, 2, 23, 30);
       var localDate = date.toLocal();
@@ -80,25 +67,5 @@ class L10nWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     value = context.i18n.okButtonText;
     return Text(value);
-  }
-}
-
-class TestWidget extends StatelessWidget {
-  const TestWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<I18nProvider>(
-          create: (context) => I18nProvider(fileName: 'mock'),
-        ),
-      ],
-      child: Consumer<I18nProvider>(
-          builder: (context, i18n, child) => delta.Await(
-                [i18n],
-                child: const L10nWidget(),
-              )),
-    );
   }
 }

@@ -8,6 +8,9 @@ class LibLocalizationsEn extends LibLocalizations {
   LibLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get confirmButtonText => 'Confirm';
+
+  @override
   String get searchButtonText => 'Search';
 
   @override
@@ -345,6 +348,21 @@ class LibLocalizationsEn extends LibLocalizations {
 
   @override
   String get testTicketMessage => 'Thank your!';
+
+  @override
+  String get placeEnterAddress => 'Please enter your address';
+
+  @override
+  String get placeConfirmAddress => 'Confirm address';
+
+  @override
+  String get placeMyLocation => 'My Location';
+
+  @override
+  String get placeIsAddressCorrect => 'is your address on map correct?';
+
+  @override
+  String get placeErrorLocateYourAddress => 'Fail to locate your address';
 
   @override
   String get hello => 'Hello';

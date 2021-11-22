@@ -32,8 +32,8 @@ class SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<i18n.I18nProvider, SearchViewProvider>(
-        builder: (context, i18nProvider, searchViewProvider, child) => Stack(
+    return Consumer<SearchViewProvider>(
+        builder: (context, searchViewProvider, child) => Stack(
               children: <Widget>[
                 locate.map(),
                 Consumer<MyLocationButtonProvider>(
@@ -59,7 +59,7 @@ class SearchView extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    i18nProvider.translate('myLoc'),
+                                    context.i18n.placeMyLocation,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.black,
@@ -88,11 +88,11 @@ class SearchView extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
                                   child: Text(
-                                    i18nProvider.translate('correct'),
+                                    context.i18n.placeIsAddressCorrect,
                                     style: TextStyle(fontSize: 24, color: Colors.grey[900]),
                                   ),
                                 ),
-                                confirmButton(context, 280, 54, 20, i18nProvider.translate('confirmAddr'), null,
+                                confirmButton(context, 280, 54, 20, context.i18n.placeConfirmAddress, null,
                                     searchViewProvider.onClickConfirm),
                               ],
                             ),

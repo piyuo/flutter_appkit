@@ -71,9 +71,7 @@ class ShowSearchProvider with ChangeNotifier {
         }
 
         if (_locations.isEmpty) {
-          var provider = Provider.of<i18n.I18nProvider>(ctx, listen: false);
-          var text = provider.translate('myLocFail');
-          dialog.alert(context, text);
+          dialog.alert(context, context.i18n.placeErrorLocateYourAddress);
           return;
         }
 
@@ -189,47 +187,44 @@ class ShowSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ShowSearchProvider, i18n.I18nProvider>(
-      builder: (context, showSearchProvider, i18nProvider, child) => delta.Await(
-        [i18nProvider],
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider.value(
-              value: showSearchProvider._mapProvider,
-            ),
-            ChangeNotifierProvider.value(
-              value: showSearchProvider._confirmButtonProvider,
-            ),
-            ChangeNotifierProvider.value(
-              value: showSearchProvider._myLocationButtonProvider,
-            ),
-            ChangeNotifierProvider.value(
-              value: showSearchProvider._barProvider,
-            ),
-            ChangeNotifierProvider.value(
-              value: showSearchProvider._viewProvider,
-            ),
-          ],
-          child: Scaffold(
-            /*appBar: TopBar(
+    return Consumer<ShowSearchProvider>(
+      builder: (context, showSearchProvider, child) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: showSearchProvider._mapProvider,
+          ),
+          ChangeNotifierProvider.value(
+            value: showSearchProvider._confirmButtonProvider,
+          ),
+          ChangeNotifierProvider.value(
+            value: showSearchProvider._myLocationButtonProvider,
+          ),
+          ChangeNotifierProvider.value(
+            value: showSearchProvider._barProvider,
+          ),
+          ChangeNotifierProvider.value(
+            value: showSearchProvider._viewProvider,
+          ),
+        ],
+        child: Scaffold(
+          /*appBar: TopBar(
               titleSpacing: 0,
               title: SearchBar(),
               elevation: 0,
             ),*/
 
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              titleSpacing: 0,
-              title: const SearchBar(),
-              elevation: 0,
-            ),
-            body: Column(
-              children: const <Widget>[
-                Expanded(
-                  child: SearchView(),
-                ),
-              ],
-            ),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            titleSpacing: 0,
+            title: const SearchBar(),
+            elevation: 0,
+          ),
+          body: Column(
+            children: const <Widget>[
+              Expanded(
+                child: SearchView(),
+              ),
+            ],
           ),
         ),
       ),
