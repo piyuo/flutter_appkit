@@ -8,6 +8,7 @@ import '../src/back_button.dart';
 main() {
   start(
     appName: 'app example',
+    l10nDelegate: testing.MockLocalizationDelegate(),
     routes: (String name) {
       switch (name) {
         case '/':

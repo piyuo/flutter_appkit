@@ -33,8 +33,9 @@ var navigatorObserver = NavigatorMock();
 @visibleForTesting
 Future<void> mockApp(
   WidgetTester tester, {
-  List<SingleChildWidget>? providers,
   required Widget child,
+  required LocalizationsDelegate<dynamic> l10nDelegate,
+  List<SingleChildWidget>? providers,
 }) async {
   useTestFont(tester);
   pref.mock({});
@@ -54,6 +55,7 @@ Future<void> mockApp(
               : child,
           debugShowCheckedModeBanner: false,
           localizationsDelegates: [
+            l10nDelegate,
             i18n.LocaleDelegate(),
           ],
           supportedLocales: const [
@@ -62,4 +64,15 @@ Future<void> mockApp(
         ),
       )));
   await tester.pumpAndSettle();
+}
+
+class MockLocalizationDelegate extends LocalizationsDelegate {
+  @override
+  bool isSupported(Locale locale) => false;
+
+  @override
+  Future<MockLocalizationDelegate> load(Locale locale) async => MockLocalizationDelegate();
+
+  @override
+  bool shouldReload(LocalizationsDelegate<MockLocalizationDelegate> old) => false;
 }

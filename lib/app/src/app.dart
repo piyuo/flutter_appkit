@@ -75,7 +75,7 @@ set userID(String value) {
 void start({
   required String appName,
   required Widget? Function(String name) routes,
-  LocalizationsDelegate<dynamic>? localizationsDelegate,
+  required LocalizationsDelegate<dynamic> l10nDelegate,
   List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
   String serviceEmail = 'support@piyuo.com',
@@ -111,7 +111,7 @@ void start({
             darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
             locale: l10n.currentLocale,
             localizationsDelegates: [
-              if (localizationsDelegate != null) localizationsDelegate,
+              l10nDelegate,
               ...l10n.localizationsDelegates,
             ],
             supportedLocales: l10n.supportedLocales,

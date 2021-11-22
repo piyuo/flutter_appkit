@@ -13,6 +13,7 @@ void main() {
     testWidgets('should click', (WidgetTester tester) async {
       bool clicked = false;
       await testing.mockApp(tester,
+          l10nDelegate: testing.MockLocalizationDelegate(),
           child: Button(
             key: const Key('Button'),
             label: 'button',
@@ -27,6 +28,7 @@ void main() {
 
     testWidgets('should show loading', (WidgetTester tester) async {
       await testing.mockApp(tester,
+          l10nDelegate: testing.MockLocalizationDelegate(),
           child: Button(
             key: const Key('Button'),
             label: 'button',

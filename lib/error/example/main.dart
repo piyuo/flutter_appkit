@@ -5,11 +5,13 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
 import '../error.dart';
 
 main() => app.start(
       appName: 'error example',
+      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const ErrorExample(),
     );
 

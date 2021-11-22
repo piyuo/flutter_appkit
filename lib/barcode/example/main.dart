@@ -9,6 +9,7 @@ import '../src/barcode_scanner_dialog.dart';
 
 main() => app.start(
       appName: 'barcode example',
+      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const BarcodeExample(),
     );
 

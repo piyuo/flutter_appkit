@@ -25,6 +25,7 @@ void main() {
     testWidgets('should alert with close', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
+        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) => alert(context, 'hello')),
       );
 
@@ -45,6 +46,7 @@ void main() {
       bool? result;
       await testing.mockApp(
         tester,
+        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(
             onPressed: (context) async => result = await alert(
                   context,
@@ -73,6 +75,7 @@ void main() {
       bool? result;
       await testing.mockApp(
         tester,
+        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(
             onPressed: (context) async => result = await alert(
                   context,
@@ -97,6 +100,7 @@ void main() {
     testWidgets('should alert with yes no', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
+        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(
             onPressed: (context) async => await alert(
                   context,
@@ -115,6 +119,7 @@ void main() {
     testWidgets('should alert error', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
+        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async => await alert(context, 'error message', title: 'error')),
       );
 

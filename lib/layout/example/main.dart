@@ -11,6 +11,7 @@ import '../src/story_line.dart';
 
 main() => app.start(
       appName: 'layout example',
+      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const LayoutExample(),
     );
 

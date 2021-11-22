@@ -2,12 +2,14 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/uid/uid.dart' as uid;
 import '../dialog.dart';
 
 main() => app.start(
       appName: 'dialog example',
+      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const DialogExample(),
     );
 

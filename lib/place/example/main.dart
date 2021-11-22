@@ -3,11 +3,13 @@ import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/testing/testing.dart' as testing;
 import '../src/place_field.dart';
 import '../src/open_in_map.dart';
 
 main() => app.start(
       appName: 'place example',
+      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const PlaceExample(),
     );
 

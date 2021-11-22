@@ -9,6 +9,7 @@ import '../src/audio.dart';
 
 main() => app.start(
       appName: 'audio example',
+      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const AudioExample(),
     );
 
