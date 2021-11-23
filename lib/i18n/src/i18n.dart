@@ -12,6 +12,7 @@ import '../gen/lib_localizations_en.dart';
 
 //const _prefLocaleKey = 'locale';
 
+/// I18nProvider used to redraw when user change locale
 class I18nProvider with ChangeNotifier {
   Locale get currentLocale => locale;
 
@@ -31,11 +32,27 @@ class I18nProvider with ChangeNotifier {
   Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
 
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
-//    LocaleDelegate(),
+    _I18nDelegate(),
     LibLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
   ];
+}
+
+/// _I18nDelegate used to get localized change events
+class _I18nDelegate extends LocalizationsDelegate<Locale> {
+  @override
+  bool isSupported(Locale locale) => LibLocalizations.supportedLocales.contains(locale);
+
+  @override
+  Future<Locale> load(Locale locale) async {
+    Intl.defaultLocale = locale.toString();
+    debugPrint('[i18n] locale=${Intl.defaultLocale}');
+    return locale;
+  }
+
+  @override
+  bool shouldReload(_I18nDelegate old) => false;
 }
 
 extension I18nString on String {
@@ -190,30 +207,6 @@ Future<bool> setLocale(
 
 class I18nChangedEvent extends eventbus.Event {}
 
-class LocaleDelegate extends LocalizationsDelegate<Locale> {
-  @override
-  bool isSupported(Locale locale) {
-    return (locale.languageCode == 'en' && locale.countryCode == 'US') ||
-        (locale.languageCode == 'zh' && locale.countryCode == 'CN') ||
-        (locale.languageCode == 'zh' && locale.countryCode == 'TW');
-  }
-
-  @override
-  Future<Locale> load(Locale locale) async {
-    // check pref first
-    final preferLocaleStr = await pref.getStringWithExp(prefLocaleKey);
-    Intl.defaultLocale = preferLocaleStr.isNotEmpty ? preferLocaleStr : Intl.defaultLocale = locale.toString();
-    //no need for now, cause GlobalLocalizations will load date formatting
-    //if (initDateFormatting != null) {
-    //initDateFormatting(localeToId(l));
-    //}
-    log.log('[i18n] init ${Intl.defaultLocale}');
-    return stringToLocale(Intl.defaultLocale!);
-  }
-
-  @override
-  bool shouldReload(LocaleDelegate old) => false;
-}
 */
 /*
 /// mock a locale
