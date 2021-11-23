@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
 import 'i18n.dart';
@@ -48,17 +50,25 @@ void main() {
       var date = DateTime(2021, 1, 2, 23, 30);
       google.Timestamp t = timestamp(datetime: date);
 
+      mockLocale('en_US');
+      expect(t.localDateString, 'January 2, 2021');
+      expect(t.localTimeString, '11:30 PM');
+      expect(t.localDateTimeString, 'January 2, 2021 11:30 PM');
+
+      mockLocale('zh_CN');
+      expect(t.localDateString, '2021年1月2日');
+      expect(t.localTimeString, '下午11:30');
+      expect(t.localDateTimeString, '2021年1月2日 下午11:30');
+    });
+
+    test('should override system locale', () async {
       var i18nProvider = I18nProvider();
       try {
-        i18nProvider.currentLocale = const Locale('en', 'US');
-        expect(t.localDateString, 'January 2, 2021');
-        expect(t.localTimeString, '11:30 PM');
-        expect(t.localDateTimeString, 'January 2, 2021 11:30 PM');
-
-        i18nProvider.currentLocale = const Locale('zh', 'CN');
-        expect(t.localDateString, '2021年1月2日');
-        expect(t.localTimeString, '下午11:30');
-        expect(t.localDateTimeString, '2021年1月2日 下午11:30');
+        expect(i18nProvider.overrideLocale, isNull);
+        i18nProvider.overrideLocale = const Locale('en', 'US');
+        expect(i18nProvider.overrideLocale.toString(), 'en_US');
+        i18nProvider.overrideLocale = null;
+        expect(i18nProvider.overrideLocale, isNull);
       } finally {
         i18nProvider.dispose();
       }

@@ -14,21 +14,24 @@ import '../gen/lib_localizations_en.dart';
 
 /// I18nProvider used to redraw when user change locale
 class I18nProvider with ChangeNotifier {
-  Locale get currentLocale => locale;
+  /// overrideLocale is locale used to override system locale
+  Locale? _overrideLocale;
 
-  set currentLocale(Locale newLocale) {
-    final newLocaleName = newLocale.toString();
-    if (newLocaleName != localeName) {
-      Intl.defaultLocale = newLocaleName;
+  Locale? get overrideLocale => _overrideLocale;
+
+  set overrideLocale(Locale? newLocale) {
+    if (overrideLocale != newLocale) {
+      _overrideLocale = newLocale;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
+/*
   /// of get I18nProvider from context
   static I18nProvider of(BuildContext context) {
     return Provider.of<I18nProvider>(context, listen: false);
   }
-
+*/
   Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
 
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
@@ -85,16 +88,17 @@ extension I18nBuildContext on BuildContext {
 }
 
 /// localeName return current locale name
-String get localeName => Intl.defaultLocale ?? 'en_US';
+String get localeName => Intl.defaultLocale ?? 'en';
 
 /// localeName return current locale name
-set localeName(String value) => Intl.defaultLocale = value;
+//set localeName(String value) => Intl.defaultLocale = value;
 
 /// locale is current locale, it set by Intl.defaultLocale
 Locale get locale => stringToLocale(localeName);
 
-/// locale is current locale, it set by Intl.defaultLocale
-set locale(Locale value) => Intl.defaultLocale = value.toString();
+/// mockLocale mock intl default locale
+@visibleForTesting
+void mockLocale(String newLocaleName) => Intl.defaultLocale = newLocaleName;
 
 /// countryCode is current locale country code
 String get countryCode => locale.countryCode ?? 'US';
