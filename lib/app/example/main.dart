@@ -8,7 +8,6 @@ import '../src/back_button.dart';
 main() {
   start(
     appName: 'app example',
-    l10nDelegate: testing.MockLocalizationDelegate(),
     routes: (String name) {
       switch (name) {
         case '/':
@@ -93,21 +92,21 @@ class AppExampleState extends State<AppExample> {
             child: const Text('change locale to en'),
             onPressed: () {
               setState(() {
-                i18n.L10nProvider.of(context).currentLocale = const Locale('en');
+                i18n.I18nProvider.of(context).currentLocale = const Locale('en');
               });
             }),
         OutlinedButton(
             child: const Text('change locale to zh'),
             onPressed: () {
               setState(() {
-                i18n.L10nProvider.of(context).currentLocale = const Locale('zh');
+                i18n.I18nProvider.of(context).currentLocale = const Locale('zh');
               });
             }),
         OutlinedButton(
             child: const Text('change locale to zh_TW'),
             onPressed: () {
               setState(() {
-                i18n.L10nProvider.of(context).currentLocale = const Locale('zh', 'TW');
+                i18n.I18nProvider.of(context).currentLocale = const Locale('zh', 'TW');
               });
             }),
       ],

@@ -75,7 +75,7 @@ set userID(String value) {
 void start({
   required String appName,
   required Widget? Function(String name) routes,
-  required LocalizationsDelegate<dynamic> l10nDelegate,
+  LocalizationsDelegate<dynamic>? l10nDelegate,
   List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
   String serviceEmail = 'support@piyuo.com',
@@ -99,22 +99,22 @@ void start({
   error.watch(() => runApp(MultiProvider(
         providers: [
           Provider(create: (_) => dialog.DialogProvider()),
-          ChangeNotifierProvider(create: (_) => i18n.L10nProvider()),
+          ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
           if (providers != null) ...providers,
         ],
-        child: Consumer2<dialog.DialogProvider, i18n.L10nProvider>(
-          builder: (context, dialogProvider, l10n, __) => MaterialApp(
+        child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
+          builder: (context, dialogProvider, i18nProvider, __) => MaterialApp(
             navigatorKey: dialogProvider.navigatorKey,
             builder: dialogProvider.init(),
             debugShowCheckedModeBanner: false,
             theme: theme ?? ThemeData(brightness: Brightness.light),
             darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
-            locale: l10n.currentLocale,
+            locale: i18nProvider.currentLocale,
             localizationsDelegates: [
-              l10nDelegate,
-              ...l10n.localizationsDelegates,
+              if (l10nDelegate != null) l10nDelegate,
+              ...i18nProvider.localizationsDelegates,
             ],
-            supportedLocales: l10n.supportedLocales,
+            supportedLocales: i18nProvider.supportedLocales,
             onGenerateRoute: (RouteSettings settings) {
               String name = listenRoute(settings);
               if (name == '') {

@@ -34,16 +34,20 @@ var navigatorObserver = NavigatorMock();
 Future<void> mockApp(
   WidgetTester tester, {
   required Widget child,
-  required LocalizationsDelegate<dynamic> l10nDelegate,
+  LocalizationsDelegate<dynamic>? l10nDelegate,
   List<SingleChildWidget>? providers,
 }) async {
   useTestFont(tester);
   pref.mock({});
 
-  await tester.pumpWidget(Provider(
-      create: (_) => dialog.DialogProvider(),
-      child: Consumer<dialog.DialogProvider>(
-        builder: (context, dialogProvider, _) => MaterialApp(
+  await tester.pumpWidget(MultiProvider(
+      providers: [
+        Provider(create: (_) => dialog.DialogProvider()),
+        ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
+        if (providers != null) ...providers,
+      ],
+      child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
+        builder: (context, dialogProvider, i18nProvider, _) => MaterialApp(
           navigatorObservers: [navigatorObserver],
           navigatorKey: dialogProvider.navigatorKey,
           builder: dialogProvider.init(),
@@ -55,8 +59,8 @@ Future<void> mockApp(
               : child,
           debugShowCheckedModeBanner: false,
           localizationsDelegates: [
-            l10nDelegate,
-            i18n.LocaleDelegate(),
+            if (l10nDelegate != null) l10nDelegate,
+            ...i18nProvider.localizationsDelegates,
           ],
           supportedLocales: const [
             Locale('en', 'US'),
@@ -64,15 +68,4 @@ Future<void> mockApp(
         ),
       )));
   await tester.pumpAndSettle();
-}
-
-class MockLocalizationDelegate extends LocalizationsDelegate {
-  @override
-  bool isSupported(Locale locale) => false;
-
-  @override
-  Future<MockLocalizationDelegate> load(Locale locale) async => MockLocalizationDelegate();
-
-  @override
-  bool shouldReload(LocalizationsDelegate<MockLocalizationDelegate> old) => false;
 }

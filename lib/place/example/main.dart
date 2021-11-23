@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/form/form.dart' as form;
-import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/app/app.dart' as app;
-import 'package:libcli/testing/testing.dart' as testing;
 import '../src/place_field.dart';
 import '../src/open_in_map.dart';
 
 main() => app.start(
       appName: 'place example',
-      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const PlaceExample(),
     );
 
@@ -21,8 +18,6 @@ class PlaceExample extends StatefulWidget {
 }
 
 class PlaceExampleState extends State<PlaceExample> {
-  final countryController = TextEditingController();
-
   final _keyForm = GlobalKey<FormState>();
 
   final Map countryItems = {
@@ -45,8 +40,6 @@ class PlaceExampleState extends State<PlaceExample> {
 
   @override
   void initState() {
-    countryController.text = i18n.localeName;
-    countryController.addListener(_onCountryChanged);
     addressWithValueController.value = types.Place(
       address: '2141 spectrum, irvine, CA 92618',
       latlng: types.LatLng(33.65352503793474, -117.75017169525502),
@@ -55,17 +48,6 @@ class PlaceExampleState extends State<PlaceExample> {
     );
     addressWithValue2Controller.text = 'room 1';
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    countryController.removeListener(_onCountryChanged);
-    super.dispose();
-  }
-
-  /// _onCountryChanged happen when user change country
-  void _onCountryChanged() {
-    i18n.setLocale(countryController.text);
   }
 
   @override
@@ -79,13 +61,6 @@ class PlaceExampleState extends State<PlaceExample> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: <Widget>[
-                        form.DropdownField(
-                          key: const Key('test-dropdown'),
-                          controller: countryController,
-                          items: countryItems,
-                          label: 'Country',
-                        ),
-                        form.p(),
                         PlaceField(
                           key: const Key('test-place'),
                           controller: addressController,

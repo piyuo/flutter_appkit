@@ -33,7 +33,6 @@ void main() {
     testWidgets('should alert when catch exception', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) {
           watch(() => throw Exception('mock exception'));
         }),
@@ -48,7 +47,6 @@ void main() {
     testWidgets('should alert when firewall block', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
@@ -64,7 +62,6 @@ void main() {
     testWidgets('should alert when no internet', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) {
           watch(() => throw const SocketException('wifi off'));
         }),
@@ -79,7 +76,6 @@ void main() {
     testWidgets('should alert when service not available', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           var contract = command.InternetRequiredContract(url: 'http://mock');
@@ -102,7 +98,6 @@ void main() {
     testWidgets('should alert when internet blocked', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           var contract = command.InternetRequiredContract(url: 'http://mock');
@@ -125,7 +120,6 @@ void main() {
     testWidgets('should alert when internal server error', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.InternalServerErrorEvent());
@@ -140,7 +134,6 @@ void main() {
     testWidgets('should alert when server not ready', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.ServerNotReadyEvent());
@@ -155,7 +148,6 @@ void main() {
     testWidgets('should alert when bad request', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.BadRequestEvent());
@@ -170,7 +162,6 @@ void main() {
     testWidgets('should alert when client timeout', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           try {
@@ -190,7 +181,6 @@ void main() {
     testWidgets('should alert when deadline exceeded', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
@@ -205,7 +195,6 @@ void main() {
     testWidgets('should alert when disk error', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() => throw log.DiskErrorException());
         }),
@@ -219,7 +208,6 @@ void main() {
     testWidgets('should toast when network is slow', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        l10nDelegate: testing.MockLocalizationDelegate(),
         child: createSample(onPressed: (context) async {
           watch(() {});
           await eventbus.broadcast(context, command.SlowNetworkEvent());

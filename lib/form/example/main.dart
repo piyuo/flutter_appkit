@@ -6,7 +6,6 @@ import '../form.dart';
 
 main() => app.start(
       appName: 'form example',
-      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const FormExample(),
     );
 

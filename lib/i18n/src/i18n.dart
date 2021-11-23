@@ -1,29 +1,37 @@
+// ignore: implementation_imports
+import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
+import 'package:libcli/pb/google.dart' as google;
+import 'datetime.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/pref/pref.dart' as pref;
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
+import '../gen/lib_localizations_en.dart';
 
-class L10nProvider with ChangeNotifier {
+//const _prefLocaleKey = 'locale';
+
+class I18nProvider with ChangeNotifier {
   Locale get currentLocale => locale;
 
   set currentLocale(Locale newLocale) {
-    setLocale(newLocale.toString());
+    final newLocaleName = newLocale.toString();
+    if (newLocaleName != localeName) {
+      Intl.defaultLocale = newLocaleName;
+    }
     notifyListeners();
   }
 
-  static L10nProvider of(BuildContext context) {
-    return Provider.of<L10nProvider>(context, listen: false);
+  /// of get I18nProvider from context
+  static I18nProvider of(BuildContext context) {
+    return Provider.of<I18nProvider>(context, listen: false);
   }
 
   Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
 
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
-    LocaleDelegate(),
+//    LocaleDelegate(),
     LibLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
@@ -56,16 +64,20 @@ extension I18nBuildContext on BuildContext {
   ///
   ///     context.i18n;
   ///
-  LibLocalizations get i18n => LibLocalizations.of(this);
+  LibLocalizations get i18n => Localizations.of<LibLocalizations>(this, LibLocalizations) ?? LibLocalizationsEn();
 }
-
-const prefLocaleKey = 'locale';
 
 /// localeName return current locale name
 String get localeName => Intl.defaultLocale ?? 'en_US';
 
+/// localeName return current locale name
+set localeName(String value) => Intl.defaultLocale = value;
+
 /// locale is current locale, it set by Intl.defaultLocale
 Locale get locale => stringToLocale(localeName);
+
+/// locale is current locale, it set by Intl.defaultLocale
+set locale(Locale value) => Intl.defaultLocale = value.toString();
 
 /// countryCode is current locale country code
 String get countryCode => locale.countryCode ?? 'US';
@@ -76,6 +88,84 @@ withLocale(String newLocaleName, Function() function) {
   Intl.withLocale(newLocaleName, function);
 }
 
+/// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
+///
+/// var id = localeToAcceptLanguage(Locale('en','US'));
+///
+String localeToAcceptLanguage(Locale value) {
+  return '${value.languageCode}-${value.countryCode}';
+}
+
+/// stringToLocale 'en_US' to Locale(''en,'US')
+///
+Locale stringToLocale(String value) {
+  var ids = value.split('_');
+  if (ids.length > 1) return Locale(ids[0], ids[1]);
+  return Locale(ids[0]);
+}
+
+/// timestamp create TimeStamp and convert datetime to utc, if datetime is null use DateTime.now()
+///
+///      var t = timestamp();
+///
+google.Timestamp timestamp({
+  DateTime? datetime,
+}) {
+  datetime = datetime ?? DateTime.now();
+  return google.Timestamp.fromDateTime(datetime.toUtc());
+}
+
+/// I18nTime add time function to TimeStamp
+///
+extension I18nTime on google.Timestamp {
+  /// local return local datetime
+  ///
+  ///     var d = DateTime(2021, 1, 2, 23, 30);
+  ///     var t = timestamp();
+  ///     t.local = d;
+  ///     expect(t.local, d);
+  ///
+  DateTime get local {
+    return toDateTime().toLocal();
+  }
+
+  /// local set local datetime
+  ///
+  ///     var d = DateTime(2021, 1, 2, 23, 30);
+  ///     var t = timestamp();
+  ///     t.local = d;
+  ///     expect(t.local, d);
+  ///
+  set local(DateTime d) {
+    google_mixin.TimestampMixin.setFromDateTime(this, d.toUtc());
+  }
+
+  /// localDateString return local date string in current locale
+  ///
+  ///     expect(t.localDateString, 'Jan 2, 2021');
+  ///
+  String get localDateString {
+    return formatDate(local);
+  }
+
+  /// localDateTimeString return local date time string in current locale
+  ///
+  ///     expect(t.localTimeString, '11:30 PM');
+  ///
+  String get localDateTimeString {
+    return formatDateTime(local);
+  }
+
+  /// localDateString return local time string in current locale
+  ///
+  ///     expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
+  ///
+  String get localTimeString {
+    return formatTime(local);
+  }
+}
+
+/*
 /// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours
 Future<bool> setLocale(
   String newLocaleName, {
@@ -99,37 +189,6 @@ Future<bool> setLocale(
 }
 
 class I18nChangedEvent extends eventbus.Event {}
-
-/// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
-///
-/// var id = localeToAcceptLanguage(Locale('en','US'));
-///
-String localeToAcceptLanguage(Locale value) {
-  return '${value.languageCode}-${value.countryCode}';
-}
-
-/// stringToLocale 'en_US' to Locale(''en,'US')
-///
-Locale stringToLocale(String value) {
-  var ids = value.split('_');
-  if (ids.length > 1) return Locale(ids[0], ids[1]);
-  return Locale(ids[0]);
-}
-
-/*
-/// _country is current country, it set by first country code in determineLocale(), it mean user's default country
-///
-String _country = 'US';
-
-String get country => _country;
-
-set country(String value) {
-  _country = value;
-  log.log('[i18n] country=$value');
-}
-/// isCountryCN return true if country is china, we may need show different map or import different service cause china's firewall
-get isCountryCN => _country == 'CN';
-*/
 
 class LocaleDelegate extends LocalizationsDelegate<Locale> {
   @override
@@ -155,6 +214,7 @@ class LocaleDelegate extends LocalizationsDelegate<Locale> {
   @override
   bool shouldReload(LocaleDelegate old) => false;
 }
+*/
 /*
 /// mock a locale
 ///

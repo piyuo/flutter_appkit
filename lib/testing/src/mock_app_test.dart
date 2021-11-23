@@ -17,7 +17,6 @@ void main() {
       await tester.runAsync(() async {
         await mockApp(
           tester,
-          l10nDelegate: MockLocalizationDelegate(),
           child: const Text('hi'),
         );
         expect(find.textContaining('hi'), findsOneWidget); //email error

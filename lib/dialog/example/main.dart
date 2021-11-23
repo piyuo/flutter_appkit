@@ -9,7 +9,6 @@ import '../dialog.dart';
 
 main() => app.start(
       appName: 'dialog example',
-      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const DialogExample(),
     );
 

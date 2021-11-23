@@ -23,7 +23,6 @@ main() {
 
   app.start(
     appName: 'delta example',
-    l10nDelegate: testing.MockLocalizationDelegate(),
     routes: (_) => const DeltaExample(),
   );
 }

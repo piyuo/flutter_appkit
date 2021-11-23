@@ -332,13 +332,13 @@ void main() {
           return List.generate(2, (index) => index.toString());
         },
       );
-      expect(sds.pagingInfo, isEmpty);
+      expect(sds.pagingInfo(testing.Context()), isEmpty);
 
       await sds.loadMoreRow(testing.Context());
-      expect(sds.pagingInfo, '1 - 10 of many');
+      expect(sds.pagingInfo(testing.Context()), '1 - 10 of many');
 
       await sds.loadMoreRow(testing.Context(), to: 1);
-      expect(sds.pagingInfo, '1 - 10 of 12');
+      expect(sds.pagingInfo(testing.Context()), '1 - 10 of 12');
     });
 
     test('should select row', () async {

@@ -11,7 +11,6 @@ import '../src/image_upload_editor.dart';
 
 main() => app.start(
       appName: 'uploader example',
-      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const UploaderExample(),
     );
 

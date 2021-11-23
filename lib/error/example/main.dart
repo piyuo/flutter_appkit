@@ -11,7 +11,6 @@ import '../error.dart';
 
 main() => app.start(
       appName: 'error example',
-      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const ErrorExample(),
     );
 

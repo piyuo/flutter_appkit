@@ -10,7 +10,6 @@ import '../src/image_editor_dialog.dart';
 
 main() => app.start(
       appName: 'editor example',
-      l10nDelegate: testing.MockLocalizationDelegate(),
       routes: (_) => const EditorExample(),
     );
 
