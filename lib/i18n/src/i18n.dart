@@ -26,12 +26,11 @@ class I18nProvider with ChangeNotifier {
     }
   }
 
-/*
   /// of get I18nProvider from context
   static I18nProvider of(BuildContext context) {
     return Provider.of<I18nProvider>(context, listen: false);
   }
-*/
+
   Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
 
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
