@@ -109,7 +109,7 @@ void start({
             debugShowCheckedModeBanner: false,
             theme: theme ?? ThemeData(brightness: Brightness.light),
             darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
-            locale: i18nProvider.currentLocale,
+            locale: i18nProvider.overrideLocale,
             localizationsDelegates: [
               if (l10nDelegate != null) l10nDelegate,
               ...i18nProvider.localizationsDelegates,

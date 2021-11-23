@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:intl/intl.dart';
 import '../src/app.dart';
 import '../src/page_route.dart' as page_route;
 import '../src/back_button.dart';
@@ -34,10 +35,11 @@ class AppExample extends StatefulWidget {
 class AppExampleState extends State<AppExample> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SafeArea(
+        child: Column(
       children: [
         SizedBox(
-          height: 200,
+          height: 300,
           child: _localization(context),
         ),
         testing.example(
@@ -51,7 +53,7 @@ class AppExampleState extends State<AppExample> {
           child: _localization(context),
         ),
       ],
-    );
+    ));
   }
 
   Widget _pushNewRoute(BuildContext context) {
@@ -85,28 +87,39 @@ class AppExampleState extends State<AppExample> {
   }
 
   Widget _localization(BuildContext context) {
+    String defaultLocale = Intl.defaultLocale ?? '';
     return Column(
       children: [
         Text(context.i18n.okButtonText),
+        Text(Localizations.localeOf(context).toString()),
+        Text('intl.defaultLocale=$defaultLocale'),
+        Text('current locale=${i18n.localeName}, date=${i18n.formatDate(DateTime.now())}'),
+        OutlinedButton(
+            child: const Text('get locale to system default'),
+            onPressed: () {
+              setState(() {
+                i18n.I18nProvider.of(context).overrideLocale = null;
+              });
+            }),
         OutlinedButton(
             child: const Text('change locale to en'),
             onPressed: () {
               setState(() {
-                i18n.I18nProvider.of(context).currentLocale = const Locale('en');
+                i18n.I18nProvider.of(context).overrideLocale = const Locale('en');
               });
             }),
         OutlinedButton(
             child: const Text('change locale to zh'),
             onPressed: () {
               setState(() {
-                i18n.I18nProvider.of(context).currentLocale = const Locale('zh');
+                i18n.I18nProvider.of(context).overrideLocale = const Locale('zh');
               });
             }),
         OutlinedButton(
             child: const Text('change locale to zh_TW'),
             onPressed: () {
               setState(() {
-                i18n.I18nProvider.of(context).currentLocale = const Locale('zh', 'TW');
+                i18n.I18nProvider.of(context).overrideLocale = const Locale('zh', 'TW');
               });
             }),
       ],
