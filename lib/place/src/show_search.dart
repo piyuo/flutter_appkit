@@ -5,7 +5,6 @@ import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/locate/locate.dart' as locate;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'search_bar.dart';
 import 'search_view.dart';
 import 'geo_client.dart';

@@ -87,10 +87,10 @@
     "printerNameHint": "Give printer a name (e.g. Kitchen)",
     "printerNeedIP": "Please input the printer IP address",
     "printerNeedBT": "Please select a Bluetooth Printer",
-    "printerIP": "Printer\"s IP Address",
+    "printerIP": "Printer's IP Address",
     "printerIPHint": "e.g. 192.168.1.2",
     "printerIPNotValid": "%1 is not a valid IP. (Example: 192.168.1.2)",
-    "printerFindIP": "How to Print Printer\"s IP Address",
+    "printerFindIP": "How to Print Printer's IP Address",
     "bluetoothPrinterNotSupport":
         "Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings",
     "bluetoothPrinterHint": "Click Search to select bluetooth device",

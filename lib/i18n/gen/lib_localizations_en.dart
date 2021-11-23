@@ -272,7 +272,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get printerNeedBT => 'Please select a Bluetooth Printer';
 
   @override
-  String get printerIP => 'Printer\"s IP Address';
+  String get printerIP => 'Printer\'s IP Address';
 
   @override
   String get printerIPHint => 'e.g. 192.168.1.2';
@@ -281,7 +281,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get printerIPNotValid => '%1 is not a valid IP. (Example: 192.168.1.2)';
 
   @override
-  String get printerFindIP => 'How to Print Printer\"s IP Address';
+  String get printerFindIP => 'How to Print Printer\'s IP Address';
 
   @override
   String get bluetoothPrinterNotSupport => 'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';

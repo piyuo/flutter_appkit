@@ -626,7 +626,7 @@ abstract class LibLocalizations {
   /// No description provided for @printerIP.
   ///
   /// In en, this message translates to:
-  /// **'Printer\"s IP Address'**
+  /// **'Printer\'s IP Address'**
   String get printerIP;
 
   /// No description provided for @printerIPHint.
@@ -644,7 +644,7 @@ abstract class LibLocalizations {
   /// No description provided for @printerFindIP.
   ///
   /// In en, this message translates to:
-  /// **'How to Print Printer\"s IP Address'**
+  /// **'How to Print Printer\'s IP Address'**
   String get printerFindIP;
 
   /// No description provided for @bluetoothPrinterNotSupport.
