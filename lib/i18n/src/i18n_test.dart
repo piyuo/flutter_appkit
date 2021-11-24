@@ -11,12 +11,10 @@ import 'package:libcli/pb/google.dart' as google;
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() async {
-    // ignore: invalid_use_of_visible_for_testing_member
     asset.mock('{"a": "A"}');
   });
 
   tearDown(() async {
-    // ignore: invalid_use_of_visible_for_testing_member
     asset.mockDone();
   });
 
