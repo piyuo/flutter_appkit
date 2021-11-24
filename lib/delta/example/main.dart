@@ -63,7 +63,12 @@ class DeltaExample extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 400,
-                          child: _error(context),
+                          child: _tapOnButtonHint(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'tap on button hint',
+                          child: _tapOnButtonHint(context),
                         ),
                         testing.example(
                           context,
@@ -184,6 +189,10 @@ class DeltaExample extends StatelessWidget {
                     ),
                   ),
                 )));
+  }
+
+  Widget _tapOnButtonHint(BuildContext context) {
+    return const TapOnButtonHint('Printer');
   }
 
   Widget _awaitOnTap(BuildContext context) {
