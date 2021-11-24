@@ -3,6 +3,8 @@
     "searchButtonText": "搜寻",
     "loadingLabel": "读取中...",
     "tapToRetryButtonText": "按此处重试",
+    "tapOnHint": "请按下方",
+    "tapOnHintAdd": "来新增 %1",
     "refreshButtonText":"刷新",
     "retryButtonText":"重试",
     "okButtonText":"确定",

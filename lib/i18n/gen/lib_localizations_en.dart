@@ -20,6 +20,12 @@ class LibLocalizationsEn extends LibLocalizations {
   String get tapToRetryButtonText => 'Tap to retry';
 
   @override
+  String get tapOnHint => 'Tap on';
+
+  @override
+  String get tapOnHintAdd => 'to add %1';
+
+  @override
   String get refreshButtonText => 'Refresh';
 
   @override

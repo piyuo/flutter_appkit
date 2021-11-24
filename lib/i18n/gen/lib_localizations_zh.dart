@@ -20,6 +20,12 @@ class LibLocalizationsZh extends LibLocalizations {
   String get tapToRetryButtonText => '按此处重试';
 
   @override
+  String get tapOnHint => '请按下方';
+
+  @override
+  String get tapOnHintAdd => '来新增 %1';
+
+  @override
   String get refreshButtonText => '刷新';
 
   @override
@@ -383,6 +389,12 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get tapToRetryButtonText => '按此處重試';
+
+  @override
+  String get tapOnHint => '請按下方';
+
+  @override
+  String get tapOnHintAdd => '來新增 %1';
 
   @override
   String get refreshButtonText => '刷新';

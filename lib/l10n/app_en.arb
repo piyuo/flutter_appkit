@@ -3,6 +3,8 @@
     "searchButtonText": "Search",
     "loadingLabel": "Loading...",
     "tapToRetryButtonText": "Tap to retry",
+    "tapOnHint": "Tap on",
+    "tapOnHintAdd": "to add %1",
     "refreshButtonText":"Refresh",
     "retryButtonText":"Retry",
     "okButtonText":"OK",

@@ -119,6 +119,18 @@ abstract class LibLocalizations {
   /// **'Tap to retry'**
   String get tapToRetryButtonText;
 
+  /// No description provided for @tapOnHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap on'**
+  String get tapOnHint;
+
+  /// No description provided for @tapOnHintAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'to add %1'**
+  String get tapOnHintAdd;
+
   /// No description provided for @refreshButtonText.
   ///
   /// In en, this message translates to:
