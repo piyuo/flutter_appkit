@@ -5,24 +5,52 @@ import 'datetime.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:libcli/pref/pref.dart' as pref;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
 import '../gen/lib_localizations_en.dart';
 
-//const _prefLocaleKey = 'locale';
+const _prefKeyTempLocale = 'locale';
 
 /// I18nProvider used to redraw when user change locale
 class I18nProvider with ChangeNotifier {
+  I18nProvider() {
+    //try to load temp locale
+    Future.microtask(loadTemporaryLocale);
+  }
+
   /// overrideLocale is locale used to override system locale
   Locale? _overrideLocale;
 
   Locale? get overrideLocale => _overrideLocale;
 
   set overrideLocale(Locale? newLocale) {
-    if (overrideLocale != newLocale) {
+    if (_overrideLocale != newLocale) {
       _overrideLocale = newLocale;
       notifyListeners();
+    }
+  }
+
+  /// loadTemporaryLocale call when app start, try to load temp locale
+  Future<void> loadTemporaryLocale() async {
+    final localeTemp = await pref.getStringWithExp(_prefKeyTempLocale);
+    if (localeTemp.isNotEmpty) {
+      overrideLocale = stringToLocale(localeTemp);
+    }
+  }
+
+  /// overrideLocaleTemporary override locale for 24 hour, cause when web mode
+  /// if user change one page's locale, other page need reflect change
+  Future<void> overrideLocaleTemporary(Locale? newLocale) async {
+    if (overrideLocale != newLocale) {
+      final tomorrow = DateTime.now().add(const Duration(hours: 24));
+      if (newLocale != null) {
+        await pref.setStringWithExp(_prefKeyTempLocale, newLocale.toString(), tomorrow);
+      } else {
+        await pref.remove(_prefKeyTempLocale);
+      }
+      overrideLocale = newLocale;
     }
   }
 

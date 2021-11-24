@@ -65,7 +65,7 @@ void main() {
       var i18nProvider = I18nProvider();
       try {
         expect(i18nProvider.overrideLocale, isNull);
-        i18nProvider.overrideLocale = const Locale('en', 'US');
+        await i18nProvider.overrideLocaleTemporary(const Locale('en', 'US'));
         expect(i18nProvider.overrideLocale.toString(), 'en_US');
         i18nProvider.overrideLocale = null;
         expect(i18nProvider.overrideLocale, isNull);
