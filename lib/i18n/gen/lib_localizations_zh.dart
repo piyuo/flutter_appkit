@@ -254,6 +254,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get errorPrint => '无法打印到%1';
 
   @override
+  String get printer => '打印机';
+
+  @override
   String get networkPrinter => '网路打印机';
 
   @override
@@ -623,6 +626,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get errorPrint => '無法列印到%1';
+
+  @override
+  String get printer => '印表機';
 
   @override
   String get networkPrinter => '網路印表機';

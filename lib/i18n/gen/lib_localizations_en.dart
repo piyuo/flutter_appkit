@@ -254,6 +254,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get errorPrint => 'Failed to Print on %1';
 
   @override
+  String get printer => 'Printer';
+
+  @override
   String get networkPrinter => 'Network Printer';
 
   @override

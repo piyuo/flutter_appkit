@@ -83,6 +83,7 @@
     "errorPrint": "无法打印到%1",
     "networkPrinter": "网路打印机",
     "bluetoothPrinter": "蓝芽打印机",
+    "printer": "打印机",
     "printerList": "打印机列表",
     "printerName": "打印机名称",
     "printerNameExists": "%1 这名称已被使用. 请换一个名称",

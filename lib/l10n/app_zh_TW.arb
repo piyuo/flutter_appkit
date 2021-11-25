@@ -81,6 +81,7 @@
     "ticket58mm": "58 mm",
     "ticket80mm": "80 mm",
     "errorPrint": "無法列印到%1",
+    "printer": "印表機",
     "networkPrinter": "網路印表機",
     "bluetoothPrinter": "藍芽印表機",
     "printerList": "印表機列表",

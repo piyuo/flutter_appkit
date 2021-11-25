@@ -587,6 +587,12 @@ abstract class LibLocalizations {
   /// **'Failed to Print on %1'**
   String get errorPrint;
 
+  /// No description provided for @printer.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer'**
+  String get printer;
+
   /// No description provided for @networkPrinter.
   ///
   /// In en, this message translates to:

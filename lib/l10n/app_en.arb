@@ -81,6 +81,7 @@
     "ticket58mm": "58 mm",
     "ticket80mm": "80 mm",
     "errorPrint": "Failed to Print on %1",
+    "printer": "Printer",
     "networkPrinter": "Network Printer",
     "bluetoothPrinter": "Bluetooth Printer",
     "printerList": "Printer List",
