@@ -11,106 +11,6 @@ const keyAlertButtonNo = Key('alertBtnNo');
 
 const keyAlertButtonCancel = Key('alertBtnCancel');
 
-Widget _showIcon(IconData? icon, Color iconColor) {
-  if (icon != null) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Icon(
-        icon,
-        color: iconColor,
-        size: 64,
-      ),
-    );
-  }
-  return const SizedBox();
-}
-
-Widget _showButton(
-  BuildContext context,
-  Key key,
-  String? text,
-  Color color,
-  Color textColor,
-  bool? value,
-) {
-  return text != null
-      ? Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          width: double.infinity,
-          height: 42,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              elevation: MaterialStateProperty.all(1),
-              shape: MaterialStateProperty.all(
-                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0)))),
-              backgroundColor: MaterialStateProperty.all(color),
-              textStyle: MaterialStateProperty.all(TextStyle(color: color)),
-            ),
-            key: key,
-            child: Text(text),
-            onPressed: () => Navigator.of(context).pop(value),
-          ),
-        )
-      : const SizedBox();
-}
-
-Widget _showTitle(String? title) {
-  return title != null
-      ? Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Text(title,
-              textAlign: TextAlign.center, style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
-        )
-      : const SizedBox();
-}
-
-Widget _showMessage(String message, bool titleExists) {
-  return Container(
-    alignment: Alignment.center,
-    padding: titleExists ? const EdgeInsets.only(bottom: 30) : const EdgeInsets.symmetric(vertical: 30),
-    child: Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17.0)),
-  );
-}
-
-Widget _showFooter(String? footer) {
-  return footer != null
-      ? Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Text(footer, textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
-        )
-      : const SizedBox();
-}
-
-Widget _showEmailUs(BuildContext context, bool emailUs) {
-  return emailUs
-      ? Container(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
-                child: const Icon(
-                  Icons.email,
-                  color: Colors.blueAccent,
-                  size: 18,
-                ),
-              ),
-              const SizedBox(width: 10),
-              InkWell(
-                  child: GestureDetector(
-                      onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
-                      child: Text(
-                        context.i18n.errorEmailUsLink,
-                        style: const TextStyle(fontSize: 16, color: Colors.blueAccent),
-                      ))),
-            ],
-          ))
-      : const SizedBox();
-}
-
 /// alert show alert dialog, return true if it's ok or yes
 ///
 Future<bool?> alert(
@@ -118,7 +18,7 @@ Future<bool?> alert(
   String message, {
   bool warning = false,
   IconData? icon,
-  Color iconColor = const Color.fromRGBO(239, 91, 93, 1),
+  Color? iconColor,
   String? title,
   String? footer,
   bool emailUs = false,
@@ -136,8 +36,69 @@ Future<bool?> alert(
   bool buttonClose = false,
   bool scrollContent = false,
 }) async {
-  assentButtonColor = assentButtonColor ?? const Color(0xee2091eb);
-  buttonColor = buttonColor ?? context.themeColor(dark: const Color(0xcc6a7073), light: const Color(0xeebbbcbb));
+  Widget _showButton(
+    Key key,
+    String? text,
+    Color color,
+    Color textColor,
+    bool? value,
+  ) {
+    return text != null
+        ? Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            width: double.infinity,
+            height: 42,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(1),
+                shape: MaterialStateProperty.all(
+                    const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0)))),
+                backgroundColor: MaterialStateProperty.all(color),
+                textStyle: MaterialStateProperty.all(TextStyle(color: color)),
+              ),
+              key: key,
+              child: Text(text),
+              onPressed: () => Navigator.of(context).pop(value),
+            ),
+          )
+        : const SizedBox();
+  }
+
+  Widget _showTitle() {
+    return title != null
+        ? Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text(title,
+                textAlign: TextAlign.center, style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
+          )
+        : const SizedBox();
+  }
+
+  Widget _showMessage(bool titleExists) {
+    return Container(
+      alignment: Alignment.center,
+      padding: titleExists ? const EdgeInsets.only(bottom: 30) : const EdgeInsets.symmetric(vertical: 30),
+      child: Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17.0)),
+    );
+  }
+
+  Widget _showFooter() {
+    return footer != null
+        ? Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(footer, textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
+          )
+        : const SizedBox();
+  }
+
+  assentButtonColor = assentButtonColor ?? (warning ? Colors.red[400]! : const Color(0xee2091eb));
+  buttonColor = buttonColor ??
+      context.themeColor(
+        dark: const Color(0xcc6a7073),
+        light: Colors.grey,
+      );
   if (buttonOK) {
     yes = context.i18n.okButtonText;
   }
@@ -168,9 +129,6 @@ Future<bool?> alert(
           dark: const Color.fromRGBO(25, 25, 28, 0.6), light: const Color.fromRGBO(230, 230, 238, 0.6)),
       barrierDismissible: false,
       builder: (BuildContext ctx) {
-        if (warning) {
-          icon = Icons.error_outline;
-        }
         return Dialog(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -197,27 +155,34 @@ Future<bool?> alert(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _showIcon(icon, iconColor),
+                  if (icon != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Icon(
+                        icon,
+                        color: iconColor,
+                        size: 64,
+                      ),
+                    ),
                   scrollContent
                       ? SizedBox(
                           height: 200,
                           child: SingleChildScrollView(
                             child: ListBody(
                               children: <Widget>[
-                                _showTitle(title),
-                                _showMessage(message, title != null || icon != null || warning),
-                                _showFooter(footer),
+                                _showTitle(),
+                                _showMessage(title != null || icon != null || warning),
+                                _showFooter(),
                               ],
                             ),
                           ),
                         )
                       : Column(children: [
-                          _showTitle(title),
-                          _showMessage(message, title != null || icon != null || warning),
-                          _showFooter(footer),
+                          _showTitle(),
+                          _showMessage(title != null || icon != null || warning),
+                          _showFooter(),
                         ]),
                   _showButton(
-                    context,
                     keyAlertButtonYes,
                     yes,
                     assentButtonColor!,
@@ -225,7 +190,6 @@ Future<bool?> alert(
                     true,
                   ),
                   _showButton(
-                    context,
                     keyAlertButtonNo,
                     no,
                     buttonColor!,
@@ -234,14 +198,36 @@ Future<bool?> alert(
                   ),
                   const SizedBox(height: 10),
                   _showButton(
-                    context,
                     keyAlertButtonCancel,
                     cancel,
                     yes != null ? buttonColor : assentButtonColor,
                     yes != null ? context.themeColor(dark: Colors.blue[50]!, light: Colors.black54) : Colors.white,
                     null,
                   ),
-                  _showEmailUs(context, emailUs),
+                  if (emailUs)
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
+                              child: const Icon(
+                                Icons.email,
+                                color: Colors.blueAccent,
+                                size: 18,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            InkWell(
+                                child: GestureDetector(
+                                    onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
+                                    child: Text(
+                                      context.i18n.errorEmailUsLink,
+                                      style: const TextStyle(fontSize: 16, color: Colors.blueAccent),
+                                    ))),
+                          ],
+                        )),
                 ],
               ),
             ),
