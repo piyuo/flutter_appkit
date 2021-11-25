@@ -102,6 +102,9 @@
     "printTestPage": "Print Test Page",
     "printAutoLabel": "Automatically print when receive",
     "printerAutoDisabled": "Automatic printing is disabled",
+    "printerScanning":"Scanning",
+    "printerTurnOnPower":"Please turn on the Bluetooth Printer",
+    "noName":"no name",
     "errorConnect":
         "Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct",
     "errorTimeout": "Printer connection timeout, make sure printer is turned on",

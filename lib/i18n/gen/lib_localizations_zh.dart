@@ -314,6 +314,15 @@ class LibLocalizationsZh extends LibLocalizations {
   String get printerAutoDisabled => '自动打印目前停用';
 
   @override
+  String get printerScanning => '扫描中';
+
+  @override
+  String get printerTurnOnPower => '请打开蓝芽打印机的电源';
+
+  @override
+  String get noName => '无名称';
+
+  @override
   String get errorConnect => '无法连线到打印机，请确认打印机电源已开启，有连接到网路上，而且IP地址是正确的';
 
   @override
@@ -695,6 +704,15 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get printerAutoDisabled => '自動列印目前停用';
+
+  @override
+  String get printerScanning => '掃描中';
+
+  @override
+  String get printerTurnOnPower => '請打開藍芽印表機的電源';
+
+  @override
+  String get noName => '無名稱';
 
   @override
   String get errorConnect => '無法連線到印表機，請確認印表機電源已開啟，有連接到網路上，而且IP地址是正確的';

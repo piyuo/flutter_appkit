@@ -707,6 +707,24 @@ abstract class LibLocalizations {
   /// **'Automatic printing is disabled'**
   String get printerAutoDisabled;
 
+  /// No description provided for @printerScanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning'**
+  String get printerScanning;
+
+  /// No description provided for @printerTurnOnPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Please turn on the Bluetooth Printer'**
+  String get printerTurnOnPower;
+
+  /// No description provided for @noName.
+  ///
+  /// In en, this message translates to:
+  /// **'no name'**
+  String get noName;
+
   /// No description provided for @errorConnect.
   ///
   /// In en, this message translates to:

@@ -102,6 +102,9 @@
     "printTestPage": "列印測試單據",
     "printAutoLabel": "當收到以下單據時自動列印",
     "printerAutoDisabled": "自動列印目前停用",
+    "printerScanning":"掃描中",
+    "printerTurnOnPower":"請打開藍芽印表機的電源",
+    "noName":"無名稱",
     "errorConnect":
         "無法連線到印表機，請確認印表機電源已開啟，有連接到網路上，而且IP地址是正確的",
     "errorTimeout": "印表機連接超時，請確認印表機電源已開啟",
