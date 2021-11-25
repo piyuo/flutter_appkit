@@ -100,6 +100,7 @@
     "bluetoothPrinterHint": "按此处选择蓝芽打印机",
     "printTestPage": "打印测试单据",
     "printAutoLabel": "当收到以下单据时自动打印",
+    "printerAutoDisabled": "自动打印目前停用",
     "errorConnect":
         "无法连线到打印机，请确认打印机电源已开启，有连接到网路上，而且IP地址是正确的",
     "errorTimeout": "打印机连接超时，请确认打印机电源已开启",

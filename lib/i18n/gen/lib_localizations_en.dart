@@ -308,6 +308,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get printAutoLabel => 'Automatically print when receive';
 
   @override
+  String get printerAutoDisabled => 'Automatic printing is disabled';
+
+  @override
   String get errorConnect => 'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
 
   @override

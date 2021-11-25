@@ -100,6 +100,7 @@
     "bluetoothPrinterHint": "按此處選擇藍芽印表機",
     "printTestPage": "列印測試單據",
     "printAutoLabel": "當收到以下單據時自動列印",
+    "printerAutoDisabled": "自動列印目前停用",
     "errorConnect":
         "無法連線到印表機，請確認印表機電源已開啟，有連接到網路上，而且IP地址是正確的",
     "errorTimeout": "印表機連接超時，請確認印表機電源已開啟",

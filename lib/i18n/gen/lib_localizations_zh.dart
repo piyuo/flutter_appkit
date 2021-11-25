@@ -308,6 +308,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get printAutoLabel => '当收到以下单据时自动打印';
 
   @override
+  String get printerAutoDisabled => '自动打印目前停用';
+
+  @override
   String get errorConnect => '无法连线到打印机，请确认打印机电源已开启，有连接到网路上，而且IP地址是正确的';
 
   @override
@@ -683,6 +686,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get printAutoLabel => '當收到以下單據時自動列印';
+
+  @override
+  String get printerAutoDisabled => '自動列印目前停用';
 
   @override
   String get errorConnect => '無法連線到印表機，請確認印表機電源已開啟，有連接到網路上，而且IP地址是正確的';

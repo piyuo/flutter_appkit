@@ -100,6 +100,7 @@
     "bluetoothPrinterHint": "Click Search to select bluetooth device",
     "printTestPage": "Print Test Page",
     "printAutoLabel": "Automatically print when receive",
+    "printerAutoDisabled": "Automatic printing is disabled",
     "errorConnect":
         "Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct",
     "errorTimeout": "Printer connection timeout, make sure printer is turned on",

@@ -695,6 +695,12 @@ abstract class LibLocalizations {
   /// **'Automatically print when receive'**
   String get printAutoLabel;
 
+  /// No description provided for @printerAutoDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic printing is disabled'**
+  String get printerAutoDisabled;
+
   /// No description provided for @errorConnect.
   ///
   /// In en, this message translates to:
