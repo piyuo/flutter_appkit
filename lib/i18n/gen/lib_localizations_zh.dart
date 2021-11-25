@@ -266,6 +266,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get printerList => '打印机列表';
 
   @override
+  String get printerSettings => '打印机设定';
+
+  @override
   String get printerName => '打印机名称';
 
   @override
@@ -638,6 +641,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get printerList => '印表機列表';
+
+  @override
+  String get printerSettings => '印表機設定';
 
   @override
   String get printerName => '印表機名稱';

@@ -266,6 +266,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get printerList => 'Printer List';
 
   @override
+  String get printerSettings => 'Printer Settings';
+
+  @override
   String get printerName => 'Printer Name';
 
   @override

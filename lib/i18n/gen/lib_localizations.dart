@@ -611,6 +611,12 @@ abstract class LibLocalizations {
   /// **'Printer List'**
   String get printerList;
 
+  /// No description provided for @printerSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer Settings'**
+  String get printerSettings;
+
   /// No description provided for @printerName.
   ///
   /// In en, this message translates to:

@@ -85,6 +85,7 @@
     "networkPrinter": "網路印表機",
     "bluetoothPrinter": "藍芽印表機",
     "printerList": "印表機列表",
+    "printerSettings": "印表機設定",
     "printerName": "印表機名稱",
     "printerNameExists": "%1 這名稱已被使用. 請換一個名稱",
     "printerNameHint": "請給此印表機一個名稱 (例如. 廚房)",

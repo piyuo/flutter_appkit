@@ -85,6 +85,7 @@
     "networkPrinter": "Network Printer",
     "bluetoothPrinter": "Bluetooth Printer",
     "printerList": "Printer List",
+    "printerSettings": "Printer Settings",
     "printerName": "Printer Name",
     "printerNameExists": "%1 already been used. please try another name",
     "printerNameHint": "Give printer a name (e.g. Kitchen)",

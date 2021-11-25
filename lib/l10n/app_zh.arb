@@ -85,6 +85,7 @@
     "bluetoothPrinter": "蓝芽打印机",
     "printer": "打印机",
     "printerList": "打印机列表",
+    "printerSettings": "打印机设定",
     "printerName": "打印机名称",
     "printerNameExists": "%1 这名称已被使用. 请换一个名称",
     "printerNameHint": "请给此打印机一个名称 (例如. 厨房)",
