@@ -284,6 +284,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get printerNeedBT => 'Please select a Bluetooth Printer';
 
   @override
+  String get bluetoothScanTitle => 'Select Bluetooth Printer';
+
+  @override
   String get printerIP => 'Printer\'s IP Address';
 
   @override

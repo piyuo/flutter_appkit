@@ -647,6 +647,12 @@ abstract class LibLocalizations {
   /// **'Please select a Bluetooth Printer'**
   String get printerNeedBT;
 
+  /// No description provided for @bluetoothScanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Bluetooth Printer'**
+  String get bluetoothScanTitle;
+
   /// No description provided for @printerIP.
   ///
   /// In en, this message translates to:

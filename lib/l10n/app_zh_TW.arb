@@ -91,6 +91,7 @@
     "printerNameHint": "請給此印表機一個名稱 (例如. 廚房)",
     "printerNeedIP": "請輸入印表機的IP地址",
     "printerNeedBT": "請選擇一個藍芽印表機",
+    "bluetoothScanTitle": "選擇一個藍芽印表機",
     "printerIP": "印表機IP地址",
     "printerIPHint": "例如. 192.168.1.2",
     "printerIPNotValid": "%1 不是有效的IP地址格式. (範例格式: 192.168.1.2)",

@@ -91,6 +91,7 @@
     "printerNameHint": "Give printer a name (e.g. Kitchen)",
     "printerNeedIP": "Please input the printer IP address",
     "printerNeedBT": "Please select a Bluetooth Printer",
+    "bluetoothScanTitle": "Select Bluetooth Printer",
     "printerIP": "Printer's IP Address",
     "printerIPHint": "e.g. 192.168.1.2",
     "printerIPNotValid": "%1 is not a valid IP. (Example: 192.168.1.2)",

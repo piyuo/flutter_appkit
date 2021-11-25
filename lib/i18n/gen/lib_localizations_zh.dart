@@ -284,6 +284,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get printerNeedBT => '请选择一个蓝芽打印机';
 
   @override
+  String get bluetoothScanTitle => '选择一个蓝芽打印机';
+
+  @override
   String get printerIP => '打印机IP地址';
 
   @override
@@ -662,6 +665,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get printerNeedBT => '請選擇一個藍芽印表機';
+
+  @override
+  String get bluetoothScanTitle => '選擇一個藍芽印表機';
 
   @override
   String get printerIP => '印表機IP地址';
