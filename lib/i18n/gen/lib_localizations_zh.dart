@@ -224,7 +224,7 @@ class LibLocalizationsZh extends LibLocalizations {
   String get ticketItemCount => '总数量: %1';
 
   @override
-  String get ticketPickup => '取餐';
+  String get ticketPickup => '时间';
 
   @override
   String get ticketSubtotal => '小计';

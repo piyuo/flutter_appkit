@@ -530,7 +530,7 @@ abstract class LibLocalizations {
   /// No description provided for @ticketPickup.
   ///
   /// In en, this message translates to:
-  /// **'Pickup'**
+  /// **'Time'**
   String get ticketPickup;
 
   /// No description provided for @ticketSubtotal.

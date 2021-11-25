@@ -71,7 +71,7 @@
     "ticketOrderDelivery": "Delivery",
     "ticketOrderDineIn": "Dine in",
     "ticketItemCount": "Item Count: %1",
-    "ticketPickup": "Pickup",
+    "ticketPickup": "Time",
     "ticketSubtotal": "Subtotal",
     "ticketTax": "Tax",
     "ticketService": "Service",
