@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/delta/delta.dart' as delta;
@@ -10,6 +11,14 @@ const keyAlertButtonYes = Key('alertBtnYes');
 const keyAlertButtonNo = Key('alertBtnNo');
 
 const keyAlertButtonCancel = Key('alertBtnCancel');
+
+bool _disableAlert = false;
+
+/// disable alert when testing
+@visibleForTesting
+void disableAlert() {
+  _disableAlert = true;
+}
 
 /// alert show alert dialog, return true if it's ok or yes
 ///
@@ -36,6 +45,10 @@ Future<bool?> alert(
   bool buttonClose = false,
   bool scrollContent = false,
 }) async {
+  if (!kReleaseMode && _disableAlert) {
+    return null;
+  }
+
   Widget _showButton(
     Key key,
     String? text,
