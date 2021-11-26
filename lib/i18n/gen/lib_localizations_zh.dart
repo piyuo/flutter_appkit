@@ -8,6 +8,12 @@ class LibLocalizationsZh extends LibLocalizations {
   LibLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get hintPleaseWait => '请稍候';
+
+  @override
+  String get hintDone => '完成';
+
+  @override
   String get confirmButtonText => '确认';
 
   @override
@@ -398,6 +404,12 @@ class LibLocalizationsZh extends LibLocalizations {
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class LibLocalizationsZhTw extends LibLocalizationsZh {
   LibLocalizationsZhTw(): super('zh_TW');
+
+  @override
+  String get hintPleaseWait => '請稍候';
+
+  @override
+  String get hintDone => '完成';
 
   @override
   String get confirmButtonText => '確認';

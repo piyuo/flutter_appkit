@@ -95,6 +95,18 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @hintPleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Wait'**
+  String get hintPleaseWait;
+
+  /// No description provided for @hintDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get hintDone;
+
   /// No description provided for @confirmButtonText.
   ///
   /// In en, this message translates to:

@@ -1,4 +1,6 @@
 {
+    "hintPleaseWait": "請稍候",
+    "hintDone": "完成",
     "confirmButtonText": "確認",
     "searchButtonText": "搜尋",
     "loadingLabel": "讀取中...",

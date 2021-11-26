@@ -1,4 +1,6 @@
 {
+    "hintPleaseWait": "Please Wait",
+    "hintDone": "Done",
     "confirmButtonText": "Confirm",
     "searchButtonText": "Search",
     "loadingLabel": "Loading...",

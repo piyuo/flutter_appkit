@@ -8,6 +8,12 @@ class LibLocalizationsEn extends LibLocalizations {
   LibLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get hintPleaseWait => 'Please Wait';
+
+  @override
+  String get hintDone => 'Done';
+
+  @override
   String get confirmButtonText => 'Confirm';
 
   @override
