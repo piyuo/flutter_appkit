@@ -74,11 +74,11 @@ class DialogExample extends StatelessWidget {
                                 buttonCancel: true,
                               );
                               if (result == true) {
-                                toastOK(context, text: 'yes');
+                                toastDone(context, text: 'yes');
                               } else if (result == false) {
-                                toastOK(context, text: 'no');
+                                toastDone(context, text: 'no');
                               } else if (result == null) {
-                                toastOK(context, text: 'cancel');
+                                toastDone(context, text: 'cancel');
                               }
                             },
                           ),
@@ -90,9 +90,9 @@ class DialogExample extends StatelessWidget {
                                 'save this document?',
                               );
                               if (result == true) {
-                                toastOK(context, text: 'ok');
+                                toastDone(context, text: 'ok');
                               } else if (result == null) {
-                                toastOK(context, text: 'cancel');
+                                toastDone(context, text: 'cancel');
                               }
                             },
                           ),
@@ -189,9 +189,9 @@ class DialogExample extends StatelessWidget {
                           },
                         ),
                         ElevatedButton(
-                          child: const Text('OK'),
+                          child: const Text('Done'),
                           onPressed: () async {
-                            toastOK(context);
+                            toastDone(context);
                           },
                         ),
                         ElevatedButton(
@@ -216,7 +216,7 @@ class DialogExample extends StatelessWidget {
                             toastLoading(context);
                             await Future.delayed(const Duration(seconds: 1));
                             dismiss();
-                            toastOK(context);
+                            toastDone(context);
                           },
                         ),
                         ElevatedButton(
@@ -255,7 +255,7 @@ class DialogExample extends StatelessWidget {
                         ),
                         ElevatedButton(
                           child: const Text('toast'),
-                          onPressed: () => toastOK(context, text: 'add item to cart'),
+                          onPressed: () => toastDone(context, text: 'add item to cart'),
                         ),
                         ElevatedButton(
                           child: const Text('fail'),

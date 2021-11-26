@@ -81,9 +81,9 @@ Future<void> toastLoading(
   );
 }
 
-/// toastOK show ok toast
+/// toastDone show done toast
 ///
-Future<void> toastOK(BuildContext context, {String? text}) async {
+Future<void> toastDone(BuildContext context, {String? text}) async {
   _applyTheme(context);
   return await EasyLoading.showSuccess(
     text ?? context.i18n.hintDone,

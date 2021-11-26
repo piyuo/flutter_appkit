@@ -77,7 +77,7 @@ void main() {
 
     testWidgets('should show ok toast', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) async => await toastOK(context, text: 'hi')),
+        sampleApp(onPressed: (context) async => await toastDone(context, text: 'hi')),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));
