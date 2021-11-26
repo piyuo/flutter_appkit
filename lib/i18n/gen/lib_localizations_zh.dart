@@ -224,7 +224,7 @@ class LibLocalizationsZh extends LibLocalizations {
   String get ticketItemCount => '总数量: %1';
 
   @override
-  String get ticketPickup => '时间';
+  String get ticketPickup => '取餐时间';
 
   @override
   String get ticketSubtotal => '小计';
@@ -616,7 +616,7 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
   String get ticketItemCount => '總數量: %1';
 
   @override
-  String get ticketPickup => '取餐';
+  String get ticketPickup => '取餐時間';
 
   @override
   String get ticketSubtotal => '小計';

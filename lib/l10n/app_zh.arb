@@ -71,7 +71,7 @@
     "ticketOrderDelivery": "外送",
     "ticketOrderDineIn": "内用",
     "ticketItemCount": "总数量: %1",
-    "ticketPickup": "时间",
+    "ticketPickup": "取餐时间",
     "ticketSubtotal": "小计",
     "ticketTax": "税",
     "ticketService": "服务费",

@@ -224,7 +224,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get ticketItemCount => 'Item Count: %1';
 
   @override
-  String get ticketPickup => 'Time';
+  String get ticketPickup => 'Pickup';
 
   @override
   String get ticketSubtotal => 'Subtotal';
