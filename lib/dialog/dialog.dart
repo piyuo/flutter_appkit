@@ -11,4 +11,4 @@ export 'src/single_selection_dialog.dart';
 export 'src/banner.dart';
 export 'src/slide.dart';
 export 'src/check_list_dialog.dart';
-export 'src/loading.dart';
+export 'src/with_loading.dart';

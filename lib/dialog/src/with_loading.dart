@@ -20,13 +20,16 @@ Future<void> withLoading(
 ///
 Future<void> withLoadingThenDone(
   BuildContext context,
-  Future<void> Function() callback,
+  Future<bool> Function() callback,
 ) async {
   toastLoading(context);
+  bool result = false;
   try {
-    await callback();
+    result = await callback();
   } finally {
     dismiss();
+  }
+  if (result) {
     toastDone(context);
   }
 }
