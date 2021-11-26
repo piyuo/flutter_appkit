@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// _applyTheme apply theme before show toast
 ///
@@ -75,8 +76,19 @@ Future<void> toastLoading(
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
   return await EasyLoading.show(
-    status: text,
+    status: text ?? context.i18n.hintPleaseWait,
     maskType: EasyLoadingMaskType.clear,
+  );
+}
+
+/// toastOK show ok toast
+///
+Future<void> toastOK(BuildContext context, {String? text}) async {
+  _applyTheme(context);
+  return await EasyLoading.showSuccess(
+    text ?? context.i18n.hintDone,
+    maskType: EasyLoadingMaskType.none,
+    dismissOnTap: true,
   );
 }
 
@@ -125,17 +137,6 @@ Future<void> toastInfo(BuildContext context,
   return await EasyLoading.show(
     status: text,
     indicator: widget,
-    dismissOnTap: true,
-  );
-}
-
-/// toastOK show ok toast
-///
-Future<void> toastOK(BuildContext context, String text) async {
-  _applyTheme(context);
-  return await EasyLoading.showSuccess(
-    text,
-    maskType: EasyLoadingMaskType.none,
     dismissOnTap: true,
   );
 }
