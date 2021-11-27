@@ -218,6 +218,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  esc_pos_bluetooth:
+    dependency: "direct main"
+    description:
+      name: esc_pos_bluetooth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
+  esc_pos_utils:
+    dependency: transitive
+    description:
+      name: esc_pos_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   extended_image:
     dependency: "direct main"
     description:
@@ -265,6 +279,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bluetooth_basic:
+    dependency: transitive
+    description:
+      name: flutter_bluetooth_basic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.7"
   flutter_colorpicker:
     dependency: transitive
     description:
@@ -392,6 +413,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  gbk_codec:
+    dependency: transitive
+    description:
+      name: gbk_codec
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   gettext_parser:
     dependency: transitive
     description:
@@ -434,6 +462,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2"
+  hex:
+    dependency: transitive
+    description:
+      name: hex
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   html:
     dependency: transitive
     description:
@@ -525,6 +560,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.3"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.0"
   just_audio:
     dependency: "direct main"
     description:
@@ -825,7 +867,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.27.3"
+    version: "0.26.0"
   sanitize_html:
     dependency: transitive
     description:
@@ -957,6 +999,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  synchronized:
+    dependency: "direct main"
+    description:
+      name: synchronized
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   term_glyph:
     dependency: transitive
     description:
