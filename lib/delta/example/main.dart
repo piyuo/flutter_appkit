@@ -63,7 +63,7 @@ class DeltaExample extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 400,
-                          child: _tapOnButtonHint(context),
+                          child: _statusLight(context),
                         ),
                         testing.example(
                           context,
@@ -747,11 +747,17 @@ class DeltaExample extends StatelessWidget {
 
   Widget _statusLight(BuildContext context) {
     return Row(children: const [
-      StatusLight(status: LightStatus.green, tooltip: 'connected', label: 'connected'),
-      SizedBox(width: 20),
-      StatusLight(status: LightStatus.yellow, tooltip: 'connecting..', label: 'connecting..'),
-      SizedBox(width: 20),
-      StatusLight(status: LightStatus.red, tooltip: 'failed to connect', label: 'failed to connect'),
+      Expanded(
+        child: StatusLight(status: LightStatus.green, tooltip: 'connected', label: 'connected'),
+      ),
+      SizedBox(
+        width: 120,
+        child: StatusLight(status: LightStatus.yellow, tooltip: 'connecting..', label: 'connecting..'),
+      ),
+      SizedBox(
+        width: 120,
+        child: StatusLight(status: LightStatus.red, tooltip: 'failed to connect', label: 'failed to connect'),
+      ),
     ]);
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'extensions.dart';
 
 enum LightStatus { green, yellow, red }
@@ -43,10 +44,16 @@ class StatusLight extends StatelessWidget {
                     ? context.themeColor(light: Colors.yellow[600]!, dark: Colors.yellow[400]!)
                     : context.themeColor(light: Colors.red[600]!, dark: Colors.red[400]!),
           ),
-          onPressed: onPressed,
+          onPressed: null,
           tooltip: tooltip,
         ),
-        if (label != null) Text(label!, style: const TextStyle(fontSize: 16, color: Colors.grey)),
+        if (label != null)
+          Expanded(
+              child: AutoSizeText(
+            label!,
+            maxLines: 1,
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
+          ))
       ],
     );
   }
