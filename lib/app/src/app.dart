@@ -82,13 +82,13 @@ void start({
   ThemeData? theme,
   ThemeData? darkTheme,
 }) {
+  WidgetsFlutterBinding.ensureInitialized();
   // init env
   log.log('[env] start $appName, branch=$branch');
   _branch = branch;
   _appName = appName;
   _serviceEmail = serviceEmail;
   //Provider.debugCheckInvalidValueType = null;
-  //WidgetsFlutterBinding.ensureInitialized();
 
   //routes
   if (kIsWeb) {

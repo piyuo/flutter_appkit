@@ -98,28 +98,28 @@ class AppExampleState extends State<AppExample> {
             child: const Text('get locale to system default'),
             onPressed: () {
               setState(() {
-                i18n.I18nProvider.of(context).overrideLocale = null;
+                i18n.I18nProvider.of(context).overrideLocaleTemporary(null);
               });
             }),
         OutlinedButton(
             child: const Text('change locale to en'),
             onPressed: () {
               setState(() {
-                i18n.I18nProvider.of(context).overrideLocale = const Locale('en');
+                i18n.I18nProvider.of(context).overrideLocaleTemporary(const Locale('en'));
               });
             }),
         OutlinedButton(
             child: const Text('change locale to zh'),
             onPressed: () {
               setState(() {
-                i18n.I18nProvider.of(context).overrideLocale = const Locale('zh');
+                i18n.I18nProvider.of(context).overrideLocaleTemporary(const Locale('zh'));
               });
             }),
         OutlinedButton(
             child: const Text('change locale to zh_TW'),
             onPressed: () {
               setState(() {
-                i18n.I18nProvider.of(context).overrideLocale = const Locale('zh', 'TW');
+                i18n.I18nProvider.of(context).overrideLocaleTemporary(const Locale('zh', 'TW'));
               });
             }),
       ],
