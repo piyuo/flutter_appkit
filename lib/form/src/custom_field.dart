@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class CustomField<T> extends StatefulWidget {
   const CustomField({
     required this.controller,
-    required this.valueToString,
     required this.label,
-    this.onTap,
+    required this.builder,
+    this.border,
     this.validator,
     this.focusNode,
     this.nextFocusNode,
@@ -23,21 +23,24 @@ class CustomField<T> extends StatefulWidget {
   /// label will show when value is not empty
   final String? label;
 
-  final VoidCallback? onTap;
+  /// border for input border
+  ///
+  ///  * [InputBorder.none], which doesn't draw a border.
+  ///  * [UnderlineInputBorder], which draws a horizontal line at the
+  ///    bottom of the input decorator's container.
+  ///  * [OutlineInputBorder], an [InputDecorator] border which draws a
+  ///    rounded rectangle around the input decorator's container.
+  final InputBorder? border;
 
   final String? Function(T?)? validator;
-
-  /// valueString show string to represent value
-  final String Function(T?) valueToString;
 
   /// suffixIcon is suffix icon
   final Widget? suffixIcon;
 
-  String get valueText => valueToString(controller.value);
+  /// builder to build display widget
+  final Widget Function() builder;
 
-  String? validate() {
-    return validator?.call(controller.value);
-  }
+  String? validate() => validator?.call(controller.value);
 
   @override
   State<StatefulWidget> createState() => _CustomFieldState<T>();
@@ -82,6 +85,7 @@ class _CustomFieldState<T> extends State<CustomField> {
       isFocused: widget.focusNode != null ? widget.focusNode!.hasFocus : false,
       isEmpty: widget.controller.value == null,
       decoration: InputDecoration(
+        border: widget.border,
         labelText: widget.label,
         errorText: _error,
         suffixIcon: widget.suffixIcon,
@@ -95,16 +99,7 @@ class _CustomFieldState<T> extends State<CustomField> {
           });
           return _error;
         },
-        builder: (FormFieldState<T> state) {
-          return InkWell(
-            focusNode: widget.focusNode,
-            onTap: widget.onTap,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-              child: Text(widget.valueText, style: Theme.of(context).textTheme.subtitle1),
-            ),
-          );
-        },
+        builder: (FormFieldState<T> state) => widget.builder(),
       ),
     );
   }

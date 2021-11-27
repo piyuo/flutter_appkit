@@ -28,6 +28,8 @@ class FormExampleProvider extends ChangeNotifier {
 
   final dropdownFocus = FocusNode();
 
+  final radioFocus = FocusNode(debugLabel: 'radioFocus');
+
   final clickFocus = FocusNode(debugLabel: 'clickFocus');
 
   final clickValueFocus = FocusNode();
@@ -55,6 +57,8 @@ final dropdownController = ValueNotifier<int>(0);
 
 final dateController = ValueNotifier<DateTime?>(null);
 
+final radioController = ValueNotifier<String>('50');
+
 final clickController = ValueNotifier<String?>(null);
 
 final clickValueController = ValueNotifier<String?>('hello');
@@ -80,6 +84,16 @@ class FormExample extends StatelessWidget {
                 key: _keyForm,
                 child: Column(
                   children: [
+                    RadioGroup<String>(
+                        key: const Key('test-radio'),
+                        controller: radioController,
+                        focusNode: pFormPlayground.radioFocus,
+                        nextFocusNode: pFormPlayground.clickFocus,
+                        label: 'Paper Size',
+                        items: const {
+                          '50': '50 mm',
+                          '80': '80 mm',
+                        }),
                     ClickField<String>(
                       key: const Key('test-click'),
                       controller: clickController,

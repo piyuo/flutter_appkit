@@ -40,14 +40,20 @@ class ClickField<T> extends Field<T> {
       focusNode: focusNode,
       nextFocusNode: nextFocusNode,
       controller: controller,
-      valueToString: valueToString,
       validator: (T? value) => super.validate(context, value),
       suffixIcon: const Icon(
         Icons.navigate_next,
       ),
-      onTap: () async {
-        controller.value = await onClicked(controller.value);
-      },
+      builder: () => InkWell(
+        focusNode: focusNode,
+        onTap: () async {
+          controller.value = await onClicked(controller.value);
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+          child: Text(valueToString(controller.value), style: Theme.of(context).textTheme.subtitle1),
+        ),
+      ),
     );
   }
 }
