@@ -350,6 +350,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get errorUnknown => 'Unknown error';
 
   @override
+  String get testTicketInstruction => 'change Paper Size in Printer Settings (58mm <-> 80mm) if receipt content not fitting page';
+
+  @override
   String get testTicketTitle => 'piyuo.com';
 
   @override

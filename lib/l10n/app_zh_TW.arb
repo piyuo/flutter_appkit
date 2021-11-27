@@ -115,6 +115,7 @@
     "errorAnotherPrinting": "無法列印，因為引表機正在列印",
     "errorScanInProgress": "無法列印，因為正在掃描藍芽印表機",
     "errorUnknown": "無法列印，未知的錯誤",
+    "testTicketInstruction": "若是發現內容沒能紙上顯示的剛剛好，請更改印表機設定的紙張大小 (58mm <-> 80mm)",
     "testTicketTitle": "piyuo.com",
     "testTicketAddress": "測試用收據",
     "testTicketCustomerName": "顧客 1'",

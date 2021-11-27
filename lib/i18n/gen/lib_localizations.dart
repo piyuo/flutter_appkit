@@ -779,6 +779,12 @@ abstract class LibLocalizations {
   /// **'Unknown error'**
   String get errorUnknown;
 
+  /// No description provided for @testTicketInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'change Paper Size in Printer Settings (58mm <-> 80mm) if receipt content not fitting page'**
+  String get testTicketInstruction;
+
   /// No description provided for @testTicketTitle.
   ///
   /// In en, this message translates to:

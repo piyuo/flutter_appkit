@@ -115,6 +115,7 @@
     "errorAnotherPrinting": "Another print in progress",
     "errorScanInProgress": "Printer scanning in progress",
     "errorUnknown": "Unknown error",
+    "testTicketInstruction": "change Paper Size in Printer Settings (58mm <-> 80mm) if receipt content not fitting page",
     "testTicketTitle": "piyuo.com",
     "testTicketAddress": "Test Receipt",
     "testTicketCustomerName": "Customer 1",

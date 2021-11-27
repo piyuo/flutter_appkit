@@ -350,6 +350,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get errorUnknown => '无法打印，未知的错误';
 
   @override
+  String get testTicketInstruction => '若是发现内容没能纸上显示的刚刚好，请更改打印机设定的纸张大小 (58mm <-> 80mm)';
+
+  @override
   String get testTicketTitle => 'piyuo.com';
 
   @override
@@ -746,6 +749,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get errorUnknown => '無法列印，未知的錯誤';
+
+  @override
+  String get testTicketInstruction => '若是發現內容沒能紙上顯示的剛剛好，請更改印表機設定的紙張大小 (58mm <-> 80mm)';
 
   @override
   String get testTicketTitle => 'piyuo.com';
