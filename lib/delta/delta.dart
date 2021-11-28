@@ -35,3 +35,4 @@ export 'src/separator.dart';
 export 'src/error_box.dart';
 export 'src/error_label.dart';
 export 'src/tap_on_button_hint.dart';
+export 'src/redirect_to_url.dart';

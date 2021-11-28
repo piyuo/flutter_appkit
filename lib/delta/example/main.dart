@@ -63,7 +63,12 @@ class DeltaExample extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 400,
-                          child: _statusLight(context),
+                          child: _redirectToUrl(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'redirect to url',
+                          child: _redirectToUrl(context),
                         ),
                         testing.example(
                           context,
@@ -189,6 +194,13 @@ class DeltaExample extends StatelessWidget {
                     ),
                   ),
                 )));
+  }
+
+  Widget _redirectToUrl(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('redirect to url'),
+      onPressed: () => redirectToURL(context, 'https://starbucks.com', caption: 'starbucks.com'),
+    );
   }
 
   Widget _tapOnButtonHint(BuildContext context) {
