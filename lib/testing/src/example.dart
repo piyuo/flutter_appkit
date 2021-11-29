@@ -7,19 +7,25 @@ Widget _button(BuildContext context, String text, void Function() callback) {
   );
 }
 
-void _show(BuildContext context, Widget child) {
+void _show(
+  BuildContext context,
+  Widget child, {
+  bool useScaffold = true,
+}) {
   Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => Scaffold(
-          appBar: AppBar(),
-          body: SafeArea(
-              child: SingleChildScrollView(
-                  child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: child,
-          ))),
-        ),
+        builder: (_) => useScaffold
+            ? Scaffold(
+                appBar: AppBar(),
+                body: SafeArea(
+                    child: SingleChildScrollView(
+                        child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: child,
+                ))),
+              )
+            : child,
       ));
 }
 
@@ -27,8 +33,9 @@ Widget example(
   BuildContext context, {
   String? text,
   Widget? child,
+  bool useScaffold = true,
 }) {
   assert(text != null);
   assert(child != null);
-  return _button(context, text!, () => _show(context, child!));
+  return _button(context, text!, () => _show(context, child!, useScaffold: useScaffold));
 }
