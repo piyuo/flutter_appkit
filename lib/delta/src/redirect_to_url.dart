@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -19,7 +18,7 @@ Future<void> redirectToURL(
 
   // use webview in ios and android
   if (Platform.isIOS || Platform.isAndroid) {
-    await Navigator.push<Uint8List?>(
+    await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => Scaffold(
