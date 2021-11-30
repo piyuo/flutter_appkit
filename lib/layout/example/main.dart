@@ -2,12 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
-import '../src/dynamic_bottom_side.dart';
-import '../src/wrapped_list_view.dart';
-import '../src/slideshow.dart';
-import '../src/wall.dart';
-import '../src/side_panel.dart';
-import '../src/story_line.dart';
+import '../layout.dart';
 
 main() => app.start(
       appName: 'layout example',
@@ -21,56 +16,94 @@ class LayoutExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              Column(
-                children: [
-                  _storyLine(context),
-                  _storyLine(context),
-                  _storyLine(context),
-                ],
-              ),
-              testing.example(
-                context,
-                text: 'layout-dynamic-bottom-side',
-                child: _layoutDynamicBottomSide(),
-              ),
-              testing.example(
-                context,
-                text: 'wrapped-list-view',
-                child: _wrappedListView(),
-              ),
-              testing.example(
-                context,
-                text: 'slideshow',
-                child: _slideshow(context),
-              ),
-              testing.example(
-                context,
-                text: 'wall',
-                child: _wall(context),
-              ),
-              testing.example(
-                context,
-                text: 'side panel',
-                child: _sidePanel(context),
-              ),
-              testing.example(
-                context,
-                text: 'story line',
-                child: _storyLine(context),
-              ),
-            ],
+    return Column(children: [
+      Expanded(child: _hideInPhone(context)),
+      Wrap(
+        children: [
+          testing.example(
+            context,
+            text: 'layout-dynamic-bottom-side',
+            child: _layoutDynamicBottomSide(context),
           ),
-        ),
-      ),
+          testing.example(
+            context,
+            text: 'hide in phone',
+            child: _hideInPhone(context),
+          ),
+          testing.example(
+            context,
+            text: 'sliver scaffold',
+            child: _sliverScaffold(context),
+            useScaffold: false,
+          ),
+          testing.example(
+            context,
+            text: 'wrapped-list-view',
+            child: _wrappedListView(context),
+          ),
+          testing.example(
+            context,
+            text: 'slideshow',
+            child: _slideshow(context),
+          ),
+          testing.example(
+            context,
+            text: 'wall',
+            child: _wall(context),
+          ),
+          testing.example(
+            context,
+            text: 'side panel',
+            child: _sidePanel(context),
+          ),
+          testing.example(
+            context,
+            text: 'story line',
+            child: _storyLine(context),
+          ),
+        ],
+      )
+    ]);
+  }
+
+  Widget _hideInPhone(BuildContext context) {
+    return const HideInPhone(
+      child: Text('hide this when in phone layout'),
     );
   }
 
-  Widget _layoutDynamicBottomSide() {
+  Widget _sliverScaffold(BuildContext context) {
+    return SliverScaffold(
+      appBar: SliverAppBar(
+        pinned: true,
+        backgroundColor: Colors.blue.withOpacity(0.5),
+      ),
+      children: [
+        Container(
+          height: 200,
+          color: Colors.red,
+          child: const Text('hello1'),
+        ),
+        Container(
+          height: 200,
+          color: Colors.green,
+          child: const Text('hello1'),
+        ),
+        Container(
+          height: 200,
+          color: Colors.yellow,
+          child: const Text('hello3'),
+        ),
+        Container(
+          height: 200,
+          color: Colors.orange,
+          child: const Text('hello4'),
+        ),
+      ],
+    );
+  }
+
+  Widget _layoutDynamicBottomSide(BuildContext context) {
     return DynamicBottomSide(
       leftBuilder: () => Container(
         color: Colors.red,
@@ -88,7 +121,7 @@ class LayoutExample extends StatelessWidget {
     );
   }
 
-  Widget _wrappedListView() {
+  Widget _wrappedListView(BuildContext context) {
     return WrappedListView(
       children: [
         Wrapped(
@@ -240,56 +273,80 @@ class LayoutExample extends StatelessWidget {
   }
 
   Widget _sidePanel(BuildContext context) {
-    return ChangeNotifierProvider<SidePanelProvider>.value(
-        value: sidePanelProvider,
-        child: Column(
-          children: [
-            ElevatedButton(
-                child: const Text('toggle'),
-                onPressed: () {
-                  sidePanelProvider.setOpen(!sidePanelProvider.opened);
-                }),
-            Expanded(
-              child: SidePanel(
-                autoHide: true,
-                sideWidth: 250,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: const Alignment(1, 1), // 10% of the width, so there are ten blinds.
-                    colors: [
-                      Colors.green[100]!,
-                      Colors.green[900]!,
-                    ], // red to yellow
-                    tileMode: TileMode.repeated, // repeats the gradient over the canvas
+    return SizedBox(
+        height: 600,
+        child: ChangeNotifierProvider<SidePanelProvider>.value(
+            value: sidePanelProvider,
+            child: Column(
+              children: [
+                ElevatedButton(
+                    child: const Text('toggle'),
+                    onPressed: () {
+                      sidePanelProvider.setOpen(!sidePanelProvider.opened);
+                    }),
+                Expanded(
+                  child: SidePanel(
+                    //autoHide: true,
+                    sideWidth: 250,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: const Alignment(1, 1), // 10% of the width, so there are ten blinds.
+                        colors: [
+                          Colors.green[100]!,
+                          Colors.green[900]!,
+                        ], // red to yellow
+                        tileMode: TileMode.repeated, // repeats the gradient over the canvas
+                      ),
+                    ),
+                    sideWidget: const SizedBox(
+                      height: double.infinity,
+                      child: Text(
+                        'side widget',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                    mainWidget: Scaffold(
+                      appBar: AppBar(
+                        actions: [
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => Scaffold(
+                                        appBar: AppBar(
+                                          title: const Text('child window'),
+                                        ),
+                                        body: const SafeArea(
+                                          child: Text('hello'),
+                                        )),
+                                  ));
+                            },
+                          ),
+                        ],
+                      ),
+                      body: Container(
+                        color: Colors.white,
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                                child: const Text('test'),
+                                onPressed: () {
+                                  //print('hello');
+                                }),
+                            const Text('hello'),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                sideWidget: const SizedBox(
-                  height: double.infinity,
-                  child: Text(
-                    'side widget',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                ),
-                mainWidget: Container(
-                  color: Colors.white,
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                          child: const Text('test'),
-                          onPressed: () {
-                            //print('hello');
-                          }),
-                      const Text('hello'),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ));
+              ],
+            )));
   }
 
   Widget _storyLine(BuildContext context) {
