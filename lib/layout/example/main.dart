@@ -17,7 +17,7 @@ class LayoutExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: _hideInPhone(context)),
+      Expanded(child: _sliverScaffold(context)),
       Wrap(
         children: [
           testing.example(
@@ -74,6 +74,8 @@ class LayoutExample extends StatelessWidget {
 
   Widget _sliverScaffold(BuildContext context) {
     return SliverScaffold(
+      padding: const EdgeInsets.all(10),
+      appBarPadding: const EdgeInsets.all(10),
       appBar: SliverAppBar(
         pinned: true,
         backgroundColor: Colors.blue.withOpacity(0.5),

@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class SliverScaffold extends StatelessWidget {
   const SliverScaffold({
     required this.children,
+    required this.appBar,
     this.backgroundColor,
-    this.appBar,
+    this.appBarPadding = EdgeInsets.zero,
+    this.padding = EdgeInsets.zero,
     Key? key,
   }) : super(key: key);
 
@@ -13,7 +15,11 @@ class SliverScaffold extends StatelessWidget {
 
   final Color? backgroundColor;
 
-  final SliverAppBar? appBar;
+  final SliverAppBar appBar;
+
+  final EdgeInsets appBarPadding;
+
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +27,20 @@ class SliverScaffold extends StatelessWidget {
         backgroundColor: backgroundColor,
         body: CustomScrollView(
           slivers: <Widget>[
-            if (appBar != null) appBar!,
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children,
+            SliverPadding(
+              padding: appBarPadding,
+              sliver: appBar,
+            ),
+            SliverPadding(
+              padding: padding,
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: children,
+                  ),
+                  childCount: 1,
                 ),
-                childCount: 1,
               ),
             ),
           ],
