@@ -8,12 +8,16 @@ enum DeviceLayout { phone, tablet, desktop }
 
 enum DeviceOrientation { portrait, landscape }
 
+const phoneWidth = 600.0;
+
+const tabletWidth = 1200.0;
+
 ///  deviceLayout return current suggest device layout base on window width
 DeviceLayout deviceLayout(double windowWidth) {
-  if (windowWidth < 600) {
+  if (windowWidth < phoneWidth) {
     return DeviceLayout.phone;
   }
-  if (windowWidth < 1200) {
+  if (windowWidth < tabletWidth) {
     return DeviceLayout.tablet;
   }
   return DeviceLayout.desktop;
