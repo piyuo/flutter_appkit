@@ -17,12 +17,17 @@ class LayoutExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: _sliverScaffold(context)),
+      Expanded(child: _paddingToTablet(context)),
       Wrap(
         children: [
           testing.example(
             context,
-            text: 'layout-dynamic-bottom-side',
+            text: 'padding to tablet',
+            child: _paddingToTablet(context),
+          ),
+          testing.example(
+            context,
+            text: 'layout dynamic bottom side',
             child: _layoutDynamicBottomSide(context),
           ),
           testing.example(
@@ -64,6 +69,14 @@ class LayoutExample extends StatelessWidget {
         ],
       )
     ]);
+  }
+
+  Widget _paddingToTablet(BuildContext context) {
+    return Container(
+      margin: paddingToTablet(context),
+      color: Colors.red,
+      height: 200,
+    );
   }
 
   Widget _hideInPhone(BuildContext context) {
