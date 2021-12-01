@@ -6,6 +6,7 @@ class SliverScaffold extends StatelessWidget {
     required this.children,
     required this.appBar,
     this.backgroundColor,
+    this.drawer,
     this.appBarPadding = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
     Key? key,
@@ -21,9 +22,12 @@ class SliverScaffold extends StatelessWidget {
 
   final EdgeInsets padding;
 
+  final Widget? drawer;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: drawer,
         backgroundColor: backgroundColor,
         body: CustomScrollView(
           slivers: <Widget>[
