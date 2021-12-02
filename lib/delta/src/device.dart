@@ -47,9 +47,9 @@ bool isDesktopLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.desktop;
 }
 
-///  DeviceLayoutBuilder help choose device layout
-class DeviceLayoutBuilder extends StatelessWidget {
-  const DeviceLayoutBuilder({
+///  DeviceLayoutWidget help choose device proper layout widget
+class DeviceLayoutWidget extends StatelessWidget {
+  const DeviceLayoutWidget({
     this.phone,
     this.tablet,
     this.desktop,
@@ -77,9 +77,28 @@ class DeviceLayoutBuilder extends StatelessWidget {
   }
 }
 
-///  DeviceOrientationBuilder help choose orientation layout
-class DeviceOrientationBuilder extends StatelessWidget {
-  const DeviceOrientationBuilder({
+///  buildDeviceLayout help choose device layout builder to run
+Widget? buildDeviceLayout(
+  BuildContext context, {
+  WidgetBuilder? phone,
+  WidgetBuilder? tablet,
+  WidgetBuilder? desktop,
+}) {
+  return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+    switch (deviceLayout(constraints.maxWidth)) {
+      case DeviceLayout.phone:
+        return phone!(context);
+      case DeviceLayout.tablet:
+        return tablet!(context);
+      case DeviceLayout.desktop:
+        return desktop!(context);
+    }
+  });
+}
+
+///  DeviceOrientationWidget help choose orientation layout
+class DeviceOrientationWidget extends StatelessWidget {
+  const DeviceOrientationWidget({
     Key? key,
     required this.landscape,
     required this.portrait,
@@ -98,4 +117,18 @@ class DeviceOrientationBuilder extends StatelessWidget {
       return landscape(context);
     });
   }
+}
+
+///  buildDeviceOrientation help choose device orientation builder to run
+Widget? buildDeviceOrientation(
+  BuildContext context, {
+  WidgetBuilder? landscape,
+  WidgetBuilder? portrait,
+}) {
+  return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+    if (isPhoneLayout(constraints.maxWidth)) {
+      return portrait!(context);
+    }
+    return landscape!(context);
+  });
 }
