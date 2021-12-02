@@ -77,23 +77,21 @@ class DeviceLayoutWidget extends StatelessWidget {
   }
 }
 
-///  buildDeviceLayout help choose device layout builder to run
-Widget? buildDeviceLayout(
-  BuildContext context, {
-  WidgetBuilder? phone,
-  WidgetBuilder? tablet,
-  WidgetBuilder? desktop,
+///  buildLayoutWidget help choose device layout builder to run
+Widget? buildLayoutWidget(
+  double width, {
+  Function()? phone,
+  Function()? tablet,
+  Function()? desktop,
 }) {
-  return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-    switch (deviceLayout(constraints.maxWidth)) {
-      case DeviceLayout.phone:
-        return phone!(context);
-      case DeviceLayout.tablet:
-        return tablet!(context);
-      case DeviceLayout.desktop:
-        return desktop!(context);
-    }
-  });
+  switch (deviceLayout(width)) {
+    case DeviceLayout.phone:
+      return phone != null ? phone() : null;
+    case DeviceLayout.tablet:
+      return tablet != null ? tablet() : null;
+    case DeviceLayout.desktop:
+      return desktop != null ? desktop() : null;
+  }
 }
 
 ///  DeviceOrientationWidget help choose orientation layout
@@ -119,16 +117,14 @@ class DeviceOrientationWidget extends StatelessWidget {
   }
 }
 
-///  buildDeviceOrientation help choose device orientation builder to run
-Widget? buildDeviceOrientation(
-  BuildContext context, {
-  WidgetBuilder? landscape,
-  WidgetBuilder? portrait,
+///  buildOrientationWidget help choose device orientation builder to run
+Widget? buildOrientationWidget(
+  double width, {
+  Function()? landscape,
+  Function()? portrait,
 }) {
-  return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-    if (isPhoneLayout(constraints.maxWidth)) {
-      return portrait!(context);
-    }
-    return landscape!(context);
-  });
+  if (isPhoneLayout(width)) {
+    return portrait != null ? portrait() : null;
+  }
+  return landscape != null ? landscape() : null;
 }
