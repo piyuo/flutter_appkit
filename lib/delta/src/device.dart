@@ -51,12 +51,15 @@ bool isDesktopLayout(double windowWidth) {
 class DeviceLayoutWidget extends StatelessWidget {
   const DeviceLayoutWidget({
     this.phone,
+    this.notPhone,
     this.tablet,
     this.desktop,
     Key? key,
   }) : super(key: key);
 
   final WidgetBuilder? phone;
+
+  final WidgetBuilder? notPhone;
 
   final WidgetBuilder? tablet;
 
@@ -69,8 +72,14 @@ class DeviceLayoutWidget extends StatelessWidget {
         case DeviceLayout.phone:
           return phone != null ? phone!(context) : const SizedBox();
         case DeviceLayout.tablet:
+          if (notPhone != null) {
+            return notPhone!(context);
+          }
           return tablet != null ? tablet!(context) : const SizedBox();
         default:
+          if (notPhone != null) {
+            return notPhone!(context);
+          }
           return desktop != null ? desktop!(context) : const SizedBox();
       }
     });
@@ -81,6 +90,7 @@ class DeviceLayoutWidget extends StatelessWidget {
 Widget? buildLayoutWidget(
   double width, {
   Function()? phone,
+  Function()? notPhone,
   Function()? tablet,
   Function()? desktop,
 }) {
@@ -88,8 +98,14 @@ Widget? buildLayoutWidget(
     case DeviceLayout.phone:
       return phone != null ? phone() : null;
     case DeviceLayout.tablet:
+      if (notPhone != null) {
+        return notPhone();
+      }
       return tablet != null ? tablet() : null;
     case DeviceLayout.desktop:
+      if (notPhone != null) {
+        return notPhone();
+      }
       return desktop != null ? desktop() : null;
   }
 }
