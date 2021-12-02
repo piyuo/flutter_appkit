@@ -107,7 +107,7 @@ class PagedTable<T> extends StatelessWidget {
   /// isTableLayout return true if use table layout
   bool get isTableLayout {
     if (rowBuilder != null && cardBuilder != null) {
-      return delta.isPhone ? false : true;
+      return delta.isDevicePhone ? false : true;
     }
     if (cardBuilder != null) {
       return false;
