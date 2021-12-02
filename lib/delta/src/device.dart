@@ -50,28 +50,28 @@ bool isDesktopLayout(double windowWidth) {
 ///  DeviceLayoutBuilder help choose device layout
 class DeviceLayoutBuilder extends StatelessWidget {
   const DeviceLayoutBuilder({
-    required this.phone,
-    required this.tablet,
-    required this.desktop,
+    this.phone,
+    this.tablet,
+    this.desktop,
     Key? key,
   }) : super(key: key);
 
-  final WidgetBuilder phone;
+  final WidgetBuilder? phone;
 
-  final WidgetBuilder tablet;
+  final WidgetBuilder? tablet;
 
-  final WidgetBuilder desktop;
+  final WidgetBuilder? desktop;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       switch (deviceLayout(constraints.maxWidth)) {
         case DeviceLayout.phone:
-          return phone(context);
+          return phone != null ? phone!(context) : const SizedBox();
         case DeviceLayout.tablet:
-          return tablet(context);
+          return tablet != null ? tablet!(context) : const SizedBox();
         default:
-          return desktop(context);
+          return desktop != null ? desktop!(context) : const SizedBox();
       }
     });
   }
