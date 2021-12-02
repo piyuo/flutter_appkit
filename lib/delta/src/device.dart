@@ -12,7 +12,7 @@ const phoneWidth = 600.0;
 
 const tabletWidth = 1200.0;
 
-///  deviceLayout return current suggest device layout base on window width
+/// deviceLayout return current suggest device layout base on window width
 DeviceLayout deviceLayout(double windowWidth) {
   if (windowWidth < phoneWidth) {
     return DeviceLayout.phone;
@@ -23,18 +23,18 @@ DeviceLayout deviceLayout(double windowWidth) {
   return DeviceLayout.desktop;
 }
 
-///  isPhone return true if use phone layout
+/// isPhone return true if use phone layout
 bool get isPhone => isPhoneLayout(screenSize.width);
 
-///  isPhoneLayout return true if use phone layout
+/// isPhoneLayout return true if use phone layout
 bool isPhoneLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.phone;
 }
 
-///  isTablet return true if use tablet layout
+/// isTablet return true if use tablet layout
 bool get isTablet => isTabletLayout(screenSize.width);
 
-///  isTabletLayout return true if use tablet layout
+/// isTabletLayout return true if use tablet layout
 bool isTabletLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.tablet;
 }
@@ -42,12 +42,12 @@ bool isTabletLayout(double windowWidth) {
 /// isDesktop return true if use desktop layout
 bool get isDesktop => isDesktopLayout(screenSize.width);
 
-///  isDesktopLayout return true if use desktop layout
+/// isDesktopLayout return true if use desktop layout
 bool isDesktopLayout(double windowWidth) {
   return deviceLayout(windowWidth) == DeviceLayout.desktop;
 }
 
-///  DeviceLayoutWidget help choose device proper layout widget
+/// DeviceLayoutWidget help choose device proper layout widget
 class DeviceLayoutWidget extends StatelessWidget {
   const DeviceLayoutWidget({
     this.phone,
@@ -77,7 +77,7 @@ class DeviceLayoutWidget extends StatelessWidget {
   }
 }
 
-///  buildLayoutWidget help choose device layout builder to run
+/// buildLayoutWidget help choose device layout builder to run
 Widget? buildLayoutWidget(
   double width, {
   Function()? phone,
@@ -94,7 +94,7 @@ Widget? buildLayoutWidget(
   }
 }
 
-///  DeviceOrientationWidget help choose orientation layout
+/// DeviceOrientationWidget help choose orientation layout
 class DeviceOrientationWidget extends StatelessWidget {
   const DeviceOrientationWidget({
     Key? key,
@@ -117,7 +117,7 @@ class DeviceOrientationWidget extends StatelessWidget {
   }
 }
 
-///  buildOrientationWidget help choose device orientation builder to run
+/// buildOrientationWidget help choose device orientation builder to run
 Widget? buildOrientationWidget(
   double width, {
   Function()? landscape,
