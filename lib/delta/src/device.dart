@@ -12,6 +12,15 @@ const phoneWidth = 600.0;
 
 const tabletWidth = 1200.0;
 
+/// isDevicePhone return true if use phone layout
+bool get isDevicePhone => isPhoneLayout(screenSize.width);
+
+/// isDeviceTablet return true if use tablet layout
+bool get isDeviceTablet => isTabletLayout(screenSize.width);
+
+/// isDeviceDesktop return true if use desktop layout
+bool get isDeviceDesktop => isDesktopLayout(screenSize.width);
+
 /// deviceLayout return current suggest device layout base on window width
 DeviceLayout deviceLayout(double windowWidth) {
   if (windowWidth < phoneWidth) {
@@ -23,29 +32,17 @@ DeviceLayout deviceLayout(double windowWidth) {
   return DeviceLayout.desktop;
 }
 
-/// isPhone return true if use phone layout
-bool get isPhone => isPhoneLayout(screenSize.width);
-
 /// isPhoneLayout return true if use phone layout
-bool isPhoneLayout(double windowWidth) {
-  return deviceLayout(windowWidth) == DeviceLayout.phone;
-}
+bool isPhoneLayout(double width) => deviceLayout(width) == DeviceLayout.phone;
 
-/// isTablet return true if use tablet layout
-bool get isTablet => isTabletLayout(screenSize.width);
+/// isNotPhoneLayout return true if not use phone layout
+bool isNotPhoneLayout(double width) => !isPhoneLayout(width);
 
 /// isTabletLayout return true if use tablet layout
-bool isTabletLayout(double windowWidth) {
-  return deviceLayout(windowWidth) == DeviceLayout.tablet;
-}
-
-/// isDesktop return true if use desktop layout
-bool get isDesktop => isDesktopLayout(screenSize.width);
+bool isTabletLayout(double width) => deviceLayout(width) == DeviceLayout.tablet;
 
 /// isDesktopLayout return true if use desktop layout
-bool isDesktopLayout(double windowWidth) {
-  return deviceLayout(windowWidth) == DeviceLayout.desktop;
-}
+bool isDesktopLayout(double width) => deviceLayout(width) == DeviceLayout.desktop;
 
 /// DeviceLayoutWidget help choose device proper layout widget
 class DeviceLayoutWidget extends StatelessWidget {
