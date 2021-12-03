@@ -17,7 +17,7 @@ class LayoutExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: _paddingToTablet(context)),
+      Expanded(child: _sidePanel(context)),
       Wrap(
         children: [
           testing.example(
@@ -326,76 +326,60 @@ class LayoutExample extends StatelessWidget {
         height: 600,
         child: ChangeNotifierProvider<SidePanelProvider>.value(
             value: sidePanelProvider,
-            child: Column(
-              children: [
-                ElevatedButton(
-                    child: const Text('toggle'),
-                    onPressed: () {
-                      sidePanelProvider.setOpen(!sidePanelProvider.opened);
-                    }),
-                Expanded(
-                  child: SidePanel(
-                    //autoHide: true,
-                    sideWidth: 250,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: const Alignment(1, 1), // 10% of the width, so there are ten blinds.
-                        colors: [
-                          Colors.green[100]!,
-                          Colors.green[900]!,
-                        ], // red to yellow
-                        tileMode: TileMode.repeated, // repeats the gradient over the canvas
-                      ),
-                    ),
-                    sideWidget: const SizedBox(
-                      height: double.infinity,
-                      child: Text(
-                        'side widget',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                    mainWidget: Scaffold(
-                      appBar: AppBar(
-                        actions: [
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => Scaffold(
-                                        appBar: AppBar(
-                                          title: const Text('child window'),
-                                        ),
-                                        body: const SafeArea(
-                                          child: Text('hello'),
-                                        )),
-                                  ));
-                            },
+            child: Consumer<SidePanelProvider>(
+                builder: (context, sidePanelProvider, _) => Column(
+                      children: [
+                        Expanded(
+                          child: SidePanel(
+                            //autoHide: true,
+                            sideWidth: 240,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: const Alignment(1, 1), // 10% of the width, so there are ten blinds.
+                                colors: [
+                                  Colors.grey[50]!,
+                                  Colors.grey[100]!,
+                                ], // red to yellow
+                                tileMode: TileMode.repeated, // repeats the gradient over the canvas
+                              ),
+                            ),
+                            sideWidget: const SizedBox(
+                              height: double.infinity,
+                              child: Text(
+                                'side widget',
+                                style: TextStyle(fontSize: 24),
+                              ),
+                            ),
+                            mainWidget: Scaffold(
+                              appBar: AppBar(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                elevation: 1,
+                                centerTitle: false,
+                                title: const Text('App Name'),
+                                leading: sidePanelProvider.leading,
+                              ),
+                              body: Container(
+                                color: Colors.white,
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: Column(
+                                  children: [
+                                    ElevatedButton(
+                                        child: const Text('test'),
+                                        onPressed: () {
+                                          //print('hello');
+                                        }),
+                                    const Text('hello'),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      body: Container(
-                        color: Colors.white,
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                                child: const Text('test'),
-                                onPressed: () {
-                                  //print('hello');
-                                }),
-                            const Text('hello'),
-                          ],
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )));
+                      ],
+                    ))));
   }
 
   Widget _storyLine(BuildContext context) {

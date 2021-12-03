@@ -3,17 +3,40 @@ import 'package:provider/provider.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 
 class SidePanelProvider with ChangeNotifier {
-  SidePanelProvider() {
-    opened = !delta.isPhone;
-  }
-  late bool opened;
+  bool? _isPreviousPhone;
 
-  void setOpen(bool open) {
-    opened = open;
+  bool? _opened;
+
+  bool? get opened => _opened;
+
+  bool _isSideVisible = false;
+
+  set opened(bool? value) {
+    _opened = value;
     notifyListeners();
   }
 
-  void toggle() => setOpen(!opened);
+  void toggle() => opened = !(opened ?? _isSideVisible);
+
+  void trackWidth(double width) {
+    final isPhone = delta.isPhoneLayout(width);
+    if (isPhone != _isPreviousPhone) {
+      _isPreviousPhone = isPhone;
+      _opened = null;
+    }
+  }
+
+  bool isSideVisible(double width) {
+    _isSideVisible = _opened ?? !delta.isPhoneLayout(width);
+    return _isSideVisible;
+  }
+
+  bool isAutoHide(double width) => isSideVisible(width) && delta.isPhoneLayout(width);
+
+  Widget get leading => IconButton(
+        icon: const Icon(Icons.menu),
+        onPressed: toggle,
+      );
 }
 
 class SidePanel extends StatelessWidget {
@@ -21,7 +44,6 @@ class SidePanel extends StatelessWidget {
     required this.sideWidget,
     required this.mainWidget,
     required this.sideWidth,
-    this.autoHide = false,
     this.decoration,
     Key? key,
   }) : super(key: key);
@@ -35,9 +57,6 @@ class SidePanel extends StatelessWidget {
   /// sideWidth define side width
   final double sideWidth;
 
-  /// autoHide is true will auto hide side panel when user click main widget
-  final bool autoHide;
-
   /// decoration to paint behind the panel
   final Decoration? decoration;
 
@@ -45,11 +64,11 @@ class SidePanel extends StatelessWidget {
     return isOpen
         ? Material(
             clipBehavior: Clip.antiAlias,
-            elevation: 4,
-            shape: const RoundedRectangleBorder(
+            elevation: 1,
+/*            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
-            )),
+            )),*/
             child: mainWidget)
         : mainWidget;
   }
@@ -58,44 +77,47 @@ class SidePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<SidePanelProvider>(builder: (context, provide, child) {
       return SafeArea(
-        bottom: false,
-        left: false,
-        right: false,
-        child: Container(
-            decoration: decoration,
-            child: Stack(
-              children: [
-                AnimatedPositioned(
-                  left: provide.opened ? 0 : -sideWidth,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  duration: const Duration(milliseconds: 100),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: sideWidth,
-                        child: sideWidget,
+          bottom: false,
+          left: false,
+          right: false,
+          child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+            provide.trackWidth(constraints.maxWidth);
+            final sideVisible = provide.isSideVisible(constraints.maxWidth);
+            return Container(
+                decoration: decoration,
+                child: Stack(
+                  children: [
+                    AnimatedPositioned(
+                      left: sideVisible ? 0 : -sideWidth,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      duration: const Duration(milliseconds: 100),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: sideWidth,
+                            child: sideWidget,
+                          ),
+                          Expanded(
+                            child: provide.isAutoHide(constraints.maxWidth)
+                                ? GestureDetector(
+                                    onTap: () {
+                                      provide.opened = false;
+                                    },
+                                    child: AbsorbPointer(
+                                      child: _buildMainWidget(context, sideVisible),
+                                    ),
+                                  )
+                                : _buildMainWidget(context, sideVisible),
+                          ),
+                        ],
                       ),
-                      Expanded(
-                        child: provide.opened & autoHide
-                            ? GestureDetector(
-                                onTap: () {
-                                  provide.setOpen(false);
-                                },
-                                child: AbsorbPointer(
-                                  child: _buildMainWidget(context, provide.opened),
-                                ),
-                              )
-                            : _buildMainWidget(context, provide.opened),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )),
-      );
+                    ),
+                  ],
+                ));
+          }));
     });
   }
 }
