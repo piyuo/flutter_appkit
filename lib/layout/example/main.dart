@@ -357,8 +357,12 @@ class LayoutExample extends StatelessWidget {
                                 foregroundColor: Colors.black,
                                 elevation: 1,
                                 centerTitle: false,
-                                title: const Text('App Name'),
-                                leading: sidePanelProvider.leading,
+                                titleSpacing: 0,
+                                title: Row(children: [
+                                  sidePanelProvider.leading,
+                                  const Text('App Name'),
+                                ]),
+                                leading: const Icon(Icons.arrow_back_ios_new),
                               ),
                               body: Container(
                                 color: Colors.white,
