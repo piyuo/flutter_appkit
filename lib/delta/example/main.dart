@@ -63,7 +63,12 @@ class DeltaExample extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 400,
-                          child: _redirectToUrl(context),
+                          child: _responsive(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'responsive design',
+                          child: _responsive(context),
                         ),
                         testing.example(
                           context,
@@ -194,6 +199,14 @@ class DeltaExample extends StatelessWidget {
                     ),
                   ),
                 )));
+  }
+
+  Widget _responsive(BuildContext context) {
+    return Responsive(
+      phone: () => Container(child: const Text('phone'), color: Colors.red),
+      tablet: () => Container(child: const Text('tablet'), color: Colors.blue),
+      desktop: () => Container(child: const Text('desktop'), color: Colors.green),
+    );
   }
 
   Widget _redirectToUrl(BuildContext context) {

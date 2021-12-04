@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'popup.dart';
 import 'listing.dart';
-import 'device.dart';
+import 'responsive.dart';
 import 'list_item.dart';
 
 const itemHeight = 40.0;
