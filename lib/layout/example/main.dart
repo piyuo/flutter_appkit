@@ -32,11 +32,6 @@ class LayoutExample extends StatelessWidget {
           ),
           testing.example(
             context,
-            text: 'hide in phone',
-            child: _hideInPhone(context),
-          ),
-          testing.example(
-            context,
             text: 'sliver scaffold',
             child: _sliverScaffold(context),
             useScaffold: false,
@@ -76,12 +71,6 @@ class LayoutExample extends StatelessWidget {
       margin: paddingToTablet(context),
       color: Colors.red,
       height: 200,
-    );
-  }
-
-  Widget _hideInPhone(BuildContext context) {
-    return const HideInPhone(
-      child: Text('hide this when in phone layout'),
     );
   }
 

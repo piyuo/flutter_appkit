@@ -18,20 +18,20 @@ class SidePanelProvider with ChangeNotifier {
 
   void toggle() => opened = !(opened ?? _isSideVisible);
 
-  void trackWidth(double width) {
-    final isPhone = delta.isPhoneLayout(width);
+  void trackWidth() {
+    final isPhone = delta.isPhoneDesign;
     if (isPhone != _isPreviousPhone) {
       _isPreviousPhone = isPhone;
       _opened = null;
     }
   }
 
-  bool isSideVisible(double width) {
-    _isSideVisible = _opened ?? !delta.isPhoneLayout(width);
+  bool get isSideVisible {
+    _isSideVisible = _opened ?? !delta.isPhoneDesign;
     return _isSideVisible;
   }
 
-  bool isAutoHide(double width) => isSideVisible(width) && delta.isPhoneLayout(width);
+  bool get isAutoHide => isSideVisible && delta.isPhoneDesign;
 
   Widget get leading => IconButton(
         icon: const Icon(Icons.menu),
@@ -76,48 +76,46 @@ class SidePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<SidePanelProvider>(builder: (context, provide, child) {
+      provide.trackWidth();
+      final sideVisible = provide.isSideVisible;
       return SafeArea(
           bottom: false,
           left: false,
           right: false,
-          child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-            provide.trackWidth(constraints.maxWidth);
-            final sideVisible = provide.isSideVisible(constraints.maxWidth);
-            return Container(
-                decoration: decoration,
-                child: Stack(
-                  children: [
-                    AnimatedPositioned(
-                      left: sideVisible ? 0 : -sideWidth,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      duration: const Duration(milliseconds: 100),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: sideWidth,
-                            child: sideWidget,
-                          ),
-                          Expanded(
-                            child: provide.isAutoHide(constraints.maxWidth)
-                                ? GestureDetector(
-                                    onTap: () {
-                                      provide.opened = false;
-                                    },
-                                    child: AbsorbPointer(
-                                      child: _buildMainWidget(context, sideVisible),
-                                    ),
-                                  )
-                                : _buildMainWidget(context, sideVisible),
-                          ),
-                        ],
-                      ),
+          child: Container(
+              decoration: decoration,
+              child: Stack(
+                children: [
+                  AnimatedPositioned(
+                    left: sideVisible ? 0 : -sideWidth,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    duration: const Duration(milliseconds: 100),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: sideWidth,
+                          child: sideWidget,
+                        ),
+                        Expanded(
+                          child: provide.isAutoHide
+                              ? GestureDetector(
+                                  onTap: () {
+                                    provide.opened = false;
+                                  },
+                                  child: AbsorbPointer(
+                                    child: _buildMainWidget(context, sideVisible),
+                                  ),
+                                )
+                              : _buildMainWidget(context, sideVisible),
+                        ),
+                      ],
                     ),
-                  ],
-                ));
-          }));
+                  ),
+                ],
+              )));
     });
   }
 }

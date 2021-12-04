@@ -70,47 +70,45 @@ class Wall extends StatelessWidget {
 
   final List<Tile> tiles;
 
-  int _determineCrossAxisCount(double windowWidth) {
+  int get _determineCrossAxisCount {
     // -100 make sure when layout change, tile will be big enough
-    switch (delta.deviceLayout(windowWidth - 200)) {
-      case delta.DeviceLayout.phone:
-        return 16;
-      case delta.DeviceLayout.tablet:
-        return 32;
-      default:
-        return 64;
+    final screenWidth = delta.screenSize.width - 200;
+    if (screenWidth < delta.phoneDesignMax) {
+      return 16;
     }
+    if (screenWidth < delta.tabletDesignMax) {
+      return 32;
+    }
+    return 64;
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      int crossAxisCount = _determineCrossAxisCount(constraints.maxWidth);
-      var grid = StaggeredGridView.countBuilder(
-        crossAxisCount: crossAxisCount,
-        mainAxisSpacing: 10.0,
-        crossAxisSpacing: 10.0,
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        shrinkWrap: true,
-        controller: ScrollController(), // override default controller, we don't wall scroll
-        itemCount: tiles.length,
-        itemBuilder: (BuildContext context, int index) => tiles[index],
-        staggeredTileBuilder: (int index) {
-          var entry = tiles[index];
-          int cross = entry.x;
-          if (cross == -1) {
-            cross = crossAxisCount;
-          }
-          return StaggeredTile.count(cross, entry.y);
-        },
-      );
+    int crossAxisCount = _determineCrossAxisCount;
+    var grid = StaggeredGridView.countBuilder(
+      crossAxisCount: crossAxisCount,
+      mainAxisSpacing: 10.0,
+      crossAxisSpacing: 10.0,
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+      shrinkWrap: true,
+      controller: ScrollController(), // override default controller, we don't wall scroll
+      itemCount: tiles.length,
+      itemBuilder: (BuildContext context, int index) => tiles[index],
+      staggeredTileBuilder: (int index) {
+        var entry = tiles[index];
+        int cross = entry.x;
+        if (cross == -1) {
+          cross = crossAxisCount;
+        }
+        return StaggeredTile.count(cross, entry.y);
+      },
+    );
 
-      if (crossAxisCount == 32) {
-        // force redraw grid when 32->64
-        return Column(children: [grid]);
-      }
-      return grid;
-    });
+    if (crossAxisCount == 32) {
+      // force redraw grid when 32->64
+      return Column(children: [grid]);
+    }
+    return grid;
   }
 }
 

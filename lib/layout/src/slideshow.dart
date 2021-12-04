@@ -47,16 +47,14 @@ class Slideshow extends StatelessWidget {
               builder: (BuildContext context, BoxConstraints constraints) => CarouselSlider(
                 carouselController: _model.controller,
                 options: CarouselOptions(
-                  viewportFraction: delta.isPhoneLayout(constraints.maxWidth) ? 1 : imageWidth / constraints.maxWidth,
+                  viewportFraction: delta.isPhoneDesign ? 1 : imageWidth / constraints.maxWidth,
                   height: height,
                   autoPlay: true,
                   onPageChanged: (index, _) => _model.onPageChanged(index),
                 ),
                 items: urls
                     .map((url) => Padding(
-                          padding: delta.isPhoneLayout(constraints.maxWidth)
-                              ? EdgeInsets.zero
-                              : const EdgeInsets.symmetric(horizontal: 8),
+                          padding: delta.isPhoneDesign ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 8),
                           child: delta.WebImage(
                             url,
                           ),

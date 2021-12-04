@@ -7,5 +7,4 @@ export 'src/wall.dart';
 export 'src/side_panel.dart';
 export 'src/story_line.dart';
 export 'src/sliver_scaffold.dart';
-export 'src/hide_in_phone.dart';
 export 'src/padding_to_tablet.dart';
