@@ -21,6 +21,10 @@ main() {
     () => _segmentController.value = _swipeController.value,
   );
 
+  _searchBoxController.addListener(
+    () => debugPrint(_searchBoxController.text),
+  );
+
   app.start(
     appName: 'delta example',
     routes: (_) => const DeltaExample(),
@@ -49,6 +53,8 @@ final _swipeController = ValueNotifier<int>(0);
 
 final _busyController = ValueNotifier<bool>(false);
 
+final _searchBoxController = TextEditingController();
+
 class DeltaExample extends StatelessWidget {
   const DeltaExample({Key? key}) : super(key: key);
 
@@ -61,9 +67,13 @@ class DeltaExample extends StatelessWidget {
                   body: SafeArea(
                     child: Wrap(
                       children: [
-                        SizedBox(
-                          height: 400,
-                          child: _responsive(context),
+                        Expanded(
+                          child: _suggestions(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'auto complete',
+                          child: _suggestions(context),
                         ),
                         testing.example(
                           context,
@@ -311,6 +321,26 @@ class DeltaExample extends StatelessWidget {
         debugPrint('image not exists');
       },
     );
+  }
+
+  Widget _suggestions(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: SearchBox<String>(
+          controller: _searchBoxController,
+          hintText: 'Search orders/products here',
+          suggestionsCallback: (pattern) async {
+//            await Future.delayed(const Duration(seconds: 5));
+            if (pattern == 'a') {
+              return ['a', 'b', 'c'];
+            }
+            if (pattern == 'b') {
+              return [];
+            }
+            return ['hello', 'world'];
+            //return await BackendService.getSuggestions(pattern);
+          },
+        ));
   }
 
   Widget _searchBar(BuildContext context) {

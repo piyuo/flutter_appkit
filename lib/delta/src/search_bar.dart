@@ -46,26 +46,26 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SearchBarProvider>(
-        create: (context) => SearchBarProvider(
+    return ChangeNotifierProvider<_SearchBarProvider>(
+        create: (context) => _SearchBarProvider(
               controller: controller,
               suggestionBuilder: suggestionBuilder,
               onTextChanged: onTextChanged,
               focusNode: focusNode,
             ),
-        child: Consumer<SearchBarProvider>(builder: (context, model, child) {
+        child: Consumer<_SearchBarProvider>(builder: (context, provide, child) {
           return LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) => RawAutocomplete<String>(
-                    focusNode: model._focus,
+                    focusNode: provide._focus,
                     textEditingController: controller,
                     optionsBuilder: (TextEditingValue textEditingValue) {
-                      return model.options;
+                      return provide.options;
                     },
                     onSelected: (text) {
                       if (onSuggestionChanged != null) {
                         onSuggestionChanged!(text);
                       }
-                      model.cursorReposition();
+                      provide.cursorReposition();
                     },
                     fieldViewBuilder: (BuildContext context, TextEditingController controller, FocusNode _focusNode,
                         VoidCallback onFieldSubmitted) {
@@ -78,17 +78,16 @@ class SearchBar extends StatelessWidget {
                           isDense: isDense,
                           prefixIcon: Icon(
                             Icons.search,
-                            size: 24,
                             color: context.themeColor(light: Colors.grey[900]!, dark: Colors.grey[200]!),
                           ),
                           prefixIconConstraints: BoxConstraints(
                             minWidth: isDense ? 46 : 56,
                           ),
                           suffixIcon: Visibility(
-                            visible: model.text.isNotEmpty,
+                            visible: provide.text.isNotEmpty,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(25.0),
-                              onTap: () => model._innerController.text = '',
+                              onTap: () => provide._innerController.text = '',
                               child: Icon(
                                 Icons.close,
                                 size: 24,
@@ -117,7 +116,7 @@ class SearchBar extends StatelessWidget {
                           contentPadding: const EdgeInsets.only(left: 0, bottom: 10, top: 12, right: 0),
                           hintText: hint,
                         ),
-                        controller: model._innerController,
+                        controller: provide._innerController,
                         focusNode: _focusNode,
                         //                    onSubmitted: (String text) {
                         //                        print('submit search');
@@ -127,7 +126,7 @@ class SearchBar extends StatelessWidget {
                     },
                     optionsViewBuilder:
                         (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> _) {
-                      final options = model.options;
+                      final options = provide.options;
                       return Stack(
                         // put list view inside stack, so we can use Positioned to set width
                         children: [
@@ -139,10 +138,7 @@ class SearchBar extends StatelessWidget {
                             child: Material(
                                 clipBehavior: Clip.antiAlias,
                                 elevation: 5.0,
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(15),
-                                  bottomRight: Radius.circular(15),
-                                ),
+                                borderRadius: const BorderRadius.all(Radius.circular(15)),
                                 child: ListView.builder(
                                   padding: EdgeInsets.zero,
                                   itemCount: options.length,
@@ -185,8 +181,8 @@ class SearchBar extends StatelessWidget {
   }
 }
 
-class SearchBarProvider with ChangeNotifier {
-  SearchBarProvider({
+class _SearchBarProvider with ChangeNotifier {
+  _SearchBarProvider({
     required this.controller,
     required this.suggestionBuilder,
     required this.onTextChanged,
