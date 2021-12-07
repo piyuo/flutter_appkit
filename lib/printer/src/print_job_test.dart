@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/pref/pref.dart' as pref;
 import 'print_job.dart';
 import 'printer.dart';

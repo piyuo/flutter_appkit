@@ -56,6 +56,7 @@ dependencies:
     esc_pos_bluetooth: ^0.4.1
     synchronized: ^3.0.0
     webview_flutter: ^2.3.1
+    flutter_typeahead: ^3.2.3
 dependency_overrides:
 
 dev_dependencies:
