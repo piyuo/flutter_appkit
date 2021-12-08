@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
-import '../src/uploader.dart';
-import '../src/image_upload.dart';
-import '../src/image_upload_controller.dart';
-import '../src/image_upload_editor.dart';
+import '../uploader.dart';
 
 main() => app.start(
       appName: 'uploader example',
