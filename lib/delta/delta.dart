@@ -37,3 +37,5 @@ export 'src/error_label.dart';
 export 'src/tap_on_button_hint.dart';
 export 'src/redirect_to_url.dart';
 export 'src/search_box.dart';
+export 'src/count_down.dart';
+export 'src/countUp.dart';

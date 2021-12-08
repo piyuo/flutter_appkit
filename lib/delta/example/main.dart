@@ -68,7 +68,12 @@ class DeltaExample extends StatelessWidget {
                     child: Wrap(
                       children: [
                         Expanded(
-                          child: _suggestions(context),
+                          child: _countdown(context),
+                        ),
+                        testing.example(
+                          context,
+                          text: 'countdown',
+                          child: _countdown(context),
                         ),
                         testing.example(
                           context,
@@ -320,6 +325,20 @@ class DeltaExample extends StatelessWidget {
         }
         debugPrint('image not exists');
       },
+    );
+  }
+
+  Widget _countdown(BuildContext context) {
+    return Column(
+      children: const [
+        CountUp(
+          greenLight: 10,
+          yellowLight: 20,
+        ),
+        CountDown(
+          duration: Duration(minutes: 0, seconds: 10),
+        )
+      ],
     );
   }
 
