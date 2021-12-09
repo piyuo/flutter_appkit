@@ -58,6 +58,7 @@ dependencies:
     webview_flutter: ^2.3.1
     flutter_typeahead: ^3.2.3
     slide_countdown: ^0.0.7
+    fl_chart: ^0.40.5
 dependency_overrides:
 
 dev_dependencies:
