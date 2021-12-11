@@ -226,7 +226,7 @@ class SearchBar extends StatelessWidget {
                                           border: Border(
                                             top: BorderSide(
                                               width: 1,
-                                              color: Colors.grey[200]!,
+                                              color: Colors.grey.shade200,
                                             ),
                                           ),
                                         ),

@@ -36,8 +36,8 @@ Future<bool> ask(
     context.i18n.permissionAsk.replaceAll('%1', name),
     icon: icon,
     iconColor: context.themeColor(
-      light: Colors.grey[900]!,
-      dark: Colors.grey[100]!,
+      light: Colors.grey.shade900,
+      dark: Colors.grey.shade100,
     ),
     yes: context.i18n.permissionGotoSetting,
     buttonCancel: true,

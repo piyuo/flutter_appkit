@@ -280,7 +280,7 @@ class SettingPrinterDetail extends StatelessWidget {
                                     },
                                   ),
                                   if (!isNewPrinter) form.br(),
-                                  if (!isNewPrinter) delta.Separator(height: 2, color: Colors.red[200]!),
+                                  if (!isNewPrinter) delta.Separator(height: 2, color: Colors.red.shade200),
                                   if (!isNewPrinter) form.br(),
                                   if (!isNewPrinter)
                                     form.Button(

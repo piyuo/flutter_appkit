@@ -203,8 +203,8 @@ class PagedTable<T> extends StatelessWidget {
           ? SizedBox(
               width: 64,
               child: LinearProgressIndicator(
-                backgroundColor: Colors.grey[300]!,
-                color: Colors.grey[500]!,
+                backgroundColor: Colors.grey.shade300,
+                color: Colors.grey.shade500,
               ),
             )
           : Text(dataSource.pagingInfo(context)),
@@ -390,8 +390,8 @@ class PagedTable<T> extends StatelessWidget {
     return DataTable(
       dataRowHeight: rowHeight,
       headingRowColor: MaterialStateProperty.all(context.themeColor(
-        light: Colors.grey[100]!,
-        dark: Colors.grey[850]!,
+        light: Colors.grey.shade100,
+        dark: Colors.grey.shade800,
       )),
       columns: columns,
       onSelectAll: (bool? selected) => provide.selectAll(selected),
@@ -406,7 +406,7 @@ class PagedTable<T> extends StatelessWidget {
         data: Theme.of(context).copyWith(
           dividerColor: context.themeColor(
             light: Colors.white,
-            dark: Colors.grey[800]!,
+            dark: Colors.grey.shade800,
           ),
         ),
         child: DataTable(

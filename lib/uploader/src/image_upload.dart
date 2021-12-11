@@ -134,8 +134,8 @@ class ImageUpload extends StatelessWidget {
   Widget _buildBusy(BuildContext context) {
     return _buildCard(context,
         color: context.themeColor(
-          light: Colors.grey[200]!,
-          dark: Colors.grey[800]!,
+          light: Colors.grey.shade200,
+          dark: Colors.grey.shade800,
         ),
         child: const Padding(
             padding: EdgeInsets.all(0),
@@ -150,7 +150,7 @@ class ImageUpload extends StatelessWidget {
   Widget _buildDragging(BuildContext context) {
     return _buildCard(
       context,
-      color: Colors.blue[400]!,
+      color: Colors.blue.shade400,
       child: const Icon(
         Icons.add,
         size: 128,
@@ -192,8 +192,8 @@ class ImageUpload extends StatelessWidget {
     final iconColor = controller.dragging ? Colors.white : Colors.grey[400];
     return _buildCard(context,
         color: context.themeColor(
-          light: Colors.grey[200]!,
-          dark: Colors.grey[800]!,
+          light: Colors.grey.shade200,
+          dark: Colors.grey.shade800,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -217,14 +217,14 @@ class ImageUpload extends StatelessWidget {
                       TextSpan(
                         text: context.i18n.uploadDrop,
                         style: TextStyle(
-                          color: context.themeColor(light: Colors.grey[600]!, dark: Colors.grey[400]!),
+                          color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
                           fontSize: 14,
                         ),
                       ),
                       TextSpan(
                         text: context.i18n.uploadBrowse,
                         style: TextStyle(
-                          color: Colors.blue[600]!,
+                          color: Colors.blue.shade600,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
