@@ -54,7 +54,7 @@ class SearchBox<T> extends StatelessWidget {
               isDense: true,
               prefixIcon: Icon(
                 Icons.search,
-                color: context.themeColor(light: Colors.grey[900]!, dark: Colors.grey[200]!),
+                color: context.themeColor(light: Colors.grey.shade900, dark: Colors.grey.shade200),
               ),
               prefixIconConstraints: const BoxConstraints(minWidth: 46),
               suffixIcon: Visibility(
@@ -65,7 +65,7 @@ class SearchBox<T> extends StatelessWidget {
                   child: Icon(
                     Icons.close,
                     size: 24,
-                    color: context.themeColor(light: Colors.grey[900]!, dark: Colors.grey[200]!),
+                    color: context.themeColor(light: Colors.grey.shade900, dark: Colors.grey.shade200),
                   ),
                 ),
               ),
@@ -89,7 +89,7 @@ class SearchBox<T> extends StatelessWidget {
       suggestionsBoxDecoration: SuggestionsBoxDecoration(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(15.0),
-        color: context.themeColor(light: Colors.grey[100]!, dark: Colors.grey[800]!),
+        color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
       ),
       suggestionsCallback: suggestionsCallback,
       transitionBuilder: (context, suggestionsBox, controller) => suggestionsBox,
@@ -103,8 +103,8 @@ class SearchBox<T> extends StatelessWidget {
                 top: BorderSide(
                   width: 1,
                   color: context.themeColor(
-                    dark: Colors.grey[850]!,
-                    light: Colors.grey[300]!,
+                    dark: Colors.grey.shade800,
+                    light: Colors.grey.shade300,
                   ),
                 ),
               ),

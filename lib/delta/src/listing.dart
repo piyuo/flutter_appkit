@@ -65,8 +65,8 @@ class Listing<T> extends StatelessWidget {
   Color _fontColor(BuildContext context) {
     return fontColor ??
         context.themeColor(
-          light: Colors.grey[800]!,
-          dark: Colors.grey[200]!,
+          light: Colors.grey.shade800,
+          dark: Colors.grey.shade200,
         );
   }
 
@@ -116,8 +116,8 @@ class Listing<T> extends StatelessWidget {
       selected: selected,
       selectedTileColor: selectedTileColor ??
           context.themeColor(
-            light: Colors.grey[300]!,
-            dark: Colors.grey[700]!,
+            light: Colors.grey.shade300,
+            dark: Colors.grey.shade700,
           ),
       onTap: onTap,
       minLeadingWidth: 0,

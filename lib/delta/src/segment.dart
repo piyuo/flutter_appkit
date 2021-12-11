@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 
 /// SlideSegment provides a segmented control with sliding effect.
 ///
-class SlideSegment<T> extends StatefulWidget {
-  const SlideSegment({
+class Segment<T extends Object> extends StatefulWidget {
+  const Segment({
     required this.children,
     required this.controller,
     this.onBeforeChange,
@@ -27,10 +27,10 @@ class SlideSegment<T> extends StatefulWidget {
   }
 
   @override
-  _SlideSegmentState createState() => _SlideSegmentState<T>();
+  _SegmentState createState() => _SegmentState<T>();
 }
 
-class _SlideSegmentState<T> extends State<SlideSegment<T>> {
+class _SegmentState<T extends Object> extends State<Segment<T>> {
   @override
   void initState() {
     widget.controller.addListener(_onValueChanged);
@@ -50,10 +50,17 @@ class _SlideSegmentState<T> extends State<SlideSegment<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoSlidingSegmentedControl<T>(
+    return CupertinoSegmentedControl<T>(
         groupValue: widget.controller.value,
-        children: widget.children,
-        onValueChanged: (value) {
+        children: widget.children.map((key, value) {
+          return MapEntry(
+              key,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                child: value,
+              ));
+        }).cast<T, Widget>(),
+        onValueChanged: (T value) {
           widget.notifyBeforeChange(value);
           widget.controller.value = value;
         });

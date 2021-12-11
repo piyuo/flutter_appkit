@@ -33,7 +33,7 @@ class CountDown extends StatelessWidget {
             horizontal: 10,
           ),
           decoration: BoxDecoration(
-              color: Colors.red[400]!,
+              color: Colors.red.shade400,
               borderRadius: const BorderRadius.all(
                 Radius.circular(20),
               )),

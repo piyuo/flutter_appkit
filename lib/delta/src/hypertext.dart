@@ -155,7 +155,7 @@ class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin
     super.build(context);
     bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     var bColor = isDark ? Colors.white : Colors.black;
-    var linkColor = isDark ? Colors.lightBlue[300]! : Colors.lightBlue[800]!;
+    var linkColor = isDark ? Colors.lightBlue.shade300 : Colors.lightBlue.shade800;
     return RichText(
       text: TextSpan(
         children: widget.children.map((_Span span) {

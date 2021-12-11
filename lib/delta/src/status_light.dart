@@ -39,10 +39,10 @@ class StatusLight extends StatelessWidget {
           icon: Icon(
             Icons.circle,
             color: status == LightStatus.green
-                ? context.themeColor(light: Colors.green[600]!, dark: Colors.green[400]!)
+                ? context.themeColor(light: Colors.green.shade600, dark: Colors.green.shade400)
                 : status == LightStatus.yellow
-                    ? context.themeColor(light: Colors.yellow[600]!, dark: Colors.yellow[400]!)
-                    : context.themeColor(light: Colors.red[600]!, dark: Colors.red[400]!),
+                    ? context.themeColor(light: Colors.yellow.shade600, dark: Colors.yellow.shade400)
+                    : context.themeColor(light: Colors.red.shade600, dark: Colors.red.shade400),
           ),
           onPressed: null,
           tooltip: tooltip,

@@ -21,7 +21,7 @@ class ErrorBox extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: DottedDecoration(
         shape: Shape.box,
-        color: Colors.red[400]!,
+        color: Colors.red.shade400,
         borderRadius: BorderRadius.circular(10),
       ),
       child: ErrorLabel(

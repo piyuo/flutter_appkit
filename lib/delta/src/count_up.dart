@@ -63,11 +63,11 @@ class _CountUpState extends State<CountUp> {
   Color _getColor() {
     switch (light) {
       case _light.green:
-        return Colors.green[400]!;
+        return Colors.green.shade400;
       case _light.yellow:
-        return Colors.yellow[700]!;
+        return Colors.yellow.shade700;
       case _light.red:
-        return Colors.red[400]!;
+        return Colors.red.shade400;
     }
   }
 

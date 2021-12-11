@@ -67,8 +67,8 @@ class WebImage extends StatelessWidget {
         child: Icon(
       icon,
       color: context.themeColor(
-        dark: Colors.grey[800]!,
-        light: Colors.grey[400]!,
+        dark: Colors.grey.shade800,
+        light: Colors.grey.shade400,
       ),
     ));
   }
@@ -95,8 +95,8 @@ class WebImage extends StatelessWidget {
                       switch (state.extendedImageLoadState) {
                         case LoadState.loading:
                           return Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
                             child: _icon(context, Icons.image),
                           );
 

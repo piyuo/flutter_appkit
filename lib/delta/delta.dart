@@ -1,7 +1,6 @@
 library delta;
 
 export 'src/test.dart';
-export 'src/align_center.dart';
 export 'src/pixel_ratio.dart';
 export 'src/page_route.dart';
 export 'src/blurry_container.dart';
@@ -28,7 +27,8 @@ export 'src/checkbox_label.dart';
 export 'src/check_list.dart';
 export 'src/round_checkbox.dart';
 export 'src/slide_segment.dart';
-export 'src/slide_segment_container.dart';
+export 'src/segment.dart';
+export 'src/segment_container.dart';
 export 'src/swipe_container.dart';
 export 'src/busy.dart';
 export 'src/separator.dart';

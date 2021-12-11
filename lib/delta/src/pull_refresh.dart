@@ -54,7 +54,7 @@ class PullRefresh extends StatelessWidget {
                 : MaterialHeader(),
             footer: scrollDirection == Axis.vertical
                 ? BallPulseFooter(
-                    color: context.themeColor(light: Colors.grey[400]!, dark: Colors.grey[600]!),
+                    color: context.themeColor(light: Colors.grey.shade400, dark: Colors.grey.shade600),
                   )
                 : MaterialFooter(),
             onRefresh: onPullRefresh != null

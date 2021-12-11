@@ -61,8 +61,8 @@ class CheckList<T> extends StatelessWidget {
   Color _fontColor(BuildContext context) {
     return fontColor ??
         context.themeColor(
-          light: Colors.grey[800]!,
-          dark: Colors.grey[200]!,
+          light: Colors.grey.shade800,
+          dark: Colors.grey.shade200,
         );
   }
 
@@ -122,8 +122,8 @@ class CheckList<T> extends StatelessWidget {
       selected: isItemSelected,
       selectedTileColor: selectedTileColor ??
           context.themeColor(
-            light: Colors.grey[300]!,
-            dark: Colors.grey[700]!,
+            light: Colors.grey.shade300,
+            dark: Colors.grey.shade700,
           ),
       contentPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
       leading: RoundCheckbox(

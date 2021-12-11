@@ -30,7 +30,7 @@ class _RefreshButtonState extends State<RefreshButton> {
       icon: _isRefreshing
           ? CircularProgressIndicator(
               strokeWidth: 5,
-              color: context.themeColor(light: Colors.grey[700]!, dark: Colors.grey[200]!),
+              color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade200),
             )
           : const Icon(
               Icons.refresh,

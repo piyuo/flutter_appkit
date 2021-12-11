@@ -29,8 +29,8 @@ class ErrorLabel extends StatelessWidget {
       children: [
         Icon(icon,
             color: context.themeColor(
-              light: Colors.red[700]!,
-              dark: Colors.red[300]!,
+              light: Colors.red.shade700,
+              dark: Colors.red.shade300,
             ),
             size: iconSize),
         SizedBox(width: space),
@@ -41,8 +41,8 @@ class ErrorLabel extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: context.themeColor(
-                  light: Colors.red[700]!,
-                  dark: Colors.red[400]!,
+                  light: Colors.red.shade700,
+                  dark: Colors.red.shade400,
                 ),
                 fontSize: 16),
           ),

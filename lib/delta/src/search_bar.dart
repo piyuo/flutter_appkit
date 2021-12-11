@@ -78,7 +78,7 @@ class SearchBar extends StatelessWidget {
                           isDense: isDense,
                           prefixIcon: Icon(
                             Icons.search,
-                            color: context.themeColor(light: Colors.grey[900]!, dark: Colors.grey[200]!),
+                            color: context.themeColor(light: Colors.grey.shade900, dark: Colors.grey.shade200),
                           ),
                           prefixIconConstraints: BoxConstraints(
                             minWidth: isDense ? 46 : 56,
@@ -91,7 +91,7 @@ class SearchBar extends StatelessWidget {
                               child: Icon(
                                 Icons.close,
                                 size: 24,
-                                color: context.themeColor(light: Colors.grey[900]!, dark: Colors.grey[200]!),
+                                color: context.themeColor(light: Colors.grey.shade900, dark: Colors.grey.shade200),
                               ),
                             ),
                           ),
@@ -149,15 +149,15 @@ class SearchBar extends StatelessWidget {
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: context.themeColor(
-                                            dark: Colors.grey[900]!,
-                                            light: Colors.grey[100]!,
+                                            dark: Colors.grey.shade900,
+                                            light: Colors.grey.shade100,
                                           ),
                                           border: Border(
                                             top: BorderSide(
                                               width: 1,
                                               color: context.themeColor(
-                                                dark: Colors.grey[850]!,
-                                                light: Colors.grey[200]!,
+                                                dark: Colors.grey.shade800,
+                                                light: Colors.grey.shade200,
                                               ),
                                             ),
                                           ),

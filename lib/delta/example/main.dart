@@ -68,7 +68,7 @@ class DeltaExample extends StatelessWidget {
                     child: Wrap(
                       children: [
                         Expanded(
-                          child: _countdown(context),
+                          child: _segment(context),
                         ),
                         testing.example(
                           context,
@@ -540,11 +540,31 @@ class DeltaExample extends StatelessWidget {
           1: Text('Bluetooth Printer'),
         },
       ),
+      Segment<int>(
+        onBeforeChange: (index) {
+          debugPrint('before change: $index');
+        },
+        controller: _segmentController,
+        children: const {
+          0: Text('Network Printer'),
+          1: Text('Bluetooth Printer'),
+        },
+      ),
       SwipeContainer(controller: _swipeController, children: const [
         Text('Network Setting'),
         Text('Bluetooth Setting'),
       ]),
-      SlideSegmentContainer(
+      SegmentContainer(
+          segmentControl: Segment<int>(
+            onBeforeChange: (index) {
+              debugPrint('before change: $index');
+            },
+            controller: _segmentController,
+            children: const {
+              0: Text('Network Printer'),
+              1: Text('Bluetooth Printer'),
+            },
+          ),
           onBeforeChange: (int? index) {
             debugPrint('before change: $index');
           },
@@ -556,7 +576,30 @@ class DeltaExample extends StatelessWidget {
           children: const [
             Text('Network Setting'),
             Text('Bluetooth Setting'),
-          ])
+          ]),
+      SegmentContainer(
+          segmentControl: SlideSegment<int>(
+            onBeforeChange: (index) {
+              debugPrint('before change: $index');
+            },
+            controller: _segmentController,
+            children: const {
+              0: Text('Network Printer'),
+              1: Text('Bluetooth Printer'),
+            },
+          ),
+          onBeforeChange: (int? index) {
+            debugPrint('before change: $index');
+          },
+          controller: _swipeController,
+          segments: const [
+            Text('Network Printer'),
+            Text('Bluetooth Printer'),
+          ],
+          children: const [
+            Text('Network Setting'),
+            Text('Bluetooth Setting'),
+          ]),
     ]);
   }
 
@@ -564,7 +607,7 @@ class DeltaExample extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(20),
         child: Column(children: [
-          Separator(height: 2, color: Colors.red[200]!),
+          Separator(height: 2, color: Colors.red.shade200),
           const SizedBox(height: 30),
           const ErrorLabel(
             message: 'An error message is information displayed when an unforeseen problem occurs',

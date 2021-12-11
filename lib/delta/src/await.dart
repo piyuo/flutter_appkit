@@ -104,8 +104,8 @@ class _AwaitState extends State<Await> {
                     Icons.access_time,
                     size: 128,
                     color: context.themeColor(
-                      light: Colors.grey[300]!,
-                      dark: Colors.grey[800]!,
+                      light: Colors.grey.shade300,
+                      dark: Colors.grey.shade800,
                     ),
                   ),
                 ),
