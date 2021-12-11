@@ -26,7 +26,7 @@ class BarcodeScannerDialog extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         iconTheme: IconTheme.of(context).copyWith(
-          color: Colors.grey[400]!,
+          color: Colors.grey.shade400,
         ),
         centerTitle: true,
         title: Text(context.i18n.scanQRButtonText,

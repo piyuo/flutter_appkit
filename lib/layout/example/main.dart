@@ -275,8 +275,8 @@ class LayoutExample extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.green[300]!,
-                Colors.yellow[200]!,
+                Colors.green.shade300,
+                Colors.yellow.shade200,
               ],
               begin: const FractionalOffset(0.0, 0.0),
               end: const FractionalOffset(1.0, 0.0),
@@ -327,8 +327,8 @@ class LayoutExample extends StatelessWidget {
                                 begin: Alignment.topLeft,
                                 end: const Alignment(1, 1), // 10% of the width, so there are ten blinds.
                                 colors: [
-                                  Colors.grey[50]!,
-                                  Colors.grey[100]!,
+                                  Colors.grey.shade50,
+                                  Colors.grey.shade100,
                                 ], // red to yellow
                                 tileMode: TileMode.repeated, // repeats the gradient over the canvas
                               ),
@@ -391,21 +391,21 @@ class LayoutExample extends StatelessWidget {
             icon: Icons.takeout_dining,
             text: 'you have new takeout order',
             title: 'pork rice, beef noddle and more ...',
-            color: Colors.red[700]!,
+            color: Colors.red.shade700,
           ),
           SimpleStory(
             utcDate: DateTime.now().toUtc(),
             icon: Icons.bookmark,
             text: 'Someone asking question about',
             title: 'Pork Rice',
-            color: Colors.blue[700]!,
+            color: Colors.blue.shade700,
           ),
           SimpleStory(
             utcDate: DateTime.now().toUtc(),
             icon: Icons.card_giftcard,
             text: 'Order delivered',
             title: 'pork rice, beef noodle and more',
-            color: Colors.green[700]!,
+            color: Colors.green.shade700,
           ),
           //Story(utcDate: DateTime.now().add(Duration(hours: -1)).toUtc(), key: 'order2'),
           //Story(utcDate: DateTime.now().add(Duration(hours: -1)).toUtc(), key: 'order3'),
