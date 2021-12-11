@@ -92,19 +92,22 @@ class SettingPrinterDetail extends StatelessWidget {
                                           message: printServer.error,
                                         )),
                                   // Printer Type
-                                  delta.SlideSegmentContainer(
+                                  delta.SegmentContainer(
+                                    segmentControl: delta.SlideSegment<int>(
+                                      onBeforeChange: (int? index) async {
+                                        if (index == 1) {
+                                          provide.checkBluetooth(context, printQueue);
+                                        }
+                                      },
+                                      controller: provide.printerType,
+                                      children: {
+                                        0: Text(context.i18n.networkPrinter),
+                                        1: Text(context.i18n.bluetoothPrinter),
+                                      },
+                                    ),
                                     height: 74,
                                     padding: const EdgeInsets.only(top: 10),
                                     controller: provide.printerType,
-                                    onBeforeChange: (int? index) async {
-                                      if (index == 1) {
-                                        provide.checkBluetooth(context, printQueue);
-                                      }
-                                    },
-                                    segments: [
-                                      Text(context.i18n.networkPrinter),
-                                      Text(context.i18n.bluetoothPrinter),
-                                    ],
                                     children: [
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -139,7 +142,7 @@ class SettingPrinterDetail extends StatelessWidget {
                                       // Bluetooth Search
                                       provide.isBluetoothSupported == false
                                           ? Text(context.i18n.bluetoothPrinterNotSupport,
-                                              style: TextStyle(color: Colors.red[400]!))
+                                              style: TextStyle(color: Colors.red.shade400))
                                           : form.InputField(
                                               key: _keyBluetooth,
                                               decoration: InputDecoration(
@@ -192,7 +195,7 @@ class SettingPrinterDetail extends StatelessWidget {
                                         padding: MaterialStateProperty.all(
                                             const EdgeInsets.symmetric(vertical: 12, horizontal: 36)),
                                         side: MaterialStateProperty.all(BorderSide(
-                                          color: provide.bluetoothDevice != null ? Colors.blue[600]! : Colors.grey,
+                                          color: provide.bluetoothDevice != null ? Colors.blue.shade600 : Colors.grey,
                                           style: BorderStyle.solid,
                                           width: 1,
                                         )),
@@ -203,11 +206,12 @@ class SettingPrinterDetail extends StatelessWidget {
                                         ),
                                       ),
                                       icon: Icon(Icons.print,
-                                          color: context.themeColor(light: Colors.grey[700]!, dark: Colors.grey[200]!)),
+                                          color: context.themeColor(
+                                              light: Colors.grey.shade700, dark: Colors.grey.shade200)),
                                       label: Text(context.i18n.printTestPage,
                                           style: TextStyle(
                                               color: context.themeColor(
-                                                  light: Colors.grey[700]!, dark: Colors.grey[200]!))),
+                                                  light: Colors.grey.shade700, dark: Colors.grey.shade200))),
                                       onPressed: () async => await provide.printTestPage(context, printQueue)),
                                   form.br(),
                                   form.InputField(

@@ -107,7 +107,7 @@ class BluetoothScanner extends StatelessWidget {
                             controller: ValueNotifier(null),
                             selectedTileColor: Colors.blue,
                             selectedFontColor: Colors.white,
-                            dividerColor: context.themeColor(light: Colors.grey[300]!, dark: Colors.grey[800]!),
+                            dividerColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
                             items: provide._devicesList(context),
                             onItemTap: (BuildContext context, PrinterBluetooth value) {
                               Navigator.pop(context, value);
@@ -115,7 +115,7 @@ class BluetoothScanner extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          color: context.themeColor(light: Colors.grey[300]!, dark: Colors.grey[900]!),
+                          color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
                           height: 120,
                           child: Stack(
                             children: [
@@ -127,9 +127,9 @@ class BluetoothScanner extends StatelessWidget {
                                   width: 80,
                                   height: 80,
                                   child: delta.ballScaleIndicator(colors: [
-                                    Colors.blue[200]!,
+                                    Colors.blue.shade200,
                                     Colors.blue,
-                                    Colors.blue[800]!,
+                                    Colors.blue.shade800,
                                   ]),
                                 ),
                               ),
@@ -153,8 +153,8 @@ class BluetoothScanner extends StatelessWidget {
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: context.themeColor(
-                                        light: Colors.grey[800]!,
-                                        dark: Colors.grey[300]!,
+                                        light: Colors.grey.shade800,
+                                        dark: Colors.grey.shade300,
                                       ),
                                     )),
                               ),
@@ -167,8 +167,8 @@ class BluetoothScanner extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: context.themeColor(
-                                        light: Colors.grey[800]!,
-                                        dark: Colors.grey[300]!,
+                                        light: Colors.grey.shade800,
+                                        dark: Colors.grey.shade300,
                                       ),
                                     )),
                               ),
