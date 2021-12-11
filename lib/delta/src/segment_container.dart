@@ -8,10 +8,8 @@ import 'swipe_container.dart';
 class SegmentContainer extends StatelessWidget {
   const SegmentContainer({
     required this.children,
-    required this.segments,
     required this.controller,
     required this.segmentControl,
-    this.onBeforeChange,
     this.height = 100,
     this.padding,
     Key? key,
@@ -23,13 +21,8 @@ class SegmentContainer extends StatelessWidget {
   /// children is children widget
   final List<Widget> children;
 
-  /// segments is segment control widget
-  final List<Widget> segments;
-
   /// controller is dropdown value controller
   final ValueNotifier<int?> controller;
-
-  final void Function(int?)? onBeforeChange;
 
   /// height is container height;
   final double height;
