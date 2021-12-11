@@ -18,7 +18,7 @@ class Indicator extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
           border: Border.all(
-            color: context.themeColor(light: Colors.grey[400]!, dark: Colors.grey[700]!),
+            color: context.themeColor(light: Colors.grey.shade400, dark: Colors.grey.shade700),
           ),
           borderRadius: const BorderRadius.all(Radius.circular(25))),
       child: Column(
@@ -26,7 +26,7 @@ class Indicator extends StatelessWidget {
           Text(title,
               style: TextStyle(
                 fontSize: 16,
-                color: context.themeColor(light: Colors.grey[700]!, dark: Colors.grey[300]!),
+                color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
               )),
           const SizedBox(height: 10),
           Text(text,

@@ -66,13 +66,13 @@ class TimeChart extends StatelessWidget {
           drawVerticalLine: true,
           getDrawingHorizontalLine: (value) {
             return FlLine(
-              color: context.themeColor(light: Colors.grey[300]!, dark: const Color(0xff37434d)),
+              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff37434d)),
               strokeWidth: 1,
             );
           },
           getDrawingVerticalLine: (value) {
             return FlLine(
-              color: context.themeColor(light: Colors.grey[300]!, dark: const Color(0xff37434d)),
+              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff37434d)),
               strokeWidth: 1,
             );
           },
@@ -82,11 +82,11 @@ class TimeChart extends StatelessWidget {
           show: true,
           border: Border(
             bottom: BorderSide(
-              color: context.themeColor(light: Colors.grey[300]!, dark: const Color(0xff4e4965)),
+              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff4e4965)),
               width: 1,
             ),
             left: BorderSide(
-              color: context.themeColor(light: Colors.grey[300]!, dark: const Color(0xff4e4965)),
+              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff4e4965)),
               width: 1,
             ),
             right: const BorderSide(color: Colors.transparent),
