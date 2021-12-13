@@ -92,90 +92,92 @@ class SettingPrinterDetail extends StatelessWidget {
                                           message: printServer.error,
                                         )),
                                   // Printer Type
-                                  delta.SegmentContainer(
-                                    segmentControl: delta.SlideSegment<int>(
-                                      onBeforeChange: (int? index) async {
-                                        if (index == 1) {
-                                          provide.checkBluetooth(context, printQueue);
-                                        }
-                                      },
-                                      controller: provide.printerType,
-                                      children: {
-                                        0: Text(context.i18n.networkPrinter),
-                                        1: Text(context.i18n.bluetoothPrinter),
-                                      },
-                                    ),
-                                    height: 74,
-                                    padding: const EdgeInsets.only(top: 10),
-                                    controller: provide.printerType,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          // IP
-                                          form.InputField(
-                                              key: _keyIP,
-                                              focusNode: provide.focusIP,
-                                              controller: provide.ip,
-                                              keyboardType: TextInputType.number,
-                                              inputFormatters: [
-                                                validator.decimalNumberFormatter,
-                                              ],
-                                              label: context.i18n.printerIP,
-                                              hint: context.i18n.printerIPHint,
-                                              validator: (value) {
-                                                if (provide.printerType.value != 0) {
-                                                  return null;
-                                                }
-                                                final result = validator.ipAddressRegexp.hasMatch(value!.text)
-                                                    ? null
-                                                    : context.i18n.printerIPNotValid.replace1(value.text);
-                                                if (result == null) {
-                                                  provide.setNetworkDevice(value.text);
-                                                }
-                                                return result;
-                                              }),
-                                          delta.Hypertext(fontSize: 13)
-                                            ..moreDoc(context.i18n.printerFindIP, docName: 'privacy'),
-                                        ],
+                                  SizedBox(
+                                    height: 134,
+                                    child: delta.SegmentContainer(
+                                      segmentControl: delta.SlideSegment<int>(
+                                        onBeforeChange: (int? index) async {
+                                          if (index == 1) {
+                                            provide.checkBluetooth(context, printQueue);
+                                          }
+                                        },
+                                        controller: provide.printerType,
+                                        children: {
+                                          0: Text(context.i18n.networkPrinter),
+                                          1: Text(context.i18n.bluetoothPrinter),
+                                        },
                                       ),
-                                      // Bluetooth Search
-                                      provide.isBluetoothSupported == false
-                                          ? Text(context.i18n.bluetoothPrinterNotSupport,
-                                              style: TextStyle(color: Colors.red.shade400))
-                                          : form.InputField(
-                                              key: _keyBluetooth,
-                                              decoration: InputDecoration(
-                                                labelText: context.i18n.bluetoothPrinter,
-                                                hintText: context.i18n.bluetoothPrinterHint,
-                                                suffixIcon: ElevatedButton.icon(
-                                                    style: ButtonStyle(
-                                                      shape: MaterialStateProperty.all(
-                                                        RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(25),
+                                      padding: const EdgeInsets.only(top: 10),
+                                      controller: provide.printerType,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            // IP
+                                            form.InputField(
+                                                key: _keyIP,
+                                                focusNode: provide.focusIP,
+                                                controller: provide.ip,
+                                                keyboardType: TextInputType.number,
+                                                inputFormatters: [
+                                                  validator.decimalNumberFormatter,
+                                                ],
+                                                label: context.i18n.printerIP,
+                                                hint: context.i18n.printerIPHint,
+                                                validator: (value) {
+                                                  if (provide.printerType.value != 0) {
+                                                    return null;
+                                                  }
+                                                  final result = validator.ipAddressRegexp.hasMatch(value!.text)
+                                                      ? null
+                                                      : context.i18n.printerIPNotValid.replace1(value.text);
+                                                  if (result == null) {
+                                                    provide.setNetworkDevice(value.text);
+                                                  }
+                                                  return result;
+                                                }),
+                                            delta.Hypertext(fontSize: 13)
+                                              ..moreDoc(context.i18n.printerFindIP, docName: 'privacy'),
+                                          ],
+                                        ),
+                                        // Bluetooth Search
+                                        provide.isBluetoothSupported == false
+                                            ? Text(context.i18n.bluetoothPrinterNotSupport,
+                                                style: TextStyle(color: Colors.red.shade400))
+                                            : form.InputField(
+                                                key: _keyBluetooth,
+                                                decoration: InputDecoration(
+                                                  labelText: context.i18n.bluetoothPrinter,
+                                                  hintText: context.i18n.bluetoothPrinterHint,
+                                                  suffixIcon: ElevatedButton.icon(
+                                                      style: ButtonStyle(
+                                                        shape: MaterialStateProperty.all(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(25),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    focusNode: provide.focusSearch,
-                                                    icon: const Icon(Icons.bluetooth),
-                                                    label: Text(context.i18n.searchButtonText),
-                                                    onPressed: () async {
-                                                      final result =
-                                                          await selectBluetoothPrinter(context, printQueue.bluetooth);
-                                                      if (result != null) {
-                                                        provide.setBluetoothDevice(BluetoothDevice()
-                                                          ..name = result.name
-                                                          ..address = result.address
-                                                          ..type = result.type);
-                                                      }
-                                                    }),
+                                                      focusNode: provide.focusSearch,
+                                                      icon: const Icon(Icons.bluetooth),
+                                                      label: Text(context.i18n.searchButtonText),
+                                                      onPressed: () async {
+                                                        final result =
+                                                            await selectBluetoothPrinter(context, printQueue.bluetooth);
+                                                        if (result != null) {
+                                                          provide.setBluetoothDevice(BluetoothDevice()
+                                                            ..name = result.name
+                                                            ..address = result.address
+                                                            ..type = result.type);
+                                                        }
+                                                      }),
+                                                ),
+                                                readOnly: true,
+                                                controller: provide.bluetooth,
+                                                requiredField: provide.printerType.value == 0,
+                                                focusNode: provide.focusBluetooth,
                                               ),
-                                              readOnly: true,
-                                              controller: provide.bluetooth,
-                                              requiredField: provide.printerType.value == 0,
-                                              focusNode: provide.focusBluetooth,
-                                            ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   // Paper Size
                                   form.RadioGroup<PaperSize>(
