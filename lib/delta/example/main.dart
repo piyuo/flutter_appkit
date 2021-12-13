@@ -550,42 +550,50 @@ class DeltaExample extends StatelessWidget {
           1: Text('Bluetooth Printer'),
         },
       ),
-      SwipeContainer(controller: _swipeController, children: const [
-        Text('Network Setting'),
-        Text('Bluetooth Setting'),
-      ]),
-      SegmentContainer(
-          segmentControl: Segment<int>(
-            onBeforeChange: (index) {
-              debugPrint('before change: $index');
-            },
+      SizedBox(
+          height: 200,
+          child: SwipeContainer(controller: _swipeController, children: const [
+            Text('Network Setting'),
+            Text('Bluetooth Setting'),
+          ])),
+      SizedBox(
+        height: 200,
+        child: SegmentContainer(
+            segmentControl: Segment<int>(
+              onBeforeChange: (index) {
+                debugPrint('before change: $index');
+              },
+              controller: _swipeController,
+              children: const {
+                0: Text('Network Printer'),
+                1: Text('Bluetooth Printer'),
+              },
+            ),
             controller: _swipeController,
-            children: const {
-              0: Text('Network Printer'),
-              1: Text('Bluetooth Printer'),
-            },
-          ),
-          controller: _swipeController,
-          children: const [
-            Text('hello Network Setting'),
-            Text('hello Bluetooth Setting'),
-          ]),
-      SegmentContainer(
-          segmentControl: SlideSegment<int>(
-            onBeforeChange: (index) {
-              debugPrint('before change: $index');
-            },
+            children: const [
+              Text('hello Network Setting'),
+              Text('hello Bluetooth Setting'),
+            ]),
+      ),
+      SizedBox(
+        height: 200,
+        child: SegmentContainer(
+            segmentControl: SlideSegment<int>(
+              onBeforeChange: (index) {
+                debugPrint('before change: $index');
+              },
+              controller: _swipeController,
+              children: const {
+                0: Text('Network Printer'),
+                1: Text('Bluetooth Printer'),
+              },
+            ),
             controller: _swipeController,
-            children: const {
-              0: Text('Network Printer'),
-              1: Text('Bluetooth Printer'),
-            },
-          ),
-          controller: _swipeController,
-          children: const [
-            Text('hello Network Setting'),
-            Text('hello Bluetooth Setting'),
-          ]),
+            children: const [
+              Text('hello Network Setting'),
+              Text('hello Bluetooth Setting'),
+            ]),
+      ),
     ]);
   }
 

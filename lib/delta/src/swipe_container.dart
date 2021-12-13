@@ -8,7 +8,6 @@ class SwipeContainer extends StatefulWidget {
   const SwipeContainer({
     required this.children,
     required this.controller,
-    this.height = 200,
     Key? key,
   }) : super(key: key);
 
@@ -17,9 +16,6 @@ class SwipeContainer extends StatefulWidget {
 
   /// controller is dropdown value controller
   final ValueNotifier<int?> controller;
-
-  /// height is container height;
-  final double height;
 
   @override
   _SwipeContainerState createState() => _SwipeContainerState();
@@ -53,15 +49,13 @@ class _SwipeContainerState extends State<SwipeContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: widget.height,
-        child: PageView(
-          scrollDirection: Axis.horizontal,
-          controller: pager,
-          children: widget.children,
-          onPageChanged: (index) {
-            widget.controller.value = index;
-          },
-        ));
+    return PageView(
+      scrollDirection: Axis.horizontal,
+      controller: pager,
+      children: widget.children,
+      onPageChanged: (index) {
+        widget.controller.value = index;
+      },
+    );
   }
 }

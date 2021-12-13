@@ -10,7 +10,6 @@ class SegmentContainer extends StatelessWidget {
     required this.children,
     required this.controller,
     required this.segmentControl,
-    this.height = 100,
     this.padding,
     Key? key,
   }) : super(key: key);
@@ -24,22 +23,19 @@ class SegmentContainer extends StatelessWidget {
   /// controller is dropdown value controller
   final ValueNotifier<int?> controller;
 
-  /// height is container height;
-  final double height;
-
   final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       segmentControl,
-      Padding(
-          padding: padding ?? EdgeInsets.zero,
-          child: SwipeContainer(
-            height: height,
-            controller: controller,
-            children: children,
-          ))
+      Expanded(
+          child: Padding(
+              padding: padding ?? EdgeInsets.zero,
+              child: SwipeContainer(
+                controller: controller,
+                children: children,
+              )))
     ]);
   }
 }
