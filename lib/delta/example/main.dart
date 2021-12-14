@@ -67,9 +67,7 @@ class DeltaExample extends StatelessWidget {
                   body: SafeArea(
                     child: Wrap(
                       children: [
-                        Expanded(
-                          child: _segment(context),
-                        ),
+                        _pullRefresh(context),
                         testing.example(
                           context,
                           text: 'countdown',

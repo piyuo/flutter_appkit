@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -106,7 +105,7 @@ Future<bool?> alert(
         : const SizedBox();
   }
 
-  assentButtonColor = assentButtonColor ?? (warning ? Colors.red[400]! : const Color(0xee2091eb));
+  assentButtonColor = assentButtonColor ?? (warning ? Colors.red.shade400 : const Color(0xee2091eb));
   buttonColor = buttonColor ??
       context.themeColor(
         dark: const Color(0xcc6a7073),
@@ -206,7 +205,7 @@ Future<bool?> alert(
                     keyAlertButtonNo,
                     no,
                     buttonColor!,
-                    context.themeColor(dark: Colors.blue[50]!, light: Colors.black54),
+                    context.themeColor(dark: Colors.blue.shade50, light: Colors.black54),
                     false,
                   ),
                   const SizedBox(height: 10),
@@ -214,7 +213,7 @@ Future<bool?> alert(
                     keyAlertButtonCancel,
                     cancel,
                     yes != null ? buttonColor : assentButtonColor,
-                    yes != null ? context.themeColor(dark: Colors.blue[50]!, light: Colors.black54) : Colors.white,
+                    yes != null ? context.themeColor(dark: Colors.blue.shade50, light: Colors.black54) : Colors.white,
                     null,
                   ),
                   if (emailUs)

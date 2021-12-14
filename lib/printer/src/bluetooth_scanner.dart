@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:provider/provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
 import 'package:libcli/delta/delta.dart' as delta;

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 
 /// SlideSegment provides a segmented control with sliding effect.

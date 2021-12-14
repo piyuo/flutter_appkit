@@ -211,7 +211,7 @@ class FormExample extends StatelessWidget {
                     br(),
                     Button(
                       elevation: 0,
-                      color: Colors.red[400]!,
+                      color: Colors.red.shade400,
                       key: const Key('submitLong'),
                       label: 'Submit very long waiting form',
                       onClick: () async {
@@ -221,7 +221,7 @@ class FormExample extends StatelessWidget {
                     br(),
                     Button(
                       elevation: 0,
-                      color: Colors.green[400]!,
+                      color: Colors.green.shade400,
                       key: const Key('submitSelect'),
                       label: 'Select',
                       onClick: () async {

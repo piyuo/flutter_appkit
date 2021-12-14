@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/permission/permission.dart' as permission;
 import 'package:libcli/i18n/i18n.dart' as i18n;
@@ -36,7 +35,7 @@ class BarcodeScannerDialog extends StatelessWidget {
         elevation: 0,
       ),
       body: BarcodeScanner(
-        onQRCodeScanned: (BuildContext context, String code) {
+        onQRCodeScanned: (BuildContext context, String? code) {
           Navigator.pop(context, code);
         },
       ),

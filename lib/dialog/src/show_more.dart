@@ -36,8 +36,8 @@ delta.Popup showMore(
 }) {
   backgroundColor = backgroundColor ??
       context.themeColor(
-        light: Colors.grey[100]!,
-        dark: Colors.grey[850]!,
+        light: Colors.grey.shade100,
+        dark: Colors.grey.shade800,
       );
   final screenSize = window.physicalSize / window.devicePixelRatio;
   bool triangleInBottom = false;

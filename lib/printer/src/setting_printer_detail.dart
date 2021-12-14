@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
@@ -8,7 +7,6 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/validator/validator.dart' as validator;
-import 'package:flutter/services.dart';
 import 'bluetooth_scanner.dart';
 import 'printer.dart';
 import 'print_queue.dart';

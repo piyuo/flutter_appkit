@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'ticket.dart';
 import 'ticket_to_preview.dart';

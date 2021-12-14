@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter/foundation.dart';
 
 /// TapBreak will break all concatenate callback if one callback is running
 class TapBreaker with ChangeNotifier {

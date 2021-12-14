@@ -52,7 +52,7 @@ class EditorExample extends StatelessWidget {
             margin: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.blueAccent),
-              color: context.themeColor(light: Colors.white, dark: Colors.grey[800]!),
+              color: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
             ),
             child: Column(children: [
               RichEditor(

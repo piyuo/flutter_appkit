@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/pref/pref.dart' as pref;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;

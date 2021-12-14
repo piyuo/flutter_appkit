@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';

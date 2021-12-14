@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-typedef CodeScanned = void Function(BuildContext context, String format, String code);
+typedef CodeScanned = void Function(BuildContext context, String format, String? code);
 
-typedef QRCodeScanned = void Function(BuildContext context, String code);
+typedef QRCodeScanned = void Function(BuildContext context, String? code);
 
 class BarcodeScanner extends StatefulWidget {
   const BarcodeScanner({

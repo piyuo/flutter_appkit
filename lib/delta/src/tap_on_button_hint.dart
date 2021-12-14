@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// TapOnButtonHint show hint to user to tap on button

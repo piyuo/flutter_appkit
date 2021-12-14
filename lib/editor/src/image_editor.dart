@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
 import 'image_editor_helper.dart';

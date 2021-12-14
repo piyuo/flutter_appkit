@@ -29,10 +29,7 @@ class PagedExample extends StatelessWidget {
         child: SingleChildScrollView(
           child: Wrap(
             children: [
-              SizedBox(
-                height: 300,
-                child: _simpleList(),
-              ),
+              _simpleList(),
               testing.example(
                 context,
                 text: 'clear storage',

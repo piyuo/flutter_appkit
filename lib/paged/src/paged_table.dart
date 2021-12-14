@@ -78,8 +78,8 @@ class PagedTable<T> extends StatelessWidget {
         child: Consumer<delta.TapBreaker>(builder: (context, breaker, child) {
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              return Card(
-                semanticContainer: false,
+              return IntrinsicHeight(
+                //semanticContainer: false,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[

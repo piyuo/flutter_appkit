@@ -53,7 +53,7 @@ class _SingleSelectionState<T> extends State<SingleSelection<T>> {
           child: delta.Listing<T>(
             selectedTileColor: Colors.blue,
             selectedFontColor: Colors.white,
-            dividerColor: context.themeColor(light: Colors.grey[300]!, dark: Colors.grey[800]!),
+            dividerColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
             controller: widget.controller,
             items: widget.items.entries.map((entry) => delta.ListItem(entry.key, title: entry.value)).toList(),
             onItemTap: (BuildContext context, T value) {
