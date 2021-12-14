@@ -232,7 +232,9 @@ class PagedExample extends StatelessWidget {
         dataRemover: (BuildContext context, List<String> removeList) async => true,
       )..init(context),
       child: Consumer<PagedDataSource>(
-          builder: (context, dataSource, child) => PagedList<String>(
+          builder: (context, dataSource, child) => SizedBox(
+              height: 200,
+              child: PagedList<String>(
                 dataSource: dataSource,
                 cardBuilder: (BuildContext context, String text, int rowIndex) {
                   return Material(
@@ -243,7 +245,7 @@ class PagedExample extends StatelessWidget {
                     ),
                   );
                 },
-              )),
+              ))),
     );
   }
 }
