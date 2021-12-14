@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;

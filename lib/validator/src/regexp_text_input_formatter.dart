@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 class RegexpTextInputFormatter extends TextInputFormatter {
