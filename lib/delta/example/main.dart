@@ -811,28 +811,30 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _pullRefresh(BuildContext context) {
-    return PullRefresh(
-        scrollDirection: Axis.horizontal,
-        onPullRefresh: (BuildContext context) async {
-          await Future.delayed(const Duration(seconds: 1));
-          _pullRefreshCount--;
-        },
-        onLoadMore: (BuildContext context) async {
-          await Future.delayed(const Duration(seconds: 1));
-          _pullRefreshCount++;
-        },
-        itemCount: (BuildContext context) {
-          return _pullRefreshCount;
-        },
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            width: 100,
-            height: 100,
-            color: index % 2 == 0 ? Colors.yellow[100] : Colors.blue[100],
-            margin: const EdgeInsets.all(0),
-            child: Text('item $index'),
-          );
-        });
+    return SizedBox(
+        height: 200,
+        child: PullRefresh(
+            scrollDirection: Axis.horizontal,
+            onPullRefresh: (BuildContext context) async {
+              await Future.delayed(const Duration(seconds: 1));
+              _pullRefreshCount--;
+            },
+            onLoadMore: (BuildContext context) async {
+              await Future.delayed(const Duration(seconds: 1));
+              _pullRefreshCount++;
+            },
+            itemCount: (BuildContext context) {
+              return _pullRefreshCount;
+            },
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                width: 100,
+                height: 100,
+                color: index % 2 == 0 ? Colors.yellow[100] : Colors.blue[100],
+                margin: const EdgeInsets.all(0),
+                child: Text('item $index'),
+              );
+            }));
   }
 
   Widget _pullRefreshVertical(BuildContext context) {
