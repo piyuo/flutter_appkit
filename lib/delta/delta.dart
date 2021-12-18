@@ -39,3 +39,4 @@ export 'src/redirect_to_url.dart';
 export 'src/search_box.dart';
 export 'src/count_down.dart';
 export 'src/count_up.dart';
+export 'src/badge.dart';

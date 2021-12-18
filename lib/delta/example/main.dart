@@ -67,7 +67,12 @@ class DeltaExample extends StatelessWidget {
                   body: SafeArea(
                     child: Wrap(
                       children: [
-                        _pullRefresh(context),
+                        _badge(context),
+                        testing.example(
+                          context,
+                          text: 'countdown',
+                          child: _badge(context),
+                        ),
                         testing.example(
                           context,
                           text: 'countdown',
@@ -323,6 +328,20 @@ class DeltaExample extends StatelessWidget {
         }
         debugPrint('image not exists');
       },
+    );
+  }
+
+  Widget _badge(BuildContext context) {
+    return Column(
+      children: const [
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Badge(
+            badgeContent: '18',
+            child: Text('Badge', style: TextStyle(fontSize: 20)),
+          ),
+        )
+      ],
     );
   }
 
