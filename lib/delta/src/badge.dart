@@ -22,7 +22,7 @@ class Badge extends StatelessWidget {
   Widget build(BuildContext context) {
     return badges.Badge(
       padding: const EdgeInsets.all(5),
-      //alignment: Alignment.centerLeft,
+      showBadge: badgeContent != null && badgeContent!.isNotEmpty,
       position: badges.BadgePosition.topEnd(top: -15, end: -20),
       elevation: 3,
       shape: badges.BadgeShape.square,
