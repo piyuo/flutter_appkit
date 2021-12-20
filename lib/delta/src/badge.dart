@@ -23,7 +23,7 @@ class Badge extends StatelessWidget {
     return badges.Badge(
       padding: const EdgeInsets.fromLTRB(6, 1, 6, 3),
       showBadge: badgeContent != null && badgeContent!.isNotEmpty,
-      position: badges.BadgePosition.topEnd(top: -12, end: -14),
+      position: badges.BadgePosition.topEnd(top: -10, end: -12),
       elevation: 3,
       shape: badges.BadgeShape.square,
       borderRadius: const BorderRadius.all(Radius.circular(15)),
