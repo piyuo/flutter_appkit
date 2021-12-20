@@ -21,9 +21,9 @@ class Badge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return badges.Badge(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.fromLTRB(7, 2, 7, 4),
       showBadge: badgeContent != null && badgeContent!.isNotEmpty,
-      position: badges.BadgePosition.topEnd(top: -15, end: -20),
+      position: badges.BadgePosition.topEnd(top: -12, end: -14),
       elevation: 3,
       shape: badges.BadgeShape.square,
       borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -33,7 +33,8 @@ class Badge extends StatelessWidget {
               badgeContent!,
               style: TextStyle(
                 color: badgeTextColor,
-                fontSize: 13,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
               ),
             )
           : null,

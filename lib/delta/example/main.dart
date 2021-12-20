@@ -337,7 +337,21 @@ class DeltaExample extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(20),
           child: Badge(
-            badgeContent: '18',
+            badgeContent: '2',
+            child: Text('Badge', style: TextStyle(fontSize: 20)),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Badge(
+            badgeContent: '12',
+            child: Text('Badge', style: TextStyle(fontSize: 20)),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Badge(
+            badgeContent: '112',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
