@@ -8,6 +8,7 @@ import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:beamer/beamer.dart';
 import 'page_route.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -103,7 +104,8 @@ void start({
         ],
         child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
           builder: (context, dialogProvider, i18nProvider, __) => MaterialApp(
-            navigatorKey: dialogProvider.navigatorKey,
+            //navigatorKey: dialogProvider.navigatorKey,
+            scaffoldMessengerKey: dialogProvider.scaffoldKey,
             builder: dialogProvider.init(),
             debugShowCheckedModeBanner: false,
             theme: theme ?? ThemeData(brightness: Brightness.light),

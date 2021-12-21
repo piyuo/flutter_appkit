@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:intl/intl.dart';
 import '../src/app.dart';
 import '../src/page_route.dart' as page_route;
@@ -40,23 +41,35 @@ class AppExampleState extends State<AppExample> {
       children: [
         SizedBox(
           height: 300,
-          child: _localization(context),
+          child: _pageRoute(context),
         ),
         testing.example(
           context,
           text: 'page route',
-          child: _pushNewRoute(context),
+          useScaffold: false,
+          child: _pageRoute(context),
         ),
         testing.example(
           context,
           text: 'localization',
           child: _localization(context),
         ),
+        testing.example(
+          context,
+          text: 'test root context with dialog',
+          child: _testRootContext(context),
+        ),
+        testing.example(
+          context,
+          text: 'scroll behavior',
+          useScaffold: false,
+          child: _scrollBehavior(context),
+        ),
       ],
     ));
   }
 
-  Widget _pushNewRoute(BuildContext context) {
+  Widget _pageRoute(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: widget.color,
@@ -80,6 +93,17 @@ class AppExampleState extends State<AppExample> {
               child: const Text('pop'),
               onPressed: () {
                 page_route.pop(context);
+              }),
+          OutlinedButton(
+              child: const Text('show snackbar'),
+              onPressed: () {
+                const snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }),
+          OutlinedButton(
+              child: const Text('show alert'),
+              onPressed: () {
+                dialog.alert(context, 'hello');
               }),
         ])),
       ),
@@ -124,5 +148,28 @@ class AppExampleState extends State<AppExample> {
             }),
       ],
     );
+  }
+
+  Widget _testRootContext(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('alert'),
+      onPressed: () {
+        dialog.alert(context, 'hello');
+      },
+    );
+  }
+
+  Widget _scrollBehavior(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: SafeArea(
+            child: SingleChildScrollView(
+          child: Column(children: [
+            Container(height: 500, color: Colors.red),
+            Container(height: 500, color: Colors.blue),
+            Container(height: 500, color: Colors.yellow),
+            Container(height: 500, color: Colors.green),
+          ]),
+        )));
   }
 }
