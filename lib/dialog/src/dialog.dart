@@ -21,6 +21,10 @@ class DialogProvider {
   ///
   final navigatorKey = GlobalKey<NavigatorState>();
 
+  /// scaffoldKey for get rootContext
+  ///
+  final GlobalKey<ScaffoldMessengerState> scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
   static late DialogProvider? _instance;
 
   /// initToast initialize toast
@@ -45,10 +49,16 @@ Widget Function(BuildContext, Widget?) initToast() {
 ///
 BuildContext get rootContext {
   assert(DialogProvider._instance != null, 'please initialize DialogProvider before App()');
+  final nKey = DialogProvider._instance!.scaffoldKey;
+  assert(nKey.currentState != null, 'add scaffoldMessengerKey: dialogProvider.navigatorKey in MaterialApp');
+  return nKey.currentState!.context;
+  /*
+  assert(DialogProvider._instance != null, 'please initialize DialogProvider before App()');
   final nKey = DialogProvider._instance!.navigatorKey;
   assert(nKey.currentState != null && nKey.currentState!.overlay != null,
       'please set navigatorKey: dialogProvider.navigatorKey in MaterialApp');
   return nKey.currentState!.overlay!.context;
+  */
 }
 
 /// prevent user set scale too big, the layout may not show correctly
