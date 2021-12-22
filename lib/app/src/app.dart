@@ -73,18 +73,10 @@ set userID(String value) {
 
 /// simpleLocationBuilder return location builder for example app
 BeamLocation<RouteInformationSerializable<dynamic>> Function(RouteInformation, BeamParameters?) simpleLocationBuilder(
-  Widget child, {
-  String? title,
-  LocalKey? key,
-}) {
+    dynamic Function(BuildContext, BeamState, Object?) route) {
   return RoutesLocationBuilder(
     routes: {
-      '/': (context, state, data) => BeamPage(
-            key: key,
-            title: title,
-            child: child,
-            type: BeamPageType.noTransition,
-          ),
+      '/': (context, state, data) => route,
     },
   );
 }
