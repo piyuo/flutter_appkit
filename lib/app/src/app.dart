@@ -71,6 +71,16 @@ set userID(String value) {
   _userID = value;
 }
 
+/// simpleLocationBuilder return location builder for example app
+BeamLocation<RouteInformationSerializable<dynamic>> Function(RouteInformation, BeamParameters?) simpleLocationBuilder(
+    Widget child) {
+  return RoutesLocationBuilder(
+    routes: {
+      '/': (context, state, data) => child,
+    },
+  );
+}
+
 /// start application
 void start({
   required String appName,
