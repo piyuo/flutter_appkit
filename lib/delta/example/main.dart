@@ -27,7 +27,7 @@ main() {
 
   app.start(
     appName: 'delta',
-    locationBuilder: app.simpleLocationBuilder(const DeltaExample()),
+    locationBuilder: app.simpleLocationBuilder((_, __, ___) => const DeltaExample()),
   );
 }
 

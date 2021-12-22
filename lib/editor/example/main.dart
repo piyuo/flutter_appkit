@@ -10,7 +10,7 @@ import '../src/image_editor_dialog.dart';
 
 main() => app.start(
       appName: 'editor',
-      locationBuilder: app.simpleLocationBuilder(const EditorExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const EditorExample()),
     );
 
 class EditorExample extends StatelessWidget {

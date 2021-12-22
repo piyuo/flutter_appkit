@@ -7,7 +7,7 @@ import '../payment.dart';
 
 main() => app.start(
       appName: 'payment',
-      locationBuilder: app.simpleLocationBuilder(const BarcodeExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const BarcodeExample()),
     );
 
 class BarcodeExample extends StatelessWidget {

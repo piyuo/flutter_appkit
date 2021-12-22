@@ -15,7 +15,7 @@ main() => app.start(
         )
       ],
       appName: 'printer',
-      locationBuilder: app.simpleLocationBuilder(const Example()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const Example()),
     );
 
 class Example extends StatelessWidget {

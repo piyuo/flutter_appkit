@@ -5,7 +5,7 @@ import '../form.dart';
 
 main() => app.start(
       appName: 'form',
-      locationBuilder: app.simpleLocationBuilder(const FormExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const FormExample()),
     );
 
 class FormExampleProvider extends ChangeNotifier {

@@ -10,7 +10,7 @@ import '../error.dart';
 
 main() => app.start(
       appName: 'error',
-      locationBuilder: app.simpleLocationBuilder(const ErrorExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const ErrorExample()),
     );
 
 class ErrorExample extends StatelessWidget {

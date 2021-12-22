@@ -7,7 +7,7 @@ import '../src/open_in_map.dart';
 
 main() => app.start(
       appName: 'place',
-      locationBuilder: app.simpleLocationBuilder(const PlaceExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const PlaceExample()),
     );
 
 class PlaceExample extends StatefulWidget {

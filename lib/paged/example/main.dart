@@ -14,7 +14,7 @@ import '../src/types.dart';
 
 main() => app.start(
       appName: 'paged',
-      locationBuilder: app.simpleLocationBuilder(const PagedExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const PagedExample()),
     );
 
 int refreshCount = 0;

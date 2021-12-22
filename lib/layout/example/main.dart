@@ -6,7 +6,7 @@ import '../layout.dart';
 
 main() => app.start(
       appName: 'layout',
-      locationBuilder: app.simpleLocationBuilder(const LayoutExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const LayoutExample()),
     );
 
 final sidePanelProvider = SidePanelProvider();

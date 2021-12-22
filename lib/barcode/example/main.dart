@@ -9,7 +9,7 @@ import '../src/barcode_scanner_dialog.dart';
 
 main() => app.start(
       appName: 'barcode',
-      locationBuilder: app.simpleLocationBuilder(const BarcodeExample()),
+      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const BarcodeExample()),
     );
 
 class BarcodeExample extends StatelessWidget {
