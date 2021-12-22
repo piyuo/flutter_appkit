@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 import '../src/audio.dart';
 
 main() => app.start(
-      appName: 'audio example',
-      routes: (_) => const AudioExample(),
+      appName: 'audio',
+      locationBuilder: app.simpleLocationBuilder(const AudioExample()),
     );
 
 class AudioExample extends StatelessWidget {

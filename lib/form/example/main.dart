@@ -4,8 +4,8 @@ import 'package:libcli/app/app.dart' as app;
 import '../form.dart';
 
 main() => app.start(
-      appName: 'form example',
-      routes: (_) => const FormExample(),
+      appName: 'form',
+      locationBuilder: app.simpleLocationBuilder(const FormExample()),
     );
 
 class FormExampleProvider extends ChangeNotifier {

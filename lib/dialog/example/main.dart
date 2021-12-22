@@ -7,8 +7,8 @@ import 'package:libcli/uid/uid.dart' as uid;
 import '../dialog.dart';
 
 main() => app.start(
-      appName: 'dialog example',
-      routes: (_) => const DialogExample(),
+      appName: 'dialog',
+      locationBuilder: app.simpleLocationBuilder(const DialogExample()),
     );
 
 final GlobalKey btnMenu = GlobalKey();

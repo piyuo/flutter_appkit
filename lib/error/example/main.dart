@@ -9,8 +9,8 @@ import 'package:libcli/app/app.dart' as app;
 import '../error.dart';
 
 main() => app.start(
-      appName: 'error example',
-      routes: (_) => const ErrorExample(),
+      appName: 'error',
+      locationBuilder: app.simpleLocationBuilder(const ErrorExample()),
     );
 
 class ErrorExample extends StatelessWidget {

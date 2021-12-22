@@ -14,8 +14,8 @@ main() => app.start(
           create: (context) => PrintQueue(),
         )
       ],
-      appName: 'printer example',
-      routes: (_) => const Example(),
+      appName: 'printer',
+      locationBuilder: app.simpleLocationBuilder(const Example()),
     );
 
 class Example extends StatelessWidget {

@@ -6,8 +6,8 @@ import 'package:libcli/app/app.dart' as app;
 import '../charts.dart';
 
 main() => app.start(
-      appName: 'charts example',
-      routes: (_) => const ChartsExample(),
+      appName: 'charts',
+      locationBuilder: app.simpleLocationBuilder(const ChartsExample()),
     );
 
 class ChartsExample extends StatelessWidget {

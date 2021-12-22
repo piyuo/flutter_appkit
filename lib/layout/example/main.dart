@@ -5,8 +5,8 @@ import 'package:libcli/testing/testing.dart' as testing;
 import '../layout.dart';
 
 main() => app.start(
-      appName: 'layout example',
-      routes: (_) => const LayoutExample(),
+      appName: 'layout',
+      locationBuilder: app.simpleLocationBuilder(const LayoutExample()),
     );
 
 final sidePanelProvider = SidePanelProvider();
@@ -17,7 +17,7 @@ class LayoutExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: _sidePanel(context)),
+      Expanded(child: _paddingToTablet(context)),
       Wrap(
         children: [
           testing.example(

@@ -9,8 +9,8 @@ import '../src/image_editor.dart';
 import '../src/image_editor_dialog.dart';
 
 main() => app.start(
-      appName: 'editor example',
-      routes: (_) => const EditorExample(),
+      appName: 'editor',
+      locationBuilder: app.simpleLocationBuilder(const EditorExample()),
     );
 
 class EditorExample extends StatelessWidget {

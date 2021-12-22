@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:beamer/beamer.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:universal_html/html.dart' as html;
-import 'beamer_link.dart';
 
 /// isRootCanPop return true if root page still can go back to previous page
 bool isRootCanPop(BuildContext context) {
