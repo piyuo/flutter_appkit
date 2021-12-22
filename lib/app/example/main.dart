@@ -3,31 +3,52 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:intl/intl.dart';
-import '../src/app.dart';
-import '../src/page_route.dart' as page_route;
-import '../src/back_button.dart';
+import 'package:beamer/beamer.dart';
+import '../app.dart';
+
+class MyData {
+  MyData({
+    required this.name,
+    required this.flag,
+    required this.number,
+  });
+  final String name;
+  final bool flag;
+  final double number;
+}
 
 main() {
   start(
-    appName: 'app example',
-    routes: (String name) {
-      switch (name) {
-        case '/':
-          return const AppExample(color: Colors.blue);
-        case '/new_route':
-          return const AppExample(color: Colors.red);
-      }
-    },
-  );
+      appName: 'app example',
+      locationBuilder: RoutesLocationBuilder(
+        routes: {
+          '/': (context, state, data) => const BeamPage(
+                key: ValueKey('home'),
+                title: 'Home',
+                child: AppExample(color: Colors.blue),
+              ),
+          '/other': (context, state, data) => BeamPage(
+                key: const ValueKey('other'),
+                title: 'other',
+                child: AppExample(
+                  color: Colors.red,
+                  otherData: data != null ? data as MyData : null,
+                ),
+              ),
+        },
+      ));
 }
 
 class AppExample extends StatefulWidget {
   const AppExample({
     required this.color,
+    this.otherData,
     Key? key,
   }) : super(key: key);
 
   final Color color;
+
+  final MyData? otherData;
 
   @override
   State<StatefulWidget> createState() => AppExampleState();
@@ -39,74 +60,109 @@ class AppExampleState extends State<AppExample> {
     return SafeArea(
         child: Column(
       children: [
-        SizedBox(
-          height: 300,
-          child: _pageRoute(context),
+        Expanded(
+          child: _routing(context, widget.otherData),
         ),
-        testing.example(
-          context,
-          text: 'page route',
-          useScaffold: false,
-          child: _pageRoute(context),
-        ),
-        testing.example(
-          context,
-          text: 'localization',
-          child: _localization(context),
-        ),
-        testing.example(
-          context,
-          text: 'test root context with dialog',
-          child: _testRootContext(context),
-        ),
-        testing.example(
-          context,
-          text: 'scroll behavior',
-          useScaffold: false,
-          child: _scrollBehavior(context),
-        ),
+        Container(
+            color: Colors.black,
+            child: Wrap(children: [
+              testing.example(
+                context,
+                text: 'routing',
+                useScaffold: false,
+                child: _routing(context, widget.otherData),
+              ),
+              testing.example(
+                context,
+                text: 'localization',
+                child: _localization(context),
+              ),
+              testing.example(
+                context,
+                text: 'test root context with dialog',
+                child: _testRootContext(context),
+              ),
+              testing.example(
+                context,
+                text: 'scroll behavior',
+                useScaffold: false,
+                child: _scrollBehavior(context),
+              ),
+            ]))
       ],
     ));
   }
 
-  Widget _pageRoute(BuildContext context) {
+  Widget _routing(BuildContext context, MyData? otherData) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: widget.color,
-        leading: backButton(context),
+        leading: beamerBack(context),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: Column(children: [
-          if (page_route.args['arg1'] != null) Text('current arg1=${page_route.args['arg1']}'),
-          OutlinedButton(
-              child: const Text('new route'),
-              onPressed: () {
-                page_route.push(context, '/new_route', args: {'arg1': 'new_route'});
-              }),
-          OutlinedButton(
-              child: const Text('new route in other tab'),
-              onPressed: () {
-                page_route.push(context, '/new_route', openNewTab: true, args: {'arg1': 'new_route_other_tab'});
-              }),
-          OutlinedButton(
-              child: const Text('pop'),
-              onPressed: () {
-                page_route.pop(context);
-              }),
-          OutlinedButton(
-              child: const Text('show snackbar'),
-              onPressed: () {
-                const snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }),
-          OutlinedButton(
-              child: const Text('show alert'),
-              onPressed: () {
-                dialog.alert(context, 'hello');
-              }),
-        ])),
-      ),
+      body: SingleChildScrollView(
+          child: Column(children: [
+        if (otherData != null) Text('name=${otherData.name},flag=${otherData.flag},flag=${otherData.number}'),
+        OutlinedButton(
+            child: const Text('beam to other'),
+            onPressed: () {
+              context.beamToNamed('/other');
+            }),
+        OutlinedButton(
+            child: const Text('beam to other with data'),
+            onPressed: () {
+              context.beamToNamed('/other',
+                  data: MyData(
+                    name: 'data',
+                    flag: false,
+                    number: 2.0,
+                  ));
+            }),
+        const BeamerLink(
+          child: Text('link:goto app'),
+          appName: '/other',
+          queryParameters: {'aa': 'bb'},
+        ),
+/*        OutlinedButton(
+            child: const Text('goto app in new tab'),
+            onPressed: () {
+              gotoApp(context, '/other', newTab: true, args: {'app': 'newTab'});
+            }),*/
+        const BeamerLink(
+          child: Text('link:goto app in new tab'),
+          appName: '/other',
+          newTab: true,
+          queryParameters: {},
+        ),
+        OutlinedButton(
+            child: const Text('root pop'),
+            onPressed: () {
+              rootPop(context);
+            }),
+        OutlinedButton(
+            child: const Text('navigator push'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    appBar: AppBar(),
+                    body: const Text('hello'),
+                  ),
+                ),
+              );
+            }),
+        OutlinedButton(
+            child: const Text('show snackbar'),
+            onPressed: () {
+              const snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }),
+        OutlinedButton(
+            child: const Text('show alert'),
+            onPressed: () {
+              dialog.alert(context, 'hello');
+            }),
+      ])),
     );
   }
 

@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
-import 'package:url_strategy/url_strategy.dart';
+//import 'package:url_strategy/url_strategy.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/delta/delta.dart' as delta;
+//import 'package:libcli/delta/delta.dart' as delta;
 import 'package:beamer/beamer.dart';
-import 'page_route.dart';
+//import 'page_route.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 ///
@@ -74,7 +74,8 @@ set userID(String value) {
 /// start application
 void start({
   required String appName,
-  required Widget? Function(String name) routes,
+  required BeamLocation<RouteInformationSerializable<dynamic>> Function(RouteInformation, BeamParameters?)
+      locationBuilder,
   LocalizationsDelegate<dynamic>? l10nDelegate,
   List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
@@ -92,8 +93,14 @@ void start({
 
   //routes
   if (kIsWeb) {
-    setPathUrlStrategy(); //remove the leading hash (#) from the URL
+    Beamer.setPathUrlStrategy();
+    //setPathUrlStrategy(); //remove the leading hash (#) from the URL
   }
+
+  // put delegate outside of build to avoid hot reload error
+  final beamerDelegate = BeamerDelegate(
+    locationBuilder: locationBuilder,
+  );
 
   // run app
   error.watch(() => runApp(MultiProvider(
@@ -103,8 +110,7 @@ void start({
           if (providers != null) ...providers,
         ],
         child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
-          builder: (context, dialogProvider, i18nProvider, __) => MaterialApp(
-            //navigatorKey: dialogProvider.navigatorKey,
+          builder: (context, dialogProvider, i18nProvider, __) => MaterialApp.router(
             scaffoldMessengerKey: dialogProvider.scaffoldKey,
             builder: dialogProvider.init(),
             debugShowCheckedModeBanner: false,
@@ -116,7 +122,17 @@ void start({
               ...i18nProvider.localizationsDelegates,
             ],
             supportedLocales: i18nProvider.supportedLocales,
-            onGenerateRoute: (RouteSettings settings) {
+            routeInformationParser: BeamerParser(),
+            routerDelegate: beamerDelegate,
+            backButtonDispatcher: BeamerBackButtonDispatcher(
+              delegate: beamerDelegate,
+            ),
+          ),
+        ),
+      )));
+}
+
+            /*onGenerateRoute: (RouteSettings settings) {
               String name = listenRoute(settings);
               if (name == '') {
                 // for web with url route, return null to skip default route
@@ -138,8 +154,4 @@ void start({
                           child: Text('404! ${settings.name} not found'),
                         ),
                       ));
-            },
-          ),
-        ),
-      )));
-}
+            },*/
