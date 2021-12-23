@@ -4,11 +4,10 @@ import 'package:url_launcher/link.dart';
 import 'package:beamer/beamer.dart';
 import 'package:universal_html/html.dart' as html;
 
-class BeamerLink extends StatelessWidget {
-  const BeamerLink({
+class BeamLink extends StatelessWidget {
+  const BeamLink({
     required this.child,
-    required this.appName,
-    required this.queryParameters,
+    required this.path,
     this.newTab = false,
     this.beamBack = false,
     Key? key,
@@ -16,24 +15,20 @@ class BeamerLink extends StatelessWidget {
 
   final Widget child;
 
-  final String appName;
+  final String path;
 
   final bool newTab;
 
   final bool beamBack;
 
-  final Map<String, dynamic> queryParameters;
-
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
       final l = html.window.location;
-      var uri = Uri.parse('${l.protocol}//${l.host}$appName');
+      var uri = Uri.parse('${l.protocol}//${l.host}$path');
       if (beamBack) {
         // beamBack is true let target app show back button
-        uri = uri.replace(queryParameters: {'back': '1', ...queryParameters});
-      } else {
-        uri = uri.replace(queryParameters: queryParameters);
+        uri = uri.replace(queryParameters: {'back': '1'});
       }
       return Link(
         uri: uri,
@@ -46,10 +41,9 @@ class BeamerLink extends StatelessWidget {
         },
       );
     }
-
     return InkWell(
       child: child,
-      onTap: () => Beamer.of(context).beamToNamed(appName),
+      onTap: () => Beamer.of(context).beamToNamed(path),
     );
   }
 }

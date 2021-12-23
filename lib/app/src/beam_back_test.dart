@@ -2,12 +2,12 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'beamer_back.dart';
+import 'beam_back.dart';
 
 void main() {
   group('[app.back_button]', () {
     test('should return back button', () {
-      expect(beamerBack(testing.Context()), isNull);
+      expect(beamBack(testing.Context()), isNull);
     });
   });
 }

@@ -6,17 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../app.dart';
 
-class MyData {
-  MyData({
-    required this.name,
-    required this.flag,
-    required this.number,
-  });
-  final String name;
-  final bool flag;
-  final double number;
-}
-
 main() {
   start(appName: 'app', routes: {
     '/': (context, state, data) => const BeamPage(
@@ -24,12 +13,25 @@ main() {
           title: 'Home',
           child: AppExample(color: Colors.blue),
         ),
+    '/other/:id': (context, state, data) {
+      final id = state.pathParameters['id']!;
+      return BeamPage(
+        key: ValueKey('other-$id'),
+        title: 'other',
+        child: AppExample(
+          color: Colors.red,
+          data: {
+            'id': id,
+          },
+        ),
+      );
+    },
     '/other': (context, state, data) => BeamPage(
           key: const ValueKey('other'),
           title: 'other',
           child: AppExample(
             color: Colors.red,
-            otherData: data != null ? data as MyData : null,
+            data: data,
           ),
         ),
   });
@@ -38,13 +40,13 @@ main() {
 class AppExample extends StatefulWidget {
   const AppExample({
     required this.color,
-    this.otherData,
+    this.data,
     Key? key,
   }) : super(key: key);
 
   final Color color;
 
-  final MyData? otherData;
+  final dynamic? data;
 
   @override
   State<StatefulWidget> createState() => AppExampleState();
@@ -57,7 +59,7 @@ class AppExampleState extends State<AppExample> {
         child: Column(
       children: [
         Expanded(
-          child: _routing(context, widget.otherData),
+          child: _routing(context, widget.data),
         ),
         Container(
             color: Colors.black,
@@ -66,7 +68,7 @@ class AppExampleState extends State<AppExample> {
                 context,
                 text: 'routing',
                 useScaffold: false,
-                child: _routing(context, widget.otherData),
+                child: _routing(context, widget.data),
               ),
               testing.example(
                 context,
@@ -89,41 +91,45 @@ class AppExampleState extends State<AppExample> {
     ));
   }
 
-  Widget _routing(BuildContext context, MyData? otherData) {
+  Widget _routing(BuildContext context, dynamic data) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: widget.color,
-        //leading: beamerBack(context),
+        leading: beamBack(context),
       ),
       body: SingleChildScrollView(
           child: Column(children: [
-        if (otherData != null) Text('name=${otherData.name},flag=${otherData.flag},flag=${otherData.number}'),
+        if (data != null) Text('id=${data["id"]}'),
         OutlinedButton(
             child: const Text('beam to other'),
             onPressed: () {
               context.beamToNamed('/other');
             }),
         OutlinedButton(
+            child: const Text('beam to other with path param'),
+            onPressed: () {
+              context.beamToNamed('/other/2fb83m');
+            }),
+        OutlinedButton(
             child: const Text('beam to other with data'),
             onPressed: () {
-              context.beamToNamed('/other',
-                  data: MyData(
-                    name: 'data',
-                    flag: false,
-                    number: 2.0,
-                  ));
+              context.beamToNamed(
+                '/other',
+                popBeamLocationOnPop: true,
+                data: {
+                  'id': '1',
+                },
+              );
             }),
-        const BeamerLink(
+        const BeamLink(
           child: Text('link:goto app'),
-          appName: '/other',
-          queryParameters: {'aa': 'bb'},
+          path: '/other',
         ),
-        const BeamerLink(
+        const BeamLink(
           child: Text('link:goto app in new tab'),
-          appName: '/other',
+          path: '/other',
           newTab: true,
           beamBack: true,
-          queryParameters: {},
         ),
         OutlinedButton(
             child: const Text('root pop'),
