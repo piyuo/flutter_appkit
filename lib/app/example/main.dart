@@ -46,7 +46,7 @@ class AppExample extends StatefulWidget {
 
   final Color color;
 
-  final dynamic? data;
+  final dynamic data;
 
   @override
   State<StatefulWidget> createState() => AppExampleState();
