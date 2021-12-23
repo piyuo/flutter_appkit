@@ -14,7 +14,9 @@ import '../src/types.dart';
 
 main() => app.start(
       appName: 'paged',
-      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const PagedExample()),
+      routes: {
+        '/': (context, state, data) => const PagedExample(),
+      },
     );
 
 int refreshCount = 0;

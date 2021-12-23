@@ -8,7 +8,9 @@ import '../dialog.dart';
 
 main() => app.start(
       appName: 'dialog',
-      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const DialogExample()),
+      routes: {
+        '/': (context, state, data) => const DialogExample(),
+      },
     );
 
 final GlobalKey btnMenu = GlobalKey();

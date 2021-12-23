@@ -8,7 +8,9 @@ import '../uploader.dart';
 
 main() => app.start(
       appName: 'uploader',
-      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const UploaderExample()),
+      routes: {
+        '/': (context, state, data) => const UploaderExample(),
+      },
     );
 
 class UploaderExample extends StatelessWidget {

@@ -7,7 +7,9 @@ import '../charts.dart';
 
 main() => app.start(
       appName: 'charts',
-      locationBuilder: app.simpleLocationBuilder((_, __, ___) => const ChartsExample()),
+      routes: {
+        '/': (context, state, data) => const ChartsExample(),
+      },
     );
 
 class ChartsExample extends StatelessWidget {

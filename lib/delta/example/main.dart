@@ -27,7 +27,9 @@ main() {
 
   app.start(
     appName: 'delta',
-    locationBuilder: app.simpleLocationBuilder((_, __, ___) => const DeltaExample()),
+    routes: {
+      '/': (context, state, data) => const DeltaExample(),
+    },
   );
 }
 

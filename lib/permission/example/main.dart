@@ -12,7 +12,9 @@ main() {
 
   app.start(
     appName: 'permission',
-    locationBuilder: app.simpleLocationBuilder((_, __, ___) => const DeltaExample()),
+    routes: {
+      '/': (context, state, data) => const DeltaExample(),
+    },
   );
 }
 
