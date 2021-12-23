@@ -18,7 +18,7 @@ class MyData {
 }
 
 main() {
-  start(appName: 'app example', routes: {
+  start(appName: 'app', routes: {
     '/': (context, state, data) => const BeamPage(
           key: ValueKey('home'),
           title: 'Home',
@@ -93,7 +93,7 @@ class AppExampleState extends State<AppExample> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: widget.color,
-        leading: beamerBack(context),
+        //leading: beamerBack(context),
       ),
       body: SingleChildScrollView(
           child: Column(children: [
@@ -118,15 +118,11 @@ class AppExampleState extends State<AppExample> {
           appName: '/other',
           queryParameters: {'aa': 'bb'},
         ),
-/*        OutlinedButton(
-            child: const Text('goto app in new tab'),
-            onPressed: () {
-              gotoApp(context, '/other', newTab: true, args: {'app': 'newTab'});
-            }),*/
         const BeamerLink(
           child: Text('link:goto app in new tab'),
           appName: '/other',
           newTab: true,
+          beamBack: true,
           queryParameters: {},
         ),
         OutlinedButton(
@@ -225,3 +221,8 @@ class AppExampleState extends State<AppExample> {
         )));
   }
 }
+/*        OutlinedButton(
+            child: const Text('goto app in new tab'),
+            onPressed: () {
+              gotoApp(context, '/other', newTab: true, args: {'app': 'newTab'});
+            }),*/

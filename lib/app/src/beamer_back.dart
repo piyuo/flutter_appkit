@@ -20,13 +20,11 @@ void rootPop(BuildContext context) {
 
 /// beamerBack need put in app entry Scaffold.appBar
 Widget? beamerBack(BuildContext context) {
-  if (kIsWeb) {
-    if (isRootCanPop(context)) {
-      return IconButton(
-        icon: Icon(html.window.history.length == 0 ? Icons.close : Icons.arrow_back_ios_new),
-        onPressed: () => rootPop(context),
-      );
-    }
+  if (kIsWeb && isRootCanPop(context)) {
+    return IconButton(
+      icon: Icon(html.window.history.length == 0 ? Icons.close : Icons.arrow_back_ios_new),
+      onPressed: () => rootPop(context),
+    );
   }
   return null;
 }

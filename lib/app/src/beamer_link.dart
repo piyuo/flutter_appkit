@@ -8,8 +8,9 @@ class BeamerLink extends StatelessWidget {
   const BeamerLink({
     required this.child,
     required this.appName,
-    this.newTab = false,
     required this.queryParameters,
+    this.newTab = false,
+    this.beamBack = false,
     Key? key,
   }) : super(key: key);
 
@@ -19,14 +20,23 @@ class BeamerLink extends StatelessWidget {
 
   final bool newTab;
 
+  final bool beamBack;
+
   final Map<String, dynamic> queryParameters;
 
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
       final l = html.window.location;
+      var uri = Uri.parse('${l.protocol}//${l.host}$appName');
+      if (beamBack) {
+        // beamBack is true let target app show back button
+        uri = uri.replace(queryParameters: {'back': '1', ...queryParameters});
+      } else {
+        uri = uri.replace(queryParameters: queryParameters);
+      }
       return Link(
-        uri: Uri.parse('${l.protocol}//${l.host}$appName').replace(queryParameters: {'back': '1', ...queryParameters}),
+        uri: uri,
         target: newTab ? LinkTarget.blank : LinkTarget.self,
         builder: (_, followLink) {
           return InkWell(
