@@ -18,25 +18,21 @@ class MyData {
 }
 
 main() {
-  start(
-      appName: 'app example',
-      locationBuilder: RoutesLocationBuilder(
-        routes: {
-          '/': (context, state, data) => const BeamPage(
-                key: ValueKey('home'),
-                title: 'Home',
-                child: AppExample(color: Colors.blue),
-              ),
-          '/other': (context, state, data) => BeamPage(
-                key: const ValueKey('other'),
-                title: 'other',
-                child: AppExample(
-                  color: Colors.red,
-                  otherData: data != null ? data as MyData : null,
-                ),
-              ),
-        },
-      ));
+  start(appName: 'app example', routes: {
+    '/': (context, state, data) => const BeamPage(
+          key: ValueKey('home'),
+          title: 'Home',
+          child: AppExample(color: Colors.blue),
+        ),
+    '/other': (context, state, data) => BeamPage(
+          key: const ValueKey('other'),
+          title: 'other',
+          child: AppExample(
+            color: Colors.red,
+            otherData: data != null ? data as MyData : null,
+          ),
+        ),
+  });
 }
 
 class AppExample extends StatefulWidget {

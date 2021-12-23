@@ -2,14 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
-//import 'package:url_strategy/url_strategy.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-//import 'package:libcli/delta/delta.dart' as delta;
 import 'package:beamer/beamer.dart';
-//import 'page_route.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 ///
@@ -71,21 +68,10 @@ set userID(String value) {
   _userID = value;
 }
 
-/// simpleLocationBuilder return location builder for example app
-BeamLocation<RouteInformationSerializable<dynamic>> Function(RouteInformation, BeamParameters?) simpleLocationBuilder(
-    dynamic Function(BuildContext, BeamState, Object?) route) {
-  return RoutesLocationBuilder(
-    routes: {
-      '/': (context, state, data) => route,
-    },
-  );
-}
-
 /// start application
 void start({
   required String appName,
-  required BeamLocation<RouteInformationSerializable<dynamic>> Function(RouteInformation, BeamParameters?)
-      locationBuilder,
+  required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
   LocalizationsDelegate<dynamic>? l10nDelegate,
   List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
@@ -109,7 +95,9 @@ void start({
 
   // put delegate outside of build to avoid hot reload error
   final beamerDelegate = BeamerDelegate(
-    locationBuilder: locationBuilder,
+    locationBuilder: RoutesLocationBuilder(
+      routes: routes,
+    ),
   );
 
   // run app
