@@ -13,6 +13,9 @@ class DB {
   /// keys is all the keys in the box, The keys are sorted alphabetically in ascending order.
   Iterable<dynamic> get keys => _box.keys;
 
+  /// keyAt return the n-th key in the box.
+  Future<dynamic> keyAt(int index) async => _box.keyAt(index);
+
   /// length is the number of entries in the box.
   int get length => _box.length;
 
@@ -26,21 +29,15 @@ class DB {
   bool containsKey(dynamic key) => _box.containsKey(key);
 
   /// put saves the [key] - [value] pair
-  Future<void> put(dynamic key, dynamic value) {
-    return _box.put(key, value);
-  }
+  Future<void> set(dynamic key, dynamic value) => _box.put(key, value);
 
   /// get returns the value associated with the given [key]. If the key does not exist, `null` is returned.
   ///
   /// If [defaultValue] is specified, it is returned in case the key does not exist.
-  dynamic get(dynamic key, {dynamic defaultValue}) {
-    return _box.get(key, defaultValue: defaultValue);
-  }
+  Future<dynamic> get(dynamic key, {dynamic defaultValue}) async => _box.get(key, defaultValue: defaultValue);
 
   /// deletes the given [key] from the box , If it does not exist, nothing happens.
-  Future<void> delete(dynamic key) {
-    return _box.delete(key);
-  }
+  Future<void> delete(dynamic key) => _box.delete(key);
 
   /// deleteFromDisk remove the file which contains the box and closes the box. In the browser, the IndexedDB database is being removed.
   Future<void> deleteFromDisk() => _box.deleteFromDisk();
