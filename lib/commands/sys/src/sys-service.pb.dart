@@ -7,16 +7,7 @@ import 'geo-locations.pb.dart';
 import 'geo-suggestion.pb.dart';
 import 'geo-suggestions.pb.dart';
 
-class SysService extends Service {
-  /// init sys service with predefine remote url
-  /// remote url is defined in "service project/proto/.proto.json"
-  /// For example:
-  ///
-  ///     SysService service = SysService();
-  SysService() : super(serviceName: 'sys', timeout: 20000, slow: 10000);
-
-  @override
-  pb.Object newObjectByID(int id, List<int> bytes) {
+pb.Object objectBuilder(int id, List<int> bytes) {
     switch (id) {
       case 1004:
         return GeoLocation.fromBuffer(bytes);
@@ -28,5 +19,17 @@ class SysService extends Service {
         return GeoSuggestions.fromBuffer(bytes);
     }
     throw Exception('failed to create object in SysService. id($id) out of range');
-  }
+}
+
+class SysService extends Service {
+
+  /// init sys service with predefine remote url
+  /// remote url is defined in "service project/proto/.proto.json"
+  /// For example:
+  ///
+  ///     SysService service = SysService();
+  SysService(): super(serviceName: 'sys',timeout: 20000,slow: 10000);
+
+  @override
+  pb.Object newObjectByID(int id, List<int> bytes) => objectBuilder(id, bytes);
 }

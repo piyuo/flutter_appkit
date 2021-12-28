@@ -5,7 +5,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 typedef Factory<T> = T Function();
 
 /// ObjectBuilder build object from id and binary data
-typedef ObjectBuilder<T> = T Function(int id, List<int> bytes);
+typedef ObjectBuilder<Object> = Object Function(int id, List<int> bytes);
 
 /// Object is data transfer object that use protobuf format
 ///
