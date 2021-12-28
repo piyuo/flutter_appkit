@@ -1,13 +1,13 @@
 library google;
 
-export 'any.pb.dart';
-export 'api.pb.dart';
-export 'descriptor.pb.dart';
-export 'duration.pb.dart';
-export 'empty.pb.dart';
-export 'field_mask.pb.dart';
-export 'source_context.pb.dart';
-export 'struct.pb.dart';
-export 'timestamp.pb.dart';
-export 'type.pb.dart';
-export 'wrappers.pb.dart';
+export 'src/any.pb.dart';
+export 'src/api.pb.dart';
+export 'src/descriptor.pb.dart';
+export 'src/duration.pb.dart';
+export 'src/empty.pb.dart';
+export 'src/field_mask.pb.dart';
+export 'src/source_context.pb.dart';
+export 'src/struct.pb.dart';
+export 'src/timestamp.pb.dart';
+export 'src/type.pb.dart';
+export 'src/wrappers.pb.dart';

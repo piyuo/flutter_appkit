@@ -1,3 +1,3 @@
-library db;
+library stack;
 
 export 'src/stack.dart';
