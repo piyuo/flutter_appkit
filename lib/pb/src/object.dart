@@ -52,5 +52,5 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   }
 }
 
-/// ObjectBuilder create empty object instance
-typedef ObjectBuilder<T> = T Function();
+/// Factory function will create empty instance
+typedef Factory<T> = T Function();

@@ -7,7 +7,7 @@ import 'types.dart';
 class PagedObjectSource<T extends pb.Object> extends PagedDataSource<T> {
   PagedObjectSource({
     required String key,
-    required pb.ObjectBuilder<T> objectBuilder,
+    required pb.Factory<T> objectBuilder,
     required DataLoader<T> dataLoader,
     DataRefresher<T>? dataRefresher,
     DataRemover<T>? dataRemover,
