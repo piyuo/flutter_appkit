@@ -18,7 +18,7 @@ void main() {
       int refreshCount = 0;
       PagedObjectSource<pb.Error> pos = PagedObjectSource(
         key: 'mySource',
-        objectBuilder: () => pb.Error(),
+        objectFactory: () => pb.Error(),
         dataLoader: (BuildContext context, pb.Error? last, int length) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -39,7 +39,7 @@ void main() {
 
       PagedObjectSource<pb.Error> pos2 = PagedObjectSource(
         key: 'mySource',
-        objectBuilder: () => pb.Error(),
+        objectFactory: () => pb.Error(),
         dataLoader: (BuildContext context, pb.Error? last, int length) async {
           return [];
         },

@@ -70,7 +70,7 @@ class PagedExample extends StatelessWidget {
     return ChangeNotifierProvider<PagedDataSource>(
       create: (context) => PagedObjectSource<pb.Error>(
         key: 'mySource',
-        objectBuilder: () => pb.Error(),
+        objectFactory: () => pb.Error(),
         dataLoader: (BuildContext context, pb.Error? last, int length) async {
           await Future.delayed(const Duration(seconds: 3));
           if (last == null) {

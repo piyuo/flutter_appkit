@@ -7,7 +7,7 @@ import 'types.dart';
 class PagedObjectSource<T extends pb.Object> extends PagedDataSource<T> {
   PagedObjectSource({
     required String key,
-    required pb.Factory<T> objectBuilder,
+    required pb.Factory<T> objectFactory,
     required DataLoader<T> dataLoader,
     DataRefresher<T>? dataRefresher,
     DataRemover<T>? dataRemover,
@@ -30,7 +30,7 @@ class PagedObjectSource<T extends pb.Object> extends PagedDataSource<T> {
             if (json == null) {
               return null;
             }
-            final rows = pb.parseObjectList<T>(json['rows'], objectBuilder);
+            final rows = pb.parseObjectList<T>(json['rows'], objectFactory);
             final status = PagedDataSourceStatus.values[json['stat']];
             return CacheInstruction(
               rows: [...rows],
