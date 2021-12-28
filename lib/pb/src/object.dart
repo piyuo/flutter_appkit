@@ -1,7 +1,13 @@
 import 'dart:convert';
 import 'package:protobuf/protobuf.dart' as $pb;
 
-/// PbObject is data transfer object that use protobuf format
+/// Factory function will create empty instance
+typedef Factory<T> = T Function();
+
+/// ObjectBuilder build object from id and binary data
+typedef ObjectBuilder<T> = T Function(int id, List<int> bytes);
+
+/// Object is data transfer object that use protobuf format
 ///
 abstract class Object extends $pb.GeneratedMessage implements Comparable<Object> {
   /// mapIdXXX return map id let service create object by id
@@ -51,6 +57,3 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
     mergeFromBuffer(bytes);
   }
 }
-
-/// Factory function will create empty instance
-typedef Factory<T> = T Function();
