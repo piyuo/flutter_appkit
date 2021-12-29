@@ -10,8 +10,8 @@ import 'package:libcli/pb/pb.dart' as pb;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'package:libcli/pb/src/google/source_context.pb.dart' as $0;
-import 'package:libcli/pb/src/google/any.pb.dart' as $1;
+import 'package:libcli/pb/src/google/src/source_context.pb.dart' as $0;
+import 'package:libcli/pb/src/google/src/any.pb.dart' as $1;
 
 import 'type.pbenum.dart';
 

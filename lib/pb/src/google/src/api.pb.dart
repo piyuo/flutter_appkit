@@ -10,10 +10,10 @@ import 'package:libcli/pb/pb.dart' as pb;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'package:libcli/pb/src/google/type.pb.dart' as $0;
-import 'package:libcli/pb/src/google/source_context.pb.dart' as $1;
+import 'package:libcli/pb/src/google/src/type.pb.dart' as $0;
+import 'package:libcli/pb/src/google/src/source_context.pb.dart' as $1;
 
-import 'package:libcli/pb/src/google/type.pbenum.dart' as $0;
+import 'package:libcli/pb/src/google/src/type.pbenum.dart' as $0;
 
 class Api extends pb.Object {
   $core.int mapIdXXX() => 1002;

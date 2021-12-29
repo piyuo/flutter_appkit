@@ -30,7 +30,7 @@ pb.Object decode(List<int> bytes, Service service) {
 
   pb.Object obj;
   if (id <= 1000) {
-    obj = pb.simpleObjectByID(id, protoBytes);
+    obj = pb.objectBuilder(id, protoBytes);
   } else {
     obj = service.newObjectByID(id, protoBytes);
   }

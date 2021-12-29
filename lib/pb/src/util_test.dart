@@ -1,76 +1,76 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'simple/types.dart' as types;
+import 'package:libcli/pb/src/simple/simple.dart' as simple;
 import 'util.dart';
 
 void main() {
   group('[util]', () {
     test('should able test PbOK', () {
-      expect(isOK(types.Error()), false);
-      expect(isOK(types.OK()), true);
+      expect(isOK(simple.Error()), false);
+      expect(isOK(simple.OK()), true);
     });
 
     test('should able test error', () {
       expect(
           isError(
-            types.Error()..code = 'a',
+            simple.Error()..code = 'a',
             'a',
           ),
           true);
       expect(
           isError(
-            types.Error()..code = 'b',
+            simple.Error()..code = 'b',
             'a',
           ),
           false);
-      expect(isError(types.OK(), 'a'), false);
+      expect(isError(simple.OK(), 'a'), false);
     });
 
     test('should able test PbString', () {
       expect(
           isString(
-            types.String()..value = 'a',
+            simple.String()..value = 'a',
             'a',
           ),
           true);
       expect(
           isString(
-            types.String()..value = 'b',
+            simple.String()..value = 'b',
             'a',
           ),
           false);
-      expect(isString(types.OK(), 'a'), false);
+      expect(isString(simple.OK(), 'a'), false);
     });
 
     test('should able test PbBool', () {
       expect(
           isBool(
-            types.Bool()..value = true,
+            simple.Bool()..value = true,
             true,
           ),
           true);
       expect(
           isBool(
-            types.Bool()..value = false,
+            simple.Bool()..value = false,
             true,
           ),
           false);
-      expect(isBool(types.OK(), false), false);
+      expect(isBool(simple.OK(), false), false);
     });
 
     test('should able test PbInt', () {
       expect(
           isNumber(
-            types.Number()..value = 12,
+            simple.Number()..value = 12,
             12,
           ),
           true);
       expect(
           isNumber(
-            types.Number()..value = 12,
+            simple.Number()..value = 12,
             11,
           ),
           false);
-      expect(isNumber(types.OK(), 11), false);
+      expect(isNumber(simple.OK(), 11), false);
     });
   });
 }

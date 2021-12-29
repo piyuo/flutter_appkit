@@ -1,11 +1,11 @@
-import 'simple/types.dart' as types;
+import 'package:libcli/pb/src/simple/simple.dart' as simple;
 
 /// isOK return true if obj is OK
 ///
 ///     isOK(response);
 ///
 bool isOK(dynamic obj) {
-  return obj is types.OK;
+  return obj is simple.OK;
 }
 
 /// isError return true if obj is Error and code==code
@@ -13,7 +13,7 @@ bool isOK(dynamic obj) {
 ///     isError(response,'code-1');
 ///
 bool isError(dynamic obj, String code) {
-  if (obj is types.Error) {
+  if (obj is simple.Error) {
     return obj.code == code;
   }
   return false;
@@ -24,7 +24,7 @@ bool isError(dynamic obj, String code) {
 ///     isString(response,'hi');
 ///
 bool isString(dynamic obj, String value) {
-  if (obj is types.String) {
+  if (obj is simple.String) {
     return obj.value == value;
   }
   return false;
@@ -35,7 +35,7 @@ bool isString(dynamic obj, String value) {
 ///     isBool(response,true);
 ///
 bool isBool(dynamic obj, bool value) {
-  if (obj is types.Bool) {
+  if (obj is simple.Bool) {
     return obj.value == value;
   }
   return false;
@@ -46,7 +46,7 @@ bool isBool(dynamic obj, bool value) {
 ///     isNumber(response,16);
 ///
 bool isNumber(dynamic obj, int value) {
-  if (obj is types.Number) {
+  if (obj is simple.Number) {
     return obj.value == value;
   }
   return false;
