@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:protobuf/protobuf.dart' as $pb;
+import 'package:libcli/pb/src/common/common.dart' as common;
 
 /// Factory function will create empty instance
 typedef Factory<T> = T Function();
@@ -56,4 +57,6 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
     var bytes = base64.decode(text);
     mergeFromBuffer(bytes);
   }
+
+  common.Entity? getEntity() => null;
 }

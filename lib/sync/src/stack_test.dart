@@ -3,7 +3,7 @@
 import 'package:libcli/pb/pb.dart' as pb;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'stack.dart';
+import 'sync.dart';
 
 void main() {
   initForTest();
