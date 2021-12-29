@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/util/util.dart' as util;
-import 'package:libcli/commands/sys/sys.dart' as sys;
+import 'package:libcli/meta/sys/sys.dart' as sys;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'search_confirm.dart';
 import 'show_search.dart';

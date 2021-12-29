@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/commands/sys/sys.dart' as sys;
+import 'package:libcli/meta/sys/sys.dart' as sys;
 import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/locate/locate.dart' as locate;
 import 'package:libcli/dialog/dialog.dart' as dialog;
