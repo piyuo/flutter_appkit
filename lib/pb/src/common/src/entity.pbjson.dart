@@ -15,8 +15,9 @@ const Entity$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'updateTime', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'updateTime'},
     const {'1': 'notGoingToChange', '3': 3, '4': 1, '5': 8, '10': 'notGoingToChange'},
+    const {'1': 'deleted', '3': 4, '4': 1, '5': 8, '10': 'deleted'},
   ],
 };
 
 /// Descriptor for `Entity`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List entityDescriptor = $convert.base64Decode('CgZFbnRpdHkSDgoCaWQYASABKAlSAmlkEjoKCnVwZGF0ZVRpbWUYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgp1cGRhdGVUaW1lEioKEG5vdEdvaW5nVG9DaGFuZ2UYAyABKAhSEG5vdEdvaW5nVG9DaGFuZ2U=');
+final $typed_data.Uint8List entityDescriptor = $convert.base64Decode('CgZFbnRpdHkSDgoCaWQYASABKAlSAmlkEjoKCnVwZGF0ZVRpbWUYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgp1cGRhdGVUaW1lEioKEG5vdEdvaW5nVG9DaGFuZ2UYAyABKAhSEG5vdEdvaW5nVG9DaGFuZ2USGAoHZGVsZXRlZBgEIAEoCFIHZGVsZXRlZA==');

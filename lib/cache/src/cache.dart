@@ -17,11 +17,27 @@ Future<void> init() async {
   _cacheDB = await db.use('cache');
 }
 
+/// tagKey return key that store time tag
+@visibleForTesting
+String tagKey(String key) => '${key}_tag';
+
+/// getSavedTag get saved tag
+@visibleForTesting
+Future<String?> getSavedTag(String key) async => await _cacheDB.get(tagKey(key));
+
 /// set saves the [key] - [value] pair
 Future<void> set(dynamic key, dynamic value) async {
-  final timeTag = uniqueExpirationTag();
-  if (timeTag.isEmpty) return;
-  _timeDB.set(timeTag, key);
+  String? timeTag;
+  final savedTag = await getSavedTag(key);
+  if (savedTag != null) {
+    timeTag = savedTag;
+  } else {
+    timeTag = uniqueExpirationTag();
+    if (timeTag.isEmpty) return;
+    await _timeDB.set(timeTag, key);
+    await _cacheDB.set(tagKey(key), timeTag);
+  }
+
   _cacheDB.set(key, value);
   _setCount++;
   if (_setCount > 10) {
@@ -49,7 +65,14 @@ String uniqueExpirationTag() {
 Future<dynamic> get(dynamic key, {dynamic defaultValue}) => _cacheDB.get(key, defaultValue: defaultValue);
 
 /// deletes the given [key] from the box , If it does not exist, nothing happens.
-Future<void> delete(dynamic key) => _cacheDB.delete(key);
+Future<void> delete(dynamic key) async {
+  final savedTag = await getSavedTag(key);
+  if (savedTag != null) {
+    await _timeDB.delete(savedTag);
+  }
+  await _cacheDB.delete(key);
+  await _cacheDB.delete(tagKey(key));
+}
 
 /// cleanup deletes 10 expired items
 Future<void> cleanup() async {
@@ -63,6 +86,7 @@ Future<void> cleanup() async {
     }
     final key = await _timeDB.get(expirationTimeTag);
     await _cacheDB.delete(key);
+    await _cacheDB.delete(tagKey(key));
     await _timeDB.delete(expirationTimeTag);
     deleteCount++;
   }

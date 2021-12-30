@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'paged_data_source.dart';
+import 'data_source.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'types.dart';
 
 void main() {
   setUp(() async {});
 
-  group('[paged_data_source]', () {
+  group('[data_source]', () {
     test('should load', () async {
       int refreshCount = 0;
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (refreshCount == 0) {
             // first
@@ -64,7 +64,7 @@ void main() {
 
     test('should load on error', () async {
       int refreshCount = 0;
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -93,7 +93,7 @@ void main() {
     });
 
     test('should delete rows', () async {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           return ['a', 'b', 'c'];
         },
@@ -108,7 +108,7 @@ void main() {
 
     test('should refresh', () async {
       int refreshCount = 0;
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           return ['a', 'b', 'c'];
         },
@@ -162,7 +162,7 @@ void main() {
     });
 
     test('should load next/prev/last/first page', () async {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (last == null) {
             return List.generate(10, (index) => index.toString());
@@ -242,7 +242,7 @@ void main() {
     });
 
     test('should check isEmpty', () {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           return [];
         },
@@ -253,7 +253,7 @@ void main() {
     });
 
     test('should load and set state end', () async {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           return ['a', 'b'];
         },
@@ -266,7 +266,7 @@ void main() {
     });
 
     test('should load and set state load', () async {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           return List.generate(10, (index) => index.toString());
         },
@@ -279,7 +279,7 @@ void main() {
     });
 
     test('should change rowsPerPage', () async {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (last == null) {
             return List.generate(10, (index) => index.toString());
@@ -300,7 +300,7 @@ void main() {
     });
 
     test('should change rowsPerPage when next page exists', () async {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (last == null) {
             return List.generate(10, (index) => index.toString());
@@ -324,7 +324,7 @@ void main() {
     });
 
     test('should show paging info', () async {
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (last == null) {
             return List.generate(10, (index) => index.toString());
@@ -343,7 +343,7 @@ void main() {
 
     test('should select row', () async {
       int refreshCount = 0;
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -395,7 +395,7 @@ void main() {
         return _instruction!;
       }
 
-      PagedDataSource<String> sds = PagedDataSource(
+      DataSource<String> sds = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -440,7 +440,7 @@ void main() {
 
       var loadCount2 = 0;
       var refreshCount2 = 0;
-      PagedDataSource<String> sds2 = PagedDataSource(
+      DataSource<String> sds2 = DataSource(
         dataLoader: (BuildContext context, String? last, int length) async {
           loadCount2++;
           return [];

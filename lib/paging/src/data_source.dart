@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'types.dart';
 
-class PagedDataSource<T> extends ChangeNotifier {
-  PagedDataSource({
+class DataSource<T> extends ChangeNotifier {
+  DataSource({
     required this.dataLoader,
     this.dataRefresher,
     this.dataComparator,

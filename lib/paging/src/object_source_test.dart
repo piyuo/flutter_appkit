@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/storage/storage.dart' as storage;
-import 'paged_object_source.dart';
+import 'object_source.dart';
 import 'types.dart';
 
 void main() {
@@ -13,10 +13,10 @@ void main() {
     storage.clear();
   });
 
-  group('[paged_object_source]', () {
+  group('[object_source]', () {
     test('should use disk cache', () async {
       int refreshCount = 0;
-      PagedObjectSource<pb.Error> pos = PagedObjectSource(
+      ObjectSource<pb.Error> pos = ObjectSource(
         key: 'mySource',
         objectFactory: () => pb.Error(),
         dataLoader: (BuildContext context, pb.Error? last, int length) async {
@@ -37,7 +37,7 @@ void main() {
       expect(pos.pageCount, 1);
       expect(pos.status, PagedDataSourceStatus.end);
 
-      PagedObjectSource<pb.Error> pos2 = PagedObjectSource(
+      ObjectSource<pb.Error> pos2 = ObjectSource(
         key: 'mySource',
         objectFactory: () => pb.Error(),
         dataLoader: (BuildContext context, pb.Error? last, int length) async {

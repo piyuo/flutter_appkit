@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'paged_data_source.dart';
+import 'data_source.dart';
 import 'types.dart';
 
-class PagedList<T> extends StatelessWidget {
-  const PagedList({
+class PageList<T> extends StatelessWidget {
+  const PageList({
     required this.dataSource,
     required this.cardBuilder,
     Key? key,
@@ -14,7 +14,7 @@ class PagedList<T> extends StatelessWidget {
   final CardBuilder<T> cardBuilder;
 
   /// dataSOurce for PagedList
-  final PagedDataSource dataSource;
+  final DataSource dataSource;
 
   @override
   Widget build(BuildContext context) {

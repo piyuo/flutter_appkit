@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'paged_data_source.dart';
+import 'data_source.dart';
 import 'types.dart';
 
-class PagedTable<T> extends StatelessWidget {
-  const PagedTable({
+class PageTable<T> extends StatelessWidget {
+  const PageTable({
     required this.columns,
     required this.dataSource,
     this.cardHeight,
@@ -38,7 +38,7 @@ class PagedTable<T> extends StatelessWidget {
 
   final DragStartBehavior dragStartBehavior;
 
-  final PagedDataSource dataSource;
+  final DataSource dataSource;
 
   /// The table card's optional header.
   ///
@@ -62,7 +62,7 @@ class PagedTable<T> extends StatelessWidget {
 
   /// The options to offer for the rowsPerPage.
   ///
-  /// The current [rowsPerPage] must be a value in this list.
+  /// The current [_rowsPerPage] must be a value in this list.
   ///
   /// The values in this list should be sorted in ascending order.
   final List<int> availableRowsPerPage;
@@ -122,7 +122,7 @@ class PagedTable<T> extends StatelessWidget {
     );
   }
 
-  Widget buildExtraInfo(BuildContext context, PagedDataSource provide) {
+  Widget buildExtraInfo(BuildContext context, DataSource provide) {
     switch (provide.status) {
       case PagedDataSourceStatus.notLoad:
         return provide.isBusy
@@ -159,7 +159,7 @@ class PagedTable<T> extends StatelessWidget {
 
   Widget buildFooter(
     BuildContext context,
-    PagedDataSource dataSource,
+    DataSource dataSource,
     ThemeData themeData,
     MaterialLocalizations localizations,
     BoxConstraints constraints,
@@ -284,7 +284,7 @@ class PagedTable<T> extends StatelessWidget {
     );
   }
 
-  Widget buildHeader(BuildContext context, PagedDataSource dataSource, double paddingLeft, delta.TapBreaker breaker) {
+  Widget buildHeader(BuildContext context, DataSource dataSource, double paddingLeft, delta.TapBreaker breaker) {
     final ThemeData themeData = Theme.of(context);
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final List<Widget> headerWidgets = <Widget>[];
@@ -371,7 +371,7 @@ class PagedTable<T> extends StatelessWidget {
         : const SizedBox();
   }
 
-  List<DataRow> buildRows(BuildContext context, PagedDataSource provide, RowBuilder<T> builder) {
+  List<DataRow> buildRows(BuildContext context, DataSource provide, RowBuilder<T> builder) {
     return List<DataRow>.generate(
       provide.rowCount,
       (int position) {
@@ -386,7 +386,7 @@ class PagedTable<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildTable(BuildContext context, PagedDataSource provide) {
+  Widget _buildTable(BuildContext context, DataSource provide) {
     return DataTable(
       dataRowHeight: rowHeight,
       headingRowColor: MaterialStateProperty.all(context.themeColor(
@@ -399,7 +399,7 @@ class PagedTable<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(BuildContext context, PagedDataSource provide, double maxWidth, delta.TapBreaker breaker) {
+  Widget _buildCard(BuildContext context, DataSource provide, double maxWidth, delta.TapBreaker breaker) {
     final ThemeData themeData = Theme.of(context);
     double cardWidth = maxWidth - 100;
     return Theme(

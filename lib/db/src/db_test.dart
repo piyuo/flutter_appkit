@@ -32,5 +32,14 @@ void main() {
       var err = await testDB.get('e');
       expect(err.code, '123');
     });
+
+    test('should save string list ', () async {
+      final list = <String>['1', '2', '3'];
+      final testDB = await use('testDB');
+      testDB.set('l', list);
+      var list2 = await testDB.get('l');
+      expect(list2.length, 3);
+      expect(list2[2], '3');
+    });
   });
 }

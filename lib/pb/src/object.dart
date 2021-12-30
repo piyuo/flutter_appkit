@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
+import 'package:libcli/pb/src/google/google.dart' as google;
 
 /// Factory function will create empty instance
 typedef Factory<T> = T Function();
@@ -58,5 +59,30 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
     mergeFromBuffer(bytes);
   }
 
+  /// getEntity return object defined entity
   common.Entity? getEntity() => null;
+
+  /// entityId return entity id
+  String get entityId {
+    assert(getEntity() != null, '$runtimeType not define entity');
+    return getEntity()!.id;
+  }
+
+  /// entityUpdateTime return entity update time stamp
+  google.Timestamp get entityUpdateTime {
+    assert(getEntity() != null, '$runtimeType not define entity');
+    return getEntity()!.updateTime;
+  }
+
+  /// entityNotGoingToChange return true if entity not going to change
+  bool get entityNotGoingToChange {
+    assert(getEntity() != null, '$runtimeType not define entity');
+    return getEntity()!.notGoingToChange;
+  }
+
+  /// entityDeleted return true if entity mask as deleted
+  bool get entityDeleted {
+    assert(getEntity() != null, '$runtimeType not define entity');
+    return getEntity()!.deleted;
+  }
 }

@@ -6,23 +6,19 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/storage/storage.dart' as storage;
-import '../src/paged_data_source.dart';
-import '../src/paged_object_source.dart';
-import '../src/paged_table.dart';
-import '../src/paged_list.dart';
-import '../src/types.dart';
+import '../paging.dart';
 
 main() => app.start(
       appName: 'paged',
       routes: {
-        '/': (context, state, data) => const PagedExample(),
+        '/': (context, state, data) => const PaginationExample(),
       },
     );
 
 int refreshCount = 0;
 
-class PagedExample extends StatelessWidget {
-  const PagedExample({Key? key}) : super(key: key);
+class PaginationExample extends StatelessWidget {
+  const PaginationExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +63,8 @@ class PagedExample extends StatelessWidget {
   }
 
   Widget _simpleObjectTable() {
-    return ChangeNotifierProvider<PagedDataSource>(
-      create: (context) => PagedObjectSource<pb.Error>(
+    return ChangeNotifierProvider<DataSource>(
+      create: (context) => ObjectSource<pb.Error>(
         key: 'mySource',
         objectFactory: () => pb.Error(),
         dataLoader: (BuildContext context, pb.Error? last, int length) async {
@@ -88,8 +84,8 @@ class PagedExample extends StatelessWidget {
         },
         dataRemover: (BuildContext context, List<pb.Error> removeList) async => true,
       )..init(context),
-      child: Consumer<PagedDataSource>(
-          builder: (context, dataSource, child) => PagedTable<pb.Error>(
+      child: Consumer<DataSource>(
+          builder: (context, dataSource, child) => PageTable<pb.Error>(
                 dataSource: dataSource,
                 header: Row(
                   children: [
@@ -134,8 +130,8 @@ class PagedExample extends StatelessWidget {
   }
 
   Widget _simpleTable() {
-    return ChangeNotifierProvider<PagedDataSource>(
-      create: (context) => PagedDataSource<String>(
+    return ChangeNotifierProvider<DataSource>(
+      create: (context) => DataSource<String>(
         dataLoader: (BuildContext context, String? last, int length) async {
           await Future.delayed(const Duration(seconds: 2));
           refreshCount++;
@@ -159,8 +155,8 @@ class PagedExample extends StatelessWidget {
         },
         dataRemover: (BuildContext context, List<String> removeList) async => true,
       )..init(context),
-      child: Consumer<PagedDataSource>(
-          builder: (context, dataSource, child) => PagedTable<String>(
+      child: Consumer<DataSource>(
+          builder: (context, dataSource, child) => PageTable<String>(
                 dataSource: dataSource,
                 header: Row(
                   children: [
@@ -208,8 +204,8 @@ class PagedExample extends StatelessWidget {
   }
 
   Widget _simpleList() {
-    return ChangeNotifierProvider<PagedDataSource>(
-      create: (context) => PagedDataSource<String>(
+    return ChangeNotifierProvider<DataSource>(
+      create: (context) => DataSource<String>(
         dataLoader: (BuildContext context, String? last, int length) async {
           await Future.delayed(const Duration(seconds: 2));
           refreshCount++;
@@ -233,10 +229,10 @@ class PagedExample extends StatelessWidget {
         },
         dataRemover: (BuildContext context, List<String> removeList) async => true,
       )..init(context),
-      child: Consumer<PagedDataSource>(
+      child: Consumer<DataSource>(
           builder: (context, dataSource, child) => SizedBox(
               height: 200,
-              child: PagedList<String>(
+              child: PageList<String>(
                 dataSource: dataSource,
                 cardBuilder: (BuildContext context, String text, int rowIndex) {
                   return Material(

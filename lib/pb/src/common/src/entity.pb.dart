@@ -22,6 +22,7 @@ class Entity extends pb.Object {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOM<$0.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'updateTime', protoName: 'updateTime', subBuilder: $0.Timestamp.create)
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'notGoingToChange', protoName: 'notGoingToChange')
+    ..aOB(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deleted')
     ..hasRequiredFields = false
   ;
 
@@ -30,6 +31,7 @@ class Entity extends pb.Object {
     $core.String? id,
     $0.Timestamp? updateTime,
     $core.bool? notGoingToChange,
+    $core.bool? deleted,
   }) {
     final _result = create();
     if (id != null) {
@@ -40,6 +42,9 @@ class Entity extends pb.Object {
     }
     if (notGoingToChange != null) {
       _result.notGoingToChange = notGoingToChange;
+    }
+    if (deleted != null) {
+      _result.deleted = deleted;
     }
     return _result;
   }
@@ -92,5 +97,14 @@ class Entity extends pb.Object {
   $core.bool hasNotGoingToChange() => $_has(2);
   @$pb.TagNumber(3)
   void clearNotGoingToChange() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get deleted => $_getBF(3);
+  @$pb.TagNumber(4)
+  set deleted($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasDeleted() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearDeleted() => clearField(4);
 }
 

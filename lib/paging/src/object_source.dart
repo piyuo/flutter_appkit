@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/disk_cache/disk_cache.dart' as disk_cache;
-import 'paged_data_source.dart';
+import 'data_source.dart';
 import 'types.dart';
 
-class PagedObjectSource<T extends pb.Object> extends PagedDataSource<T> {
-  PagedObjectSource({
+class ObjectSource<T extends pb.Object> extends DataSource<T> {
+  ObjectSource({
     required String key,
     required pb.Factory<T> objectFactory,
     required DataLoader<T> dataLoader,

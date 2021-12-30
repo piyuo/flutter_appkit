@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 /// if T is not null mean load row after T
 typedef DataLoader<T> = Future<List<T>> Function(BuildContext context, T? last, int rowsPerPage);
 
+/// DataRefresher refresh cached rows, return true if cachedRows has reach to end
+typedef DataRefresher<T> = Future<RefreshInstruction<T>> Function(BuildContext context, T? first, int rowsPerPage);
+
+
 /// RefreshInstruction instruct how to refresh rows
 class RefreshInstruction<T> {
   RefreshInstruction({
@@ -16,8 +20,6 @@ class RefreshInstruction<T> {
   bool get isNotEmpty => updated.isNotEmpty || deleted.isNotEmpty;
 }
 
-/// DataRefresher refresh cached rows, return true if cachedRows has reach to end
-typedef DataRefresher<T> = Future<RefreshInstruction<T>> Function(BuildContext context, T? first, int rowsPerPage);
 
 /// DataRemover remove data, return true if removal success
 typedef DataRemover<T> = Future<bool> Function(BuildContext context, List<T> selectedRows);
