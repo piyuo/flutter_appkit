@@ -43,6 +43,23 @@ void main() {
       expect(savedTag, savedTag2);
     });
 
+    test('should support namespace', () async {
+      await reset();
+      await set('hello', 'world', namespace: 'my');
+      expect(length, 2);
+      expect(timeLength, 1);
+
+      var value = await get('hello');
+      expect(value, isNull);
+
+      value = await get('hello', namespace: 'my');
+      expect(value, 'world');
+
+      await delete('hello', namespace: 'my');
+      value = await get('hello', namespace: 'my');
+      expect(value, isNull);
+    });
+
     test('should delete from cache', () async {
       await reset();
       await set('hello', 'world');
@@ -67,10 +84,10 @@ void main() {
       await setTestItem(notExpiredTag, 'notExpired', 'world');
       expect(await get('notExpired'), 'world');
 
-      expect(length, 2);
+      expect(length, 4);
       expect(timeLength, 2);
       await cleanup();
-      expect(length, 1);
+      expect(length, 2);
       expect(timeLength, 1);
 
       expect(await get('expired'), isNull);

@@ -31,11 +31,14 @@ class Dataset<T extends pb.Object> {
   Dataset({
     required this.dataLoader,
     required this.id,
+    this.namespace = '',
   });
 
   final DataLoader<T> dataLoader;
 
   final String id;
+
+  final String namespace;
 
   bool _noRefresh = false;
 
@@ -171,4 +174,16 @@ class Dataset<T extends pb.Object> {
   bool get isNotEmpty => rows.isNotEmpty;
 
   bool contains(T obj) => rows.contains(obj);
+
+  /// update item in cache, usually after user edit item
+  Future<void> update(T item) async {
+    for (int i = 0; i < _data.length; i++) {
+      if (item.entityId == _data[i].entityId) {
+        _data[i] = item;
+        await cache.set(item.entityId, item);
+        break;
+      }
+    }
+    await saveToCache();
+  }
 }
