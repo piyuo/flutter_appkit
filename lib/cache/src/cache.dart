@@ -13,6 +13,16 @@ int _setCount = 0;
 
 /// init cache env
 Future<void> init() async {
+  await db.init();
+  _timeDB = await db.use('time');
+  _cacheDB = await db.use('cache');
+}
+
+/// init database env
+@visibleForTesting
+Future<void> initForTest() async {
+  // ignore: invalid_use_of_visible_for_testing_member
+  await db.initForTest();
   _timeDB = await db.use('time');
   _cacheDB = await db.use('cache');
 }

@@ -43,18 +43,24 @@ class DB {
   Future<void> deleteFromDisk() => _box.deleteFromDisk();
 }
 
+bool _init = false;
+
 /// init database env
 Future<void> init() async {
-  if (!kIsWeb) {
+  if (!kIsWeb && !_init) {
     final directory = await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);
+    _init = true;
   }
 }
 
 /// init database env
 @visibleForTesting
 Future<void> initForTest() async {
-  Hive.init('test.db');
+  if (!_init) {
+    Hive.init('test.db');
+    _init = true;
+  }
 }
 
 /// registerBuilder registers a [builder] for generate pb.Object

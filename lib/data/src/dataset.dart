@@ -8,20 +8,26 @@ enum LoadType { refresh, more }
 
 class LoadGuide {
   LoadGuide({
+    required this.isRefresh,
+    required this.limit,
     this.anchorTimestamp,
     this.anchorId,
-    this.type = LoadType.refresh,
-    this.limit = 10,
   });
 
+  /// anchorTimestamp is anchor item's timestamp
   google.Timestamp? anchorTimestamp;
 
+  /// anchorID is anchor item's ID
   String? anchorId;
 
-  // isNext set to true to load next page, otherwise load previous page
-  LoadType type;
+  /// isRefresh set to true mean refresh data, otherwise load more data
+  bool isRefresh;
 
+  /// limit is the number of data to load
   int limit;
+
+  /// hasAnchor return true if the load guide has anchor
+  bool get hasAnchor => anchorId != null;
 }
 
 /// DataLoader load new data by guide, return null if this data reach to the end.
@@ -31,14 +37,20 @@ class Dataset<T extends pb.Object> {
   Dataset({
     required this.dataLoader,
     required this.id,
-    this.namespace = '',
+    this.namespace,
+    this.onDataChanged,
   });
 
   final DataLoader<T> dataLoader;
 
   final String id;
 
-  final String namespace;
+  final String? namespace;
+
+  final VoidCallback? onDataChanged;
+
+  /// _data keep all saved data
+  final List<T> _data = [];
 
   bool _noRefresh = false;
 
@@ -48,22 +60,27 @@ class Dataset<T extends pb.Object> {
 
   bool get noMoreData => _noMore;
 
-  /// _data keep all saved data
-  final List<T> _data = [];
-
   /// init read snapshot from cache
   Future<void> init() async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    final snapshot = await cache.get(id);
-    if (snapshot != null) {
-      snapshot as DatasetSnapshot;
-      for (String itemID in snapshot.data) {
-        final item = await cache.get(itemID);
-        _data.add(item);
-      }
-      _noRefresh = snapshot.noRefresh;
-      _noMore = snapshot.noMore;
+    final snapshot = await cache.get(id, namespace: namespace);
+    if (snapshot == null) {
+      return;
     }
+
+    snapshot as DatasetSnapshot;
+    for (String itemID in snapshot.data) {
+      final item = await cache.get(itemID, namespace: namespace);
+      if (item == null) {
+        // item should not be null, cache may not reliable
+        await reset();
+        return;
+      }
+      _data.add(item);
+    }
+    _noRefresh = snapshot.noRefresh;
+    _noMore = snapshot.noMore;
+    onDataChanged?.call();
   }
 
   /// saveToCache save snapshot to cache
@@ -71,19 +88,36 @@ class Dataset<T extends pb.Object> {
   Future<void> saveToCache() async {
     assert(id.isNotEmpty, 'dataset id is empty');
     return await cache.set(
-        id,
-        DatasetSnapshot(
-          data: _data.map((item) => item.entityId).toList(),
-          noMore: _noMore,
-          noRefresh: _noRefresh,
-        ));
+      id,
+      DatasetSnapshot(
+        data: _data.map((item) => item.entityId).toList(),
+        noMore: _noMore,
+        noRefresh: _noRefresh,
+      ),
+      namespace: namespace,
+    );
+  }
+
+  /// saveItems save list of item into cache
+  @visibleForTesting
+  Future<void> reset() async {
+    _noRefresh = false;
+    _noMore = false;
+    await deleteItems(_data);
+    _data.clear();
+    onDataChanged?.call();
+    debugPrint('[dataset] data reset, start fresh');
   }
 
   /// saveItems save list of item into cache
   @visibleForTesting
   Future<void> saveItems(List<T> items) async {
     for (var item in items) {
-      await cache.set(item.entityId, item);
+      await cache.set(
+        item.entityId,
+        item,
+        namespace: namespace,
+      );
     }
   }
 
@@ -91,19 +125,23 @@ class Dataset<T extends pb.Object> {
   @visibleForTesting
   Future<void> deleteItems(List<T> items) async {
     for (var item in items) {
-      await cache.delete(item.entityId);
+      await cache.delete(
+        item.entityId,
+        namespace: namespace,
+      );
     }
   }
 
-  /// newGuide create guide for data loader
+  /// removeDuplicateInData remove duplicate item
   @visibleForTesting
-  LoadGuide newGuide(LoadType type, T? anchor, int limit) {
-    return LoadGuide(
-      type: type,
-      anchorTimestamp: anchor != null ? anchor.getEntity()!.updateTime : null,
-      anchorId: anchor != null ? anchor.getEntity()!.id : null,
-      limit: limit,
-    );
+  Future<void> removeDuplicateInData(List<T> items) async {
+    final idList = items.map((item) => item.entityId).toList();
+    for (int i = _data.length - 1; i >= 0; i--) {
+      final item = _data[i];
+      if (idList.contains(item)) {
+        _data.removeAt(i);
+      }
+    }
   }
 
   /// refresh seeking new data from data loader
@@ -117,7 +155,14 @@ class Dataset<T extends pb.Object> {
     if (_data.isNotEmpty) {
       anchor = _data.first;
     }
-    final result = await dataLoader(context, newGuide(LoadType.refresh, anchor, limit));
+    final result = await dataLoader(
+        context,
+        LoadGuide(
+          isRefresh: true,
+          anchorTimestamp: anchor?.entityUpdateTime,
+          anchorId: anchor?.entityId,
+          limit: limit,
+        ));
 
     if (result == null) {
       debugPrint('[dataset] end of data, no need refresh');
@@ -126,15 +171,15 @@ class Dataset<T extends pb.Object> {
     }
     if (result.length == limit) {
       // if result.length == limit, it means there is more data and we need expired all our cache to start over
-      _noRefresh = false;
-      _noMore = false;
-      await deleteItems(_data);
-      _data.clear();
-      debugPrint('[dataset] data reset, start fresh');
+      await reset();
+    } else if (result.isNotEmpty && _data.isNotEmpty) {
+      removeDuplicateInData(result);
     }
+
     await saveItems(result);
     _data.insertAll(0, result);
     await saveToCache();
+    onDataChanged?.call();
     debugPrint('[dataset] refresh ${result.length} items');
   }
 
@@ -149,12 +194,20 @@ class Dataset<T extends pb.Object> {
     if (_data.isNotEmpty) {
       anchor = _data.last;
     }
-    final result = await dataLoader(context, newGuide(LoadType.more, anchor, limit));
-
+    final result = await dataLoader(
+        context,
+        LoadGuide(
+          isRefresh: false,
+          anchorTimestamp: anchor?.entityUpdateTime,
+          anchorId: anchor?.entityId,
+          limit: limit,
+        ));
     if (result == null) {
       debugPrint('[dataset] end of data, no more data');
       _noMore = true;
       return;
+    } else if (result.isNotEmpty && _data.isNotEmpty) {
+      removeDuplicateInData(result);
     }
     await saveItems(result);
     _data.addAll(result);
@@ -162,6 +215,7 @@ class Dataset<T extends pb.Object> {
       _noMore = true;
     }
     await saveToCache();
+    onDataChanged?.call();
     debugPrint('[dataset] load ${result.length} items');
   }
 
@@ -180,7 +234,7 @@ class Dataset<T extends pb.Object> {
     for (int i = 0; i < _data.length; i++) {
       if (item.entityId == _data[i].entityId) {
         _data[i] = item;
-        await cache.set(item.entityId, item);
+        await cache.set(item.entityId, item, namespace: namespace);
         break;
       }
     }

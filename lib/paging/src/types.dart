@@ -8,7 +8,6 @@ typedef DataLoader<T> = Future<List<T>> Function(BuildContext context, T? last, 
 /// DataRefresher refresh cached rows, return true if cachedRows has reach to end
 typedef DataRefresher<T> = Future<RefreshInstruction<T>> Function(BuildContext context, T? first, int rowsPerPage);
 
-
 /// RefreshInstruction instruct how to refresh rows
 class RefreshInstruction<T> {
   RefreshInstruction({
@@ -19,7 +18,6 @@ class RefreshInstruction<T> {
   final List<T> deleted;
   bool get isNotEmpty => updated.isNotEmpty || deleted.isNotEmpty;
 }
-
 
 /// DataRemover remove data, return true if removal success
 typedef DataRemover<T> = Future<bool> Function(BuildContext context, List<T> selectedRows);
