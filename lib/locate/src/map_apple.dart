@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/types/types.dart' as types;
-import 'package:libcli/uid/uid.dart' as uid;
+import 'package:libcli/unique/unique.dart' as unique;
 import 'map.dart';
 
 /// AppleImpl is apple map implementation
@@ -34,7 +34,7 @@ class AppleImpl extends MapProviderImpl {
     if (showMarker) {
       _markers.add(
         Annotation(
-            annotationId: AnnotationId(uid.uuid()), // marker id must be unique
+            annotationId: AnnotationId(unique.uuid()), // marker id must be unique
             position: LatLng(
               latlng.lat,
               latlng.lng,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:libcli/types/types.dart' as types;
-import 'package:libcli/uid/uid.dart' as uid;
+import 'package:libcli/unique/unique.dart' as unique;
 import 'map.dart';
 
 /// GoogleImpl is google map implementation
@@ -30,7 +30,7 @@ class GoogleImpl extends MapProviderImpl {
     if (showMarker) {
       _markers.add(
         Marker(
-            markerId: MarkerId(uid.uuid()), // marker id must be unique
+            markerId: MarkerId(unique.uuid()), // marker id must be unique
             position: LatLng(
               latlng.lat,
               latlng.lng,
