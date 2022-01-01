@@ -1,7 +1,9 @@
-import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/pb/google.dart' as google;
 
 extension TimestampOnDateTime on DateTime {
-  /// toTimestamp
+  /// timestamp return google timestamp
   google.Timestamp get timestamp => google.Timestamp.fromDateTime(this);
+
+  /// utcTimestamp return utc google timestamp
+  google.Timestamp get utcTimestamp => google.Timestamp.fromDateTime(toUtc());
 }
