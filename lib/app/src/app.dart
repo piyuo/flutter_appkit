@@ -6,6 +6,7 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'package:beamer/beamer.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -64,7 +65,7 @@ typedef RouteBuilder = Widget Function(BuildContext context, Map<String, String>
 String _userID = '';
 String get userID => _userID;
 set userID(String value) {
-  log.log('[env] set userID=$value');
+  log.log('[app] set userID=$value');
   _userID = value;
 }
 
@@ -80,8 +81,8 @@ void start({
   ThemeData? darkTheme,
 }) {
   WidgetsFlutterBinding.ensureInitialized();
-  // init env
-  log.log('[env] start $appName, branch=$branch');
+  // init cache && db
+  log.log('[app] start $appName, branch=$branch');
   _branch = branch;
   _appName = appName;
   _serviceEmail = serviceEmail;
@@ -90,7 +91,6 @@ void start({
   //routes
   if (kIsWeb) {
     Beamer.setPathUrlStrategy();
-    //setPathUrlStrategy(); //remove the leading hash (#) from the URL
   }
 
   // put delegate outside of build to avoid hot reload error
@@ -100,56 +100,36 @@ void start({
     ),
   );
 
-  // run app
-  error.watch(() => runApp(MultiProvider(
-        providers: [
-          Provider(create: (_) => dialog.DialogProvider()),
-          ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
-          if (providers != null) ...providers,
-        ],
-        child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
-          builder: (context, dialogProvider, i18nProvider, __) => MaterialApp.router(
-            scaffoldMessengerKey: dialogProvider.scaffoldKey,
-            builder: dialogProvider.init(),
-            debugShowCheckedModeBanner: false,
-            theme: theme ?? ThemeData(brightness: Brightness.light),
-            darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
-            locale: i18nProvider.overrideLocale,
-            localizationsDelegates: [
-              if (l10nDelegate != null) l10nDelegate,
-              ...i18nProvider.localizationsDelegates,
-            ],
-            supportedLocales: i18nProvider.supportedLocales,
-            routeInformationParser: BeamerParser(),
-            routerDelegate: beamerDelegate,
-            backButtonDispatcher: BeamerBackButtonDispatcher(
-              delegate: beamerDelegate,
+  Future.microtask(() async {
+    // init cache
+    await cache.init();
+    // run app
+    return error.watch(() => runApp(MultiProvider(
+          providers: [
+            Provider(create: (_) => dialog.DialogProvider()),
+            ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
+            if (providers != null) ...providers,
+          ],
+          child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
+            builder: (context, dialogProvider, i18nProvider, __) => MaterialApp.router(
+              scaffoldMessengerKey: dialogProvider.scaffoldKey,
+              builder: dialogProvider.init(),
+              debugShowCheckedModeBanner: false,
+              theme: theme ?? ThemeData(brightness: Brightness.light),
+              darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
+              locale: i18nProvider.overrideLocale,
+              localizationsDelegates: [
+                if (l10nDelegate != null) l10nDelegate,
+                ...i18nProvider.localizationsDelegates,
+              ],
+              supportedLocales: i18nProvider.supportedLocales,
+              routeInformationParser: BeamerParser(),
+              routerDelegate: beamerDelegate,
+              backButtonDispatcher: BeamerBackButtonDispatcher(
+                delegate: beamerDelegate,
+              ),
             ),
           ),
-        ),
-      )));
+        )));
+  });
 }
-
-            /*onGenerateRoute: (RouteSettings settings) {
-              String name = listenRoute(settings);
-              if (name == '') {
-                // for web with url route, return null to skip default route
-                return null;
-              }
-              Widget? widget = routes(name);
-              if (widget != null) {
-                if (kIsWeb || name == '/') {
-                  return delta.NoAnimRouteBuilder(widget);
-                }
-                return MaterialPageRoute(
-                  builder: (_) => widget,
-                  settings: settings,
-                );
-              }
-              return MaterialPageRoute(
-                  builder: (_) => Scaffold(
-                        body: Center(
-                          child: Text('404! ${settings.name} not found'),
-                        ),
-                      ));
-            },*/
