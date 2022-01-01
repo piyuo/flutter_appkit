@@ -1,76 +1,76 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/pb/src/simple/simple.dart' as simple;
+import 'package:libcli/pb/src/common/common.dart' as common;
 import 'util.dart';
 
 void main() {
   group('[util]', () {
     test('should able test PbOK', () {
-      expect(isOK(simple.Error()), false);
-      expect(isOK(simple.OK()), true);
+      expect(isOK(common.Error()), false);
+      expect(isOK(common.OK()), true);
     });
 
     test('should able test error', () {
       expect(
           isError(
-            simple.Error()..code = 'a',
+            common.Error()..code = 'a',
             'a',
           ),
           true);
       expect(
           isError(
-            simple.Error()..code = 'b',
+            common.Error()..code = 'b',
             'a',
           ),
           false);
-      expect(isError(simple.OK(), 'a'), false);
+      expect(isError(common.OK(), 'a'), false);
     });
 
     test('should able test PbString', () {
       expect(
           isString(
-            simple.String()..value = 'a',
+            common.String()..value = 'a',
             'a',
           ),
           true);
       expect(
           isString(
-            simple.String()..value = 'b',
+            common.String()..value = 'b',
             'a',
           ),
           false);
-      expect(isString(simple.OK(), 'a'), false);
+      expect(isString(common.OK(), 'a'), false);
     });
 
     test('should able test PbBool', () {
       expect(
           isBool(
-            simple.Bool()..value = true,
+            common.Bool()..value = true,
             true,
           ),
           true);
       expect(
           isBool(
-            simple.Bool()..value = false,
+            common.Bool()..value = false,
             true,
           ),
           false);
-      expect(isBool(simple.OK(), false), false);
+      expect(isBool(common.OK(), false), false);
     });
 
     test('should able test PbInt', () {
       expect(
           isNumber(
-            simple.Number()..value = 12,
+            common.Number()..value = 12,
             12,
           ),
           true);
       expect(
           isNumber(
-            simple.Number()..value = 12,
+            common.Number()..value = 12,
             11,
           ),
           false);
-      expect(isNumber(simple.OK(), 11), false);
+      expect(isNumber(common.OK(), 11), false);
     });
   });
 }

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/pb/src/simple/simple.dart' as simple;
+import 'package:libcli/pb/src/common/common.dart' as common;
 import 'json.dart';
 
 void main() {
@@ -23,20 +23,20 @@ void main() {
     });
 
     test('should stringify object', () async {
-      final obj = simple.Error()..code = 'hi';
+      final obj = common.Error()..code = 'hi';
       String str = formatObject(obj);
       expect(str, 'CgJoaQ==');
 
-      final obj2 = parseObject(str, simple.Error());
+      final obj2 = parseObject(str, common.Error());
       expect(obj.code, obj2.code);
     });
 
     test('should stringify object list', () async {
-      final list = [simple.Error()..code = 'hello', simple.Error()..code = 'world'];
+      final list = [common.Error()..code = 'hello', common.Error()..code = 'world'];
       List<String> strList = formatObjectList(list);
       expect(strList.length, 2);
 
-      final list2 = parseObjectList(strList, () => simple.Error());
+      final list2 = parseObjectList(strList, () => common.Error());
       expect(list[0].code, list2[0].code);
       expect(list[0].code, list2[0].code);
     });

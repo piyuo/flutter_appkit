@@ -2,11 +2,26 @@
 
 import 'package:libcli/pb/pb.dart' as pb;
 import 'entity.pb.dart';
+import 'bool.pb.dart';
+import 'error.pb.dart';
+import 'number.pb.dart';
+import 'ok.pb.dart';
+import 'string.pb.dart';
 
   pb.Object objectBuilder(int id, List<int> bytes) {
     switch (id) {
       case 2:
         return Entity.fromBuffer(bytes);
+      case 3:
+        return Bool.fromBuffer(bytes);
+      case 4:
+        return Error.fromBuffer(bytes);
+      case 5:
+        return Number.fromBuffer(bytes);
+      case 6:
+        return OK.fromBuffer(bytes);
+      case 7:
+        return String.fromBuffer(bytes);
     }
     throw Exception('failed to create object in commonObjectByID. id($id) out of range');
 }

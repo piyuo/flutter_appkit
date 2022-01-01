@@ -11,7 +11,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Number extends pb.Object {
-  $core.int mapIdXXX() => 4;
+  $core.int mapIdXXX() => 5;
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Number', createEmptyInstance: create)
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.O3)
