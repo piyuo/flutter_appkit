@@ -51,8 +51,8 @@ Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
     Hive.init(directory.path);
     _init = true;
   }
-  Hive.registerAdapter(
-      ObjectBuilderAdapter(builders: <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders)));
+  final map = <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders);
+  Hive.registerAdapter(ObjectBuilderAdapter(builders: map));
 }
 
 /// init database env
@@ -62,8 +62,8 @@ Future<void> initForTest(Map<String, pb.ObjectBuilder> builders) async {
     Hive.init('test.db');
     _init = true;
   }
-  Hive.registerAdapter(
-      ObjectBuilderAdapter(builders: <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders)));
+  final map = <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders);
+  Hive.registerAdapter(ObjectBuilderAdapter(builders: map));
 }
 
 /// use a db, create new one if database not exists
