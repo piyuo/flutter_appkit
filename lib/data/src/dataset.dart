@@ -63,6 +63,7 @@ class Dataset<T extends pb.Object> {
   /// init read snapshot from cache
   Future<void> init() async {
     assert(id.isNotEmpty, 'dataset id is empty');
+/*
     final snapshot = await cache.get(id, namespace: namespace);
     if (snapshot == null) {
       return;
@@ -80,6 +81,23 @@ class Dataset<T extends pb.Object> {
     }
     _noRefresh = snapshot.noRefresh;
     _noMore = snapshot.noMore;
+*/
+    final savedData = await cache.get('${id}_data', namespace: namespace);
+    if (savedData == null) {
+      return;
+    }
+
+    for (String itemID in savedData) {
+      final item = await cache.get(itemID, namespace: namespace);
+      if (item == null) {
+        // item should not be null, cache may not reliable
+        await reset();
+        return;
+      }
+      _data.add(item);
+    }
+    _noRefresh = await cache.get('${id}_nr', namespace: namespace);
+    _noMore = await cache.get('${id}_nm', namespace: namespace);
     onDataChanged?.call();
   }
 
@@ -87,7 +105,11 @@ class Dataset<T extends pb.Object> {
   @visibleForTesting
   Future<void> saveToCache() async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    return await cache.set(
+    await cache.set('${id}_data', _data.map((item) => item.entityId).toList(), namespace: namespace);
+    await cache.set('${id}_nm', _noMore, namespace: namespace);
+    await cache.set('${id}_nr', _noRefresh, namespace: namespace);
+
+/*    return await cache.set(
       id,
       pb.DatasetSnapshot(
         data: _data.map((item) => item.entityId).toList(),
@@ -95,7 +117,7 @@ class Dataset<T extends pb.Object> {
         noRefresh: _noRefresh,
       ),
       namespace: namespace,
-    );
+    );*/
   }
 
   /// saveItems save list of item into cache
