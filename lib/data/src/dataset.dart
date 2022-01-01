@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/pb/src/google/google.dart' as google;
-import 'dataset_snapshot.dart';
 
 enum LoadType { refresh, more }
 
@@ -68,7 +67,7 @@ class Dataset<T extends pb.Object> {
       return;
     }
 
-    snapshot as DatasetSnapshot;
+    snapshot as pb.DatasetSnapshot;
     for (String itemID in snapshot.data) {
       final item = await cache.get(itemID, namespace: namespace);
       if (item == null) {
@@ -89,7 +88,7 @@ class Dataset<T extends pb.Object> {
     assert(id.isNotEmpty, 'dataset id is empty');
     return await cache.set(
       id,
-      DatasetSnapshot(
+      pb.DatasetSnapshot(
         data: _data.map((item) => item.entityId).toList(),
         noMore: _noMore,
         noRefresh: _noRefresh,

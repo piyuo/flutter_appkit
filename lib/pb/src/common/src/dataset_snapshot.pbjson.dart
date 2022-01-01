@@ -12,11 +12,11 @@ import 'dart:typed_data' as $typed_data;
 const DatasetSnapshot$json = const {
   '1': 'DatasetSnapshot',
   '2': const [
-    const {'1': 'value', '3': 1, '4': 3, '5': 9, '10': 'value'},
+    const {'1': 'data', '3': 1, '4': 3, '5': 9, '10': 'data'},
     const {'1': 'noRefresh', '3': 2, '4': 1, '5': 8, '10': 'noRefresh'},
     const {'1': 'noMore', '3': 3, '4': 1, '5': 8, '10': 'noMore'},
   ],
 };
 
 /// Descriptor for `DatasetSnapshot`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List datasetSnapshotDescriptor = $convert.base64Decode('Cg9EYXRhc2V0U25hcHNob3QSFAoFdmFsdWUYASADKAlSBXZhbHVlEhwKCW5vUmVmcmVzaBgCIAEoCFIJbm9SZWZyZXNoEhYKBm5vTW9yZRgDIAEoCFIGbm9Nb3Jl');
+final $typed_data.Uint8List datasetSnapshotDescriptor = $convert.base64Decode('Cg9EYXRhc2V0U25hcHNob3QSEgoEZGF0YRgBIAMoCVIEZGF0YRIcCglub1JlZnJlc2gYAiABKAhSCW5vUmVmcmVzaBIWCgZub01vcmUYAyABKAhSBm5vTW9yZQ==');

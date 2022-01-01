@@ -15,7 +15,7 @@ class DatasetSnapshot extends pb.Object {
   namespace() => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'DatasetSnapshot', createEmptyInstance: create)
-    ..pPS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')
+    ..pPS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'data')
     ..aOB(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'noRefresh', protoName: 'noRefresh')
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'noMore', protoName: 'noMore')
     ..hasRequiredFields = false
@@ -23,13 +23,13 @@ class DatasetSnapshot extends pb.Object {
 
   DatasetSnapshot._() : super();
   factory DatasetSnapshot({
-    $core.Iterable<$core.String>? value,
+    $core.Iterable<$core.String>? data,
     $core.bool? noRefresh,
     $core.bool? noMore,
   }) {
     final _result = create();
-    if (value != null) {
-      _result.value.addAll(value);
+    if (data != null) {
+      _result.data.addAll(data);
     }
     if (noRefresh != null) {
       _result.noRefresh = noRefresh;
@@ -61,7 +61,7 @@ class DatasetSnapshot extends pb.Object {
   static DatasetSnapshot? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.String> get value => $_getList(0);
+  $core.List<$core.String> get data => $_getList(0);
 
   @$pb.TagNumber(2)
   $core.bool get noRefresh => $_getBF(1);
