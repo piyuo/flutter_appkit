@@ -7,6 +7,7 @@ import 'error.pb.dart';
 import 'number.pb.dart';
 import 'ok.pb.dart';
 import 'string.pb.dart';
+import 'dataset_snapshot.pb.dart';
 
   pb.Object objectBuilder(int id, List<int> bytes) {
     switch (id) {
@@ -22,6 +23,8 @@ import 'string.pb.dart';
         return OK.fromBuffer(bytes);
       case 7:
         return String.fromBuffer(bytes);
+      case 8:
+        return DatasetSnapshot.fromBuffer(bytes);
     }
     throw Exception('failed to create object in commonObjectByID. id($id) out of range');
 }

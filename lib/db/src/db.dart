@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/pb/src/common/common.dart' as common;
 
 class DB {
   DB(this._box);
@@ -45,6 +46,7 @@ bool _init = false;
 
 /// init database env
 Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
+  builders['common'] = common.objectBuilder;
   if (!kIsWeb && !_init) {
     final directory = await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);
@@ -56,6 +58,7 @@ Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
 /// init database env
 @visibleForTesting
 Future<void> initForTest(Map<String, pb.ObjectBuilder> builders) async {
+  builders['common'] = common.objectBuilder;
   if (!_init) {
     Hive.init('test.db');
     _init = true;

@@ -7,3 +7,4 @@ export 'src/error.pb.dart';
 export 'src/number.pb.dart';
 export 'src/ok.pb.dart';
 export 'src/string.pb.dart';
+export 'src/dataset_snapshot.pb.dart';
