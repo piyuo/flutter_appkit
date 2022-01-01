@@ -15,6 +15,7 @@ import 'package:libcli/pb/src/common/src/entity.pb.dart' as $0;
 class Person extends pb.Object {
   $core.int mapIdXXX() => 1001;
   getEntity() => entity;
+  namespace() => 'sample';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Person', createEmptyInstance: create)
     ..aOM<$0.Entity>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'entity', subBuilder: $0.Entity.create)

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'cache.dart';
 
 void main() {
-  db.initForTest();
+  db.initForTest({});
   init();
 
   setUp(() async {});

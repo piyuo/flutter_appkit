@@ -1,15 +1,11 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
-
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/meta/sample/sample.dart' as sample;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'db.dart';
 
 void main() {
-  initForTest();
-  registerBuilder((id, bytes) {
-    return pb.Error.fromBuffer(bytes);
-  });
+  initForTest({'sample': sample.objectBuilder});
 
   setUp(() async {});
 
@@ -26,11 +22,11 @@ void main() {
       expect(name, 'world');
     });
 
-    test('should put/get pb.object', () async {
+    test('should set/get pb.object', () async {
       final testDB = await use('testDB');
-      testDB.set('e', pb.Error()..code = '123');
-      var err = await testDB.get('e');
-      expect(err.code, '123');
+      testDB.set('e', sample.Person(name: '123'));
+      var person = await testDB.get('e');
+      expect(person.name, '123');
     });
 
     test('should save string list ', () async {

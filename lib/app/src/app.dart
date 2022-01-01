@@ -7,6 +7,8 @@ import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/cache/cache.dart' as cache;
+import 'package:libcli/db/db.dart' as db;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'package:beamer/beamer.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -77,6 +79,7 @@ void start({
   List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
   String serviceEmail = 'support@piyuo.com',
+  Map<String, pb.ObjectBuilder> objectBuilders = const {},
   ThemeData? theme,
   ThemeData? darkTheme,
 }) {
@@ -101,6 +104,9 @@ void start({
   );
 
   Future.microtask(() async {
+    // init db
+    await db.init(objectBuilders);
+
     // init cache
     await cache.init();
     // run app

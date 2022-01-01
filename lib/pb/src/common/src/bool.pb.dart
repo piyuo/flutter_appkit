@@ -12,6 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class Bool extends pb.Object {
   $core.int mapIdXXX() => 3;
+  namespace() => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Bool', createEmptyInstance: create)
     ..aOB(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')

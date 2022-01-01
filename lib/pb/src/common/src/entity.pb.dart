@@ -17,6 +17,7 @@ class Entity extends pb.Object {
   $core.int mapIdXXX() => 2;
 
   $core.int compareTo(pb.Object other) => other is Entity ? other.id.compareTo(this.id) : -1;
+  namespace() => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Entity', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')

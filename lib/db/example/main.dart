@@ -1,4 +1,4 @@
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:flutter/material.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
@@ -20,10 +20,7 @@ class Inventory {
 }
 
 main() {
-  init();
-  registerBuilder((id, bytes) {
-    return pb.Error.fromBuffer(bytes);
-  });
+  init({'sample': sample.objectBuilder});
   app.start(
     appName: 'db',
     routes: {
@@ -78,9 +75,9 @@ class DbExample extends StatelessWidget {
           child: const Text('pb.Object'),
           onPressed: () async {
             final testDB = await use('testDB');
-            testDB.set('e', pb.Error()..code = '123');
-            var err = await testDB.get('e');
-            debugPrint('error code: ${err.code}');
+            testDB.set('e', sample.Person(name: '123'));
+            var person = await testDB.get('e');
+            debugPrint('person name: ${person.name}');
           }),
     ]);
   }

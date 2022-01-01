@@ -59,6 +59,9 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
     mergeFromBuffer(bytes);
   }
 
+  /// namespace return object namespace, usually is package name
+  String namespace() => '';
+
   /// getEntity return object defined entity
   common.Entity? getEntity() => null;
 

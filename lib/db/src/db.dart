@@ -3,8 +3,6 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:libcli/pb/pb.dart' as pb;
 
-typedef InstanceBuilder<T> = T Function(int id, List<int> bytes);
-
 class DB {
   DB(this._box);
 
@@ -46,26 +44,23 @@ class DB {
 bool _init = false;
 
 /// init database env
-Future<void> init() async {
+Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
   if (!kIsWeb && !_init) {
     final directory = await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);
     _init = true;
   }
+  Hive.registerAdapter(ObjectBuilderAdapter(builders: builders));
 }
 
 /// init database env
 @visibleForTesting
-Future<void> initForTest() async {
+Future<void> initForTest(Map<String, pb.ObjectBuilder> builders) async {
   if (!_init) {
     Hive.init('test.db');
     _init = true;
   }
-}
-
-/// registerBuilder registers a [builder] for generate pb.Object
-void registerBuilder(InstanceBuilder builder) async {
-  Hive.registerAdapter(ObjectAdapter(builder: builder));
+  Hive.registerAdapter(ObjectBuilderAdapter(builders: builders));
 }
 
 /// use a db, create new one if database not exists
@@ -74,18 +69,22 @@ Future<DB> use(String dbName) async {
   return DB(box);
 }
 
-class ObjectAdapter extends TypeAdapter<pb.Object> {
-  ObjectAdapter({
-    required this.builder,
+class ObjectBuilderAdapter extends TypeAdapter<pb.Object> {
+  ObjectBuilderAdapter({
+    required this.builders,
   });
 
-  final InstanceBuilder builder;
+  final Map<String, pb.ObjectBuilder> builders;
 
   @override
   final typeId = 0;
 
   @override
   pb.Object read(BinaryReader reader) {
+    String namespace = reader.readString();
+    assert(builders.containsKey(namespace),
+        "$namespace not found, make sure you register {'$namespace':objectBuilder} in app.start()");
+    final builder = builders[namespace]!;
     int id = reader.readInt();
     final bytes = reader.readByteList();
     return builder(id, bytes);
@@ -93,6 +92,7 @@ class ObjectAdapter extends TypeAdapter<pb.Object> {
 
   @override
   void write(BinaryWriter writer, pb.Object obj) {
+    writer.writeString(obj.namespace());
     writer.writeInt(obj.mapIdXXX());
     var bytes = obj.writeToBuffer();
     writer.writeByteList(bytes);
