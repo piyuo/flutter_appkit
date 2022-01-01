@@ -1,4 +1,5 @@
 import 'package:libcli/pb/src/common/common.dart' as common;
+import 'package:libcli/pb/google.dart' as google;
 
 /// isOK return true if obj is OK
 ///
