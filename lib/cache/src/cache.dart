@@ -2,6 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'dart:core';
 import 'package:libcli/db/db.dart' as db;
 
+/// cleanupWhenSet is when to cleanup on every 10th set
+const int cleanupWhenSet = 5;
+
+/// cleanupMaxItem is the maximum number of items to delete in every cleanup
+const int cleanupMaxItem = 20;
+
 /// cacheDB keep all cached data
 late db.DB _cacheDB;
 
@@ -45,7 +51,7 @@ Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
 
   _cacheDB.set(key, value);
   _setCount++;
-  if (_setCount > 10) {
+  if (_setCount > cleanupWhenSet) {
     _setCount = 0;
     await cleanup();
   }
@@ -89,7 +95,7 @@ Future<void> cleanup() async {
   for (int i = 0; i < _timeDB.length; i++) {
     final expirationTimeTag = await _timeDB.keyAt(i);
     final expirationTime = int.parse(expirationTimeTag);
-    if (expirationTime > yearBefore || deleteCount > 10) {
+    if (expirationTime > yearBefore || deleteCount > cleanupMaxItem) {
       break;
     }
     final key = await _timeDB.get(expirationTimeTag);

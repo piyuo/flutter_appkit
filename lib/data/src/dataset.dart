@@ -3,7 +3,8 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/pb/src/google/google.dart' as google;
 
-enum LoadType { refresh, more }
+/// deleteMaxItem is the maximum number of items to delete, rest leave to cache cleanup to avoid application busy too long.
+const int deleteMaxItem = 100;
 
 class LoadGuide {
   LoadGuide({
@@ -120,14 +121,19 @@ class Dataset<T extends pb.Object> {
     }
   }
 
-  /// deleteItems delete list of item into cache
+  /// deleteItems delete list of item from cache, max 100 items
   @visibleForTesting
   Future<void> deleteItems(List<T> items) async {
+    int deleteCount = 0;
     for (var item in items) {
       await cache.delete(
         item.entityId,
         namespace: namespace,
       );
+      deleteCount++;
+      if (deleteCount >= deleteMaxItem) {
+        break;
+      }
     }
   }
 
