@@ -58,12 +58,12 @@ Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
 /// init database env
 @visibleForTesting
 Future<void> initForTest(Map<String, pb.ObjectBuilder> builders) async {
-  builders['common'] = common.objectBuilder;
   if (!_init) {
     Hive.init('test.db');
     _init = true;
   }
-  Hive.registerAdapter(ObjectBuilderAdapter(builders: builders));
+  Hive.registerAdapter(
+      ObjectBuilderAdapter(builders: <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders)));
 }
 
 /// use a db, create new one if database not exists
