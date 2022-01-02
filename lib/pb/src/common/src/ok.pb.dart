@@ -11,7 +11,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class OK extends pb.Object {
-  $core.int mapIdXXX() => 6;
+  $core.int mapIdXXX() => 5;
   namespace() => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OK', createEmptyInstance: create)
