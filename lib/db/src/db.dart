@@ -28,10 +28,7 @@ class DB {
   bool contains(dynamic key) => _box.containsKey(key);
 
   /// put saves the [key] - [value] pair
-  Future<void> set(dynamic key, dynamic value) async {
-    debugPrint('[db] set $key');
-    _box.put(key, value);
-  }
+  Future<void> set(dynamic key, dynamic value) => _box.put(key, value);
 
   /// get returns the value associated with the given [key]. If the key does not exist, `null` is returned.
   ///
@@ -39,23 +36,17 @@ class DB {
   Future<dynamic> get(dynamic key, {dynamic defaultValue}) async => _box.get(key, defaultValue: defaultValue);
 
   /// deletes the given [key] from the box , If it does not exist, nothing happens.
-  Future<void> delete(dynamic key) async {
-    debugPrint('[db] delete $key');
-    _box.delete(key);
-  }
+  Future<void> delete(dynamic key) => _box.delete(key);
 
   /// deleteFromDisk remove the file which contains the box and closes the box. In the browser, the IndexedDB database is being removed.
   Future<void> deleteFromDisk() => _box.deleteFromDisk();
 }
 
-bool _init = false;
-
 /// init database env
 Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
-  if (!kIsWeb && !_init) {
+  if (!kIsWeb) {
     final directory = await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);
-    _init = true;
   }
   final map = <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders);
   Hive.registerAdapter(ObjectBuilderAdapter(builders: map));
@@ -64,10 +55,7 @@ Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
 /// init database env
 @visibleForTesting
 Future<void> initForTest(Map<String, pb.ObjectBuilder> builders) async {
-  if (!_init) {
-    Hive.init('test.db');
-    _init = true;
-  }
+  Hive.init('test.db');
   final map = <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders);
   Hive.registerAdapter(ObjectBuilderAdapter(builders: map));
 }
