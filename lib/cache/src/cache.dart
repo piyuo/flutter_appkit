@@ -107,6 +107,9 @@ Future<void> cleanup() async {
     await _timeDB.delete(expirationTimeTag);
     deleteCount++;
   }
+  if (deleteCount > 0) {
+    debugPrint('[cache] cleanup $deleteCount items');
+  }
 }
 
 /// reset entire cache by remove cache file
