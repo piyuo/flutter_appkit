@@ -24,8 +24,8 @@ class DB {
   /// isNotEmpty returns true if there is at least one entries in this box.
   bool get isNotEmpty => _box.isNotEmpty;
 
-  /// containsKey checks whether the box contains the [key].
-  bool containsKey(dynamic key) => _box.containsKey(key);
+  /// contains checks whether the box contains the [key].
+  bool contains(dynamic key) => _box.containsKey(key);
 
   /// put saves the [key] - [value] pair
   Future<void> set(dynamic key, dynamic value) => _box.put(key, value);

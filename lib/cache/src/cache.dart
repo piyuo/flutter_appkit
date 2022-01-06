@@ -63,13 +63,16 @@ String uniqueExpirationTag() {
   int tag = DateTime.now().millisecondsSinceEpoch;
   for (int i = 0; i < 100; i++) {
     final tagStr = tag.toString();
-    if (!_timeDB.containsKey(tagStr)) {
+    if (!_timeDB.contains(tagStr)) {
       return tagStr;
     }
     tag++;
   }
   return '';
 }
+
+/// contains return true if key is in cache
+bool contains(dynamic key, {String? namespace}) => _cacheDB.contains(namespaceKey(namespace, key));
 
 /// get returns the value associated with the given [key]. If the key does not exist, `null` is returned.
 ///
