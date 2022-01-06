@@ -5,8 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'cache.dart';
 
 void main() {
-  db.initForTest({});
-  init();
+  setUpAll(() async {
+    await db.initForTest({});
+    await init();
+  });
 
   setUp(() async {});
 
@@ -94,11 +96,11 @@ void main() {
       expect(await get('notExpired'), 'world');
     });
 
-    test('should run cleanup when setCount > 10', () async {
-      for (int i = 0; i < 10; i++) {
+    test('should run cleanup when setCount > cleanupWhenSet', () async {
+      for (int i = 0; i < cleanupWhenSet; i++) {
         await set('hello_$i', 'world');
       }
-      expect(setCount, 10);
+      expect(setCount, cleanupWhenSet);
       await set('hello_10', 'world');
       expect(setCount, 0);
     });

@@ -37,6 +37,7 @@ String namespaceKey(String? namespace, String key) => namespace != null ? '${nam
 
 /// set saves the [key] - [value] pair
 Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
+  debugPrint('[cache] set $key');
   key = namespaceKey(namespace, key);
   String? timeTag;
   final savedTag = await getSavedTag(key);
@@ -82,6 +83,7 @@ Future<dynamic> get(dynamic key, {dynamic defaultValue, String? namespace}) =>
 
 /// deletes the given [key] from the box , If it does not exist, nothing happens.
 Future<void> delete(dynamic key, {String? namespace}) async {
+  debugPrint('[cache] delete $key');
   key = namespaceKey(namespace, key);
   final savedTag = await getSavedTag(key);
   if (savedTag != null) {

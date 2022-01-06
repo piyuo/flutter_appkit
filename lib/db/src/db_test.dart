@@ -5,7 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'db.dart';
 
 void main() {
-  initForTest({'sample': sample.objectBuilder});
+  setUpAll(() async {
+    initForTest({'sample': sample.objectBuilder});
+  });
 
   setUp(() async {});
 
