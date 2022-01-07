@@ -50,7 +50,7 @@ Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
     await _cacheDB.set(tagKey(key), timeTag);
   }
 
-  _cacheDB.set(key, value);
+  await _cacheDB.set(key, value);
   _setCount++;
   if (_setCount > cleanupWhenSet) {
     _setCount = 0;
@@ -78,8 +78,8 @@ bool contains(dynamic key, {String? namespace}) => _cacheDB.contains(namespaceKe
 /// get returns the value associated with the given [key]. If the key does not exist, `null` is returned.
 ///
 /// If [defaultValue] is specified, it is returned in case the key does not exist.
-Future<dynamic> get(dynamic key, {dynamic defaultValue, String? namespace}) =>
-    _cacheDB.get(namespaceKey(namespace, key), defaultValue: defaultValue);
+Future<dynamic> get(dynamic key, {dynamic defaultValue, String? namespace}) async =>
+    await _cacheDB.get(namespaceKey(namespace, key), defaultValue: defaultValue);
 
 /// deletes the given [key] from the box , If it does not exist, nothing happens.
 Future<void> delete(dynamic key, {String? namespace}) async {
@@ -137,7 +137,7 @@ int get setCount => _setCount;
 /// setTestItem set cached item for test
 @visibleForTesting
 Future<void> setTestItem(String timeTag, dynamic key, dynamic value) async {
-  _timeDB.set(timeTag, key);
-  _cacheDB.set(key, value);
-  _cacheDB.set(tagKey(key), timeTag);
+  await _timeDB.set(timeTag, key);
+  await _cacheDB.set(key, value);
+  await _cacheDB.set(tagKey(key), timeTag);
 }
