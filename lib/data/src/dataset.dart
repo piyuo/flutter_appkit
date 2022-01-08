@@ -1,37 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/pb/src/google/google.dart' as google;
 
 /// deleteMaxItem is the maximum number of items to delete, rest leave to cache cleanup to avoid application busy too long.
-const int deleteMaxItem = 100;
-
-class LoadGuide {
-  LoadGuide({
-    required this.isRefresh,
-    required this.limit,
-    this.anchorTimestamp,
-    this.anchorId,
-  });
-
-  /// anchorTimestamp is anchor item's timestamp
-  google.Timestamp? anchorTimestamp;
-
-  /// anchorID is anchor item's ID
-  String? anchorId;
-
-  /// isRefresh set to true mean refresh data, otherwise load more data
-  bool isRefresh;
-
-  /// limit is the number of data to load
-  int limit;
-
-  /// hasAnchor return true if the load guide has anchor
-  bool get hasAnchor => anchorId != null;
-}
+@visibleForTesting
+int get deleteMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
 /// DataLoader load new data by guide, return null if this data reach to the end.
-typedef DataLoader<T> = Future<List<T>?> Function(BuildContext context, LoadGuide guide);
+typedef DataLoader<T> = Future<List<T>?> Function(
+  BuildContext context, {
+  required bool isRefresh,
+  required int limit,
+  google.Timestamp? anchorTimestamp,
+  String? anchorId,
+});
 
 class Dataset<T extends pb.Object> {
   Dataset({
@@ -41,48 +25,46 @@ class Dataset<T extends pb.Object> {
     this.onDataChanged,
   });
 
+  /// dataLoader is the function to load new data
   final DataLoader<T> dataLoader;
 
+  /// id is the unique id of this dataset, it is used to cache data
   final String id;
 
+  /// namespace is the namespace of this dataset, it is used to cache data
   final String? namespace;
 
+  /// onDataChanged is the callback when data changed
   final VoidCallback? onDataChanged;
 
   /// _data keep all saved data
   final List<T> _data = [];
 
-  bool _noRefresh = false;
+  /// _noNeedRefresh mean this dataset is no need to refresh, just use cache
+  bool _noNeedRefresh = false;
 
-  bool _noMore = false;
+  /// _noMoreData mean this dataset is no need to load more data, just use cache
+  bool _noMoreData = false;
 
-  bool get noNeedRefresh => _noMore;
+  /// noNeedRefresh set to true mean this dataset is no need to refresh, just use cache
+  bool get noNeedRefresh => _noNeedRefresh;
 
-  bool get noMoreData => _noMore;
+  /// noNeedLoadMore set to true mean this dataset is no need to load more data, just use cache
+  bool get noMoreData => _noMoreData;
+
+  /// row return rows in dataset that is not deleted
+  List<T> get rows => _data.where((item) => !item.entityDeleted).toList();
+
+  /// isEmpty return rows is empty
+  bool get isEmpty => rows.isEmpty;
+
+  /// isEmpty return rows is not empty
+  bool get isNotEmpty => rows.isNotEmpty;
 
   /// init read snapshot from cache
   Future<void> init() async {
     assert(id.isNotEmpty, 'dataset id is empty');
-/*
-    final snapshot = await cache.get(id, namespace: namespace);
-    if (snapshot == null) {
-      return;
-    }
-
-    snapshot as pb.DatasetSnapshot;
-    for (String itemID in snapshot.data) {
-      final item = await cache.get(itemID, namespace: namespace);
-      if (item == null) {
-        // item should not be null, cache may not reliable
-        await reset();
-        return;
-      }
-      _data.add(item);
-    }
-    _noRefresh = snapshot.noRefresh;
-    _noMore = snapshot.noMore;
-*/
-    final savedData = await cache.get('${id}_data', namespace: namespace);
+    final savedData = await cache.get(id, namespace: namespace);
     if (savedData == null) {
       return;
     }
@@ -96,42 +78,37 @@ class Dataset<T extends pb.Object> {
       }
       _data.add(item);
     }
-    _noRefresh = await cache.get('${id}_nr', namespace: namespace);
-    _noMore = await cache.get('${id}_nm', namespace: namespace);
+    _noNeedRefresh = await cache.get('${id}_nr', namespace: namespace);
+    _noMoreData = await cache.get('${id}_nm', namespace: namespace);
     onDataChanged?.call();
+    debugPrint('[dataset] init $id ${_data.length}');
   }
 
-  /// saveToCache save snapshot to cache
+  /// save data to cache
   @visibleForTesting
-  Future<void> saveToCache() async {
+  Future<void> save() async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    await cache.set('${id}_data', _data.map((item) => item.entityId).toList(), namespace: namespace);
-    await cache.set('${id}_nm', _noMore, namespace: namespace);
-    await cache.set('${id}_nr', _noRefresh, namespace: namespace);
-
-/*    return await cache.set(
-      id,
-      pb.DatasetSnapshot(
-        data: _data.map((item) => item.entityId).toList(),
-        noMore: _noMore,
-        noRefresh: _noRefresh,
-      ),
-      namespace: namespace,
-    );*/
+    await cache.set(id, _data.map((item) => item.entityId).toList(), namespace: namespace);
+    await cache.set('${id}_nm', _noMoreData, namespace: namespace);
+    await cache.set('${id}_nr', _noNeedRefresh, namespace: namespace);
+    debugPrint('[dataset] save $id ${_data.length}');
   }
 
   /// saveItems save list of item into cache
   @visibleForTesting
   Future<void> reset() async {
-    _noRefresh = false;
-    _noMore = false;
+    _noNeedRefresh = false;
+    _noMoreData = false;
     await deleteItems(_data);
     _data.clear();
     onDataChanged?.call();
-    debugPrint('[dataset] data reset, start fresh');
+    debugPrint('[dataset] reset, start fresh');
   }
 
   /// saveItems save list of item into cache
+  ///
+  ///     await ds.saveItems([person]);
+  ///
   @visibleForTesting
   Future<void> saveItems(List<T> items) async {
     for (var item in items) {
@@ -143,9 +120,12 @@ class Dataset<T extends pb.Object> {
     }
   }
 
-  /// deleteItems delete list of item from cache, max 100 items
+  /// deleteItems delete list of item from cache,return actual delete count, max 100 items
+  ///
+  ///     await ds.deleteItems([person]);
+  ///
   @visibleForTesting
-  Future<void> deleteItems(List<T> items) async {
+  Future<int> deleteItems(List<T> items) async {
     int deleteCount = 0;
     for (var item in items) {
       await cache.delete(
@@ -157,15 +137,19 @@ class Dataset<T extends pb.Object> {
         break;
       }
     }
+    return deleteCount;
   }
 
   /// removeDuplicateInData remove duplicate item
+  ///
+  ///     ds.removeDuplicateInData(samples);
+  ///
   @visibleForTesting
-  Future<void> removeDuplicateInData(List<T> items) async {
+  void removeDuplicateInData(List<T> items) {
     final idList = items.map((item) => item.entityId).toList();
     for (int i = _data.length - 1; i >= 0; i--) {
       final item = _data[i];
-      if (idList.contains(item)) {
+      if (idList.contains(item.entityId)) {
         _data.removeAt(i);
       }
     }
@@ -173,7 +157,7 @@ class Dataset<T extends pb.Object> {
 
   /// refresh seeking new data from data loader
   Future<void> refresh(BuildContext context, int limit) async {
-    if (_noRefresh) {
+    if (_noNeedRefresh) {
       debugPrint('[dataset] no refresh already');
       return;
     }
@@ -182,37 +166,49 @@ class Dataset<T extends pb.Object> {
     if (_data.isNotEmpty) {
       anchor = _data.first;
     }
-    final result = await dataLoader(
+    List<T>? result;
+    try {
+      result = await dataLoader(
         context,
-        LoadGuide(
-          isRefresh: true,
-          anchorTimestamp: anchor?.entityUpdateTime,
-          anchorId: anchor?.entityId,
-          limit: limit,
-        ));
+        isRefresh: true,
+        anchorTimestamp: anchor?.entityUpdateTime,
+        anchorId: anchor?.entityId,
+        limit: limit,
+      );
 
-    if (result == null) {
-      debugPrint('[dataset] end of data, no need refresh');
-      _noRefresh = true;
-      return;
-    }
-    if (result.length == limit) {
-      // if result.length == limit, it means there is more data and we need expired all our cache to start over
-      await reset();
-    } else if (result.isNotEmpty && _data.isNotEmpty) {
-      removeDuplicateInData(result);
-    }
+      if (result == null) {
+        debugPrint('[dataset] end of data, no refresh');
+        _noNeedRefresh = true;
+        if (anchor == null) {
+          debugPrint('[dataset] no anchor, no more');
+          _noMoreData = true;
+        }
+        return;
+      }
+      if (result.length == limit) {
+        // if result.length == limit, it means there is more data and we need expired all our cache to start over
+        await reset();
+      } else if (result.length < limit && anchor == null) {
+        _noMoreData = true;
+      }
 
-    await saveItems(result);
-    _data.insertAll(0, result);
-    await saveToCache();
-    onDataChanged?.call();
-    debugPrint('[dataset] refresh ${result.length} items');
+      if (result.isNotEmpty && _data.isNotEmpty) {
+        removeDuplicateInData(result);
+      }
+
+      await saveItems(result);
+      _data.insertAll(0, result);
+      onDataChanged?.call();
+    } finally {
+      await save();
+      final count = result != null ? result.length : 0;
+      debugPrint('[dataset] refresh $count items');
+    }
   }
 
   /// more seeking more data from data loader
   Future<void> more(BuildContext context, int limit) async {
-    if (_noMore) {
+    if (_noMoreData) {
       debugPrint('[dataset] no more already');
       return;
     }
@@ -221,50 +217,55 @@ class Dataset<T extends pb.Object> {
     if (_data.isNotEmpty) {
       anchor = _data.last;
     }
-    final result = await dataLoader(
+    List<T>? result;
+    try {
+      result = await dataLoader(
         context,
-        LoadGuide(
-          isRefresh: false,
-          anchorTimestamp: anchor?.entityUpdateTime,
-          anchorId: anchor?.entityId,
-          limit: limit,
-        ));
-    if (result == null) {
-      debugPrint('[dataset] end of data, no more data');
-      _noMore = true;
-      return;
-    } else if (result.isNotEmpty && _data.isNotEmpty) {
-      removeDuplicateInData(result);
+        isRefresh: false,
+        anchorTimestamp: anchor?.entityUpdateTime,
+        anchorId: anchor?.entityId,
+        limit: limit,
+      );
+      if (result == null) {
+        debugPrint('[dataset] end of data, no more data');
+        _noMoreData = true;
+        return;
+      } else if (result.isNotEmpty && _data.isNotEmpty) {
+        removeDuplicateInData(result);
+      }
+      await saveItems(result);
+      _data.addAll(result);
+      if (result.length < limit) {
+        _noMoreData = true;
+      }
+      onDataChanged?.call();
+    } finally {
+      await save();
+      final count = result != null ? result.length : 0;
+      debugPrint('[dataset] load $count items');
     }
-    await saveItems(result);
-    _data.addAll(result);
-    if (result.length < limit) {
-      _noMore = true;
-    }
-    await saveToCache();
-    onDataChanged?.call();
-    debugPrint('[dataset] load ${result.length} items');
   }
 
-  List<T> get rows => _data.where((item) => !item.entityDeleted).toList();
-
-  int get length => rows.length;
-
-  bool get isEmpty => rows.isEmpty;
-
-  bool get isNotEmpty => rows.isNotEmpty;
-
-  bool contains(T obj) => rows.contains(obj);
-
-  /// update item in cache, usually after user edit item
-  Future<void> update(T item) async {
+  /// set item directly to dataset,return false if no item to update, new item will move to first item in cache. usually after user edit item
+  Future<void> set(T item) async {
     for (int i = 0; i < _data.length; i++) {
       if (item.entityId == _data[i].entityId) {
-        _data[i] = item;
-        await cache.set(item.entityId, item, namespace: namespace);
-        break;
+        _data.removeAt(i);
       }
     }
-    await saveToCache();
+    _data.insert(0, item);
+    await cache.set(item.entityId, item, namespace: namespace);
+    await save();
+  }
+
+  /// delete item from dataset
+  Future<void> delete(T item) async {
+    for (int i = 0; i < _data.length; i++) {
+      if (item.entityId == _data[i].entityId) {
+        _data.removeAt(i);
+      }
+    }
+    await cache.delete(item.entityId, namespace: namespace);
+    await save();
   }
 }

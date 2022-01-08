@@ -5,239 +5,321 @@ import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/app/app.dart' as app;
-import 'package:libcli/storage/storage.dart' as storage;
+import 'package:libcli/cache/cache.dart' as cache;
+import 'package:libcli/unique/unique.dart' as unique;
+import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/pb/src/google/google.dart' as google;
 import '../data.dart';
 
 main() => app.start(
-      appName: 'paged',
+      appName: 'data',
+      objectBuilders: {'sample': sample.objectBuilder},
       routes: {
-        '/': (context, state, data) => const PaginationExample(),
+        '/': (context, state, data) => const DataExample(),
       },
     );
 
 int refreshCount = 0;
 
-class PaginationExample extends StatelessWidget {
-  const PaginationExample({Key? key}) : super(key: key);
+class DataExample extends StatelessWidget {
+  const DataExample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-/*              _simpleList(),
-              testing.example(
-                context,
-                text: 'clear storage',
-                child: _clearStorage(),
-              ),*/
-              testing.example(
-                context,
-                text: 'page table',
-                child: _pageTable(),
-              ),
-              /*            testing.example(
-                context,
-                text: 'object table',
-                child: _simpleObjectTable(),
-              ),
-              testing.example(
-                context,
-                text: 'simple list',
-                child: _simpleList(),
-              ),*/
-            ],
-          ),
+    return SafeArea(
+        child: Column(
+      children: [
+        Expanded(
+          child: _emptyPullList(),
         ),
-      ),
+        Wrap(
+          children: [
+            testing.example(
+              context,
+              text: 'page table',
+              useScaffold: false,
+              child: _pageTable(),
+            ),
+            testing.example(
+              context,
+              text: 'empty table',
+              useScaffold: false,
+              child: _emptyTable(),
+            ),
+            testing.example(
+              context,
+              text: 'pull list',
+              useScaffold: false,
+              child: _pullList(),
+            ),
+            testing.example(
+              context,
+              text: 'empty pull list',
+              useScaffold: false,
+              child: _emptyPullList(),
+            ),
+            testing.example(
+              context,
+              text: 'utility',
+              child: _utility(),
+            ),
+          ],
+        ),
+      ],
+    ));
+  }
+
+  Widget _utility() {
+    return Wrap(
+      children: [
+        OutlinedButton(
+          child: const Text('clear cache'),
+          onPressed: () async => await cache.reset(),
+        ),
+        OutlinedButton(
+          child: const Text('set 50 item'),
+          onPressed: () async {
+            final now = DateTime.now();
+            for (int i = 0; i < 50; i++) {
+              await cache.set(
+                  'key$i',
+                  sample.Person(
+                    entity: pb.Entity(
+                      id: unique.uuid(),
+                      updateTime: DateTime.now().utcTimestamp,
+                      notGoingToChange: false,
+                      deleted: false,
+                    ),
+                    name: 'stress test $i',
+                    age: i,
+                  ));
+            }
+            debugPrint('set 50 item: ${DateTime.now().difference(now).inMilliseconds}ms');
+          },
+        ),
+        OutlinedButton(
+          child: const Text('update 50 item'),
+          onPressed: () async {
+            final now = DateTime.now();
+            for (int i = 0; i < 50; i++) {
+              await cache.set(
+                  'key$i',
+                  sample.Person(
+                    entity: pb.Entity(
+                      id: unique.uuid(),
+                      updateTime: DateTime.now().utcTimestamp,
+                      notGoingToChange: true,
+                      deleted: true,
+                    ),
+                    name: 'update test $i',
+                    age: i,
+                  ));
+            }
+            debugPrint('update 50 item: ${DateTime.now().difference(now).inMilliseconds}ms');
+          },
+        ),
+        OutlinedButton(
+          child: const Text('delete 50 item'),
+          onPressed: () async {
+            final now = DateTime.now();
+            for (int i = 0; i < 50; i++) {
+              await cache.delete(
+                'key$i',
+              );
+            }
+            debugPrint('delete 50 item: ${DateTime.now().difference(now).inMilliseconds}ms');
+          },
+        ),
+      ],
     );
   }
 
-  Widget _clearStorage() {
-    return ElevatedButton(
-      child: const Text('clear storage'),
-      onPressed: () async => await storage.clear(),
-    );
-  }
-
-/*
-  Widget _simpleObjectTable() {
-    return ChangeNotifierProvider<DataSource>(
-      create: (context) => ObjectSource<pb.Error>(
-        key: 'mySource',
-        objectFactory: () => pb.Error(),
-        dataLoader: (BuildContext context, pb.Error? last, int length) async {
-          await Future.delayed(const Duration(seconds: 3));
-          if (last == null) {
-            return List.generate(10, (index) => pb.Error()..code = 'Error $index');
-          }
-          return List.generate(2, (index) => pb.Error()..code = 'old Error $index');
-        },
-        dataRefresher: (BuildContext context, pb.Error? first, int rowsPerPage) async {
-          await Future.delayed(const Duration(seconds: 2));
-          refreshCount++;
-          return RefreshInstruction(
-            updated: [pb.Error()..code = 'new Error'],
-            deleted: [],
-          );
-        },
-        dataRemover: (BuildContext context, List<pb.Error> removeList) async => true,
-      )..init(context),
-      child: Consumer<DataSource>(
-          builder: (context, dataSource, child) => PageTable<pb.Error>(
-                dataSource: dataSource,
-                header: Row(
-                  children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.add_outlined),
-                      label: const Text('Error'),
-                      onPressed: () => debugPrint('clicked'),
-                    ),
-                  ],
-                ),
-                actions: const [],
-                columns: [
-                  DataColumn(label: const Text('code'), onSort: (index, asc) {}),
-                  DataColumn(label: const Text('message'), onSort: (index, asc) {}),
-                ],
-                rowBuilder: (BuildContext context, pb.Error err, int rowIndex) {
-                  return [
-                    DataCell(
-                      Text(err.code),
-                      onTap: () => debugPrint('taped'),
-                    ),
-                    DataCell(
-                      ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 250), //SET max width
-                          child: Text(err.toDebugString(), overflow: TextOverflow.ellipsis)),
-                      onTap: () => debugPrint('taped'),
-                    ),
-                  ];
-                },
-                cardHeight: 100,
-                cardBuilder: (BuildContext context, pb.Error err, int rowIndex) {
-                  return Material(
-                    elevation: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: Text(err.code),
-                    ),
-                  );
-                },
-              )),
-    );
-  }
-*/
-  Widget _pageTable() {
-    return ChangeNotifierProvider<DataSource<pb.Error>>(
-      create: (context) => DataSource<pb.Error>(
+  Widget _emptyTable() {
+    return ChangeNotifierProvider<DataSource<sample.Person>>(
+      create: (context) => DataSource<sample.Person>(
         context: context,
-        id: 'today_errors',
-        dataLoader: (BuildContext context, LoadGuide guide) async {
+        id: 'data.example.empty_table',
+        dataLoader: (
+          BuildContext context, {
+          required bool isRefresh,
+          required int limit,
+          google.Timestamp? anchorTimestamp,
+          String? anchorId,
+        }) async =>
+            [],
+      ),
+      child: Consumer<DataSource<sample.Person>>(
+          builder: (context, dataSource, child) => PageTable<sample.Person>(
+                dataSource: dataSource,
+                columns: [
+                  PageColumn(label: const Text('ID')),
+                  PageColumn(label: const Text('Name'), width: ColumnWidth.large),
+                  PageColumn(label: const Text('Age'), width: ColumnWidth.small),
+                ],
+                tableBuilder: (BuildContext context, sample.Person person, int rowIndex) => [],
+                cardBuilder: (BuildContext context, sample.Person person, int rowIndex) => const SizedBox(),
+              )),
+    );
+  }
+
+  Widget _pageTable() {
+    return ChangeNotifierProvider<DataSource<sample.Person>>(
+      create: (context) => DataSource<sample.Person>(
+        context: context,
+        id: 'today_customer',
+        dataLoader: (BuildContext context,
+            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
           await Future.delayed(const Duration(seconds: 1));
+          if (isRefresh) {
+            return List.generate(
+                limit,
+                (index) => sample.Person(
+                      entity: pb.Entity(
+                        id: unique.uuid(),
+                        updateTime: DateTime.now().utcTimestamp,
+                        notGoingToChange: false,
+                        deleted: false,
+                      ),
+                      name: 'refresh $index',
+                      age: index,
+                    ));
+          }
           refreshCount++;
-          if (!guide.hasAnchor) {
-            // init
-            return List.generate(10, (index) => pb.Error(code: 'code $index'));
+          if (refreshCount > 2) {
+            refreshCount = 0;
+            return [];
           }
-          if (guide.isRefresh) {
-            return List.generate(3, (index) => pb.Error(code: 'refresh $index'));
-          }
+
           // load more data
-          return List.generate(2, (index) => pb.Error(code: 'more $index'));
+          return List.generate(
+              limit,
+              (index) => sample.Person(
+                    entity: pb.Entity(
+                      id: unique.uuid(),
+                      updateTime: DateTime.now().utcTimestamp,
+                      notGoingToChange: false,
+                      deleted: false,
+                    ),
+                    name: 'more $index',
+                    age: index,
+                  ));
         },
       ),
-      child: Consumer<DataSource<pb.Error>>(
-          builder: (context, dataSource, child) => PageTable<pb.Error>(
+      child: Consumer<DataSource<sample.Person>>(
+          builder: (context, dataSource, child) => PageTable<sample.Person>(
                 dataSource: dataSource,
-                header: Row(
-                  children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.add_outlined),
-                      label: const Text('Product'),
-                      onPressed: () => debugPrint('Received click'),
-                    ),
-                  ],
-                ),
-                actions: const [],
+                smallRatio: 0.25,
+                largeRatio: 3,
                 columns: [
-                  DataColumn(label: const Text('ID'), onSort: (index, asc) {}),
-                  DataColumn(label: const Text('Name'), onSort: (index, asc) {}),
-                  DataColumn(label: const Text('Price'), onSort: (index, asc) {}),
+                  PageColumn(label: const Text('ID')),
+                  PageColumn(label: const Text('Name'), width: ColumnWidth.large),
+                  PageColumn(label: const Text('Age'), width: ColumnWidth.small),
                 ],
-                rowBuilder: (BuildContext context, pb.Error error, int rowIndex) {
+                dataRemover: (BuildContext context, List<sample.Person> removeList) async => true,
+                tableBuilder: (BuildContext context, sample.Person person, int rowIndex) {
                   return [
-                    DataCell(
-                      Text(error.code),
-                      onTap: () => debugPrint('taped'),
-                    ),
-                    DataCell(
-                      ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 250), //SET max width
-                          child: const Text('very long text blah blah blah blah blah blah',
-                              overflow: TextOverflow.ellipsis)),
-                      onTap: () => debugPrint('taped'),
-                    ),
-                    DataCell(
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          minWidth: double.infinity,
-                          maxWidth: double.infinity,
-                        ), //SET max width
-                        child: const Text('fit width', overflow: TextOverflow.ellipsis),
-                      ),
-                      onTap: () => debugPrint('taped'),
-                    ),
-//          DataCell(Text(rowIndex.toString())),
+                    Text(person.entityId, overflow: TextOverflow.ellipsis),
+                    Text('${person.name} very long text blah blah blah blah blah blah',
+                        overflow: TextOverflow.ellipsis),
+                    Text('${person.age}', overflow: TextOverflow.ellipsis),
                   ];
+                },
+                cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
+                  return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(children: [
+                        Text(person.entityId),
+                        Text(person.name),
+                        Text('${person.age}'),
+                      ]));
+                },
+                onRowTap: (BuildContext context, sample.Person person, int rowIndex) => debugPrint(person.name),
+              )),
+    );
+  }
+
+  Widget _pullList() {
+    return ChangeNotifierProvider<DataSource<sample.Person>>(
+      create: (context) => DataSource<sample.Person>(
+        context: context,
+        id: 'today_visitor',
+        dataLoader: (BuildContext context,
+            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+          await Future.delayed(const Duration(seconds: 1));
+          if (isRefresh) {
+            return List.generate(
+                limit,
+                (index) => sample.Person(
+                      entity: pb.Entity(
+                        id: unique.uuid(),
+                        updateTime: DateTime.now().utcTimestamp,
+                        notGoingToChange: false,
+                        deleted: false,
+                      ),
+                      name: 'refresh $index',
+                      age: index,
+                    ));
+          }
+          refreshCount++;
+          if (refreshCount > 2) {
+            refreshCount = 0;
+            return [];
+          }
+
+          // load more data
+          return List.generate(
+              limit,
+              (index) => sample.Person(
+                    entity: pb.Entity(
+                      id: unique.uuid(),
+                      updateTime: DateTime.now().utcTimestamp,
+                      notGoingToChange: false,
+                      deleted: false,
+                    ),
+                    name: 'more $index',
+                    age: index,
+                  ));
+        },
+      ),
+      child: Consumer<DataSource<sample.Person>>(
+          builder: (context, dataSource, child) => PullList<sample.Person>(
+                dataSource: dataSource,
+                cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
+                  return Card(
+                      margin: const EdgeInsets.all(10),
+                      child: Column(children: [
+                        Text(person.entityId),
+                        Text(person.name),
+                        Text('${person.age}'),
+                      ]));
                 },
               )),
     );
   }
-/*
-  Widget _simpleList() {
-    return ChangeNotifierProvider<DataSource>(
-      create: (context) => DataSource<String>(
-        dataLoader: (BuildContext context, String? last, int length) async {
-          await Future.delayed(const Duration(seconds: 2));
-          refreshCount++;
-          if (last == null) {
-            // init
-            return List.generate(10, (index) => 'Item $index');
-          }
-          // load more data
-          return List.generate(2, (index) => 'A $index');
+
+  Widget _emptyPullList() {
+    return ChangeNotifierProvider<DataSource<sample.Person>>(
+      create: (context) => DataSource<sample.Person>(
+        context: context,
+        id: 'today_visitor_empty',
+        dataLoader: (BuildContext context,
+            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+          await Future.delayed(const Duration(seconds: 1));
+          debugPrint('isRefresh: $isRefresh');
+          return [];
         },
-        dataRefresher: (BuildContext context, String? first, int rowsPerPage) async {
-          await Future.delayed(const Duration(seconds: 2));
-          refreshCount++;
-          return RefreshInstruction(
-            updated: ['refresh $refreshCount'],
-            deleted: ['Item $refreshCount'],
-          );
-        },
-        dataComparator: (String src, String dest) {
-          return src.compareTo(dest);
-        },
-        dataRemover: (BuildContext context, List<String> removeList) async => true,
-      )..init(context),
-      child: Consumer<DataSource>(
-          builder: (context, dataSource, child) => SizedBox(
-              height: 200,
-              child: PageList<String>(
+      ),
+      child: Consumer<DataSource<sample.Person>>(
+          builder: (context, dataSource, child) => PullList<sample.Person>(
                 dataSource: dataSource,
-                cardBuilder: (BuildContext context, String text, int rowIndex) {
-                  return Material(
-                    elevation: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: Text(text),
-                    ),
-                  );
+                cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
+                  return Card(
+                      margin: const EdgeInsets.all(10),
+                      child: Column(children: [
+                        Text(person.entityId),
+                      ]));
                 },
-              ))),
+              )),
     );
-  }*/
+  }
 }

@@ -9,24 +9,12 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     required String id,
     required DataLoader<T> dataLoader,
     this.onRowsChanged,
+    int rowsPerPage = 10,
   }) {
+    _rowsPerPage = rowsPerPage;
     _dataset = Dataset(id: id, dataLoader: dataLoader, onDataChanged: onDataChanged);
     if (context != null) {
       init(context);
-    }
-  }
-
-  /// init data source with cache or data loader
-  ///
-  ///     await init(context);
-  ///
-  Future<void> init(BuildContext context) async {
-    _notifyBusy(true);
-    try {
-      await _dataset.init();
-      await _dataset.refresh(context, _rowsPerPage);
-    } finally {
-      _notifyBusy(false);
     }
   }
 
@@ -37,20 +25,34 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   final VoidCallback? onRowsChanged;
 
   /// _selectedRows keep all selected rows
-  final List<T> _selectedRows = [];
+  final List<T> selectedRows = [];
 
-  /// selectedRows keep all selected rows
-  List<T> get selectedRows => _selectedRows;
+  /// pageRows return current page rows
+  List<T> get pageRows => _dataset.rows.getRange(currentIndexStart, currentIndexEnd).toList();
 
-  /// currentRows export cached rows for Test
-  List<T> get rows => _dataset.rows.getRange(_pageIndex, _pageIndex + rowsPerPage).toList();
+  /// allRows return all rows
+  List<T> get allRows => _dataset.rows;
 
+  /// pageIndex return current page index
+  int get pageIndex => _pageIndex;
+
+  /// noNeedRefresh return true if no need to refresh
   bool get noNeedRefresh => _dataset.noNeedRefresh;
 
+  /// noMoreData return true if no need to load more data
   bool get noMoreData => _dataset.noMoreData;
+
+  /// isEmpty return true if dataset is empty
+  bool get isEmpty => _dataset.isEmpty;
+
+  /// isNotEmpty return true if dataset is not empty
+  bool get isNotEmpty => _dataset.isNotEmpty;
 
   /// _rowsPerPage is current rows per page
   int _rowsPerPage = 10;
+
+  /// rowsPerPage return current rows per page
+  int get rowsPerPage => _rowsPerPage;
 
   /// _isBusy return true if data source is busy loading data
   bool _isBusy = false;
@@ -66,32 +68,20 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     if (_dataset.isEmpty) {
       return 1;
     }
-    return (_dataset.length / _rowsPerPage).ceil();
+    return (_dataset.rows.length / _rowsPerPage).ceil();
   }
 
-  /// isLastPage return true if current page is last page
-  bool get isLastPage => _dataset.noMoreData || _pageIndex == pageCount - 1;
+  /// currentIndexStart return start index in current page
+  int get currentIndexStart => _pageIndex * _rowsPerPage;
 
-  /// _notifyBusy set busy value and notify listener
-  void _notifyBusy(bool value) {
-    if (value != _isBusy) {
-      _isBusy = value;
-      notifyListeners();
-    }
-  }
+  /// currentIndexEnd return end index in current page
+  int get currentIndexEnd => currentIndexStart + currentRowCount;
 
-  /// onDataChanged called when data changed
-  @visibleForTesting
-  void onDataChanged() {
-    // remove not exists selected rows
-    for (int i = _selectedRows.length - 1; i >= 0; i--) {
-      final selected = _selectedRows[i];
-      if (!_dataset.contains(selected)) {
-        _selectedRows.remove(selected);
-      }
-    }
-    onRowsChanged?.call();
-  }
+  /// return row count in current page
+  int get currentRowCount => getRowCountByPage(_pageIndex);
+
+  /// isLastPage return true if current page is the last page
+  bool get isLastPage => _dataset.noMoreData && _pageIndex == pageCount - 1;
 
   /// hasFirstPage return true if user can click first page
   bool get hasFirstPage => hasPrevPage;
@@ -113,17 +103,52 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     return _pageIndex < pageCount - 1;
   }
 
+  /// init data source with cache or data loader
+  ///
+  ///     await init(context);
+  ///
+  Future<void> init(BuildContext context) async {
+    _notifyBusy(true);
+    try {
+      await _dataset.init();
+      await _dataset.refresh(context, _rowsPerPage);
+    } finally {
+      _notifyBusy(false);
+    }
+  }
+
+  /// _notifyBusy set busy value and notify listener
+  void _notifyBusy(bool value) {
+    if (value != _isBusy) {
+      _isBusy = value;
+      notifyListeners();
+    }
+  }
+
+  /// onDataChanged called when data changed
+  @visibleForTesting
+  void onDataChanged() {
+    // remove not exists selected rows
+    for (int i = selectedRows.length - 1; i >= 0; i--) {
+      final selected = selectedRows[i];
+      if (!_dataset.rows.contains(selected)) {
+        selectedRows.remove(selected);
+      }
+    }
+    onRowsChanged?.call();
+  }
+
   /// nextPage return true if load data
   ///
   ///     await nextPage(context);
   ///
-  Future<void> nextPage(BuildContext context) async => await gotoPage(context, _pageIndex++);
+  Future<void> nextPage(BuildContext context) async => await gotoPage(context, _pageIndex + 1);
 
   /// prevPage return true if page changed
   ///
   ///     await prevPage(context);
   ///
-  Future<void> prevPage(BuildContext context) async => await gotoPage(context, _pageIndex--);
+  Future<void> prevPage(BuildContext context) async => await gotoPage(context, _pageIndex - 1);
 
   /// firstPage return true if page changed
   ///
@@ -141,13 +166,14 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   ///
   ///     await gotoPage(context,2);
   ///
+  @visibleForTesting
   Future<void> gotoPage(BuildContext context, int index) async {
     _notifyBusy(true);
     try {
-      if (index >= pageCount && !_dataset.noMoreData) {
-        await _dataset.more(context, _rowsPerPage);
-        _pageIndex = pageCount;
-        return;
+      final expectRowsCount = _dataset.rows.length - index * _rowsPerPage;
+      if (expectRowsCount < _rowsPerPage && !_dataset.noMoreData) {
+        //the page is not fill with enough data, load more data
+        await _dataset.more(context, _rowsPerPage - expectRowsCount);
       }
       _pageIndex = index;
       if (_pageIndex < 0) {
@@ -168,18 +194,13 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   Future<void> setRowsPerPage(BuildContext context, int value) async {
     _notifyBusy(true);
     try {
-      if (value > _dataset.length && !_dataset.noMoreData) {
-        await _dataset.more(context, value - _dataset.length);
-      }
       _pageIndex = 0;
       _rowsPerPage = value;
+      await gotoPage(context, 0);
     } finally {
       _notifyBusy(false);
     }
   }
-
-  /// rowsPerPage return current rows per page
-  int get rowsPerPage => _rowsPerPage;
 
   /// refresh cached rows
   ///
@@ -188,17 +209,12 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   Future<void> refresh(BuildContext context) async {
     _notifyBusy(true);
     try {
+      _pageIndex = 0;
       await _dataset.refresh(context, _rowsPerPage);
     } finally {
       _notifyBusy(false);
     }
   }
-
-  /// length return current page row count
-  ///
-  ///     dataSource.length;
-  ///
-  int get length => _dataset.length;
 
   /// getRowCountByPage return row total count in current page
   ///
@@ -210,73 +226,51 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
       return 0; // page not exists
     }
     if (pageIndex == pageCount - 1) {
-      return _dataset.length - pageIndex * _rowsPerPage;
+      return _dataset.rows.length - pageIndex * _rowsPerPage;
     }
     return _rowsPerPage;
   }
 
-  /// rowIndex get real row index from current page and position
-  ///
-  ///     sds.currentPageRow(0,0);
-  ///
-  int rowIndex(int row) => getRowIndexByPage(_pageIndex, row);
-
-  /// getRowIndexByPage return a row index in page
-  ///
-  ///     getRowIndexByPage(0,0);
-  ///
-  @visibleForTesting
-  int getRowIndexByPage(int pageIndex, int position) => pageIndex * _rowsPerPage + position;
-
-  /// row return a row by row index
-  ///
-  ///     sds.row(1);
-  ///
-  T? row(int rowIndex) => rowIndex < _dataset.length ? _dataset.rows[rowIndex] : null;
-
   /// paging return text page info like '1-10' of 19
   String pagingInfo(BuildContext context) {
-    int start = _pageIndex * _rowsPerPage;
-    int end = start + getRowCountByPage(_pageIndex);
     if (_dataset.noMoreData) {
-      return '${start + 1} - $end ' + context.i18n.pagingCount.replaceAll('%1', _dataset.length.toString());
+      return '${currentIndexStart + 1} - $currentIndexEnd ' +
+          context.i18n.pagingCount.replaceAll('%1', _dataset.rows.length.toString());
     }
-    return '${start + 1} - $end ' + context.i18n.pagingMany;
+    return '${currentIndexStart + 1} - $currentIndexEnd ' + context.i18n.pagingMany;
   }
 
-  /// selectAll select all row
-  void selectAll(bool? selected) {
-    selected = selected ?? false;
-    _selectedRows.clear();
+  /// isRowSelected return true when row is selected
+  bool isRowSelected(T row) => selectedRows.contains(row);
+
+  /// selectAllRows select all row
+  void selectAllRows(bool selected) {
+    selectedRows.clear();
     if (selected) {
-      _selectedRows.addAll(_dataset.rows);
+      selectedRows.addAll(_dataset.rows);
+    }
+    notifyListeners();
+  }
+
+  /// selectPageRows select all row in current page
+  void selectPageRows(bool selected) {
+    selectedRows.clear();
+    if (selected) {
+      selectedRows.addAll(_dataset.rows.getRange(currentIndexStart, currentIndexEnd));
     }
     notifyListeners();
   }
 
   /// select a row
-  void select(int rowIndex, bool? selected) {
+  void selectRow(T row, bool? selected) {
     selected = selected ?? false;
-    final row = _dataset.rows[rowIndex];
     if (selected) {
-      if (!_selectedRows.contains(row)) {
-        _selectedRows.add(row);
+      if (!selectedRows.contains(row)) {
+        selectedRows.add(row);
       }
     } else {
-      _selectedRows.remove(row);
+      selectedRows.remove(row);
     }
     notifyListeners();
-  }
-
-  /// selectedRowsIsEmpty return true when selected rows is empty
-  bool get selectedRowsIsEmpty => _selectedRows.isEmpty;
-
-  /// selectedRowsLength return selected rows length
-  int get selectedRowsLength => _selectedRows.length;
-
-  /// isSelected return true when row is selected
-  bool isSelected(int rowIndex) {
-    final row = _dataset.rows[rowIndex];
-    return _selectedRows.contains(row);
   }
 }

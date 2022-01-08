@@ -1,50 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'data.dart';
 import 'data_source.dart';
 
-/// RowBuilder build table row cells
-typedef RowBuilder<T extends pb.Object> = List<DataCell> Function(BuildContext context, T row, int rowIndex);
+enum ColumnWidth { small, regular, large }
 
-/// CardBuilder build card for mobile device
-typedef CardBuilder<T extends pb.Object> = Widget Function(BuildContext context, T row, int rowIndex);
-
-/// DataRemover remove data, return true if removal success
-typedef DataRemover<T extends pb.Object> = Future<bool> Function(BuildContext context, List<T> selectedRows);
+class PageColumn extends DataColumn2 {
+  /// Creates the configuration for a column of a [DataTable2].
+  ///
+  /// The [label] argument must not be null.
+  const PageColumn(
+      {required Widget label,
+      String? tooltip,
+      bool numeric = false,
+      Function(int, bool)? onSort,
+      ColumnWidth width = ColumnWidth.regular})
+      : super(
+          label: label,
+          tooltip: tooltip,
+          numeric: numeric,
+          onSort: onSort,
+          size: width == ColumnWidth.regular
+              ? ColumnSize.M
+              : width == ColumnWidth.small
+                  ? ColumnSize.S
+                  : ColumnSize.L,
+        );
+}
 
 class PageTable<T extends pb.Object> extends StatelessWidget {
   const PageTable({
     required this.columns,
+    required this.tableBuilder,
+    required this.cardBuilder,
     required this.dataSource,
-    this.cardHeight,
-    this.cardBuilder,
-    this.rowHeight,
-    this.rowBuilder,
+    this.onRowTap,
+    this.selectable = true,
+    this.cardHeight = 100,
+    this.tableRowHeight = 48,
     this.dragStartBehavior = DragStartBehavior.start,
-    this.header,
-    this.actions = const [],
     this.dataRemover,
     this.availableRowsPerPage = const <int>[10, 20, 50],
+    this.smallRatio = 0.5,
+    this.largeRatio = 2,
     Key? key,
-  })  : assert(cardBuilder != null || rowBuilder != null),
-        super(key: key);
+  }) : super(key: key);
 
-  final List<DataColumn> columns;
+  final List<PageColumn> columns;
+
+  /// TableBuilder build table row
+  final TableBuilder<T> tableBuilder;
 
   /// rowHeight is data row height in row layout
-  final double? rowHeight;
+  final double tableRowHeight;
 
-  /// RowBuilder build cells layout
-  final RowBuilder<T>? rowBuilder;
+  /// cardBuilder build card layout used in mobile device
+  final CardBuilder<T> cardBuilder;
+
+  /// onRowTap trigger when user tap on row
+  final OnRowTap<T>? onRowTap;
 
   /// cardHeight is row height in card layout
   final double? cardHeight;
 
-  /// cardBuilder build card layout used in mobile device
-  final CardBuilder<T>? cardBuilder;
+  /// selectable is true if user can select rows
+  final bool selectable;
 
   final DragStartBehavior dragStartBehavior;
 
@@ -53,26 +80,6 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
   /// dataRemover call when control need delete data from data source
   final DataRemover<T>? dataRemover;
 
-  /// The table card's optional header.
-  ///
-  /// This is typically a [Text] widget, but can also be a [Row] of
-  /// [TextButton]s. To show icon buttons at the top end side of the table with
-  /// a header, set the [actions] property.
-  ///
-  /// If items in the table are selectable, then, when the selection is not
-  /// empty, the header is replaced by a count of the selected items. The
-  /// [actions] are still visible when items are selected.
-  final Widget? header;
-
-  /// Icon buttons to show at the top end side of the table. The [header] must
-  /// not be null to show the actions.
-  ///
-  /// Typically, the exact actions included in this list will vary based on
-  /// whether any rows are selected or not.
-  ///
-  /// These should be size 24.0 with default padding (8.0).
-  final List<Widget> actions;
-
   /// The options to offer for the rowsPerPage.
   ///
   /// The current [_rowsPerPage] must be a value in this list.
@@ -80,331 +87,235 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
   /// The values in this list should be sorted in ascending order.
   final List<int> availableRowsPerPage;
 
+  final double smallRatio;
+
+  final double largeRatio;
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
-    final ThemeData themeData = Theme.of(context);
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-
     return ChangeNotifierProvider<delta.TapBreaker>(
         create: (context) => delta.TapBreaker(),
         child: Consumer<delta.TapBreaker>(builder: (context, breaker, child) {
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              return IntrinsicHeight(
-                //semanticContainer: false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    if (isTableLayout) buildHeader(context, dataSource, 24, breaker),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      dragStartBehavior: dragStartBehavior,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: constraints.minWidth),
-                        child: isTableLayout
-                            ? _buildTable(context, dataSource)
-                            : _buildCard(context, dataSource, constraints.maxWidth, breaker),
-                      ),
-                    ),
-                    buildExtraInfo(context, dataSource),
-                    buildFooter(context, dataSource, themeData, localizations, constraints, breaker),
-                  ],
-                ),
-              );
+              return isTableLayout
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        if (isTableLayout) buildHeader(context, breaker),
+                        Expanded(
+                          child: _buildTable(context),
+                        ),
+                      ],
+                    )
+                  : _buildCard(
+                      context,
+                      constraints.maxWidth,
+                      breaker,
+                    );
             },
           );
         }));
   }
 
   /// isTableLayout return true if use table layout
-  bool get isTableLayout {
-    if (rowBuilder != null && cardBuilder != null) {
-      return delta.isPhoneDesign ? false : true;
+  bool get isTableLayout => !delta.isPhoneDesign;
+
+  Widget buildHeader(BuildContext context, delta.TapBreaker breaker) {
+    if (dataSource.selectedRows.isNotEmpty) {
+      return buildSelectedHeader(context, breaker);
     }
-    if (cardBuilder != null) {
-      return false;
-    }
-    return true;
-  }
-
-  Widget buildInfo(Widget child) {
-    return SizedBox(
-      height: 48 * 10,
-      child: Center(child: child),
-    );
-  }
-
-  Widget buildExtraInfo(BuildContext context, DataSource dataSource) {
-    return dataSource.isBusy
-        ? buildInfo(Text(context.i18n.loadingLabel))
-        : buildInfo(
-            InkWell(
-              child: SizedBox(
-                height: 150,
-                width: 250,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: 54,
-                    ),
-                    Text(context.i18n.errorTitle),
-                    Text(context.i18n.tapToRetryButtonText),
-                  ],
-                ),
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    var _actions = <Widget>[
+      if (isTableLayout) const SizedBox(width: 14),
+      IconButton(
+        tooltip: context.i18n.refreshButtonText,
+        onPressed: breaker.linkVoidFunc(() => dataSource.refresh(context)),
+        icon: const Icon(Icons.refresh_rounded),
+      ),
+      if (isTableLayout) Text(localizations.rowsPerPageTitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+      if (isTableLayout) const SizedBox(width: 10),
+      ConstrainedBox(
+        constraints: BoxConstraints(minWidth: isTableLayout ? 54 : 30), // 40.0 for the text, 24.0 for the icon
+        child: Align(
+          alignment: AlignmentDirectional.centerEnd,
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<int>(
+              items: availableRowsPerPage.map<DropdownMenuItem<int>>((int value) {
+                return DropdownMenuItem<int>(
+                  value: value,
+                  child: Text('$value'),
+                );
+              }).toList(),
+              value: dataSource.rowsPerPage,
+              onChanged: breaker.linkValueFunc<int>(
+                (int? value) => dataSource.setRowsPerPage(context, value!),
               ),
-              // onTap: () => dataSource.loadMoreRow(context),
-            ),
-          );
-  }
-
-  Widget buildFooter(
-    BuildContext context,
-    DataSource dataSource,
-    ThemeData themeData,
-    MaterialLocalizations localizations,
-    BoxConstraints constraints,
-    delta.TapBreaker breaker,
-  ) {
-    final TextStyle? footerTextStyle = themeData.textTheme.caption;
-    final List<Widget> rowsWidgets = <Widget>[];
-    if (availableRowsPerPage.isNotEmpty) {
-      final List<Widget> _availableRowsPerPage = availableRowsPerPage.map<DropdownMenuItem<int>>((int value) {
-        return DropdownMenuItem<int>(
-          value: value,
-          child: Text('$value'),
-        );
-      }).toList();
-      rowsWidgets.addAll(<Widget>[
-        const SizedBox(width: 24.0),
-        Text(localizations.rowsPerPageTitle),
-        ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 64.0), // 40.0 for the text, 24.0 for the icon
-          child: Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<int>(
-                items: _availableRowsPerPage.cast<DropdownMenuItem<int>>(),
-                value: dataSource.rowsPerPage,
-                onChanged: breaker.linkValueFunc<int>(
-                  (int? value) => dataSource.setRowsPerPage(context, value!),
-                ),
-                style: footerTextStyle,
-                iconSize: 24.0,
-              ),
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
           ),
         ),
-      ]);
-    }
-
-    final infoWidgets = <Widget>[
-      const SizedBox(width: 24.0),
-      dataSource.isBusy
-          ? SizedBox(
-              width: 64,
-              child: LinearProgressIndicator(
-                backgroundColor: Colors.grey.shade300,
-                color: Colors.grey.shade500,
-              ),
-            )
-          : Text(dataSource.pagingInfo(context)),
+      ),
     ];
 
-    final pageWidgets = <Widget>[
-      const SizedBox(width: 32.0),
+    var _tails = <Widget>[
+      Expanded(
+          child: AutoSizeText(
+        dataSource.isBusy ? context.i18n.loadingLabel : dataSource.pagingInfo(context),
+        maxLines: 2,
+        style: const TextStyle(fontSize: 13, color: Colors.grey),
+        textAlign: TextAlign.right,
+      )),
+      const SizedBox(width: 10),
       IconButton(
-        icon: const Icon(Icons.skip_previous),
-        padding: EdgeInsets.zero,
-        tooltip: localizations.firstPageTooltip,
-        onPressed: dataSource.hasPrevPage ? breaker.linkVoidFunc(() => dataSource.firstPage(context)) : null,
-      ),
-      IconButton(
+        iconSize: 32,
         icon: const Icon(Icons.chevron_left),
         padding: EdgeInsets.zero,
         tooltip: localizations.previousPageTooltip,
         onPressed: dataSource.hasPrevPage ? breaker.linkVoidFunc(() => dataSource.prevPage(context)) : null,
       ),
-      const SizedBox(width: 24.0),
       IconButton(
+        iconSize: 32,
         icon: const Icon(Icons.chevron_right),
         padding: EdgeInsets.zero,
         tooltip: localizations.nextPageTooltip,
         onPressed: dataSource.hasNextPage ? breaker.linkVoidFunc(() => dataSource.nextPage(context)) : null,
       ),
-      if (dataSource.noMoreData)
-        IconButton(
-          icon: const Icon(Icons.skip_next),
-          padding: EdgeInsets.zero,
-          tooltip: localizations.lastPageTooltip,
-          onPressed: dataSource.hasLastPage ? breaker.linkVoidFunc(() => dataSource.lastPage(context)) : null,
-        ),
-      Container(width: 14.0),
+      if (isTableLayout) const SizedBox(width: 14),
     ];
+    return styleHeader(context, _actions, _tails);
+  }
 
-    return DefaultTextStyle(
-      style: footerTextStyle!,
-      child: IconTheme.merge(
-        data: const IconThemeData(
-          opacity: 0.54,
-        ),
-        child: SizedBox(
-          height: 56,
-          child: constraints.maxWidth > 500
-              ? Row(
-                  children: [
-                    Expanded(
-                      child: Row(children: rowsWidgets),
-                    ),
-                    ...infoWidgets,
-                    ...pageWidgets,
-                  ],
-                )
-              : Column(
-                  children: [
-                    SizedBox(
-                      height: 24,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: Row(children: infoWidgets),
-                          ),
-                          ...pageWidgets,
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24,
-                      child: Row(children: rowsWidgets),
-                    ),
-                  ],
-                ),
+  Widget buildSelectedHeader(BuildContext context, delta.TapBreaker breaker) {
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final tails = <Widget>[
+      if (dataRemover != null)
+        Padding(
+            padding: EdgeInsets.only(right: isTableLayout ? 24 : 6),
+            child: ElevatedButton(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[600])),
+              child: Text(context.i18n.deleteButtonText),
+              onPressed: breaker.linkVoidFunc(() => dataRemover!(context, dataSource.selectedRows)),
+            )),
+    ];
+    return styleHeader(
+        context,
+        [
+          SizedBox(width: isTableLayout ? 24 : 6),
+          Expanded(
+            child: Text(localizations.selectedRowCountTitle(dataSource.selectedRows.length)),
+          )
+        ],
+        tails);
+  }
+
+  Widget styleHeader(BuildContext context, List<Widget> leadings, List<Widget> tails) {
+    final ThemeData themeData = Theme.of(context);
+    return Semantics(
+      container: true,
+      child: DefaultTextStyle(
+        // These typographic styles aren't quite the regular ones. We pick the closest ones from the regular
+        // list and then tweak them appropriately.
+        // See https://material.io/design/components/data-tables.html#tables-within-cards
+        style: dataSource.selectedRows.isNotEmpty
+            ? themeData.textTheme.subtitle1!.copyWith(color: themeData.colorScheme.secondary)
+            : themeData.textTheme.headline6!.copyWith(fontWeight: FontWeight.w400),
+        child: IconTheme.merge(
+          data: const IconThemeData(
+            opacity: 0.54,
+          ),
+          child: Ink(
+              height: isTableLayout ? 48 : 76,
+              color: dataSource.selectedRows.isNotEmpty && isTableLayout ? themeData.secondaryHeaderColor : null,
+              child: Row(
+                children: [
+                  ...leadings,
+                  Expanded(child: Row(mainAxisAlignment: MainAxisAlignment.end, children: tails)),
+                ],
+              )),
         ),
       ),
     );
   }
 
-  Widget buildHeader(BuildContext context, DataSource<T> dataSource, double paddingLeft, delta.TapBreaker breaker) {
-    final ThemeData themeData = Theme.of(context);
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    final List<Widget> headerWidgets = <Widget>[];
-    if (dataSource.selectedRows.isEmpty && header != null) {
-      headerWidgets.add(Expanded(child: header!));
-    } else if (header != null) {
-      headerWidgets.add(
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 6),
-            child: Text(localizations.selectedRowCountTitle(dataSource.selectedRows.length)),
+  Widget _buildNoData(BuildContext context) {
+    return SizedBox(
+      height: tableRowHeight * 3,
+      width: 250,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.wb_cloudy_outlined,
+            size: 54,
+            color: Colors.grey,
           ),
-        ),
-      );
-    }
-
-    var _actions = <Widget>[];
-    _actions.addAll(actions);
-    if (dataRemover != null) {
-      _actions.add(!dataSource.selectedRowsIsEmpty
-          ? ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[600])),
-              child: Text(context.i18n.deleteButtonText),
-              onPressed: breaker.linkVoidFunc(() => dataRemover!(context, dataSource.selectedRows)),
-            )
-          : IconButton(
-              tooltip: context.i18n.deleteButtonText,
-              onPressed: null,
-              icon: const Icon(
-                Icons.delete,
-              ),
-            ));
-    }
-
-    if (dataSource.selectedRowsIsEmpty) {
-      _actions.add(
-        IconButton(
-          tooltip: context.i18n.refreshButtonText,
-          onPressed: breaker.linkVoidFunc(() => dataSource.refresh(context)),
-          icon: const Icon(Icons.refresh_rounded),
-        ),
-      );
-    }
-
-    if (_actions.isNotEmpty) {
-      headerWidgets.addAll(
-        _actions.map<Widget>((Widget action) {
-          return Padding(
-            // 8.0 is the default padding of an icon button
-            padding: const EdgeInsetsDirectional.only(start: 24.0 - 8.0 * 2.0),
-            child: action,
-          );
-        }).toList(),
-      );
-    }
-    return headerWidgets.isNotEmpty
-        ? Semantics(
-            container: true,
-            child: DefaultTextStyle(
-              // These typographic styles aren't quite the regular ones. We pick the closest ones from the regular
-              // list and then tweak them appropriately.
-              // See https://material.io/design/components/data-tables.html#tables-within-cards
-              style: dataSource.selectedRows.isNotEmpty
-                  ? themeData.textTheme.subtitle1!.copyWith(color: themeData.colorScheme.secondary)
-                  : themeData.textTheme.headline6!.copyWith(fontWeight: FontWeight.w400),
-              child: IconTheme.merge(
-                data: const IconThemeData(
-                  opacity: 0.54,
-                ),
-                child: Ink(
-                  height: 64.0,
-                  color: dataSource.selectedRows.isNotEmpty && isTableLayout ? themeData.secondaryHeaderColor : null,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.only(start: paddingLeft, end: 14.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: headerWidgets,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
-        : const SizedBox();
-  }
-
-  List<DataRow> buildRows(BuildContext context, DataSource<T> dataSource, RowBuilder<T> builder) {
-    return List<DataRow>.generate(
-      dataSource.rows.length,
-      (int position) {
-        final rowIndex = dataSource.rowIndex(position);
-        final row = dataSource.rows[rowIndex];
-        return DataRow(
-          selected: dataSource.isSelected(rowIndex),
-          onSelectChanged: (bool? selected) => dataSource.select(rowIndex, selected),
-          cells: builder(context, row, rowIndex),
-        );
-      },
+          Text(context.i18n.noDataLabel,
+              style: const TextStyle(
+                color: Colors.grey,
+              )),
+        ],
+      ),
     );
   }
 
-  Widget _buildTable(BuildContext context, DataSource<T> dataSource) {
-    return DataTable(
-      dataRowHeight: rowHeight,
+  Widget _buildTable(BuildContext context) {
+    return DataTable2(
+      showBottomBorder: true,
+      smRatio: smallRatio,
+      lmRatio: largeRatio,
+      headingRowHeight: 38,
+      columnSpacing: 6,
+      dataRowHeight: tableRowHeight,
       headingRowColor: MaterialStateProperty.all(context.themeColor(
         light: Colors.grey.shade100,
         dark: Colors.grey.shade800,
       )),
       columns: columns,
-      onSelectAll: (bool? selected) => dataSource.selectAll(selected),
-      rows: buildRows(context, dataSource, rowBuilder!),
+      onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
+      empty: _buildNoData(context),
+      rows: dataSource.isBusy
+          ? List<DataRow>.generate(
+              dataSource.rowsPerPage,
+              (int position) {
+                return DataRow(
+                    selected: false,
+                    onSelectChanged: selectable ? (bool? selected) {} : null,
+                    cells: List<Widget>.generate(
+                            columns.length,
+                            (_) => Container(
+                                  margin: const EdgeInsets.fromLTRB(0, 14, 5, 14),
+                                  color: Colors.grey.shade500,
+                                ))
+                        .map((Widget widget) => DataCell(Shimmer.fromColors(
+                              baseColor: Colors.grey.shade500,
+                              highlightColor: Colors.grey.shade100,
+                              child: widget,
+                            )))
+                        .toList());
+              },
+            )
+          : List<DataRow>.generate(
+              dataSource.pageRows.length,
+              (int index) {
+                final row = dataSource.pageRows[index];
+                return DataRow(
+                    selected: dataSource.isRowSelected(row),
+                    onSelectChanged: selectable ? (bool? selected) => dataSource.selectRow(row, selected) : null,
+                    cells: tableBuilder(context, row, index)
+                        .map((Widget widget) => DataCell(
+                              widget,
+                              onTap: onRowTap != null ? () => onRowTap!(context, row, index) : null,
+                            ))
+                        .toList());
+              },
+            ),
     );
   }
 
-  Widget _buildCard(BuildContext context, DataSource<T> dataSource, double maxWidth, delta.TapBreaker breaker) {
+  Widget _buildCard(BuildContext context, double maxWidth, delta.TapBreaker breaker) {
     final ThemeData themeData = Theme.of(context);
-    double cardWidth = maxWidth - 100;
     return Theme(
         data: Theme.of(context).copyWith(
           dividerColor: context.themeColor(
@@ -412,30 +323,56 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             dark: Colors.grey.shade800,
           ),
         ),
-        child: DataTable(
-          dataRowHeight: cardHeight,
-          headingRowColor:
-              dataSource.selectedRows.isNotEmpty ? MaterialStateProperty.all(themeData.secondaryHeaderColor) : null,
-          columns: [
-            DataColumn(
-                label: SizedBox(
-              width: cardWidth,
-              //child: Container(color: Colors.red),
-              child: buildHeader(context, dataSource, 0, breaker),
-            )),
-          ],
-          onSelectAll: (bool? selected) => dataSource.selectAll(selected),
-          rows: buildRows(
-            context,
-            dataSource,
-            (BuildContext context, T row, int rowIndex) => [
-              DataCell(
-                ConstrainedBox(
-                    constraints: BoxConstraints(minWidth: cardWidth), //SET max width
-                    child: cardBuilder!(context, row, rowIndex)),
-              )
+        child: DataTable2(
+            smRatio: smallRatio,
+            lmRatio: largeRatio,
+            horizontalMargin: 12,
+            dataRowHeight: cardHeight,
+            headingRowHeight: 48,
+            headingRowColor:
+                dataSource.selectedRows.isNotEmpty ? MaterialStateProperty.all(themeData.secondaryHeaderColor) : null,
+            columns: [
+              DataColumn(label: buildHeader(context, breaker)),
             ],
-          ),
-        ));
+            onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
+            empty: _buildNoData(context),
+            rows: dataSource.isBusy
+                ? List<DataRow>.generate(
+                    dataSource.rowsPerPage,
+                    (int position) {
+                      return DataRow(
+                        selected: false,
+                        onSelectChanged: selectable ? (bool? selected) {} : null,
+                        cells: [
+                          DataCell(Shimmer.fromColors(
+                            baseColor: Colors.grey.shade500,
+                            highlightColor: Colors.grey.shade100,
+                            child: Card(margin: const EdgeInsets.symmetric(vertical: 5), child: Container()),
+                          ))
+                        ],
+                      );
+                    },
+                  )
+                : List<DataRow>.generate(
+                    dataSource.pageRows.length,
+                    (int index) {
+                      final row = dataSource.pageRows[index];
+                      return DataRow(
+                        selected: dataSource.isRowSelected(row),
+                        onSelectChanged: selectable ? (bool? selected) => dataSource.selectRow(row, selected) : null,
+                        cells: [
+                          DataCell(Card(
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              child: SizedBox(
+                                  width: maxWidth,
+                                  child: cardBuilder(
+                                    context,
+                                    row,
+                                    index,
+                                  ))))
+                        ],
+                      );
+                    },
+                  )));
   }
 }
