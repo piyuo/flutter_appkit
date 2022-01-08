@@ -1,3 +1,3 @@
-library disk_cache;
+library cache;
 
 export 'src/cache.dart';
