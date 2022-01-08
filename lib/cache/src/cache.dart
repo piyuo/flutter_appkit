@@ -3,10 +3,10 @@ import 'dart:core';
 import 'package:libcli/db/db.dart' as db;
 
 /// cleanupWhenSet is when to cleanup on every 10th set
-const int cleanupWhenSet = 5;
+const int cleanupWhenSet = 10;
 
 /// cleanupMaxItem is the maximum number of items to delete in every cleanup
-const int cleanupMaxItem = 20;
+int get cleanupMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
 /// cacheDB keep all cached data
 late db.DB _cacheDB;
@@ -54,7 +54,11 @@ Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
   _setCount++;
   if (_setCount > cleanupWhenSet) {
     _setCount = 0;
-    await cleanup();
+    if (!kReleaseMode) {
+      await cleanup();
+      return;
+    }
+    cleanup(); // don't wait cleanup
   }
 }
 
