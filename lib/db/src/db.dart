@@ -4,6 +4,8 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
 
+const testDB = 'test.db';
+
 class DB {
   DB(this._box);
 
@@ -55,14 +57,17 @@ Future<void> init(Map<String, pb.ObjectBuilder> builders) async {
 /// init database env
 @visibleForTesting
 Future<void> initForTest(Map<String, pb.ObjectBuilder> builders) async {
-  Hive.init('test.db');
+  Hive.init(testDB);
   final map = <String, pb.ObjectBuilder>{'common': common.objectBuilder}..addAll(builders);
   Hive.registerAdapter(ObjectBuilderAdapter(builders: map));
 }
 
 /// use a db, create new one if database not exists
-Future<DB> use(String dbName) async {
-  final box = await Hive.openBox(dbName);
+Future<DB> use(String name, {bool cleanBeforeUse = false}) async {
+  if (cleanBeforeUse) {
+    await Hive.deleteBoxFromDisk(name, path: testDB);
+  }
+  final box = await Hive.openBox(name);
   return DB(box);
 }
 

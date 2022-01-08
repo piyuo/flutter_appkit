@@ -9,18 +9,35 @@ const int cleanupWhenSet = 50;
 int get cleanupMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
 /// cacheDB keep all cached data
-late db.DB _cacheDB;
+db.DB? _cacheDB;
 
 /// timeDB keep track cached item expired time
-late db.DB _timeDB;
+db.DB? _timeDB;
 
 /// _setCount count how many set, if > 10 then cleanup cache
 int _setCount = 0;
 
 /// init cache env
 Future<void> init() async {
-  _timeDB = await db.use('time');
-  _cacheDB = await db.use('cache');
+  _timeDB ??= await db.use('time');
+  _cacheDB ??= await db.use('cache');
+}
+
+/// initForTest init cache env for test
+Future<void> initForTest() async {
+  _timeDB ??= await db.use('time', cleanBeforeUse: true);
+  _cacheDB ??= await db.use('cache', cleanBeforeUse: true);
+}
+
+/// reset entire cache by remove cache file
+@visibleForTesting
+Future<void> reset() async {
+  await _cacheDB?.deleteFromDisk();
+  _cacheDB = null;
+  await _timeDB?.deleteFromDisk();
+  _timeDB = null;
+  _setCount = 0;
+  await init();
 }
 
 /// tagKey return key that store time tag
@@ -29,7 +46,7 @@ String tagKey(String key) => '${key}_tag';
 
 /// getSavedTag get saved tag
 @visibleForTesting
-Future<String?> getSavedTag(String key) async => await _cacheDB.get(tagKey(key));
+Future<String?> getSavedTag(String key) async => await _cacheDB!.get(tagKey(key));
 
 /// namespaceKey return key in namespace
 @visibleForTesting
@@ -37,6 +54,7 @@ String namespaceKey(String? namespace, String key) => namespace != null ? '${nam
 
 /// set saves the [key] - [value] pair
 Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
   debugPrint('[cache] set $key');
   key = namespaceKey(namespace, key);
   String? timeTag;
@@ -46,11 +64,11 @@ Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
   } else {
     timeTag = uniqueExpirationTag();
     if (timeTag.isEmpty) return;
-    await _timeDB.set(timeTag, key);
-    await _cacheDB.set(tagKey(key), timeTag);
+    await _timeDB!.set(timeTag, key);
+    await _cacheDB!.set(tagKey(key), timeTag);
   }
 
-  await _cacheDB.set(key, value);
+  await _cacheDB!.set(key, value);
   _setCount++;
   if (_setCount > cleanupWhenSet) {
     _setCount = 0;
@@ -68,7 +86,7 @@ String uniqueExpirationTag() {
   int tag = DateTime.now().millisecondsSinceEpoch;
   for (int i = 0; i < 100; i++) {
     final tagStr = tag.toString();
-    if (!_timeDB.contains(tagStr)) {
+    if (!_timeDB!.contains(tagStr)) {
       return tagStr;
     }
     tag++;
@@ -77,40 +95,44 @@ String uniqueExpirationTag() {
 }
 
 /// contains return true if key is in cache
-bool contains(dynamic key, {String? namespace}) => _cacheDB.contains(namespaceKey(namespace, key));
+bool contains(dynamic key, {String? namespace}) => _cacheDB!.contains(namespaceKey(namespace, key));
 
 /// get returns the value associated with the given [key]. If the key does not exist, `null` is returned.
 ///
 /// If [defaultValue] is specified, it is returned in case the key does not exist.
-Future<dynamic> get(dynamic key, {dynamic defaultValue, String? namespace}) async =>
-    await _cacheDB.get(namespaceKey(namespace, key), defaultValue: defaultValue);
+Future<dynamic> get(dynamic key, {dynamic defaultValue, String? namespace}) async {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  return await _cacheDB!.get(namespaceKey(namespace, key), defaultValue: defaultValue);
+}
 
 /// deletes the given [key] from the box , If it does not exist, nothing happens.
 Future<void> delete(dynamic key, {String? namespace}) async {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
   debugPrint('[cache] delete $key');
   key = namespaceKey(namespace, key);
   final savedTag = await getSavedTag(key);
   if (savedTag != null) {
-    await _timeDB.delete(savedTag);
+    await _timeDB!.delete(savedTag);
   }
-  await _cacheDB.delete(key);
-  await _cacheDB.delete(tagKey(key));
+  await _cacheDB!.delete(key);
+  await _cacheDB!.delete(tagKey(key));
 }
 
 /// cleanup deletes 10 expired items
 Future<void> cleanup() async {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
   int deleteCount = 0;
   final yearBefore = DateTime.now().add(const Duration(days: -365)).millisecondsSinceEpoch;
-  for (int i = 0; i < _timeDB.length; i++) {
-    final expirationTimeTag = await _timeDB.keyAt(i);
+  for (int i = 0; i < _timeDB!.length; i++) {
+    final expirationTimeTag = await _timeDB!.keyAt(i);
     final expirationTime = int.parse(expirationTimeTag);
     if (expirationTime > yearBefore || deleteCount > cleanupMaxItem) {
       break;
     }
-    final key = await _timeDB.get(expirationTimeTag);
-    await _cacheDB.delete(key);
-    await _cacheDB.delete(tagKey(key));
-    await _timeDB.delete(expirationTimeTag);
+    final key = await _timeDB!.get(expirationTimeTag);
+    await _cacheDB!.delete(key);
+    await _cacheDB!.delete(tagKey(key));
+    await _timeDB!.delete(expirationTimeTag);
     deleteCount++;
   }
   if (deleteCount > 0) {
@@ -118,21 +140,12 @@ Future<void> cleanup() async {
   }
 }
 
-/// reset entire cache by remove cache file
-@visibleForTesting
-Future<void> reset() async {
-  await _cacheDB.deleteFromDisk();
-  await _timeDB.deleteFromDisk();
-  _setCount = 0;
-  await init();
-}
-
 /// length return cached item length
-int get length => _cacheDB.length;
+int get length => _cacheDB!.length;
 
 /// timeLength return timeDB length
 @visibleForTesting
-int get timeLength => _timeDB.length;
+int get timeLength => _timeDB!.length;
 
 /// _setCount return current set count
 @visibleForTesting
@@ -141,7 +154,8 @@ int get setCount => _setCount;
 /// setTestItem set cached item for test
 @visibleForTesting
 Future<void> setTestItem(String timeTag, dynamic key, dynamic value) async {
-  await _timeDB.set(timeTag, key);
-  await _cacheDB.set(key, value);
-  await _cacheDB.set(tagKey(key), timeTag);
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  await _timeDB!.set(timeTag, key);
+  await _cacheDB!.set(key, value);
+  await _cacheDB!.set(tagKey(key), timeTag);
 }

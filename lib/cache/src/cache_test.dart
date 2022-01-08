@@ -7,14 +7,10 @@ import 'cache.dart';
 void main() {
   setUpAll(() async {
     await db.initForTest({});
-    await init();
+    await initForTest();
   });
 
   setUp(() async {});
-
-  tearDownAll(() async {
-    await reset();
-  });
 
   group('[cache]', () {
     test('should cache data', () async {
