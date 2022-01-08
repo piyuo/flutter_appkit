@@ -49,7 +49,8 @@ Future<void> mockApp(
       child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
         builder: (context, dialogProvider, i18nProvider, _) => MaterialApp(
           navigatorObservers: [navigatorObserver],
-          navigatorKey: dialogProvider.navigatorKey,
+          scaffoldMessengerKey: dialogProvider.scaffoldKey,
+//          navigatorKey: dialogProvider.navigatorKey,
           builder: dialogProvider.init(),
           home: providers != null
               ? MultiProvider(
