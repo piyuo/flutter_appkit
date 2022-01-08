@@ -1,12 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'dart:core';
 import 'package:libcli/db/db.dart' as db;
+import 'package:synchronized/synchronized.dart';
 
 /// cleanupWhenSet is when to cleanup on every 50th set
 const int cleanupWhenSet = 50;
 
 /// cleanupMaxItem is the maximum number of items to delete in every cleanup
 int get cleanupMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
+
+final _lock = Lock();
 
 /// cacheDB keep all cached data
 db.DB? _cacheDB;
@@ -24,7 +27,11 @@ Future<void> init() async {
 }
 
 /// initForTest init cache env for test
+///  use different namespace to each test can avoid conflict
 Future<void> initForTest() async {
+  //String namespace
+//  _timeDB ??= await db.use('${namespace}_time', cleanBeforeUse: true);
+  // _cacheDB ??= await db.use('${namespace}_cache', cleanBeforeUse: true);
   _timeDB ??= await db.use('time', cleanBeforeUse: true);
   _cacheDB ??= await db.use('cache', cleanBeforeUse: true);
 }
@@ -54,30 +61,32 @@ String namespaceKey(String? namespace, String key) => namespace != null ? '${nam
 
 /// set saves the [key] - [value] pair
 Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
-  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  debugPrint('[cache] set $key');
-  key = namespaceKey(namespace, key);
-  String? timeTag;
-  final savedTag = await getSavedTag(key);
-  if (savedTag != null) {
-    timeTag = savedTag;
-  } else {
-    timeTag = uniqueExpirationTag();
-    if (timeTag.isEmpty) return;
-    await _timeDB!.set(timeTag, key);
-    await _cacheDB!.set(tagKey(key), timeTag);
-  }
-
-  await _cacheDB!.set(key, value);
-  _setCount++;
-  if (_setCount > cleanupWhenSet) {
-    _setCount = 0;
-    if (!kReleaseMode) {
-      await cleanup();
-      return;
+  await _lock.synchronized(() async {
+    assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+    debugPrint('[cache] set $key');
+    key = namespaceKey(namespace, key);
+    String? timeTag;
+    final savedTag = await getSavedTag(key);
+    if (savedTag != null) {
+      timeTag = savedTag;
+    } else {
+      timeTag = uniqueExpirationTag();
+      if (timeTag.isEmpty) return;
+      await _timeDB!.set(timeTag, key);
+      await _cacheDB!.set(tagKey(key), timeTag);
     }
-    cleanup(); // don't wait cleanup
-  }
+
+    await _cacheDB!.set(key, value);
+    _setCount++;
+    if (_setCount > cleanupWhenSet) {
+      _setCount = 0;
+      if (!kReleaseMode) {
+        await cleanup();
+        return;
+      }
+      cleanup(); // don't wait cleanup
+    }
+  });
 }
 
 /// uniqueExpirationTag return unique expiration time tag use in timeDB
@@ -107,15 +116,17 @@ Future<dynamic> get(dynamic key, {dynamic defaultValue, String? namespace}) asyn
 
 /// deletes the given [key] from the box , If it does not exist, nothing happens.
 Future<void> delete(dynamic key, {String? namespace}) async {
-  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  debugPrint('[cache] delete $key');
-  key = namespaceKey(namespace, key);
-  final savedTag = await getSavedTag(key);
-  if (savedTag != null) {
-    await _timeDB!.delete(savedTag);
-  }
-  await _cacheDB!.delete(key);
-  await _cacheDB!.delete(tagKey(key));
+  await _lock.synchronized(() async {
+    assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+    debugPrint('[cache] delete $key');
+    key = namespaceKey(namespace, key);
+    final savedTag = await getSavedTag(key);
+    if (savedTag != null) {
+      await _timeDB!.delete(savedTag);
+    }
+    await _cacheDB!.delete(key);
+    await _cacheDB!.delete(tagKey(key));
+  });
 }
 
 /// cleanup deletes 10 expired items

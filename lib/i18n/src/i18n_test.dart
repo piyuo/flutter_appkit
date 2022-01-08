@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:libcli/assets/assets.dart' as asset;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libcli/pb/google.dart' as google;
+import 'package:libcli/pref/pref.dart' as pref;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  pref.mock({});
   setUp(() async {
     asset.mock('{"a": "A"}');
   });
@@ -20,7 +22,7 @@ void main() {
 
   group('[i18n]', () {
     test('should get default locale en', () async {
-      expect(localeName, 'en_US');
+      expect(localeName, 'en');
     });
 
     test('should get local date', () async {
