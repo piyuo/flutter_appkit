@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:async';
 import 'package:clock/clock.dart';
 
-class MemoryCache {
+class Memory {
   /// _clock uses to compute expire
   final Clock _clock = const Clock();
 
@@ -15,7 +15,7 @@ class MemoryCache {
   /// _cache is the internal cache
   final _cache = <dynamic, dynamic>{};
 
-  MemoryCache({
+  Memory({
     this.maxCacheLimit = 240,
     this.expiredCheck = const Duration(minutes: 3),
   }) {
@@ -37,7 +37,7 @@ class MemoryCache {
     if (_cache.containsKey(key)) {
       _cache.remove(key);
     }
-    _cache[key] = _MemoryCacheEntry(value, _clock.now(), expire);
+    _cache[key] = _MemoryEntry(value, _clock.now(), expire);
     if (_cache.length > maxCacheLimit) {
       _cache.remove(_cache.keys.first);
     }
@@ -79,7 +79,7 @@ class MemoryCache {
   }
 }
 
-class _MemoryCacheEntry {
+class _MemoryEntry {
   /// _obj is cached object
   final dynamic _obj;
 
@@ -89,5 +89,5 @@ class _MemoryCacheEntry {
   /// The duration between entry create and expire. Default is 5 minutes
   final Duration _expire;
 
-  _MemoryCacheEntry(this._obj, this._created, this._expire);
+  _MemoryEntry(this._obj, this._created, this._expire);
 }

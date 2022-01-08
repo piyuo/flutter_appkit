@@ -1,8 +1,8 @@
 import 'dart:core';
-import 'memory_cache.dart';
+import 'memory.dart';
 
 /// _cache is the internal cache
-final _cache = MemoryCache();
+final _cache = Memory();
 
 /// set the value, this is a FIFO cache, set the same key will make that key the latest key in [_cache]. the default expire duration is 5 minutes
 ///
