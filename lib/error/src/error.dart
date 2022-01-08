@@ -16,10 +16,14 @@ var showCatchedAlert = false;
 ///      errorHandler.watch(suspect);
 ///
 void watch(Function suspect) {
-  FlutterError.onError = (FlutterErrorDetails details) async => await catched(
-        details.exception,
-        details.stack,
-      );
+  final originalOnError = FlutterError.onError;
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    await catched(
+      details.exception,
+      details.stack,
+    );
+    originalOnError?.call(details);
+  };
 
   runZonedGuarded<Future<void>>(() async {
     suspect();
