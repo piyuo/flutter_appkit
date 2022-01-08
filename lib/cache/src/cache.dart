@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'dart:core';
 import 'package:libcli/db/db.dart' as db;
 
-/// cleanupWhenSet is when to cleanup on every 10th set
-const int cleanupWhenSet = 10;
+/// cleanupWhenSet is when to cleanup on every 50th set
+const int cleanupWhenSet = 50;
 
 /// cleanupMaxItem is the maximum number of items to delete in every cleanup
 int get cleanupMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
