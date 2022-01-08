@@ -11,11 +11,6 @@ void main() {
 
   setUp(() async {});
 
-  tearDownAll(() async {
-    final testDB = await use('testDB');
-    await testDB.deleteFromDisk();
-  });
-
   group('[db]', () {
     test('should put/get simple data type', () async {
       final testDB = await use('testDB');
@@ -31,13 +26,22 @@ void main() {
       expect(person.name, '123');
     });
 
-    test('should save string list ', () async {
+    test('should save string list', () async {
       final list = <String>['1', '2', '3'];
       final testDB = await use('testDB');
       testDB.set('l', list);
       var list2 = await testDB.get('l');
       expect(list2.length, 3);
       expect(list2[2], '3');
+    });
+
+    test('should reset', () async {
+      final testDB = await use('testDB');
+      await testDB.set('a', 'b');
+      await testDB.set('1', '2');
+      await testDB.reset();
+      expect(testDB.contains('a'), false);
+      expect(testDB.contains('1'), false);
     });
   });
 }

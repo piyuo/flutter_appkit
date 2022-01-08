@@ -40,8 +40,14 @@ class DB {
   /// deletes the given [key] from the box , If it does not exist, nothing happens.
   Future<void> delete(dynamic key) => _box.delete(key);
 
+  Future<void> reset() async {
+    for (var key in _box.keys) {
+      await _box.delete(key);
+    }
+  }
+
   /// deleteFromDisk remove the file which contains the box and closes the box. In the browser, the IndexedDB database is being removed.
-  Future<void> deleteFromDisk() => _box.deleteFromDisk();
+  //Future<void> deleteFromDisk() => _box.deleteFromDisk();
 }
 
 /// init database env
@@ -64,7 +70,7 @@ Future<void> initForTest(Map<String, pb.ObjectBuilder> builders) async {
 
 /// use a db, create new one if database not exists
 Future<DB> use(String name, {bool cleanBeforeUse = false}) async {
-  if (cleanBeforeUse) {
+  if (cleanBeforeUse && await Hive.boxExists(name, path: testDB)) {
     await Hive.deleteBoxFromDisk(name, path: testDB);
   }
   final box = await Hive.openBox(name);

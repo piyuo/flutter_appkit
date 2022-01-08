@@ -27,11 +27,7 @@ Future<void> init() async {
 }
 
 /// initForTest init cache env for test
-///  use different namespace to each test can avoid conflict
 Future<void> initForTest() async {
-  //String namespace
-//  _timeDB ??= await db.use('${namespace}_time', cleanBeforeUse: true);
-  // _cacheDB ??= await db.use('${namespace}_cache', cleanBeforeUse: true);
   _timeDB ??= await db.use('time', cleanBeforeUse: true);
   _cacheDB ??= await db.use('cache', cleanBeforeUse: true);
 }
@@ -39,12 +35,11 @@ Future<void> initForTest() async {
 /// reset entire cache by remove cache file
 @visibleForTesting
 Future<void> reset() async {
-  await _cacheDB?.deleteFromDisk();
-  _cacheDB = null;
-  await _timeDB?.deleteFromDisk();
-  _timeDB = null;
-  _setCount = 0;
-  await init();
+  await _lock.synchronized(() async {
+    await _cacheDB?.reset();
+    await _timeDB?.reset();
+    _setCount = 0;
+  });
 }
 
 /// tagKey return key that store time tag
