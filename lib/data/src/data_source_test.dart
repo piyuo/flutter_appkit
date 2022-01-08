@@ -1,5 +1,4 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/cache/cache.dart' as cache;
@@ -12,7 +11,7 @@ import 'data_source.dart';
 void main() {
   setUpAll(() async {
     await db.initForTest({'sample': sample.objectBuilder});
-    await cache.init();
+    await cache.initForTest();
   });
 
   setUp(() async {

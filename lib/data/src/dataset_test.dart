@@ -12,7 +12,7 @@ import 'dataset.dart';
 void main() {
   setUpAll(() async {
     await db.initForTest({'sample': sample.objectBuilder});
-    await cache.init();
+    await cache.initForTest();
   });
 
   setUp(() async {
