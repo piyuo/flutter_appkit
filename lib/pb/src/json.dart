@@ -57,7 +57,7 @@ List<String> formatObjectList(List<Object> src) {
 ///
 ///     final list2 = parseObjectList(strList, () => Error());
 ///
-List<T> parseObjectList<T extends Object>(List<String> src, Factory<T> builder) {
+List<T> parseObjectList<T extends Object>(List<String> src, Builder<T> builder) {
   final list = <T>[];
   for (final item in src) {
     final obj = builder();

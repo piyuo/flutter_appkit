@@ -3,8 +3,8 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/pb/src/google/google.dart' as google;
 
-/// Factory function will create empty instance
-typedef Factory<T> = T Function();
+/// Builder function will create empty object instance
+typedef Builder<T> = T Function();
 
 /// ObjectBuilder build object from id and binary data
 typedef ObjectBuilder<Object> = Object Function(int id, List<int> bytes);
