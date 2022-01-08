@@ -17,13 +17,21 @@ class DialogProvider {
     _instance = this;
   }
 
-  /// NavigatorKey used in rootContext
+  /// NavigatorKey used in rootContext for MaterialApp
+  ///
+  ///     MaterialApp(
+  ///        navigatorKey: dialogProvider.navigatorKey,
+  ///     ...)
   ///
   final navigatorKey = GlobalKey<NavigatorState>();
 
-  /// scaffoldKey for get rootContext
+  /// scaffoldMessengerKey for get rootContext
   ///
-  final GlobalKey<ScaffoldMessengerState> scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+  ///     MaterialApp.router(
+  ///        scaffoldMessengerKey: dialogProvider.scaffoldMessengerKey,
+  ///     ...)
+  ///
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   static late DialogProvider? _instance;
 
@@ -49,9 +57,16 @@ Widget Function(BuildContext, Widget?) initToast() {
 ///
 BuildContext get rootContext {
   assert(DialogProvider._instance != null, 'please initialize DialogProvider before App()');
-  final nKey = DialogProvider._instance!.scaffoldKey;
-  assert(nKey.currentState != null, 'add scaffoldMessengerKey: dialogProvider.navigatorKey in MaterialApp');
-  return nKey.currentState!.context;
+
+  final nKey = DialogProvider._instance!.navigatorKey;
+  if (nKey.currentState != null && nKey.currentState!.overlay != null) {
+    // for testing.mockApp
+    return nKey.currentState!.overlay!.context;
+  }
+
+  final sKey = DialogProvider._instance!.scaffoldMessengerKey;
+  assert(sKey.currentState != null, 'add scaffoldMessengerKey: dialogProvider.scaffoldKey in MaterialApp.router()');
+  return sKey.currentState!.context;
   /*
   assert(DialogProvider._instance != null, 'please initialize DialogProvider before App()');
   final nKey = DialogProvider._instance!.navigatorKey;

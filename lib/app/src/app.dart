@@ -118,7 +118,7 @@ void start({
           ],
           child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
             builder: (context, dialogProvider, i18nProvider, __) => MaterialApp.router(
-              scaffoldMessengerKey: dialogProvider.scaffoldKey,
+              scaffoldMessengerKey: dialogProvider.scaffoldMessengerKey,
               builder: dialogProvider.init(),
               debugShowCheckedModeBanner: false,
               theme: theme ?? ThemeData(brightness: Brightness.light),
