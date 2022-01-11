@@ -1,35 +1,166 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
-import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'storage.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  setUp(() async {
-    await clear();
-  });
+  // ignore: invalid_use_of_visible_for_testing_member
+  initForTest({});
+  setUp(() async {});
 
   group('[storage]', () {
+    test('should check contains key', () async {
+      var found = await containsKey('k');
+      expect(found, false);
+      await setBool('k', true);
+      found = await containsKey('k');
+      expect(found, true);
+      await delete('k');
+      found = await containsKey('k');
+      expect(found, false);
+    });
+
+    test('should remove', () async {
+      await setBool('k', true);
+      var result = await getBool('k');
+      expect(result, true);
+
+      await delete('k');
+      result = await getBool('k');
+      expect(result, null);
+    });
+
+    test('should get/set bool', () async {
+      await setBool('k', true);
+      var result = await getBool('k');
+      expect(result, true);
+
+      await setBool('k', false);
+      result = await getBool('k');
+      expect(result, false);
+      await delete('k');
+      result = await getBool('k');
+      expect(result, null);
+    });
+
+    test('should get/set Int', () async {
+      await setInt('k', 1);
+      var result = await getInt('k');
+      expect(result, 1);
+      await delete('k');
+      result = await getInt('k');
+      expect(result, null);
+    });
+
+    test('should get/set double', () async {
+      await setDouble('k', 1.1);
+      var result = await getDouble('k');
+      expect(result, 1.1);
+      await delete('k');
+      result = await getDouble('k');
+      expect(result, null);
+    });
+
+    test('should get/set string', () async {
+      await setString('k', 'a');
+      var result = await getString('k');
+      expect(result, 'a');
+      await delete('k');
+      result = await getString('k');
+      expect(result, null);
+    });
+
+    test('should get/set string with expiration time', () async {
+      var now = DateTime.now();
+      var exp = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second);
+      exp = exp.add(const Duration(seconds: 1));
+      await setStringWithExp('k', 'a', exp);
+
+      // check exp key
+      var expInPref = await getDateTime('k' + expirationExt);
+      expect(exp, expInPref);
+      final str = await getStringWithExp('k');
+      expect(str, 'a');
+      expect(await containsKey('k'), true);
+      expect(await containsKey('k' + expirationExt), true);
+
+      // let key expired
+      await Future.delayed(const Duration(seconds: 1));
+      final str2 = await getStringWithExp('k');
+      expect(str2, null);
+
+      expect(await containsKey('k'), false);
+      expect(await containsKey('k' + expirationExt), false);
+    });
+
+    test('should get/set datetime', () async {
+      var now = DateTime.now();
+      var shortStr = now.toString().toString().substring(0, 19);
+      final value = DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second);
+      await setDateTime('k', value);
+      var result = await getDateTime('k');
+      expect(result.toString().substring(0, 19), shortStr);
+      expect(result, value);
+      await delete('k');
+      result = await getDateTime('k');
+      expect(result, null);
+    });
+
+    test('should get/set string list', () async {
+      var list = ['a', 'b', 'c'];
+      await setStringList('k', list);
+      var result = await getStringList('k');
+      expect(result![1], 'b');
+      await delete('k');
+      result = await getStringList('k');
+      expect(result, null);
+    });
+
+    test('should get/set map', () async {
+      Map<String, dynamic> map = <String, dynamic>{};
+      map['a'] = 1;
+      map['b'] = 2;
+
+      await setMap('k', map);
+      var result = await getMap('k');
+      expect(result!['b'], 2);
+      await delete('k');
+      result = await getMap('k');
+      expect(result, null);
+    });
+
+    test('should get/set map list', () async {
+      Map<String, dynamic> map1 = <String, dynamic>{};
+      map1['a'] = 1;
+      map1['b'] = 2;
+
+      Map<String, dynamic> map2 = <String, dynamic>{};
+      map2['a'] = 'a';
+      map2['b'] = 'b';
+
+      var list = <Map<String, dynamic>>[];
+      list.add(map1);
+      list.add(map2);
+
+      await setMapList('k', list);
+      var result = await getMapList('k');
+      expect(result![0]['a'], 1);
+      expect(result[1]['a'], 'a');
+      expect(result[0]['b'], 2);
+      expect(result[1]['b'], 'b');
+      await delete('k');
+      result = await getMapList('k');
+      expect(result, null);
+    });
+
     test('should set/get object', () async {
       final person = sample.Person(name: '123');
-      await set('p', person);
-      var p = await get<sample.Person>('p', () => sample.Person());
+      await setObject('p', person);
+      var p = await getObject<sample.Person>('p', () => sample.Person());
       expect(p, isNotNull);
       expect(p!.name, person.name);
       await delete('p');
-      var p2 = await get<sample.Person>('p', () => sample.Person());
+      var p2 = await getObject<sample.Person>('p', () => sample.Person());
       expect(p2, isNull);
-    });
-
-    test('should set/get JSON', () async {
-      await setJSON('item1', {'cleaning': 'done'});
-      var item1 = await getJSON('item1');
-      expect(item1!['cleaning'], 'done');
-      await delete('item1');
-      var item2 = await getJSON('item1');
-      expect(item2, isNull);
-      await clear();
     });
   });
 }

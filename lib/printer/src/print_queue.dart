@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/pref/pref.dart' as pref;
+import 'package:libcli/storage/storage.dart' as storage;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:synchronized/synchronized.dart';
 import 'ticket.dart';
@@ -53,19 +53,21 @@ class PrintQueue with ChangeNotifier {
 
   /// _init load printers from preferences
   Future<void> _init() async {
-    if (await pref.containsKey(_prefKeyPrinters)) {
-      final saved = await pref.getMapList(_prefKeyPrinters);
-      final list = saved.map((e) => Printer.fromJSON(e)).toList();
-      printers.clear();
-      printers.addAll(list);
-      notifyListeners();
+    if (await storage.containsKey(_prefKeyPrinters)) {
+      final saved = await storage.getMapList(_prefKeyPrinters);
+      if (saved != null) {
+        final list = saved.map((e) => Printer.fromJSON(e)).toList();
+        printers.clear();
+        printers.addAll(list);
+        notifyListeners();
+      }
     }
   }
 
   /// save save printers to preferences
   Future<void> save(BuildContext context) async {
     final list = printers.map((printer) => printer.toJSON()).toList();
-    await pref.setMapList(_prefKeyPrinters, list);
+    await storage.setMapList(_prefKeyPrinters, list);
   }
 
   /// addPrinter add printer

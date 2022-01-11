@@ -5,7 +5,7 @@ import 'datetime.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/pref/pref.dart' as pref;
+import 'package:libcli/storage/storage.dart' as storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
@@ -34,8 +34,8 @@ class I18nProvider with ChangeNotifier {
 
   /// loadTemporaryLocale call when app start, try to load temp locale
   Future<void> loadTemporaryLocale() async {
-    final localeTemp = await pref.getStringWithExp(_prefKeyTempLocale);
-    if (localeTemp.isNotEmpty) {
+    final localeTemp = await storage.getStringWithExp(_prefKeyTempLocale);
+    if (localeTemp != null) {
       overrideLocale = stringToLocale(localeTemp);
     }
   }
@@ -46,9 +46,9 @@ class I18nProvider with ChangeNotifier {
     if (overrideLocale != newLocale) {
       final tomorrow = DateTime.now().add(const Duration(hours: 24));
       if (newLocale != null) {
-        await pref.setStringWithExp(_prefKeyTempLocale, newLocale.toString(), tomorrow);
+        await storage.setStringWithExp(_prefKeyTempLocale, newLocale.toString(), tomorrow);
       } else {
-        await pref.remove(_prefKeyTempLocale);
+        await storage.delete(_prefKeyTempLocale);
       }
       overrideLocale = newLocale;
     }

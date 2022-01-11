@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/pref/pref.dart' as pref;
+import 'package:libcli/storage/storage.dart' as storage;
 import 'print_queue.dart';
 import 'printer.dart';
 import 'ticket.dart';
@@ -12,7 +12,7 @@ import 'bluetooth.dart';
 
 void main() {
   setUp(() async {
-    pref.mock({});
+    storage.initForTest({});
   });
 
   group('[print-queue]', () {

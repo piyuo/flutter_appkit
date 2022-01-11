@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:nested/nested.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/pref/pref.dart' as pref;
+import 'package:libcli/storage/storage.dart' as storage;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'navigator.dart';
 
@@ -38,7 +38,7 @@ Future<void> mockApp(
   List<SingleChildWidget>? providers,
 }) async {
   useTestFont(tester);
-  pref.mock({});
+  storage.initForTest({});
 
   await tester.pumpWidget(MultiProvider(
       providers: [
