@@ -14,7 +14,6 @@ git clone git@github.com:piyuo/libcli.git
 
 using project libcli.code-workspace
 
-
 ### Test
 
 unit test
@@ -39,4 +38,10 @@ publish libcli to pub.dev
 
 ```bash
 flutter packages pub publish  --force
+```
+
+### ignore build folder in dropbox
+
+``` bash
+xattr -w com.dropbox.ignored 1 /Users/cc/Dropbox/libcli/build
 ```
