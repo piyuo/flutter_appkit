@@ -271,3 +271,12 @@ Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) asy
   }
   return null;
 }
+
+/// clear entire storage,return true if successfully
+///
+///     await storage.clear();
+///
+Future<bool> clear() async {
+  final instance = await SharedPreferences.getInstance();
+  return await instance.clear();
+}

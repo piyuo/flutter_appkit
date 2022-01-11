@@ -8,6 +8,15 @@ void main() {
   setUp(() async {});
 
   group('[storage]', () {
+    test('should clear', () async {
+      await setBool('k', true);
+      var found = await containsKey('k');
+      expect(found, true);
+      await clear();
+      found = await containsKey('k');
+      expect(found, false);
+    });
+
     test('should check contains key', () async {
       var found = await containsKey('k');
       expect(found, false);
