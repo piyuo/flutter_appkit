@@ -33,8 +33,8 @@ abstract class Service {
   ///
   /// debug port used in debug branch
   ///
-  Service({
-    required this.serviceName,
+  Service(
+    this.serviceName, {
     this.timeout = 20000,
     this.slow = 10000,
     this.debugPort,
