@@ -35,8 +35,8 @@ abstract class Service {
   ///
   Service({
     required this.serviceName,
-    required this.timeout,
-    required this.slow,
+    this.timeout = 20000,
+    this.slow = 10000,
     this.debugPort,
   }) {
     assert(serviceName.isNotEmpty, 'must have service name');
