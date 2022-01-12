@@ -200,7 +200,7 @@ Future<List<String>?> getStringList(String key) async {
 ///
 setStringList(String key, List<String> value) async {
   assert(key.isNotEmpty);
-  log.log('[pref] set $key=$value');
+  log.log('[storage] set $key=$value');
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setStringList(key, value);
   if (!result) {
@@ -255,7 +255,7 @@ Future<void> setMapList(String key, List<Map<String, dynamic>> mapList) async {
 ///     await storage.setObject('item1', sample);
 ///
 Future<void> setObject(String key, pb.Object obj) async {
-  await setMap(key, obj.writeToJsonMap());
+  await setString(key, obj.writeToJson());
 }
 
 /// getJSON return json object from storage
@@ -263,10 +263,10 @@ Future<void> setObject(String key, pb.Object obj) async {
 ///     final item1 = await storage.get('item1');
 ///
 Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) async {
-  final map = await getMap(key);
-  if (map != null) {
+  final str = await getString(key);
+  if (str != null) {
     T item = builder();
-    item.fromJsonMap(map);
+    item.mergeFromJson(str);
     return item;
   }
   return null;
