@@ -22,7 +22,7 @@ void main() {
       await provide.login(
         accessToken: 'fakeAccessToken',
         accessTokenExpired: aExpired,
-        refreshToken: 'fakeAccessToken',
+        refreshToken: 'fakeRefreshToken',
         refreshTokenExpired: rExpired,
       );
       final valid2 = await provide.isValid(testing.Context());
