@@ -17,6 +17,7 @@ import 'package:libcli/pb/src/google/src/type.pbenum.dart' as $0;
 
 class Api extends pb.Object {
   $core.int mapIdXXX() => 1002;
+  namespace() => 'google';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Api', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'google.protobuf'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')

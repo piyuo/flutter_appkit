@@ -9,13 +9,13 @@ import 'geo-suggestions.pb.dart';
 
 pb.Object objectBuilder(int id, List<int> bytes) {
     switch (id) {
-      case 1004:
+      case 1003:
         return GeoLocation.fromBuffer(bytes);
-      case 1005:
+      case 1004:
         return GeoLocations.fromBuffer(bytes);
-      case 1006:
+      case 1005:
         return GeoSuggestion.fromBuffer(bytes);
-      case 1007:
+      case 1006:
         return GeoSuggestions.fromBuffer(bytes);
     }
     throw Exception('failed to create object in SysService. id($id) out of range');
@@ -28,7 +28,7 @@ class SysService extends Service {
   /// For example:
   ///
   ///     SysService service = SysService();
-  SysService(): super(serviceName: 'sys',timeout: 20000,slow: 10000);
+  SysService(): super('sys');
 
   @override
   pb.Object newObjectByID(int id, List<int> bytes) => objectBuilder(id, bytes);

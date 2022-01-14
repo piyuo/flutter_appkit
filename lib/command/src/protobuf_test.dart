@@ -1,29 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/mock/protobuf/sample-service.pb.dart';
-import 'package:libcli/mock/protobuf/cmd-echo.pbserver.dart';
-import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
+import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/command/src/protobuf.dart';
 
 void main() {
-  var service = SampleService();
+  var service = sample.SampleService();
   group('[command-protobuf]', () {
     test('should encode Object', () {
-      CmdEcho echoAction = CmdEcho();
+      sample.CmdEcho echoAction = sample.CmdEcho();
       echoAction.value = 'hi';
       List<int> bytes = encode(echoAction);
       expect(bytes.length, 6);
     });
 
     test('should decode Object', () {
-      StringResponse response = StringResponse();
+      sample.StringResponse response = sample.StringResponse();
       response.value = 'hi';
       List<int> bytes = encode(response);
-      StringResponse decodeAction = decode(bytes, service) as StringResponse;
+      sample.StringResponse decodeAction = decode(bytes, service) as sample.StringResponse;
       expect(decodeAction.value, 'hi');
     });
 
     test('should decode fail when id is wrong', () {
-      CmdEcho echoAction = CmdEcho();
+      sample.CmdEcho echoAction = sample.CmdEcho();
       echoAction.value = 'hi';
       List<int> bytes = encode(echoAction);
       bytes[bytes.length - 1] = 255;

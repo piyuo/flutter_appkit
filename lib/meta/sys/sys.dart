@@ -1,6 +1,6 @@
 library sys;
 
-export 'src/sys-service.pb.dart';
+export 'src/sys_service.pb.dart';
 export 'src/cmd-auto-complete.pb.dart';
 export 'src/cmd-get-location.pb.dart';
 export 'src/cmd-reverse-geocoding.pb.dart';

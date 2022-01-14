@@ -17,6 +17,7 @@ export 'descriptor.pbenum.dart';
 
 class FileDescriptorSet extends pb.Object {
   $core.int mapIdXXX() => 1003;
+  namespace() => 'google';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'FileDescriptorSet', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'google.protobuf'), createEmptyInstance: create)
     ..pc<FileDescriptorProto>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'file', $pb.PbFieldType.PM, subBuilder: FileDescriptorProto.create)

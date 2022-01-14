@@ -1,6 +1,6 @@
 library common;
 
-export 'src/common-service.pb.dart';
+export 'src/common_service.pb.dart';
 export 'src/bool.pb.dart';
 export 'src/entity.pb.dart';
 export 'src/error.pb.dart';

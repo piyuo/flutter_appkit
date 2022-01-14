@@ -8,9 +8,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/mock/protobuf/string-response.pbserver.dart';
-import 'package:libcli/mock/protobuf/cmd-echo.pbserver.dart';
-import 'package:libcli/mock/protobuf/sample-service.pb.dart';
+import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/command/src/test.dart';
 import 'package:libcli/command/src/protobuf.dart';
 import 'package:libcli/command/src/firewall.dart';
@@ -28,15 +26,15 @@ void main() {
   group('[command]', () {
     test('should send command and receive response', () async {
       var client = MockClient((request) async {
-        StringResponse sr = StringResponse();
+        sample.StringResponse sr = sample.StringResponse();
         sr.value = 'hi';
         List<int> bytes = encode(sr);
         return http.Response.bytes(bytes, 200);
       });
-      SampleService service = SampleService();
-      var response = await service.executeWithClient(testing.Context(), CmdEcho()..value = 'hello', client);
-      expect(response is StringResponse, true);
-      if (response is StringResponse) {
+      sample.SampleService service = sample.SampleService();
+      var response = await service.executeWithClient(testing.Context(), sample.CmdEcho()..value = 'hello', client);
+      expect(response is sample.StringResponse, true);
+      if (response is sample.StringResponse) {
         expect(response.value, 'hi');
       }
     });
@@ -46,7 +44,7 @@ void main() {
         return http.Response('', 501);
       });
       MockService service = MockService();
-      var response = await service.executeWithClient(testing.Context(), CmdEcho(), client);
+      var response = await service.executeWithClient(testing.Context(), sample.CmdEcho(), client);
       expect(response is pb.Empty, true);
     });
 
@@ -55,7 +53,7 @@ void main() {
       var service = MockService(mockExecute: (ctx, action) async {
         throw Exception('mock');
       });
-      CmdEcho action = CmdEcho();
+      sample.CmdEcho action = sample.CmdEcho();
       expect(() async {
         await service.execute(testing.Context(), action);
       }, throwsException);
@@ -63,25 +61,25 @@ void main() {
 
     test('should mock execute', () async {
       var service = MockService(mockExecute: (ctx, action) async {
-        return StringResponse()..value = 'hi';
+        return sample.StringResponse()..value = 'hi';
       });
 
-      CmdEcho action = CmdEcho();
+      sample.CmdEcho action = sample.CmdEcho();
       var response = await service.execute(testing.Context(), action);
-      expect(response is StringResponse, true);
-      if (response is StringResponse) {
+      expect(response is sample.StringResponse, true);
+      if (response is sample.StringResponse) {
         expect(response.value, 'hi');
       }
     });
 
     test('should use shared object', () async {
       var service = MockService(mockExecute: (ctx, action) async {
-        return StringResponse()..value = 'hi';
+        return sample.StringResponse()..value = 'hi';
       });
 
-      CmdEcho action = CmdEcho();
+      sample.CmdEcho action = sample.CmdEcho();
       var response = await service.execute(testing.Context(), action);
-      expect(response is StringResponse, true);
+      expect(response is sample.StringResponse, true);
     });
 
     test('debugPort should return local test url', () async {
@@ -92,11 +90,11 @@ void main() {
 
     test('should block by firewall', () async {
       var client = MockClient((request) async {
-        return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
+        return http.Response.bytes(encode(sample.StringResponse()..value = 'hi'), 200);
       });
-      SampleService service = SampleService();
+      sample.SampleService service = sample.SampleService();
 
-      final cmd = CmdEcho(value: 'firewallBlock');
+      final cmd = sample.CmdEcho(value: 'firewallBlock');
       mockFirewallInFlight(cmd.jsonString);
 
       var response = await service.executeWithClient(testing.Context(), cmd, client);
@@ -108,16 +106,16 @@ void main() {
       var execCount = 0;
       var client = MockClient((request) async {
         execCount++;
-        return http.Response.bytes(encode(StringResponse()..value = 'hi'), 200);
+        return http.Response.bytes(encode(sample.StringResponse()..value = 'hi'), 200);
       });
-      SampleService service = SampleService();
+      sample.SampleService service = sample.SampleService();
 
-      final cmd1 = CmdEcho(value: 'twin');
-      final cmd2 = CmdEcho(value: 'twin');
+      final cmd1 = sample.CmdEcho(value: 'twin');
+      final cmd2 = sample.CmdEcho(value: 'twin');
 
       var response = await service.executeWithClient(testing.Context(), cmd1, client);
       var response2 = await service.executeWithClient(testing.Context(), cmd2, client);
-      expect(response is StringResponse, true);
+      expect(response is sample.StringResponse, true);
       expect(response, response2);
       expect(execCount, 1);
     });

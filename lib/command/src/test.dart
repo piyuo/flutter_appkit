@@ -17,12 +17,7 @@ class MockService extends Service {
   ///
   final MockExecute? mockExecute;
 
-  MockService({this.mockExecute})
-      : super(
-          serviceName: 'mock',
-          timeout: -1,
-          slow: -1,
-        );
+  MockService({this.mockExecute}) : super('mock');
 
   @override
   pb.Object newObjectByID(int id, List<int> bytes) {

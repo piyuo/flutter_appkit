@@ -12,6 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class Empty extends pb.Object {
   $core.int mapIdXXX() => 1005;
+  namespace() => 'google';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Empty', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'google.protobuf'), createEmptyInstance: create)
     ..hasRequiredFields = false
