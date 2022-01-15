@@ -10,7 +10,6 @@ import 'package:libcli/command/src/url.dart';
 import 'package:libcli/command/src/http.dart';
 
 /// Sender define send function use in service, only for test
-@visibleForTesting
 typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command);
 
 /// Service communicate with server with command using protobuf and command pattern

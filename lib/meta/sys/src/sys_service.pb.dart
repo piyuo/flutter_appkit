@@ -2,21 +2,9 @@
 
 import 'package:libcli/command/command.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'geo-location.pb.dart';
-import 'geo-locations.pb.dart';
-import 'geo-suggestion.pb.dart';
-import 'geo-suggestions.pb.dart';
 
 pb.Object objectBuilder(int id, List<int> bytes) {
     switch (id) {
-      case 1003:
-        return GeoLocation.fromBuffer(bytes);
-      case 1004:
-        return GeoLocations.fromBuffer(bytes);
-      case 1005:
-        return GeoSuggestion.fromBuffer(bytes);
-      case 1006:
-        return GeoSuggestions.fromBuffer(bytes);
     }
     throw Exception('failed to create object in SysService. id($id) out of range');
 }
@@ -27,8 +15,11 @@ class SysService extends Service {
   /// remote url is defined in "service project/proto/.proto.json"
   /// For example:
   ///
-  ///     SysService service = SysService();
-  SysService(): super('sys');
+  ///     final service = SysService(sender: (BuildContext ctx, pb.Object command) async {
+  ///         return StringResponse()..value = 'fake';
+  ///     });
+  ///
+  SysService({Sender? sender}): super('sys', sender: sender);
 
   @override
   pb.Object newObjectByID(int id, List<int> bytes) => objectBuilder(id, bytes);
