@@ -1,9 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/pb/src/common/common.dart' as common;
 import 'memory_cache.dart';
 
 void main() {
   group('[memory]', () {
-    test('should get/set obj', () {
+    test('should get/set', () {
       MemoryCache cache = MemoryCache();
       var len = cache.length;
       expect(cache.get("key1"), isNull);
@@ -14,6 +15,28 @@ void main() {
       expect(len2 > len, true);
       cache.delete("key1");
       expect(cache.get("key1"), isNull);
+    });
+
+    test('should use pb.object as key', () {
+      final cache = MemoryCache();
+      final key = common.Error()..code = 'err1';
+      var len = cache.length;
+      expect(cache.get(key), isNull);
+      cache.set(key, "value1");
+      expect(cache.get(key), "value1");
+      expect(cache.contains(key), true);
+
+      final key2 = common.Error()..code = 'err1';
+      expect(cache.get(key2), "value1");
+      expect(cache.contains(key2), true);
+
+      var len2 = cache.length;
+      expect(len2 > len, true);
+      cache.delete(key);
+      expect(cache.get(key), isNull);
+
+      expect(cache.get(key2), isNull);
+      expect(cache.contains(key2), false);
     });
 
     test('should remove expired entry', () async {
