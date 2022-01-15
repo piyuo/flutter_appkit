@@ -9,10 +9,36 @@ import 'package:libcli/command/src/firewall.dart';
 import 'package:libcli/command/src/url.dart';
 import 'package:libcli/command/src/http.dart';
 
+/// OnRowTap trigger when user tap on row
+typedef Executer = Future<pb.Object> Function(
+  BuildContext context,
+  pb.Object command, {
+  bool ignoreFirewall,
+});
+
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
 ///
 abstract class Service {
+  /// Service create service with remote cloud function name,timeout and slow
+  ///
+  /// debug port used in debug branch
+  ///
+  Service(
+    this.serviceName, {
+    this.timeout = 20000,
+    this.slow = 10000,
+    this.debugPort,
+    Executer? executer,
+  }) {
+    assert(serviceName.isNotEmpty, 'must have service name');
+    execute = executer ??
+        (BuildContext ctx, pb.Object command, {bool ignoreFirewall = false}) async {
+          http.Client client = http.Client();
+          return await executeWithClient(ctx, command, client, ignoreFirewall: ignoreFirewall);
+        };
+  }
+
   /// debugPort used debug local service, service url will change to http://localhost:$debugPort
   ///
   int? debugPort;
@@ -28,19 +54,6 @@ abstract class Service {
   /// slow define slow network in ms
   ///
   int slow;
-
-  /// Service create service with remote cloud function name,timeout and slow
-  ///
-  /// debug port used in debug branch
-  ///
-  Service(
-    this.serviceName, {
-    this.timeout = 20000,
-    this.slow = 10000,
-    this.debugPort,
-  }) {
-    assert(serviceName.isNotEmpty, 'must have service name');
-  }
 
   /// find object by id
   ///
@@ -63,19 +76,7 @@ abstract class Service {
   ///
   ///     var response = await service.execute(EchoAction());
   ///
-  Future<pb.Object> execute(
-    BuildContext ctx,
-    pb.Object command, {
-    bool ignoreFirewall = false,
-  }) async {
-    http.Client client = http.Client();
-    return await executeWithClient(
-      ctx,
-      command,
-      client,
-      ignoreFirewall: ignoreFirewall,
-    );
-  }
+  late Executer execute;
 
   /// executeWithClient send command to remote service,return object if success, return null if exception happen
   ///

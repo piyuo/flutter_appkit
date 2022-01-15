@@ -32,6 +32,7 @@ void main() {
         return http.Response.bytes(bytes, 200);
       });
       sample.SampleService service = sample.SampleService();
+
       var response = await service.executeWithClient(testing.Context(), sample.CmdEcho()..value = 'hello', client);
       expect(response is sample.StringResponse, true);
       if (response is sample.StringResponse) {

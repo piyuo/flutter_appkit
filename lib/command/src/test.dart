@@ -13,28 +13,26 @@ typedef MockExecute = Future<pb.Object> Function(BuildContext ctx, pb.Object obj
 /// MockService let you mock service with your own execute function
 ///
 class MockService extends Service {
+  MockService({this.mockExecute})
+      : super('mock', executer: (
+          BuildContext ctx,
+          pb.Object command, {
+          bool ignoreFirewall = false,
+        }) async {
+          var f = mockExecute ??
+              (_, action) async {
+                return pb.OK();
+              };
+          return await f(ctx, command);
+        });
+
   /// mockExecute mock execute function
   ///
   final MockExecute? mockExecute;
 
-  MockService({this.mockExecute}) : super('mock');
-
   @override
   pb.Object newObjectByID(int id, List<int> bytes) {
     return pb.OK();
-  }
-
-  @override
-  Future<pb.Object> execute(
-    BuildContext ctx,
-    pb.Object command, {
-    bool ignoreFirewall = false,
-  }) async {
-    var f = mockExecute ??
-        (_, action) async {
-          return pb.OK();
-        };
-    return await f(ctx, command);
   }
 }
 
