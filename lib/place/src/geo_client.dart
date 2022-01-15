@@ -15,7 +15,7 @@ class GeoClient {
   ///     final suggestions = await geoClient.autoComplete(ctx, '165', types.LatLng(33.7338518, -117.7403496));
   ///
   Future<List<sys.GeoSuggestion>> autoComplete(BuildContext ctx, String input, types.LatLng l) async {
-    var response = await sysService.execute(
+    var response = await sysService.send(
       ctx,
       sys.CmdAutoComplete(
         sessionToken: sessionToken,
@@ -37,7 +37,7 @@ class GeoClient {
   ///     final location = await geoClient.getLocation(ctx, suggestion.id);
   ///
   Future<sys.GeoLocation?> getLocation(BuildContext ctx, String suggestionID) async {
-    var response = await sysService.execute(
+    var response = await sysService.send(
       ctx,
       sys.CmdGetLocation(
         sessionToken: sessionToken,
@@ -56,7 +56,7 @@ class GeoClient {
   ///     final locations = await geoClient.reverseGeocoding(testing.Context(), types.LatLng(33.7338518, -117.7403496));
   ///
   Future<List<sys.GeoLocation>> reverseGeocoding(BuildContext ctx, types.LatLng l) async {
-    var response = await sysService.execute(
+    var response = await sysService.send(
       ctx,
       sys.CmdReverseGeocoding(
         lat: l.lat,

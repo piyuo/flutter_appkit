@@ -6,23 +6,23 @@ import 'person.pb.dart';
 import 'string_response.pb.dart';
 
 pb.Object objectBuilder(int id, List<int> bytes) {
-    switch (id) {
-      case 1001:
-        return Person.fromBuffer(bytes);
-      case 1003:
-        return StringResponse.fromBuffer(bytes);
-    }
-    throw Exception('failed to create object in SampleService. id($id) out of range');
+  switch (id) {
+    case 1001:
+      return Person.fromBuffer(bytes);
+    case 1003:
+      return StringResponse.fromBuffer(bytes);
+  }
+  throw Exception('failed to create object in SampleService. id($id) out of range');
 }
 
 class SampleService extends Service {
-
   /// init sample service with predefine remote url
   /// remote url is defined in "service project/proto/.proto.json"
   /// For example:
   ///
-  ///     SampleService service = SampleService();
-  SampleService(): super('sample');
+  ///     final service = SampleService();
+  ///
+  SampleService({Sender? sender}) : super('sample', sender: sender);
 
   @override
   pb.Object newObjectByID(int id, List<int> bytes) => objectBuilder(id, bytes);

@@ -1,13 +1,14 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/command/src/test.dart';
 import 'package:libcli/command/src/events.dart';
 import 'package:libcli/command/src/http.dart';
+import 'package:libcli/command/src/service.dart';
 
 void main() {
   dynamic contractHappening;
@@ -28,55 +29,55 @@ void main() {
 
   group('[command-http]', () {
     test('should return object', () async {
-      var req = newRequest(statusMock(200));
+      var req = _fakeOkRequest(statusMock(200));
       var obj = await doPost(testing.Context(), req);
       expect(obj is pb.OK, true);
     });
 
     test('should handle 500, internal server error', () async {
-      var req = newRequest(statusMock(500));
+      var req = _fakeOkRequest(statusMock(500));
       var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(eventHappening is InternalServerErrorEvent, true);
     });
 
     test('should handle 501, service is not properly setup', () async {
-      var req = newRequest(statusMock(501));
+      var req = _fakeOkRequest(statusMock(501));
       var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(eventHappening is ServerNotReadyEvent, true);
     });
 
     test('should handle 504, service context deadline exceeded', () async {
-      var req = newRequest(statusMock(504));
+      var req = _fakeOkRequest(statusMock(504));
       var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is RequestTimeoutContract, true);
     });
 
     test('should retry 511 and ok, access token required', () async {
-      var req = newRequest(statusMock(511));
+      var req = _fakeOkRequest(statusMock(511));
       var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is CAccessTokenRequired, true);
     });
 
     test('should retry 412 and ok, access token expired', () async {
-      var req = newRequest(statusMock(412));
+      var req = _fakeOkRequest(statusMock(412));
       var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is CAccessTokenExpired, true);
     });
 
     test('should retry 402 and ok, payment token expired', () async {
-      var req = newRequest(statusMock(402));
+      var req = _fakeOkRequest(statusMock(402));
       var response = await doPost(testing.Context(), req);
       expect(response is pb.Empty, true);
       expect(contractHappening is CPaymentTokenRequired, true);
     });
 
     test('should handle unknown status', () async {
-      var req = newRequest(statusMock(101));
+      var req = _fakeOkRequest(statusMock(101));
       expect(() async => {await doPost(testing.Context(), req)}, throwsException);
     });
 
@@ -89,7 +90,7 @@ void main() {
       await post(
           testing.Context(),
           Request(
-            service: MockService(),
+            service: _FakeOkService(),
             client: client,
             action: pb.String(),
             url: 'http://mock',
@@ -107,7 +108,7 @@ void main() {
       await post(
           testing.Context(),
           Request(
-            service: MockService(),
+            service: _FakeOkService(),
             client: client,
             action: pb.String(),
             url: 'http://mock',
@@ -139,4 +140,27 @@ MockClient statusMock(int status) {
     }
     return resp;
   });
+}
+
+/// _FakeService only return pb.OK object
+class _FakeOkService extends Service {
+  _FakeOkService() : super('mock', sender: (BuildContext ctx, pb.Object command) async => pb.OK());
+
+  @override
+  pb.Object newObjectByID(int id, List<int> bytes) {
+    return pb.OK();
+  }
+}
+
+/// _fakeRequest return a fake service request
+Request _fakeOkRequest(MockClient client) {
+  _FakeOkService service = _FakeOkService();
+  return Request(
+    service: service,
+    client: client,
+    action: pb.String(),
+    url: 'http://mock',
+    timeout: const Duration(milliseconds: 9000),
+    slow: const Duration(milliseconds: 9000),
+  );
 }

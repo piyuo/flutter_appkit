@@ -9,12 +9,9 @@ import 'package:libcli/command/src/firewall.dart';
 import 'package:libcli/command/src/url.dart';
 import 'package:libcli/command/src/http.dart';
 
-/// OnRowTap trigger when user tap on row
-typedef Executer = Future<pb.Object> Function(
-  BuildContext context,
-  pb.Object command, {
-  bool ignoreFirewall,
-});
+/// Sender define send function use in service, only for test
+@visibleForTesting
+typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command);
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -26,16 +23,13 @@ abstract class Service {
   ///
   Service(
     this.serviceName, {
-    this.timeout = 20000,
-    this.slow = 10000,
-    this.debugPort,
-    Executer? executer,
+    Sender? sender,
   }) {
     assert(serviceName.isNotEmpty, 'must have service name');
-    execute = executer ??
-        (BuildContext ctx, pb.Object command, {bool ignoreFirewall = false}) async {
+    send = sender ??
+        (BuildContext ctx, pb.Object command) async {
           http.Client client = http.Client();
-          return await executeWithClient(ctx, command, client, ignoreFirewall: ignoreFirewall);
+          return await sendByClient(ctx, command, client);
         };
   }
 
@@ -49,11 +43,15 @@ abstract class Service {
 
   /// timeout define request timeout in ms
   ///
-  int timeout;
+  int timeout = 20000;
 
   /// slow define slow network in ms
   ///
-  int slow;
+  int slow = 10000;
+
+  /// ignoreFirewall is true will ignore firewall check
+  ///
+  bool ignoreFirewall = false;
 
   /// find object by id
   ///
@@ -72,22 +70,17 @@ abstract class Service {
     return serviceUrl(serviceName);
   }
 
-  /// execute command to remote service, no need to handle exception, all exception contract to eventBus
+  /// send action to remote service, no need to handle exception, all exception are contract to eventBus
   ///
-  ///     var response = await service.execute(EchoAction());
+  ///     var response = await service.send(EchoAction());
   ///
-  late Executer execute;
+  late Sender send;
 
-  /// executeWithClient send command to remote service,return object if success, return null if exception happen
+  /// sendByClient send command to remote service,return object if success, return null if exception happen
   ///
-  ///     var response = await service.executeWithClient(client, EchoAction());
+  ///     var response = await service.sendByClient(client, EchoAction());
   ///
-  Future<pb.Object> executeWithClient(
-    BuildContext context,
-    pb.Object command,
-    http.Client client, {
-    bool ignoreFirewall = false,
-  }) async {
+  Future<pb.Object> sendByClient(BuildContext context, pb.Object command, http.Client client) async {
     final commandJSON = command.jsonString;
     dynamic result = FirewallPass;
     if (!ignoreFirewall) {
@@ -124,8 +117,7 @@ abstract class Service {
       return result;
     }
     //cached object
-    log.log('[command] send $commandJSON to $url');
-    log.log('[command] return cache ${result.jsonString}');
+    log.log('[command] send $commandJSON to $url and return cache ${result.jsonString}');
     return result;
   }
 }

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/command/src/test.dart';
+import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/command/src/events.dart';
 import 'package:libcli/command/src/http.dart';
 
@@ -28,7 +28,7 @@ void main() {
 
   group('[command-http-error]', () {
     test('should throw exception when something wrong in request()', () async {
-      var req = newRequest(MockClient((request) async {
+      var req = _fakeSampleRequest(MockClient((request) async {
         throw Exception('mock');
       }));
       expect(() async {
@@ -41,7 +41,7 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 2));
         return http.Response('hi', 200);
       });
-      var req = newRequest(client);
+      var req = _fakeSampleRequest(client);
 
       req.timeout = const Duration(milliseconds: 1);
       var obj = await doPost(testing.Context(), req);
@@ -49,4 +49,16 @@ void main() {
       expect(contract is RequestTimeoutContract, true);
     });
   });
+}
+
+/// _fakeRequest return a fake service request
+Request _fakeSampleRequest(MockClient client) {
+  return Request(
+    service: sample.SampleService(),
+    client: client,
+    action: pb.String(),
+    url: 'http://mock',
+    timeout: const Duration(milliseconds: 9000),
+    slow: const Duration(milliseconds: 9000),
+  );
 }
