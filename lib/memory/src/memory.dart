@@ -8,13 +8,13 @@ final _cache = MemoryCache();
 ///
 ///     cache.set("key1", "value1");
 ///
-void set(dynamic key, dynamic value, {Duration? expire}) => _cache.set(key, value, expire: expire);
+void set<T>(dynamic key, T? value, {Duration? expire}) => _cache.set(key, value, expire: expire);
 
 /// get the value associated with [key].
 ///
 ///     cache.set("key1", "value1");
 ///
-dynamic get(dynamic key) => _cache.get(key);
+T? get<T>(dynamic key) => _cache.get(key);
 
 /// Returns true if any of the key exists in cache
 ///

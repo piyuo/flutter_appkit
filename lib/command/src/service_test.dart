@@ -105,10 +105,10 @@ void main() {
       });
       sample.SampleService service = sample.SampleService();
 
-      final cmd = sample.CmdEcho(value: 'firewallBlock');
-      mockFirewallInFlight(cmd.jsonString);
+      final action = sample.CmdEcho(value: 'firewallBlock');
+      mockFirewallInFlight(action);
 
-      var response = await service.sendByClient(testing.Context(), cmd, client);
+      var response = await service.sendByClient(testing.Context(), action, client);
       expect(response is FirewallBlock, true);
       expect(lastEvent is FirewallBlockEvent, true);
     });

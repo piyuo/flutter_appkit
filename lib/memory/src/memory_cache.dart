@@ -27,14 +27,14 @@ class MemoryCache {
 
   /// set the value, this is a FIFO cache, set the same key will make that key the latest key in [_cache]. the default expire duration is 5 minutes
   //
-  void set(
+  void set<T>(
     dynamic key,
-    dynamic value, {
+    T? value, {
     Duration? expire,
   }) {
     expire = expire ?? const Duration(minutes: 5);
     // make sure it be the last one in cache
-    if (_cache.containsKey(key)) {
+    if (_cache.containsKey(key) || value == null) {
       _cache.remove(key);
     }
     _cache[key] = _MemoryCacheEntry(value, _clock.now(), expire);
@@ -45,7 +45,7 @@ class MemoryCache {
 
   /// get the value associated with [key].
   ///
-  dynamic get(dynamic key) {
+  T? get<T>(dynamic key) {
     if (_cache.containsKey(key) && _isExpired(key)) {
       _cache.remove(key);
       return null;

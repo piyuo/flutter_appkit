@@ -76,18 +76,17 @@ abstract class Service {
   ///
   late Sender send;
 
-  /// sendByClient send command to remote service,return object if success, return null if exception happen
+  /// sendByClient send action to remote service,return object if success, return null if exception happen
   ///
   ///     var response = await service.sendByClient(client, EchoAction());
   ///
-  Future<pb.Object> sendByClient(BuildContext context, pb.Object command, http.Client client) async {
-    final commandJSON = command.jsonString;
+  Future<pb.Object> sendByClient(BuildContext context, pb.Object action, http.Client client) async {
     dynamic result = FirewallPass;
     if (!ignoreFirewall) {
-      result = firewallBegin(commandJSON);
+      result = firewallBegin(action);
     }
     if (result is FirewallPass) {
-      log.log('[command] send $commandJSON to $url');
+      log.log('[command] send ${action.jsonString} to $url');
       pb.Object? returnObj;
       try {
         returnObj = await post(
@@ -96,14 +95,14 @@ abstract class Service {
               service: this,
               client: client,
               url: url,
-              action: command,
+              action: action,
               timeout: Duration(milliseconds: timeout),
               slow: Duration(milliseconds: slow),
             ));
         return returnObj;
       } finally {
         if (!ignoreFirewall) {
-          firewallEnd(commandJSON, returnObj);
+          firewallEnd(action, returnObj);
         }
         if (returnObj != null) {
           log.log('[command] got ${returnObj.jsonString}');
@@ -112,12 +111,12 @@ abstract class Service {
         }
       }
     } else if (result is FirewallBlock) {
-      log.log('[command] block ${result.reason} ${command.jsonString}');
+      log.log('[command] block ${result.reason} ${action.jsonString}');
       eventbus.broadcast(context, FirewallBlockEvent(result.reason));
       return result;
     }
     //cached object
-    log.log('[command] send $commandJSON to $url and return cache ${result.jsonString}');
+    log.log('[command] send ${action.jsonString} to $url and return cache ${result.jsonString}');
     return result;
   }
 }

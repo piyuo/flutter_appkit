@@ -1,7 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/memory/memory.dart' as memory;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/unique/unique.dart' as unique;
+
+/// _blockList keep action need block
+final _blockList = memory.MemoryCache();
 
 /// FirewallBlockEvent happen when command send has been block by command service internal firewall
 ///
@@ -33,14 +37,14 @@ const inFlight = 'IN_FLIGHT';
 /// overflow is command run too many times
 const overflow = 'OVERFLOW';
 
-/// cacheKeyLastRequest is cache key that identify last request
-const cacheKeyLastRequest = "CMD_LAST_REQUEST";
+/// memoryKeyLastRequest is cache key that identify last request
+const memoryKeyLastRequest = "CMD_LAST_ACTION";
 
-/// cacheKeyLastResponse is cache key that identify last response
-const cacheKeyLastResponse = "CMD_LAST_RESPONSE";
+/// memoryKeyLastResponse is cache key that identify last response
+const memoryKeyLastResponse = "CMD_LAST_RESPONSE";
 
-/// cacheKeyCall is cache key that use to count overflow
-const cacheKeyCall = "CMD_CALL_";
+/// memoryKeyCall is cache key that use to count overflow
+const memoryKeyCall = "CMD_CALL_";
 
 /// CacheDuration is the time we cache last response
 var cacheDuration = const Duration(seconds: 30);
@@ -53,9 +57,6 @@ const maxAllowPostCount = 96;
 
 /// firewallDisable set to true will disable firewall
 bool firewallDisable = false;
-
-/// cacheKeyBlock is cache key for block command
-const cacheKeyBlock = "CMD_BLOCK_";
 
 /// BlockShortDuration define time of short duration
 var blockShortDuration = const Duration(minutes: 1);
@@ -70,23 +71,23 @@ var blockLongDuration = const Duration(days: 1);
 ///   4. it will block command for 1 minutes when receive server "BLOCK_SHORT"
 ///   5. it will block command for 24 hour when receive server "BLOCK_LONG"
 ///
-pb.Object firewallBegin(String cmdJSON) {
+pb.Object firewallBegin(pb.Object action) {
   if (firewallDisable) {
     return FirewallPass();
   }
 
   // check block by server
-  var blocked = memory.get(cacheKeyBlock + cmdJSON);
+  var blocked = _blockList.get(action);
   if (blocked != null) {
     return FirewallBlock(blocked);
   }
 
   // check IN_FLIGHT/LAST_RESPONSE
-  var lastReq = memory.get(cacheKeyLastRequest);
-  if (lastReq != null && lastReq is String) {
+  var lastReq = memory.get<pb.Object>(memoryKeyLastRequest);
+  if (lastReq != null) {
     // hit cache
-    if (lastReq == cmdJSON) {
-      final response = memory.get(cacheKeyLastResponse);
+    if (lastReq == action) {
+      final response = memory.get(memoryKeyLastResponse);
       if (response != null) {
         // LAST_RESPONSE
         return response;
@@ -98,49 +99,50 @@ pb.Object firewallBegin(String cmdJSON) {
   }
 
   // check OVERFLOW
-  final currentCount = memory.beginWith(cacheKeyCall);
+  final currentCount = memory.beginWith(memoryKeyCall);
   if (currentCount >= maxAllowPostCount) {
     return FirewallBlock(overflow);
   }
 
   // track last command
-  memory.set(cacheKeyLastRequest, cmdJSON, expire: cacheDuration);
-  memory.delete(cacheKeyLastResponse);
+  memory.set(memoryKeyLastRequest, action, expire: cacheDuration);
+  memory.delete(memoryKeyLastResponse);
 
   // add call count for OVERFLOW detection
-  memory.set(cacheKeyCall + unique.randomNumber(6), null, expire: maxAllowPostDuration);
+  memory.set(memoryKeyCall + unique.randomNumber(6), null, expire: maxAllowPostDuration);
   return FirewallPass();
 }
 
 /// firewallPostComplete must be call when post complete
 ///
-void firewallEnd(String cmdJSON, pb.Object? response) {
+void firewallEnd(pb.Object action, pb.Object? response) {
   if (firewallDisable) {
     return;
   }
 
   if (response == null) {
     // something wrong with post, just delete cache
-    memory.delete(cacheKeyLastRequest);
-    memory.delete(cacheKeyLastResponse);
+    memory.delete(memoryKeyLastRequest);
+    memory.delete(memoryKeyLastResponse);
     return;
   }
   // update request cache time, make sure request and response will expire at the same time
-  memory.set(cacheKeyLastRequest, cmdJSON, expire: cacheDuration);
-  memory.set(cacheKeyLastResponse, response, expire: cacheDuration);
+  memory.set(memoryKeyLastRequest, action, expire: cacheDuration);
+  memory.set(memoryKeyLastResponse, response, expire: cacheDuration);
 
   // check block by server
   if (response is pb.Error) {
     if (response.code == blockShort) {
-      memory.set(cacheKeyBlock + cmdJSON, blockShort, expire: blockShortDuration);
+      _blockList.set(action, blockShort, expire: blockShortDuration);
     }
     if (response.code == blockLong) {
-      memory.set(cacheKeyBlock + cmdJSON, blockLong, expire: blockLongDuration);
+      _blockList.set(action, blockLong, expire: blockLongDuration);
     }
   }
 }
 
-void mockFirewallInFlight(String cmdJSON) {
-  memory.set(cacheKeyLastRequest, cmdJSON, expire: cacheDuration);
-  memory.delete(cacheKeyLastResponse);
+@visibleForTesting
+void mockFirewallInFlight(pb.Object action) {
+  memory.set(memoryKeyLastRequest, action, expire: cacheDuration);
+  memory.delete(memoryKeyLastResponse);
 }

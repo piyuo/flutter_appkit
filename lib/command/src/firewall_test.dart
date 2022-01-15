@@ -12,31 +12,31 @@ void main() {
   group('[command-firewall]', () {
     test('should pass firewall', () async {
       final cmd = pb.Error()..code = "pass-" + unique.randomNumber(5);
-      final response = firewallBegin(cmd.jsonString);
+      final response = firewallBegin(cmd);
       expect(response is FirewallPass, true);
     });
 
     test('should block IN_FLIGHT', () async {
       final cmd = pb.Error()..code = "flight-" + unique.randomNumber(5);
       final cmd2 = pb.Error()..code = "not-flight-" + unique.randomNumber(5);
-      expect(firewallBegin(cmd.jsonString) is FirewallPass, true);
-      expect(firewallBegin(cmd.jsonString) is FirewallBlock, true); // check again
-      expect(firewallBegin(cmd2.jsonString) is FirewallPass, true); // other command will pass
-      firewallEnd(cmd.jsonString, pb.Error()); // set complete
-      expect(firewallBegin(cmd.jsonString) is FirewallBlock, false);
+      expect(firewallBegin(cmd) is FirewallPass, true);
+      expect(firewallBegin(cmd) is FirewallBlock, true); // check again
+      expect(firewallBegin(cmd2) is FirewallPass, true); // other command will pass
+      firewallEnd(cmd, pb.Error()); // set complete
+      expect(firewallBegin(cmd) is FirewallBlock, false);
     });
 
     test('should get response from cache', () async {
       final cmd = pb.Error()..code = "cache-" + unique.randomNumber(5);
-      expect(firewallBegin(cmd.jsonString) is FirewallPass, true);
-      firewallEnd(cmd.jsonString, pb.Error()..code = 'hi');
-      final response = firewallBegin(cmd.jsonString);
+      expect(firewallBegin(cmd) is FirewallPass, true);
+      firewallEnd(cmd, pb.Error()..code = 'hi');
+      final response = firewallBegin(cmd);
       expect(response is pb.Error, true);
       if (response is pb.Error) {
         expect(response.code, 'hi');
       }
       await Future.delayed(const Duration(milliseconds: 1001)); // expire the cache
-      expect(firewallBegin(cmd.jsonString) is FirewallPass, true);
+      expect(firewallBegin(cmd) is FirewallPass, true);
     });
 
     test('should block when command overflow', () async {
@@ -44,56 +44,56 @@ void main() {
       for (int i = 0; i < maxAllowPostCount; i++) {
         final cmdID = "not-overflow-" + unique.randomNumber(5);
         final cmd = pb.Error()..code = cmdID;
-        firewallBegin(cmd.jsonString) is FirewallPass;
-        firewallEnd(cmd.jsonString, pb.Error()); // set complete
+        firewallBegin(cmd) is FirewallPass;
+        firewallEnd(cmd, pb.Error()); // set complete
       }
       final countBeforeExpire = memory.length;
       expect(countBeforeExpire >= maxAllowPostCount, true);
       final cmdID2 = "overflow-" + unique.randomNumber(5);
       final cmd2 = pb.Error()..code = cmdID2;
-      expect(firewallBegin(cmd2.jsonString) is FirewallBlock, true);
+      expect(firewallBegin(cmd2) is FirewallBlock, true);
       await Future.delayed(const Duration(seconds: 1));
-      expect(firewallBegin(cmd2.jsonString) is FirewallPass, true);
+      expect(firewallBegin(cmd2) is FirewallPass, true);
     });
 
     test('should block when server request BLOCK_SHORT', () async {
       // set block short to 0.5s
       blockShortDuration = const Duration(milliseconds: 500);
-
-      expect(firewallBegin('short') is FirewallPass, true);
+      final short = pb.Error()..code = "short";
+      expect(firewallBegin(short) is FirewallPass, true);
 
       // server request block short duration
-      firewallEnd('short', pb.Error()..code = blockShort); // set complete
-      var result = firewallBegin('short');
+      firewallEnd(short, pb.Error()..code = blockShort); // set complete
+      var result = firewallBegin(short);
       expect(result is FirewallBlock, true);
       expect((result as FirewallBlock).reason, blockShort);
 
       //try again, still block
-      expect(firewallBegin('short') is FirewallBlock, true);
+      expect(firewallBegin(short) is FirewallBlock, true);
 
       // wait 1 seconds should pass short duration
       await Future.delayed(const Duration(seconds: 1));
-      expect(firewallBegin('short') is FirewallPass, true);
+      expect(firewallBegin(short) is FirewallPass, true);
     });
 
     test('should block when server request BLOCK_LONG', () async {
       // set block short to 0.5s
       blockLongDuration = const Duration(milliseconds: 500);
-
-      expect(firewallBegin('long') is FirewallPass, true);
+      final long = pb.Error()..code = "long";
+      expect(firewallBegin(long) is FirewallPass, true);
 
       // server request block long duration
-      firewallEnd('long', pb.Error()..code = blockLong); // set complete
-      var result = firewallBegin('long');
+      firewallEnd(long, pb.Error()..code = blockLong); // set complete
+      var result = firewallBegin(long);
       expect(result is FirewallBlock, true);
       expect((result as FirewallBlock).reason, blockLong);
 
       //try again, still block
-      expect(firewallBegin('long') is FirewallBlock, true);
+      expect(firewallBegin(long) is FirewallBlock, true);
 
       // wait 1 seconds should pass short duration
       await Future.delayed(const Duration(seconds: 1));
-      expect(firewallBegin('long') is FirewallPass, true);
+      expect(firewallBegin(long) is FirewallPass, true);
     });
   });
 }
