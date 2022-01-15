@@ -28,19 +28,6 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
     return '$runtimeType{$text}';
   }
 
-  /// toJson return object in json format string
-  ///
-  ///     final text = toJson();
-  ///
-  String toJson() => writeToJson();
-
-  /// fromJsonMap set object from json format map
-  ///
-  ///     final jsonMap = json.decode(jText) as Map<String, dynamic>;
-  ///     final obj2 = Error()..fromJsonMap(jsonMap);
-  ///
-  void fromJsonMap(Map<String, dynamic> json) => mergeFromJsonMap(json);
-
   /// toBase64 return object in base64 string
   ///
   ///     final text = Error()..toBase64();

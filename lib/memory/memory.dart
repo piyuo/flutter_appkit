@@ -1,3 +1,3 @@
-library memory_cache;
+library memory;
 
-export 'src/global.dart';
+export 'src/memory.dart';
