@@ -6,7 +6,7 @@ import 'cache.dart';
 
 void main() {
   setUpAll(() async {
-    await db.initForTest({});
+    await db.initForTest1({});
     await initForTest();
   });
 

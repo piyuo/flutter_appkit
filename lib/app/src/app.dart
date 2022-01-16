@@ -105,7 +105,7 @@ void start({
 
   Future.microtask(() async {
     // init db
-    await db.init(objectBuilders);
+    await db.init1(objectBuilders);
 
     // init cache
     await cache.init();

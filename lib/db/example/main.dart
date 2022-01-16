@@ -53,15 +53,15 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('helloWorld'),
           onPressed: () async {
-            final testDB = await use('testDB');
-            testDB.set('hello', 'world');
-            var name = testDB.get('hello');
+            final testDB = await open('testDB');
+            testDB.setString('hello', 'world');
+            var name = testDB.getString('hello');
             debugPrint('hello:$name');
           }),
-      OutlinedButton(
+      /*OutlinedButton(
           child: const Text('custom type'),
           onPressed: () async {
-            final testDB = await use('testDB');
+            final testDB = await open('testDB');
             testDB.set(
                 'i',
                 Inventory(
@@ -70,14 +70,14 @@ class DbExample extends StatelessWidget {
                 ));
             var inventory = await testDB.get('i');
             debugPrint('Name: ${inventory.name}');
-          }),
+          }),*/
       OutlinedButton(
           child: const Text('pb.Object'),
           onPressed: () async {
-            final testDB = await use('testDB');
-            testDB.set('e', sample.Person(name: '123'));
-            var person = await testDB.get('e');
-            debugPrint('person name: ${person.name}');
+            final testDB = await open('testDB');
+            testDB.setObject('e', sample.Person(name: '123'));
+            var person = testDB.getObject<sample.Person>('e', () => sample.Person());
+            debugPrint('person name: ${person!.name}');
           }),
     ]);
   }
