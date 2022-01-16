@@ -10,12 +10,7 @@ int get deleteMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 s
 
 /// DataLoader load new data by guide, return null if this data reach to the end.
 typedef DataLoader<T> = Future<List<T>?> Function(
-  BuildContext context, {
-  required bool isRefresh,
-  required int limit,
-  google.Timestamp? anchorTimestamp,
-  String? anchorId,
-});
+    BuildContext context, bool refresh, int limit, google.Timestamp? anchorTime, String? anchorId);
 
 class Dataset<T extends pb.Object> {
   Dataset({
@@ -168,14 +163,7 @@ class Dataset<T extends pb.Object> {
     }
     List<T>? result;
     try {
-      result = await dataLoader(
-        context,
-        isRefresh: true,
-        anchorTimestamp: anchor?.entityUpdateTime,
-        anchorId: anchor?.entityId,
-        limit: limit,
-      );
-
+      result = await dataLoader(context, true, limit, anchor?.entityUpdateTime, anchor?.entityId);
       if (result == null) {
         debugPrint('[dataset] end of data, no refresh');
         _noNeedRefresh = true;
@@ -219,13 +207,7 @@ class Dataset<T extends pb.Object> {
     }
     List<T>? result;
     try {
-      result = await dataLoader(
-        context,
-        isRefresh: false,
-        anchorTimestamp: anchor?.entityUpdateTime,
-        anchorId: anchor?.entityId,
-        limit: limit,
-      );
+      result = await dataLoader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityId);
       if (result == null) {
         debugPrint('[dataset] end of data, no more data');
         _noMoreData = true;

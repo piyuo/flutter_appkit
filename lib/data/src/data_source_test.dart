@@ -5,7 +5,6 @@ import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/pb/src/google/google.dart' as google;
 import 'data_source.dart';
 
 void main() {
@@ -23,13 +22,7 @@ void main() {
       int step = 0;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
             step++;
@@ -164,8 +157,7 @@ void main() {
       int step = 0;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
-        dataLoader: (context,
-            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
             step++;
@@ -229,8 +221,7 @@ void main() {
       int step = 0;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
-        dataLoader: (context,
-            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
             step++;
@@ -297,8 +288,7 @@ void main() {
       String? lastAnchorId;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
-        dataLoader: (context,
-            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           lastIsRefresh = isRefresh;
           lastLimit = limit;
           lastAnchorId = anchorId;

@@ -23,15 +23,7 @@ void main() {
     test('should init', () async {
       Dataset ds = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
-          return null;
-        },
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       expect(ds.rows.isEmpty, true);
       expect(ds.isEmpty, true);
@@ -48,20 +40,13 @@ void main() {
     test('should reset', () async {
       Dataset ds = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async =>
-            List.generate(
-                limit,
-                (i) => sample.Person(
-                      entity: pb.Entity(
-                        id: i.toString(),
-                      ),
-                    )),
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => List.generate(
+            limit,
+            (i) => sample.Person(
+                  entity: pb.Entity(
+                    id: i.toString(),
+                  ),
+                )),
       );
       await ds.init();
       await ds.refresh(testing.Context(), 1);
@@ -78,14 +63,7 @@ void main() {
     test('should save and delete items', () async {
       Dataset ds = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async =>
-            null,
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       final person = sample.Person(
           entity: pb.Entity(
@@ -105,14 +83,7 @@ void main() {
     test('should not delete after max item limit', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async =>
-            null,
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       final samples = List.generate(
           deleteMaxItem + 1,
@@ -136,13 +107,7 @@ void main() {
       int refreshLimit = 0;
       Dataset ds = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           refreshed = true;
           refreshLimit = limit;
           return null;
@@ -158,15 +123,7 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
-          return null;
-        },
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       await ds2.init();
       expect(ds2.noNeedRefresh, true);
@@ -177,13 +134,7 @@ void main() {
     test('should keep refresh, more and reset when receive enough data', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(
               limit,
               (index) => sample.Person(
@@ -209,13 +160,7 @@ void main() {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
             return List.generate(
@@ -249,15 +194,7 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
-          return null;
-        },
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       await ds2.init();
       expect(ds2.noNeedRefresh, false);
@@ -275,14 +212,7 @@ void main() {
       ];
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async =>
-            samples,
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => samples,
       );
       await ds.init();
       await ds.refresh(testing.Context(), 1);
@@ -296,14 +226,7 @@ void main() {
     test('should remove duplicate data in cache when refresh', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async =>
-            [
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [
           sample.Person(
             entity: pb.Entity(
               id: 'duplicate',
@@ -327,13 +250,7 @@ void main() {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
             return List.generate(
@@ -364,15 +281,7 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
-          return null;
-        },
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       await ds2.init();
       expect(ds2.noNeedRefresh, false);
@@ -384,13 +293,7 @@ void main() {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
             return List.generate(
@@ -422,15 +325,7 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
-          return null;
-        },
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       await ds2.init();
       expect(ds2.noMoreData, true);
@@ -440,13 +335,7 @@ void main() {
     test('should update cache', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(
               limit,
               (index) => sample.Person(
@@ -473,15 +362,7 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
-          return null;
-        },
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       await ds2.init();
       expect(ds.rows[0].name, 'new name');
@@ -491,14 +372,7 @@ void main() {
     test('should delete cache', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async =>
-            null,
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       final person = sample.Person(
         entity: pb.Entity(
@@ -521,13 +395,7 @@ void main() {
 
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           _isRefresh = isRefresh;
           _limit = limit;
           _anchorTimestamp = anchorTimestamp;
@@ -573,13 +441,7 @@ void main() {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           refreshCount++;
           return null;
         },
@@ -603,13 +465,7 @@ void main() {
       int counter = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
             return List.generate(
@@ -643,13 +499,7 @@ void main() {
       int counter = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
             return List.generate(
@@ -688,13 +538,7 @@ void main() {
     test('should not return deleted rows', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
-        dataLoader: (
-          context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async {
+        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(
               limit,
               (index) => sample.Person(

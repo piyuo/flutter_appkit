@@ -8,7 +8,6 @@ import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/unique/unique.dart' as unique;
 import 'package:libcli/meta/sample/sample.dart' as sample;
-import 'package:libcli/pb/src/google/google.dart' as google;
 import '../data.dart';
 
 main() => app.start(
@@ -139,14 +138,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'data.example.empty_table',
-        dataLoader: (
-          BuildContext context, {
-          required bool isRefresh,
-          required int limit,
-          google.Timestamp? anchorTimestamp,
-          String? anchorId,
-        }) async =>
-            [],
+        dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async => [],
       ),
       child: Consumer<DataSource<sample.Person>>(
           builder: (context, dataSource, child) => PageTable<sample.Person>(
@@ -167,8 +159,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'today_customer',
-        dataLoader: (BuildContext context,
-            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+        dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
           await Future.delayed(const Duration(seconds: 1));
           if (isRefresh) {
             return List.generate(
@@ -243,8 +234,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'today_visitor',
-        dataLoader: (BuildContext context,
-            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+        dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
           await Future.delayed(const Duration(seconds: 1));
           if (isRefresh) {
             return List.generate(
@@ -302,8 +292,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'today_visitor_empty',
-        dataLoader: (BuildContext context,
-            {required bool isRefresh, required int limit, google.Timestamp? anchorTimestamp, String? anchorId}) async {
+        dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
           await Future.delayed(const Duration(seconds: 1));
           debugPrint('isRefresh: $isRefresh');
           return [];
