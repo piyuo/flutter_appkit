@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/storage/storage.dart' as storage;
 
 /// AccessTokenRefresher should use refresh token to exchange new access token, must call loginByRefresh()
@@ -41,6 +42,11 @@ class SessionProvider with ChangeNotifier {
 
   /// _data keep session data
   Map<String, dynamic>? _data;
+
+  /// of get SessionProvider from context
+  static SessionProvider of(BuildContext context) {
+    return Provider.of<SessionProvider>(context, listen: false);
+  }
 
   /// _load load data from storage
   Future<void> _load() async {
