@@ -7,15 +7,19 @@ import 'db.dart';
 void main() {
   setUpAll(() async {
     await initForTest();
-    await deleteTestDb('test');
+    await deleteTestDb('test_db');
   });
 
   setUp(() async {});
 
+  tearDownAll(() async {
+    await deleteTestDb('test_db');
+  });
+
   group('[database]', () {
     test('should set/get bool', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       await database.setBool('k', false);
       final value = database.getBool('k');
       expect(value, false);
@@ -23,7 +27,7 @@ void main() {
 
     test('should set/get int', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       await database.setInt('k', 1);
       final value = database.getInt('k');
       expect(value, 1);
@@ -31,7 +35,7 @@ void main() {
 
     test('should set/get string', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       await database.setString('k', 'hi');
       final value = database.getString('k');
       expect(value, 'hi');
@@ -39,7 +43,7 @@ void main() {
 
     test('should set/get datetime', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       final now = DateTime.now();
       await database.setDateTime('k', now);
       final value = database.getDateTime('k');
@@ -48,7 +52,7 @@ void main() {
 
     test('should set/get pb.object', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       final person = sample.Person(name: 'l');
       await database.setObject('k', person);
       final value = database.getObject<sample.Person>('k', () => sample.Person());
@@ -59,7 +63,7 @@ void main() {
 
     test('should save string list', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       final list = <String>['1', '2', '3'];
       await database.setStringList('l', list);
       var list2 = database.getStringList('l');
@@ -69,7 +73,7 @@ void main() {
 
     test('should save int list', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       final list = <int>[1, 2, 3];
       await database.setIntList('l', list);
       var list2 = database.getIntList('l');
@@ -79,7 +83,7 @@ void main() {
 
     test('should reset', () async {
       final database = Database();
-      await database.open('test');
+      await database.open('test_db');
       await database.setString('a', 'b');
       await database.setString('1', '2');
       await database.reset();

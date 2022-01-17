@@ -29,14 +29,17 @@ Future<void> init() async {
 
 /// initForTest init test database
 Future<void> initForTest() async {
-  const cacheDbName = 'testCache';
-  const timeDbName = 'testTime';
+  await cleanupTest();
+  _cacheDB ??= await db.open('test_cache');
+  _timeDB ??= await db.open('test_time');
+}
+
+/// cleanupTest cleanup test database
+Future<void> cleanupTest() async {
   // ignore: invalid_use_of_visible_for_testing_member
-  await db.deleteTestDb(cacheDbName);
+  await db.deleteTestDb('test_cache');
   // ignore: invalid_use_of_visible_for_testing_member
-  await db.deleteTestDb(timeDbName);
-  _cacheDB ??= await db.open(cacheDbName);
-  _timeDB ??= await db.open(timeDbName);
+  await db.deleteTestDb('test_time');
 }
 
 /// reset entire cache by remove cache file
@@ -63,30 +66,30 @@ String namespaceKey(String? namespace, String key) => namespace != null ? '${nam
 
 /// setBool saves the [key] - [value] pair
 Future<void> setBool(String key, bool value, {String? namespace}) =>
-    _set(key, () async => _cacheDB!.setBool(key, value), namespace);
+    _set(key, (newKey) async => _cacheDB!.setBool(newKey, value), namespace);
 
 /// setInt saves the [key] - [value] pair
 Future<void> setInt(String key, int value, {String? namespace}) =>
-    _set(key, () async => _cacheDB!.setInt(key, value), namespace);
+    _set(key, (newKey) async => _cacheDB!.setInt(newKey, value), namespace);
 
 /// setString saves the [key] - [value] pair
 Future<void> setString(String key, String value, {String? namespace}) =>
-    _set(key, () async => _cacheDB!.setString(key, value), namespace);
+    _set(key, (newKey) async => _cacheDB!.setString(newKey, value), namespace);
 
 /// setStringList saves the [key] - [value] pair
 Future<void> setStringList(String key, List<String> value, {String? namespace}) =>
-    _set(key, () async => _cacheDB!.setStringList(key, value), namespace);
+    _set(key, (newKey) async => _cacheDB!.setStringList(newKey, value), namespace);
 
 /// setDateTime saves the [key] - [value] pair
 Future<void> setDateTime(String key, DateTime value, {String? namespace}) =>
-    _set(key, () async => _cacheDB!.setDateTime(key, value), namespace);
+    _set(key, (newKey) async => _cacheDB!.setDateTime(newKey, value), namespace);
 
 /// setObject saves the [key] - [value] pair
 Future<void> setObject(String key, pb.Object value, {String? namespace}) =>
-    _set(key, () async => _cacheDB!.setObject(key, value), namespace);
+    _set(key, (newKey) async => _cacheDB!.setObject(newKey, value), namespace);
 
 /// _set saves the [key] - [value] pair
-Future<void> _set(String key, Future<void> Function() setValueCallback, String? namespace) async {
+Future<void> _set(String key, Future<void> Function(String) setValueCallback, String? namespace) async {
   await _lock.synchronized(() async {
     assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
     debugPrint('[cache] set $key');
@@ -102,7 +105,7 @@ Future<void> _set(String key, Future<void> Function() setValueCallback, String? 
       await _cacheDB!.setString(tagKey(key), timeTag);
     }
 
-    await setValueCallback();
+    await setValueCallback(key);
     _setCount++;
     if (_setCount > cleanupWhenSet) {
       _setCount = 0;

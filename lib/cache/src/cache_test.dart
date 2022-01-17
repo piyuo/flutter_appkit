@@ -10,6 +10,10 @@ void main() {
     await initForTest();
   });
 
+  tearDownAll(() async {
+    await cleanupTest();
+  });
+
   setUp(() async {});
 
   group('[cache]', () {
