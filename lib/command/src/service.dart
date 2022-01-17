@@ -52,10 +52,6 @@ abstract class Service {
   ///
   bool ignoreFirewall = false;
 
-  /// find object by id
-  /// outdated
-  pb.Object newObjectByID(int id, List<int> bytes);
-
   /// url return remote service url
   ///
   String get url {

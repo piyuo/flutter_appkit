@@ -56,7 +56,7 @@ Request _fakeSampleRequest(MockClient client) {
   return Request(
     service: sample.SampleService(),
     client: client,
-    action: pb.String(),
+    action: pb.OK(),
     url: 'http://mock',
     timeout: const Duration(milliseconds: 9000),
     slow: const Duration(milliseconds: 9000),

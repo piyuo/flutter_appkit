@@ -3,31 +3,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/command/command.dart';
-import 'package:libcli/pb/pb.dart' as pb;
 
-pb.Object objectBuilder(int id, List<int> bytes) {
-    switch (id) {
-    }
-    throw Exception('failed to create object in SampleService. id($id) out of range');
-}
 
-class SampleService extends Service {
-
-  /// init sample service with predefine remote url
-  /// remote url is defined in "service project/proto/.proto.json"
-  /// For example:
-  ///
-  ///     final service = SampleService(sender: (BuildContext ctx, pb.Object command) async {
-  ///         return StringResponse()..value = 'fake';
-  ///     });
-  ///
+ /// SampleService define sample service, source .proto can be found in /pb/sample
+ ///
+ ///     final service = SampleService(sender: (context, action) async {
+ ///         return StringResponse()..value = 'fake';
+ ///     });
+ ///
+ class SampleService extends Service {
   SampleService({Sender? sender}): super('sample', sender: sender);
 
   /// of get SampleService from context
   static SampleService of(BuildContext context) {
     return Provider.of<SampleService>(context, listen: false);
   }
-
-  @override
-  pb.Object newObjectByID(int id, List<int> bytes) => objectBuilder(id, bytes);
 }

@@ -18,36 +18,3 @@ bool isError(dynamic obj, String code) {
   }
   return false;
 }
-
-/// isString return true if obj is String and value is the same
-///
-///     isString(response,'hi');
-///
-bool isString(dynamic obj, String value) {
-  if (obj is common.String) {
-    return obj.value == value;
-  }
-  return false;
-}
-
-/// isBool return true if obj is Bool and value is the same
-///
-///     isBool(response,true);
-///
-bool isBool(dynamic obj, bool value) {
-  if (obj is common.Bool) {
-    return obj.value == value;
-  }
-  return false;
-}
-
-/// isNumber return true if obj is number and value is the same
-///
-///     isNumber(response,16);
-///
-bool isNumber(dynamic obj, int value) {
-  if (obj is common.Number) {
-    return obj.value == value;
-  }
-  return false;
-}

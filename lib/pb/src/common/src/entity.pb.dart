@@ -14,7 +14,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/google/src/timestamp.pb.dart' as $0;
 
 class Entity extends pb.Object {
-  $core.int mapIdXXX() => 2;
+  $core.int mapIdXXX() => 0;
 
   $core.int compareTo(pb.Object other) => other is Entity ? other.id.compareTo(this.id) : -1;
   namespace() => 'common';

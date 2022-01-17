@@ -94,7 +94,7 @@ void main() {
           Request(
             service: _FakeOkService(),
             client: client,
-            action: pb.String(),
+            action: pb.OK(),
             url: 'http://mock',
             timeout: const Duration(milliseconds: 500),
             slow: const Duration(milliseconds: 1),
@@ -113,7 +113,7 @@ void main() {
           Request(
             service: _FakeOkService(),
             client: client,
-            action: pb.String(),
+            action: pb.OK(),
             url: 'http://mock',
             timeout: const Duration(milliseconds: 500),
             slow: const Duration(milliseconds: 3000),
@@ -154,11 +154,6 @@ MockClient statusMock(int status) {
 /// _FakeService only return pb.OK object
 class _FakeOkService extends Service {
   _FakeOkService() : super('mock', sender: (BuildContext ctx, pb.Object command, pb.Builder builder) async => pb.OK());
-
-  @override
-  pb.Object newObjectByID(int id, List<int> bytes) {
-    return pb.OK();
-  }
 }
 
 /// _fakeRequest return a fake service request
@@ -167,7 +162,7 @@ Request _fakeOkRequest(MockClient client) {
   return Request(
     service: service,
     client: client,
-    action: pb.String(),
+    action: pb.OK(),
     url: 'http://mock',
     timeout: const Duration(milliseconds: 9000),
     slow: const Duration(milliseconds: 9000),
