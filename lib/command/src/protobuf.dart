@@ -23,16 +23,17 @@ Uint8List encode(pb.Object obj) {
 ///     EchoAction decodeAction = commandProtobuf.decode(bytes, service);
 ///     expect(decodeAction.text, 'hi');
 ///
-pb.Object decode(List<int> bytes, Service service) {
+pb.Object decode(List<int> bytes, Service service, pb.Builder builder) {
   List<int> protoBytes = bytes.sublist(0, bytes.length - 2);
   Uint8List idBytes = Uint8List.fromList(bytes.sublist(bytes.length - 2, bytes.length));
   final id = idBytes.buffer.asByteData().getInt16(0, Endian.little);
 
-  pb.Object obj;
+  // common objects like error, ok
   if (id <= 1000) {
-    obj = pb.objectBuilder(id, protoBytes);
-  } else {
-    obj = service.newObjectByID(id, protoBytes);
+    return pb.objectBuilder(id, protoBytes);
   }
+  final obj = builder();
+  assert(obj.mapIdXXX() == id, 'expect object with id ${obj.mapIdXXX()} but got $id');
+  obj.mergeFromBuffer(protoBytes);
   return obj;
 }

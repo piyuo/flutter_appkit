@@ -6,9 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/command/src/events.dart';
 import 'package:libcli/command/src/http.dart';
 import 'package:libcli/command/src/service.dart';
+import 'package:libcli/command/src/protobuf.dart';
 
 void main() {
   dynamic contractHappening;
@@ -29,62 +31,62 @@ void main() {
 
   group('[command-http]', () {
     test('should return object', () async {
-      var req = _fakeOkRequest(statusMock(200));
-      var obj = await doPost(testing.Context(), req);
+      var req = _fakeOkRequest(statusOkMock());
+      var obj = await doPost(testing.Context(), req, () => pb.OK());
       expect(obj is pb.OK, true);
     });
 
     test('should handle 500, internal server error', () async {
       var req = _fakeOkRequest(statusMock(500));
-      var response = await doPost(testing.Context(), req);
+      var response = await doPost(testing.Context(), req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(eventHappening is InternalServerErrorEvent, true);
     });
 
     test('should handle 501, service is not properly setup', () async {
       var req = _fakeOkRequest(statusMock(501));
-      var response = await doPost(testing.Context(), req);
+      var response = await doPost(testing.Context(), req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(eventHappening is ServerNotReadyEvent, true);
     });
 
     test('should handle 504, service context deadline exceeded', () async {
       var req = _fakeOkRequest(statusMock(504));
-      var response = await doPost(testing.Context(), req);
+      var response = await doPost(testing.Context(), req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(contractHappening is RequestTimeoutContract, true);
     });
 
     test('should retry 511 and ok, access token required', () async {
       var req = _fakeOkRequest(statusMock(511));
-      var response = await doPost(testing.Context(), req);
+      var response = await doPost(testing.Context(), req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(contractHappening is CAccessTokenRequired, true);
     });
 
     test('should retry 412 and ok, access token expired', () async {
       var req = _fakeOkRequest(statusMock(412));
-      var response = await doPost(testing.Context(), req);
+      var response = await doPost(testing.Context(), req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(contractHappening is CAccessTokenExpired, true);
     });
 
     test('should retry 402 and ok, payment token expired', () async {
       var req = _fakeOkRequest(statusMock(402));
-      var response = await doPost(testing.Context(), req);
+      var response = await doPost(testing.Context(), req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(contractHappening is CPaymentTokenRequired, true);
     });
 
     test('should handle unknown status', () async {
       var req = _fakeOkRequest(statusMock(101));
-      expect(() async => {await doPost(testing.Context(), req)}, throwsException);
+      expect(() async => {await doPost(testing.Context(), req, () => sample.StringResponse())}, throwsException);
     });
 
     test('should broadcast slow network', () async {
       var client = MockClient((request) async {
         await Future.delayed(const Duration(milliseconds: 2));
-        return http.Response('hi', 200);
+        return http.Response.bytes(encode(pb.OK()), 200);
       });
 
       await post(
@@ -96,13 +98,14 @@ void main() {
             url: 'http://mock',
             timeout: const Duration(milliseconds: 500),
             slow: const Duration(milliseconds: 1),
-          ));
+          ),
+          () => pb.OK());
       expect(eventHappening.runtimeType, SlowNetworkEvent);
     });
 
     test('should no slow network', () async {
       var client = MockClient((request) async {
-        return http.Response('hi', 200);
+        return http.Response.bytes(encode(pb.OK()), 200);
       });
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await post(
@@ -114,7 +117,8 @@ void main() {
             url: 'http://mock',
             timeout: const Duration(milliseconds: 500),
             slow: const Duration(milliseconds: 3000),
-          ));
+          ),
+          () => pb.OK());
       expect(eventHappening, null);
     });
 
@@ -125,10 +129,15 @@ void main() {
   });
 }
 
+MockClient statusOkMock() {
+  return MockClient((request) async {
+    return http.Response.bytes(encode(pb.OK()), 200);
+  });
+}
+
 MockClient statusMock(int status) {
   bool badNews = true;
   var resp = http.Response('mock', status);
-
   return MockClient((request) async {
     if (status == 511 || status == 412 || status == 402) {
       if (badNews) {
@@ -144,7 +153,7 @@ MockClient statusMock(int status) {
 
 /// _FakeService only return pb.OK object
 class _FakeOkService extends Service {
-  _FakeOkService() : super('mock', sender: (BuildContext ctx, pb.Object command) async => pb.OK());
+  _FakeOkService() : super('mock', sender: (BuildContext ctx, pb.Object command, pb.Builder builder) async => pb.OK());
 
   @override
   pb.Object newObjectByID(int id, List<int> bytes) {

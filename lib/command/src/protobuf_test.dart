@@ -16,7 +16,8 @@ void main() {
       sample.StringResponse response = sample.StringResponse();
       response.value = 'hi';
       List<int> bytes = encode(response);
-      sample.StringResponse decodeAction = decode(bytes, service) as sample.StringResponse;
+      sample.StringResponse decodeAction =
+          decode(bytes, service, () => sample.StringResponse()) as sample.StringResponse;
       expect(decodeAction.value, 'hi');
     });
 
@@ -25,7 +26,7 @@ void main() {
       echoAction.value = 'hi';
       List<int> bytes = encode(echoAction);
       bytes[bytes.length - 1] = 255;
-      expect(() => decode(bytes, service), throwsException);
+      expect(() => decode(bytes, service, () => sample.StringResponse()), throwsException);
     });
   });
 }

@@ -32,7 +32,7 @@ void main() {
         throw Exception('mock');
       }));
       expect(() async {
-        await doPost(testing.Context(), req);
+        await doPost(testing.Context(), req, () => sample.StringResponse());
       }, throwsException);
     });
 
@@ -44,7 +44,7 @@ void main() {
       var req = _fakeSampleRequest(client);
 
       req.timeout = const Duration(milliseconds: 1);
-      var obj = await doPost(testing.Context(), req);
+      var obj = await doPost(testing.Context(), req, () => sample.StringResponse());
       expect(obj is pb.Empty, true);
       expect(contract is RequestTimeoutContract, true);
     });

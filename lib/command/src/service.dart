@@ -10,7 +10,7 @@ import 'package:libcli/command/src/url.dart';
 import 'package:libcli/command/src/http.dart';
 
 /// Sender define send function use in service, only for test
-typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command);
+typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command, pb.Builder builder);
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -26,9 +26,9 @@ abstract class Service {
   }) {
     assert(serviceName.isNotEmpty, 'must have service name');
     send = sender ??
-        (BuildContext ctx, pb.Object command) async {
+        (BuildContext ctx, pb.Object command, pb.Builder builder) async {
           http.Client client = http.Client();
-          return await sendByClient(ctx, command, client);
+          return await sendByClient(ctx, command, client, builder);
         };
   }
 
@@ -53,7 +53,7 @@ abstract class Service {
   bool ignoreFirewall = false;
 
   /// find object by id
-  ///
+  /// outdated
   pb.Object newObjectByID(int id, List<int> bytes);
 
   /// url return remote service url
@@ -79,7 +79,7 @@ abstract class Service {
   ///
   ///     var response = await service.sendByClient(client, EchoAction());
   ///
-  Future<pb.Object> sendByClient(BuildContext context, pb.Object action, http.Client client) async {
+  Future<pb.Object> sendByClient(BuildContext context, pb.Object action, http.Client client, pb.Builder builder) async {
     dynamic result = FirewallPass;
     if (!ignoreFirewall) {
       result = firewallBegin(action);
@@ -97,7 +97,8 @@ abstract class Service {
               action: action,
               timeout: Duration(milliseconds: timeout),
               slow: Duration(milliseconds: slow),
-            ));
+            ),
+            builder);
         return returnObj;
       } finally {
         if (!ignoreFirewall) {

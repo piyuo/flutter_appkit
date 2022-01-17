@@ -31,7 +31,8 @@ void main() {
         return http.Response.bytes(bytes, 200);
       });
       final service = sample.SampleService();
-      var response = await service.sendByClient(testing.Context(), sample.CmdEcho()..value = 'hello', client);
+      var response = await service.sendByClient(
+          testing.Context(), sample.CmdEcho()..value = 'hello', client, () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
       if (response is sample.StringResponse) {
         expect(response.value, 'hi');
@@ -39,11 +40,12 @@ void main() {
     });
 
     test('should use sender to mock response', () async {
-      final service = sample.SampleService(sender: (BuildContext ctx, pb.Object command) async {
+      final service = sample.SampleService(sender: (BuildContext ctx, pb.Object command, pb.Builder builder) async {
         return sample.StringResponse()..value = 'fake';
       });
 
-      var response = await service.send(testing.Context(), sample.CmdEcho()..value = 'hello');
+      var response =
+          await service.send(testing.Context(), sample.CmdEcho()..value = 'hello', () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
       if (response is sample.StringResponse) {
         expect(response.value, 'fake');
@@ -55,28 +57,29 @@ void main() {
         return http.Response('', 501);
       });
       final service = sample.SampleService();
-      var response = await service.sendByClient(testing.Context(), sample.CmdEcho(), client);
+      var response =
+          await service.sendByClient(testing.Context(), sample.CmdEcho(), client, () => sample.StringResponse());
       expect(response is pb.Empty, true);
     });
 
     test('should return null when send wrong action to test server', () async {
       app.branch = app.branchMaster;
-      final service = sample.SampleService(sender: (ctx, action) async {
+      final service = sample.SampleService(sender: (ctx, action, builder) async {
         throw Exception('mock');
       });
       sample.CmdEcho action = sample.CmdEcho();
       expect(() async {
-        await service.send(testing.Context(), action);
+        await service.send(testing.Context(), action, () => sample.StringResponse());
       }, throwsException);
     });
 
     test('should mock execute', () async {
-      final service = sample.SampleService(sender: (ctx, action) async {
+      final service = sample.SampleService(sender: (ctx, action, builder) async {
         return sample.StringResponse()..value = 'hi';
       });
 
       sample.CmdEcho action = sample.CmdEcho();
-      var response = await service.send(testing.Context(), action);
+      var response = await service.send(testing.Context(), action, () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
       if (response is sample.StringResponse) {
         expect(response.value, 'hi');
@@ -84,12 +87,12 @@ void main() {
     });
 
     test('should use shared object', () async {
-      final service = sample.SampleService(sender: (ctx, action) async {
+      final service = sample.SampleService(sender: (ctx, action, builder) async {
         return sample.StringResponse()..value = 'hi';
       });
 
       sample.CmdEcho action = sample.CmdEcho();
-      var response = await service.send(testing.Context(), action);
+      var response = await service.send(testing.Context(), action, () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
     });
 
@@ -108,7 +111,7 @@ void main() {
       final action = sample.CmdEcho(value: 'firewallBlock');
       mockFirewallInFlight(action);
 
-      var response = await service.sendByClient(testing.Context(), action, client);
+      var response = await service.sendByClient(testing.Context(), action, client, () => sample.StringResponse());
       expect(response is FirewallBlock, true);
       expect(lastEvent is FirewallBlockEvent, true);
     });
@@ -124,8 +127,8 @@ void main() {
       final cmd1 = sample.CmdEcho(value: 'twin');
       final cmd2 = sample.CmdEcho(value: 'twin');
 
-      var response = await service.sendByClient(testing.Context(), cmd1, client);
-      var response2 = await service.sendByClient(testing.Context(), cmd2, client);
+      var response = await service.sendByClient(testing.Context(), cmd1, client, () => sample.StringResponse());
+      var response2 = await service.sendByClient(testing.Context(), cmd2, client, () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
       expect(response, response2);
       expect(execCount, 1);
