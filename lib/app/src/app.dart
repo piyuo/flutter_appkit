@@ -8,7 +8,6 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/db/db.dart' as db;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:beamer/beamer.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
