@@ -18,12 +18,12 @@ Uint8List encode(pb.Object obj) {
   return list;
 }
 
-/// decode bytes array to protobuf object
+/// decode bytes array to protobuf object, set builder if result is anything other than common objects
 ///
 ///     EchoAction decodeAction = commandProtobuf.decode(bytes, service);
 ///     expect(decodeAction.text, 'hi');
 ///
-pb.Object decode(List<int> bytes, Service service, pb.Builder builder) {
+pb.Object decode(List<int> bytes, Service service, pb.Builder? builder) {
   List<int> protoBytes = bytes.sublist(0, bytes.length - 2);
   Uint8List idBytes = Uint8List.fromList(bytes.sublist(bytes.length - 2, bytes.length));
   final id = idBytes.buffer.asByteData().getInt16(0, Endian.little);
@@ -32,8 +32,12 @@ pb.Object decode(List<int> bytes, Service service, pb.Builder builder) {
   if (id <= 1000) {
     return pb.objectBuilder(id, protoBytes);
   }
-  final obj = builder();
-  assert(obj.mapIdXXX() == id, 'expect object with id ${obj.mapIdXXX()} but got $id');
-  obj.mergeFromBuffer(protoBytes);
-  return obj;
+  if (builder != null) {
+    final obj = builder();
+    assert(obj.mapIdXXX() == id, 'expect object with id ${obj.mapIdXXX()} but got $id');
+    obj.mergeFromBuffer(protoBytes);
+    return obj;
+  }
+  assert(false, 'unexpected id $id, please set builder to decode it');
+  return pb.Empty();
 }

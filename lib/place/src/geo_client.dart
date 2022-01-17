@@ -23,7 +23,7 @@ class GeoClient {
         lat: l.lat,
         lng: l.lng,
       ),
-      () => sys.GeoSuggestions(),
+      builder: () => sys.GeoSuggestions(),
     );
 
     if (response is sys.GeoSuggestions) {
@@ -44,7 +44,7 @@ class GeoClient {
         sessionToken: sessionToken,
         suggestionID: suggestionID,
       ),
-      () => sys.GeoLocation(),
+      builder: () => sys.GeoLocation(),
     );
 
     if (response is sys.GeoLocation) {
@@ -64,7 +64,7 @@ class GeoClient {
         lat: l.lat,
         lng: l.lng,
       ),
-      () => sys.GeoLocations(),
+      builder: () => sys.GeoLocations(),
     );
 
     if (response is sys.GeoLocations) {

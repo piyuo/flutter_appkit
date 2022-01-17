@@ -10,7 +10,7 @@ import 'package:libcli/command/src/url.dart';
 import 'package:libcli/command/src/http.dart';
 
 /// Sender define send function use in service, only for test
-typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command, pb.Builder builder);
+typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command, {pb.Builder? builder});
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -26,7 +26,7 @@ abstract class Service {
   }) {
     assert(serviceName.isNotEmpty, 'must have service name');
     send = sender ??
-        (BuildContext ctx, pb.Object command, pb.Builder builder) async {
+        (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async {
           http.Client client = http.Client();
           return await sendByClient(ctx, command, client, builder);
         };
@@ -75,7 +75,8 @@ abstract class Service {
   ///
   ///     var response = await service.sendByClient(client, EchoAction());
   ///
-  Future<pb.Object> sendByClient(BuildContext context, pb.Object action, http.Client client, pb.Builder builder) async {
+  Future<pb.Object> sendByClient(
+      BuildContext context, pb.Object action, http.Client client, pb.Builder? builder) async {
     dynamic result = FirewallPass;
     if (!ignoreFirewall) {
       result = firewallBegin(action);

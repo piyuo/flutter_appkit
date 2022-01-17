@@ -153,7 +153,8 @@ MockClient statusMock(int status) {
 
 /// _FakeService only return pb.OK object
 class _FakeOkService extends Service {
-  _FakeOkService() : super('mock', sender: (BuildContext ctx, pb.Object command, pb.Builder builder) async => pb.OK());
+  _FakeOkService()
+      : super('mock', sender: (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK());
 }
 
 /// _fakeRequest return a fake service request

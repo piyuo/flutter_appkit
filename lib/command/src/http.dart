@@ -31,7 +31,7 @@ class Request {
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
 ///
-Future<pb.Object> post(BuildContext ctx, Request request, pb.Builder builder) async {
+Future<pb.Object> post(BuildContext ctx, Request request, pb.Builder? builder) async {
   Completer<pb.Object> completer = Completer<pb.Object>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
@@ -55,7 +55,7 @@ Future<pb.Object> post(BuildContext ctx, Request request, pb.Builder builder) as
 ///     req.timeout = 9000;
 ///     var bytes = await commandHttp.doPost(req);
 ///
-Future<pb.Object> doPost(BuildContext context, Request r, pb.Builder builder) async {
+Future<pb.Object> doPost(BuildContext context, Request r, pb.Builder? builder) async {
   try {
     var headers = await doRequestHeaders();
     Uint8List bytes = encode(r.action);
@@ -122,7 +122,7 @@ Future<pb.Object> giveup(BuildContext ctx, dynamic e) async {
 ///
 Future<pb.Object> retry(
   BuildContext context,
-  pb.Builder builder, {
+  pb.Builder? builder, {
   required eventbus.Contract contract,
   required Request request,
 }) async {
