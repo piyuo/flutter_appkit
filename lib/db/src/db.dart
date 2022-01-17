@@ -10,6 +10,7 @@ Future<void> init() async {
   if (!kIsWeb) {
     final directory = await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);
+    debugPrint('[db] init hive at ${directory.path}');
   }
 }
 
