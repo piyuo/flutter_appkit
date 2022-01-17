@@ -12,7 +12,6 @@ import '../data.dart';
 
 main() => app.start(
       appName: 'data',
-      objectBuilders: {'sample': sample.objectBuilder},
       routes: {
         '/': (context, state, data) => const DataExample(),
       },
@@ -80,7 +79,7 @@ class DataExample extends StatelessWidget {
           onPressed: () async {
             final now = DateTime.now();
             for (int i = 0; i < 50; i++) {
-              await cache.set(
+              await cache.setObject(
                   'key$i',
                   sample.Person(
                     entity: pb.Entity(
@@ -101,7 +100,7 @@ class DataExample extends StatelessWidget {
           onPressed: () async {
             final now = DateTime.now();
             for (int i = 0; i < 50; i++) {
-              await cache.set(
+              await cache.setObject(
                   'key$i',
                   sample.Person(
                     entity: pb.Entity(
@@ -138,6 +137,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'data.example.empty_table',
+        dataBuilder: () => sample.Person(),
         dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async => [],
       ),
       child: Consumer<DataSource<sample.Person>>(
@@ -159,6 +159,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'today_customer',
+        dataBuilder: () => sample.Person(),
         dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
           await Future.delayed(const Duration(seconds: 1));
           if (isRefresh) {
@@ -234,6 +235,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'today_visitor',
+        dataBuilder: () => sample.Person(),
         dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
           await Future.delayed(const Duration(seconds: 1));
           if (isRefresh) {
@@ -292,6 +294,7 @@ class DataExample extends StatelessWidget {
       create: (context) => DataSource<sample.Person>(
         context: context,
         id: 'today_visitor_empty',
+        dataBuilder: () => sample.Person(),
         dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
           await Future.delayed(const Duration(seconds: 1));
           debugPrint('isRefresh: $isRefresh');

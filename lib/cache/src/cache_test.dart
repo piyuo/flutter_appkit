@@ -6,7 +6,7 @@ import 'cache.dart';
 
 void main() {
   setUpAll(() async {
-    await db.initForTest1({});
+    await db.initForTest();
     await initForTest();
   });
 
@@ -17,8 +17,8 @@ void main() {
       expect(length, 0);
       expect(timeLength, 0);
       expect(setCount, 0);
-      await set('hello', 'world');
-      var name = await get('hello');
+      await setString('hello', 'world');
+      var name = getString('hello');
       expect(name, 'world');
       expect(length, 2);
       expect(timeLength, 1);
@@ -31,36 +31,36 @@ void main() {
 
     test('should reuse time tag', () async {
       await reset();
-      await set('hello', 'world');
+      await setString('hello', 'world');
       expect(tagKey('hello'), 'hello_tag');
-      final savedTag = await getSavedTag('hello');
+      final savedTag = getSavedTag('hello');
       expect(savedTag, isNotNull);
 
-      await set('hello', 'world');
-      final savedTag2 = await getSavedTag('hello');
+      await setString('hello', 'world');
+      final savedTag2 = getSavedTag('hello');
       expect(savedTag, savedTag2);
     });
 
     test('should support namespace', () async {
       await reset();
-      await set('hello', 'world', namespace: 'my');
+      await setString('hello', 'world', namespace: 'my');
       expect(length, 2);
       expect(timeLength, 1);
 
-      var value = await get('hello');
+      var value = getString('hello');
       expect(value, isNull);
 
-      value = await get('hello', namespace: 'my');
+      value = getString('hello', namespace: 'my');
       expect(value, 'world');
 
       await delete('hello', namespace: 'my');
-      value = await get('hello', namespace: 'my');
+      value = getString('hello', namespace: 'my');
       expect(value, isNull);
     });
 
     test('should delete from cache', () async {
       await reset();
-      await set('hello', 'world');
+      await setString('hello', 'world');
       expect(length, 2);
       expect(timeLength, 1);
 
@@ -74,13 +74,13 @@ void main() {
 
       final expired = DateTime.now().add(const Duration(days: -366)).millisecondsSinceEpoch;
       final expiredTag = expired.toString();
-      await setTestItem(expiredTag, 'expired', 'hello');
-      expect(await get('expired'), 'hello');
+      await setTestString(expiredTag, 'expired', 'hello');
+      expect(getString('expired'), 'hello');
 
       final notExpired = DateTime.now().add(const Duration(days: -364)).millisecondsSinceEpoch;
       final notExpiredTag = notExpired.toString();
-      await setTestItem(notExpiredTag, 'notExpired', 'world');
-      expect(await get('notExpired'), 'world');
+      await setTestString(notExpiredTag, 'notExpired', 'world');
+      expect(getString('notExpired'), 'world');
 
       expect(length, 4);
       expect(timeLength, 2);
@@ -88,16 +88,16 @@ void main() {
       expect(length, 2);
       expect(timeLength, 1);
 
-      expect(await get('expired'), isNull);
-      expect(await get('notExpired'), 'world');
+      expect(getString('expired'), isNull);
+      expect(getString('notExpired'), 'world');
     });
 
     test('should run cleanup when setCount > cleanupWhenSet', () async {
       for (int i = 0; i < cleanupWhenSet; i++) {
-        await set('hello_$i', 'world');
+        await setString('hello_$i', 'world');
       }
       expect(setCount, cleanupWhenSet);
-      await set('hello_10', 'world');
+      await setString('hello_10', 'world');
       expect(setCount, 0);
     });
   });

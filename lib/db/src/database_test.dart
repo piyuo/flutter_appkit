@@ -6,12 +6,21 @@ import 'db.dart';
 
 void main() {
   setUpAll(() async {
-    await initForTest('test');
+    await initForTest();
+    await deleteTestDb('test');
   });
 
   setUp(() async {});
 
   group('[database]', () {
+    test('should set/get bool', () async {
+      final database = Database();
+      await database.open('test');
+      await database.setBool('k', false);
+      final value = database.getBool('k');
+      expect(value, false);
+    });
+
     test('should set/get int', () async {
       final database = Database();
       await database.open('test');
@@ -54,7 +63,7 @@ void main() {
       final list = <String>['1', '2', '3'];
       await database.setStringList('l', list);
       var list2 = database.getStringList('l');
-      expect(list2.length, 3);
+      expect(list2!.length, 3);
       expect(list2[2], '3');
     });
 
@@ -64,7 +73,7 @@ void main() {
       final list = <int>[1, 2, 3];
       await database.setIntList('l', list);
       var list2 = database.getIntList('l');
-      expect(list2.length, 3);
+      expect(list2!.length, 3);
       expect(list2[2], 3);
     });
 

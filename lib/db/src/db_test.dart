@@ -4,7 +4,8 @@ import 'db.dart';
 
 void main() {
   setUpAll(() async {
-    initForTest('test');
+    await initForTest();
+    await deleteTestDb('test');
   });
 
   setUp(() async {});

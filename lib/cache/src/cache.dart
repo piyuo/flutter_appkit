@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'dart:core';
 import 'package:libcli/db/db.dart' as db;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'package:synchronized/synchronized.dart';
 
 /// cleanupWhenSet is when to cleanup on every 50th set
@@ -12,24 +13,30 @@ int get cleanupMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 
 final _lock = Lock();
 
 /// cacheDB keep all cached data
-db.DB? _cacheDB;
+db.Database? _cacheDB;
 
 /// timeDB keep track cached item expired time
-db.DB? _timeDB;
+db.Database? _timeDB;
 
 /// _setCount count how many set, if > 10 then cleanup cache
 int _setCount = 0;
 
 /// init cache env
 Future<void> init() async {
-  _timeDB ??= await db.use('time');
-  _cacheDB ??= await db.use('cache');
+  _timeDB ??= await db.open('time');
+  _cacheDB ??= await db.open('cache');
 }
 
-/// initForTest init cache env for test
+/// initForTest init test database
 Future<void> initForTest() async {
-  _timeDB ??= await db.use('time', cleanBeforeUse: true);
-  _cacheDB ??= await db.use('cache', cleanBeforeUse: true);
+  const cacheDbName = 'testCache';
+  const timeDbName = 'testTime';
+  // ignore: invalid_use_of_visible_for_testing_member
+  await db.deleteTestDb(cacheDbName);
+  // ignore: invalid_use_of_visible_for_testing_member
+  await db.deleteTestDb(timeDbName);
+  _cacheDB ??= await db.open(cacheDbName);
+  _timeDB ??= await db.open(timeDbName);
 }
 
 /// reset entire cache by remove cache file
@@ -48,30 +55,54 @@ String tagKey(String key) => '${key}_tag';
 
 /// getSavedTag get saved tag
 @visibleForTesting
-Future<String?> getSavedTag(String key) async => await _cacheDB!.get(tagKey(key));
+String? getSavedTag(String key) => _cacheDB!.getString(tagKey(key));
 
 /// namespaceKey return key in namespace
 @visibleForTesting
 String namespaceKey(String? namespace, String key) => namespace != null ? '${namespace}_$key' : key;
 
-/// set saves the [key] - [value] pair
-Future<void> set(dynamic key, dynamic value, {String? namespace}) async {
+/// setBool saves the [key] - [value] pair
+Future<void> setBool(String key, bool value, {String? namespace}) =>
+    _set(key, () async => _cacheDB!.setBool(key, value), namespace);
+
+/// setInt saves the [key] - [value] pair
+Future<void> setInt(String key, int value, {String? namespace}) =>
+    _set(key, () async => _cacheDB!.setInt(key, value), namespace);
+
+/// setString saves the [key] - [value] pair
+Future<void> setString(String key, String value, {String? namespace}) =>
+    _set(key, () async => _cacheDB!.setString(key, value), namespace);
+
+/// setStringList saves the [key] - [value] pair
+Future<void> setStringList(String key, List<String> value, {String? namespace}) =>
+    _set(key, () async => _cacheDB!.setStringList(key, value), namespace);
+
+/// setDateTime saves the [key] - [value] pair
+Future<void> setDateTime(String key, DateTime value, {String? namespace}) =>
+    _set(key, () async => _cacheDB!.setDateTime(key, value), namespace);
+
+/// setObject saves the [key] - [value] pair
+Future<void> setObject(String key, pb.Object value, {String? namespace}) =>
+    _set(key, () async => _cacheDB!.setObject(key, value), namespace);
+
+/// _set saves the [key] - [value] pair
+Future<void> _set(String key, Future<void> Function() setValueCallback, String? namespace) async {
   await _lock.synchronized(() async {
     assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
     debugPrint('[cache] set $key');
     key = namespaceKey(namespace, key);
     String? timeTag;
-    final savedTag = await getSavedTag(key);
+    final savedTag = getSavedTag(key);
     if (savedTag != null) {
       timeTag = savedTag;
     } else {
       timeTag = uniqueExpirationTag();
       if (timeTag.isEmpty) return;
-      await _timeDB!.set(timeTag, key);
-      await _cacheDB!.set(tagKey(key), timeTag);
+      await _timeDB!.setString(timeTag, key);
+      await _cacheDB!.setString(tagKey(key), timeTag);
     }
 
-    await _cacheDB!.set(key, value);
+    await setValueCallback();
     _setCount++;
     if (_setCount > cleanupWhenSet) {
       _setCount = 0;
@@ -101,21 +132,55 @@ String uniqueExpirationTag() {
 /// contains return true if key is in cache
 bool contains(dynamic key, {String? namespace}) => _cacheDB!.contains(namespaceKey(namespace, key));
 
-/// get returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-///
-/// If [defaultValue] is specified, it is returned in case the key does not exist.
-Future<dynamic> get(dynamic key, {dynamic defaultValue, String? namespace}) async {
+/// getBool returns the value associated with the given [key]. If the key does not exist, `null` is returned.
+bool? getBool(String key, {String? namespace}) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return await _cacheDB!.get(namespaceKey(namespace, key), defaultValue: defaultValue);
+  return _cacheDB!.getBool(namespaceKey(namespace, key));
+}
+
+/// getInt returns the value associated with the given [key]. If the key does not exist, `null` is returned.
+int? getInt(String key, {String? namespace}) {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  return _cacheDB!.getInt(namespaceKey(namespace, key));
+}
+
+/// getString returns the value associated with the given [key]. If the key does not exist, `null` is returned.
+String? getString(String key, {String? namespace}) {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  return _cacheDB!.getString(namespaceKey(namespace, key));
+}
+
+/// getStringList returns the value associated with the given [key]. If the key does not exist, `null` is returned.
+List<String>? getStringList(String key, {String? namespace}) {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  return _cacheDB!.getStringList(namespaceKey(namespace, key));
+}
+
+/// getIntList returns the value associated with the given [key]. If the key does not exist, `null` is returned.
+List<int>? getIntList(String key, {String? namespace}) {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  return _cacheDB!.getIntList(namespaceKey(namespace, key));
+}
+
+/// getDateTime returns the value associated with the given [key]. If the key does not exist, `null` is returned.
+DateTime? getDateTime(String key, {String? namespace}) {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  return _cacheDB!.getDateTime(namespaceKey(namespace, key));
+}
+
+/// getObject returns the value associated with the given [key]. If the key does not exist, `null` is returned.
+T? getObject<T extends pb.Object>(String key, pb.Builder<T> builder, {String? namespace}) {
+  assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
+  return _cacheDB!.getObject(namespaceKey(namespace, key), builder);
 }
 
 /// deletes the given [key] from the box , If it does not exist, nothing happens.
-Future<void> delete(dynamic key, {String? namespace}) async {
+Future<void> delete(String key, {String? namespace}) async {
   await _lock.synchronized(() async {
     assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
     debugPrint('[cache] delete $key');
     key = namespaceKey(namespace, key);
-    final savedTag = await getSavedTag(key);
+    final savedTag = getSavedTag(key);
     if (savedTag != null) {
       await _timeDB!.delete(savedTag);
     }
@@ -135,9 +200,11 @@ Future<void> cleanup() async {
     if (expirationTime > yearBefore || deleteCount > cleanupMaxItem) {
       break;
     }
-    final key = await _timeDB!.get(expirationTimeTag);
-    await _cacheDB!.delete(key);
-    await _cacheDB!.delete(tagKey(key));
+    final key = _timeDB!.getString(expirationTimeTag);
+    if (key != null) {
+      await _cacheDB!.delete(key);
+      await _cacheDB!.delete(tagKey(key));
+    }
     await _timeDB!.delete(expirationTimeTag);
     deleteCount++;
   }
@@ -159,9 +226,9 @@ int get setCount => _setCount;
 
 /// setTestItem set cached item for test
 @visibleForTesting
-Future<void> setTestItem(String timeTag, dynamic key, dynamic value) async {
+Future<void> setTestString(String timeTag, String key, dynamic value) async {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  await _timeDB!.set(timeTag, key);
-  await _cacheDB!.set(key, value);
-  await _cacheDB!.set(tagKey(key), timeTag);
+  await _timeDB!.setString(timeTag, key);
+  await _cacheDB!.setString(key, value);
+  await _cacheDB!.setString(tagKey(key), timeTag);
 }

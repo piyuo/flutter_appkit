@@ -34,6 +34,9 @@ class Database {
   /// setInt save int to database
   Future<void> setInt(String key, int value) => _box.put(key, value);
 
+  /// setBool save bool to database
+  Future<void> setBool(String key, bool value) => _box.put(key, value);
+
   /// setIntList save int list to database
   Future<void> setIntList(String key, List<int> value) => _box.put(key, value);
 
@@ -51,20 +54,23 @@ class Database {
     _box.put(key, value.writeToBuffer());
   }
 
+  /// getBool return the value associated with the given [key]
+  bool? getBool(String key) => _box.get(key);
+
   /// getInt return the value associated with the given [key]
-  int getInt(String key) => _box.get(key);
+  int? getInt(String key) => _box.get(key);
 
   /// getIntList return the value associated with the given [key]
-  List<int> getIntList(String key) => _box.get(key);
+  List<int>? getIntList(String key) => _box.get(key);
 
   /// getString return the value associated with the given [key]
-  String getString(String key) => _box.get(key);
+  String? getString(String key) => _box.get(key);
 
   /// getStringList return the value associated with the given [key]
-  List<String> getStringList(String key) => _box.get(key);
+  List<String>? getStringList(String key) => _box.get(key);
 
   /// getDateTime return the value associated with the given [key]
-  DateTime getDateTime(String key) => _box.get(key);
+  DateTime? getDateTime(String key) => _box.get(key);
 
   /// getObject return the value associated with the given [key]
   T? getObject<T extends pb.Object>(String key, pb.Builder<T> builder) {
@@ -75,7 +81,7 @@ class Database {
     return builder()..mergeFromBuffer(value);
   }
 
-  /// deletes the given [key] from the box , If it does not exist, nothing happens.
+  /// delete the given [key] from the box ,if it does not exist, nothing happens.
   Future<void> delete(String key) => _box.delete(key);
 
   Future<void> reset() async {

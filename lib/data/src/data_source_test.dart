@@ -9,7 +9,7 @@ import 'data_source.dart';
 
 void main() {
   setUpAll(() async {
-    await db.initForTest1({'sample': sample.objectBuilder});
+    await db.initForTest();
     await cache.initForTest();
   });
 
@@ -22,6 +22,7 @@ void main() {
       int step = 0;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
@@ -62,7 +63,10 @@ void main() {
           }
         },
       );
-      await ds.init(testing.Context());
+      await ds.init(
+        testing.Context(),
+        () => sample.Person(),
+      );
       expect(ds.hasFirstPage, false);
       expect(ds.hasPrevPage, false);
       expect(ds.hasNextPage, true);
@@ -157,6 +161,7 @@ void main() {
       int step = 0;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
@@ -182,7 +187,7 @@ void main() {
           }
         },
       );
-      await ds.init(testing.Context());
+      await ds.init(testing.Context(), () => sample.Person());
       await ds.nextPage(testing.Context());
       expect(ds.selectedRows.length, 0);
       final row0 = ds.pageRows[0];
@@ -221,6 +226,7 @@ void main() {
       int step = 0;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
@@ -257,7 +263,10 @@ void main() {
           }
         },
       );
-      await ds.init(testing.Context());
+      await ds.init(
+        testing.Context(),
+        () => sample.Person(),
+      );
       expect(ds.pagingInfo(testing.Context()), '1 - 10 of many');
       expect(ds.allRows.length, 10);
       await ds.nextPage(testing.Context());
@@ -288,6 +297,7 @@ void main() {
       String? lastAnchorId;
       final ds = DataSource<sample.Person>(
         id: 'ds1',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           lastIsRefresh = isRefresh;
           lastLimit = limit;
@@ -327,7 +337,10 @@ void main() {
           }
         },
       );
-      await ds.init(testing.Context());
+      await ds.init(
+        testing.Context(),
+        () => sample.Person(),
+      );
       expect(ds.allRows.length, 10);
       expect(ds.rowsPerPage, 10);
       expect(lastIsRefresh, true);

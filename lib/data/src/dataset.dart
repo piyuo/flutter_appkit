@@ -57,15 +57,15 @@ class Dataset<T extends pb.Object> {
   bool get isNotEmpty => rows.isNotEmpty;
 
   /// init read snapshot from cache
-  Future<void> init() async {
+  Future<void> init(pb.Builder<T> builder) async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    final savedData = await cache.get(id, namespace: namespace);
+    final savedData = cache.getStringList(id, namespace: namespace);
     if (savedData == null) {
       return;
     }
 
     for (String itemID in savedData) {
-      final item = await cache.get(itemID, namespace: namespace);
+      final item = cache.getObject<T>(itemID, builder, namespace: namespace);
       if (item == null) {
         // item should not be null, cache may not reliable
         await reset();
@@ -73,8 +73,8 @@ class Dataset<T extends pb.Object> {
       }
       _data.add(item);
     }
-    _noNeedRefresh = await cache.get('${id}_nr', namespace: namespace);
-    _noMoreData = await cache.get('${id}_nm', namespace: namespace);
+    _noNeedRefresh = cache.getBool('${id}_nr', namespace: namespace) ?? false;
+    _noMoreData = cache.getBool('${id}_nm', namespace: namespace) ?? false;
     onDataChanged?.call();
     debugPrint('[dataset] init $id ${_data.length}');
   }
@@ -83,9 +83,9 @@ class Dataset<T extends pb.Object> {
   @visibleForTesting
   Future<void> save() async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    await cache.set(id, _data.map((item) => item.entityId).toList(), namespace: namespace);
-    await cache.set('${id}_nm', _noMoreData, namespace: namespace);
-    await cache.set('${id}_nr', _noNeedRefresh, namespace: namespace);
+    await cache.setStringList(id, _data.map((item) => item.entityId).toList(), namespace: namespace);
+    await cache.setBool('${id}_nm', _noMoreData, namespace: namespace);
+    await cache.setBool('${id}_nr', _noNeedRefresh, namespace: namespace);
     debugPrint('[dataset] save $id ${_data.length}');
   }
 
@@ -107,7 +107,7 @@ class Dataset<T extends pb.Object> {
   @visibleForTesting
   Future<void> saveItems(List<T> items) async {
     for (var item in items) {
-      await cache.set(
+      await cache.setObject(
         item.entityId,
         item,
         namespace: namespace,
@@ -236,7 +236,7 @@ class Dataset<T extends pb.Object> {
       }
     }
     _data.insert(0, item);
-    await cache.set(item.entityId, item, namespace: namespace);
+    await cache.setObject(item.entityId, item, namespace: namespace);
     await save();
   }
 

@@ -79,7 +79,6 @@ void start({
   List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
   String serviceEmail = 'support@piyuo.com',
-  Map<String, pb.ObjectBuilder> objectBuilders = const {},
   ThemeData? theme,
   ThemeData? darkTheme,
 }) {
@@ -105,8 +104,7 @@ void start({
 
   Future.microtask(() async {
     // init db
-    await db.init1(objectBuilders);
-
+    await db.init();
     // init cache
     await cache.init();
     // run app

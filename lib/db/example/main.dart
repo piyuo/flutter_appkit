@@ -22,7 +22,6 @@ class Inventory {
 main() {
   app.start(
     appName: 'db',
-    objectBuilders: {'sample': sample.objectBuilder},
     routes: {
       '/': (context, state, data) => const DbExample(),
     },

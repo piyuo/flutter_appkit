@@ -15,15 +15,15 @@ Future<void> init() async {
 
 /// init database env
 @visibleForTesting
-Future<void> initForTest(String databaseName) async {
+Future<void> initForTest() async {
   Hive.init(testDatabaseFile);
-  await deleteDatabase(databaseName, testDatabaseFile);
 }
 
-/// deleteDatabase delete database
-Future<void> deleteDatabase(String databaseName, String file) async {
-  if (await Hive.boxExists(databaseName, path: file)) {
-    await Hive.deleteBoxFromDisk(databaseName, path: file);
+/// deleteTestDb delete testing database
+@visibleForTesting
+Future<void> deleteTestDb(String databaseName) async {
+  if (await Hive.boxExists(databaseName, path: testDatabaseFile)) {
+    await Hive.deleteBoxFromDisk(databaseName, path: testDatabaseFile);
   }
 }
 

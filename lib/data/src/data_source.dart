@@ -8,13 +8,14 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     BuildContext? context,
     required String id,
     required DataLoader<T> dataLoader,
+    required pb.Builder<T> dataBuilder,
     this.onRowsChanged,
     int rowsPerPage = 10,
   }) {
     _rowsPerPage = rowsPerPage;
     _dataset = Dataset(id: id, dataLoader: dataLoader, onDataChanged: onDataChanged);
     if (context != null) {
-      init(context);
+      init(context, dataBuilder);
     }
   }
 
@@ -107,10 +108,10 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   ///
   ///     await init(context);
   ///
-  Future<void> init(BuildContext context) async {
+  Future<void> init(BuildContext context, pb.Builder<T> builder) async {
     _notifyBusy(true);
     try {
-      await _dataset.init();
+      await _dataset.init(builder);
       await _dataset.refresh(context, _rowsPerPage);
     } finally {
       _notifyBusy(false);
