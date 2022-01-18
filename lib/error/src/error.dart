@@ -49,25 +49,28 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
     return;
   }
   showCatchedAlert = true;
+  try {
+    if (e is log.DiskErrorException) {
+      await dialog.alert(
+        dialog.rootContext,
+        dialog.rootContext.i18n.errorDiskErrorMessage,
+        icon: Icons.priority_high,
+      );
+      return;
+    }
 
-  if (e is log.DiskErrorException) {
     await dialog.alert(
       dialog.rootContext,
-      dialog.rootContext.i18n.errorDiskErrorMessage,
-      icon: Icons.priority_high,
+      dialog.rootContext.i18n.errorNotified,
+      warning: true,
+      footer: e.toString(),
+      emailUs: true,
     );
+  } catch (ex) {
+    debugPrint(ex.toString()); //don't show error if something wrong in alert
+  } finally {
     showCatchedAlert = false;
-    return;
   }
-
-  await dialog.alert(
-    dialog.rootContext,
-    dialog.rootContext.i18n.errorNotified,
-    warning: true,
-    footer: e.toString(),
-    emailUs: true,
-  );
-  showCatchedAlert = false;
 }
 
 String firewallBlockMessage(BuildContext context, String reason) {
