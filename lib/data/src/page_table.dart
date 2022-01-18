@@ -159,31 +159,33 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
       ),
     ];
 
-    var _tails = <Widget>[
-      Expanded(
-          child: AutoSizeText(
-        dataSource.isBusy ? context.i18n.loadingLabel : dataSource.pagingInfo(context),
-        maxLines: 2,
-        style: const TextStyle(fontSize: 13, color: Colors.grey),
-        textAlign: TextAlign.right,
-      )),
-      const SizedBox(width: 10),
-      IconButton(
-        iconSize: 32,
-        icon: const Icon(Icons.chevron_left),
-        padding: EdgeInsets.zero,
-        tooltip: localizations.previousPageTooltip,
-        onPressed: dataSource.hasPrevPage ? breaker.linkVoidFunc(() => dataSource.prevPage(context)) : null,
-      ),
-      IconButton(
-        iconSize: 32,
-        icon: const Icon(Icons.chevron_right),
-        padding: EdgeInsets.zero,
-        tooltip: localizations.nextPageTooltip,
-        onPressed: dataSource.hasNextPage ? breaker.linkVoidFunc(() => dataSource.nextPage(context)) : null,
-      ),
-      if (isTableLayout) const SizedBox(width: 14),
-    ];
+    var _tails = dataSource.isEmpty
+        ? <Widget>[]
+        : <Widget>[
+            Expanded(
+                child: AutoSizeText(
+              dataSource.isBusy ? context.i18n.loadingLabel : dataSource.pagingInfo(context),
+              maxLines: 2,
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
+              textAlign: TextAlign.right,
+            )),
+            const SizedBox(width: 10),
+            IconButton(
+              iconSize: 32,
+              icon: const Icon(Icons.chevron_left),
+              padding: EdgeInsets.zero,
+              tooltip: localizations.previousPageTooltip,
+              onPressed: dataSource.hasPrevPage ? breaker.linkVoidFunc(() => dataSource.prevPage(context)) : null,
+            ),
+            IconButton(
+              iconSize: 32,
+              icon: const Icon(Icons.chevron_right),
+              padding: EdgeInsets.zero,
+              tooltip: localizations.nextPageTooltip,
+              onPressed: dataSource.hasNextPage ? breaker.linkVoidFunc(() => dataSource.nextPage(context)) : null,
+            ),
+            if (isTableLayout) const SizedBox(width: 14),
+          ];
     return styleHeader(context, _actions, _tails);
   }
 
@@ -239,6 +241,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
     );
   }
 
+  /// _buildNoData build no data ui
   Widget _buildNoData(BuildContext context) {
     return SizedBox(
       height: tableRowHeight * 3,
