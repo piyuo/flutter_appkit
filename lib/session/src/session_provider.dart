@@ -100,11 +100,11 @@ class SessionProvider with ChangeNotifier {
     return false;
   }
 
-  /// isValid return true if session is valid, it will refresh access token if expired
+  /// isLogin return true if login and session is valid, it will refresh access token if expired
   ///
-  ///     var valid = await provide.isValid(context);
+  ///     var valid = await provide.isLogin(context);
   ///
-  Future<bool> isValid(BuildContext context) async {
+  Future<bool> isLogin(BuildContext context) async {
     await _load();
     if (hasValidAccessToken) {
       return true;
@@ -131,7 +131,7 @@ class SessionProvider with ChangeNotifier {
   ///     final token = await provide.getAccessToken(context);
   ///
   Future<String?> getAccessToken(BuildContext context) async {
-    if (await isValid(context)) {
+    if (await isLogin(context)) {
       return _data![_accessToken];
     }
     return null;
@@ -196,7 +196,7 @@ class SessionProvider with ChangeNotifier {
   ///     await provide.set(context, 'region', 'en');
   ///
   Future<void> set(BuildContext context, String key, dynamic value) async {
-    if (await isValid(context)) {
+    if (await isLogin(context)) {
       _data![key] = value;
       await _save();
     }
@@ -207,7 +207,7 @@ class SessionProvider with ChangeNotifier {
   ///     final region = await provide.get(context, 'region');
   ///
   Future<T?> get<T>(BuildContext context, String key) async {
-    if (await isValid(context)) {
+    if (await isLogin(context)) {
       return _data![key];
     }
     return null;

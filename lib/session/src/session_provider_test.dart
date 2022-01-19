@@ -15,7 +15,7 @@ void main() {
   group('[session_provider]', () {
     test('should keep session data', () async {
       final provide = SessionProvider();
-      final valid = await provide.isValid(testing.Context());
+      final valid = await provide.isLogin(testing.Context());
       final aExpired = DateTime.now().add(const Duration(seconds: 300));
       final rExpired = DateTime.now().add(const Duration(seconds: 100));
       expect(valid, false);
@@ -25,7 +25,7 @@ void main() {
         refreshToken: 'fakeRefreshToken',
         refreshTokenExpired: rExpired,
       );
-      final valid2 = await provide.isValid(testing.Context());
+      final valid2 = await provide.isLogin(testing.Context());
       expect(valid2, true);
 
       await provide.set(testing.Context(), 'region', 'en');
@@ -69,7 +69,7 @@ void main() {
         refreshToken: 'refreshAccessToken',
         refreshTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
       );
-      var valid = await provide.isValid(testing.Context());
+      var valid = await provide.isLogin(testing.Context());
       expect(valid, false);
       expect(refreshCount, 1);
       expect(rToken, 'refreshAccessToken');
@@ -102,7 +102,7 @@ void main() {
         refreshToken: 'refreshAccessToken',
         refreshTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
       );
-      var valid = await provide.isValid(testing.Context());
+      var valid = await provide.isLogin(testing.Context());
       expect(valid, true);
       expect(refreshCount, 1);
       expect(backCount, 0);
@@ -136,7 +136,7 @@ void main() {
         refreshToken: 'refreshAccessToken',
         refreshTokenExpired: DateTime.now().add(const Duration(seconds: -30)),
       );
-      var valid = await provide.isValid(testing.Context());
+      var valid = await provide.isLogin(testing.Context());
       expect(valid, true);
       expect(refreshCount, 0);
       expect(backCount, 1);
