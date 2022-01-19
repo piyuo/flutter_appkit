@@ -12,3 +12,22 @@ Future<String?> getAccessToken(BuildContext context) async => SessionProvider.of
 ///     final logIn = await session.isLogin(context);
 ///
 Future<bool> isLogin(BuildContext context) async => SessionProvider.of(context).isLogin(context);
+
+/// login to save token
+///
+///     await session.login(
+///        context,
+///        accessToken: 'fakeAccessToken',
+///        accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
+///        refreshToken: 'fakeAccessToken',
+///        refreshTokenExpired: rExpired,
+///      );
+///
+Future<void> login(
+  BuildContext context, {
+  required String accessToken,
+  required DateTime accessTokenExpired,
+  String? refreshToken,
+  DateTime? refreshTokenExpired,
+}) async =>
+    SessionProvider.of(context).isLogin(context);
