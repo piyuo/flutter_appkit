@@ -30,4 +30,9 @@ Future<void> login(
   String? refreshToken,
   DateTime? refreshTokenExpired,
 }) async =>
-    SessionProvider.of(context).isLogin(context);
+    SessionProvider.of(context).login(
+      accessToken: accessToken,
+      accessTokenExpired: accessTokenExpired,
+      refreshToken: refreshToken,
+      refreshTokenExpired: refreshTokenExpired,
+    );
