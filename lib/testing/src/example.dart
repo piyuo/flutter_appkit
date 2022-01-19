@@ -18,12 +18,7 @@ void _show(
         builder: (_) => useScaffold
             ? Scaffold(
                 appBar: AppBar(),
-                body: SafeArea(
-                    child: SingleChildScrollView(
-                        child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: child,
-                ))),
+                body: SafeArea(child: child),
               )
             : child,
       ));
