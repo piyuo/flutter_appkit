@@ -59,13 +59,13 @@ class Dataset<T extends pb.Object> {
   /// init read snapshot from cache
   Future<void> init(pb.Builder<T> builder) async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    final savedData = cache.getStringList(id, namespace: namespace);
+    final savedData = cache.getStringList(id);
     if (savedData == null) {
       return;
     }
 
     for (String itemID in savedData) {
-      final item = cache.getObject<T>(itemID, builder, namespace: namespace);
+      final item = cache.getObject<T>(itemID, builder);
       if (item == null) {
         // item should not be null, cache may not reliable
         await reset();
@@ -73,8 +73,8 @@ class Dataset<T extends pb.Object> {
       }
       _data.add(item);
     }
-    _noNeedRefresh = cache.getBool('${id}_nr', namespace: namespace) ?? false;
-    _noMoreData = cache.getBool('${id}_nm', namespace: namespace) ?? false;
+    _noNeedRefresh = cache.getBool('${id}_nr') ?? false;
+    _noMoreData = cache.getBool('${id}_nm') ?? false;
     onDataChanged?.call();
     debugPrint('[dataset] init $id ${_data.length}');
   }
@@ -83,9 +83,9 @@ class Dataset<T extends pb.Object> {
   @visibleForTesting
   Future<void> save() async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    await cache.setStringList(id, _data.map((item) => item.entityId).toList(), namespace: namespace);
-    await cache.setBool('${id}_nm', _noMoreData, namespace: namespace);
-    await cache.setBool('${id}_nr', _noNeedRefresh, namespace: namespace);
+    await cache.setStringList(id, _data.map((item) => item.entityId).toList());
+    await cache.setBool('${id}_nm', _noMoreData);
+    await cache.setBool('${id}_nr', _noNeedRefresh);
     debugPrint('[dataset] save $id ${_data.length}');
   }
 
@@ -110,7 +110,6 @@ class Dataset<T extends pb.Object> {
       await cache.setObject(
         item.entityId,
         item,
-        namespace: namespace,
       );
     }
   }
@@ -125,7 +124,6 @@ class Dataset<T extends pb.Object> {
     for (var item in items) {
       await cache.delete(
         item.entityId,
-        namespace: namespace,
       );
       deleteCount++;
       if (deleteCount >= deleteMaxItem) {
@@ -236,7 +234,7 @@ class Dataset<T extends pb.Object> {
       }
     }
     _data.insert(0, item);
-    await cache.setObject(item.entityId, item, namespace: namespace);
+    await cache.setObject(item.entityId, item);
     await save();
   }
 
@@ -247,7 +245,7 @@ class Dataset<T extends pb.Object> {
         _data.removeAt(i);
       }
     }
-    await cache.delete(item.entityId, namespace: namespace);
+    await cache.delete(item.entityId);
     await save();
   }
 }

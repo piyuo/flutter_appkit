@@ -45,23 +45,6 @@ void main() {
       expect(savedTag, savedTag2);
     });
 
-    test('should support namespace', () async {
-      await reset();
-      await setString('hello', 'world', namespace: 'my');
-      expect(length, 2);
-      expect(timeLength, 1);
-
-      var value = getString('hello');
-      expect(value, isNull);
-
-      value = getString('hello', namespace: 'my');
-      expect(value, 'world');
-
-      await delete('hello', namespace: 'my');
-      value = getString('hello', namespace: 'my');
-      expect(value, isNull);
-    });
-
     test('should delete from cache', () async {
       await reset();
       await setString('hello', 'world');

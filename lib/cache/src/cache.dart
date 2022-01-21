@@ -60,40 +60,31 @@ String tagKey(String key) => '${key}_tag';
 @visibleForTesting
 String? getSavedTag(String key) => _cacheDB!.getString(tagKey(key));
 
-/// namespaceKey return key in namespace
-@visibleForTesting
-String namespaceKey(String? namespace, String key) => namespace != null ? '${namespace}_$key' : key;
-
 /// setBool saves the [key] - [value] pair
-Future<void> setBool(String key, bool value, {String? namespace}) =>
-    _set(key, (newKey) async => _cacheDB!.setBool(newKey, value), namespace);
+Future<void> setBool(String key, bool value) => _set(key, (newKey) async => _cacheDB!.setBool(newKey, value));
 
 /// setInt saves the [key] - [value] pair
-Future<void> setInt(String key, int value, {String? namespace}) =>
-    _set(key, (newKey) async => _cacheDB!.setInt(newKey, value), namespace);
+Future<void> setInt(String key, int value) => _set(key, (newKey) async => _cacheDB!.setInt(newKey, value));
 
 /// setString saves the [key] - [value] pair
-Future<void> setString(String key, String value, {String? namespace}) =>
-    _set(key, (newKey) async => _cacheDB!.setString(newKey, value), namespace);
+Future<void> setString(String key, String value) => _set(key, (newKey) async => _cacheDB!.setString(newKey, value));
 
 /// setStringList saves the [key] - [value] pair
-Future<void> setStringList(String key, List<String> value, {String? namespace}) =>
-    _set(key, (newKey) async => _cacheDB!.setStringList(newKey, value), namespace);
+Future<void> setStringList(String key, List<String> value) =>
+    _set(key, (newKey) async => _cacheDB!.setStringList(newKey, value));
 
 /// setDateTime saves the [key] - [value] pair
-Future<void> setDateTime(String key, DateTime value, {String? namespace}) =>
-    _set(key, (newKey) async => _cacheDB!.setDateTime(newKey, value), namespace);
+Future<void> setDateTime(String key, DateTime value) =>
+    _set(key, (newKey) async => _cacheDB!.setDateTime(newKey, value));
 
 /// setObject saves the [key] - [value] pair
-Future<void> setObject(String key, pb.Object value, {String? namespace}) =>
-    _set(key, (newKey) async => _cacheDB!.setObject(newKey, value), namespace);
+Future<void> setObject(String key, pb.Object value) => _set(key, (newKey) async => _cacheDB!.setObject(newKey, value));
 
 /// _set saves the [key] - [value] pair
-Future<void> _set(String key, Future<void> Function(String) setValueCallback, String? namespace) async {
+Future<void> _set(String key, Future<void> Function(String) setValueCallback) async {
   await _lock.synchronized(() async {
     assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
     debugPrint('[cache] set $key');
-    key = namespaceKey(namespace, key);
     String? timeTag;
     final savedTag = getSavedTag(key);
     if (savedTag != null) {
@@ -133,56 +124,56 @@ String uniqueExpirationTag() {
 }
 
 /// contains return true if key is in cache
-bool contains(dynamic key, {String? namespace}) => _cacheDB!.contains(namespaceKey(namespace, key));
+bool contains(dynamic key) => _cacheDB!.contains(key);
 
 /// getBool returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-bool? getBool(String key, {String? namespace}) {
+bool? getBool(String key) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return _cacheDB!.getBool(namespaceKey(namespace, key));
+  return _cacheDB!.getBool(key);
 }
 
 /// getInt returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-int? getInt(String key, {String? namespace}) {
+int? getInt(String key) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return _cacheDB!.getInt(namespaceKey(namespace, key));
+  return _cacheDB!.getInt(key);
 }
 
 /// getString returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-String? getString(String key, {String? namespace}) {
+String? getString(String key) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return _cacheDB!.getString(namespaceKey(namespace, key));
+  return _cacheDB!.getString(key);
 }
 
 /// getStringList returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-List<String>? getStringList(String key, {String? namespace}) {
+List<String>? getStringList(String key) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return _cacheDB!.getStringList(namespaceKey(namespace, key));
+  return _cacheDB!.getStringList(key);
 }
 
 /// getIntList returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-List<int>? getIntList(String key, {String? namespace}) {
+List<int>? getIntList(String key) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return _cacheDB!.getIntList(namespaceKey(namespace, key));
+  return _cacheDB!.getIntList(key);
 }
 
 /// getDateTime returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-DateTime? getDateTime(String key, {String? namespace}) {
+DateTime? getDateTime(String key) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return _cacheDB!.getDateTime(namespaceKey(namespace, key));
+  return _cacheDB!.getDateTime(key);
 }
 
 /// getObject returns the value associated with the given [key]. If the key does not exist, `null` is returned.
-T? getObject<T extends pb.Object>(String key, pb.Builder<T> builder, {String? namespace}) {
+T? getObject<T extends pb.Object>(String key, pb.Builder<T> builder) {
   assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
-  return _cacheDB!.getObject(namespaceKey(namespace, key), builder);
+  return _cacheDB!.getObject(key, builder);
 }
 
 /// deletes the given [key] from the box , If it does not exist, nothing happens.
-Future<void> delete(String key, {String? namespace}) async {
+Future<void> delete(String key) async {
   await _lock.synchronized(() async {
     assert(_cacheDB != null && _timeDB != null, 'please call await cache.init() first');
     debugPrint('[cache] delete $key');
-    key = namespaceKey(namespace, key);
+    key = key;
     final savedTag = getSavedTag(key);
     if (savedTag != null) {
       await _timeDB!.delete(savedTag);
