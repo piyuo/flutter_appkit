@@ -83,7 +83,7 @@ class Dataset<T extends pb.Object> {
   @visibleForTesting
   Future<void> save() async {
     assert(id.isNotEmpty, 'dataset id is empty');
-    await cache.setStringList(id, _data.map((item) => item.entityId).toList());
+    await cache.setStringList(id, _data.map((item) => item.entityID).toList());
     await cache.setBool('${id}_nm', _noMoreData);
     await cache.setBool('${id}_nr', _noNeedRefresh);
     debugPrint('[dataset] save $id ${_data.length}');
@@ -108,7 +108,7 @@ class Dataset<T extends pb.Object> {
   Future<void> saveItems(List<T> items) async {
     for (var item in items) {
       await cache.setObject(
-        item.entityId,
+        item.entityID,
         item,
       );
     }
@@ -123,7 +123,7 @@ class Dataset<T extends pb.Object> {
     int deleteCount = 0;
     for (var item in items) {
       await cache.delete(
-        item.entityId,
+        item.entityID,
       );
       deleteCount++;
       if (deleteCount >= deleteMaxItem) {
@@ -139,10 +139,10 @@ class Dataset<T extends pb.Object> {
   ///
   @visibleForTesting
   void removeDuplicateInData(List<T> items) {
-    final idList = items.map((item) => item.entityId).toList();
+    final idList = items.map((item) => item.entityID).toList();
     for (int i = _data.length - 1; i >= 0; i--) {
       final item = _data[i];
-      if (idList.contains(item.entityId)) {
+      if (idList.contains(item.entityID)) {
         _data.removeAt(i);
       }
     }
@@ -161,7 +161,7 @@ class Dataset<T extends pb.Object> {
     }
     List<T>? result;
     try {
-      result = await dataLoader(context, true, limit, anchor?.entityUpdateTime, anchor?.entityId);
+      result = await dataLoader(context, true, limit, anchor?.entityUpdateTime, anchor?.entityID);
       if (result == null) {
         debugPrint('[dataset] end of data, no refresh');
         _noNeedRefresh = true;
@@ -205,7 +205,7 @@ class Dataset<T extends pb.Object> {
     }
     List<T>? result;
     try {
-      result = await dataLoader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityId);
+      result = await dataLoader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
       if (result == null) {
         debugPrint('[dataset] end of data, no more data');
         _noMoreData = true;
@@ -229,23 +229,23 @@ class Dataset<T extends pb.Object> {
   /// set item directly to dataset,return false if no item to update, new item will move to first item in cache. usually after user edit item
   Future<void> set(T item) async {
     for (int i = 0; i < _data.length; i++) {
-      if (item.entityId == _data[i].entityId) {
+      if (item.entityID == _data[i].entityID) {
         _data.removeAt(i);
       }
     }
     _data.insert(0, item);
-    await cache.setObject(item.entityId, item);
+    await cache.setObject(item.entityID, item);
     await save();
   }
 
   /// delete item from dataset
   Future<void> delete(T item) async {
     for (int i = 0; i < _data.length; i++) {
-      if (item.entityId == _data[i].entityId) {
+      if (item.entityID == _data[i].entityID) {
         _data.removeAt(i);
       }
     }
-    await cache.delete(item.entityId);
+    await cache.delete(item.entityID);
     await save();
   }
 }

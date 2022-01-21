@@ -349,7 +349,7 @@ void main() {
       await ds.init(() => sample.Person());
       await ds.refresh(testing.Context(), 2);
       expect(ds.rows[1].name, '1');
-      expect(ds.rows[1].entityId, '1');
+      expect(ds.rows[1].entityID, '1');
 
       final person = sample.Person(
         entity: pb.Entity(
@@ -366,7 +366,7 @@ void main() {
       );
       await ds2.init(() => sample.Person());
       expect(ds.rows[0].name, 'new name');
-      expect(ds.rows[0].entityId, '1');
+      expect(ds.rows[0].entityID, '1');
     });
 
     test('should delete cache', () async {

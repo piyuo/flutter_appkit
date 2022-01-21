@@ -210,7 +210,7 @@ class DataExample extends StatelessWidget {
                 dataRemover: (BuildContext context, List<sample.Person> removeList) async => true,
                 tableBuilder: (BuildContext context, sample.Person person, int rowIndex) {
                   return [
-                    Text(person.entityId, overflow: TextOverflow.ellipsis),
+                    Text(person.entityID, overflow: TextOverflow.ellipsis),
                     Text('${person.name} very long text blah blah blah blah blah blah',
                         overflow: TextOverflow.ellipsis),
                     Text('${person.age}', overflow: TextOverflow.ellipsis),
@@ -220,7 +220,7 @@ class DataExample extends StatelessWidget {
                   return Padding(
                       padding: const EdgeInsets.all(10),
                       child: Column(children: [
-                        Text(person.entityId),
+                        Text(person.entityID),
                         Text(person.name),
                         Text('${person.age}'),
                       ]));
@@ -280,7 +280,7 @@ class DataExample extends StatelessWidget {
                   return Card(
                       margin: const EdgeInsets.all(10),
                       child: Column(children: [
-                        Text(person.entityId),
+                        Text(person.entityID),
                         Text(person.name),
                         Text('${person.age}'),
                       ]));
@@ -308,7 +308,7 @@ class DataExample extends StatelessWidget {
                   return Card(
                       margin: const EdgeInsets.all(10),
                       child: Column(children: [
-                        Text(person.entityId),
+                        Text(person.entityID),
                       ]));
                 },
               )),

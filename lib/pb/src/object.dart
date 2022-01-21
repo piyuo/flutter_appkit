@@ -55,8 +55,8 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   /// setEntity set object defined entity
   void setEntity(common.Entity e) {}
 
-  /// entityId return entity id
-  String get entityId {
+  /// entityID return entity id
+  String get entityID {
     assert(getEntity() != null, '$runtimeType not define entity');
     return getEntity()!.id;
   }
