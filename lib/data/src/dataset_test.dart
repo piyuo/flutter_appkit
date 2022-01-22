@@ -23,6 +23,7 @@ void main() {
     test('should init', () async {
       Dataset ds = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       expect(ds.rows.isEmpty, true);
@@ -31,7 +32,7 @@ void main() {
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
 
-      await ds.init(() => sample.Person());
+      await ds.init();
       expect(ds.noMoreData, false);
       expect(ds.noNeedRefresh, false);
       expect(ds.rows.isEmpty, true);
@@ -40,6 +41,7 @@ void main() {
     test('should reset', () async {
       Dataset ds = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => List.generate(
             limit,
             (i) => sample.Person(
@@ -48,7 +50,7 @@ void main() {
                   ),
                 )),
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 1);
       expect(ds.rows.length, 1);
       expect(cache.contains('0'), true);
@@ -63,6 +65,7 @@ void main() {
     test('should save and delete items', () async {
       Dataset ds = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       final person = sample.Person(
@@ -83,6 +86,7 @@ void main() {
     test('should not delete after max item limit', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       final samples = List.generate(
@@ -107,13 +111,14 @@ void main() {
       int refreshLimit = 0;
       Dataset ds = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           refreshed = true;
           refreshLimit = limit;
           return null;
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 9);
       expect(refreshed, true);
       expect(refreshLimit, 9);
@@ -123,9 +128,10 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init(() => sample.Person());
+      await ds2.init();
       expect(ds2.noNeedRefresh, true);
       expect(ds2.noMoreData, true);
       expect(ds2.rows.length, 0);
@@ -134,6 +140,7 @@ void main() {
     test('should keep refresh, more and reset when receive enough data', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(
               limit,
@@ -144,7 +151,7 @@ void main() {
                   ));
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 2);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -160,6 +167,7 @@ void main() {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -180,7 +188,7 @@ void main() {
                   ));
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 2);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -194,9 +202,10 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init(() => sample.Person());
+      await ds2.init();
       expect(ds2.noNeedRefresh, false);
       expect(ds2.noMoreData, false);
       expect(ds2.rows.length, 3);
@@ -212,9 +221,10 @@ void main() {
       ];
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => samples,
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 1);
       expect(ds.rows.length, 1);
 
@@ -226,6 +236,7 @@ void main() {
     test('should remove duplicate data in cache when refresh', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [
           sample.Person(
             entity: pb.Entity(
@@ -234,7 +245,7 @@ void main() {
           )
         ],
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 1);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -249,6 +260,7 @@ void main() {
     test('should keep more and cache when receive enough data', () async {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
+        dataBuilder: () => sample.Person(),
         id: 'testId',
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
@@ -270,7 +282,7 @@ void main() {
                   ));
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 2);
       expect(ds.noMoreData, false);
       // second refresh will trigger reset
@@ -281,9 +293,10 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init(() => sample.Person());
+      await ds2.init();
       expect(ds2.noNeedRefresh, false);
       expect(ds2.noMoreData, false);
       expect(ds2.rows.length, 4);
@@ -293,6 +306,7 @@ void main() {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -313,7 +327,7 @@ void main() {
                   ));
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 2);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -325,53 +339,19 @@ void main() {
       // check cache
       final ds2 = Dataset(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init(() => sample.Person());
+      await ds2.init();
       expect(ds2.noMoreData, true);
       expect(ds2.rows.length, 3);
     });
 
-    test('should update cache', () async {
-      final ds = Dataset<sample.Person>(
-        id: 'testId',
-        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          return List.generate(
-              limit,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: index.toString(),
-                    ),
-                    name: index.toString(),
-                  ));
-        },
-      );
-      await ds.init(() => sample.Person());
-      await ds.refresh(testing.Context(), 2);
-      expect(ds.rows[1].name, '1');
-      expect(ds.rows[1].entityID, '1');
-
-      final person = sample.Person(
-        entity: pb.Entity(
-          id: '1',
-        ),
-        name: 'new name',
-      );
-      await ds.set(person);
-
-      // check cache
-      final ds2 = Dataset(
-        id: 'testId',
-        dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
-      );
-      await ds2.init(() => sample.Person());
-      expect(ds.rows[0].name, 'new name');
-      expect(ds.rows[0].entityID, '1');
-    });
-
     test('should delete cache', () async {
       final ds = Dataset<sample.Person>(
+        dataBuilder: () => sample.Person(),
         id: 'testId',
+        dataRemover: (context, ids) async {},
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
       final person = sample.Person(
@@ -382,7 +362,7 @@ void main() {
       );
       await ds.set(person);
       expect(ds.rows.length, 1);
-      await ds.delete(person);
+      await ds.delete(testing.Context(), ['1']);
       expect(ds.rows.length, 0);
     });
 
@@ -395,6 +375,7 @@ void main() {
 
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           _isRefresh = isRefresh;
           _limit = limit;
@@ -411,7 +392,7 @@ void main() {
                   ));
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 1);
       expect(_isRefresh, true);
       expect(_limit, 1);
@@ -441,12 +422,13 @@ void main() {
       int refreshCount = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           refreshCount++;
           return null;
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 1);
       expect(ds.noNeedRefresh, true);
       expect(refreshCount, 1);
@@ -465,6 +447,7 @@ void main() {
       int counter = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
@@ -481,7 +464,7 @@ void main() {
           return null;
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 1);
       expect(ds.noMoreData, false);
 
@@ -499,6 +482,7 @@ void main() {
       int counter = 0;
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
@@ -522,7 +506,7 @@ void main() {
                   ));
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 1);
       expect(ds.noMoreData, false);
 
@@ -538,6 +522,7 @@ void main() {
     test('should not return deleted rows', () async {
       final ds = Dataset<sample.Person>(
         id: 'testId',
+        dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(
               limit,
@@ -549,7 +534,7 @@ void main() {
                   ));
         },
       );
-      await ds.init(() => sample.Person());
+      await ds.init();
       await ds.refresh(testing.Context(), 5);
       expect(ds.rows.length, 5);
 

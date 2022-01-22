@@ -65,7 +65,6 @@ void main() {
       );
       await ds.init(
         testing.Context(),
-        () => sample.Person(),
       );
       expect(ds.hasFirstPage, false);
       expect(ds.hasPrevPage, false);
@@ -187,7 +186,7 @@ void main() {
           }
         },
       );
-      await ds.init(testing.Context(), () => sample.Person());
+      await ds.init(testing.Context());
       await ds.nextPage(testing.Context());
       expect(ds.selectedRows.length, 0);
       final row0 = ds.pageRows[0];
@@ -211,14 +210,14 @@ void main() {
       ds.selectAllRows(false);
       expect(ds.selectedRows.length, 0);
 
-      ds.selectPageRows(true);
+      ds.selectRows(true);
       expect(ds.selectedRows.length, 2);
-      ds.selectPageRows(false);
+      ds.selectRows(false);
       expect(ds.selectedRows.length, 0);
       ds.prevPage(testing.Context());
-      ds.selectPageRows(true);
+      ds.selectRows(true);
       expect(ds.selectedRows.length, 10);
-      ds.selectPageRows(false);
+      ds.selectRows(false);
       expect(ds.selectedRows.length, 0);
     });
 
@@ -265,7 +264,6 @@ void main() {
       );
       await ds.init(
         testing.Context(),
-        () => sample.Person(),
       );
       expect(ds.pagingInfo(testing.Context()), '1 - 10 of many');
       expect(ds.allRows.length, 10);
@@ -339,7 +337,6 @@ void main() {
       );
       await ds.init(
         testing.Context(),
-        () => sample.Person(),
       );
       expect(ds.allRows.length, 10);
       expect(ds.rowsPerPage, 10);

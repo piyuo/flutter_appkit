@@ -28,7 +28,7 @@ class DataExample extends StatelessWidget {
         child: Column(
       children: [
         Expanded(
-          child: _emptyPullList(),
+          child: _pageTable(),
         ),
         Wrap(
           children: [
@@ -207,7 +207,7 @@ class DataExample extends StatelessWidget {
                   PageColumn(label: const Text('Name'), width: ColumnWidth.large),
                   PageColumn(label: const Text('Age'), width: ColumnWidth.small),
                 ],
-                dataRemover: (BuildContext context, List<sample.Person> removeList) async => true,
+                dataRemover: (BuildContext context, List<String> ids) async => true,
                 tableBuilder: (BuildContext context, sample.Person person, int rowIndex) {
                   return [
                     Text(person.entityID, overflow: TextOverflow.ellipsis),

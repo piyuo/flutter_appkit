@@ -2,32 +2,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
-import 'package:libcli/pb/src/google/google.dart' as google;
+import 'data.dart';
+import 'data_common.dart';
 
 /// deleteMaxItem is the maximum number of items to delete, rest leave to cache cleanup to avoid application busy too long.
 @visibleForTesting
 int get deleteMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
-/// DataLoader load new data by guide, return null if this data reach to the end.
-typedef DataLoader<T> = Future<List<T>?> Function(
-    BuildContext context, bool refresh, int limit, google.Timestamp? anchorTime, String? anchorId);
-
-class Dataset<T extends pb.Object> {
+class Dataset<T extends pb.Object> extends DataCommon<T> {
   Dataset({
     required this.dataLoader,
-    required this.id,
-    this.namespace,
+    required pb.Builder<T> dataBuilder,
+    required String id,
     this.onDataChanged,
-  });
+    DataRemover<T>? dataRemover,
+  }) : super(
+          dataBuilder: dataBuilder,
+          dataRemover: dataRemover,
+          id: id,
+        );
 
   /// dataLoader is the function to load new data
   final DataLoader<T> dataLoader;
-
-  /// id is the unique id of this dataset, it is used to cache data
-  final String id;
-
-  /// namespace is the namespace of this dataset, it is used to cache data
-  final String? namespace;
 
   /// onDataChanged is the callback when data changed
   final VoidCallback? onDataChanged;
@@ -57,7 +53,7 @@ class Dataset<T extends pb.Object> {
   bool get isNotEmpty => rows.isNotEmpty;
 
   /// init read snapshot from cache
-  Future<void> init(pb.Builder<T> builder) async {
+  Future<void> init() async {
     assert(id.isNotEmpty, 'dataset id is empty');
     final savedData = cache.getStringList(id);
     if (savedData == null) {
@@ -65,7 +61,7 @@ class Dataset<T extends pb.Object> {
     }
 
     for (String itemID in savedData) {
-      final item = cache.getObject<T>(itemID, builder);
+      final item = cache.getObject<T>(itemID, dataBuilder);
       if (item == null) {
         // item should not be null, cache may not reliable
         await reset();
@@ -226,7 +222,23 @@ class Dataset<T extends pb.Object> {
     }
   }
 
+  /// delete item from dataset
+  Future<void> delete(BuildContext context, List<String> ids) async {
+    assert(dataRemover != null, 'dataRemover must not be null');
+    await dataRemover!(context, ids);
+    await setCacheDeleted(ids, builder: dataBuilder);
+    for (String id in ids) {
+      for (int i = 0; i < _data.length; i++) {
+        if (id == _data[i].entityID) {
+          _data.removeAt(i);
+        }
+      }
+    }
+    await save();
+  }
+
   /// set item directly to dataset,return false if no item to update, new item will move to first item in cache. usually after user edit item
+  @visibleForTesting
   Future<void> set(T item) async {
     for (int i = 0; i < _data.length; i++) {
       if (item.entityID == _data[i].entityID) {
@@ -235,17 +247,6 @@ class Dataset<T extends pb.Object> {
     }
     _data.insert(0, item);
     await cache.setObject(item.entityID, item);
-    await save();
-  }
-
-  /// delete item from dataset
-  Future<void> delete(T item) async {
-    for (int i = 0; i < _data.length; i++) {
-      if (item.entityID == _data[i].entityID) {
-        _data.removeAt(i);
-      }
-    }
-    await cache.delete(item.entityID);
     await save();
   }
 }

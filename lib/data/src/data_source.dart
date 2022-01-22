@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'dataset.dart';
+import 'data.dart';
 
 class DataSource<T extends pb.Object> extends ChangeNotifier {
   DataSource({
@@ -9,13 +10,20 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     required String id,
     required DataLoader<T> dataLoader,
     required pb.Builder<T> dataBuilder,
+    DataRemover<T>? dataRemover,
     this.onRowsChanged,
     int rowsPerPage = 10,
   }) {
     _rowsPerPage = rowsPerPage;
-    _dataset = Dataset(id: id, dataLoader: dataLoader, onDataChanged: onDataChanged);
+    _dataset = Dataset<T>(
+      id: id,
+      dataLoader: dataLoader,
+      dataBuilder: dataBuilder,
+      dataRemover: dataRemover,
+      onDataChanged: onDataChanged,
+    );
     if (context != null) {
-      init(context, dataBuilder);
+      init(context);
     }
   }
 
@@ -108,10 +116,10 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   ///
   ///     await init(context);
   ///
-  Future<void> init(BuildContext context, pb.Builder<T> builder) async {
+  Future<void> init(BuildContext context) async {
     _notifyBusy(true);
     try {
-      await _dataset.init(builder);
+      await _dataset.init();
       await _dataset.refresh(context, _rowsPerPage);
     } finally {
       _notifyBusy(false);
@@ -254,7 +262,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   }
 
   /// selectPageRows select all row in current page
-  void selectPageRows(bool selected) {
+  void selectRows(bool selected) {
     selectedRows.clear();
     if (selected) {
       selectedRows.addAll(_dataset.rows.getRange(currentIndexStart, currentIndexEnd));
@@ -262,7 +270,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// select a row
+  /// selectRow select a row
   void selectRow(T row, bool? selected) {
     selected = selected ?? false;
     if (selected) {
@@ -273,5 +281,13 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
       selectedRows.remove(row);
     }
     notifyListeners();
+  }
+
+  /// delete item from dataset
+  Future<void> deleteSelectedRows(BuildContext context) async {
+    if (selectedRows.isNotEmpty) {
+      final ids = selectedRows.map((row) => row.entityID).toList();
+      _dataset.delete(context, ids);
+    }
   }
 }

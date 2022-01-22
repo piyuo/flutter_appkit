@@ -198,7 +198,9 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             child: ElevatedButton(
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[600])),
               child: Text(context.i18n.deleteButtonText),
-              onPressed: breaker.linkVoidFunc(() => dataRemover!(context, dataSource.selectedRows)),
+              onPressed: breaker.linkVoidFunc(
+                () async => dataSource.deleteSelectedRows(context),
+              ),
             )),
     ];
     return styleHeader(
@@ -276,7 +278,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
         dark: Colors.grey.shade800,
       )),
       columns: columns,
-      onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
+      onSelectAll: (bool? selected) => dataSource.selectRows(selected ?? false),
       empty: _buildNoData(context),
       rows: dataSource.isBusy
           ? List<DataRow>.generate(
@@ -337,7 +339,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             columns: [
               DataColumn(label: buildHeader(context, breaker)),
             ],
-            onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
+            onSelectAll: (bool? selected) => dataSource.selectRows(selected ?? false),
             empty: _buildNoData(context),
             rows: dataSource.isBusy
                 ? List<DataRow>.generate(
