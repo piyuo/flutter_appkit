@@ -7,14 +7,18 @@ class RefreshButton extends StatefulWidget {
   const RefreshButton({
     required this.onRefresh,
     Key? key,
-    this.iconSize = 24,
+    this.size = 24,
+    this.color,
   }) : super(key: key);
 
   /// onRefresh call when user press button
   final Future<void> Function(BuildContext context) onRefresh;
 
-  /// iconSize is status light icon size
-  final double iconSize;
+  /// size is icon size
+  final double size;
+
+  /// color is icon color
+  final Color? color;
 
   @override
   State<StatefulWidget> createState() => _RefreshButtonState();
@@ -26,12 +30,16 @@ class _RefreshButtonState extends State<RefreshButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      iconSize: widget.iconSize,
+      iconSize: widget.size,
+      color: widget.color,
       icon: _isRefreshing
-          ? CircularProgressIndicator(
-              strokeWidth: 5,
-              color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade200),
-            )
+          ? SizedBox(
+              width: widget.size - 8,
+              height: widget.size - 8,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                color: widget.color,
+              ))
           : const Icon(
               Icons.refresh,
             ),
