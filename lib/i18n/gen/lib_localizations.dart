@@ -191,6 +191,12 @@ abstract class LibLocalizations {
   /// **'Add'**
   String get addButtonText;
 
+  /// No description provided for @unselectAllButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Unselect All'**
+  String get unselectAllButtonText;
+
   /// No description provided for @deleteButtonText.
   ///
   /// In en, this message translates to:

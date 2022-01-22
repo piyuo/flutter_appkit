@@ -15,6 +15,7 @@
     "yesButtonText":"Yes",
     "noButtonText":"No",
     "addButtonText":"Add",
+    "unselectAllButtonText":"Unselect All",
     "deleteButtonText":"Delete",
     "saveButtonText":"Save",
     "backButtonText":"Back",

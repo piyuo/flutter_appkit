@@ -56,6 +56,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get addButtonText => 'Add';
 
   @override
+  String get unselectAllButtonText => 'Unselect All';
+
+  @override
   String get deleteButtonText => 'Delete';
 
   @override

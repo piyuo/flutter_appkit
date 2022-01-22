@@ -15,6 +15,7 @@
     "yesButtonText":"是",
     "noButtonText":"否",
     "addButtonText":"新增",
+    "unselectAllButtonText":"取消所有選取",
     "deleteButtonText":"刪除",
     "saveButtonText":"存檔",
     "backButtonText":"返回",

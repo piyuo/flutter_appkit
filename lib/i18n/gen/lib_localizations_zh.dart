@@ -56,6 +56,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get addButtonText => '新增';
 
   @override
+  String get unselectAllButtonText => '取消所有选取';
+
+  @override
   String get deleteButtonText => '删除';
 
   @override
@@ -455,6 +458,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get addButtonText => '新增';
+
+  @override
+  String get unselectAllButtonText => '取消所有選取';
 
   @override
   String get deleteButtonText => '刪除';
