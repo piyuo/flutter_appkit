@@ -18,14 +18,14 @@ class RefreshButtonProvider with ChangeNotifier {
 /// RefreshButton show animation when refreshing
 class RefreshButton extends StatelessWidget {
   const RefreshButton({
-    required this.onRefresh,
+    required this.onPressed,
     Key? key,
     this.size = 24,
     this.color,
   }) : super(key: key);
 
   /// onRefresh call when user press button
-  final Future<void> Function(BuildContext context) onRefresh;
+  final Future<void> Function() onPressed;
 
   /// size is icon size
   final double size;
@@ -53,7 +53,7 @@ class RefreshButton extends StatelessWidget {
               onPressed: () async {
                 provide.setBusy(true);
                 try {
-                  await onRefresh(context);
+                  await onPressed();
                 } finally {
                   provide.setBusy(false);
                 }

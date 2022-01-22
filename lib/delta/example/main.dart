@@ -981,7 +981,7 @@ class DeltaExample extends StatelessWidget {
                 RefreshButton(
                     size: 32,
                     color: Colors.blue,
-                    onRefresh: (BuildContext context) async {
+                    onPressed: () async {
                       await Future.delayed(const Duration(seconds: 5));
                     }),
                 OutlinedButton(
