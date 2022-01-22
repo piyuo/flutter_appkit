@@ -25,7 +25,7 @@ class RefreshButton extends StatelessWidget {
   }) : super(key: key);
 
   /// onRefresh call when user press button
-  final Future<void> Function() onPressed;
+  final Future<void> Function()? onPressed;
 
   /// size is icon size
   final double size;
@@ -50,14 +50,16 @@ class RefreshButton extends StatelessWidget {
                   : const Icon(
                       Icons.refresh,
                     ),
-              onPressed: () async {
-                provide.setBusy(true);
-                try {
-                  await onPressed();
-                } finally {
-                  provide.setBusy(false);
-                }
-              },
+              onPressed: onPressed != null
+                  ? () async {
+                      provide.setBusy(true);
+                      try {
+                        await onPressed!();
+                      } finally {
+                        provide.setBusy(false);
+                      }
+                    }
+                  : null,
               tooltip: context.i18n.refreshButtonText,
             ));
   }
