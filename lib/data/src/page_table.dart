@@ -131,7 +131,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
       if (isTableLayout) const SizedBox(width: 14),
       IconButton(
         tooltip: context.i18n.refreshButtonText,
-        onPressed: breaker.linkVoidFunc(() => dataSource.refresh(context)),
+        onPressed: breaker.voidFunc(() => dataSource.refresh(context)),
         icon: const Icon(Icons.refresh_rounded),
       ),
       if (isTableLayout) Text(localizations.rowsPerPageTitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
@@ -149,7 +149,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
                 );
               }).toList(),
               value: dataSource.rowsPerPage,
-              onChanged: breaker.linkValueFunc<int>(
+              onChanged: breaker.valueFunc<int>(
                 (int? value) => dataSource.setRowsPerPage(context, value!),
               ),
               style: const TextStyle(color: Colors.grey, fontSize: 13),
@@ -175,14 +175,14 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
               icon: const Icon(Icons.chevron_left),
               padding: EdgeInsets.zero,
               tooltip: localizations.previousPageTooltip,
-              onPressed: dataSource.hasPrevPage ? breaker.linkVoidFunc(() => dataSource.prevPage(context)) : null,
+              onPressed: dataSource.hasPrevPage ? breaker.voidFunc(() => dataSource.prevPage(context)) : null,
             ),
             IconButton(
               iconSize: 32,
               icon: const Icon(Icons.chevron_right),
               padding: EdgeInsets.zero,
               tooltip: localizations.nextPageTooltip,
-              onPressed: dataSource.hasNextPage ? breaker.linkVoidFunc(() => dataSource.nextPage(context)) : null,
+              onPressed: dataSource.hasNextPage ? breaker.voidFunc(() => dataSource.nextPage(context)) : null,
             ),
             if (isTableLayout) const SizedBox(width: 14),
           ];
@@ -198,7 +198,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             child: ElevatedButton(
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[600])),
               child: Text(context.i18n.deleteButtonText),
-              onPressed: breaker.linkVoidFunc(
+              onPressed: breaker.voidFunc(
                 () async => dataSource.deleteSelectedRows(context),
               ),
             )),

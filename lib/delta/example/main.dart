@@ -278,14 +278,14 @@ class DeltaExample extends StatelessWidget {
           return Row(children: [
             ElevatedButton(
               child: const Text('break 1'),
-              onPressed: breaker.linkVoidFunc(() async {
+              onPressed: breaker.voidFunc(() async {
                 await Future.delayed(const Duration(seconds: 2));
                 debugPrint('break 1');
               }),
             ),
             ElevatedButton(
               child: const Text('button2'),
-              onPressed: breaker.linkVoidFunc(() async {
+              onPressed: breaker.voidFunc(() async {
                 await Future.delayed(const Duration(seconds: 2));
                 debugPrint('click 2');
               }),

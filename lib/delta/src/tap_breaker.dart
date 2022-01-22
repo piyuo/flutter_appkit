@@ -11,8 +11,8 @@ class TapBreaker with ChangeNotifier {
     }
   }
 
-  /// linkVoidFunc add break on callback, if one callback is running the others will be disable
-  void Function()? linkVoidFunc<T>(Future Function()? callback) {
+  /// voidFunc add break on callback, if one callback is running the others will be disable
+  void Function()? voidFunc<T>(Future Function()? callback) {
     if (_busy || callback == null) {
       return null;
     }
@@ -27,8 +27,8 @@ class TapBreaker with ChangeNotifier {
     };
   }
 
-  /// linkValueFunc add break on callback, if one callback is running the others will be disable
-  ValueChanged<T?>? linkValueFunc<T>(Future Function(T? value)? callback) {
+  /// valueFunc add break on callback, if one callback is running the others will be disable
+  ValueChanged<T?>? valueFunc<T>(Future Function(T? value)? callback) {
     if (_busy || callback == null) {
       return null;
     }
@@ -42,8 +42,8 @@ class TapBreaker with ChangeNotifier {
     };
   }
 
-  /// linkFutureContextFunc add break on callback, if one callback is running the others will be disable
-  Future<void> Function(BuildContext)? linkFutureContextFunc<T>(Future<void> Function(BuildContext)? callback) {
+  /// futureContextFunc add break on callback, if one callback is running the others will be disable
+  Future<void> Function(BuildContext)? futureContextFunc<T>(Future<void> Function(BuildContext)? callback) {
     if (_busy || callback == null) {
       return null;
     }
@@ -51,6 +51,21 @@ class TapBreaker with ChangeNotifier {
       setBusy(true);
       try {
         await callback(context);
+      } finally {
+        setBusy(false);
+      }
+    };
+  }
+
+  /// futureFunc add break on future callback, if one callback is running the others will be disable
+  Future<void> Function()? futureFunc<T>(Future<void> Function()? callback) {
+    if (_busy || callback == null) {
+      return null;
+    }
+    return () async {
+      setBusy(true);
+      try {
+        await callback();
       } finally {
         setBusy(false);
       }
