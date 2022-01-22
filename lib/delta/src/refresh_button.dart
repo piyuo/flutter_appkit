@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
+/// RefreshButtonProvider can control refresh button is busy
+class RefreshButtonProvider with ChangeNotifier {
+  /// _busy is true if in refresh or load more
+  bool _busy = false;
+
+  void setBusy(bool busy) {
+    if (_busy != busy) {
+      _busy = busy;
+      notifyListeners();
+    }
+  }
+}
+
 /// RefreshButton show animation when refreshing
-class RefreshButton extends StatefulWidget {
+class RefreshButton extends StatelessWidget {
   const RefreshButton({
     required this.onRefresh,
     Key? key,
@@ -20,41 +34,31 @@ class RefreshButton extends StatefulWidget {
   final Color? color;
 
   @override
-  State<StatefulWidget> createState() => _RefreshButtonState();
-}
-
-class _RefreshButtonState extends State<RefreshButton> {
-  bool _isRefreshing = false;
-
-  @override
   Widget build(BuildContext context) {
-    return IconButton(
-      iconSize: widget.size,
-      color: widget.color,
-      icon: _isRefreshing
-          ? SizedBox(
-              width: widget.size - 8,
-              height: widget.size - 8,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-                color: widget.color,
-              ))
-          : const Icon(
-              Icons.refresh,
-            ),
-      onPressed: () async {
-        setState(() {
-          _isRefreshing = true;
-        });
-        try {
-          await widget.onRefresh(context);
-        } finally {
-          setState(() {
-            _isRefreshing = false;
-          });
-        }
-      },
-      tooltip: context.i18n.refreshButtonText,
-    );
+    return Consumer<RefreshButtonProvider>(
+        builder: (context, provide, c) => IconButton(
+              iconSize: size,
+              color: color,
+              icon: provide._busy
+                  ? SizedBox(
+                      width: size - 8,
+                      height: size - 8,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                        color: color,
+                      ))
+                  : const Icon(
+                      Icons.refresh,
+                    ),
+              onPressed: () async {
+                provide.setBusy(true);
+                try {
+                  await onRefresh(context);
+                } finally {
+                  provide.setBusy(false);
+                }
+              },
+              tooltip: context.i18n.refreshButtonText,
+            ));
   }
 }

@@ -974,12 +974,26 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _refreshButton(BuildContext context) {
-    return RefreshButton(
-        size: 32,
-        color: Colors.blue,
-        onRefresh: (BuildContext context) async {
-          await Future.delayed(const Duration(seconds: 5));
-        });
+    return ChangeNotifierProvider<RefreshButtonProvider>(
+      create: (context) => RefreshButtonProvider(),
+      child: Consumer<RefreshButtonProvider>(
+          builder: (context, provide, child) => Column(children: [
+                RefreshButton(
+                    size: 32,
+                    color: Colors.blue,
+                    onRefresh: (BuildContext context) async {
+                      await Future.delayed(const Duration(seconds: 5));
+                    }),
+                OutlinedButton(
+                  onPressed: () async {
+                    provide.setBusy(true);
+                    await Future.delayed(const Duration(seconds: 5));
+                    provide.setBusy(false);
+                  },
+                  child: const Text('refresh'),
+                ),
+              ])),
+    );
   }
 }
 
