@@ -5,8 +5,8 @@ import 'data_source.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
-class PullList<T extends pb.Object> extends StatelessWidget {
-  const PullList({
+class PageList<T extends pb.Object> extends StatelessWidget {
+  const PageList({
     required this.dataSource,
     required this.cardBuilder,
     Key? key,
@@ -42,12 +42,12 @@ class PullList<T extends pb.Object> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return delta.PullRefresh(
-      onPullRefresh: dataSource.noNeedRefresh || dataSource.isBusy
+      onPullRefresh: dataSource.noNeedRefresh || dataSource.isLoading
           ? null
           : (BuildContext context) async {
               await dataSource.refresh(context);
             },
-      onLoadMore: dataSource.noMoreData || dataSource.isBusy
+      onLoadMore: dataSource.noMoreData || dataSource.isLoading
           ? null
           : (BuildContext context) async {
               await dataSource.nextPage(context);

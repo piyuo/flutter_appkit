@@ -46,10 +46,10 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
     this.cardHeight = 100,
     this.tableRowHeight = 48,
     this.dragStartBehavior = DragStartBehavior.start,
-    this.dataRemover,
     this.availableRowsPerPage = const <int>[10, 20, 50],
     this.smallRatio = 0.5,
     this.largeRatio = 2,
+    this.deleteButtonText,
     Key? key,
   }) : super(key: key);
 
@@ -77,8 +77,8 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
 
   final DataSource<T> dataSource;
 
-  /// dataRemover call when control need delete data from data source
-  final DataRemover<T>? dataRemover;
+  /// deleteButtonText is delete button text
+  final String? deleteButtonText;
 
   /// The options to offer for the rowsPerPage.
   ///
@@ -94,29 +94,44 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
-    return ChangeNotifierProvider<delta.TapBreaker>(
-        create: (context) => delta.TapBreaker(),
-        child: Consumer<delta.TapBreaker>(builder: (context, breaker, child) {
-          return LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return isTableLayout
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        if (isTableLayout) buildHeader(context, breaker),
-                        Expanded(
-                          child: _buildTable(context),
-                        ),
-                      ],
-                    )
-                  : _buildCard(
-                      context,
-                      constraints.maxWidth,
-                      breaker,
-                    );
-            },
-          );
-        }));
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<delta.TapBreaker>(
+            create: (context) => delta.TapBreaker(),
+          ),
+          ChangeNotifierProvider<delta.RefreshButtonProvider>(
+            create: (context) => delta.RefreshButtonProvider(),
+          ),
+        ],
+        child: Consumer<delta.TapBreaker>(
+            builder: (context, breaker, child) =>
+                Consumer<delta.RefreshButtonProvider>(builder: (context, refreshButton, child) {
+                  dataSource.onRefreshBegin = () {
+                    refreshButton.setBusy(true);
+                  };
+                  dataSource.onRefreshEnd = () {
+                    refreshButton.setBusy(false);
+                  };
+                  return LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      return isTableLayout
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                if (isTableLayout) buildHeader(context, breaker),
+                                Expanded(
+                                  child: _buildTable(context),
+                                ),
+                              ],
+                            )
+                          : _buildCard(
+                              context,
+                              constraints.maxWidth,
+                              breaker,
+                            );
+                    },
+                  );
+                })));
   }
 
   /// isTableLayout return true if use table layout
@@ -129,11 +144,11 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     var _actions = <Widget>[
       if (isTableLayout) const SizedBox(width: 14),
-      IconButton(
-        tooltip: context.i18n.refreshButtonText,
-        onPressed: breaker.voidFunc(() => dataSource.refresh(context)),
-        icon: const Icon(Icons.refresh_rounded),
-      ),
+      delta.RefreshButton(
+          color: context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade200),
+          onPressed: breaker.futureFunc(
+            () => dataSource.refresh(context),
+          )),
       if (isTableLayout) Text(localizations.rowsPerPageTitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
       if (isTableLayout) const SizedBox(width: 10),
       ConstrainedBox(
@@ -164,7 +179,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
         : <Widget>[
             Expanded(
                 child: AutoSizeText(
-              dataSource.isBusy ? context.i18n.loadingLabel : dataSource.pagingInfo(context),
+              dataSource.isLoading ? context.i18n.loadingLabel : dataSource.pagingInfo(context),
               maxLines: 2,
               style: const TextStyle(fontSize: 13, color: Colors.grey),
               textAlign: TextAlign.right,
@@ -192,12 +207,12 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
   Widget buildSelectedHeader(BuildContext context, delta.TapBreaker breaker) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final tails = <Widget>[
-      if (dataRemover != null)
+      if (dataSource.hasDataRemover)
         Padding(
             padding: EdgeInsets.only(right: isTableLayout ? 24 : 6),
             child: ElevatedButton(
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[600])),
-              child: Text(context.i18n.deleteButtonText),
+              child: Text(deleteButtonText ?? context.i18n.deleteButtonText),
               onPressed: breaker.voidFunc(
                 () async => dataSource.deleteSelectedRows(context),
               ),
@@ -207,9 +222,12 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
         context,
         [
           SizedBox(width: isTableLayout ? 24 : 6),
-          Expanded(
-            child: Text(localizations.selectedRowCountTitle(dataSource.selectedRows.length)),
-          )
+          Text(localizations.selectedRowCountTitle(dataSource.selectedRows.length)),
+          SizedBox(width: isTableLayout ? 24 : 6),
+          TextButton(
+            onPressed: () => dataSource.selectAllRows(false),
+            child: Text(context.i18n.unselectAllButtonText),
+          ),
         ],
         tails);
   }
@@ -270,6 +288,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
       showBottomBorder: true,
       smRatio: smallRatio,
       lmRatio: largeRatio,
+      showCheckboxColumn: dataSource.hasDataRemover,
       headingRowHeight: 38,
       columnSpacing: 6,
       dataRowHeight: tableRowHeight,
@@ -280,7 +299,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
       columns: columns,
       onSelectAll: (bool? selected) => dataSource.selectRows(selected ?? false),
       empty: _buildNoData(context),
-      rows: dataSource.isBusy
+      rows: dataSource.isLoading
           ? List<DataRow>.generate(
               dataSource.rowsPerPage,
               (int position) {
@@ -305,7 +324,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
               dataSource.pageRows.length,
               (int index) {
                 final row = dataSource.pageRows[index];
-                return DataRow(
+                return DataRow2(
                     selected: dataSource.isRowSelected(row),
                     onSelectChanged: selectable ? (bool? selected) => dataSource.selectRow(row, selected) : null,
                     cells: tableBuilder(context, row, index)
@@ -331,6 +350,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
         child: DataTable2(
             smRatio: smallRatio,
             lmRatio: largeRatio,
+            showCheckboxColumn: dataSource.hasDataRemover,
             horizontalMargin: 12,
             dataRowHeight: cardHeight,
             headingRowHeight: 48,
@@ -341,7 +361,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             ],
             onSelectAll: (bool? selected) => dataSource.selectRows(selected ?? false),
             empty: _buildNoData(context),
-            rows: dataSource.isBusy
+            rows: dataSource.isLoading
                 ? List<DataRow>.generate(
                     dataSource.rowsPerPage,
                     (int position) {
@@ -366,15 +386,18 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
                         selected: dataSource.isRowSelected(row),
                         onSelectChanged: selectable ? (bool? selected) => dataSource.selectRow(row, selected) : null,
                         cells: [
-                          DataCell(Card(
-                              margin: const EdgeInsets.symmetric(vertical: 4),
-                              child: SizedBox(
-                                  width: maxWidth,
-                                  child: cardBuilder(
-                                    context,
-                                    row,
-                                    index,
-                                  ))))
+                          DataCell(
+                            Card(
+                                margin: const EdgeInsets.symmetric(vertical: 4),
+                                child: SizedBox(
+                                    width: maxWidth,
+                                    child: cardBuilder(
+                                      context,
+                                      row,
+                                      index,
+                                    ))),
+                            onTap: onRowTap != null ? () => onRowTap!(context, row, index) : null,
+                          )
                         ],
                       );
                     },

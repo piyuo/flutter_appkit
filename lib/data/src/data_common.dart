@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'data.dart';
@@ -18,6 +17,9 @@ class DataCommon<T extends pb.Object> {
 
   /// id is the unique id of this dataset, it is used to cache data
   final String id;
+
+  /// hasDataRemover return true if there data remover is not null
+  bool get hasDataRemover => dataRemover != null;
 
   /// set data to cache
   Future<void> setCacheDeleted(

@@ -33,6 +33,12 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   /// onRowsChange is called when rows are changed
   final VoidCallback? onRowsChanged;
 
+  /// onRefreshBegin is called when data source begin to refresh
+  VoidCallback? onRefreshBegin;
+
+  /// onRefreshEnd is called when data source end to refresh
+  VoidCallback? onRefreshEnd;
+
   /// _selectedRows keep all selected rows
   final List<T> selectedRows = [];
 
@@ -63,11 +69,11 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   /// rowsPerPage return current rows per page
   int get rowsPerPage => _rowsPerPage;
 
-  /// _isBusy return true if data source is busy loading data
-  bool _isBusy = false;
+  /// _isLoading return true if data source is busy loading data
+  bool _isLoading = false;
 
-  /// isBusy return true if data source is busy loading data
-  bool get isBusy => _isBusy;
+  /// isLoading return true if data source is busy loading data
+  bool get isLoading => _isLoading;
 
   /// _pageIndex is current page index
   int _pageIndex = 0;
@@ -96,14 +102,14 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   bool get hasFirstPage => hasPrevPage;
 
   /// hasPrevPage return true if user can click prev page
-  bool get hasPrevPage => !_isBusy && _pageIndex > 0;
+  bool get hasPrevPage => !_isLoading && _pageIndex > 0;
 
   /// hasLastPage return true if user can click last page
-  bool get hasLastPage => !_isBusy && _dataset.noMoreData && _pageIndex < pageCount - 1;
+  bool get hasLastPage => !_isLoading && _dataset.noMoreData && _pageIndex < pageCount - 1;
 
   /// hasNextPage return true if user can click next page
   bool get hasNextPage {
-    if (_isBusy) {
+    if (_isLoading) {
       return false;
     }
     if (!_dataset.noMoreData) {
@@ -112,24 +118,22 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     return _pageIndex < pageCount - 1;
   }
 
+  /// hasDataRemover return true if there data remover is not null
+  bool get hasDataRemover => _dataset.hasDataRemover;
+
   /// init data source with cache or data loader
   ///
   ///     await init(context);
   ///
   Future<void> init(BuildContext context) async {
-    _notifyBusy(true);
-    try {
-      await _dataset.init();
-      await _dataset.refresh(context, _rowsPerPage);
-    } finally {
-      _notifyBusy(false);
-    }
+    await _dataset.init();
+    await refresh(context);
   }
 
-  /// _notifyBusy set busy value and notify listener
-  void _notifyBusy(bool value) {
-    if (value != _isBusy) {
-      _isBusy = value;
+  /// _notifyLoading set busy value and notify listener
+  void _notifyLoading(bool value) {
+    if (value != _isLoading) {
+      _isLoading = value;
       notifyListeners();
     }
   }
@@ -177,7 +181,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   ///
   @visibleForTesting
   Future<void> gotoPage(BuildContext context, int index) async {
-    _notifyBusy(true);
+    _notifyLoading(true);
     try {
       final expectRowsCount = _dataset.rows.length - index * _rowsPerPage;
       if (expectRowsCount < _rowsPerPage && !_dataset.noMoreData) {
@@ -192,7 +196,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
         _pageIndex = pageCount - 1;
       }
     } finally {
-      _notifyBusy(false);
+      _notifyLoading(false);
     }
   }
 
@@ -201,13 +205,13 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   ///     await setRowsPerPage(context,20);
   ///
   Future<void> setRowsPerPage(BuildContext context, int value) async {
-    _notifyBusy(true);
+    _notifyLoading(true);
     try {
       _pageIndex = 0;
       _rowsPerPage = value;
       await gotoPage(context, 0);
     } finally {
-      _notifyBusy(false);
+      _notifyLoading(false);
     }
   }
 
@@ -216,12 +220,12 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   ///     await refreshNewRow(context);
   ///
   Future<void> refresh(BuildContext context) async {
-    _notifyBusy(true);
+    onRefreshBegin?.call();
     try {
       _pageIndex = 0;
       await _dataset.refresh(context, _rowsPerPage);
     } finally {
-      _notifyBusy(false);
+      onRefreshEnd?.call();
     }
   }
 

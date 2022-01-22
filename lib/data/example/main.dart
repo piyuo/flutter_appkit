@@ -46,15 +46,15 @@ class DataExample extends StatelessWidget {
             ),
             testing.example(
               context,
-              text: 'pull list',
+              text: 'page list',
               useScaffold: false,
-              child: _pullList(),
+              child: _pageList(),
             ),
             testing.example(
               context,
-              text: 'empty pull list',
+              text: 'empty page list',
               useScaffold: false,
-              child: _emptyPullList(),
+              child: _emptyPageList(),
             ),
             testing.example(
               context,
@@ -160,8 +160,9 @@ class DataExample extends StatelessWidget {
         context: context,
         id: 'today_customer',
         dataBuilder: () => sample.Person(),
+        dataRemover: (BuildContext context, List<String> ids) async => true,
         dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          await Future.delayed(const Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 5));
           if (isRefresh) {
             return List.generate(
                 limit,
@@ -202,12 +203,12 @@ class DataExample extends StatelessWidget {
                 dataSource: dataSource,
                 smallRatio: 0.25,
                 largeRatio: 3,
+                tableRowHeight: 100,
                 columns: [
                   PageColumn(label: const Text('ID')),
                   PageColumn(label: const Text('Name'), width: ColumnWidth.large),
                   PageColumn(label: const Text('Age'), width: ColumnWidth.small),
                 ],
-                dataRemover: (BuildContext context, List<String> ids) async => true,
                 tableBuilder: (BuildContext context, sample.Person person, int rowIndex) {
                   return [
                     Text(person.entityID, overflow: TextOverflow.ellipsis),
@@ -225,12 +226,13 @@ class DataExample extends StatelessWidget {
                         Text('${person.age}'),
                       ]));
                 },
-                onRowTap: (BuildContext context, sample.Person person, int rowIndex) => debugPrint(person.name),
+                onRowTap: (BuildContext context, sample.Person person, int rowIndex) =>
+                    debugPrint("press " + person.name),
               )),
     );
   }
 
-  Widget _pullList() {
+  Widget _pageList() {
     return ChangeNotifierProvider<DataSource<sample.Person>>(
       create: (context) => DataSource<sample.Person>(
         context: context,
@@ -274,7 +276,7 @@ class DataExample extends StatelessWidget {
         },
       ),
       child: Consumer<DataSource<sample.Person>>(
-          builder: (context, dataSource, child) => PullList<sample.Person>(
+          builder: (context, dataSource, child) => PageList<sample.Person>(
                 dataSource: dataSource,
                 cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
                   return Card(
@@ -289,7 +291,7 @@ class DataExample extends StatelessWidget {
     );
   }
 
-  Widget _emptyPullList() {
+  Widget _emptyPageList() {
     return ChangeNotifierProvider<DataSource<sample.Person>>(
       create: (context) => DataSource<sample.Person>(
         context: context,
@@ -302,7 +304,7 @@ class DataExample extends StatelessWidget {
         },
       ),
       child: Consumer<DataSource<sample.Person>>(
-          builder: (context, dataSource, child) => PullList<sample.Person>(
+          builder: (context, dataSource, child) => PageList<sample.Person>(
                 dataSource: dataSource,
                 cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
                   return Card(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/src/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/cache/cache.dart' as cache;
 
 /// RowBuilder build table row cells
 typedef TableBuilder<T extends pb.Object> = List<Widget> Function(BuildContext context, T row, int rowIndex);
