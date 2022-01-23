@@ -4,7 +4,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'dataset.dart';
 import 'data.dart';
 
-class DataSource<T extends pb.Object> extends ChangeNotifier {
+class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
   DataSource({
     BuildContext? context,
     required String id,
@@ -13,22 +13,17 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     DataRemover<T>? dataRemover,
     this.onRowsChanged,
     int rowsPerPage = 10,
-  }) {
+  }) : super(
+          id: id,
+          dataLoader: dataLoader,
+          dataBuilder: dataBuilder,
+          dataRemover: dataRemover,
+        ) {
     _rowsPerPage = rowsPerPage;
-    _dataset = Dataset<T>(
-      id: id,
-      dataLoader: dataLoader,
-      dataBuilder: dataBuilder,
-      dataRemover: dataRemover,
-      onDataChanged: onDataChanged,
-    );
     if (context != null) {
       init(context);
     }
   }
-
-  /// _rows keep all cached rows
-  late Dataset<T> _dataset;
 
   /// onRowsChange is called when rows are changed
   final VoidCallback? onRowsChanged;
@@ -43,25 +38,10 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   final List<T> selectedRows = [];
 
   /// pageRows return current page rows
-  List<T> get pageRows => _dataset.rows.getRange(currentIndexStart, currentIndexEnd).toList();
-
-  /// allRows return all rows
-  List<T> get allRows => _dataset.rows;
+  List<T> get pageRows => rows.getRange(currentIndexStart, currentIndexEnd).toList();
 
   /// pageIndex return current page index
   int get pageIndex => _pageIndex;
-
-  /// noNeedRefresh return true if no need to refresh
-  bool get noNeedRefresh => _dataset.noNeedRefresh;
-
-  /// noMoreData return true if no need to load more data
-  bool get noMoreData => _dataset.noMoreData;
-
-  /// isEmpty return true if dataset is empty
-  bool get isEmpty => _dataset.isEmpty;
-
-  /// isNotEmpty return true if dataset is not empty
-  bool get isNotEmpty => _dataset.isNotEmpty;
 
   /// _rowsPerPage is current rows per page
   int _rowsPerPage = 10;
@@ -80,10 +60,10 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
 
   /// pageCount return total page count
   int get pageCount {
-    if (_dataset.isEmpty) {
+    if (isEmpty) {
       return 1;
     }
-    return (_dataset.rows.length / _rowsPerPage).ceil();
+    return (rows.length / _rowsPerPage).ceil();
   }
 
   /// currentIndexStart return start index in current page
@@ -96,7 +76,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   int get currentRowCount => getRowCountByPage(_pageIndex);
 
   /// isLastPage return true if current page is the last page
-  bool get isLastPage => _dataset.noMoreData && _pageIndex == pageCount - 1;
+  bool get isLastPage => noMoreData && _pageIndex == pageCount - 1;
 
   /// hasFirstPage return true if user can click first page
   bool get hasFirstPage => hasPrevPage;
@@ -105,29 +85,27 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   bool get hasPrevPage => !_isLoading && _pageIndex > 0;
 
   /// hasLastPage return true if user can click last page
-  bool get hasLastPage => !_isLoading && _dataset.noMoreData && _pageIndex < pageCount - 1;
+  bool get hasLastPage => !_isLoading && noMoreData && _pageIndex < pageCount - 1;
 
   /// hasNextPage return true if user can click next page
   bool get hasNextPage {
     if (_isLoading) {
       return false;
     }
-    if (!_dataset.noMoreData) {
+    if (!noMoreData) {
       return true;
     }
     return _pageIndex < pageCount - 1;
   }
 
-  /// hasDataRemover return true if there data remover is not null
-  bool get hasDataRemover => _dataset.hasDataRemover;
-
   /// init data source with cache or data loader
   ///
   ///     await init(context);
   ///
+  @override
   Future<void> init(BuildContext context) async {
-    await _dataset.init();
-    await refresh(context);
+    await super.init(context);
+    await refreshData(context);
   }
 
   /// _notifyLoading set busy value and notify listener
@@ -144,7 +122,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     // remove not exists selected rows
     for (int i = selectedRows.length - 1; i >= 0; i--) {
       final selected = selectedRows[i];
-      if (!_dataset.rows.contains(selected)) {
+      if (!rows.contains(selected)) {
         selectedRows.remove(selected);
       }
     }
@@ -183,10 +161,10 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   Future<void> gotoPage(BuildContext context, int index) async {
     _notifyLoading(true);
     try {
-      final expectRowsCount = _dataset.rows.length - index * _rowsPerPage;
-      if (expectRowsCount < _rowsPerPage && !_dataset.noMoreData) {
+      final expectRowsCount = rows.length - index * _rowsPerPage;
+      if (expectRowsCount < _rowsPerPage && !noMoreData) {
         //the page is not fill with enough data, load more data
-        await _dataset.more(context, _rowsPerPage - expectRowsCount);
+        await more(context, _rowsPerPage - expectRowsCount);
       }
       _pageIndex = index;
       if (_pageIndex < 0) {
@@ -215,16 +193,17 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
     }
   }
 
-  /// refresh cached rows
+  /// refreshData cached rows
   ///
-  ///     await refreshNewRow(context);
+  ///     await refreshData(context);
   ///
-  Future<void> refresh(BuildContext context) async {
+  Future<void> refreshData(BuildContext context) async {
     onRefreshBegin?.call();
     try {
       _pageIndex = 0;
-      await _dataset.refresh(context, _rowsPerPage);
+      await refresh(context, _rowsPerPage);
     } finally {
+      notifyListeners();
       onRefreshEnd?.call();
     }
   }
@@ -239,16 +218,16 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
       return 0; // page not exists
     }
     if (pageIndex == pageCount - 1) {
-      return _dataset.rows.length - pageIndex * _rowsPerPage;
+      return rows.length - pageIndex * _rowsPerPage;
     }
     return _rowsPerPage;
   }
 
   /// paging return text page info like '1-10' of 19
   String pagingInfo(BuildContext context) {
-    if (_dataset.noMoreData) {
+    if (noMoreData) {
       return '${currentIndexStart + 1} - $currentIndexEnd ' +
-          context.i18n.pagingCount.replaceAll('%1', _dataset.rows.length.toString());
+          context.i18n.pagingCount.replaceAll('%1', rows.length.toString());
     }
     return '${currentIndexStart + 1} - $currentIndexEnd ' + context.i18n.pagingMany;
   }
@@ -260,7 +239,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   void selectAllRows(bool selected) {
     selectedRows.clear();
     if (selected) {
-      selectedRows.addAll(_dataset.rows);
+      selectedRows.addAll(rows);
     }
     notifyListeners();
   }
@@ -269,7 +248,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   void selectRows(bool selected) {
     selectedRows.clear();
     if (selected) {
-      selectedRows.addAll(_dataset.rows.getRange(currentIndexStart, currentIndexEnd));
+      selectedRows.addAll(rows.getRange(currentIndexStart, currentIndexEnd));
     }
     notifyListeners();
   }
@@ -291,7 +270,7 @@ class DataSource<T extends pb.Object> extends ChangeNotifier {
   Future<void> deleteSelectedRows(BuildContext context) async {
     if (selectedRows.isNotEmpty) {
       final ids = selectedRows.map((row) => row.entityID).toList();
-      _dataset.delete(context, ids);
+      delete(context, ids);
     }
   }
 }

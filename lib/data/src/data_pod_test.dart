@@ -38,11 +38,11 @@ void main() {
         },
       );
 
-      final person = await dp.get(testing.Context());
+      await dp.init(testing.Context());
       expect(isGet, isTrue);
-      expect(person, isNotNull);
+      expect(dp.data, isNotNull);
 
-      await dp.set(testing.Context(), person!);
+      await dp.set(testing.Context(), dp.data!);
       expect(isSet, isTrue);
 
       await dp.delete(testing.Context());

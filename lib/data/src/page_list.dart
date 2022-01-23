@@ -45,7 +45,7 @@ class PageList<T extends pb.Object> extends StatelessWidget {
       onPullRefresh: dataSource.noNeedRefresh || dataSource.isLoading
           ? null
           : (BuildContext context) async {
-              await dataSource.refresh(context);
+              await dataSource.refreshData(context);
             },
       onLoadMore: dataSource.noMoreData || dataSource.isLoading
           ? null
@@ -53,14 +53,14 @@ class PageList<T extends pb.Object> extends StatelessWidget {
               await dataSource.nextPage(context);
             },
       itemCount: (BuildContext context) {
-        return dataSource.isEmpty ? 1 : dataSource.allRows.length;
+        return dataSource.isEmpty ? 1 : dataSource.rows.length;
       },
       itemBuilder: (BuildContext context, int index) {
         if (dataSource.isEmpty) {
           return _buildNoData(context);
         }
 
-        final row = dataSource.allRows[index];
+        final row = dataSource.rows[index];
         return cardBuilder(context, row, index);
       },
     );

@@ -32,7 +32,7 @@ void main() {
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
 
-      await ds.init();
+      await ds.init(testing.Context());
       expect(ds.noMoreData, false);
       expect(ds.noNeedRefresh, false);
       expect(ds.rows.isEmpty, true);
@@ -50,7 +50,7 @@ void main() {
                   ),
                 )),
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 1);
       expect(ds.rows.length, 1);
       expect(cache.contains('0'), true);
@@ -118,7 +118,7 @@ void main() {
           return null;
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 9);
       expect(refreshed, true);
       expect(refreshLimit, 9);
@@ -131,7 +131,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init();
+      await ds2.init(testing.Context());
       expect(ds2.noNeedRefresh, true);
       expect(ds2.noMoreData, true);
       expect(ds2.rows.length, 0);
@@ -151,7 +151,7 @@ void main() {
                   ));
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 2);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -188,7 +188,7 @@ void main() {
                   ));
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 2);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -205,7 +205,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init();
+      await ds2.init(testing.Context());
       expect(ds2.noNeedRefresh, false);
       expect(ds2.noMoreData, false);
       expect(ds2.rows.length, 3);
@@ -224,7 +224,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => samples,
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 1);
       expect(ds.rows.length, 1);
 
@@ -245,7 +245,7 @@ void main() {
           )
         ],
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 1);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -282,7 +282,7 @@ void main() {
                   ));
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 2);
       expect(ds.noMoreData, false);
       // second refresh will trigger reset
@@ -296,7 +296,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init();
+      await ds2.init(testing.Context());
       expect(ds2.noNeedRefresh, false);
       expect(ds2.noMoreData, false);
       expect(ds2.rows.length, 4);
@@ -327,7 +327,7 @@ void main() {
                   ));
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 2);
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
@@ -342,7 +342,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         dataLoader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => null,
       );
-      await ds2.init();
+      await ds2.init(testing.Context());
       expect(ds2.noMoreData, true);
       expect(ds2.rows.length, 3);
     });
@@ -392,7 +392,7 @@ void main() {
                   ));
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 1);
       expect(_isRefresh, true);
       expect(_limit, 1);
@@ -428,7 +428,7 @@ void main() {
           return null;
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 1);
       expect(ds.noNeedRefresh, true);
       expect(refreshCount, 1);
@@ -464,7 +464,7 @@ void main() {
           return null;
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 1);
       expect(ds.noMoreData, false);
 
@@ -506,7 +506,7 @@ void main() {
                   ));
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 1);
       expect(ds.noMoreData, false);
 
@@ -534,7 +534,7 @@ void main() {
                   ));
         },
       );
-      await ds.init();
+      await ds.init(testing.Context());
       await ds.refresh(testing.Context(), 5);
       expect(ds.rows.length, 5);
 

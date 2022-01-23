@@ -77,7 +77,7 @@ void main() {
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, false);
       expect(ds.pageIndex, 0);
-      expect(ds.allRows.length, 10);
+      expect(ds.rows.length, 10);
       expect(ds.isLastPage, false);
       expect(ds.currentIndexStart, 0);
       expect(ds.currentIndexEnd, ds.rowsPerPage);
@@ -95,7 +95,7 @@ void main() {
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, true);
       expect(ds.pageIndex, 1);
-      expect(ds.allRows.length, 12);
+      expect(ds.rows.length, 12);
       expect(ds.isLastPage, true);
       expect(ds.currentIndexStart, 10);
       expect(ds.currentIndexEnd, 12);
@@ -113,13 +113,13 @@ void main() {
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, true);
       expect(ds.pageIndex, 0);
-      expect(ds.allRows.length, 12);
+      expect(ds.rows.length, 12);
       expect(ds.isLastPage, false);
       expect(ds.currentIndexStart, 0);
       expect(ds.currentIndexEnd, 10);
       expect(ds.currentRowCount, 10);
 
-      await ds.refresh(testing.Context());
+      await ds.refreshData(testing.Context());
       expect(ds.hasFirstPage, false);
       expect(ds.hasPrevPage, false);
       expect(ds.hasNextPage, true);
@@ -131,13 +131,13 @@ void main() {
       expect(ds.noNeedRefresh, false);
       expect(ds.noMoreData, true);
       expect(ds.pageIndex, 0);
-      expect(ds.allRows.length, 14);
+      expect(ds.rows.length, 14);
       expect(ds.isLastPage, false);
       expect(ds.currentIndexStart, 0);
       expect(ds.currentIndexEnd, 10);
       expect(ds.currentRowCount, 10);
 
-      await ds.refresh(testing.Context());
+      await ds.refreshData(testing.Context());
       expect(ds.hasFirstPage, false);
       expect(ds.hasPrevPage, false);
       expect(ds.hasNextPage, true);
@@ -149,7 +149,7 @@ void main() {
       expect(ds.noNeedRefresh, true);
       expect(ds.noMoreData, true);
       expect(ds.pageIndex, 0);
-      expect(ds.allRows.length, 14);
+      expect(ds.rows.length, 14);
       expect(ds.isLastPage, false);
       expect(ds.currentIndexStart, 0);
       expect(ds.currentIndexEnd, 10);
@@ -266,13 +266,13 @@ void main() {
         testing.Context(),
       );
       expect(ds.pagingInfo(testing.Context()), '1 - 10 of many');
-      expect(ds.allRows.length, 10);
+      expect(ds.rows.length, 10);
       await ds.nextPage(testing.Context());
       expect(ds.pagingInfo(testing.Context()), '11 - 20 of many');
-      expect(ds.allRows.length, 20);
+      expect(ds.rows.length, 20);
       await ds.nextPage(testing.Context());
       expect(ds.pagingInfo(testing.Context()), '21 - 22 of 22');
-      expect(ds.allRows.length, 22);
+      expect(ds.rows.length, 22);
       expect(ds.getRowCountByPage(0), 10);
       expect(ds.getRowCountByPage(1), 10);
       expect(ds.getRowCountByPage(2), 2);
@@ -338,7 +338,7 @@ void main() {
       await ds.init(
         testing.Context(),
       );
-      expect(ds.allRows.length, 10);
+      expect(ds.rows.length, 10);
       expect(ds.rowsPerPage, 10);
       expect(lastIsRefresh, true);
       expect(lastLimit, 10);
@@ -349,7 +349,7 @@ void main() {
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);
       expect(lastAnchorId, 'init9');
-      expect(ds.allRows.length, 20);
+      expect(ds.rows.length, 20);
 
       lastIsRefresh = null;
       lastLimit = null;
@@ -359,7 +359,7 @@ void main() {
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
-      expect(ds.allRows.length, 20);
+      expect(ds.rows.length, 20);
 
       await ds.gotoPage(testing.Context(), 1);
       expect(ds.pageIndex, 1);
@@ -372,7 +372,7 @@ void main() {
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);
       expect(lastAnchorId, 'firstMore9');
-      expect(ds.allRows.length, 22);
+      expect(ds.rows.length, 22);
       expect(ds.noMoreData, true);
     });
   });

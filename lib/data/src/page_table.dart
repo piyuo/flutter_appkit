@@ -147,7 +147,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
       delta.RefreshButton(
           color: context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade200),
           onPressed: breaker.futureFunc(
-            () => dataSource.refresh(context),
+            () => dataSource.refreshData(context),
           )),
       if (isTableLayout) Text(localizations.rowsPerPageTitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
       if (isTableLayout) const SizedBox(width: 10),

@@ -14,7 +14,6 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
     required this.dataLoader,
     required pb.Builder<T> dataBuilder,
     required String id,
-    this.onDataChanged,
     DataRemover<T>? dataRemover,
   }) : super(
           dataBuilder: dataBuilder,
@@ -24,9 +23,6 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
 
   /// dataLoader is the function to load new data
   final DataLoader<T> dataLoader;
-
-  /// onDataChanged is the callback when data changed
-  final VoidCallback? onDataChanged;
 
   /// _data keep all saved data
   final List<T> _data = [];
@@ -53,7 +49,7 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
   bool get isNotEmpty => rows.isNotEmpty;
 
   /// init read snapshot from cache
-  Future<void> init() async {
+  Future<void> init(BuildContext context) async {
     assert(id.isNotEmpty, 'dataset id is empty');
     final savedData = cache.getStringList(id);
     if (savedData == null) {
@@ -71,7 +67,6 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
     }
     _noNeedRefresh = cache.getBool('${id}_nr') ?? false;
     _noMoreData = cache.getBool('${id}_nm') ?? false;
-    onDataChanged?.call();
     debugPrint('[dataset] init $id ${_data.length}');
   }
 
@@ -92,7 +87,6 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
     _noMoreData = false;
     await deleteItems(_data);
     _data.clear();
-    onDataChanged?.call();
     debugPrint('[dataset] reset, start fresh');
   }
 
@@ -180,7 +174,6 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
 
       await saveItems(result);
       _data.insertAll(0, result);
-      onDataChanged?.call();
     } finally {
       await save();
       final count = result != null ? result.length : 0;
@@ -214,7 +207,6 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
       if (result.length < limit) {
         _noMoreData = true;
       }
-      onDataChanged?.call();
     } finally {
       await save();
       final count = result != null ? result.length : 0;
