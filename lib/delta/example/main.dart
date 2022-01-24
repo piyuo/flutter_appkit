@@ -72,10 +72,15 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _waitError(context),
+                          child: _flicker(context),
                         ),
                         Wrap(
                           children: [
+                            testing.example(
+                              context,
+                              text: 'flicker',
+                              child: _flicker(context),
+                            ),
                             testing.example(
                               context,
                               text: 'wait',
@@ -349,6 +354,16 @@ class DeltaExample extends StatelessWidget {
         debugPrint('image not exists');
       },
     );
+  }
+
+  Widget _flicker(BuildContext context) {
+    //return Text('hello', style: TextStyle(color: Colors.red, fontSize: 124));
+    return Flickering(
+        child: Column(children: [
+      Flicker(width: 120, height: 30, builder: () => const Text('done')),
+      const SizedBox(height: 20),
+      Flicker(width: 120, height: 30, builder: () => const Text('done')),
+    ]));
   }
 
   Widget _wait(BuildContext context) {
