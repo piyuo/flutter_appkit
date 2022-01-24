@@ -29,8 +29,8 @@ class Flickering extends StatelessWidget {
 class Flicker extends StatelessWidget {
   const Flicker({
     required this.builder,
-    required this.width,
-    required this.height,
+    this.width,
+    this.height,
     Key? key,
     this.done = false,
   }) : super(key: key);
@@ -42,10 +42,10 @@ class Flicker extends StatelessWidget {
   final bool done;
 
   /// width is shimmer width
-  final double width;
+  final double? width;
 
   /// width is shimmer height
-  final double height;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
