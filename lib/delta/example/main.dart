@@ -363,6 +363,16 @@ class DeltaExample extends StatelessWidget {
       Flicker(width: 120, height: 30, builder: () => const Text('done')),
       const SizedBox(height: 20),
       Flicker(width: 120, height: 30, builder: () => const Text('done')),
+      const SizedBox(height: 20),
+      FittedBox(
+          child: Icon(
+        Icons.image,
+        size: 120,
+        color: context.themeColor(
+          dark: Colors.grey.shade800,
+          light: Colors.grey.shade400,
+        ),
+      )),
     ]));
   }
 

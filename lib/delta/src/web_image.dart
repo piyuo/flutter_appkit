@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:provider/provider.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
-import 'package:shimmer/shimmer.dart';
 import 'extensions.dart';
 
 /// webImageData get binary image data from url
@@ -93,11 +92,7 @@ class WebImage extends StatelessWidget {
                     loadStateChanged: (ExtendedImageState state) {
                       switch (state.extendedImageLoadState) {
                         case LoadState.loading:
-                          return Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade100,
-                            child: _icon(context, Icons.image),
-                          );
+                          return _icon(context, Icons.image);
 
                         case LoadState.completed:
                           return null;
