@@ -28,3 +28,10 @@ Widget? beamBack(BuildContext context) {
   }
   return null;
 }
+
+///setWebPageTitle set web page title
+void setWebPageTitle(String title) {
+  if (kIsWeb) {
+    html.document.title = title;
+  }
+}

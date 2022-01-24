@@ -59,7 +59,8 @@ class AppExampleState extends State<AppExample> {
         child: Column(
       children: [
         Expanded(
-          child: _routing(context, widget.data),
+          //child: _routing(context, widget.data),
+          child: _setPageTitle(context),
         ),
         Container(
             color: Colors.black,
@@ -85,6 +86,12 @@ class AppExampleState extends State<AppExample> {
                 text: 'scroll behavior',
                 useScaffold: false,
                 child: _scrollBehavior(context),
+              ),
+              testing.example(
+                context,
+                text: 'set page title',
+                useScaffold: false,
+                child: _setPageTitle(context),
               ),
             ]))
       ],
@@ -201,6 +208,15 @@ class AppExampleState extends State<AppExample> {
               });
             }),
       ],
+    );
+  }
+
+  Widget _setPageTitle(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('set page title'),
+      onPressed: () {
+        setWebPageTitle('hello');
+      },
     );
   }
 
