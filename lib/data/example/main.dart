@@ -28,10 +28,16 @@ class DataExample extends StatelessWidget {
         child: Column(
       children: [
         Expanded(
-          child: _pageTable(),
+          child: _dataPod(),
         ),
         Wrap(
           children: [
+            testing.example(
+              context,
+              text: 'data pod',
+              useScaffold: false,
+              child: _dataPod(),
+            ),
             testing.example(
               context,
               text: 'page table',
@@ -129,6 +135,33 @@ class DataExample extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  Widget _dataPod() {
+    return ChangeNotifierProvider<DataPod<sample.Person>>(
+      create: (context) => DataPod<sample.Person>(
+          id: 'testId',
+          context: context,
+          dataBuilder: () => sample.Person(),
+          dataGetter: (context, id) async {
+            return sample.Person(entity: pb.Entity(id: 'testId'));
+          },
+          dataSetter: (context, sample.Person person) async {},
+          dataRemover: (context, ids) async {},
+          onLoad: (sample.Person? person) {
+            debugPrint('onLoad: $person');
+          }),
+      child: Consumer<DataPod<sample.Person>>(builder: (context, dataPod, child) {
+        if (dataPod.isLoading) {
+          return const Text('loading...');
+        }
+        if (dataPod.isEmpty) {
+          return const Text('no data');
+        }
+        final person = dataPod.data!;
+        return Text(person.entityID);
+      }),
     );
   }
 

@@ -14,6 +14,7 @@ class DataPod<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
     DataRemover<T>? dataRemover,
     this.onUpdateBegin,
     this.onUpdateEnd,
+    this.onLoad,
   }) : super(
           dataBuilder: dataBuilder,
           dataRemover: dataRemover,
@@ -36,8 +37,8 @@ class DataPod<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
   /// onUpdateEnd is called when data update end
   VoidCallback? onUpdateEnd;
 
-  /// onDataEmpty is called when data init and is empty
-  VoidCallback? onDataEmpty;
+  /// onLoad is called when data load
+  void Function(T? data)? onLoad;
 
   /// _data keep current data
   T? _data;
@@ -73,11 +74,8 @@ class DataPod<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
       _data ??= await dataGetter(context, id);
       if (_data != null) {
         await cache.setObject(id, _data!);
-      } else {
-        if (onDataEmpty != null) {
-          Future.microtask(() async => onDataEmpty!());
-        }
       }
+      onLoad?.call(_data);
     } finally {
       _notifyLoading(false);
     }
