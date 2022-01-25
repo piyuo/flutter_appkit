@@ -6,24 +6,24 @@ class Flickering extends StatelessWidget {
   const Flickering({
     required this.child,
     Key? key,
-    this.done = false,
+    this.flicker = true,
   }) : super(key: key);
 
-  /// done is true will show child
-  final bool done;
+  /// flicker is true will show shimmer
+  final bool flicker;
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return done
-        ? child
-        : Shimmer.fromColors(
+    return flicker
+        ? Shimmer.fromColors(
             baseColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
             highlightColor: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade600),
             child: child,
             enabled: true,
-          );
+          )
+        : child;
   }
 }
 
@@ -34,14 +34,14 @@ class Flicker extends StatelessWidget {
     this.width,
     this.height,
     Key? key,
-    this.done = false,
+    this.flicker = false,
   }) : super(key: key);
 
   /// builder only called when flicker is done
   final Widget Function()? builder;
 
-  /// done is true will show child
-  final bool done;
+  /// flicker is true will show shimmer
+  final bool flicker;
 
   /// width is shimmer width
   final double? width;
@@ -51,17 +51,17 @@ class Flicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return done
-        ? builder != null
-            ? builder!()
-            : const SizedBox()
-        : SizedBox(
+    return flicker
+        ? SizedBox(
             width: width,
             height: height,
             child: const DecoratedBox(
                 decoration: BoxDecoration(
               color: Colors.white,
             )),
-          );
+          )
+        : builder != null
+            ? builder!()
+            : const SizedBox();
   }
 }
