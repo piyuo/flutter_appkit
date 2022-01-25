@@ -28,7 +28,7 @@ class Flickering extends StatelessWidget {
 /// Flicker display shimmer with custom width and height
 class Flicker extends StatelessWidget {
   const Flicker({
-    required this.builder,
+    this.builder,
     this.width,
     this.height,
     Key? key,
@@ -36,7 +36,7 @@ class Flicker extends StatelessWidget {
   }) : super(key: key);
 
   /// builder only called when flicker is done
-  final Widget Function() builder;
+  final Widget Function()? builder;
 
   /// done is true will show child
   final bool done;
@@ -50,7 +50,9 @@ class Flicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return done
-        ? builder()
+        ? builder != null
+            ? builder!()
+            : SizedBox()
         : SizedBox(
             width: width,
             height: height,
