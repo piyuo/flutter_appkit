@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
@@ -107,9 +106,11 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             builder: (context, breaker, child) =>
                 Consumer<delta.RefreshButtonProvider>(builder: (context, refreshButton, child) {
                   dataSource.onRefreshBegin = () {
+                    breaker.setBusy(true);
                     refreshButton.setBusy(true);
                   };
                   dataSource.onRefreshEnd = () {
+                    breaker.setBusy(false);
                     refreshButton.setBusy(false);
                   };
                   return LayoutBuilder(
@@ -307,17 +308,11 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
                     selected: false,
                     onSelectChanged: selectable ? (bool? selected) {} : null,
                     cells: List<Widget>.generate(
-                            columns.length,
-                            (_) => Container(
-                                  margin: const EdgeInsets.fromLTRB(0, 14, 5, 14),
-                                  color: Colors.grey.shade500,
-                                ))
-                        .map((Widget widget) => DataCell(Shimmer.fromColors(
-                              baseColor: Colors.grey.shade500,
-                              highlightColor: Colors.grey.shade100,
-                              child: widget,
-                            )))
-                        .toList());
+                        columns.length,
+                        (_) => Container(
+                              margin: const EdgeInsets.fromLTRB(0, 12, 5, 12),
+                              color: Colors.white,
+                            )).map((Widget widget) => DataCell(delta.Flickering(child: widget))).toList());
               },
             )
           : List<DataRow>.generate(
@@ -369,11 +364,11 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
                         selected: false,
                         onSelectChanged: selectable ? (bool? selected) {} : null,
                         cells: [
-                          DataCell(Shimmer.fromColors(
-                            baseColor: Colors.grey.shade500,
-                            highlightColor: Colors.grey.shade100,
-                            child: Card(margin: const EdgeInsets.symmetric(vertical: 5), child: Container()),
-                          ))
+                          DataCell(delta.Flickering(
+                              child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            color: Colors.white,
+                          )))
                         ],
                       );
                     },

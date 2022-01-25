@@ -236,7 +236,6 @@ class DataExample extends StatelessWidget {
                 dataSource: dataSource,
                 smallRatio: 0.25,
                 largeRatio: 3,
-                tableRowHeight: 100,
                 columns: [
                   PageColumn(label: const Text('ID')),
                   PageColumn(label: const Text('Name'), width: ColumnWidth.large),
