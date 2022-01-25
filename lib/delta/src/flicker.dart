@@ -34,7 +34,7 @@ class Flicker extends StatelessWidget {
     this.width,
     this.height,
     Key? key,
-    this.flicker = false,
+    this.flicker = true,
   }) : super(key: key);
 
   /// builder only called when flicker is done
