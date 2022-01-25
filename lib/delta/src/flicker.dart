@@ -52,7 +52,7 @@ class Flicker extends StatelessWidget {
     return done
         ? builder != null
             ? builder!()
-            : SizedBox()
+            : const SizedBox()
         : SizedBox(
             width: width,
             height: height,
