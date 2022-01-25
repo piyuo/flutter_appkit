@@ -16,12 +16,14 @@ class Flickering extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
-      highlightColor: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade600),
-      child: child,
-      enabled: !done,
-    );
+    return done
+        ? child
+        : Shimmer.fromColors(
+            baseColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
+            highlightColor: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade600),
+            child: child,
+            enabled: true,
+          );
   }
 }
 
