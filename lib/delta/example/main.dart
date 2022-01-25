@@ -72,10 +72,15 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _flicker(context),
+                          child: _placeHolder(context),
                         ),
                         Wrap(
                           children: [
+                            testing.example(
+                              context,
+                              text: 'place holder',
+                              child: _placeHolder(context),
+                            ),
                             testing.example(
                               context,
                               text: 'flicker',
@@ -356,13 +361,27 @@ class DeltaExample extends StatelessWidget {
     );
   }
 
-  Widget _flicker(BuildContext context) {
-    //return Text('hello', style: TextStyle(color: Colors.red, fontSize: 124));
-    return Flickering(
-        child: Column(children: [
-      Flicker(width: 120, height: 30, builder: () => const Text('done')),
+  Widget _placeHolder(BuildContext context) {
+    return Column(children: [
+      PlaceHolder(builder: () => const Text('done')),
       const SizedBox(height: 20),
-      Flicker(width: 120, height: 30, builder: () => const Text('done')),
+      Container(color: Colors.red, height: 30),
+      /*
+      const SizedBox(height: 20),
+      Container(color: Colors.red, height: 30),
+      const SizedBox(height: 20),
+      const SizedBox(height: 20),
+      PlaceHolder(width: 120, height: 30, builder: () => const Text('done')),
+      */
+    ]);
+  }
+
+  Widget _flicker(BuildContext context) {
+    return Flicker(
+        child: Column(children: [
+      PlaceHolder(width: 120, height: 30, builder: () => const Text('done')),
+      const SizedBox(height: 20),
+      PlaceHolder(width: 120, height: 30, builder: () => const Text('done')),
       const SizedBox(height: 20),
       FittedBox(
           child: Icon(

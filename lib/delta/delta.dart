@@ -42,3 +42,4 @@ export 'src/count_up.dart';
 export 'src/badge.dart';
 export 'src/wait.dart';
 export 'src/flicker.dart';
+export 'src/place_holder.dart';
