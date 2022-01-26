@@ -78,4 +78,10 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
     assert(getEntity() != null, '$runtimeType not define entity');
     return getEntity()!.deleted;
   }
+
+  /// setAccessToken set access token
+  void setAccessToken(String token) {}
+
+  /// needAccessToken return true if action object need access token
+  bool needAccessToken() => false;
 }
