@@ -39,9 +39,9 @@ void main() {
 
       await dp.init(testing.Context(), 'testId', false);
       expect(isGet, isTrue);
-      expect(dp.data, isNotNull);
+      expect(dp.current, isNotNull);
 
-      await dp.set(testing.Context(), dp.data!);
+      await dp.set(testing.Context(), dp.current!);
       expect(isSet, isTrue);
 
       await dp.delete(testing.Context(), 'testId');

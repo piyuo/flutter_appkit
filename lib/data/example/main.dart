@@ -149,7 +149,7 @@ class DataExample extends StatelessWidget {
           },
           dataSetter: (context, sample.Person person) async {},
           dataRemover: (context, ids) async {},
-          onLoad: (sample.Person? person) {
+          onDataLoad: (sample.Person? person) {
             debugPrint('onLoad: $person');
           }),
       child: Consumer<DataProvider<sample.Person>>(builder: (context, dataPod, child) {
@@ -159,7 +159,7 @@ class DataExample extends StatelessWidget {
         if (dataPod.isEmpty) {
           return const Text('no data');
         }
-        final person = dataPod.data!;
+        final person = dataPod.current!;
         return Text(person.entityID);
       }),
     );
