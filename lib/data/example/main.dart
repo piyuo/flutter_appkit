@@ -156,10 +156,7 @@ class DataExample extends StatelessWidget {
         if (dataPod.isLoading) {
           return const Text('loading...');
         }
-        if (dataPod.isEmpty) {
-          return const Text('no data');
-        }
-        final person = dataPod.current!;
+        final person = dataPod.current;
         return Text(person.entityID);
       }),
     );

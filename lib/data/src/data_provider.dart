@@ -20,7 +20,7 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
           dataBuilder: dataBuilder,
           dataRemover: dataRemover,
         ) {
-    if (context != null && id != null) {
+    if (context != null) {
       init(context, id, forceRefresh);
     }
   }
@@ -44,19 +44,16 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   T? _data;
 
   /// current keep current data
-  T? get current => _data;
+  T get current {
+    assert(_data != null, 'must call init first or give context in constructor');
+    return _data!;
+  }
 
   /// _isLoading return true if data source is busy loading data
   bool _isLoading = false;
 
   /// isLoading return true if data source is busy loading data
   bool get isLoading => _isLoading;
-
-  /// isEmpty return true if data is empty
-  bool get isEmpty => _data == null;
-
-  /// isNotEmpty return true if data is not empty
-  bool get isNotEmpty => _data != null;
 
   void _updateBegin(BuildContext context) {
     onUpdateBegin?.call();
@@ -67,21 +64,25 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   }
 
   /// init data from cache, use data getter if not exist, forceRefresh will check entity is not going to change and refresh if not true
-  Future<void> init(BuildContext context, String id, bool forceRefresh) async {
-    _notifyLoading(true);
-    try {
-      _data = cache.getObject<T>(id, dataBuilder);
-      if (forceRefresh && _data != null && !_data!.entityNotGoingToChange) {
-        _data = null;
+  Future<void> init(BuildContext context, String? id, bool forceRefresh) async {
+    if (id != null) {
+      _notifyLoading(true);
+      try {
+        _data = cache.getObject<T>(id, dataBuilder);
+        if (forceRefresh && _data != null && !_data!.entityNotGoingToChange) {
+          _data = null;
+        }
+        _data ??= await dataGetter(context, id);
+        if (_data != null) {
+          await cache.setObject(id, _data!);
+        }
+        onDataLoaded();
+      } finally {
+        _notifyLoading(false);
       }
-      _data ??= await dataGetter(context, id);
-      if (_data != null) {
-        await cache.setObject(id, _data!);
-      }
-      onDataLoaded();
-    } finally {
-      _notifyLoading(false);
+      return;
     }
+    _data = dataBuilder();
   }
 
   /// onDataLoaded is called when data loaded
