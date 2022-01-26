@@ -12,6 +12,9 @@ import 'package:libcli/command/src/http.dart';
 /// Sender define send function use in service, only for test
 typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command, {pb.Builder? builder});
 
+/// AccessTokenProvider define access token provider
+typedef AccessTokenProvider = Future<String> Function(BuildContext context);
+
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
 ///
@@ -65,6 +68,9 @@ abstract class Service {
     return serviceUrl(serviceName);
   }
 
+  /// accessTokenProvider return access token that action need
+  AccessTokenProvider? accessTokenProvider;
+
   /// send action to remote service, no need to handle exception, all exception are contract to eventBus
   ///
   ///     var response = await service.send(EchoAction());
@@ -82,6 +88,12 @@ abstract class Service {
       result = firewallBegin(action);
     }
     if (result is FirewallPass) {
+      // auto add access token
+      if (action.needAccessToken() && accessTokenProvider != null) {
+        final accessToken = await accessTokenProvider!(context);
+        action.setAccessToken(accessToken);
+      }
+
       log.log('[command] send ${action.jsonString} to $url');
       pb.Object? returnObj;
       try {
