@@ -13,7 +13,7 @@ import 'package:libcli/command/src/http.dart';
 typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command, {pb.Builder? builder});
 
 /// AccessTokenProvider define access token provider
-typedef AccessTokenProvider = Future<String> Function(BuildContext context);
+typedef AccessTokenProvider = Future<String?> Function(BuildContext context);
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -91,7 +91,12 @@ abstract class Service {
       // auto add access token
       if (action.needAccessToken() && accessTokenProvider != null) {
         final accessToken = await accessTokenProvider!(context);
-        action.setAccessToken(accessToken);
+        if (accessToken != null) {
+          action.setAccessToken(accessToken);
+        } else {
+          // no access token
+          return pb.Error();
+        }
       }
 
       log.log('[command] send ${action.jsonString} to $url');
