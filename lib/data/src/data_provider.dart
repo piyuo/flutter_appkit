@@ -14,7 +14,7 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
     DataRemover<T>? dataRemover,
     this.onUpdateBegin,
     this.onUpdateEnd,
-    this.onDataLoad,
+    this.dataLoaded,
     bool forceRefresh = false,
   }) : super(
           dataBuilder: dataBuilder,
@@ -37,8 +37,8 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   /// onUpdateEnd is called when data update end
   VoidCallback? onUpdateEnd;
 
-  /// onLoad is called when data load
-  void Function(T? data)? onDataLoad;
+  /// dataLoaded is called when data load
+  void Function(T? data)? dataLoaded;
 
   /// _data keep current data
   T? _data;
@@ -78,10 +78,15 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
       if (_data != null) {
         await cache.setObject(id, _data!);
       }
-      onDataLoad?.call(_data);
+      onDataLoaded();
     } finally {
       _notifyLoading(false);
     }
+  }
+
+  /// onDataLoaded is called when data loaded
+  void onDataLoaded() {
+    dataLoaded?.call(_data);
   }
 
   /// _notifyLoading set busy value and notify listener

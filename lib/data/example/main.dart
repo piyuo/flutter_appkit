@@ -149,7 +149,7 @@ class DataExample extends StatelessWidget {
           },
           dataSetter: (context, sample.Person person) async {},
           dataRemover: (context, ids) async {},
-          onDataLoad: (sample.Person? person) {
+          dataLoaded: (sample.Person? person) {
             debugPrint('onLoad: $person');
           }),
       child: Consumer<DataProvider<sample.Person>>(builder: (context, dataPod, child) {
