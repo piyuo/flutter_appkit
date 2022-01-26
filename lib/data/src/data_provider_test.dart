@@ -6,7 +6,7 @@ import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/meta/sample/sample.dart' as sample;
-import 'data_pod.dart';
+import 'data_provider.dart';
 
 void main() {
   setUpAll(() async {
@@ -18,12 +18,12 @@ void main() {
     await cache.reset();
   });
 
-  group('[data_pod]', () {
+  group('[data_provider]', () {
     test('should get/set/delete', () async {
       bool isSet = false;
       bool isGet = false;
       bool isDelete = false;
-      final dp = DataPod<sample.Person>(
+      final dp = DataProvider<sample.Person>(
         id: 'testId',
         dataBuilder: () => sample.Person(),
         dataGetter: (context, id) async {
@@ -38,7 +38,7 @@ void main() {
         },
       );
 
-      await dp.init(testing.Context());
+      await dp.init(testing.Context(), false);
       expect(isGet, isTrue);
       expect(dp.data, isNotNull);
 

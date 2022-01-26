@@ -4,8 +4,8 @@ import 'package:libcli/cache/cache.dart' as cache;
 import 'data.dart';
 import 'data_common.dart';
 
-class DataPod<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
-  DataPod({
+class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
+  DataProvider({
     BuildContext? context,
     required this.dataGetter,
     required this.dataSetter,
@@ -15,13 +15,14 @@ class DataPod<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
     this.onUpdateBegin,
     this.onUpdateEnd,
     this.onLoad,
+    bool forceRefresh = false,
   }) : super(
           dataBuilder: dataBuilder,
           dataRemover: dataRemover,
           id: id,
         ) {
     if (context != null) {
-      init(context);
+      init(context, forceRefresh);
     }
   }
 
@@ -66,11 +67,14 @@ class DataPod<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
     onUpdateEnd?.call();
   }
 
-  /// init data from cache, use data getter if not exist
-  Future<void> init(BuildContext context) async {
+  /// init data from cache, use data getter if not exist, forceRefresh will check entity is not going to change and refresh if not true
+  Future<void> init(BuildContext context, bool forceRefresh) async {
     _notifyLoading(true);
     try {
       _data = cache.getObject<T>(id, dataBuilder);
+      if (forceRefresh && _data != null && !_data!.entityNotGoingToChange) {
+        _data = null;
+      }
       _data ??= await dataGetter(context, id);
       if (_data != null) {
         await cache.setObject(id, _data!);

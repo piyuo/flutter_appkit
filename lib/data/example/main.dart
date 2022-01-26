@@ -28,15 +28,15 @@ class DataExample extends StatelessWidget {
         child: Column(
       children: [
         Expanded(
-          child: _dataPod(),
+          child: _dataProvider(),
         ),
         Wrap(
           children: [
             testing.example(
               context,
-              text: 'data pod',
+              text: 'data provider',
               useScaffold: false,
-              child: _dataPod(),
+              child: _dataProvider(),
             ),
             testing.example(
               context,
@@ -138,9 +138,9 @@ class DataExample extends StatelessWidget {
     );
   }
 
-  Widget _dataPod() {
-    return ChangeNotifierProvider<DataPod<sample.Person>>(
-      create: (context) => DataPod<sample.Person>(
+  Widget _dataProvider() {
+    return ChangeNotifierProvider<DataProvider<sample.Person>>(
+      create: (context) => DataProvider<sample.Person>(
           id: 'testId',
           context: context,
           dataBuilder: () => sample.Person(),
@@ -152,7 +152,7 @@ class DataExample extends StatelessWidget {
           onLoad: (sample.Person? person) {
             debugPrint('onLoad: $person');
           }),
-      child: Consumer<DataPod<sample.Person>>(builder: (context, dataPod, child) {
+      child: Consumer<DataProvider<sample.Person>>(builder: (context, dataPod, child) {
         if (dataPod.isLoading) {
           return const Text('loading...');
         }
