@@ -7,12 +7,12 @@ import 'package:libcli/command/command.dart';
 
  /// SysService define sys service, source .proto can be found in /pb/sys
  ///
- ///     final service = SysService(sender: (context, action) async {
+ ///     final service = SysService()..sender = (context, action) async {
  ///         return StringResponse()..value = 'fake';
- ///     });
+ ///     };
  ///
  class SysService extends Service {
-  SysService({Sender? sender}): super('sys', sender: sender);
+  SysService(): super('sys');
 
   /// of get SysService from context
   static SysService of(BuildContext context) {

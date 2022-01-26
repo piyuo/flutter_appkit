@@ -40,9 +40,10 @@ void main() {
     });
 
     test('should use sender to mock response', () async {
-      final service = sample.SampleService(sender: (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async {
-        return sample.StringResponse()..value = 'fake';
-      });
+      final service = sample.SampleService()
+        ..sender = (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async {
+          return sample.StringResponse()..value = 'fake';
+        };
 
       var response = await service.send(testing.Context(), sample.CmdEcho()..value = 'hello',
           builder: () => sample.StringResponse());
@@ -64,9 +65,10 @@ void main() {
 
     test('should return null when send wrong action to test server', () async {
       app.branch = app.branchMaster;
-      final service = sample.SampleService(sender: (ctx, action, {builder}) async {
-        throw Exception('mock');
-      });
+      final service = sample.SampleService()
+        ..sender = (ctx, action, {builder}) async {
+          throw Exception('mock');
+        };
       sample.CmdEcho action = sample.CmdEcho();
       expect(() async {
         await service.send(testing.Context(), action, builder: () => sample.StringResponse());
@@ -74,9 +76,10 @@ void main() {
     });
 
     test('should mock execute', () async {
-      final service = sample.SampleService(sender: (ctx, action, {builder}) async {
-        return sample.StringResponse()..value = 'hi';
-      });
+      final service = sample.SampleService()
+        ..sender = (ctx, action, {builder}) async {
+          return sample.StringResponse()..value = 'hi';
+        };
 
       sample.CmdEcho action = sample.CmdEcho();
       var response = await service.send(testing.Context(), action, builder: () => sample.StringResponse());
@@ -87,9 +90,10 @@ void main() {
     });
 
     test('should use shared object', () async {
-      final service = sample.SampleService(sender: (ctx, action, {builder}) async {
-        return sample.StringResponse()..value = 'hi';
-      });
+      final service = sample.SampleService()
+        ..sender = (ctx, action, {builder}) async {
+          return sample.StringResponse()..value = 'hi';
+        };
 
       sample.CmdEcho action = sample.CmdEcho();
       var response = await service.send(testing.Context(), action, builder: () => sample.StringResponse());

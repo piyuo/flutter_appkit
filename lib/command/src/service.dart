@@ -13,7 +13,7 @@ import 'package:libcli/command/src/http.dart';
 typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command, {pb.Builder? builder});
 
 /// AccessTokenProvider define access token provider
-typedef AccessTokenProvider = Future<String?> Function(BuildContext context);
+typedef AccessTokenBuilder = Future<String?> Function(BuildContext context);
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -23,16 +23,8 @@ abstract class Service {
   ///
   /// debug port used in debug branch
   ///
-  Service(
-    this.serviceName, {
-    Sender? sender,
-  }) {
+  Service(this.serviceName) {
     assert(serviceName.isNotEmpty, 'must have service name');
-    send = sender ??
-        (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async {
-          http.Client client = http.Client();
-          return await sendByClient(ctx, command, client, builder);
-        };
   }
 
   /// debugPort used debug local service, service url will change to http://localhost:$debugPort
@@ -68,14 +60,23 @@ abstract class Service {
     return serviceUrl(serviceName);
   }
 
-  /// accessTokenProvider return access token that action need
-  AccessTokenProvider? accessTokenProvider;
+  /// accessTokenBuilder return access token that action need
+  AccessTokenBuilder? accessTokenBuilder;
 
   /// send action to remote service, no need to handle exception, all exception are contract to eventBus
   ///
   ///     var response = await service.send(EchoAction());
   ///
-  late Sender send;
+  Future<pb.Object> send(BuildContext context, pb.Object command, {pb.Builder? builder}) async {
+    if (sender != null) {
+      return sender!(context, command, builder: builder);
+    }
+    http.Client client = http.Client();
+    return await sendByClient(context, command, client, builder);
+  }
+
+  /// sender can set custom send handler for test
+  Sender? sender;
 
   /// sendByClient send action to remote service,return object if success, return null if exception happen
   ///
@@ -89,8 +90,8 @@ abstract class Service {
     }
     if (result is FirewallPass) {
       // auto add access token
-      if (action.needAccessToken() && accessTokenProvider != null) {
-        final accessToken = await accessTokenProvider!(context);
+      if (action.needAccessToken() && accessTokenBuilder != null) {
+        final accessToken = await accessTokenBuilder!(context);
         if (accessToken != null) {
           action.setAccessToken(accessToken);
         } else {

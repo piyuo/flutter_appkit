@@ -7,12 +7,12 @@ import 'package:libcli/command/command.dart';
 
  /// SampleService define sample service, source .proto can be found in /pb/sample
  ///
- ///     final service = SampleService(sender: (context, action) async {
+ ///     final service = SampleService()..sender = (context, action) async {
  ///         return StringResponse()..value = 'fake';
- ///     });
+ ///     };
  ///
  class SampleService extends Service {
-  SampleService({Sender? sender}): super('sample', sender: sender);
+  SampleService(): super('sample');
 
   /// of get SampleService from context
   static SampleService of(BuildContext context) {

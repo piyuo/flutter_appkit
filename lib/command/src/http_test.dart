@@ -92,7 +92,8 @@ void main() {
       await post(
           testing.Context(),
           Request(
-            service: _FakeOkService(),
+            service: _FakeOkService()
+              ..sender = (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK(),
             client: client,
             action: pb.OK(),
             url: 'http://mock',
@@ -111,7 +112,8 @@ void main() {
       await post(
           testing.Context(),
           Request(
-            service: _FakeOkService(),
+            service: _FakeOkService()
+              ..sender = (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK(),
             client: client,
             action: pb.OK(),
             url: 'http://mock',
@@ -153,13 +155,13 @@ MockClient statusMock(int status) {
 
 /// _FakeService only return pb.OK object
 class _FakeOkService extends Service {
-  _FakeOkService()
-      : super('mock', sender: (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK());
+  _FakeOkService() : super('mock');
 }
 
 /// _fakeRequest return a fake service request
 Request _fakeOkRequest(MockClient client) {
-  _FakeOkService service = _FakeOkService();
+  _FakeOkService service = _FakeOkService()
+    ..sender = (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK();
   return Request(
     service: service,
     client: client,
