@@ -21,5 +21,5 @@ typedef DataLoader<T> = Future<List<T>?> Function(
 /// DataGetter get data from remote service
 typedef DataGetter<T> = Future<T?> Function(BuildContext context, String id);
 
-/// DataSetter set data to remote service
-typedef DataSetter<T> = Future<void> Function(BuildContext context, T obj);
+/// DataSetter set data to remote service, return true if set success
+typedef DataSetter<T> = Future<bool> Function(BuildContext context, T obj);

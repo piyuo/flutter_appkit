@@ -147,7 +147,7 @@ class DataExample extends StatelessWidget {
           dataGetter: (context, id) async {
             return sample.Person(entity: pb.Entity(id: 'testId'));
           },
-          dataSetter: (context, sample.Person person) async {},
+          dataSetter: (context, sample.Person person) async => true,
           dataRemover: (context, ids) async {},
           dataLoaded: (sample.Person? person) {
             debugPrint('onLoad: $person');

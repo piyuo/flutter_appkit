@@ -31,6 +31,7 @@ void main() {
         },
         dataSetter: (context, sample.Person person) async {
           isSet = true;
+          return true;
         },
         dataRemover: (context, ids) async {
           isDelete = true;
@@ -41,7 +42,7 @@ void main() {
       expect(isGet, isTrue);
       expect(dp.current, isNotNull);
 
-      await dp.set(testing.Context(), dp.current!);
+      await dp.set(testing.Context(), dp.current);
       expect(isSet, isTrue);
 
       await dp.delete(testing.Context(), 'testId');

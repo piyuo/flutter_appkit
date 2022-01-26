@@ -98,14 +98,15 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
     }
   }
 
-  /// set data to cache
+  /// set data to cache, only update cache when dataSetter return true
   Future<void> set(BuildContext context, T item) async {
     _updateBegin(context);
     try {
       assert(item.getEntity() != null, 'set item must have entity');
-      await dataSetter(context, item);
-      await cache.setObject(item.entityID, item);
-      _data = item;
+      if (await dataSetter(context, item)) {
+        await cache.setObject(item.entityID, item);
+        _data = item;
+      }
     } finally {
       _updateEnd(context);
     }
