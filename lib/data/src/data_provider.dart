@@ -78,14 +78,14 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
       if (_data != null) {
         await cache.setObject(id, _data!);
       }
-      onDataLoaded();
+      onDataLoaded(_data);
     } finally {
       _notifyLoading(false);
     }
   }
 
   /// onDataLoaded is called when data loaded
-  void onDataLoaded() {
+  void onDataLoaded(_data) {
     dataLoaded?.call(_data);
   }
 
