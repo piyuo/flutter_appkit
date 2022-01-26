@@ -24,7 +24,7 @@ const _refreshToken = '_RT';
 /// _refreshToken is refresh token expired key in session
 const _refreshTokenExpired = '_RTE';
 
-class SessionProvider with ChangeNotifier {
+class SessionProvider {
   SessionProvider({
     this.onAccessTokenRefresh,
     this.onLoginBack,
