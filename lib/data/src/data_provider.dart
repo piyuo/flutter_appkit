@@ -85,7 +85,7 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   }
 
   /// onDataLoaded is called when data loaded
-  void onDataLoaded(_data) {
+  void onDataLoaded(T? _data) {
     dataLoaded?.call(_data);
   }
 
