@@ -13,13 +13,15 @@ class Dataset<T extends pb.Object> extends DataCommon<T> {
   Dataset({
     required this.dataLoader,
     required pb.Builder<T> dataBuilder,
-    required String id,
+    required this.id,
     DataRemover<T>? dataRemover,
   }) : super(
           dataBuilder: dataBuilder,
           dataRemover: dataRemover,
-          id: id,
         );
+
+  /// id is the unique id of this dataset, it is used to cache data
+  final String id;
 
   /// dataLoader is the function to load new data
   final DataLoader<T> dataLoader;

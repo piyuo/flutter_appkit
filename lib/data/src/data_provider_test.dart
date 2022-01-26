@@ -24,7 +24,6 @@ void main() {
       bool isGet = false;
       bool isDelete = false;
       final dp = DataProvider<sample.Person>(
-        id: 'testId',
         dataBuilder: () => sample.Person(),
         dataGetter: (context, id) async {
           isGet = true;
@@ -38,14 +37,14 @@ void main() {
         },
       );
 
-      await dp.init(testing.Context(), false);
+      await dp.init(testing.Context(), 'testId', false);
       expect(isGet, isTrue);
       expect(dp.data, isNotNull);
 
       await dp.set(testing.Context(), dp.data!);
       expect(isSet, isTrue);
 
-      await dp.delete(testing.Context());
+      await dp.delete(testing.Context(), 'testId');
       expect(isDelete, isTrue);
     });
   });

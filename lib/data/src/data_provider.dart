@@ -7,10 +7,10 @@ import 'data_common.dart';
 class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
   DataProvider({
     BuildContext? context,
+    String? id,
     required this.dataGetter,
     required this.dataSetter,
     required pb.Builder<T> dataBuilder,
-    required String id,
     DataRemover<T>? dataRemover,
     this.onUpdateBegin,
     this.onUpdateEnd,
@@ -19,10 +19,9 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   }) : super(
           dataBuilder: dataBuilder,
           dataRemover: dataRemover,
-          id: id,
         ) {
-    if (context != null) {
-      init(context, forceRefresh);
+    if (context != null && id != null) {
+      init(context, id, forceRefresh);
     }
   }
 
@@ -68,7 +67,7 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   }
 
   /// init data from cache, use data getter if not exist, forceRefresh will check entity is not going to change and refresh if not true
-  Future<void> init(BuildContext context, bool forceRefresh) async {
+  Future<void> init(BuildContext context, String id, bool forceRefresh) async {
     _notifyLoading(true);
     try {
       _data = cache.getObject<T>(id, dataBuilder);
@@ -97,10 +96,9 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   Future<void> set(BuildContext context, T item) async {
     _updateBegin(context);
     try {
-      assert(item.entityID == id, 'item.entityID must be $id');
       assert(item.getEntity() != null, 'set item must have entity');
       await dataSetter(context, item);
-      await cache.setObject(id, item);
+      await cache.setObject(item.entityID, item);
       _data = item;
     } finally {
       _updateEnd(context);
@@ -108,7 +106,7 @@ class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifie
   }
 
   /// delete data from data pod, it will set a empty deleted item
-  Future<void> delete(BuildContext context) async {
+  Future<void> delete(BuildContext context, String id) async {
     _updateBegin(context);
     try {
       assert(dataRemover != null, 'dataRemover must not be null');

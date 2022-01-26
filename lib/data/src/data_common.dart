@@ -5,7 +5,6 @@ import 'data.dart';
 class DataCommon<T extends pb.Object> {
   DataCommon({
     required this.dataBuilder,
-    required this.id,
     this.dataRemover,
   });
 
@@ -14,9 +13,6 @@ class DataCommon<T extends pb.Object> {
 
   /// DataRemover remove data, return true if removal success
   final DataRemover<T>? dataRemover;
-
-  /// id is the unique id of this dataset, it is used to cache data
-  final String id;
 
   /// hasDataRemover return true if there data remover is not null
   bool get hasDataRemover => dataRemover != null;
