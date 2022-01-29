@@ -4,10 +4,19 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// banner show a simple text banner
 ///
+///     banner(
+///       context,
+///       const Text(
+///         'this record has been deleted',
+///         style: TextStyle(fontSize: 18, color: Colors.black),
+///       ),
+///       leading: const Icon(Icons.warning, color: Colors.black),
+///     );
+///
 Future<void> banner(
   BuildContext context,
-  String text, {
-  IconData? icon,
+  Widget child, {
+  Widget? leading,
 }) {
   final completer = Completer();
   Timer timer = Timer(const Duration(seconds: 15), () {
@@ -17,15 +26,15 @@ Future<void> banner(
 
   ScaffoldMessenger.of(context).showMaterialBanner(
     MaterialBanner(
-      padding: const EdgeInsets.all(10),
-      content: Text(text),
-      leading: icon != null ? Icon(icon) : null,
-      backgroundColor: Colors.yellow[700],
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      content: child,
+      leading: leading,
+      backgroundColor: Colors.yellow[700]!.withOpacity(0.9),
       actions: <Widget>[
         TextButton(
           child: Text(
             context.i18n.closeButtonText,
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.brown, fontWeight: FontWeight.bold),
           ),
           onPressed: () {
             timer.cancel();
