@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'extensions.dart';
 import 'list_item.dart';
-import 'round_checkbox.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 
 class CheckList<T> extends StatelessWidget {
   const CheckList({
@@ -126,7 +124,7 @@ class CheckList<T> extends StatelessWidget {
             dark: Colors.grey.shade700,
           ),
       contentPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-      leading: RoundCheckbox(
+      leading: delta.RoundCheckbox(
         fillColor: checkboxColor,
         checked: isItemSelected,
         onChanged: (bool value) => setSelected(key, value),

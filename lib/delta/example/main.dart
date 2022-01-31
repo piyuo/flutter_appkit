@@ -9,9 +9,6 @@ main() {
   _checkController.addListener(() {
     debugPrint('check controller:${_checkController.value}');
   });
-  _listingController.addListener(
-    () => debugPrint(_listingController.value.toString()),
-  );
 
   _segmentController.addListener(
     () => _swipeController.value = _segmentController.value,
@@ -43,10 +40,6 @@ final GlobalKey btnTooltip = GlobalKey();
 
 final GlobalKey btnMenuOnBottom = GlobalKey();
 
-final _listingController = ValueNotifier<int>(1);
-
-final _checkListController = ValueNotifier<List<int>>([]);
-
 final _checkController = ValueNotifier<bool>(false);
 
 final _switchController = ValueNotifier<bool>(false);
@@ -72,7 +65,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _menuButton(context),
+                          child: _searchBox(context),
                         ),
                         Wrap(
                           children: [
@@ -108,8 +101,8 @@ class DeltaExample extends StatelessWidget {
                             ),
                             testing.example(
                               context,
-                              text: 'auto complete',
-                              child: _suggestions(context),
+                              text: 'search box',
+                              child: _searchBox(context),
                             ),
                             testing.example(
                               context,
@@ -185,16 +178,6 @@ class DeltaExample extends StatelessWidget {
                               context,
                               text: 'popup',
                               child: _popup(context),
-                            ),
-                            testing.example(
-                              context,
-                              text: 'listing',
-                              child: _listing(context),
-                            ),
-                            testing.example(
-                              context,
-                              text: 'check list',
-                              child: _checkList(context),
                             ),
                             testing.example(
                               context,
@@ -448,106 +431,109 @@ class DeltaExample extends StatelessWidget {
     );
   }
 
-  Widget _suggestions(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(20),
-        child: SearchBox<String>(
-          controller: _searchBoxController,
-          hintText: 'Search orders/products here',
-          suggestionsCallback: (pattern) async {
+  Widget _searchBox(BuildContext context) {
+    var controller1 = TextEditingController();
+    var focusNode1 = FocusNode();
+    return Column(children: [
+      Padding(
+          padding: const EdgeInsets.all(20),
+          child: SearchBox<String>(
+            controller: _searchBoxController,
+            hintText: 'Search orders/products here',
+            suggestionsCallback: (pattern) async {
 //            await Future.delayed(const Duration(seconds: 5));
-            if (pattern == 'a') {
-              return ['a', 'b', 'c'];
-            }
-            if (pattern == 'b') {
-              return [];
-            }
-            return ['hello', 'world'];
-            //return await BackendService.getSuggestions(pattern);
-          },
-        ));
+              if (pattern == 'a') {
+                return ['a', 'b', 'c'];
+              }
+              if (pattern == 'b') {
+                return [];
+              }
+              return ['hello', 'world'];
+            },
+          )),
+      const Divider(),
+      Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                  child: const Text('set text'),
+                  onPressed: () {
+                    controller1.text = 'hello world';
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                  child: const Text('show suggestion'),
+                  onPressed: () {
+                    focusNode1.requestFocus();
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                  child: const Text('hide suggestion'),
+                  onPressed: () {
+                    focusNode1.unfocus();
+                  }),
+            ),
+            SearchBar(
+              controller: controller1,
+              focusNode: focusNode1,
+              hint: 'please enter search text',
+              suggestionBuilder: (text) async {
+                if (text == '') {
+                  return [
+                    'selection 1',
+                    'selection 2',
+                    'selection 3',
+                  ];
+                }
+
+                return [
+                  'aa',
+                  'bb',
+                  'cc',
+                ];
+              },
+              onSuggestionChanged: (text) => debugPrint('1. $text selected'),
+              onTextChanged: (text) => debugPrint('1. text changed: $text'),
+            ),
+            const SizedBox(height: 20),
+            const Text('no suggestion'),
+            SearchBar(
+              controller: TextEditingController(),
+              onTextChanged: (text) => debugPrint('2.text changed: $text'),
+            ),
+            const Text('text not empty suggestion'),
+            SearchBar(
+              controller: TextEditingController(),
+              suggestionBuilder: (text) async {
+                if (text == '') {
+                  return [];
+                }
+
+                return [
+                  'aa',
+                  'bb',
+                  'cc',
+                ];
+              },
+              onTextChanged: (text) => debugPrint('3.text changed: $text'),
+            ),
+            const Text('not dense'),
+            SearchBar(
+              controller: TextEditingController(text: 'search now'),
+              isDense: false,
+            ),
+          ])),
+    ]);
   }
 
   Widget _searchBar(BuildContext context) {
-    var controller1 = TextEditingController();
-    var focusNode1 = FocusNode();
-    return Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-                child: const Text('set text'),
-                onPressed: () {
-                  controller1.text = 'hello world';
-                }),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-                child: const Text('show suggestion'),
-                onPressed: () {
-                  focusNode1.requestFocus();
-                }),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-                child: const Text('hide suggestion'),
-                onPressed: () {
-                  focusNode1.unfocus();
-                }),
-          ),
-          SearchBar(
-            controller: controller1,
-            focusNode: focusNode1,
-            hint: 'please enter search text',
-            suggestionBuilder: (text) async {
-              if (text == '') {
-                return [
-                  'selection 1',
-                  'selection 2',
-                  'selection 3',
-                ];
-              }
-
-              return [
-                'aa',
-                'bb',
-                'cc',
-              ];
-            },
-            onSuggestionChanged: (text) => debugPrint('1. $text selected'),
-            onTextChanged: (text) => debugPrint('1. text changed: $text'),
-          ),
-          const SizedBox(height: 20),
-          const Text('no suggestion'),
-          SearchBar(
-            controller: TextEditingController(),
-            onTextChanged: (text) => debugPrint('2.text changed: $text'),
-          ),
-          const Text('text not empty suggestion'),
-          SearchBar(
-            controller: TextEditingController(),
-            suggestionBuilder: (text) async {
-              if (text == '') {
-                return [];
-              }
-
-              return [
-                'aa',
-                'bb',
-                'cc',
-              ];
-            },
-            onTextChanged: (text) => debugPrint('3.text changed: $text'),
-          ),
-          const Text('not dense'),
-          SearchBar(
-            controller: TextEditingController(text: 'search now'),
-            isDense: false,
-          ),
-        ]));
+    return SizedBox();
   }
 
   Widget _checkbox(BuildContext context, ValueNotifier model) {
@@ -706,148 +692,17 @@ class DeltaExample extends StatelessWidget {
   Widget _error(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(20),
-        child: Column(children: [
-          Separator(height: 2, color: Colors.red.shade200),
-          const SizedBox(height: 30),
-          const ErrorLabel(
+        child: Column(children: const [
+          // Separator(height: 2, color: Colors.red.shade200),
+          SizedBox(height: 30),
+          ErrorLabel(
             message: 'An error message is information displayed when an unforeseen problem occurs',
           ),
-          const SizedBox(height: 30),
-          const ErrorBox(
+          SizedBox(height: 30),
+          ErrorBox(
               message:
                   'An error message is information displayed when an unforeseen problem occurs, usually on a computer or other device. On modern operating systems with graphical, error messages are often displayed using dialog boxes. Error messages are used when user intervention is required, to indicate that a desired operation has failed, or to relay important warnings (such as warning a computer user that they are almost out of hard disk space). Error messages are seen widely throughout computing, and are part of every operating system or computer hardware device. Proper design of error messages is an important topic in usability and other fields of human–computer interaction'),
         ]));
-  }
-
-  Widget _checkList(BuildContext context) {
-    return CheckList(
-//      selectedTileColor: Colors.grey[300],
-      //     checkboxColor: Colors.grey,
-      controller: _checkListController,
-      onItemTap: (int key) {
-        debugPrint('item $key tapped');
-      },
-      items: [
-        ListItem(
-          1,
-          title: 'item 1',
-          icon: Icons.print,
-          iconColor: Colors.green,
-        ),
-        ListItem(
-          2,
-          title: 'item 2',
-          icon: Icons.access_alarms_sharp,
-          iconColor: Colors.green,
-        ),
-        ListItem(
-          3,
-          title: 'item 3',
-          icon: Icons.air,
-          iconColor: Colors.grey,
-        ),
-      ],
-    );
-  }
-
-  Widget _listing(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-            width: 300,
-            height: 300,
-            child: Listing<int>(
-              dividerColor: Colors.grey,
-              controller: ValueNotifier<int>(0),
-              items: [
-                ListItem(1, title: 'item 1'),
-                ListItem(7, title: 'item 7'),
-                ListItem(8, title: 'item 8'),
-                ListItem(9, title: 'item 9'),
-                ListItem(0, title: 'item 0'),
-              ],
-              onItemTap: (context, int key) {
-                debugPrint('$key pressed');
-              },
-            )),
-        SizedBox(
-            width: 300,
-            height: 300,
-            child: Listing<int>(
-              controller: _listingController,
-              shape: Shape.roundRight,
-              selectedTileColor: Colors.green[400],
-              selectedFontColor: Colors.grey[100],
-              fontColor: Colors.green[600],
-              physics: const NeverScrollableScrollPhysics(),
-              items: [
-                ListItem(1, title: 'item 1'),
-                ListItem(2, title: 'item 2', icon: Icons.card_giftcard),
-                const Divider(
-                  height: 1,
-                ),
-                ListItem(3, title: 'item 3', icon: Icons.card_giftcard, iconColor: Colors.red),
-                ListItem(4, title: 'item 4', icon: Icons.card_giftcard),
-                ListItem(5, title: 'item 5', icon: Icons.card_giftcard),
-                ListItem(6, title: 'item 6', icon: Icons.card_giftcard),
-                ListItem(7, title: 'item 7'),
-                ListItem(8, title: 'item 8'),
-                ListItem(9, title: 'item 9'),
-                ListItem(0, title: 'item 0'),
-              ],
-              tileBuilder: (BuildContext context, int key, dynamic item, bool selected) {
-                return key == 1
-                    ? Container(
-                        height: 100,
-                        color: Colors.blue,
-                        child: Center(
-                          child: Text(
-                            item is ListItem ? item.title ?? '' : '',
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        ))
-                    : null;
-              },
-              onItemTap: (context, int key) {
-                debugPrint('$key pressed');
-              },
-            )),
-        SizedBox(
-            width: 300,
-            height: 300,
-            child: Listing<int>(
-              controller: _listingController,
-              dense: true,
-              padding: EdgeInsets.zero,
-              shape: Shape.round,
-              items: [
-                ListItem(1, title: 'item 1'),
-                ListItem(2, title: 'item 2'),
-                ListItem(3, title: 'item 3'),
-                ListItem(4, title: 'item 4'),
-                ListItem(5, title: 'item 5'),
-                ListItem(6, title: 'item 6'),
-              ],
-              textBuilder: (BuildContext context, int key, String text, bool selected) {
-                return key == 5
-                    ? Text(
-                        text,
-                        style: const TextStyle(color: Colors.red),
-                      )
-                    : null;
-              },
-              onItemTap: (context, int key) {
-                debugPrint('$key pressed');
-              },
-            )),
-        Expanded(
-          child: Container(
-            color: Colors.yellow,
-            height: 300,
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _popup(BuildContext context) {
