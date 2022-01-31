@@ -7,6 +7,7 @@ class MenuButton<T> extends StatelessWidget {
     required this.selection,
     this.tooltip,
     this.checkedValue,
+    this.color,
     Key? key,
   }) : super(key: key);
 
@@ -20,6 +21,8 @@ class MenuButton<T> extends StatelessWidget {
 
   final T? checkedValue;
 
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -29,11 +32,13 @@ class MenuButton<T> extends StatelessWidget {
           icon: icon,
           onPressed: () => onPress(context),
           tooltip: tooltip,
+          color: color,
         ),
         GestureDetector(
             onTap: () => onPress(context),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_drop_down,
+              color: color,
               size: 20,
             )),
       ],
