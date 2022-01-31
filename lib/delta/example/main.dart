@@ -113,11 +113,6 @@ class DeltaExample extends StatelessWidget {
                             ),
                             testing.example(
                               context,
-                              text: 'responsive design',
-                              child: _responsive(context),
-                            ),
-                            testing.example(
-                              context,
                               text: 'redirect to url',
                               child: _redirectToUrl(context),
                             ),
@@ -208,16 +203,6 @@ class DeltaExample extends StatelessWidget {
                             ),
                             testing.example(
                               context,
-                              text: 'menu',
-                              child: _menu(context),
-                            ),
-                            testing.example(
-                              context,
-                              text: 'menu on bottom',
-                              child: _menuOnBottom(context),
-                            ),
-                            testing.example(
-                              context,
                               text: 'pull refresh',
                               child: _pullRefresh(context),
                             ),
@@ -252,14 +237,6 @@ class DeltaExample extends StatelessWidget {
                     ),
                   ),
                 )));
-  }
-
-  Widget _responsive(BuildContext context) {
-    return Responsive(
-      phone: () => Container(child: const Text('phone'), color: Colors.red),
-      tablet: () => Container(child: const Text('tablet'), color: Colors.blue),
-      desktop: () => Container(child: const Text('desktop'), color: Colors.green),
-    );
   }
 
   Widget _redirectToUrl(BuildContext context) {
@@ -918,50 +895,6 @@ class DeltaExample extends StatelessWidget {
         ],
       ),
     ]);
-  }
-
-  Widget _menu(BuildContext context) {
-    return SizedBox(
-        width: 240,
-        child: ElevatedButton(
-          key: btnMenu,
-          child: const Text('menu'),
-          onPressed: () async {
-            int? i = await menu<int>(
-              context,
-              target: btnMenu,
-              items: [
-                ListItem<int>(1, title: 'item 1'),
-                ListItem<int>(2, title: 'item 2'),
-                ListItem<int>(3, title: 'item 3'),
-              ],
-            );
-            debugPrint(i != null ? 'select item $i' : 'not select');
-          },
-        ));
-  }
-
-  Widget _menuOnBottom(BuildContext context) {
-    return Container(
-        alignment: Alignment.bottomLeft,
-        height: 500,
-        width: 240,
-        child: ElevatedButton(
-          key: btnMenuOnBottom,
-          child: const Text('menu on bottom'),
-          onPressed: () async {
-            int? i = await menu<int>(
-              context,
-              target: btnMenuOnBottom,
-              items: [
-                ListItem(1, title: 'item 1'),
-                ListItem(2, title: 'item 2'),
-                ListItem(3, title: 'item 3'),
-              ],
-            );
-            debugPrint(i != null ? 'select item $i' : 'not select');
-          },
-        ));
   }
 
   Widget _pullRefresh(BuildContext context) {

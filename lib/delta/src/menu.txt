@@ -1,3 +1,49 @@
+/*
+  Widget _menu(BuildContext context) {
+    return SizedBox(
+        width: 240,
+        child: ElevatedButton(
+          key: btnMenu,
+          child: const Text('menu'),
+          onPressed: () async {
+            int? i = await menu<int>(
+              context,
+              target: btnMenu,
+              items: [
+                ListItem<int>(1, title: 'item 1'),
+                ListItem<int>(2, title: 'item 2'),
+                ListItem<int>(3, title: 'item 3'),
+              ],
+            );
+            debugPrint(i != null ? 'select item $i' : 'not select');
+          },
+        ));
+  }
+
+  Widget _menuOnBottom(BuildContext context) {
+    return Container(
+        alignment: Alignment.bottomLeft,
+        height: 500,
+        width: 240,
+        child: ElevatedButton(
+          key: btnMenuOnBottom,
+          child: const Text('menu on bottom'),
+          onPressed: () async {
+            int? i = await menu<int>(
+              context,
+              target: btnMenuOnBottom,
+              items: [
+                ListItem(1, title: 'item 1'),
+                ListItem(2, title: 'item 2'),
+                ListItem(3, title: 'item 3'),
+              ],
+            );
+            debugPrint(i != null ? 'select item $i' : 'not select');
+          },
+        ));
+  }*/
+
+
 import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
