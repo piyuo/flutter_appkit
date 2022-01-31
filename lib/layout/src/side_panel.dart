@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/responsive/responsive.dart' as responsive;
 
 class SidePanelProvider with ChangeNotifier {
   bool? _isPreviousPhone;
@@ -19,7 +20,7 @@ class SidePanelProvider with ChangeNotifier {
   void toggle() => opened = !(opened ?? _isSideVisible);
 
   void trackWidth() {
-    final isPhone = delta.isPhoneDesign;
+    final isPhone = responsive.isPhoneDesign;
     if (isPhone != _isPreviousPhone) {
       _isPreviousPhone = isPhone;
       _opened = null;
@@ -27,11 +28,11 @@ class SidePanelProvider with ChangeNotifier {
   }
 
   bool get isSideVisible {
-    _isSideVisible = _opened ?? !delta.isPhoneDesign;
+    _isSideVisible = _opened ?? !responsive.isPhoneDesign;
     return _isSideVisible;
   }
 
-  bool get isAutoHide => isSideVisible && delta.isPhoneDesign;
+  bool get isAutoHide => isSideVisible && responsive.isPhoneDesign;
 
   Widget get leading => IconButton(
         icon: const Icon(Icons.menu),

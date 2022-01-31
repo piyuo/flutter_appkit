@@ -4,6 +4,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'data.dart';
@@ -136,7 +137,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
   }
 
   /// isTableLayout return true if use table layout
-  bool get isTableLayout => !delta.isPhoneDesign;
+  bool get isTableLayout => !responsive.isPhoneDesign;
 
   Widget buildHeader(BuildContext context, delta.TapBreaker breaker) {
     if (dataSource.selectedRows.isNotEmpty) {

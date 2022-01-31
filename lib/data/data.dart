@@ -7,3 +7,4 @@ export 'src/data_provider.dart';
 export 'src/data_source.dart';
 export 'src/page_table.dart';
 export 'src/page_list.dart';
+export 'src/notes_view.dart';

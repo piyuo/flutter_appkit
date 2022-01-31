@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:libcli/responsive/responsive.dart' as responsive;
 
 const double elevation = 8;
 
@@ -72,12 +73,16 @@ class Wall extends StatelessWidget {
 
   int get _determineCrossAxisCount {
     // -100 make sure when layout change, tile will be big enough
-    final screenWidth = delta.screenSize.width - 200;
-    if (screenWidth < delta.phoneDesignMax) {
+/*    final screenWidth = delta.screenSize.width - 200;
+    if (screenWidth < responsive.phoneDesignMax) {
       return 16;
     }
     if (screenWidth < delta.tabletDesignMax) {
       return 32;
+    }
+*/
+    if (responsive.isPhoneDesign) {
+      return 16;
     }
     return 64;
   }

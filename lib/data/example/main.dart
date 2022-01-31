@@ -28,10 +28,16 @@ class DataExample extends StatelessWidget {
         child: Column(
       children: [
         Expanded(
-          child: _dataProvider(),
+          child: _notesViewer(),
         ),
         Wrap(
           children: [
+            testing.example(
+              context,
+              text: 'notes viewer',
+              useScaffold: false,
+              child: _notesViewer(),
+            ),
             testing.example(
               context,
               text: 'data provider',
@@ -135,6 +141,63 @@ class DataExample extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  Widget _notesViewer() {
+    return ChangeNotifierProvider<DataSource<sample.Person>>(
+      create: (context) => DataSource<sample.Person>(
+        context: context,
+        id: 'today_customer',
+        dataBuilder: () => sample.Person(),
+        dataRemover: (BuildContext context, List<String> ids) async => true,
+        dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          await Future.delayed(const Duration(seconds: 5));
+          if (isRefresh) {
+            return List.generate(
+                limit,
+                (index) => sample.Person(
+                      entity: pb.Entity(
+                        id: unique.uuid(),
+                        updateTime: DateTime.now().utcTimestamp,
+                        notGoingToChange: false,
+                        deleted: false,
+                      ),
+                      name: 'refresh $index',
+                      age: index,
+                    ));
+          }
+          refreshCount++;
+          if (refreshCount > 2) {
+            refreshCount = 0;
+            return [];
+          }
+
+          // load more data
+          return List.generate(
+              limit,
+              (index) => sample.Person(
+                    entity: pb.Entity(
+                      id: unique.uuid(),
+                      updateTime: DateTime.now().utcTimestamp,
+                      notGoingToChange: false,
+                      deleted: false,
+                    ),
+                    name: 'more $index',
+                    age: index,
+                  ));
+        },
+      ),
+      child: Consumer<DataSource<sample.Person>>(
+          builder: (context, dataSource, child) => NotesView<sample.Person>(
+                dataSource: dataSource,
+                cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
+                  return const SizedBox(height: 100, child: Placeholder());
+                },
+                contentBuilder: (BuildContext context, sample.Person person, int rowIndex) {
+                  return Placeholder();
+                },
+              )),
     );
   }
 

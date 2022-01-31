@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:provider/provider.dart';
+import 'package:libcli/responsive/responsive.dart' as responsive;
 
 class SlideshowProvider with ChangeNotifier {
   int current = 0;
@@ -47,14 +48,15 @@ class Slideshow extends StatelessWidget {
               builder: (BuildContext context, BoxConstraints constraints) => CarouselSlider(
                 carouselController: _model.controller,
                 options: CarouselOptions(
-                  viewportFraction: delta.isPhoneDesign ? 1 : imageWidth / constraints.maxWidth,
+                  viewportFraction: responsive.isPhoneDesign ? 1 : imageWidth / constraints.maxWidth,
                   height: height,
                   autoPlay: true,
                   onPageChanged: (index, _) => _model.onPageChanged(index),
                 ),
                 items: urls
                     .map((url) => Padding(
-                          padding: delta.isPhoneDesign ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 8),
+                          padding:
+                              responsive.isPhoneDesign ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 8),
                           child: delta.WebImage(
                             url,
                           ),
