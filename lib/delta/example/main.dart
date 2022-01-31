@@ -151,11 +151,6 @@ class DeltaExample extends StatelessWidget {
                             ),
                             testing.example(
                               context,
-                              text: 'search_bar',
-                              child: _searchBar(context),
-                            ),
-                            testing.example(
-                              context,
                               text: 'checkbox',
                               child: _checkbox(context, model),
                             ),
@@ -530,10 +525,6 @@ class DeltaExample extends StatelessWidget {
             ),
           ])),
     ]);
-  }
-
-  Widget _searchBar(BuildContext context) {
-    return SizedBox();
   }
 
   Widget _checkbox(BuildContext context, ValueNotifier model) {
