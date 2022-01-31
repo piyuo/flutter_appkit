@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 
 class SidePanelProvider with ChangeNotifier {

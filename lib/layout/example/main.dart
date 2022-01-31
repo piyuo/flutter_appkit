@@ -19,29 +19,14 @@ class LayoutExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: _paddingToTablet(context)),
+      Expanded(child: _sliverScaffold(context)),
       Wrap(
         children: [
-          testing.example(
-            context,
-            text: 'padding to tablet',
-            child: _paddingToTablet(context),
-          ),
-          testing.example(
-            context,
-            text: 'layout dynamic bottom side',
-            child: _layoutDynamicBottomSide(context),
-          ),
           testing.example(
             context,
             text: 'sliver scaffold',
             child: _sliverScaffold(context),
             useScaffold: false,
-          ),
-          testing.example(
-            context,
-            text: 'wrapped-list-view',
-            child: _wrappedListView(context),
           ),
           testing.example(
             context,
@@ -66,14 +51,6 @@ class LayoutExample extends StatelessWidget {
         ],
       )
     ]);
-  }
-
-  Widget _paddingToTablet(BuildContext context) {
-    return Container(
-      margin: paddingToTablet(context),
-      color: Colors.red,
-      height: 200,
-    );
   }
 
   Widget _sliverScaffold(BuildContext context) {
@@ -138,73 +115,6 @@ class LayoutExample extends StatelessWidget {
           height: 200,
           color: Colors.orange,
           child: const Text('hello4'),
-        ),
-      ],
-    );
-  }
-
-  Widget _layoutDynamicBottomSide(BuildContext context) {
-    return DynamicBottomSide(
-      leftBuilder: () => Container(
-        color: Colors.red,
-        width: 200,
-      ),
-      centerBuilder: () => Container(color: Colors.yellow),
-      sideBuilder: () => Container(
-        color: Colors.blue,
-        width: 300,
-      ),
-      bottomBuilder: () => Container(
-        color: Colors.green,
-        height: 100,
-      ),
-    );
-  }
-
-  Widget _wrappedListView(BuildContext context) {
-    return WrappedListView(
-      children: [
-        Wrapped(
-          title: Container(
-            width: double.infinity,
-            height: 80,
-            color: Colors.red,
-          ),
-          children: [
-            Container(
-              color: Colors.blue,
-            ),
-            Container(
-              color: Colors.yellow,
-            ),
-            Container(
-              color: Colors.green,
-            ),
-            Container(
-              color: Colors.orange,
-            ),
-          ],
-        ),
-        Wrapped(
-          title: Container(
-            width: double.infinity,
-            height: 80,
-            color: Colors.yellow,
-          ),
-          children: [
-            Container(
-              color: Colors.green,
-            ),
-            Container(
-              color: Colors.yellow,
-            ),
-            Container(
-              color: Colors.orange,
-            ),
-            Container(
-              color: Colors.black,
-            ),
-          ],
         ),
       ],
     );
