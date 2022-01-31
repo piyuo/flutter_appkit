@@ -72,7 +72,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _placeHolder(context),
+                          child: _menuButton(context),
                         ),
                         Wrap(
                           children: [
@@ -200,6 +200,11 @@ class DeltaExample extends StatelessWidget {
                               context,
                               text: 'check list',
                               child: _checkList(context),
+                            ),
+                            testing.example(
+                              context,
+                              text: 'menu button',
+                              child: _menuButton(context),
                             ),
                             testing.example(
                               context,
@@ -892,6 +897,29 @@ class DeltaExample extends StatelessWidget {
     );
   }
 
+  Widget _menuButton(BuildContext context) {
+    return Column(children: [
+      const SizedBox(height: 40),
+      const Text('General'),
+      Row(
+        children: [
+          const SizedBox(width: 20),
+          const Text('Settings'),
+          MenuButton<String>(
+              icon: const Icon(Icons.settings),
+              onPressed: (value) {
+                debugPrint('$value pressed');
+              },
+              checkedValue: '2',
+              selection: const {
+                '1': 'hello',
+                '2': 'world',
+              })
+        ],
+      ),
+    ]);
+  }
+
   Widget _menu(BuildContext context) {
     return SizedBox(
         width: 240,
@@ -903,9 +931,9 @@ class DeltaExample extends StatelessWidget {
               context,
               target: btnMenu,
               items: [
-                ListItem(1, title: 'item 1'),
-                ListItem(2, title: 'item 2'),
-                ListItem(3, title: 'item 3'),
+                ListItem<int>(1, title: 'item 1'),
+                ListItem<int>(2, title: 'item 2'),
+                ListItem<int>(3, title: 'item 3'),
               ],
             );
             debugPrint(i != null ? 'select item $i' : 'not select');
