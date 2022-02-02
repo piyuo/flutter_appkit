@@ -65,10 +65,15 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _searchBox(context),
+                          child: _noData(context),
                         ),
                         Wrap(
                           children: [
+                            testing.example(
+                              context,
+                              text: 'no data',
+                              child: _noData(context),
+                            ),
                             testing.example(
                               context,
                               text: 'place holder',
@@ -319,6 +324,10 @@ class DeltaExample extends StatelessWidget {
         debugPrint('image not exists');
       },
     );
+  }
+
+  Widget _noData(BuildContext context) {
+    return const NoData();
   }
 
   Widget _placeHolder(BuildContext context) {
