@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-///typedef Widget ThemeWidgetBuilder(bool isDark);
+/// isMobile return true if is on ios or android
+bool isMobile(BuildContext context) {
+  if (kIsWeb) {
+    return false;
+  }
+  var platform = Theme.of(context).platform;
+  return platform == TargetPlatform.iOS || platform == TargetPlatform.android;
+}
 
-/// UIBuildContext add color function to BuildContext
+/// DeltaBuildContext add color function to BuildContext
 ///
 extension DeltaBuildContext on BuildContext {
   /// isDark return true if is dark theme

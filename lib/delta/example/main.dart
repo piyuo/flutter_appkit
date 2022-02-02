@@ -65,10 +65,15 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _noData(context),
+                          child: _isMobile(context),
                         ),
                         Wrap(
                           children: [
+                            testing.example(
+                              context,
+                              text: 'is mobile?',
+                              child: _isMobile(context),
+                            ),
                             testing.example(
                               context,
                               text: 'no data',
@@ -324,6 +329,10 @@ class DeltaExample extends StatelessWidget {
         debugPrint('image not exists');
       },
     );
+  }
+
+  Widget _isMobile(BuildContext context) {
+    return isMobile(context) ? const Text('mobile') : const Text('not mobile');
   }
 
   Widget _noData(BuildContext context) {
