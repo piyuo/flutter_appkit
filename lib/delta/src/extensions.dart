@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-/// isMobile return true if is on ios or android
-bool isMobile(BuildContext context) {
-  if (kIsWeb) {
-    return false;
-  }
-  var platform = Theme.of(context).platform;
-  return platform == TargetPlatform.iOS || platform == TargetPlatform.android;
-}
-
 /// DeltaBuildContext add color function to BuildContext
 ///
 extension DeltaBuildContext on BuildContext {
@@ -40,4 +31,13 @@ extension DeltaBuildContext on BuildContext {
   ///     context.sameColor();
   ///
   Color get sameColor => isDark ? Colors.black : Colors.white;
+}
+
+/// isMobileDevice return true if is on ios or android
+bool isMobileDevice(BuildContext context) {
+  if (kIsWeb) {
+    return false;
+  }
+  var platform = Theme.of(context).platform;
+  return platform == TargetPlatform.iOS || platform == TargetPlatform.android;
 }

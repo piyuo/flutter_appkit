@@ -65,14 +65,14 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _isMobile(context),
+                          child: _isMobileDevice(context),
                         ),
                         Wrap(
                           children: [
                             testing.example(
                               context,
-                              text: 'is mobile?',
-                              child: _isMobile(context),
+                              text: 'is mobile device?',
+                              child: _isMobileDevice(context),
                             ),
                             testing.example(
                               context,
@@ -331,8 +331,8 @@ class DeltaExample extends StatelessWidget {
     );
   }
 
-  Widget _isMobile(BuildContext context) {
-    return isMobile(context) ? const Text('mobile') : const Text('not mobile');
+  Widget _isMobileDevice(BuildContext context) {
+    return isMobileDevice(context) ? const Text('mobile') : const Text('not mobile');
   }
 
   Widget _noData(BuildContext context) {
