@@ -65,7 +65,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _shimmer(context),
+                          child: _noData(context),
                         ),
                         Wrap(
                           children: [
@@ -331,7 +331,13 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _noData(BuildContext context) {
-    return const NoData();
+    return Column(
+      children: const [
+        NoDataDisplay(),
+        Divider(),
+        LoadingDisplay(),
+      ],
+    );
   }
 
   Widget _shimmer(BuildContext context) {
