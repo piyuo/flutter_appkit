@@ -65,7 +65,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _isMobileDevice(context),
+                          child: _shimmer(context),
                         ),
                         Wrap(
                           children: [
@@ -81,13 +81,8 @@ class DeltaExample extends StatelessWidget {
                             ),
                             testing.example(
                               context,
-                              text: 'place holder',
-                              child: _placeHolder(context),
-                            ),
-                            testing.example(
-                              context,
-                              text: 'flicker',
-                              child: _flicker(context),
+                              text: 'shimmer',
+                              child: _shimmer(context),
                             ),
                             testing.example(
                               context,
@@ -339,28 +334,11 @@ class DeltaExample extends StatelessWidget {
     return const NoData();
   }
 
-  Widget _placeHolder(BuildContext context) {
-    return Column(children: [
-      PlaceHolder(builder: () => const Text('done')),
-      const SizedBox(height: 20),
-      Container(color: Colors.red, height: 30),
-      /*
-      const SizedBox(height: 20),
-      Container(color: Colors.red, height: 30),
-      const SizedBox(height: 20),
-      const SizedBox(height: 20),
-      PlaceHolder(width: 120, height: 30, builder: () => const Text('done')),
-      */
-    ]);
-  }
-
-  Widget _flicker(BuildContext context) {
-    return Flicker(
+  Widget _shimmer(BuildContext context) {
+    return ShimmerScope(
         child: Column(children: [
-      PlaceHolder(width: 120, height: 30, builder: () => const Text('done')),
-      const SizedBox(height: 20),
-      PlaceHolder(width: 120, height: 30, builder: () => const Text('done')),
-      const SizedBox(height: 20),
+      ShimmerSpot(width: 120, height: 30, builder: () => const Text('done')),
+      ShimmerSpot(width: 120, height: 30, builder: () => const Text('done'), radius: 15),
       FittedBox(
           child: Icon(
         Icons.image,

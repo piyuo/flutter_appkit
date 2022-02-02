@@ -313,7 +313,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
                         (_) => Container(
                               margin: const EdgeInsets.fromLTRB(0, 12, 5, 12),
                               color: Colors.white,
-                            )).map((Widget widget) => DataCell(delta.Flicker(child: widget))).toList());
+                            )).map((Widget widget) => DataCell(delta.ShimmerScope(child: widget))).toList());
               },
             )
           : List<DataRow>.generate(
@@ -365,7 +365,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
                         selected: false,
                         onSelectChanged: selectable ? (bool? selected) {} : null,
                         cells: [
-                          DataCell(delta.Flicker(
+                          DataCell(delta.ShimmerScope(
                               child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 5),
                             color: Colors.white,
