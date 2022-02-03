@@ -195,7 +195,7 @@ class DataExample extends StatelessWidget {
                   return const SizedBox(height: 100, child: Placeholder());
                 },
                 contentBuilder: (BuildContext context, sample.Person person, int rowIndex) {
-                  return Placeholder();
+                  return const Placeholder();
                 },
               )),
     );

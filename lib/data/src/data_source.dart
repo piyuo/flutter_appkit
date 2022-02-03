@@ -35,7 +35,7 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
   VoidCallback? onRefreshEnd;
 
   /// _selectedRows keep all selected rows
-  final List<T> selectedRows = [];
+  List<T> selectedRows = [];
 
   /// pageRows return current page rows
   List<T> get pageRows => rows.getRange(currentIndexStart, currentIndexEnd).toList();
@@ -234,6 +234,12 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
 
   /// isRowSelected return true when row is selected
   bool isRowSelected(T row) => selectedRows.contains(row);
+
+  /// setSelectedRows select all row
+  void setSelectedRows(List<T> value) {
+    selectedRows = value;
+    notifyListeners();
+  }
 
   /// selectAllRows select all row
   void selectAllRows(bool selected) {
