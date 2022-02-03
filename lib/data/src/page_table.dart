@@ -299,7 +299,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
         dark: Colors.grey.shade800,
       )),
       columns: columns,
-      onSelectAll: (bool? selected) => dataSource.selectRows(selected ?? false),
+      onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
       empty: _buildNoData(context),
       rows: dataSource.isLoading
           ? List<DataRow>.generate(
@@ -355,7 +355,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             columns: [
               DataColumn(label: buildHeader(context, breaker)),
             ],
-            onSelectAll: (bool? selected) => dataSource.selectRows(selected ?? false),
+            onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
             empty: _buildNoData(context),
             rows: dataSource.isLoading
                 ? List<DataRow>.generate(

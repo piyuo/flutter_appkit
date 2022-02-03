@@ -210,14 +210,14 @@ void main() {
       ds.selectAllRows(false);
       expect(ds.selectedRows.length, 0);
 
-      ds.selectRows(true);
+      ds.selectPageRows(true);
       expect(ds.selectedRows.length, 2);
-      ds.selectRows(false);
+      ds.selectPageRows(false);
       expect(ds.selectedRows.length, 0);
       ds.prevPage(testing.Context());
-      ds.selectRows(true);
+      ds.selectPageRows(true);
       expect(ds.selectedRows.length, 10);
-      ds.selectRows(false);
+      ds.selectPageRows(false);
       expect(ds.selectedRows.length, 0);
     });
 

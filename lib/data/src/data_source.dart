@@ -12,6 +12,7 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
     required pb.Builder<T> dataBuilder,
     DataRemover<T>? dataRemover,
     this.onRowsChanged,
+    this.autoSelectFirstRow = false,
     int rowsPerPage = 10,
   }) : super(
           id: id,
@@ -24,6 +25,9 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
       init(context);
     }
   }
+
+  /// autoSelectFirstRow will auto select first row after init
+  final bool autoSelectFirstRow;
 
   /// onRowsChange is called when rows are changed
   final VoidCallback? onRowsChanged;
@@ -106,6 +110,9 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
   Future<void> init(BuildContext context) async {
     await super.init(context);
     await refreshData(context);
+    if (autoSelectFirstRow) {
+      selectFirstRows();
+    }
   }
 
   /// _notifyLoading set busy value and notify listener
@@ -250,8 +257,17 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
     notifyListeners();
   }
 
+  /// selectFirstRows select first row in current page
+  void selectFirstRows() {
+    if (rows.isNotEmpty) {
+      selectedRows.clear();
+      selectedRows.add(rows[0]);
+      notifyListeners();
+    }
+  }
+
   /// selectPageRows select all row in current page
-  void selectRows(bool selected) {
+  void selectPageRows(bool selected) {
     selectedRows.clear();
     if (selected) {
       selectedRows.addAll(rows.getRange(currentIndexStart, currentIndexEnd));
