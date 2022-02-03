@@ -109,9 +109,11 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
   @override
   Future<void> init(BuildContext context) async {
     await super.init(context);
+    // may select first new item after refresh
     if (autoSelectFirstRow) {
       selectFirstRows();
     }
+    // may select first new item after refresh
     await refreshData(context);
     if (autoSelectFirstRow) {
       selectFirstRows();
@@ -262,7 +264,7 @@ class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
 
   /// selectFirstRows select first row in current page
   void selectFirstRows() {
-    if (selectedRows.isEmpty && rows.isNotEmpty) {
+    if (rows.isNotEmpty) {
       selectedRows.clear();
       selectedRows.add(rows[0]);
       notifyListeners();
