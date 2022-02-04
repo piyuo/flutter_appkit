@@ -59,6 +59,15 @@ Widget ballSpinIndicator({
       strokeWidth: 4.0,
     );
 
+Widget ballRotateChase({
+  List<Color> colors = kDefaultRainbowColors,
+}) =>
+    LoadingIndicator(
+      indicatorType: Indicator.ballRotateChase,
+      colors: colors,
+      strokeWidth: 12.0,
+    );
+
 /// NoDataDisplay show a no data display on page
 class NoDataDisplay extends StatelessWidget {
   const NoDataDisplay({

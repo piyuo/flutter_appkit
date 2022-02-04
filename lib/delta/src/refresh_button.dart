@@ -1,23 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'extensions.dart';
+import 'indicator.dart';
 
-/// RefreshButtonProvider can control refresh button is busy
-class RefreshButtonProvider with ChangeNotifier {
-  /// _busy is true if in refresh or load more
-  bool _busy = false;
-
-  void setBusy(bool busy) {
-    if (_busy != busy) {
-      _busy = busy;
-      notifyListeners();
-    }
-  }
-}
-
-/// RefreshButton show animation when refreshing
 class RefreshButton extends StatelessWidget {
+  /// RefreshButton show animation when refreshing
   const RefreshButton({
+    required this.controller,
     required this.onPressed,
     Key? key,
     this.size = 24,
@@ -25,7 +14,7 @@ class RefreshButton extends StatelessWidget {
   }) : super(key: key);
 
   /// onRefresh call when user press button
-  final Future<void> Function()? onPressed;
+  final Future<void> Function() onPressed;
 
   /// size is icon size
   final double size;
@@ -33,34 +22,29 @@ class RefreshButton extends StatelessWidget {
   /// color is icon color
   final Color? color;
 
+  /// controller control refresh button is busy
+  final ValueNotifier<bool> controller;
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<RefreshButtonProvider>(
-        builder: (context, provide, c) => IconButton(
-              iconSize: size,
-              color: color,
-              icon: provide._busy
-                  ? SizedBox(
-                      width: size - 8,
-                      height: size - 8,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3,
-                        color: color,
-                      ))
-                  : const Icon(
-                      Icons.refresh,
-                    ),
-              onPressed: onPressed != null
-                  ? () async {
-                      provide.setBusy(true);
-                      try {
-                        await onPressed!();
-                      } finally {
-                        provide.setBusy(false);
-                      }
-                    }
-                  : null,
-              tooltip: context.i18n.refreshButtonText,
-            ));
+    final defaultColor = color ?? context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400);
+    return IconButton(
+      iconSize: size,
+      color: defaultColor,
+      icon: controller.value
+          ? SizedBox(width: size + 16, height: size + 16, child: ballRotateChase())
+          : const Icon(
+              Icons.refresh,
+            ),
+      onPressed: () async {
+        controller.value = true;
+        try {
+          await onPressed();
+        } finally {
+          controller.value = false;
+        }
+      },
+      tooltip: context.i18n.refreshButtonText,
+    );
   }
 }

@@ -65,7 +65,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _noData(context),
+                          child: _refreshButton(context),
                         ),
                         Wrap(
                           children: [
@@ -827,21 +827,21 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _refreshButton(BuildContext context) {
-    return ChangeNotifierProvider<RefreshButtonProvider>(
-      create: (context) => RefreshButtonProvider(),
-      child: Consumer<RefreshButtonProvider>(
+    return ChangeNotifierProvider<ValueNotifier<bool>>(
+      create: (context) => ValueNotifier<bool>(false),
+      child: Consumer<ValueNotifier<bool>>(
           builder: (context, provide, child) => Column(children: [
                 RefreshButton(
+                    controller: provide,
                     size: 32,
-                    color: Colors.blue,
                     onPressed: () async {
                       await Future.delayed(const Duration(seconds: 5));
                     }),
                 OutlinedButton(
                   onPressed: () async {
-                    provide.setBusy(true);
+                    provide.value = true;
                     await Future.delayed(const Duration(seconds: 5));
-                    provide.setBusy(false);
+                    provide.value = false;
                   },
                   child: const Text('refresh'),
                 ),
