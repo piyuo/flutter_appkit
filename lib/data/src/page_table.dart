@@ -99,47 +99,46 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
           ChangeNotifierProvider<delta.TapBreaker>(
             create: (context) => delta.TapBreaker(),
           ),
-          ChangeNotifierProvider<delta.RefreshButtonProvider>(
-            create: (context) => delta.RefreshButtonProvider(),
+          ChangeNotifierProvider<ValueNotifier<bool>>(
+            create: (context) => ValueNotifier<bool>(false),
           ),
         ],
-        child: Consumer<delta.TapBreaker>(
-            builder: (context, breaker, child) =>
-                Consumer<delta.RefreshButtonProvider>(builder: (context, refreshButton, child) {
-                  dataSource.onRefreshBegin = () {
-                    breaker.setBusy(true);
-                    refreshButton.setBusy(true);
-                  };
-                  dataSource.onRefreshEnd = () {
-                    breaker.setBusy(false);
-                    refreshButton.setBusy(false);
-                  };
-                  return LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
-                      return isTableLayout
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                if (isTableLayout) buildHeader(context, breaker),
-                                Expanded(
-                                  child: _buildTable(context),
-                                ),
-                              ],
-                            )
-                          : _buildCard(
-                              context,
-                              constraints.maxWidth,
-                              breaker,
-                            );
-                    },
-                  );
-                })));
+        child: Consumer2<delta.TapBreaker, ValueNotifier<bool>>(builder: (context, breaker, refreshing, child) {
+          dataSource.onRefreshBegin = () {
+            breaker.setBusy(true);
+            refreshing.value = true;
+          };
+          dataSource.onRefreshEnd = () {
+            breaker.setBusy(false);
+            refreshing.value = false;
+          };
+          return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return isTableLayout
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        if (isTableLayout) buildHeader(context, breaker, refreshing),
+                        Expanded(
+                          child: _buildTable(context),
+                        ),
+                      ],
+                    )
+                  : _buildCard(
+                      context,
+                      constraints.maxWidth,
+                      breaker,
+                      refreshing,
+                    );
+            },
+          );
+        }));
   }
 
   /// isTableLayout return true if use table layout
   bool get isTableLayout => !responsive.isPhoneDesign;
 
-  Widget buildHeader(BuildContext context, delta.TapBreaker breaker) {
+  Widget buildHeader(BuildContext context, delta.TapBreaker breaker, ValueNotifier<bool> refreshing) {
     if (dataSource.selectedRows.isNotEmpty) {
       return buildSelectedHeader(context, breaker);
     }
@@ -147,10 +146,10 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
     var _actions = <Widget>[
       if (isTableLayout) const SizedBox(width: 14),
       delta.RefreshButton(
-          color: context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade200),
+          controller: refreshing,
           onPressed: breaker.futureFunc(
             () => dataSource.refreshData(context),
-          )),
+          )!),
       if (isTableLayout) Text(localizations.rowsPerPageTitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
       if (isTableLayout) const SizedBox(width: 10),
       ConstrainedBox(
@@ -334,7 +333,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(BuildContext context, double maxWidth, delta.TapBreaker breaker) {
+  Widget _buildCard(BuildContext context, double maxWidth, delta.TapBreaker breaker, ValueNotifier<bool> refreshing) {
     final ThemeData themeData = Theme.of(context);
     return Theme(
         data: Theme.of(context).copyWith(
@@ -353,7 +352,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             headingRowColor:
                 dataSource.selectedRows.isNotEmpty ? MaterialStateProperty.all(themeData.secondaryHeaderColor) : null,
             columns: [
-              DataColumn(label: buildHeader(context, breaker)),
+              DataColumn(label: buildHeader(context, breaker, refreshing)),
             ],
             onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
             empty: _buildNoData(context),

@@ -63,29 +63,29 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
           ChangeNotifierProvider<delta.TapBreaker>(
             create: (context) => delta.TapBreaker(),
           ),
-          ChangeNotifierProvider<delta.RefreshButtonProvider>(
-            create: (context) => delta.RefreshButtonProvider(),
+          ChangeNotifierProvider<ValueNotifier<bool>>(
+            create: (context) => ValueNotifier<bool>(false),
           ),
           ChangeNotifierProvider<NotesViewProvider>(
             create: (context) => NotesViewProvider(),
           ),
         ],
-        child: Consumer3<delta.TapBreaker, delta.RefreshButtonProvider, NotesViewProvider>(
-            builder: (context, breaker, refreshButton, provide, _) {
+        child: Consumer3<delta.TapBreaker, ValueNotifier<bool>, NotesViewProvider>(
+            builder: (context, breaker, refreshing, provide, _) {
           dataSource.onRefreshBegin = () {
             breaker.setBusy(true);
-            refreshButton.setBusy(true);
+            refreshing.value = true;
           };
           dataSource.onRefreshEnd = () {
             breaker.setBusy(false);
-            refreshButton.setBusy(false);
+            refreshing.value = false;
           };
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  _bar(context, breaker),
+                  _bar(context, breaker, refreshing),
                   Expanded(
                     child: responsive.isPhoneDesign ? _singleLayout(context) : _sideBySideLayout(context),
                   ),
@@ -170,7 +170,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
         ));
   }
 
-  Widget _bar(BuildContext context, delta.TapBreaker breaker) {
+  Widget _bar(BuildContext context, delta.TapBreaker breaker, ValueNotifier<bool> refreshing) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     var _tails = dataSource.isEmpty
         ? <Widget>[]
@@ -203,10 +203,10 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     return Row(children: [
       const SizedBox(width: 14),
       delta.RefreshButton(
-          color: context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade200),
+          controller: refreshing,
           onPressed: breaker.futureFunc(
             () => dataSource.refreshData(context),
-          )),
+          )!),
       IconButton(
         iconSize: 28,
         icon: const Icon(Icons.list),
