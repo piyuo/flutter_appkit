@@ -100,10 +100,11 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             create: (context) => delta.TapBreaker(),
           ),
           ChangeNotifierProvider<ValueNotifier<bool>>(
-            create: (context) => ValueNotifier<bool>(false),
+            create: (context) => delta.RefreshButtonController(),
           ),
         ],
-        child: Consumer2<delta.TapBreaker, ValueNotifier<bool>>(builder: (context, breaker, refreshing, child) {
+        child:
+            Consumer2<delta.TapBreaker, delta.RefreshButtonController>(builder: (context, breaker, refreshing, child) {
           dataSource.onRefreshBegin = () {
             breaker.setBusy(true);
             refreshing.value = true;
@@ -118,7 +119,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        if (isTableLayout) buildHeader(context, breaker, refreshing),
+                        if (isTableLayout) buildHeader(context, breaker),
                         Expanded(
                           child: _buildTable(context),
                         ),
@@ -138,7 +139,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
   /// isTableLayout return true if use table layout
   bool get isTableLayout => !responsive.isPhoneDesign;
 
-  Widget buildHeader(BuildContext context, delta.TapBreaker breaker, ValueNotifier<bool> refreshing) {
+  Widget buildHeader(BuildContext context, delta.TapBreaker breaker) {
     if (dataSource.selectedRows.isNotEmpty) {
       return buildSelectedHeader(context, breaker);
     }
@@ -146,10 +147,9 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
     var _actions = <Widget>[
       if (isTableLayout) const SizedBox(width: 14),
       delta.RefreshButton(
-          controller: refreshing,
           onPressed: breaker.futureFunc(
-            () => dataSource.refreshData(context),
-          )!),
+        () => dataSource.refreshData(context),
+      )!),
       if (isTableLayout) Text(localizations.rowsPerPageTitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
       if (isTableLayout) const SizedBox(width: 10),
       ConstrainedBox(
@@ -352,7 +352,7 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
             headingRowColor:
                 dataSource.selectedRows.isNotEmpty ? MaterialStateProperty.all(themeData.secondaryHeaderColor) : null,
             columns: [
-              DataColumn(label: buildHeader(context, breaker, refreshing)),
+              DataColumn(label: buildHeader(context, breaker)),
             ],
             onSelectAll: (bool? selected) => dataSource.selectPageRows(selected ?? false),
             empty: _buildNoData(context),
