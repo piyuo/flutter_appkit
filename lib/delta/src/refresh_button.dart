@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:provider/provider.dart';
 import 'extensions.dart';
 import 'indicator.dart';
 
+class RefreshButtonController extends ValueNotifier<bool> {
+  /// RefreshButtonController control refresh button is refreshing
+  RefreshButtonController() : super(false);
+}
+
 class RefreshButton extends StatelessWidget {
-  /// RefreshButton show animation when refreshing
+  /// RefreshButton show animation when refreshing, must have provide [RefreshButtonController]
+  ///
+  /// ```dart
+  /// Consumer<RefreshButtonController>(
+  ///     builder: (context, provide, child) => Column(children: [
+  ///        RefreshButton(
+  ///            onPressed: () async {
+  ///              await Future.delayed(const Duration(seconds: 5));
+  ///            }),
+  ///        ]))
+  /// ```
+  ///
   const RefreshButton({
-    required this.controller,
     required this.onPressed,
     Key? key,
     this.size = 24,
@@ -22,29 +38,27 @@ class RefreshButton extends StatelessWidget {
   /// color is icon color
   final Color? color;
 
-  /// controller control refresh button is busy
-  final ValueNotifier<bool> controller;
-
   @override
   Widget build(BuildContext context) {
     final defaultColor = color ?? context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400);
-    return IconButton(
-      iconSize: size,
-      color: defaultColor,
-      icon: controller.value
-          ? SizedBox(width: size + 16, height: size + 16, child: ballRotateChase())
-          : const Icon(
-              Icons.refresh,
-            ),
-      onPressed: () async {
-        controller.value = true;
-        try {
-          await onPressed();
-        } finally {
-          controller.value = false;
-        }
-      },
-      tooltip: context.i18n.refreshButtonText,
-    );
+    return Consumer<RefreshButtonController>(
+        builder: (context, controller, _) => IconButton(
+              iconSize: size,
+              color: defaultColor,
+              icon: controller.value
+                  ? SizedBox(width: size + 16, height: size + 16, child: ballRotateChase())
+                  : const Icon(
+                      Icons.refresh,
+                    ),
+              onPressed: () async {
+                controller.value = true;
+                try {
+                  await onPressed();
+                } finally {
+                  controller.value = false;
+                }
+              },
+              tooltip: context.i18n.refreshButtonText,
+            ));
   }
 }

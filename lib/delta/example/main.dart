@@ -827,16 +827,13 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _refreshButton(BuildContext context) {
-    return ChangeNotifierProvider<ValueNotifier<bool>>(
-      create: (context) => ValueNotifier<bool>(false),
-      child: Consumer<ValueNotifier<bool>>(
+    return ChangeNotifierProvider<RefreshButtonController>(
+      create: (context) => RefreshButtonController(),
+      child: Consumer<RefreshButtonController>(
           builder: (context, provide, child) => Column(children: [
-                RefreshButton(
-                    controller: provide,
-                    size: 32,
-                    onPressed: () async {
-                      await Future.delayed(const Duration(seconds: 5));
-                    }),
+                RefreshButton(onPressed: () async {
+                  await Future.delayed(const Duration(seconds: 5));
+                }),
                 OutlinedButton(
                   onPressed: () async {
                     provide.value = true;
