@@ -4,15 +4,16 @@ import 'package:libcli/delta/delta.dart' as delta;
 
 /// bottomSheet show popup sheet from bottom
 ///
-///     bottomSheet(
-///          context,
-///          child: Column(children: const [
-///            SizedBox(height: 30),
-///            SizedBox(height: 80, child: Placeholder()),
-///            SizedBox(height: 120),
-///          ]),
-///        )
-///
+/// ```dart
+/// bottomSheet(
+///      context,
+///      child: Column(children: const [
+///        SizedBox(height: 30),
+///        SizedBox(height: 80, child: Placeholder()),
+///        SizedBox(height: 120),
+///      ]),
+///    )
+/// ```
 Future<void> bottomSheet(
   BuildContext context, {
   required Widget child,
