@@ -342,6 +342,7 @@ class DialogExample extends StatelessWidget {
         child: const Text('show sheet'),
         onPressed: () => showSheet(
           context,
+          constraints: const BoxConstraints(maxWidth: 300),
           child: Column(children: [
             const SizedBox(height: 30),
             SizedBox(

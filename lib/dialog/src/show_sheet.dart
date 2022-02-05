@@ -21,6 +21,7 @@ Future<void> showSheet(
   required Widget child,
   Color? color,
   Color closeButtonColor = Colors.grey,
+  BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
 }) {
   return showGeneralDialog(
     barrierLabel: "bottom",
@@ -32,7 +33,7 @@ Future<void> showSheet(
       return Align(
         alignment: Alignment.bottomCenter,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600), //SET max width
+          constraints: constraints,
           child: Container(
             decoration: BoxDecoration(
               color: color ??
