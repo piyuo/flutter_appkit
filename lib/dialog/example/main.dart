@@ -339,8 +339,8 @@ class DialogExample extends StatelessWidget {
   Widget _slide(BuildContext context) {
     return Wrap(children: [
       ElevatedButton(
-        child: const Text('slide'),
-        onPressed: () => bottomSheet(
+        child: const Text('show sheet'),
+        onPressed: () => showSheet(
           context,
           child: Column(children: const [
             SizedBox(height: 30),

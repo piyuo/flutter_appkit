@@ -5,7 +5,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 /// bottomSheet show popup sheet from bottom
 ///
 /// ```dart
-/// bottomSheet(
+/// showSheet(
 ///      context,
 ///      child: Column(children: const [
 ///        SizedBox(height: 30),
@@ -14,9 +14,10 @@ import 'package:libcli/delta/delta.dart' as delta;
 ///      ]),
 ///    )
 /// ```
-Future<void> bottomSheet(
+Future<void> showSheet(
   BuildContext context, {
   required Widget child,
+  Color? color,
 }) {
   return showGeneralDialog(
     barrierLabel: "bottom",
