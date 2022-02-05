@@ -2,11 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 
-/// bottomSheet show popup sheet from bottom
+/// showSheet show popup sheet from the bottom
 ///
 /// ```dart
 /// showSheet(
 ///      context,
+///      color: Colors.red,
+///      closeButtonColor: Colors.blue,
 ///      child: Column(children: const [
 ///        SizedBox(height: 30),
 ///        SizedBox(height: 80, child: Placeholder()),
@@ -18,6 +20,7 @@ Future<void> showSheet(
   BuildContext context, {
   required Widget child,
   Color? color,
+  Color closeButtonColor = Colors.grey,
 }) {
   return showGeneralDialog(
     barrierLabel: "bottom",
@@ -32,10 +35,11 @@ Future<void> showSheet(
           constraints: const BoxConstraints(maxWidth: 600), //SET max width
           child: Container(
             decoration: BoxDecoration(
-              color: context.themeColor(
-                light: Colors.white,
-                dark: Colors.grey.shade800,
-              ),
+              color: color ??
+                  context.themeColor(
+                    light: Colors.white,
+                    dark: Colors.grey.shade800,
+                  ),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Stack(
@@ -44,14 +48,19 @@ Future<void> showSheet(
                     right: 0,
                     top: 0,
                     child: IconButton(
-                      iconSize: 30,
-                      color: Colors.grey,
+                      iconSize: 32,
+                      color: closeButtonColor,
                       icon: const Icon(Icons.cancel_rounded),
                       onPressed: () => Navigator.pop(context),
                     )),
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: IntrinsicHeight(child: child),
+                  child: IntrinsicHeight(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: child,
+                    ),
+                  ),
                 ),
               ],
             ),
