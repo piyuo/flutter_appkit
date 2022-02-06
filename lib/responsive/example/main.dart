@@ -22,10 +22,20 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _wrappedListView(context),
+              child: _toolMenu(context),
             ),
             Wrap(
               children: [
+                testing.example(
+                  context,
+                  text: 'toolbar',
+                  child: _toolbar(context),
+                ),
+                testing.example(
+                  context,
+                  text: 'tool menu',
+                  child: _toolMenu(context),
+                ),
                 testing.example(
                   context,
                   text: 'padding to center',
@@ -45,11 +55,6 @@ class ResponsiveExample extends StatelessWidget {
                   context,
                   text: 'responsive design',
                   child: _responsive(context),
-                ),
-                testing.example(
-                  context,
-                  text: 'toolbar',
-                  child: _toolbar(context),
                 ),
               ],
             ),
@@ -144,15 +149,15 @@ class ResponsiveExample extends StatelessWidget {
   Widget _toolbar(BuildContext context) {
     return Column(children: [
       Toolbar<String>(
-        color: Colors.blue.shade300,
-        activeColor: Colors.blue,
+//        color: Colors.blue.shade300,
+        //      activeColor: Colors.blue,
         onPressed: (index) => debugPrint('just press $index'),
         items: [
           ToolButton(
             label: 'New File',
             icon: Icons.new_label,
             value: 'new_file',
-            marginRight: 10,
+            space: 10,
           ),
           ToolButton(
             label: 'List View',
@@ -165,9 +170,9 @@ class ResponsiveExample extends StatelessWidget {
             icon: Icons.grid_view,
             value: 'grid_view',
             active: false,
-            marginRight: 10,
+            space: 10,
           ),
-          ToolSelection(
+          /*ToolSelection(
             label: 'Rows per page',
             icon: Icons.table_rows,
             selection: {
@@ -175,15 +180,26 @@ class ResponsiveExample extends StatelessWidget {
               '20': '20 rows',
               '50': '50 rows',
             },
+          ),*/
+          ToolSelection<String>(
+            width: 120,
+            text: 'page 2 of more',
+            label: 'rows per page',
+            selection: {
+              '10': '10 rows',
+              '20': '20 rows',
+              '50': '50 rows',
+            },
           ),
           ToolButton(
+            width: 42,
+            text: '3/4',
             label: 'delete',
-            icon: Icons.delete,
-            value: 'delete',
+            value: 'page info',
           ),
           ToolButton(
-            label: 'delete2',
-            icon: Icons.delete,
+            width: 62,
+            label: 'Hello',
             value: 'delete2',
           ),
           ToolButton(
@@ -206,14 +222,57 @@ class ResponsiveExample extends StatelessWidget {
             icon: Icons.delete,
             value: 'delete4',
           ),
-          ToolSpace(),
+          ToolSpacer(),
           ToolButton(
-            label: 'delete5',
-            icon: Icons.delete,
-            value: 'delete5',
+            label: 'Back',
+            icon: Icons.chevron_left,
+            value: 'back',
+          ),
+          ToolButton(
+            label: 'Next',
+            icon: Icons.chevron_right,
+            value: 'next',
           ),
         ],
       ),
     ]);
+  }
+
+  Widget _toolMenu(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('tool menu'),
+      onPressed: () => showToolMenu<String>(
+        context,
+        onPressed: (index) => debugPrint('just press $index'),
+        items: [
+          ToolButton(
+            label: 'New File',
+            icon: Icons.new_label,
+            value: 'new_file',
+          ),
+          ToolButton(
+            label: 'abc',
+            icon: Icons.abc_outlined,
+            value: 'abc',
+          ),
+          ToolSelection(
+            checkedValue: '20',
+            label: 'Rows per page',
+            icon: Icons.table_rows,
+            selection: {
+              '10': '10 rows2',
+              '20': '20 rows2',
+              '50': '50 rows2',
+            },
+          ),
+          ToolSpacer(),
+          ToolButton(
+            label: 'hi',
+            icon: Icons.hail,
+            value: 'hi',
+          ),
+        ],
+      ),
+    );
   }
 }
