@@ -11,7 +11,7 @@ class MenuButton<T> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Icon icon;
+  final Widget icon;
 
   final void Function(T value) onPressed;
 
