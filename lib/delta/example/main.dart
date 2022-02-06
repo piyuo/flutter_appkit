@@ -410,6 +410,7 @@ class DeltaExample extends StatelessWidget {
           errorCount++;
           throw Exception('error');
         }
+        return 'ok';
       },
       builder: (context, text) => Text(text ?? 'no data'),
     );
