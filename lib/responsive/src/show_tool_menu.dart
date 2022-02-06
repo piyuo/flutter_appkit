@@ -28,7 +28,7 @@ Future<T?> showToolMenu<T>(
   return await dialog.showSheet<T>(
     context,
     constraints: constraints,
-    color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
+    color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade900),
     child: Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 80),
       child: Column(
