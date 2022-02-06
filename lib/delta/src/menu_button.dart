@@ -27,13 +27,15 @@ class MenuButton<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
+        Expanded(
+            child: IconButton(
+          alignment: Alignment.centerLeft,
           padding: EdgeInsets.zero,
           icon: icon,
           onPressed: () => onPress(context),
           tooltip: tooltip,
           color: color,
-        ),
+        )),
         GestureDetector(
             onTap: () => onPress(context),
             child: Icon(
