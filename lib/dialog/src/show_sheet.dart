@@ -5,7 +5,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 /// showSheet show popup sheet from the bottom
 ///
 /// ```dart
-/// showSheet(
+/// final result = await showSheet(
 ///      context,
 ///      color: Colors.red,
 ///      closeButtonColor: Colors.blue,
@@ -16,7 +16,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 ///      ]),
 ///    )
 /// ```
-Future<void> showSheet(
+Future<T?> showSheet<T>(
   BuildContext context, {
   required Widget child,
   Color? color,
