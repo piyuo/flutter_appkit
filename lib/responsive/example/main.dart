@@ -241,38 +241,40 @@ class ResponsiveExample extends StatelessWidget {
   Widget _toolMenu(BuildContext context) {
     return OutlinedButton(
       child: const Text('tool menu'),
-      onPressed: () => showToolMenu<String>(
-        context,
-        onPressed: (index) => debugPrint('just press $index'),
-        items: [
-          ToolButton(
-            label: 'New File',
-            icon: Icons.new_label,
-            value: 'new_file',
-          ),
-          ToolButton(
-            label: 'abc',
-            icon: Icons.abc_outlined,
-            value: 'abc',
-          ),
-          ToolSelection(
-            checkedValue: '20',
-            label: 'Rows per page',
-            icon: Icons.table_rows,
-            selection: {
-              '10': '10 rows2',
-              '20': '20 rows2',
-              '50': '50 rows2',
-            },
-          ),
-          ToolSpacer(),
-          ToolButton(
-            label: 'hi',
-            icon: Icons.hail,
-            value: 'hi',
-          ),
-        ],
-      ),
+      onPressed: () async {
+        final value = await showToolMenu<String>(
+          context,
+          items: [
+            ToolButton(
+              label: 'New File',
+              icon: Icons.new_label,
+              value: 'new_file',
+            ),
+            ToolButton(
+              label: 'abc',
+              icon: Icons.abc_outlined,
+              value: 'abc',
+            ),
+            ToolSelection(
+              checkedValue: '20',
+              label: 'Rows per page',
+              icon: Icons.table_rows,
+              selection: {
+                '10': '10 rows2',
+                '20': '20 rows2',
+                '50': '50 rows2',
+              },
+            ),
+            ToolSpacer(),
+            ToolButton(
+              label: 'hi',
+              icon: Icons.hail,
+              value: 'hi',
+            ),
+          ],
+        );
+        debugPrint('just press $value');
+      },
     );
   }
 }

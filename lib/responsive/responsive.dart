@@ -3,7 +3,7 @@ library responsive;
 export 'src/responsive.dart';
 export 'src/toolbar.dart';
 export 'src/tools.dart';
-export 'src/tool_menu.dart';
+export 'src/show_tool_menu.dart';
 export 'src/dynamic_bottom_side.dart';
 export 'src/wrapped_list_view.dart';
 export 'src/padding_to_center.dart';

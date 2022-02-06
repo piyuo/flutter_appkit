@@ -3,28 +3,36 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'tools.dart';
 
-Future<void> showToolMenu<T>(
+/// showToolMenu show tool sheet, let user choose item easily on mobile phone device
+///
+///  ```dart
+/// final value = await showToolMenu<String>(
+///       context,
+///       items: [
+///         ToolButton(
+///           label: 'New File',
+///           icon: Icons.new_label,
+///           value: 'new_file',
+///         ),
+///     ],
+///     );
+///  ```
+Future<T?> showToolMenu<T>(
   BuildContext context, {
   required List<ToolItem<T>> items,
-  required ToolCallback<T> onPressed,
   Color? color,
   Color? activeColor,
   Color? iconColor,
   BoxConstraints constraints = const BoxConstraints(maxWidth: 450),
 }) async {
-  void onItemPressed(T value) {
-    debugPrint('onItemPressed: $value');
-    Navigator.pop(context);
-  }
-
-  return await dialog.showSheet(
+  return await dialog.showSheet<T>(
     context,
     constraints: constraints,
     color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
     child: Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 80),
       child: Column(
-        children: items.map((item) => _buildSheetItem(context, item, onItemPressed)).toList(),
+        children: items.map((item) => _buildSheetItem(context, item)).toList(),
       ),
     ),
   );
@@ -33,7 +41,6 @@ Future<void> showToolMenu<T>(
 Widget _buildSheetItem<T>(
   BuildContext context,
   ToolItem<T> item,
-  ToolCallback<T> onPressed,
 ) {
   if (item is ToolButton<T>) {
     return Padding(
@@ -53,7 +60,7 @@ Widget _buildSheetItem<T>(
             ),
             Icon(item.icon, size: 28),
           ]),
-          onPressed: () => onPressed(item.value!),
+          onPressed: () => Navigator.pop(context, item.value!),
         ));
   }
 
@@ -71,7 +78,7 @@ Widget _buildSheetItem<T>(
                 )),
             delta.ButtonPanel<T>(
               checkedValues: item.checkedValue != null ? [item.checkedValue!] : null,
-              onPressed: (value) => onPressed(value),
+              onPressed: (value) => Navigator.pop(context, value),
               children: item.selection.map((T key, String value) {
                 return MapEntry<T, Widget>(
                     key,
