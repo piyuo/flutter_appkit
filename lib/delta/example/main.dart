@@ -65,10 +65,15 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _refreshButton(context),
+                          child: _buttonPanel(context),
                         ),
                         Wrap(
                           children: [
+                            testing.example(
+                              context,
+                              text: 'button panel',
+                              child: _buttonPanel(context),
+                            ),
                             testing.example(
                               context,
                               text: 'is mobile device?',
@@ -328,6 +333,35 @@ class DeltaExample extends StatelessWidget {
 
   Widget _isMobileDevice(BuildContext context) {
     return isMobileDevice(context) ? const Text('mobile') : const Text('not mobile');
+  }
+
+  Widget _buttonPanel(BuildContext context) {
+    return Container(
+        color: Colors.grey.shade100,
+        padding: const EdgeInsets.all(50),
+        child: ButtonPanel<String>(
+          onPressed: (item) => debugPrint('$item pressed'),
+          children: {
+            '0': Row(children: const [
+              Expanded(
+                child: Text('button', style: TextStyle(fontSize: 18)),
+              ),
+              Icon(Icons.add),
+            ]),
+            '1': Row(children: const [
+              Expanded(
+                child: Text('button 1', style: TextStyle(fontSize: 18)),
+              ),
+              Icon(Icons.dark_mode),
+            ]),
+            '2': Row(children: const [
+              Expanded(
+                child: Text('button 2', style: TextStyle(fontSize: 18)),
+              ),
+              Icon(Icons.accessibility),
+            ]),
+          },
+        ));
   }
 
   Widget _noData(BuildContext context) {

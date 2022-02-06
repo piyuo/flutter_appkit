@@ -21,7 +21,6 @@ class RefreshButton extends StatelessWidget {
   ///            }),
   ///        ]))
   /// ```
-  ///
   const RefreshButton({
     required this.onPressed,
     Key? key,
