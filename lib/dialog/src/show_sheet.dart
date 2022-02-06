@@ -24,9 +24,9 @@ Future<void> showSheet(
   BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
 }) {
   return showGeneralDialog(
-    barrierLabel: "bottom",
+    barrierLabel: "sheet",
     barrierDismissible: true,
-    barrierColor: Colors.black.withOpacity(0.1),
+    barrierColor: Colors.grey.withOpacity(0.2),
     transitionDuration: const Duration(milliseconds: 220),
     context: context,
     pageBuilder: (context, anim1, anim2) {
