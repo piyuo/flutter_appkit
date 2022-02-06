@@ -21,7 +21,7 @@ class ButtonPanel<T> extends StatelessWidget {
     Key? key,
     required this.children,
     required this.onPressed,
-    this.checkedValue,
+    this.checkedValues,
     this.foregroundColor,
     this.backgroundColor,
     this.checkColor,
@@ -40,10 +40,12 @@ class ButtonPanel<T> extends StatelessWidget {
   final Map<T, Widget> children;
 
   /// checkedValue is the value of button should check
-  final List<T>? checkedValue;
+  final List<T>? checkedValues;
 
   /// onPressed is the callback when a button is pressed
   final void Function(T value) onPressed;
+
+  bool isItemChecked(T value) => checkedValues != null && checkedValues!.contains(value);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,11 @@ class ButtonPanel<T> extends StatelessWidget {
           elevation: 0,
         ),
         label: children.values.elementAt(i),
-        icon: Icon(Icons.check, color: checkColor ?? Colors.amber.shade700),
+        icon: checkedValues != null
+            ? isItemChecked(children.entries.elementAt(i).key)
+                ? Icon(Icons.check, color: checkColor ?? Colors.amber.shade700)
+                : const SizedBox(width: 24)
+            : const SizedBox(),
         onPressed: () => onPressed(children.entries.elementAt(i).key),
       ));
       if (i < children.entries.length - 1) result.add(const Divider(height: 1));

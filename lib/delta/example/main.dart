@@ -341,6 +341,7 @@ class DeltaExample extends StatelessWidget {
         padding: const EdgeInsets.all(50),
         child: ButtonPanel<String>(
           onPressed: (item) => debugPrint('$item pressed'),
+          checkedValues: const ['1'],
           children: {
             '0': Row(children: const [
               Expanded(
