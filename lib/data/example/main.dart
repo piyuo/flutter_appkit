@@ -6,6 +6,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/cache/cache.dart' as cache;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/unique/unique.dart' as unique;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import '../data.dart';
@@ -28,16 +29,10 @@ class DataExample extends StatelessWidget {
         child: Column(
       children: [
         Expanded(
-          child: _notesViewer(),
+          child: _pageTable(),
         ),
         Wrap(
           children: [
-            testing.example(
-              context,
-              text: 'notes viewer',
-              useScaffold: false,
-              child: _notesViewer(),
-            ),
             testing.example(
               context,
               text: 'data provider',
@@ -144,63 +139,6 @@ class DataExample extends StatelessWidget {
     );
   }
 
-  Widget _notesViewer() {
-    return ChangeNotifierProvider<DataSource<sample.Person>>(
-      create: (context) => DataSource<sample.Person>(
-        context: context,
-        id: 'today_customer',
-        dataBuilder: () => sample.Person(),
-        dataRemover: (BuildContext context, List<String> ids) async => true,
-        dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          await Future.delayed(const Duration(seconds: 5));
-          if (isRefresh) {
-            return List.generate(
-                limit,
-                (index) => sample.Person(
-                      entity: pb.Entity(
-                        id: unique.uuid(),
-                        updateTime: DateTime.now().utcTimestamp,
-                        notGoingToChange: false,
-                        deleted: false,
-                      ),
-                      name: 'refresh $index',
-                      age: index,
-                    ));
-          }
-          refreshCount++;
-          if (refreshCount > 2) {
-            refreshCount = 0;
-            return [];
-          }
-
-          // load more data
-          return List.generate(
-              limit,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: unique.uuid(),
-                      updateTime: DateTime.now().utcTimestamp,
-                      notGoingToChange: false,
-                      deleted: false,
-                    ),
-                    name: 'more $index',
-                    age: index,
-                  ));
-        },
-      ),
-      child: Consumer<DataSource<sample.Person>>(
-          builder: (context, dataSource, child) => NotesView<sample.Person>(
-                dataSource: dataSource,
-                cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
-                  return const SizedBox(height: 100, child: Placeholder());
-                },
-                contentBuilder: (BuildContext context, sample.Person person, int rowIndex) {
-                  return const Placeholder();
-                },
-              )),
-    );
-  }
-
   Widget _dataProvider() {
     return ChangeNotifierProvider<DataProvider<sample.Person>>(
       create: (context) => DataProvider<sample.Person>(
@@ -248,80 +186,86 @@ class DataExample extends StatelessWidget {
   }
 
   Widget _pageTable() {
-    return ChangeNotifierProvider<DataSource<sample.Person>>(
-      create: (context) => DataSource<sample.Person>(
-        context: context,
-        id: 'today_customer',
-        dataBuilder: () => sample.Person(),
-        dataRemover: (BuildContext context, List<String> ids) async => true,
-        dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          await Future.delayed(const Duration(seconds: 5));
-          if (isRefresh) {
-            return List.generate(
-                limit,
-                (index) => sample.Person(
-                      entity: pb.Entity(
-                        id: unique.uuid(),
-                        updateTime: DateTime.now().utcTimestamp,
-                        notGoingToChange: false,
-                        deleted: false,
-                      ),
-                      name: 'refresh $index',
-                      age: index,
-                    ));
-          }
-          refreshCount++;
-          if (refreshCount > 2) {
-            refreshCount = 0;
-            return [];
-          }
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<delta.RefreshButtonController>(
+            create: (context) => delta.RefreshButtonController(),
+          ),
+          ChangeNotifierProvider<DataSource<sample.Person>>(
+            create: (context) => DataSource<sample.Person>(
+              context: context,
+              id: 'today_customer',
+              dataBuilder: () => sample.Person(),
+              dataRemover: (BuildContext context, List<String> ids) async => true,
+              dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
+                await Future.delayed(const Duration(seconds: 5));
+                if (isRefresh) {
+                  return List.generate(
+                      limit,
+                      (index) => sample.Person(
+                            entity: pb.Entity(
+                              id: unique.uuid(),
+                              updateTime: DateTime.now().utcTimestamp,
+                              notGoingToChange: false,
+                              deleted: false,
+                            ),
+                            name: 'refresh $index',
+                            age: index,
+                          ));
+                }
+                refreshCount++;
+                if (refreshCount > 2) {
+                  refreshCount = 0;
+                  return [];
+                }
 
-          // load more data
-          return List.generate(
-              limit,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: unique.uuid(),
-                      updateTime: DateTime.now().utcTimestamp,
-                      notGoingToChange: false,
-                      deleted: false,
-                    ),
-                    name: 'more $index',
-                    age: index,
-                  ));
-        },
-      ),
-      child: Consumer<DataSource<sample.Person>>(
-          builder: (context, dataSource, child) => PageTable<sample.Person>(
-                dataSource: dataSource,
-                smallRatio: 0.25,
-                largeRatio: 3,
-                columns: [
-                  PageColumn(label: const Text('ID')),
-                  PageColumn(label: const Text('Name'), width: ColumnWidth.large),
-                  PageColumn(label: const Text('Age'), width: ColumnWidth.small),
-                ],
-                tableBuilder: (BuildContext context, sample.Person person, int rowIndex) {
-                  return [
-                    Text(person.entityID, overflow: TextOverflow.ellipsis),
-                    Text('${person.name} very long text blah blah blah blah blah blah',
-                        overflow: TextOverflow.ellipsis),
-                    Text('${person.age}', overflow: TextOverflow.ellipsis),
-                  ];
-                },
-                cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
-                  return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(children: [
-                        Text(person.entityID),
-                        Text(person.name),
-                        Text('${person.age}'),
-                      ]));
-                },
-                onRowTap: (BuildContext context, sample.Person person, int rowIndex) =>
-                    debugPrint("press " + person.name),
-              )),
-    );
+                // load more data
+                return List.generate(
+                    limit,
+                    (index) => sample.Person(
+                          entity: pb.Entity(
+                            id: unique.uuid(),
+                            updateTime: DateTime.now().utcTimestamp,
+                            notGoingToChange: false,
+                            deleted: false,
+                          ),
+                          name: 'more $index',
+                          age: index,
+                        ));
+              },
+            ),
+          )
+        ],
+        child: Consumer<DataSource<sample.Person>>(
+            builder: (context, dataSource, child) => PageTable<sample.Person>(
+                  dataSource: dataSource,
+                  smallRatio: 0.25,
+                  largeRatio: 3,
+                  columns: [
+                    PageColumn(label: const Text('ID')),
+                    PageColumn(label: const Text('Name'), width: ColumnWidth.large),
+                    PageColumn(label: const Text('Age'), width: ColumnWidth.small),
+                  ],
+                  tableBuilder: (BuildContext context, sample.Person person, int rowIndex) {
+                    return [
+                      Text(person.entityID, overflow: TextOverflow.ellipsis),
+                      Text('${person.name} very long text blah blah blah blah blah blah',
+                          overflow: TextOverflow.ellipsis),
+                      Text('${person.age}', overflow: TextOverflow.ellipsis),
+                    ];
+                  },
+                  cardBuilder: (BuildContext context, sample.Person person, int rowIndex) {
+                    return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(children: [
+                          Text(person.entityID),
+                          Text(person.name),
+                          Text('${person.age}'),
+                        ]));
+                  },
+                  onRowTap: (BuildContext context, sample.Person person, int rowIndex) =>
+                      debugPrint("press " + person.name),
+                )));
   }
 
   Widget _pageList() {

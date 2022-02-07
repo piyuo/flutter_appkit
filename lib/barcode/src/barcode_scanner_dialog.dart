@@ -6,12 +6,13 @@ import 'barcode_scanner.dart';
 /// showQRcodeScanner return scanned QR code or null if not scanned
 Future<String?> showQRcodeScanner(BuildContext context) async {
   if (await permission.camera(context)) {
-    return Navigator.push<String?>(
+    return await Navigator.push<String?>(
         context,
         MaterialPageRoute(
           builder: (_) => const BarcodeScannerDialog(),
         ));
   }
+  return null;
 }
 
 class BarcodeScannerDialog extends StatelessWidget {

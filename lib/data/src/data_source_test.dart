@@ -61,6 +61,7 @@ void main() {
             step++;
             return null; // no need refresh
           }
+          return null;
         },
       );
       await ds.init(
@@ -184,6 +185,7 @@ void main() {
                       ),
                     ));
           }
+          return null;
         },
       );
       await ds.init(testing.Context());
@@ -260,6 +262,7 @@ void main() {
                       ),
                     ));
           }
+          return null;
         },
       );
       await ds.init(
@@ -333,6 +336,7 @@ void main() {
                       ),
                     ));
           }
+          return null;
         },
       );
       await ds.init(

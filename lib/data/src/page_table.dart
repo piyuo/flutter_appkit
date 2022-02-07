@@ -147,9 +147,12 @@ class PageTable<T extends pb.Object> extends StatelessWidget {
     var _actions = <Widget>[
       if (isTableLayout) const SizedBox(width: 14),
       delta.RefreshButton(
-          onPressed: breaker.futureFunc(
+        onPressed: () => dataSource.refreshData(context),
+
+        /*breaker.futureFunc(
         () => dataSource.refreshData(context),
-      )!),
+      )!*/
+      ),
       if (isTableLayout) Text(localizations.rowsPerPageTitle, style: const TextStyle(color: Colors.grey, fontSize: 14)),
       if (isTableLayout) const SizedBox(width: 10),
       ConstrainedBox(
