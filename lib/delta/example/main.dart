@@ -65,7 +65,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _buttonPanel(context),
+                          child: _searchBox(context),
                         ),
                         Wrap(
                           children: [
@@ -473,7 +473,7 @@ class DeltaExample extends StatelessWidget {
           child: SearchBox<String>(
             controller: _searchBoxController,
             hintText: 'Search orders/products here',
-            suggestionsCallback: (pattern) async {
+            onGetSuggestions: (pattern) async {
 //            await Future.delayed(const Duration(seconds: 5));
               if (pattern == 'a') {
                 return ['a', 'b', 'c'];

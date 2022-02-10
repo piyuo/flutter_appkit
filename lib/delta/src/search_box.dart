@@ -6,7 +6,7 @@ class SearchBox<T> extends StatelessWidget {
   const SearchBox({
     Key? key,
     required this.controller,
-    required this.suggestionsCallback,
+    required this.onGetSuggestions,
     this.itemBuilder,
     this.itemToString,
     this.decoration,
@@ -21,8 +21,8 @@ class SearchBox<T> extends StatelessWidget {
   /// keyboardType control keyboard input type
   final TextInputType? keyboardType;
 
-  /// onSuggestionChanged trigger when select a suggestion
-  final Future<Iterable<T>> Function(String) suggestionsCallback;
+  /// onGetSuggestions trigger when select a suggestion
+  final Future<Iterable<T>> Function(String) onGetSuggestions;
 
   /// itemBuilder is a function to build suggestion item
   final Widget Function(BuildContext, T)? itemBuilder;
@@ -90,7 +90,7 @@ class SearchBox<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
         color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
       ),
-      suggestionsCallback: suggestionsCallback,
+      suggestionsCallback: onGetSuggestions,
       transitionBuilder: (context, suggestionsBox, controller) => suggestionsBox,
       noItemsFoundBuilder: (_) => const SizedBox(),
       itemBuilder: itemBuilder ??
