@@ -20,13 +20,14 @@ Future<T?> showSheet<T>(
   BuildContext context, {
   required Widget child,
   Color? color,
+  Color barrierColor = Colors.grey,
   Color closeButtonColor = Colors.grey,
   BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
 }) {
   return showGeneralDialog(
     barrierLabel: "sheet",
     barrierDismissible: true,
-    barrierColor: Colors.grey.withOpacity(0.2),
+    barrierColor: barrierColor.withOpacity(0.2),
     transitionDuration: const Duration(milliseconds: 220),
     context: context,
     pageBuilder: (context, anim1, anim2) {

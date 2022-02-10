@@ -360,6 +360,26 @@ class DialogExample extends StatelessWidget {
         ),
       ),
       ElevatedButton(
+        child: const Text('show side'),
+        onPressed: () => showSide(
+          context,
+          child: Column(children: [
+            const SizedBox(height: 30),
+            SizedBox(
+                height: 80,
+                child: ElevatedButton(
+                  child: const Text('close'),
+                  onPressed: () => Navigator.pop(context),
+                )),
+            const SizedBox(height: 20),
+            const SizedBox(height: 80, child: Placeholder()),
+            const SizedBox(height: 20),
+            const SizedBox(height: 80, child: Placeholder()),
+            const SizedBox(height: 120),
+          ]),
+        ),
+      ),
+      ElevatedButton(
         child: const Text('banner'),
         onPressed: () => banner(
           context,
