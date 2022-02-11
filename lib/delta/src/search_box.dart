@@ -70,7 +70,7 @@ class SearchBox extends StatelessWidget {
                         ),
                     decoration: InputDecoration(
                       //focusColor: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
-                      contentPadding: EdgeInsets.zero,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
                       isDense: true,
                       counterText: '',
                       prefixIcon: prefixIcon,
