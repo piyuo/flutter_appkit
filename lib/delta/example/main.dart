@@ -470,18 +470,24 @@ class DeltaExample extends StatelessWidget {
     return Column(children: [
       Padding(
           padding: const EdgeInsets.all(20),
-          child: SearchBox<String>(
+          child: SearchBox(
             controller: _searchBoxController,
+            prefixIcon: IconButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
+                ),
+                onPressed: () => debugPrint('menu pressed')),
             hintText: 'Search orders/products here',
-            onGetSuggestions: (pattern) async {
-//            await Future.delayed(const Duration(seconds: 5));
+            onSuggestion: (pattern) async {
+              //             await Future.delayed(const Duration(seconds: 5));
               if (pattern == 'a') {
-                return ['a', 'b', 'c'];
+                return [SearchSuggestion('a', icon: Icons.add), SearchSuggestion('b'), SearchSuggestion('c')];
               }
               if (pattern == 'b') {
                 return [];
               }
-              return ['hello', 'world'];
+              return [SearchSuggestion('hello', icon: Icons.add), SearchSuggestion('world')];
             },
           )),
       const Divider(),
