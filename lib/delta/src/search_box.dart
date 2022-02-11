@@ -6,14 +6,14 @@ import 'package:libcli/responsive/responsive.dart' as responsive;
 
 /// SearchBox is a widget that displays a search box with a selection.
 /// ```dart
-//  SearchBox(
-//    controller: _searchBoxController,
-//    hintText: 'Search orders/products here',
-//    onSuggestion: (pattern) async {
-//      await Future.delayed(const Duration(seconds: 5));
-//      return [SearchSuggestion('hello', icon: Icons.add), SearchSuggestion('world')];
-//    },
-//  )),
+/// SearchBox(
+///   controller: _searchBoxController,
+///   hintText: 'Search orders/products here',
+///   onSuggestion: (pattern) async {
+///     await Future.delayed(const Duration(seconds: 5));
+///     return [SearchSuggestion('hello', icon: Icons.add), SearchSuggestion('world')];
+///   },
+/// )),
 ///  ```
 class SearchBox extends StatelessWidget {
   /// SearchBox is a widget that displays a search box with a selection.
