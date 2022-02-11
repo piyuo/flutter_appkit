@@ -118,8 +118,30 @@ void start({
               scaffoldMessengerKey: dialogProvider.scaffoldMessengerKey,
               builder: dialogProvider.init(),
               debugShowCheckedModeBanner: false,
-              theme: theme ?? ThemeData(brightness: Brightness.light),
-              darkTheme: darkTheme ?? ThemeData(brightness: Brightness.dark),
+              theme: theme ??
+                  ThemeData(
+                    brightness: Brightness.light,
+                    colorScheme: ColorScheme.fromSwatch(
+                      primarySwatch: Colors.amber,
+                    ),
+                    appBarTheme: AppBarTheme(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.grey.shade700,
+                      elevation: 1,
+                    ),
+                  ),
+              darkTheme: darkTheme ??
+                  ThemeData(
+                    brightness: Brightness.dark,
+                    colorScheme: ColorScheme.fromSwatch(
+                      primarySwatch: Colors.amber,
+                      brightness: Brightness.dark,
+                    ),
+                    appBarTheme: AppBarTheme(
+                      foregroundColor: Colors.grey.shade100,
+                      elevation: 1,
+                    ),
+                  ),
               locale: i18nProvider.overrideLocale,
               localizationsDelegates: [
                 if (l10nDelegate != null) l10nDelegate,

@@ -11,7 +11,7 @@ main() {
     '/': (context, state, data) => const BeamPage(
           key: ValueKey('home'),
           title: 'Home',
-          child: AppExample(color: Colors.blue),
+          child: AppExample(color: null),
         ),
     '/other/:id': (context, state, data) {
       final id = state.pathParameters['id']!;
@@ -44,7 +44,7 @@ class AppExample extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  final Color color;
+  final Color? color;
 
   final dynamic data;
 
