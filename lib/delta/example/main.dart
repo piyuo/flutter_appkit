@@ -472,12 +472,7 @@ class DeltaExample extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: SearchBox(
             controller: _searchBoxController,
-            prefixIcon: IconButton(
-                icon: Icon(
-                  Icons.menu,
-                  color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
-                ),
-                onPressed: () => debugPrint('menu pressed')),
+            prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
             hintText: 'Search orders/products here',
             onSuggestion: (pattern) async {
               //             await Future.delayed(const Duration(seconds: 5));

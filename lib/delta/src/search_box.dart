@@ -65,30 +65,23 @@ class SearchBox extends StatelessWidget {
                     controller: controller,
                     focusNode: focusNode,
                     maxLength: 60,
-                    onEditingComplete: () {
-                      debugPrint('onEditingComplete');
-                    },
                     style: DefaultTextStyle.of(context).style.copyWith(
-                          fontSize: 14,
                           overflow: TextOverflow.ellipsis,
                         ),
                     decoration: InputDecoration(
-                      isDense: !responsive.isPhoneDesign,
+                      //focusColor: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
+                      contentPadding: EdgeInsets.zero,
+                      isDense: true,
                       counterText: '',
                       prefixIcon: prefixIcon,
-                      prefixIconConstraints: const BoxConstraints(minWidth: 54),
+                      prefixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
+                      suffixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
                       suffixIcon: controller.text.isNotEmpty
                           ? IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
-                              ),
+                              icon: const Icon(Icons.close),
                               onPressed: () => controller.text = '',
                             )
-                          : Icon(
-                              Icons.search,
-                              color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
-                            ),
+                          : const Icon(Icons.search),
                       border: OutlineInputBorder(
                         gapPadding: 0,
                         borderRadius: BorderRadius.circular(10),
@@ -110,18 +103,21 @@ class SearchBox extends StatelessWidget {
                     elevation: 1,
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
-                        color: context.themeColor(light: Colors.grey.shade400, dark: Colors.grey.shade600),
+                        color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade600),
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey[850]!),
+                    color: context.themeColor(
+                      light: Colors.grey.shade50.withOpacity(0.9),
+                      dark: Colors.grey.shade900.withOpacity(0.95),
+                    ),
                     clipBehavior: Clip.antiAlias,
                   ),
                   itemBuilder: (context, suggestion) {
                     return ListTile(
                       horizontalTitleGap: 0,
                       dense: !responsive.isPhoneDesign,
-                      title: Text(suggestion.label, style: const TextStyle(fontSize: 14)),
+                      title: Text(suggestion.label),
                       leading: Icon(suggestion.icon),
                     );
                   },
@@ -130,6 +126,14 @@ class SearchBox extends StatelessWidget {
   }
 }
 
+/// SearchSuggestion is search box suggestion
+/// ```dart
+///  SearchSuggestion(
+///      'Inbox',
+///      value:'inbox',
+///      icon: Icons.inbox,
+///    ),
+/// ```
 class SearchSuggestion {
   /// SearchSuggestion is search box suggestion
   /// ```dart
