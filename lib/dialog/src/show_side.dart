@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 
 /// showSheet show popup sheet from the bottom
-///
 /// ```dart
-/// final result = await showSheet(
+/// final result = await showSide(
 ///      context,
-///      color: Colors.red,
-///      closeButtonColor: Colors.blue,
 ///      child: Column(children: const [
 ///        SizedBox(height: 30),
 ///        SizedBox(height: 80, child: Placeholder()),
@@ -45,10 +42,10 @@ Future<T?> showSide<T>(
                   borderRadius: const BorderRadius.horizontal(right: Radius.circular(16)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3), // changes position of shadow
+                      color: Colors.black.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: const Offset(0, 2), // changes position of shadow
                     ),
                   ],
                 ),
