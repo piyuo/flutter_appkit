@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 /// DeltaBuildContext add color function to BuildContext
-///
 extension DeltaBuildContext on BuildContext {
   /// isDark return true if is dark theme
-  ///
-  bool get isDark {
-    return MediaQuery.of(this).platformBrightness == Brightness.dark;
-  }
+  /// ```dart
+  /// context.isDark;
+  /// ```
+  bool get isDark => MediaQuery.of(this).platformBrightness == Brightness.dark;
 
   /// themeColor return right color base on light theme or dark theme
-  ///
-  ///     context.themeColor(dark:Colors.red,light:COlors.blue);
-  ///
+  /// ```dart
+  /// context.themeColor(light:Colors.blue,dark:Colors.red);
+  /// ```
   Color themeColor({
     Color dark = Colors.white,
     Color light = Colors.black,
@@ -21,23 +19,23 @@ extension DeltaBuildContext on BuildContext {
       isDark ? dark : light;
 
   /// invertColor return white on dark, black on light
-  ///
-  ///     context.invertColor();
-  ///
-  Color get invertColor => isDark ? Colors.white : Colors.black;
+  /// ```dart
+  /// context.invertedColor;
+  /// ```
+  Color get invertedColor => isDark ? Colors.white : Colors.black;
 
   /// invertColor return white on light, black on dark
-  ///
-  ///     context.sameColor();
-  ///
+  /// ```dart
+  /// context.sameColor;
+  /// ```
   Color get sameColor => isDark ? Colors.black : Colors.white;
-}
 
-/// isMobileDevice return true if is on ios or android
-bool isMobileDevice(BuildContext context) {
-  if (kIsWeb) {
-    return false;
+  /// isTouchSupported is true if is on ios or android
+  /// ```dart
+  /// context.isTouchSupported;
+  /// ```
+  bool get isTouchSupported {
+    var platform = Theme.of(this).platform;
+    return platform == TargetPlatform.iOS || platform == TargetPlatform.android;
   }
-  var platform = Theme.of(context).platform;
-  return platform == TargetPlatform.iOS || platform == TargetPlatform.android;
 }

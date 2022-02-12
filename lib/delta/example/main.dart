@@ -76,8 +76,8 @@ class DeltaExample extends StatelessWidget {
                             ),
                             testing.example(
                               context,
-                              text: 'is mobile device?',
-                              child: _isMobileDevice(context),
+                              text: 'is touch enabled?',
+                              child: _isTouchSupported(context),
                             ),
                             testing.example(
                               context,
@@ -331,8 +331,8 @@ class DeltaExample extends StatelessWidget {
     );
   }
 
-  Widget _isMobileDevice(BuildContext context) {
-    return isMobileDevice(context) ? const Text('mobile') : const Text('not mobile');
+  Widget _isTouchSupported(BuildContext context) {
+    return context.isTouchSupported ? const Text('touch supported') : const Text('touch not support');
   }
 
   Widget _buttonPanel(BuildContext context) {
