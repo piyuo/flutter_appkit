@@ -84,7 +84,7 @@ class CheckList<T> extends StatelessWidget {
         Text(item.title ?? key.toString(),
             style: TextStyle(
               fontSize: 18,
-              color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
+              color: selected ? selectedFontColor ?? context.invertedColor : _fontColor(context),
             ))
       ],
     );

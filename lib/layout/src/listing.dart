@@ -81,7 +81,7 @@ class Listing<T> extends StatelessWidget {
     return Text(text ?? key.toString(),
         style: TextStyle(
           fontSize: 18,
-          color: selected ? selectedFontColor ?? context.invertColor : _fontColor(context),
+          color: selected ? selectedFontColor ?? context.invertedColor : _fontColor(context),
         ));
   }
 
@@ -126,7 +126,7 @@ class Listing<T> extends StatelessWidget {
           ? Icon(
               item.icon,
               size: 24,
-              color: item.iconColor ?? (selected ? selectedFontColor ?? context.invertColor : _fontColor(context)),
+              color: item.iconColor ?? (selected ? selectedFontColor ?? context.invertedColor : _fontColor(context)),
             )
           : null,
       title: _buildText(
