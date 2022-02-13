@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'list_item.dart';
+import 'list_item.txt';
 import 'package:libcli/delta/delta.dart' as delta;
 
 class CheckList<T> extends StatelessWidget {

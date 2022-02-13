@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/gallery/gallery.dart' as gallery;
+import 'package:libcli/layout/layout.dart' as layout;
 import 'package:libcli/delta/delta.dart' as delta;
 import '../src/route.dart';
 
@@ -51,12 +51,12 @@ class _SingleSelectionState<T> extends State<SingleSelection<T>> {
       body: SafeArea(
           right: false,
           bottom: false,
-          child: gallery.Listing<T>(
+          child: layout.Listing<T>(
             selectedTileColor: Colors.blue,
             selectedFontColor: Colors.white,
             dividerColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
             controller: widget.controller,
-            items: widget.items.entries.map((entry) => gallery.ListItem(entry.key, title: entry.value)).toList(),
+            items: widget.items.entries.map((entry) => layout.ListItem(entry.key, title: entry.value)).toList(),
             onItemTap: (BuildContext context, T value) {
               Navigator.pop(context, value);
             },

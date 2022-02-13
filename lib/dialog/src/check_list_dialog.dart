@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/gallery/gallery.dart' as gallery;
+import 'package:libcli/layout/layout.dart' as layout;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import '../src/route.dart';
 
@@ -9,9 +9,9 @@ import '../src/route.dart';
 ///
 Future<void> showCheckList<T>(
   BuildContext context, {
-  required List<gallery.ListItem<T>> items,
+  required List<layout.ListItem<T>> items,
   Future<void> Function(List<T>)? onDelete,
-  Future<List<gallery.ListItem<T>>> Function()? onRefresh,
+  Future<List<layout.ListItem<T>>> Function()? onRefresh,
   Future<void> Function()? onNewItem,
   Future<void> Function(T)? onItemTap,
   String? title,
@@ -20,7 +20,7 @@ Future<void> showCheckList<T>(
   await routeOrDialog<T>(
     context,
     CheckListDialog(
-      items: ValueNotifier<List<gallery.ListItem<T>>>(items),
+      items: ValueNotifier<List<layout.ListItem<T>>>(items),
       title: title,
       onDelete: onDelete,
       onNewItem: onNewItem,
@@ -52,7 +52,7 @@ class CheckListDialog<T> extends StatelessWidget {
   }) : super(key: key);
 
   /// items keep all list item
-  final ValueNotifier<List<gallery.ListItem<T>>> items;
+  final ValueNotifier<List<layout.ListItem<T>>> items;
 
   /// selection keep selected item keys
   final ValueNotifier<List<T>> selection;
@@ -66,7 +66,7 @@ class CheckListDialog<T> extends StatelessWidget {
   final Future<void> Function(List<T>)? onDelete;
 
   /// onRefresh refresh items list
-  final Future<List<gallery.ListItem<T>>> Function()? onRefresh;
+  final Future<List<layout.ListItem<T>>> Function()? onRefresh;
 
   /// onItemTap happen when user tap a item
   final Future<void> Function(T)? onItemTap;
@@ -90,7 +90,7 @@ class CheckListDialog<T> extends StatelessWidget {
   final Widget? hint;
 
   /// itemBuilder build custom item widget
-  final gallery.ListItemBuilder<T, gallery.ListItem>? itemBuilder;
+  final layout.ListItemBuilder<T, layout.ListItem>? itemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class CheckListDialog<T> extends StatelessWidget {
           ChangeNotifierProvider.value(value: selection),
         ],
         child:
-            Consumer2<ValueNotifier<List<gallery.ListItem<T>>>, ValueNotifier<List<T>>>(builder: (context, _, __, ___) {
+            Consumer2<ValueNotifier<List<layout.ListItem<T>>>, ValueNotifier<List<T>>>(builder: (context, _, __, ___) {
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -155,7 +155,7 @@ class CheckListDialog<T> extends StatelessWidget {
                           }
                         },
                       )
-                    : gallery.CheckList<T>(
+                    : layout.CheckList<T>(
                         itemBuilder: itemBuilder,
                         selectedTileColor: selectedTileColor,
                         selectedFontColor: selectedFontColor,
