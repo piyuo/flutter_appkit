@@ -442,12 +442,6 @@ class LayoutExample extends StatelessWidget {
     return StoryLine(
         title: 'Notification',
         subtitle: 'open',
-        onPullRefresh: (BuildContext context) async {
-          await Future.delayed(const Duration(seconds: 1));
-        },
-        onLoadMore: (BuildContext context) async {
-          await Future.delayed(const Duration(seconds: 1));
-        },
         stories: [
           SimpleStory(
             utcDate: DateTime.now().toUtc(),

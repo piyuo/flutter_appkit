@@ -201,16 +201,6 @@ class DeltaExample extends StatelessWidget {
                                 ),
                                 testing.example(
                                   context,
-                                  text: 'pull refresh',
-                                  child: _pullRefresh(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'pull refresh vertical',
-                                  child: _pullRefreshVertical(context),
-                                ),
-                                testing.example(
-                                  context,
                                   text: 'status light',
                                   child: _statusLight(context),
                                 ),
@@ -799,52 +789,6 @@ class DeltaExample extends StatelessWidget {
         ],
       ),
     ]);
-  }
-
-  Widget _pullRefresh(BuildContext context) {
-    return SizedBox(
-        height: 200,
-        child: PullRefresh(
-            scrollDirection: Axis.horizontal,
-            onPullRefresh: (BuildContext context) async {
-              await Future.delayed(const Duration(seconds: 1));
-              _pullRefreshCount--;
-            },
-            onLoadMore: (BuildContext context) async {
-              await Future.delayed(const Duration(seconds: 1));
-              _pullRefreshCount++;
-            },
-            itemCount: (BuildContext context) {
-              return _pullRefreshCount;
-            },
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                width: 100,
-                height: 100,
-                color: index % 2 == 0 ? Colors.yellow[100] : Colors.blue[100],
-                margin: const EdgeInsets.all(0),
-                child: Text('item $index'),
-              );
-            }));
-  }
-
-  Widget _pullRefreshVertical(BuildContext context) {
-    return PullRefresh(onPullRefresh: (BuildContext context) async {
-      await Future.delayed(const Duration(seconds: 1));
-      _pullRefreshCount--;
-    }, onLoadMore: (BuildContext context) async {
-      await Future.delayed(const Duration(seconds: 1));
-      _pullRefreshCount++;
-    }, itemCount: (BuildContext context) {
-      return _pullRefreshCount;
-    }, itemBuilder: (BuildContext context, int index) {
-      return Container(
-        //height: double.infinity,
-        color: Colors.blue[100],
-        padding: const EdgeInsets.fromLTRB(80, 20, 80, 20),
-        child: Text('item $index'),
-      );
-    });
   }
 
   Widget _refreshMoreView(BuildContext context) {

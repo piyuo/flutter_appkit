@@ -21,8 +21,6 @@ class StoryLine extends StatelessWidget {
   const StoryLine({
     required this.stories,
     required this.builder,
-    required this.onPullRefresh,
-    required this.onLoadMore,
     required this.title,
     this.subtitle = '',
     this.height = 300,
@@ -40,12 +38,6 @@ class StoryLine extends StatelessWidget {
 
   /// stories keep list of story
   final List<Story> stories;
-
-  /// onPullRefresh mean pull to refresh, return true if count change
-  final delta.PullRefreshLoader onPullRefresh;
-
-  /// onLoadMore mean scroll down to load more, return true if count change
-  final delta.PullRefreshLoader onLoadMore;
 
   final StoryBuilder builder;
 
@@ -75,17 +67,8 @@ class StoryLine extends StatelessWidget {
             ]),
           ),
           Expanded(
-            child: delta.PullRefresh(
-              scrollDirection: Axis.horizontal,
-              onPullRefresh: (BuildContext context) async {
-                await Future.delayed(const Duration(seconds: 1));
-              },
-              onLoadMore: (BuildContext context) async {
-                await Future.delayed(const Duration(seconds: 1));
-              },
-              itemCount: (BuildContext context) {
-                return stories.length;
-              },
+            child: delta.RefreshMoreView(
+              itemCount: stories.length,
               itemBuilder: (BuildContext context, int index) {
                 final story = stories[index];
                 return Card(
