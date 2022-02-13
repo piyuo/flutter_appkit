@@ -32,8 +32,6 @@ main() {
 
 int errorCount = 0;
 
-var _pullRefreshCount = 8;
-
 final GlobalKey btnMenu = GlobalKey();
 
 final GlobalKey btnTooltip = GlobalKey();
