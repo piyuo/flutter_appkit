@@ -41,8 +41,8 @@ class PageList<T extends pb.Object> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return delta.PullRefresh(
-      onPullRefresh: dataSource.noNeedRefresh || dataSource.isLoading
+    return delta.RefreshMoreView(
+      /*onPullRefresh: dataSource.noNeedRefresh || dataSource.isLoading
           ? null
           : (BuildContext context) async {
               await dataSource.refreshData(context);
@@ -51,10 +51,8 @@ class PageList<T extends pb.Object> extends StatelessWidget {
           ? null
           : (BuildContext context) async {
               await dataSource.nextPage(context);
-            },
-      itemCount: (BuildContext context) {
-        return dataSource.isEmpty ? 1 : dataSource.rows.length;
-      },
+            },*/
+      itemCount: dataSource.isEmpty ? 1 : dataSource.rows.length,
       itemBuilder: (BuildContext context, int index) {
         if (dataSource.isEmpty) {
           return _buildNoData(context);
