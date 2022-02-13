@@ -62,8 +62,15 @@ class _RefreshMoreViewState extends State<RefreshMoreView> {
 
   @override
   Widget build(BuildContext context) {
-    int itemCount = widget.itemCount + (widget.onRefresh != null ? 1 : 0) + (widget.onLoadMore != null ? 1 : 0);
+    if (widget.onRefresh == null && widget.onLoadMore == null) {
+      return ListView.builder(
+        controller: widget.scrollController,
+        itemCount: widget.itemCount,
+        itemBuilder: widget.itemBuilder,
+      );
+    }
 
+    int itemCount = widget.itemCount + (widget.onRefresh != null ? 1 : 0) + (widget.onLoadMore != null ? 1 : 0);
     Widget button(String text, Future<void> Function() callback) => OutlinedButton.icon(
           label: Text(text, style: const TextStyle(color: Colors.grey)),
           icon: const Icon(Icons.refresh, color: Colors.grey),
