@@ -71,7 +71,7 @@ class _RefreshMoreViewState extends State<RefreshMoreView> {
     }
 
     int itemCount = widget.itemCount + (widget.onRefresh != null ? 1 : 0) + (widget.onLoadMore != null ? 1 : 0);
-    Widget button(String text, Future<void> Function() callback) => OutlinedButton.icon(
+    Widget _button(String text, Future<void> Function() callback) => TextButton.icon(
           label: Text(text, style: const TextStyle(color: Colors.grey)),
           icon: const Icon(Icons.refresh, color: Colors.grey),
           onPressed: () async {
@@ -84,7 +84,12 @@ class _RefreshMoreViewState extends State<RefreshMoreView> {
           },
         );
 
-    Widget indicator() => Align(alignment: Alignment.center, child: SizedBox(height: 28, child: ballPulseIndicator()));
+    Widget _indicator() => Align(
+        alignment: Alignment.center,
+        child: SizedBox(
+          height: 28,
+          child: ballPulseIndicator(),
+        ));
 
     return context.isTouchSupported
         ? EasyRefresh(
@@ -104,13 +109,13 @@ class _RefreshMoreViewState extends State<RefreshMoreView> {
             itemBuilder: (BuildContext context, int index) {
               if (widget.onRefresh != null && index == 0) {
                 return Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                    child: _busy ? indicator() : button('Refresh', widget.onRefresh!));
+                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 8),
+                    child: _busy ? _indicator() : _button('Refresh', widget.onRefresh!));
               }
               if (widget.onLoadMore != null && index == itemCount - 1) {
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-                  child: _busy ? indicator() : button('Load more', widget.onLoadMore!),
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 15),
+                  child: _busy ? _indicator() : _button('Load more', widget.onLoadMore!),
                 );
               }
               if (widget.onRefresh != null) {
