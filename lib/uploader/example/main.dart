@@ -26,21 +26,9 @@ class UploaderExample extends StatelessWidget {
               Container(
                 child: _editImage(),
               ),
-              testing.example(
-                context,
-                text: 'new image upload',
-                child: _newImageUpload(),
-              ),
-              testing.example(
-                context,
-                text: 'change image upload',
-                child: _changeImageUpload(),
-              ),
-              testing.example(
-                context,
-                text: 'edit image',
-                child: _editImage(),
-              ),
+              testing.ExampleButton(label: 'new image upload', builder: () => _newImageUpload()),
+              testing.ExampleButton(label: 'change image upload', builder: () => _changeImageUpload()),
+              testing.ExampleButton(label: 'edit image', builder: () => _editImage()),
             ],
           ),
         ),

@@ -42,11 +42,7 @@ class DeltaExample extends StatelessWidget {
                           height: 400,
                           child: _askPermission(context),
                         ),
-                        testing.example(
-                          context,
-                          text: 'ask permission',
-                          child: _askPermission(context),
-                        ),
+                        testing.ExampleButton(label: 'ask permission', builder: () => _askPermission(context)),
                       ],
                     ),
                   ),

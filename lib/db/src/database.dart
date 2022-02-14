@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:flutter/foundation.dart';
 
 /// Database represent indexedDB
 class Database {
@@ -10,9 +9,8 @@ class Database {
   late Box _box;
 
   /// use a db, create new one if database not exists
-  Future<void> open(String name) async {
+  Future<void> open(String name, {bool cleanBeforeUse = false}) async {
     _box = await Hive.openBox(name);
-    debugPrint('[db] hive open box: $name');
   }
 
   /// keys is all the keys in the box, The keys are sorted alphabetically in ascending order.

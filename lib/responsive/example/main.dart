@@ -26,36 +26,13 @@ class ResponsiveExample extends StatelessWidget {
             ),
             Wrap(
               children: [
-                testing.example(
-                  context,
-                  text: 'toolbar',
-                  child: _toolbar(context),
-                ),
-                testing.example(
-                  context,
-                  text: 'tool menu',
-                  child: _toolMenu(context),
-                ),
-                testing.example(
-                  context,
-                  text: 'padding to center',
-                  child: _paddingToCenter(context),
-                ),
-                testing.example(
-                  context,
-                  text: 'layout dynamic bottom side',
-                  child: _layoutDynamicBottomSide(context),
-                ),
-                testing.example(
-                  context,
-                  text: 'wrapped-list-view',
-                  child: _wrappedListView(context),
-                ),
-                testing.example(
-                  context,
-                  text: 'responsive design',
-                  child: _responsive(context),
-                ),
+                testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
+                testing.ExampleButton(label: 'tool menu', builder: () => _toolMenu(context)),
+                testing.ExampleButton(label: 'padding to center', builder: () => _paddingToCenter(context)),
+                testing.ExampleButton(
+                    label: 'layout dynamic bottom side', builder: () => _layoutDynamicBottomSide(context)),
+                testing.ExampleButton(label: 'wrapped-list-view', builder: () => _wrappedListView(context)),
+                testing.ExampleButton(label: 'responsive design', builder: () => _responsive(context)),
               ],
             ),
           ],

@@ -27,11 +27,7 @@ class BarcodeExample extends StatelessWidget {
                 height: 300,
                 child: _pay(),
               ),
-              testing.example(
-                context,
-                text: 'pay',
-                child: _pay(),
-              ),
+              testing.ExampleButton(label: 'pay', builder: () => _pay()),
             ],
           ),
         ),

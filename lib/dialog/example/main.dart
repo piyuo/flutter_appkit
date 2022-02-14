@@ -40,36 +40,12 @@ class DialogExample extends StatelessWidget {
           ),
           Wrap(
             children: [
-              testing.example(
-                context,
-                text: 'alert',
-                child: _alert(context),
-              ),
-              testing.example(
-                context,
-                text: 'tooltip',
-                child: _tooltip(context),
-              ),
-              testing.example(
-                context,
-                text: 'loading',
-                child: _loading(context),
-              ),
-              testing.example(
-                context,
-                text: 'slide',
-                child: _slide(context),
-              ),
-              testing.example(
-                context,
-                text: 'route',
-                child: _route(context),
-              ),
-              testing.example(
-                context,
-                text: 'selection',
-                child: _selection(context),
-              ),
+              testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
+              testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
+              testing.ExampleButton(label: 'loading', builder: () => _loading(context)),
+              testing.ExampleButton(label: 'slide', builder: () => _slide(context)),
+              testing.ExampleButton(label: 'route', builder: () => _route(context)),
+              testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
             ],
           ),
         ],

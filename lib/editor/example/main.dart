@@ -28,16 +28,8 @@ class EditorExample extends StatelessWidget {
               Container(
                 child: _imageEditor(),
               ),
-              testing.example(
-                context,
-                text: 'rich editor',
-                child: _richEditor(),
-              ),
-              testing.example(
-                context,
-                text: 'image editor',
-                child: _imageEditor(),
-              ),
+              testing.ExampleButton(label: 'rich editor', builder: () => _richEditor()),
+              testing.ExampleButton(label: 'image editor', builder: () => _imageEditor()),
             ],
           ),
         ),

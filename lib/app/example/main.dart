@@ -65,33 +65,28 @@ class AppExampleState extends State<AppExample> {
         Container(
             color: Colors.black,
             child: Wrap(children: [
-              testing.example(
-                context,
-                text: 'routing',
+              testing.ExampleButton(
+                label: 'routing',
                 useScaffold: false,
-                child: _routing(context, widget.data),
+                builder: () => _routing(context, widget.data),
               ),
-              testing.example(
-                context,
-                text: 'localization',
-                child: _localization(context),
+              testing.ExampleButton(
+                label: 'localization',
+                builder: () => _localization(context),
               ),
-              testing.example(
-                context,
-                text: 'test root context with dialog',
-                child: _testRootContext(context),
+              testing.ExampleButton(
+                label: 'test root context with dialog',
+                builder: () => _testRootContext(context),
               ),
-              testing.example(
-                context,
-                text: 'scroll behavior',
+              testing.ExampleButton(
+                label: 'scroll behavior',
                 useScaffold: false,
-                child: _scrollBehavior(context),
+                builder: () => _scrollBehavior(context),
               ),
-              testing.example(
-                context,
-                text: 'set page title',
+              testing.ExampleButton(
+                label: 'set page title',
                 useScaffold: false,
-                child: _setPageTitle(context),
+                builder: () => _setPageTitle(context),
               ),
             ]))
       ],

@@ -32,42 +32,13 @@ class LayoutExample extends StatelessWidget {
       Expanded(child: _sliverScaffold(context)),
       Wrap(
         children: [
-          testing.example(
-            context,
-            text: 'sliver scaffold',
-            child: _sliverScaffold(context),
-            useScaffold: false,
-          ),
-          testing.example(
-            context,
-            text: 'slideshow',
-            child: _slideshow(context),
-          ),
-          testing.example(
-            context,
-            text: 'wall',
-            child: _wall(context),
-          ),
-          testing.example(
-            context,
-            text: 'side panel',
-            child: _sidePanel(context),
-          ),
-          testing.example(
-            context,
-            text: 'story line',
-            child: _storyLine(context),
-          ),
-          testing.example(
-            context,
-            text: 'listing',
-            child: _listing(context),
-          ),
-          testing.example(
-            context,
-            text: 'check list',
-            child: _checkList(context),
-          ),
+          testing.ExampleButton(label: 'sliver scaffold', builder: () => _sliverScaffold(context), useScaffold: false),
+          testing.ExampleButton(label: 'slideshow', builder: () => _slideshow(context)),
+          testing.ExampleButton(label: 'wall', builder: () => _wall(context)),
+          testing.ExampleButton(label: 'side panel', builder: () => _sidePanel(context)),
+          testing.ExampleButton(label: 'story line', builder: () => _storyLine(context)),
+          testing.ExampleButton(label: 'listing', builder: () => _listing(context)),
+          testing.ExampleButton(label: 'check list', builder: () => _checkList(context)),
         ],
       )
     ]);

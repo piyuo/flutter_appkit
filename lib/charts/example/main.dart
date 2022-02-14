@@ -25,15 +25,13 @@ class ChartsExample extends StatelessWidget {
               Expanded(
                 child: _indicator(),
               ),
-              testing.example(
-                context,
-                text: 'line chart',
-                child: _timeChart(),
+              testing.ExampleButton(
+                label: 'line chart',
+                builder: () => _timeChart(),
               ),
-              testing.example(
-                context,
-                text: 'indicator',
-                child: _indicator(),
+              testing.ExampleButton(
+                label: 'indicator',
+                builder: () => _indicator(),
               ),
             ],
           ),

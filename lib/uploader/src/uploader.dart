@@ -69,7 +69,7 @@ class Uploader with ChangeNotifier {
     }
     filenames.add(result);
     notifyListeners();
-    return null;
+    return result;
   }
 
   Future<void> delete(BuildContext context, String filename) async {

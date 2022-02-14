@@ -72,151 +72,38 @@ class DeltaExample extends StatelessWidget {
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
-                                testing.example(
-                                  context,
-                                  text: 'refresh more',
-                                  child: _refreshMoreView(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'button panel',
-                                  child: _buttonPanel(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'is touch enabled?',
-                                  child: _isTouchSupported(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'no data',
-                                  child: _noData(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'shimmer',
-                                  child: _shimmer(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'wait',
-                                  child: _wait(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'wait error',
-                                  child: _waitError(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'countdown',
-                                  child: _badge(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'countdown',
-                                  child: _countdown(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'search box',
-                                  child: _searchBox(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'redirect to url',
-                                  child: _redirectToUrl(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'tap on button hint',
-                                  child: _tapOnButtonHint(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'await on tap',
-                                  child: _awaitOnTap(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'refresh button',
-                                  child: _refreshButton(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'indicator',
-                                  child: _indicator(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'tap breaker',
-                                  child: _tapBreaker(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'web image',
-                                  child: _webImage(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'web image provider',
-                                  child: _webImageProvider(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'web image data',
-                                  child: _webImageData(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'checkbox',
-                                  child: _checkbox(context, model),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'hypertext',
-                                  child: _hypertext(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'await wait',
-                                  child: _awaitWait(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'await error',
-                                  child: _awaitError(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'popup',
-                                  child: _popup(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'menu button',
-                                  child: _menuButton(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'status light',
-                                  child: _statusLight(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'switch',
-                                  child: _switching(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'segment',
-                                  child: _segment(context),
-                                ),
-                                testing.example(
-                                  context,
-                                  text: 'error',
-                                  child: _error(context),
-                                ),
+                                testing.ExampleButton(label: 'refresh more', builder: () => _refreshMoreView(context)),
+                                testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
+                                testing.ExampleButton(
+                                    label: 'is touch enabled?', builder: () => _isTouchSupported(context)),
+                                testing.ExampleButton(label: 'no data', builder: () => _noData(context)),
+                                testing.ExampleButton(label: 'shimmer', builder: () => _shimmer(context)),
+                                testing.ExampleButton(label: 'wait', builder: () => _wait(context)),
+                                testing.ExampleButton(label: 'wait error', builder: () => _waitError(context)),
+                                testing.ExampleButton(label: 'countdown', builder: () => _badge(context)),
+                                testing.ExampleButton(label: 'countdown', builder: () => _countdown(context)),
+                                testing.ExampleButton(label: 'search box', builder: () => _searchBox(context)),
+                                testing.ExampleButton(label: 'redirect to url', builder: () => _redirectToUrl(context)),
+                                testing.ExampleButton(
+                                    label: 'tap on button hint', builder: () => _tapOnButtonHint(context)),
+                                testing.ExampleButton(label: 'await on tap', builder: () => _awaitOnTap(context)),
+                                testing.ExampleButton(label: 'refresh button', builder: () => _refreshButton(context)),
+                                testing.ExampleButton(label: 'indicator', builder: () => _indicator(context)),
+                                testing.ExampleButton(label: 'tap breaker', builder: () => _tapBreaker(context)),
+                                testing.ExampleButton(label: 'web image', builder: () => _webImage(context)),
+                                testing.ExampleButton(
+                                    label: 'web image provider', builder: () => _webImageProvider(context)),
+                                testing.ExampleButton(label: 'web image data', builder: () => _webImageData(context)),
+                                testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
+                                testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
+                                testing.ExampleButton(label: 'await wait', builder: () => _awaitWait(context)),
+                                testing.ExampleButton(label: 'await error', builder: () => _awaitError(context)),
+                                testing.ExampleButton(label: 'popup', builder: () => _popup(context)),
+                                testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
+                                testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
+                                testing.ExampleButton(label: 'switch', builder: () => _switching(context)),
+                                testing.ExampleButton(label: 'segment', builder: () => _segment(context)),
+                                testing.ExampleButton(label: 'error', builder: () => _error(context)),
                               ],
                             ),
                           ),

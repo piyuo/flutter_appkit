@@ -33,40 +33,34 @@ class DataExample extends StatelessWidget {
         ),
         Wrap(
           children: [
-            testing.example(
-              context,
-              text: 'data provider',
+            testing.ExampleButton(
+              label: 'data provider',
               useScaffold: false,
-              child: _dataProvider(),
+              builder: () => _dataProvider(),
             ),
-            testing.example(
-              context,
-              text: 'page table',
+            testing.ExampleButton(
+              label: 'page table',
               useScaffold: false,
-              child: _pageTable(),
+              builder: () => _pageTable(),
             ),
-            testing.example(
-              context,
-              text: 'empty table',
+            testing.ExampleButton(
+              label: 'empty table',
               useScaffold: false,
-              child: _emptyTable(),
+              builder: () => _emptyTable(),
             ),
-            testing.example(
-              context,
-              text: 'page list',
+            testing.ExampleButton(
+              label: 'page list',
               useScaffold: false,
-              child: _pageList(),
+              builder: () => _pageList(),
             ),
-            testing.example(
-              context,
-              text: 'empty page list',
+            testing.ExampleButton(
+              label: 'empty page list',
               useScaffold: false,
-              child: _emptyPageList(),
+              builder: () => _emptyPageList(),
             ),
-            testing.example(
-              context,
-              text: 'utility',
-              child: _utility(),
+            testing.ExampleButton(
+              label: 'utility',
+              builder: () => _utility(),
             ),
           ],
         ),

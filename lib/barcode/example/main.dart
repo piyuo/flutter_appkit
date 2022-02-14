@@ -29,20 +29,17 @@ class BarcodeExample extends StatelessWidget {
                 height: 300,
                 child: _showBarcodeScanner(context),
               ),
-              testing.example(
-                context,
-                text: 'QR code',
-                child: _qrCode(),
+              testing.ExampleButton(
+                label: 'QR code',
+                builder: () => _qrCode(),
               ),
-              testing.example(
-                context,
-                text: 'barcode scanner',
-                child: _barcodeScanner(),
+              testing.ExampleButton(
+                label: 'barcode scanner',
+                builder: () => _barcodeScanner(),
               ),
-              testing.example(
-                context,
-                text: 'show scanner dialog',
-                child: _showBarcodeScanner(context),
+              testing.ExampleButton(
+                label: 'show scanner dialog',
+                builder: () => _showBarcodeScanner(context),
               ),
             ],
           ),

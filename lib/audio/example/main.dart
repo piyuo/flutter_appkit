@@ -27,10 +27,9 @@ class AudioExample extends StatelessWidget {
               Container(
                 child: _playAudio(),
               ),
-              testing.example(
-                context,
-                text: 'play audio',
-                child: _playAudio(),
+              testing.ExampleButton(
+                label: 'play audio',
+                builder: () => _playAudio(),
               ),
             ],
           ),

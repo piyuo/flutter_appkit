@@ -37,10 +37,9 @@ class DbExample extends StatelessWidget {
       Expanded(child: _sample(context)),
       Wrap(
         children: [
-          testing.example(
-            context,
-            text: 'padding to tablet',
-            child: _sample(context),
+          testing.ExampleButton(
+            label: 'padding to tablet',
+            builder: () => _sample(context),
           ),
         ],
       )
