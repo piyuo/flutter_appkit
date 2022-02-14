@@ -1,0 +1,380 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/responsive/responsive.dart' as responsive;
+import 'package:split_view/split_view.dart';
+import 'grid_list.dart';
+import 'selectable_list.dart';
+import 'selectable_grid.dart';
+import 'view_controller.dart';
+import 'selection_header.dart';
+
+/// MasterDetailViewAction is the action that that MasterDetailView generates
+enum MasterDetailViewAction {
+  refresh,
+  listView,
+  gridView,
+  delete,
+  archive,
+  add,
+  select,
+  previousPage,
+  nextPage,
+  rows10,
+  rows20,
+  rows50
+}
+
+class MasterDetailView<T> extends StatelessWidget {
+  /// MasterDetailView show basic master detail view with select/check function, it need [delta.RefreshButtonController]
+  const MasterDetailView({
+    required this.listBuilder,
+    required this.gridBuilder,
+    required this.detailBuilder,
+    required this.items,
+    required this.selectedItems,
+    required this.onBarAction,
+    this.labelBuilder,
+    this.onRefresh,
+    this.onLoadMore,
+    this.headerBuilder,
+    this.footerBuilder,
+    this.isLoading = false,
+    this.onItemSelected,
+    this.onItemChecked,
+    this.onNavigateToDetail,
+    this.gridItemWidth = 240,
+    this.pageInfo,
+    this.onCheckBegin,
+    this.onCheckEnd,
+    Key? key,
+  }) : super(key: key);
+
+  /// items is the list of data to be displayed
+  final List<T> items;
+
+  /// selectedItems is the list of selected items
+  final List<T> selectedItems;
+
+  /// listBuilder is the builder for list view
+  final ItemBuilder<T> listBuilder;
+
+  /// gridBuilder is the builder for grid view
+  final ItemBuilder<T> gridBuilder;
+
+  /// gridItemWidth is the width of grid item
+  final int gridItemWidth;
+
+  /// labelBuilder is the builder for label in grid view
+  final ItemBuilder<T>? labelBuilder;
+
+  /// detailBuilder is the builder for detail view
+  final Widget Function(T) detailBuilder;
+
+  /// headerBuilder is the builder for header
+  final Widget Function()? headerBuilder;
+
+  /// footerBuilder is the builder for footer
+  final Widget Function()? footerBuilder;
+
+  /// onRefresh is the callback for refresh button
+  final Future<void> Function()? onRefresh;
+
+  /// onLoadMore is the callback for pull refresh load more
+  final Future<void> Function()? onLoadMore;
+
+  /// isLoading is the flag to indicate if loading
+  final bool isLoading;
+
+  /// pageInfo is current page info if not in phone design
+  final String? pageInfo;
+
+  /// onItemSelected is the callback for item selected
+  final void Function(List<T> items)? onItemSelected;
+
+  /// onItemChecked is the callback for item checked
+  final void Function(List<T> items)? onItemChecked;
+
+  /// isSplitView is true if in split view
+  bool isSplitView(ViewController controller) => controller.isListView && !responsive.isPhoneDesign;
+
+  /// onNavigateToDetail is the callback for navigate to detail view
+  final void Function(T)? onNavigateToDetail;
+
+  /// onBarAction is the callback for bar action
+  final Future<void> Function(MasterDetailViewAction) onBarAction;
+
+  /// onCheckBegin is the callback for check mode begin
+  final VoidCallback? onCheckBegin;
+
+  /// onCheckBegin is the callback for check mode end
+  final VoidCallback? onCheckEnd;
+
+  /// _buildFooterButton build footer buttons bar
+  Widget _buildFooterButtons(BuildContext context, ViewController controller) {
+    final buttonStyle = TextStyle(
+      fontSize: 15,
+      color: Colors.orange.shade700,
+    );
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+      color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade800),
+      child: Row(children: [
+        TextButton(
+          child: Text('Select', style: buttonStyle),
+          style: controller.isSelecting
+              ? ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
+                  ),
+                )
+              : null,
+          onPressed: () async {
+            controller.isSelecting ? onCheckEnd?.call() : onCheckBegin?.call();
+            controller.isSelecting = !controller.isSelecting;
+            await onBarAction.call(MasterDetailViewAction.select);
+          },
+        ),
+        const Spacer(),
+        TextButton(
+          child: Text('New', style: buttonStyle),
+          onPressed: () => onBarAction.call(MasterDetailViewAction.add),
+        ),
+      ]),
+    );
+  }
+
+  /// buildList build list and split view
+  Widget buildList(BuildContext context, ViewController controller) {
+    return Column(
+      children: [
+        if (controller.isSelecting) _buildSelectionHeader(context, controller),
+        Expanded(
+          child: SelectableList<T>(
+            checkMode: controller.isSelecting,
+            items: items,
+            selectedItems: selectedItems,
+            builder: listBuilder,
+            onRefresh: context.isTouchSupported ? onRefresh : null, // only run on touch device
+            onLoadMore: context.isTouchSupported ? onLoadMore : null, // only run on touch device
+            headerBuilder: headerBuilder,
+            footerBuilder: footerBuilder,
+            onItemSelected: (selectedItems) {
+              if (!isSplitView(controller)) {
+                onNavigateToDetail?.call(selectedItems[0]);
+              }
+              onItemSelected?.call(selectedItems);
+            },
+            onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
+          ),
+        ),
+        _buildFooterButtons(context, controller),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ViewController>(
+        builder: (context, controller, child) =>
+            LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+              if (isLoading) {
+                return const delta.LoadingDisplay();
+              }
+              if (items.isEmpty) {
+                return const delta.NoDataDisplay();
+              }
+              if (!controller.isListView) {
+                // grid view
+                return Column(
+                  children: [
+                    if (controller.isSelecting) _buildSelectionHeader(context, controller),
+                    if (responsive.isNotPhoneDesign && !controller.isSelecting)
+                      Row(
+                        children: [
+                          SizedBox(width: 230, child: _buildLeftBar(context, controller)),
+                          const SizedBox(height: 30, child: VerticalDivider(color: Colors.grey)),
+                          Expanded(child: _buildRightBar(context)),
+                        ],
+                      ),
+                    Expanded(
+                        child: SelectableGrid<T>(
+                      checkMode: controller.isSelecting,
+                      headerBuilder: headerBuilder,
+                      footerBuilder: footerBuilder,
+                      items: items,
+                      selectedItems: selectedItems,
+                      builder: gridBuilder,
+                      labelBuilder: labelBuilder,
+                      onRefresh: onRefresh,
+                      onLoadMore: onLoadMore,
+                      onItemSelected: onItemSelected,
+                      onItemChecked: onItemChecked,
+                      crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
+                    )),
+                    _buildFooterButtons(context, controller),
+                  ],
+                );
+              }
+
+              if (!isSplitView(controller)) {
+                return buildList(context, controller);
+              }
+
+              final activeItem = selectedItems.isEmpty ? items[0] : selectedItems[0];
+              return Column(children: [
+                if (controller.isSelecting) _buildSelectionHeader(context, controller),
+                Expanded(
+                    child: SplitView(
+                  gripSize: 5,
+                  gripColor: context.themeColor(
+                    light: Colors.grey.shade100,
+                    dark: Colors.grey.shade800,
+                  ),
+                  gripColorActive: context.themeColor(
+                    light: Colors.grey.shade300,
+                    dark: Colors.grey.shade800,
+                  ),
+                  controller: SplitViewController(
+                    weights: [0.35],
+                    limits: [WeightLimit(min: 0.25, max: 0.45)],
+                  ),
+                  viewMode: SplitViewMode.Horizontal,
+                  indicator: SplitIndicator(
+                      viewMode: SplitViewMode.Horizontal,
+                      color: context.themeColor(
+                        light: Colors.grey.shade400,
+                        dark: Colors.grey,
+                      )),
+                  activeIndicator: const SplitIndicator(
+                    viewMode: SplitViewMode.Horizontal,
+                    isActive: true,
+                    color: Colors.grey,
+                  ),
+                  children: [
+                    Column(
+                      children: [
+                        if (!controller.isSelecting) _buildLeftBar(context, controller),
+                        Expanded(
+                          child: buildList(context, controller),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        if (!controller.isSelecting) _buildRightBar(context),
+                        Expanded(
+                          child: detailBuilder(activeItem),
+                        )
+                      ],
+                    ),
+                  ],
+                  //onWeightChanged: (w) => onSplitViewResized?.call(constraints.maxWidth * w[0]!),
+                ))
+              ]);
+            }));
+  }
+
+  /// _buildSelectionHeader in selection view
+  Widget _buildSelectionHeader(BuildContext context, ViewController controller) {
+    return SelectionHeader(
+      selected: selectedItems.length,
+      isAllSelected: selectedItems.length == items.length,
+      onSelectAll: () => onItemChecked?.call(items),
+      onUnselectAll: () => onItemChecked?.call([]),
+      actions: [
+        TextButton.icon(
+          style: TextButton.styleFrom(
+            primary: Colors.grey.shade900,
+          ),
+          label: const Text('Delete'),
+          icon: const Icon(Icons.delete),
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+
+  /// _buildLeftBar in split view
+  Widget _buildLeftBar(BuildContext context, ViewController controller) {
+    return Row(
+      children: [
+        const SizedBox(width: 10),
+        delta.RefreshButton(
+          onPressed: () async => await onBarAction(MasterDetailViewAction.refresh),
+        ),
+        Expanded(
+          child: responsive.Toolbar<MasterDetailViewAction>(
+            onPressed: (action) {
+              if (action == MasterDetailViewAction.listView) {
+                controller.isListView = true;
+              } else if (action == MasterDetailViewAction.gridView) {
+                controller.isListView = false;
+              }
+              onBarAction.call(action);
+            },
+            items: [
+              responsive.ToolButton(
+                label: 'View as List',
+                icon: Icons.view_headline,
+                value: MasterDetailViewAction.listView,
+                active: controller.isListView,
+              ),
+              responsive.ToolButton(
+                label: 'View as Grid',
+                icon: Icons.grid_view,
+                value: MasterDetailViewAction.gridView,
+                active: !controller.isListView,
+              ),
+              responsive.ToolSpacer(),
+              responsive.ToolButton(
+                label: 'Delete',
+                icon: Icons.delete_forever,
+                value: MasterDetailViewAction.delete,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// _buildRightBar in split view
+  Widget _buildRightBar(BuildContext context) {
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    return responsive.Toolbar<MasterDetailViewAction>(
+      onPressed: onBarAction,
+      items: [
+        responsive.ToolButton(
+          label: 'Add',
+          icon: Icons.add,
+          value: MasterDetailViewAction.add,
+        ),
+        responsive.ToolSpacer(),
+        if (pageInfo != null)
+          responsive.ToolSelection<MasterDetailViewAction>(
+            width: 80,
+            label: localizations.rowsPerPageTitle,
+            text: pageInfo!,
+            selection: {
+              MasterDetailViewAction.rows10: 'show 10 rows per page',
+              MasterDetailViewAction.rows20: 'show 20 rows per page',
+              MasterDetailViewAction.rows50: 'show 50 rows per page',
+            },
+          ),
+        responsive.ToolButton(
+          label: localizations.previousPageTooltip,
+          icon: Icons.chevron_left,
+          value: MasterDetailViewAction.previousPage,
+        ),
+        responsive.ToolButton(
+          label: localizations.nextPageTooltip,
+          icon: Icons.chevron_right,
+          value: MasterDetailViewAction.nextPage,
+        ),
+      ],
+    );
+  }
+}
