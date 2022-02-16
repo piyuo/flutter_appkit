@@ -8,22 +8,31 @@ class LibLocalizationsEn extends LibLocalizations {
   LibLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get notesSelectButtonText => 'Select';
+  String get notesSelectButtonLabel => 'Select';
 
   @override
-  String get notesNewButtonText => 'New';
+  String get notesNewButtonLabel => 'New';
 
   @override
-  String get notesDeleteButtonText => 'Delete';
+  String get notesDeleteButtonLabel => 'Delete';
 
   @override
-  String get notesViewAsList => 'View as List';
+  String get notesViewAsListLabel => 'View as List';
 
   @override
-  String get notesViewAsGrid => 'View as Grid';
+  String get notesViewAsGridLabel => 'View as Grid';
 
   @override
   String get notesRowsPerPage => '%1 Rows per page';
+
+  @override
+  String get notesSelectAllButtonLabel => 'Select All';
+
+  @override
+  String get notesUnselectAllButtonLabel => 'Unselect All';
+
+  @override
+  String get notesItemSelectedLabel => 'Item selected';
 
   @override
   String get hintPleaseWait => 'Please Wait';

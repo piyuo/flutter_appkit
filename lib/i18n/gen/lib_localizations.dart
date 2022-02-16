@@ -95,41 +95,59 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
-  /// No description provided for @notesSelectButtonText.
+  /// No description provided for @notesSelectButtonLabel.
   ///
   /// In en, this message translates to:
   /// **'Select'**
-  String get notesSelectButtonText;
+  String get notesSelectButtonLabel;
 
-  /// No description provided for @notesNewButtonText.
+  /// No description provided for @notesNewButtonLabel.
   ///
   /// In en, this message translates to:
   /// **'New'**
-  String get notesNewButtonText;
+  String get notesNewButtonLabel;
 
-  /// No description provided for @notesDeleteButtonText.
+  /// No description provided for @notesDeleteButtonLabel.
   ///
   /// In en, this message translates to:
   /// **'Delete'**
-  String get notesDeleteButtonText;
+  String get notesDeleteButtonLabel;
 
-  /// No description provided for @notesViewAsList.
+  /// No description provided for @notesViewAsListLabel.
   ///
   /// In en, this message translates to:
   /// **'View as List'**
-  String get notesViewAsList;
+  String get notesViewAsListLabel;
 
-  /// No description provided for @notesViewAsGrid.
+  /// No description provided for @notesViewAsGridLabel.
   ///
   /// In en, this message translates to:
   /// **'View as Grid'**
-  String get notesViewAsGrid;
+  String get notesViewAsGridLabel;
 
   /// No description provided for @notesRowsPerPage.
   ///
   /// In en, this message translates to:
   /// **'%1 Rows per page'**
   String get notesRowsPerPage;
+
+  /// No description provided for @notesSelectAllButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select All'**
+  String get notesSelectAllButtonLabel;
+
+  /// No description provided for @notesUnselectAllButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unselect All'**
+  String get notesUnselectAllButtonLabel;
+
+  /// No description provided for @notesItemSelectedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item selected'**
+  String get notesItemSelectedLabel;
 
   /// No description provided for @hintPleaseWait.
   ///

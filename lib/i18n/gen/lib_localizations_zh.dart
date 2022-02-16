@@ -8,22 +8,31 @@ class LibLocalizationsZh extends LibLocalizations {
   LibLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get notesSelectButtonText => '選擇';
+  String get notesSelectButtonLabel => '選擇';
 
   @override
-  String get notesNewButtonText => '新增';
+  String get notesNewButtonLabel => '新增';
 
   @override
-  String get notesDeleteButtonText => '刪除';
+  String get notesDeleteButtonLabel => '刪除';
 
   @override
-  String get notesViewAsList => '以列表形式查看';
+  String get notesViewAsListLabel => '以列表形式查看';
 
   @override
-  String get notesViewAsGrid => '以網格形式查看';
+  String get notesViewAsGridLabel => '以網格形式查看';
 
   @override
   String get notesRowsPerPage => '每頁顯示 %1 項';
+
+  @override
+  String get notesSelectAllButtonLabel => '全選';
+
+  @override
+  String get notesUnselectAllButtonLabel => '全不選';
+
+  @override
+  String get notesItemSelectedLabel => '項目已選擇';
 
   @override
   String get hintPleaseWait => '請稍候';
@@ -430,22 +439,31 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
   LibLocalizationsZhTw(): super('zh_TW');
 
   @override
-  String get notesSelectButtonText => '選擇';
+  String get notesSelectButtonLabel => '選擇';
 
   @override
-  String get notesNewButtonText => '新增';
+  String get notesNewButtonLabel => '新增';
 
   @override
-  String get notesDeleteButtonText => '刪除';
+  String get notesDeleteButtonLabel => '刪除';
 
   @override
-  String get notesViewAsList => '以列表形式查看';
+  String get notesViewAsListLabel => '以列表形式查看';
 
   @override
-  String get notesViewAsGrid => '以網格形式查看';
+  String get notesViewAsGridLabel => '以網格形式查看';
 
   @override
   String get notesRowsPerPage => '每頁顯示 %1 項';
+
+  @override
+  String get notesSelectAllButtonLabel => '全選';
+
+  @override
+  String get notesUnselectAllButtonLabel => '全不選';
+
+  @override
+  String get notesItemSelectedLabel => '項目已選擇';
 
   @override
   String get hintPleaseWait => '請稍候';
