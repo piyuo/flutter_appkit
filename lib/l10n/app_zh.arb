@@ -1,5 +1,7 @@
 {
-    "hintPleaseWait": "请稍候",
+    "notesSelectButtonText":"選擇",
+    "notesNewButtonText":"新增",
+    "hintPleaseWait": "請稍候",
     "hintDone": "完成",
     "confirmButtonText": "确认",
     "searchButtonText": "搜寻",

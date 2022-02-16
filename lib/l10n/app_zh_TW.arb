@@ -1,4 +1,6 @@
 {
+    "notesSelectButtonText":"選擇",
+    "notesNewButtonText":"新增",
     "hintPleaseWait": "請稍候",
     "hintDone": "完成",
     "confirmButtonText": "確認",

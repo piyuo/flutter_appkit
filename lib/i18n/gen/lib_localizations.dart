@@ -95,6 +95,18 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @notesSelectButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get notesSelectButtonText;
+
+  /// No description provided for @notesNewButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get notesNewButtonText;
+
   /// No description provided for @hintPleaseWait.
   ///
   /// In en, this message translates to:

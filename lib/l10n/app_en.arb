@@ -1,4 +1,6 @@
 {
+    "notesSelectButtonText":"Select",
+    "notesNewButtonText":"New",
     "hintPleaseWait": "Please Wait",
     "hintDone": "Done",
     "confirmButtonText": "Confirm",
