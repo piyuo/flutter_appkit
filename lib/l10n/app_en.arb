@@ -7,7 +7,7 @@
     "notesRowsPerPage":"%1 Rows per page",
     "notesSelectAllButtonLabel":"Select All",
     "notesUnselectAllButtonLabel":"Unselect All",
-    "notesItemSelectedLabel":"Item selected",
+    "notesItemSelectedLabel":"%1 Item selected",
 
     "hintPleaseWait": "Please Wait",
     "hintDone": "Done",

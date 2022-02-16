@@ -7,7 +7,7 @@
     "notesRowsPerPage":"每頁顯示 %1 項",
     "notesSelectAllButtonLabel":"全選",
     "notesUnselectAllButtonLabel":"全不選",
-    "notesItemSelectedLabel":"項目已選擇",
+    "notesItemSelectedLabel":"%1 項目已選擇",
     "hintPleaseWait": "請稍候",
     "hintDone": "完成",
     "confirmButtonText": "確認",
