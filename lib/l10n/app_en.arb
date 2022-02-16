@@ -1,6 +1,10 @@
 {
     "notesSelectButtonText":"Select",
     "notesNewButtonText":"New",
+    "notesDeleteButtonText":"Delete",
+    "notesViewAsList":"View as List",
+    "notesViewAsGrid":"View as Grid",
+    "notesRowsPerPage":"%1 Rows per page",
     "hintPleaseWait": "Please Wait",
     "hintDone": "Done",
     "confirmButtonText": "Confirm",

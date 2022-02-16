@@ -1,6 +1,10 @@
 {
     "notesSelectButtonText":"選擇",
     "notesNewButtonText":"新增",
+    "notesViewAsList":"以列表形式查看",
+    "notesViewAsGrid":"以網格形式查看",
+    "notesDeleteButtonText":"刪除",
+    "notesRowsPerPage":"每頁顯示 %1 項",
     "hintPleaseWait": "請稍候",
     "hintDone": "完成",
     "confirmButtonText": "确认",

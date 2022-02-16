@@ -14,6 +14,18 @@ class LibLocalizationsEn extends LibLocalizations {
   String get notesNewButtonText => 'New';
 
   @override
+  String get notesDeleteButtonText => 'Delete';
+
+  @override
+  String get notesViewAsList => 'View as List';
+
+  @override
+  String get notesViewAsGrid => 'View as Grid';
+
+  @override
+  String get notesRowsPerPage => '%1 Rows per page';
+
+  @override
   String get hintPleaseWait => 'Please Wait';
 
   @override

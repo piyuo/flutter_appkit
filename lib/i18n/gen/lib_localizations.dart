@@ -107,6 +107,30 @@ abstract class LibLocalizations {
   /// **'New'**
   String get notesNewButtonText;
 
+  /// No description provided for @notesDeleteButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get notesDeleteButtonText;
+
+  /// No description provided for @notesViewAsList.
+  ///
+  /// In en, this message translates to:
+  /// **'View as List'**
+  String get notesViewAsList;
+
+  /// No description provided for @notesViewAsGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'View as Grid'**
+  String get notesViewAsGrid;
+
+  /// No description provided for @notesRowsPerPage.
+  ///
+  /// In en, this message translates to:
+  /// **'%1 Rows per page'**
+  String get notesRowsPerPage;
+
   /// No description provided for @hintPleaseWait.
   ///
   /// In en, this message translates to:

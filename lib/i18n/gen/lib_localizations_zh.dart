@@ -14,6 +14,18 @@ class LibLocalizationsZh extends LibLocalizations {
   String get notesNewButtonText => '新增';
 
   @override
+  String get notesDeleteButtonText => '刪除';
+
+  @override
+  String get notesViewAsList => '以列表形式查看';
+
+  @override
+  String get notesViewAsGrid => '以網格形式查看';
+
+  @override
+  String get notesRowsPerPage => '每頁顯示 %1 項';
+
+  @override
   String get hintPleaseWait => '請稍候';
 
   @override
@@ -422,6 +434,18 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get notesNewButtonText => '新增';
+
+  @override
+  String get notesDeleteButtonText => '刪除';
+
+  @override
+  String get notesViewAsList => '以列表形式查看';
+
+  @override
+  String get notesViewAsGrid => '以網格形式查看';
+
+  @override
+  String get notesRowsPerPage => '每頁顯示 %1 項';
 
   @override
   String get hintPleaseWait => '請稍候';
