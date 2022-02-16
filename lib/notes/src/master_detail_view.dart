@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:split_view/split_view.dart';
 import 'grid_list.dart';
@@ -123,7 +124,7 @@ class MasterDetailView<T> extends StatelessWidget {
       color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade800),
       child: Row(children: [
         TextButton(
-          child: Text('Select', style: buttonStyle),
+          child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
           style: controller.isSelecting
               ? ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -139,7 +140,7 @@ class MasterDetailView<T> extends StatelessWidget {
         ),
         const Spacer(),
         TextButton(
-          child: Text('New', style: buttonStyle),
+          child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
           onPressed: () => onBarAction.call(MasterDetailViewAction.add),
         ),
       ]),
@@ -150,7 +151,7 @@ class MasterDetailView<T> extends StatelessWidget {
   Widget buildList(BuildContext context, ViewController controller) {
     return Column(
       children: [
-        if (controller.isSelecting) _buildSelectionHeader(context, controller),
+        if (controller.isSelecting && !isSplitView(controller)) _buildSelectionHeader(context, controller),
         Expanded(
           child: SelectableList<T>(
             checkMode: controller.isSelecting,
@@ -159,8 +160,8 @@ class MasterDetailView<T> extends StatelessWidget {
             builder: listBuilder,
             onRefresh: context.isTouchSupported ? onRefresh : null, // only run on touch device
             onLoadMore: context.isTouchSupported ? onLoadMore : null, // only run on touch device
-            headerBuilder: headerBuilder,
-            footerBuilder: footerBuilder,
+            headerBuilder: controller.isSelecting ? null : headerBuilder,
+            footerBuilder: controller.isSelecting ? null : footerBuilder,
             onItemSelected: (selectedItems) {
               if (!isSplitView(controller)) {
                 onNavigateToDetail?.call(selectedItems[0]);
@@ -289,7 +290,7 @@ class MasterDetailView<T> extends StatelessWidget {
           style: TextButton.styleFrom(
             primary: Colors.grey.shade900,
           ),
-          label: const Text('Delete'),
+          label: Text(context.i18n.notesDeleteButtonLabel),
           icon: const Icon(Icons.delete),
           onPressed: () {},
         ),
@@ -317,20 +318,20 @@ class MasterDetailView<T> extends StatelessWidget {
             },
             items: [
               responsive.ToolButton(
-                label: 'View as List',
+                label: context.i18n.notesViewAsListLabel,
                 icon: Icons.view_headline,
                 value: MasterDetailViewAction.listView,
                 active: controller.isListView,
               ),
               responsive.ToolButton(
-                label: 'View as Grid',
+                label: context.i18n.notesViewAsGridLabel,
                 icon: Icons.grid_view,
                 value: MasterDetailViewAction.gridView,
                 active: !controller.isListView,
               ),
               responsive.ToolSpacer(),
               responsive.ToolButton(
-                label: 'Delete',
+                label: context.i18n.notesDeleteButtonLabel,
                 icon: Icons.delete_forever,
                 value: MasterDetailViewAction.delete,
               ),
@@ -348,7 +349,7 @@ class MasterDetailView<T> extends StatelessWidget {
       onPressed: onBarAction,
       items: [
         responsive.ToolButton(
-          label: 'Add',
+          label: context.i18n.notesNewButtonLabel,
           icon: Icons.add,
           value: MasterDetailViewAction.add,
         ),
@@ -359,9 +360,9 @@ class MasterDetailView<T> extends StatelessWidget {
             label: localizations.rowsPerPageTitle,
             text: pageInfo!,
             selection: {
-              MasterDetailViewAction.rows10: 'show 10 rows per page',
-              MasterDetailViewAction.rows20: 'show 20 rows per page',
-              MasterDetailViewAction.rows50: 'show 50 rows per page',
+              MasterDetailViewAction.rows10: context.i18n.notesRowsPerPage.replace1('10'),
+              MasterDetailViewAction.rows20: context.i18n.notesRowsPerPage.replace1('20'),
+              MasterDetailViewAction.rows50: context.i18n.notesRowsPerPage.replace1('50'),
             },
           ),
         responsive.ToolButton(

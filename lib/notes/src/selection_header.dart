@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 
 class SelectionHeader extends StatelessWidget {
@@ -42,18 +43,20 @@ class SelectionHeader extends StatelessWidget {
                     onPressed: isAllSelected ? onUnselectAll : onSelectAll,
                   ),
                 if (selected > 0)
-                  Text('$selected item selected',
+                  Text(context.i18n.notesItemSelectedLabel.replace1(selected.toString()),
                       style: const TextStyle(fontSize: 16, color: Colors.white), maxLines: 1),
                 if (selected == 0)
                   TextButton(
-                    child: Text('Select All', style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
+                    child: Text(context.i18n.notesSelectAllButtonLabel,
+                        style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
                     onPressed: onSelectAll,
                   ),
                 if (selected > 0 && responsive.isNotPhoneDesign)
                   Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: TextButton(
-                      child: Text('Unselect All', style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
+                      child: Text(context.i18n.notesUnselectAllButtonLabel,
+                          style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
                       onPressed: onUnselectAll,
                     ),
                   ),

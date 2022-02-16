@@ -65,7 +65,7 @@ class SelectableList<T> extends GridList<T> {
   @override
   Widget buildHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.only(top: 2, bottom: 5),
       child: headerBuilder!(),
     );
   }
