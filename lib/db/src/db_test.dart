@@ -3,22 +3,40 @@ import 'package:flutter_test/flutter_test.dart';
 import 'db.dart';
 
 void main() {
-  setUpAll(() async {
-    await initForTest();
-    await deleteTestDb('test_db');
-  });
+  setUpAll(() async {});
 
   setUp(() async {});
 
-  tearDownAll(() async {
-    await deleteTestDb('test_db');
-  });
+  tearDownAll(() async {});
 
   group('[db]', () {
-    test('should reset', () async {
-      final database = await open('test_db');
+    test('should init', () async {
+      await initDBForTest();
+      final database = await openDatabase('test');
       await database.setString('a', 'b');
       expect(database.contains('a'), true);
+      await database.close();
+
+      // open again
+      final database2 = await openDatabase('test');
+      await database2.setString('b', 'c');
+      expect(database2.contains('a'), true);
+      expect(database2.contains('b'), true);
+      await deleteDatabase('test');
+
+      // since it's been deleted, this should be a new database
+      final database3 = await openDatabase('test');
+      expect(database3.contains('a'), false);
+      expect(database3.contains('b'), false);
+      await deleteDatabase('test');
+    });
+
+    test('should open/delete database', () async {
+      await initDBForTest();
+      await openDatabase('test');
+      expect(await isDatabaseExists('test'), true);
+      await deleteDatabase('test');
+      expect(await isDatabaseExists('test'), false);
     });
   });
 }

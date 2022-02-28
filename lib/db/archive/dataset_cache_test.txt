@@ -1,0 +1,342 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/testing/testing.dart' as testing;
+import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/pb/src/google/google.dart' as google;
+import 'dataset_cache.txt';
+import 'db.dart';
+import 'cache.dart' as cache;
+
+void main() {
+  setUpAll(() async {
+    await initDBForTest();
+    await initCache();
+  });
+
+  setUp(() async {});
+
+  tearDown(() async {
+    await deleteCache();
+    await initCache();
+  });
+
+  tearDownAll(() async {
+    await deleteCache();
+  });
+
+  group('[dataset_cache]', () {
+    test('should refresh on startup', () async {
+      int refreshCount = 0;
+      DatasetCache cacheSet = DatasetCache(
+          id: 'test',
+          dataBuilder: () => sample.Person(),
+          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+            if (refreshCount == 1) {
+              limit = 2;
+            }
+            refreshCount++;
+            return List.generate(limit, (i) => sample.Person(entity: pb.Entity(id: '$refreshCount$i')));
+          });
+      await cacheSet.startup(testing.Context());
+      // should read 10 rows
+      expect(cacheSet.allRows.length, 10);
+      expect(cacheSet.displayRows.length, 10);
+      expect(cacheSet.isEmpty, false);
+      expect(cacheSet.isNotEmpty, true);
+      expect(cacheSet.noMoreData, false);
+      expect(cache.contains('10'), true);
+      expect(cache.contains('19'), true);
+
+      // should read 2 rows
+      await cacheSet.refresh(testing.Context());
+      expect(cacheSet.allRows.length, 12);
+      expect(cacheSet.displayRows.length, 10);
+      expect(cacheSet.isEmpty, false);
+      expect(cacheSet.isNotEmpty, true);
+      expect(cache.contains('20'), true);
+      expect(cache.contains('21'), true);
+      expect(cache.contains('22'), false);
+
+      // should reset all rows
+      await cacheSet.clear();
+      expect(cache.contains('10'), false);
+      expect(cache.contains('19'), false);
+      expect(cache.contains('20'), false);
+      expect(cache.contains('21'), false);
+      expect(cacheSet.allRows.length, 0);
+      expect(cacheSet.isEmpty, true);
+      expect(cacheSet.isNotEmpty, false);
+
+      await cacheSet.close();
+    });
+
+
+    test('should no more when data loader less than limit', () async {
+      bool refreshed = false;
+      int refreshLimit = 0;
+      DatasetCache ds = DatasetCache(
+        id: 'test',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          refreshed = true;
+          refreshLimit = limit;
+          return [];
+        },
+      );
+      await ds.startup(testing.Context());
+      expect(refreshed, true);
+      expect(refreshLimit, 10);
+      expect(ds.noMoreData, true);
+    });
+
+    test('should remove duplicate data when refresh', () async {
+      final cs = DatasetCache<sample.Person>(
+        id: 'test',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
+            [sample.Person(entity: pb.Entity(id: 'duplicate'))],
+      );
+      await cs.startup(testing.Context());
+      await cs.refresh(testing.Context());
+      // second refresh will delete duplicate data
+      expect(cs.allRows.length, 1);
+    });
+
+    test('should keep more and cache when receive enough data', () async {
+      int refreshCount = 0;
+      final cs = DatasetCache<sample.Person>(
+        dataBuilder: () => sample.Person(),
+        id: 'test',
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          if (refreshCount == 0) {
+            refreshCount++;
+            return List.generate(
+                limit,
+                (index) => sample.Person(
+                      entity: pb.Entity(
+                        id: index.toString(),
+                      ),
+                    ));
+          }
+          return List.generate(
+              limit,
+              (index) => sample.Person(
+                    entity: pb.Entity(
+                      id: 'more' + index.toString(),
+                    ),
+                  ));
+        },
+      );
+      await cs.startup(testing.Context());
+      expect(cs.noMoreData, false);
+      // second refresh will trigger reset
+      await cs.more(testing.Context(), 2);
+      expect(cs.noMoreData, false);
+      expect(cs.allRows.length, 12);
+
+      // check cache
+      final cs2 = DatasetCache<sample.Person>(
+        id: 'test',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [],
+      );
+      await cs2.startup(testing.Context());
+      expect(cs2.noMoreData, false);
+      expect(cs2.allRows.length, 12);
+    });
+
+    test('should no keep more when receive less data', () async {
+      int refreshCount = 0;
+      final cs = DatasetCache<sample.Person>(
+        id: 'testId',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          if (refreshCount == 0) {
+            refreshCount++;
+            return List.generate(
+                limit,
+                (index) => sample.Person(
+                      entity: pb.Entity(
+                        id: index.toString(),
+                      ),
+                    ));
+          }
+          return List.generate(
+              1,
+              (index) => sample.Person(
+                    entity: pb.Entity(
+                      id: 'more' + index.toString(),
+                    ),
+                  ));
+        },
+      );
+      await cs.startup(testing.Context());
+      expect(cs.noMoreData, false);
+      // second refresh will trigger reset
+      await cs.more(testing.Context(), 2);
+      expect(cs.noMoreData, true);
+      expect(cs.allRows.length, 11);
+
+      // check cache
+      final cs2 = DatasetCache<sample.Person>(
+        id: 'testId',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [],
+      );
+      await cs2.startup(testing.Context());
+      expect(cs2.noMoreData, true);
+      expect(cs2.allRows.length, 11);
+    });
+
+    test('should send anchor to data loader', () async {
+      int idCount = 0;
+      bool? _isRefresh;
+      int? _limit;
+      google.Timestamp? _anchorTimestamp;
+      String? _anchorId;
+
+      final cs = DatasetCache<sample.Person>(
+        id: 'test',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          _isRefresh = isRefresh;
+          _limit = limit;
+          _anchorTimestamp = anchorTimestamp;
+          _anchorId = anchorId;
+          idCount++;
+          return List.generate(
+              limit,
+              (index) => sample.Person(
+                    entity: pb.Entity(
+                      id: idCount.toString(),
+                      updateTime: DateTime.now().utcTimestamp,
+                    ),
+                  ));
+        },
+      );
+      await cs.startup(testing.Context());
+      expect(_isRefresh, true);
+      expect(_limit, 10);
+      expect(_anchorTimestamp, isNull);
+      expect(_anchorId, isNull);
+
+      await cs.more(testing.Context(), 1);
+      expect(_isRefresh, false);
+      expect(_limit, 1);
+      expect(_anchorTimestamp, isNotNull);
+      expect(_anchorId, '1');
+
+      await cs.more(testing.Context(), 1);
+      expect(_isRefresh, false);
+      expect(_limit, 1);
+      expect(_anchorTimestamp, isNotNull);
+      expect(_anchorId, '2');
+
+      await cs.refresh(testing.Context());
+      expect(_isRefresh, true);
+      expect(_limit, 10);
+      expect(_anchorTimestamp, isNotNull);
+      expect(_anchorId, '1');
+    });
+
+    test('should no more on when receive empty data', () async {
+      int moreCount = 0;
+      int counter = 0;
+      final ds = DatasetCache<sample.Person>(
+        id: 'testId',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          if (counter == 0) {
+            counter++;
+            return List.generate(
+                limit,
+                (index) => sample.Person(
+                      entity: pb.Entity(
+                        id: index.toString(),
+                        updateTime: DateTime.now().utcTimestamp,
+                      ),
+                    ));
+          }
+          moreCount++;
+          return [];
+        },
+      );
+      await ds.startup(testing.Context());
+      expect(ds.noMoreData, false);
+
+      await ds.more(testing.Context(), 1);
+      expect(ds.noMoreData, true);
+      expect(moreCount, 1);
+
+      await ds.more(testing.Context(), 1);
+      expect(ds.noMoreData, true);
+      expect(moreCount, 1);
+    });
+
+    test('should no more on less data', () async {
+      int moreCount = 0;
+      int counter = 0;
+      final cs = DatasetCache<sample.Person>(
+        id: 'test',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          if (counter == 0) {
+            counter++;
+            return List.generate(
+                limit,
+                (index) => sample.Person(
+                      entity: pb.Entity(
+                        id: index.toString(),
+                        updateTime: DateTime.now().utcTimestamp,
+                      ),
+                    ));
+          }
+          moreCount++;
+          return List.generate(
+              1,
+              (index) => sample.Person(
+                    entity: pb.Entity(
+                      id: index.toString(),
+                      updateTime: DateTime.now().utcTimestamp,
+                    ),
+                  ));
+        },
+      );
+      await cs.startup(testing.Context());
+      expect(cs.noMoreData, false);
+
+      await cs.more(testing.Context(), 2);
+      expect(cs.noMoreData, true);
+      expect(moreCount, 1);
+
+      await cs.more(testing.Context(), 2);
+      expect(cs.noMoreData, true);
+      expect(moreCount, 1);
+    });
+
+    test('should save state', () async {
+      final cs = DatasetCache<sample.Person>(
+        id: 'test',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
+        },
+      );
+      await cs.startup(testing.Context());
+      expect(cs.allRows.length, 1);
+      expect(cs.noMoreData, true);
+      expect(cs.rowsPerPage, 10);
+      final cs2 = DatasetCache<sample.Person>(
+        id: 'test',
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [],
+      );
+      await cs2.open();
+      expect(cs.allRows.length, 1);
+      expect(cs.noMoreData, true);
+      expect(cs.rowsPerPage, 10);
+    });
+  });
+}

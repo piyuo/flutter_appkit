@@ -1,6 +1,6 @@
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
-import 'data.dart';
+import 'data.txt';
 
 class DataCommon<T extends pb.Object> {
   DataCommon({

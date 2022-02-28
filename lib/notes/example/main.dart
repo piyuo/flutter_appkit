@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
-import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/meta/sample/sample.dart' as sample;
@@ -14,6 +14,24 @@ enum SampleFilter { inbox, vip, sent, all }
 final _searchBoxController = TextEditingController();
 int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
+
+class SampleDataset extends db.Dataset<sample.Person> {
+  SampleDataset(BuildContext context)
+      : super(
+          db.MemoryRam(dataBuilder: () => sample.Person()),
+          dataBuilder: () => sample.Person(),
+          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+            return List.generate(returnCount, (i) => sample.Person(entity: pb.Entity(id: '$returnID-$i')));
+          },
+        ) {
+    start(context);
+  }
+
+  static String returnID = 'A';
+
+  static int returnCount = 10;
+}
+
 main() {
   app.start(
     appName: 'notes',
@@ -96,44 +114,7 @@ class NotesExample extends StatelessWidget {
   Widget _dataExplorer(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<data.DataSource<sample.Person>>(
-              create: (context) => data.DataSource<sample.Person>(
-                    context: context,
-                    autoSelectFirstRow: true,
-                    id: 'today_customer',
-                    dataBuilder: () => sample.Person(),
-                    dataRemover: (BuildContext context, List<String> ids) async => true,
-                    dataLoader: (BuildContext context, isRefresh, limit, anchorTimestamp, anchorId) async {
-                      if (isRefresh) {
-                        return List.generate(
-                            limit,
-                            (index) => sample.Person(
-                                  entity: pb.Entity(
-                                    id: unique.uuid(),
-                                    updateTime: DateTime.now().utcTimestamp,
-                                    notGoingToChange: false,
-                                    deleted: false,
-                                  ),
-                                  name: 'refresh $index',
-                                  age: index,
-                                ));
-                      }
-
-                      // load more data
-                      return List.generate(
-                          limit,
-                          (index) => sample.Person(
-                                entity: pb.Entity(
-                                  id: unique.uuid(),
-                                  updateTime: DateTime.now().utcTimestamp,
-                                  notGoingToChange: false,
-                                  deleted: false,
-                                ),
-                                name: 'more $index',
-                                age: index,
-                              ));
-                    },
-                  )),
+          ChangeNotifierProvider<SampleDataset>(create: (context) => SampleDataset(context)),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
           ),
@@ -141,9 +122,9 @@ class NotesExample extends StatelessWidget {
             create: (context) => ViewController(),
           )
         ],
-        child: Consumer<data.DataSource<sample.Person>>(
+        child: Consumer<SampleDataset>(
             builder: (context, dataSource, _) => DataExplorer<sample.Person>(
-                  dataSource: dataSource,
+                  dataset: dataSource,
                   listBuilder: (sample.Person person, bool isSelected) => Padding(
                     padding: const EdgeInsets.all(20),
                     child: Text('list:${person.name}'),

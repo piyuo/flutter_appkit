@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
-import 'data.dart';
-import 'data_common.dart';
+import 'data.txt';
+import 'data_common.txt';
 
 class DataProvider<T extends pb.Object> extends DataCommon<T> with ChangeNotifier {
   DataProvider({

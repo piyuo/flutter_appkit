@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'dataset.dart';
-import 'data.dart';
+import 'dataset.txt';
+import 'data.txt';
 
 class DataSource<T extends pb.Object> extends Dataset<T> with ChangeNotifier {
   DataSource({

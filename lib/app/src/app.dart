@@ -6,7 +6,6 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/db/db.dart' as db;
 import 'package:beamer/beamer.dart';
 
@@ -70,6 +69,21 @@ set userID(String value) {
   _userID = value;
 }
 
+/// _cacheDBName is cache database name
+const _cacheDBName = 'cache';
+
+/// _cacheTimeName is cache time database name
+const _cacheTimeName = 'time';
+
+/// _cache is global cache
+db.Cache? _cache;
+
+/// applicationCache is application cache
+Future<db.Cache> get applicationCache async {
+  _cache ??= await db.openCache(_cacheDBName, _cacheTimeName);
+  return _cache!;
+}
+
 /// start application
 void start({
   required String appName,
@@ -103,9 +117,7 @@ void start({
 
   Future.microtask(() async {
     // init db
-    await db.init();
-    // init cache
-    await cache.init();
+    await db.initDB();
     // run app
     return error.watch(() => runApp(MultiProvider(
           providers: [

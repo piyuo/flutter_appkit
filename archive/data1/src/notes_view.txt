@@ -7,8 +7,8 @@ import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:split_view/split_view.dart';
-import 'data_source.dart';
-import 'notes_view_provider.dart';
+import 'data_source.txt';
+import 'notes_view_provider.txt';
 
 /// NoteBuilder build note how to show on list and content
 typedef NoteBuilder<T extends pb.Object> = Widget Function(BuildContext context, T row, int rowIndex);

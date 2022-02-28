@@ -3,33 +3,64 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'database.dart';
 
-const testDatabaseFile = 'test.db';
+/// DatasetState is data source state.
+enum DataState {
+  initial, // initial state
+  refreshing, // refresh new data
+  loading, // loading more data
+  ready, // ready to show data
+  dataMissing, // local data missing, maybe someone delete data, need let user know they need refresh
+}
 
-/// init database env
-Future<void> init() async {
+/// hivePath is hive database path
+String? hivePath;
+
+/// initDB database env
+/// ```dart
+/// await initDB();
+/// ```
+Future<void> initDB() async {
   if (!kIsWeb) {
     final directory = await path_provider.getApplicationDocumentsDirectory();
-    Hive.init(directory.path);
+    hivePath = directory.path;
+    debugPrint('hivePath: $hivePath');
+    Hive.init(hivePath!);
   }
 }
 
-/// init database env
+/// initDBForTest init database env in test mode
+/// ```dart
+/// await initDBForTest();
+/// ```
 @visibleForTesting
-Future<void> initForTest() async {
-  Hive.init(testDatabaseFile);
+Future<void> initDBForTest() async {
+  hivePath = 'test.hive';
+  Hive.init(hivePath!);
 }
 
-/// deleteTestDb delete testing database
-@visibleForTesting
-Future<void> deleteTestDb(String databaseName) async {
-  if (await Hive.boxExists(databaseName, path: testDatabaseFile)) {
-    await Hive.deleteBoxFromDisk(databaseName, path: testDatabaseFile);
+/// openDatabase open a database to use, create new one if database not exists
+/// ```dart
+/// final database = await openDatabase('database_name');
+/// ```
+Future<Database> openDatabase(String name) async {
+  final box = await Hive.openBox(name);
+  return Database(box);
+}
+
+/// deleteDatabase delete a database forever
+/// ```dart
+/// await deleteDatabase('database_name');
+/// ```
+Future<void> deleteDatabase(String name) async {
+  if (await Hive.boxExists(name, path: hivePath)) {
+    await Hive.deleteBoxFromDisk(name, path: hivePath);
   }
+  debugPrint('[db] $name deleted');
 }
 
-/// open a database to use, create new one if database not exists
-Future<Database> open(String name) async {
-  final database = Database();
-  await database.open(name);
-  return database;
-}
+/// isDatabaseExists return true if database is exists
+/// ```dart
+/// bool found=await isDatabaseExists('database_name');
+/// ```
+Future<bool> isDatabaseExists(String name) async => await Hive.boxExists(name, path: hivePath);
+

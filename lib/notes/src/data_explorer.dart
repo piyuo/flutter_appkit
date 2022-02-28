@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'grid_list.dart';
-import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'master_detail_view.dart';
 
 class DataExplorer<T extends pb.Object> extends StatelessWidget {
   const DataExplorer({
-    required this.dataSource,
+    required this.dataset,
     required this.listBuilder,
     required this.gridBuilder,
     required this.detailBuilder,
@@ -16,7 +16,7 @@ class DataExplorer<T extends pb.Object> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final data.DataSource<T> dataSource;
+  final db.Dataset<T> dataset;
 
   final ItemBuilder<T> listBuilder;
 
@@ -33,14 +33,14 @@ class DataExplorer<T extends pb.Object> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MasterDetailView<T>(
-      items: dataSource.pageRows,
-      selectedItems: dataSource.selectedRows,
+      items: dataset.displayRows,
+      selectedItems: dataset.selectedRows,
       listBuilder: listBuilder,
       gridBuilder: gridBuilder,
       labelBuilder: labelBuilder,
       detailBuilder: detailBuilder,
       onItemSelected: (List<T> selectedItems) {
-        dataSource.setSelectedRows(selectedItems);
+        dataset.selectRows(selectedItems);
       },
       onNavigateToDetail: onNavigateToDetail,
       onBarAction: onAction,
