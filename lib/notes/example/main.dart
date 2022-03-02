@@ -6,7 +6,6 @@ import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/meta/sample/sample.dart' as sample;
-import 'package:libcli/unique/unique.dart' as unique;
 import '../notes.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
