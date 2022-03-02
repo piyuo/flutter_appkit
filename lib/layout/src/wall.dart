@@ -90,10 +90,12 @@ class Wall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int crossAxisCount = _determineCrossAxisCount;
-    var grid = StaggeredGridView.countBuilder(
+    var grid = StaggeredGrid.count(
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: 10.0,
       crossAxisSpacing: 10.0,
+      children: tiles,
+      /*
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       shrinkWrap: true,
       controller: ScrollController(), // override default controller, we don't wall scroll
@@ -106,7 +108,7 @@ class Wall extends StatelessWidget {
           cross = crossAxisCount;
         }
         return StaggeredTile.count(cross, entry.y);
-      },
+      },*/
     );
 
     if (crossAxisCount == 32) {
