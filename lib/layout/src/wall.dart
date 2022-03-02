@@ -94,7 +94,15 @@ class Wall extends StatelessWidget {
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: 10.0,
       crossAxisSpacing: 10.0,
-      children: tiles,
+      children: tiles.map((tile) {
+        return StaggeredGridTile.count(
+          crossAxisCellCount: tile.x == -1 ? crossAxisCount : tile.x,
+          mainAxisCellCount: tile.y,
+          child: tile,
+        );
+      }).toList(),
+
+//      children: tiles,
       /*
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
       shrinkWrap: true,
@@ -111,10 +119,10 @@ class Wall extends StatelessWidget {
       },*/
     );
 
-    if (crossAxisCount == 32) {
+    /*if (crossAxisCount == 32) {
       // force redraw grid when 32->64
       return Column(children: [grid]);
-    }
+    }*/
     return grid;
   }
 }

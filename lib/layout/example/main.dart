@@ -29,7 +29,7 @@ class LayoutExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: _sliverScaffold(context)),
+      Expanded(child: _wall(context)),
       Wrap(
         children: [
           testing.ExampleButton(label: 'sliver scaffold', builder: () => _sliverScaffold(context), useScaffold: false),
