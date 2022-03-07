@@ -65,7 +65,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _refreshMoreView(context),
+                          child: _menuButton(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -657,21 +657,32 @@ class DeltaExample extends StatelessWidget {
     return Column(children: [
       const SizedBox(height: 40),
       const Text('General'),
-      Row(
-        children: [
-          const SizedBox(width: 20),
-          const Text('Settings'),
-          MenuButton<String>(
-              icon: const Icon(Icons.settings),
-              onPressed: (value) {
-                debugPrint('$value pressed');
-              },
-              checkedValue: '2',
-              selection: const {
-                '1': 'hello',
-                '2': 'world',
-              })
-        ],
+      SizedBox(
+        width: 60,
+        child: MenuButton<String>(
+            icon: const Icon(Icons.settings),
+            tooltip: 'settings',
+            onPressed: (value) {
+              debugPrint('$value pressed');
+            },
+            selectedValue: '2',
+            selection: const {
+              '1': 'hello',
+              '2': 'world',
+            }),
+      ),
+      const Text('Disabled'),
+      const SizedBox(
+        width: 60,
+        child: MenuButton<String>(
+          icon: Icon(Icons.settings),
+          onPressed: null,
+          selectedValue: '2',
+          selection: {
+            '1': 'hello',
+            '2': 'world',
+          },
+        ),
       ),
     ]);
   }
