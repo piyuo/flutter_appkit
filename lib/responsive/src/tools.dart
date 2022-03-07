@@ -112,8 +112,15 @@ class ToolSelection<T> extends ToolControl<T> {
   final Map<T, String>? selection;
 }
 
+/// ToolSpacer show expanded space on toolbar
+/// ```dart
+/// ToolSpacer(),
+/// ```
 class ToolSpacer<T> extends ToolItem<T> {
   /// ToolSpacer show expanded space on toolbar
+  /// ```dart
+  /// ToolSpacer(),
+  /// ```
   ToolSpacer({
     double space = 0,
   }) : super(width: 0, space: space);

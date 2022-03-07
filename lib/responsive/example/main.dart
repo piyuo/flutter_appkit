@@ -126,8 +126,8 @@ class ResponsiveExample extends StatelessWidget {
   Widget _toolbar(BuildContext context) {
     return Column(children: [
       Toolbar<String>(
-//        color: Colors.blue.shade300,
-        //      activeColor: Colors.blue,
+        color: Colors.blue.shade300,
+        activeColor: Colors.blue,
         onPressed: (index) => debugPrint('just press $index'),
         items: [
           ToolButton(
@@ -172,7 +172,9 @@ class ResponsiveExample extends StatelessWidget {
             width: 120,
             text: 'Disabled',
             label: '',
-            selection: null,
+            selection: {
+              '10': '10 rows',
+            },
           ),
           ToolButton(
             width: 42,

@@ -2,10 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'tools.dart';
 
-const buttonMoreWidth = 60;
+const _buttonMoreWidth = 60;
 
+/// Toolbar show button and selection on bar, show menu if bar is not long enough
+/// ```dart
+/// Toolbar<String>(
+///  onPressed: (index) => debugPrint('just press $index'),
+///  items: [
+///    ToolButton(
+///      label: 'New File',
+///      icon: Icons.new_label,
+///      value: 'new_file',
+///      space: 10,
+///    ),
+///  ],
+///),
+/// ```
 class Toolbar<T> extends StatelessWidget {
   /// Toolbar show button and selection on bar, show menu if bar is not long enough
+  /// ```dart
+  /// Toolbar<String>(
+  ///  onPressed: (index) => debugPrint('just press $index'),
+  ///  items: [
+  ///    ToolButton(
+  ///      label: 'New File',
+  ///      icon: Icons.new_label,
+  ///      value: 'new_file',
+  ///      space: 10,
+  ///    ),
+  ///  ],
+  ///),
+  /// ```
   const Toolbar({
     required this.items,
     required this.onPressed,
@@ -18,19 +45,23 @@ class Toolbar<T> extends StatelessWidget {
   /// children contain tool item need show on toolbar
   final List<ToolItem<T>> items;
 
+  /// onPressed callback when user click on item
   final ToolCallback<T> onPressed;
 
+  /// color of toolbar
   final Color? color;
 
+  /// activeColor is color of active item
   final Color? activeColor;
 
+  /// iconColor is color of icon
   final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        double maxWidth = constraints.maxWidth - buttonMoreWidth;
+        double maxWidth = constraints.maxWidth - _buttonMoreWidth;
         var barItems = <ToolItem<T>>[];
         var menuItems = <ToolItem<T>>[];
         double width = 0;
@@ -59,7 +90,7 @@ class Toolbar<T> extends StatelessWidget {
               }
               final result = await showMenu(
                 context: context,
-                position: RelativeRect.fromLTRB(constraints.maxWidth - buttonMoreWidth, 0, 0, 0),
+                position: RelativeRect.fromLTRB(constraints.maxWidth - _buttonMoreWidth, 0, 0, 0),
                 items: popItems,
               );
               if (result != null) {
