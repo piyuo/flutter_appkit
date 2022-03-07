@@ -22,7 +22,7 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _toolMenu(context),
+              child: _toolbar(context),
             ),
             Wrap(
               children: [
@@ -168,6 +168,12 @@ class ResponsiveExample extends StatelessWidget {
               '50': '50 rows',
             },
           ),
+          ToolSelection<String>(
+            width: 120,
+            text: 'Disabled',
+            label: '',
+            selection: null,
+          ),
           ToolButton(
             width: 42,
             text: '3/4',
@@ -185,7 +191,7 @@ class ResponsiveExample extends StatelessWidget {
             value: 'delete3',
           ),
           ToolSelection(
-            checkedValue: '20',
+            value: '20',
             label: 'Rows per page2',
             icon: Icons.table_rows,
             selection: {
@@ -210,6 +216,12 @@ class ResponsiveExample extends StatelessWidget {
             icon: Icons.chevron_right,
             value: 'next',
           ),
+          ToolButton(
+            label: 'Disabled',
+            icon: Icons.cabin,
+            value: null,
+            space: 10,
+          ),
         ],
       ),
     ]);
@@ -228,12 +240,17 @@ class ResponsiveExample extends StatelessWidget {
               value: 'new_file',
             ),
             ToolButton(
+              label: 'Disabled',
+              icon: Icons.cabin,
+              value: null,
+            ),
+            ToolButton(
               label: 'abc',
               icon: Icons.abc_outlined,
               value: 'abc',
             ),
             ToolSelection(
-              checkedValue: '20',
+              value: '20',
               label: 'Rows per page',
               icon: Icons.table_rows,
               selection: {

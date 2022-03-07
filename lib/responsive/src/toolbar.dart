@@ -50,7 +50,7 @@ class Toolbar<T> extends StatelessWidget {
         if (menuItems.isNotEmpty) {
           buttons.add(IconButton(
             color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
-            icon: const Icon(Icons.navigate_next),
+            icon: const Icon(Icons.keyboard_double_arrow_right),
             onPressed: () async {
               var popItems = <PopupMenuEntry>[];
               for (int i = 0; i < menuItems.length; i++) {
@@ -111,7 +111,7 @@ Widget _buildBarItem<T>(
             : item.icon != null
                 ? Icon(item.icon!)
                 : Text(item.label, style: TextStyle(color: color)),
-        onPressed: () => callback(item.value!),
+        onPressed: item.value != null ? () => callback(item.value!) : null,
         tooltip: item.label,
       ),
     );
@@ -128,9 +128,9 @@ Widget _buildBarItem<T>(
               : item.icon != null
                   ? Icon(item.icon!)
                   : Text(item.label, style: TextStyle(color: color)),
-          onPressed: (value) => callback(value),
-          checkedValue: item.checkedValue,
-          selection: item.selection,
+          onPressed: item.selection != null ? (value) => callback(value) : null,
+          selectedValue: item.value,
+          selection: item.selection != null ? item.selection! : {},
           tooltip: item.label,
         ));
   }
@@ -155,6 +155,7 @@ List<PopupMenuEntry> _buildMenuItem<T>(
     return [
       PopupMenuItem(
           value: item.value,
+          enabled: item.value != null,
           child: Row(
             children: [
               Icon(
@@ -178,20 +179,21 @@ List<PopupMenuEntry> _buildMenuItem<T>(
         child: Text(item.label),
         enabled: false,
       ),
-      ...item.selection.entries.map((entry) {
-        return PopupMenuItem<T>(
-          value: entry.key,
-          child: Row(
-            children: [
-              SizedBox(
-                width: 28,
-                child: item.checkedValue == entry.key ? const Icon(Icons.check, size: 18) : null,
-              ),
-              Text(entry.value),
-            ],
-          ),
-        );
-      }).toList(),
+      if (item.selection != null)
+        ...item.selection!.entries.map((entry) {
+          return PopupMenuItem<T>(
+            value: entry.key,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 28,
+                  child: item.value == entry.key ? const Icon(Icons.check, size: 18) : null,
+                ),
+                Text(entry.value),
+              ],
+            ),
+          );
+        }).toList(),
       if (!last) const PopupMenuDivider()
     ];
   }

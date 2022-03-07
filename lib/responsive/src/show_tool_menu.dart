@@ -60,38 +60,40 @@ Widget _buildSheetItem<T>(
             ),
             Icon(item.icon, size: 28),
           ]),
-          onPressed: () => Navigator.pop(context, item.value!),
+          onPressed: () => item.value != null ? Navigator.pop(context, item.value!) : null,
         ));
   }
 
   if (item is ToolSelection<T>) {
-    return Padding(
-        padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-                padding: const EdgeInsets.only(left: 10, bottom: 10),
-                child: Text(
-                  item.label,
-                  style: const TextStyle(fontSize: 15, color: Colors.grey),
-                )),
-            delta.ButtonPanel<T>(
-              checkedValues: item.checkedValue != null ? [item.checkedValue!] : null,
-              onPressed: (value) => Navigator.pop(context, value),
-              children: item.selection.map((T key, String value) {
-                return MapEntry<T, Widget>(
-                    key,
-                    Row(children: [
-                      Expanded(
-                        child: Text(value, style: const TextStyle(fontSize: 18)),
-                      ),
-                      Icon(item.icon),
-                    ]));
-              }),
-            )
-          ],
-        ));
+    return item.selection == null
+        ? const SizedBox()
+        : Padding(
+            padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(left: 10, bottom: 10),
+                    child: Text(
+                      item.label,
+                      style: const TextStyle(fontSize: 15, color: Colors.grey),
+                    )),
+                delta.ButtonPanel<T>(
+                  checkedValues: item.value != null ? [item.value!] : null,
+                  onPressed: (value) => Navigator.pop(context, value),
+                  children: item.selection!.map((T key, String value) {
+                    return MapEntry<T, Widget>(
+                        key,
+                        Row(children: [
+                          Expanded(
+                            child: Text(value, style: const TextStyle(fontSize: 18)),
+                          ),
+                          Icon(item.icon),
+                        ]));
+                  }),
+                )
+              ],
+            ));
   }
 
   if (item is ToolSpacer<T>) {

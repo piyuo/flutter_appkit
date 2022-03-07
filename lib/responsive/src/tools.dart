@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /// ToolCallback define the callback for toolbar button
 typedef ToolCallback<T> = void Function(T value);
 
+/// ToolItem define item in toolbar
 abstract class ToolItem<T> {
   /// ToolItem define item in toolbar
   ToolItem({required this.width, this.space});
@@ -14,6 +15,7 @@ abstract class ToolItem<T> {
   double? space;
 }
 
+/// ToolControl define control item in toolbar
 abstract class ToolControl<T> extends ToolItem<T> {
   /// ToolControl define control item in toolbar
   ToolControl({
@@ -38,13 +40,30 @@ abstract class ToolControl<T> extends ToolItem<T> {
   final T? value;
 }
 
+/// ToolButton define button item in toolbar
+/// ```dart
+/// ToolButton(
+///   label: 'New File',
+///   icon: Icons.new_label,
+///   value: 'new_file',
+///   space: 10,
+///  ),
+/// ```
 class ToolButton<T> extends ToolControl<T> {
   /// ToolButton define button item in toolbar
+  /// ```dart
+  /// ToolButton(
+  ///   label: 'New File',
+  ///   icon: Icons.new_label,
+  ///   value: 'new_file',
+  ///   space: 10,
+  ///  ),
+  /// ```
   ToolButton({
     double width = 38,
     double? space,
     required String label,
-    required T value,
+    required T? value,
     String? text,
     IconData? icon,
     this.active = false,
@@ -53,8 +72,33 @@ class ToolButton<T> extends ToolControl<T> {
   final bool active;
 }
 
+/// ToolSelection define item in toolbar
+/// ```dart
+///  ToolSelection<String>(
+///   width: 120,
+///   text: 'page 2 of more',
+///   label: 'rows per page',
+///   selection: {
+///     '10': '10 rows',
+///     '20': '20 rows',
+///     '50': '50 rows',
+///   },
+/// ),
+/// ```
 class ToolSelection<T> extends ToolControl<T> {
   /// ToolSelection define item in toolbar
+  /// ```dart
+  ///  ToolSelection<String>(
+  ///   width: 120,
+  ///   text: 'page 2 of more',
+  ///   label: 'rows per page',
+  ///   selection: {
+  ///     '10': '10 rows',
+  ///     '20': '20 rows',
+  ///     '50': '50 rows',
+  ///   },
+  /// ),
+  /// ```
   ToolSelection({
     double width = 60,
     double? space,
@@ -62,12 +106,10 @@ class ToolSelection<T> extends ToolControl<T> {
     required this.selection,
     String? text,
     IconData? icon,
-    this.checkedValue,
+    T? value,
   }) : super(width: width, label: label, icon: icon, space: space, text: text);
 
-  final T? checkedValue;
-
-  final Map<T, String> selection;
+  final Map<T, String>? selection;
 }
 
 class ToolSpacer<T> extends ToolItem<T> {
