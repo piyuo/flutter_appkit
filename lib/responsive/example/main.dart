@@ -22,12 +22,12 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _toolbar(context),
+              child: _showToolMenu(context),
             ),
             Wrap(
               children: [
                 testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
-                testing.ExampleButton(label: 'tool menu', builder: () => _toolMenu(context)),
+                testing.ExampleButton(label: 'tool menu', builder: () => _showToolMenu(context)),
                 testing.ExampleButton(label: 'padding to center', builder: () => _paddingToCenter(context)),
                 testing.ExampleButton(
                     label: 'layout dynamic bottom side', builder: () => _layoutDynamicBottomSide(context)),
@@ -229,7 +229,7 @@ class ResponsiveExample extends StatelessWidget {
     ]);
   }
 
-  Widget _toolMenu(BuildContext context) {
+  Widget _showToolMenu(BuildContext context) {
     return OutlinedButton(
       child: const Text('tool menu'),
       onPressed: () async {
