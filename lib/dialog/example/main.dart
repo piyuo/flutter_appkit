@@ -36,14 +36,14 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _slide(context),
+            child: _showSlideSheet(context),
           ),
           Wrap(
             children: [
               testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
               testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
               testing.ExampleButton(label: 'loading', builder: () => _loading(context)),
-              testing.ExampleButton(label: 'slide', builder: () => _slide(context)),
+              testing.ExampleButton(label: 'sheet', builder: () => _showSlideSheet(context)),
               testing.ExampleButton(label: 'route', builder: () => _route(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
             ],
@@ -312,27 +312,35 @@ class DialogExample extends StatelessWidget {
     ]);
   }
 
-  Widget _slide(BuildContext context) {
+  Widget _showSlideSheet(BuildContext context) {
     return Wrap(children: [
       ElevatedButton(
-        child: const Text('show sheet'),
-        onPressed: () => showSheet(
+        child: const Text('show slide sheet'),
+        onPressed: () => showSlideSheet(
           context,
-          constraints: const BoxConstraints(maxWidth: 300),
-          child: Column(children: [
+          constraints: const BoxConstraints(maxWidth: 500),
+          children: [
+            const Text('Title'),
             const SizedBox(height: 30),
-            SizedBox(
-                height: 80,
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
-                  child: const Text('close'),
+                  child: const Text('Close'),
                   onPressed: () => Navigator.pop(context),
                 )),
             const SizedBox(height: 20),
-            const SizedBox(height: 80, child: Placeholder()),
+            const SizedBox(height: 180, child: Placeholder()),
             const SizedBox(height: 20),
-            const SizedBox(height: 80, child: Placeholder()),
-            const SizedBox(height: 120),
-          ]),
+            const SizedBox(height: 180, child: Placeholder()),
+            const SizedBox(height: 20),
+            const SizedBox(height: 180, child: Placeholder()),
+            const SizedBox(height: 20),
+            const SizedBox(height: 180, child: Placeholder()),
+            const SizedBox(height: 20),
+            const SizedBox(height: 180, child: Placeholder()),
+            const Text('hello world'),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
       ElevatedButton(
