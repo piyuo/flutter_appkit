@@ -23,18 +23,13 @@ Future<T?> showToolMenu<T>(
   Color? color,
   Color? activeColor,
   Color? iconColor,
-  BoxConstraints constraints = const BoxConstraints(maxWidth: 450),
+  BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
 }) async {
-  return await dialog.showSheet<T>(
+  return await dialog.showSlideSheet<T>(
     context,
     constraints: constraints,
     color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade900),
-    child: Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 80),
-      child: Column(
-        children: items.map((item) => _buildSheetItem(context, item)).toList(),
-      ),
-    ),
+    children: items.map((item) => _buildSheetItem(context, item)).toList(),
   );
 }
 
