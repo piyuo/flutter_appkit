@@ -18,16 +18,17 @@ Future<T?> showSlideSheet<T>(
   BuildContext context, {
   required List<Widget> children,
   Color? color,
-  Color barrierColor = Colors.grey,
   Color closeButtonColor = Colors.grey,
   BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
   EdgeInsets padding = const EdgeInsets.fromLTRB(16, 16, 16, 0),
+  double initHeight = 0.7,
+  double maxHeight = 0.92,
 }) async {
   return await showFlexibleBottomSheet<T>(
-    initHeight: 0.6,
-    maxHeight: 0.92,
+    initHeight: initHeight,
+    maxHeight: maxHeight,
     context: context,
-    anchors: [0.6, 0.92],
+    anchors: [initHeight, maxHeight],
     builder: (
       BuildContext context,
       ScrollController scrollController,
@@ -42,7 +43,6 @@ Future<T?> showSlideSheet<T>(
                 child: Stack(children: [
                   Container(
                     padding: padding,
-                    clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       color: color ??
                           context.themeColor(
