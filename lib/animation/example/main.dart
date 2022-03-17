@@ -1,9 +1,16 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
 import '../animation.dart';
+
+final GlobalKey<AnimatedGridState> gridKey = GlobalKey<AnimatedGridState>();
+
+var gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+int gridIndex = 10;
 
 main() => app.start(
       appName: 'animation',
@@ -20,31 +27,163 @@ class AnimationExample extends StatefulWidget {
 }
 
 class _AnimationExampleState extends State<AnimationExample> {
+  int shifterIndex = 1;
+  bool shifterReverse = false;
+  bool shifterVertical = false;
+
   bool isSwitched = false;
+
+  int counter = 3;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              Container(
-                child: _axisAnimate(),
+        child: Column(
+          children: [
+            Expanded(
+              child: _animatedGrid(),
+            ),
+            Row(children: [
+              testing.ExampleButton(
+                label: 'shifter',
+                builder: () => _shifter(),
               ),
               testing.ExampleButton(
-                label: 'animate',
+                label: 'animated grid',
+                builder: () => _animatedGrid(),
+              ),
+              testing.ExampleButton(
+                label: 'animated view',
+                builder: () => _animatedView(),
+              ),
+              testing.ExampleButton(
+                label: 'axis animate',
                 builder: () => _axisAnimate(),
               ),
               testing.ExampleButton(
                 label: 'transform container',
                 builder: () => _transformContainer(),
               ),
-            ],
+            ])
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _shifter() {
+    return Column(
+      children: [
+        Row(children: [
+          OutlinedButton(
+              child: const Text('left in'),
+              onPressed: () {
+                setState(() {
+                  shifterVertical = false;
+                  shifterReverse = false;
+                  shifterIndex++;
+                });
+              }),
+          OutlinedButton(
+              child: const Text('right in'),
+              onPressed: () {
+                setState(() {
+                  shifterVertical = false;
+                  shifterReverse = true;
+                  shifterIndex--;
+                });
+              }),
+          OutlinedButton(
+              child: const Text('bottom in'),
+              onPressed: () {
+                setState(() {
+                  shifterVertical = true;
+                  shifterReverse = false;
+                  shifterIndex++;
+                });
+              }),
+          OutlinedButton(
+              child: const Text('top in'),
+              onPressed: () {
+                setState(() {
+                  shifterVertical = true;
+                  shifterReverse = true;
+                  shifterIndex--;
+                });
+              }),
+        ]),
+        Shifter(
+          reverse: shifterReverse,
+          vertical: shifterVertical,
+          newChildKey: ValueKey(shifterIndex),
+          child: shifterIndex == 1
+              ? Container(
+                  key: ValueKey(shifterIndex), width: 200, height: 200, color: Colors.red, child: const Text('text 1'))
+              : shifterIndex == 2
+                  ? Container(
+                      key: ValueKey(shifterIndex),
+                      width: 200,
+                      height: 200,
+                      color: Colors.blue,
+                      child: const Text('text 2'))
+                  : Container(
+                      key: ValueKey(shifterIndex),
+                      width: 200,
+                      height: 200,
+                      color: Colors.green,
+                      child: const Text('text 3')),
+        ),
+      ],
+    );
+  }
+
+  Widget slideIt(BuildContext context, int index, animation) {
+    int item = gridItems[index];
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0, -1),
+        end: const Offset(0, 0),
+      ).animate(animation),
+      child: SizedBox(
+        // Actual widget to display
+        height: 128.0,
+        child: Card(
+          child: Center(
+            child: Text('Item $item'),
           ),
         ),
       ),
     );
+  }
+
+  Widget _animatedGrid() {
+    return Column(children: [
+      Row(children: [
+        OutlinedButton(
+          child: const Text('insert'),
+          onPressed: () {
+            gridItems.insert(0, gridIndex++);
+            gridKey.currentState!.insertItem(0);
+          },
+        ),
+        OutlinedButton(
+            child: const Text('remove'),
+            onPressed: () {
+              gridKey.currentState!.removeItem(0, (_, animation) => slideIt(context, 0, animation));
+              gridItems.removeAt(0);
+            }),
+      ]),
+      Expanded(
+          child: AnimatedGrid(
+        key: gridKey,
+        crossAxisCount: 1,
+        initialItemCount: gridItems.length,
+        itemBuilder: (context, index, animation) {
+          return slideIt(context, index, animation); // Refer step 3
+        },
+      )),
+    ]);
   }
 
   Widget _axisAnimate() {
@@ -135,5 +274,83 @@ class _AnimationExampleState extends State<AnimationExample> {
                 })),
           );
         });
+  }
+
+  Widget _animatedView() {
+    return ChangeNotifierProvider<AnimatedViewProvider<int>>(
+      create: (context) => AnimatedViewProvider<int>(
+        crossAxisCount: 1,
+        listBuilder: (int item) {
+          return SizedBox(
+            // Actual widget to display
+            height: 64.0,
+            child: Card(
+              child: Center(
+                child: Text('Item $item'),
+              ),
+            ),
+          );
+        },
+        gridBuilder: (int item) {
+          return Card(
+            child: Center(
+              child: Text('Item $item'),
+            ),
+          );
+        },
+      ),
+      child: Consumer<AnimatedViewProvider<int>>(
+          builder: (context, provide, child) => Column(children: [
+                Row(children: [
+                  OutlinedButton(
+                    child: const Text('insert'),
+                    onPressed: () {
+                      gridItems.insert(0, 9);
+                      provide.insertAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                      child: const Text('remove'),
+                      onPressed: () {
+                        int item = gridItems[2];
+                        gridItems.removeAt(2);
+                        provide.removeAnimation(2, item);
+                      }),
+                  OutlinedButton(
+                    child: const Text('reorder'),
+                    onPressed: () {
+                      int item = gridItems[2];
+                      gridItems.removeAt(2);
+                      provide.removeAnimation(2, item);
+                      gridItems.insert(0, 2);
+                      provide.insertAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('as list'),
+                    onPressed: () => provide.setCrossAxisCount(1),
+                  ),
+                  OutlinedButton(
+                    child: const Text('as grid'),
+                    onPressed: () => provide.setCrossAxisCount(4),
+                  ),
+                  OutlinedButton(
+                    child: const Text('next page'),
+                    onPressed: () {
+                      gridItems = [11, 12, 13];
+                      provide.nextPageAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('prev page'),
+                    onPressed: () {
+                      gridItems = [21, 22, 23, 24, 25];
+                      provide.prevPageAnimation();
+                    },
+                  ),
+                ]),
+                Expanded(child: AnimatedView<int>(items: gridItems)),
+              ])),
+    );
   }
 }
