@@ -382,28 +382,38 @@ class _AnimationExampleState extends State<AnimationExample> {
         },
       ),
       child: Consumer<AnimatedViewProvider<int>>(
-          builder: (context, provide, child) => ListView.builder(
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return Container(
-                    height: 50,
-                    color: Colors.amber,
-                    child: const Center(child: Text('header')),
-                  );
-                }
-                if (index == 2) {
-                  return Container(
-                    height: 50,
-                    color: Colors.green,
-                    child: const Center(child: Text('footer')),
-                  );
-                }
-                return AnimatedView<int>(
-                  shrinkWrap: true,
-                  items: gridItems,
-                );
-              })),
+          builder: (context, provide, child) => Column(children: [
+                OutlinedButton(
+                  child: const Text('insert'),
+                  onPressed: () {
+                    gridItems.insert(0, 9);
+                    provide.insertAnimation();
+                  },
+                ),
+                Expanded(
+                    child: ListView.builder(
+                        itemCount: 3,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index == 0) {
+                            return Container(
+                              height: 50,
+                              color: Colors.amber,
+                              child: const Center(child: Text('header')),
+                            );
+                          }
+                          if (index == 2) {
+                            return Container(
+                              height: 50,
+                              color: Colors.green,
+                              child: const Center(child: Text('footer')),
+                            );
+                          }
+                          return AnimatedView<int>(
+                            shrinkWrap: true,
+                            items: gridItems,
+                          );
+                        })),
+              ])),
     );
   }
 }
