@@ -34,16 +34,16 @@ class AnimatedViewProvider<T> with ChangeNotifier {
   /// child:
   /// ```
   AnimatedViewProvider({
-    required this.listBuilder,
-    required this.gridBuilder,
+    this.listBuilder,
+    this.gridBuilder,
     this.crossAxisCount = 1,
   });
 
   /// listBuilder is the builder for list view
-  final ItemBuilder<T> listBuilder;
+  final ItemBuilder<T>? listBuilder;
 
   /// gridBuilder is the builder for grid view
-  final ItemBuilder<T> gridBuilder;
+  final ItemBuilder<T>? gridBuilder;
 
   /// crossAxisCount is 1 will show list view, others is grid view
   int crossAxisCount;
@@ -106,6 +106,8 @@ class AnimatedViewProvider<T> with ChangeNotifier {
 
   /// _slideIt is slide animation
   Widget _slideIt(T item, animation) {
+    assert(isListView && listBuilder != null, 'listview require listBuilder');
+    assert(!isListView && gridBuilder != null, 'listview require gridBuilder');
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(0, -1),
@@ -114,17 +116,19 @@ class AnimatedViewProvider<T> with ChangeNotifier {
       child: SizeTransition(
         axis: Axis.vertical,
         sizeFactor: animation,
-        child: isListView ? listBuilder(item) : gridBuilder(item),
+        child: isListView ? listBuilder!(item) : gridBuilder!(item),
       ),
     );
   }
 
   /// _slideIt is size animation
   Widget _sizeIt(T item, animation) {
+    assert(isListView && listBuilder != null, 'listview require listBuilder');
+    assert(!isListView && gridBuilder != null, 'listview require gridBuilder');
     return SizeTransition(
       axis: Axis.vertical,
       sizeFactor: animation,
-      child: isListView ? listBuilder(item) : gridBuilder(item),
+      child: isListView ? listBuilder!(item) : gridBuilder!(item),
     );
   }
 }
