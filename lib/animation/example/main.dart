@@ -12,21 +12,21 @@ var gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 int gridIndex = 10;
 
-Widget itemBuilder(bool isListView, int item) {
+Widget itemBuilder(bool isListView, int index) {
   if (isListView) {
     return SizedBox(
       // Actual widget to display
       height: 64.0,
       child: Card(
         child: Center(
-          child: Text('Item $item'),
+          child: Text('Item $index'),
         ),
       ),
     );
   }
   return Card(
     child: Center(
-      child: Text('Item $item'),
+      child: Text('Item $index'),
     ),
   );
 }
