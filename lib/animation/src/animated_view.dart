@@ -106,8 +106,11 @@ class AnimatedViewProvider<T> with ChangeNotifier {
 
   /// _slideIt is slide animation
   Widget _slideIt(T item, animation) {
-    assert(isListView && listBuilder != null, 'listview require listBuilder');
-    assert(!isListView && gridBuilder != null, 'listview require gridBuilder');
+    if (isListView) {
+      assert(listBuilder != null, 'listview require listBuilder');
+    } else {
+      assert(gridBuilder != null, 'listview require gridBuilder');
+    }
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(0, -1),
@@ -123,8 +126,11 @@ class AnimatedViewProvider<T> with ChangeNotifier {
 
   /// _slideIt is size animation
   Widget _sizeIt(T item, animation) {
-    assert(isListView && listBuilder != null, 'listview require listBuilder');
-    assert(!isListView && gridBuilder != null, 'listview require gridBuilder');
+    if (isListView) {
+      assert(listBuilder != null, 'listview require listBuilder');
+    } else {
+      assert(gridBuilder != null, 'listview require gridBuilder');
+    }
     return SizeTransition(
       axis: Axis.vertical,
       sizeFactor: animation,
@@ -144,11 +150,28 @@ class AnimatedView<T> extends StatelessWidget {
   /// ```
   const AnimatedView({
     required this.items,
+    this.shrinkWrap = false,
     Key? key,
   }) : super(key: key);
 
   /// items is the list of items
   final List<T> items;
+
+  /// Whether the extent of the scroll view in the [scrollDirection] should be
+  /// determined by the contents being viewed.
+  ///
+  /// If the scroll view does not shrink wrap, then the scroll view will expand
+  /// to the maximum allowed size in the [scrollDirection]. If the scroll view
+  /// has unbounded constraints in the [scrollDirection], then [shrinkWrap] must
+  /// be true.
+  ///
+  /// Shrink wrapping the content of the scroll view is significantly more
+  /// expensive than expanding to the maximum allowed size because the content
+  /// can expand and contract during scrolling, which means the size of the
+  /// scroll view needs to be recomputed whenever the scroll position changes.
+  ///
+  /// Defaults to false.
+  final bool shrinkWrap;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +180,7 @@ class AnimatedView<T> extends StatelessWidget {
         reverse: provide._shifterReverse,
         newChildKey: provide._gridKey,
         child: AnimatedGrid(
+          shrinkWrap: shrinkWrap,
           key: provide._gridKey,
           crossAxisCount: provide.crossAxisCount,
           initialItemCount: items.length,

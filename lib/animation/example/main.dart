@@ -42,7 +42,7 @@ class _AnimationExampleState extends State<AnimationExample> {
         child: Column(
           children: [
             Expanded(
-              child: _animatedGrid(),
+              child: _animatedViewInListView(),
             ),
             Row(children: [
               testing.ExampleButton(
@@ -56,6 +56,10 @@ class _AnimationExampleState extends State<AnimationExample> {
               testing.ExampleButton(
                 label: 'animated view',
                 builder: () => _animatedView(),
+              ),
+              testing.ExampleButton(
+                label: 'animated view in list view',
+                builder: () => _animatedViewInListView(),
               ),
               testing.ExampleButton(
                 label: 'axis animate',
@@ -351,6 +355,55 @@ class _AnimationExampleState extends State<AnimationExample> {
                 ]),
                 Expanded(child: AnimatedView<int>(items: gridItems)),
               ])),
+    );
+  }
+
+  Widget _animatedViewInListView() {
+    return ChangeNotifierProvider<AnimatedViewProvider<int>>(
+      create: (context) => AnimatedViewProvider<int>(
+        crossAxisCount: 1,
+        listBuilder: (int item) {
+          return SizedBox(
+            // Actual widget to display
+            height: 64.0,
+            child: Card(
+              child: Center(
+                child: Text('Item $item'),
+              ),
+            ),
+          );
+        },
+        gridBuilder: (int item) {
+          return Card(
+            child: Center(
+              child: Text('Item $item'),
+            ),
+          );
+        },
+      ),
+      child: Consumer<AnimatedViewProvider<int>>(
+          builder: (context, provide, child) => ListView.builder(
+              itemCount: 3,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return Container(
+                    height: 50,
+                    color: Colors.amber,
+                    child: const Center(child: Text('header')),
+                  );
+                }
+                if (index == 2) {
+                  return Container(
+                    height: 50,
+                    color: Colors.green,
+                    child: const Center(child: Text('footer')),
+                  );
+                }
+                return AnimatedView<int>(
+                  shrinkWrap: true,
+                  items: gridItems,
+                );
+              })),
     );
   }
 }
