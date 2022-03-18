@@ -3,76 +3,39 @@ import 'package:provider/provider.dart';
 import 'animated_grid.dart';
 import 'shifter.dart';
 
-/// itemBuilder is item builder for list or grid
-typedef ItemBuilder<T> = Widget Function(T item);
+/// AnimatedViewItemBuilder is item builder for list or grid
+typedef AnimatedViewItemBuilder = Widget Function(bool isListView, int index);
 
 /// AnimatedViewProvider control view's animation
 /// ```dart
-/// return ChangeNotifierProvider<AnimatedViewProvider<int>>(
-/// create: (context) => AnimatedViewProvider<int>(
-///   listBuilder: (int item) {
-///     ...
-///   },
-///   gridBuilder: (int item) {
-///     ...
-///   },
-/// ),
-/// child:
+// return ChangeNotifierProvider<AnimatedViewProvider>(
+///       create: (context) => AnimatedViewProvider(),
+///       child: Consumer<AnimatedViewProvider>(
+///           builder: (context, provide, child) => AnimatedView(
+///                   itemBuilder: itemBuilder,
+///                   itemCount: gridItems.length,
+///                 )),
+///     );
 /// ```
-class AnimatedViewProvider<T> with ChangeNotifier {
+class AnimatedViewProvider with ChangeNotifier {
   /// AnimatedViewProvider control view's animation
   /// ```dart
-  /// return ChangeNotifierProvider<AnimatedViewProvider<int>>(
-  /// create: (context) => AnimatedViewProvider<int>(
-  ///   listBuilder: (int item) {
-  ///     ...
-  ///   },
-  ///   gridBuilder: (int item) {
-  ///     ...
-  ///   },
-  /// ),
-  /// child:
+// return ChangeNotifierProvider<AnimatedViewProvider>(
+  ///       create: (context) => AnimatedViewProvider(),
+  ///       child: Consumer<AnimatedViewProvider>(
+  ///           builder: (context, provide, child) => AnimatedView(
+  ///                   itemBuilder: itemBuilder,
+  ///                   itemCount: gridItems.length,
+  ///                 )),
+  ///     );
   /// ```
-  AnimatedViewProvider({
-    this.listBuilder,
-    this.gridBuilder,
-    this.crossAxisCount = 1,
-  });
-
-  /// listBuilder is the builder for list view
-  final ItemBuilder<T>? listBuilder;
-
-  /// gridBuilder is the builder for grid view
-  final ItemBuilder<T>? gridBuilder;
-
-  /// crossAxisCount is 1 will show list view, others is grid view
-  int crossAxisCount;
-
-  /// setCrossAxisCount set current crossAxisCount
-  /// ```dart
-  /// setCrossAxisCount(1);
-  /// ```
-  void setCrossAxisCount(int value) {
-    if (value != crossAxisCount) {
-      crossAxisCount = value;
-      notifyListeners();
-    }
-  }
-
-  /// isListView return true if crossAxisCount is 1
-  bool get isListView => crossAxisCount == 1;
+  AnimatedViewProvider();
 
   /// _shifterReverse is true will reverse shifter animation
   bool _shifterReverse = false;
 
   /// _gridKey is the key of the animated grid
   GlobalKey<AnimatedGridState> _gridKey = GlobalKey<AnimatedGridState>();
-
-  /// _buildItem build for AnimatedView
-  Widget _buildItem(List<T> items, int index, Animation<double> animation) {
-    T item = items[index];
-    return _slideIt(item, animation);
-  }
 
   /// nextPageAnimation show next page animation
   void nextPageAnimation() {
@@ -94,68 +57,66 @@ class AnimatedViewProvider<T> with ChangeNotifier {
   }
 
   /// removeAnimation show remove animation
-  void removeAnimation(int index, T item) {
+  void removeAnimation(int index, bool isListView, Widget child) {
     if (index != -1) {
       _gridKey.currentState!.removeItem(
         index,
-        (_, animation) => isListView ? _sizeIt(item, animation) : _slideIt(item, animation),
+        (_, animation) => isListView ? _sizeIt(child, animation) : _slideIt(child, animation),
         duration: animatedDuration,
       );
     }
   }
+}
 
-  /// _slideIt is slide animation
-  Widget _slideIt(T item, animation) {
-    if (isListView) {
-      assert(listBuilder != null, 'listview require listBuilder');
-    } else {
-      assert(gridBuilder != null, 'listview require gridBuilder');
-    }
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0, -1),
-        end: const Offset(0, 0),
-      ).animate(animation),
-      child: SizeTransition(
-        axis: Axis.vertical,
-        sizeFactor: animation,
-        child: isListView ? listBuilder!(item) : gridBuilder!(item),
-      ),
-    );
-  }
-
-  /// _slideIt is size animation
-  Widget _sizeIt(T item, animation) {
-    if (isListView) {
-      assert(listBuilder != null, 'listview require listBuilder');
-    } else {
-      assert(gridBuilder != null, 'listview require gridBuilder');
-    }
-    return SizeTransition(
+/// _slideIt is slide animation
+Widget _slideIt(Widget child, animation) {
+  return SlideTransition(
+    position: Tween<Offset>(
+      begin: const Offset(0, -1),
+      end: const Offset(0, 0),
+    ).animate(animation),
+    child: SizeTransition(
       axis: Axis.vertical,
       sizeFactor: animation,
-      child: isListView ? listBuilder!(item) : gridBuilder!(item),
-    );
-  }
+      child: child,
+    ),
+  );
+}
+
+/// _slideIt is size animation
+Widget _sizeIt(Widget child, animation) {
+  return SizeTransition(
+    axis: Axis.vertical,
+    sizeFactor: animation,
+    child: child,
+  );
 }
 
 /// AnimatedView show animation list or grid
 /// ```dart
 /// AnimatedView<int>(items: gridItems)
 /// ```
-class AnimatedView<T> extends StatelessWidget {
+class AnimatedView extends StatelessWidget {
   /// AnimatedView show animation list or grid
   /// ```dart
   /// AnimatedView<int>(items: gridItems)
   /// ```
   const AnimatedView({
-    required this.items,
+    required this.itemBuilder,
+    required this.itemCount,
+    this.crossAxisCount = 1,
     this.shrinkWrap = false,
     Key? key,
   }) : super(key: key);
 
-  /// items is the list of items
-  final List<T> items;
+  /// itemCount is total item count
+  final int itemCount;
+
+  /// itemBuilder is the item builder
+  final AnimatedViewItemBuilder itemBuilder;
+
+  /// crossAxisCount is 1 will show list view, others is grid view
+  final int crossAxisCount;
 
   /// Whether the extent of the scroll view in the [scrollDirection] should be
   /// determined by the contents being viewed.
@@ -173,18 +134,24 @@ class AnimatedView<T> extends StatelessWidget {
   /// Defaults to false.
   final bool shrinkWrap;
 
+  /// isListView return true if crossAxisCount is 1
+  bool get isListView => crossAxisCount == 1;
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<AnimatedViewProvider<T>>(
+    return Consumer<AnimatedViewProvider>(
       builder: (context, provide, _) => Shifter(
         reverse: provide._shifterReverse,
         newChildKey: provide._gridKey,
         child: AnimatedGrid(
           shrinkWrap: shrinkWrap,
           key: provide._gridKey,
-          crossAxisCount: provide.crossAxisCount,
-          initialItemCount: items.length,
-          itemBuilder: (context, index, animation) => provide._buildItem(items, index, animation),
+          crossAxisCount: crossAxisCount,
+          initialItemCount: itemCount,
+          itemBuilder: (context, index, animation) {
+            Widget widget = itemBuilder(isListView, index);
+            return _slideIt(widget, animation);
+          },
         ),
       ),
     );

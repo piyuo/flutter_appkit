@@ -12,6 +12,25 @@ var gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 int gridIndex = 10;
 
+Widget itemBuilder(bool isListView, int item) {
+  if (isListView) {
+    return SizedBox(
+      // Actual widget to display
+      height: 64.0,
+      child: Card(
+        child: Center(
+          child: Text('Item $item'),
+        ),
+      ),
+    );
+  }
+  return Card(
+    child: Center(
+      child: Text('Item $item'),
+    ),
+  );
+}
+
 main() => app.start(
       appName: 'animation',
       routes: {
@@ -281,29 +300,9 @@ class _AnimationExampleState extends State<AnimationExample> {
   }
 
   Widget _animatedView() {
-    return ChangeNotifierProvider<AnimatedViewProvider<int>>(
-      create: (context) => AnimatedViewProvider<int>(
-        crossAxisCount: 1,
-        listBuilder: (int item) {
-          return SizedBox(
-            // Actual widget to display
-            height: 64.0,
-            child: Card(
-              child: Center(
-                child: Text('Item $item'),
-              ),
-            ),
-          );
-        },
-        gridBuilder: (int item) {
-          return Card(
-            child: Center(
-              child: Text('Item $item'),
-            ),
-          );
-        },
-      ),
-      child: Consumer<AnimatedViewProvider<int>>(
+    return ChangeNotifierProvider<AnimatedViewProvider>(
+      create: (context) => AnimatedViewProvider(),
+      child: Consumer<AnimatedViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
                   OutlinedButton(
@@ -318,25 +317,17 @@ class _AnimationExampleState extends State<AnimationExample> {
                       onPressed: () {
                         int item = gridItems[2];
                         gridItems.removeAt(2);
-                        provide.removeAnimation(2, item);
+                        provide.removeAnimation(2, true, itemBuilder(true, item));
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () {
                       int item = gridItems[2];
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, item);
+                      provide.removeAnimation(2, true, itemBuilder(true, item));
                       gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
-                  ),
-                  OutlinedButton(
-                    child: const Text('as list'),
-                    onPressed: () => provide.setCrossAxisCount(1),
-                  ),
-                  OutlinedButton(
-                    child: const Text('as grid'),
-                    onPressed: () => provide.setCrossAxisCount(4),
                   ),
                   OutlinedButton(
                     child: const Text('next page'),
@@ -353,35 +344,19 @@ class _AnimationExampleState extends State<AnimationExample> {
                     },
                   ),
                 ]),
-                Expanded(child: AnimatedView<int>(items: gridItems)),
+                Expanded(
+                    child: AnimatedView(
+                  itemBuilder: itemBuilder,
+                  itemCount: gridItems.length,
+                )),
               ])),
     );
   }
 
   Widget _animatedViewInListView() {
-    return ChangeNotifierProvider<AnimatedViewProvider<int>>(
-      create: (context) => AnimatedViewProvider<int>(
-        crossAxisCount: 1,
-        listBuilder: (int item) {
-          return SizedBox(
-            // Actual widget to display
-            height: 64.0,
-            child: Card(
-              child: Center(
-                child: Text('Item $item'),
-              ),
-            ),
-          );
-        },
-        gridBuilder: (int item) {
-          return Card(
-            child: Center(
-              child: Text('Item $item'),
-            ),
-          );
-        },
-      ),
-      child: Consumer<AnimatedViewProvider<int>>(
+    return ChangeNotifierProvider<AnimatedViewProvider>(
+      create: (context) => AnimatedViewProvider(),
+      child: Consumer<AnimatedViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 OutlinedButton(
                   child: const Text('insert'),
@@ -408,9 +383,10 @@ class _AnimationExampleState extends State<AnimationExample> {
                               child: const Center(child: Text('footer')),
                             );
                           }
-                          return AnimatedView<int>(
+                          return AnimatedView(
+                            itemBuilder: itemBuilder,
                             shrinkWrap: true,
-                            items: gridItems,
+                            itemCount: gridItems.length,
                           );
                         })),
               ])),
