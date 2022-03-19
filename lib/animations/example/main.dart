@@ -6,6 +6,8 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
 import '../animations.dart';
 
+var scrollController = ScrollController();
+
 final GlobalKey<AnimatedGridState> gridKey = GlobalKey<AnimatedGridState>();
 
 var gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -63,32 +65,34 @@ class _AnimationExampleState extends State<AnimationExample> {
             Expanded(
               child: _animatedViewInListView(),
             ),
-            Row(children: [
-              testing.ExampleButton(
-                label: 'shifter',
-                builder: () => _shifter(),
-              ),
-              testing.ExampleButton(
-                label: 'animated grid',
-                builder: () => _animatedGrid(),
-              ),
-              testing.ExampleButton(
-                label: 'animated view',
-                builder: () => _animatedView(),
-              ),
-              testing.ExampleButton(
-                label: 'animated view in list view',
-                builder: () => _animatedViewInListView(),
-              ),
-              testing.ExampleButton(
-                label: 'axis animate',
-                builder: () => _axisAnimate(),
-              ),
-              testing.ExampleButton(
-                label: 'transform container',
-                builder: () => _transformContainer(),
-              ),
-            ])
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(children: [
+                  testing.ExampleButton(
+                    label: 'shifter',
+                    builder: () => _shifter(),
+                  ),
+                  testing.ExampleButton(
+                    label: 'animated grid',
+                    builder: () => _animatedGrid(),
+                  ),
+                  testing.ExampleButton(
+                    label: 'animated view',
+                    builder: () => _animatedView(),
+                  ),
+                  testing.ExampleButton(
+                    label: 'animated view in list view',
+                    builder: () => _animatedViewInListView(),
+                  ),
+                  testing.ExampleButton(
+                    label: 'axis animate',
+                    builder: () => _axisAnimate(),
+                  ),
+                  testing.ExampleButton(
+                    label: 'transform container',
+                    builder: () => _transformContainer(),
+                  ),
+                ])),
           ],
         ),
       ),
@@ -367,6 +371,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                 ),
                 Expanded(
                     child: ListView.builder(
+                        controller: scrollController,
                         itemCount: 3,
                         itemBuilder: (BuildContext context, int index) {
                           if (index == 0) {
@@ -384,6 +389,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                             );
                           }
                           return AnimatedView(
+                            controller: scrollController,
                             itemBuilder: itemBuilder,
                             shrinkWrap: true,
                             itemCount: gridItems.length,

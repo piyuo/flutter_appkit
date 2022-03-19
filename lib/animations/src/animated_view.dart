@@ -106,6 +106,7 @@ class AnimatedView extends StatelessWidget {
     required this.itemCount,
     this.crossAxisCount = 1,
     this.shrinkWrap = false,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -134,6 +135,20 @@ class AnimatedView extends StatelessWidget {
   /// Defaults to false.
   final bool shrinkWrap;
 
+  /// An object that can be used to control the position to which this scroll
+  /// view is scrolled.
+  ///
+  /// Must be null if [primary] is true.
+  ///
+  /// A [ScrollController] serves several purposes. It can be used to control
+  /// the initial scroll position (see [ScrollController.initialScrollOffset]).
+  /// It can be used to control whether the scroll view should automatically
+  /// save and restore its scroll position in the [PageStorage] (see
+  /// [ScrollController.keepScrollOffset]). It can be used to read the current
+  /// scroll position (see [ScrollController.offset]), or change it (see
+  /// [ScrollController.animateTo]).
+  final ScrollController? controller;
+
   /// isListView return true if crossAxisCount is 1
   bool get isListView => crossAxisCount == 1;
 
@@ -144,6 +159,7 @@ class AnimatedView extends StatelessWidget {
         reverse: provide._shifterReverse,
         newChildKey: provide._gridKey,
         child: AnimatedGrid(
+          controller: controller,
           shrinkWrap: shrinkWrap,
           key: provide._gridKey,
           crossAxisCount: crossAxisCount,
