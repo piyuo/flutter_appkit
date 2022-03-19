@@ -28,8 +28,8 @@ dependencies:
   flutter_markdown: ^0.6.8
   location: ^4.3.0 # device lat lng
   apple_maps_flutter: ^1.0.1
-  google_maps_flutter: ^2.0.11
-  google_maps_flutter_web: ^0.3.2
+  google_maps_flutter: ^2.1.2
+  google_maps_flutter_web: ^0.3.2+1
   amap_flutter_map: ^3.0.0 # 高德地圖
   extended_image: ^6.0.1
   carousel_slider: ^4.0.0
