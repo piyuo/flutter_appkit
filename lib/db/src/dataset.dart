@@ -132,11 +132,11 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// refresh seeking new data from data loader
+  /// refresh seeking new data from data loader, return true if has new data
   /// ```dart
   /// await ds.refresh(context);
   /// ```
-  Future<void> refresh(BuildContext context) async {
+  Future<bool> refresh(BuildContext context) async {
     notifyState(DataState.refreshing);
     try {
       T? anchor = await _memory.first;
@@ -149,20 +149,22 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
         debugPrint('[dataset] refresh ${downloadRows.length} rows');
         await _memory.insert(downloadRows);
         await gotoPage(context, 0);
+        return true;
       }
+      return false;
     } finally {
       notifyState(DataState.ready);
     }
   }
 
-  /// more seeking more data from data loader
+  /// more seeking more data from data loader, return true if has more data
   /// ```dart
   /// await ds.more(testing.Context(), 2);
   /// ```
-  Future<void> more(BuildContext context, int limit) async {
+  Future<bool> more(BuildContext context, int limit) async {
     if (_memory.noMoreData) {
       debugPrint('[dataset] no more already');
-      return;
+      return false;
     }
     notifyState(DataState.loading);
     try {
@@ -172,7 +174,11 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
         debugPrint('[dataset] has no more data');
         _memory.noMoreData = true;
       }
-      await _memory.add(downloadRows);
+      if (downloadRows.isNotEmpty) {
+        await _memory.add(downloadRows);
+        return true;
+      }
+      return false;
     } finally {
       notifyState(DataState.ready);
     }

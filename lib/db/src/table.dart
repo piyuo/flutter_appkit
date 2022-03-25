@@ -47,9 +47,14 @@ class Table<T extends pb.Object> extends Dataset<T> {
           loader: loader,
         );
 
-  /// more override, no more data in table
+  /// more seeking more data from data loader, return true if has more data
+  /// ```dart
+  /// await ds.more(testing.Context(), 2);
+  /// ```
   @override
-  Future<void> more(BuildContext context, int limit) async {}
+  Future<bool> more(BuildContext context, int limit) async {
+    return false;
+  }
 
   /// hasNextPage return true if user can click next page
   @override
