@@ -79,26 +79,26 @@ class Toolbar<T> extends StatelessWidget {
 
         final buttons = barItems.map((item) => _buildBarItem(context, item, onPressed, activeColor)).toList();
         if (menuItems.isNotEmpty) {
-          buttons.add(IconButton(
-            color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
-            icon: const Icon(Icons.keyboard_double_arrow_right),
-            onPressed: () async {
-              var popItems = <PopupMenuEntry>[];
-              for (int i = 0; i < menuItems.length; i++) {
-                ToolItem<T> item = menuItems[i];
-                popItems.addAll(_buildMenuItem(context, item, i == 0, i == menuItems.length - 1));
-              }
-              final result = await showMenu(
-                context: context,
-                position: RelativeRect.fromLTRB(constraints.maxWidth - _buttonMoreWidth, 0, 0, 0),
-                items: popItems,
-              );
-              if (result != null) {
-                onPressed(result!);
-              }
-            },
-            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-          ));
+          var popItems = <PopupMenuEntry<T>>[];
+          for (int i = 0; i < menuItems.length; i++) {
+            ToolItem<T> item = menuItems[i];
+            popItems.addAll(_buildMenuItem(context, item, i == 0, i == menuItems.length - 1));
+          }
+
+          buttons.add(
+            PopupMenuButton<T>(
+              icon: Icon(
+                Icons.keyboard_double_arrow_right,
+                color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
+              ),
+              offset: const Offset(0, 45),
+              itemBuilder: (context) => popItems,
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              onSelected: (value) {
+                onPressed(value);
+              },
+            ),
+          );
         }
         return Container(
             color: color,
@@ -171,7 +171,7 @@ Widget _buildBarItem<T>(
 }
 
 /// _buildMenuItem build menu item for toolbar popup menu
-List<PopupMenuEntry> _buildMenuItem<T>(
+List<PopupMenuEntry<T>> _buildMenuItem<T>(
   BuildContext context,
   ToolItem<T> item,
   bool first,

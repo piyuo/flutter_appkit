@@ -22,7 +22,7 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _showToolMenu(context),
+              child: _toolbar(context),
             ),
             Wrap(
               children: [
@@ -149,15 +149,6 @@ class ResponsiveExample extends StatelessWidget {
             active: false,
             space: 10,
           ),
-          /*ToolSelection(
-            label: 'Rows per page',
-            icon: Icons.table_rows,
-            selection: {
-              '10': '10 rows',
-              '20': '20 rows',
-              '50': '50 rows',
-            },
-          ),*/
           ToolSelection<String>(
             width: 120,
             text: 'page 2 of more',
@@ -226,6 +217,62 @@ class ResponsiveExample extends StatelessWidget {
           ),
         ],
       ),
+      Row(children: [
+        Expanded(
+            child: Toolbar<String>(
+                color: Colors.blue.shade300,
+                activeColor: Colors.blue,
+                onPressed: (index) => debugPrint('just press $index'),
+                items: [
+              ToolButton(
+                label: 'New File',
+                icon: Icons.new_label,
+                value: 'new_file',
+                space: 10,
+              ),
+              ToolButton(
+                label: 'List View',
+                icon: Icons.list,
+                value: 'list_view',
+                active: true,
+              ),
+              ToolButton(
+                label: 'Grid View',
+                icon: Icons.grid_view,
+                value: 'grid_view',
+                active: false,
+                space: 10,
+              ),
+              ToolSelection<String>(
+                width: 120,
+                text: 'page 2 of more',
+                label: 'rows per page',
+                selection: {
+                  '10': '10 rows',
+                  '20': '20 rows',
+                  '50': '50 rows',
+                },
+              ),
+              ToolSpacer(),
+              ToolButton(
+                label: 'Back',
+                icon: Icons.chevron_left,
+                value: 'back',
+              ),
+              ToolButton(
+                label: 'Next',
+                icon: Icons.chevron_right,
+                value: 'next',
+              ),
+              ToolButton(
+                label: 'Disabled',
+                icon: Icons.cabin,
+                value: null,
+                space: 10,
+              ),
+            ])),
+        const SizedBox(width: 450),
+      ])
     ]);
   }
 
