@@ -3,8 +3,8 @@ import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/unique/unique.dart' as unique;
 
-class SamplePersonDataset extends db.Dataset<sample.Person> {
-  SamplePersonDataset()
+class PersonDataset extends db.Dataset<sample.Person> {
+  PersonDataset()
       : super(
           db.MemoryRam(dataBuilder: () => sample.Person()),
           dataBuilder: () => sample.Person(),
