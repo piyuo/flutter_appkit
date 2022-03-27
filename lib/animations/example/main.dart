@@ -63,7 +63,7 @@ class _AnimationExampleState extends State<AnimationExample> {
         child: Column(
           children: [
             Expanded(
-              child: _animatedViewInListView(),
+              child: _animatedView(),
             ),
             SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -305,10 +305,16 @@ class _AnimationExampleState extends State<AnimationExample> {
 
   Widget _animatedView() {
     return ChangeNotifierProvider<AnimatedViewProvider>(
-      create: (context) => AnimatedViewProvider(),
+      create: (context) => AnimatedViewProvider(gridItems.length),
       child: Consumer<AnimatedViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
+                  OutlinedButton(
+                    child: const Text('update item count'),
+                    onPressed: () {
+                      provide.itemCount = 5;
+                    },
+                  ),
                   OutlinedButton(
                     child: const Text('insert'),
                     onPressed: () {
@@ -348,18 +354,14 @@ class _AnimationExampleState extends State<AnimationExample> {
                     },
                   ),
                 ]),
-                Expanded(
-                    child: AnimatedView(
-                  itemBuilder: itemBuilder,
-                  itemCount: gridItems.length,
-                )),
+                const Expanded(child: AnimatedView(itemBuilder: itemBuilder)),
               ])),
     );
   }
 
   Widget _animatedViewInListView() {
     return ChangeNotifierProvider<AnimatedViewProvider>(
-      create: (context) => AnimatedViewProvider(),
+      create: (context) => AnimatedViewProvider(gridItems.length),
       child: Consumer<AnimatedViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 OutlinedButton(
@@ -392,7 +394,6 @@ class _AnimationExampleState extends State<AnimationExample> {
                             controller: scrollController,
                             itemBuilder: itemBuilder,
                             shrinkWrap: true,
-                            itemCount: gridItems.length,
                           );
                         })),
               ])),

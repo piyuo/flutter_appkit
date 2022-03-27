@@ -8,28 +8,39 @@ typedef AnimatedViewItemBuilder = Widget Function(bool isListView, int index);
 
 /// AnimatedViewProvider control view's animation
 /// ```dart
-// return ChangeNotifierProvider<AnimatedViewProvider>(
-///       create: (context) => AnimatedViewProvider(),
+/// return ChangeNotifierProvider<AnimatedViewProvider>(
+///       create: (context) => AnimatedViewProvider(gridItems.length),
 ///       child: Consumer<AnimatedViewProvider>(
 ///           builder: (context, provide, child) => AnimatedView(
 ///                   itemBuilder: itemBuilder,
-///                   itemCount: gridItems.length,
 ///                 )),
 ///     );
 /// ```
 class AnimatedViewProvider with ChangeNotifier {
   /// AnimatedViewProvider control view's animation
   /// ```dart
-// return ChangeNotifierProvider<AnimatedViewProvider>(
-  ///       create: (context) => AnimatedViewProvider(),
+  /// return ChangeNotifierProvider<AnimatedViewProvider>(
+  ///       create: (context) => AnimatedViewProvider(gridItems.length),
   ///       child: Consumer<AnimatedViewProvider>(
   ///           builder: (context, provide, child) => AnimatedView(
   ///                   itemBuilder: itemBuilder,
-  ///                   itemCount: gridItems.length,
   ///                 )),
   ///     );
   /// ```
-  AnimatedViewProvider();
+  AnimatedViewProvider(count) {
+    itemCount = count;
+  }
+
+  /// itemCount is total item count
+  int _itemCount = 0;
+
+  set itemCount(int value) {
+    _itemCount = value;
+    if (_gridKey.currentState != null) {
+      _gridKey.currentState!.itemCount = _itemCount;
+    }
+    notifyListeners();
+  }
 
   /// _shifterReverse is true will reverse shifter animation
   bool _shifterReverse = false;
@@ -41,6 +52,7 @@ class AnimatedViewProvider with ChangeNotifier {
   void nextPageAnimation() {
     _shifterReverse = false;
     _gridKey = GlobalKey<AnimatedGridState>();
+    _gridKey.currentState!.itemCount = _itemCount;
     notifyListeners();
   }
 
@@ -103,15 +115,11 @@ class AnimatedView extends StatelessWidget {
   /// ```
   const AnimatedView({
     required this.itemBuilder,
-    required this.itemCount,
     this.crossAxisCount = 1,
     this.shrinkWrap = false,
     this.controller,
     Key? key,
   }) : super(key: key);
-
-  /// itemCount is total item count
-  final int itemCount;
 
   /// itemBuilder is the item builder
   final AnimatedViewItemBuilder itemBuilder;
@@ -163,7 +171,7 @@ class AnimatedView extends StatelessWidget {
           shrinkWrap: shrinkWrap,
           key: provide._gridKey,
           crossAxisCount: crossAxisCount,
-          initialItemCount: itemCount,
+          initialItemCount: provide._itemCount,
           itemBuilder: (context, index, animation) {
             Widget widget = itemBuilder(isListView, index);
             return _slideIt(widget, animation);

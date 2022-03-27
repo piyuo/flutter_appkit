@@ -264,6 +264,10 @@ class AnimatedGrid extends StatefulWidget {
 class AnimatedGridState extends State<AnimatedGrid> with TickerProviderStateMixin<AnimatedGrid> {
   final GlobalKey<SliverAnimatedGridState> _sliverAnimatedGridKey = GlobalKey();
 
+  set itemCount(int value) {
+    _sliverAnimatedGridKey.currentState!.itemCount = value;
+  }
+
   /// Insert an item at [index] and start an animation that will be passed
   /// to [AnimatedGrid.itemBuilder] when the item is visible.
   ///
@@ -465,12 +469,12 @@ class SliverAnimatedGrid extends StatefulWidget {
 class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProviderStateMixin {
   final List<_ActiveItem> _incomingItems = <_ActiveItem>[];
   final List<_ActiveItem> _outgoingItems = <_ActiveItem>[];
-  int _itemsCount = 0;
+  int itemCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _itemsCount = widget.initialItemCount;
+    itemCount = widget.initialItemCount;
   }
 
   @override
@@ -530,7 +534,7 @@ class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProvi
   /// after [index] towards the end of the list.
   void insertItem(int index, {Duration duration = animatedDuration}) {
     final int itemIndex = _indexToItemIndex(index);
-    assert(itemIndex >= 0 && itemIndex <= _itemsCount);
+    assert(itemIndex >= 0 && itemIndex <= itemCount);
 
     // Increment the incoming and outgoing item indices to account
     // for the insertion.
@@ -553,7 +557,7 @@ class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProvi
       _incomingItems
         ..add(incomingItem)
         ..sort();
-      _itemsCount += 1;
+      itemCount += 1;
     });
 
     controller.forward().then<void>((_) {
@@ -574,7 +578,7 @@ class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProvi
   /// before [index] towards the beginning of the list.
   void removeItem(int index, AnimatedListRemovedItemBuilder builder, {Duration duration = animatedDuration}) {
     final int itemIndex = _indexToItemIndex(index);
-    assert(itemIndex >= 0 && itemIndex < _itemsCount);
+    assert(itemIndex >= 0 && itemIndex < itemCount);
     assert(_activeItemAt(_outgoingItems, itemIndex) == null);
 
     final _ActiveItem? incomingItem = _removeActiveItemAt(_incomingItems, itemIndex);
@@ -599,7 +603,7 @@ class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProvi
         if (item.itemIndex > outgoingItem.itemIndex) item.itemIndex -= 1;
       }
 
-      setState(() => _itemsCount -= 1);
+      setState(() => itemCount -= 1);
     });
   }
 
@@ -638,6 +642,6 @@ class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProvi
   }
 
   SliverChildDelegate _createDelegate() {
-    return SliverChildBuilderDelegate(_itemBuilder, childCount: _itemsCount);
+    return SliverChildBuilderDelegate(_itemBuilder, childCount: itemCount);
   }
 }
