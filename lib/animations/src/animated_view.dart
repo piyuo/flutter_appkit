@@ -52,7 +52,6 @@ class AnimatedViewProvider with ChangeNotifier {
   void nextPageAnimation() {
     _shifterReverse = false;
     _gridKey = GlobalKey<AnimatedGridState>();
-    _gridKey.currentState!.itemCount = _itemCount;
     notifyListeners();
   }
 
