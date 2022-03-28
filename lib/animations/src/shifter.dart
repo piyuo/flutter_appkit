@@ -47,6 +47,7 @@ class Shifter extends StatelessWidget {
     this.reverse = false,
     this.vertical = false,
     this.alignment = Alignment.topLeft,
+    this.duration = const Duration(milliseconds: 300),
     Key? key,
   }) : super(key: key);
 
@@ -65,10 +66,13 @@ class Shifter extends StatelessWidget {
   /// alignment is layout alignment
   final Alignment alignment;
 
+  /// duration is the duration of the transition from the old [child] value to the new one
+  final Duration duration;
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
+      duration: duration,
       layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
         return Stack(
           alignment: alignment,
