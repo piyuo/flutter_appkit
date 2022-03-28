@@ -369,6 +369,7 @@ void main() {
         },
       );
       await ds.start(testing.Context());
+      expect(ds.isFirstPage, true);
       expect(ds.hasPrevPage, false);
       expect(ds.hasNextPage, true);
       expect(ds.displayRows.length, 10);
@@ -379,6 +380,7 @@ void main() {
       expect(ds.length, 10);
 
       await ds.nextPage(testing.Context());
+      expect(ds.isFirstPage, false);
       expect(ds.hasPrevPage, true);
       expect(ds.hasNextPage, false);
       expect(ds.displayRows.length, 2);

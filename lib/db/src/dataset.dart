@@ -202,6 +202,9 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     displayRows.addAll(range);
   }
 
+  /// isFirstPage return true if it is first page
+  bool get isFirstPage => pageIndex == 0;
+
   /// hasPrevPage return true if user can click prev page
   bool get hasPrevPage => pageIndex > 0;
 
