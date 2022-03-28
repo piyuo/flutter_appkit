@@ -63,7 +63,7 @@ class _AnimationExampleState extends State<AnimationExample> {
         child: Column(
           children: [
             Expanded(
-              child: _animatedView(),
+              child: _shifter(),
             ),
             SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -146,7 +146,12 @@ class _AnimationExampleState extends State<AnimationExample> {
           newChildKey: ValueKey(shifterIndex),
           child: shifterIndex == 1
               ? Container(
-                  key: ValueKey(shifterIndex), width: 200, height: 200, color: Colors.red, child: const Text('text 1'))
+                  key: ValueKey(shifterIndex),
+                  width: 200,
+                  height: 400,
+                  color: Colors.red,
+                  child: const Text('text 1'),
+                )
               : shifterIndex == 2
                   ? Container(
                       key: ValueKey(shifterIndex),

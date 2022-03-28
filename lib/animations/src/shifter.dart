@@ -46,6 +46,7 @@ class Shifter extends StatelessWidget {
     required this.newChildKey,
     this.reverse = false,
     this.vertical = false,
+    this.alignment = Alignment.topLeft,
     Key? key,
   }) : super(key: key);
 
@@ -61,10 +62,22 @@ class Shifter extends StatelessWidget {
   /// vertical the animation
   final bool vertical;
 
+  /// alignment is layout alignment
+  final Alignment alignment;
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
+      layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
+        return Stack(
+          alignment: alignment,
+          children: <Widget>[
+            ...previousChildren,
+            if (currentChild != null) currentChild,
+          ],
+        );
+      },
       transitionBuilder: (Widget child, Animation<double> animation) {
         var inAnimation = Tween<Offset>(
           begin: vertical ? const Offset(0, 1.0) : const Offset(1.0, 0.0),
