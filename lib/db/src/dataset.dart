@@ -72,6 +72,9 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// pageIndex is current page index
   int pageIndex = 0;
 
+  /// isDisplayRowsFull return true if displayRows is full
+  bool get isDisplayRowsFull => displayRows.length == rowsPerPage;
+
   /// length return rows is empty
   /// ```dart
   /// var len=ds.length;

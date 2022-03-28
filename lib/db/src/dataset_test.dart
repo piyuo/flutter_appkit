@@ -48,6 +48,7 @@ void main() {
       // should read 10 rows
       expect(ds.length, 10);
       expect(ds.displayRows.length, 10);
+      expect(ds.isDisplayRowsFull, true);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
 
