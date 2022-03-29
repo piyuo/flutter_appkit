@@ -32,7 +32,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get notesUnselectAllButtonLabel => 'Unselect All';
 
   @override
-  String get notesItemSelectedLabel => 'Item selected';
+  String get notesItemSelectedLabel => '%1 Item selected';
 
   @override
   String get hintPleaseWait => 'Please Wait';

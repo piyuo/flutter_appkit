@@ -32,7 +32,7 @@ class LibLocalizationsZh extends LibLocalizations {
   String get notesUnselectAllButtonLabel => '全不選';
 
   @override
-  String get notesItemSelectedLabel => '項目已選擇';
+  String get notesItemSelectedLabel => '%1 項目已選擇';
 
   @override
   String get hintPleaseWait => '請稍候';
@@ -463,7 +463,7 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
   String get notesUnselectAllButtonLabel => '全不選';
 
   @override
-  String get notesItemSelectedLabel => '項目已選擇';
+  String get notesItemSelectedLabel => '%1 項目已選擇';
 
   @override
   String get hintPleaseWait => '請稍候';

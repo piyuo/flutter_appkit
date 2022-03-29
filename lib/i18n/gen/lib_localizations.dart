@@ -146,7 +146,7 @@ abstract class LibLocalizations {
   /// No description provided for @notesItemSelectedLabel.
   ///
   /// In en, this message translates to:
-  /// **'Item selected'**
+  /// **'%1 Item selected'**
   String get notesItemSelectedLabel;
 
   /// No description provided for @hintPleaseWait.
