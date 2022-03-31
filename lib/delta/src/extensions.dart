@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 /// DeltaBuildContext add color function to BuildContext
 extension DeltaBuildContext on BuildContext {
@@ -37,5 +38,16 @@ extension DeltaBuildContext on BuildContext {
   bool get isTouchSupported {
     var platform = Theme.of(this).platform;
     return platform == TargetPlatform.iOS || platform == TargetPlatform.android;
+  }
+
+  /// isPreferMouse is true if os prefer mouse or touch pad
+  /// ```dart
+  /// context.isPreferMouse;
+  /// ```
+  bool get isPreferMouse {
+    if (kIsWeb) {
+      return true;
+    }
+    return !isTouchSupported;
   }
 }
