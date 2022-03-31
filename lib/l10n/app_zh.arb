@@ -52,6 +52,7 @@
     "fieldTextTooShort": "%1必须至少包含 %2 个字元. 您输入了 %3 个字元",
     "fieldTextTooLong": "%1必须是%2个或更少字元. 您输入了 %3 个字元",
     "scanQRButtonText": "扫描二维码",
+    "pagingRows": "笔资料",
     "pagingMany": "共很多",
     "pagingCount": "共 %1 笔",
     "noDataLabel": "无资料",

@@ -146,7 +146,7 @@ abstract class LibLocalizations {
   /// No description provided for @notesItemSelectedLabel.
   ///
   /// In en, this message translates to:
-  /// **'%1 Item selected'**
+  /// **'%1 Row selected'**
   String get notesItemSelectedLabel;
 
   /// No description provided for @hintPleaseWait.
@@ -412,6 +412,12 @@ abstract class LibLocalizations {
   /// In en, this message translates to:
   /// **'Scan QR code'**
   String get scanQRButtonText;
+
+  /// No description provided for @pagingRows.
+  ///
+  /// In en, this message translates to:
+  /// **'rows'**
+  String get pagingRows;
 
   /// No description provided for @pagingMany.
   ///

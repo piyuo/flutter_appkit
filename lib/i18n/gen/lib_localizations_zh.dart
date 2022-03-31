@@ -167,6 +167,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get scanQRButtonText => '扫描二维码';
 
   @override
+  String get pagingRows => '笔资料';
+
+  @override
   String get pagingMany => '共很多';
 
   @override
@@ -596,6 +599,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get scanQRButtonText => '掃描二維碼';
+
+  @override
+  String get pagingRows => '筆資料';
 
   @override
   String get pagingMany => '共很多';

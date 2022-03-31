@@ -7,8 +7,7 @@
     "notesRowsPerPage":"%1 Rows per page",
     "notesSelectAllButtonLabel":"Select All",
     "notesUnselectAllButtonLabel":"Unselect All",
-    "notesItemSelectedLabel":"%1 Item selected",
-
+    "notesItemSelectedLabel":"%1 Row selected",
     "hintPleaseWait": "Please Wait",
     "hintDone": "Done",
     "confirmButtonText": "Confirm",
@@ -53,6 +52,7 @@
     "fieldTextTooShort": "%1 must contain at least %2 character. You entered %3 characters",
     "fieldTextTooLong": "%1 must be %2 characters or fewer. You entered %3 characters",
     "scanQRButtonText": "Scan QR code",
+    "pagingRows": "rows",
     "pagingMany": "of many",
     "pagingCount": "of %1",
     "noDataLabel": "No data",

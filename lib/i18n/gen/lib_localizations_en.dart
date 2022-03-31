@@ -32,7 +32,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get notesUnselectAllButtonLabel => 'Unselect All';
 
   @override
-  String get notesItemSelectedLabel => '%1 Item selected';
+  String get notesItemSelectedLabel => '%1 Row selected';
 
   @override
   String get hintPleaseWait => 'Please Wait';
@@ -165,6 +165,9 @@ class LibLocalizationsEn extends LibLocalizations {
 
   @override
   String get scanQRButtonText => 'Scan QR code';
+
+  @override
+  String get pagingRows => 'rows';
 
   @override
   String get pagingMany => 'of many';
