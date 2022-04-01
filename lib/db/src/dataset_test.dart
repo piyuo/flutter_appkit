@@ -48,7 +48,7 @@ void main() {
       // should read 10 rows
       expect(ds.length, 10);
       expect(ds.displayRows.length, 10);
-      expect(ds.isDisplayRowsFull, true);
+      expect(ds.isDisplayRowsFullPage, true);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
 
@@ -534,6 +534,52 @@ void main() {
       expect(lastAnchorId, 'firstMore9');
       expect(ds.length, 22);
       expect(ds.noMoreData, true);
+    });
+
+    test('should always display all rows', () async {
+      int step = 0;
+      final ds = Dataset<sample.Person>(
+        MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
+        alwaysDisplayAll: true,
+        dataBuilder: () => sample.Person(),
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          if (step == 0) {
+            // init
+            step++;
+            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+          }
+          if (step == 1) {
+            // first more
+            step++;
+            return List.generate(
+                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
+          }
+          if (step == 2) {
+            // second more
+            step++;
+            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'secondMore' + index.toString())));
+          }
+          return [];
+        },
+      );
+      await ds.start(testing.Context());
+      expect(ds.pagingInfo(testing.Context()), '10 rows');
+      expect(ds.length, 10);
+      await ds.nextPage(testing.Context());
+      expect(ds.pagingInfo(testing.Context()), '20 rows');
+      expect(ds.length, 20);
+      await ds.nextPage(testing.Context());
+      expect(ds.pagingInfo(testing.Context()), '22 rows');
+      expect(ds.length, 22);
+
+      await ds.gotoPage(testing.Context(), 0);
+      expect(ds.pagingInfo(testing.Context()), '22 rows');
+
+      await ds.gotoPage(testing.Context(), 1);
+      expect(ds.pagingInfo(testing.Context()), '22 rows');
+
+      await ds.gotoPage(testing.Context(), 2);
+      expect(ds.pagingInfo(testing.Context()), '22 rows');
     });
   });
 }

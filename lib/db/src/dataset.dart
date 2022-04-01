@@ -41,6 +41,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     BuildContext? context,
     required this.loader,
     required this.dataBuilder,
+    this.alwaysDisplayAll = false,
     this.onReady,
   }) {
     if (context != null) {
@@ -72,8 +73,11 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// pageIndex is current page index
   int pageIndex = 0;
 
-  /// isDisplayRowsFull return true if displayRows is full
-  bool get isDisplayRowsFull => displayRows.length == rowsPerPage;
+  /// alwaysDisplayAll will display all data in memory
+  bool alwaysDisplayAll;
+
+  /// isDisplayRowsFullPage return true if displayRows is full of page
+  bool get isDisplayRowsFullPage => displayRows.length == rowsPerPage;
 
   /// length return rows is empty
   /// ```dart
@@ -193,8 +197,13 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   Future<void> fill() async {
     displayRows.clear();
-    final paginator = Paginator(rowCount: _memory.length, rowsPerPage: _memory.rowsPerPage);
-    final range = await _memory.subRows(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
+    List<T>? range;
+    if (alwaysDisplayAll) {
+      range = await _memory.allRows;
+    } else {
+      final paginator = Paginator(rowCount: _memory.length, rowsPerPage: _memory.rowsPerPage);
+      range = await _memory.subRows(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
+    }
     if (range == null) {
       notifyState(DataState.dataMissing);
       return;
@@ -271,8 +280,14 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// paging return text page info like '1-10 of many'
+  /// pagingInfo return text page info like '1-10 of many'
+  /// ```dart
+  /// expect(ds.pagingInfo(testing.Context()), '10 rows');
+  /// ```
   String pagingInfo(BuildContext context) {
+    if (alwaysDisplayAll) {
+      return '${_memory.length} ' + context.i18n.pagingRows;
+    }
     final paginator = Paginator(rowCount: _memory.length, rowsPerPage: _memory.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
     if (noMoreData) {
