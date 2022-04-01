@@ -48,6 +48,7 @@ dependencies:
   permission_handler: ^9.2.0
   just_audio: ^0.9.18
   universal_html: ^2.0.8
+  universal_platform: ^1.0.0+1
   loading_indicator: ^3.0.2
   synchronized: ^3.0.0
   date_field: ^2.1.2
