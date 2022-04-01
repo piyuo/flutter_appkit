@@ -128,17 +128,6 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  /// onBeforeRefresh called before refresh
-  void onBeforeRefresh(List<T> list) {
-    if (isEmpty && list.length < rowsPerPage) {
-      _memory.noMoreData = true;
-    }
-    if (list.length == rowsPerPage) {
-      // if download length == limit, it means there is more data and we need expired all our cache to start over
-      _memory.clear();
-    }
-  }
-
   /// refresh seeking new data from data loader, return true if has new data
   /// ```dart
   /// await ds.refresh(context);
@@ -148,10 +137,14 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     try {
       T? anchor = await _memory.first;
       final downloadRows = await loader(context, true, _memory.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
-      onBeforeRefresh(downloadRows);
       if (_memory.isEmpty && downloadRows.length < _memory.rowsPerPage) {
         _memory.noMoreData = true;
       }
+      if (downloadRows.length == rowsPerPage) {
+        // if download length == limit, it means there is more data and we need expired all our cache to start over
+        _memory.clear();
+      }
+
       if (downloadRows.isNotEmpty) {
         debugPrint('[dataset] refresh ${downloadRows.length} rows');
         await _memory.insert(downloadRows);
@@ -183,6 +176,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
       }
       if (downloadRows.isNotEmpty) {
         await _memory.add(downloadRows);
+        await fill();
         return true;
       }
       return false;
