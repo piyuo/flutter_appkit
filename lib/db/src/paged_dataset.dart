@@ -1,0 +1,118 @@
+import 'package:flutter/material.dart';
+import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'memory.dart';
+import 'db.dart';
+import 'paginator.dart';
+import 'dataset.dart';
+
+/// PagedDataset is dataset that support page
+class PagedDataset<T extends pb.Object> extends Dataset<T> {
+  PagedDataset(
+    Memory<T> _memory, {
+    BuildContext? context,
+    required DatasetLoader<T> loader,
+    required pb.Builder<T> dataBuilder,
+    VoidCallback? onReady,
+  }) : super(
+          _memory,
+          context: context,
+          loader: loader,
+          dataBuilder: dataBuilder,
+          onReady: onReady,
+        );
+
+  /// pageIndex is current page index
+  int pageIndex = 0;
+
+  @override
+  Future<void> setRowsPerPage(BuildContext context, int value) async {
+    pageIndex = 0;
+    await super.setRowsPerPage(context, value);
+  }
+
+  /// fill display rows
+  /// ```dart
+  /// await ds.fill();
+  /// ```
+  @override
+  Future<void> fill() async {
+    displayRows.clear();
+    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+    final range = await memory.subRows(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
+    if (range == null) {
+      notifyState(DataState.dataMissing);
+      return;
+    }
+    displayRows.addAll(range);
+  }
+
+  /// pagingInfo return text page info like '1-10 of many'
+  /// ```dart
+  /// expect(ds.pagingInfo(testing.Context()), '10 rows');
+  /// ```
+  @override
+  String pagingInfo(BuildContext context) {
+    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+    final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
+    if (noMoreData) {
+      return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
+    }
+    return info + context.i18n.pagingMany;
+  }
+
+  /// gotoPage goto specified page, load more page if needed
+  /// ```dart
+  /// await gotoPage(context, 2);
+  /// ```
+  @override
+  Future<void> gotoPage(BuildContext context, int index) async {
+    await loadMoreBeforeGotoPage(context, index);
+    try {
+      final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+      pageIndex = index;
+      if (pageIndex < 0) {
+        pageIndex = 0;
+      }
+      if (pageIndex >= paginator.pageCount) {
+        pageIndex = paginator.pageCount - 1;
+      }
+      await fill();
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  /// isFirstPage return true if it is first page
+  bool get isFirstPage => pageIndex == 0;
+
+  /// hasPrevPage return true if user can click prev page
+  bool get hasPrevPage => pageIndex > 0;
+
+  /// hasNextPage return true if user can click next page
+  bool get hasNextPage {
+    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+    return noMoreData ? pageIndex < paginator.pageCount - 1 : true;
+  }
+
+  /// nextPage return true if load data
+  ///
+  ///     await nextPage(context);
+  ///
+  Future<void> nextPage(BuildContext context) async => await gotoPage(context, pageIndex + 1);
+
+  /// prevPage return true if page changed
+  ///
+  ///     await prevPage();
+  ///
+  Future<void> prevPage(BuildContext context) async => await gotoPage(context, pageIndex - 1);
+
+  /// loadMoreBeforeGotoPage load more data before goto page
+  Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {
+    final expectRowsCount = length - index * rowsPerPage;
+    if (expectRowsCount < rowsPerPage && !noMoreData) {
+      //the page is not fill with enough data, load more data
+      await more(context, rowsPerPage - expectRowsCount);
+    }
+  }
+}

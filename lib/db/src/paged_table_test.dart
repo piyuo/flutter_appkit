@@ -5,26 +5,21 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/pb/src/google/google.dart' as google;
-import 'table.dart';
-import 'db.dart';
+import 'paged_table.dart';
+import 'memory_ram.dart';
 
 void main() {
-  setUpAll(() async {
-    await initDBForTest();
-  });
+  setUpAll(() async {});
 
-  setUp(() async {
-    await deleteTable('test');
-  });
+  setUp(() async {});
 
-  tearDownAll(() async {
-    await deleteTable('test');
-  });
+  tearDownAll(() async {});
 
-  group('[table]', () {
+  group('[paged_table]', () {
     test('should refresh on start', () async {
       int refreshCount = 0;
-      Table dataSet = Table(
+      PagedTable dataSet = PagedTable(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -55,25 +50,23 @@ void main() {
     });
 
     test('should remove duplicate data when refresh', () async {
-      final ds = Table<sample.Person>(
+      final ds = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test2',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async =>
             [sample.Person(entity: pb.Entity(id: 'duplicate'))],
       );
-      try {
-        await ds.start(testing.Context());
-        await ds.refresh(testing.Context());
-        // second refresh will delete duplicate data
-        expect(ds.length, 1);
-      } finally {
-        await deleteTable('test2');
-      }
+      await ds.start(testing.Context());
+      await ds.refresh(testing.Context());
+      // second refresh will delete duplicate data
+      expect(ds.length, 1);
     });
 
     test('should not reset on refresh', () async {
       int idCount = 0;
-      final ds = Table<sample.Person>(
+      final ds = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -102,7 +95,8 @@ void main() {
       google.Timestamp? _anchorTimestamp;
       String? _anchorId;
 
-      final ds = Table<sample.Person>(
+      final ds = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -132,7 +126,8 @@ void main() {
     });
 
     test('should save state', () async {
-      final cs = Table<sample.Person>(
+      final cs = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -142,7 +137,8 @@ void main() {
       await cs.start(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
-      final cs2 = Table<sample.Person>(
+      final cs2 = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
@@ -153,7 +149,8 @@ void main() {
     });
 
     test('should goto page', () async {
-      final cs = Table<sample.Person>(
+      final cs = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -163,7 +160,8 @@ void main() {
       await cs.start(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
-      final cs2 = Table<sample.Person>(
+      final cs2 = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
@@ -175,7 +173,8 @@ void main() {
 
     test('should load next/prev/last/first page', () async {
       int step = 0;
-      final ds = Table<sample.Person>(
+      final ds = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -251,7 +250,8 @@ void main() {
 
     test('should goto page and show info', () async {
       int step = 0;
-      final ds = Table<sample.Person>(
+      final ds = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -304,7 +304,8 @@ void main() {
       bool? lastIsRefresh;
       int? lastLimit;
       String? lastAnchorId;
-      final ds = Table<sample.Person>(
+      final ds = PagedTable<sample.Person>(
+        MemoryRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {

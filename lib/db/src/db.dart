@@ -35,6 +35,7 @@ Future<void> initDB() async {
 @visibleForTesting
 Future<void> initDBForTest() async {
   hivePath = 'test.hive';
+  debugPrint('hivePath: $hivePath');
   Hive.init(hivePath!);
 }
 
@@ -63,4 +64,3 @@ Future<void> deleteDatabase(String name) async {
 /// bool found=await isDatabaseExists('database_name');
 /// ```
 Future<bool> isDatabaseExists(String name) async => await Hive.boxExists(name, path: hivePath);
-

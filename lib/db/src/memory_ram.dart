@@ -56,10 +56,6 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   Future<void> insert(List<T> list) async {
-    if (list.length == rowsPerPage) {
-      // if download length == limit, it means there is more data and we need expired all our cache to start over
-      clear();
-    }
     for (T row in list) {
       _removeDuplicate(row, _rows);
     }

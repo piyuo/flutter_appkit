@@ -4,15 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'dataset.dart';
-import 'db.dart';
-import 'memory_database.dart';
+import 'paged_dataset.dart';
+import 'memory.dart';
 import 'paginator.dart';
-
-/// deleteTable delete table database
-/// ```dart
-/// await deleteTable('test');
-/// ```
-Future<void> deleteTable(String id) async => deleteDatabase(id);
 
 /// Table keep full table data in local, no data allow to be deleted due to local cache can not detect server delete data
 /// ```dart
@@ -24,7 +18,7 @@ Future<void> deleteTable(String id) async => deleteDatabase(id);
 ///   );
 /// await ds.start(testing.Context());
 /// ```
-class Table<T extends pb.Object> extends Dataset<T> {
+class PagedTable<T extends pb.Object> extends PagedDataset<T> {
   /// Table keep full table data in local, no data allow to be deleted due to local cache can not detect server delete data
   /// ```dart
   /// final ds = Table<sample.Person>(
@@ -35,17 +29,27 @@ class Table<T extends pb.Object> extends Dataset<T> {
   ///   );
   /// await ds.start(testing.Context());
   /// ```
-  Table({
+  PagedTable(
+    Memory<T> _memory, {
     BuildContext? context,
     required String id,
     required pb.Builder<T> dataBuilder,
     required DatasetLoader<T> loader,
   }) : super(
-          MemoryDatabase(id: id, dataBuilder: dataBuilder),
+          _memory,
           context: context,
           dataBuilder: dataBuilder,
           loader: loader,
-        );
+        ) {
+    _memory.noMoreData = true;
+  }
+
+  /// onRefresh reset memory on dataset mode, but not on table mode
+  @override
+  void onRefresh(List<T> downloadRows) {}
+
+  @override
+  Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {}
 
   /// more seeking more data from data loader, return true if has more data
   /// ```dart
@@ -63,9 +67,6 @@ class Table<T extends pb.Object> extends Dataset<T> {
     return pageIndex < paginator.pageCount - 1;
   }
 
-  @override
-  Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {}
-
   /// pagingInfo return text page info like '1-10 of 19'
   @override
   String pagingInfo(BuildContext context) {
@@ -73,8 +74,4 @@ class Table<T extends pb.Object> extends Dataset<T> {
     return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ' +
         context.i18n.pagingCount.replaceAll('%1', innerMemory.length.toString());
   }
-
-  /// onBeforeRefresh called before refresh
-  @override
-  void onBeforeRefresh(List<T> list) {}
 }

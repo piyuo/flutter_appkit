@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/pb/src/google/google.dart' as google;
 import 'memory.dart';
 import 'db.dart';
-import 'paginator.dart';
 
 /// DatasetLoader can refresh or load more data by anchor and limit
 /// ```dart
@@ -25,7 +23,7 @@ typedef DatasetLoader<T> = Future<List<T>> Function(
 /// );
 /// await ds.start(testing.Context());
 /// ```
-class Dataset<T extends pb.Object> with ChangeNotifier {
+abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// Dataset read data save to local, manage paging and select row
   /// ```dart
   /// final ds = Dataset<sample.Person>(
@@ -37,11 +35,10 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// await ds.start(testing.Context());
   /// ```
   Dataset(
-    this._memory, {
+    this.memory, {
     BuildContext? context,
     required this.loader,
     required this.dataBuilder,
-    this.alwaysDisplayAll = false,
     this.onReady,
   }) {
     if (context != null) {
@@ -61,20 +58,14 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// state is the state of dataset
   DataState state = DataState.initial;
 
-  /// _memory keep all rows in memory
-  final Memory<T> _memory;
+  /// memory keep all rows in memory
+  final Memory<T> memory;
 
   /// selectedRows keep all selected rows
   List<T> selectedRows = [];
 
   /// displayRows is rows to display
   List<T> displayRows = [];
-
-  /// pageIndex is current page index
-  int pageIndex = 0;
-
-  /// alwaysDisplayAll will display all data in memory
-  bool alwaysDisplayAll;
 
   /// isDisplayRowsFullPage return true if displayRows is full of page
   bool get isDisplayRowsFullPage => displayRows.length == rowsPerPage;
@@ -83,23 +74,41 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// var len=ds.length;
   /// ```
-  int get length => _memory.length;
+  int get length => memory.length;
 
   /// innerMemory can get _memory for child
   @protected
-  Memory<T> get innerMemory => _memory;
+  Memory<T> get innerMemory => memory;
 
   /// noMoreData return true if no more data to add
-  bool get noMoreData => _memory.noMoreData;
+  bool get noMoreData => memory.noMoreData;
 
   /// rowsPerPage return rows per page
-  int get rowsPerPage => _memory.rowsPerPage;
+  int get rowsPerPage => memory.rowsPerPage;
 
   /// isEmpty return rows is empty
-  bool get isEmpty => _memory.isEmpty;
+  bool get isEmpty => memory.isEmpty;
 
   /// isNotEmpty return rows is not empty
-  bool get isNotEmpty => _memory.isNotEmpty;
+  bool get isNotEmpty => memory.isNotEmpty;
+
+  /// fill display rows
+  /// ```dart
+  /// await ds.fill();
+  /// ```
+  Future<void> fill();
+
+  /// pagingInfo return text page info like '1-10 of many'
+  /// ```dart
+  /// expect(ds.pagingInfo(testing.Context()), '10 rows');
+  /// ```
+  String pagingInfo(BuildContext context);
+
+  /// gotoPage goto specified page, load more page if needed
+  /// ```dart
+  /// await gotoPage(context, 2);
+  /// ```
+  Future<void> gotoPage(BuildContext context, int index);
 
   /// start when data source create with context
   /// ```dart
@@ -107,7 +116,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   Future<void> start(BuildContext context) async {
     try {
-      await _memory.open();
+      await memory.open();
       await refresh(context);
       onReady?.call();
     } finally {
@@ -120,12 +129,23 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// await ds.close();
   /// ```
   @visibleForTesting
-  Future<void> close() async => await _memory.close();
+  Future<void> close() async => await memory.close();
 
   /// notifyState change state and notify listener
   void notifyState(DataState newState) {
     state = newState;
     notifyListeners();
+  }
+
+  /// onRefresh reset memory on dataset mode, but not on table mode
+  void onRefresh(List<T> downloadRows) {
+    if (memory.isEmpty && downloadRows.length < memory.rowsPerPage) {
+      memory.noMoreData = true;
+    }
+    if (downloadRows.length == rowsPerPage) {
+      // if download length == limit, it means there is more data and we need expired all our cache to start over
+      memory.clear();
+    }
   }
 
   /// refresh seeking new data from data loader, return true if has new data
@@ -135,19 +155,12 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   Future<bool> refresh(BuildContext context) async {
     notifyState(DataState.refreshing);
     try {
-      T? anchor = await _memory.first;
-      final downloadRows = await loader(context, true, _memory.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
-      if (_memory.isEmpty && downloadRows.length < _memory.rowsPerPage) {
-        _memory.noMoreData = true;
-      }
-      if (downloadRows.length == rowsPerPage) {
-        // if download length == limit, it means there is more data and we need expired all our cache to start over
-        _memory.clear();
-      }
-
+      T? anchor = await memory.first;
+      final downloadRows = await loader(context, true, memory.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
+      onRefresh(downloadRows);
       if (downloadRows.isNotEmpty) {
         debugPrint('[dataset] refresh ${downloadRows.length} rows');
-        await _memory.insert(downloadRows);
+        await memory.insert(downloadRows);
         await gotoPage(context, 0);
         return true;
       }
@@ -162,20 +175,20 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// await ds.more(testing.Context(), 2);
   /// ```
   Future<bool> more(BuildContext context, int limit) async {
-    if (_memory.noMoreData) {
+    if (memory.noMoreData) {
       debugPrint('[dataset] no more already');
       return false;
     }
     notifyState(DataState.loading);
     try {
-      T? anchor = await _memory.last;
+      T? anchor = await memory.last;
       final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
       if (downloadRows.length < limit) {
         debugPrint('[dataset] has no more data');
-        _memory.noMoreData = true;
+        memory.noMoreData = true;
       }
       if (downloadRows.isNotEmpty) {
-        await _memory.add(downloadRows);
+        await memory.add(downloadRows);
         await fill();
         return true;
       }
@@ -185,109 +198,18 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// fill display rows
-  /// ```dart
-  /// await ds.fill();
-  /// ```
-  Future<void> fill() async {
-    displayRows.clear();
-    List<T>? range;
-    if (alwaysDisplayAll) {
-      range = await _memory.allRows;
-    } else {
-      final paginator = Paginator(rowCount: _memory.length, rowsPerPage: _memory.rowsPerPage);
-      range = await _memory.subRows(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
-    }
-    if (range == null) {
-      notifyState(DataState.dataMissing);
-      return;
-    }
-    displayRows.addAll(range);
-  }
-
-  /// isFirstPage return true if it is first page
-  bool get isFirstPage => pageIndex == 0;
-
-  /// hasPrevPage return true if user can click prev page
-  bool get hasPrevPage => pageIndex > 0;
-
-  /// hasNextPage return true if user can click next page
-  bool get hasNextPage {
-    final paginator = Paginator(rowCount: _memory.length, rowsPerPage: _memory.rowsPerPage);
-    return noMoreData ? pageIndex < paginator.pageCount - 1 : true;
-  }
-
-  /// nextPage return true if load data
-  ///
-  ///     await nextPage(context);
-  ///
-  Future<void> nextPage(BuildContext context) async => await gotoPage(context, pageIndex + 1);
-
-  /// prevPage return true if page changed
-  ///
-  ///     await prevPage();
-  ///
-  Future<void> prevPage(BuildContext context) async => await gotoPage(context, pageIndex - 1);
-
-  /// loadMoreBeforeGotoPage load more data before goto page
-  Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {
-    final expectRowsCount = length - index * rowsPerPage;
-    if (expectRowsCount < rowsPerPage && !noMoreData) {
-      //the page is not fill with enough data, load more data
-      await more(context, rowsPerPage - expectRowsCount);
-    }
-  }
-
-  /// gotoPage goto specified page, load more page if needed
-  /// ```dart
-  /// await gotoPage(context, 2);
-  /// ```
-  Future<void> gotoPage(BuildContext context, int index) async {
-    await loadMoreBeforeGotoPage(context, index);
-    try {
-      final paginator = Paginator(rowCount: _memory.length, rowsPerPage: _memory.rowsPerPage);
-      pageIndex = index;
-      if (pageIndex < 0) {
-        pageIndex = 0;
-      }
-      if (pageIndex >= paginator.pageCount) {
-        pageIndex = paginator.pageCount - 1;
-      }
-      await fill();
-    } finally {
-      notifyListeners();
-    }
-  }
-
   /// setRowsPerPage set rows per page and change page index to 0
   /// ```dart
   /// await setRowsPerPage(context, 20);
   /// ```
   Future<void> setRowsPerPage(BuildContext context, int value) async {
     try {
-      pageIndex = 0;
-      _memory.rowsPerPage = value;
-      _memory.save();
+      memory.rowsPerPage = value;
+      memory.save();
       await gotoPage(context, 0);
     } finally {
       notifyListeners();
     }
-  }
-
-  /// pagingInfo return text page info like '1-10 of many'
-  /// ```dart
-  /// expect(ds.pagingInfo(testing.Context()), '10 rows');
-  /// ```
-  String pagingInfo(BuildContext context) {
-    if (alwaysDisplayAll) {
-      return '${_memory.length} ' + context.i18n.pagingRows;
-    }
-    final paginator = Paginator(rowCount: _memory.length, rowsPerPage: _memory.rowsPerPage);
-    final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
-    if (noMoreData) {
-      return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
-    }
-    return info + context.i18n.pagingMany;
   }
 
   /// isRowSelected return true when row is selected
@@ -302,7 +224,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   void selectRows(List<T> rows) {
     selectedRows.clear();
-    rows.removeWhere((row) => !_memory.isIDExists(row.entityID));
+    rows.removeWhere((row) => !memory.isIDExists(row.entityID));
     selectedRows.addAll(rows);
     notifyListeners();
   }
@@ -313,7 +235,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   void selectRow(T row, bool selected) {
     selectedRows.remove(row);
-    if (selected && _memory.isIDExists(row.entityID)) {
+    if (selected && memory.isIDExists(row.entityID)) {
       selectedRows.add(row);
     }
     notifyListeners();

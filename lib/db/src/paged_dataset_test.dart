@@ -7,9 +7,10 @@ import 'package:libcli/pb/src/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'db.dart';
 import 'dataset.dart';
+import 'paged_dataset.dart';
 import 'memory_ram.dart';
 
-class OrderSampleDataset extends Dataset<sample.Person> {
+class OrderSampleDataset extends PagedDataset<sample.Person> {
   OrderSampleDataset()
       : super(
           MemoryRam(dataBuilder: () => sample.Person()),
@@ -99,7 +100,7 @@ void main() {
     });
 
     test('should remove duplicate data when refresh', () async {
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
@@ -113,7 +114,7 @@ void main() {
 
     test('should keep more and cache when receive enough data', () async {
       int refreshCount = 0;
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -148,7 +149,7 @@ void main() {
 
     test('should no keep more when receive less data', () async {
       int refreshCount = 0;
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -186,7 +187,7 @@ void main() {
       google.Timestamp? _anchorTimestamp;
       String? _anchorId;
 
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -233,7 +234,7 @@ void main() {
     test('should no more on when receive empty data', () async {
       int moreCount = 0;
       int counter = 0;
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -267,7 +268,7 @@ void main() {
     test('should no more on less data', () async {
       int moreCount = 0;
       int counter = 0;
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -306,7 +307,7 @@ void main() {
     });
 
     test('should select rows', () async {
-      Dataset ds = Dataset(
+      Dataset ds = PagedDataset(
         MemoryRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -331,7 +332,7 @@ void main() {
 
     test('should fill display rows', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-      Dataset ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         memory,
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -348,7 +349,7 @@ void main() {
 
     test('should load next/prev/last/first page', () async {
       int step = 0;
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -425,7 +426,7 @@ void main() {
 
     test('should goto page and show info', () async {
       int step = 0;
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -473,7 +474,7 @@ void main() {
       bool? lastIsRefresh;
       int? lastLimit;
       String? lastAnchorId;
-      final ds = Dataset<sample.Person>(
+      final ds = PagedDataset<sample.Person>(
         MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -536,88 +537,6 @@ void main() {
       expect(lastAnchorId, 'firstMore9');
       expect(ds.length, 22);
       expect(ds.noMoreData, true);
-    });
-
-    test('should always display all rows', () async {
-      int step = 0;
-      final ds = Dataset<sample.Person>(
-        MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
-        alwaysDisplayAll: true,
-        dataBuilder: () => sample.Person(),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          if (step == 0) {
-            // init
-            step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
-          }
-          if (step == 1) {
-            // first nextPage
-            step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
-          }
-          if (step == 2) {
-            // second nextPage
-            step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'secondMore' + index.toString())));
-          }
-          if (step == 3) {
-            // first more
-            step++;
-            return List.generate(3, (index) => sample.Person(entity: pb.Entity(id: 'secondMore' + index.toString())));
-          }
-          return [];
-        },
-      );
-      await ds.start(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '10 rows');
-      expect(ds.length, 10);
-      await ds.nextPage(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '20 rows');
-      expect(ds.length, 20);
-      await ds.nextPage(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '22 rows');
-      expect(ds.length, 22);
-
-      await ds.gotoPage(testing.Context(), 0);
-      expect(ds.pagingInfo(testing.Context()), '22 rows');
-
-      await ds.gotoPage(testing.Context(), 1);
-      expect(ds.pagingInfo(testing.Context()), '22 rows');
-
-      await ds.gotoPage(testing.Context(), 2);
-      expect(ds.pagingInfo(testing.Context()), '22 rows');
-    });
-
-    test('should fill display rows when load more', () async {
-      int step = 0;
-      final ds = Dataset<sample.Person>(
-        MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
-        alwaysDisplayAll: true,
-        dataBuilder: () => sample.Person(),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          if (step == 0) {
-            // init
-            step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
-          }
-          if (step == 1) {
-            // first more
-            step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
-          }
-          return [];
-        },
-      );
-      await ds.start(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '10 rows');
-      expect(ds.length, 10);
-      expect(ds.displayRows.length, 10);
-      await ds.more(testing.Context(), 10);
-      expect(ds.pagingInfo(testing.Context()), '20 rows');
-      expect(ds.length, 20);
-      expect(ds.displayRows.length, 20);
     });
   });
 }
