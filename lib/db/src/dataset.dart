@@ -104,6 +104,18 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   String pagingInfo(BuildContext context);
 
+  /// nextPage return true if load data
+  ///
+  ///     await nextPage(context);
+  ///
+  Future<void> nextPage(BuildContext context);
+
+  /// prevPage return true if page changed
+  ///
+  ///     await prevPage();
+  ///
+  Future<void> prevPage(BuildContext context);
+
   /// gotoPage goto specified page, load more page if needed
   /// ```dart
   /// await gotoPage(context, 2);

@@ -99,12 +99,14 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   ///
   ///     await nextPage(context);
   ///
+  @override
   Future<void> nextPage(BuildContext context) async => await gotoPage(context, pageIndex + 1);
 
   /// prevPage return true if page changed
   ///
   ///     await prevPage();
   ///
+  @override
   Future<void> prevPage(BuildContext context) async => await gotoPage(context, pageIndex - 1);
 
   /// loadMoreBeforeGotoPage load more data before goto page

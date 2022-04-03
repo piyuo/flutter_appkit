@@ -53,4 +53,12 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
     await fill();
     notifyListeners();
   }
+
+  /// nextPage, no next page in continuous dataset
+  @override
+  Future<void> nextPage(BuildContext context) async {}
+
+  /// prevPage, no previous page in continuous dataset
+  @override
+  Future<void> prevPage(BuildContext context) async {}
 }
