@@ -104,6 +104,9 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   String pagingInfo(BuildContext context);
 
+  /// isFirstPage return true if it is first page
+  bool get isFirstPage;
+
   /// nextPage return true if load data
   ///
   ///     await nextPage(context);

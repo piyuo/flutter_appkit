@@ -54,6 +54,10 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
     notifyListeners();
   }
 
+  /// isFirstPage return true if it is first page
+  @override
+  bool get isFirstPage => true;
+
   /// nextPage, no next page in continuous dataset
   @override
   Future<void> nextPage(BuildContext context) async {}

@@ -84,6 +84,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   }
 
   /// isFirstPage return true if it is first page
+  @override
   bool get isFirstPage => pageIndex == 0;
 
   /// hasPrevPage return true if user can click prev page
