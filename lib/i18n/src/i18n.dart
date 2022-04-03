@@ -72,7 +72,7 @@ class I18nProvider with ChangeNotifier {
 /// _I18nDelegate used to get localized change events
 class _I18nDelegate extends LocalizationsDelegate<Locale> {
   @override
-  bool isSupported(Locale locale) => LibLocalizations.supportedLocales.contains(locale);
+  bool isSupported(Locale locale) => true;
 
   @override
   Future<Locale> load(Locale locale) async {
