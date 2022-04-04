@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+
+/// Builder build item to display
+typedef ItemBuilder<T> = Widget Function(T item, bool isSelected);
+
+abstract class Selectable<T> extends StatelessWidget {
+  const Selectable({
+    required this.items,
+    required this.selectedItems,
+    required this.itemBuilder,
+    this.checkMode = false,
+    this.onItemSelected,
+    this.onItemChecked,
+    this.headerBuilder,
+    this.footerBuilder,
+    Key? key,
+  }) : super(key: key);
+
+  /// items is all items need to display
+  final List<T> items;
+
+  /// selectedItems is selected items
+  final List<T> selectedItems;
+
+  /// checkMode is a boolean value that indicates whether the list is in check mode
+  final bool checkMode;
+
+  /// itemBuilder is a item builder for list view
+  final ItemBuilder<T> itemBuilder;
+
+  /// onItemSelected is callback when item selected
+  final void Function(List<T> items)? onItemSelected;
+
+  /// onItemChecked is callback when item checked
+  final void Function(List<T> items)? onItemChecked;
+
+  /// headerBuilder build header widget
+  final Widget Function()? headerBuilder;
+
+  /// footerBuilder build footer widget
+  final Widget Function()? footerBuilder;
+
+  /// onBuildItem call when item need to build
+  Widget onBuildItem(BuildContext context, int itemIndex, T item, bool isSelected);
+
+  /// buildItem is build item by itemIndex
+  Widget buildItem(BuildContext context, int itemIndex) {
+    final item = items[itemIndex];
+    final isSelected = selectedItems.contains(item);
+    if (onItemSelected != null || onItemChecked != null) {
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          if (!checkMode) {
+            if (!selectedItems.contains(item)) {
+              onItemSelected?.call([item]);
+            }
+            return;
+          }
+          var newLSelected = selectedItems.toList();
+          if (newLSelected.contains(item)) {
+            newLSelected.remove(item);
+          } else {
+            newLSelected.add(item);
+          }
+          onItemChecked?.call(newLSelected);
+        },
+        child: onBuildItem(context, itemIndex, item, isSelected),
+      );
+    }
+    return onBuildItem(context, itemIndex, item, isSelected);
+  }
+}

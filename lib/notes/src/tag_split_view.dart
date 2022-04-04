@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:split_view/split_view.dart';
-import 'filter_view.dart';
+import 'tag_view.dart';
 
-class FilterSplitView extends StatelessWidget {
-  /// FilterSplitView show a filter and content widget in split view
-  const FilterSplitView({
-    required this.folderView,
+class TagSplitView extends StatelessWidget {
+  /// TagSplitView show a tag and content widget in split view
+  const TagSplitView({
+    required this.tagView,
     required this.child,
     Key? key,
   }) : super(key: key);
 
-  /// folderView is filter view
-  final FilterView folderView;
+  /// tagView is tag view
+  final TagView tagView;
 
   /// child is content widget in split view
   final Widget child;
@@ -49,7 +49,7 @@ class FilterSplitView extends StatelessWidget {
               color: Colors.grey,
             ),
             children: [
-              folderView,
+              tagView,
               child,
             ],
             //onWeightChanged: (w) => onSplitViewResized?.call(constraints.maxWidth * w[0]!),

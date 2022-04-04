@@ -2,43 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
-import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/animations/animations.dart' as animations;
+import 'package:libcli/db/db.dart' as db;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/unique/unique.dart' as unique;
 import '../notes.dart';
+import 'sample.dart';
+import 'sample_table.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
 final _searchBoxController = TextEditingController();
 int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
-
-class SampleDataset extends db.Dataset<sample.Person> {
-  SampleDataset(BuildContext context)
-      : super(
-          db.MemoryRam(dataBuilder: () => sample.Person()),
-          dataBuilder: () => sample.Person(),
-          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-            return List.generate(returnCount, (i) => sample.Person(entity: pb.Entity(id: '$returnID-$i')));
-          },
-        ) {
-    start(context);
-  }
-
-  static String returnID = 'A';
-
-  static int returnCount = 10;
-}
+int sampleID = 0;
+var animationListItems = ['a', 'b', 'c', 'd', 'e'];
 
 main() {
   app.start(
     appName: 'notes',
-    providers: [
-      ChangeNotifierProvider<ViewController>(
-        create: (context) => ViewController(),
-      ),
-    ],
+    providers: [],
     routes: {
       '/': (context, state, data) => const NotesExample(),
     },
@@ -68,41 +53,46 @@ class NotesExample extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey.shade800,
         actions: [
-          Consumer<ViewController>(
+/*          Consumer<NotesController>(
               builder: (context, viewController, child) => IconButton(
                     icon: const Icon(Icons.pending_outlined),
                     onPressed: () async {
-                      final value = await showMasterDetailMenu(
-                        context,
-                        viewController: viewController,
-                      );
-                      debugPrint('$value just pressed');
+//                      final value = await showMasterDetailMenu(
+                      //                      context,
+                      //                    viewController: viewController,
+                      //                );
+                      //              debugPrint('$value just pressed');
                     },
-                  )),
+                  )),*/
         ],
       ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
-              child: _masterDetailView(context),
+              child: _notesView(context),
             ),
-            Wrap(
-              children: [
-                testing.ExampleButton(label: 'show filter view', builder: () => _showFilterView(context)),
-                testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
-                testing.ExampleButton(label: 'folder view', builder: () => _folderView(context)),
-                testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
-                testing.ExampleButton(label: 'data explorer', builder: () => _dataExplorer(context)),
-                testing.ExampleButton(label: 'loading data', builder: () => _loadingMasterDetailView(context)),
-                testing.ExampleButton(label: 'master detail view', builder: () => _masterDetailView(context)),
-                testing.ExampleButton(label: 'selectable grid', builder: () => _selectableGrid(context)),
-                testing.ExampleButton(label: 'checkable grid', builder: () => _checkableGrid(context)),
-                testing.ExampleButton(label: 'selectable list', builder: () => _selectableList(context)),
-                testing.ExampleButton(label: 'checkable list', builder: () => _checkableList(context)),
-                testing.ExampleButton(label: 'list gallery', builder: () => _selectableList(context)),
-                testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  testing.ExampleButton(label: 'simple list', builder: () => _simpleList(context)),
+                  testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
+                  testing.ExampleButton(label: 'checkable grid', builder: () => _checkableGrid(context)),
+                  testing.ExampleButton(label: 'checkable list', builder: () => _checkableList(context)),
+                  testing.ExampleButton(label: 'dynamic list', builder: () => _dynamicList(context)),
+                  testing.ExampleButton(label: 'dynamic grid', builder: () => _dynamicGrid(context)),
+                  testing.ExampleButton(label: 'master detail view', builder: () => _masterDetailView(context)),
+                  testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
+                  testing.ExampleButton(label: 'show filter view', builder: () => _showFilterView(context)),
+                  testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
+                  testing.ExampleButton(label: 'folder view', builder: () => _folderView(context)),
+                  testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
+//                  testing.ExampleButton(label: 'data explorer', builder: () => _tableView(context)),
+                  testing.ExampleButton(label: 'loading data', builder: () => _loadingMasterDetailView(context)),
+                  testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
+                ],
+              ),
             ),
           ],
         ),
@@ -110,42 +100,200 @@ class NotesExample extends StatelessWidget {
     );
   }
 
-  Widget _dataExplorer(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<SampleDataset>(create: (context) => SampleDataset(context)),
-          ChangeNotifierProvider<delta.RefreshButtonController>(
-            create: (context) => delta.RefreshButtonController(),
+  Widget _simpleList(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(children: [
+          Expanded(
+            child: SimpleList<String>(
+              headerBuilder: () => delta.SearchBox(
+                controller: _searchBoxController,
+              ),
+              footerBuilder: () => Container(
+                child: const Text('footer'),
+                color: Colors.red,
+              ),
+              items: const ['a', 'b', 'c', 'd', 'e'],
+              selectedItems: const ['b'],
+              itemBuilder: (String item, bool isSelected) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                child: Text(item),
+              ),
+            ),
           ),
-          ChangeNotifierProvider<ViewController>(
-            create: (context) => ViewController(),
-          )
-        ],
-        child: Consumer<SampleDataset>(
-            builder: (context, dataSource, _) => DataExplorer<sample.Person>(
-                  dataset: dataSource,
-                  listBuilder: (sample.Person person, bool isSelected) => Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text('list:${person.name}'),
+        ]));
+  }
+
+  Widget _checkableList(BuildContext context) {
+    return Column(children: [
+      Expanded(
+        child: SimpleList<String>(
+          headerBuilder: () => delta.SearchBox(
+            controller: _searchBoxController,
+          ),
+          checkMode: true,
+          items: const ['a', 'b', 'c', 'd', 'e'],
+          selectedItems: const ['b'],
+          itemBuilder: (String item, bool isSelected) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Text(item),
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  Widget _simpleGrid(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: SimpleGrid<String>(
+        crossAxisCount: 2,
+        headerBuilder: () => delta.SearchBox(
+          controller: _searchBoxController,
+        ),
+        items: const ['a', 'b', 'c', 'd', 'e'],
+        selectedItems: const ['b'],
+        itemBuilder: (String item, bool isSelected) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Text(item),
+        ),
+        labelBuilder: (String item, bool isSelected) => Container(
+          color: Colors.yellow,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+          child: const Center(child: Text('hello world')),
+        ),
+      ),
+    );
+  }
+
+  Widget _checkableGrid(BuildContext context) {
+    return Column(children: [
+      Expanded(
+        child: SimpleGrid<String>(
+          headerBuilder: () => delta.SearchBox(
+            controller: _searchBoxController,
+          ),
+          footerBuilder: () => Container(
+            child: const Text('footer'),
+            color: Colors.red,
+          ),
+          checkMode: true,
+          items: const ['a', 'b', 'c', 'd', 'e'],
+          selectedItems: const ['b'],
+          itemBuilder: (String item, bool isSelected) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+            child: Text(item),
+          ),
+          labelBuilder: (String item, bool isSelected) => const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            child: Center(child: Text('hello world')),
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  Widget _dynamicList(BuildContext context) {
+    return ChangeNotifierProvider<animations.AnimatedViewProvider>(
+        create: (context) => animations.AnimatedViewProvider(animationListItems.length),
+        child: Consumer<animations.AnimatedViewProvider>(
+            builder: (context, provide, child) => Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(children: [
+                  OutlinedButton(
+                    child: const Text('insert'),
+                    onPressed: () {
+                      animationListItems.insert(0, 'z');
+                      provide.insertAnimation();
+                    },
                   ),
-                  gridBuilder: (sample.Person person, bool isSelected) => Padding(
-                    padding: const EdgeInsets.all(50),
-                    child: Text('list:${person.name}'),
+                  Expanded(
+                    child: DynamicList<String>(
+                      headerBuilder: () => delta.SearchBox(
+                        controller: _searchBoxController,
+                      ),
+                      footerBuilder: () => Container(
+                        child: const Text('footer'),
+                        color: Colors.red,
+                      ),
+                      items: animationListItems,
+                      selectedItems: const ['b'],
+                      itemBuilder: (String item, bool isSelected) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        child: Text(item),
+                      ),
+                    ),
                   ),
-                  labelBuilder: (sample.Person person, bool isSelected) => Text('label:${person.age}'),
-                  detailBuilder: (sample.Person person) => Column(
-                    children: [
-                      Text('name:${person.name}'),
-                      Text('age:${person.age}'),
-                    ],
+                ]))));
+  }
+
+  Widget _pullRefresh(BuildContext context) {
+    return ChangeNotifierProvider<animations.AnimatedViewProvider>(
+        create: (context) => animations.AnimatedViewProvider(15),
+        child: Consumer<animations.AnimatedViewProvider>(
+            builder: (context, provide, child) => Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(children: [
+                  Expanded(
+                      child: DynamicList<String>(
+                    items: const ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'],
+                    selectedItems: const ['b'],
+                    onRefresh: () async {
+                      await Future.delayed(const Duration(seconds: 3));
+                      debugPrint('refresh');
+                    },
+                    onLoadMore: () async {
+                      await Future.delayed(const Duration(seconds: 3));
+                      debugPrint('load more');
+                    },
+                    itemBuilder: (String item, bool isSelected) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                      child: Text(item),
+                    ),
+                  )),
+                ]))));
+  }
+
+  Widget _dynamicGrid(BuildContext context) {
+    return ChangeNotifierProvider<animations.AnimatedViewProvider>(
+        create: (context) => animations.AnimatedViewProvider(animationListItems.length),
+        child: Consumer<animations.AnimatedViewProvider>(
+            builder: (context, provide, child) => Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(children: [
+                  OutlinedButton(
+                    child: const Text('insert'),
+                    onPressed: () {
+                      animationListItems.insert(0, 'z');
+                      provide.insertAnimation();
+                    },
                   ),
-                  onAction: (action) async {},
-                )));
+                  Expanded(
+                    child: DynamicGrid<String>(
+                      headerBuilder: () => delta.SearchBox(
+                        controller: _searchBoxController,
+                      ),
+                      footerBuilder: () => Container(
+                        child: const Text('footer'),
+                        color: Colors.red,
+                      ),
+                      items: animationListItems,
+                      selectedItems: const ['b'],
+                      itemBuilder: (String item, bool isSelected) => Container(
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        child: Text(item),
+                      ),
+                    ),
+                  ),
+                ]))));
   }
 
   Widget _masterDetailView(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider<animations.AnimatedViewProvider>(
+            create: (context) => animations.AnimatedViewProvider(5),
+          ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
           ),
@@ -153,35 +301,35 @@ class NotesExample extends StatelessWidget {
             create: (context) => _SelectedController(),
           )
         ],
-        child: Consumer2<_SelectedController, ViewController>(
-            builder: (context, selectedController, viewController, child) => MasterDetailView<String>(
+        child: Consumer<_SelectedController>(
+            builder: (context, selectedController, child) => MasterDetailView<String>(
                   headerBuilder: () => delta.SearchBox(
                     prefixIcon: IconButton(
                       icon: const Icon(Icons.menu),
-                      onPressed: () => showFilterView<SampleFilter>(
+                      onPressed: () => showTagView<SampleFilter>(
                         context,
-                        onFilterSelected: (value) => debugPrint('$value selected'),
-                        filters: const [
-                          Filter<SampleFilter>(
+                        onTagSelected: (value) => debugPrint('$value selected'),
+                        tags: const [
+                          Tag<SampleFilter>(
                             label: 'Inbox',
                             value: SampleFilter.inbox,
                             icon: Icons.inbox,
                             count: 0,
                           ),
-                          Filter<SampleFilter>(
+                          Tag<SampleFilter>(
                             label: 'VIPs',
                             value: SampleFilter.vip,
                             icon: Icons.verified_user,
                             count: 1,
                             selected: true,
                           ),
-                          Filter<SampleFilter>(
+                          Tag<SampleFilter>(
                             label: 'Sent',
                             value: SampleFilter.sent,
                             icon: Icons.send,
                             count: 20,
                           ),
-                          Filter<SampleFilter>(
+                          Tag<SampleFilter>(
                             label: 'All',
                             value: SampleFilter.all,
                             icon: Icons.all_inbox,
@@ -193,13 +341,9 @@ class NotesExample extends StatelessWidget {
                     ),
                     controller: _searchBoxController,
                   ),
-                  pageInfo: '1-6 of 6',
+                  pagingInfo: '1-6 of 6',
                   items: const ['a', 'b', 'c', 'd', 'e'],
-                  selectedItems: viewController.isSelecting
-                      ? selectedController.items
-                      : selectedController.items.isEmpty
-                          ? ['a']
-                          : selectedController.items,
+                  selectedItems: const ['a'],
                   listBuilder: (String item, bool isSelected) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     child: Text('list:' + item),
@@ -228,40 +372,79 @@ class NotesExample extends StatelessWidget {
                   onItemChecked: (items) {
                     selectedController.items = items;
                   },
-                  onCheckBegin: () => selectedController.items = <String>[],
-                  onCheckEnd: () => selectedController.items = <String>['a'],
-                  onRefresh: () async => debugPrint('refresh'),
-                  onLoadMore: () async => debugPrint('load more'),
                 )));
   }
+
+/*
+  Widget _tableView(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<SampleTable>(create: (context) => SampleTable(context)),
+        ],
+        child: Consumer<SampleTable>(
+            builder: (context, table, _) => TableView<sample.Person>(
+                  table: table,
+                  listBuilder: (sample.Person person, bool isSelected) => Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text('list:${person.name}'),
+                  ),
+                  gridBuilder: (sample.Person person, bool isSelected) => Padding(
+                    padding: const EdgeInsets.all(50),
+                    child: Text('list:${person.name}'),
+                  ),
+                  labelBuilder: (sample.Person person, bool isSelected) => Text('label:${person.age}'),
+                  detailBuilder: (sample.Person person) => Column(
+                    children: [
+                      Text('name:${person.name}'),
+                      Text('age:${person.age}'),
+                    ],
+                  ),
+                  onShowDetail: (sample.Person person) => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                    return Scaffold(
+                      appBar: AppBar(
+                        elevation: 1,
+                      ),
+                      body: SafeArea(
+                          child: Column(
+                        children: [
+                          Text('name:${person.name}'),
+                          Text('age:${person.age}'),
+                        ],
+                      )),
+                    );
+                  })),
+                  onBarAction: (action) async {},
+                )));
+  }
+*/
 
   Widget _showFilterView(BuildContext context) {
     return OutlinedButton(
       child: const Text('show folder view'),
-      onPressed: () => showFilterView<SampleFilter>(
+      onPressed: () => showTagView<SampleFilter>(
         context,
-        onFilterSelected: (value) => debugPrint('$value selected'),
-        filters: const [
-          Filter<SampleFilter>(
+        onTagSelected: (value) => debugPrint('$value selected'),
+        tags: const [
+          Tag<SampleFilter>(
             label: 'Inbox',
             value: SampleFilter.inbox,
             icon: Icons.inbox,
             count: 0,
           ),
-          Filter<SampleFilter>(
+          Tag<SampleFilter>(
             label: 'VIPs',
             value: SampleFilter.vip,
             icon: Icons.verified_user,
             count: 1,
             selected: true,
           ),
-          Filter<SampleFilter>(
+          Tag<SampleFilter>(
             label: 'Sent',
             value: SampleFilter.sent,
             icon: Icons.send,
             count: 20,
           ),
-          Filter<SampleFilter>(
+          Tag<SampleFilter>(
             label: 'All',
             value: SampleFilter.all,
             icon: Icons.all_inbox,
@@ -274,29 +457,29 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _folderView(BuildContext context) {
-    return FilterView<SampleFilter>(
-      onFilterSelected: (value) => debugPrint('$value selected'),
-      filters: const [
-        Filter<SampleFilter>(
+    return TagView<SampleFilter>(
+      onTagSelected: (value) => debugPrint('$value selected'),
+      tags: const [
+        Tag<SampleFilter>(
           label: 'Inbox',
           value: SampleFilter.inbox,
           icon: Icons.inbox,
           count: 0,
         ),
-        Filter<SampleFilter>(
+        Tag<SampleFilter>(
           label: 'VIPs',
           value: SampleFilter.vip,
           icon: Icons.verified_user,
           count: 1,
           selected: true,
         ),
-        Filter<SampleFilter>(
+        Tag<SampleFilter>(
           label: 'Sent',
           value: SampleFilter.sent,
           icon: Icons.send,
           count: 20,
         ),
-        Filter<SampleFilter>(
+        Tag<SampleFilter>(
           label: 'All',
           value: SampleFilter.all,
           icon: Icons.all_inbox,
@@ -310,6 +493,9 @@ class NotesExample extends StatelessWidget {
   Widget _filterSplitView(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider<animations.AnimatedViewProvider>(
+            create: (context) => animations.AnimatedViewProvider(5),
+          ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
           ),
@@ -317,31 +503,31 @@ class NotesExample extends StatelessWidget {
             create: (context) => _SelectedController(),
           )
         ],
-        child: Consumer2<_SelectedController, ViewController>(
-          builder: (context, selectedController, viewController, child) => FilterSplitView(
-              folderView: FilterView<SampleFilter>(
-                onFilterSelected: (value) => debugPrint('$value selected'),
-                filters: const [
-                  Filter<SampleFilter>(
+        child: Consumer<_SelectedController>(
+          builder: (context, selectedController, child) => TagSplitView(
+              tagView: TagView<SampleFilter>(
+                onTagSelected: (value) => debugPrint('$value selected'),
+                tags: const [
+                  Tag<SampleFilter>(
                     label: 'Inbox',
                     value: SampleFilter.inbox,
                     icon: Icons.inbox,
                     count: 0,
                   ),
-                  Filter<SampleFilter>(
+                  Tag<SampleFilter>(
                     label: 'VIPs',
                     value: SampleFilter.vip,
                     icon: Icons.verified_user,
                     count: 1,
                     selected: true,
                   ),
-                  Filter<SampleFilter>(
+                  Tag<SampleFilter>(
                     label: 'Sent',
                     value: SampleFilter.sent,
                     icon: Icons.send,
                     count: 20,
                   ),
-                  Filter<SampleFilter>(
+                  Tag<SampleFilter>(
                     label: 'All',
                     value: SampleFilter.all,
                     icon: Icons.all_inbox,
@@ -351,13 +537,9 @@ class NotesExample extends StatelessWidget {
                 ],
               ),
               child: MasterDetailView<String>(
-                pageInfo: '1-6 of 6',
+                pagingInfo: '1-6 of 6',
                 items: const ['a', 'b', 'c', 'd', 'e'],
-                selectedItems: viewController.isSelecting
-                    ? selectedController.items
-                    : selectedController.items.isEmpty
-                        ? ['a']
-                        : selectedController.items,
+                selectedItems: const ['a'],
                 listBuilder: (String item, bool isSelected) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                   child: Text('list:' + item),
@@ -386,18 +568,16 @@ class NotesExample extends StatelessWidget {
                 onItemChecked: (items) {
                   selectedController.items = items;
                 },
-                onCheckBegin: () => selectedController.items = <String>[],
-                onCheckEnd: () => selectedController.items = <String>['a'],
               )),
         ));
   }
 
   Widget _selectionHeader(BuildContext context) {
     return Column(children: [
-      SelectionHeader(
+      CheckableHeader(
         onSelectAll: () => debugPrint('select all'),
         onUnselectAll: () => debugPrint('unselect all'),
-        selected: 12,
+        selectedItemCount: 12,
         isAllSelected: true,
         actions: [
           TextButton.icon(
@@ -420,10 +600,9 @@ class NotesExample extends StatelessWidget {
         ],
       ),
       const SizedBox(height: 20),
-      const SelectionHeader(
-        selected: 3,
+      const CheckableHeader(
+        selectedItemCount: 3,
         isAllSelected: true,
-        showCheckbox: false,
       ),
     ]);
   }
@@ -434,9 +613,9 @@ class NotesExample extends StatelessWidget {
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
           ),
-          ChangeNotifierProvider<ViewController>(
-            create: (context) => ViewController(),
-          )
+//          ChangeNotifierProvider<NotesController>(
+          //          create: (context) => NotesController(),
+          //      )
         ],
         child: MasterDetailView<String>(
           isLoading: true,
@@ -450,131 +629,81 @@ class NotesExample extends StatelessWidget {
         ));
   }
 
-  Widget _selectableGrid(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: SelectableGrid<String>(
-        gap: 50,
-        headerBuilder: () => delta.SearchBox(
-          controller: _searchBoxController,
-        ),
-        items: const ['a', 'b', 'c', 'd', 'e'],
-        selectedItems: const ['b'],
-        builder: (String item, bool isSelected) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          child: Text(item),
-        ),
-        labelBuilder: (String item, bool isSelected) => const Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          child: Center(child: Text('hello world')),
-        ),
-        onRefresh: () async {
-          await Future.delayed(const Duration(seconds: 3));
-          debugPrint('refresh');
-        },
-        onLoadMore: () async {
-          await Future.delayed(const Duration(seconds: 3));
-          debugPrint('load more');
-        },
-      ),
-    );
-  }
-
-  Widget _checkableGrid(BuildContext context) {
-    return Column(children: [
-      Expanded(
-        child: SelectableGrid<String>(
-          headerBuilder: () => delta.SearchBox(
-            controller: _searchBoxController,
+  Widget _notesView(BuildContext context) {
+    return ChangeNotifierProvider<NotesController<sample.Person>>(
+        create: (context) => NotesController<sample.Person>(
+              context: context,
+              dataset: db.PagedDataset<sample.Person>(
+                db.MemoryRam(dataBuilder: () => sample.Person()),
+                dataBuilder: () => sample.Person(),
+                loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+                  return List.generate(
+                    10,
+                    (i) {
+                      final uuid = unique.uuid();
+                      return sample.Person(
+                        name: uuid,
+                        entity: pb.Entity(id: uuid),
+                      );
+                    },
+                  );
+                },
+              ),
+              tags: const [
+                Tag(
+                  label: 'Inbox',
+                  value: 'inbox',
+                  icon: Icons.inbox,
+                  count: 0,
+                ),
+                Tag(
+                  label: 'VIPs',
+                  value: 'vips',
+                  icon: Icons.verified_user,
+                  count: 1,
+                  selected: true,
+                ),
+                Tag(
+                  label: 'Sent',
+                  value: 'sent',
+                  icon: Icons.send,
+                  count: 20,
+                ),
+                Tag(
+                  label: 'All',
+                  value: 'all',
+                  icon: Icons.all_inbox,
+                  count: 120,
+                  category: 'iCloud',
+                ),
+              ],
+            ),
+        child: Consumer<NotesController<sample.Person>>(
+          builder: (context, notesController, child) => NotesView<sample.Person>(
+            controller: notesController,
+            listBuilder: (sample.Person person, bool isSelected) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              child: Text('list:${person.name}'),
+            ),
+            gridBuilder: (sample.Person person, bool isSelected) => Container(
+              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+              child: Text('grid:$person'),
+            ),
+            labelBuilder: (sample.Person person, bool isSelected) => const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              child: Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
+            ),
+            detailBuilder: (sample.Person person) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              child: Center(child: Text('detail view for $person')),
+            ),
+            onBarAction: (action) async {
+              debugPrint('$action pressed');
+              if (action == MasterDetailViewAction.refresh) {
+                await Future.delayed(const Duration(seconds: 10));
+              }
+            },
           ),
-          footerBuilder: () => Container(
-            child: const Text('footer'),
-            color: Colors.red,
-          ),
-          checkMode: true,
-          items: const ['a', 'b', 'c', 'd', 'e'],
-          selectedItems: const ['b'],
-          builder: (String item, bool isSelected) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-            child: Text(item),
-          ),
-          labelBuilder: (String item, bool isSelected) => const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            child: Center(child: Text('hello world')),
-          ),
-        ),
-      ),
-    ]);
-  }
-
-  Widget _selectableList(BuildContext context) {
-    return Column(children: [
-      Expanded(
-        child: SelectableList<String>(
-          headerBuilder: () => delta.SearchBox(
-            controller: _searchBoxController,
-          ),
-          footerBuilder: () => Container(
-            child: const Text('footer'),
-            color: Colors.red,
-          ),
-          items: const ['a', 'b', 'c', 'd', 'e'],
-          selectedItems: const ['b'],
-          builder: (String item, bool isSelected) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: Text(item),
-          ),
-          onRefresh: () async {
-            await Future.delayed(const Duration(seconds: 3));
-            debugPrint('refresh');
-          },
-          onLoadMore: () async {
-            await Future.delayed(const Duration(seconds: 3));
-            debugPrint('load more');
-          },
-        ),
-      ),
-    ]);
-  }
-
-  Widget _checkableList(BuildContext context) {
-    return Column(children: [
-      Expanded(
-        child: SelectableList<String>(
-          headerBuilder: () => delta.SearchBox(
-            controller: _searchBoxController,
-          ),
-          checkMode: true,
-          items: const ['a', 'b', 'c', 'd', 'e'],
-          selectedItems: const ['b'],
-          builder: (String item, bool isSelected) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: Text(item),
-          ),
-        ),
-      ),
-    ]);
-  }
-
-  Widget _pullRefresh(BuildContext context) {
-    return Column(children: [
-      Expanded(
-          child: SelectableList<String>(
-        items: const ['a', 'b', 'c', 'd', 'e', 'a', 'b', 'c', 'd', 'e', 'a', 'b', 'c', 'd', 'e'],
-        selectedItems: const ['b'],
-        onRefresh: () async {
-          await Future.delayed(const Duration(seconds: 3));
-          debugPrint('refresh');
-        },
-        onLoadMore: () async {
-          await Future.delayed(const Duration(seconds: 3));
-          debugPrint('load more');
-        },
-        builder: (String item, bool isSelected) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          child: Text(item),
-        ),
-      )),
-    ]);
+        ));
   }
 }

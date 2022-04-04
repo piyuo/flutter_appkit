@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/responsive/responsive.dart' as responsive;
-import 'master_detail_view.dart';
-import 'view_controller.dart';
-
+/*
 Future<MasterDetailViewAction?> showMasterDetailMenu(
   BuildContext context, {
   required ViewController viewController,
@@ -40,3 +38,4 @@ Future<MasterDetailViewAction?> showMasterDetailMenu(
 
   return result;
 }
+*/

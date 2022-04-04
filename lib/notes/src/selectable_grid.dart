@@ -1,88 +1,40 @@
 import 'package:flutter/material.dart';
-import 'grid_list.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/responsive/responsive.dart' as responsive;
+import 'selectable.dart';
 
-/// SelectableGrid is a grid view that selectable
-/// ```dart
-/// SelectableGrid<String>(
-///        gap: 50,
-///        headerBuilder: () => delta.SearchBox(
-///          controller: _searchBoxController,
-///        ),
-///        items: const ['a', 'b', 'c', 'd', 'e'],
-///        selectedItems: const ['b'],
-///        builder: (String item, bool isSelected) => Padding(
-///          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-///          child: Text(item),
-///        ),
-///        labelBuilder: (String item, bool isSelected) => const Padding(
-///           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-///     child: Center(child: Text('hello world')),
-///   ),
-/// ),
-/// ```
-class SelectableGrid<T> extends GridList<T> {
-  /// SelectableGrid is a grid view that selectable
-  /// ```dart
-  /// SelectableGrid<String>(
-  ///        gap: 50,
-  ///        headerBuilder: () => delta.SearchBox(
-  ///          controller: _searchBoxController,
-  ///        ),
-  ///        items: const ['a', 'b', 'c', 'd', 'e'],
-  ///        selectedItems: const ['b'],
-  ///        builder: (String item, bool isSelected) => Padding(
-  ///          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-  ///          child: Text(item),
-  ///        ),
-  ///        labelBuilder: (String item, bool isSelected) => const Padding(
-  ///           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-  ///     child: Center(child: Text('hello world')),
-  ///   ),
-  /// ),
-  /// ```
+abstract class SelectableGrid<T> extends Selectable<T> {
   const SelectableGrid({
     required List<T> items,
     required List<T> selectedItems,
-    required this.builder,
-    this.labelBuilder,
-    this.checkMode = false,
-    this.borderColor,
-    this.selectedBorderColor,
-    int crossAxisCount = 3,
-    final Future<void> Function()? onRefresh,
-    final Future<void> Function()? onLoadMore,
-    Widget Function()? headerBuilder,
-    Widget Function()? footerBuilder,
+    bool checkMode = false,
     void Function(List<T> items)? onItemSelected,
     void Function(List<T> items)? onItemChecked,
-    double gap = 80,
+    required ItemBuilder<T> itemBuilder,
+    Widget Function()? headerBuilder,
+    Widget Function()? footerBuilder,
+    this.crossAxisCount = 2,
+    this.labelBuilder,
+    this.borderColor,
+    this.selectedBorderColor,
     Key? key,
   }) : super(
           items: items,
           selectedItems: selectedItems,
-          multiSelect: checkMode,
-          crossAxisCount: crossAxisCount,
-          onRefresh: onRefresh,
-          onLoadMore: onLoadMore,
-          headerBuilder: headerBuilder,
-          footerBuilder: footerBuilder,
+          checkMode: checkMode,
+          itemBuilder: itemBuilder,
           onItemSelected: onItemSelected,
           onItemChecked: onItemChecked,
-          padding: EdgeInsets.zero,
-          gap: gap,
+          headerBuilder: headerBuilder,
+          footerBuilder: footerBuilder,
           key: key,
         );
 
-  /// builder for build grid item content
-  final ItemBuilder<T> builder;
+  /// crossAxisCount is the number of children in the cross axis.
+  final int crossAxisCount;
 
   /// builder for build grid item label
   final ItemBuilder<T>? labelBuilder;
-
-  /// checkMode is true will let user multi select item
-  final bool checkMode;
 
   /// borderColor is item border color
   final Color? borderColor;
@@ -90,8 +42,34 @@ class SelectableGrid<T> extends GridList<T> {
   /// borderColor is selected item border color
   final Color? selectedBorderColor;
 
-  /// buildHeader build header
   @override
+  Widget onBuildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: checkMode
+              ? _buildCheckItem(context, itemIndex, item, isSelected)
+              : _buildItem(context, itemIndex, item, isSelected),
+        ),
+        if (labelBuilder != null) labelBuilder!(item, isSelected),
+      ],
+    );
+  }
+
+  /// rowCount is actual row count to display
+  int get rowCount {
+    int count = 1;
+    if (headerBuilder != null) {
+      count++;
+    }
+    if (footerBuilder != null) {
+      count++;
+    }
+    return count;
+  }
+
+  /// buildListHeader build header in list view
   Widget buildHeader(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -103,32 +81,19 @@ class SelectableGrid<T> extends GridList<T> {
                 )));
   }
 
-  /// buildFooter build footer
-  @override
+  /// buildListFooter build footer in list view
   Widget buildFooter(BuildContext context) {
     return footerBuilder!();
   }
 
-  /// buildItem build item
-  @override
-  Widget buildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        checkMode ? buildCheckable(context, item, isSelected) : buildSelectable(context, item, isSelected),
-        if (labelBuilder != null) labelBuilder!(item, isSelected),
-      ],
-    );
-  }
-
-  /// buildCheckable build checkable item
-  Widget buildCheckable(BuildContext context, T item, bool isSelected) {
+  /// _buildCheckItem is a widget builder for each item in check mode
+  Widget _buildCheckItem(BuildContext context, int itemIndex, T item, bool isSelected) {
     return Stack(
       children: [
-        buildSelectable(context, item, isSelected),
+        _buildItem(context, itemIndex, item, isSelected),
         Positioned(
-          top: 25,
-          left: 35,
+          top: 30,
+          left: 30,
           child: Icon(
             isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
             color: isSelected
@@ -146,11 +111,14 @@ class SelectableGrid<T> extends GridList<T> {
     );
   }
 
-  /// buildCheckable build selectable item
-  Widget buildSelectable(BuildContext context, T item, bool isSelected) {
+  /// _buildItem build grid view item
+  Widget _buildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
     return Container(
       width: double.infinity,
-      margin: isSelected ? const EdgeInsets.fromLTRB(4, 10, 4, 24) : const EdgeInsets.fromLTRB(5, 10, 5, 24),
+      height: double.infinity,
+      margin: isSelected
+          ? const EdgeInsets.symmetric(vertical: 24, horizontal: 24)
+          : const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(
@@ -168,7 +136,7 @@ class SelectableGrid<T> extends GridList<T> {
                   ),
         ),
       ),
-      child: builder(item, isSelected),
+      child: itemBuilder(item, isSelected),
     );
   }
 }

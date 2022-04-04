@@ -1,49 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'filter.dart';
+import 'tag.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 
-class FilterView<T> extends StatelessWidget {
-  /// filterView is a widget that displays a filter
+class TagView<T> extends StatelessWidget {
+  /// TagView is a widget that displays a tag
   /// ```dart
-  /// FilterView<SampleFilter>(
-  ///  onFilterSelected: (value) => debugPrint('$value selected'),
-  ///  filters: const [
-  ///    Filter<SampleFilter>(
+  /// TagView<SampleTag>(
+  ///  onTagSelected: (value) => debugPrint('$value selected'),
+  ///  tags: const [
+  ///    Tag<SampleTag>(
   ///    title: 'Inbox',
-  ///      value: SampleFilter.inbox,
+  ///      value: SampleTag.inbox,
   ///      icon: Icons.inbox,
   ///      count: 0,
   ///    ),
   ///  ],
   /// )
   /// ```
-  const FilterView({
-    required this.filters,
+  const TagView({
+    required this.tags,
     this.iconColor = Colors.amber,
-    this.onFilterSelected,
+    this.onTagSelected,
     Key? key,
   }) : super(key: key);
 
-  /// filters is a list of filters to display.
-  final List<Filter<T>> filters;
+  /// tags is a list of tags to display.
+  final List<Tag<T>> tags;
 
   /// The color of the icon.
   final Color? iconColor;
 
-  /// onFilterSelected trigger when a filter is selected
-  final void Function(T)? onFilterSelected;
+  /// onTagSelected trigger when a tag is selected
+  final void Function(T)? onTagSelected;
 
   @override
   Widget build(BuildContext context) {
     var children = <dynamic>[];
 
-    final categories = findCategories(filters);
+    final categories = findCategories(tags);
     for (String category in categories) {
       if (category.isNotEmpty) {
         children.add(category);
       }
-      children.addAll(filters.where((Filter filter) => filter.category == category));
+      children.addAll(tags.where((Tag tag) => tag.category == category));
     }
 
     return Container(
@@ -64,7 +64,7 @@ class FilterView<T> extends StatelessWidget {
             }
 
             return TextButton(
-              onPressed: onFilterSelected != null && !item.selected ? () => onFilterSelected!(item.value) : null,
+              onPressed: onTagSelected != null && !item.selected ? () => onTagSelected!(item.value) : null,
               style: TextButton.styleFrom(
                 primary: Colors.grey,
                 backgroundColor: item.selected
@@ -100,37 +100,37 @@ class FilterView<T> extends StatelessWidget {
   }
 }
 
-/// showFilterView show filter view in side menu
+/// showTagView show tag view in side menu
 ///
 /// ```dart
-/// showFilterView<SampleFilter>(
+/// showTagView<SampleTag>(
 ///     context,
-///     onFilterSelected: (value) => debugPrint('$value selected'),
-///     filters: const [
-///       Filter<SampleFilter>(
+///     onTagSelected: (value) => debugPrint('$value selected'),
+///     tags: const [
+///       Tag<SampleTag>(
 ///         title: 'Inbox',
-///         value: SampleFilter.inbox,
+///         value: SampleTag.inbox,
 ///         icon: Icons.inbox,
 ///         count: 0,
 ///       ),
 ///     ],
 ///   )
 /// ```
-Future<T?> showFilterView<T>(
+Future<T?> showTagView<T>(
   BuildContext context, {
-  required List<Filter<T>> filters,
-  final void Function(T)? onFilterSelected,
+  required List<Tag<T>> tags,
+  final void Function(T)? onTagSelected,
 }) async {
   return await dialog.showSide<T>(
     context,
-    child: FilterView<T>(
-      onFilterSelected: onFilterSelected != null
+    child: TagView<T>(
+      onTagSelected: onTagSelected != null
           ? (value) {
-              onFilterSelected(value);
+              onTagSelected(value);
               Navigator.of(context).pop();
             }
           : null,
-      filters: filters,
+      tags: tags,
     ),
   );
 }
