@@ -45,12 +45,24 @@ class AnimatedViewProvider with ChangeNotifier {
   /// _shifterReverse is true will reverse shifter animation
   bool _shifterReverse = false;
 
+  /// _shifterVertical is true will use vertical shifter animation
+  bool _shifterVertical = false;
+
   /// _gridKey is the key of the animated grid
   GlobalKey<AnimatedGridState> _gridKey = GlobalKey<AnimatedGridState>();
+
+  /// refreshPageAnimation show refresh page animation
+  void refreshPageAnimation() {
+    _shifterReverse = true;
+    _shifterVertical = true;
+    _gridKey = GlobalKey<AnimatedGridState>();
+    notifyListeners();
+  }
 
   /// nextPageAnimation show next page animation
   void nextPageAnimation() {
     _shifterReverse = false;
+    _shifterVertical = false;
     _gridKey = GlobalKey<AnimatedGridState>();
     notifyListeners();
   }
@@ -58,6 +70,7 @@ class AnimatedViewProvider with ChangeNotifier {
   /// prevPageAnimation show prev page animation
   void prevPageAnimation() {
     _shifterReverse = true;
+    _shifterVertical = false;
     _gridKey = GlobalKey<AnimatedGridState>();
     notifyListeners();
   }
@@ -164,6 +177,7 @@ class AnimatedView extends StatelessWidget {
     return Consumer<AnimatedViewProvider>(
       builder: (context, provide, _) => Shifter(
         reverse: provide._shifterReverse,
+        vertical: provide._shifterVertical,
         newChildKey: provide._gridKey,
         child: AnimatedGrid(
           controller: controller,

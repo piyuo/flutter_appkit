@@ -63,7 +63,7 @@ class _AnimationExampleState extends State<AnimationExample> {
         child: Column(
           children: [
             Expanded(
-              child: _shifter(),
+              child: _animatedView(),
             ),
             SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -356,6 +356,13 @@ class _AnimationExampleState extends State<AnimationExample> {
                     onPressed: () {
                       gridItems = [21, 22, 23, 24, 25];
                       provide.prevPageAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('refresh'),
+                    onPressed: () {
+                      gridItems = [31, 32, 33, 34, 35];
+                      provide.refreshPageAnimation();
                     },
                   ),
                 ]),
