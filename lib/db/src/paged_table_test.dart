@@ -276,27 +276,27 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '1 - 10 of 10');
+      expect(ds.information(testing.Context()), '1 - 10 of 10');
       expect(ds.length, 10);
       await ds.refresh(testing.Context());
       await ds.nextPage(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '11 - 20 of 20');
+      expect(ds.information(testing.Context()), '11 - 20 of 20');
       expect(ds.length, 20);
       await ds.refresh(testing.Context());
       expect(ds.length, 22);
       //refresh will goto page 0, so we need 2 next page
       await ds.nextPage(testing.Context());
       await ds.nextPage(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '21 - 22 of 22');
+      expect(ds.information(testing.Context()), '21 - 22 of 22');
 
       await ds.gotoPage(testing.Context(), 0);
-      expect(ds.pagingInfo(testing.Context()), '1 - 10 of 22');
+      expect(ds.information(testing.Context()), '1 - 10 of 22');
 
       await ds.gotoPage(testing.Context(), 1);
-      expect(ds.pagingInfo(testing.Context()), '11 - 20 of 22');
+      expect(ds.information(testing.Context()), '11 - 20 of 22');
 
       await ds.gotoPage(testing.Context(), 2);
-      expect(ds.pagingInfo(testing.Context()), '21 - 22 of 22');
+      expect(ds.information(testing.Context()), '21 - 22 of 22');
     });
 
     test('should set rows per page', () async {

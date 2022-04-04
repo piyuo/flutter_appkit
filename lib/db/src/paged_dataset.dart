@@ -25,10 +25,15 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// pageIndex is current page index
   int pageIndex = 0;
 
+  /// isSupportPage return true if support page
   @override
-  Future<void> setRowsPerPage(BuildContext context, int value) async {
-    pageIndex = 0;
-    await super.setRowsPerPage(context, value);
+  bool get isSupportPage => true;
+
+  /// onRefresh reset memory on dataset mode, but not on table mode
+  @override
+  Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
+    super.onRefresh(context, downloadRows);
+    await gotoPage(context, 0);
   }
 
   /// fill display rows
@@ -52,7 +57,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// expect(ds.pagingInfo(testing.Context()), '10 rows');
   /// ```
   @override
-  String pagingInfo(BuildContext context) {
+  String information(BuildContext context) {
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
     if (noMoreData) {
@@ -65,7 +70,6 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// ```dart
   /// await gotoPage(context, 2);
   /// ```
-  @override
   Future<void> gotoPage(BuildContext context, int index) async {
     await loadMoreBeforeGotoPage(context, index);
     try {
@@ -84,7 +88,6 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   }
 
   /// isFirstPage return true if it is first page
-  @override
   bool get isFirstPage => pageIndex == 0;
 
   /// hasPrevPage return true if user can click prev page
@@ -100,14 +103,12 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   ///
   ///     await nextPage(context);
   ///
-  @override
   Future<void> nextPage(BuildContext context) async => await gotoPage(context, pageIndex + 1);
 
   /// prevPage return true if page changed
   ///
   ///     await prevPage();
   ///
-  @override
   Future<void> prevPage(BuildContext context) async => await gotoPage(context, pageIndex - 1);
 
   /// loadMoreBeforeGotoPage load more data before goto page
@@ -117,5 +118,18 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
       //the page is not fill with enough data, load more data
       await more(context, rowsPerPage - expectRowsCount);
     }
+  }
+
+  /// setRowsPerPage set rows per page and change page index to 0
+  /// ```dart
+  /// await setRowsPerPage(context, 20);
+  /// ```
+  @override
+  Future<void> setRowsPerPage(BuildContext context, int value) async {
+    pageIndex = 0;
+    memory.rowsPerPage = value;
+    memory.save();
+    await gotoPage(context, 0);
+    notifyListeners();
   }
 }

@@ -92,38 +92,20 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// isNotEmpty return rows is not empty
   bool get isNotEmpty => memory.isNotEmpty;
 
+  /// isSupportPage return true if support page
+  bool get isSupportPage => false;
+
   /// fill display rows
   /// ```dart
   /// await ds.fill();
   /// ```
   Future<void> fill();
 
-  /// pagingInfo return text page info like '1-10 of many'
+  /// information return text page info like '1-10 of many'
   /// ```dart
-  /// expect(ds.pagingInfo(testing.Context()), '10 rows');
+  /// expect(ds.information(testing.Context()), '10 rows');
   /// ```
-  String pagingInfo(BuildContext context);
-
-  /// isFirstPage return true if it is first page
-  bool get isFirstPage;
-
-  /// nextPage return true if load data
-  ///
-  ///     await nextPage(context);
-  ///
-  Future<void> nextPage(BuildContext context);
-
-  /// prevPage return true if page changed
-  ///
-  ///     await prevPage();
-  ///
-  Future<void> prevPage(BuildContext context);
-
-  /// gotoPage goto specified page, load more page if needed
-  /// ```dart
-  /// await gotoPage(context, 2);
-  /// ```
-  Future<void> gotoPage(BuildContext context, int index);
+  String information(BuildContext context);
 
   /// start when data source create with context
   /// ```dart
@@ -153,7 +135,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   }
 
   /// onRefresh reset memory on dataset mode, but not on table mode
-  void onRefresh(List<T> downloadRows) {
+  Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
     if (memory.isEmpty && downloadRows.length < memory.rowsPerPage) {
       memory.noMoreData = true;
     }
@@ -161,6 +143,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
       memory.clear();
     }
+    await memory.insert(downloadRows);
   }
 
   /// refresh seeking new data from data loader, return true if has new data
@@ -172,11 +155,9 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     try {
       T? anchor = await memory.first;
       final downloadRows = await loader(context, true, memory.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
-      onRefresh(downloadRows);
+      await onRefresh(context, downloadRows);
       if (downloadRows.isNotEmpty) {
         debugPrint('[dataset] refresh ${downloadRows.length} rows');
-        await memory.insert(downloadRows);
-        await gotoPage(context, 0);
         return true;
       }
       return false;
@@ -217,15 +198,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// await setRowsPerPage(context, 20);
   /// ```
-  Future<void> setRowsPerPage(BuildContext context, int value) async {
-    try {
-      memory.rowsPerPage = value;
-      memory.save();
-      await gotoPage(context, 0);
-    } finally {
-      notifyListeners();
-    }
-  }
+  Future<void> setRowsPerPage(BuildContext context, int value);
 
   /// isRowSelected return true when row is selected
   /// ```dart

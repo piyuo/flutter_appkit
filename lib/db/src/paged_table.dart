@@ -46,7 +46,10 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
 
   /// onRefresh reset memory on dataset mode, but not on table mode
   @override
-  void onRefresh(List<T> downloadRows) {}
+  Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
+    await memory.insert(downloadRows);
+    await gotoPage(context, 0);
+  }
 
   @override
   Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {}
@@ -69,7 +72,7 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
 
   /// pagingInfo return text page info like '1-10 of 19'
   @override
-  String pagingInfo(BuildContext context) {
+  String information(BuildContext context) {
     final paginator = Paginator(rowCount: innerMemory.length, rowsPerPage: innerMemory.rowsPerPage);
     return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ' +
         context.i18n.pagingCount.replaceAll('%1', innerMemory.length.toString());

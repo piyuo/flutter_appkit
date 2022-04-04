@@ -49,23 +49,23 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '10 rows');
+      expect(ds.information(testing.Context()), '10 rows');
       expect(ds.length, 10);
       await ds.refresh(testing.Context()); // first nextPage, it will reset memory cause download rows is rowsPerPage
-      expect(ds.pagingInfo(testing.Context()), '10 rows');
+      expect(ds.information(testing.Context()), '10 rows');
       expect(ds.length, 10);
       await ds.refresh(testing.Context()); // second nextPage, it will add to memory
-      expect(ds.pagingInfo(testing.Context()), '12 rows');
+      expect(ds.information(testing.Context()), '12 rows');
       expect(ds.length, 12);
 
       await ds.gotoPage(testing.Context(), 0);
-      expect(ds.pagingInfo(testing.Context()), '12 rows');
+      expect(ds.information(testing.Context()), '12 rows');
 
       await ds.gotoPage(testing.Context(), 1);
-      expect(ds.pagingInfo(testing.Context()), '12 rows');
+      expect(ds.information(testing.Context()), '12 rows');
 
       await ds.gotoPage(testing.Context(), 2);
-      expect(ds.pagingInfo(testing.Context()), '12 rows');
+      expect(ds.information(testing.Context()), '12 rows');
     });
 
     test('should fill display rows when load more', () async {
@@ -89,11 +89,11 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.pagingInfo(testing.Context()), '10 rows');
+      expect(ds.information(testing.Context()), '10 rows');
       expect(ds.length, 10);
       expect(ds.displayRows.length, 10);
       await ds.more(testing.Context(), 10);
-      expect(ds.pagingInfo(testing.Context()), '20 rows');
+      expect(ds.information(testing.Context()), '20 rows');
       expect(ds.length, 20);
       expect(ds.displayRows.length, 20);
     });

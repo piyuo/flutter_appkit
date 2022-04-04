@@ -20,6 +20,20 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
           onReady: onReady,
         );
 
+  /// onRefresh reset memory on dataset mode, but not on table mode
+  @override
+  Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
+    super.onRefresh(context, downloadRows);
+    await fill();
+  }
+
+  /// setRowsPerPage set rows per page and change page index to 0
+  /// ```dart
+  /// await setRowsPerPage(context, 20);
+  /// ```
+  @override
+  Future<void> setRowsPerPage(BuildContext context, int value) async {}
+
   /// fill display rows
   /// ```dart
   /// await ds.fill();
@@ -40,7 +54,7 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   /// expect(ds.pagingInfo(testing.Context()), '10 rows');
   /// ```
   @override
-  String pagingInfo(BuildContext context) {
+  String information(BuildContext context) {
     return '${memory.length} ' + context.i18n.pagingRows;
   }
 
@@ -53,16 +67,4 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
     await fill();
     notifyListeners();
   }
-
-  /// isFirstPage return true if it is first page
-  @override
-  bool get isFirstPage => true;
-
-  /// nextPage, no next page in continuous dataset
-  @override
-  Future<void> nextPage(BuildContext context) async {}
-
-  /// prevPage, no previous page in continuous dataset
-  @override
-  Future<void> prevPage(BuildContext context) async {}
 }
