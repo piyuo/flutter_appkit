@@ -139,6 +139,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
       memory.clear();
+      selectedRows.clear();
     }
     await memory.insert(downloadRows);
   }
