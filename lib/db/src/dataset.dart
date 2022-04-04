@@ -92,9 +92,6 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// isNotEmpty return rows is not empty
   bool get isNotEmpty => memory.isNotEmpty;
 
-  /// isSupportPage return true if support page
-  bool get isSupportPage => false;
-
   /// fill display rows
   /// ```dart
   /// await ds.fill();

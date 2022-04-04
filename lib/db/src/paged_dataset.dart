@@ -25,10 +25,6 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// pageIndex is current page index
   int pageIndex = 0;
 
-  /// isSupportPage return true if support page
-  @override
-  bool get isSupportPage => true;
-
   /// onRefresh reset memory on dataset mode, but not on table mode
   @override
   Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
