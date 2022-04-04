@@ -57,15 +57,6 @@ void main() {
       await ds.refresh(testing.Context()); // second nextPage, it will add to memory
       expect(ds.information(testing.Context()), '12 rows');
       expect(ds.length, 12);
-
-      await ds.gotoPage(testing.Context(), 0);
-      expect(ds.information(testing.Context()), '12 rows');
-
-      await ds.gotoPage(testing.Context(), 1);
-      expect(ds.information(testing.Context()), '12 rows');
-
-      await ds.gotoPage(testing.Context(), 2);
-      expect(ds.information(testing.Context()), '12 rows');
     });
 
     test('should fill display rows when load more', () async {

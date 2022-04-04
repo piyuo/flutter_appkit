@@ -57,14 +57,4 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   String information(BuildContext context) {
     return '${memory.length} ' + context.i18n.pagingRows;
   }
-
-  /// gotoPage goto specified page, load more page if needed
-  /// ```dart
-  /// await gotoPage(context, 2);
-  /// ```
-  @override
-  Future<void> gotoPage(BuildContext context, int index) async {
-    await fill();
-    notifyListeners();
-  }
 }
