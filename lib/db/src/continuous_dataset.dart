@@ -20,11 +20,12 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
           onReady: onReady,
         );
 
-  /// onRefresh reset memory on dataset mode, but not on table mode
+  /// onRefresh reset memory on dataset mode, but not on table mode, return true if reset memory
   @override
-  Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
-    super.onRefresh(context, downloadRows);
+  Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
+    final isReset = super.onRefresh(context, downloadRows);
     await fill();
+    return isReset;
   }
 
   /// setRowsPerPage set rows per page and change page index to 0

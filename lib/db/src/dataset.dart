@@ -131,8 +131,9 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  /// onRefresh reset memory on dataset mode, but not on table mode
-  Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
+  /// onRefresh reset memory on dataset mode but not on table mode, return true if reset memory
+  Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
+    bool isReset = false;
     if (memory.isEmpty && downloadRows.length < memory.rowsPerPage) {
       memory.noMoreData = true;
     }
@@ -140,8 +141,10 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
       memory.clear();
       selectedRows.clear();
+      isReset = true;
     }
     await memory.insert(downloadRows);
+    return isReset;
   }
 
   /// refresh seeking new data from data loader, return true if has new data
@@ -153,12 +156,11 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     try {
       T? anchor = await memory.first;
       final downloadRows = await loader(context, true, memory.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
-      await onRefresh(context, downloadRows);
+      bool isReset = await onRefresh(context, downloadRows);
       if (downloadRows.isNotEmpty) {
         debugPrint('[dataset] refresh ${downloadRows.length} rows');
-        return true;
       }
-      return false;
+      return isReset;
     } finally {
       notifyState(DataState.ready);
     }

@@ -94,8 +94,9 @@ void main() {
       await ds.start(testing.Context());
       expect(ds.noMoreData, false);
       expect(ds.length, 10);
-      await ds.refresh(testing.Context());
-      expect(ds.noMoreData, false);
+      final result = await ds.refresh(testing.Context());
+      expect(result, true);
+     expect(ds.noMoreData, false);
       expect(ds.length, 10);
     });
 

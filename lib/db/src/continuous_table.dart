@@ -24,9 +24,10 @@ class ContinuousTable<T extends pb.Object> extends ContinuousDataset<T> {
 
   /// onRefresh reset memory on dataset mode, but not on table mode
   @override
-  Future<void> onRefresh(BuildContext context, List<T> downloadRows) async {
+  Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     await memory.insert(downloadRows);
     await fill();
+    return false; // table do not reset memory
   }
 
   /// more seeking more data from data loader, return true if has more data
