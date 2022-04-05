@@ -245,7 +245,7 @@ class ResponsiveExample extends StatelessWidget {
               ),
               ToolSelection<String>(
                 width: 120,
-                text: 'page 2 of more',
+                text: '2',
                 label: 'rows per page',
                 selection: {
                   '10': '10 rows',

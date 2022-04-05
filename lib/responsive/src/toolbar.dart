@@ -154,15 +154,11 @@ Widget _buildBarItem<T>(
         width: item.width,
         child: delta.MenuButton<T>(
           color: color,
-          icon: item.text != null
-              ? Text(item.text!, style: TextStyle(color: color))
-              : item.icon != null
-                  ? Icon(item.icon!)
-                  : Text(item.label, style: TextStyle(color: color)),
+          icon: item.icon != null ? Icon(item.icon!) : null,
+          label: item.text != null ? Text(item.text!, style: TextStyle(color: color)) : null,
           onPressed: item.selection != null ? (value) => callback(value) : null,
           selectedValue: item.value,
           selection: item.selection != null ? item.selection! : {},
-          tooltip: item.label,
         ));
   }
 
