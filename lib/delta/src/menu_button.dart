@@ -37,6 +37,8 @@ class MenuButton<T> extends StatelessWidget {
     this.label,
     this.selectedValue,
     this.color,
+    this.padding,
+    this.mainAxisAlignment = MainAxisAlignment.center,
     Key? key,
   }) : super(key: key);
 
@@ -58,15 +60,22 @@ class MenuButton<T> extends StatelessWidget {
   /// color is button color
   final Color? color;
 
+  /// padding is button padding
+  final EdgeInsetsGeometry? padding;
+
+  /// mainAxisAlignment is button mainAxisAlignment
+  final MainAxisAlignment mainAxisAlignment;
+
   @override
   Widget build(BuildContext context) {
     final foregroundColor = color ?? context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade200);
     return TextButton.icon(
       style: TextButton.styleFrom(
         primary: foregroundColor,
-        padding: EdgeInsets.zero,
+        padding: padding,
       ),
       label: Row(
+        mainAxisAlignment: mainAxisAlignment,
         children: [
           label ?? const SizedBox(),
           Icon(
