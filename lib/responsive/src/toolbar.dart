@@ -153,6 +153,7 @@ Widget _buildBarItem<T>(
         margin: item.space != null ? EdgeInsets.only(right: item.space!) : null,
         width: item.width,
         child: delta.MenuButton<T>(
+          padding: EdgeInsets.zero,
           color: color,
           icon: item.icon != null ? Icon(item.icon!) : null,
           label: item.text != null ? Text(item.text!, style: TextStyle(color: color)) : null,
