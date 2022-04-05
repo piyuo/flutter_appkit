@@ -64,6 +64,7 @@ class MenuButton<T> extends StatelessWidget {
     return TextButton.icon(
       style: TextButton.styleFrom(
         primary: foregroundColor,
+        padding: EdgeInsets.zero,
       ),
       label: Row(
         children: [
