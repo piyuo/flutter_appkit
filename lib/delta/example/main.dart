@@ -658,10 +658,10 @@ class DeltaExample extends StatelessWidget {
       const SizedBox(height: 40),
       const Text('General'),
       SizedBox(
-        width: 60,
+        width: 140,
         child: MenuButton<String>(
-            icon: const Icon(Icons.settings),
-            tooltip: 'settings',
+            icon: const Icon(Icons.settings, size: 18),
+            label: const Text('Settings'),
             onPressed: (value) {
               debugPrint('$value pressed');
             },
@@ -672,17 +672,14 @@ class DeltaExample extends StatelessWidget {
             }),
       ),
       const Text('Disabled'),
-      const SizedBox(
-        width: 60,
-        child: MenuButton<String>(
-          icon: Icon(Icons.settings),
-          onPressed: null,
-          selectedValue: '2',
-          selection: {
-            '1': 'hello',
-            '2': 'world',
-          },
-        ),
+      const MenuButton<String>(
+        icon: Icon(Icons.settings),
+        onPressed: null,
+        selectedValue: '2',
+        selection: {
+          '1': 'hello',
+          '2': 'world',
+        },
       ),
     ]);
   }
