@@ -70,7 +70,9 @@ Future<bool?> alert(
               ),
               key: key,
               child: Text(text),
-              onPressed: () => Navigator.of(context).pop(value),
+              onPressed: () {
+                Navigator.of(context).pop(value);
+              },
             ),
           )
         : const SizedBox();

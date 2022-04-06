@@ -347,6 +347,7 @@ class DialogExample extends StatelessWidget {
         child: const Text('show side'),
         onPressed: () => showSide(
           context,
+          color: Colors.green.shade300,
           child: Column(children: [
             const SizedBox(height: 30),
             SizedBox(

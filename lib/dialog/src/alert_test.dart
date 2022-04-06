@@ -21,7 +21,7 @@ void main() {
             ));
   }
 
-  group('[dialog.alert]', () {
+  group('[alert]', () {
     testWidgets('should alert with close', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
@@ -35,10 +35,7 @@ void main() {
       //tap close
       await tester.tap(find.byKey(keyAlertButtonCancel));
       await tester.pumpAndSettle();
-      expect(
-        find.byType(Dialog),
-        findsNothing,
-      );
+      expect(find.byType(Dialog), findsNothing);
     });
 
     testWidgets('should alert with cancel', (WidgetTester tester) async {
@@ -62,10 +59,7 @@ void main() {
       //tap close
       await tester.tap(find.byKey(keyAlertButtonCancel));
       await tester.pumpAndSettle();
-      expect(
-        find.byType(Dialog),
-        findsNothing,
-      );
+      expect(find.byType(Dialog), findsNothing);
       expect(result, null);
     });
 
