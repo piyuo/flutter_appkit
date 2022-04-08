@@ -45,7 +45,7 @@ class Responsive extends StatelessWidget {
   ///
   const Responsive({
     required this.phoneScreen,
-    required this.notPhoneScreen,
+    this.notPhoneScreen,
     this.bigScreen,
     Key? key,
   }) : super(key: key);
@@ -54,7 +54,7 @@ class Responsive extends StatelessWidget {
   final DesignBuilder phoneScreen;
 
   /// notPhoneScreen is widget for not phone screen
-  final DesignBuilder notPhoneScreen;
+  final DesignBuilder? notPhoneScreen;
 
   /// bigScreen is widget for big screen
   final DesignBuilder? bigScreen;
@@ -66,5 +66,7 @@ class Responsive extends StatelessWidget {
               ? bigScreen!()
               : isPhoneScreen(constraints.maxWidth)
                   ? phoneScreen()
-                  : notPhoneScreen());
+                  : notPhoneScreen == null
+                      ? phoneScreen()
+                      : notPhoneScreen!());
 }
