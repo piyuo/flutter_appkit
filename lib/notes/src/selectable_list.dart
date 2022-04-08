@@ -76,7 +76,7 @@ abstract class SelectableList<T> extends Selectable<T> {
     return isSelected
         ? Container(
             width: double.infinity,
-            margin: const EdgeInsets.only(bottom: 2),
+            margin: const EdgeInsets.only(top: 2),
             padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(9)),

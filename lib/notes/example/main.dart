@@ -9,8 +9,6 @@ import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/unique/unique.dart' as unique;
 import '../notes.dart';
-import 'sample.dart';
-import 'sample_table.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
@@ -341,7 +339,7 @@ class NotesExample extends StatelessWidget {
                     ),
                     controller: _searchBoxController,
                   ),
-                  pagingInfo: '1-6 of 6',
+                  information: '1-6 of 6',
                   items: const ['a', 'b', 'c', 'd', 'e'],
                   selectedItems: const ['a'],
                   listBuilder: (String item, bool isSelected) => Padding(
@@ -537,7 +535,7 @@ class NotesExample extends StatelessWidget {
                 ],
               ),
               child: MasterDetailView<String>(
-                pagingInfo: '1-6 of 6',
+                information: '1-6 of 6',
                 items: const ['a', 'b', 'c', 'd', 'e'],
                 selectedItems: const ['a'],
                 listBuilder: (String item, bool isSelected) => Padding(
@@ -632,23 +630,21 @@ class NotesExample extends StatelessWidget {
   Widget _notesView(BuildContext context) {
     return ChangeNotifierProvider<NotesController<sample.Person>>(
         create: (context) => NotesController<sample.Person>(
+              db.MemoryRam(dataBuilder: () => sample.Person()),
               context: context,
-              dataset: db.PagedDataset<sample.Person>(
-                db.MemoryRam(dataBuilder: () => sample.Person()),
-                dataBuilder: () => sample.Person(),
-                loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-                  return List.generate(
-                    10,
-                    (i) {
-                      final uuid = unique.uuid();
-                      return sample.Person(
-                        name: uuid,
-                        entity: pb.Entity(id: uuid),
-                      );
-                    },
-                  );
-                },
-              ),
+              loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+                return List.generate(
+                  10,
+                  (i) {
+                    final uuid = unique.uuid();
+                    return sample.Person(
+                      name: uuid,
+                      entity: pb.Entity(id: uuid),
+                    );
+                  },
+                );
+              },
+              dataBuilder: () => sample.Person(),
               tags: const [
                 Tag(
                   label: 'Inbox',

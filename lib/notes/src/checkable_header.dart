@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/responsive/responsive.dart' as responsive;
 
 /// CheckableHeader is a widget that displays the title and actions of the selection
 /// ```dart
@@ -62,23 +61,9 @@ class CheckableHeader extends StatelessWidget {
                 ),
                 Text(context.i18n.notesItemSelectedLabel.replace1(selectedItemCount.toString()),
                     style: const TextStyle(fontSize: 16, color: Colors.white), maxLines: 1),
-                if (!isAllSelected)
-                  TextButton(
-                    child: Text(context.i18n.notesSelectAllButtonLabel,
-                        style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
-                    onPressed: onSelectAll,
-                  ),
-                if (isAllSelected && responsive.isNotPhoneDesign)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0),
-                    child: TextButton(
-                      child: Text(context.i18n.notesUnselectAllButtonLabel,
-                          style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
-                      onPressed: onUnselectAll,
-                    ),
-                  ),
-                IconButton(
-                  icon: const Icon(Icons.cancel, color: Colors.white),
+                TextButton(
+                  child:
+                      Text(context.i18n.closeButtonText, style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
                   onPressed: onCancel,
                 ),
                 const Spacer(),

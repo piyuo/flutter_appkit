@@ -76,7 +76,7 @@ abstract class SelectableGrid<T> extends Selectable<T> {
         alignment: Alignment.centerRight,
         child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) => ConstrainedBox(
-                  constraints: responsive.isPhoneDesign ? const BoxConstraints() : const BoxConstraints(maxWidth: 300),
+                  constraints: responsive.phoneScreen ? const BoxConstraints() : const BoxConstraints(maxWidth: 300),
                   child: headerBuilder!(),
                 )));
   }

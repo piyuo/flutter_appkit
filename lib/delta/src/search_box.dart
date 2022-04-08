@@ -116,7 +116,7 @@ class SearchBox extends StatelessWidget {
                   itemBuilder: (context, suggestion) {
                     return ListTile(
                       horizontalTitleGap: 0,
-                      dense: !responsive.isPhoneDesign,
+                      dense: !responsive.phoneScreen,
                       title: Text(suggestion.label),
                       leading: Icon(suggestion.icon),
                     );

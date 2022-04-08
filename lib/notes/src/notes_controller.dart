@@ -7,15 +7,28 @@ import 'tag.dart';
 import 'master_detail_view.dart';
 
 class NotesController<T extends pb.Object> with ChangeNotifier {
-  NotesController({
+  NotesController(
+    db.Memory<T> _memory, {
     required BuildContext context,
-    required this.dataset,
+    required db.DatasetLoader<T> loader,
+    required pb.Builder<T> dataBuilder,
     this.tags = const [],
   }) {
+    dataset = context.isPreferMouse
+        ? db.PagedDataset<T>(
+            _memory,
+            dataBuilder: dataBuilder,
+            loader: loader,
+          )
+        : db.ContinuousDataset<T>(
+            _memory,
+            dataBuilder: dataBuilder,
+            loader: loader,
+          );
     start(context);
   }
 
-  /// start dataset, set dataset alwaysDisplayAll if os prefer using mouse
+  /// start dataset
   Future<void> start(BuildContext context) async {
     await dataset.start(context);
     animatedViewController.itemCount = dataset.displayRows.length;
@@ -33,7 +46,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   final searchController = TextEditingController();
 
   /// table is data to be display
-  final db.Dataset<T> dataset;
+  late db.Dataset<T> dataset;
 
   /// tags is a list of tags to display.
   List<Tag<String>> tags;
@@ -73,27 +86,26 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         if (dataset is db.PagedDataset) {
           firstPage = (dataset as db.PagedDataset).isFirstPage;
         }
-
-        await dataset.refresh(context);
-
+        final isReset = await dataset.refresh(context);
         final diff = dataset.length - originLength;
+        setDefaultSelected();
+        if (isReset || (diff > 0 && !firstPage)) {
+          animatedViewController.refreshPageAnimation();
+          animatedViewController.itemCount = dataset.displayRows.length;
+          return;
+        }
         if (diff > 0) {
-          setDefaultSelected();
-          if (!firstPage) {
-            animatedViewController.prevPageAnimation();
-            animatedViewController.itemCount = dataset.displayRows.length;
-          } else {
-            if (dataset.isDisplayRowsFullPage) {
-              animatedViewController.itemCount = dataset.rowsPerPage - diff;
-            }
-            for (int i = 0; i < diff; i++) {
-              animatedViewController.insertAnimation();
-            }
+          if (dataset.isDisplayRowsFullPage) {
+            animatedViewController.itemCount = dataset.rowsPerPage - diff;
+          }
+          for (int i = 0; i < diff; i++) {
+            animatedViewController.insertAnimation();
           }
         }
         break;
       case MasterDetailViewAction.more:
         await dataset.more(context, dataset.rowsPerPage);
+        animatedViewController.itemCount = dataset.displayRows.length;
         break;
       case MasterDetailViewAction.previousPage:
         if (dataset is db.PagedDataset) {

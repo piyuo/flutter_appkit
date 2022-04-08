@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'notes_controller.dart';
 import 'selectable.dart';
@@ -81,13 +82,13 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
               onShowDetail: onShowDetail,
               checkMode: controller.checkMode,
               isListView: controller.listView,
-              pagingInfo: controller.dataset.information(context),
-              //            hasNextPage: controller.dataset.hasNextPage,
-//              hasPrevPage: controller.dataset.hasPrevPage,
+              information: controller.dataset.information(context),
+              hasNextPage:
+                  controller.dataset is db.PagedDataset ? (controller.dataset as db.PagedDataset).hasNextPage : false,
+              hasPrevPage:
+                  controller.dataset is db.PagedDataset ? (controller.dataset as db.PagedDataset).hasPrevPage : false,
               onItemChecked: controller.selectRows,
               onItemSelected: controller.selectRows,
-              //                onCheckBegin: () => selectedController.items = <String>[],
-              //                onCheckEnd: () => selectedController.items = <String>['a'],
               onBarAction: (action) => controller.barAction(context, action),
             )));
   }

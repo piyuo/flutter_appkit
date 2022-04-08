@@ -3,6 +3,9 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'tag.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 
+Color tagViewBackgroundColor(BuildContext context) =>
+    context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800);
+
 class TagView<T> extends StatelessWidget {
   /// TagView is a widget that displays a tag
   /// ```dart
@@ -47,7 +50,7 @@ class TagView<T> extends StatelessWidget {
     }
 
     return Container(
-        color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
+        color: tagViewBackgroundColor(context),
         child: ListView.builder(
           padding: const EdgeInsets.all(10),
           itemCount: children.length,
@@ -123,6 +126,7 @@ Future<T?> showTagView<T>(
 }) async {
   return await dialog.showSide<T>(
     context,
+    color: tagViewBackgroundColor(context),
     child: TagView<T>(
       onTagSelected: onTagSelected != null
           ? (value) {

@@ -43,7 +43,7 @@ class MasterDetailView<T> extends StatelessWidget {
     this.onItemChecked,
     this.onShowDetail,
     this.gridItemWidth = 240,
-    this.pagingInfo,
+    this.information,
     this.hasNextPage = true,
     this.hasPrevPage = true,
     this.checkMode = false,
@@ -82,7 +82,7 @@ class MasterDetailView<T> extends StatelessWidget {
   final bool isLoading;
 
   /// pagingInfo is current page info if not in phone design
-  final String? pagingInfo;
+  final String? information;
 
   /// onItemSelected is the callback for item selected
   final void Function(List<T> items)? onItemSelected;
@@ -109,7 +109,7 @@ class MasterDetailView<T> extends StatelessWidget {
   final bool isListView;
 
   /// isSplitView is true if in split view
-  bool get isSplitView => isListView && !responsive.isPhoneDesign;
+  bool get isSplitView => isListView && !responsive.phoneScreen;
 
   /// _buildFooterButton build footer buttons bar
   Widget _buildFooterButtons(BuildContext context) {
@@ -185,7 +185,7 @@ class MasterDetailView<T> extends StatelessWidget {
         return Column(
           children: [
             if (checkMode) _buildSelectionHeader(context),
-            if (responsive.isNotPhoneDesign && !checkMode)
+            if (responsive.notPhoneScreen && !checkMode)
               Row(
                 children: [
                   SizedBox(width: 230, child: _buildLeftBar(context)),
@@ -354,11 +354,11 @@ class MasterDetailView<T> extends StatelessWidget {
         ),
         if (items.isNotEmpty) ...[
           responsive.ToolSpacer(),
-          if (pagingInfo != null)
+          if (information != null)
             responsive.ToolSelection<MasterDetailViewAction>(
-              width: 120,
+              width: 180,
               label: localizations.rowsPerPageTitle,
-              text: pagingInfo!,
+              text: information!,
               selection: {
                 MasterDetailViewAction.rows10: context.i18n.notesRowsPerPage.replace1('10'),
                 MasterDetailViewAction.rows20: context.i18n.notesRowsPerPage.replace1('20'),

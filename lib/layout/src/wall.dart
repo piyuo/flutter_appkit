@@ -81,7 +81,7 @@ class Wall extends StatelessWidget {
       return 32;
     }
 */
-    if (responsive.isPhoneDesign) {
+    if (responsive.phoneScreen) {
       return 16;
     }
     return 64;

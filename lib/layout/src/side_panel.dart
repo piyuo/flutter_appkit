@@ -19,7 +19,7 @@ class SidePanelProvider with ChangeNotifier {
   void toggle() => opened = !(opened ?? _isSideVisible);
 
   void trackWidth() {
-    final isPhone = responsive.isPhoneDesign;
+    final isPhone = responsive.phoneScreen;
     if (isPhone != _isPreviousPhone) {
       _isPreviousPhone = isPhone;
       _opened = null;
@@ -27,11 +27,11 @@ class SidePanelProvider with ChangeNotifier {
   }
 
   bool get isSideVisible {
-    _isSideVisible = _opened ?? !responsive.isPhoneDesign;
+    _isSideVisible = _opened ?? !responsive.phoneScreen;
     return _isSideVisible;
   }
 
-  bool get isAutoHide => isSideVisible && responsive.isPhoneDesign;
+  bool get isAutoHide => isSideVisible && responsive.phoneScreen;
 
   Widget get leading => IconButton(
         icon: const Icon(Icons.menu),

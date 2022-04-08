@@ -20,7 +20,7 @@ class TagSplitView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return responsive.isPhoneDesign
+    return responsive.phoneScreen
         ? child
         : SplitView(
             gripSize: 5,
