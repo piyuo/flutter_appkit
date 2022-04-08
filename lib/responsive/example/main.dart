@@ -22,7 +22,7 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _toolbar(context),
+              child: _responsive(context),
             ),
             Wrap(
               children: [
@@ -32,7 +32,7 @@ class ResponsiveExample extends StatelessWidget {
                 testing.ExampleButton(
                     label: 'layout dynamic bottom side', builder: () => _layoutDynamicBottomSide(context)),
                 testing.ExampleButton(label: 'wrapped-list-view', builder: () => _wrappedListView(context)),
-                testing.ExampleButton(label: 'responsive design', builder: () => _responsive(context)),
+                testing.ExampleButton(label: 'responsive', builder: () => _responsive(context)),
               ],
             ),
           ],
@@ -118,8 +118,9 @@ class ResponsiveExample extends StatelessWidget {
 
   Widget _responsive(BuildContext context) {
     return Responsive(
-      phone: () => Container(child: const Text('phone'), color: Colors.red),
-      notPhone: () => Container(child: const Text('desktop'), color: Colors.blue),
+      phoneScreen: () => Container(child: const Text('phone'), color: Colors.red),
+      notPhoneScreen: () => Container(child: const Text('not phone'), color: Colors.blue),
+      bigScreen: () => Container(child: const Text('big screen'), color: Colors.green),
     );
   }
 

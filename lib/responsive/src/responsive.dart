@@ -8,14 +8,35 @@ typedef DesignBuilder = Widget Function();
 /// return screen size on phone/tablet or windows size on desktop
 Size get screenSize => window.physicalSize / window.devicePixelRatio;
 
-/// phoneDesignMax is phone design max width
-const phoneDesignMax = 600.0;
+/// phoneScreenMax is max width for phone screen
+const phoneScreenMax = 600.0;
 
-/// isPhoneDesign return true if use phone design, this function use global screen size
-bool get isPhoneDesign => screenSize.width < phoneDesignMax;
+/// bigScreenDesignMin is min width to use big screen design
+const bigScreenMin = 1100.0;
 
-/// isNotPhoneDesign return true if not use phone design, this function use global screen size
-bool get isNotPhoneDesign => !isPhoneDesign;
+/// phoneScreen return true if phone screen
+bool get phoneScreen => screenSize.width < phoneScreenMax;
+
+/// notPhoneScreen return true if not phone screen
+bool get notPhoneScreen => !phoneScreen;
+
+/// bigScreen return true if is beg screen
+bool get bigScreen => screenSize.width > bigScreenMin;
+
+/// notBigScreen return true if not big screen
+bool get notBigScreen => !bigScreen;
+
+/// isPhoneScreen return true if phone screen
+bool isPhoneScreen(double width) => width < phoneScreenMax;
+
+/// isNotPhoneScreen return true if not phone screen
+bool isNotPhoneScreen(double width) => !isPhoneScreen(width);
+
+/// isBigScreen return true if is beg screen
+bool isBigScreen(double width) => width > bigScreenMin;
+
+/// isNotBigScreen return true if not big screen
+bool isNotBigScreen(double width) => !isBigScreen(width);
 
 class Responsive extends StatelessWidget {
   /// Responsive help choose device proper layout widget
@@ -23,19 +44,27 @@ class Responsive extends StatelessWidget {
   ///     Responsive(phone:..., notPhone:...)
   ///
   const Responsive({
-    required this.phone,
-    required this.notPhone,
+    required this.phoneScreen,
+    required this.notPhoneScreen,
+    this.bigScreen,
     Key? key,
   }) : super(key: key);
 
-  /// phone is widget for phone design
-  final DesignBuilder phone;
+  /// phoneScreen is widget for phone screen
+  final DesignBuilder phoneScreen;
 
-  /// notPhone is widget for not phone design
-  final DesignBuilder notPhone;
+  /// notPhoneScreen is widget for not phone screen
+  final DesignBuilder notPhoneScreen;
+
+  /// bigScreen is widget for big screen
+  final DesignBuilder? bigScreen;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) =>
-          constraints.maxWidth < phoneDesignMax ? phone() : notPhone());
+          (bigScreen != null && isBigScreen(constraints.maxWidth))
+              ? bigScreen!()
+              : isPhoneScreen(constraints.maxWidth)
+                  ? phoneScreen()
+                  : notPhoneScreen());
 }
