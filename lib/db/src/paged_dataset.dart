@@ -24,7 +24,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
 
   /// pageIndex is current page index
   int pageIndex = 0;
-
+ 
   /// onRefresh reset memory on dataset mode, but not on table mode, return true if reset memory
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
