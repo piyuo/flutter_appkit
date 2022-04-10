@@ -47,12 +47,12 @@ class SimpleList<T> extends SelectableList<T> {
         int rowIndex = index;
         if (headerBuilder != null) {
           if (index == 0) {
-            return buildHeader(context);
+            return headerBuilder!();
           }
           rowIndex--;
         }
         if (footerBuilder != null && index == _rowCount - 1) {
-          return buildFooter(context);
+          return footerBuilder!();
         }
         return buildItem(context, rowIndex);
       },

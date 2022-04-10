@@ -119,13 +119,11 @@ class DynamicList<T> extends SelectableList<T> {
             onLoadMore: onLoadMore,
             itemCount: _rowCount,
             itemBuilder: (BuildContext context, int index) {
-              if (headerBuilder != null) {
-                if (index == 0) {
-                  return buildHeader(context);
-                }
+              if (headerBuilder != null && index == 0) {
+                return headerBuilder!();
               }
               if (footerBuilder != null && index == _rowCount - 1) {
-                return buildFooter(context);
+                return footerBuilder!();
               }
 
               return animations.AnimatedView(

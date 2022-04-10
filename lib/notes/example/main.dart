@@ -628,13 +628,15 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _notesView(BuildContext context) {
+    int stepCount = 0;
     return ChangeNotifierProvider<NotesController<sample.Person>>(
         create: (context) => NotesController<sample.Person>(
               db.MemoryRam(dataBuilder: () => sample.Person()),
               context: context,
               loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+                stepCount++;
                 return List.generate(
-                  10,
+                  stepCount == 1 ? 10 : 2,
                   (i) {
                     final uuid = unique.uuid();
                     return sample.Person(

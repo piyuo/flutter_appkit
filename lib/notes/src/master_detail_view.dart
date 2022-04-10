@@ -111,37 +111,6 @@ class MasterDetailView<T> extends StatelessWidget {
   /// isSplitView is true if in split view
   bool get isSplitView => isListView && !responsive.phoneScreen;
 
-  /// _buildFooterButton build footer buttons bar
-  Widget _buildFooterButtons(BuildContext context) {
-    final buttonStyle = TextStyle(
-      fontSize: 15,
-      color: Colors.orange.shade700,
-    );
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 1),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-      color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade800),
-      child: Row(children: [
-        TextButton(
-          child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
-          style: checkMode
-              ? ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
-                  ),
-                )
-              : null,
-          onPressed: () async => await onBarAction.call(MasterDetailViewAction.toggleCheckMode),
-        ),
-        const Spacer(),
-        TextButton(
-          child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
-          onPressed: () => onBarAction.call(MasterDetailViewAction.add),
-        ),
-      ]),
-    );
-  }
-
   /// buildList build list and split view
   Widget buildList(BuildContext context) {
     return Column(
@@ -149,7 +118,7 @@ class MasterDetailView<T> extends StatelessWidget {
         if (checkMode && !isSplitView) _buildSelectionHeader(context),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(15, context.isPreferMouse ? 0 : 10, 15, 0),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: DynamicList<T>(
               checkMode: checkMode,
               items: items,
@@ -157,7 +126,11 @@ class MasterDetailView<T> extends StatelessWidget {
               itemBuilder: listBuilder,
               onRefresh: context.isTouchSupported ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
               onLoadMore: context.isTouchSupported ? () => onBarAction.call(MasterDetailViewAction.more) : null,
-              headerBuilder: checkMode ? null : headerBuilder,
+              headerBuilder: checkMode
+                  ? null
+                  : () => Padding(
+                      padding: EdgeInsets.only(top: !context.isPreferMouse || responsive.phoneScreen ? 10 : 0),
+                      child: headerBuilder != null ? headerBuilder!() : null),
               footerBuilder: checkMode ? null : footerBuilder,
               onItemSelected: (selectedItems) {
                 if (!isSplitView) {
@@ -169,7 +142,7 @@ class MasterDetailView<T> extends StatelessWidget {
             ),
           ),
         ),
-        if (!context.isPreferMouse) _buildFooterButtons(context),
+        if (responsive.phoneScreen || !context.isPreferMouse) _buildBottomTouchBar(context),
       ],
     );
   }
@@ -208,7 +181,7 @@ class MasterDetailView<T> extends StatelessWidget {
               onItemChecked: onItemChecked,
               crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
             )),
-            if (!context.isPreferMouse) _buildFooterButtons(context),
+            if (!context.isPreferMouse) _buildBottomTouchBar(context),
           ],
         );
       }
@@ -341,9 +314,36 @@ class MasterDetailView<T> extends StatelessWidget {
     );
   }
 
+  /// _buildPaginator build paginator
+  List<responsive.ToolItem<MasterDetailViewAction>> _buildPaginator(BuildContext context) {
+    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    return [
+      if (information != null)
+        responsive.ToolSelection<MasterDetailViewAction>(
+          width: 180,
+          label: localizations.rowsPerPageTitle,
+          text: information!,
+          selection: {
+            MasterDetailViewAction.rows10: context.i18n.notesRowsPerPage.replace1('10'),
+            MasterDetailViewAction.rows20: context.i18n.notesRowsPerPage.replace1('20'),
+            MasterDetailViewAction.rows50: context.i18n.notesRowsPerPage.replace1('50'),
+          },
+        ),
+      responsive.ToolButton(
+        label: localizations.previousPageTooltip,
+        icon: Icons.chevron_left,
+        value: hasPrevPage ? MasterDetailViewAction.previousPage : null,
+      ),
+      responsive.ToolButton(
+        label: localizations.nextPageTooltip,
+        icon: Icons.chevron_right,
+        value: hasNextPage ? MasterDetailViewAction.nextPage : null,
+      ),
+    ];
+  }
+
   /// _buildRightBar in split view
   Widget _buildRightBar(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return responsive.Toolbar<MasterDetailViewAction>(
       onPressed: onBarAction,
       items: [
@@ -352,31 +352,63 @@ class MasterDetailView<T> extends StatelessWidget {
           icon: Icons.add,
           value: MasterDetailViewAction.add,
         ),
-        if (items.isNotEmpty) ...[
-          responsive.ToolSpacer(),
-          if (information != null)
-            responsive.ToolSelection<MasterDetailViewAction>(
-              width: 180,
-              label: localizations.rowsPerPageTitle,
-              text: information!,
-              selection: {
-                MasterDetailViewAction.rows10: context.i18n.notesRowsPerPage.replace1('10'),
-                MasterDetailViewAction.rows20: context.i18n.notesRowsPerPage.replace1('20'),
-                MasterDetailViewAction.rows50: context.i18n.notesRowsPerPage.replace1('50'),
-              },
-            ),
-          responsive.ToolButton(
-            label: localizations.previousPageTooltip,
-            icon: Icons.chevron_left,
-            value: hasPrevPage ? MasterDetailViewAction.previousPage : null,
-          ),
-          responsive.ToolButton(
-            label: localizations.nextPageTooltip,
-            icon: Icons.chevron_right,
-            value: hasNextPage ? MasterDetailViewAction.nextPage : null,
-          ),
-        ],
+        if (items.isNotEmpty) responsive.ToolSpacer(),
+        if (items.isNotEmpty) ..._buildPaginator(context),
       ],
     );
   }
+
+  /// _buildBottomTouchBar build list bottom bar for touch device
+  Widget _buildBottomTouchBar(BuildContext context) {
+    final buttonStyle = TextStyle(
+      fontSize: 15,
+      color: Colors.orange.shade700,
+    );
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+      color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade800),
+      child: Row(children: [
+        TextButton(
+          child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
+          style: checkMode
+              ? ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
+                  ),
+                )
+              : null,
+          onPressed: () async => await onBarAction.call(MasterDetailViewAction.toggleCheckMode),
+        ),
+        information != null
+            ? Expanded(
+                child: Text(information!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
+                    )),
+              )
+            : const Spacer(),
+        TextButton(
+          child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
+          onPressed: () => onBarAction.call(MasterDetailViewAction.add),
+        ),
+      ]),
+    );
+  }
+
+/*  Widget _buildRightBar(BuildContext context) {
+    return responsive.Toolbar<MasterDetailViewAction>(
+      onPressed: onBarAction,
+      items: [
+        responsive.ToolButton(
+          label: context.i18n.notesNewButtonLabel,
+          icon: Icons.add,
+          value: MasterDetailViewAction.add,
+        ),
+        if (items.isNotEmpty) responsive.ToolSpacer(),
+        if (items.isNotEmpty) ..._buildPaginator(context),
+      ],
+    );
+  }*/
 }

@@ -36,19 +36,6 @@ abstract class SelectableList<T> extends Selectable<T> {
         : _buildItem(context, itemIndex, item, isSelected);
   }
 
-  /// buildListHeader build header in list view
-  Widget buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 2, bottom: 5),
-      child: headerBuilder!(),
-    );
-  }
-
-  /// buildListFooter build footer in list view
-  Widget buildFooter(BuildContext context) {
-    return footerBuilder!();
-  }
-
   /// buildCheckListItem is a widget builder for each item in check mode
   Widget _buildCheckItem(BuildContext context, int itemIndex, T item, bool isSelected) {
     return Row(

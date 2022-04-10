@@ -82,7 +82,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
               onShowDetail: onShowDetail,
               checkMode: controller.checkMode,
               isListView: controller.listView,
-              information: controller.dataset.information(context),
+              information: controller.dataset.pageInfo(context),
               hasNextPage:
                   controller.dataset is db.PagedDataset ? (controller.dataset as db.PagedDataset).hasNextPage : false,
               hasPrevPage:

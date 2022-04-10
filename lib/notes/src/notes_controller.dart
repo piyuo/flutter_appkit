@@ -92,9 +92,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         if (isReset || (diff > 0 && !firstPage)) {
           animatedViewController.refreshPageAnimation();
           animatedViewController.itemCount = dataset.displayRows.length;
-          return;
-        }
-        if (diff > 0) {
+        } else if (diff > 0) {
           if (dataset.isDisplayRowsFullPage) {
             animatedViewController.itemCount = dataset.rowsPerPage - diff;
           }
