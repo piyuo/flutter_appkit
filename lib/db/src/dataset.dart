@@ -98,11 +98,11 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   Future<void> fill();
 
-  /// information return text page info like '1-10 of many'
+  /// pageInfo return text page info like '1-10 of many'
   /// ```dart
-  /// expect(ds.information(testing.Context()), '10 rows');
+  /// expect(ds.pageInfo(testing.Context()), '1-10 of many');
   /// ```
-  String information(BuildContext context);
+  String pageInfo(BuildContext context);
 
   /// start when data source create with context
   /// ```dart

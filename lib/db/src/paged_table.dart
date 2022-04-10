@@ -73,7 +73,7 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
 
   /// pagingInfo return text page info like '1-10 of 19'
   @override
-  String information(BuildContext context) {
+  String pageInfo(BuildContext context) {
     final paginator = Paginator(rowCount: innerMemory.length, rowsPerPage: innerMemory.rowsPerPage);
     return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ' +
         context.i18n.pagingCount.replaceAll('%1', innerMemory.length.toString());

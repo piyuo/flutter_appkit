@@ -50,15 +50,15 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
     displayRows.addAll(range);
   }
 
-  /// information return text page info like '10 rows' or '10 of many'
+  /// pageInfo return text page info like '1 - 10 of many'
   /// ```dart
-  /// expect(ds.pagingInfo(testing.Context()), '10 rows');
+  /// expect(ds.pageInfo(testing.Context()), '10 rows');
   /// ```
   @override
-  String information(BuildContext context) {
-    final info = '${memory.length} ';
+  String pageInfo(BuildContext context) {
+    final info = '1 - $length ';
     if (noMoreData) {
-      return info + context.i18n.pagingRows;
+      return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
     }
     return info + context.i18n.pagingMany;
   }

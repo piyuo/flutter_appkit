@@ -24,7 +24,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
 
   /// pageIndex is current page index
   int pageIndex = 0;
- 
+
   /// onRefresh reset memory on dataset mode, but not on table mode, return true if reset memory
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
@@ -49,12 +49,12 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
     displayRows.addAll(range);
   }
 
-  /// pagingInfo return text page info like '1-10 of many'
+  /// pageInfo return text page info like '1 - 10 of many'
   /// ```dart
-  /// expect(ds.pagingInfo(testing.Context()), '10 rows');
+  /// expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
   /// ```
   @override
-  String information(BuildContext context) {
+  String pageInfo(BuildContext context) {
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
     if (noMoreData) {
