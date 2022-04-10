@@ -91,4 +91,40 @@ void main() {
       expect(ds.information(testing.Context()), '20 rows');
     });
   });
+
+  test('should refresh after load more', () async {
+    int step = 0;
+    final ds = ContinuousDataset<sample.Person>(
+      MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
+      dataBuilder: () => sample.Person(),
+      loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        if (step == 0) {
+          // init
+          step++;
+          return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+        }
+        if (step == 1) {
+          // first more
+          step++;
+          return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
+        }
+        if (step == 2) {
+          // refresh
+          step++;
+          return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'firstRefresh' + index.toString())));
+        }
+        return [];
+      },
+    );
+    await ds.start(testing.Context());
+    expect(ds.information(testing.Context()), '10 of many');
+    expect(ds.length, 10);
+    expect(ds.displayRows.length, 10);
+    await ds.more(testing.Context(), 10);
+    expect(ds.information(testing.Context()), '20 of many');
+    expect(ds.length, 20);
+    expect(ds.displayRows.length, 20);
+    await ds.refresh(testing.Context());
+    expect(ds.information(testing.Context()), '22 of many');
+  });
 }
