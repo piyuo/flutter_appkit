@@ -14,19 +14,19 @@ void main() {
   group('[memory_ram]', () {
     test('should init and clear data', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-      expect(memory.noMoreData, false);
+      expect(memory.noMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 0);
       expect(await memory.first, isNull);
       expect(await memory.last, isNull);
       await memory.add([sample.Person(name: 'hi')]);
-      expect(memory.noMoreData, false);
+      expect(memory.noMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 1);
       expect((await memory.first)!.name, 'hi');
       expect((await memory.last)!.name, 'hi');
       await memory.clear();
-      expect(memory.noMoreData, false);
+      expect(memory.noMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 0);
       expect(await memory.first, isNull);

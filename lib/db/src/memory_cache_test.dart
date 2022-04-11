@@ -18,19 +18,19 @@ void main() {
       try {
         final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        expect(memory.noMoreData, false);
+        expect(memory.noMore, false);
         expect(memory.rowsPerPage, 10);
         expect(memory.length, 0);
         expect(await memory.first, isNull);
         expect(await memory.last, isNull);
         await memory.add([sample.Person(name: 'hi')]);
-        expect(memory.noMoreData, false);
+        expect(memory.noMore, false);
         expect(memory.rowsPerPage, 10);
         expect(memory.length, 1);
         expect((await memory.first)!.name, 'hi');
         expect((await memory.last)!.name, 'hi');
         await memory.clear();
-        expect(memory.noMoreData, false);
+        expect(memory.noMore, false);
         expect(memory.rowsPerPage, 10);
         expect(memory.length, 0);
         expect(await memory.first, isNull);
@@ -114,14 +114,14 @@ void main() {
         await memory.open();
         await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
         await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
-        memory.noMoreData = true;
+        memory.noMore = true;
         memory.rowsPerPage = 21;
         await memory.save();
         await memory.close();
 
         final memory2 = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
         await memory2.open();
-        expect(memory2.noMoreData, true);
+        expect(memory2.noMore, true);
         expect(memory2.rowsPerPage, 21);
         expect(memory2.length, 2);
         expect((await memory2.first)!.entityID, 'first');

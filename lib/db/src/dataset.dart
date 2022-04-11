@@ -80,8 +80,14 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   @protected
   Memory<T> get innerMemory => memory;
 
-  /// noMoreData return true if no more data to add
-  bool get noMoreData => memory.noMoreData;
+  /// noRefresh return true if no refresh need
+  bool get noRefresh => memory.noRefresh;
+
+  /// noRefresh set to true if no refresh need
+  set noRefresh(value) => memory.noRefresh = value;
+
+  /// noMore return true if no more data to add
+  bool get noMore => memory.noMore;
 
   /// rowsPerPage return rows per page
   int get rowsPerPage => memory.rowsPerPage;
@@ -135,7 +141,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     bool isReset = false;
     if (memory.isEmpty && downloadRows.length < memory.rowsPerPage) {
-      memory.noMoreData = true;
+      memory.noMore = true;
     }
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
@@ -152,6 +158,10 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// await ds.refresh(context);
   /// ```
   Future<bool> refresh(BuildContext context) async {
+    if (memory.noRefresh) {
+      debugPrint('[dataset] no refresh already');
+      return false;
+    }
     notifyState(DataState.refreshing);
     try {
       T? anchor = await memory.first;
@@ -171,7 +181,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// await ds.more(testing.Context(), 2);
   /// ```
   Future<bool> more(BuildContext context, int limit) async {
-    if (memory.noMoreData) {
+    if (memory.noMore) {
       debugPrint('[dataset] no more already');
       return false;
     }
@@ -181,7 +191,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
       final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
       if (downloadRows.length < limit) {
         debugPrint('[dataset] has no more data');
-        memory.noMoreData = true;
+        memory.noMore = true;
       }
       if (downloadRows.isNotEmpty) {
         await memory.add(downloadRows);

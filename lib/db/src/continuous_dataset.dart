@@ -57,7 +57,7 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   @override
   String pageInfo(BuildContext context) {
     final info = '1 - $length ';
-    if (noMoreData) {
+    if (noMore) {
       return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
     }
     return info + context.i18n.pagingMany;

@@ -57,7 +57,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   String pageInfo(BuildContext context) {
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
-    if (noMoreData) {
+    if (noMore) {
       return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
     }
     return info + context.i18n.pagingMany;
@@ -93,7 +93,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// hasNextPage return true if user can click next page
   bool get hasNextPage {
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
-    return noMoreData ? pageIndex < paginator.pageCount - 1 : true;
+    return noMore ? pageIndex < paginator.pageCount - 1 : true;
   }
 
   /// nextPage return true if load data
@@ -111,7 +111,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// loadMoreBeforeGotoPage load more data before goto page
   Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {
     final expectRowsCount = length - index * rowsPerPage;
-    if (expectRowsCount < rowsPerPage && !noMoreData) {
+    if (expectRowsCount < rowsPerPage && !noMore) {
       //the page is not fill with enough data, load more data
       await more(context, rowsPerPage - expectRowsCount);
     }

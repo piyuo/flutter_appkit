@@ -1,5 +1,17 @@
 import 'package:libcli/pb/pb.dart' as pb;
 
+/// keyAll is key for keep all rows
+const keyIndex = '__idx';
+
+/// keyRowsPerPage is key for keep all rows per page
+const keyRowsPerPage = '__rpp';
+
+/// keyNoMoreData is key for no more data
+const keyNoMore = '__nm';
+
+/// keyNoRefresh is key for no refresh
+const keyNoRefresh = '__nr';
+
 /// Memory keep rows for later use
 /// ```dart
 /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
@@ -13,7 +25,8 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   Memory({
     required this.dataBuilder,
-    this.noMoreData = false,
+    this.noRefresh = false,
+    this.noMore = false,
     this.rowsPerPage = 10,
   });
 
@@ -23,8 +36,11 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   final pb.Builder<T> dataBuilder;
 
-  /// noMoreData mean this dataset has no need to load more data, just use cache
-  bool noMoreData;
+  /// noRefresh mean dataset has no need to refresh data, it will only use data in memory
+  bool noRefresh;
+
+  /// noMore mean dataset has no need to load more data, it will only use data in memory
+  bool noMore;
 
   /// rowsPerPage is current rows per page
   int rowsPerPage;

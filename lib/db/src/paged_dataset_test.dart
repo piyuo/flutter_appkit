@@ -71,7 +71,7 @@ void main() {
       await ds.start(testing.Context());
       expect(OrderSampleDataset.loaderIsRefresh, true);
       expect(OrderSampleDataset.loaderLimit, 10);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
     });
 
     test('should check no more data', () async {
@@ -80,23 +80,23 @@ void main() {
       OrderSampleDataset.loaderLimit = 0;
       final ds = OrderSampleDataset();
       await ds.start(testing.Context());
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
       // know no more data at first
       OrderSampleDataset.returnCount = 9;
       final ds2 = OrderSampleDataset();
       await ds2.start(testing.Context());
-      expect(ds2.noMoreData, true);
+      expect(ds2.noMore, true);
     });
 
     test('should reset on refresh', () async {
       OrderSampleDataset.returnCount = 10;
       final ds = OrderSampleDataset();
       await ds.start(testing.Context());
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
       expect(ds.length, 10);
       final result = await ds.refresh(testing.Context());
       expect(result, true);
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
       expect(ds.length, 10);
     });
 
@@ -139,11 +139,11 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
       expect(ds.displayRows.length, 10);
       // second refresh will trigger reset
       await ds.more(testing.Context(), 2);
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
       expect(ds.length, 12);
       expect(ds.displayRows.length, 10);
     });
@@ -174,10 +174,10 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
       // second refresh will trigger reset
       await ds.more(testing.Context(), 2);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.length, 11);
     });
 
@@ -255,14 +255,14 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
 
       await ds.more(testing.Context(), 1);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(moreCount, 1);
 
       await ds.more(testing.Context(), 1);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(moreCount, 1);
     });
 
@@ -296,14 +296,14 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
 
       await ds.more(testing.Context(), 2);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(moreCount, 1);
 
       await ds.more(testing.Context(), 2);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(moreCount, 1);
     });
 
@@ -379,7 +379,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, false);
+      expect(ds.noMore, false);
       expect(ds.pageIndex, 0);
       expect(ds.length, 10);
 
@@ -390,7 +390,7 @@ void main() {
       expect(ds.displayRows.length, 2);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 1);
       expect(ds.length, 12);
 
@@ -400,7 +400,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 0);
       expect(ds.length, 12);
 
@@ -410,7 +410,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 0);
       expect(ds.length, 14);
 
@@ -420,7 +420,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 0);
       expect(ds.length, 14);
     });
@@ -537,7 +537,7 @@ void main() {
       expect(lastLimit, 10);
       expect(lastAnchorId, 'firstMore9');
       expect(ds.length, 22);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
     });
   });
 }

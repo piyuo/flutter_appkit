@@ -7,28 +7,20 @@ import 'cache.dart';
 @visibleForTesting
 int get maxResetItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
-/// _keyAll is key for keep all rows
-const _keyIndex = '__idx';
-
-/// _keyRowsPerPage is key for keep all rows per page
-const _keyRowsPerPage = '__rpp';
-
-/// _keyNoMoreData is key for no more data
-const _keyNoMoreData = '__nmd';
-
 /// deleteMemoryCache delete a memory cache
 /// ```dart
 /// await deleteMemoryCache('test');
 /// ```
 Future<void> deleteMemoryCache(Cache cache, String id) async {
-  final all = cache.getStringList('$id$_keyIndex');
+  final all = cache.getStringList('$id$keyIndex');
   if (all != null) {
     for (String id in all) {
       await cache.delete(id);
     }
-    await cache.delete('$id$_keyIndex');
-    await cache.delete('$id$_keyRowsPerPage');
-    await cache.delete('$id$_keyNoMoreData');
+    await cache.delete('$id$keyIndex');
+    await cache.delete('$id$keyRowsPerPage');
+    await cache.delete('$id$keyNoMore');
+    await cache.delete('$id$keyNoRefresh');
   }
   debugPrint('[memory_cache] $id deleted');
 }
@@ -84,9 +76,10 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   Future<void> open() async {
-    _index = _cache.getStringList('$id$_keyIndex') ?? [];
-    rowsPerPage = _cache.getInt('$id$_keyRowsPerPage') ?? 10;
-    noMoreData = _cache.getBool('$id$_keyNoMoreData') ?? false;
+    _index = _cache.getStringList('$id$keyIndex') ?? [];
+    rowsPerPage = _cache.getInt('$id$keyRowsPerPage') ?? 10;
+    noRefresh = _cache.getBool('$id$keyNoRefresh') ?? false;
+    noMore = _cache.getBool('$id$keyNoMore') ?? false;
   }
 
   /// save memory cache
@@ -95,9 +88,10 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   Future<void> save() async {
-    await _cache.setStringList('$id$_keyIndex', _index);
-    await _cache.setInt('$id$_keyRowsPerPage', rowsPerPage);
-    await _cache.setBool('$id$_keyNoMoreData', noMoreData);
+    await _cache.setStringList('$id$keyIndex', _index);
+    await _cache.setInt('$id$keyRowsPerPage', rowsPerPage);
+    await _cache.setBool('$id$keyNoMore', noMore);
+    await _cache.setBool('$id$keyNoRefresh', noRefresh);
   }
 
   /// insert list of rows into ram
@@ -137,9 +131,10 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   @override
   Future<void> clear() async {
     final deletedRows = _index;
-    noMoreData = false;
+    noMore = false;
+    noRefresh = false;
     _index = [];
-    await _cache.delete('$id$_keyIndex');
+    await _cache.delete('$id$keyIndex');
     int deleteCount = 0;
     for (String id in deletedRows) {
       await _cache.delete(id);
@@ -164,7 +159,8 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
       if (row == null) {
         // data is missing
         _index = [];
-        noMoreData = false;
+        noMore = false;
+        noRefresh = false;
         await save();
         return null;
       }

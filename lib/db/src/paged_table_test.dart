@@ -82,10 +82,10 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.length, 10);
       await ds.refresh(testing.Context());
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.length, 20);
     });
 
@@ -202,7 +202,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 0);
       expect(ds.length, 10);
 
@@ -213,7 +213,7 @@ void main() {
       expect(ds.displayRows.length, 2);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 1);
       expect(ds.length, 12);
 
@@ -223,7 +223,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 0);
       expect(ds.length, 12);
 
@@ -233,7 +233,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 0);
       expect(ds.length, 14);
 
@@ -243,7 +243,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.pageIndex, 0);
       expect(ds.length, 14);
     });
@@ -370,7 +370,7 @@ void main() {
       expect(lastLimit, 10);
       expect(lastAnchorId, 'firstRefresh0');
       expect(ds.length, 22);
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
     });
   });
 }

@@ -82,10 +82,10 @@ void main() {
         },
       );
       await ds.start(testing.Context());
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.length, 10);
       await ds.refresh(testing.Context());
-      expect(ds.noMoreData, true);
+      expect(ds.noMore, true);
       expect(ds.length, 20);
     });
 

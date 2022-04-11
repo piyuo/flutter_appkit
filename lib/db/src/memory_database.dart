@@ -5,12 +5,6 @@ import 'database.dart';
 import 'memory.dart';
 import 'db.dart';
 
-/// _keyIndex is key for index of all rows
-const _keyIndex = '__idx';
-
-/// _keyRowsPerPage is key for keep rows per page
-const _keyRowsPerPage = '__rpp';
-
 /// deleteMemoryDatabase delete memory database
 /// ```dart
 /// await deleteMemoryDatabase('test');
@@ -31,7 +25,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   MemoryDatabase({
     required this.id,
     required pb.Builder<T> dataBuilder,
-  }) : super(dataBuilder: dataBuilder, noMoreData: true);
+  }) : super(dataBuilder: dataBuilder, noMore: true);
 
   /// id is the unique id of this dataset, it is used to cache data
   final String id;
@@ -68,8 +62,9 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   @override
   Future<void> open() async {
     _database = await openDatabase(id);
-    _index = _database.getStringList(_keyIndex) ?? [];
-    rowsPerPage = _database.getInt(_keyRowsPerPage) ?? 10;
+    _index = _database.getStringList(keyIndex) ?? [];
+    rowsPerPage = _database.getInt(keyRowsPerPage) ?? 10;
+    noRefresh = _database.getBool(keyNoRefresh) ?? false;
   }
 
   /// close memory database
@@ -87,8 +82,9 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   Future<void> save() async {
-    await _database.setStringList(_keyIndex, _index);
-    await _database.setInt(_keyRowsPerPage, rowsPerPage);
+    await _database.setStringList(keyIndex, _index);
+    await _database.setInt(keyRowsPerPage, rowsPerPage);
+    await _database.setBool(keyNoRefresh, noRefresh);
   }
 
   /// insert list of rows into memory database
@@ -131,6 +127,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
     await _database.close();
     await deleteMemoryDatabase(id);
     _database = await openDatabase(id);
+    noRefresh = false;
     debugPrint('[memory_database] clear');
   }
 
@@ -147,7 +144,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
       if (row == null) {
         // data is missing
         _index = [];
-        noMoreData = false;
+        noMore = false;
         await save();
         return null;
       }
