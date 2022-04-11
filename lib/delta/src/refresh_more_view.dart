@@ -93,8 +93,9 @@ class _RefreshMoreViewState extends State<RefreshMoreView> {
 
     return context.isTouchSupported
         ? EasyRefresh(
-            header: BallPulseHeader(color: Theme.of(context).colorScheme.primary),
-            footer: BallPulseFooter(color: Theme.of(context).colorScheme.primary),
+            //set header or footer to null if no onRefresh or onLoad, will force list bounce
+            header: widget.onRefresh != null ? BallPulseHeader(color: Theme.of(context).colorScheme.primary) : null,
+            footer: widget.onLoadMore != null ? BallPulseFooter(color: Theme.of(context).colorScheme.primary) : null,
             onRefresh: widget.onRefresh,
             onLoad: widget.onLoadMore,
             child: ListView.builder(
