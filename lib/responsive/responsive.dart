@@ -1,6 +1,6 @@
 library responsive;
 
-export 'src/responsive.dart';
+export 'src/responsive1.dart';
 export 'src/toolbar.dart';
 export 'src/tools.dart';
 export 'src/show_tool_menu.dart';

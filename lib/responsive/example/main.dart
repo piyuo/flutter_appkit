@@ -22,7 +22,7 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _responsive(context),
+              child: _toolbar(context),
             ),
             Wrap(
               children: [
@@ -269,6 +269,36 @@ class ResponsiveExample extends StatelessWidget {
                 label: 'Disabled',
                 icon: Icons.cabin,
                 value: null,
+                space: 10,
+              ),
+            ])),
+        const SizedBox(width: 450),
+      ]),
+      Row(children: [
+        Expanded(
+            child: Toolbar<String>(
+                mainAxisAlignment: MainAxisAlignment.center,
+                color: Colors.blue.shade300,
+                activeColor: Colors.blue,
+                onPressed: (index) => debugPrint('just press $index'),
+                items: [
+              ToolButton(
+                label: 'New File',
+                icon: Icons.new_label,
+                value: 'new_file',
+                space: 10,
+              ),
+              ToolButton(
+                label: 'List View',
+                icon: Icons.list,
+                value: 'list_view',
+                active: true,
+              ),
+              ToolButton(
+                label: 'Grid View',
+                icon: Icons.grid_view,
+                value: 'grid_view',
+                active: false,
                 space: 10,
               ),
             ])),

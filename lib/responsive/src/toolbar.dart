@@ -39,6 +39,7 @@ class Toolbar<T> extends StatelessWidget {
     this.color,
     this.activeColor,
     this.iconColor,
+    this.mainAxisAlignment = MainAxisAlignment.start,
     Key? key,
   }) : super(key: key);
 
@@ -56,6 +57,9 @@ class Toolbar<T> extends StatelessWidget {
 
   /// iconColor is color of icon
   final Color? iconColor;
+
+  /// mainAxisAlignment is toolbar main axis alignment
+  final MainAxisAlignment mainAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +108,7 @@ class Toolbar<T> extends StatelessWidget {
             color: color,
             padding: const EdgeInsets.all(5),
             child: Row(
+              mainAxisAlignment: mainAxisAlignment,
               children: buttons,
             ));
       },
