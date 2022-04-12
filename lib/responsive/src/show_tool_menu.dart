@@ -29,6 +29,7 @@ Future<T?> showToolMenu<T>(
 }) async {
   return await dialog.showSlideSheet<T>(
     context,
+    padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
     constraints: constraints,
     initHeight: initHeight,
     maxHeight: maxHeight,

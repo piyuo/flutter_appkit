@@ -22,7 +22,7 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _toolbar(context),
+              child: _showToolMenu(context),
             ),
             Wrap(
               children: [
