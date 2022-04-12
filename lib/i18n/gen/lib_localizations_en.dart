@@ -11,6 +11,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get notesSelectButtonLabel => 'Select';
 
   @override
+  String get notesDeselectButtonLabel => 'Deselect';
+
+  @override
   String get notesNewButtonLabel => 'New';
 
   @override

@@ -1,5 +1,6 @@
 {
     "notesSelectButtonLabel":"Select",
+    "notesDeselectButtonLabel":"Deselect",
     "notesNewButtonLabel":"New",
     "notesDeleteButtonLabel":"Delete",
     "notesViewAsListLabel":"View as List",

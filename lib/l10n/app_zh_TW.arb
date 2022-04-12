@@ -1,5 +1,6 @@
 {
     "notesSelectButtonLabel":"選擇",
+    "notesDeselectButtonLabel":"取消選擇",
     "notesNewButtonLabel":"新增",
     "notesDeleteButtonLabel":"刪除",
     "notesViewAsListLabel":"以列表形式查看",

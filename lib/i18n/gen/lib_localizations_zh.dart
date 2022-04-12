@@ -8,7 +8,10 @@ class LibLocalizationsZh extends LibLocalizations {
   LibLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get notesSelectButtonLabel => '選擇';
+  String get notesSelectButtonLabel => '选取';
+
+  @override
+  String get notesDeselectButtonLabel => '取消选取';
 
   @override
   String get notesNewButtonLabel => '新增';
@@ -443,6 +446,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get notesSelectButtonLabel => '選擇';
+
+  @override
+  String get notesDeselectButtonLabel => '取消選擇';
 
   @override
   String get notesNewButtonLabel => '新增';

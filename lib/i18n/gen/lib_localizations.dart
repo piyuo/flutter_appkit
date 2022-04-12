@@ -101,6 +101,12 @@ abstract class LibLocalizations {
   /// **'Select'**
   String get notesSelectButtonLabel;
 
+  /// No description provided for @notesDeselectButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect'**
+  String get notesDeselectButtonLabel;
+
   /// No description provided for @notesNewButtonLabel.
   ///
   /// In en, this message translates to:
