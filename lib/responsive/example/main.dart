@@ -22,7 +22,7 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _showToolMenu(context),
+              child: _toolbar(context),
             ),
             Wrap(
               children: [
@@ -169,32 +169,6 @@ class ResponsiveExample extends StatelessWidget {
             },
           ),
           ToolButton(
-            width: 42,
-            text: '3/4',
-            label: 'delete',
-            value: 'page info',
-          ),
-          ToolButton(
-            width: 62,
-            label: 'Hello',
-            value: 'delete2',
-          ),
-          ToolButton(
-            label: 'delete3',
-            icon: Icons.delete,
-            value: 'delete3',
-          ),
-          ToolSelection(
-            value: '20',
-            label: 'Rows per page2',
-            icon: Icons.table_rows,
-            selection: {
-              '10': '10 rows2',
-              '20': '20 rows2',
-              '50': '50 rows2',
-            },
-          ),
-          ToolButton(
             label: 'delete4',
             icon: Icons.delete,
             value: 'delete4',
@@ -218,7 +192,7 @@ class ResponsiveExample extends StatelessWidget {
           ),
         ],
       ),
-      Row(children: [
+/*      Row(children: [
         Expanded(
             child: Toolbar<String>(
                 color: Colors.blue.shade300,
@@ -304,6 +278,7 @@ class ResponsiveExample extends StatelessWidget {
             ])),
         const SizedBox(width: 450),
       ])
+    */
     ]);
   }
 

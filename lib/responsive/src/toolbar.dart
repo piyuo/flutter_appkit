@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'tools.dart';
 
-const _buttonMoreWidth = 60;
+const _buttonMoreWidth = 50;
 
 /// Toolbar show button and selection on bar, show menu if bar is not long enough
 /// ```dart
@@ -70,10 +70,7 @@ class Toolbar<T> extends StatelessWidget {
         var menuItems = <ToolItem<T>>[];
         double width = 0;
         for (ToolItem<T> item in items) {
-          width += item.width;
-          if (item.space != null) {
-            width += item.space!;
-          }
+          width += item.width + (item.space ?? 0);
           if (width > maxWidth) {
             menuItems.add(item);
           } else {
