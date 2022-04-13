@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -89,11 +88,7 @@ abstract class LibLocalizations {
   ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('en'),
-    Locale('zh'),
-    Locale('zh', 'TW')
-  ];
+  static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('zh'), Locale('zh', 'TW')];
 
   /// No description provided for @notesSelectButtonLabel.
   ///
@@ -976,27 +971,28 @@ class _LibLocalizationsDelegate extends LocalizationsDelegate<LibLocalizations> 
 }
 
 LibLocalizations lookupLibLocalizations(Locale locale) {
-
   // Lookup logic when language+country codes are specified.
   switch (locale.languageCode) {
-    case 'zh': {
-  switch (locale.countryCode) {
-    case 'TW': return LibLocalizationsZhTw();
-   }
-  break;
-   }
+    case 'zh':
+      {
+        switch (locale.countryCode) {
+          case 'TW':
+            return LibLocalizationsZhTw();
+        }
+        break;
+      }
   }
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return LibLocalizationsEn();
-    case 'zh': return LibLocalizationsZh();
+    case 'en':
+      return LibLocalizationsEn();
+    case 'zh':
+      return LibLocalizationsZh();
   }
 
-  throw FlutterError(
-    'LibLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
-  );
+  throw FlutterError('LibLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }

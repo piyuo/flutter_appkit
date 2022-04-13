@@ -1,6 +1,3 @@
-
-
-
 import 'lib_localizations.dart';
 
 /// The translations for Chinese (`zh`).
@@ -442,7 +439,7 @@ class LibLocalizationsZh extends LibLocalizations {
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class LibLocalizationsZhTw extends LibLocalizationsZh {
-  LibLocalizationsZhTw(): super('zh_TW');
+  LibLocalizationsZhTw() : super('zh_TW');
 
   @override
   String get notesSelectButtonLabel => '選擇';
