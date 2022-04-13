@@ -209,7 +209,9 @@ class _AnimationExampleState extends State<AnimationExample> {
       Expanded(
           child: AnimatedGrid(
         key: gridKey,
-        crossAxisCount: 1,
+        mainAxisSpacing: 5,
+        crossAxisSpacing: 20,
+        crossAxisCount: 2,
         initialItemCount: gridItems.length,
         itemBuilder: (context, index, animation) {
           return slideIt(context, index, animation); // Refer step 3
@@ -366,7 +368,13 @@ class _AnimationExampleState extends State<AnimationExample> {
                     },
                   ),
                 ]),
-                const Expanded(child: AnimatedView(itemBuilder: itemBuilder)),
+                const Expanded(
+                    child: AnimatedView(
+                  itemBuilder: itemBuilder,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 20,
+                  crossAxisCount: 1,
+                )),
               ])),
     );
   }

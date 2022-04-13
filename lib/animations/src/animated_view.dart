@@ -130,6 +130,9 @@ class AnimatedView extends StatelessWidget {
     this.crossAxisCount = 1,
     this.shrinkWrap = false,
     this.controller,
+    this.mainAxisSpacing = 0,
+    this.crossAxisSpacing = 0,
+    this.childAspectRatio = 1,
     Key? key,
   }) : super(key: key);
 
@@ -138,6 +141,15 @@ class AnimatedView extends StatelessWidget {
 
   /// crossAxisCount is 1 will show list view, others is grid view
   final int crossAxisCount;
+
+  /// mainAxisSpacing for grid is the number of logical pixels between each child along the main axis.
+  final double mainAxisSpacing;
+
+  /// crossAxisSpacing for grid is the number of logical pixels between each child along the cross axis.
+  final double crossAxisSpacing;
+
+  /// childAspectRatio for grid is the cross-axis to the main-axis extent of each child.
+  final double childAspectRatio;
 
   /// Whether the extent of the scroll view in the [scrollDirection] should be
   /// determined by the contents being viewed.
@@ -182,6 +194,9 @@ class AnimatedView extends StatelessWidget {
         child: AnimatedGrid(
           controller: controller,
           shrinkWrap: shrinkWrap,
+          mainAxisSpacing: mainAxisSpacing,
+          crossAxisSpacing: crossAxisSpacing,
+          childAspectRatio: childAspectRatio,
           key: provide._gridKey,
           crossAxisCount: crossAxisCount,
           initialItemCount: provide._itemCount,
