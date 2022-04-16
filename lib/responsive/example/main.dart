@@ -22,10 +22,11 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _toolbar(context),
+              child: _foldPanel(context),
             ),
             Wrap(
               children: [
+                testing.ExampleButton(label: 'fold panel', builder: () => _foldPanel(context)),
                 testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
                 testing.ExampleButton(label: 'tool menu', builder: () => _showToolMenu(context)),
                 testing.ExampleButton(label: 'padding to center', builder: () => _paddingToCenter(context)),
@@ -37,6 +38,19 @@ class ResponsiveExample extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _foldPanel(BuildContext context) {
+    return FoldPanel(
+      topLeft: Container(
+        color: Colors.red,
+        child: const Text('top left'),
+      ),
+      bottomRight: Container(
+        color: Colors.blue,
+        child: const Text('bottom right'),
       ),
     );
   }

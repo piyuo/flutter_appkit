@@ -59,7 +59,7 @@ dependencies:
   slide_countdown: ^0.1.2
   fl_chart: ^0.45.0
   badges: ^2.0.2
-  beamer: ^1.1.0
+  beamer: ^1.4.1+1
   hive: ^2.0.5
   cupertino_listview: ^2.0.0
   split_view: ^3.1.0

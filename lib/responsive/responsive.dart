@@ -1,5 +1,6 @@
 library responsive;
 
+export 'src/fold_panel.dart';
 export 'src/responsive1.dart';
 export 'src/toolbar.dart';
 export 'src/tools.dart';
