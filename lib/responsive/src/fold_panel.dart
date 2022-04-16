@@ -25,26 +25,28 @@ class FoldPanel extends StatelessWidget {
   ///)
   /// ```
   const FoldPanel({
-    required this.topLeft,
+    this.topLeft,
     required this.bottomRight,
     Key? key,
   }) : super(key: key);
 
   /// topLeft is widget show on top in small screen or left on big screen
-  final Widget topLeft;
+  final Widget? topLeft;
 
   /// bottomRight is widget show on bottom in small screen or right on big screen
   final Widget bottomRight;
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) => isPhoneScreen(constraints.maxWidth)
-          ? Column(children: [
-              Expanded(child: topLeft),
-              Expanded(child: bottomRight),
-            ])
-          : Row(children: [
-              Expanded(child: topLeft),
-              Expanded(child: bottomRight),
-            ]));
+  Widget build(BuildContext context) => topLeft == null
+      ? bottomRight
+      : LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) => isPhoneScreen(constraints.maxWidth)
+              ? Column(children: [
+                  Expanded(child: topLeft!),
+                  Expanded(child: bottomRight),
+                ])
+              : Row(children: [
+                  Expanded(child: topLeft!),
+                  Expanded(child: bottomRight),
+                ]));
 }
