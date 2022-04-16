@@ -3,50 +3,41 @@ import 'responsive1.dart';
 
 /// FoldPanel show two widget on top/bottom in small screen, left/right on big screen
 /// ```dart
-/// FoldPanel(
-///  topLeft: Container(
-///    child: const Text('top left'),
-///  ),
-///  bottomRight: Container(
-///    child: const Text('bottom right'),
-///  ),
+/// FoldPanel(children: [
+/// Container(
+///   color: Colors.red,
+///   child: const Text('top left'),
+/// ),
+/// Container(
+///   color: Colors.blue,
+///   child: const Text('bottom right'),
+/// ]);
 ///)
 /// ```
 class FoldPanel extends StatelessWidget {
   /// FoldPanel show two widget on top/bottom in small screen, left/right on big screen
   /// ```dart
-  /// FoldPanel(
-  ///  topLeft: Container(
-  ///    child: const Text('top left'),
-  ///  ),
-  ///  bottomRight: Container(
-  ///    child: const Text('bottom right'),
-  ///  ),
+  /// FoldPanel(children: [
+  /// Container(
+  ///   color: Colors.red,
+  ///   child: const Text('top left'),
+  /// ),
+  /// Container(
+  ///   color: Colors.blue,
+  ///   child: const Text('bottom right'),
+  /// ]);
   ///)
   /// ```
   const FoldPanel({
-    this.topLeft,
-    required this.bottomRight,
+    required this.children,
     Key? key,
   }) : super(key: key);
 
-  /// topLeft is widget show on top in small screen or left on big screen
-  final Widget? topLeft;
-
-  /// bottomRight is widget show on bottom in small screen or right on big screen
-  final Widget bottomRight;
+  /// children show column in small screen, row on big screen
+  final List<Widget> children;
 
   @override
-  Widget build(BuildContext context) => topLeft == null
-      ? bottomRight
-      : LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) => isPhoneScreen(constraints.maxWidth)
-              ? Column(children: [
-                  Expanded(child: topLeft!),
-                  Expanded(child: bottomRight),
-                ])
-              : Row(children: [
-                  Expanded(child: topLeft!),
-                  Expanded(child: bottomRight),
-                ]));
+  Widget build(BuildContext context) => LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) =>
+          isPhoneScreen(constraints.maxWidth) ? Column(children: children) : Row(children: children));
 }

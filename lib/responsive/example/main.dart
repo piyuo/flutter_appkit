@@ -43,16 +43,18 @@ class ResponsiveExample extends StatelessWidget {
   }
 
   Widget _foldPanel(BuildContext context) {
-    return FoldPanel(
-      topLeft: Container(
+    return FoldPanel(children: [
+      Expanded(
+          child: Container(
         color: Colors.red,
         child: const Text('top left'),
-      ),
-      bottomRight: Container(
+      )),
+      Expanded(
+          child: Container(
         color: Colors.blue,
         child: const Text('bottom right'),
-      ),
-    );
+      )),
+    ]);
   }
 
   Widget _paddingToCenter(BuildContext context) {
