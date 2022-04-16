@@ -38,6 +38,12 @@ class FoldPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) =>
-          isPhoneScreen(constraints.maxWidth) ? Column(children: children) : Row(children: children));
+      builder: (BuildContext context, BoxConstraints constraints) => isPhoneScreen(constraints.maxWidth)
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            )
+          : Row(
+              children: children,
+            ));
 }
