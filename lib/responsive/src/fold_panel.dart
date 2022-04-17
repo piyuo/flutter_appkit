@@ -31,19 +31,31 @@ class FoldPanel extends StatelessWidget {
   const FoldPanel({
     required this.children,
     Key? key,
+    this.columnPadding = EdgeInsets.zero,
+    this.rowPadding = EdgeInsets.zero,
   }) : super(key: key);
 
   /// children show column in small screen, row on big screen
   final List<Widget> children;
 
+  /// columnPadding is the padding of column
+  final EdgeInsets columnPadding;
+
+  /// rowPadding is the padding of row
+  final EdgeInsets rowPadding;
+
   @override
   Widget build(BuildContext context) => LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) => isPhoneScreen(constraints.maxWidth)
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            )
-          : Row(
-              children: children.map((child) => Expanded(child: child)).toList(),
-            ));
+          ? Padding(
+              padding: columnPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: children,
+              ))
+          : Padding(
+              padding: rowPadding,
+              child: Row(
+                children: children.map((child) => Expanded(child: child)).toList(),
+              )));
 }
