@@ -59,8 +59,8 @@ class AppExampleState extends State<AppExample> {
         child: Column(
       children: [
         Expanded(
-          //child: _routing(context, widget.data),
-          child: _setPageTitle(context),
+          child: _routing(context, widget.data),
+          //child: _setPageTitle(context),
         ),
         Container(
             color: Colors.black,

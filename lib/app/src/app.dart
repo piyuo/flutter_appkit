@@ -134,7 +134,7 @@ void start({
                   ThemeData(
                     brightness: Brightness.light,
                     colorScheme: ColorScheme.fromSwatch(
-                      primarySwatch: Colors.amber,
+                      primarySwatch: Colors.blue,
                     ),
                     appBarTheme: AppBarTheme(
                       backgroundColor: Colors.white,
@@ -146,7 +146,7 @@ void start({
                   ThemeData(
                     brightness: Brightness.dark,
                     colorScheme: ColorScheme.fromSwatch(
-                      primarySwatch: Colors.amber,
+                      primarySwatch: Colors.blue,
                       brightness: Brightness.dark,
                     ),
                     appBarTheme: AppBarTheme(
