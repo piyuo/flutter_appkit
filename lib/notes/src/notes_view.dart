@@ -18,7 +18,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     required this.detailBuilder,
     this.detailBeamName = '',
     this.detailNavigator,
-    required this.onBarAction,
     this.gridLabelBuilder,
     this.gridItemBackgroundColor,
     this.caption,
@@ -47,9 +46,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
 
   /// controller is the [NotesController]
   final NotesController<T> controller;
-
-  /// onBarAction is the callback for bar action
-  final Future<void> Function(MasterDetailViewAction) onBarAction;
 
   /// gridItemBackgroundColor is the background color of grid item
   final Color? gridItemBackgroundColor;

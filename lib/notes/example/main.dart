@@ -721,12 +721,6 @@ class NotesExample extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           child: Center(child: Text('detail view for $person')),
         ),
-        onBarAction: (action) async {
-          debugPrint('$action pressed');
-          if (action == MasterDetailViewAction.refresh) {
-            await Future.delayed(const Duration(seconds: 10));
-          }
-        },
       ),
     );
   }
