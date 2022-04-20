@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'selectable.dart';
 
 abstract class SelectableGrid<T> extends Selectable<T> {
   const SelectableGrid({
     required List<T> items,
     required List<T> selectedItems,
-    bool checkMode = false,
+    bool isCheckMode = false,
     void Function(List<T> items)? onItemSelected,
     void Function(List<T> items)? onItemChecked,
     required ItemBuilder<T> itemBuilder,
@@ -17,16 +16,18 @@ abstract class SelectableGrid<T> extends Selectable<T> {
     this.labelBuilder,
     this.borderColor,
     this.selectedBorderColor,
+    Color? itemBackgroundColor,
     Key? key,
   }) : super(
           items: items,
           selectedItems: selectedItems,
-          checkMode: checkMode,
+          checkMode: isCheckMode,
           itemBuilder: itemBuilder,
           onItemSelected: onItemSelected,
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
+          itemBackgroundColor: itemBackgroundColor,
           key: key,
         );
 
@@ -53,6 +54,7 @@ abstract class SelectableGrid<T> extends Selectable<T> {
               : _buildItem(context, itemIndex, item, isSelected),
         ),
         if (labelBuilder != null) labelBuilder!(item, isSelected),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -69,16 +71,12 @@ abstract class SelectableGrid<T> extends Selectable<T> {
     return count;
   }
 
-  /// buildListHeader build header in list view
+  /// buildHeader build header in list view
   Widget buildHeader(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-        alignment: Alignment.centerRight,
-        child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) => ConstrainedBox(
-                  constraints: responsive.phoneScreen ? const BoxConstraints() : const BoxConstraints(maxWidth: 300),
-                  child: headerBuilder!(),
-                )));
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+      child: headerBuilder!(),
+    );
   }
 
   /// buildListFooter build footer in list view
@@ -92,14 +90,14 @@ abstract class SelectableGrid<T> extends Selectable<T> {
       children: [
         _buildItem(context, itemIndex, item, isSelected),
         Positioned(
-          top: 30,
-          left: 30,
+          top: 5,
+          left: 10,
           child: Icon(
             isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
             color: isSelected
                 ? context.themeColor(
-                    light: Colors.amber.shade600,
-                    dark: Colors.orange.withOpacity(0.5),
+                    light: Colors.blue.shade600,
+                    dark: Colors.blueAccent.withOpacity(0.5),
                   )
                 : context.themeColor(
                     light: Colors.grey.shade300,
@@ -116,18 +114,18 @@ abstract class SelectableGrid<T> extends Selectable<T> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      margin: isSelected
-          ? const EdgeInsets.symmetric(vertical: 24, horizontal: 24)
-          : const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+      margin: isSelected ? const EdgeInsets.fromLTRB(4, 0, 4, 4) : const EdgeInsets.fromLTRB(5, 1, 5, 5),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
+        color: itemBackgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(
           width: isSelected ? 2 : 1,
           color: isSelected
               ? selectedBorderColor ??
                   context.themeColor(
-                    light: Colors.amber.shade700,
-                    dark: Colors.orange.shade200,
+                    light: Colors.blue.shade700,
+                    dark: Colors.blueAccent.shade200,
                   )
               : borderColor ??
                   context.themeColor(

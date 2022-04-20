@@ -10,7 +10,7 @@ class Tag<T> {
   ///      count: 0,
   ///    ),
   /// ```
-  const Tag({
+  Tag({
     required this.label,
     required this.value,
     this.category = '',
@@ -35,7 +35,7 @@ class Tag<T> {
   final IconData? icon;
 
   /// selected is the tag has been selected
-  final bool selected;
+  bool selected = false;
 }
 
 /// findCategories returns a list of categories for the given list of tags

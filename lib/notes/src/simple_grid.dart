@@ -20,7 +20,7 @@ class SimpleGrid<T> extends SelectableGrid<T> {
   }) : super(
           items: items,
           selectedItems: selectedItems,
-          checkMode: checkMode,
+          isCheckMode: checkMode,
           crossAxisCount: crossAxisCount,
           labelBuilder: labelBuilder,
           borderColor: borderColor,

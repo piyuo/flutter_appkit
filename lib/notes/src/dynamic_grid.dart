@@ -50,7 +50,7 @@ class DynamicGrid<T> extends SelectableGrid<T> {
   const DynamicGrid({
     required List<T> items,
     required List<T> selectedItems,
-    bool checkMode = false,
+    bool isCheckMode = false,
     void Function(List<T> items)? onItemSelected,
     void Function(List<T> items)? onItemChecked,
     Color? selectedColor,
@@ -64,11 +64,12 @@ class DynamicGrid<T> extends SelectableGrid<T> {
     this.onRefresh,
     this.onLoadMore,
     this.controller,
+    Color? itemBackgroundColor,
     Key? key,
   }) : super(
           items: items,
           selectedItems: selectedItems,
-          checkMode: checkMode,
+          isCheckMode: isCheckMode,
           itemBuilder: itemBuilder,
           onItemSelected: onItemSelected,
           onItemChecked: onItemChecked,
@@ -77,6 +78,7 @@ class DynamicGrid<T> extends SelectableGrid<T> {
           crossAxisCount: crossAxisCount,
           labelBuilder: labelBuilder,
           selectedBorderColor: selectedBorderColor,
+          itemBackgroundColor: itemBackgroundColor,
           borderColor: borderColor,
           key: key,
         );
@@ -123,6 +125,8 @@ class DynamicGrid<T> extends SelectableGrid<T> {
 
               return animations.AnimatedView(
                 crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 5,
                 controller: context.isTouchSupported ? scrollController : ScrollController(),
                 shrinkWrap: true,
                 itemBuilder: (bool isListView, int index) {

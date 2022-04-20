@@ -48,8 +48,8 @@ class CheckableHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) => Container(
-            color: Colors.yellow.shade800,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            color: Colors.blue.shade600,
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
             child: Row(
               children: [
                 IconButton(
@@ -62,8 +62,8 @@ class CheckableHeader extends StatelessWidget {
                 Text(context.i18n.notesItemSelectedLabel.replace1(selectedItemCount.toString()),
                     style: const TextStyle(fontSize: 16, color: Colors.white), maxLines: 1),
                 TextButton(
-                  child:
-                      Text(context.i18n.closeButtonText, style: TextStyle(fontSize: 16, color: Colors.blue.shade700)),
+                  child: Text(context.i18n.closeButtonText,
+                      style: TextStyle(fontSize: 16, color: Colors.blueGrey.shade300)),
                   onPressed: onCancel,
                 ),
                 const Spacer(),

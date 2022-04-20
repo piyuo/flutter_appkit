@@ -5,6 +5,7 @@ import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/animations/animations.dart' as animations;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/unique/unique.dart' as unique;
@@ -17,13 +18,85 @@ int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
 int sampleID = 0;
 var animationListItems = ['a', 'b', 'c', 'd', 'e'];
+int stepCount = 0;
 
 main() {
   app.start(
     appName: 'notes',
-    providers: [],
+    providers: [
+      ChangeNotifierProvider<NotesController<sample.Person>>(
+        create: (context) => NotesController<sample.Person>(
+          db.MemoryRam(dataBuilder: () => sample.Person()),
+          context: context,
+          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+            stepCount++;
+            return List.generate(
+              stepCount == 1 ? 10 : 2,
+              (i) {
+                final uuid = unique.uuid();
+                return sample.Person(
+                  name: uuid,
+                  entity: pb.Entity(id: uuid),
+                );
+              },
+            );
+          },
+          onAdd: () async {
+            debugPrint('onAdd');
+          },
+          onDelete: () async {
+            debugPrint('onDelete');
+          },
+          dataBuilder: () => sample.Person(),
+          tags: [
+            Tag(
+              label: 'Inbox',
+              value: 'inbox',
+              icon: Icons.inbox,
+              count: 0,
+            ),
+            Tag(
+              label: 'VIPs',
+              value: 'vips',
+              icon: Icons.verified_user,
+              count: 1,
+              selected: true,
+            ),
+            Tag(
+              label: 'Sent',
+              value: 'sent',
+              icon: Icons.send,
+              count: 20,
+            ),
+            Tag(
+              label: 'All',
+              value: 'all',
+              icon: Icons.all_inbox,
+              count: 120,
+              category: 'iCloud',
+            ),
+          ],
+        ),
+      )
+    ],
     routes: {
       '/': (context, state, data) => const NotesExample(),
+      '/:id': (context, state, data) {
+        final id = state.pathParameters['id']!;
+        return NotesBeamPage<sample.Person>(
+          id: id,
+          title: 'Detail',
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Detail')),
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                child: Center(child: Text('beam: detail view for $id')),
+              ),
+            ),
+          ),
+        );
+      },
     },
   );
 }
@@ -47,21 +120,17 @@ class NotesExample extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: const Text('Notes'),
+        title: const Text('Example Application'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey.shade800,
         actions: [
-/*          Consumer<NotesController>(
-              builder: (context, viewController, child) => IconButton(
-                    icon: const Icon(Icons.pending_outlined),
-                    onPressed: () async {
-//                      final value = await showMasterDetailMenu(
-                      //                      context,
-                      //                    viewController: viewController,
-                      //                );
-                      //              debugPrint('$value just pressed');
-                    },
-                  )),*/
+          Consumer<NotesController<sample.Person>>(
+            builder: (context, control, child) => NotesButton(
+              controller: control,
+              deleteLabel: context.i18n.notesDeleteButtonLabel,
+              deleteIcon: Icons.delete,
+            ),
+          ),
         ],
       ),
       body: SafeArea(
@@ -307,7 +376,7 @@ class NotesExample extends StatelessWidget {
                       onPressed: () => showTagView<SampleFilter>(
                         context,
                         onTagSelected: (value) => debugPrint('$value selected'),
-                        tags: const [
+                        tags: [
                           Tag<SampleFilter>(
                             label: 'Inbox',
                             value: SampleFilter.inbox,
@@ -350,7 +419,7 @@ class NotesExample extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                     child: Text('grid:' + item),
                   ),
-                  labelBuilder: (String item, bool isSelected) => const Padding(
+                  gridLabelBuilder: (String item, bool isSelected) => const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
                   ),
@@ -422,7 +491,7 @@ class NotesExample extends StatelessWidget {
       onPressed: () => showTagView<SampleFilter>(
         context,
         onTagSelected: (value) => debugPrint('$value selected'),
-        tags: const [
+        tags: [
           Tag<SampleFilter>(
             label: 'Inbox',
             value: SampleFilter.inbox,
@@ -457,7 +526,7 @@ class NotesExample extends StatelessWidget {
   Widget _folderView(BuildContext context) {
     return TagView<SampleFilter>(
       onTagSelected: (value) => debugPrint('$value selected'),
-      tags: const [
+      tags: [
         Tag<SampleFilter>(
           label: 'Inbox',
           value: SampleFilter.inbox,
@@ -505,7 +574,7 @@ class NotesExample extends StatelessWidget {
           builder: (context, selectedController, child) => TagSplitView(
               tagView: TagView<SampleFilter>(
                 onTagSelected: (value) => debugPrint('$value selected'),
-                tags: const [
+                tags: [
                   Tag<SampleFilter>(
                     label: 'Inbox',
                     value: SampleFilter.inbox,
@@ -546,7 +615,7 @@ class NotesExample extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                   child: Text('grid:' + item),
                 ),
-                labelBuilder: (String item, bool isSelected) => const Padding(
+                gridLabelBuilder: (String item, bool isSelected) => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                   child: Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
                 ),
@@ -621,87 +690,44 @@ class NotesExample extends StatelessWidget {
           selectedItems: const [],
           listBuilder: (String item, bool isSelected) => const SizedBox(),
           gridBuilder: (String item, bool isSelected) => const SizedBox(),
-          labelBuilder: (String item, bool isSelected) => const Text('label'),
+          gridLabelBuilder: (String item, bool isSelected) => const Text('label'),
           detailBuilder: (String item) => const Text('detail view'),
           onBarAction: (action) async => debugPrint('$action pressed'),
         ));
   }
 
   Widget _notesView(BuildContext context) {
-    int stepCount = 0;
-    return ChangeNotifierProvider<NotesController<sample.Person>>(
-        create: (context) => NotesController<sample.Person>(
-              db.MemoryRam(dataBuilder: () => sample.Person()),
-              context: context,
-              loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-                stepCount++;
-                return List.generate(
-                  stepCount == 1 ? 10 : 2,
-                  (i) {
-                    final uuid = unique.uuid();
-                    return sample.Person(
-                      name: uuid,
-                      entity: pb.Entity(id: uuid),
-                    );
-                  },
-                );
-              },
-              dataBuilder: () => sample.Person(),
-              tags: const [
-                Tag(
-                  label: 'Inbox',
-                  value: 'inbox',
-                  icon: Icons.inbox,
-                  count: 0,
-                ),
-                Tag(
-                  label: 'VIPs',
-                  value: 'vips',
-                  icon: Icons.verified_user,
-                  count: 1,
-                  selected: true,
-                ),
-                Tag(
-                  label: 'Sent',
-                  value: 'sent',
-                  icon: Icons.send,
-                  count: 20,
-                ),
-                Tag(
-                  label: 'All',
-                  value: 'all',
-                  icon: Icons.all_inbox,
-                  count: 120,
-                  category: 'iCloud',
-                ),
-              ],
-            ),
-        child: Consumer<NotesController<sample.Person>>(
-          builder: (context, notesController, child) => NotesView<sample.Person>(
-            controller: notesController,
-            listBuilder: (sample.Person person, bool isSelected) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-              child: Text('list:${person.name}'),
-            ),
-            gridBuilder: (sample.Person person, bool isSelected) => Container(
-              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-              child: Text('grid:$person'),
-            ),
-            labelBuilder: (sample.Person person, bool isSelected) => const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-              child: Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
-            ),
-            detailBuilder: (sample.Person person) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-              child: Center(child: Text('detail view for $person')),
-            ),
-            onBarAction: (action) async {
-              debugPrint('$action pressed');
-              if (action == MasterDetailViewAction.refresh) {
-                await Future.delayed(const Duration(seconds: 10));
-              }
-            },
-          ),
-        ));
+    return Consumer<NotesController<sample.Person>>(
+      builder: (context, notesController, child) => NotesView<sample.Person>(
+        controller: notesController,
+        caption: "Notes",
+        deleteLabel: context.i18n.notesDeleteButtonLabel,
+        deleteIcon: Icons.delete,
+        listBuilder: (sample.Person person, bool isSelected) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Text('list:${person.name}'),
+        ),
+        gridItemBackgroundColor: Colors.white,
+        gridBuilder: (sample.Person person, bool isSelected) => Container(
+          padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+          child: Text('grid:$person'),
+        ),
+        gridLabelBuilder: (sample.Person person, bool isSelected) => Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          child: const Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
+        ),
+        detailBuilder: (sample.Person person) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          child: Center(child: Text('detail view for $person')),
+        ),
+        onBarAction: (action) async {
+          debugPrint('$action pressed');
+          if (action == MasterDetailViewAction.refresh) {
+            await Future.delayed(const Duration(seconds: 10));
+          }
+        },
+      ),
+    );
   }
 }

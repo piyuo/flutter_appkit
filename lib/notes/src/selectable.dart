@@ -13,6 +13,7 @@ abstract class Selectable<T> extends StatelessWidget {
     this.onItemChecked,
     this.headerBuilder,
     this.footerBuilder,
+    this.itemBackgroundColor,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +28,9 @@ abstract class Selectable<T> extends StatelessWidget {
 
   /// itemBuilder is a item builder for list view
   final ItemBuilder<T> itemBuilder;
+
+  /// itemBackgroundColor is the background color of item
+  final Color? itemBackgroundColor;
 
   /// onItemSelected is callback when item selected
   final void Function(List<T> items)? onItemSelected;

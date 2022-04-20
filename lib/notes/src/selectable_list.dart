@@ -13,6 +13,7 @@ abstract class SelectableList<T> extends Selectable<T> {
     required ItemBuilder<T> itemBuilder,
     Widget Function()? headerBuilder,
     Widget Function()? footerBuilder,
+    Color? itemBackgroundColor,
     Key? key,
   }) : super(
           items: items,
@@ -23,6 +24,7 @@ abstract class SelectableList<T> extends Selectable<T> {
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
+          itemBackgroundColor: itemBackgroundColor,
           key: key,
         );
 
@@ -44,8 +46,8 @@ abstract class SelectableList<T> extends Selectable<T> {
           isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
           color: isSelected
               ? context.themeColor(
-                  light: Colors.amber.shade600,
-                  dark: Colors.orange.withOpacity(0.8),
+                  light: Colors.blue.shade600,
+                  dark: Colors.blueAccent.withOpacity(0.8),
                 )
               : context.themeColor(
                   light: Colors.grey.shade300,
@@ -60,36 +62,37 @@ abstract class SelectableList<T> extends Selectable<T> {
 
   /// buildListItem build list view item
   Widget _buildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
-    return isSelected
-        ? Container(
-            width: double.infinity,
-            margin: const EdgeInsets.only(top: 2),
-            padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(9)),
-              color: selectedColor ??
-                  context.themeColor(
-                    light: Colors.amber.shade200,
-                    dark: Colors.orange.shade300.withOpacity(0.8),
-                  ),
-            ),
-            child: itemBuilder(item, isSelected),
-          )
-        : Padding(
-            padding: const EdgeInsets.fromLTRB(9, 0, 9, 1),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                itemBuilder(item, isSelected),
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: context.themeColor(
-                    light: Colors.grey.shade200,
-                    dark: Colors.grey.shade800,
-                  ),
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
+        child: isSelected
+            ? Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(1, 0, 1, 1),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(9)),
+                  color: selectedColor ??
+                      context.themeColor(
+                        light: Colors.blue.shade200,
+                        dark: Colors.blueAccent.shade400.withOpacity(0.8),
+                      ),
                 ),
-              ],
-            ));
+                child: itemBuilder(item, isSelected),
+              )
+            : Padding(
+                padding: const EdgeInsets.fromLTRB(1, 0, 1, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    itemBuilder(item, isSelected),
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: context.themeColor(
+                        light: Colors.grey.shade200,
+                        dark: Colors.grey.shade800,
+                      ),
+                    ),
+                  ],
+                )));
   }
 }

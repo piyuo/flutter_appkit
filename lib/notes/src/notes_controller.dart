@@ -13,6 +13,9 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     required db.DatasetLoader<T> loader,
     required pb.Builder<T> dataBuilder,
     this.tags = const [],
+    this.onAdd,
+    this.onDelete,
+    this.onTagChanged,
   }) {
     dataset = context.isPreferMouse
         ? db.PagedDataset<T>(
@@ -51,11 +54,20 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// tags is a list of tags to display.
   List<Tag<String>> tags;
 
-  /// listView is true if is in list view mode
-  bool listView = true;
+  /// isListView is true if is in list view mode
+  bool isListView = true;
 
-  /// checkMode is true if is in check mode
-  bool checkMode = false;
+  /// isCheckMode is true if is in check mode
+  bool isCheckMode = false;
+
+  /// onNew called when pressed new button
+  final Future<void> Function()? onAdd;
+
+  /// onDelete called when pressed delete button
+  final Future<void> Function()? onDelete;
+
+  /// onTagChanged called when tag changed
+  final Future<void> Function(String value)? onTagChanged;
 
   @override
   void dispose() {
@@ -63,6 +75,15 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     animatedViewController.dispose();
     super.dispose();
   }
+
+  /// noMore return true if dataset is no more data
+  bool get noMore => dataset.noMore;
+
+  /// noRefresh return true if dataset is no need refresh
+  bool get noRefresh => dataset.noRefresh;
+
+  /// noRefresh set to true if no need refresh dataset
+  set noRefresh(value) => dataset.noRefresh = value;
 
   /// setDefaultSelected will select first row if no row selected
   void setDefaultSelected() {
@@ -76,6 +97,18 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     dataset.selectRows(selectedItems);
     notifyListeners();
   }
+
+  /// hasNextPage return true if has next page
+  bool get hasNextPage => dataset is db.PagedDataset ? (dataset as db.PagedDataset).hasNextPage : false;
+
+  /// hasPrevPage return true if has prev page
+  bool get hasPrevPage => dataset is db.PagedDataset ? (dataset as db.PagedDataset).hasPrevPage : false;
+
+  /// refill let dataset refill data, the data may changed or deleted
+  Future<void> refill(BuildContext context) async => await barAction(context, MasterDetailViewAction.refill);
+
+  /// refresh dataset
+  Future<void> refresh(BuildContext context) async => await barAction(context, MasterDetailViewAction.refresh);
 
   /// barAction handle bar action
   Future<void> barAction(BuildContext context, MasterDetailViewAction action) async {
@@ -105,6 +138,10 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         await dataset.more(context, dataset.rowsPerPage);
         animatedViewController.itemCount = dataset.displayRows.length;
         break;
+      case MasterDetailViewAction.refill:
+        await dataset.fill();
+        animatedViewController.itemCount = dataset.displayRows.length;
+        break;
       case MasterDetailViewAction.previousPage:
         if (dataset is db.PagedDataset) {
           await (dataset as db.PagedDataset).prevPage(context);
@@ -132,14 +169,14 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         animatedViewController.itemCount = dataset.displayRows.length;
         break;
       case MasterDetailViewAction.listView:
-        listView = true;
+        isListView = true;
         break;
       case MasterDetailViewAction.gridView:
-        listView = false;
+        isListView = false;
         break;
       case MasterDetailViewAction.toggleCheckMode:
-        checkMode = !checkMode;
-        if (checkMode) {
+        isCheckMode = !isCheckMode;
+        if (isCheckMode) {
           dataset.selectRows([]);
         } else {
           if (dataset.displayRows.isNotEmpty) {
@@ -148,18 +185,38 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         }
         break;
       case MasterDetailViewAction.add:
+        await onAdd?.call();
         break;
       case MasterDetailViewAction.delete:
-        break;
-      case MasterDetailViewAction.archive:
+        await onDelete?.call();
         break;
     }
     notifyListeners();
     debugPrint('$action');
   }
 
-  /// tagSelected called when a tag is selected
-  tagSelected(String value) {
-    debugPrint('$value selected');
+  /// setSelectedTag called when a tag is selected
+  Future<void> setSelectedTag(String value) async {
+    for (final tag in tags) {
+      tag.selected = tag.value == value;
+    }
+    await onTagChanged?.call(value);
+    notifyListeners();
   }
+
+  /// getSelectedTag return selected tag
+  String? getSelectedTag() {
+    for (final tag in tags) {
+      if (tag.selected) {
+        return tag.value;
+      }
+    }
+    return null;
+  }
+
+  /// getRowByID return object by id
+  /// ```dart
+  /// final obj = await getRowByID('1');
+  /// ```
+  Future<T?> getRowByID(String id) async => await dataset.getRowByID(id);
 }

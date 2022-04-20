@@ -13,10 +13,10 @@ import 'checkable_header.dart';
 enum MasterDetailViewAction {
   refresh,
   more,
+  refill, // refill dataset
   listView,
   gridView,
   delete,
-  archive,
   add,
   toggleCheckMode,
   previousPage,
@@ -35,7 +35,7 @@ class MasterDetailView<T> extends StatelessWidget {
     required this.items,
     required this.selectedItems,
     required this.onBarAction,
-    this.labelBuilder,
+    this.gridLabelBuilder,
     this.headerBuilder,
     this.footerBuilder,
     this.isLoading = false,
@@ -46,8 +46,13 @@ class MasterDetailView<T> extends StatelessWidget {
     this.information,
     this.hasNextPage = true,
     this.hasPrevPage = true,
-    this.checkMode = false,
+    this.isCheckMode = false,
     this.isListView = true,
+    this.supportRefresh = true,
+    this.supportLoadMore = true,
+    this.gridItemBackgroundColor,
+    this.deleteLabel,
+    this.deleteIcon,
     Key? key,
   }) : super(key: key);
 
@@ -66,8 +71,11 @@ class MasterDetailView<T> extends StatelessWidget {
   /// gridItemWidth is the width of grid item
   final int gridItemWidth;
 
+  /// gridItemBackgroundColor is the background color of grid item
+  final Color? gridItemBackgroundColor;
+
   /// labelBuilder is the builder for label in grid view
-  final ItemBuilder<T>? labelBuilder;
+  final ItemBuilder<T>? gridLabelBuilder;
 
   /// detailBuilder is the builder for detail view
   final Widget Function(T) detailBuilder;
@@ -103,35 +111,50 @@ class MasterDetailView<T> extends StatelessWidget {
   final bool hasPrevPage;
 
   /// checkMode is a boolean value that indicates whether the list is in check mode
-  final bool checkMode;
+  final bool isCheckMode;
 
   /// isListView is true will use list view
   final bool isListView;
 
+  /// isGridView return true if it's grid view
+  bool get isGridView => !isListView;
+
+  /// supportRefresh is true will support refresh in pull refresh list
+  final bool supportRefresh;
+
+  /// supportLoadMore is true will support load more in pull refresh list
+  final bool supportLoadMore;
+
   /// isSplitView is true if in split view
   bool get isSplitView => isListView && !responsive.phoneScreen;
+
+  /// deleteLabel is the label for delete button
+  final String? deleteLabel;
+
+  /// deleteIcon is the icon for delete button
+  final IconData? deleteIcon;
 
   /// buildList build list and split view
   Widget buildList(BuildContext context) {
     return Column(
       children: [
-        if (checkMode && !isSplitView) _buildSelectionHeader(context),
+        if (isCheckMode && !isSplitView) _buildSelectionHeader(context),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: DynamicList<T>(
-              checkMode: checkMode,
+              checkMode: isCheckMode,
               items: items,
               selectedItems: selectedItems,
               itemBuilder: listBuilder,
-              onRefresh: context.isTouchSupported ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
-              onLoadMore: context.isTouchSupported ? () => onBarAction.call(MasterDetailViewAction.more) : null,
-              headerBuilder: checkMode
+              onRefresh: supportRefresh ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
+              onLoadMore: supportLoadMore ? () => onBarAction.call(MasterDetailViewAction.more) : null,
+              headerBuilder: isCheckMode
                   ? null
                   : () => Padding(
-                      padding: EdgeInsets.only(top: !context.isPreferMouse || responsive.phoneScreen ? 10 : 0),
+                      padding: EdgeInsets.fromLTRB(4, !context.isPreferMouse || responsive.phoneScreen ? 10 : 0, 4, 0),
                       child: headerBuilder != null ? headerBuilder!() : null),
-              footerBuilder: checkMode ? null : footerBuilder,
+              footerBuilder: isCheckMode ? null : footerBuilder,
               onItemSelected: (selectedItems) {
                 if (!isSplitView) {
                   onShowDetail?.call(selectedItems[0]);
@@ -142,7 +165,8 @@ class MasterDetailView<T> extends StatelessWidget {
             ),
           ),
         ),
-        if (responsive.phoneScreen || !context.isPreferMouse) _buildBottomTouchBar(context),
+        if (responsive.phoneScreen && !context.isPreferMouse && !isCheckMode) _buildBottomTouchBar(context),
+        if (responsive.phoneScreen && context.isPreferMouse && !isCheckMode) _buildBottomMouseBar(context),
       ],
     );
   }
@@ -153,35 +177,48 @@ class MasterDetailView<T> extends StatelessWidget {
       if (isLoading) {
         return const delta.LoadingDisplay();
       }
-      if (!isListView) {
-        // grid view
+      if (isGridView) {
         return Column(
           children: [
-            if (checkMode) _buildSelectionHeader(context),
-            if (responsive.notPhoneScreen && !checkMode)
+            if (isCheckMode) _buildSelectionHeader(context),
+            if (context.isPreferMouse && !isCheckMode && responsive.notPhoneScreen)
               Row(
                 children: [
-                  SizedBox(width: 230, child: _buildLeftBar(context)),
+                  SizedBox(width: 272, child: _buildLeftBar(context)),
                   const SizedBox(height: 30, child: VerticalDivider(color: Colors.grey)),
                   Expanded(child: _buildRightBar(context)),
                 ],
               ),
             Expanded(
-                child: DynamicGrid<T>(
-              checkMode: checkMode,
-              headerBuilder: headerBuilder,
-              footerBuilder: footerBuilder,
-              items: items,
-              selectedItems: selectedItems,
-              itemBuilder: gridBuilder,
-              labelBuilder: labelBuilder,
-              onRefresh: context.isTouchSupported ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
-              onLoadMore: context.isTouchSupported ? () => onBarAction.call(MasterDetailViewAction.more) : null,
-              onItemSelected: onItemSelected,
-              onItemChecked: onItemChecked,
-              crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
-            )),
-            if (!context.isPreferMouse) _buildBottomTouchBar(context),
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: DynamicGrid<T>(
+                      itemBackgroundColor: gridItemBackgroundColor,
+                      crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
+                      isCheckMode: isCheckMode,
+                      items: items,
+                      selectedItems: selectedItems,
+                      itemBuilder: gridBuilder,
+                      labelBuilder: gridLabelBuilder,
+                      onRefresh: supportRefresh ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
+                      onLoadMore: supportLoadMore ? () => onBarAction.call(MasterDetailViewAction.more) : null,
+                      headerBuilder: () => Padding(
+                          padding: EdgeInsets.only(
+                              top: context.isPreferMouse && !isCheckMode && responsive.notPhoneScreen ? 0 : 10),
+                          child: isCheckMode
+                              ? null
+                              : headerBuilder != null
+                                  ? headerBuilder!()
+                                  : null),
+                      footerBuilder: isCheckMode ? null : footerBuilder,
+                      onItemSelected: (selectedItems) {
+                        onShowDetail?.call(selectedItems[0]);
+                        onItemSelected?.call(selectedItems);
+                      },
+                      onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
+                    ))),
+            if (responsive.phoneScreen && !context.isPreferMouse && !isCheckMode) _buildBottomTouchBar(context),
+            if (responsive.phoneScreen && context.isPreferMouse && !isCheckMode) _buildBottomMouseBar(context),
           ],
         );
       }
@@ -197,7 +234,7 @@ class MasterDetailView<T> extends StatelessWidget {
           : selectedItems[0];
 
       return Column(children: [
-        if (checkMode) _buildSelectionHeader(context),
+        if (isCheckMode) _buildSelectionHeader(context),
         Expanded(
             child: SplitView(
           gripSize: 5,
@@ -228,7 +265,7 @@ class MasterDetailView<T> extends StatelessWidget {
           children: [
             Column(
               children: [
-                if (!checkMode && context.isPreferMouse) _buildLeftBar(context),
+                if (!isCheckMode && context.isPreferMouse) _buildLeftBar(context),
                 Expanded(
                   child: buildList(context),
                 ),
@@ -236,7 +273,7 @@ class MasterDetailView<T> extends StatelessWidget {
             ),
             Column(
               children: [
-                if (!checkMode && context.isPreferMouse) _buildRightBar(context),
+                if (!isCheckMode && context.isPreferMouse) _buildRightBar(context),
                 if (activeItem != null)
                   Expanded(
                     child: detailBuilder(activeItem),
@@ -259,14 +296,18 @@ class MasterDetailView<T> extends StatelessWidget {
       onUnselectAll: () => onItemChecked?.call([]),
       onCancel: () => onBarAction.call(MasterDetailViewAction.toggleCheckMode),
       actions: [
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            primary: Colors.grey.shade900,
+        if (deleteLabel != null)
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              primary: Colors.grey.shade900,
+            ),
+            label: Text(deleteLabel!),
+            icon: Icon(deleteIcon ?? Icons.delete),
+            onPressed: () async {
+              await onBarAction.call(MasterDetailViewAction.toggleCheckMode);
+              await onBarAction.call(MasterDetailViewAction.delete);
+            },
           ),
-          label: Text(context.i18n.notesDeleteButtonLabel),
-          icon: const Icon(Icons.delete),
-          onPressed: () => onBarAction.call(MasterDetailViewAction.delete),
-        ),
       ],
     );
   }
@@ -302,11 +343,12 @@ class MasterDetailView<T> extends StatelessWidget {
                 value: MasterDetailViewAction.toggleCheckMode,
               ),
               responsive.ToolSpacer(),
-              responsive.ToolButton(
-                label: context.i18n.notesDeleteButtonLabel,
-                icon: Icons.delete_forever,
-                value: MasterDetailViewAction.delete,
-              ),
+              if (deleteLabel != null)
+                responsive.ToolButton(
+                  label: deleteLabel!,
+                  icon: deleteIcon ?? Icons.delete,
+                  value: MasterDetailViewAction.delete,
+                ),
             ],
           ),
         ),
@@ -365,13 +407,15 @@ class MasterDetailView<T> extends StatelessWidget {
       color: Colors.orange.shade700,
     );
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 1),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-      color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade800),
+      margin: const EdgeInsets.symmetric(horizontal: 18),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
+      ),
       child: Row(children: [
         TextButton(
           child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
-          style: checkMode
+          style: isCheckMode
               ? ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                     context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
@@ -397,18 +441,19 @@ class MasterDetailView<T> extends StatelessWidget {
     );
   }
 
-/*  Widget _buildRightBar(BuildContext context) {
-    return responsive.Toolbar<MasterDetailViewAction>(
-      onPressed: onBarAction,
-      items: [
-        responsive.ToolButton(
-          label: context.i18n.notesNewButtonLabel,
-          icon: Icons.add,
-          value: MasterDetailViewAction.add,
+  Widget _buildBottomMouseBar(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 18),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
         ),
-        if (items.isNotEmpty) responsive.ToolSpacer(),
-        if (items.isNotEmpty) ..._buildPaginator(context),
-      ],
-    );
-  }*/
+        child: responsive.Toolbar<MasterDetailViewAction>(
+          mainAxisAlignment: MainAxisAlignment.center,
+          onPressed: onBarAction,
+          items: [
+            if (items.isNotEmpty) ..._buildPaginator(context),
+          ],
+        ));
+  }
 }

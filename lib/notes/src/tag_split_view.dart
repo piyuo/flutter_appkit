@@ -7,19 +7,22 @@ import 'tag_view.dart';
 class TagSplitView extends StatelessWidget {
   /// TagSplitView show a tag and content widget in split view on big screen
   const TagSplitView({
-    required this.tagView,
     required this.child,
+    this.tagView,
     Key? key,
   }) : super(key: key);
 
-  /// tagView is tag view
-  final TagView tagView;
+  /// tagView is tag view, if tag view is null it will show child directly
+  final TagView? tagView;
 
   /// child is content widget in split view
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    if (tagView == null) {
+      return child;
+    }
     return responsive.Responsive(
         phoneScreen: () => child,
         bigScreen: () => SplitView(
@@ -33,7 +36,7 @@ class TagSplitView extends StatelessWidget {
                 dark: Colors.grey.shade800,
               ),
               controller: SplitViewController(
-                weights: [0.2],
+                weights: [0.15],
                 limits: [WeightLimit(min: 0.15, max: 0.25)],
               ),
               viewMode: SplitViewMode.Horizontal,
@@ -49,10 +52,9 @@ class TagSplitView extends StatelessWidget {
                 color: Colors.grey,
               ),
               children: [
-                tagView,
+                tagView!,
                 child,
               ],
-              //onWeightChanged: (w) => onSplitViewResized?.call(constraints.maxWidth * w[0]!),
             ));
   }
 }

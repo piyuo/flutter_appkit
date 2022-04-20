@@ -23,7 +23,7 @@ class TagView<T> extends StatelessWidget {
   /// ```
   const TagView({
     required this.tags,
-    this.iconColor = Colors.amber,
+    this.iconColor = Colors.blueAccent,
     this.onTagSelected,
     Key? key,
   }) : super(key: key);
