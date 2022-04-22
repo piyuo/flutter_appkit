@@ -3,7 +3,7 @@ library db;
 export 'src/db.dart';
 export 'src/database.dart';
 export 'src/cache.dart';
-export 'src/data.dart';
+export 'src/detail.dart';
 export 'src/dataset.dart';
 export 'src/paged_dataset.dart';
 export 'src/continuous_dataset.dart';

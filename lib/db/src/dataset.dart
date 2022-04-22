@@ -239,7 +239,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  /// getRowByID return row by id
+  /// getRowByID return object by id
   /// ```dart
   /// final obj = await getRowByID('1');
   /// ```
