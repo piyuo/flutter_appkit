@@ -17,7 +17,7 @@ typedef DetailGetter<T> = Future<T?> Function(BuildContext context, String id);
 ///   return person;
 /// }
 /// ```
-typedef DetailSetter<T> = Future<T> Function(BuildContext context, T obj);
+typedef DetailSetter<T> = Future<T?> Function(BuildContext context, T obj);
 
 /// Detail provide a way to access data though memory
 /// ```dart
@@ -63,7 +63,7 @@ class Detail<T extends pb.Object> with ChangeNotifier {
   /// getter get data from remote service
   final DetailGetter<T> getter;
 
-  /// setter set data to remote service
+  /// setter set data to remote service,return null if fail to set data
   final DetailSetter<T> setter;
 
   /// id is the id of data
@@ -83,6 +83,8 @@ class Detail<T extends pb.Object> with ChangeNotifier {
   /// await detail.load(testing.Context());
   /// ```
   Future<void> load(BuildContext context) async {
+    await _memory.open();
+
     if (current != null || id == null) {
       return;
     }
@@ -110,11 +112,15 @@ class Detail<T extends pb.Object> with ChangeNotifier {
   /// detail.current = sample.Person()..name = 'john';
   /// await detail.save(context);
   /// ```
-  Future<void> save(BuildContext context) async {
+  Future<bool> save(BuildContext context) async {
     if (current == null) {
-      return;
+      return false;
     }
     current = await setter(context, current!);
-    await _memory.setRow(current!);
+    if (current != null) {
+      await _memory.setRow(current!);
+      return true;
+    }
+    return false;
   }
 }

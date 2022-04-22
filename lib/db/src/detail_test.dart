@@ -62,7 +62,6 @@ void main() {
       await memory.open();
       final detail = Detail<sample.Person>(
         memory,
-        context: testing.Context(),
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
         setter: (context, sample.Person person) async {
@@ -76,11 +75,33 @@ void main() {
       expect(detail.isLoading, false);
 
       detail.current = sample.Person()..name = 'john';
-      await detail.save(testing.Context());
-
+      final success = await detail.save(testing.Context());
+      expect(success, isTrue);
       final person = await memory.first;
       expect(person!.name, 'john');
       expect(person.entityID, 'newId');
+    });
+
+    test('should not save data if setter went wrong', () async {
+      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      await memory.open();
+      final detail = Detail<sample.Person>(
+        memory,
+        dataBuilder: () => sample.Person(),
+        getter: (context, id) async => null,
+        setter: (context, sample.Person person) async {
+          return null;
+        },
+      );
+      await detail.load(testing.Context());
+      expect(detail.current, isNull);
+      expect(memory.isEmpty, true);
+      expect(detail.isLoading, false);
+
+      detail.current = sample.Person()..name = 'john';
+      final success = await detail.save(testing.Context());
+      expect(success, isFalse);
+      expect(memory.isEmpty, isTrue);
     });
   });
 }
