@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
-import 'package:provider/provider.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'notes_controller.dart';
 
 class NotesBeamPage<T extends pb.Object> extends BeamPage {
   NotesBeamPage({
@@ -19,9 +17,11 @@ class NotesBeamPage<T extends pb.Object> extends BeamPage {
             RouteInformationSerializable state,
             BeamPage poppedPage,
           ) {
-            final controller = Provider.of<NotesController<T>>(context, listen: false);
-            controller.refresh(context);
+            // no need to refresh
+            //            final controller = Provider.of<NotesController<T>>(context, listen: false);
+            //          controller.refresh(context);
             return BeamPage.pathSegmentPop(context, delegate, state, poppedPage);
           },
         );
 }
+ 

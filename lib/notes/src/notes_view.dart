@@ -17,7 +17,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     required this.gridBuilder,
     required this.detailBuilder,
     this.detailBeamName = '',
-    this.detailNavigator,
+    this.onDetailSelected,
     this.gridLabelBuilder,
     this.gridItemBackgroundColor,
     this.caption,
@@ -41,8 +41,8 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   /// detailBeamName is the beam location name of detail, like '/user'
   final String detailBeamName;
 
-  /// detailNavigator navigates to detail view
-  final void Function(T)? detailNavigator;
+  /// onDetailRowSelected called when row is selected and ready to show on detail
+  final void Function(T)? onDetailSelected;
 
   /// controller is the [NotesController]
   final NotesController<T> controller;
@@ -88,9 +88,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       gridItemBackgroundColor: gridItemBackgroundColor,
                       gridLabelBuilder: gridLabelBuilder,
                       detailBuilder: detailBuilder,
-                      onShowDetail: (T row) => detailNavigator != null
-                          ? detailNavigator!(row)
-                          : context.beamToNamed('$detailBeamName/${row.entityID}'),
+                      onDetailPopup: (T row) => context.beamToNamed('$detailBeamName/${row.entityID}'),
                       supportRefresh: context.isTouchSupported && !controller.noRefresh,
                       supportLoadMore: context.isTouchSupported && !controller.noMore,
                       headerBuilder: () => Padding(
@@ -140,7 +138,12 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       hasNextPage: controller.hasNextPage,
                       hasPrevPage: controller.hasPrevPage,
                       onItemChecked: controller.selectRows,
-                      onItemSelected: controller.selectRows,
+                      onItemSelected: (List<T> items) {
+                        if (items.isNotEmpty) {
+                          onDetailSelected?.call(items.first);
+                        }
+                        controller.selectRows(items);
+                      },
                       onBarAction: (action) => controller.barAction(context, action),
                       deleteLabel: deleteLabel,
                       deleteIcon: deleteIcon,

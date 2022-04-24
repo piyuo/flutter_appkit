@@ -721,6 +721,7 @@ class NotesExample extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           child: Center(child: Text('detail view for $person')),
         ),
+        onDetailSelected: (sample.Person person) => debugPrint('$person detail selected'),
       ),
     );
   }

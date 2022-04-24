@@ -41,7 +41,7 @@ class MasterDetailView<T> extends StatelessWidget {
     this.isLoading = false,
     this.onItemSelected,
     this.onItemChecked,
-    this.onShowDetail,
+    this.onDetailPopup,
     this.gridItemWidth = 240,
     this.information,
     this.hasNextPage = true,
@@ -99,7 +99,7 @@ class MasterDetailView<T> extends StatelessWidget {
   final void Function(List<T> items)? onItemChecked;
 
   /// onShowDetail is the callback for navigate to detail view
-  final void Function(T)? onShowDetail;
+  final void Function(T)? onDetailPopup;
 
   /// onBarAction is the callback for bar action
   final Future<void> Function(MasterDetailViewAction) onBarAction;
@@ -157,7 +157,7 @@ class MasterDetailView<T> extends StatelessWidget {
               footerBuilder: isCheckMode ? null : footerBuilder,
               onItemSelected: (selectedItems) {
                 if (!isSplitView) {
-                  onShowDetail?.call(selectedItems[0]);
+                  onDetailPopup?.call(selectedItems[0]);
                 }
                 onItemSelected?.call(selectedItems);
               },
@@ -212,7 +212,7 @@ class MasterDetailView<T> extends StatelessWidget {
                                   : null),
                       footerBuilder: isCheckMode ? null : footerBuilder,
                       onItemSelected: (selectedItems) {
-                        onShowDetail?.call(selectedItems[0]);
+                        onDetailPopup?.call(selectedItems[0]);
                         onItemSelected?.call(selectedItems);
                       },
                       onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
