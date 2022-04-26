@@ -33,8 +33,6 @@ Future<void> redirectToURL(
   }
 
   // mac os use launch browser
-  await launch(
-    url,
-    forceSafariVC: false,
-  );
+  final uri = Uri.parse(url);
+  await launchUrl(uri);
 }

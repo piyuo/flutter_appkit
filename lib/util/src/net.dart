@@ -38,9 +38,8 @@ Future<bool> isGoogleCloudFunctionAvailable() async {
 ///     bool result = await openUrl('https://www.starbucks.com');
 ///
 Future<void> openUrl(String url) async {
-  await launch(
-    url,
-    forceSafariVC: false,
+  await launchUrl(
+    Uri.parse(url),
   );
 }
 

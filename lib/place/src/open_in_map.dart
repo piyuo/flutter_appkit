@@ -26,10 +26,8 @@ class OpenInMap extends StatelessWidget {
     return InkWell(
         onTap: () async {
           var url = locate.mapUrl(address, latlng);
-          launch(
-            url,
-            forceSafariVC: false,
-          );
+          final uri = Uri.parse(url);
+          await launchUrl(uri);
         },
         child: Row(children: [
           Text(
