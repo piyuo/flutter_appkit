@@ -100,6 +100,16 @@ class Filter<T extends pb.Object> extends Memory<T> {
     await _query();
   }
 
+  /// add rows into ram
+  /// ```dart
+  /// await memory.remove(list);
+  /// ```
+  @override
+  Future<void> remove(List<T> list) async {
+    await _memory.remove(list);
+    await _query();
+  }
+
   /// clear memory
   /// ```dart
   /// await memory.clear();

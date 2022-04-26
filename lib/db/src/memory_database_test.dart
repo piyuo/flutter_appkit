@@ -18,7 +18,7 @@ void main() {
     await deleteMemoryDatabase('test');
   });
 
-  group('[memory_cache]', () {
+  group('[memory_database]', () {
     test('should init and clear data', () async {
       final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
       await memory.open();
@@ -55,6 +55,23 @@ void main() {
       expect(memory.length, 2);
       expect((await memory.first)!.entityID, 'second');
       expect((await memory.last)!.entityID, 'first');
+    });
+
+    test('should remove data', () async {
+      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      await memory.open();
+      await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.insert([sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.insert([sample.Person(entity: pb.Entity(id: 'third'))]);
+      expect(memory.length, 3);
+
+      await memory.remove([
+        sample.Person(entity: pb.Entity(id: 'first')),
+        sample.Person(entity: pb.Entity(id: 'third')),
+      ]);
+
+      expect(memory.length, 1);
+      expect((await memory.first)!.entityID, 'second');
     });
 
     test('should remove duplicate when add', () async {

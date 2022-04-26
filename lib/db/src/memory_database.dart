@@ -117,6 +117,20 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
     }
   }
 
+  /// remove rows from memory
+  /// ```dart
+  /// await memory.remove(list);
+  /// ```
+  @override
+  Future<void> remove(List<T> list) async {
+    for (T row in list) {
+      if (_index.contains(row.entityID)) {
+        _index.remove(row.entityID);
+        await _database.delete(row.entityID);
+      }
+    }
+  }
+
   /// clear memory database
   /// ```dart
   /// await memory.clear();
@@ -177,6 +191,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
     _index.insert(0, row.entityID);
     await save();
     await _database.setObject(row.entityID, row);
+    onRowSet?.call(row);
   }
 
   /// forEach iterate all rows

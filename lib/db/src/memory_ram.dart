@@ -74,6 +74,17 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
     _rows.addAll(list);
   }
 
+  /// remove rows from memory
+  /// ```dart
+  /// await memory.remove(list);
+  /// ```
+  @override
+  Future<void> remove(List<T> list) async {
+    for (T row in list) {
+      _rows.remove(row);
+    }
+  }
+
   /// clear memory
   /// ```dart
   /// await memory.clear();
@@ -110,6 +121,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   Future<void> setRow(T row) async {
     _removeDuplicate(row, _rows);
     _rows.insert(0, row);
+    onRowSet?.call(row);
   }
 
   /// forEach iterate all rows

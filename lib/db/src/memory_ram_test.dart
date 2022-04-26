@@ -48,6 +48,22 @@ void main() {
       expect((await memory.last)!.entityID, 'first');
     });
 
+    test('should remove data', () async {
+      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.insert([sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.insert([sample.Person(entity: pb.Entity(id: 'third'))]);
+      expect(memory.length, 3);
+
+      await memory.remove([
+        sample.Person(entity: pb.Entity(id: 'first')),
+        sample.Person(entity: pb.Entity(id: 'third')),
+      ]);
+
+      expect(memory.length, 1);
+      expect((await memory.first)!.entityID, 'second');
+    });
+
     test('should remove duplicate when add', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
       await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);

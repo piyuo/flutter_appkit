@@ -28,6 +28,7 @@ abstract class Memory<T extends pb.Object> {
     this.noRefresh = false,
     this.noMore = false,
     this.rowsPerPage = 10,
+    this.onRowSet,
   });
 
   /// dataBuilder build data
@@ -58,11 +59,16 @@ abstract class Memory<T extends pb.Object> {
   Future<void> insert(List<T> list);
 
   /// add list of rows into memory, it will avoid duplicate rows
-  /// add rows into ram
   /// ```dart
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   Future<void> add(List<T> list);
+
+  /// remove list of rows from memory
+  /// ```dart
+  /// await memory.remove(list);
+  /// ```
+  Future<void> remove(List<T> list);
 
   /// clear memory
   /// ```dart
@@ -137,5 +143,8 @@ abstract class Memory<T extends pb.Object> {
   /// ```dart
   /// await memory.setRow(row);
   /// ```
-  Future<void> setRow(T obj);
+  Future<void> setRow(T row);
+
+  /// onRowSet called when row is set to memory
+  final void Function(T row)? onRowSet;
 }
