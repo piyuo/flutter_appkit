@@ -41,7 +41,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> fill() async {
     displayRows.clear();
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
-    final range = await memory.subRows(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
+    final range = await memory.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
     if (range == null) {
       notifyState(DataState.dataMissing);
       return;
@@ -124,8 +124,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> setRowsPerPage(BuildContext context, int value) async {
     pageIndex = 0;
-    memory.rowsPerPage = value;
-    memory.save();
+    await memory.setRowsPerPage(value);
     await gotoPage(context, 0);
     notifyListeners();
   }

@@ -25,10 +25,6 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   Memory({
     required this.dataBuilder,
-    this.noRefresh = false,
-    this.noMore = false,
-    this.rowsPerPage = 10,
-    this.onRowSet,
   });
 
   /// dataBuilder build data
@@ -37,20 +33,47 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   final pb.Builder<T> dataBuilder;
 
+  /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in memory
+  bool internalNoRefresh = false;
+
   /// noRefresh mean dataset has no need to refresh data, it will only use data in memory
-  bool noRefresh;
+  bool get noRefresh => internalNoRefresh;
+
+  /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
+  Future<void> setNoRefresh(value) async => internalNoRefresh = value;
+
+  /// internalNoMore mean dataset has no need to load more data, it will only use data in memory
+  bool internalNoMore = false;
 
   /// noMore mean dataset has no need to load more data, it will only use data in memory
-  bool noMore;
+  bool get noMore => internalNoMore;
+
+  /// setNoMore set true mean dataset has no need to load more data, it will only use data in memory
+  Future<void> setNoMore(value) async => internalNoMore = value;
+
+  /// internalRowsPerPage is current rows per page
+  int internalRowsPerPage = 10;
 
   /// rowsPerPage is current rows per page
-  int rowsPerPage;
+  int get rowsPerPage => internalRowsPerPage;
+
+  /// setRowsPerPage set current rows per page
+  Future<void> setRowsPerPage(value) async => internalRowsPerPage = value;
 
   /// length return rows length
   /// ```dart
   /// var len = memory.length;
   /// ```
   int get length;
+
+  /// open memory and load content
+  Future<void> open() async {}
+
+  /// reload memory content
+  Future<void> reload() async {}
+
+  /// close memory
+  Future<void> close() async {}
 
   /// insert list of rows into memory, it will avoid duplicate rows
   /// ```dart
@@ -64,11 +87,11 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   Future<void> add(List<T> list);
 
-  /// remove list of rows from memory
+  /// delete list of rows from memory
   /// ```dart
-  /// await memory.remove(list);
+  /// await memory.delete(list);
   /// ```
-  Future<void> remove(List<T> list);
+  Future<void> delete(List<T> list);
 
   /// clear memory
   /// ```dart
@@ -76,26 +99,29 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   Future<void> clear();
 
-  /// save memory
-  Future<void> save() async {}
+  /// setRow set a single row into memory and move row to first
+  /// ```dart
+  /// await memory.setRow(row);
+  /// ```
+  Future<void> setRow(T row);
 
-  /// open memory
-  Future<void> open() async {}
-
-  /// close memory
-  Future<void> close() async {}
+  /// getRow return row by id
+  /// ```dart
+  /// final obj = await memory.getRow('1');
+  /// ```
+  Future<T?> getRow(String id);
 
   /// subRows return sublist of rows
   /// ```dart
-  /// var subRows = await memory.subRows(0, 10);
+  /// var subRows = await memory.range(0, 10);
   /// ```
-  Future<List<T>?> subRows(int start, [int? end]);
+  Future<List<T>?> range(int start, [int? end]);
 
   /// allRows return all rows, return null if something went wrong
   /// ```dart
-  /// var rowsAll = await memory.allRows;
+  /// var rowsAll = await memory.all;
   /// ```
-  Future<List<T>?> get allRows async => await subRows(0, length);
+  Future<List<T>?> get all async => await range(0, length);
 
   /// forEach iterate all rows
   /// ```dart
@@ -132,19 +158,4 @@ abstract class Memory<T extends pb.Object> {
   /// await memory.isNotEmpty;
   /// ```
   bool get isNotEmpty => !isEmpty;
-
-  /// getRowByID return object by id
-  /// ```dart
-  /// final obj = await memory.getRowByID('1');
-  /// ```
-  Future<T?> getRowByID(String id);
-
-  /// setRow set row into memory and move row to first
-  /// ```dart
-  /// await memory.setRow(row);
-  /// ```
-  Future<void> setRow(T row);
-
-  /// onRowSet called when row is set to memory
-  final void Function(T row)? onRowSet;
 }

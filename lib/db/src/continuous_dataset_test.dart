@@ -48,7 +48,7 @@ void main() {
           return [];
         },
       );
-      await ds.start(testing.Context());
+      await ds.open(testing.Context());
       expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
       expect(ds.length, 10);
       await ds.refresh(testing.Context()); // first nextPage, it will reset memory cause download rows is rowsPerPage
@@ -79,7 +79,7 @@ void main() {
           return [];
         },
       );
-      await ds.start(testing.Context());
+      await ds.open(testing.Context());
       expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
       expect(ds.length, 10);
       expect(ds.displayRows.length, 10);
@@ -116,7 +116,7 @@ void main() {
         return [];
       },
     );
-    await ds.start(testing.Context());
+    await ds.open(testing.Context());
     expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
     expect(ds.length, 10);
     expect(ds.displayRows.length, 10);

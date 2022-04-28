@@ -79,7 +79,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.remove(list);
   /// ```
   @override
-  Future<void> remove(List<T> list) async {
+  Future<void> delete(List<T> list) async {
     for (T row in list) {
       _rows.remove(row);
     }
@@ -97,14 +97,14 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// var subRows = await memory.subRows(0, 10);
   /// ```
   @override
-  Future<List<T>?> subRows(int start, [int? end]) async => _rows.sublist(start, end);
+  Future<List<T>?> range(int start, [int? end]) async => _rows.sublist(start, end);
 
   /// getRowByID return object by id
   /// ```dart
   /// final obj = await memory.getRowByID('1');
   /// ```
   @override
-  Future<T?> getRowByID(String id) async {
+  Future<T?> getRow(String id) async {
     for (T row in _rows) {
       if (row.entityID == id) {
         return row;
@@ -121,7 +121,6 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   Future<void> setRow(T row) async {
     _removeDuplicate(row, _rows);
     _rows.insert(0, row);
-    onRowSet?.call(row);
   }
 
   /// forEach iterate all rows

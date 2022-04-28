@@ -14,19 +14,19 @@ void main() {
   group('[memory_ram]', () {
     test('should init and clear data', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-      expect(memory.noMore, false);
+      expect(memory.internalNoMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 0);
       expect(await memory.first, isNull);
       expect(await memory.last, isNull);
       await memory.add([sample.Person(name: 'hi')]);
-      expect(memory.noMore, false);
+      expect(memory.internalNoMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 1);
       expect((await memory.first)!.name, 'hi');
       expect((await memory.last)!.name, 'hi');
       await memory.clear();
-      expect(memory.noMore, false);
+      expect(memory.internalNoMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 0);
       expect(await memory.first, isNull);
@@ -55,7 +55,7 @@ void main() {
       await memory.insert([sample.Person(entity: pb.Entity(id: 'third'))]);
       expect(memory.length, 3);
 
-      await memory.remove([
+      await memory.delete([
         sample.Person(entity: pb.Entity(id: 'first')),
         sample.Person(entity: pb.Entity(id: 'third')),
       ]);
@@ -81,27 +81,27 @@ void main() {
 
     test('should get sub rows', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-      var rows = await memory.subRows(0);
+      var rows = await memory.range(0);
       expect(rows!.length, 0);
 
       await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
       await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
-      rows = await memory.subRows(0);
+      rows = await memory.range(0);
       expect(rows!.length, 2);
-      rows = await memory.subRows(0, 2);
+      rows = await memory.range(0, 2);
       expect(rows!.length, 2);
 
-      var rowsAll = await memory.allRows;
+      var rowsAll = await memory.all;
       expect(rowsAll!.length, 2);
     });
 
     test('should get row by id', () async {
       final memory = MemoryRam(dataBuilder: () => sample.Person());
       memory.add(List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
-      final obj = await memory.getRowByID('1');
+      final obj = await memory.getRow('1');
       expect(obj, isNotNull);
       expect(obj!.entityID, '1');
-      final obj2 = await memory.getRowByID('not-exist');
+      final obj2 = await memory.getRow('not-exist');
       expect(obj2, isNull);
     });
 
@@ -114,9 +114,9 @@ void main() {
       await memory.setRow(sample.Person(entity: pb.Entity(id: 'second')));
       expect(memory.length, 2);
       expect((await memory.first)!.entityID, 'second');
-      final obj = await memory.getRowByID('first');
+      final obj = await memory.getRow('first');
       expect(obj, isNotNull);
-      final obj2 = await memory.getRowByID('second');
+      final obj2 = await memory.getRow('second');
       expect(obj2, isNotNull);
     });
 

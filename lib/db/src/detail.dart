@@ -91,7 +91,7 @@ class Detail<T extends pb.Object> with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      current = await _memory.getRowByID(id!);
+      current = await _memory.getRow(id!);
       if (current != null) {
         return;
       }

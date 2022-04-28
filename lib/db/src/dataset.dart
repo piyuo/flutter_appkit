@@ -42,7 +42,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     this.onReady,
   }) {
     if (context != null) {
-      start(context);
+      open(context);
     }
   }
 
@@ -83,8 +83,8 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// noRefresh return true if no refresh need
   bool get noRefresh => memory.noRefresh;
 
-  /// noRefresh set to true if no refresh need
-  set noRefresh(value) => memory.noRefresh = value;
+  /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
+  Future<void> setNoRefresh(value) async => memory.setNoRefresh(value);
 
   /// noMore return true if no more data to add
   bool get noMore => memory.noMore;
@@ -110,11 +110,11 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```
   String pageInfo(BuildContext context);
 
-  /// start when data source create with context
+  /// open dataset memory and refresh data, it will automatically called when dataset create with context
   /// ```dart
-  /// await ds.start(context);
+  /// await ds.open(context);
   /// ```
-  Future<void> start(BuildContext context) async {
+  Future<void> open(BuildContext context) async {
     try {
       await memory.open();
       await refresh(context);
@@ -141,7 +141,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     bool isReset = false;
     if (memory.isEmpty && downloadRows.length < memory.rowsPerPage) {
-      memory.noMore = true;
+      await memory.setNoMore(true);
     }
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
@@ -164,12 +164,13 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     }
     notifyState(DataState.refreshing);
     try {
+      await memory.reload(); // someone may change memory so reload it
       T? anchor = await memory.first;
       final downloadRows = await loader(context, true, memory.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
-      bool isReset = await onRefresh(context, downloadRows);
       if (downloadRows.isNotEmpty) {
         debugPrint('[dataset] refresh ${downloadRows.length} rows');
       }
+      bool isReset = await onRefresh(context, downloadRows);
       return isReset;
     } finally {
       notifyState(DataState.ready);
@@ -191,7 +192,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
       final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
       if (downloadRows.length < limit) {
         debugPrint('[dataset] has no more data');
-        memory.noMore = true;
+        await memory.setNoMore(true);
       }
       if (downloadRows.isNotEmpty) {
         await memory.add(downloadRows);
@@ -243,5 +244,5 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// final obj = await getRowByID('1');
   /// ```
-  Future<T?> getRowByID(String id) async => await memory.getRowByID(id);
+  Future<T?> getRowByID(String id) async => await memory.getRow(id);
 }

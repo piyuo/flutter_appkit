@@ -13,13 +13,13 @@ void main() {
   group('[memory]', () {
     test('should count page row', () async {
       final memory = MemoryRam(dataBuilder: () => sample.Person());
-      expect(memory.noMore, false);
+      expect(memory.internalNoMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 0);
       expect(memory.isEmpty, true);
       expect(memory.isNotEmpty, false);
       memory.add([sample.Person()]);
-      expect(memory.noMore, false);
+      expect(memory.internalNoMore, false);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 1);
       expect(memory.isEmpty, false);

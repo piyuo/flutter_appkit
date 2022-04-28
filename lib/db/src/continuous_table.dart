@@ -19,7 +19,7 @@ class ContinuousTable<T extends pb.Object> extends ContinuousDataset<T> {
           dataBuilder: dataBuilder,
           loader: loader,
         ) {
-    _memory.noMore = true;
+    _memory.internalNoMore = true;
   }
 
   /// onRefresh reset memory on dataset mode, but not on table mode

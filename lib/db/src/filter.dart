@@ -66,7 +66,7 @@ class Filter<T extends pb.Object> extends Memory<T> {
   Future<T?> get first async => hasQueries
       ? _result.isEmpty
           ? null
-          : await getRowByID(_result.first)
+          : await getRow(_result.first)
       : await _memory.first;
 
   /// last return last row
@@ -77,7 +77,7 @@ class Filter<T extends pb.Object> extends Memory<T> {
   Future<T?> get last async => hasQueries
       ? _result.isEmpty
           ? null
-          : await getRowByID(_result.last)
+          : await getRow(_result.last)
       : await _memory.last;
 
   /// insert list of rows into ram
@@ -105,8 +105,8 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// await memory.remove(list);
   /// ```
   @override
-  Future<void> remove(List<T> list) async {
-    await _memory.remove(list);
+  Future<void> delete(List<T> list) async {
+    await _memory.delete(list);
     await _query();
   }
 
@@ -125,19 +125,19 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// var subRows = await memory.subRows(0, 10);
   /// ```
   @override
-  Future<List<T>?> subRows(int start, [int? end]) async {
+  Future<List<T>?> range(int start, [int? end]) async {
     if (hasQueries) {
       List<T> list = [];
       final idList = _result.sublist(start, end);
       for (String id in idList) {
-        final row = await getRowByID(id);
+        final row = await getRow(id);
         if (row != null) {
           list.add(row);
         }
       }
       return list;
     }
-    return await _memory.subRows(start, end);
+    return await _memory.range(start, end);
   }
 
   /// getRowByID return object by id
@@ -145,7 +145,7 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// final obj = await memory.getRowByID('1');
   /// ```
   @override
-  Future<T?> getRowByID(String id) async => await _memory.getRowByID(id);
+  Future<T?> getRow(String id) async => await _memory.getRow(id);
 
   /// setRow set row into memory and move row to first
   /// ```dart

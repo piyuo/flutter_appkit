@@ -42,7 +42,7 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> fill() async {
     displayRows.clear();
-    final range = await memory.allRows;
+    final range = await memory.all;
     if (range == null) {
       notifyState(DataState.dataMissing);
       return;
