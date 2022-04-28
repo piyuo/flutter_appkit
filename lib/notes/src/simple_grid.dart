@@ -50,7 +50,7 @@ class SimpleGrid<T> extends SelectableGrid<T> {
             crossAxisCount: crossAxisCount,
           ),
           itemCount: items.length,
-          itemBuilder: buildItem,
+          itemBuilder: (context, index) => buildItem(context, items[index]),
         );
       },
     );

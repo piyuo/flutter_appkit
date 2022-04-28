@@ -17,6 +17,7 @@ abstract class SelectableGrid<T> extends Selectable<T> {
     this.borderColor,
     this.selectedBorderColor,
     Color? itemBackgroundColor,
+    T? newItem,
     Key? key,
   }) : super(
           items: items,
@@ -28,6 +29,7 @@ abstract class SelectableGrid<T> extends Selectable<T> {
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
           itemBackgroundColor: itemBackgroundColor,
+          newItem: newItem,
           key: key,
         );
 
@@ -44,14 +46,12 @@ abstract class SelectableGrid<T> extends Selectable<T> {
   final Color? selectedBorderColor;
 
   @override
-  Widget onBuildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
+  Widget onBuildItem(BuildContext context, T item, bool isSelected) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: checkMode
-              ? _buildCheckItem(context, itemIndex, item, isSelected)
-              : _buildItem(context, itemIndex, item, isSelected),
+          child: checkMode ? _buildCheckItem(context, item, isSelected) : _buildItem(context, item, isSelected),
         ),
         if (labelBuilder != null) labelBuilder!(item, isSelected),
         const SizedBox(height: 15),
@@ -85,10 +85,10 @@ abstract class SelectableGrid<T> extends Selectable<T> {
   }
 
   /// _buildCheckItem is a widget builder for each item in check mode
-  Widget _buildCheckItem(BuildContext context, int itemIndex, T item, bool isSelected) {
+  Widget _buildCheckItem(BuildContext context, T item, bool isSelected) {
     return Stack(
       children: [
-        _buildItem(context, itemIndex, item, isSelected),
+        _buildItem(context, item, isSelected),
         Positioned(
           top: 5,
           left: 10,
@@ -110,7 +110,7 @@ abstract class SelectableGrid<T> extends Selectable<T> {
   }
 
   /// _buildItem build grid view item
-  Widget _buildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
+  Widget _buildItem(BuildContext context, T item, bool isSelected) {
     return Container(
       width: double.infinity,
       height: double.infinity,

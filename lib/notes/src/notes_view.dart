@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:beamer/beamer.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/responsive/responsive.dart' as responsive;
@@ -16,8 +15,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     required this.listBuilder,
     required this.gridBuilder,
     required this.detailBuilder,
-    this.detailBeamName = '',
-    this.onDetailSelected,
     this.gridLabelBuilder,
     this.gridItemBackgroundColor,
     this.caption,
@@ -38,12 +35,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   /// detailBuilder is the builder for detail view
   final Widget Function(T) detailBuilder;
 
-  /// detailBeamName is the beam location name of detail, like '/user'
-  final String detailBeamName;
-
-  /// onDetailRowSelected called when row is selected and ready to show on detail
-  final void Function(T)? onDetailSelected;
-
   /// controller is the [NotesController]
   final NotesController<T> controller;
 
@@ -63,90 +54,95 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final nextPageColor = context.themeColor(light: Colors.blue.shade400, dark: Colors.blue.shade500);
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) => MultiProvider(
-                providers: [
-                  ChangeNotifierProvider.value(
-                    value: controller.refreshButtonController,
-                  ),
-                  ChangeNotifierProvider.value(
-                    value: controller.animatedViewController,
-                  )
-                ],
-                child: TagSplitView(
-                    tagView: controller.tags.isNotEmpty
-                        ? TagView<String>(
-                            onTagSelected: controller.setSelectedTag,
-                            tags: controller.tags,
-                          )
-                        : null,
-                    child: MasterDetailView<T>(
-                      items: controller.dataset.displayRows,
-                      selectedItems: controller.dataset.selectedRows,
-                      listBuilder: listBuilder,
-                      gridBuilder: gridBuilder,
-                      gridItemBackgroundColor: gridItemBackgroundColor,
-                      gridLabelBuilder: gridLabelBuilder,
-                      detailBuilder: detailBuilder,
-                      onDetailPopup: (T row) => context.beamToNamed('$detailBeamName/${row.entityID}'),
-                      supportRefresh: context.isTouchSupported && !controller.noRefresh,
-                      supportLoadMore: context.isTouchSupported && !controller.noMore,
-                      headerBuilder: () => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: responsive.FoldPanel(
-                          builder: (isColumn) => [
-                            if (caption != null)
-                              Padding(
-                                  padding: isColumn ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
-                                  child: Text(caption!,
-                                      style: const TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
-                                        overflow: TextOverflow.ellipsis,
-                                      ))),
-                            delta.SearchBox(
-                              prefixIcon: controller.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
-                                  ? null
-                                  : IconButton(
-                                      icon: const Icon(Icons.menu, color: Colors.blue),
-                                      onPressed: () => showTagView<String>(
-                                        context,
-                                        onTagSelected: (value) => controller.setSelectedTag(value),
-                                        tags: controller.tags,
-                                      ),
-                                    ),
-                              controller: controller.searchController,
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      final searchBox = delta.SearchBox(
+        prefixIcon: controller.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.menu, color: Colors.blue),
+                onPressed: () => showTagView<String>(
+                  context,
+                  onTagSelected: (value) => controller.setSelectedTag(value),
+                  tags: controller.tags,
+                ),
+              ),
+        controller: controller.searchController,
+      );
+      return MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(
+              value: controller.refreshButtonController,
+            ),
+            ChangeNotifierProvider.value(
+              value: controller.animatedViewController,
+            )
+          ],
+          child: TagSplitView(
+              tagView: controller.tags.isNotEmpty
+                  ? TagView<String>(
+                      onTagSelected: controller.setSelectedTag,
+                      tags: controller.tags,
+                    )
+                  : null,
+              child: MasterDetailView<T>(
+                items: controller.dataset.displayRows,
+                selectedItems: controller.dataset.selectedRows,
+                listBuilder: listBuilder,
+                gridBuilder: gridBuilder,
+                gridItemBackgroundColor: gridItemBackgroundColor,
+                gridLabelBuilder: gridLabelBuilder,
+                detailBuilder: detailBuilder,
+                supportRefresh: context.isTouchSupported && !controller.noRefresh,
+                supportLoadMore: context.isTouchSupported && !controller.noMore,
+                headerBuilder: () => Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: responsive.FoldPanel(
+                    builder: (isColumn) => [
+                      if (caption != null)
+                        Padding(
+                            padding: isColumn ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+                            child: Text(caption!,
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis,
+                                ))),
+                      isColumn
+                          ? searchBox
+                          : Align(
+                              alignment: Alignment.centerRight,
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 320),
+                                child: searchBox,
+                              ),
                             )
-                          ],
-                        ),
-                      ),
-                      footerBuilder: controller.hasNextPage
-                          ? () => Column(children: [
-                                if (!controller.isListView) const Divider(),
-                                Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: TextButton.icon(
-                                      icon: Text(localizations.nextPageTooltip, style: TextStyle(color: nextPageColor)),
-                                      label: Icon(Icons.chevron_right, color: nextPageColor),
-                                      onPressed: () => controller.barAction(context, MasterDetailViewAction.nextPage),
-                                    )),
-                              ])
-                          : null,
-                      isCheckMode: controller.isCheckMode,
-                      isListView: controller.isListView,
-                      information: controller.dataset.pageInfo(context),
-                      hasNextPage: controller.hasNextPage,
-                      hasPrevPage: controller.hasPrevPage,
-                      onItemChecked: controller.selectRows,
-                      onItemSelected: (List<T> items) {
-                        if (items.isNotEmpty) {
-                          onDetailSelected?.call(items.first);
-                        }
-                        controller.selectRows(items);
-                      },
-                      onBarAction: (action) => controller.barAction(context, action),
-                      deleteLabel: deleteLabel,
-                      deleteIcon: deleteIcon,
-                    ))));
+                    ],
+                  ),
+                ),
+                footerBuilder: controller.hasNextPage
+                    ? () => Column(children: [
+                          if (!controller.isListView) const Divider(),
+                          Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: TextButton.icon(
+                                icon: Text(localizations.nextPageTooltip, style: TextStyle(color: nextPageColor)),
+                                label: Icon(Icons.chevron_right, color: nextPageColor),
+                                onPressed: () => controller.barAction(context, MasterDetailViewAction.nextPage),
+                              )),
+                        ])
+                    : null,
+                newItem: controller.newItem,
+                isCheckMode: controller.isCheckMode,
+                isListView: controller.isListView,
+                information: controller.dataset.pageInfo(context),
+                hasNextPage: controller.hasNextPage,
+                hasPrevPage: controller.hasPrevPage,
+                onItemChecked: (selected) => controller.onItemChecked(context, selected),
+                onItemSelected: (selected) => controller.onItemSelected(context, selected),
+                onBarAction: (action) => controller.barAction(context, action),
+                deleteLabel: deleteLabel,
+                deleteIcon: deleteIcon,
+              )));
+    });
   }
 }

@@ -13,6 +13,7 @@ import '../notes.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
+final memory = db.MemoryRam(dataBuilder: () => sample.Person());
 final _searchBoxController = TextEditingController();
 int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
@@ -26,12 +27,12 @@ main() {
     providers: [
       ChangeNotifierProvider<NotesController<sample.Person>>(
         create: (context) => NotesController<sample.Person>(
-          db.MemoryRam(dataBuilder: () => sample.Person()),
+          memory,
           context: context,
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
             return List.generate(
-              stepCount == 1 ? 10 : 2,
+              stepCount == 1 ? 2 : 2,
               (i) {
                 final uuid = unique.uuid();
                 return sample.Person(
@@ -41,12 +42,20 @@ main() {
               },
             );
           },
-          onAdd: () async {
-            debugPrint('onAdd');
+          adder: (context) async {
+            final uuid = unique.uuid();
+            return sample.Person(
+              name: 'new item',
+              entity: pb.Entity(id: uuid),
+            );
           },
-          onDelete: () async {
-            debugPrint('onDelete');
+          isSaved: (person) {
+            return true;
           },
+          isRemovable: (person) {
+            return true;
+          },
+          remover: (context, persons) async => true,
           dataBuilder: () => sample.Person(),
           tags: [
             Tag(
@@ -90,9 +99,15 @@ main() {
             appBar: AppBar(title: const Text('Detail')),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                child: Center(child: Text('beam: detail view for $id')),
-              ),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  child: Column(children: [
+                    Text('beam: detail view for $id'),
+                    ElevatedButton(
+                        child: const Text('Save'),
+                        onPressed: () {
+                          if (id == 'new') {}
+                        })
+                  ])),
             ),
           ),
         );
@@ -719,9 +734,22 @@ class NotesExample extends StatelessWidget {
         ),
         detailBuilder: (sample.Person person) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          child: Center(child: Text('detail view for $person')),
+          child: Column(
+            children: [
+              Text('${person.name} - $person'),
+              ElevatedButton(
+                child: const Text('Save'),
+                onPressed: () async {
+                  if (person.name == 'new item') {
+                    person.name = 'saved item';
+                    memory.insert([person]);
+                    await notesController.refill(context);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
-        onDetailSelected: (sample.Person person) => debugPrint('$person detail selected'),
       ),
     );
   }

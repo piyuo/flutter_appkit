@@ -13,7 +13,6 @@ import 'checkable_header.dart';
 enum MasterDetailViewAction {
   refresh,
   more,
-  refill, // refill dataset
   listView,
   gridView,
   delete,
@@ -41,7 +40,6 @@ class MasterDetailView<T> extends StatelessWidget {
     this.isLoading = false,
     this.onItemSelected,
     this.onItemChecked,
-    this.onDetailPopup,
     this.gridItemWidth = 240,
     this.information,
     this.hasNextPage = true,
@@ -53,6 +51,7 @@ class MasterDetailView<T> extends StatelessWidget {
     this.gridItemBackgroundColor,
     this.deleteLabel,
     this.deleteIcon,
+    this.newItem,
     Key? key,
   }) : super(key: key);
 
@@ -61,6 +60,9 @@ class MasterDetailView<T> extends StatelessWidget {
 
   /// selectedItems is the list of selected items
   final List<T> selectedItems;
+
+  /// newItem is not null mean user is editing a new item
+  final T? newItem;
 
   /// listBuilder is the builder for list view
   final ItemBuilder<T> listBuilder;
@@ -97,9 +99,6 @@ class MasterDetailView<T> extends StatelessWidget {
 
   /// onItemChecked is the callback for item checked
   final void Function(List<T> items)? onItemChecked;
-
-  /// onShowDetail is the callback for navigate to detail view
-  final void Function(T)? onDetailPopup;
 
   /// onBarAction is the callback for bar action
   final Future<void> Function(MasterDetailViewAction) onBarAction;
@@ -144,6 +143,7 @@ class MasterDetailView<T> extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: DynamicList<T>(
               checkMode: isCheckMode,
+              newItem: newItem,
               items: items,
               selectedItems: selectedItems,
               itemBuilder: listBuilder,
@@ -155,12 +155,7 @@ class MasterDetailView<T> extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(4, !context.isPreferMouse || responsive.phoneScreen ? 10 : 0, 4, 0),
                       child: headerBuilder != null ? headerBuilder!() : null),
               footerBuilder: isCheckMode ? null : footerBuilder,
-              onItemSelected: (selectedItems) {
-                if (!isSplitView) {
-                  onDetailPopup?.call(selectedItems[0]);
-                }
-                onItemSelected?.call(selectedItems);
-              },
+              onItemSelected: (selectedItems) => onItemSelected?.call(selectedItems),
               onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
             ),
           ),
@@ -196,6 +191,7 @@ class MasterDetailView<T> extends StatelessWidget {
                       itemBackgroundColor: gridItemBackgroundColor,
                       crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
                       isCheckMode: isCheckMode,
+                      newItem: newItem,
                       items: items,
                       selectedItems: selectedItems,
                       itemBuilder: gridBuilder,
@@ -211,10 +207,7 @@ class MasterDetailView<T> extends StatelessWidget {
                                   ? headerBuilder!()
                                   : null),
                       footerBuilder: isCheckMode ? null : footerBuilder,
-                      onItemSelected: (selectedItems) {
-                        onDetailPopup?.call(selectedItems[0]);
-                        onItemSelected?.call(selectedItems);
-                      },
+                      onItemSelected: (selectedItems) => onItemSelected?.call(selectedItems),
                       onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
                     ))),
             if (responsive.phoneScreen && !context.isPreferMouse && !isCheckMode) _buildBottomTouchBar(context),
@@ -227,11 +220,13 @@ class MasterDetailView<T> extends StatelessWidget {
         return buildList(context);
       }
 
-      final activeItem = selectedItems.isEmpty
-          ? items.isEmpty
-              ? null
-              : items[0]
-          : selectedItems[0];
+      final activeItem = (newItem != null)
+          ? newItem
+          : selectedItems.isEmpty
+              ? items.isEmpty
+                  ? null
+                  : items[0]
+              : selectedItems[0];
 
       return Column(children: [
         if (isCheckMode) _buildSelectionHeader(context),
@@ -303,10 +298,12 @@ class MasterDetailView<T> extends StatelessWidget {
             ),
             label: Text(deleteLabel!),
             icon: Icon(deleteIcon ?? Icons.delete),
-            onPressed: () async {
-              await onBarAction.call(MasterDetailViewAction.toggleCheckMode);
-              await onBarAction.call(MasterDetailViewAction.delete);
-            },
+            onPressed: selectedItems.isNotEmpty
+                ? () async {
+                    await onBarAction.call(MasterDetailViewAction.toggleCheckMode);
+                    await onBarAction.call(MasterDetailViewAction.delete);
+                  }
+                : null,
           ),
       ],
     );

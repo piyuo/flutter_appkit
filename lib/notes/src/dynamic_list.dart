@@ -60,6 +60,7 @@ class DynamicList<T> extends SelectableList<T> {
     this.onRefresh,
     this.onLoadMore,
     this.controller,
+    T? newItem,
     Key? key,
   }) : super(
           items: items,
@@ -71,6 +72,7 @@ class DynamicList<T> extends SelectableList<T> {
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
+          newItem: newItem,
           key: key,
         );
 
@@ -103,6 +105,9 @@ class DynamicList<T> extends SelectableList<T> {
     if (footerBuilder != null) {
       count++;
     }
+//    if (newItem != null) {
+//      count++;
+//    }
     return count;
   }
 
@@ -122,6 +127,7 @@ class DynamicList<T> extends SelectableList<T> {
               if (headerBuilder != null && index == 0) {
                 return headerBuilder!();
               }
+
               if (footerBuilder != null && index == _rowCount - 1) {
                 return footerBuilder!();
               }
@@ -130,7 +136,18 @@ class DynamicList<T> extends SelectableList<T> {
                 controller: context.isTouchSupported ? scrollController : ScrollController(),
                 shrinkWrap: true,
                 itemBuilder: (bool isListView, int index) {
-                  return buildItem(context, index);
+                  if (newItem != null) {
+                    if (index == 0) {
+                      return buildItem(context, newItem!);
+                    } else {
+                      index--;
+                    }
+                  }
+                  if (index >= items.length) {
+                    //new item may cause index out of range
+                    return const SizedBox();
+                  }
+                  return buildItem(context, items[index]);
                 },
               );
             })

@@ -65,6 +65,7 @@ class DynamicGrid<T> extends SelectableGrid<T> {
     this.onLoadMore,
     this.controller,
     Color? itemBackgroundColor,
+    T? newItem,
     Key? key,
   }) : super(
           items: items,
@@ -80,6 +81,7 @@ class DynamicGrid<T> extends SelectableGrid<T> {
           selectedBorderColor: selectedBorderColor,
           itemBackgroundColor: itemBackgroundColor,
           borderColor: borderColor,
+          newItem: newItem,
           key: key,
         );
 
@@ -130,7 +132,18 @@ class DynamicGrid<T> extends SelectableGrid<T> {
                 controller: context.isTouchSupported ? scrollController : ScrollController(),
                 shrinkWrap: true,
                 itemBuilder: (bool isListView, int index) {
-                  return buildItem(context, index);
+                  if (newItem != null) {
+                    if (index == 0) {
+                      return buildItem(context, newItem!);
+                    } else {
+                      index--;
+                    }
+                  }
+                  if (index >= items.length) {
+                    //new item may cause index out of range
+                    return const SizedBox();
+                  }
+                  return buildItem(context, items[index]);
                 },
               );
             })

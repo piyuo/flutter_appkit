@@ -14,6 +14,7 @@ abstract class SelectableList<T> extends Selectable<T> {
     Widget Function()? headerBuilder,
     Widget Function()? footerBuilder,
     Color? itemBackgroundColor,
+    T? newItem,
     Key? key,
   }) : super(
           items: items,
@@ -25,6 +26,7 @@ abstract class SelectableList<T> extends Selectable<T> {
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
           itemBackgroundColor: itemBackgroundColor,
+          newItem: newItem,
           key: key,
         );
 
@@ -32,14 +34,12 @@ abstract class SelectableList<T> extends Selectable<T> {
   final Color? selectedColor;
 
   @override
-  Widget onBuildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
-    return checkMode
-        ? _buildCheckItem(context, itemIndex, item, isSelected)
-        : _buildItem(context, itemIndex, item, isSelected);
+  Widget onBuildItem(BuildContext context, T item, bool isSelected) {
+    return checkMode ? _buildCheckItem(context, item, isSelected) : _buildItem(context, item, isSelected);
   }
 
   /// buildCheckListItem is a widget builder for each item in check mode
-  Widget _buildCheckItem(BuildContext context, int itemIndex, T item, bool isSelected) {
+  Widget _buildCheckItem(BuildContext context, T item, bool isSelected) {
     return Row(
       children: [
         Icon(
@@ -55,13 +55,13 @@ abstract class SelectableList<T> extends Selectable<T> {
                 ),
         ),
         const SizedBox(width: 10),
-        Expanded(child: _buildItem(context, itemIndex, item, isSelected)),
+        Expanded(child: _buildItem(context, item, isSelected)),
       ],
     );
   }
 
   /// buildListItem build list view item
-  Widget _buildItem(BuildContext context, int itemIndex, T item, bool isSelected) {
+  Widget _buildItem(BuildContext context, T item, bool isSelected) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
         child: isSelected

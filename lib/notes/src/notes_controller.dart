@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:beamer/beamer.dart';
 import 'package:libcli/animations/animations.dart' as animations;
+import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'tag.dart';
 import 'master_detail_view.dart';
+
+/// Adder add new item
+typedef Adder<T> = Future<T> Function(BuildContext context);
+
+/// Remover remove list of selected rows
+typedef Remover<T> = Future<bool> Function(BuildContext context, List<T> item);
 
 class NotesController<T extends pb.Object> with ChangeNotifier {
   NotesController(
@@ -12,10 +20,14 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     required BuildContext context,
     required db.DatasetLoader<T> loader,
     required pb.Builder<T> dataBuilder,
+    required this.adder,
+    required this.remover,
+    required this.isSaved,
+    required this.isRemovable,
     this.tags = const [],
-    this.onAdd,
-    this.onDelete,
     this.onTagChanged,
+    this.onShowDetail,
+    this.detailBeamName = '',
   }) {
     dataset = context.isPreferMouse
         ? db.PagedDataset<T>(
@@ -28,12 +40,12 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
             dataBuilder: dataBuilder,
             loader: loader,
           );
-    start(context);
+    open(context);
   }
 
-  /// start dataset
-  Future<void> start(BuildContext context) async {
-    await dataset.start(context);
+  /// open dataset
+  Future<void> open(BuildContext context) async {
+    await dataset.open(context);
     animatedViewController.itemCount = dataset.displayRows.length;
     setDefaultSelected();
     notifyListeners();
@@ -60,14 +72,29 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// isCheckMode is true if is in check mode
   bool isCheckMode = false;
 
-  /// onNew called when pressed new button
-  final Future<void> Function()? onAdd;
-
-  /// onDelete called when pressed delete button
-  final Future<void> Function()? onDelete;
-
   /// onTagChanged called when tag changed
   final Future<void> Function(String value)? onTagChanged;
+
+  /// adder create new item
+  final Adder adder;
+
+  /// isSaved is true if row is saved and ready to move to other row
+  final bool Function(T row) isSaved;
+
+  /// remover remove item
+  final Remover remover;
+
+  /// isRemovable check if item is removable, return true will delete the row
+  final bool Function(List<T> row) isRemovable;
+
+  /// newItem is not null mean user is editing a new item
+  T? newItem;
+
+  /// onShowDetail called when row is selected and ready to show on detail
+  final void Function(T)? onShowDetail;
+
+  /// detailBeamName is the beam location name of detail, like '/user'
+  final String detailBeamName;
 
   @override
   void dispose() {
@@ -83,20 +110,55 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   bool get noRefresh => dataset.noRefresh;
 
   /// noRefresh set to true if no need refresh dataset
-  set noRefresh(value) => dataset.noRefresh = value;
+  Future<void> setNoRefresh(value) async => await dataset.setNoRefresh(value);
 
   /// setDefaultSelected will select first row if no row selected
   void setDefaultSelected() {
     if (dataset.selectedRows.isEmpty && dataset.displayRows.isNotEmpty) {
-      dataset.selectRows([dataset.displayRows.first]);
+      if (onRowExit(null)) {
+        dataset.selectRows([dataset.displayRows.first]);
+      }
     }
   }
 
-  /// selectRows call when user select rows
-  void selectRows(List<T> selectedItems) {
-    dataset.selectRows(selectedItems);
+  /// onItemChecked called when user select item, return true if new item has been selected
+  bool onItemChecked(BuildContext context, List<T> selectedRows) {
+    final oldRow = dataset.selectedRows.isNotEmpty ? dataset.selectedRows.first : null;
+    if (!onRowExit(oldRow)) {
+      return false;
+    }
+    dataset.selectRows(selectedRows);
     notifyListeners();
+    return true;
   }
+
+  /// onItemSelected call when user select rows
+  void onItemSelected(BuildContext context, List<T> selectedRows) {
+    if (!onItemChecked(context, selectedRows)) {
+      return;
+    }
+
+    if (!isSplitView) {
+      final item = selectedRows.first;
+      context.beamToNamed('$detailBeamName/${item.entityID}');
+      return;
+    }
+
+    final newRow = selectedRows.first;
+    onShowDetail?.call(newRow);
+  }
+
+  /// onRowExit return true if row allow to exit
+  bool onRowExit(T? oldRow) {
+    if (oldRow != null && !isSaved(oldRow)) {
+      return false;
+    }
+    newItem = null;
+    return true;
+  }
+
+  /// isSplitView is true if in split view
+  bool get isSplitView => isListView && !responsive.phoneScreen;
 
   /// hasNextPage return true if has next page
   bool get hasNextPage => dataset is db.PagedDataset ? (dataset as db.PagedDataset).hasNextPage : false;
@@ -105,7 +167,13 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   bool get hasPrevPage => dataset is db.PagedDataset ? (dataset as db.PagedDataset).hasPrevPage : false;
 
   /// refill let dataset refill data, the data may changed or deleted
-  Future<void> refill(BuildContext context) async => await barAction(context, MasterDetailViewAction.refill);
+  Future<void> refill(BuildContext context) async {
+    await dataset.fill();
+    newItem = null;
+    setDefaultSelected();
+    animatedViewController.itemCount = dataset.displayRows.length;
+    notifyListeners();
+  }
 
   /// refresh dataset
   Future<void> refresh(BuildContext context) async => await barAction(context, MasterDetailViewAction.refresh);
@@ -136,10 +204,6 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         break;
       case MasterDetailViewAction.more:
         await dataset.more(context, dataset.rowsPerPage);
-        animatedViewController.itemCount = dataset.displayRows.length;
-        break;
-      case MasterDetailViewAction.refill:
-        await dataset.fill();
         animatedViewController.itemCount = dataset.displayRows.length;
         break;
       case MasterDetailViewAction.previousPage:
@@ -185,10 +249,25 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         }
         break;
       case MasterDetailViewAction.add:
-        await onAdd?.call();
+        if (!isSplitView) {
+          context.beamToNamed('$detailBeamName/new/');
+          return;
+        }
+
+        dataset.selectRows([]);
+        newItem = await adder(context);
+        animatedViewController.itemCount = dataset.displayRows.length + 1;
+        animatedViewController.insertAnimation();
         break;
       case MasterDetailViewAction.delete:
-        await onDelete?.call();
+        if (isRemovable(dataset.selectedRows)) {
+          final deleted = await remover(context, dataset.selectedRows);
+          if (deleted) {
+            await dataset.memory.delete(dataset.selectedRows);
+            dataset.selectRows([]);
+            await refill(context);
+          }
+        }
         break;
     }
     notifyListeners();

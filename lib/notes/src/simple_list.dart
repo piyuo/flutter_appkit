@@ -54,7 +54,7 @@ class SimpleList<T> extends SelectableList<T> {
         if (footerBuilder != null && index == _rowCount - 1) {
           return footerBuilder!();
         }
-        return buildItem(context, rowIndex);
+        return buildItem(context, items[rowIndex]);
       },
     );
   }

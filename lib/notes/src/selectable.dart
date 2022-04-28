@@ -14,6 +14,7 @@ abstract class Selectable<T> extends StatelessWidget {
     this.headerBuilder,
     this.footerBuilder,
     this.itemBackgroundColor,
+    this.newItem,
     Key? key,
   }) : super(key: key);
 
@@ -44,13 +45,20 @@ abstract class Selectable<T> extends StatelessWidget {
   /// footerBuilder build footer widget
   final Widget Function()? footerBuilder;
 
+  /// newItem is not null mean user is editing a new item
+  final T? newItem;
+
   /// onBuildItem call when item need to build
-  Widget onBuildItem(BuildContext context, int itemIndex, T item, bool isSelected);
+  Widget onBuildItem(BuildContext context, T item, bool isSelected);
 
   /// buildItem is build item by itemIndex
-  Widget buildItem(BuildContext context, int itemIndex) {
-    final item = items[itemIndex];
-    final isSelected = selectedItems.contains(item);
+  Widget buildItem(BuildContext context, T item) {
+    var isSelected = false;
+    if (newItem != null && item == newItem) {
+      isSelected = true;
+    } else if (newItem == null && selectedItems.contains(item)) {
+      isSelected = true;
+    }
     if (onItemSelected != null || onItemChecked != null) {
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -69,9 +77,9 @@ abstract class Selectable<T> extends StatelessWidget {
           }
           onItemChecked?.call(newLSelected);
         },
-        child: onBuildItem(context, itemIndex, item, isSelected),
+        child: onBuildItem(context, item, isSelected),
       );
     }
-    return onBuildItem(context, itemIndex, item, isSelected);
+    return onBuildItem(context, item, isSelected);
   }
 }
