@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'memory.dart';
 
@@ -55,7 +56,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.insert([sample.Person()]);
   /// ```
   @override
-  Future<void> insert(List<T> list) async {
+  Future<void> insert(BuildContext context, List<T> list) async {
     for (T row in list) {
       _removeDuplicate(row, _rows);
     }
@@ -67,7 +68,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   @override
-  Future<void> add(List<T> list) async {
+  Future<void> add(BuildContext context, List<T> list) async {
     for (T row in list) {
       _removeDuplicate(row, _rows);
     }
@@ -79,7 +80,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.remove(list);
   /// ```
   @override
-  Future<void> delete(List<T> list) async {
+  Future<void> delete(BuildContext context, List<T> list) async {
     for (T row in list) {
       _rows.remove(row);
     }
@@ -90,14 +91,14 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.clear();
   /// ```
   @override
-  Future<void> clear() async => _rows.clear();
+  Future<void> clear(BuildContext context) async => _rows.clear();
 
-  /// subRows return sublist of rows
+  /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var subRows = await memory.subRows(0, 10);
+  /// var range =  memory.range(0, 10);
   /// ```
   @override
-  Future<List<T>?> range(int start, [int? end]) async => _rows.sublist(start, end);
+  List<T> range(int start, [int? end]) => _rows.sublist(start, end);
 
   /// getRowByID return object by id
   /// ```dart
@@ -118,7 +119,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.setRow(row);
   /// ```
   @override
-  Future<void> setRow(T row) async {
+  Future<void> setRow(BuildContext context, T row) async {
     _removeDuplicate(row, _rows);
     _rows.insert(0, row);
   }

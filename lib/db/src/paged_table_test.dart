@@ -46,7 +46,7 @@ void main() {
       expect(dataSet.isEmpty, false);
       expect(dataSet.isNotEmpty, true);
 
-      await dataSet.close();
+      dataSet.dispose();
     });
 
     test('should remove duplicate data when refresh', () async {

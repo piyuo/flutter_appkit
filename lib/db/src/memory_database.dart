@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'database.dart';
+import 'persist_memory.dart';
 import 'memory.dart';
 import 'db.dart';
 
@@ -14,21 +16,18 @@ Future<void> deleteMemoryDatabase(String id) async => deleteDatabase(id);
 /// final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
 /// await memory.open();
 /// ```
-class MemoryDatabase<T extends pb.Object> extends Memory<T> {
+class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
   /// MemoryDatabase keep memory into a separate database
   /// ```dart
   /// final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
   /// await memory.open();
   /// ```
   MemoryDatabase({
-    required this.id,
+    required String name,
     required pb.Builder<T> dataBuilder,
-  }) : super(dataBuilder: dataBuilder) {
+  }) : super(name: name, dataBuilder: dataBuilder) {
     internalNoMore = true;
   }
-
-  /// id is the unique id of this dataset, it is used to cache data
-  final String id;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields
@@ -61,7 +60,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   Future<void> open() async {
-    _database = await openDatabase(id);
+    _database = await openDatabase(name);
     await reload();
   }
 
@@ -76,34 +75,37 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
     internalNoRefresh = _database.getBool(keyNoRefresh) ?? false;
   }
 
-  /// close memory database
+  /// close memory
   /// ```dart
   /// await memory.close();
   /// ```
   @override
   Future<void> close() async {
-    _database.close();
+    await super.close();
+    await _database.close();
   }
 
-  /// _save save memory cache
-  Future<void> _save() async {
+  /// save memory cache
+  @override
+  Future<void> save(BuildContext context) async {
     await _database.setStringList(keyIndex, _index);
     await _database.setInt(keyRowsPerPage, rowsPerPage);
     await _database.setBool(keyNoRefresh, noRefresh);
+    super.save(context);
   }
 
   /// setRowsPerPage set current rows per page
   @override
-  Future<void> setRowsPerPage(value) async {
-    await super.setRowsPerPage(value);
-    await _save();
+  Future<void> setRowsPerPage(BuildContext context, value) async {
+    await super.setRowsPerPage(context, value);
+    await save(context);
   }
 
   /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
   @override
-  Future<void> setNoRefresh(value) async {
-    await super.setNoRefresh(value);
-    await _save();
+  Future<void> setNoRefresh(BuildContext context, value) async {
+    await super.setNoRefresh(context, value);
+    await save(context);
   }
 
   /// insert list of rows into memory database
@@ -111,11 +113,11 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// await memory.insert([sample.Person()]);
   /// ```
   @override
-  Future<void> insert(List<T> list) async {
+  Future<void> insert(BuildContext context, List<T> list) async {
     final downloadID = list.map((row) => row.entityID).toList();
     _index.removeWhere((element) => downloadID.contains(element));
     _index.insertAll(0, downloadID);
-    await _save();
+    await save(context);
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
@@ -126,11 +128,11 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   @override
-  Future<void> add(List<T> list) async {
+  Future<void> add(BuildContext context, List<T> list) async {
     final downloadID = list.map((row) => row.entityID).toList();
     downloadID.removeWhere((element) => _index.contains(element));
     _index.addAll(downloadID);
-    await _save();
+    await save(context);
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
@@ -141,14 +143,14 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// await memory.delete(list);
   /// ```
   @override
-  Future<void> delete(List<T> list) async {
+  Future<void> delete(BuildContext context, List<T> list) async {
     for (T row in list) {
       if (_index.contains(row.entityID)) {
         _index.remove(row.entityID);
         await _database.delete(row.entityID);
       }
     }
-    await _save();
+    await save(context);
   }
 
   /// clear memory database
@@ -156,20 +158,21 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// await memory.clear();
   /// ```
   @override
-  Future<void> clear() async {
+  Future<void> clear(BuildContext context) async {
     _index = [];
     await _database.close();
-    await deleteMemoryDatabase(id);
-    _database = await openDatabase(id);
+    await deleteMemoryDatabase(name);
+    _database = await openDatabase(name);
     internalNoRefresh = false;
+    await broadcastChangedEvent(context);
   }
 
-  /// sublist return sublist of rows, return null if something went wrong
+  /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var subRows = await memory.subRows(0, 10);
+  /// var range =  memory.range(0, 10);
   /// ```
   @override
-  Future<List<T>?> range(int start, [int? end]) async {
+  List<T> range(int start, [int? end]) {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
@@ -177,9 +180,8 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
       if (row == null) {
         // data is missing
         _index = [];
-        internalNoMore = false;
-        await _save();
-        return null;
+        internalNoRefresh = false;
+        return [];
       }
       source.add(row);
     }
@@ -191,10 +193,10 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// await memory.setRow(row);
   /// ```
   @override
-  Future<void> setRow(T row) async {
+  Future<void> setRow(BuildContext context, T row) async {
     _index.removeWhere((id) => row.entityID == id);
     _index.insert(0, row.entityID);
-    await _save();
+    await save(context);
     await _database.setObject(row.entityID, row);
   }
 

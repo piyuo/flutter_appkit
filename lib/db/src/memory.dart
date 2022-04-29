@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 
 /// keyAll is key for keep all rows
@@ -40,7 +41,7 @@ abstract class Memory<T extends pb.Object> {
   bool get noRefresh => internalNoRefresh;
 
   /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
-  Future<void> setNoRefresh(value) async => internalNoRefresh = value;
+  Future<void> setNoRefresh(BuildContext context, value) async => internalNoRefresh = value;
 
   /// internalNoMore mean dataset has no need to load more data, it will only use data in memory
   bool internalNoMore = false;
@@ -49,7 +50,7 @@ abstract class Memory<T extends pb.Object> {
   bool get noMore => internalNoMore;
 
   /// setNoMore set true mean dataset has no need to load more data, it will only use data in memory
-  Future<void> setNoMore(value) async => internalNoMore = value;
+  Future<void> setNoMore(BuildContext context, value) async => internalNoMore = value;
 
   /// internalRowsPerPage is current rows per page
   int internalRowsPerPage = 10;
@@ -58,7 +59,7 @@ abstract class Memory<T extends pb.Object> {
   int get rowsPerPage => internalRowsPerPage;
 
   /// setRowsPerPage set current rows per page
-  Future<void> setRowsPerPage(value) async => internalRowsPerPage = value;
+  Future<void> setRowsPerPage(BuildContext context, value) async => internalRowsPerPage = value;
 
   /// length return rows length
   /// ```dart
@@ -69,41 +70,42 @@ abstract class Memory<T extends pb.Object> {
   /// open memory and load content
   Future<void> open() async {}
 
+  /// close memory
+  @mustCallSuper
+  Future<void> close() async {}
+
   /// reload memory content
   Future<void> reload() async {}
-
-  /// close memory
-  Future<void> close() async {}
 
   /// insert list of rows into memory, it will avoid duplicate rows
   /// ```dart
   /// await memory.insert([sample.Person()]);
   /// ```
-  Future<void> insert(List<T> list);
+  Future<void> insert(BuildContext context, List<T> list);
 
   /// add list of rows into memory, it will avoid duplicate rows
   /// ```dart
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
-  Future<void> add(List<T> list);
+  Future<void> add(BuildContext context, List<T> list);
 
   /// delete list of rows from memory
   /// ```dart
   /// await memory.delete(list);
   /// ```
-  Future<void> delete(List<T> list);
+  Future<void> delete(BuildContext context, List<T> list);
 
   /// clear memory
   /// ```dart
   /// await memory.clear();
   /// ```
-  Future<void> clear();
+  Future<void> clear(BuildContext context);
 
   /// setRow set a single row into memory and move row to first
   /// ```dart
   /// await memory.setRow(row);
   /// ```
-  Future<void> setRow(T row);
+  Future<void> setRow(BuildContext context, T row);
 
   /// getRow return row by id
   /// ```dart
@@ -111,17 +113,17 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   Future<T?> getRow(String id);
 
-  /// subRows return sublist of rows
+  /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var subRows = await memory.range(0, 10);
+  /// var range =  memory.range(0, 10);
   /// ```
-  Future<List<T>?> range(int start, [int? end]);
+  List<T> range(int start, [int? end]);
 
-  /// allRows return all rows, return null if something went wrong
+  /// all return all rows, return null if something went wrong
   /// ```dart
-  /// var rowsAll = await memory.all;
+  /// var rowsAll =  memory.all;
   /// ```
-  Future<List<T>?> get all async => await range(0, length);
+  List<T> get all => range(0, length);
 
   /// forEach iterate all rows
   /// ```dart

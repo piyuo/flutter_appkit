@@ -9,7 +9,6 @@ enum DataState {
   refreshing, // refresh new data
   loading, // loading more data
   ready, // ready to show data
-  dataMissing, // local data missing, maybe someone delete data, need let user know they need refresh
 }
 
 /// hivePath is hive database path

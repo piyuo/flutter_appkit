@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'memory_cache.dart';
 import 'cache.dart';
 import 'db.dart';
@@ -16,20 +17,20 @@ void main() {
       final cache = await openCache('memory_cache_test_1', 'memory_cache_test_time_1');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
         expect(memory.noMore, false);
         expect(memory.rowsPerPage, 10);
         expect(memory.length, 0);
         expect(await memory.first, isNull);
         expect(await memory.last, isNull);
-        await memory.add([sample.Person(name: 'hi')]);
+        await memory.add(testing.Context(), [sample.Person(name: 'hi')]);
         expect(memory.noMore, false);
         expect(memory.rowsPerPage, 10);
         expect(memory.length, 1);
         expect((await memory.first)!.name, 'hi');
         expect((await memory.last)!.name, 'hi');
-        await memory.clear();
+        await memory.clear(testing.Context());
         expect(memory.noMore, false);
         expect(memory.rowsPerPage, 10);
         expect(memory.length, 0);
@@ -42,13 +43,13 @@ void main() {
     test('should reload', () async {
       final cache = await openCache('memory_cache_test_1', 'memory_cache_test_time_1');
       await cache.reset();
-      final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
       expect(memory.length, 0);
 
-      final memory2 = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+      final memory2 = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
       await memory2.open();
-      await memory2.add([sample.Person(name: 'hi')]);
+      await memory2.add(testing.Context(), [sample.Person(name: 'hi')]);
 
       await memory.reload();
       expect(memory.length, 1);
@@ -57,14 +58,14 @@ void main() {
     test('should remove data', () async {
       final cache = await openCache('memory_cache_test_1', 'memory_cache_test_time_1');
       await cache.reset();
-      final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'second'))]);
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'third'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'third'))]);
       expect(memory.length, 3);
 
-      await memory.delete([
+      await memory.delete(testing.Context(), [
         sample.Person(entity: pb.Entity(id: 'first')),
         sample.Person(entity: pb.Entity(id: 'third')),
       ]);
@@ -77,16 +78,16 @@ void main() {
       final cache = await openCache('memory_cache_test_2', 'memory_cache_test_time_2');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
         expect(memory.length, 1);
 
         // remove duplicate
-        await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
         expect(memory.length, 1);
 
-        await memory.insert([sample.Person(entity: pb.Entity(id: 'second'))]);
+        await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
         expect(memory.length, 2);
         expect((await memory.first)!.entityID, 'second');
         expect((await memory.last)!.entityID, 'first');
@@ -99,16 +100,16 @@ void main() {
       final cache = await openCache('memory_cache_test_3', 'memory_cache_test_time_3');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
         expect(memory.length, 1);
 
         // remove duplicate
-        await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
         expect(memory.length, 1);
 
-        await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
         expect(memory.length, 2);
         expect((await memory.first)!.entityID, 'first');
         expect((await memory.last)!.entityID, 'second');
@@ -121,20 +122,20 @@ void main() {
       final cache = await openCache('memory_cache_test_4', 'memory_cache_test_time_4');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        var rows = await memory.range(0);
-        expect(rows!.length, 0);
+        var rows = memory.range(0);
+        expect(rows.length, 0);
 
-        await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
-        await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
-        rows = await memory.range(0);
-        expect(rows!.length, 2);
-        rows = await memory.range(0, 2);
-        expect(rows!.length, 2);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+        rows = memory.range(0);
+        expect(rows.length, 2);
+        rows = memory.range(0, 2);
+        expect(rows.length, 2);
 
-        var rowsAll = await memory.all;
-        expect(rowsAll!.length, 2);
+        var rowsAll = memory.all;
+        expect(rowsAll.length, 2);
       } finally {
         await deleteCache('memory_cache_test_4', 'memory_cache_test_time_4');
       }
@@ -143,15 +144,15 @@ void main() {
       final cache = await openCache('memory_cache_test_5', 'memory_cache_test_time_5');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
-        await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
-        await memory.setNoMore(true);
-        await memory.setRowsPerPage(21);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+        await memory.setNoMore(testing.Context(), true);
+        await memory.setRowsPerPage(testing.Context(), 21);
         await memory.close();
 
-        final memory2 = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory2 = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory2.open();
         expect(memory2.noMore, true);
         expect(memory2.rowsPerPage, 21);
@@ -167,13 +168,14 @@ void main() {
       final cache = await openCache('memory_cache_test_6', 'memory_cache_test_time_6');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.add(List.generate(maxResetItem + 1, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
+        await memory.add(
+            testing.Context(), List.generate(maxResetItem + 1, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
 
         expect(cache.contains('0'), true);
         expect(cache.contains(maxResetItem.toString()), true);
-        await memory.clear();
+        await memory.clear(testing.Context());
         expect(cache.contains('0'), false);
         expect(cache.contains(maxResetItem.toString()), true);
       } finally {
@@ -185,9 +187,9 @@ void main() {
       final cache = await openCache('memory_cache_test_7', 'memory_cache_test_time_7');
       await cache.reset();
       try {
-        final memory = MemoryCache(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.add(List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
+        await memory.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
         final obj = await memory.getRow('1');
         expect(obj, isNotNull);
         expect(obj!.entityID, '1');
@@ -202,13 +204,13 @@ void main() {
       final cache = await openCache('memory_cache_test_8', 'memory_cache_test_time_8');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.setRow(sample.Person(entity: pb.Entity(id: 'first')));
+        await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
         expect(memory.length, 1);
-        await memory.setRow(sample.Person(entity: pb.Entity(id: 'first')));
+        await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
         expect(memory.length, 1);
-        await memory.setRow(sample.Person(entity: pb.Entity(id: 'second')));
+        await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
         expect(memory.length, 2);
         expect((await memory.first)!.entityID, 'second');
         final obj = await memory.getRow('first');
@@ -224,10 +226,10 @@ void main() {
       final cache = await openCache('memory_cache_test_9', 'memory_cache_test_time_9');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
-        await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
 
         var count = 0;
         var id = '';
@@ -246,9 +248,9 @@ void main() {
       final cache = await openCache('memory_cache_test_9', 'memory_cache_test_time_9');
       await cache.reset();
       try {
-        final memory = MemoryCache<sample.Person>(cache, id: 'test', dataBuilder: () => sample.Person());
+        final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
+        await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
         expect(memory.isIDExists('first'), isTrue);
         expect(memory.isIDExists('notExists'), isFalse);
       } finally {

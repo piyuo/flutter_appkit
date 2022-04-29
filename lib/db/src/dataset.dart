@@ -84,7 +84,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   bool get noRefresh => memory.noRefresh;
 
   /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
-  Future<void> setNoRefresh(value) async => memory.setNoRefresh(value);
+  Future<void> setNoRefresh(BuildContext context, value) async => memory.setNoRefresh(context, value);
 
   /// noMore return true if no more data to add
   bool get noMore => memory.noMore;
@@ -124,12 +124,12 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// close dataset
-  /// ```dart
-  /// await ds.close();
-  /// ```
-  @visibleForTesting
-  Future<void> close() async => await memory.close();
+  /// dispose dataset
+  @override
+  void dispose() {
+    memory.close();
+    super.dispose();
+  }
 
   /// notifyState change state and notify listener
   void notifyState(DataState newState) {
@@ -141,15 +141,15 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     bool isReset = false;
     if (memory.isEmpty && downloadRows.length < memory.rowsPerPage) {
-      await memory.setNoMore(true);
+      await memory.setNoMore(context, true);
     }
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
-      memory.clear();
+      memory.clear(context);
       selectedRows.clear();
       isReset = true;
     }
-    await memory.insert(downloadRows);
+    await memory.insert(context, downloadRows);
     return isReset;
   }
 
@@ -192,10 +192,10 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
       final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
       if (downloadRows.length < limit) {
         debugPrint('[dataset] has no more data');
-        await memory.setNoMore(true);
+        await memory.setNoMore(context, true);
       }
       if (downloadRows.isNotEmpty) {
-        await memory.add(downloadRows);
+        await memory.add(context, downloadRows);
         await fill();
         return true;
       }

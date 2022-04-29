@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'memory.dart';
-import 'db.dart';
 import 'paginator.dart';
 import 'dataset.dart';
 
@@ -41,11 +40,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> fill() async {
     displayRows.clear();
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
-    final range = await memory.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
-    if (range == null) {
-      notifyState(DataState.dataMissing);
-      return;
-    }
+    final range = memory.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
     displayRows.addAll(range);
   }
 
@@ -124,7 +119,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> setRowsPerPage(BuildContext context, int value) async {
     pageIndex = 0;
-    await memory.setRowsPerPage(value);
+    await memory.setRowsPerPage(context, value);
     await gotoPage(context, 0);
     notifyListeners();
   }

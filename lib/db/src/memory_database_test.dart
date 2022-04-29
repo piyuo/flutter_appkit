@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'memory_database.dart';
 import 'db.dart';
 
@@ -20,20 +21,20 @@ void main() {
 
   group('[memory_database]', () {
     test('should init and clear data', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
       expect(memory.noMore, true);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 0);
       expect(await memory.first, isNull);
       expect(await memory.last, isNull);
-      await memory.add([sample.Person(name: 'hi')]);
+      await memory.add(testing.Context(), [sample.Person(name: 'hi')]);
       expect(memory.noMore, true);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 1);
       expect((await memory.first)!.name, 'hi');
       expect((await memory.last)!.name, 'hi');
-      await memory.clear();
+      await memory.clear(testing.Context());
       expect(memory.noMore, true);
       expect(memory.rowsPerPage, 10);
       expect(memory.length, 0);
@@ -42,43 +43,43 @@ void main() {
     });
 
     test('should reload', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
       expect(memory.length, 0);
 
-      final memory2 = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory2 = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory2.open();
-      await memory2.add([sample.Person(name: 'hi')]);
+      await memory2.add(testing.Context(), [sample.Person(name: 'hi')]);
 
       await memory.reload();
       expect(memory.length, 1);
     });
 
     test('should remove duplicate when insert', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       expect(memory.length, 1);
 
       // remove duplicate
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       expect(memory.length, 1);
 
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
       expect(memory.length, 2);
       expect((await memory.first)!.entityID, 'second');
       expect((await memory.last)!.entityID, 'first');
     });
 
     test('should remove data', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'second'))]);
-      await memory.insert([sample.Person(entity: pb.Entity(id: 'third'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'third'))]);
       expect(memory.length, 3);
 
-      await memory.delete([
+      await memory.delete(testing.Context(), [
         sample.Person(entity: pb.Entity(id: 'first')),
         sample.Person(entity: pb.Entity(id: 'third')),
       ]);
@@ -88,47 +89,47 @@ void main() {
     });
 
     test('should remove duplicate when add', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       expect(memory.length, 1);
 
       // remove duplicate
-      await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       expect(memory.length, 1);
 
-      await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
       expect(memory.length, 2);
       expect((await memory.first)!.entityID, 'first');
       expect((await memory.last)!.entityID, 'second');
     });
 
     test('should get sub rows', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      var rows = await memory.range(0);
-      expect(rows!.length, 0);
+      var rows = memory.range(0);
+      expect(rows.length, 0);
 
-      await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
-      rows = await memory.range(0);
-      expect(rows!.length, 2);
-      rows = await memory.range(0, 2);
-      expect(rows!.length, 2);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      rows = memory.range(0);
+      expect(rows.length, 2);
+      rows = memory.range(0, 2);
+      expect(rows.length, 2);
 
-      var rowsAll = await memory.all;
-      expect(rowsAll!.length, 2);
+      var rowsAll = memory.all;
+      expect(rowsAll.length, 2);
     });
     test('should save state', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
-      await memory.setNoMore(true);
-      await memory.setRowsPerPage(21);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.setNoMore(testing.Context(), true);
+      await memory.setRowsPerPage(testing.Context(), 21);
       await memory.close();
 
-      final memory2 = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory2 = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory2.open();
       expect(memory2.noMore, true);
       expect(memory2.rowsPerPage, 21);
@@ -138,9 +139,9 @@ void main() {
     });
 
     test('should get row by id', () async {
-      final memory = MemoryDatabase(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.add(List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
+      await memory.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
       final obj = await memory.getRow('1');
       expect(obj, isNotNull);
       expect(obj!.entityID, '1');
@@ -149,13 +150,13 @@ void main() {
     });
 
     test('should set row and move to first', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.setRow(sample.Person(entity: pb.Entity(id: 'first')));
+      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
       expect(memory.length, 1);
-      await memory.setRow(sample.Person(entity: pb.Entity(id: 'first')));
+      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
       expect(memory.length, 1);
-      await memory.setRow(sample.Person(entity: pb.Entity(id: 'second')));
+      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
       expect(memory.length, 2);
       expect((await memory.first)!.entityID, 'second');
       final obj = await memory.getRow('first');
@@ -165,10 +166,10 @@ void main() {
     });
 
     test('should use forEach to iterate all row', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.add([sample.Person(entity: pb.Entity(id: 'second'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
 
       var count = 0;
       var id = '';
@@ -181,9 +182,9 @@ void main() {
     });
 
     test('should check id exists', () async {
-      final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+      final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.add([sample.Person(entity: pb.Entity(id: 'first'))]);
+      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       expect(memory.isIDExists('first'), isTrue);
       expect(memory.isIDExists('notExists'), isFalse);
     });

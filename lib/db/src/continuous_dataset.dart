@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'memory.dart';
-import 'db.dart';
 import 'dataset.dart';
 
 class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
@@ -42,12 +41,7 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> fill() async {
     displayRows.clear();
-    final range = await memory.all;
-    if (range == null) {
-      notifyState(DataState.dataMissing);
-      return;
-    }
-    displayRows.addAll(range);
+    displayRows.addAll(memory.all);
   }
 
   /// pageInfo return text page info like '1 - 10 of many'

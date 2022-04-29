@@ -60,7 +60,7 @@ void main() {
       expect(ds.displayRows.length, 10);
       expect(ds.isEmpty, false);
       expect(ds.isNotEmpty, true);
-      await ds.close();
+      ds.dispose();
     });
 
     test('should no more when data loader less than limit', () async {
@@ -341,7 +341,7 @@ void main() {
         },
       );
       await ds.open(testing.Context());
-      await memory.setRowsPerPage(5);
+      await memory.setRowsPerPage(testing.Context(), 5);
       ds.pageIndex = 0;
 
       await ds.fill();

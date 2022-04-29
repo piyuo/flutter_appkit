@@ -98,7 +98,7 @@ class Detail<T extends pb.Object> with ChangeNotifier {
 
       current = await getter(context, id!);
       if (current != null) {
-        _memory.setRow(current!);
+        _memory.setRow(context, current!);
         return;
       }
     } finally {
@@ -118,7 +118,7 @@ class Detail<T extends pb.Object> with ChangeNotifier {
     }
     current = await setter(context, current!);
     if (current != null) {
-      await _memory.setRow(current!);
+      await _memory.setRow(context, current!);
       return true;
     }
     return false;

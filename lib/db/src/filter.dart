@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'memory.dart';
 import 'query.dart';
@@ -10,7 +11,7 @@ class Filter<T extends pb.Object> extends Memory<T> {
   List<Query> _queries = [];
 
   /// _result is rows after query
-  List<String> _result = [];
+  List<T> _result = [];
 
   /// setFilters set filter to memory
   /// ```dart
@@ -39,7 +40,7 @@ class Filter<T extends pb.Object> extends Memory<T> {
           }
         }
         if (isMatch) {
-          _result.add(row.entityID);
+          _result.add(row);
         }
       },
     );
@@ -66,7 +67,7 @@ class Filter<T extends pb.Object> extends Memory<T> {
   Future<T?> get first async => hasQueries
       ? _result.isEmpty
           ? null
-          : await getRow(_result.first)
+          : _result.first
       : await _memory.first;
 
   /// last return last row
@@ -77,7 +78,7 @@ class Filter<T extends pb.Object> extends Memory<T> {
   Future<T?> get last async => hasQueries
       ? _result.isEmpty
           ? null
-          : await getRow(_result.last)
+          : _result.last
       : await _memory.last;
 
   /// insert list of rows into ram
@@ -85,8 +86,8 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// await memory.insert([sample.Person()]);
   /// ```
   @override
-  Future<void> insert(List<T> list) async {
-    await _memory.insert(list);
+  Future<void> insert(BuildContext context, List<T> list) async {
+    await _memory.insert(context, list);
     await _query();
   }
 
@@ -95,8 +96,8 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   @override
-  Future<void> add(List<T> list) async {
-    await _memory.add(list);
+  Future<void> add(BuildContext context, List<T> list) async {
+    await _memory.add(context, list);
     await _query();
   }
 
@@ -105,8 +106,8 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// await memory.remove(list);
   /// ```
   @override
-  Future<void> delete(List<T> list) async {
-    await _memory.delete(list);
+  Future<void> delete(BuildContext context, List<T> list) async {
+    await _memory.delete(context, list);
     await _query();
   }
 
@@ -115,29 +116,21 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// await memory.clear();
   /// ```
   @override
-  Future<void> clear() async {
-    await _memory.clear();
+  Future<void> clear(BuildContext context) async {
+    await _memory.clear(context);
     _result = [];
   }
 
-  /// subRows return sublist of rows
+  /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var subRows = await memory.subRows(0, 10);
+  /// var range =  memory.range(0, 10);
   /// ```
   @override
-  Future<List<T>?> range(int start, [int? end]) async {
+  List<T> range(int start, [int? end]) {
     if (hasQueries) {
-      List<T> list = [];
-      final idList = _result.sublist(start, end);
-      for (String id in idList) {
-        final row = await getRow(id);
-        if (row != null) {
-          list.add(row);
-        }
-      }
-      return list;
+      return _result.sublist(start, end);
     }
-    return await _memory.range(start, end);
+    return _memory.range(start, end);
   }
 
   /// getRowByID return object by id
@@ -152,8 +145,8 @@ class Filter<T extends pb.Object> extends Memory<T> {
   /// await memory.setRow(row);
   /// ```
   @override
-  Future<void> setRow(T row) async {
-    await _memory.setRow(row);
+  Future<void> setRow(BuildContext context, T row) async {
+    await _memory.setRow(context, row);
     await _query();
   }
 
