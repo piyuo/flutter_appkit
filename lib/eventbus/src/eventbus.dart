@@ -4,27 +4,23 @@ import 'package:libcli/log/log.dart' as log;
 import 'types.dart';
 
 /// latestEvent is used for testing purpose
-///
 @visibleForTesting
 Event? latest;
 
-/// Listener
+/// Listener is listener for event bus
 class Listener {
-  /// eventType is event type the listener listen to
-  ///
-  final dynamic eventType;
-
-  /// callback called when event happen
-  ///
-  final Future<void> Function(BuildContext context, dynamic event) callback;
-
   Listener({
     required this.eventType,
     required this.callback,
   });
 
+  /// eventType is event type the listener listen to
+  final dynamic eventType;
+
+  /// callback called when event happen
+  final Future<void> Function(BuildContext context, dynamic event) callback;
+
   /// listen all event and run callback when event type is match
-  ///
   Future<void> listen(BuildContext context, dynamic event) async {
     if (eventType == dynamic || eventType == event.runtimeType) {
       await callback(context, event);
@@ -33,25 +29,21 @@ class Listener {
 }
 
 /// Subscription use for remove listener from _listeners
-///
 class Subscription {
   final Listener _listener;
 
   Subscription(this._listener);
 
   /// cancel remove listener from _listeners
-  ///
   cancel() {
     _listeners.remove(_listener);
   }
 }
 
 /// _listeners save all listener
-///
 List<Listener> _listeners = [];
 
 /// clearListeners  remove all listener from eventbus
-///
 clearListeners() {
   _listeners.clear();
 }
@@ -61,12 +53,13 @@ int getListenerCount() {
   return _listeners.length;
 }
 
-/// Listens for events of Type [T] and its subtypes.
-///
-///     Subscription sub = eventbus.listen<MockEvent>('test',(ctx,event) {
-///       text = event.text;
-///     });
-///     sub.cancel();
+/// listens for events of Type [T] and its subtypes.
+/// ```dart
+/// Subscription sub = eventbus.listen<MockEvent>('test',(ctx,event) {
+///   text = event.text;
+/// });
+/// sub.cancel();
+/// ```
 Subscription listen<T>(
   Future<void> Function(BuildContext, dynamic) func,
 ) {
@@ -83,17 +76,18 @@ Subscription listen<T>(
 }
 
 /// broadcast a new event or contract on the event bus with the specified [event].
-///
-///     eventbus.listen<MockEventA>((BuildContext ctx,event) {
-///       type = event.runtimeType;
-///     });
-///     eventbus.broadcast(ctx,MockEventA('a1'));
-///
+/// ```dart
+/// eventbus.listen<MockEventA>((BuildContext ctx,event) {
+///   type = event.runtimeType;
+/// });
+/// eventbus.broadcast(ctx,MockEventA('a1'));
+/// ```
 Future<bool> broadcast(BuildContext context, Event event) async {
   latest = event;
   log.log('[eventbus] broadcast ${event.runtimeType}');
 
-  for (var listener in _listeners) {
+  for (var i = _listeners.length - 1; i >= 0; i--) {
+    final listener = _listeners[i];
     try {
       await listener.listen(context, event);
     } catch (e, s) {
