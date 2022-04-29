@@ -742,7 +742,7 @@ class NotesExample extends StatelessWidget {
                 onPressed: () async {
                   if (person.name == 'new item') {
                     person.name = 'saved item';
-                    memory.insert([person]);
+                    memory.insert(context, [person]);
                     await notesController.refill(context);
                   }
                 },

@@ -100,6 +100,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   void dispose() {
     refreshButtonController.dispose();
     animatedViewController.dispose();
+    dataset.dispose();
     super.dispose();
   }
 
@@ -110,7 +111,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   bool get noRefresh => dataset.noRefresh;
 
   /// noRefresh set to true if no need refresh dataset
-  Future<void> setNoRefresh(value) async => await dataset.setNoRefresh(value);
+  Future<void> setNoRefresh(BuildContext context, value) async => await dataset.setNoRefresh(context, value);
 
   /// setDefaultSelected will select first row if no row selected
   void setDefaultSelected() {
@@ -263,7 +264,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         if (isRemovable(dataset.selectedRows)) {
           final deleted = await remover(context, dataset.selectedRows);
           if (deleted) {
-            await dataset.memory.delete(dataset.selectedRows);
+            await dataset.memory.delete(context, dataset.selectedRows);
             dataset.selectRows([]);
             await refill(context);
           }
