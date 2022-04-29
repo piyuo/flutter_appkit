@@ -22,7 +22,7 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   /// onRefresh reset memory on dataset mode, but not on table mode, return true if reset memory
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    final isReset = super.onRefresh(context, downloadRows);
+    final isReset = await super.onRefresh(context, downloadRows);
     await fill();
     return isReset;
   }
