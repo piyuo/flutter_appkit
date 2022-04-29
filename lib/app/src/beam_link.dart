@@ -47,22 +47,3 @@ class BeamLink extends StatelessWidget {
     );
   }
 }
-
-/*
-/// gotoApp go to another app, redirect to new app page in web, beamToNamed in native
-void gotoApp(
-  BuildContext context,
-  String appName, {
-  bool newTab = false,
-  required Map<String, String> args,
-}) {
-  log.debug('[app] redirect to $appName, newTab=$newTab');
-  if (kIsWeb) {
-    args[by] = newTab ? byNewTab : byRedirect;
-    Uri uri = Uri(path: appName, queryParameters: args);
-    html.window.open(uri.toString(), newTab ? '_blank' : '_self');
-    return;
-  }
-  Beamer.of(context).beamToNamed(appName);
-}
-*/
