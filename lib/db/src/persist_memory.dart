@@ -34,7 +34,7 @@ abstract class PersistMemory<T extends pb.Object> extends Memory<T> {
   final String _id = unique.generate(4);
 
   /// onChanged called when memory saved
-  final VoidCallback? onChanged;
+  Future<void> Function(BuildContext context)? onChanged;
 
   /// _subscribed is eventbus subscription
   eventbus.Subscription? _subscribed;
@@ -64,7 +64,9 @@ abstract class PersistMemory<T extends pb.Object> extends Memory<T> {
       if (e.name == name && e.id != _id) {
         // do not handle if event is fire from same memory
         await reload();
-        onChanged?.call();
+        if (onChanged != null) {
+          await onChanged!(context);
+        }
       }
     }
   }

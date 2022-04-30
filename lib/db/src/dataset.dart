@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/pb/src/google/google.dart' as google;
 import 'memory.dart';
+import 'persist_memory.dart';
 import 'db.dart';
 
 /// DatasetLoader can refresh or load more data by anchor and limit
@@ -40,9 +41,14 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     required this.loader,
     required this.dataBuilder,
     this.onReady,
+    Future<void> Function(BuildContext context)? onChanged,
   }) {
     if (context != null) {
       open(context);
+    }
+
+    if (memory is PersistMemory) {
+      (memory as PersistMemory).onChanged = onChanged;
     }
   }
 
