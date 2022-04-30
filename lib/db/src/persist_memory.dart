@@ -31,7 +31,7 @@ abstract class PersistMemory<T extends pb.Object> extends Memory<T> {
   final String name;
 
   /// _id is the unique id of this dataset, it is used to cache data
-  final String _id = unique.uuid();
+  final String _id = unique.generate(4);
 
   /// onChanged called when memory saved
   final VoidCallback? onChanged;
