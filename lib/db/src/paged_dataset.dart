@@ -13,12 +13,14 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
     required DatasetLoader<T> loader,
     required pb.Builder<T> dataBuilder,
     VoidCallback? onReady,
+    Future<void> Function(BuildContext context)? onChanged,
   }) : super(
           _memory,
           context: context,
           loader: loader,
           dataBuilder: dataBuilder,
           onReady: onReady,
+          onChanged: onChanged,
         );
 
   /// pageIndex is current page index

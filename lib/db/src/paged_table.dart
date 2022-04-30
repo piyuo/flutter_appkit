@@ -35,11 +35,15 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
     required String id,
     required pb.Builder<T> dataBuilder,
     required DatasetLoader<T> loader,
+    VoidCallback? onReady,
+    Future<void> Function(BuildContext context)? onChanged,
   }) : super(
           _memory,
           context: context,
           dataBuilder: dataBuilder,
           loader: loader,
+          onReady: onReady,
+          onChanged: onChanged,
         ) {
     _memory.internalNoMore = true;
   }
