@@ -15,20 +15,21 @@ var gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 int gridIndex = 10;
 
 Widget itemBuilder(bool isListView, int index) {
+  int item = gridItems[index];
   if (isListView) {
     return SizedBox(
       // Actual widget to display
       height: 64.0,
       child: Card(
         child: Center(
-          child: Text('Item $index'),
+          child: Text('Item $item'),
         ),
       ),
     );
   }
   return Card(
     child: Center(
-      child: Text('Item $index'),
+      child: Text('Item $item'),
     ),
   );
 }
@@ -332,16 +333,16 @@ class _AnimationExampleState extends State<AnimationExample> {
                   OutlinedButton(
                       child: const Text('remove'),
                       onPressed: () {
-                        int item = gridItems[2];
-                        gridItems.removeAt(2);
-                        provide.removeAnimation(2, true, itemBuilder(true, item));
+                        Widget child = itemBuilder(true, 0);
+                        gridItems.removeAt(0);
+                        provide.removeAnimation(0, true, child);
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () {
-                      int item = gridItems[2];
+                      Widget child = itemBuilder(true, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, true, itemBuilder(true, item));
+                      provide.removeAnimation(2, true, child);
                       gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
