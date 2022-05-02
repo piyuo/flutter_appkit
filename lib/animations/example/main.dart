@@ -336,6 +336,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                         Widget child = itemBuilder(true, 0);
                         gridItems.removeAt(0);
                         provide.removeAnimation(0, true, child);
+                        provide.onAnimationDone(() => debugPrint('animation done'));
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),

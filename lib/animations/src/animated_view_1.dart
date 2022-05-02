@@ -81,14 +81,19 @@ class AnimatedViewProvider with ChangeNotifier {
   }
 
   /// removeAnimation show remove animation
-  void removeAnimation(int index, bool isListView, Widget child) {
+  void removeAnimation(int index, bool isSizeAnimation, Widget child) {
     if (index != -1) {
       _gridKey.currentState!.removeItem(
         index,
-        (_, animation) => isListView ? _sizeIt(child, animation) : _slideIt(child, animation),
+        (_, animation) => isSizeAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
         duration: animatedDuration,
       );
     }
+  }
+
+  /// onAnimationDone called when animated duration is passed
+  void onAnimationDone(VoidCallback callback) {
+    Future.delayed(animatedDuration, callback);
   }
 }
 
