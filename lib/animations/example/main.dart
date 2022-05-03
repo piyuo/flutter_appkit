@@ -64,7 +64,7 @@ class _AnimationExampleState extends State<AnimationExample> {
         child: Column(
           children: [
             Expanded(
-              child: _animatedView(),
+              child: _animatedViewInGrid(),
             ),
             SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -78,8 +78,12 @@ class _AnimationExampleState extends State<AnimationExample> {
                     builder: () => _animatedGrid(),
                   ),
                   testing.ExampleButton(
-                    label: 'animated view',
-                    builder: () => _animatedView(),
+                    label: 'animated view in list',
+                    builder: () => _animatedViewInList(),
+                  ),
+                  testing.ExampleButton(
+                    label: 'animated view in grid',
+                    builder: () => _animatedViewInGrid(),
                   ),
                   testing.ExampleButton(
                     label: 'animated view in list view',
@@ -203,8 +207,8 @@ class _AnimationExampleState extends State<AnimationExample> {
         OutlinedButton(
             child: const Text('remove'),
             onPressed: () {
-              gridKey.currentState!.removeItem(0, (_, animation) => slideIt(context, 0, animation));
-              gridItems.removeAt(0);
+              gridKey.currentState!.removeItem(1, (_, animation) => slideIt(context, 0, animation));
+              gridItems.removeAt(1);
             }),
       ]),
       Expanded(
@@ -311,7 +315,7 @@ class _AnimationExampleState extends State<AnimationExample> {
         });
   }
 
-  Widget _animatedView() {
+  Widget _animatedViewInList() {
     return ChangeNotifierProvider<AnimatedViewProvider>(
       create: (context) => AnimatedViewProvider(gridItems.length),
       child: Consumer<AnimatedViewProvider>(
@@ -376,6 +380,76 @@ class _AnimationExampleState extends State<AnimationExample> {
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 20,
                   crossAxisCount: 1,
+                )),
+              ])),
+    );
+  }
+
+  Widget _animatedViewInGrid() {
+    return ChangeNotifierProvider<AnimatedViewProvider>(
+      create: (context) => AnimatedViewProvider(gridItems.length),
+      child: Consumer<AnimatedViewProvider>(
+          builder: (context, provide, child) => Column(children: [
+                Row(children: [
+                  OutlinedButton(
+                    child: const Text('update item count'),
+                    onPressed: () {
+                      provide.itemCount = 5;
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('insert'),
+                    onPressed: () {
+                      gridItems.insert(0, 9);
+                      provide.insertAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                      child: const Text('remove'),
+                      onPressed: () {
+                        Widget child = itemBuilder(true, 0);
+                        gridItems.removeAt(0);
+                        provide.removeAnimation(0, false, child);
+                        provide.onAnimationDone(() => debugPrint('animation done'));
+                      }),
+                  OutlinedButton(
+                    child: const Text('reorder'),
+                    onPressed: () {
+                      Widget child = itemBuilder(true, 2);
+                      gridItems.removeAt(2);
+                      provide.removeAnimation(2, true, child);
+                      gridItems.insert(0, 2);
+                      provide.insertAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('next page'),
+                    onPressed: () {
+                      gridItems = [11, 12, 13];
+                      provide.nextPageAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('prev page'),
+                    onPressed: () {
+                      gridItems = [21, 22, 23, 24, 25];
+                      provide.prevPageAnimation();
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('refresh'),
+                    onPressed: () {
+                      gridItems = [31, 32, 33, 34, 35];
+                      provide.refreshPageAnimation();
+                    },
+                  ),
+                ]),
+                const Expanded(
+                    child: AnimatedView(
+                  itemBuilder: itemBuilder,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 20,
+                  crossAxisCount: 3,
                 )),
               ])),
     );
