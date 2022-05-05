@@ -7,10 +7,12 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 /// LoadingDisplay show a loading display on page
 class LoadingDisplay extends StatelessWidget {
   const LoadingDisplay({
+    this.showAnimation = false,
     Key? key,
   }) : super(key: key);
 
-  final bool 
+  /// showAnimation is a boolean value that indicates whether show animation
+  final bool showAnimation;
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -19,15 +21,16 @@ class LoadingDisplay extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-                width: 100,
-                height: 100,
-                child: LoadingIndicator(
-                  indicatorType: Indicator.lineScalePulseOut,
-                  colors: kDefaultRainbowColors,
-                  strokeWidth: 4.0,
-                )),
-            const SizedBox(height: 25),
+            if (showAnimation)
+              const SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.lineScalePulseOut,
+                    colors: kDefaultRainbowColors,
+                    strokeWidth: 4.0,
+                  )),
+            if (showAnimation) const SizedBox(height: 25),
             Text(context.i18n.loadingLabel,
                 style: const TextStyle(
                   color: Colors.grey,
