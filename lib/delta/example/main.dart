@@ -22,6 +22,13 @@ main() {
     () => debugPrint(_searchBoxController.text),
   );
 
+  _trigger = SearchTrigger(
+    controller: _searchBoxController,
+    onSearch: (text) => debugPrint('search:$text'),
+    onSearchBegin: () => debugPrint('search begin'),
+    onSearchEnd: () => debugPrint('search end'),
+  );
+
   app.start(
     appName: 'delta',
     routes: {
@@ -52,6 +59,8 @@ final _searchBoxController = TextEditingController();
 
 final _scrollController = ScrollController();
 
+SearchTrigger? _trigger;
+
 class DeltaExample extends StatelessWidget {
   const DeltaExample({Key? key}) : super(key: key);
 
@@ -65,13 +74,14 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _refreshMoreView(context),
+                          child: _searchTrigger(context),
                         ),
                         SizedBox(
                           height: 100,
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
+                                testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(label: 'refresh more', builder: () => _refreshMoreView(context)),
                                 testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
                                 testing.ExampleButton(
@@ -112,6 +122,20 @@ class DeltaExample extends StatelessWidget {
                     ),
                   ),
                 )));
+  }
+
+  Widget _searchTrigger(BuildContext context) {
+    return Column(children: [
+      TextField(controller: _searchBoxController),
+      ElevatedButton(
+        child: const Text('dispose'),
+        onPressed: () {
+          if (_trigger != null) {
+            _trigger!.dispose();
+          }
+        },
+      )
+    ]);
   }
 
   Widget _redirectToUrl(BuildContext context) {
