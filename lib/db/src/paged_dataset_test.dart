@@ -344,7 +344,7 @@ void main() {
       await memory.setRowsPerPage(testing.Context(), 5);
       ds.pageIndex = 0;
 
-      await ds.fill();
+      ds.fill();
       expect(ds.displayRows.length, 5);
     });
 

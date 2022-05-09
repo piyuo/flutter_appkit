@@ -30,7 +30,7 @@ class ContinuousTable<T extends pb.Object> extends ContinuousDataset<T> {
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     await memory.insert(context, downloadRows);
-    await fill();
+    fill();
     return false; // table do not reset memory
   }
 

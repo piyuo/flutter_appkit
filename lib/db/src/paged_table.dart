@@ -71,15 +71,15 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
   /// hasNextPage return true if user can click next page
   @override
   bool get hasNextPage {
-    final paginator = Paginator(rowCount: innerMemory.length, rowsPerPage: innerMemory.rowsPerPage);
+    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
     return pageIndex < paginator.pageCount - 1;
   }
 
   /// pagingInfo return text page info like '1-10 of 19'
   @override
   String pageInfo(BuildContext context) {
-    final paginator = Paginator(rowCount: innerMemory.length, rowsPerPage: innerMemory.rowsPerPage);
+    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
     return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ' +
-        context.i18n.pagingCount.replaceAll('%1', innerMemory.length.toString());
+        context.i18n.pagingCount.replaceAll('%1', memory.length.toString());
   }
 }

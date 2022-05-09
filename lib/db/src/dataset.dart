@@ -41,7 +41,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
     required this.loader,
     required this.dataBuilder,
     this.onReady,
-    Future<void> Function(BuildContext context)? onChanged,
+    this.onChanged,
   }) {
     if (context != null) {
       open(context);
@@ -65,7 +65,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   DataState state = DataState.initial;
 
   /// memory keep all rows in memory
-  final Memory<T> memory;
+  Memory<T> memory;
 
   /// selectedRows keep all selected rows
   List<T> selectedRows = [];
@@ -76,15 +76,17 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// isDisplayRowsFullPage return true if displayRows is full of page
   bool get isDisplayRowsFullPage => displayRows.length == rowsPerPage;
 
-  /// length return rows is empty
+  /// length return rows length
   /// ```dart
   /// var len=ds.length;
   /// ```
   int get length => memory.length;
 
-  /// innerMemory can get _memory for child
-  @protected
-  Memory<T> get innerMemory => memory;
+  /// isEmpty return rows is empty
+  bool get isEmpty => memory.isEmpty;
+
+  /// isNotEmpty return rows is not empty
+  bool get isNotEmpty => memory.isNotEmpty;
 
   /// noRefresh return true if no refresh need
   bool get noRefresh => memory.noRefresh;
@@ -98,17 +100,25 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
   /// rowsPerPage return rows per page
   int get rowsPerPage => memory.rowsPerPage;
 
-  /// isEmpty return rows is empty
-  bool get isEmpty => memory.isEmpty;
+  /// onChanged call when memory changed
+  Future<void> Function(BuildContext context)? onChanged;
 
-  /// isNotEmpty return rows is not empty
-  bool get isNotEmpty => memory.isNotEmpty;
+  /// setMemory set new memory to data set
+  /// ```dart
+  /// ds.setMemory(context,memory);
+  /// ```
+  void setMemory(BuildContext context, Memory<T> source) {
+    if (source is PersistMemory) {
+      (source as PersistMemory).onChanged = onChanged;
+    }
+    memory = source;
+  }
 
   /// fill display rows
   /// ```dart
-  /// await ds.fill();
+  /// ds.fill();
   /// ```
-  Future<void> fill();
+  void fill();
 
   /// pageInfo return text page info like '1-10 of many'
   /// ```dart
@@ -202,7 +212,7 @@ abstract class Dataset<T extends pb.Object> with ChangeNotifier {
       }
       if (downloadRows.isNotEmpty) {
         await memory.add(context, downloadRows);
-        await fill();
+        fill();
         return true;
       }
       return false;

@@ -39,7 +39,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// await ds.fill();
   /// ```
   @override
-  Future<void> fill() async {
+  void fill() {
     displayRows.clear();
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
     final range = memory.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
@@ -75,7 +75,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
       if (pageIndex >= paginator.pageCount) {
         pageIndex = paginator.pageCount - 1;
       }
-      await fill();
+      fill();
     } finally {
       notifyListeners();
     }

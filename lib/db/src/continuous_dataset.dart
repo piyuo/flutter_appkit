@@ -25,7 +25,7 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     final isReset = await super.onRefresh(context, downloadRows);
-    await fill();
+    fill();
     return isReset;
   }
 
@@ -41,7 +41,7 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   /// await ds.fill();
   /// ```
   @override
-  Future<void> fill() async {
+  void fill() {
     displayRows.clear();
     displayRows.addAll(memory.all);
   }
