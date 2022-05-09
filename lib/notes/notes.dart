@@ -1,8 +1,6 @@
 library notes;
 
 export 'src/selectable.dart';
-export 'src/selectable_list.dart';
-export 'src/selectable_grid.dart';
 export 'src/simple_list.dart';
 export 'src/simple_grid.dart';
 export 'src/dynamic_list.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/animations/animations.dart' as animations;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'selectable.dart';
-import 'selectable_grid.dart';
 
 /// DynamicGrid is animation + refresh more, need AnimatedViewProvider
 /// ```dart
@@ -25,7 +24,7 @@ import 'selectable_grid.dart';
 ///                  ),
 ///                )));
 /// ```
-class DynamicGrid<T> extends SelectableGrid<T> {
+class DynamicGrid<T> extends Selectable<T> {
   /// DynamicGrid is animation + refresh more, need AnimatedViewProvider
   /// ```dart
   ///return ChangeNotifierProvider<animations.AnimatedViewProvider>(
@@ -51,37 +50,36 @@ class DynamicGrid<T> extends SelectableGrid<T> {
     required List<T> items,
     required List<T> selectedItems,
     bool isCheckMode = false,
+    void Function(T item)? onItemTapped,
     void Function(List<T> items)? onItemSelected,
     void Function(List<T> items)? onItemChecked,
     Color? selectedColor,
     required ItemBuilder<T> itemBuilder,
+    ItemDecorationBuilder<T> itemDecorationBuilder = defaultGridDecorationBuilder,
     Widget Function()? headerBuilder,
     Widget Function()? footerBuilder,
-    int crossAxisCount = 2,
-    ItemBuilder<T>? labelBuilder,
     Color? selectedBorderColor,
     Color? borderColor,
     this.onRefresh,
     this.onLoadMore,
     this.controller,
-    Color? itemBackgroundColor,
+    this.crossAxisCount = 2,
     T? newItem,
+    bool isReadyToShow = true,
     Key? key,
   }) : super(
           items: items,
           selectedItems: selectedItems,
-          isCheckMode: isCheckMode,
+          checkMode: isCheckMode,
           itemBuilder: itemBuilder,
+          itemDecorationBuilder: itemDecorationBuilder,
+          onItemTapped: onItemTapped,
           onItemSelected: onItemSelected,
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
-          crossAxisCount: crossAxisCount,
-          labelBuilder: labelBuilder,
-          selectedBorderColor: selectedBorderColor,
-          itemBackgroundColor: itemBackgroundColor,
-          borderColor: borderColor,
           newItem: newItem,
+          isReadyToShow: isReadyToShow,
           key: key,
         );
 
@@ -105,8 +103,39 @@ class DynamicGrid<T> extends SelectableGrid<T> {
   /// [ScrollController.animateTo]).
   final ScrollController? controller;
 
+  /// crossAxisCount is the number of children in the cross axis.
+  final int crossAxisCount;
+
+  /// rowCount is actual row count to display
+  int get rowCount {
+    int count = 1;
+    if (headerBuilder != null) {
+      count++;
+    }
+    if (footerBuilder != null) {
+      count++;
+    }
+    return count;
+  }
+
+  /// buildHeader build header in list view
+  Widget buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+      child: headerBuilder!(),
+    );
+  }
+
+  /// buildListFooter build footer in list view
+  Widget buildFooter(BuildContext context) {
+    return footerBuilder!();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!isReadyToShow) {
+      return const delta.LoadingDisplay();
+    }
     var scrollController = controller ?? ScrollController();
     return Stack(
       fit: StackFit.expand,

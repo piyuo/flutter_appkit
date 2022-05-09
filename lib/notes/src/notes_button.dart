@@ -62,7 +62,7 @@ class NotesButton<T extends pb.Object> extends StatelessWidget {
         );
 
         if (action != null) {
-          controller.barAction(context, action);
+          controller.onBarAction(context, action);
         }
       },
     );

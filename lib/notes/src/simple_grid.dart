@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'selectable.dart';
-import 'selectable_grid.dart';
 
-class SimpleGrid<T> extends SelectableGrid<T> {
+class SimpleGrid<T> extends Selectable<T> {
   const SimpleGrid({
     required List<T> items,
     required List<T> selectedItems,
@@ -12,26 +11,46 @@ class SimpleGrid<T> extends SelectableGrid<T> {
     required ItemBuilder<T> itemBuilder,
     Widget Function()? headerBuilder,
     Widget Function()? footerBuilder,
-    ItemBuilder<T>? labelBuilder,
     Color? borderColor,
     Color? selectedBorderColor,
-    int crossAxisCount = 2,
+    this.crossAxisCount = 2,
     Key? key,
   }) : super(
           items: items,
           selectedItems: selectedItems,
-          isCheckMode: checkMode,
-          crossAxisCount: crossAxisCount,
-          labelBuilder: labelBuilder,
-          borderColor: borderColor,
-          selectedBorderColor: selectedBorderColor,
           itemBuilder: itemBuilder,
+          itemDecorationBuilder: defaultGridDecorationBuilder,
           onItemSelected: onItemSelected,
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
           key: key,
         );
+
+  /// crossAxisCount is the number of children in the cross axis.
+  final int crossAxisCount;
+
+  /// rowCount is actual row count to display
+  int get rowCount {
+    int count = 1;
+    if (headerBuilder != null) {
+      count++;
+    }
+    if (footerBuilder != null) {
+      count++;
+    }
+    return count;
+  }
+
+  /// buildHeader build header in list view
+  Widget buildHeader(BuildContext context) {
+    return headerBuilder!();
+  }
+
+  /// buildListFooter build footer in list view
+  Widget buildFooter(BuildContext context) {
+    return footerBuilder!();
+  }
 
   @override
   Widget build(BuildContext context) {

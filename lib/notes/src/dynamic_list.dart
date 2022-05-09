@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/animations/animations.dart' as animations;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'selectable.dart';
-import 'selectable_list.dart';
 
 /// DynamicList is animation + refresh more, need AnimatedViewProvider
 /// ```dart
@@ -25,7 +24,7 @@ import 'selectable_list.dart';
 ///                  ),
 ///                )));
 /// ```
-class DynamicList<T> extends SelectableList<T> {
+class DynamicList<T> extends Selectable<T> {
   /// DynamicList is animation + refresh more, need AnimatedViewProvider
   /// ```dart
   /// return ChangeNotifierProvider<animations.AnimatedViewProvider>(
@@ -50,29 +49,34 @@ class DynamicList<T> extends SelectableList<T> {
   const DynamicList({
     required List<T> items,
     required List<T> selectedItems,
-    bool checkMode = false,
+    bool isCheckMode = false,
+    void Function(T item)? onItemTapped,
     void Function(List<T> items)? onItemSelected,
     void Function(List<T> items)? onItemChecked,
     Color? selectedColor,
     required ItemBuilder<T> itemBuilder,
+    ItemDecorationBuilder<T> itemDecorationBuilder = defaultListDecorationBuilder,
     Widget Function()? headerBuilder,
     Widget Function()? footerBuilder,
     this.onRefresh,
     this.onLoadMore,
     this.controller,
     T? newItem,
+    bool isReadyToShow = true,
     Key? key,
   }) : super(
           items: items,
           selectedItems: selectedItems,
-          checkMode: checkMode,
-          selectedColor: selectedColor,
+          checkMode: isCheckMode,
           itemBuilder: itemBuilder,
+          itemDecorationBuilder: itemDecorationBuilder,
+          onItemTapped: onItemTapped,
           onItemSelected: onItemSelected,
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
           newItem: newItem,
+          isReadyToShow: isReadyToShow,
           key: key,
         );
 
@@ -105,14 +109,14 @@ class DynamicList<T> extends SelectableList<T> {
     if (footerBuilder != null) {
       count++;
     }
-//    if (newItem != null) {
-//      count++;
-//    }
     return count;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!isReadyToShow) {
+      return const delta.LoadingDisplay();
+    }
     var scrollController = controller ?? ScrollController();
     return Stack(
       fit: StackFit.expand,

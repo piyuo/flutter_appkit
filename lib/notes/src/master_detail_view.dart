@@ -29,15 +29,17 @@ class MasterDetailView<T> extends StatelessWidget {
   /// MasterDetailView show basic master detail view with select/check function, it need [delta.RefreshButtonController]
   const MasterDetailView({
     required this.listBuilder,
+    this.listDecorationBuilder = defaultListDecorationBuilder,
     required this.gridBuilder,
+    this.gridDecorationBuilder = defaultGridDecorationBuilder,
     required this.detailBuilder,
     required this.items,
     required this.selectedItems,
     required this.onBarAction,
-    this.gridLabelBuilder,
     this.headerBuilder,
     this.footerBuilder,
     this.isLoading = false,
+    this.onItemTapped,
     this.onItemSelected,
     this.onItemChecked,
     this.gridItemWidth = 240,
@@ -48,10 +50,10 @@ class MasterDetailView<T> extends StatelessWidget {
     this.isListView = true,
     this.supportRefresh = true,
     this.supportLoadMore = true,
-    this.gridItemBackgroundColor,
     this.deleteLabel,
     this.deleteIcon,
     this.newItem,
+    this.isReadyToShow = true,
     Key? key,
   }) : super(key: key);
 
@@ -67,17 +69,17 @@ class MasterDetailView<T> extends StatelessWidget {
   /// listBuilder is the builder for list view
   final ItemBuilder<T> listBuilder;
 
+  /// listDecorationBuilder is a list decoration builder
+  final ItemDecorationBuilder<T> listDecorationBuilder;
+
   /// gridBuilder is the builder for grid view
   final ItemBuilder<T> gridBuilder;
 
+  /// gridDecorationBuilder is a grid decoration builder
+  final ItemDecorationBuilder<T> gridDecorationBuilder;
+
   /// gridItemWidth is the width of grid item
   final int gridItemWidth;
-
-  /// gridItemBackgroundColor is the background color of grid item
-  final Color? gridItemBackgroundColor;
-
-  /// labelBuilder is the builder for label in grid view
-  final ItemBuilder<T>? gridLabelBuilder;
 
   /// detailBuilder is the builder for detail view
   final Widget Function(T) detailBuilder;
@@ -94,6 +96,9 @@ class MasterDetailView<T> extends StatelessWidget {
   /// pagingInfo is current page info if not in phone design
   final String? information;
 
+  /// onItemTapped is callback when item is tapped
+  final void Function(T item)? onItemTapped;
+
   /// onItemSelected is the callback for item selected
   final void Function(List<T> items)? onItemSelected;
 
@@ -101,7 +106,7 @@ class MasterDetailView<T> extends StatelessWidget {
   final void Function(List<T> items)? onItemChecked;
 
   /// onBarAction is the callback for bar action
-  final Future<void> Function(MasterDetailViewAction) onBarAction;
+  final Future<void> Function(MasterDetailViewAction action, {ItemBuilder<T>? builder}) onBarAction;
 
   /// nextPageEnabled is the flag to indicate if next page is enabled
   final bool hasNextPage;
@@ -133,6 +138,9 @@ class MasterDetailView<T> extends StatelessWidget {
   /// deleteIcon is the icon for delete button
   final IconData? deleteIcon;
 
+  /// isReadyToShow is true mean list is ready to show
+  final bool isReadyToShow;
+
   /// buildList build list and split view
   Widget buildList(BuildContext context) {
     return Column(
@@ -142,11 +150,13 @@ class MasterDetailView<T> extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: DynamicList<T>(
-              checkMode: isCheckMode,
+              isReadyToShow: isReadyToShow,
+              isCheckMode: isCheckMode,
               newItem: newItem,
               items: items,
               selectedItems: selectedItems,
               itemBuilder: listBuilder,
+              itemDecorationBuilder: listDecorationBuilder,
               onRefresh: supportRefresh ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
               onLoadMore: supportLoadMore ? () => onBarAction.call(MasterDetailViewAction.more) : null,
               headerBuilder: isCheckMode
@@ -155,6 +165,7 @@ class MasterDetailView<T> extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(4, !context.isPreferMouse || responsive.phoneScreen ? 10 : 0, 4, 0),
                       child: headerBuilder != null ? headerBuilder!() : null),
               footerBuilder: isCheckMode ? null : footerBuilder,
+              onItemTapped: (selectedItem) => onItemTapped?.call(selectedItem),
               onItemSelected: (selectedItems) => onItemSelected?.call(selectedItems),
               onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
             ),
@@ -188,14 +199,14 @@ class MasterDetailView<T> extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: DynamicGrid<T>(
-                      itemBackgroundColor: gridItemBackgroundColor,
                       crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
+                      isReadyToShow: isReadyToShow,
                       isCheckMode: isCheckMode,
                       newItem: newItem,
                       items: items,
                       selectedItems: selectedItems,
                       itemBuilder: gridBuilder,
-                      labelBuilder: gridLabelBuilder,
+                      itemDecorationBuilder: gridDecorationBuilder,
                       onRefresh: supportRefresh ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
                       onLoadMore: supportLoadMore ? () => onBarAction.call(MasterDetailViewAction.more) : null,
                       headerBuilder: () => Padding(
@@ -207,6 +218,7 @@ class MasterDetailView<T> extends StatelessWidget {
                                   ? headerBuilder!()
                                   : null),
                       footerBuilder: isCheckMode ? null : footerBuilder,
+                      onItemTapped: (selectedItem) => onItemTapped?.call(selectedItem),
                       onItemSelected: (selectedItems) => onItemSelected?.call(selectedItems),
                       onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
                     ))),
@@ -282,6 +294,23 @@ class MasterDetailView<T> extends StatelessWidget {
     });
   }
 
+  /// _buildItemWithDecoration build item with decoration
+  Widget _buildItemWithDecoration(BuildContext context, T item, bool isSelected) {
+    return isListView
+        ? listDecorationBuilder(
+            context,
+            child: listBuilder(context, item, isSelected),
+            checkMode: isCheckMode,
+            isSelected: isSelected,
+          )
+        : gridDecorationBuilder(
+            context,
+            child: gridBuilder(context, item, isSelected),
+            checkMode: isCheckMode,
+            isSelected: isSelected,
+          );
+  }
+
   /// _buildSelectionHeader in selection view
   Widget _buildSelectionHeader(BuildContext context) {
     return CheckableHeader(
@@ -300,8 +329,10 @@ class MasterDetailView<T> extends StatelessWidget {
             icon: Icon(deleteIcon ?? Icons.delete),
             onPressed: selectedItems.isNotEmpty
                 ? () async {
-                    await onBarAction.call(MasterDetailViewAction.toggleCheckMode);
-                    await onBarAction.call(MasterDetailViewAction.delete);
+                    await onBarAction.call(
+                      MasterDetailViewAction.delete,
+                      builder: _buildItemWithDecoration,
+                    );
                   }
                 : null,
           ),
@@ -319,7 +350,9 @@ class MasterDetailView<T> extends StatelessWidget {
         ),
         Expanded(
           child: responsive.Toolbar<MasterDetailViewAction>(
-            onPressed: (action) => onBarAction.call(action),
+            onPressed: (action) {
+              onBarAction.call(action, builder: _buildItemWithDecoration);
+            },
             items: [
               responsive.ToolButton(
                 label: context.i18n.notesViewAsListLabel,

@@ -13,7 +13,7 @@ import '../notes.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
-final memory = db.MemoryRam(dataBuilder: () => sample.Person());
+late db.Memory<sample.Person> memory;
 final _searchBoxController = TextEditingController();
 int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
@@ -24,12 +24,16 @@ int stepCount = 0;
 main() {
   app.start(
     appName: 'notes',
+    onBeforeStart: () async {
+      await db.deleteMemoryDatabase('test');
+      memory = db.MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+    },
     providers: [
       ChangeNotifierProvider<NotesController<sample.Person>>(
         create: (context) => NotesController<sample.Person>(
           memory,
           context: context,
-          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          loader: (context, isRefresh, limit, anchorTimestamp, anchorId, tag, search) async {
             stepCount++;
             return List.generate(
               stepCount == 1 ? 2 : 2,
@@ -57,6 +61,9 @@ main() {
           },
           remover: (context, persons) async => true,
           dataBuilder: () => sample.Person(),
+          onSearch: (text) => debugPrint('search:$text'),
+          onSearchBegin: () => debugPrint('search begin'),
+          onSearchEnd: () => debugPrint('search end'),
           tags: [
             Tag(
               label: 'Inbox',
@@ -104,8 +111,17 @@ main() {
                     Text('beam: detail view for $id'),
                     ElevatedButton(
                         child: const Text('Save'),
-                        onPressed: () {
-                          if (id == 'new') {}
+                        onPressed: () async {
+                          if (id == 'new') {
+                            final person = sample.Person(
+                              name: 'beam item',
+                              entity: pb.Entity(id: unique.uuid()),
+                            );
+                            final memory2 =
+                                db.MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+                            await memory2.open();
+                            await memory2.insert(context, [person]);
+                          }
                         })
                   ])),
             ),
@@ -197,7 +213,7 @@ class NotesExample extends StatelessWidget {
               ),
               items: const ['a', 'b', 'c', 'd', 'e'],
               selectedItems: const ['b'],
-              itemBuilder: (String item, bool isSelected) => Padding(
+              itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Text(item),
               ),
@@ -216,7 +232,7 @@ class NotesExample extends StatelessWidget {
           checkMode: true,
           items: const ['a', 'b', 'c', 'd', 'e'],
           selectedItems: const ['b'],
-          itemBuilder: (String item, bool isSelected) => Padding(
+          itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Text(item),
           ),
@@ -235,14 +251,9 @@ class NotesExample extends StatelessWidget {
         ),
         items: const ['a', 'b', 'c', 'd', 'e'],
         selectedItems: const ['b'],
-        itemBuilder: (String item, bool isSelected) => Padding(
+        itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Text(item),
-        ),
-        labelBuilder: (String item, bool isSelected) => Container(
-          color: Colors.yellow,
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-          child: const Center(child: Text('hello world')),
         ),
       ),
     );
@@ -262,13 +273,9 @@ class NotesExample extends StatelessWidget {
           checkMode: true,
           items: const ['a', 'b', 'c', 'd', 'e'],
           selectedItems: const ['b'],
-          itemBuilder: (String item, bool isSelected) => Padding(
+          itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
             child: Text(item),
-          ),
-          labelBuilder: (String item, bool isSelected) => const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            child: Center(child: Text('hello world')),
           ),
         ),
       ),
@@ -300,7 +307,7 @@ class NotesExample extends StatelessWidget {
                       ),
                       items: animationListItems,
                       selectedItems: const ['b'],
-                      itemBuilder: (String item, bool isSelected) => Padding(
+                      itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Text(item),
                       ),
@@ -328,7 +335,7 @@ class NotesExample extends StatelessWidget {
                       await Future.delayed(const Duration(seconds: 3));
                       debugPrint('load more');
                     },
-                    itemBuilder: (String item, bool isSelected) => Padding(
+                    itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                       child: Text(item),
                     ),
@@ -361,7 +368,7 @@ class NotesExample extends StatelessWidget {
                       ),
                       items: animationListItems,
                       selectedItems: const ['b'],
-                      itemBuilder: (String item, bool isSelected) => Container(
+                      itemBuilder: (BuildContext context, String item, bool isSelected) => Container(
                         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Text(item),
                       ),
@@ -426,23 +433,19 @@ class NotesExample extends StatelessWidget {
                   information: '1-6 of 6',
                   items: const ['a', 'b', 'c', 'd', 'e'],
                   selectedItems: const ['a'],
-                  listBuilder: (String item, bool isSelected) => Padding(
+                  listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     child: Text('list:' + item),
                   ),
-                  gridBuilder: (String item, bool isSelected) => Container(
+                  gridBuilder: (BuildContext context, String item, bool isSelected) => Container(
                     padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                     child: Text('grid:' + item),
-                  ),
-                  gridLabelBuilder: (String item, bool isSelected) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    child: Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
                   ),
                   detailBuilder: (String item) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Center(child: Text('detail view for $item')),
                   ),
-                  onBarAction: (action) async {
+                  onBarAction: (MasterDetailViewAction action, {ItemBuilder<String>? builder}) async {
                     debugPrint('$action pressed');
                     if (action == MasterDetailViewAction.refresh) {
                       await Future.delayed(const Duration(seconds: 10));
@@ -456,49 +459,6 @@ class NotesExample extends StatelessWidget {
                   },
                 )));
   }
-
-/*
-  Widget _tableView(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<SampleTable>(create: (context) => SampleTable(context)),
-        ],
-        child: Consumer<SampleTable>(
-            builder: (context, table, _) => TableView<sample.Person>(
-                  table: table,
-                  listBuilder: (sample.Person person, bool isSelected) => Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text('list:${person.name}'),
-                  ),
-                  gridBuilder: (sample.Person person, bool isSelected) => Padding(
-                    padding: const EdgeInsets.all(50),
-                    child: Text('list:${person.name}'),
-                  ),
-                  labelBuilder: (sample.Person person, bool isSelected) => Text('label:${person.age}'),
-                  detailBuilder: (sample.Person person) => Column(
-                    children: [
-                      Text('name:${person.name}'),
-                      Text('age:${person.age}'),
-                    ],
-                  ),
-                  onShowDetail: (sample.Person person) => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                    return Scaffold(
-                      appBar: AppBar(
-                        elevation: 1,
-                      ),
-                      body: SafeArea(
-                          child: Column(
-                        children: [
-                          Text('name:${person.name}'),
-                          Text('age:${person.age}'),
-                        ],
-                      )),
-                    );
-                  })),
-                  onBarAction: (action) async {},
-                )));
-  }
-*/
 
   Widget _showFilterView(BuildContext context) {
     return OutlinedButton(
@@ -622,23 +582,19 @@ class NotesExample extends StatelessWidget {
                 information: '1-6 of 6',
                 items: const ['a', 'b', 'c', 'd', 'e'],
                 selectedItems: const ['a'],
-                listBuilder: (String item, bool isSelected) => Padding(
+                listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                   child: Text('list:' + item),
                 ),
-                gridBuilder: (String item, bool isSelected) => Container(
+                gridBuilder: (BuildContext context, String item, bool isSelected) => Container(
                   padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                   child: Text('grid:' + item),
-                ),
-                gridLabelBuilder: (String item, bool isSelected) => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  child: Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
                 ),
                 detailBuilder: (String item) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                   child: Center(child: Text('detail view for $item')),
                 ),
-                onBarAction: (action) async {
+                onBarAction: (MasterDetailViewAction action, {ItemBuilder<String>? builder}) async {
                   debugPrint('$action pressed');
                   if (action == MasterDetailViewAction.refresh) {
                     await Future.delayed(const Duration(seconds: 10));
@@ -703,11 +659,11 @@ class NotesExample extends StatelessWidget {
           isLoading: true,
           items: const [],
           selectedItems: const [],
-          listBuilder: (String item, bool isSelected) => const SizedBox(),
-          gridBuilder: (String item, bool isSelected) => const SizedBox(),
-          gridLabelBuilder: (String item, bool isSelected) => const Text('label'),
+          listBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
+          gridBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
           detailBuilder: (String item) => const Text('detail view'),
-          onBarAction: (action) async => debugPrint('$action pressed'),
+          onBarAction: (MasterDetailViewAction action, {ItemBuilder<String>? builder}) async =>
+              debugPrint('$action pressed'),
         ));
   }
 
@@ -718,19 +674,13 @@ class NotesExample extends StatelessWidget {
         caption: "Notes",
         deleteLabel: context.i18n.notesDeleteButtonLabel,
         deleteIcon: Icons.delete,
-        listBuilder: (sample.Person person, bool isSelected) => Padding(
+        listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Text('list:${person.name}'),
         ),
-        gridItemBackgroundColor: Colors.white,
-        gridBuilder: (sample.Person person, bool isSelected) => Container(
+        gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
           padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
           child: Text('grid:$person'),
-        ),
-        gridLabelBuilder: (sample.Person person, bool isSelected) => Container(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-          child: const Center(child: Text('hello world', style: TextStyle(color: Colors.red))),
         ),
         detailBuilder: (sample.Person person) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
@@ -742,7 +692,7 @@ class NotesExample extends StatelessWidget {
                 onPressed: () async {
                   if (person.name == 'new item') {
                     person.name = 'saved item';
-                    memory.insert(context, [person]);
+                    await memory.insert(context, [person]);
                     await notesController.refill(context);
                   }
                 },

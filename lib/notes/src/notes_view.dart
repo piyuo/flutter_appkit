@@ -15,8 +15,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     required this.listBuilder,
     required this.gridBuilder,
     required this.detailBuilder,
-    this.gridLabelBuilder,
-    this.gridItemBackgroundColor,
     this.caption,
     this.deleteLabel,
     this.deleteIcon,
@@ -29,17 +27,11 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   /// gridBuilder is the builder for grid view
   final ItemBuilder<T> gridBuilder;
 
-  /// gridLabelBuilder is the builder for label in grid view
-  final ItemBuilder<T>? gridLabelBuilder;
-
   /// detailBuilder is the builder for detail view
   final Widget Function(T) detailBuilder;
 
   /// controller is the [NotesController]
   final NotesController<T> controller;
-
-  /// gridItemBackgroundColor is the background color of grid item
-  final Color? gridItemBackgroundColor;
 
   /// caption on top of search box
   final String? caption;
@@ -53,7 +45,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    final nextPageColor = context.themeColor(light: Colors.blue.shade400, dark: Colors.blue.shade500);
+    final linkColor = context.themeColor(light: Colors.blue.shade400, dark: Colors.blue.shade500);
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       final searchBox = delta.SearchBox(
         prefixIcon: controller.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
@@ -85,12 +77,11 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     )
                   : null,
               child: MasterDetailView<T>(
+                isReadyToShow: controller.isReadyToShow,
                 items: controller.dataset.displayRows,
                 selectedItems: controller.dataset.selectedRows,
                 listBuilder: listBuilder,
                 gridBuilder: gridBuilder,
-                gridItemBackgroundColor: gridItemBackgroundColor,
-                gridLabelBuilder: gridLabelBuilder,
                 detailBuilder: detailBuilder,
                 supportRefresh: context.isTouchSupported && !controller.noRefresh,
                 supportLoadMore: context.isTouchSupported && !controller.noMore,
@@ -119,16 +110,38 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     ],
                   ),
                 ),
-                footerBuilder: controller.hasNextPage
+                footerBuilder: controller.hasNextPage || controller.hasPreviousPage
                     ? () => Column(children: [
                           if (!controller.isListView) const Divider(),
                           Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: TextButton.icon(
-                                icon: Text(localizations.nextPageTooltip, style: TextStyle(color: nextPageColor)),
-                                label: Icon(Icons.chevron_right, color: nextPageColor),
-                                onPressed: () => controller.barAction(context, MasterDetailViewAction.nextPage),
-                              )),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: LayoutBuilder(
+                                builder: (BuildContext context, BoxConstraints constraints) => Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        if (controller.hasPreviousPage)
+                                          TextButton.icon(
+                                            icon: Icon(Icons.chevron_left, color: linkColor),
+                                            label: constraints.maxWidth < 300
+                                                ? const SizedBox()
+                                                : Text(localizations.previousPageTooltip,
+                                                    style: TextStyle(color: linkColor)),
+                                            onPressed: () =>
+                                                controller.onBarAction(context, MasterDetailViewAction.previousPage),
+                                          ),
+                                        if (controller.hasNextPage)
+                                          TextButton.icon(
+                                            icon: constraints.maxWidth < 300
+                                                ? const SizedBox()
+                                                : Text(localizations.nextPageTooltip,
+                                                    style: TextStyle(color: linkColor)),
+                                            label: Icon(Icons.chevron_right, color: linkColor),
+                                            onPressed: () =>
+                                                controller.onBarAction(context, MasterDetailViewAction.nextPage),
+                                          ),
+                                      ],
+                                    )),
+                          ),
                         ])
                     : null,
                 newItem: controller.newItem,
@@ -136,10 +149,12 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                 isListView: controller.isListView,
                 information: controller.dataset.pageInfo(context),
                 hasNextPage: controller.hasNextPage,
-                hasPrevPage: controller.hasPrevPage,
+                hasPrevPage: controller.hasPreviousPage,
                 onItemChecked: (selected) => controller.onItemChecked(context, selected),
                 onItemSelected: (selected) => controller.onItemSelected(context, selected),
-                onBarAction: (action) => controller.barAction(context, action),
+                onItemTapped: (selected) => controller.onItemTapped(context, selected),
+                onBarAction: (MasterDetailViewAction action, {ItemBuilder<T>? builder}) async =>
+                    await controller.onBarAction(context, action, builder: builder),
                 deleteLabel: deleteLabel,
                 deleteIcon: deleteIcon,
               )));

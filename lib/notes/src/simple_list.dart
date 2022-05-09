@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'selectable.dart';
-import 'selectable_list.dart';
 
-class SimpleList<T> extends SelectableList<T> {
+class SimpleList<T> extends Selectable<T> {
   const SimpleList({
     required List<T> items,
     required List<T> selectedItems,
@@ -18,8 +17,8 @@ class SimpleList<T> extends SelectableList<T> {
           items: items,
           selectedItems: selectedItems,
           checkMode: checkMode,
-          selectedColor: selectedColor,
           itemBuilder: itemBuilder,
+          itemDecorationBuilder: defaultListDecorationBuilder,
           onItemSelected: onItemSelected,
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,

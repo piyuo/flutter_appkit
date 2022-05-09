@@ -5,8 +5,10 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:beamer/beamer.dart';
 import 'package:libcli/animations/animations.dart' as animations;
 import 'package:libcli/responsive/responsive.dart' as responsive;
+import 'package:libcli/pb/src/google/google.dart' as google;
 import 'tag.dart';
 import 'master_detail_view.dart';
+import 'selectable.dart';
 
 /// Adder add new item
 typedef Adder<T> = Future<T> Function(BuildContext context);
@@ -14,32 +16,74 @@ typedef Adder<T> = Future<T> Function(BuildContext context);
 /// Remover remove list of selected rows
 typedef Remover<T> = Future<bool> Function(BuildContext context, List<T> item);
 
+/// Loader load data
+typedef Loader<T> = Future<List<T>> Function(
+  BuildContext context,
+  bool isRefresh,
+  int limit,
+  google.Timestamp? anchorTime,
+  String? anchorId,
+  String tag,
+  String search,
+);
+
 class NotesController<T extends pb.Object> with ChangeNotifier {
   NotesController(
     db.Memory<T> _memory, {
     required BuildContext context,
-    required db.DatasetLoader<T> loader,
     required pb.Builder<T> dataBuilder,
+    required Loader<T> loader,
     required this.adder,
     required this.remover,
     required this.isSaved,
     required this.isRemovable,
     this.tags = const [],
     this.onTagChanged,
+    this.onSearchChanged,
     this.onShowDetail,
     this.detailBeamName = '',
+    required this.onSearch,
+    this.onSearchBegin,
+    this.onSearchEnd,
   }) {
+    searchTrigger = delta.SearchTrigger(
+      controller: searchController,
+      onSearch: onSearch,
+      onSearchBegin: onSearchBegin,
+      onSearchEnd: onSearchEnd,
+    );
+
+    _onChanged(context) async {
+      dataset.selectRows([]);
+      await refill(context);
+    }
+
+    _onLoadData(context, isRefresh, limit, anchorTimestamp, anchorId) async {
+      return await loader(
+        context,
+        isRefresh,
+        limit,
+        anchorTimestamp,
+        anchorId,
+        getSelectedTag(),
+        searchController.text,
+      );
+    }
+
     dataset = context.isPreferMouse
         ? db.PagedDataset<T>(
             _memory,
             dataBuilder: dataBuilder,
-            loader: loader,
+            loader: _onLoadData,
+            onChanged: _onChanged,
           )
         : db.ContinuousDataset<T>(
             _memory,
             dataBuilder: dataBuilder,
-            loader: loader,
+            loader: _onLoadData,
+            onChanged: _onChanged,
           );
+
     open(context);
   }
 
@@ -48,6 +92,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     await dataset.open(context);
     animatedViewController.itemCount = dataset.displayRows.length;
     setDefaultSelected();
+    isReadyToShow = true;
     notifyListeners();
   }
 
@@ -57,7 +102,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// animatedViewController control view animation
   final animatedViewController = animations.AnimatedViewProvider(0);
 
-  /// searchController is search box controller
+  /// _searchController is search box controller
   final searchController = TextEditingController();
 
   /// table is data to be display
@@ -72,8 +117,11 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// isCheckMode is true if is in check mode
   bool isCheckMode = false;
 
-  /// onTagChanged called when tag changed
-  final Future<void> Function(String value)? onTagChanged;
+  /// onTagChanged called when tag changed, return true if need refresh
+  final Future<bool> Function(String value)? onTagChanged;
+
+  /// onSearchChanged called when search changed, return true if need refresh
+  final Future<bool> Function(String value)? onSearchChanged;
 
   /// adder create new item
   final Adder adder;
@@ -96,8 +144,24 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// detailBeamName is the beam location name of detail, like '/user'
   final String detailBeamName;
 
+  /// isReadyToShow is true mean list is ready to show
+  bool isReadyToShow = false;
+
+  /// searchTrigger trigger search event
+  late delta.SearchTrigger searchTrigger;
+
+  /// onSearch called when text need to be search
+  final void Function(String text) onSearch;
+
+  /// onSearchBegin called when text is editing and search begin
+  final VoidCallback? onSearchBegin;
+
+  /// onSearchEnd called when text is clear and search end
+  final VoidCallback? onSearchEnd;
+
   @override
   void dispose() {
+    searchTrigger.dispose();
     refreshButtonController.dispose();
     animatedViewController.dispose();
     dataset.dispose();
@@ -122,6 +186,24 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     }
   }
 
+  /// onItemTapped called when user tap item
+  void onItemTapped(BuildContext context, T selectedRow) {
+    if (!isSplitView) {
+      context.beamToNamed('$detailBeamName/${selectedRow.entityID}');
+      return;
+    }
+  }
+
+  /// onItemSelected call when user select rows
+  void onItemSelected(BuildContext context, List<T> selectedRows) {
+    if (!onItemChecked(context, selectedRows)) {
+      return;
+    }
+
+    final newRow = selectedRows.first;
+    onShowDetail?.call(newRow);
+  }
+
   /// onItemChecked called when user select item, return true if new item has been selected
   bool onItemChecked(BuildContext context, List<T> selectedRows) {
     final oldRow = dataset.selectedRows.isNotEmpty ? dataset.selectedRows.first : null;
@@ -131,22 +213,6 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     dataset.selectRows(selectedRows);
     notifyListeners();
     return true;
-  }
-
-  /// onItemSelected call when user select rows
-  void onItemSelected(BuildContext context, List<T> selectedRows) {
-    if (!onItemChecked(context, selectedRows)) {
-      return;
-    }
-
-    if (!isSplitView) {
-      final item = selectedRows.first;
-      context.beamToNamed('$detailBeamName/${item.entityID}');
-      return;
-    }
-
-    final newRow = selectedRows.first;
-    onShowDetail?.call(newRow);
   }
 
   /// onRowExit return true if row allow to exit
@@ -165,11 +231,11 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   bool get hasNextPage => dataset is db.PagedDataset ? (dataset as db.PagedDataset).hasNextPage : false;
 
   /// hasPrevPage return true if has prev page
-  bool get hasPrevPage => dataset is db.PagedDataset ? (dataset as db.PagedDataset).hasPrevPage : false;
+  bool get hasPreviousPage => dataset is db.PagedDataset ? (dataset as db.PagedDataset).hasPrevPage : false;
 
   /// refill let dataset refill data, the data may changed or deleted
   Future<void> refill(BuildContext context) async {
-    await dataset.fill();
+    dataset.fill();
     newItem = null;
     setDefaultSelected();
     animatedViewController.itemCount = dataset.displayRows.length;
@@ -177,10 +243,14 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   }
 
   /// refresh dataset
-  Future<void> refresh(BuildContext context) async => await barAction(context, MasterDetailViewAction.refresh);
+  Future<void> refresh(BuildContext context) async => await onBarAction(context, MasterDetailViewAction.refresh);
 
-  /// barAction handle bar action
-  Future<void> barAction(BuildContext context, MasterDetailViewAction action) async {
+  /// onBarAction handle bar action
+  Future<void> onBarAction(
+    BuildContext context,
+    MasterDetailViewAction action, {
+    ItemBuilder<T>? builder, // only use at delete
+  }) async {
     switch (action) {
       case MasterDetailViewAction.refresh:
         final originLength = dataset.length;
@@ -261,14 +331,33 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         animatedViewController.insertAnimation();
         break;
       case MasterDetailViewAction.delete:
+        assert(builder != null, 'builder must not be null when delete item');
+
+        if (isCheckMode) {
+          isCheckMode = false;
+        }
         if (isRemovable(dataset.selectedRows)) {
           final deleted = await remover(context, dataset.selectedRows);
           if (deleted) {
             await dataset.memory.delete(context, dataset.selectedRows);
+            int removeCount = 0;
+            for (int i = 0; i < dataset.displayRows.length; i++) {
+              final row = dataset.displayRows[i];
+              if (dataset.selectedRows.contains(row)) {
+                final child = builder!(context, row, true);
+                animatedViewController.removeAnimation(i - removeCount, isListView, child);
+                removeCount++;
+              }
+            }
+            dataset.fill();
             dataset.selectRows([]);
-            await refill(context);
+            animatedViewController.onAnimationDone(() {
+              setDefaultSelected();
+              notifyListeners();
+            });
           }
         }
+
         break;
     }
     notifyListeners();
@@ -277,21 +366,29 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
 
   /// setSelectedTag called when a tag is selected
   Future<void> setSelectedTag(String value) async {
+    String oldValue = getSelectedTag();
     for (final tag in tags) {
       tag.selected = tag.value == value;
     }
-    await onTagChanged?.call(value);
-    notifyListeners();
+    if (value != oldValue) {
+      searchController.text = '';
+      bool needReload = false;
+      if (onTagChanged != null) {
+        needReload = await onTagChanged!(value);
+      }
+      if (needReload) {}
+      notifyListeners();
+    }
   }
 
   /// getSelectedTag return selected tag
-  String? getSelectedTag() {
+  String getSelectedTag() {
     for (final tag in tags) {
       if (tag.selected) {
         return tag.value;
       }
     }
-    return null;
+    return '';
   }
 
   /// getRowByID return object by id
