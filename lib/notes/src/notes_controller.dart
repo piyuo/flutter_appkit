@@ -29,7 +29,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     this.tags = const [],
     this.onTagChanged,
     this.onSearchChanged,
-    this.onShowDetail,
+    this.onItemSelected,
     this.detailBeamName = '',
     required this.onSearch,
     this.onSearchBegin,
@@ -123,8 +123,8 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// newItem is not null mean user is editing a new item
   T? newItem;
 
-  /// onShowDetail called when row is selected and ready to show on detail
-  final void Function(T)? onShowDetail;
+  /// onItemSelected called when row is selected and ready to show on detail
+  final void Function(T)? onItemSelected;
 
   /// detailBeamName is the beam location name of detail, like '/user'
   final String detailBeamName;
@@ -179,14 +179,13 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// onItemSelected call when user select rows
-  void onItemSelected(BuildContext context, List<T> selectedRows) {
+  /// onSelectItems call when user select rows
+  void onSelectItems(BuildContext context, List<T> selectedRows) {
     if (!onItemChecked(context, selectedRows)) {
       return;
     }
-
     final newRow = selectedRows.first;
-    onShowDetail?.call(newRow);
+    onItemSelected?.call(newRow);
   }
 
   /// onItemChecked called when user select item, return true if new item has been selected

@@ -151,7 +151,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                 hasNextPage: controller.hasNextPage,
                 hasPrevPage: controller.hasPreviousPage,
                 onItemChecked: (selected) => controller.onItemChecked(context, selected),
-                onItemSelected: (selected) => controller.onItemSelected(context, selected),
+                onItemSelected: (selected) => controller.onSelectItems(context, selected),
                 onItemTapped: (selected) => controller.onItemTapped(context, selected),
                 onBarAction: (MasterDetailViewAction action, {ItemBuilder<T>? builder}) async =>
                     await controller.onBarAction(context, action, builder: builder),
