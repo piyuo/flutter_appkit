@@ -124,7 +124,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   T? newItem;
 
   /// onItemSelected called when row is selected and ready to show on detail
-  final void Function(T)? onItemSelected;
+  final void Function(BuildContext context, T item)? onItemSelected;
 
   /// detailBeamName is the beam location name of detail, like '/user'
   final String detailBeamName;
@@ -185,7 +185,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
       return;
     }
     final newRow = selectedRows.first;
-    onItemSelected?.call(newRow);
+    onItemSelected?.call(context, newRow);
   }
 
   /// onItemChecked called when user select item, return true if new item has been selected
