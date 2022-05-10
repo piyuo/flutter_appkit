@@ -17,9 +17,9 @@ typedef Adder<T> = Future<T> Function(BuildContext context);
 typedef Remover<T> = Future<bool> Function(BuildContext context, List<T> item);
 
 class NotesController<T extends pb.Object> with ChangeNotifier {
-  NotesController(
-    db.Memory<T> _memory, {
+  NotesController({
     required BuildContext context,
+    required this.memory,
     required pb.Builder<T> dataBuilder,
     required db.DatasetLoader<T> loader,
     required this.adder,
@@ -49,13 +49,13 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
 
     dataset = context.isPreferMouse
         ? db.PagedDataset<T>(
-            _memory,
+            memory,
             dataBuilder: dataBuilder,
             loader: loader,
             onChanged: _onChanged,
           )
         : db.ContinuousDataset<T>(
-            _memory,
+            memory,
             dataBuilder: dataBuilder,
             loader: loader,
             onChanged: _onChanged,
@@ -77,6 +77,9 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     isReadyToShow = true;
     notifyListeners();
   }
+
+  /// memory is dataset memory
+  db.Memory<T> memory;
 
   /// refreshButtonController is refresh button controller
   final refreshButtonController = delta.RefreshButtonController();

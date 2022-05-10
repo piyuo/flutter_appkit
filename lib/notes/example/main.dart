@@ -31,8 +31,8 @@ main() {
     providers: [
       ChangeNotifierProvider<NotesController<sample.Person>>(
         create: (context) => NotesController<sample.Person>(
-          memory,
           context: context,
+          memory: memory,
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
             return List.generate(
