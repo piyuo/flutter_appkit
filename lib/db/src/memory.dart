@@ -68,14 +68,13 @@ abstract class Memory<T extends pb.Object> {
   int get length;
 
   /// open memory and load content
-  Future<void> open() async {}
+  Future<void> open();
 
   /// close memory
-  @mustCallSuper
-  Future<void> close() async {}
+  Future<void> close();
 
   /// reload memory content
-  Future<void> reload() async {}
+  Future<void> reload();
 
   /// insert list of rows into memory, it will avoid duplicate rows
   /// ```dart

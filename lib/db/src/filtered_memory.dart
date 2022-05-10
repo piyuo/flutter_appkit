@@ -6,14 +6,12 @@ import 'filter.dart';
 /// Memory keep rows for later use
 /// ```dart
 /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-/// await memory.open();
 /// final filter = FilteredMemory(memory);
 /// ```
 class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// Memory keep rows for later use
   /// ```dart
   /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-  /// await memory.open();
   /// final filter = FilteredMemory(memory);
   /// ```
   FilteredMemory(this._memory) : super(dataBuilder: _memory.dataBuilder);
@@ -25,6 +23,19 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
 
   /// _result is rows after query
   List<T> _result = [];
+
+  /// open memory and load content
+  @override
+  Future<void> open() async => await _memory.open();
+
+  /// close memory
+  @override
+  @mustCallSuper
+  Future<void> close() async => await _memory.close();
+
+  /// reload memory content
+  @override
+  Future<void> reload() async => await _memory.reload();
 
   /// setFilters set filter to memory
   /// ```dart
@@ -155,6 +166,23 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
     _result = [];
   }
 
+  /// setRow set row into memory and move row to first
+  /// ```dart
+  /// await memory.setRow(row);
+  /// ```
+  @override
+  Future<void> setRow(BuildContext context, T row) async {
+    await _memory.setRow(context, row);
+    await _runFilter();
+  }
+
+  /// getRowByID return object by id
+  /// ```dart
+  /// final obj = await memory.getRowByID('1');
+  /// ```
+  @override
+  Future<T?> getRow(String id) async => await _memory.getRow(id);
+
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
   /// var range =  memory.range(0, 10);
@@ -165,23 +193,6 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
       return _result.sublist(start, end);
     }
     return _memory.range(start, end);
-  }
-
-  /// getRowByID return object by id
-  /// ```dart
-  /// final obj = await memory.getRowByID('1');
-  /// ```
-  @override
-  Future<T?> getRow(String id) async => await _memory.getRow(id);
-
-  /// setRow set row into memory and move row to first
-  /// ```dart
-  /// await memory.setRow(row);
-  /// ```
-  @override
-  Future<void> setRow(BuildContext context, T row) async {
-    await _memory.setRow(context, row);
-    await _runFilter();
   }
 
   /// forEach iterate all rows

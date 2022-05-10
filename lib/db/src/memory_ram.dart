@@ -41,6 +41,18 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   @override
   Future<T?> get last async => _rows.isNotEmpty ? _rows.last : null;
 
+  /// open memory and load content
+  @override
+  Future<void> open() async {}
+
+  /// close memory
+  @override
+  Future<void> close() async {}
+
+  /// reload memory content
+  @override
+  Future<void> reload() async {}
+
   /// _removeDuplicate remove duplicate row in the list
   void _removeDuplicate(T newRow, List<T> list) {
     for (T row in list) {

@@ -41,9 +41,9 @@ abstract class PersistMemory<T extends pb.Object> extends Memory<T> {
 
   /// close memory
   @override
+  @mustCallSuper
   Future<void> close() async {
     _subscribed?.cancel();
-    await super.close();
   }
 
   /// save memory cache
