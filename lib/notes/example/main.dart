@@ -33,7 +33,7 @@ main() {
         create: (context) => NotesController<sample.Person>(
           memory,
           context: context,
-          loader: (context, isRefresh, limit, anchorTimestamp, anchorId, tag, search) async {
+          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
             return List.generate(
               stepCount == 1 ? 2 : 2,

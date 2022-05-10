@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:beamer/beamer.dart';
 import 'package:libcli/animations/animations.dart' as animations;
 import 'package:libcli/responsive/responsive.dart' as responsive;
-import 'package:libcli/pb/src/google/google.dart' as google;
 import 'tag.dart';
 import 'master_detail_view.dart';
 import 'selectable.dart';
@@ -16,23 +16,12 @@ typedef Adder<T> = Future<T> Function(BuildContext context);
 /// Remover remove list of selected rows
 typedef Remover<T> = Future<bool> Function(BuildContext context, List<T> item);
 
-/// Loader load data
-typedef Loader<T> = Future<List<T>> Function(
-  BuildContext context,
-  bool isRefresh,
-  int limit,
-  google.Timestamp? anchorTime,
-  String? anchorId,
-  String tag,
-  String search,
-);
-
 class NotesController<T extends pb.Object> with ChangeNotifier {
   NotesController(
     db.Memory<T> _memory, {
     required BuildContext context,
     required pb.Builder<T> dataBuilder,
-    required Loader<T> loader,
+    required db.DatasetLoader<T> loader,
     required this.adder,
     required this.remover,
     required this.isSaved,
@@ -58,33 +47,26 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
       await refill(context);
     }
 
-    _onLoadData(context, isRefresh, limit, anchorTimestamp, anchorId) async {
-      return await loader(
-        context,
-        isRefresh,
-        limit,
-        anchorTimestamp,
-        anchorId,
-        getSelectedTag(),
-        searchController.text,
-      );
-    }
-
     dataset = context.isPreferMouse
         ? db.PagedDataset<T>(
             _memory,
             dataBuilder: dataBuilder,
-            loader: _onLoadData,
+            loader: loader,
             onChanged: _onChanged,
           )
         : db.ContinuousDataset<T>(
             _memory,
             dataBuilder: dataBuilder,
-            loader: _onLoadData,
+            loader: loader,
             onChanged: _onChanged,
           );
 
     open(context);
+  }
+
+  /// of get NotesController from context
+  static NotesController of(BuildContext context) {
+    return Provider.of<NotesController>(context, listen: false);
   }
 
   /// open dataset
