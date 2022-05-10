@@ -153,7 +153,7 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   @override
   Future<void> delete(BuildContext context, List<T> list) async {
     await _memory.delete(context, list);
-    await _runFilter();
+    _result.removeWhere((item) => list.contains(item));
   }
 
   /// clear memory
@@ -173,15 +173,30 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   @override
   Future<void> setRow(BuildContext context, T row) async {
     await _memory.setRow(context, row);
-    await _runFilter();
+    if (hasFilter) {
+      _result.remove(row);
+      if (match(row)) {
+        _result.insert(0, row);
+      }
+    }
   }
 
   /// getRowByID return object by id
   /// ```dart
-  /// final obj = await memory.getRowByID('1');
+  /// final obj = await memory.getRow('1');
   /// ```
   @override
-  Future<T?> getRow(String id) async => await _memory.getRow(id);
+  Future<T?> getRow(String id) async {
+    if (hasFilter) {
+      for (final item in _result) {
+        if (item.entityID == id) {
+          return item;
+        }
+      }
+      return null;
+    }
+    return await _memory.getRow(id);
+  }
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
@@ -200,12 +215,28 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// await memory.forEach((row) {});
   /// ```
   @override
-  Future<void> forEach(void Function(T) callback) async => _memory.forEach(callback);
+  Future<void> forEach(void Function(T) callback) async {
+    if (hasFilter) {
+      _result.forEach(callback);
+      return;
+    }
+    _memory.forEach(callback);
+  }
 
   /// isIDExists return true if id is in memory
   /// ```dart
   /// await memory.isIDExists();
   /// ```
   @override
-  bool isIDExists(String id) => _memory.isIDExists(id);
+  bool isIDExists(String id) {
+    if (hasFilter) {
+      for (final item in _result) {
+        if (item.entityID == id) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return _memory.isIDExists(id);
+  }
 }
