@@ -266,7 +266,7 @@ void main() {
         cache,
         name: 'test',
         dataBuilder: () => sample.Person(),
-        onChanged: (context) => changed = true,
+        onChanged: (context) async => changed = true,
       );
       await memory.open();
 

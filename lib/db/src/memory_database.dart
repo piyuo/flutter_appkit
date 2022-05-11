@@ -24,7 +24,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   MemoryDatabase({
     required this.name,
     required pb.Builder<T> dataBuilder,
-    void Function(BuildContext)? onChanged,
+    Future<void> Function(BuildContext)? onChanged,
   }) : super(onChanged: onChanged, dataBuilder: dataBuilder) {
     internalNoMore = true;
   }

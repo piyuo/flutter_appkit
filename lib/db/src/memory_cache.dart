@@ -41,7 +41,7 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
     this._cache, {
     required this.name,
     required pb.Builder<T> dataBuilder,
-    void Function(BuildContext)? onChanged,
+    Future<void> Function(BuildContext)? onChanged,
   }) : super(onChanged: onChanged, dataBuilder: dataBuilder);
 
   /// name use for database or cache id

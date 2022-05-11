@@ -31,7 +31,7 @@ void main() {
       bool changed = false;
       final memory = MemoryRam(
         dataBuilder: () => sample.Person(),
-        onChanged: (context) => changed = true,
+        onChanged: (context) async => changed = true,
       );
 
       await memory.insert(testing.Context(), [sample.Person()]);
