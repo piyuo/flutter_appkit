@@ -43,7 +43,6 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
           dataBuilder: dataBuilder,
           loader: loader,
           onReady: onReady,
-          onChanged: onChanged,
         ) {
     _memory.internalNoMore = true;
   }

@@ -72,18 +72,13 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   @override
   Future<T?> get last async => _index.isNotEmpty ? _cache.getObject(_index.last, dataBuilder) : null;
 
-  /// open memory cache and load content
-  /// ```dart
-  /// await memory.open();
-  /// ```
+  /// onOpen is called when memory need to open
   @override
-  Future<void> open() async {
-    await reload();
-  }
+  Future<void> onOpen() async => await reload();
 
-  /// close memory
+  /// onClose is called when memory need to close
   @override
-  Future<void> close() async {}
+  Future<void> onClose() async {}
 
   /// reload memory content
   /// ```dart

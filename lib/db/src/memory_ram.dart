@@ -42,13 +42,13 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   @override
   Future<T?> get last async => _rows.isNotEmpty ? _rows.last : null;
 
-  /// open memory and load content
+  /// onOpen is called when memory need to open
   @override
-  Future<void> open() async {}
+  Future<void> onOpen() async {}
 
-  /// close memory
+  /// onClose is called when memory need to close
   @override
-  Future<void> close() async {}
+  Future<void> onClose() async {}
 
   /// reload memory content
   @override

@@ -27,14 +27,13 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// _result is rows after query
   List<T> _result = [];
 
-  /// open memory and load content
+  /// onOpen is called when memory need to open
   @override
-  Future<void> open() async => await _memory.open();
+  Future<void> onOpen() async => await _memory.open();
 
-  /// close memory
+  /// onClose is called when memory need to close
   @override
-  @mustCallSuper
-  Future<void> close() async => await _memory.close();
+  Future<void> onClose() async => await _memory.close();
 
   /// reload memory content
   @override

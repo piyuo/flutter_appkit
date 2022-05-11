@@ -57,15 +57,16 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   @override
   Future<T?> get last async => _index.isNotEmpty ? _database.getObject(_index.last, dataBuilder) : null;
 
-  /// open memory database and load content
-  /// ```dart
-  /// await memory.open();
-  /// ```
+  /// onOpen is called when memory need to open
   @override
-  Future<void> open() async {
+  Future<void> onOpen() async {
     _database = await openDatabase(name);
     await reload();
   }
+
+  /// onOpen is called when memory need to open
+  @override
+  Future<void> onClose() async => await _database.close();
 
   /// reload memory content
   /// ```dart
@@ -76,15 +77,6 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
     _index = _database.getStringList(keyIndex) ?? [];
     internalRowsPerPage = _database.getInt(keyRowsPerPage) ?? 10;
     internalNoRefresh = _database.getBool(keyNoRefresh) ?? false;
-  }
-
-  /// close memory
-  /// ```dart
-  /// await memory.close();
-  /// ```
-  @override
-  Future<void> close() async {
-    await _database.close();
   }
 
   /// save memory cache

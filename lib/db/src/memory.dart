@@ -29,6 +29,9 @@ abstract class Memory<T extends pb.Object> {
     this.onChanged,
   });
 
+  /// isOpened is true when memory is open
+  bool isOpened = false;
+
   /// dataBuilder build data
   /// ```dart
   /// dataBuilder: () => sample.Person()
@@ -101,11 +104,29 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   Future<T?> get last;
 
+  /// onOpen is called when memory need to open
+  Future<void> onOpen();
+
+  /// onClose is called when memory need to close
+  Future<void> onClose();
+
   /// open memory and load content
-  Future<void> open();
+  Future<void> open() async {
+    if (isOpened) {
+      return;
+    }
+    await onOpen();
+    isOpened = true;
+  }
 
   /// close memory
-  Future<void> close();
+  Future<void> close() async {
+    if (!isOpened) {
+      return;
+    }
+    await onClose();
+    isOpened = false;
+  }
 
   /// reload memory content
   Future<void> reload();
