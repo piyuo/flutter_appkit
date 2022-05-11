@@ -26,5 +26,36 @@ void main() {
       expect(memory.isEmpty, false);
       expect(memory.isNotEmpty, true);
     });
+
+    test('should call onChanged when update data', () async {
+      bool changed = false;
+      final memory = MemoryRam(
+        dataBuilder: () => sample.Person(),
+        onChanged: () => changed = true,
+      );
+
+      await memory.insert(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.add(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.delete(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.clear(testing.Context());
+      expect(changed, true);
+
+      changed = false;
+      await memory.clear(testing.Context());
+      expect(changed, true);
+
+      changed = false;
+      await memory.update(testing.Context(), sample.Person());
+      expect(changed, true);
+    });
   });
 }

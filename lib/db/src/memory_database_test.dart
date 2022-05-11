@@ -142,26 +142,26 @@ void main() {
       final memory = MemoryDatabase(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
       await memory.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
-      final obj = await memory.getRow('1');
+      final obj = await memory.read('1');
       expect(obj, isNotNull);
       expect(obj!.entityID, '1');
-      final obj2 = await memory.getRow('not-exist');
+      final obj2 = await memory.read('not-exist');
       expect(obj2, isNull);
     });
 
     test('should set row and move to first', () async {
       final memory = MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
-      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
       expect(memory.length, 1);
-      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
       expect(memory.length, 1);
-      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
+      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
       expect(memory.length, 2);
       expect((await memory.first)!.entityID, 'second');
-      final obj = await memory.getRow('first');
+      final obj = await memory.read('first');
       expect(obj, isNotNull);
-      final obj2 = await memory.getRow('second');
+      final obj2 = await memory.read('second');
       expect(obj2, isNotNull);
     });
 
@@ -187,6 +187,39 @@ void main() {
       await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       expect(memory.isIDExists('first'), isTrue);
       expect(memory.isIDExists('notExists'), isFalse);
+    });
+
+    test('should call onChanged when update data', () async {
+      bool changed = false;
+      final memory = MemoryDatabase<sample.Person>(
+        name: 'test',
+        dataBuilder: () => sample.Person(),
+        onChanged: () => changed = true,
+      );
+      await memory.open();
+
+      await memory.insert(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.add(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.delete(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.clear(testing.Context());
+      expect(changed, true);
+
+      changed = false;
+      await memory.clear(testing.Context());
+      expect(changed, true);
+
+      changed = false;
+      await memory.update(testing.Context(), sample.Person());
+      expect(changed, true);
     });
   });
 }

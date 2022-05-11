@@ -14,7 +14,10 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
   /// final filter = FilteredMemory(memory);
   /// ```
-  FilteredMemory(this._memory) : super(dataBuilder: _memory.dataBuilder);
+  FilteredMemory(
+    this._memory, {
+    VoidCallback? onChanged,
+  }) : super(onChanged: onChanged, dataBuilder: _memory.dataBuilder);
 
   /// _memory is memory need to be filter
   final Memory<T> _memory;
@@ -125,12 +128,14 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// await memory.insert([sample.Person()]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
     await _memory.insert(context, list);
     if (hasFilter) {
       final matched = getMatchRows(list);
       _result.insertAll(0, matched);
     }
+    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -138,12 +143,14 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
     await _memory.add(context, list);
     if (hasFilter) {
       final matched = getMatchRows(list);
       _result.addAll(matched);
     }
+    await super.add(context, list);
   }
 
   /// add rows into ram
@@ -151,9 +158,11 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// await memory.remove(list);
   /// ```
   @override
+  @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
     await _memory.delete(context, list);
     _result.removeWhere((item) => list.contains(item));
+    await super.delete(context, list);
   }
 
   /// clear memory
@@ -161,9 +170,11 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// await memory.clear();
   /// ```
   @override
+  @mustCallSuper
   Future<void> clear(BuildContext context) async {
     await _memory.clear(context);
     _result = [];
+    await super.clear(context);
   }
 
   /// setRow set row into memory and move row to first
@@ -171,14 +182,16 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// await memory.setRow(row);
   /// ```
   @override
-  Future<void> setRow(BuildContext context, T row) async {
-    await _memory.setRow(context, row);
+  @mustCallSuper
+  Future<void> update(BuildContext context, T row) async {
+    await _memory.update(context, row);
     if (hasFilter) {
       _result.remove(row);
       if (match(row)) {
         _result.insert(0, row);
       }
     }
+    await super.update(context, row);
   }
 
   /// getRowByID return object by id
@@ -186,7 +199,7 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// final obj = await memory.getRow('1');
   /// ```
   @override
-  Future<T?> getRow(String id) async {
+  Future<T?> read(String id) async {
     if (hasFilter) {
       for (final item in _result) {
         if (item.entityID == id) {
@@ -195,7 +208,7 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
       }
       return null;
     }
-    return await _memory.getRow(id);
+    return await _memory.read(id);
   }
 
   /// range return sublist of rows, return null if something went wrong

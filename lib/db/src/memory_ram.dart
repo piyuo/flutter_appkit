@@ -14,7 +14,8 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// ```
   MemoryRam({
     required pb.Builder<T> dataBuilder,
-  }) : super(dataBuilder: dataBuilder);
+    VoidCallback? onChanged,
+  }) : super(onChanged: onChanged, dataBuilder: dataBuilder);
 
   /// _rows keep all rows in ram
   // ignore: prefer_final_fields
@@ -68,11 +69,13 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.insert([sample.Person()]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
     for (T row in list) {
       _removeDuplicate(row, _rows);
     }
     _rows.insertAll(0, list);
+    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -80,11 +83,13 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
     for (T row in list) {
       _removeDuplicate(row, _rows);
     }
     _rows.addAll(list);
+    await super.add(context, list);
   }
 
   /// remove rows from memory
@@ -92,10 +97,12 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.remove(list);
   /// ```
   @override
+  @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
     for (T row in list) {
       _rows.remove(row);
     }
+    await super.delete(context, list);
   }
 
   /// clear memory
@@ -103,7 +110,23 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// await memory.clear();
   /// ```
   @override
-  Future<void> clear(BuildContext context) async => _rows.clear();
+  @mustCallSuper
+  Future<void> clear(BuildContext context) async {
+    _rows.clear();
+    await super.clear(context);
+  }
+
+  /// setRow set row into memory and move row to first
+  /// ```dart
+  /// await memory.setRow(row);
+  /// ```
+  @override
+  @mustCallSuper
+  Future<void> update(BuildContext context, T row) async {
+    _removeDuplicate(row, _rows);
+    _rows.insert(0, row);
+    await super.update(context, row);
+  }
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
@@ -117,23 +140,13 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// final obj = await memory.getRowByID('1');
   /// ```
   @override
-  Future<T?> getRow(String id) async {
+  Future<T?> read(String id) async {
     for (T row in _rows) {
       if (row.entityID == id) {
         return row;
       }
     }
     return null;
-  }
-
-  /// setRow set row into memory and move row to first
-  /// ```dart
-  /// await memory.setRow(row);
-  /// ```
-  @override
-  Future<void> setRow(BuildContext context, T row) async {
-    _removeDuplicate(row, _rows);
-    _rows.insert(0, row);
   }
 
   /// forEach iterate all rows

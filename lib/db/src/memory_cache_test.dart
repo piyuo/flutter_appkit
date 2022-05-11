@@ -190,10 +190,10 @@ void main() {
         final memory = MemoryCache(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
         await memory.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
-        final obj = await memory.getRow('1');
+        final obj = await memory.read('1');
         expect(obj, isNotNull);
         expect(obj!.entityID, '1');
-        final obj2 = await memory.getRow('not-exist');
+        final obj2 = await memory.read('not-exist');
         expect(obj2, isNull);
       } finally {
         await deleteCache('memory_cache_test_7', 'memory_cache_test_time_7');
@@ -206,16 +206,16 @@ void main() {
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
         await memory.open();
-        await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+        await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
         expect(memory.length, 1);
-        await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+        await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
         expect(memory.length, 1);
-        await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
+        await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
         expect(memory.length, 2);
         expect((await memory.first)!.entityID, 'second');
-        final obj = await memory.getRow('first');
+        final obj = await memory.read('first');
         expect(obj, isNotNull);
-        final obj2 = await memory.getRow('second');
+        final obj2 = await memory.read('second');
         expect(obj2, isNotNull);
       } finally {
         await deleteCache('memory_cache_test_8', 'memory_cache_test_time_8');
@@ -256,6 +256,42 @@ void main() {
       } finally {
         await deleteCache('memory_cache_test_9', 'memory_cache_test_time_9');
       }
+    });
+
+    test('should call onChanged when update data', () async {
+      final cache = await openCache('memory_cache_test_9', 'memory_cache_test_time_9');
+      await cache.reset();
+      bool changed = false;
+      final memory = MemoryCache<sample.Person>(
+        cache,
+        name: 'test',
+        dataBuilder: () => sample.Person(),
+        onChanged: () => changed = true,
+      );
+      await memory.open();
+
+      await memory.insert(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.add(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.delete(testing.Context(), [sample.Person()]);
+      expect(changed, true);
+
+      changed = false;
+      await memory.clear(testing.Context());
+      expect(changed, true);
+
+      changed = false;
+      await memory.clear(testing.Context());
+      expect(changed, true);
+
+      changed = false;
+      await memory.update(testing.Context(), sample.Person());
+      expect(changed, true);
     });
   });
 }

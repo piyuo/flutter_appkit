@@ -26,6 +26,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   Memory({
     required this.dataBuilder,
+    this.onChanged,
   });
 
   /// dataBuilder build data
@@ -33,6 +34,9 @@ abstract class Memory<T extends pb.Object> {
   /// dataBuilder: () => sample.Person()
   /// ```
   final pb.Builder<T> dataBuilder;
+
+  /// onChanged called when memory changed like insert, delete, update
+  VoidCallback? onChanged;
 
   /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in memory
   bool internalNoRefresh = false;
@@ -61,11 +65,41 @@ abstract class Memory<T extends pb.Object> {
   /// setRowsPerPage set current rows per page
   Future<void> setRowsPerPage(BuildContext context, value) async => internalRowsPerPage = value;
 
+  /// all return all rows, return null if something went wrong
+  /// ```dart
+  /// var rowsAll =  memory.all;
+  /// ```
+  List<T> get all => range(0, length);
+
   /// length return rows length
   /// ```dart
   /// var len = memory.length;
   /// ```
   int get length;
+
+  /// isEmpty return rows is empty
+  /// ```dart
+  /// await memory.isEmpty;
+  /// ```
+  bool get isEmpty => length == 0;
+
+  /// isNotEmpty return rows is not empty
+  /// ```dart
+  /// await memory.isNotEmpty;
+  /// ```
+  bool get isNotEmpty => !isEmpty;
+
+  /// first return first row
+  /// ```dart
+  /// await memory.first;
+  /// ```
+  Future<T?> get first;
+
+  /// last return last row
+  /// ```dart
+  /// await memory.last;
+  /// ```
+  Future<T?> get last;
 
   /// open memory and load content
   Future<void> open();
@@ -80,49 +114,58 @@ abstract class Memory<T extends pb.Object> {
   /// ```dart
   /// await memory.insert([sample.Person()]);
   /// ```
-  Future<void> insert(BuildContext context, List<T> list);
+  @mustCallSuper
+  Future<void> insert(BuildContext context, List<T> list) async {
+    onChanged?.call();
+  }
 
   /// add list of rows into memory, it will avoid duplicate rows
   /// ```dart
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
-  Future<void> add(BuildContext context, List<T> list);
+  @mustCallSuper
+  Future<void> add(BuildContext context, List<T> list) async {
+    onChanged?.call();
+  }
 
   /// delete list of rows from memory
   /// ```dart
   /// await memory.delete(list);
   /// ```
-  Future<void> delete(BuildContext context, List<T> list);
+  @mustCallSuper
+  Future<void> delete(BuildContext context, List<T> list) async {
+    onChanged?.call();
+  }
 
   /// clear memory
   /// ```dart
   /// await memory.clear();
   /// ```
-  Future<void> clear(BuildContext context);
+  @mustCallSuper
+  Future<void> clear(BuildContext context) async {
+    onChanged?.call();
+  }
 
-  /// setRow set a single row into memory and move row to first
+  /// update set a single row into memory and move row to first
   /// ```dart
-  /// await memory.setRow(row);
+  /// await memory.update(row);
   /// ```
-  Future<void> setRow(BuildContext context, T row);
+  @mustCallSuper
+  Future<void> update(BuildContext context, T row) async {
+    onChanged?.call();
+  }
 
-  /// getRow return row by id
+  /// read return row by id
   /// ```dart
-  /// final obj = await memory.getRow('1');
+  /// final obj = await memory.read('1');
   /// ```
-  Future<T?> getRow(String id);
+  Future<T?> read(String id);
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
   /// var range =  memory.range(0, 10);
   /// ```
   List<T> range(int start, [int? end]);
-
-  /// all return all rows, return null if something went wrong
-  /// ```dart
-  /// var rowsAll =  memory.all;
-  /// ```
-  List<T> get all => range(0, length);
 
   /// forEach iterate all rows
   /// ```dart
@@ -135,28 +178,4 @@ abstract class Memory<T extends pb.Object> {
   /// await memory.isIDExists();
   /// ```
   bool isIDExists(String id);
-
-  /// first return first row
-  /// ```dart
-  /// await memory.first;
-  /// ```
-  Future<T?> get first;
-
-  /// last return last row
-  /// ```dart
-  /// await memory.last;
-  /// ```
-  Future<T?> get last;
-
-  /// isEmpty return rows is empty
-  /// ```dart
-  /// await memory.isEmpty;
-  /// ```
-  bool get isEmpty => length == 0;
-
-  /// isNotEmpty return rows is not empty
-  /// ```dart
-  /// await memory.isNotEmpty;
-  /// ```
-  bool get isNotEmpty => !isEmpty;
 }

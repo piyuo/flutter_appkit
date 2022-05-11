@@ -33,7 +33,7 @@ void main() {
       expect(memory.length, 1);
       expect(detail.isLoading, false);
 
-      final row = await memory.getRow('myId');
+      final row = await memory.read('myId');
       expect(row!.entityID, 'myId');
     });
 

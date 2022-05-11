@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'database.dart';
-import 'persist_memory.dart';
 import 'memory.dart';
 import 'db.dart';
 
@@ -16,18 +15,22 @@ Future<void> deleteMemoryDatabase(String id) async => deleteDatabase(id);
 /// final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
 /// await memory.open();
 /// ```
-class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
+class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// MemoryDatabase keep memory into a separate database
   /// ```dart
   /// final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
   /// await memory.open();
   /// ```
   MemoryDatabase({
-    required String name,
+    required this.name,
     required pb.Builder<T> dataBuilder,
-  }) : super(name: name, dataBuilder: dataBuilder) {
+    VoidCallback? onChanged,
+  }) : super(onChanged: onChanged, dataBuilder: dataBuilder) {
     internalNoMore = true;
   }
+
+  /// name use for database or cache id
+  final String name;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields
@@ -81,17 +84,14 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
   /// ```
   @override
   Future<void> close() async {
-    await super.close();
     await _database.close();
   }
 
   /// save memory cache
-  @override
   Future<void> save(BuildContext context) async {
     await _database.setStringList(keyIndex, _index);
     await _database.setInt(keyRowsPerPage, rowsPerPage);
     await _database.setBool(keyNoRefresh, noRefresh);
-    super.save(context);
   }
 
   /// setRowsPerPage set current rows per page
@@ -113,6 +113,7 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.insert([sample.Person()]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
     final downloadID = list.map((row) => row.entityID).toList();
     _index.removeWhere((element) => downloadID.contains(element));
@@ -121,6 +122,7 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
+    await super.insert(context, list);
   }
 
   /// add list of rows into memory database
@@ -128,6 +130,7 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
     final downloadID = list.map((row) => row.entityID).toList();
     downloadID.removeWhere((element) => _index.contains(element));
@@ -136,6 +139,7 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
+    await super.add(context, list);
   }
 
   /// delete rows from memory
@@ -143,6 +147,7 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.delete(list);
   /// ```
   @override
+  @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
     for (T row in list) {
       if (_index.contains(row.entityID)) {
@@ -151,6 +156,7 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
       }
     }
     await save(context);
+    await super.delete(context, list);
   }
 
   /// clear memory database
@@ -158,13 +164,28 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.clear();
   /// ```
   @override
+  @mustCallSuper
   Future<void> clear(BuildContext context) async {
     _index = [];
     await _database.close();
     await deleteMemoryDatabase(name);
     _database = await openDatabase(name);
     internalNoRefresh = false;
-    await broadcastChangedEvent(context);
+    await super.clear(context);
+  }
+
+  /// update set row into memory and move row to first
+  /// ```dart
+  /// await memory.update(row);
+  /// ```
+  @override
+  @mustCallSuper
+  Future<void> update(BuildContext context, T row) async {
+    _index.removeWhere((id) => row.entityID == id);
+    _index.insert(0, row.entityID);
+    await save(context);
+    await _database.setObject(row.entityID, row);
+    await super.update(context, row);
   }
 
   /// range return sublist of rows, return null if something went wrong
@@ -188,24 +209,12 @@ class MemoryDatabase<T extends pb.Object> extends PersistMemory<T> {
     return source;
   }
 
-  /// setRow set row into memory and move row to first
+  /// read return object by id
   /// ```dart
-  /// await memory.setRow(row);
+  /// final obj = await memory.read('1');
   /// ```
   @override
-  Future<void> setRow(BuildContext context, T row) async {
-    _index.removeWhere((id) => row.entityID == id);
-    _index.insert(0, row.entityID);
-    await save(context);
-    await _database.setObject(row.entityID, row);
-  }
-
-  /// getRowByID return object by id
-  /// ```dart
-  /// final obj = await memory.getRowByID('1');
-  /// ```
-  @override
-  Future<T?> getRow(String id) async {
+  Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
         return _database.getObject(row, dataBuilder);

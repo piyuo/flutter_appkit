@@ -91,14 +91,14 @@ class Part<T extends pb.Object> with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      current = await _memory.getRow(id!);
+      current = await _memory.read(id!);
       if (current != null) {
         return;
       }
 
       current = await getter(context, id!);
       if (current != null) {
-        _memory.setRow(context, current!);
+        _memory.update(context, current!);
         return;
       }
     } finally {
@@ -118,7 +118,7 @@ class Part<T extends pb.Object> with ChangeNotifier {
     }
     current = await setter(context, current!);
     if (current != null) {
-      await _memory.setRow(context, current!);
+      await _memory.update(context, current!);
       return true;
     }
     return false;

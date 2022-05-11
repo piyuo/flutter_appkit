@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'memory.dart';
 import 'cache.dart';
-import 'persist_memory.dart';
 
 /// maxResetItem is the maximum number of items to delete in reset, rest leave to cache cleanup to avoid application busy too long.
 @visibleForTesting
@@ -32,7 +31,7 @@ Future<void> deleteMemoryCache(Cache cache, String id) async {
 /// final memory = MemoryCache<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
 /// await memory.open();
 /// ```
-class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
+class MemoryCache<T extends pb.Object> extends Memory<T> {
   /// MemoryCache keep memory in cache
   /// ```dart
   /// final memory = MemoryCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
@@ -40,9 +39,13 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
   /// ```
   MemoryCache(
     this._cache, {
-    required String name,
+    required this.name,
     required pb.Builder<T> dataBuilder,
-  }) : super(name: name, dataBuilder: dataBuilder);
+    VoidCallback? onChanged,
+  }) : super(onChanged: onChanged, dataBuilder: dataBuilder);
+
+  /// name use for database or cache id
+  final String name;
 
   /// _cache is the cache store memory cache
   final Cache _cache;
@@ -78,6 +81,10 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
     await reload();
   }
 
+  /// close memory
+  @override
+  Future<void> close() async {}
+
   /// reload memory content
   /// ```dart
   /// await memory.reload();
@@ -91,13 +98,11 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
   }
 
   /// save memory cache
-  @override
   Future<void> save(BuildContext context) async {
     await _cache.setStringList('$name$keyIndex', _index);
     await _cache.setInt('$name$keyRowsPerPage', internalRowsPerPage);
     await _cache.setBool('$name$keyNoMore', internalNoMore);
     await _cache.setBool('$name$keyNoRefresh', internalNoRefresh);
-    super.save(context);
   }
 
   /// setRowsPerPage set current rows per page
@@ -126,6 +131,7 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.insert([sample.Person()]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
     final downloadID = list.map((row) => row.entityID).toList();
     _index.removeWhere((element) => downloadID.contains(element));
@@ -134,6 +140,7 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
     for (T row in list) {
       await _cache.setObject(row.entityID, row);
     }
+    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -141,6 +148,7 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.add([sample.Person(name: 'hi')]);
   /// ```
   @override
+  @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
     final downloadID = list.map((row) => row.entityID).toList();
     downloadID.removeWhere((element) => _index.contains(element));
@@ -149,6 +157,7 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
     for (T row in list) {
       await _cache.setObject(row.entityID, row);
     }
+    await super.add(context, list);
   }
 
   /// remove rows from memory
@@ -156,6 +165,7 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.remove(list);
   /// ```
   @override
+  @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
     for (T row in list) {
       if (_index.contains(row.entityID)) {
@@ -164,6 +174,7 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
       }
     }
     await save(context);
+    await super.delete(context, list);
   }
 
   /// clear memory
@@ -171,6 +182,7 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
   /// await memory.clear();
   /// ```
   @override
+  @mustCallSuper
   Future<void> clear(BuildContext context) async {
     final deletedRows = _index;
     internalNoMore = false;
@@ -185,7 +197,20 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
         break;
       }
     }
-    await broadcastChangedEvent(context);
+    await super.clear(context);
+  }
+
+  /// update set row into memory and move row to first
+  /// ```dart
+  /// await memory.update(row);
+  /// ```
+  @override
+  Future<void> update(BuildContext context, T row) async {
+    _index.removeWhere((id) => row.entityID == id);
+    _index.insert(0, row.entityID);
+    await save(context);
+    await _cache.setObject(row.entityID, row);
+    await super.update(context, row);
   }
 
   /// range return sublist of rows, return null if something went wrong
@@ -210,30 +235,18 @@ class MemoryCache<T extends pb.Object> extends PersistMemory<T> {
     return source;
   }
 
-  /// getRowByID return object by id
+  /// read return object by id
   /// ```dart
-  /// final obj = await memory.getRowByID('1');
+  /// final obj = await memory.read('1');
   /// ```
   @override
-  Future<T?> getRow(String id) async {
+  Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
         return _cache.getObject(row, dataBuilder);
       }
     }
     return null;
-  }
-
-  /// setRow set row into memory and move row to first
-  /// ```dart
-  /// await memory.setRow(row);
-  /// ```
-  @override
-  Future<void> setRow(BuildContext context, T row) async {
-    _index.removeWhere((id) => row.entityID == id);
-    _index.insert(0, row.entityID);
-    await save(context);
-    await _cache.setObject(row.entityID, row);
   }
 
   /// forEach iterate all rows

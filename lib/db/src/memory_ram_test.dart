@@ -99,25 +99,25 @@ void main() {
     test('should get row by id', () async {
       final memory = MemoryRam(dataBuilder: () => sample.Person());
       memory.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
-      final obj = await memory.getRow('1');
+      final obj = await memory.read('1');
       expect(obj, isNotNull);
       expect(obj!.entityID, '1');
-      final obj2 = await memory.getRow('not-exist');
+      final obj2 = await memory.read('not-exist');
       expect(obj2, isNull);
     });
 
     test('should set row and move to first', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
       expect(memory.length, 1);
-      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
       expect(memory.length, 1);
-      await memory.setRow(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
+      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
       expect(memory.length, 2);
       expect((await memory.first)!.entityID, 'second');
-      final obj = await memory.getRow('first');
+      final obj = await memory.read('first');
       expect(obj, isNotNull);
-      final obj2 = await memory.getRow('second');
+      final obj2 = await memory.read('second');
       expect(obj2, isNotNull);
     });
 
