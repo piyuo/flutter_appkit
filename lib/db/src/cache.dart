@@ -11,8 +11,8 @@ const int cleanupWhenSet = 50;
 /// cleanupMaxItem is the maximum number of items to delete in every cleanup
 int get cleanupMaxItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
-/// openCache create new cache if not exists
-Future<Cache> openCache(String cacheName, String timeName) async {
+/// createCache create new cache
+Future<Cache> createCache(String cacheName, String timeName) async {
   final cache = await openDatabase(cacheName);
   final time = await openDatabase(timeName);
   return Cache(cacheDB: cache, timeDB: time);
@@ -70,6 +70,12 @@ class Cache {
       await timeDB.reset();
       _setCount = 0;
     });
+  }
+
+  /// close cache
+  void close() {
+    cacheDB.close();
+    timeDB.close();
   }
 
   /// tagKey return key that store time tag

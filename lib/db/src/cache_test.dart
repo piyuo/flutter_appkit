@@ -12,13 +12,13 @@ void main() {
 
   group('[cache]', () {
     test('should open/delete cache', () async {
-      final cache = await openCache('cache_test', 'cache_test_time');
+      final cache = await createCache('cache_test', 'cache_test_time');
       await cache.setString('k', 'hello');
       await deleteCache('cache_test', 'cache_test_time');
     });
 
     test('should set/get', () async {
-      final cache = await openCache('cache_test', 'cache_test_time');
+      final cache = await createCache('cache_test', 'cache_test_time');
       try {
         expect(cache.contains('k'), false);
         await cache.setBool('k', true);
@@ -47,7 +47,7 @@ void main() {
     });
 
     test('should cache data', () async {
-      final cache = await openCache('cache_test', 'cache_test_time');
+      final cache = await createCache('cache_test', 'cache_test_time');
       try {
         expect(cache.length, 0);
         expect(cache.timeLength, 0);
@@ -68,7 +68,7 @@ void main() {
     });
 
     test('should reuse time tag', () async {
-      final cache = await openCache('cache_test', 'cache_test_time');
+      final cache = await createCache('cache_test', 'cache_test_time');
       try {
         await cache.setString('hello', 'world');
         expect(cache.tagKey('hello'), 'hello_tag');
@@ -84,7 +84,7 @@ void main() {
     });
 
     test('should delete from cache', () async {
-      final cache = await openCache('cache_test', 'cache_test_time');
+      final cache = await createCache('cache_test', 'cache_test_time');
       try {
         await cache.setString('hello', 'world');
         expect(cache.length, 2);
@@ -99,7 +99,7 @@ void main() {
     });
 
     test('should cleanup', () async {
-      final cache = await openCache('cache_test', 'cache_test_time');
+      final cache = await createCache('cache_test', 'cache_test_time');
       try {
         final expired = DateTime.now().add(const Duration(days: -366)).millisecondsSinceEpoch;
         final expiredTag = expired.toString();
@@ -125,7 +125,7 @@ void main() {
     });
 
     test('should run cleanup when setCount > cleanupWhenSet', () async {
-      final cache = await openCache('cache_test', 'cache_test_time');
+      final cache = await createCache('cache_test', 'cache_test_time');
       try {
         for (int i = 0; i < cleanupWhenSet; i++) {
           await cache.setString('hello_$i', 'world');

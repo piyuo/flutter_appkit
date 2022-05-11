@@ -14,7 +14,7 @@ void main() {
 
   group('[memory_cache]', () {
     test('should init and clear data', () async {
-      final cache = await openCache('memory_cache_test_1', 'memory_cache_test_time_1');
+      final cache = await createCache('memory_cache_test_1', 'memory_cache_test_time_1');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -41,7 +41,7 @@ void main() {
       }
     });
     test('should reload', () async {
-      final cache = await openCache('memory_cache_test_1', 'memory_cache_test_time_1');
+      final cache = await createCache('memory_cache_test_1', 'memory_cache_test_time_1');
       await cache.reset();
       final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
@@ -56,7 +56,7 @@ void main() {
     });
 
     test('should remove data', () async {
-      final cache = await openCache('memory_cache_test_1', 'memory_cache_test_time_1');
+      final cache = await createCache('memory_cache_test_1', 'memory_cache_test_time_1');
       await cache.reset();
       final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
       await memory.open();
@@ -75,7 +75,7 @@ void main() {
     });
 
     test('should remove duplicate when insert', () async {
-      final cache = await openCache('memory_cache_test_2', 'memory_cache_test_time_2');
+      final cache = await createCache('memory_cache_test_2', 'memory_cache_test_time_2');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -97,7 +97,7 @@ void main() {
     });
 
     test('should remove duplicate when add', () async {
-      final cache = await openCache('memory_cache_test_3', 'memory_cache_test_time_3');
+      final cache = await createCache('memory_cache_test_3', 'memory_cache_test_time_3');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -119,7 +119,7 @@ void main() {
     });
 
     test('should get sub rows', () async {
-      final cache = await openCache('memory_cache_test_4', 'memory_cache_test_time_4');
+      final cache = await createCache('memory_cache_test_4', 'memory_cache_test_time_4');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -141,7 +141,7 @@ void main() {
       }
     });
     test('should save state', () async {
-      final cache = await openCache('memory_cache_test_5', 'memory_cache_test_time_5');
+      final cache = await createCache('memory_cache_test_5', 'memory_cache_test_time_5');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -165,7 +165,7 @@ void main() {
     });
 
     test('should not delete in reset after max item limit', () async {
-      final cache = await openCache('memory_cache_test_6', 'memory_cache_test_time_6');
+      final cache = await createCache('memory_cache_test_6', 'memory_cache_test_time_6');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -184,7 +184,7 @@ void main() {
     });
 
     test('should get row by id', () async {
-      final cache = await openCache('memory_cache_test_7', 'memory_cache_test_time_7');
+      final cache = await createCache('memory_cache_test_7', 'memory_cache_test_time_7');
       await cache.reset();
       try {
         final memory = MemoryCache(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -201,7 +201,7 @@ void main() {
     });
 
     test('should set row and move to first', () async {
-      final cache = await openCache('memory_cache_test_8', 'memory_cache_test_time_8');
+      final cache = await createCache('memory_cache_test_8', 'memory_cache_test_time_8');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -223,7 +223,7 @@ void main() {
     });
 
     test('should use forEach to iterate all row', () async {
-      final cache = await openCache('memory_cache_test_9', 'memory_cache_test_time_9');
+      final cache = await createCache('memory_cache_test_9', 'memory_cache_test_time_9');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -245,7 +245,7 @@ void main() {
     });
 
     test('should check id exists', () async {
-      final cache = await openCache('memory_cache_test_9', 'memory_cache_test_time_9');
+      final cache = await createCache('memory_cache_test_9', 'memory_cache_test_time_9');
       await cache.reset();
       try {
         final memory = MemoryCache<sample.Person>(cache, name: 'test', dataBuilder: () => sample.Person());
@@ -259,7 +259,7 @@ void main() {
     });
 
     test('should call onChanged when update data', () async {
-      final cache = await openCache('memory_cache_test_9', 'memory_cache_test_time_9');
+      final cache = await createCache('memory_cache_test_9', 'memory_cache_test_time_9');
       await cache.reset();
       bool changed = false;
       final memory = MemoryCache<sample.Person>(

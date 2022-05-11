@@ -16,7 +16,12 @@ class Database {
   final Box _box;
 
   /// close database, If you don't need a box again, you should close it. All cached keys and values of the box will be dropped from memory and the box file is closed after all active read and write operations finished.
-  Future<void> close() async => await _box.close();
+  Future<void> close() async {
+    //Hive is an append-only data store. When you change or delete a value, the change is written to the end of the box file. Sooner or later, the box file uses more disk space than it should. Hive may automatically "compact" your box at any time to close the "holes" in the file.
+    //It may benefit the start time of your app if you induce compaction manually before you close a box.
+    await _box.compact();
+    await _box.close();
+  }
 
   /// keys is all the keys in the box, The keys are sorted alphabetically in ascending order.
   Iterable<String> get keys => _box.keys as Iterable<String>;
