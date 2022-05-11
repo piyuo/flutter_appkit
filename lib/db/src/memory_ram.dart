@@ -14,7 +14,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// ```
   MemoryRam({
     required pb.Builder<T> dataBuilder,
-    VoidCallback? onChanged,
+    void Function(BuildContext)? onChanged,
   }) : super(onChanged: onChanged, dataBuilder: dataBuilder);
 
   /// _rows keep all rows in ram

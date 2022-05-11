@@ -16,7 +16,7 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// ```
   FilteredMemory(
     this._memory, {
-    VoidCallback? onChanged,
+    void Function(BuildContext)? onChanged,
   }) : super(onChanged: onChanged, dataBuilder: _memory.dataBuilder);
 
   /// _memory is memory need to be filter

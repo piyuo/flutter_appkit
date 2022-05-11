@@ -39,7 +39,7 @@ abstract class Memory<T extends pb.Object> {
   final pb.Builder<T> dataBuilder;
 
   /// onChanged called when memory changed like insert, delete, update
-  VoidCallback? onChanged;
+  void Function(BuildContext)? onChanged;
 
   /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in memory
   bool internalNoRefresh = false;
@@ -137,7 +137,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
-    onChanged?.call();
+    onChanged?.call(context);
   }
 
   /// add list of rows into memory, it will avoid duplicate rows
@@ -146,7 +146,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
-    onChanged?.call();
+    onChanged?.call(context);
   }
 
   /// delete list of rows from memory
@@ -155,7 +155,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
-    onChanged?.call();
+    onChanged?.call(context);
   }
 
   /// clear memory
@@ -164,7 +164,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   @mustCallSuper
   Future<void> clear(BuildContext context) async {
-    onChanged?.call();
+    onChanged?.call(context);
   }
 
   /// update set a single row into memory and move row to first
@@ -173,7 +173,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```
   @mustCallSuper
   Future<void> update(BuildContext context, T row) async {
-    onChanged?.call();
+    onChanged?.call(context);
   }
 
   /// read return row by id
