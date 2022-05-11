@@ -123,7 +123,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// newItem is not null mean user is editing a new item
   T? newItem;
 
-  /// onItemSelected called when row is selected, return true if want to notify listeners
+  /// onItemSelected called when row is selected and ready to show on detail
   final bool Function(BuildContext context, T item)? onItemSelected;
 
   /// detailBeamName is the beam location name of detail, like '/user'
@@ -185,13 +185,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
       return;
     }
     final newRow = selectedRows.first;
-    bool refresh = false;
-    if (onItemSelected != null) {
-      refresh = onItemSelected!(context, newRow);
-    }
-    if (refresh) {
-      notifyListeners();
-    }
+    onItemSelected?.call(context, newRow);
   }
 
   /// onItemChecked called when user select item, return true if new item has been selected
