@@ -42,23 +42,21 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
       onSearchEnd: onSearchEnd,
     );
 
-    _onChanged(context) async {
+    memory.onChanged = (context) async {
       dataset.selectRows([]);
       await refill(context);
-    }
+    };
 
     dataset = context.isPreferMouse
         ? db.PagedDataset<T>(
             memory,
             dataBuilder: dataBuilder,
             loader: loader,
-            onChanged: _onChanged,
           )
         : db.ContinuousDataset<T>(
             memory,
             dataBuilder: dataBuilder,
             loader: loader,
-            onChanged: _onChanged,
           );
 
     open(context);
