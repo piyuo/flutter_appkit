@@ -73,7 +73,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   Future<void> open(BuildContext context) async {
     await dataset.open(context);
     animatedViewController.itemCount = dataset.displayRows.length;
-    setDefaultSelected();
+    setDefaultSelected(context);
     isReadyToShow = true;
     notifyListeners();
   }
@@ -163,10 +163,12 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   Future<void> setNoRefresh(BuildContext context, value) async => await dataset.setNoRefresh(context, value);
 
   /// setDefaultSelected will select first row if no row selected
-  void setDefaultSelected() {
+  void setDefaultSelected(BuildContext context) {
     if (dataset.selectedRows.isEmpty && dataset.displayRows.isNotEmpty) {
       if (onRowExit(null)) {
-        dataset.selectRows([dataset.displayRows.first]);
+        final first = dataset.displayRows.first;
+        dataset.selectRows([first]);
+        onItemSelected?.call(context, first);
       }
     }
   }
@@ -221,7 +223,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   Future<void> refill(BuildContext context) async {
     dataset.fill();
     newItem = null;
-    setDefaultSelected();
+    setDefaultSelected(context);
     animatedViewController.itemCount = dataset.displayRows.length;
     notifyListeners();
   }
@@ -244,7 +246,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         }
         final isReset = await dataset.refresh(context);
         final diff = dataset.length - originLength;
-        setDefaultSelected();
+        setDefaultSelected(context);
         if (isReset || (diff > 0 && !firstPage)) {
           animatedViewController.refreshPageAnimation();
           animatedViewController.itemCount = dataset.displayRows.length;
@@ -336,7 +338,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
             dataset.fill();
             dataset.selectRows([]);
             animatedViewController.onAnimationDone(() {
-              setDefaultSelected();
+              setDefaultSelected(context);
               notifyListeners();
             });
           }
