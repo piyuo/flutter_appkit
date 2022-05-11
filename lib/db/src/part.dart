@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'memory.dart';
 
-/// DetailGetter get data from remote service
+/// PartGetter get data from remote service
 /// ```dart
 /// getter: (context, id) async {
 ///   return sample.Person();
 /// },
 /// ```
-typedef DetailGetter<T> = Future<T?> Function(BuildContext context, String id);
+typedef PartGetter<T> = Future<T?> Function(BuildContext context, String id);
 
-/// DetailSetter set data to remote service, return updated object if set success
+/// PartSetter set data to remote service, return updated object if set success
 /// ```dart
 /// setter: (context, sample.Person person) async {
 ///   person.name = 'john';
 ///   return person;
 /// }
 /// ```
-typedef DetailSetter<T> = Future<T?> Function(BuildContext context, T obj);
+typedef PartSetter<T> = Future<T?> Function(BuildContext context, T obj);
 
-/// Detail provide a way to access data though memory
+/// Part provide a way to access data though memory
 /// ```dart
-/// final dp = Detail<sample.Person>(
+/// final dp = Part<sample.Person>(
 ///   context: context,
 ///   dataBuilder: () => sample.Person(),
 ///   getter: (context, id) async => null,
@@ -31,10 +31,10 @@ typedef DetailSetter<T> = Future<T?> Function(BuildContext context, T obj);
 ///   },
 /// );
 /// ```
-class Detail<T extends pb.Object> with ChangeNotifier {
+class Part<T extends pb.Object> with ChangeNotifier {
   /// Detail provide a way to access data though memory
   /// ```dart
-  /// final dp = Detail<sample.Person>(
+  /// final dp = Part<sample.Person>(
   ///   context: context,
   ///   dataBuilder: () => sample.Person(),
   ///   getter: (context, id) async => null,
@@ -44,7 +44,7 @@ class Detail<T extends pb.Object> with ChangeNotifier {
   ///   },
   /// );
   /// ```
-  Detail(
+  Part(
     this._memory, {
     required pb.Builder<T> dataBuilder,
     required this.getter,
@@ -61,10 +61,10 @@ class Detail<T extends pb.Object> with ChangeNotifier {
   final Memory<T> _memory;
 
   /// getter get data from remote service
-  final DetailGetter<T> getter;
+  final PartGetter<T> getter;
 
   /// setter set data to remote service,return null if fail to set data
-  final DetailSetter<T> setter;
+  final PartSetter<T> setter;
 
   /// id is the id of data
   String? id;

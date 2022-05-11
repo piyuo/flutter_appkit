@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'detail.dart';
+import 'part.dart';
 import 'memory_ram.dart';
 
 void main() {
@@ -16,7 +16,7 @@ void main() {
     test('should load data with id by getter', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
-      final detail = Detail<sample.Person>(
+      final detail = Part<sample.Person>(
         memory,
         id: 'myId',
         dataBuilder: () => sample.Person(),
@@ -40,7 +40,7 @@ void main() {
     test('should load no data with null id', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
-      final detail = Detail<sample.Person>(
+      final detail = Part<sample.Person>(
         memory,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async {
@@ -60,7 +60,7 @@ void main() {
     test('should save data', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
       await memory.open();
-      final detail = Detail<sample.Person>(
+      final detail = Part<sample.Person>(
         memory,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
@@ -85,7 +85,7 @@ void main() {
     test('should not save data if setter went wrong', () async {
       final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
       await memory.open();
-      final detail = Detail<sample.Person>(
+      final detail = Part<sample.Person>(
         memory,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
