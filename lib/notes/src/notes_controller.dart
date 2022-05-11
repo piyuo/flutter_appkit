@@ -124,7 +124,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   T? newItem;
 
   /// onItemSelected called when row is selected and ready to show on detail
-  final bool Function(BuildContext context, T item)? onItemSelected;
+  final void Function(BuildContext context, T item)? onItemSelected;
 
   /// detailBeamName is the beam location name of detail, like '/user'
   final String detailBeamName;
