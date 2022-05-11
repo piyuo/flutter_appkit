@@ -30,7 +30,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     this.onTagChanged,
     this.onSearchChanged,
     this.onItemSelected,
-    this.detailBeamName = '',
+    this.detailBeamName = '/',
     required this.onSearch,
     this.onSearchBegin,
     this.onSearchEnd,
@@ -126,7 +126,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// onItemSelected called when row is selected and ready to show on detail
   final void Function(BuildContext context, T item)? onItemSelected;
 
-  /// detailBeamName is the beam location name of detail, like '/user'
+  /// detailBeamName is the beam location name of detail and name must end with "/" like '/user/'
   final String detailBeamName;
 
   /// isReadyToShow is true mean list is ready to show
@@ -176,7 +176,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// onItemTapped called when user tap item
   void onItemTapped(BuildContext context, T selectedRow) {
     if (!isSplitView) {
-      context.beamToNamed('$detailBeamName/${selectedRow.entityID}');
+      context.beamToNamed('$detailBeamName${selectedRow.entityID}/');
       return;
     }
   }
@@ -307,7 +307,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         break;
       case MasterDetailViewAction.add:
         if (!isSplitView) {
-          context.beamToNamed('$detailBeamName/new/');
+          context.beamToNamed('${detailBeamName}new/');
           return;
         }
 

@@ -33,6 +33,7 @@ main() {
         create: (context) => NotesController<sample.Person>(
           context: context,
           memory: memory,
+          detailBeamName: "/",
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
             return List.generate(
