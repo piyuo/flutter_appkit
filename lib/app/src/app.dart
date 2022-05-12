@@ -74,8 +74,8 @@ const _cacheTimeName = 'time';
 /// _cache is global cache
 db.Cache? _cache;
 
-/// applicationCache is application cache
-Future<db.Cache> get applicationCache async {
+/// globalCache is application cache
+Future<db.Cache> get globalCache async {
   _cache ??= await db.createCache(_cacheDBName, _cacheTimeName);
   return _cache!;
 }
