@@ -17,7 +17,7 @@ class CountUp extends StatefulWidget {
   _CountUpState createState() => _CountUpState();
 }
 
-enum _light { green, yellow, red }
+enum Light { green, yellow, red }
 
 class _CountUpState extends State<CountUp> {
   @override
@@ -37,35 +37,35 @@ class _CountUpState extends State<CountUp> {
 
   late DateTime begin;
 
-  _light light = _light.green;
+  Light light = Light.green;
 
   void _check(Timer timer) {
     final now = DateTime.now();
     final diff = now.difference(begin);
     if (diff.inSeconds <= widget.greenLight) {
       setState(() {
-        light = _light.green;
+        light = Light.green;
       });
       return;
     }
     if (diff.inSeconds <= widget.yellowLight) {
       setState(() {
-        light = _light.yellow;
+        light = Light.yellow;
       });
       return;
     }
     setState(() {
-      light = _light.red;
+      light = Light.red;
     });
   }
 
   Color _getColor() {
     switch (light) {
-      case _light.green:
+      case Light.green:
         return Colors.green.shade400;
-      case _light.yellow:
+      case Light.yellow:
         return Colors.yellow.shade700;
-      case _light.red:
+      case Light.red:
         return Colors.red.shade400;
     }
   }
