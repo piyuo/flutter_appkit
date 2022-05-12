@@ -76,7 +76,7 @@ db.Cache? _cache;
 
 /// applicationCache is application cache
 Future<db.Cache> get applicationCache async {
-  _cache ??= await db.openCache(_cacheDBName, _cacheTimeName);
+  _cache ??= await db.createCache(_cacheDBName, _cacheTimeName);
   return _cache!;
 }
 
@@ -120,7 +120,8 @@ void start({
       await onBeforeStart();
     }
     // run app
-    return error.watch(() => runApp(MultiProvider(
+    return error.watch(() => runApp(LifecycleWatcher(
+            child: MultiProvider(
           providers: [
             Provider(create: (_) => dialog.DialogProvider()),
             ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
@@ -168,6 +169,60 @@ void start({
               ),
             ),
           ),
-        )));
+        ))));
   });
+}
+
+/// LifecycleWatcher watch app life cycle
+class LifecycleWatcher extends StatefulWidget {
+  const LifecycleWatcher({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  /// child to show
+  final Widget child;
+
+  @override
+  State<LifecycleWatcher> createState() => _LifecycleWatcherState();
+}
+
+class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    debugPrint('appLifeCycleState dispose');
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    /// only work on iOS/Android platform
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+        debugPrint('appLifeCycleState inactive');
+        break;
+      case AppLifecycleState.resumed:
+        debugPrint('appLifeCycleState resumed');
+        break;
+      case AppLifecycleState.paused:
+        debugPrint('appLifeCycleState paused');
+        break;
+      case AppLifecycleState.detached:
+        debugPrint('appLifeCycleState detached');
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
 }
