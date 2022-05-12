@@ -191,13 +191,13 @@ class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBinding
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     debugPrint('appLifeCycleState dispose');
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
