@@ -20,7 +20,9 @@ class Context extends Mock implements widgets.BuildContext {}
 ///
 @visibleForTesting
 void useTestFont(WidgetTester tester) {
-  tester.binding.window.textScaleFactorTestValue = 0.5; // test font is bigger than real device, need scale down
+  //tester.binding.window.textScaleFactorTestValue = 0.5; // test font is bigger than real device, need scale down
+  tester.binding.window.platformDispatcher.textScaleFactorTestValue =
+      0.5; // test font is bigger than real device, need scale down
 }
 
 /// navigatorObserver is navigator observer
