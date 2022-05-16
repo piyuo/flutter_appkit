@@ -9,10 +9,15 @@ void main() {
   setUpAll(() async {
     await database.initForTest();
     await cache.init();
+    await cache.reset();
   });
 
   tearDown(() async {
     await cache.reset();
+  });
+
+  tearDownAll(() async {
+    await cache.clean();
   });
 
   group('[cache]', () {

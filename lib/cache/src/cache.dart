@@ -28,7 +28,7 @@ int get length => cacheDB.length;
 @visibleForTesting
 int get timeLength => timeDB.length;
 
-/// setTestItem set cached item for test
+/// setTestString set cached item for test
 @visibleForTesting
 Future<void> setTestString(String timeTag, String key, dynamic value) async {
   await timeDB.setString(timeTag, key);
@@ -42,10 +42,25 @@ Future<void> init() async {
   timeDB = await database.open(_cacheTimeName);
 }
 
-/// dispose cache
-void dispose() {
+/// reset reset entire cache by remove cache content (not entire db)
+/// ```dart
+/// await reset();
+/// ```
+@visibleForTesting
+Future<void> reset() async {
+  await _lock.synchronized(() async {
+    await cacheDB.reset();
+    await timeDB.reset();
+  });
+}
+
+/// clean cache, only use in cache to clean cache
+@visibleForTesting
+Future<void> clean() async {
   cacheDB.close();
   timeDB.close();
+  await database.delete(_cacheDBName);
+  await database.delete(_cacheTimeName);
 }
 
 /// compact deletes 50 expired items
@@ -72,24 +87,6 @@ Future<void> compact() async {
   if (deleteCount > 0) {
     debugPrint('[cache] cleanup $deleteCount items');
   }
-}
-
-/// clear cache
-Future<void> clear() async {
-  await database.delete(_cacheDBName);
-  await database.delete(_cacheTimeName);
-}
-
-/// reset reset entire cache by remove cache content (not entire db)
-/// ```dart
-/// await reset();
-/// ```
-@visibleForTesting
-Future<void> reset() async {
-  await _lock.synchronized(() async {
-    await cacheDB.reset();
-    await timeDB.reset();
-  });
 }
 
 /// tagKey return key that store time tag
