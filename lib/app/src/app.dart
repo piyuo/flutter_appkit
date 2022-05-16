@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/database/database.dart' as database;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/db/db.dart' as db;
 import 'package:beamer/beamer.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -65,21 +66,6 @@ set userID(String value) {
   _userID = value;
 }
 
-/// _cacheDBName is cache database name
-const _cacheDBName = 'cache';
-
-/// _cacheTimeName is cache time database name
-const _cacheTimeName = 'time';
-
-/// _cache is global cache
-db.Cache? _cache;
-
-/// globalCache is application cache
-Future<db.Cache> get globalCache async {
-  _cache ??= await db.createCache(_cacheDBName, _cacheTimeName);
-  return _cache!;
-}
-
 /// start application
 void start({
   required String appName,
@@ -113,8 +99,10 @@ void start({
   );
 
   Future.microtask(() async {
-    // init db
-    await db.initDB();
+    // init database path
+    await database.init();
+    // init cache
+    await cache.init();
 
     if (onBeforeStart != null) {
       await onBeforeStart();
