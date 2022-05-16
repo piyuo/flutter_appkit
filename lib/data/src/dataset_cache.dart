@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'memory.dart';
-import 'cache.dart';
+import 'package:libcli/cache/cache.dart' as cache;
+import 'dataset.dart';
 
 /// maxResetItem is the maximum number of items to delete in reset, rest leave to cache cleanup to avoid application busy too long.
 @visibleForTesting
 int get maxResetItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
-/// deleteMemoryCache delete a memory cache
+/// deleteDatasetCache delete a memory cache
 /// ```dart
-/// await deleteMemoryCache('test');
+/// await deleteDatasetCache('test');
 /// ```
-Future<void> deleteMemoryCache(Cache cache, String id) async {
-  final all = cache.getStringList('$id$keyIndex');
+Future<void> deleteDatasetCache(String id) async {
+  final all = await cache.getStringList('$id$keyIndex');
   if (all != null) {
     for (String id in all) {
       await cache.delete(id);
@@ -23,22 +23,21 @@ Future<void> deleteMemoryCache(Cache cache, String id) async {
     await cache.delete('$id$keyNoMore');
     await cache.delete('$id$keyNoRefresh');
   }
-  debugPrint('[memory_cache] $id deleted');
+  debugPrint('[dataset_cache] $id deleted');
 }
 
-/// MemoryCache keep memory in cache
+/// DatasetCache keep data in cache
 /// ```dart
-/// final memory = MemoryCache<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
-/// await memory.open();
+/// final ds = DatasetCache<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+/// await ds.open();
 /// ```
-class MemoryCache<T extends pb.Object> extends Memory<T> {
-  /// MemoryCache keep memory in cache
+class DatasetCache<T extends pb.Object> extends Dataset<T> {
+  /// DatasetCache keep data in cache
   /// ```dart
-  /// final memory = MemoryCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-  /// await memory.open();
+  /// final ds = DatasetCache<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+  /// await ds.open();
   /// ```
-  MemoryCache(
-    this._cache, {
+  DatasetCache({
     required this.name,
     required pb.Builder<T> dataBuilder,
     Future<void> Function(BuildContext)? onChanged,
@@ -46,9 +45,6 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
 
   /// name use for database or cache id
   final String name;
-
-  /// _cache is the cache store memory cache
-  final Cache _cache;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields
@@ -63,14 +59,14 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   /// await memory.first;
   /// ```
   @override
-  Future<T?> get first async => _index.isNotEmpty ? _cache.getObject(_index.first, dataBuilder) : null;
+  Future<T?> get first async => _index.isNotEmpty ? await cache.getObject(_index.first, dataBuilder) : null;
 
   /// last return last row
   /// ```dart
   /// await memory.last;
   /// ```
   @override
-  Future<T?> get last async => _index.isNotEmpty ? _cache.getObject(_index.last, dataBuilder) : null;
+  Future<T?> get last async => _index.isNotEmpty ? await cache.getObject(_index.last, dataBuilder) : null;
 
   /// onOpen is called when memory need to open
   @override
@@ -86,18 +82,18 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   Future<void> reload() async {
-    _index = _cache.getStringList('$name$keyIndex') ?? [];
-    internalRowsPerPage = _cache.getInt('$name$keyRowsPerPage') ?? 10;
-    internalNoRefresh = _cache.getBool('$name$keyNoRefresh') ?? false;
-    internalNoMore = _cache.getBool('$name$keyNoMore') ?? false;
+    _index = await cache.getStringList('$name$keyIndex') ?? [];
+    internalRowsPerPage = await cache.getInt('$name$keyRowsPerPage') ?? 10;
+    internalNoRefresh = await cache.getBool('$name$keyNoRefresh') ?? false;
+    internalNoMore = await cache.getBool('$name$keyNoMore') ?? false;
   }
 
   /// save memory cache
   Future<void> save(BuildContext context) async {
-    await _cache.setStringList('$name$keyIndex', _index);
-    await _cache.setInt('$name$keyRowsPerPage', internalRowsPerPage);
-    await _cache.setBool('$name$keyNoMore', internalNoMore);
-    await _cache.setBool('$name$keyNoRefresh', internalNoRefresh);
+    await cache.setStringList('$name$keyIndex', _index);
+    await cache.setInt('$name$keyRowsPerPage', internalRowsPerPage);
+    await cache.setBool('$name$keyNoMore', internalNoMore);
+    await cache.setBool('$name$keyNoRefresh', internalNoRefresh);
   }
 
   /// setRowsPerPage set current rows per page
@@ -107,14 +103,14 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
     await save(context);
   }
 
-  /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
+  /// setNoRefresh set true mean  no need to refresh data, it will only use data in dataset
   @override
   Future<void> setNoRefresh(BuildContext context, value) async {
     await super.setNoRefresh(context, value);
     await save(context);
   }
 
-  /// setNoMore mean dataset has no need to load more data, it will only use data in memory
+  /// setNoMore mean no need to load more data, it will only use data in dataset
   @override
   Future<void> setNoMore(BuildContext context, value) async {
     await super.setNoMore(context, value);
@@ -133,7 +129,7 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
     _index.insertAll(0, downloadID);
     await save(context);
     for (T row in list) {
-      await _cache.setObject(row.entityID, row);
+      await cache.setObject(row.entityID, row);
     }
     await super.insert(context, list);
   }
@@ -150,7 +146,7 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
     _index.addAll(downloadID);
     await save(context);
     for (T row in list) {
-      await _cache.setObject(row.entityID, row);
+      await cache.setObject(row.entityID, row);
     }
     await super.add(context, list);
   }
@@ -165,34 +161,34 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
     for (T row in list) {
       if (_index.contains(row.entityID)) {
         _index.remove(row.entityID);
-        await _cache.delete(row.entityID);
+        await cache.delete(row.entityID);
       }
     }
     await save(context);
     await super.delete(context, list);
   }
 
-  /// clear memory
+  /// reset memory
   /// ```dart
-  /// await memory.clear();
+  /// await memory.reset();
   /// ```
   @override
   @mustCallSuper
-  Future<void> clear(BuildContext context) async {
+  Future<void> reset(BuildContext context) async {
     final deletedRows = _index;
     internalNoMore = false;
     internalNoRefresh = false;
     _index = [];
-    await _cache.delete('$name$keyIndex');
+    await cache.delete('$name$keyIndex');
     int deleteCount = 0;
     for (String id in deletedRows) {
-      await _cache.delete(id);
+      await cache.delete(id);
       deleteCount++;
       if (deleteCount >= maxResetItem) {
         break;
       }
     }
-    await super.clear(context);
+    await super.reset(context);
   }
 
   /// update set row into memory and move row to first
@@ -204,7 +200,7 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
     _index.removeWhere((id) => row.entityID == id);
     _index.insert(0, row.entityID);
     await save(context);
-    await _cache.setObject(row.entityID, row);
+    await cache.setObject(row.entityID, row);
     await super.update(context, row);
   }
 
@@ -213,11 +209,11 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   /// var range =  memory.range(0, 10);
   /// ```
   @override
-  List<T> range(int start, [int? end]) {
+  Future<List<T>> range(int start, [int? end]) async {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
-      final row = _cache.getObject(id, dataBuilder);
+      final row = await cache.getObject(id, dataBuilder);
       if (row == null) {
         // data is missing
         _index = [];
@@ -238,7 +234,7 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
-        return _cache.getObject(row, dataBuilder);
+        return await cache.getObject(row, dataBuilder);
       }
     }
     return null;
@@ -251,7 +247,7 @@ class MemoryCache<T extends pb.Object> extends Memory<T> {
   @override
   Future<void> forEach(void Function(T) callback) async {
     for (String id in _index) {
-      final obj = _cache.getObject(id, dataBuilder);
+      final obj = await cache.getObject(id, dataBuilder);
       if (obj != null) {
         callback(obj);
       }

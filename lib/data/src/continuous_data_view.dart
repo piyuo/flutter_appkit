@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'memory.dart';
 import 'dataset.dart';
+import 'data_view.dart';
 
-class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
-  ContinuousDataset(
-    Memory<T> _memory, {
+/// ContinuousDataView is view support continuous display
+class ContinuousDataView<T extends pb.Object> extends DataView<T> {
+  ContinuousDataView(
+    Dataset<T> _memory, {
     BuildContext? context,
-    required DatasetLoader<T> loader,
+    required DataViewLoader<T> loader,
     required pb.Builder<T> dataBuilder,
     VoidCallback? onReady,
   }) : super(
@@ -19,11 +20,11 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
           onReady: onReady,
         );
 
-  /// onRefresh reset memory on dataset mode, but not on table mode, return true if reset memory
+  /// onRefresh called when refresh
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     final isReset = await super.onRefresh(context, downloadRows);
-    fill();
+    await fill();
     return isReset;
   }
 
@@ -39,9 +40,9 @@ class ContinuousDataset<T extends pb.Object> extends Dataset<T> {
   /// await ds.fill();
   /// ```
   @override
-  void fill() {
+  Future<void> fill() async {
     displayRows.clear();
-    displayRows.addAll(memory.all);
+    displayRows.addAll(await memory.all);
   }
 
   /// pageInfo return text page info like '1 - 10 of many'

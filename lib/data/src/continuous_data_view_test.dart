@@ -4,24 +4,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'db.dart';
-import 'continuous_dataset.dart';
-import 'memory_ram.dart';
+import 'package:libcli/database/database.dart' as database;
+import 'continuous_data_view.dart';
+import 'dataset_ram.dart';
 
 void main() {
   setUpAll(() async {
-    await initDBForTest();
+    await database.initForTest();
   });
 
   setUp(() async {});
 
   tearDownAll(() async {});
 
-  group('[continuous_dataset]', () {
+  group('[continuous_data_view]', () {
     test('should display all rows', () async {
       int step = 0;
-      final ds = ContinuousDataset<sample.Person>(
-        MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
+      final ds = ContinuousDataView<sample.Person>(
+        DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
@@ -61,8 +61,8 @@ void main() {
 
     test('should fill display rows when load more', () async {
       int step = 0;
-      final ds = ContinuousDataset<sample.Person>(
-        MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
+      final ds = ContinuousDataView<sample.Person>(
+        DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
@@ -94,8 +94,8 @@ void main() {
 
   test('should refresh after load more', () async {
     int step = 0;
-    final ds = ContinuousDataset<sample.Person>(
-      MemoryRam<sample.Person>(dataBuilder: () => sample.Person()),
+    final ds = ContinuousDataView<sample.Person>(
+      DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
       dataBuilder: () => sample.Person(),
       loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
         if (step == 0) {

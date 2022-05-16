@@ -5,8 +5,8 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/pb/src/google/google.dart' as google;
-import 'paged_table.dart';
-import 'memory_ram.dart';
+import 'paged_full_view.dart';
+import 'dataset_ram.dart';
 
 void main() {
   setUpAll(() async {});
@@ -15,11 +15,11 @@ void main() {
 
   tearDownAll(() async {});
 
-  group('[paged_table]', () {
+  group('[paged_full_view]', () {
     test('should refresh on start', () async {
       int refreshCount = 0;
-      PagedTable dataSet = PagedTable(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      PagedFullView view = PagedFullView(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -31,27 +31,27 @@ void main() {
           return List.generate(limit, (i) => sample.Person(entity: pb.Entity(id: '$refreshCount$i')));
         },
       );
-      await dataSet.open(testing.Context());
+      await view.open(testing.Context());
 
       // should read 10 rows
-      expect(dataSet.length, 10);
-      expect(dataSet.displayRows.length, 10);
-      expect(dataSet.isEmpty, false);
-      expect(dataSet.isNotEmpty, true);
+      expect(view.length, 10);
+      expect(view.displayRows.length, 10);
+      expect(view.isEmpty, false);
+      expect(view.isNotEmpty, true);
 
       // should read 2 rows
-      await dataSet.refresh(testing.Context());
-      expect(dataSet.length, 12);
-      expect(dataSet.displayRows.length, 10);
-      expect(dataSet.isEmpty, false);
-      expect(dataSet.isNotEmpty, true);
+      await view.refresh(testing.Context());
+      expect(view.length, 12);
+      expect(view.displayRows.length, 10);
+      expect(view.isEmpty, false);
+      expect(view.isNotEmpty, true);
 
-      dataSet.dispose();
+      view.dispose();
     });
 
     test('should remove duplicate data when refresh', () async {
-      final ds = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final ds = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test2',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async =>
@@ -65,8 +65,8 @@ void main() {
 
     test('should not reset on refresh', () async {
       int idCount = 0;
-      final ds = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final ds = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -95,8 +95,8 @@ void main() {
       google.Timestamp? _anchorTimestamp;
       String? _anchorId;
 
-      final ds = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final ds = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -126,8 +126,8 @@ void main() {
     });
 
     test('should save state', () async {
-      final cs = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final cs = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -137,8 +137,8 @@ void main() {
       await cs.open(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
-      final cs2 = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final cs2 = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
@@ -149,8 +149,8 @@ void main() {
     });
 
     test('should goto page', () async {
-      final cs = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final cs = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
@@ -160,8 +160,8 @@ void main() {
       await cs.open(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
-      final cs2 = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final cs2 = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
@@ -173,8 +173,8 @@ void main() {
 
     test('should load next/prev/last/first page', () async {
       int step = 0;
-      final ds = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final ds = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -250,8 +250,8 @@ void main() {
 
     test('should goto page and show info', () async {
       int step = 0;
-      final ds = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final ds = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -304,8 +304,8 @@ void main() {
       bool? lastIsRefresh;
       int? lastLimit;
       String? lastAnchorId;
-      final ds = PagedTable<sample.Person>(
-        MemoryRam(dataBuilder: () => sample.Person()),
+      final ds = PagedFullView<sample.Person>(
+        DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {

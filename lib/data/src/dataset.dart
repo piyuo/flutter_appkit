@@ -13,18 +13,18 @@ const keyNoMore = '__nm';
 /// keyNoRefresh is key for no refresh
 const keyNoRefresh = '__nr';
 
-/// Memory keep rows for later use
+/// Dataset keep rows for later use
 /// ```dart
 /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
 /// await memory.open();
 /// ```
-abstract class Memory<T extends pb.Object> {
-  /// Memory keep rows for later use
+abstract class Dataset<T extends pb.Object> {
+  /// Dataset keep rows for later use
   /// ```dart
   /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
   /// await memory.open();
   /// ```
-  Memory({
+  Dataset({
     required this.dataBuilder,
     this.onChanged,
   });
@@ -41,22 +41,22 @@ abstract class Memory<T extends pb.Object> {
   /// onChanged called when memory changed like insert, delete, update
   Future<void> Function(BuildContext)? onChanged;
 
-  /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in memory
+  /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in dataset
   bool internalNoRefresh = false;
 
-  /// noRefresh mean dataset has no need to refresh data, it will only use data in memory
+  /// noRefresh mean dataset has no need to refresh data, it will only use data in dataset
   bool get noRefresh => internalNoRefresh;
 
-  /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
+  /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in dataset
   Future<void> setNoRefresh(BuildContext context, value) async => internalNoRefresh = value;
 
-  /// internalNoMore mean dataset has no need to load more data, it will only use data in memory
+  /// internalNoMore mean dataset has no need to load more data, it will only use data in dataset
   bool internalNoMore = false;
 
-  /// noMore mean dataset has no need to load more data, it will only use data in memory
+  /// noMore mean dataset has no need to load more data, it will only use data in dataset
   bool get noMore => internalNoMore;
 
-  /// setNoMore set true mean dataset has no need to load more data, it will only use data in memory
+  /// setNoMore set true mean dataset has no need to load more data, it will only use data in dataset
   Future<void> setNoMore(BuildContext context, value) async => internalNoMore = value;
 
   /// internalRowsPerPage is current rows per page
@@ -72,7 +72,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```dart
   /// var rowsAll =  memory.all;
   /// ```
-  List<T> get all => range(0, length);
+  Future<List<T>> get all async => await range(0, length);
 
   /// length return rows length
   /// ```dart
@@ -158,12 +158,12 @@ abstract class Memory<T extends pb.Object> {
     await onChanged?.call(context);
   }
 
-  /// clear memory
+  /// reset memory
   /// ```dart
-  /// await memory.clear();
+  /// await memory.reset();
   /// ```
   @mustCallSuper
-  Future<void> clear(BuildContext context) async {
+  Future<void> reset(BuildContext context) async {
     await onChanged?.call(context);
   }
 
@@ -186,7 +186,7 @@ abstract class Memory<T extends pb.Object> {
   /// ```dart
   /// var range =  memory.range(0, 10);
   /// ```
-  List<T> range(int start, [int? end]);
+  Future<List<T>> range(int start, [int? end]);
 
   /// forEach iterate all rows
   /// ```dart

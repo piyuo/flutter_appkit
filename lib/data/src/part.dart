@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'memory.dart';
+import 'dataset.dart';
 
 /// PartGetter get data from remote service
 /// ```dart
@@ -58,7 +58,7 @@ class Part<T extends pb.Object> with ChangeNotifier {
   }
 
   /// _memory keep all rows in memory
-  final Memory<T> _memory;
+  final Dataset<T> _memory;
 
   /// getter get data from remote service
   final PartGetter<T> getter;
@@ -107,7 +107,7 @@ class Part<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// save data to cache, only update cache when dataSetter return true
+  /// save data to cache, only update cache when setter return true
   /// ```dart
   /// detail.current = sample.Person()..name = 'john';
   /// await detail.save(context);

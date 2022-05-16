@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
+import 'data_view.dart';
+import 'continuous_data_view.dart';
 import 'dataset.dart';
-import 'continuous_dataset.dart';
-import 'memory.dart';
 
-class ContinuousTable<T extends pb.Object> extends ContinuousDataset<T> {
-  ContinuousTable(
-    Memory<T> _memory, {
+class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
+  ContinuousFullView(
+    Dataset<T> _memory, {
     BuildContext? context,
     required String id,
     required pb.Builder<T> dataBuilder,
-    required DatasetLoader<T> loader,
+    required DataViewLoader<T> loader,
     VoidCallback? onReady,
   }) : super(
           _memory,
@@ -24,7 +24,7 @@ class ContinuousTable<T extends pb.Object> extends ContinuousDataset<T> {
     _memory.internalNoMore = true;
   }
 
-  /// onRefresh reset memory on dataset mode, but not on table mode
+  /// onRefresh called when refresh
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     await memory.insert(context, downloadRows);

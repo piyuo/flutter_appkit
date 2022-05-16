@@ -5,7 +5,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'part.dart';
-import 'memory_ram.dart';
+import 'dataset_ram.dart';
 
 void main() {
   setUpAll(() async {});
@@ -14,7 +14,7 @@ void main() {
 
   group('[data]', () {
     test('should load data with id by getter', () async {
-      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
       final detail = Part<sample.Person>(
         memory,
@@ -38,7 +38,7 @@ void main() {
     });
 
     test('should load no data with null id', () async {
-      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
       final detail = Part<sample.Person>(
         memory,
@@ -58,7 +58,7 @@ void main() {
     });
 
     test('should save data', () async {
-      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await memory.open();
       final detail = Part<sample.Person>(
         memory,
@@ -83,7 +83,7 @@ void main() {
     });
 
     test('should not save data if setter went wrong', () async {
-      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await memory.open();
       final detail = Part<sample.Person>(
         memory,

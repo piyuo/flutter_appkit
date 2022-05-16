@@ -1,8 +1,8 @@
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:flutter/material.dart';
 import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/testing/testing.dart' as testing;
-import '../db.dart';
 import 'package:hive/hive.dart';
 
 @HiveType(typeId: 0)
@@ -51,7 +51,7 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('helloWorld'),
           onPressed: () async {
-            final testDB = await openDatabase('testDB');
+            final testDB = await database.open('testDB');
             testDB.setString('hello', 'world');
             var name = testDB.getString('hello');
             debugPrint('hello:$name');
@@ -72,9 +72,9 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('pb.Object'),
           onPressed: () async {
-            final testDB = await openDatabase('testDB');
-            testDB.setObject('e', sample.Person(name: '123'));
-            var person = testDB.getObject<sample.Person>('e', () => sample.Person());
+            final testDB = await database.open('testDB');
+            await testDB.setObject('e', sample.Person(name: '123'));
+            var person = await testDB.getObject<sample.Person>('e', () => sample.Person());
             debugPrint('person name: ${person!.name}');
           }),
     ]);

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'memory.dart';
+import 'dataset.dart';
 
-/// MemoryRam keep memory in ram
+/// DatasetRam keep data in ram
 /// ```dart
-/// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-/// await memory.open();
+/// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+/// await dataset.open();
 /// ```
-class MemoryRam<T extends pb.Object> extends Memory<T> {
-  /// MemoryRam keep memory in ram
+class DatasetRam<T extends pb.Object> extends Dataset<T> {
+  /// DatasetRam keep data in ram
   /// ```dart
-  /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+  /// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
   /// ```
-  MemoryRam({
+  DatasetRam({
     required pb.Builder<T> dataBuilder,
     Future<void> Function(BuildContext)? onChanged,
   }) : super(onChanged: onChanged, dataBuilder: dataBuilder);
@@ -105,15 +105,15 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
     await super.delete(context, list);
   }
 
-  /// clear memory
+  /// reset memory
   /// ```dart
-  /// await memory.clear();
+  /// await memory.reset();
   /// ```
   @override
   @mustCallSuper
-  Future<void> clear(BuildContext context) async {
+  Future<void> reset(BuildContext context) async {
     _rows.clear();
-    await super.clear(context);
+    await super.reset(context);
   }
 
   /// setRow set row into memory and move row to first
@@ -133,7 +133,7 @@ class MemoryRam<T extends pb.Object> extends Memory<T> {
   /// var range =  memory.range(0, 10);
   /// ```
   @override
-  List<T> range(int start, [int? end]) => _rows.sublist(start, end);
+  Future<List<T>> range(int start, [int? end]) async => _rows.sublist(start, end);
 
   /// getRowByID return object by id
   /// ```dart

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'memory_ram.dart';
+import 'dataset_ram.dart';
 import 'filtered_memory.dart';
 import 'filter.dart';
 
@@ -16,7 +16,7 @@ void main() {
 
   group('[filtered_memory]', () {
     test('should show all memory row when no query', () async {
-      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
 
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('should filter keyword', () async {
-      final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
+      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
       await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
 

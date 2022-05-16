@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'data_view.dart';
+import 'paged_data_view.dart';
 import 'dataset.dart';
-import 'paged_dataset.dart';
-import 'memory.dart';
 import 'paginator.dart';
 
-/// Table keep full table data in local, no data allow to be deleted due to local cache can not detect server delete data
+/// PagedFullView keep full data in local, no data allow to be deleted due to local cache can not detect server delete data
 /// ```dart
-/// final ds = Table<sample.Person>(
+/// final ds = PagedFullView<sample.Person>(
 ///   id: 'test',
 ///   dataBuilder: () => sample.Person(),
 ///   loader: (context, _, __, anchorTimestamp, anchorId) async =>
@@ -18,10 +18,10 @@ import 'paginator.dart';
 ///   );
 /// await ds.start(testing.Context());
 /// ```
-class PagedTable<T extends pb.Object> extends PagedDataset<T> {
-  /// Table keep full table data in local, no data allow to be deleted due to local cache can not detect server delete data
+class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
+  /// PagedFullView keep full table data in local, no data allow to be deleted due to local cache can not detect server delete data
   /// ```dart
-  /// final ds = Table<sample.Person>(
+  /// final ds = PagedFullView<sample.Person>(
   ///   id: 'test',
   ///   dataBuilder: () => sample.Person(),
   ///   loader: (context, _, __, anchorTimestamp, anchorId) async =>
@@ -29,12 +29,12 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
   ///   );
   /// await ds.start(testing.Context());
   /// ```
-  PagedTable(
-    Memory<T> _memory, {
+  PagedFullView(
+    Dataset<T> _memory, {
     BuildContext? context,
     required String id,
     required pb.Builder<T> dataBuilder,
-    required DatasetLoader<T> loader,
+    required DataViewLoader<T> loader,
     VoidCallback? onReady,
     Future<void> Function(BuildContext context)? onChanged,
   }) : super(
@@ -47,7 +47,7 @@ class PagedTable<T extends pb.Object> extends PagedDataset<T> {
     _memory.internalNoMore = true;
   }
 
-  /// onRefresh reset memory on dataset mode, but not on table mode
+  /// onRefresh reset dataset, but not on full view mode
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     await memory.insert(context, downloadRows);

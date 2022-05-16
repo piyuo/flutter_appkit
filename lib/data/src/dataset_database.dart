@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'database.dart';
-import 'memory.dart';
-import 'db.dart';
+import 'package:libcli/database/database.dart' as database;
+import 'dataset.dart';
 
-/// deleteMemoryDatabase delete memory database
+/// DatasetDatabase keep all data into a database
 /// ```dart
-/// await deleteMemoryDatabase('test');
+/// final ds = DatasetDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+/// await ds.open();
 /// ```
-Future<void> deleteMemoryDatabase(String id) async => deleteDatabase(id);
-
-/// MemoryDatabase keep memory into a separate database
-/// ```dart
-/// final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
-/// await memory.open();
-/// ```
-class MemoryDatabase<T extends pb.Object> extends Memory<T> {
-  /// MemoryDatabase keep memory into a separate database
+class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
+  /// DatasetFull keep all data into a database
   /// ```dart
-  /// final memory = MemoryDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
-  /// await memory.open();
+  /// final ds = DatasetDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
+  /// await ds.open();
   /// ```
-  MemoryDatabase({
+  DatasetDatabase({
     required this.name,
     required pb.Builder<T> dataBuilder,
     Future<void> Function(BuildContext)? onChanged,
@@ -36,8 +29,8 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   // ignore: prefer_final_fields
   List<String> _index = [];
 
-  /// _database is database that store dataset
-  late Database _database;
+  /// _database is database that store data
+  late database.Database _database;
 
   /// length return rows length
   @override
@@ -60,7 +53,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// onOpen is called when memory need to open
   @override
   Future<void> onOpen() async {
-    _database = await openDatabase(name);
+    _database = await database.open(name);
     await reload();
   }
 
@@ -74,9 +67,9 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   Future<void> reload() async {
-    _index = _database.getStringList(keyIndex) ?? [];
-    internalRowsPerPage = _database.getInt(keyRowsPerPage) ?? 10;
-    internalNoRefresh = _database.getBool(keyNoRefresh) ?? false;
+    _index = await _database.getStringList(keyIndex) ?? [];
+    internalRowsPerPage = await _database.getInt(keyRowsPerPage) ?? 10;
+    internalNoRefresh = await _database.getBool(keyNoRefresh) ?? false;
   }
 
   /// save memory cache
@@ -93,7 +86,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
     await save(context);
   }
 
-  /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in memory
+  /// setNoRefresh set true mean  no need to refresh data, it will only use data in dataset
   @override
   Future<void> setNoRefresh(BuildContext context, value) async {
     await super.setNoRefresh(context, value);
@@ -151,19 +144,17 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
     await super.delete(context, list);
   }
 
-  /// clear memory database
+  /// reset memory database
   /// ```dart
-  /// await memory.clear();
+  /// await memory.reset();
   /// ```
   @override
   @mustCallSuper
-  Future<void> clear(BuildContext context) async {
+  Future<void> reset(BuildContext context) async {
     _index = [];
-    await _database.close();
-    await deleteMemoryDatabase(name);
-    _database = await openDatabase(name);
+    await _database.reset();
     internalNoRefresh = false;
-    await super.clear(context);
+    await super.reset(context);
   }
 
   /// update set row into memory and move row to first
@@ -185,11 +176,11 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   /// var range =  memory.range(0, 10);
   /// ```
   @override
-  List<T> range(int start, [int? end]) {
+  Future<List<T>> range(int start, [int? end]) async {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
-      final row = _database.getObject(id, dataBuilder);
+      final row = await _database.getObject(id, dataBuilder);
       if (row == null) {
         // data is missing
         _index = [];
@@ -222,7 +213,7 @@ class MemoryDatabase<T extends pb.Object> extends Memory<T> {
   @override
   Future<void> forEach(void Function(T) callback) async {
     for (String id in _index) {
-      final obj = _database.getObject(id, dataBuilder);
+      final obj = await _database.getObject(id, dataBuilder);
       if (obj != null) {
         callback(obj);
       }

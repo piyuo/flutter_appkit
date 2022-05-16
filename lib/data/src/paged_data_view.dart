@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'memory.dart';
-import 'paginator.dart';
 import 'dataset.dart';
+import 'paginator.dart';
+import 'data_view.dart';
 
-/// PagedDataset is dataset that support page
-class PagedDataset<T extends pb.Object> extends Dataset<T> {
-  PagedDataset(
-    Memory<T> _memory, {
+/// PagedDataView is view to display paging data
+class PagedDataView<T extends pb.Object> extends DataView<T> {
+  PagedDataView(
+    Dataset<T> _memory, {
     BuildContext? context,
-    required DatasetLoader<T> loader,
+    required DataViewLoader<T> loader,
     required pb.Builder<T> dataBuilder,
     VoidCallback? onReady,
   }) : super(
@@ -24,7 +24,7 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// pageIndex is current page index
   int pageIndex = 0;
 
-  /// onRefresh reset memory on dataset mode, but not on table mode, return true if reset memory
+  /// onRefresh reset dataset, but not on full view mode, return true if reset dataset
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     final isReset = await super.onRefresh(context, downloadRows);
@@ -37,10 +37,10 @@ class PagedDataset<T extends pb.Object> extends Dataset<T> {
   /// await ds.fill();
   /// ```
   @override
-  void fill() {
+  Future<void> fill() async {
     displayRows.clear();
     final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
-    final range = memory.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
+    final range = await memory.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
     displayRows.addAll(range);
   }
 

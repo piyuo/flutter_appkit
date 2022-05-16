@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'memory.dart';
+import 'dataset.dart';
 import 'filter.dart';
 
 /// Memory keep rows for later use
@@ -8,7 +8,7 @@ import 'filter.dart';
 /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
 /// final filter = FilteredMemory(memory);
 /// ```
-class FilteredMemory<T extends pb.Object> extends Memory<T> {
+class FilteredMemory<T extends pb.Object> extends Dataset<T> {
   /// Memory keep rows for later use
   /// ```dart
   /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
@@ -20,7 +20,7 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   }) : super(onChanged: onChanged, dataBuilder: _memory.dataBuilder);
 
   /// _memory is memory need to be filter
-  final Memory<T> _memory;
+  final Dataset<T> _memory;
 
   List<Filter> _filters = [];
 
@@ -170,10 +170,10 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> clear(BuildContext context) async {
-    await _memory.clear(context);
+  Future<void> reset(BuildContext context) async {
+    await _memory.reset(context);
     _result = [];
-    await super.clear(context);
+    await super.reset(context);
   }
 
   /// setRow set row into memory and move row to first
@@ -215,7 +215,7 @@ class FilteredMemory<T extends pb.Object> extends Memory<T> {
   /// var range =  memory.range(0, 10);
   /// ```
   @override
-  List<T> range(int start, [int? end]) {
+  Future<List<T>> range(int start, [int? end]) async {
     if (hasFilter) {
       return _result.sublist(start, end);
     }
