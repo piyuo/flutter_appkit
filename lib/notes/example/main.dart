@@ -6,14 +6,15 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/animations/animations.dart' as animations;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/db/db.dart' as db;
+import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/unique/unique.dart' as unique;
 import '../notes.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
-late db.Memory<sample.Person> memory;
+late data.Dataset<sample.Person> memory;
 final _searchBoxController = TextEditingController();
 int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
@@ -25,14 +26,14 @@ main() {
   app.start(
     appName: 'notes',
     onBeforeStart: () async {
-      await db.deleteMemoryDatabase('test');
-      memory = db.MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await database.delete('test');
+      memory = data.DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
     },
     providers: [
       ChangeNotifierProvider<NotesController<sample.Person>>(
         create: (context) => NotesController<sample.Person>(
           context: context,
-          memory: memory,
+          dataset: memory,
           detailBeamName: "/",
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
@@ -97,8 +98,8 @@ main() {
       )
     ],
     routes: {
-      '/': (context, state, data) => const NotesExample(),
-      '/:id': (context, state, data) {
+      '/': (context, state, _) => const NotesExample(),
+      '/:id': (context, state, _) {
         final id = state.pathParameters['id']!;
         return NotesBeamPage<sample.Person>(
           id: id,
@@ -119,7 +120,7 @@ main() {
                               entity: pb.Entity(id: unique.uuid()),
                             );
                             final memory2 =
-                                db.MemoryDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+                                data.DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
                             await memory2.open();
                             await memory2.insert(context, [person]);
                           }
