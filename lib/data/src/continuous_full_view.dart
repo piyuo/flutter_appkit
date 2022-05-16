@@ -28,7 +28,7 @@ class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     await dataset.insert(context, downloadRows);
-    fill();
+    await fill();
     return false; // table do not reset dataset
   }
 

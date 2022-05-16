@@ -73,7 +73,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
       if (pageIndex >= paginator.pageCount) {
         pageIndex = paginator.pageCount - 1;
       }
-      fill();
+      await fill();
     } finally {
       notifyListeners();
     }

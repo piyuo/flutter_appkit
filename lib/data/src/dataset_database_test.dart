@@ -9,13 +9,10 @@ import 'dataset_database.dart';
 void main() {
   setUpAll(() async {
     await database.initForTest();
-  });
-
-  setUp(() async {
     await database.delete('test');
   });
 
-  tearDownAll(() async {
+  tearDown(() async {
     await database.delete('test');
   });
 
