@@ -323,7 +323,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         if (isRemovable(dataView.selectedRows)) {
           final deleted = await remover(context, dataView.selectedRows);
           if (deleted) {
-            await dataView.memory.delete(context, dataView.selectedRows);
+            await dataView.dataset.delete(context, dataView.selectedRows);
             int removeCount = 0;
             for (int i = 0; i < dataView.displayRows.length; i++) {
               final row = dataView.displayRows[i];

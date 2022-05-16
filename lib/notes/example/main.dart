@@ -14,7 +14,7 @@ import '../notes.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
-late data.Dataset<sample.Person> memory;
+late data.Dataset<sample.Person> _dataset;
 final _searchBoxController = TextEditingController();
 int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
@@ -27,13 +27,13 @@ main() {
     appName: 'notes',
     onBeforeStart: () async {
       await database.delete('test');
-      memory = data.DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      _dataset = data.DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
     },
     providers: [
       ChangeNotifierProvider<NotesController<sample.Person>>(
         create: (context) => NotesController<sample.Person>(
           context: context,
-          dataset: memory,
+          dataset: _dataset,
           detailBeamName: "/",
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
@@ -119,10 +119,10 @@ main() {
                               name: 'beam item',
                               entity: pb.Entity(id: unique.uuid()),
                             );
-                            final memory2 =
+                            final dataset2 =
                                 data.DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-                            await memory2.open();
-                            await memory2.insert(context, [person]);
+                            await dataset2.open();
+                            await dataset2.insert(context, [person]);
                           }
                         })
                   ])),
@@ -694,7 +694,7 @@ class NotesExample extends StatelessWidget {
                 onPressed: () async {
                   if (person.name == 'new item') {
                     person.name = 'saved item';
-                    await memory.insert(context, [person]);
+                    await _dataset.insert(context, [person]);
                     await notesController.refill(context);
                   }
                 },
