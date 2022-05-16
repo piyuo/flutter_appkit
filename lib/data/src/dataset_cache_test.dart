@@ -18,6 +18,10 @@ void main() {
     await cache.reset();
   });
 
+  tearDownAll(() async {
+    await cache.clean();
+  });
+
   group('[dataset_cache]', () {
     test('should init and clear data', () async {
       final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
