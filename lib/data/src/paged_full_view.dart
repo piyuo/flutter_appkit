@@ -30,7 +30,7 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
   /// await ds.start(testing.Context());
   /// ```
   PagedFullView(
-    Dataset<T> _memory, {
+    Dataset<T> _dataset, {
     BuildContext? context,
     required String id,
     required pb.Builder<T> dataBuilder,
@@ -38,21 +38,21 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
     VoidCallback? onReady,
     Future<void> Function(BuildContext context)? onChanged,
   }) : super(
-          _memory,
+          _dataset,
           context: context,
           dataBuilder: dataBuilder,
           loader: loader,
           onReady: onReady,
         ) {
-    _memory.internalNoMore = true;
+    _dataset.internalNoMore = true;
   }
 
   /// onRefresh reset dataset, but not on full view mode
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    await memory.insert(context, downloadRows);
+    await dataset.insert(context, downloadRows);
     await gotoPage(context, 0);
-    return false; // table do not reset memory
+    return false; // table do not reset dataset
   }
 
   @override
@@ -70,15 +70,15 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
   /// hasNextPage return true if user can click next page
   @override
   bool get hasNextPage {
-    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     return pageIndex < paginator.pageCount - 1;
   }
 
   /// pagingInfo return text page info like '1-10 of 19'
   @override
   String pageInfo(BuildContext context) {
-    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ' +
-        context.i18n.pagingCount.replaceAll('%1', memory.length.toString());
+        context.i18n.pagingCount.replaceAll('%1', dataset.length.toString());
   }
 }

@@ -20,29 +20,29 @@ enum DataViewState {
 typedef DataViewLoader<T> = Future<List<T>> Function(
     BuildContext context, bool isRefresh, int limit, google.Timestamp? anchorTime, String? anchorId);
 
-/// DataProvider read data save to local, manage paging and select row
+/// DataView read data save to local, manage paging and select row
 /// ```dart
-/// final ds = DataProvider<sample.Person>(
-///   MemoryRam(dataBuilder: () => sample.Person()),
+/// final dataView = DataView<sample.Person>(
+///   DatasetRam(dataBuilder: () => sample.Person()),
 ///   dataBuilder: () => sample.Person(),
 ///   loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
 ///     [sample.Person(entity: pb.Entity(id: 'duplicate'))],
 /// );
-/// await ds.start(testing.Context());
+/// await dataView.open(testing.Context());
 /// ```
 abstract class DataView<T extends pb.Object> with ChangeNotifier {
-  /// DataProvider read data save to local, manage paging and select row
+  /// DataView read data save to local, manage paging and select row
   /// ```dart
-  /// final ds = DataProvider<sample.Person>(
-  ///   MemoryRam(dataBuilder: () => sample.Person()),
+  /// final dataView = DataView<sample.Person>(
+  ///   DatasetRam(dataBuilder: () => sample.Person()),
   ///   dataBuilder: () => sample.Person(),
   ///   loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
   ///     [sample.Person(entity: pb.Entity(id: 'duplicate'))],
   /// );
-  /// await ds.start(testing.Context());
+  /// await dataView.open(testing.Context());
   /// ```
   DataView(
-    this.memory, {
+    this.dataset, {
     BuildContext? context,
     required this.loader,
     required this.dataBuilder,
@@ -65,8 +65,8 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// state is the state of data view
   DataViewState state = DataViewState.initial;
 
-  /// memory keep all rows in memory
-  Dataset<T> memory;
+  /// dataset keep all rows in dataset
+  Dataset<T> dataset;
 
   /// selectedRows keep all selected rows
   List<T> selectedRows = [];
@@ -81,32 +81,32 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// var len=ds.length;
   /// ```
-  int get length => memory.length;
+  int get length => dataset.length;
 
   /// isEmpty return rows is empty
-  bool get isEmpty => memory.isEmpty;
+  bool get isEmpty => dataset.isEmpty;
 
   /// isNotEmpty return rows is not empty
-  bool get isNotEmpty => memory.isNotEmpty;
+  bool get isNotEmpty => dataset.isNotEmpty;
 
   /// noRefresh return true if no refresh need
-  bool get noRefresh => memory.noRefresh;
+  bool get noRefresh => dataset.noRefresh;
 
   /// setNoRefresh set true mean  no need to refresh data, it will only use data in dataset
-  Future<void> setNoRefresh(BuildContext context, value) async => memory.setNoRefresh(context, value);
+  Future<void> setNoRefresh(BuildContext context, value) async => dataset.setNoRefresh(context, value);
 
   /// noMore return true if no more data to add
-  bool get noMore => memory.noMore;
+  bool get noMore => dataset.noMore;
 
   /// rowsPerPage return rows per page
-  int get rowsPerPage => memory.rowsPerPage;
+  int get rowsPerPage => dataset.rowsPerPage;
 
-  /// setMemory set new memory to data set
+  /// setDataset set new dataset to data set
   /// ```dart
-  /// ds.setMemory(context,memory);
+  /// ds.setDataset(context,dataset);
   /// ```
-  void setMemory(BuildContext context, Dataset<T> source) {
-    memory = source;
+  void setDataset(BuildContext context, Dataset<T> source) {
+    dataset = source;
   }
 
   /// fill display rows
@@ -127,7 +127,7 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// ```
   Future<void> open(BuildContext context) async {
     try {
-      await memory.open();
+      await dataset.open();
       await refresh(context);
       onReady?.call();
     } finally {
@@ -138,7 +138,7 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// dispose dataset
   @override
   void dispose() {
-    memory.close();
+    dataset.close();
     super.dispose();
   }
 
@@ -148,19 +148,19 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  /// onRefresh reset memory but not on full view mode, return true if reset dataset
+  /// onRefresh reset dataset but not on full view mode, return true if reset dataset
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     bool isReset = false;
-    if (memory.isEmpty && downloadRows.length < memory.rowsPerPage) {
-      await memory.setNoMore(context, true);
+    if (dataset.isEmpty && downloadRows.length < dataset.rowsPerPage) {
+      await dataset.setNoMore(context, true);
     }
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
-      memory.reset(context);
+      dataset.reset(context);
       selectedRows.clear();
       isReset = true;
     }
-    await memory.insert(context, downloadRows);
+    await dataset.insert(context, downloadRows);
     return isReset;
   }
 
@@ -169,15 +169,15 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// await ds.refresh(context);
   /// ```
   Future<bool> refresh(BuildContext context) async {
-    if (memory.noRefresh) {
+    if (dataset.noRefresh) {
       debugPrint('[data_view] no refresh already');
       return false;
     }
     notifyState(DataViewState.refreshing);
     try {
-      await memory.reload(); // someone may change memory so reload it
-      T? anchor = await memory.first;
-      final downloadRows = await loader(context, true, memory.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
+      await dataset.reload(); // someone may change dataset so reload it
+      T? anchor = await dataset.first;
+      final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
       if (downloadRows.isNotEmpty) {
         debugPrint('[data_view] refresh ${downloadRows.length} rows');
       }
@@ -193,20 +193,20 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// await ds.more(testing.Context(), 2);
   /// ```
   Future<bool> more(BuildContext context, int limit) async {
-    if (memory.noMore) {
+    if (dataset.noMore) {
       debugPrint('[data_view] no more already');
       return false;
     }
     notifyState(DataViewState.loading);
     try {
-      T? anchor = await memory.last;
+      T? anchor = await dataset.last;
       final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
       if (downloadRows.length < limit) {
         debugPrint('[data_view] has no more data');
-        await memory.setNoMore(context, true);
+        await dataset.setNoMore(context, true);
       }
       if (downloadRows.isNotEmpty) {
-        await memory.add(context, downloadRows);
+        await dataset.add(context, downloadRows);
         await fill();
         return true;
       }
@@ -234,7 +234,7 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// ```
   void selectRows(List<T> rows) {
     selectedRows.clear();
-    rows.removeWhere((row) => !memory.isIDExists(row.entityID));
+    rows.removeWhere((row) => !dataset.isIDExists(row.entityID));
     selectedRows.addAll(rows);
     notifyListeners();
   }
@@ -245,7 +245,7 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// ```
   void selectRow(T row, bool selected) {
     selectedRows.remove(row);
-    if (selected && memory.isIDExists(row.entityID)) {
+    if (selected && dataset.isIDExists(row.entityID)) {
       selectedRows.add(row);
     }
     notifyListeners();
@@ -255,5 +255,5 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// final obj = await getRowByID('1');
   /// ```
-  Future<T?> getRowByID(String id) async => await memory.read(id);
+  Future<T?> getRowByID(String id) async => await dataset.read(id);
 }

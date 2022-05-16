@@ -14,10 +14,10 @@ void main() {
 
   group('[data]', () {
     test('should load data with id by getter', () async {
-      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
       final detail = Part<sample.Person>(
-        memory,
+        dataset,
         id: 'myId',
         dataBuilder: () => sample.Person(),
         getter: (context, id) async {
@@ -30,18 +30,18 @@ void main() {
       await detail.load(testing.Context());
       expect(isGet, isTrue);
       expect(detail.current, isNotNull);
-      expect(memory.length, 1);
+      expect(dataset.length, 1);
       expect(detail.isLoading, false);
 
-      final row = await memory.read('myId');
+      final row = await dataset.read('myId');
       expect(row!.entityID, 'myId');
     });
 
     test('should load no data with null id', () async {
-      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
       final detail = Part<sample.Person>(
-        memory,
+        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async {
           isGet = true;
@@ -53,15 +53,15 @@ void main() {
       await detail.load(testing.Context());
       expect(isGet, isFalse);
       expect(detail.current, isNull);
-      expect(memory.isEmpty, true);
+      expect(dataset.isEmpty, true);
       expect(detail.isLoading, false);
     });
 
     test('should save data', () async {
-      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await memory.open();
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      await dataset.open();
       final detail = Part<sample.Person>(
-        memory,
+        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
         setter: (context, sample.Person person) async {
@@ -71,22 +71,22 @@ void main() {
       );
       await detail.load(testing.Context());
       expect(detail.current, isNull);
-      expect(memory.isEmpty, true);
+      expect(dataset.isEmpty, true);
       expect(detail.isLoading, false);
 
       detail.current = sample.Person()..name = 'john';
       final success = await detail.save(testing.Context());
       expect(success, isTrue);
-      final person = await memory.first;
+      final person = await dataset.first;
       expect(person!.name, 'john');
       expect(person.entityID, 'newId');
     });
 
     test('should not save data if setter went wrong', () async {
-      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await memory.open();
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      await dataset.open();
       final detail = Part<sample.Person>(
-        memory,
+        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
         setter: (context, sample.Person person) async {
@@ -95,13 +95,13 @@ void main() {
       );
       await detail.load(testing.Context());
       expect(detail.current, isNull);
-      expect(memory.isEmpty, true);
+      expect(dataset.isEmpty, true);
       expect(detail.isLoading, false);
 
       detail.current = sample.Person()..name = 'john';
       final success = await detail.save(testing.Context());
       expect(success, isFalse);
-      expect(memory.isEmpty, isTrue);
+      expect(dataset.isEmpty, isTrue);
     });
   });
 }

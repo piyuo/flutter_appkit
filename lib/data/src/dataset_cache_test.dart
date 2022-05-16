@@ -40,9 +40,9 @@ void main() {
       await dataset.open();
       expect(dataset.length, 0);
 
-      final memory2 = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-      await memory2.open();
-      await memory2.add(testing.Context(), [sample.Person(name: 'hi')]);
+      final dataset2 = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await dataset2.open();
+      await dataset2.add(testing.Context(), [sample.Person(name: 'hi')]);
 
       await dataset.reload();
       expect(dataset.length, 1);
@@ -122,64 +122,64 @@ void main() {
       await dataset.setRowsPerPage(testing.Context(), 21);
       await dataset.close();
 
-      final memory2 = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-      await memory2.open();
-      expect(memory2.noMore, true);
-      expect(memory2.rowsPerPage, 21);
-      expect(memory2.length, 2);
-      expect((await memory2.first)!.entityID, 'first');
-      expect((await memory2.last)!.entityID, 'second');
+      final dataset2 = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await dataset2.open();
+      expect(dataset2.noMore, true);
+      expect(dataset2.rowsPerPage, 21);
+      expect(dataset2.length, 2);
+      expect((await dataset2.first)!.entityID, 'first');
+      expect((await dataset2.last)!.entityID, 'second');
     });
 /*
     test('should not delete in reset after max item limit', () async {
-      final memory = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-      await memory.open();
-      await memory.add(
+      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await dataset.open();
+      await dataset.add(
           testing.Context(), List.generate(maxResetItem + 1, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
 
       expect(cache.contains('0'), true);
       expect(cache.contains(maxResetItem.toString()), true);
-      await memory.clear(testing.Context());
+      await dataset.clear(testing.Context());
       expect(cache.contains('0'), false);
       expect(cache.contains(maxResetItem.toString()), true);
     });
 */
     test('should get row by id', () async {
-      final memory = DatasetCache(name: 'test', dataBuilder: () => sample.Person());
-      await memory.open();
-      await memory.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
-      final obj = await memory.read('1');
+      final dataset = DatasetCache(name: 'test', dataBuilder: () => sample.Person());
+      await dataset.open();
+      await dataset.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
+      final obj = await dataset.read('1');
       expect(obj, isNotNull);
       expect(obj!.entityID, '1');
-      final obj2 = await memory.read('not-exist');
+      final obj2 = await dataset.read('not-exist');
       expect(obj2, isNull);
     });
 
     test('should set row and move to first', () async {
-      final memory = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-      await memory.open();
-      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
-      expect(memory.length, 1);
-      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
-      expect(memory.length, 1);
-      await memory.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
-      expect(memory.length, 2);
-      expect((await memory.first)!.entityID, 'second');
-      final obj = await memory.read('first');
+      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await dataset.open();
+      await dataset.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+      expect(dataset.length, 1);
+      await dataset.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
+      expect(dataset.length, 1);
+      await dataset.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
+      expect(dataset.length, 2);
+      expect((await dataset.first)!.entityID, 'second');
+      final obj = await dataset.read('first');
       expect(obj, isNotNull);
-      final obj2 = await memory.read('second');
+      final obj2 = await dataset.read('second');
       expect(obj2, isNotNull);
     });
 
     test('should use forEach to iterate all row', () async {
-      final memory = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-      await memory.open();
-      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await dataset.open();
+      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
 
       var count = 0;
       var id = '';
-      await memory.forEach((row) {
+      await dataset.forEach((row) {
         count++;
         id = row.entityID;
       });
@@ -188,43 +188,43 @@ void main() {
     });
 
     test('should check id exists', () async {
-      final memory = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-      await memory.open();
-      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      expect(memory.isIDExists('first'), isTrue);
-      expect(memory.isIDExists('notExists'), isFalse);
+      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await dataset.open();
+      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      expect(dataset.isIDExists('first'), isTrue);
+      expect(dataset.isIDExists('notExists'), isFalse);
     });
 
     test('should call onChanged when update data', () async {
       bool changed = false;
-      final memory = DatasetCache<sample.Person>(
+      final dataset = DatasetCache<sample.Person>(
         name: 'test',
         dataBuilder: () => sample.Person(),
         onChanged: (context) async => changed = true,
       );
-      await memory.open();
+      await dataset.open();
 
-      await memory.insert(testing.Context(), [sample.Person()]);
+      await dataset.insert(testing.Context(), [sample.Person()]);
       expect(changed, true);
 
       changed = false;
-      await memory.add(testing.Context(), [sample.Person()]);
+      await dataset.add(testing.Context(), [sample.Person()]);
       expect(changed, true);
 
       changed = false;
-      await memory.delete(testing.Context(), [sample.Person()]);
+      await dataset.delete(testing.Context(), [sample.Person()]);
       expect(changed, true);
 
       changed = false;
-      await memory.reset(testing.Context());
+      await dataset.reset(testing.Context());
       expect(changed, true);
 
       changed = false;
-      await memory.reset(testing.Context());
+      await dataset.reset(testing.Context());
       expect(changed, true);
 
       changed = false;
-      await memory.update(testing.Context(), sample.Person());
+      await dataset.update(testing.Context(), sample.Person());
       expect(changed, true);
     });
   });

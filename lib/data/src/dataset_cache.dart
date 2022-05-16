@@ -8,7 +8,7 @@ import 'dataset.dart';
 @visibleForTesting
 int get maxResetItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
-/// deleteDatasetCache delete a memory cache
+/// deleteDatasetCache delete a dataset cache
 /// ```dart
 /// await deleteDatasetCache('test');
 /// ```
@@ -56,29 +56,29 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
 
   /// first return first row
   /// ```dart
-  /// await memory.first;
+  /// await dataset.first;
   /// ```
   @override
   Future<T?> get first async => _index.isNotEmpty ? await cache.getObject(_index.first, dataBuilder) : null;
 
   /// last return last row
   /// ```dart
-  /// await memory.last;
+  /// await dataset.last;
   /// ```
   @override
   Future<T?> get last async => _index.isNotEmpty ? await cache.getObject(_index.last, dataBuilder) : null;
 
-  /// onOpen is called when memory need to open
+  /// onOpen is called when dataset need to open
   @override
   Future<void> onOpen() async => await reload();
 
-  /// onClose is called when memory need to close
+  /// onClose is called when dataset need to close
   @override
   Future<void> onClose() async {}
 
-  /// reload memory content
+  /// reload dataset content
   /// ```dart
-  /// await memory.reload();
+  /// await dataset.reload();
   /// ```
   @override
   Future<void> reload() async {
@@ -88,7 +88,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     internalNoMore = await cache.getBool('$name$keyNoMore') ?? false;
   }
 
-  /// save memory cache
+  /// save dataset cache
   Future<void> save(BuildContext context) async {
     await cache.setStringList('$name$keyIndex', _index);
     await cache.setInt('$name$keyRowsPerPage', internalRowsPerPage);
@@ -119,7 +119,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
 
   /// insert list of rows into ram
   /// ```dart
-  /// await memory.insert([sample.Person()]);
+  /// await dataset.insert([sample.Person()]);
   /// ```
   @override
   @mustCallSuper
@@ -136,7 +136,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
 
   /// add rows into ram
   /// ```dart
-  /// await memory.add([sample.Person(name: 'hi')]);
+  /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
   @override
   @mustCallSuper
@@ -151,9 +151,9 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     await super.add(context, list);
   }
 
-  /// remove rows from memory
+  /// remove rows from dataset
   /// ```dart
-  /// await memory.remove(list);
+  /// await dataset.remove(list);
   /// ```
   @override
   @mustCallSuper
@@ -168,9 +168,9 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     await super.delete(context, list);
   }
 
-  /// reset memory
+  /// reset dataset
   /// ```dart
-  /// await memory.reset();
+  /// await dataset.reset();
   /// ```
   @override
   @mustCallSuper
@@ -191,9 +191,9 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     await super.reset(context);
   }
 
-  /// update set row into memory and move row to first
+  /// update set row into dataset and move row to first
   /// ```dart
-  /// await memory.update(row);
+  /// await dataset.update(row);
   /// ```
   @override
   Future<void> update(BuildContext context, T row) async {
@@ -206,7 +206,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var range =  memory.range(0, 10);
+  /// var range =  dataset.range(0, 10);
   /// ```
   @override
   Future<List<T>> range(int start, [int? end]) async {
@@ -228,7 +228,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
 
   /// read return object by id
   /// ```dart
-  /// final obj = await memory.read('1');
+  /// final obj = await dataset.read('1');
   /// ```
   @override
   Future<T?> read(String id) async {
@@ -242,7 +242,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
 
   /// forEach iterate all rows
   /// ```dart
-  /// await memory.forEach((row) {});
+  /// await dataset.forEach((row) {});
   /// ```
   @override
   Future<void> forEach(void Function(T) callback) async {
@@ -254,9 +254,9 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     }
   }
 
-  /// isIDExists return true if id is in memory
+  /// isIDExists return true if id is in dataset
   /// ```dart
-  /// await memory.isIDExists();
+  /// await dataset.isIDExists();
   /// ```
   @override
   bool isIDExists(String id) => _index.contains(id);

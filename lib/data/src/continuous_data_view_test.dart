@@ -51,10 +51,10 @@ void main() {
       await ds.open(testing.Context());
       expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
       expect(ds.length, 10);
-      await ds.refresh(testing.Context()); // first nextPage, it will reset memory cause download rows is rowsPerPage
+      await ds.refresh(testing.Context()); // first nextPage, it will reset dataset cause download rows is rowsPerPage
       expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
       expect(ds.length, 10);
-      await ds.refresh(testing.Context()); // second nextPage, it will add to memory
+      await ds.refresh(testing.Context()); // second nextPage, it will add to dataset
       expect(ds.pageInfo(testing.Context()), '1 - 12 of many');
       expect(ds.length, 12);
     });

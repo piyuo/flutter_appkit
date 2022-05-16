@@ -332,16 +332,16 @@ void main() {
     });
 
     test('should fill display rows', () async {
-      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       final ds = PagedDataView<sample.Person>(
-        memory,
+        dataset,
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(10, (i) => sample.Person(entity: pb.Entity(id: '$i')));
         },
       );
       await ds.open(testing.Context());
-      await memory.setRowsPerPage(testing.Context(), 5);
+      await dataset.setRowsPerPage(testing.Context(), 5);
       ds.pageIndex = 0;
 
       await ds.fill();

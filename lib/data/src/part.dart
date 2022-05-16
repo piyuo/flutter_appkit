@@ -19,7 +19,7 @@ typedef PartGetter<T> = Future<T?> Function(BuildContext context, String id);
 /// ```
 typedef PartSetter<T> = Future<T?> Function(BuildContext context, T obj);
 
-/// Part provide a way to access data though memory
+/// Part provide a way to access data though dataset
 /// ```dart
 /// final dp = Part<sample.Person>(
 ///   context: context,
@@ -32,7 +32,7 @@ typedef PartSetter<T> = Future<T?> Function(BuildContext context, T obj);
 /// );
 /// ```
 class Part<T extends pb.Object> with ChangeNotifier {
-  /// Detail provide a way to access data though memory
+  /// Detail provide a way to access data though dataset
   /// ```dart
   /// final dp = Part<sample.Person>(
   ///   context: context,
@@ -45,7 +45,7 @@ class Part<T extends pb.Object> with ChangeNotifier {
   /// );
   /// ```
   Part(
-    this._memory, {
+    this._dataset, {
     required pb.Builder<T> dataBuilder,
     required this.getter,
     required this.setter,
@@ -57,8 +57,8 @@ class Part<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// _memory keep all rows in memory
-  final Dataset<T> _memory;
+  /// _dataset keep all rows in dataset
+  final Dataset<T> _dataset;
 
   /// getter get data from remote service
   final PartGetter<T> getter;
@@ -78,12 +78,12 @@ class Part<T extends pb.Object> with ChangeNotifier {
   /// isLoading is true when detail is loading data
   bool get isLoading => _isLoading;
 
-  /// load data to memory
+  /// load data to dataset
   /// ```dart
   /// await detail.load(testing.Context());
   /// ```
   Future<void> load(BuildContext context) async {
-    await _memory.open();
+    await _dataset.open();
 
     if (current != null || id == null) {
       return;
@@ -91,14 +91,14 @@ class Part<T extends pb.Object> with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      current = await _memory.read(id!);
+      current = await _dataset.read(id!);
       if (current != null) {
         return;
       }
 
       current = await getter(context, id!);
       if (current != null) {
-        _memory.update(context, current!);
+        _dataset.update(context, current!);
         return;
       }
     } finally {
@@ -118,7 +118,7 @@ class Part<T extends pb.Object> with ChangeNotifier {
     }
     current = await setter(context, current!);
     if (current != null) {
-      await _memory.update(context, current!);
+      await _dataset.update(context, current!);
       return true;
     }
     return false;

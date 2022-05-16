@@ -3,45 +3,45 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'dataset.dart';
 import 'filter.dart';
 
-/// Memory keep rows for later use
+/// FilteredDataset filter data from Dataset
 /// ```dart
-/// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-/// final filter = FilteredMemory(memory);
+/// final dsRam = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+/// final filter = FilteredDataset(dsRam);
 /// ```
-class FilteredMemory<T extends pb.Object> extends Dataset<T> {
-  /// Memory keep rows for later use
+class FilteredDataset<T extends pb.Object> extends Dataset<T> {
+  /// FilteredDataset filter data from Dataset
   /// ```dart
-  /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-  /// final filter = FilteredMemory(memory);
+  /// final dsRam = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+  /// final filter = FilteredDataset(dsRam);
   /// ```
-  FilteredMemory(
-    this._memory, {
+  FilteredDataset(
+    this._dataset, {
     Future<void> Function(BuildContext)? onChanged,
-  }) : super(onChanged: onChanged, dataBuilder: _memory.dataBuilder);
+  }) : super(onChanged: onChanged, dataBuilder: _dataset.dataBuilder);
 
-  /// _memory is memory need to be filter
-  final Dataset<T> _memory;
+  /// _dataset is dataset need to be filter
+  final Dataset<T> _dataset;
 
   List<Filter> _filters = [];
 
   /// _result is rows after query
   List<T> _result = [];
 
-  /// onOpen is called when memory need to open
+  /// onOpen is called when dataset need to open
   @override
-  Future<void> onOpen() async => await _memory.open();
+  Future<void> onOpen() async => await _dataset.open();
 
-  /// onClose is called when memory need to close
+  /// onClose is called when dataset need to close
   @override
-  Future<void> onClose() async => await _memory.close();
+  Future<void> onClose() async => await _dataset.close();
 
-  /// reload memory content
+  /// reload dataset content
   @override
-  Future<void> reload() async => await _memory.reload();
+  Future<void> reload() async => await _dataset.reload();
 
-  /// setFilters set filter to memory
+  /// setFilters set filter to dataset
   /// ```dart
-  /// await memory.setFilters(filters);
+  /// await dataset.setFilters(filters);
   /// ```
   Future<void> setFilters(List<Filter<T>> queries) async {
     if (queries.isEmpty) {
@@ -78,7 +78,7 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
   /// _runFilter put filtered rows to _result
   Future<void> _runFilter() async {
     _result = [];
-    await _memory.forEach(
+    await _dataset.forEach(
       (row) async {
         if (match(row)) {
           _result.add(row);
@@ -89,47 +89,47 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
 
   /// hasFilter return true if has filters defined
   /// ```dart
-  /// await memory.hasFilter;
+  /// await dataset.hasFilter;
   /// ```
   bool get hasFilter => _filters.isNotEmpty;
 
   /// length return rows length
   /// ```dart
-  /// var len = memory.length;
+  /// var len = dataset.length;
   /// ```
   @override
-  int get length => hasFilter ? _result.length : _memory.length;
+  int get length => hasFilter ? _result.length : _dataset.length;
 
   /// first return first row
   /// ```dart
-  /// await memory.first;
+  /// await dataset.first;
   /// ```
   @override
   Future<T?> get first async => hasFilter
       ? _result.isEmpty
           ? null
           : _result.first
-      : await _memory.first;
+      : await _dataset.first;
 
   /// last return last row
   /// ```dart
-  /// await memory.last;
+  /// await dataset.last;
   /// ```
   @override
   Future<T?> get last async => hasFilter
       ? _result.isEmpty
           ? null
           : _result.last
-      : await _memory.last;
+      : await _dataset.last;
 
   /// insert list of rows into ram
   /// ```dart
-  /// await memory.insert([sample.Person()]);
+  /// await dataset.insert([sample.Person()]);
   /// ```
   @override
   @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
-    await _memory.insert(context, list);
+    await _dataset.insert(context, list);
     if (hasFilter) {
       final matched = getMatchRows(list);
       _result.insertAll(0, matched);
@@ -139,12 +139,12 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
 
   /// add rows into ram
   /// ```dart
-  /// await memory.add([sample.Person(name: 'hi')]);
+  /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
   @override
   @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
-    await _memory.add(context, list);
+    await _dataset.add(context, list);
     if (hasFilter) {
       final matched = getMatchRows(list);
       _result.addAll(matched);
@@ -154,36 +154,36 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
 
   /// add rows into ram
   /// ```dart
-  /// await memory.remove(list);
+  /// await dataset.remove(list);
   /// ```
   @override
   @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
-    await _memory.delete(context, list);
+    await _dataset.delete(context, list);
     _result.removeWhere((item) => list.contains(item));
     await super.delete(context, list);
   }
 
-  /// clear memory
+  /// clear dataset
   /// ```dart
-  /// await memory.clear();
+  /// await dataset.clear();
   /// ```
   @override
   @mustCallSuper
   Future<void> reset(BuildContext context) async {
-    await _memory.reset(context);
+    await _dataset.reset(context);
     _result = [];
     await super.reset(context);
   }
 
-  /// setRow set row into memory and move row to first
+  /// setRow set row into dataset and move row to first
   /// ```dart
-  /// await memory.setRow(row);
+  /// await dataset.setRow(row);
   /// ```
   @override
   @mustCallSuper
   Future<void> update(BuildContext context, T row) async {
-    await _memory.update(context, row);
+    await _dataset.update(context, row);
     if (hasFilter) {
       _result.remove(row);
       if (match(row)) {
@@ -195,7 +195,7 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
 
   /// getRowByID return object by id
   /// ```dart
-  /// final obj = await memory.getRow('1');
+  /// final obj = await dataset.getRow('1');
   /// ```
   @override
   Future<T?> read(String id) async {
@@ -207,24 +207,24 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
       }
       return null;
     }
-    return await _memory.read(id);
+    return await _dataset.read(id);
   }
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var range =  memory.range(0, 10);
+  /// var range =  dataset.range(0, 10);
   /// ```
   @override
   Future<List<T>> range(int start, [int? end]) async {
     if (hasFilter) {
       return _result.sublist(start, end);
     }
-    return _memory.range(start, end);
+    return _dataset.range(start, end);
   }
 
   /// forEach iterate all rows
   /// ```dart
-  /// await memory.forEach((row) {});
+  /// await dataset.forEach((row) {});
   /// ```
   @override
   Future<void> forEach(void Function(T) callback) async {
@@ -232,12 +232,12 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
       _result.forEach(callback);
       return;
     }
-    _memory.forEach(callback);
+    _dataset.forEach(callback);
   }
 
-  /// isIDExists return true if id is in memory
+  /// isIDExists return true if id is in dataset
   /// ```dart
-  /// await memory.isIDExists();
+  /// await dataset.isIDExists();
   /// ```
   @override
   bool isIDExists(String id) {
@@ -249,6 +249,6 @@ class FilteredMemory<T extends pb.Object> extends Dataset<T> {
       }
       return false;
     }
-    return _memory.isIDExists(id);
+    return _dataset.isIDExists(id);
   }
 }

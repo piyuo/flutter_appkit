@@ -47,9 +47,9 @@ void main() {
       await dataset.open();
       expect(dataset.length, 0);
 
-      final memory2 = DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-      await memory2.open();
-      await memory2.add(testing.Context(), [sample.Person(name: 'hi')]);
+      final dataset2 = DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      await dataset2.open();
+      await dataset2.add(testing.Context(), [sample.Person(name: 'hi')]);
 
       await dataset.reload();
       expect(dataset.length, 1);

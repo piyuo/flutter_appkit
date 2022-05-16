@@ -8,28 +8,28 @@ import 'dataset.dart';
 
 class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
   ContinuousFullView(
-    Dataset<T> _memory, {
+    Dataset<T> _dataset, {
     BuildContext? context,
     required String id,
     required pb.Builder<T> dataBuilder,
     required DataViewLoader<T> loader,
     VoidCallback? onReady,
   }) : super(
-          _memory,
+          _dataset,
           context: context,
           dataBuilder: dataBuilder,
           loader: loader,
           onReady: onReady,
         ) {
-    _memory.internalNoMore = true;
+    _dataset.internalNoMore = true;
   }
 
   /// onRefresh called when refresh
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    await memory.insert(context, downloadRows);
+    await dataset.insert(context, downloadRows);
     fill();
-    return false; // table do not reset memory
+    return false; // table do not reset dataset
   }
 
   /// more seeking more data from data loader, return true if has more data

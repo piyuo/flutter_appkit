@@ -9,7 +9,7 @@ import 'dataset.dart';
 /// await ds.open();
 /// ```
 class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
-  /// DatasetFull keep all data into a database
+  /// DatasetDatabase keep all data into a database
   /// ```dart
   /// final ds = DatasetDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
   /// await ds.open();
@@ -38,32 +38,32 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
 
   /// first return first row
   /// ```dart
-  /// await memory.first;
+  /// await dataset.first;
   /// ```
   @override
   Future<T?> get first async => _index.isNotEmpty ? _database.getObject(_index.first, dataBuilder) : null;
 
   /// last return last row
   /// ```dart
-  /// await memory.last;
+  /// await dataset.last;
   /// ```
   @override
   Future<T?> get last async => _index.isNotEmpty ? _database.getObject(_index.last, dataBuilder) : null;
 
-  /// onOpen is called when memory need to open
+  /// onOpen is called when dataset need to open
   @override
   Future<void> onOpen() async {
     _database = await database.open(name);
     await reload();
   }
 
-  /// onOpen is called when memory need to open
+  /// onOpen is called when dataset need to open
   @override
   Future<void> onClose() async => await _database.close();
 
-  /// reload memory content
+  /// reload dataset content
   /// ```dart
-  /// await memory.reload();
+  /// await dataset.reload();
   /// ```
   @override
   Future<void> reload() async {
@@ -72,7 +72,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     internalNoRefresh = await _database.getBool(keyNoRefresh) ?? false;
   }
 
-  /// save memory cache
+  /// save dataset cache
   Future<void> save(BuildContext context) async {
     await _database.setStringList(keyIndex, _index);
     await _database.setInt(keyRowsPerPage, rowsPerPage);
@@ -93,9 +93,9 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     await save(context);
   }
 
-  /// insert list of rows into memory database
+  /// insert list of rows into dataset database
   /// ```dart
-  /// await memory.insert([sample.Person()]);
+  /// await dataset.insert([sample.Person()]);
   /// ```
   @override
   @mustCallSuper
@@ -110,9 +110,9 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     await super.insert(context, list);
   }
 
-  /// add list of rows into memory database
+  /// add list of rows into dataset database
   /// ```dart
-  /// await memory.add([sample.Person(name: 'hi')]);
+  /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
   @override
   @mustCallSuper
@@ -127,9 +127,9 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     await super.add(context, list);
   }
 
-  /// delete rows from memory
+  /// delete rows from dataset
   /// ```dart
-  /// await memory.delete(list);
+  /// await dataset.delete(list);
   /// ```
   @override
   @mustCallSuper
@@ -144,9 +144,9 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     await super.delete(context, list);
   }
 
-  /// reset memory database
+  /// reset dataset database
   /// ```dart
-  /// await memory.reset();
+  /// await dataset.reset();
   /// ```
   @override
   @mustCallSuper
@@ -157,9 +157,9 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     await super.reset(context);
   }
 
-  /// update set row into memory and move row to first
+  /// update set row into dataset and move row to first
   /// ```dart
-  /// await memory.update(row);
+  /// await dataset.update(row);
   /// ```
   @override
   @mustCallSuper
@@ -173,7 +173,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var range =  memory.range(0, 10);
+  /// var range =  dataset.range(0, 10);
   /// ```
   @override
   Future<List<T>> range(int start, [int? end]) async {
@@ -194,7 +194,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
 
   /// read return object by id
   /// ```dart
-  /// final obj = await memory.read('1');
+  /// final obj = await dataset.read('1');
   /// ```
   @override
   Future<T?> read(String id) async {
@@ -208,7 +208,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
 
   /// forEach iterate all rows
   /// ```dart
-  /// await memory.forEach((row) {});
+  /// await dataset.forEach((row) {});
   /// ```
   @override
   Future<void> forEach(void Function(T) callback) async {
@@ -220,9 +220,9 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     }
   }
 
-  /// isIDExists return true if id is in memory
+  /// isIDExists return true if id is in dataset
   /// ```dart
-  /// await memory.isIDExists();
+  /// await dataset.isIDExists();
   /// ```
   @override
   bool isIDExists(String id) => _index.contains(id);

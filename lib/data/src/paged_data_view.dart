@@ -8,13 +8,13 @@ import 'data_view.dart';
 /// PagedDataView is view to display paging data
 class PagedDataView<T extends pb.Object> extends DataView<T> {
   PagedDataView(
-    Dataset<T> _memory, {
+    Dataset<T> _dataset, {
     BuildContext? context,
     required DataViewLoader<T> loader,
     required pb.Builder<T> dataBuilder,
     VoidCallback? onReady,
   }) : super(
-          _memory,
+          _dataset,
           context: context,
           loader: loader,
           dataBuilder: dataBuilder,
@@ -39,8 +39,8 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   @override
   Future<void> fill() async {
     displayRows.clear();
-    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
-    final range = await memory.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
+    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
+    final range = await dataset.range(paginator.getBeginIndex(pageIndex), paginator.getEndIndex(pageIndex));
     displayRows.addAll(range);
   }
 
@@ -50,7 +50,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// ```
   @override
   String pageInfo(BuildContext context) {
-    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
     if (noMore) {
       return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
@@ -65,7 +65,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   Future<void> gotoPage(BuildContext context, int index) async {
     await loadMoreBeforeGotoPage(context, index);
     try {
-      final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+      final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
       pageIndex = index;
       if (pageIndex < 0) {
         pageIndex = 0;
@@ -87,7 +87,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
 
   /// hasNextPage return true if user can click next page
   bool get hasNextPage {
-    final paginator = Paginator(rowCount: memory.length, rowsPerPage: memory.rowsPerPage);
+    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     return noMore ? pageIndex < paginator.pageCount - 1 : true;
   }
 
@@ -119,7 +119,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   @override
   Future<void> setRowsPerPage(BuildContext context, int value) async {
     pageIndex = 0;
-    await memory.setRowsPerPage(context, value);
+    await dataset.setRowsPerPage(context, value);
     await gotoPage(context, 0);
     notifyListeners();
   }

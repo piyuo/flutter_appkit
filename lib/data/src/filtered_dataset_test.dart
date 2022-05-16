@@ -4,7 +4,7 @@ import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'dataset_ram.dart';
-import 'filtered_memory.dart';
+import 'filtered_dataset.dart';
 import 'filter.dart';
 
 void main() {
@@ -14,24 +14,24 @@ void main() {
 
   tearDownAll(() async {});
 
-  group('[filtered_memory]', () {
-    test('should show all memory row when no query', () async {
-      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+  group('[filtered_dataset]', () {
+    test('should show all dataset row when no query', () async {
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
 
-      final filter = FilteredMemory(memory);
+      final filter = FilteredDataset(dataset);
       expect(filter.length, 2);
       expect((await filter.first)!.entityID, 'first');
       expect((await filter.last)!.entityID, 'second');
     });
 
     test('should filter keyword', () async {
-      final memory = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      await memory.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
 
-      final filter = FilteredMemory(memory);
+      final filter = FilteredDataset(dataset);
       await filter.setFilters([FullTextFilter('first')]);
       expect(filter.length, 1);
       expect((await filter.first)!.entityID, 'first');

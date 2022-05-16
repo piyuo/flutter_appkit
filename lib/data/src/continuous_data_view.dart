@@ -7,13 +7,13 @@ import 'data_view.dart';
 /// ContinuousDataView is view support continuous display
 class ContinuousDataView<T extends pb.Object> extends DataView<T> {
   ContinuousDataView(
-    Dataset<T> _memory, {
+    Dataset<T> _dataset, {
     BuildContext? context,
     required DataViewLoader<T> loader,
     required pb.Builder<T> dataBuilder,
     VoidCallback? onReady,
   }) : super(
-          _memory,
+          _dataset,
           context: context,
           loader: loader,
           dataBuilder: dataBuilder,
@@ -42,7 +42,7 @@ class ContinuousDataView<T extends pb.Object> extends DataView<T> {
   @override
   Future<void> fill() async {
     displayRows.clear();
-    displayRows.addAll(await memory.all);
+    displayRows.addAll(await dataset.all);
   }
 
   /// pageInfo return text page info like '1 - 10 of many'

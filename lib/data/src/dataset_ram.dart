@@ -23,34 +23,34 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
 
   /// length return rows length
   /// ```dart
-  /// var len = memory.length;
+  /// var len = dataset.length;
   /// ```
   @override
   int get length => _rows.length;
 
   /// first return first row
   /// ```dart
-  /// await memory.first;
+  /// await dataset.first;
   /// ```
   @override
   Future<T?> get first async => _rows.isNotEmpty ? _rows.first : null;
 
   /// last return last row
   /// ```dart
-  /// await memory.last;
+  /// await dataset.last;
   /// ```
   @override
   Future<T?> get last async => _rows.isNotEmpty ? _rows.last : null;
 
-  /// onOpen is called when memory need to open
+  /// onOpen is called when dataset need to open
   @override
   Future<void> onOpen() async {}
 
-  /// onClose is called when memory need to close
+  /// onClose is called when dataset need to close
   @override
   Future<void> onClose() async {}
 
-  /// reload memory content
+  /// reload dataset content
   @override
   Future<void> reload() async {}
 
@@ -66,7 +66,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
 
   /// insert list of rows into ram
   /// ```dart
-  /// await memory.insert([sample.Person()]);
+  /// await dataset.insert([sample.Person()]);
   /// ```
   @override
   @mustCallSuper
@@ -80,7 +80,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
 
   /// add rows into ram
   /// ```dart
-  /// await memory.add([sample.Person(name: 'hi')]);
+  /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
   @override
   @mustCallSuper
@@ -92,9 +92,9 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
     await super.add(context, list);
   }
 
-  /// remove rows from memory
+  /// remove rows from dataset
   /// ```dart
-  /// await memory.remove(list);
+  /// await dataset.remove(list);
   /// ```
   @override
   @mustCallSuper
@@ -105,9 +105,9 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
     await super.delete(context, list);
   }
 
-  /// reset memory
+  /// reset dataset
   /// ```dart
-  /// await memory.reset();
+  /// await dataset.reset();
   /// ```
   @override
   @mustCallSuper
@@ -116,9 +116,9 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
     await super.reset(context);
   }
 
-  /// setRow set row into memory and move row to first
+  /// setRow set row into dataset and move row to first
   /// ```dart
-  /// await memory.setRow(row);
+  /// await dataset.setRow(row);
   /// ```
   @override
   @mustCallSuper
@@ -130,14 +130,14 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var range =  memory.range(0, 10);
+  /// var range =  dataset.range(0, 10);
   /// ```
   @override
   Future<List<T>> range(int start, [int? end]) async => _rows.sublist(start, end);
 
   /// getRowByID return object by id
   /// ```dart
-  /// final obj = await memory.getRowByID('1');
+  /// final obj = await dataset.getRowByID('1');
   /// ```
   @override
   Future<T?> read(String id) async {
@@ -151,7 +151,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
 
   /// forEach iterate all rows
   /// ```dart
-  /// await memory.forEach((row) {});
+  /// await dataset.forEach((row) {});
   /// ```
   @override
   Future<void> forEach(void Function(T) callback) async {
@@ -160,9 +160,9 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
     }
   }
 
-  /// isIDExists return true if id is in memory
+  /// isIDExists return true if id is in dataset
   /// ```dart
-  /// await memory.isIDExists();
+  /// await dataset.isIDExists();
   /// ```
   @override
   bool isIDExists(String id) => _rows.any((row) => row.entityID == id);

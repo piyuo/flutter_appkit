@@ -15,21 +15,21 @@ const keyNoRefresh = '__nr';
 
 /// Dataset keep rows for later use
 /// ```dart
-/// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-/// await memory.open();
+/// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+/// await dataset.open();
 /// ```
 abstract class Dataset<T extends pb.Object> {
   /// Dataset keep rows for later use
   /// ```dart
-  /// final memory = MemoryRam<sample.Person>(dataBuilder: () => sample.Person());
-  /// await memory.open();
+  /// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+  /// await dataset.open();
   /// ```
   Dataset({
     required this.dataBuilder,
     this.onChanged,
   });
 
-  /// isOpened is true when memory is open
+  /// isOpened is true when dataset is open
   bool isOpened = false;
 
   /// dataBuilder build data
@@ -38,7 +38,7 @@ abstract class Dataset<T extends pb.Object> {
   /// ```
   final pb.Builder<T> dataBuilder;
 
-  /// onChanged called when memory changed like insert, delete, update
+  /// onChanged called when dataset changed like insert, delete, update
   Future<void> Function(BuildContext)? onChanged;
 
   /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in dataset
@@ -70,47 +70,47 @@ abstract class Dataset<T extends pb.Object> {
 
   /// all return all rows, return null if something went wrong
   /// ```dart
-  /// var rowsAll =  memory.all;
+  /// var rowsAll =  dataset.all;
   /// ```
   Future<List<T>> get all async => await range(0, length);
 
   /// length return rows length
   /// ```dart
-  /// var len = memory.length;
+  /// var len = dataset.length;
   /// ```
   int get length;
 
   /// isEmpty return rows is empty
   /// ```dart
-  /// await memory.isEmpty;
+  /// await dataset.isEmpty;
   /// ```
   bool get isEmpty => length == 0;
 
   /// isNotEmpty return rows is not empty
   /// ```dart
-  /// await memory.isNotEmpty;
+  /// await dataset.isNotEmpty;
   /// ```
   bool get isNotEmpty => !isEmpty;
 
   /// first return first row
   /// ```dart
-  /// await memory.first;
+  /// await dataset.first;
   /// ```
   Future<T?> get first;
 
   /// last return last row
   /// ```dart
-  /// await memory.last;
+  /// await dataset.last;
   /// ```
   Future<T?> get last;
 
-  /// onOpen is called when memory need to open
+  /// onOpen is called when dataset need to open
   Future<void> onOpen();
 
-  /// onClose is called when memory need to close
+  /// onClose is called when dataset need to close
   Future<void> onClose();
 
-  /// open memory and load content
+  /// open dataset and load content
   Future<void> open() async {
     if (isOpened) {
       return;
@@ -119,7 +119,7 @@ abstract class Dataset<T extends pb.Object> {
     isOpened = true;
   }
 
-  /// close memory
+  /// close dataset
   Future<void> close() async {
     if (!isOpened) {
       return;
@@ -128,48 +128,48 @@ abstract class Dataset<T extends pb.Object> {
     isOpened = false;
   }
 
-  /// reload memory content
+  /// reload dataset content
   Future<void> reload();
 
-  /// insert list of rows into memory, it will avoid duplicate rows
+  /// insert list of rows into dataset, it will avoid duplicate rows
   /// ```dart
-  /// await memory.insert([sample.Person()]);
+  /// await dataset.insert([sample.Person()]);
   /// ```
   @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
     await onChanged?.call(context);
   }
 
-  /// add list of rows into memory, it will avoid duplicate rows
+  /// add list of rows into dataset, it will avoid duplicate rows
   /// ```dart
-  /// await memory.add([sample.Person(name: 'hi')]);
+  /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
   @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
     await onChanged?.call(context);
   }
 
-  /// delete list of rows from memory
+  /// delete list of rows from dataset
   /// ```dart
-  /// await memory.delete(list);
+  /// await dataset.delete(list);
   /// ```
   @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
     await onChanged?.call(context);
   }
 
-  /// reset memory
+  /// reset dataset
   /// ```dart
-  /// await memory.reset();
+  /// await dataset.reset();
   /// ```
   @mustCallSuper
   Future<void> reset(BuildContext context) async {
     await onChanged?.call(context);
   }
 
-  /// update set a single row into memory and move row to first
+  /// update set a single row into dataset and move row to first
   /// ```dart
-  /// await memory.update(row);
+  /// await dataset.update(row);
   /// ```
   @mustCallSuper
   Future<void> update(BuildContext context, T row) async {
@@ -178,25 +178,25 @@ abstract class Dataset<T extends pb.Object> {
 
   /// read return row by id
   /// ```dart
-  /// final obj = await memory.read('1');
+  /// final obj = await dataset.read('1');
   /// ```
   Future<T?> read(String id);
 
   /// range return sublist of rows, return null if something went wrong
   /// ```dart
-  /// var range =  memory.range(0, 10);
+  /// var range =  dataset.range(0, 10);
   /// ```
   Future<List<T>> range(int start, [int? end]);
 
   /// forEach iterate all rows
   /// ```dart
-  /// await memory.forEach();
+  /// await dataset.forEach();
   /// ```
   Future<void> forEach(void Function(T) callback);
 
-  /// isIDExists return true if id is in memory
+  /// isIDExists return true if id is in dataset
   /// ```dart
-  /// await memory.isIDExists();
+  /// await dataset.isIDExists();
   /// ```
   bool isIDExists(String id);
 }
