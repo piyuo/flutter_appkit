@@ -61,7 +61,7 @@ class DatabaseProvider with ChangeNotifier {
   Database get database => _database!;
 
   /// isReady return true if database is ready
-  bool isReady = false;
+  bool get isReady => _database != null;
 
   /// dispose database and reset counter
   @override
@@ -82,7 +82,6 @@ class DatabaseProvider with ChangeNotifier {
     _name = name;
     _database ??= await databaseBuilder(name);
     _inc();
-    isReady = true;
     notifyListeners();
   }
 
