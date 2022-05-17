@@ -64,16 +64,5 @@ void main() {
       provide2.dispose();
       expect(databaseUsageCount, 0);
     });
-
-    test('should call onReady when database is loaded', () async {
-      Database? loadedDB;
-      final provide = DatabaseProvider(
-        name: 'test',
-        databaseBuilder: (name) async => await open('test_db'),
-        onReady: (db) => loadedDB = db,
-      );
-      await provide.load();
-      expect(loadedDB, isNotNull);
-    });
   });
 }

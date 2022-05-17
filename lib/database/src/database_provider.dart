@@ -44,13 +44,7 @@ class DatabaseProvider with ChangeNotifier {
   DatabaseProvider({
     required this.name,
     required this.databaseBuilder,
-    this.onReady,
-    BuildContext? context,
-  }) {
-    if (context != null) {
-      Future.microtask(load);
-    }
-  }
+  });
 
   /// name is database name
   final String name;
@@ -64,9 +58,6 @@ class DatabaseProvider with ChangeNotifier {
   /// isReady return true if database is ready
   bool get isReady => _database != null;
 
-  /// onReady called when database is ready
-  final void Function(Database)? onReady;
-
   /// dispose database and reset counter
   @override
   void dispose() {
@@ -77,17 +68,16 @@ class DatabaseProvider with ChangeNotifier {
     super.dispose();
   }
 
-  /// use a database
-  @visibleForTesting
-  Future<void> load() async {
+  /// load a database
+  Future<Database> load() async {
     if (name != _name) {
       resetDatabaseUsage();
     }
     _name = name;
     _database ??= await databaseBuilder(name);
     _inc();
-    onReady?.call(_database!);
     notifyListeners();
+    return _database!;
   }
 
   /// of get DatabaseProvider from context
