@@ -83,7 +83,7 @@ class Part<T extends pb.Object> with ChangeNotifier {
   /// await detail.load(testing.Context());
   /// ```
   Future<void> load(BuildContext context) async {
-    await _dataset.open();
+    await _dataset.load();
 
     if (current != null || id == null) {
       return;

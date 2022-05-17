@@ -59,7 +59,7 @@ void main() {
 
     test('should save data', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await dataset.open();
+      await dataset.load();
       final detail = Part<sample.Person>(
         dataset,
         dataBuilder: () => sample.Person(),
@@ -84,7 +84,7 @@ void main() {
 
     test('should not save data if setter went wrong', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await dataset.open();
+      await dataset.load();
       final detail = Part<sample.Person>(
         dataset,
         dataBuilder: () => sample.Person(),

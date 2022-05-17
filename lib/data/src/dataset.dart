@@ -29,9 +29,6 @@ abstract class Dataset<T extends pb.Object> {
     this.onChanged,
   });
 
-  /// isOpened is true when dataset is open
-  bool isOpened = false;
-
   /// dataBuilder build data
   /// ```dart
   /// dataBuilder: () => sample.Person()
@@ -104,32 +101,8 @@ abstract class Dataset<T extends pb.Object> {
   /// ```
   Future<T?> get last;
 
-  /// onOpen is called when dataset need to open
-  Future<void> onOpen();
-
-  /// onClose is called when dataset need to close
-  Future<void> onClose();
-
-  /// open dataset and load content
-  Future<void> open() async {
-    if (isOpened) {
-      return;
-    }
-    await onOpen();
-    isOpened = true;
-  }
-
-  /// close dataset
-  Future<void> close() async {
-    if (!isOpened) {
-      return;
-    }
-    await onClose();
-    isOpened = false;
-  }
-
-  /// reload dataset content
-  Future<void> reload();
+  /// load dataset content
+  Future<void> load();
 
   /// insert list of rows into dataset, it will avoid duplicate rows
   /// ```dart

@@ -68,20 +68,9 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   @override
   Future<T?> get last async => _index.isNotEmpty ? await cache.getObject(_index.last, dataBuilder) : null;
 
-  /// onOpen is called when dataset need to open
+  /// load dataset content
   @override
-  Future<void> onOpen() async => await reload();
-
-  /// onClose is called when dataset need to close
-  @override
-  Future<void> onClose() async {}
-
-  /// reload dataset content
-  /// ```dart
-  /// await dataset.reload();
-  /// ```
-  @override
-  Future<void> reload() async {
+  Future<void> load() async {
     _index = await cache.getStringList('$name$keyIndex') ?? [];
     internalRowsPerPage = await cache.getInt('$name$keyRowsPerPage') ?? 10;
     internalNoRefresh = await cache.getBool('$name$keyNoRefresh') ?? false;

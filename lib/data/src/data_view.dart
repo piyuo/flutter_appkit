@@ -49,7 +49,7 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
     this.onReady,
   }) {
     if (context != null) {
-      open(context);
+      load(context);
     }
   }
 
@@ -121,25 +121,15 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
   /// ```
   String pageInfo(BuildContext context);
 
-  /// open dataset and refresh data, it will automatically called when data view create with context
-  /// ```dart
-  /// await ds.open(context);
-  /// ```
-  Future<void> open(BuildContext context) async {
+  /// load dataset
+  Future<void> load(BuildContext context) async {
     try {
-      await dataset.open();
+      await dataset.load();
       await refresh(context);
       onReady?.call();
     } finally {
       notifyState(DataViewState.ready);
     }
-  }
-
-  /// dispose dataset
-  @override
-  void dispose() {
-    dataset.close();
-    super.dispose();
   }
 
   /// notifyState change state and notify listener
@@ -175,7 +165,7 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
     }
     notifyState(DataViewState.refreshing);
     try {
-      await dataset.reload(); // someone may change dataset so reload it
+      await dataset.load(); // someone may change dataset so reload it
       T? anchor = await dataset.first;
       final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
       if (downloadRows.isNotEmpty) {

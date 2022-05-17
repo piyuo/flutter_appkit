@@ -14,23 +14,20 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   /// final ds = DatasetDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
   /// await ds.open();
   /// ```
-  DatasetDatabase({
-    required this.name,
+  DatasetDatabase(
+    this._database, {
     required pb.Builder<T> dataBuilder,
     Future<void> Function(BuildContext)? onChanged,
   }) : super(onChanged: onChanged, dataBuilder: dataBuilder) {
     internalNoMore = true;
   }
 
-  /// name use for database or cache id
-  final String name;
+  /// _database is database that store data
+  final database.Database _database;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields
   List<String> _index = [];
-
-  /// _database is database that store data
-  late database.Database _database;
 
   /// length return rows length
   @override
@@ -50,23 +47,9 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   @override
   Future<T?> get last async => _index.isNotEmpty ? _database.getObject(_index.last, dataBuilder) : null;
 
-  /// onOpen is called when dataset need to open
+  /// load dataset content
   @override
-  Future<void> onOpen() async {
-    _database = await database.open(name);
-    await reload();
-  }
-
-  /// onOpen is called when dataset need to open
-  @override
-  Future<void> onClose() async => await _database.close();
-
-  /// reload dataset content
-  /// ```dart
-  /// await dataset.reload();
-  /// ```
-  @override
-  Future<void> reload() async {
+  Future<void> load() async {
     _index = await _database.getStringList(keyIndex) ?? [];
     internalRowsPerPage = await _database.getInt(keyRowsPerPage) ?? 10;
     internalNoRefresh = await _database.getBool(keyNoRefresh) ?? false;

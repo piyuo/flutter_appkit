@@ -31,7 +31,7 @@ void main() {
           return List.generate(limit, (i) => sample.Person(entity: pb.Entity(id: '$refreshCount$i')));
         },
       );
-      await view.open(testing.Context());
+      await view.load(testing.Context());
 
       // should read 10 rows
       expect(view.length, 10);
@@ -57,7 +57,7 @@ void main() {
         loader: (context, _, __, anchorTimestamp, anchorId) async =>
             [sample.Person(entity: pb.Entity(id: 'duplicate'))],
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       await ds.refresh(testing.Context());
       // second refresh will delete duplicate data
       expect(ds.length, 1);
@@ -81,7 +81,7 @@ void main() {
                   ));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.noMore, true);
       expect(ds.length, 10);
       await ds.refresh(testing.Context());
@@ -114,7 +114,7 @@ void main() {
                   ));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(_limit, 10);
       expect(_anchorTimestamp, isNull);
       expect(_anchorId, isNull);
@@ -134,7 +134,7 @@ void main() {
           return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
         },
       );
-      await cs.open(testing.Context());
+      await cs.load(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
       final cs2 = PagedFullView<sample.Person>(
@@ -143,7 +143,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
-      await cs2.open(testing.Context());
+      await cs2.load(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
     });
@@ -157,7 +157,7 @@ void main() {
           return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
         },
       );
-      await cs.open(testing.Context());
+      await cs.load(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
       final cs2 = PagedFullView<sample.Person>(
@@ -166,7 +166,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
-      await cs2.open(testing.Context());
+      await cs2.load(testing.Context());
       expect(cs.length, 1);
       expect(cs.rowsPerPage, 10);
     });
@@ -196,7 +196,7 @@ void main() {
           return [];
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.hasPrevPage, false);
       expect(ds.hasNextPage, false);
       expect(ds.displayRows.length, 10);
@@ -275,7 +275,7 @@ void main() {
           return [];
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.pageInfo(testing.Context()), '1 - 10 of 10');
       expect(ds.length, 10);
       await ds.refresh(testing.Context());
@@ -332,7 +332,7 @@ void main() {
           return [];
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.length, 10);
       expect(ds.rowsPerPage, 10);
       expect(lastIsRefresh, true);

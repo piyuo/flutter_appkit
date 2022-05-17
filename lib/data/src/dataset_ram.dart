@@ -42,17 +42,9 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @override
   Future<T?> get last async => _rows.isNotEmpty ? _rows.last : null;
 
-  /// onOpen is called when dataset need to open
+  /// load dataset content
   @override
-  Future<void> onOpen() async {}
-
-  /// onClose is called when dataset need to close
-  @override
-  Future<void> onClose() async {}
-
-  /// reload dataset content
-  @override
-  Future<void> reload() async {}
+  Future<void> load() async {}
 
   /// _removeDuplicate remove duplicate row in the list
   void _removeDuplicate(T newRow, List<T> list) {

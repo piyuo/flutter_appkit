@@ -45,7 +45,7 @@ void main() {
       OrderSampleDataView.returnCount = 10;
       OrderSampleDataView.returnID = 'A';
       final ds = OrderSampleDataView();
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       // should read 10 rows
       expect(ds.length, 10);
       expect(ds.displayRows.length, 10);
@@ -68,7 +68,7 @@ void main() {
       OrderSampleDataView.loaderIsRefresh = false;
       OrderSampleDataView.loaderLimit = 0;
       final ds = OrderSampleDataView();
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(OrderSampleDataView.loaderIsRefresh, true);
       expect(OrderSampleDataView.loaderLimit, 10);
       expect(ds.noMore, true);
@@ -79,19 +79,19 @@ void main() {
       OrderSampleDataView.loaderIsRefresh = false;
       OrderSampleDataView.loaderLimit = 0;
       final ds = OrderSampleDataView();
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.noMore, false);
       // know no more data at first
       OrderSampleDataView.returnCount = 9;
       final ds2 = OrderSampleDataView();
-      await ds2.open(testing.Context());
+      await ds2.load(testing.Context());
       expect(ds2.noMore, true);
     });
 
     test('should reset on refresh', () async {
       OrderSampleDataView.returnCount = 10;
       final ds = OrderSampleDataView();
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.noMore, false);
       expect(ds.length, 10);
       final result = await ds.refresh(testing.Context());
@@ -107,7 +107,7 @@ void main() {
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
             [sample.Person(entity: pb.Entity(id: 'duplicate'))],
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       await ds.refresh(testing.Context());
       // second refresh will delete duplicate data
       expect(ds.length, 1);
@@ -138,7 +138,7 @@ void main() {
                   ));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.noMore, false);
       expect(ds.displayRows.length, 10);
       // second refresh will trigger reset
@@ -173,7 +173,7 @@ void main() {
                   ));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.noMore, false);
       // second refresh will trigger reset
       await ds.more(testing.Context(), 2);
@@ -207,7 +207,7 @@ void main() {
                   ));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(_isRefresh, true);
       expect(_limit, 10);
       expect(_anchorTimestamp, isNull);
@@ -254,7 +254,7 @@ void main() {
           return [];
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.noMore, false);
 
       await ds.more(testing.Context(), 1);
@@ -295,7 +295,7 @@ void main() {
                   ));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.noMore, false);
 
       await ds.more(testing.Context(), 2);
@@ -315,7 +315,7 @@ void main() {
           return List.generate(10, (i) => sample.Person(entity: pb.Entity(id: '$i')));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.displayRows.length, 10);
       expect(ds.selectedRows.length, 0);
       ds.selectRows([sample.Person(entity: pb.Entity(id: '5'))]);
@@ -340,7 +340,7 @@ void main() {
           return List.generate(10, (i) => sample.Person(entity: pb.Entity(id: '$i')));
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       await dataset.setRowsPerPage(testing.Context(), 5);
       ds.pageIndex = 0;
 
@@ -372,7 +372,7 @@ void main() {
           return [];
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.isFirstPage, true);
       expect(ds.hasPrevPage, false);
       expect(ds.hasNextPage, true);
@@ -450,7 +450,7 @@ void main() {
           return [];
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
       expect(ds.length, 10);
       await ds.nextPage(testing.Context());
@@ -501,7 +501,7 @@ void main() {
           return [];
         },
       );
-      await ds.open(testing.Context());
+      await ds.load(testing.Context());
       expect(ds.length, 10);
       expect(ds.rowsPerPage, 10);
       expect(lastIsRefresh, true);

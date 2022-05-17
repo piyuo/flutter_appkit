@@ -27,17 +27,9 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// _result is rows after query
   List<T> _result = [];
 
-  /// onOpen is called when dataset need to open
+  /// load dataset content
   @override
-  Future<void> onOpen() async => await _dataset.open();
-
-  /// onClose is called when dataset need to close
-  @override
-  Future<void> onClose() async => await _dataset.close();
-
-  /// reload dataset content
-  @override
-  Future<void> reload() async => await _dataset.reload();
+  Future<void> load() async => await _dataset.load();
 
   /// setFilters set filter to dataset
   /// ```dart
