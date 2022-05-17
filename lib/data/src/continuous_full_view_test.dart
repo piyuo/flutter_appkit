@@ -45,8 +45,6 @@ void main() {
       expect(view.displayRows.length, 12);
       expect(view.isEmpty, false);
       expect(view.isNotEmpty, true);
-
-      view.dispose();
     });
 
     test('should remove duplicate data when refresh', () async {

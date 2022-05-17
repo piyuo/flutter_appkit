@@ -3,14 +3,6 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/pb/src/google/google.dart' as google;
 import 'dataset.dart';
 
-/// DataViewState is state of data view
-enum DataViewState {
-  initial, // initial state
-  refreshing, // refresh new data
-  loading, // loading more data
-  ready, // ready to show data
-}
-
 /// DataViewLoader can refresh or load more data by anchor and limit
 /// ```dart
 /// loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -30,7 +22,7 @@ typedef DataViewLoader<T> = Future<List<T>> Function(
 /// );
 /// await dataView.open(testing.Context());
 /// ```
-abstract class DataView<T extends pb.Object> with ChangeNotifier {
+abstract class DataView<T extends pb.Object> {
   /// DataView read data save to local, manage paging and select row
   /// ```dart
   /// final dataView = DataView<sample.Person>(
@@ -61,9 +53,6 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
 
   /// onReady called when data source is opened/refreshed and ready to use
   final VoidCallback? onReady;
-
-  /// state is the state of data view
-  DataViewState state = DataViewState.initial;
 
   /// dataset keep all rows in dataset
   Dataset<T> dataset;
@@ -123,19 +112,9 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
 
   /// load dataset
   Future<void> load(BuildContext context) async {
-    try {
-      await dataset.load();
-      await refresh(context);
-      onReady?.call();
-    } finally {
-      notifyState(DataViewState.ready);
-    }
-  }
-
-  /// notifyState change state and notify listener
-  void notifyState(DataViewState newState) {
-    state = newState;
-    notifyListeners();
+    await dataset.load();
+    await refresh(context);
+    onReady?.call();
   }
 
   /// onRefresh reset dataset but not on full view mode, return true if reset dataset
@@ -163,19 +142,14 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
       debugPrint('[data_view] no refresh already');
       return false;
     }
-    notifyState(DataViewState.refreshing);
-    try {
-      await dataset.load(); // someone may change dataset so reload it
-      T? anchor = await dataset.first;
-      final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
-      if (downloadRows.isNotEmpty) {
-        debugPrint('[data_view] refresh ${downloadRows.length} rows');
-      }
-      bool isReset = await onRefresh(context, downloadRows);
-      return isReset;
-    } finally {
-      notifyState(DataViewState.ready);
+    await dataset.load(); // someone may change dataset so reload it
+    T? anchor = await dataset.first;
+    final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
+    if (downloadRows.isNotEmpty) {
+      debugPrint('[data_view] refresh ${downloadRows.length} rows');
     }
+    bool isReset = await onRefresh(context, downloadRows);
+    return isReset;
   }
 
   /// more seeking more data from data loader, return true if has more data
@@ -187,23 +161,18 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
       debugPrint('[data_view] no more already');
       return false;
     }
-    notifyState(DataViewState.loading);
-    try {
-      T? anchor = await dataset.last;
-      final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
-      if (downloadRows.length < limit) {
-        debugPrint('[data_view] has no more data');
-        await dataset.setNoMore(context, true);
-      }
-      if (downloadRows.isNotEmpty) {
-        await dataset.add(context, downloadRows);
-        await fill();
-        return true;
-      }
-      return false;
-    } finally {
-      notifyState(DataViewState.ready);
+    T? anchor = await dataset.last;
+    final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
+    if (downloadRows.length < limit) {
+      debugPrint('[data_view] has no more data');
+      await dataset.setNoMore(context, true);
     }
+    if (downloadRows.isNotEmpty) {
+      await dataset.add(context, downloadRows);
+      await fill();
+      return true;
+    }
+    return false;
   }
 
   /// setRowsPerPage set rows per page and change page index to 0
@@ -226,7 +195,6 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
     selectedRows.clear();
     rows.removeWhere((row) => !dataset.isIDExists(row.entityID));
     selectedRows.addAll(rows);
-    notifyListeners();
   }
 
   /// selectRow select a row
@@ -238,7 +206,6 @@ abstract class DataView<T extends pb.Object> with ChangeNotifier {
     if (selected && dataset.isIDExists(row.entityID)) {
       selectedRows.add(row);
     }
-    notifyListeners();
   }
 
   /// getRowByID return object by id

@@ -64,19 +64,15 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// ```
   Future<void> gotoPage(BuildContext context, int index) async {
     await loadMoreBeforeGotoPage(context, index);
-    try {
-      final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
-      pageIndex = index;
-      if (pageIndex < 0) {
-        pageIndex = 0;
-      }
-      if (pageIndex >= paginator.pageCount) {
-        pageIndex = paginator.pageCount - 1;
-      }
-      await fill();
-    } finally {
-      notifyListeners();
+    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
+    pageIndex = index;
+    if (pageIndex < 0) {
+      pageIndex = 0;
     }
+    if (pageIndex >= paginator.pageCount) {
+      pageIndex = paginator.pageCount - 1;
+    }
+    await fill();
   }
 
   /// isFirstPage return true if it is first page
@@ -121,6 +117,5 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
     pageIndex = 0;
     await dataset.setRowsPerPage(context, value);
     await gotoPage(context, 0);
-    notifyListeners();
   }
 }

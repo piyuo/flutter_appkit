@@ -44,23 +44,22 @@ void main() {
     test('should refresh on startup', () async {
       OrderSampleDataView.returnCount = 10;
       OrderSampleDataView.returnID = 'A';
-      final ds = OrderSampleDataView();
-      await ds.load(testing.Context());
+      final dataView = OrderSampleDataView();
+      await dataView.load(testing.Context());
       // should read 10 rows
-      expect(ds.length, 10);
-      expect(ds.displayRows.length, 10);
-      expect(ds.isDisplayRowsFullPage, true);
-      expect(ds.isEmpty, false);
-      expect(ds.isNotEmpty, true);
+      expect(dataView.length, 10);
+      expect(dataView.displayRows.length, 10);
+      expect(dataView.isDisplayRowsFullPage, true);
+      expect(dataView.isEmpty, false);
+      expect(dataView.isNotEmpty, true);
 
       OrderSampleDataView.returnCount = 2;
       OrderSampleDataView.returnID = 'B';
-      await ds.refresh(testing.Context());
-      expect(ds.length, 12);
-      expect(ds.displayRows.length, 10);
-      expect(ds.isEmpty, false);
-      expect(ds.isNotEmpty, true);
-      ds.dispose();
+      await dataView.refresh(testing.Context());
+      expect(dataView.length, 12);
+      expect(dataView.displayRows.length, 10);
+      expect(dataView.isEmpty, false);
+      expect(dataView.isNotEmpty, true);
     });
 
     test('should no more when data loader less than limit', () async {
