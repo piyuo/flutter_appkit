@@ -76,7 +76,6 @@ class DatabaseProvider with ChangeNotifier {
     _name = name;
     _database ??= await databaseBuilder(name);
     _inc();
-    notifyListeners();
     return _database!;
   }
 
