@@ -69,7 +69,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
 
   /// open dataset
   Future<void> open(BuildContext context) async {
-    await dataView.open(context);
+    await dataView.load(context);
     animatedViewController.itemCount = dataView.displayRows.length;
     setDefaultSelected(context);
     isReadyToShow = true;

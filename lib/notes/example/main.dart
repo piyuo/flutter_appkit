@@ -27,7 +27,10 @@ main() {
     appName: 'notes',
     onBeforeStart: () async {
       await database.delete('test');
-      _dataset = data.DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      _dataset = data.DatasetDatabase<sample.Person>(
+        await database.open('test'),
+        dataBuilder: () => sample.Person(),
+      );
     },
     providers: [
       ChangeNotifierProvider<NotesController<sample.Person>>(
@@ -119,9 +122,11 @@ main() {
                               name: 'beam item',
                               entity: pb.Entity(id: unique.uuid()),
                             );
-                            final dataset2 =
-                                data.DatasetDatabase<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
-                            await dataset2.open();
+                            final dataset2 = data.DatasetDatabase<sample.Person>(
+                              await database.open('test'),
+                              dataBuilder: () => sample.Person(),
+                            );
+                            await dataset2.load();
                             await dataset2.insert(context, [person]);
                           }
                         })
