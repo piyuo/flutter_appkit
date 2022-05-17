@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'helper.dart';
 import 'database_provider.dart';
 import 'base.dart';
+import 'database.dart';
 
 void main() {
   setUpAll(() async {
@@ -23,7 +24,7 @@ void main() {
         name: 'test',
         databaseBuilder: (name) async => await open('test_db'),
       );
-      await provide.use();
+      await provide.load();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 1);
 
@@ -31,7 +32,7 @@ void main() {
         name: 'test',
         databaseBuilder: (name) async => await open('test_db'),
       );
-      await provide2.use();
+      await provide2.load();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 2);
 
@@ -40,12 +41,13 @@ void main() {
       provide2.dispose();
       expect(databaseUsageCount, 0);
     });
+
     test('should reset when database name changed', () async {
       final provide = DatabaseProvider(
         name: 'test',
         databaseBuilder: (name) async => await open('test_db'),
       );
-      await provide.use();
+      await provide.load();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 1);
 
@@ -53,7 +55,7 @@ void main() {
         name: 'test2',
         databaseBuilder: (name) async => await open('test2_db'),
       );
-      await provide2.use();
+      await provide2.load();
       expect(provide2.name, 'test2');
       expect(databaseUsageCount, 1);
 
@@ -61,6 +63,17 @@ void main() {
       expect(databaseUsageCount, 1);
       provide2.dispose();
       expect(databaseUsageCount, 0);
+    });
+
+    test('should call onReady when database is loaded', () async {
+      Database? loadedDB;
+      final provide = DatabaseProvider(
+        name: 'test',
+        databaseBuilder: (name) async => await open('test_db'),
+        onReady: (db) => loadedDB = db,
+      );
+      await provide.load();
+      expect(loadedDB, isNotNull);
     });
   });
 }
