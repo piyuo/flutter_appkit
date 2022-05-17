@@ -16,6 +16,7 @@ typedef Adder<T> = Future<T> Function(BuildContext context);
 /// Remover remove list of selected rows
 typedef Remover<T> = Future<bool> Function(BuildContext context, List<T> item);
 
+/// Notes controller will load dataset to display but not close it, you need close dataset if need
 class NotesController<T extends pb.Object> with ChangeNotifier {
   NotesController({
     required BuildContext context,
@@ -59,7 +60,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
             loader: loader,
           );
 
-    open(context);
+    load(context);
   }
 
   /// of get NotesController from context
@@ -67,8 +68,8 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     return Provider.of<NotesController>(context, listen: false);
   }
 
-  /// open dataset
-  Future<void> open(BuildContext context) async {
+  /// load data to display
+  Future<void> load(BuildContext context) async {
     await dataView.load(context);
     animatedViewController.itemCount = dataView.displayRows.length;
     setDefaultSelected(context);
@@ -127,7 +128,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// detailBeamName is the beam location name of detail and name must end with "/" like '/user/'
   final String detailBeamName;
 
-  /// isReadyToShow is true mean list is ready to show
+  /// isReadyToShow is true mean content is ready to show
   bool isReadyToShow = false;
 
   /// searchTrigger trigger search event
@@ -147,7 +148,6 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     searchTrigger.dispose();
     refreshButtonController.dispose();
     animatedViewController.dispose();
-    dataView.dispose();
     super.dispose();
   }
 
