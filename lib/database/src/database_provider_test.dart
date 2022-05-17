@@ -23,7 +23,7 @@ void main() {
         name: 'test',
         databaseBuilder: (name) async => await open('test_db'),
       );
-      await provide.open();
+      await provide.use();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 1);
 
@@ -31,7 +31,7 @@ void main() {
         name: 'test',
         databaseBuilder: (name) async => await open('test_db'),
       );
-      await provide2.open();
+      await provide2.use();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 2);
 
@@ -45,7 +45,7 @@ void main() {
         name: 'test',
         databaseBuilder: (name) async => await open('test_db'),
       );
-      await provide.open();
+      await provide.use();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 1);
 
@@ -53,7 +53,7 @@ void main() {
         name: 'test2',
         databaseBuilder: (name) async => await open('test2_db'),
       );
-      await provide2.open();
+      await provide2.use();
       expect(provide2.name, 'test2');
       expect(databaseUsageCount, 1);
 

@@ -47,7 +47,7 @@ class DatabaseProvider with ChangeNotifier {
     BuildContext? context,
   }) {
     if (context != null) {
-      Future.microtask(open);
+      Future.microtask(use);
     }
   }
 
@@ -75,7 +75,7 @@ class DatabaseProvider with ChangeNotifier {
 
   /// use a database
   @visibleForTesting
-  Future<void> open() async {
+  Future<void> use() async {
     if (name != _name) {
       resetDatabaseUsage();
     }
