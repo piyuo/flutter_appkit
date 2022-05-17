@@ -28,14 +28,14 @@ Future<void> deleteDatasetCache(String id) async {
 
 /// DatasetCache keep data in cache
 /// ```dart
-/// final ds = DatasetCache<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
-/// await ds.open();
+/// final ds = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+/// await ds.load();
 /// ```
 class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// DatasetCache keep data in cache
   /// ```dart
-  /// final ds = DatasetCache<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
-  /// await ds.open();
+  /// final ds = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+  /// await ds.load();
   /// ```
   DatasetCache({
     required this.name,

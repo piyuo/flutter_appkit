@@ -5,14 +5,14 @@ import 'dataset.dart';
 
 /// DatasetDatabase keep all data into a database
 /// ```dart
-/// final ds = DatasetDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
-/// await ds.open();
+/// final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
+/// await dataset.load();
 /// ```
 class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   /// DatasetDatabase keep all data into a database
   /// ```dart
-  /// final ds = DatasetDatabase<sample.Person>(id: 'test', dataBuilder: () => sample.Person());
-  /// await ds.open();
+  /// final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
+  /// await dataset.load();
   /// ```
   DatasetDatabase(
     this._database, {

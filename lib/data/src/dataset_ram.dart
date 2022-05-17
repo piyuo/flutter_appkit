@@ -5,7 +5,6 @@ import 'dataset.dart';
 /// DatasetRam keep data in ram
 /// ```dart
 /// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-/// await dataset.open();
 /// ```
 class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// DatasetRam keep data in ram
