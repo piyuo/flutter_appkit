@@ -14,10 +14,7 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// final dsRam = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
   /// final filter = FilteredDataset(dsRam);
   /// ```
-  FilteredDataset(
-    this._dataset, {
-    Future<void> Function(BuildContext)? onChanged,
-  }) : super(onChanged: onChanged, dataBuilder: _dataset.dataBuilder);
+  FilteredDataset(this._dataset) : super(dataBuilder: _dataset.dataBuilder);
 
   /// _dataset is dataset need to be filter
   final Dataset<T> _dataset;
@@ -126,7 +123,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
       final matched = getMatchRows(list);
       _result.insertAll(0, matched);
     }
-    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -141,7 +137,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
       final matched = getMatchRows(list);
       _result.addAll(matched);
     }
-    await super.add(context, list);
   }
 
   /// add rows into ram
@@ -153,7 +148,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> delete(BuildContext context, List<T> list) async {
     await _dataset.delete(context, list);
     _result.removeWhere((item) => list.contains(item));
-    await super.delete(context, list);
   }
 
   /// clear dataset
@@ -165,7 +159,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> reset(BuildContext context) async {
     await _dataset.reset(context);
     _result = [];
-    await super.reset(context);
   }
 
   /// setRow set row into dataset and move row to first
@@ -182,7 +175,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
         _result.insert(0, row);
       }
     }
-    await super.update(context, row);
   }
 
   /// getRowByID return object by id

@@ -13,8 +13,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// ```
   DatasetRam({
     required pb.Builder<T> dataBuilder,
-    Future<void> Function(BuildContext)? onChanged,
-  }) : super(onChanged: onChanged, dataBuilder: dataBuilder);
+  }) : super(dataBuilder: dataBuilder);
 
   /// _rows keep all rows in ram
   // ignore: prefer_final_fields
@@ -66,7 +65,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
       _removeDuplicate(row, _rows);
     }
     _rows.insertAll(0, list);
-    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -80,7 +78,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
       _removeDuplicate(row, _rows);
     }
     _rows.addAll(list);
-    await super.add(context, list);
   }
 
   /// remove rows from dataset
@@ -93,7 +90,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       _rows.remove(row);
     }
-    await super.delete(context, list);
   }
 
   /// reset dataset
@@ -104,7 +100,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @mustCallSuper
   Future<void> reset(BuildContext context) async {
     _rows.clear();
-    await super.reset(context);
   }
 
   /// setRow set row into dataset and move row to first
@@ -116,7 +111,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   Future<void> update(BuildContext context, T row) async {
     _removeDuplicate(row, _rows);
     _rows.insert(0, row);
-    await super.update(context, row);
   }
 
   /// range return sublist of rows, return null if something went wrong

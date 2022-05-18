@@ -188,38 +188,5 @@ void main() {
       expect(dataset.isIDExists('first'), isTrue);
       expect(dataset.isIDExists('notExists'), isFalse);
     });
-
-    test('should call onChanged when update data', () async {
-      bool changed = false;
-      final dataset = DatasetCache<sample.Person>(
-        name: 'test',
-        dataBuilder: () => sample.Person(),
-        onChanged: (context) async => changed = true,
-      );
-      await dataset.load();
-
-      await dataset.insert(testing.Context(), [sample.Person()]);
-      expect(changed, true);
-
-      changed = false;
-      await dataset.add(testing.Context(), [sample.Person()]);
-      expect(changed, true);
-
-      changed = false;
-      await dataset.delete(testing.Context(), [sample.Person()]);
-      expect(changed, true);
-
-      changed = false;
-      await dataset.reset(testing.Context());
-      expect(changed, true);
-
-      changed = false;
-      await dataset.reset(testing.Context());
-      expect(changed, true);
-
-      changed = false;
-      await dataset.update(testing.Context(), sample.Person());
-      expect(changed, true);
-    });
   });
 }

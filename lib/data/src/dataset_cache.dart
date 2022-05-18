@@ -40,8 +40,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   DatasetCache({
     required this.name,
     required pb.Builder<T> dataBuilder,
-    Future<void> Function(BuildContext)? onChanged,
-  }) : super(onChanged: onChanged, dataBuilder: dataBuilder);
+  }) : super(dataBuilder: dataBuilder);
 
   /// name use for database or cache id
   final String name;
@@ -120,7 +119,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await cache.setObject(row.entityID, row);
     }
-    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -137,7 +135,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await cache.setObject(row.entityID, row);
     }
-    await super.add(context, list);
   }
 
   /// remove rows from dataset
@@ -154,7 +151,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
       }
     }
     await save(context);
-    await super.delete(context, list);
   }
 
   /// reset dataset
@@ -177,7 +173,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
         break;
       }
     }
-    await super.reset(context);
   }
 
   /// update set row into dataset and move row to first
@@ -190,7 +185,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     _index.insert(0, row.entityID);
     await save(context);
     await cache.setObject(row.entityID, row);
-    await super.update(context, row);
   }
 
   /// range return sublist of rows, return null if something went wrong

@@ -31,7 +31,6 @@ void main() {
       bool changed = false;
       final dataset = DatasetRam(
         dataBuilder: () => sample.Person(),
-        onChanged: (context) async => changed = true,
       );
 
       await dataset.insert(testing.Context(), [sample.Person()]);

@@ -17,8 +17,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   DatasetDatabase(
     this._database, {
     required pb.Builder<T> dataBuilder,
-    Future<void> Function(BuildContext)? onChanged,
-  }) : super(onChanged: onChanged, dataBuilder: dataBuilder) {
+  }) : super(dataBuilder: dataBuilder) {
     internalNoMore = true;
   }
 
@@ -90,7 +89,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
-    await super.insert(context, list);
   }
 
   /// add list of rows into dataset database
@@ -107,7 +105,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
-    await super.add(context, list);
   }
 
   /// delete rows from dataset
@@ -124,7 +121,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
       }
     }
     await save(context);
-    await super.delete(context, list);
   }
 
   /// reset dataset database
@@ -137,7 +133,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     _index = [];
     await _database.reset();
     internalNoRefresh = false;
-    await super.reset(context);
   }
 
   /// update set row into dataset and move row to first
@@ -151,7 +146,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     _index.insert(0, row.entityID);
     await save(context);
     await _database.setObject(row.entityID, row);
-    await super.update(context, row);
   }
 
   /// range return sublist of rows, return null if something went wrong

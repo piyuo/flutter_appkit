@@ -26,7 +26,6 @@ abstract class Dataset<T extends pb.Object> {
   /// ```
   Dataset({
     required this.dataBuilder,
-    this.onChanged,
   });
 
   /// dataBuilder build data
@@ -34,9 +33,6 @@ abstract class Dataset<T extends pb.Object> {
   /// dataBuilder: () => sample.Person()
   /// ```
   final pb.Builder<T> dataBuilder;
-
-  /// onChanged called when dataset changed like insert, delete, update
-  Future<void> Function(BuildContext)? onChanged;
 
   /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in dataset
   bool internalNoRefresh = false;
@@ -108,46 +104,31 @@ abstract class Dataset<T extends pb.Object> {
   /// ```dart
   /// await dataset.insert([sample.Person()]);
   /// ```
-  @mustCallSuper
-  Future<void> insert(BuildContext context, List<T> list) async {
-    await onChanged?.call(context);
-  }
+  Future<void> insert(BuildContext context, List<T> list);
 
   /// add list of rows into dataset, it will avoid duplicate rows
   /// ```dart
   /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
-  @mustCallSuper
-  Future<void> add(BuildContext context, List<T> list) async {
-    await onChanged?.call(context);
-  }
+  Future<void> add(BuildContext context, List<T> list);
 
   /// delete list of rows from dataset
   /// ```dart
   /// await dataset.delete(list);
   /// ```
-  @mustCallSuper
-  Future<void> delete(BuildContext context, List<T> list) async {
-    await onChanged?.call(context);
-  }
+  Future<void> delete(BuildContext context, List<T> list);
 
   /// reset dataset
   /// ```dart
   /// await dataset.reset();
   /// ```
-  @mustCallSuper
-  Future<void> reset(BuildContext context) async {
-    await onChanged?.call(context);
-  }
+  Future<void> reset(BuildContext context);
 
   /// update set a single row into dataset and move row to first
   /// ```dart
   /// await dataset.update(row);
   /// ```
-  @mustCallSuper
-  Future<void> update(BuildContext context, T row) async {
-    await onChanged?.call(context);
-  }
+  Future<void> update(BuildContext context, T row);
 
   /// read return row by id
   /// ```dart
