@@ -44,10 +44,13 @@ class DataClient<T extends pb.Object> {
   /// ```
   DataClient(
     this.dataset, {
-    required pb.Builder<T> dataBuilder,
+    required this.dataBuilder,
     required this.getter,
     required this.setter,
   });
+
+  /// dataBuilder build new row
+  final pb.Builder<T> dataBuilder;
 
   /// dataset keep all rows in dataset
   final Dataset<T> dataset;
@@ -58,45 +61,36 @@ class DataClient<T extends pb.Object> {
   /// setter set data to remote service,return null if fail to set data
   final DataClientSetter<T> setter;
 
-  /// data keep current data
-  T? data;
-
-  /// isReady is true when data is ready to use
-  bool get isReady => data != null;
-
   /// load dataset, get data if id present
   /// ```dart
-  /// await detail.load(testing.Context());
+  /// await client.load(testing.Context(),'id-123');
   /// ```
-  Future<void> load(BuildContext context, {required String id}) async {
+  Future<T> load(BuildContext context, {required String id}) async {
     await dataset.load();
-    if (id.isEmpty) {
-      return;
-    }
-    data = await dataset.read(id);
-    if (data != null) {
-      return;
-    }
+    if (id.isNotEmpty) {
+      var data = await dataset.read(id);
+      if (data != null) {
+        return data;
+      }
 
-    data = await getter(context, id);
-    if (data != null) {
-      dataset.update(context, data!);
-      return;
+      data = await getter(context, id);
+      if (data != null) {
+        dataset.update(context, data);
+        return data;
+      }
     }
+    return dataBuilder();
   }
 
   /// save data to cache, only update cache when setter return true
   /// ```dart
-  /// detail.current = sample.Person()..name = 'john';
-  /// await detail.save(context);
+  /// final person = sample.Person()..name = 'john';
+  /// await client.save(context, person);
   /// ```
-  Future<bool> save(BuildContext context) async {
-    if (data == null) {
-      return false;
-    }
-    data = await setter(context, data!);
-    if (data != null) {
-      await dataset.update(context, data!);
+  Future<bool> save(BuildContext context, T row) async {
+    final updated = await setter(context, row);
+    if (updated != null) {
+      await dataset.update(context, updated);
       return true;
     }
     return false;

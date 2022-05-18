@@ -26,9 +26,9 @@ void main() {
         setter: (context, sample.Person person) async => person,
       );
 
-      await detail.load(testing.Context(), id: 'myId');
+      final result = await detail.load(testing.Context(), id: 'myId');
       expect(isGet, isTrue);
-      expect(detail.data, isNotNull);
+      expect(result, isNotNull);
       expect(dataset.length, 1);
 
       final row = await dataset.read('myId');
@@ -48,9 +48,9 @@ void main() {
         setter: (context, sample.Person person) async => person,
       );
 
-      await detail.load(testing.Context(), id: '');
+      final result = await detail.load(testing.Context(), id: '');
       expect(isGet, isFalse);
-      expect(detail.data, isNull);
+      expect(result, isNotNull);
       expect(dataset.isEmpty, true);
     });
 
@@ -66,16 +66,16 @@ void main() {
           return person;
         },
       );
-      await detail.load(testing.Context(), id: '');
-      expect(detail.data, isNull);
+      final result = await detail.load(testing.Context(), id: '');
+      expect(result, isNotNull);
       expect(dataset.isEmpty, true);
 
-      detail.data = sample.Person()..name = 'john';
-      final success = await detail.save(testing.Context());
+      final person = sample.Person()..name = 'john';
+      final success = await detail.save(testing.Context(), person);
       expect(success, isTrue);
-      final person = await dataset.first;
-      expect(person!.name, 'john');
-      expect(person.entityID, 'newId');
+      final firstPerson = await dataset.first;
+      expect(firstPerson!.name, 'john');
+      expect(firstPerson.entityID, 'newId');
     });
 
     test('should not save data if setter went wrong', () async {
@@ -89,12 +89,12 @@ void main() {
           return null;
         },
       );
-      await detail.load(testing.Context(), id: '');
-      expect(detail.data, isNull);
+      final result = await detail.load(testing.Context(), id: '');
+      expect(result, isNotNull);
       expect(dataset.isEmpty, true);
 
-      detail.data = sample.Person()..name = 'john';
-      final success = await detail.save(testing.Context());
+      final person = sample.Person()..name = 'john';
+      final success = await detail.save(testing.Context(), person);
       expect(success, isFalse);
       expect(dataset.isEmpty, isTrue);
     });
