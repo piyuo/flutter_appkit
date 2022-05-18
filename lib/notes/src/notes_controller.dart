@@ -11,7 +11,7 @@ import 'master_detail_view.dart';
 import 'selectable.dart';
 
 /// Adder add new item
-typedef Adder<T> = Future<T> Function(BuildContext context);
+typedef FutureCallback<T> = Future<T> Function(BuildContext context);
 
 /// Remover remove list of selected rows
 typedef Remover<T> = Future<bool> Function(BuildContext context, List<T> item);
@@ -19,10 +19,8 @@ typedef Remover<T> = Future<bool> Function(BuildContext context, List<T> item);
 /// Notes controller will load dataset to display but not close it, you need close dataset if need
 class NotesController<T extends pb.Object> with ChangeNotifier {
   NotesController({
-    required BuildContext context,
-    required this.dataset,
-    required pb.Builder<T> dataBuilder,
-    required data.DataViewLoader<T> loader,
+    required this.dataBuilder,
+    required this.loader,
     required this.adder,
     required this.remover,
     required this.isSaved,
@@ -42,25 +40,6 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
       onSearchBegin: onSearchBegin,
       onSearchEnd: onSearchEnd,
     );
-
-    dataset.onChanged = (context) async {
-      dataView.selectRows([]);
-      await refill(context);
-    };
-
-    dataView = context.isPreferMouse
-        ? data.PagedDataView<T>(
-            dataset,
-            dataBuilder: dataBuilder,
-            loader: loader,
-          )
-        : data.ContinuousDataView<T>(
-            dataset,
-            dataBuilder: dataBuilder,
-            loader: loader,
-          );
-
-    load(context);
   }
 
   /// of get NotesController from context
@@ -68,20 +47,17 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
     return Provider.of<NotesController>(context, listen: false);
   }
 
-  /// load data to display
-  Future<void> load(BuildContext context) async {
-    await dataView.load(context);
-    animatedViewController.itemCount = dataView.displayRows.length;
-    setDefaultSelected(context);
-    isReadyToShow = true;
-    notifyListeners();
-  }
+  /// dataBuilder
+  final pb.Builder<T> dataBuilder;
+
+  /// loader
+  final data.DataViewLoader<T> loader;
 
   /// dataView data view to display data
-  late data.DataView<T> dataView;
+  data.DataView<T>? dataView;
 
   /// dataset used in data view
-  data.Dataset<T> dataset;
+  data.Dataset<T>? dataset;
 
   /// refreshButtonController is refresh button controller
   final refreshButtonController = delta.RefreshButtonController();
@@ -108,7 +84,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   final Future<bool> Function(String value)? onSearchChanged;
 
   /// adder create new item
-  final Adder adder;
+  final FutureCallback adder;
 
   /// isSaved is true if row is saved and ready to move to other row
   final bool Function(T row) isSaved;
@@ -129,7 +105,7 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   final String detailBeamName;
 
   /// isReadyToShow is true mean content is ready to show
-  bool isReadyToShow = false;
+  bool get isReadyToShow => dataView != null;
 
   /// searchTrigger trigger search event
   late delta.SearchTrigger searchTrigger;
@@ -143,6 +119,31 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// onSearchEnd called when text is clear and search end
   final VoidCallback? onSearchEnd;
 
+  /// load data to display
+  Future<void> load(BuildContext context, data.Dataset<T> dataset) async {
+    dataView = context.isPreferMouse
+        ? data.PagedDataView<T>(
+            dataset,
+            dataBuilder: dataBuilder,
+            loader: loader,
+          )
+        : data.ContinuousDataView<T>(
+            dataset,
+            dataBuilder: dataBuilder,
+            loader: loader,
+          );
+
+    //  dataset.onChanged = (context) async {
+    //dataView!.selectRows([]);
+    //await refill(context);
+    // };
+
+    await dataView!.load(context);
+    animatedViewController.itemCount = dataView!.displayRows.length;
+    setDefaultSelected(context);
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     searchTrigger.dispose();
@@ -152,20 +153,20 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   }
 
   /// noMore return true if dataset is no more data
-  bool get noMore => dataView.noMore;
+  bool get noMore => dataView != null ? dataView!.noMore : true;
 
   /// noRefresh return true if dataset is no need refresh
-  bool get noRefresh => dataView.noRefresh;
+  bool get noRefresh => dataView != null ? dataView!.noRefresh : true;
 
   /// noRefresh set to true if no need refresh dataset
-  Future<void> setNoRefresh(BuildContext context, value) async => await dataView.setNoRefresh(context, value);
+  Future<void> setNoRefresh(BuildContext context, value) async => await dataView?.setNoRefresh(context, value);
 
   /// setDefaultSelected will select first row if no row selected
   void setDefaultSelected(BuildContext context) {
-    if (dataView.selectedRows.isEmpty && dataView.displayRows.isNotEmpty) {
+    if (dataView != null && dataView!.selectedRows.isEmpty && dataView!.displayRows.isNotEmpty) {
       if (onRowExit(null)) {
-        final first = dataView.displayRows.first;
-        dataView.selectRows([first]);
+        final first = dataView!.displayRows.first;
+        dataView!.selectRows([first]);
         onItemSelected?.call(context, first);
       }
     }
@@ -190,11 +191,11 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
 
   /// onItemChecked called when user select item, return true if new item has been selected
   bool onItemChecked(BuildContext context, List<T> selectedRows) {
-    final oldRow = dataView.selectedRows.isNotEmpty ? dataView.selectedRows.first : null;
+    final oldRow = dataView!.selectedRows.isNotEmpty ? dataView!.selectedRows.first : null;
     if (!onRowExit(oldRow)) {
       return false;
     }
-    dataView.selectRows(selectedRows);
+    dataView!.selectRows(selectedRows);
     notifyListeners();
     return true;
   }
@@ -219,10 +220,10 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
 
   /// refill let dataset refill data, the data may changed or deleted
   Future<void> refill(BuildContext context) async {
-    await dataView.fill();
+    await dataView!.fill();
     newItem = null;
     setDefaultSelected(context);
-    animatedViewController.itemCount = dataView.displayRows.length;
+    animatedViewController.itemCount = dataView!.displayRows.length;
     notifyListeners();
   }
 
@@ -237,20 +238,20 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   }) async {
     switch (action) {
       case MasterDetailViewAction.refresh:
-        final originLength = dataView.length;
+        final originLength = dataView!.length;
         var firstPage = true;
         if (dataView is data.PagedDataView) {
           firstPage = (dataView as data.PagedDataView).isFirstPage;
         }
-        final isReset = await dataView.refresh(context);
-        final diff = dataView.length - originLength;
+        final isReset = await dataView!.refresh(context);
+        final diff = dataView!.length - originLength;
         setDefaultSelected(context);
         if (isReset || (diff > 0 && !firstPage)) {
           animatedViewController.refreshPageAnimation();
-          animatedViewController.itemCount = dataView.displayRows.length;
+          animatedViewController.itemCount = dataView!.displayRows.length;
         } else if (diff > 0) {
-          if (dataView.isDisplayRowsFullPage) {
-            animatedViewController.itemCount = dataView.rowsPerPage - diff;
+          if (dataView!.isDisplayRowsFullPage) {
+            animatedViewController.itemCount = dataView!.rowsPerPage - diff;
           }
           for (int i = 0; i < diff; i++) {
             animatedViewController.insertAnimation();
@@ -258,34 +259,34 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         }
         break;
       case MasterDetailViewAction.more:
-        await dataView.more(context, dataView.rowsPerPage);
-        animatedViewController.itemCount = dataView.displayRows.length;
+        await dataView!.more(context, dataView!.rowsPerPage);
+        animatedViewController.itemCount = dataView!.displayRows.length;
         break;
       case MasterDetailViewAction.previousPage:
         if (dataView is data.PagedDataView) {
           await (dataView as data.PagedDataView).prevPage(context);
-          animatedViewController.itemCount = dataView.displayRows.length;
+          animatedViewController.itemCount = dataView!.displayRows.length;
           animatedViewController.prevPageAnimation();
         }
         break;
       case MasterDetailViewAction.nextPage:
         if (dataView is data.PagedDataView) {
           await (dataView as data.PagedDataView).nextPage(context);
-          animatedViewController.itemCount = dataView.displayRows.length;
+          animatedViewController.itemCount = dataView!.displayRows.length;
           animatedViewController.nextPageAnimation();
         }
         break;
       case MasterDetailViewAction.rows10:
-        await dataView.setRowsPerPage(context, 10);
-        animatedViewController.itemCount = dataView.displayRows.length;
+        await dataView?.setRowsPerPage(context, 10);
+        animatedViewController.itemCount = dataView!.displayRows.length;
         break;
       case MasterDetailViewAction.rows20:
-        await dataView.setRowsPerPage(context, 20);
-        animatedViewController.itemCount = dataView.displayRows.length;
+        await dataView?.setRowsPerPage(context, 20);
+        animatedViewController.itemCount = dataView!.displayRows.length;
         break;
       case MasterDetailViewAction.rows50:
-        await dataView.setRowsPerPage(context, 50);
-        animatedViewController.itemCount = dataView.displayRows.length;
+        await dataView?.setRowsPerPage(context, 50);
+        animatedViewController.itemCount = dataView!.displayRows.length;
         break;
       case MasterDetailViewAction.listView:
         isListView = true;
@@ -296,10 +297,10 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
       case MasterDetailViewAction.toggleCheckMode:
         isCheckMode = !isCheckMode;
         if (isCheckMode) {
-          dataView.selectRows([]);
+          dataView?.selectRows([]);
         } else {
-          if (dataView.displayRows.isNotEmpty) {
-            dataView.selectRows([dataView.displayRows.first]);
+          if (dataView!.displayRows.isNotEmpty) {
+            dataView?.selectRows([dataView!.displayRows.first]);
           }
         }
         break;
@@ -309,9 +310,9 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
           return;
         }
 
-        dataView.selectRows([]);
+        dataView?.selectRows([]);
         newItem = await adder(context);
-        animatedViewController.itemCount = dataView.displayRows.length + 1;
+        animatedViewController.itemCount = dataView!.displayRows.length + 1;
         animatedViewController.insertAnimation();
         break;
       case MasterDetailViewAction.delete:
@@ -320,21 +321,21 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
         if (isCheckMode) {
           isCheckMode = false;
         }
-        if (isRemovable(dataView.selectedRows)) {
-          final deleted = await remover(context, dataView.selectedRows);
+        if (isRemovable(dataView!.selectedRows)) {
+          final deleted = await remover(context, dataView!.selectedRows);
           if (deleted) {
-            await dataView.dataset.delete(context, dataView.selectedRows);
+            await dataView!.dataset.delete(context, dataView!.selectedRows);
             int removeCount = 0;
-            for (int i = 0; i < dataView.displayRows.length; i++) {
-              final row = dataView.displayRows[i];
-              if (dataView.selectedRows.contains(row)) {
+            for (int i = 0; i < dataView!.displayRows.length; i++) {
+              final row = dataView!.displayRows[i];
+              if (dataView!.selectedRows.contains(row)) {
                 final child = builder!(context, row, true);
                 animatedViewController.removeAnimation(i - removeCount, isListView, child);
                 removeCount++;
               }
             }
-            await dataView.fill();
-            dataView.selectRows([]);
+            await dataView!.fill();
+            dataView!.selectRows([]);
             animatedViewController.onAnimationDone(() {
               setDefaultSelected(context);
               notifyListeners();
@@ -379,5 +380,5 @@ class NotesController<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// final obj = await getRowByID('1');
   /// ```
-  Future<T?> getRowByID(String id) async => await dataView.getRowByID(id);
+  Future<T?> getRowByID(String id) async => await dataView?.getRowByID(id);
 }

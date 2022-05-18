@@ -14,7 +14,6 @@ import '../notes.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
-late data.Dataset<sample.Person> _dataset;
 final _searchBoxController = TextEditingController();
 int refreshNum = 10; // number that changes when refreshed
 Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
@@ -25,81 +24,8 @@ int stepCount = 0;
 main() {
   app.start(
     appName: 'notes',
-    onBeforeStart: () async {
-      await database.delete('test');
-      _dataset = data.DatasetDatabase<sample.Person>(
-        await database.open('test'),
-        dataBuilder: () => sample.Person(),
-      );
-    },
-    providers: [
-      ChangeNotifierProvider<NotesController<sample.Person>>(
-        create: (context) => NotesController<sample.Person>(
-          context: context,
-          dataset: _dataset,
-          detailBeamName: "/",
-          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-            stepCount++;
-            return List.generate(
-              stepCount == 1 ? 2 : 2,
-              (i) {
-                final uuid = unique.uuid();
-                return sample.Person(
-                  name: uuid,
-                  entity: pb.Entity(id: uuid),
-                );
-              },
-            );
-          },
-          adder: (context) async {
-            final uuid = unique.uuid();
-            return sample.Person(
-              name: 'new item',
-              entity: pb.Entity(id: uuid),
-            );
-          },
-          isSaved: (person) {
-            return true;
-          },
-          isRemovable: (person) {
-            return true;
-          },
-          remover: (context, persons) async => true,
-          dataBuilder: () => sample.Person(),
-          onSearch: (text) => debugPrint('search:$text'),
-          onSearchBegin: () => debugPrint('search begin'),
-          onSearchEnd: () => debugPrint('search end'),
-          tags: [
-            Tag(
-              label: 'Inbox',
-              value: 'inbox',
-              icon: Icons.inbox,
-              count: 0,
-            ),
-            Tag(
-              label: 'VIPs',
-              value: 'vips',
-              icon: Icons.verified_user,
-              count: 1,
-              selected: true,
-            ),
-            Tag(
-              label: 'Sent',
-              value: 'sent',
-              icon: Icons.send,
-              count: 20,
-            ),
-            Tag(
-              label: 'All',
-              value: 'all',
-              icon: Icons.all_inbox,
-              count: 120,
-              category: 'iCloud',
-            ),
-          ],
-        ),
-      )
-    ],
+    onBeforeStart: () async {},
+    providers: [],
     routes: {
       '/': (context, state, _) => const NotesExample(),
       '/:id': (context, state, _) {
@@ -155,54 +81,141 @@ class NotesExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        title: const Text('Example Application'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.grey.shade800,
-        actions: [
-          Consumer<NotesController<sample.Person>>(
-            builder: (context, control, child) => NotesButton(
-              controller: control,
-              deleteLabel: context.i18n.notesDeleteButtonLabel,
-              deleteIcon: Icons.delete,
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<NotesController<sample.Person>>(
+            create: (context) => NotesController<sample.Person>(
+              detailBeamName: "/",
+              loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+                stepCount++;
+                return List.generate(
+                  stepCount == 1 ? 1 : 1,
+                  (i) {
+                    final uuid = unique.uuid();
+                    return sample.Person(
+                      name: uuid,
+                      entity: pb.Entity(id: uuid),
+                    );
+                  },
+                );
+              },
+              adder: (context) async {
+                final uuid = unique.uuid();
+                return sample.Person(
+                  name: 'new item',
+                  entity: pb.Entity(id: uuid),
+                );
+              },
+              isSaved: (person) {
+                return true;
+              },
+              isRemovable: (person) {
+                return true;
+              },
+              remover: (context, persons) async => true,
+              dataBuilder: () => sample.Person(),
+              onSearch: (text) => debugPrint('search:$text'),
+              onSearchBegin: () => debugPrint('search begin'),
+              onSearchEnd: () => debugPrint('search end'),
+              tags: [
+                Tag(
+                  label: 'Inbox',
+                  value: 'inbox',
+                  icon: Icons.inbox,
+                  count: 0,
+                ),
+                Tag(
+                  label: 'VIPs',
+                  value: 'vips',
+                  icon: Icons.verified_user,
+                  count: 1,
+                  selected: true,
+                ),
+                Tag(
+                  label: 'Sent',
+                  value: 'sent',
+                  icon: Icons.send,
+                  count: 20,
+                ),
+                Tag(
+                  label: 'All',
+                  value: 'all',
+                  icon: Icons.all_inbox,
+                  count: 120,
+                  category: 'iCloud',
+                ),
+              ],
             ),
-          ),
+          )
         ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: _notesView(context),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  testing.ExampleButton(label: 'simple list', builder: () => _simpleList(context)),
-                  testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
-                  testing.ExampleButton(label: 'checkable grid', builder: () => _checkableGrid(context)),
-                  testing.ExampleButton(label: 'checkable list', builder: () => _checkableList(context)),
-                  testing.ExampleButton(label: 'dynamic list', builder: () => _dynamicList(context)),
-                  testing.ExampleButton(label: 'dynamic grid', builder: () => _dynamicGrid(context)),
-                  testing.ExampleButton(label: 'master detail view', builder: () => _masterDetailView(context)),
-                  testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
-                  testing.ExampleButton(label: 'show filter view', builder: () => _showFilterView(context)),
-                  testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
-                  testing.ExampleButton(label: 'folder view', builder: () => _folderView(context)),
-                  testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
+        child: Consumer<NotesController<sample.Person>>(builder: (context, notesController, _) {
+          return ChangeNotifierProvider<database.DatabaseProvider>(
+              create: (context) {
+                return database.DatabaseProvider(
+                  name: 'test',
+                  databaseBuilder: (name) async => await database.open('test'),
+                )..load().then((database) => notesController.load(
+                    context,
+                    data.DatasetDatabase<sample.Person>(
+                      database,
+                      dataBuilder: () => sample.Person(),
+                    )));
+              },
+              child: Consumer<database.DatabaseProvider>(
+                  builder: (context, databaseProvider, _) => Scaffold(
+                        appBar: AppBar(
+                          elevation: 1,
+                          title: const Text('Example Application'),
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.grey.shade800,
+                          actions: [
+                            NotesButton(
+                              controller: notesController,
+                              deleteLabel: context.i18n.notesDeleteButtonLabel,
+                              deleteIcon: Icons.delete,
+                            ),
+                          ],
+                        ),
+                        body: SafeArea(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: _notesView(context),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    testing.ExampleButton(label: 'simple list', builder: () => _simpleList(context)),
+                                    testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
+                                    testing.ExampleButton(
+                                        label: 'checkable grid', builder: () => _checkableGrid(context)),
+                                    testing.ExampleButton(
+                                        label: 'checkable list', builder: () => _checkableList(context)),
+                                    testing.ExampleButton(label: 'dynamic list', builder: () => _dynamicList(context)),
+                                    testing.ExampleButton(label: 'dynamic grid', builder: () => _dynamicGrid(context)),
+                                    testing.ExampleButton(
+                                        label: 'master detail view', builder: () => _masterDetailView(context)),
+                                    testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
+                                    testing.ExampleButton(
+                                        label: 'show filter view', builder: () => _showFilterView(context)),
+                                    testing.ExampleButton(
+                                        label: 'filter split view', builder: () => _filterSplitView(context)),
+                                    testing.ExampleButton(label: 'folder view', builder: () => _folderView(context)),
+                                    testing.ExampleButton(
+                                        label: 'selection header', builder: () => _selectionHeader(context)),
 //                  testing.ExampleButton(label: 'data explorer', builder: () => _tableView(context)),
-                  testing.ExampleButton(label: 'loading data', builder: () => _loadingMasterDetailView(context)),
-                  testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                                    testing.ExampleButton(
+                                        label: 'loading data', builder: () => _loadingMasterDetailView(context)),
+                                    testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )));
+        }));
   }
 
   Widget _simpleList(BuildContext context) {
@@ -699,7 +712,7 @@ class NotesExample extends StatelessWidget {
                 onPressed: () async {
                   if (person.name == 'new item') {
                     person.name = 'saved item';
-                    await _dataset.insert(context, [person]);
+                    //     await _dataset.insert(context, [person]);
                     await notesController.refill(context);
                   }
                 },

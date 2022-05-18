@@ -1,6 +1,5 @@
 library notes;
 
-export 'src/notes_controller.dart';
 export 'src/selectable.dart';
 export 'src/simple_list.dart';
 export 'src/simple_grid.dart';
@@ -15,3 +14,4 @@ export 'src/tag_split_view.dart';
 export 'src/notes_button.dart';
 export 'src/notes_view.dart';
 export 'src/notes_beam_page.dart';
+export 'src/notes_controller.dart';
