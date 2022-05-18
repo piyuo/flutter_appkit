@@ -16,13 +16,13 @@ const keyNoRefresh = '__nr';
 /// Dataset keep rows for later use
 /// ```dart
 /// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-/// await dataset.open();
+/// await dataset.load();
 /// ```
 abstract class Dataset<T extends pb.Object> {
   /// Dataset keep rows for later use
   /// ```dart
   /// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-  /// await dataset.open();
+  /// await dataset.load();
   /// ```
   Dataset({
     required this.dataBuilder,
