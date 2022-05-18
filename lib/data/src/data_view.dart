@@ -103,6 +103,8 @@ abstract class DataView<T extends pb.Object> {
 
   /// load dataset
   Future<void> load(BuildContext context) async {
+    selectedRows = [];
+    displayRows = [];
     await dataset.load();
   }
 
