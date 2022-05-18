@@ -50,8 +50,7 @@ class DataClient<T extends pb.Object> {
   ///   },
   /// );
   /// ```
-  DataClient(
-    this.dataset, {
+  DataClient({
     required this.dataBuilder,
     required this.getter,
     this.setter,
@@ -61,8 +60,8 @@ class DataClient<T extends pb.Object> {
   /// dataBuilder build new row
   final pb.Builder<T> dataBuilder;
 
-  /// dataset keep all rows in dataset
-  final Dataset<T> dataset;
+  /// _dataset keep all rows in dataset
+  Dataset<T>? _dataset;
 
   /// getter get data from remote service
   final DataClientGetter<T> getter;
@@ -77,8 +76,9 @@ class DataClient<T extends pb.Object> {
   /// ```dart
   /// await client.load(testing.Context(),'id-123');
   /// ```
-  Future<T> load(BuildContext context, {required String id}) async {
-    await dataset.load();
+  Future<T> load(BuildContext context, {required Dataset<T> dataset, required String id}) async {
+    _dataset = dataset;
+    await _dataset!.load();
     if (id.isNotEmpty) {
       var data = await dataset.read(id);
       if (data != null) {
@@ -100,12 +100,12 @@ class DataClient<T extends pb.Object> {
   /// await client.save(context, person);
   /// ```
   Future<bool> save(BuildContext context, T row) async {
-    if (setter == null) {
+    if (_dataset == null || setter == null) {
       return false;
     }
     final updated = await setter!(context, row);
     if (updated != null) {
-      await dataset.update(context, updated);
+      await _dataset!.update(context, updated);
       return true;
     }
     return false;
@@ -116,12 +116,12 @@ class DataClient<T extends pb.Object> {
   /// await client.delete(context, person);
   /// ```
   Future<bool> delete(BuildContext context, T row) async {
-    if (remover == null) {
+    if (_dataset == null || remover == null) {
       return false;
     }
     final deleted = await remover!(context, row);
     if (deleted) {
-      await dataset.delete(context, [row]);
+      await _dataset!.delete(context, [row]);
     }
     return deleted;
   }

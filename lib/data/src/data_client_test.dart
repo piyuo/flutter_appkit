@@ -17,7 +17,6 @@ void main() {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async {
           isGet = true;
@@ -26,7 +25,7 @@ void main() {
         setter: (context, sample.Person person) async => person,
       );
 
-      final result = await dataClient.load(testing.Context(), id: 'myId');
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'myId');
       expect(isGet, isTrue);
       expect(result, isNotNull);
       expect(dataset.length, 1);
@@ -39,7 +38,6 @@ void main() {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async {
           isGet = true;
@@ -48,7 +46,7 @@ void main() {
         setter: (context, sample.Person person) async => person,
       );
 
-      final result = await dataClient.load(testing.Context(), id: '');
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(isGet, isFalse);
       expect(result, isNotNull);
       expect(dataset.isEmpty, true);
@@ -58,7 +56,6 @@ void main() {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.load();
       final dataClient = DataClient<sample.Person>(
-        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
         setter: (context, sample.Person person) async {
@@ -66,7 +63,7 @@ void main() {
           return person;
         },
       );
-      final result = await dataClient.load(testing.Context(), id: '');
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
       expect(dataset.isEmpty, true);
 
@@ -82,14 +79,13 @@ void main() {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.load();
       final dataClient = DataClient<sample.Person>(
-        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
         setter: (context, sample.Person person) async {
           return null;
         },
       );
-      final result = await dataClient.load(testing.Context(), id: '');
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
       expect(dataset.isEmpty, true);
 
@@ -108,14 +104,13 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
         remover: (context, sample.Person person) async {
           return true;
         },
       );
-      final result = await dataClient.load(testing.Context(), id: 'existsPerson');
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'existsPerson');
       expect(result, isNotNull);
       expect(dataset.isNotEmpty, true);
 
@@ -134,14 +129,13 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
         remover: (context, sample.Person person) async {
           return false;
         },
       );
-      final result = await dataClient.load(testing.Context(), id: 'existsPerson');
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'existsPerson');
       expect(result, isNotNull);
       expect(dataset.isNotEmpty, true);
 
