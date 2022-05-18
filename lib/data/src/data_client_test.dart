@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'part.dart';
+import 'data_client.dart';
 import 'dataset_ram.dart';
 
 void main() {
@@ -12,13 +12,12 @@ void main() {
 
   setUp(() async {});
 
-  group('[data]', () {
+  group('[data_client]', () {
     test('should load data with id by getter', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
-      final detail = Part<sample.Person>(
+      final detail = DataClient<sample.Person>(
         dataset,
-        id: 'myId',
         dataBuilder: () => sample.Person(),
         getter: (context, id) async {
           isGet = true;
@@ -27,11 +26,10 @@ void main() {
         setter: (context, sample.Person person) async => person,
       );
 
-      await detail.load(testing.Context());
+      await detail.load(testing.Context(), id: 'myId');
       expect(isGet, isTrue);
-      expect(detail.current, isNotNull);
+      expect(detail.data, isNotNull);
       expect(dataset.length, 1);
-      expect(detail.isLoading, false);
 
       final row = await dataset.read('myId');
       expect(row!.entityID, 'myId');
@@ -40,7 +38,7 @@ void main() {
     test('should load no data with null id', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       bool isGet = false;
-      final detail = Part<sample.Person>(
+      final detail = DataClient<sample.Person>(
         dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async {
@@ -52,15 +50,14 @@ void main() {
 
       await detail.load(testing.Context());
       expect(isGet, isFalse);
-      expect(detail.current, isNull);
+      expect(detail.data, isNull);
       expect(dataset.isEmpty, true);
-      expect(detail.isLoading, false);
     });
 
     test('should save data', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.load();
-      final detail = Part<sample.Person>(
+      final detail = DataClient<sample.Person>(
         dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
@@ -70,11 +67,10 @@ void main() {
         },
       );
       await detail.load(testing.Context());
-      expect(detail.current, isNull);
+      expect(detail.data, isNull);
       expect(dataset.isEmpty, true);
-      expect(detail.isLoading, false);
 
-      detail.current = sample.Person()..name = 'john';
+      detail.data = sample.Person()..name = 'john';
       final success = await detail.save(testing.Context());
       expect(success, isTrue);
       final person = await dataset.first;
@@ -85,7 +81,7 @@ void main() {
     test('should not save data if setter went wrong', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.load();
-      final detail = Part<sample.Person>(
+      final detail = DataClient<sample.Person>(
         dataset,
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
@@ -94,11 +90,10 @@ void main() {
         },
       );
       await detail.load(testing.Context());
-      expect(detail.current, isNull);
+      expect(detail.data, isNull);
       expect(dataset.isEmpty, true);
-      expect(detail.isLoading, false);
 
-      detail.current = sample.Person()..name = 'john';
+      detail.data = sample.Person()..name = 'john';
       final success = await detail.save(testing.Context());
       expect(success, isFalse);
       expect(dataset.isEmpty, isTrue);

@@ -1,6 +1,6 @@
 library db;
 
-export 'src/part.dart';
+export 'src/data_client.dart';
 export 'src/data_view.dart';
 export 'src/paged_data_view.dart';
 export 'src/continuous_data_view.dart';
