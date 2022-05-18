@@ -47,7 +47,6 @@ class DataClient<T extends pb.Object> {
     required pb.Builder<T> dataBuilder,
     required this.getter,
     required this.setter,
-    BuildContext? context,
   });
 
   /// dataset keep all rows in dataset
