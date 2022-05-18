@@ -26,35 +26,5 @@ void main() {
       expect(dataset.isEmpty, false);
       expect(dataset.isNotEmpty, true);
     });
-
-    test('should call onChanged when update data', () async {
-      bool changed = false;
-      final dataset = DatasetRam(
-        dataBuilder: () => sample.Person(),
-      );
-
-      await dataset.insert(testing.Context(), [sample.Person()]);
-      expect(changed, true);
-
-      changed = false;
-      await dataset.add(testing.Context(), [sample.Person()]);
-      expect(changed, true);
-
-      changed = false;
-      await dataset.delete(testing.Context(), [sample.Person()]);
-      expect(changed, true);
-
-      changed = false;
-      await dataset.reset(testing.Context());
-      expect(changed, true);
-
-      changed = false;
-      await dataset.reset(testing.Context());
-      expect(changed, true);
-
-      changed = false;
-      await dataset.update(testing.Context(), sample.Person());
-      expect(changed, true);
-    });
   });
 }
