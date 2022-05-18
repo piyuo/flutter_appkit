@@ -1,5 +1,6 @@
 library delta;
 
+export 'src/types.dart';
 export 'src/test.dart';
 export 'src/pixel_ratio.dart';
 export 'src/page_route.dart';
