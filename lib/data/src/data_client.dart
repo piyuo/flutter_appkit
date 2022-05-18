@@ -19,6 +19,14 @@ typedef DataClientGetter<T> = Future<T?> Function(BuildContext context, String i
 /// ```
 typedef DataClientSetter<T> = Future<T?> Function(BuildContext context, T obj);
 
+/// DataClientRemover set data to remote service, return updated object if set success
+/// ```dart
+/// remover: (context, sample.Person person) async {
+///   delete person ...
+/// }
+/// ```
+typedef DataClientRemover<T> = Future<bool> Function(BuildContext context, T obj);
+
 /// DataClient provide a way to access data though dataset
 /// ```dart
 /// final dc = DataClient<sample.Person>(
@@ -46,7 +54,8 @@ class DataClient<T extends pb.Object> {
     this.dataset, {
     required this.dataBuilder,
     required this.getter,
-    required this.setter,
+    this.setter,
+    this.remover,
   });
 
   /// dataBuilder build new row
@@ -59,7 +68,10 @@ class DataClient<T extends pb.Object> {
   final DataClientGetter<T> getter;
 
   /// setter set data to remote service,return null if fail to set data
-  final DataClientSetter<T> setter;
+  final DataClientSetter<T>? setter;
+
+  /// remover remove data from remote service,return null if fail to remove data
+  final DataClientRemover<T>? remover;
 
   /// load dataset, get data if id present
   /// ```dart
@@ -88,11 +100,29 @@ class DataClient<T extends pb.Object> {
   /// await client.save(context, person);
   /// ```
   Future<bool> save(BuildContext context, T row) async {
-    final updated = await setter(context, row);
+    if (setter == null) {
+      return false;
+    }
+    final updated = await setter!(context, row);
     if (updated != null) {
       await dataset.update(context, updated);
       return true;
     }
     return false;
+  }
+
+  /// delete data from cache, only delete cache when remover return true
+  /// ```dart
+  /// await client.delete(context, person);
+  /// ```
+  Future<bool> delete(BuildContext context, T row) async {
+    if (remover == null) {
+      return false;
+    }
+    final deleted = await remover!(context, row);
+    if (deleted) {
+      await dataset.delete(context, [row]);
+    }
+    return deleted;
   }
 }
