@@ -20,6 +20,14 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// pageIndex is current page index
   int pageIndex = 0;
 
+  /// load dataset
+  @override
+  @mustCallSuper
+  Future<void> load(BuildContext context) async {
+    pageIndex = 0;
+    await super.load(context);
+  }
+
   /// onRefresh reset dataset, but not on full view mode, return true if reset dataset
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {

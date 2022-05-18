@@ -102,6 +102,7 @@ abstract class DataView<T extends pb.Object> {
   String pageInfo(BuildContext context);
 
   /// load dataset
+  @mustCallSuper
   Future<void> load(BuildContext context) async {
     selectedRows = [];
     displayRows = [];
