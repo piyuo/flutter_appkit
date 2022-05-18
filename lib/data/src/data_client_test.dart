@@ -75,6 +75,34 @@ void main() {
       expect(firstPerson.entityID, 'newId');
     });
 
+    test('should put first in dataset when save data', () async {
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      await dataset.load();
+      final exists = sample.Person()
+        ..name = 'exists'
+        ..entity = pb.Entity(id: 'existsPerson');
+      dataset.add(testing.Context(), [exists]);
+
+      final dataClient = DataClient<sample.Person>(
+        dataBuilder: () => sample.Person(),
+        getter: (context, id) async => null,
+        setter: (context, sample.Person person) async {
+          person.entity = pb.Entity(id: 'newId');
+          return person;
+        },
+      );
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
+      expect(result, isNotNull);
+      expect(dataset.isNotEmpty, true);
+
+      final person = sample.Person()..name = 'john';
+      final success = await dataClient.save(testing.Context(), person);
+      expect(success, isTrue);
+      final firstPerson = await dataset.first;
+      expect(firstPerson!.name, 'john');
+      expect(firstPerson.entityID, 'newId');
+    });
+
     test('should not save data if setter went wrong', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.load();
