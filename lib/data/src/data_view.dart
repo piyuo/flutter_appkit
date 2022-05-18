@@ -104,7 +104,6 @@ abstract class DataView<T extends pb.Object> {
   /// load dataset
   Future<void> load(BuildContext context) async {
     await dataset.load();
-    await refresh(context);
   }
 
   /// onRefresh reset dataset but not on full view mode, return true if reset dataset
