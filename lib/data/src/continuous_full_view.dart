@@ -9,17 +9,13 @@ import 'dataset.dart';
 class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
   ContinuousFullView(
     Dataset<T> _dataset, {
-    BuildContext? context,
     required String id,
     required pb.Builder<T> dataBuilder,
     required DataViewLoader<T> loader,
-    VoidCallback? onReady,
   }) : super(
           _dataset,
-          context: context,
           dataBuilder: dataBuilder,
           loader: loader,
-          onReady: onReady,
         ) {
     _dataset.internalNoMore = true;
   }

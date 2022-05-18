@@ -8,16 +8,12 @@ import 'data_view.dart';
 class ContinuousDataView<T extends pb.Object> extends DataView<T> {
   ContinuousDataView(
     Dataset<T> _dataset, {
-    BuildContext? context,
     required DataViewLoader<T> loader,
     required pb.Builder<T> dataBuilder,
-    VoidCallback? onReady,
   }) : super(
           _dataset,
-          context: context,
           loader: loader,
           dataBuilder: dataBuilder,
-          onReady: onReady,
         );
 
   /// onRefresh called when refresh

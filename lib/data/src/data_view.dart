@@ -35,24 +35,15 @@ abstract class DataView<T extends pb.Object> {
   /// ```
   DataView(
     this.dataset, {
-    BuildContext? context,
     required this.loader,
     required this.dataBuilder,
-    this.onReady,
-  }) {
-    if (context != null) {
-      load(context);
-    }
-  }
+  });
 
   /// dataBuilder build data
   final pb.Builder<T> dataBuilder;
 
   /// loader can refresh or load more data by anchor and limit
   final DataViewLoader<T> loader;
-
-  /// onReady called when data source is opened/refreshed and ready to use
-  final VoidCallback? onReady;
 
   /// dataset keep all rows in dataset
   Dataset<T> dataset;
@@ -114,7 +105,6 @@ abstract class DataView<T extends pb.Object> {
   Future<void> load(BuildContext context) async {
     await dataset.load();
     await refresh(context);
-    onReady?.call();
   }
 
   /// onRefresh reset dataset but not on full view mode, return true if reset dataset

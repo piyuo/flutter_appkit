@@ -9,16 +9,12 @@ import 'data_view.dart';
 class PagedDataView<T extends pb.Object> extends DataView<T> {
   PagedDataView(
     Dataset<T> _dataset, {
-    BuildContext? context,
     required DataViewLoader<T> loader,
     required pb.Builder<T> dataBuilder,
-    VoidCallback? onReady,
   }) : super(
           _dataset,
-          context: context,
           loader: loader,
           dataBuilder: dataBuilder,
-          onReady: onReady,
         );
 
   /// pageIndex is current page index
