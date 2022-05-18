@@ -68,9 +68,9 @@ class DataClient<T extends pb.Object> {
   /// ```dart
   /// await detail.load(testing.Context());
   /// ```
-  Future<void> load(BuildContext context, {String? id}) async {
+  Future<void> load(BuildContext context, {required String id}) async {
     await dataset.load();
-    if (id == null) {
+    if (id.isEmpty) {
       return;
     }
     data = await dataset.read(id);

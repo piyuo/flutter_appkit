@@ -48,7 +48,7 @@ void main() {
         setter: (context, sample.Person person) async => person,
       );
 
-      await detail.load(testing.Context());
+      await detail.load(testing.Context(), id: '');
       expect(isGet, isFalse);
       expect(detail.data, isNull);
       expect(dataset.isEmpty, true);
@@ -66,7 +66,7 @@ void main() {
           return person;
         },
       );
-      await detail.load(testing.Context());
+      await detail.load(testing.Context(), id: '');
       expect(detail.data, isNull);
       expect(dataset.isEmpty, true);
 
@@ -89,7 +89,7 @@ void main() {
           return null;
         },
       );
-      await detail.load(testing.Context());
+      await detail.load(testing.Context(), id: '');
       expect(detail.data, isNull);
       expect(dataset.isEmpty, true);
 
