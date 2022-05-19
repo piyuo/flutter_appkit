@@ -122,4 +122,15 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
     await dataset.setRowsPerPage(context, value);
     await gotoPage(context, 0);
   }
+
+  /// delete selected item in dataset
+  @override
+  @mustCallSuper
+  Future<void> delete(BuildContext context) async {
+    await super.delete(context);
+    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
+    if (pageIndex >= paginator.pageCount) {
+      pageIndex = paginator.pageCount - 1;
+    }
+  }
 }

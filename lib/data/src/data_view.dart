@@ -205,4 +205,13 @@ abstract class DataView<T extends pb.Object> {
   /// final obj = await getRowByID('1');
   /// ```
   Future<T?> getRowByID(String id) async => await dataset.read(id);
+
+  /// delete selected item in dataset
+  @mustCallSuper
+  Future<void> delete(BuildContext context) async {
+    if (selectedRows.isEmpty) {
+      return;
+    }
+    await dataset.delete(context, selectedRows);
+  }
 }
