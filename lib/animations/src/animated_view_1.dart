@@ -93,7 +93,8 @@ class AnimatedViewProvider with ChangeNotifier {
 
   /// onAnimationDone called when animated duration is passed
   void onAnimationDone(VoidCallback callback) {
-    Future.delayed(animatedDuration, callback);
+    // wait a little longer to make sure animation is done
+    Future.delayed(Duration(milliseconds: animatedDuration.inMilliseconds + 300), callback);
   }
 }
 
