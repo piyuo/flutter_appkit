@@ -32,6 +32,7 @@ void main() {
         },
       );
       await view.load(testing.Context());
+      await view.refresh(testing.Context());
 
       // should read 10 rows
       expect(view.length, 10);
@@ -48,22 +49,22 @@ void main() {
     });
 
     test('should remove duplicate data when refresh', () async {
-      final ds = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test2',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async =>
             [sample.Person(entity: pb.Entity(id: 'duplicate'))],
       );
-      await ds.load(testing.Context());
-      await ds.refresh(testing.Context());
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
       // second refresh will delete duplicate data
-      expect(ds.length, 1);
+      expect(view.length, 1);
     });
 
     test('should not reset on refresh', () async {
       int idCount = 0;
-      final ds = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -79,12 +80,13 @@ void main() {
                   ));
         },
       );
-      await ds.load(testing.Context());
-      expect(ds.noMore, true);
-      expect(ds.length, 10);
-      await ds.refresh(testing.Context());
-      expect(ds.noMore, true);
-      expect(ds.length, 20);
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.noMore, true);
+      expect(view.length, 10);
+      await view.refresh(testing.Context());
+      expect(view.noMore, true);
+      expect(view.length, 20);
     });
 
     test('should send anchor to refresher', () async {
@@ -93,7 +95,7 @@ void main() {
       google.Timestamp? _anchorTimestamp;
       String? _anchorId;
 
-      final ds = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -112,19 +114,20 @@ void main() {
                   ));
         },
       );
-      await ds.load(testing.Context());
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
       expect(_limit, 10);
       expect(_anchorTimestamp, isNull);
       expect(_anchorId, isNull);
 
-      await ds.refresh(testing.Context());
+      await view.refresh(testing.Context());
       expect(_limit, 10);
       expect(_anchorTimestamp, isNotNull);
       expect(_anchorId, '1');
     });
 
     test('should save state', () async {
-      final cs = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -132,22 +135,24 @@ void main() {
           return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
         },
       );
-      await cs.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
-      final cs2 = PagedFullView<sample.Person>(
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
+      final view2 = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
-      await cs2.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
+      await view2.load(testing.Context());
+      await view2.refresh(testing.Context());
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
     });
 
     test('should goto page', () async {
-      final cs = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -155,23 +160,25 @@ void main() {
           return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
         },
       );
-      await cs.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
-      final cs2 = PagedFullView<sample.Person>(
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
+      final view2 = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
-      await cs2.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
+      await view2.load(testing.Context());
+      await view2.refresh(testing.Context());
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
     });
 
     test('should load next/prev/last/first page', () async {
       int step = 0;
-      final ds = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -194,61 +201,62 @@ void main() {
           return [];
         },
       );
-      await ds.load(testing.Context());
-      expect(ds.hasPrevPage, false);
-      expect(ds.hasNextPage, false);
-      expect(ds.displayRows.length, 10);
-      expect(ds.isEmpty, false);
-      expect(ds.isNotEmpty, true);
-      expect(ds.noMore, true);
-      expect(ds.pageIndex, 0);
-      expect(ds.length, 10);
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.hasPrevPage, false);
+      expect(view.hasNextPage, false);
+      expect(view.displayRows.length, 10);
+      expect(view.isEmpty, false);
+      expect(view.isNotEmpty, true);
+      expect(view.noMore, true);
+      expect(view.pageIndex, 0);
+      expect(view.length, 10);
 
-      await ds.refresh(testing.Context());
-      await ds.nextPage(testing.Context());
-      expect(ds.hasPrevPage, true);
-      expect(ds.hasNextPage, false);
-      expect(ds.displayRows.length, 2);
-      expect(ds.isEmpty, false);
-      expect(ds.isNotEmpty, true);
-      expect(ds.noMore, true);
-      expect(ds.pageIndex, 1);
-      expect(ds.length, 12);
+      await view.refresh(testing.Context());
+      await view.nextPage(testing.Context());
+      expect(view.hasPrevPage, true);
+      expect(view.hasNextPage, false);
+      expect(view.displayRows.length, 2);
+      expect(view.isEmpty, false);
+      expect(view.isNotEmpty, true);
+      expect(view.noMore, true);
+      expect(view.pageIndex, 1);
+      expect(view.length, 12);
 
-      await ds.prevPage(testing.Context());
-      expect(ds.hasPrevPage, false);
-      expect(ds.hasNextPage, true);
-      expect(ds.displayRows.length, 10);
-      expect(ds.isEmpty, false);
-      expect(ds.isNotEmpty, true);
-      expect(ds.noMore, true);
-      expect(ds.pageIndex, 0);
-      expect(ds.length, 12);
+      await view.prevPage(testing.Context());
+      expect(view.hasPrevPage, false);
+      expect(view.hasNextPage, true);
+      expect(view.displayRows.length, 10);
+      expect(view.isEmpty, false);
+      expect(view.isNotEmpty, true);
+      expect(view.noMore, true);
+      expect(view.pageIndex, 0);
+      expect(view.length, 12);
 
-      await ds.refresh(testing.Context());
-      expect(ds.hasPrevPage, false);
-      expect(ds.hasNextPage, true);
-      expect(ds.displayRows.length, 10);
-      expect(ds.isEmpty, false);
-      expect(ds.isNotEmpty, true);
-      expect(ds.noMore, true);
-      expect(ds.pageIndex, 0);
-      expect(ds.length, 14);
+      await view.refresh(testing.Context());
+      expect(view.hasPrevPage, false);
+      expect(view.hasNextPage, true);
+      expect(view.displayRows.length, 10);
+      expect(view.isEmpty, false);
+      expect(view.isNotEmpty, true);
+      expect(view.noMore, true);
+      expect(view.pageIndex, 0);
+      expect(view.length, 14);
 
-      await ds.refresh(testing.Context());
-      expect(ds.hasPrevPage, false);
-      expect(ds.hasNextPage, true);
-      expect(ds.displayRows.length, 10);
-      expect(ds.isEmpty, false);
-      expect(ds.isNotEmpty, true);
-      expect(ds.noMore, true);
-      expect(ds.pageIndex, 0);
-      expect(ds.length, 14);
+      await view.refresh(testing.Context());
+      expect(view.hasPrevPage, false);
+      expect(view.hasNextPage, true);
+      expect(view.displayRows.length, 10);
+      expect(view.isEmpty, false);
+      expect(view.isNotEmpty, true);
+      expect(view.noMore, true);
+      expect(view.pageIndex, 0);
+      expect(view.length, 14);
     });
 
     test('should goto page and show info', () async {
       int step = 0;
-      final ds = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -273,28 +281,29 @@ void main() {
           return [];
         },
       );
-      await ds.load(testing.Context());
-      expect(ds.pageInfo(testing.Context()), '1 - 10 of 10');
-      expect(ds.length, 10);
-      await ds.refresh(testing.Context());
-      await ds.nextPage(testing.Context());
-      expect(ds.pageInfo(testing.Context()), '11 - 20 of 20');
-      expect(ds.length, 20);
-      await ds.refresh(testing.Context());
-      expect(ds.length, 22);
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.pageInfo(testing.Context()), '1 - 10 of 10');
+      expect(view.length, 10);
+      await view.refresh(testing.Context());
+      await view.nextPage(testing.Context());
+      expect(view.pageInfo(testing.Context()), '11 - 20 of 20');
+      expect(view.length, 20);
+      await view.refresh(testing.Context());
+      expect(view.length, 22);
       //refresh will goto page 0, so we need 2 next page
-      await ds.nextPage(testing.Context());
-      await ds.nextPage(testing.Context());
-      expect(ds.pageInfo(testing.Context()), '21 - 22 of 22');
+      await view.nextPage(testing.Context());
+      await view.nextPage(testing.Context());
+      expect(view.pageInfo(testing.Context()), '21 - 22 of 22');
 
-      await ds.gotoPage(testing.Context(), 0);
-      expect(ds.pageInfo(testing.Context()), '1 - 10 of 22');
+      await view.gotoPage(testing.Context(), 0);
+      expect(view.pageInfo(testing.Context()), '1 - 10 of 22');
 
-      await ds.gotoPage(testing.Context(), 1);
-      expect(ds.pageInfo(testing.Context()), '11 - 20 of 22');
+      await view.gotoPage(testing.Context(), 1);
+      expect(view.pageInfo(testing.Context()), '11 - 20 of 22');
 
-      await ds.gotoPage(testing.Context(), 2);
-      expect(ds.pageInfo(testing.Context()), '21 - 22 of 22');
+      await view.gotoPage(testing.Context(), 2);
+      expect(view.pageInfo(testing.Context()), '21 - 22 of 22');
     });
 
     test('should set rows per page', () async {
@@ -302,7 +311,7 @@ void main() {
       bool? lastIsRefresh;
       int? lastLimit;
       String? lastAnchorId;
-      final ds = PagedFullView<sample.Person>(
+      final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -330,45 +339,46 @@ void main() {
           return [];
         },
       );
-      await ds.load(testing.Context());
-      expect(ds.length, 10);
-      expect(ds.rowsPerPage, 10);
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.length, 10);
+      expect(view.rowsPerPage, 10);
       expect(lastIsRefresh, true);
       expect(lastLimit, 10);
       expect(lastAnchorId, isNull);
 
-      await ds.refresh(testing.Context());
-      await ds.setRowsPerPage(testing.Context(), 20);
-      expect(ds.rowsPerPage, 20);
+      await view.refresh(testing.Context());
+      await view.setRowsPerPage(testing.Context(), 20);
+      expect(view.rowsPerPage, 20);
       expect(lastIsRefresh, true);
       expect(lastLimit, 10);
       expect(lastAnchorId, 'init0');
-      expect(ds.length, 20);
+      expect(view.length, 20);
 
       lastIsRefresh = null;
       lastLimit = null;
       lastAnchorId = null;
-      await ds.setRowsPerPage(testing.Context(), 10);
-      expect(ds.rowsPerPage, 10);
+      await view.setRowsPerPage(testing.Context(), 10);
+      expect(view.rowsPerPage, 10);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
-      expect(ds.length, 20);
+      expect(view.length, 20);
 
-      await ds.gotoPage(testing.Context(), 1);
-      expect(ds.pageIndex, 1);
+      await view.gotoPage(testing.Context(), 1);
+      expect(view.pageIndex, 1);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
 
-      await ds.refresh(testing.Context());
-      await ds.setRowsPerPage(testing.Context(), 30);
-      expect(ds.rowsPerPage, 30);
+      await view.refresh(testing.Context());
+      await view.setRowsPerPage(testing.Context(), 30);
+      expect(view.rowsPerPage, 30);
       expect(lastIsRefresh, true);
       expect(lastLimit, 10);
       expect(lastAnchorId, 'firstRefresh0');
-      expect(ds.length, 22);
-      expect(ds.noMore, true);
+      expect(view.length, 22);
+      expect(view.noMore, true);
     });
   });
 }

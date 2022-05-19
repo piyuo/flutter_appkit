@@ -26,7 +26,7 @@ void main() {
       expect(dataset.length, 1);
       expect((await dataset.first)!.name, 'hi');
       expect((await dataset.last)!.name, 'hi');
-      await dataset.reset(testing.Context());
+      await dataset.reset();
       expect(dataset.internalNoMore, false);
       expect(dataset.rowsPerPage, 10);
       expect(dataset.length, 0);

@@ -20,7 +20,7 @@ void main() {
   group('[continuous_data_view]', () {
     test('should display all rows', () async {
       int step = 0;
-      final ds = ContinuousDataView<sample.Person>(
+      final view = ContinuousDataView<sample.Person>(
         DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -48,20 +48,22 @@ void main() {
           return [];
         },
       );
-      await ds.load(testing.Context());
-      expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
-      expect(ds.length, 10);
-      await ds.refresh(testing.Context()); // first nextPage, it will reset dataset cause download rows is rowsPerPage
-      expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
-      expect(ds.length, 10);
-      await ds.refresh(testing.Context()); // second nextPage, it will add to dataset
-      expect(ds.pageInfo(testing.Context()), '1 - 12 of many');
-      expect(ds.length, 12);
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+
+      expect(view.pageInfo(testing.Context()), '1 - 10 of many');
+      expect(view.length, 10);
+      await view.refresh(testing.Context()); // first nextPage, it will reset dataset cause download rows is rowsPerPage
+      expect(view.pageInfo(testing.Context()), '1 - 10 of many');
+      expect(view.length, 10);
+      await view.refresh(testing.Context()); // second nextPage, it will add to dataset
+      expect(view.pageInfo(testing.Context()), '1 - 12 of many');
+      expect(view.length, 12);
     });
 
     test('should fill display rows when load more', () async {
       int step = 0;
-      final ds = ContinuousDataView<sample.Person>(
+      final view = ContinuousDataView<sample.Person>(
         DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -79,22 +81,23 @@ void main() {
           return [];
         },
       );
-      await ds.load(testing.Context());
-      expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
-      expect(ds.length, 10);
-      expect(ds.displayRows.length, 10);
-      await ds.more(testing.Context(), 10);
-      expect(ds.pageInfo(testing.Context()), '1 - 20 of many');
-      expect(ds.length, 20);
-      expect(ds.displayRows.length, 20);
-      await ds.more(testing.Context(), 10);
-      expect(ds.pageInfo(testing.Context()), '1 - 20 of 20');
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.pageInfo(testing.Context()), '1 - 10 of many');
+      expect(view.length, 10);
+      expect(view.displayRows.length, 10);
+      await view.more(testing.Context(), 10);
+      expect(view.pageInfo(testing.Context()), '1 - 20 of many');
+      expect(view.length, 20);
+      expect(view.displayRows.length, 20);
+      await view.more(testing.Context(), 10);
+      expect(view.pageInfo(testing.Context()), '1 - 20 of 20');
     });
   });
 
   test('should refresh after load more', () async {
     int step = 0;
-    final ds = ContinuousDataView<sample.Person>(
+    final view = ContinuousDataView<sample.Person>(
       DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
       dataBuilder: () => sample.Person(),
       loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -116,15 +119,16 @@ void main() {
         return [];
       },
     );
-    await ds.load(testing.Context());
-    expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
-    expect(ds.length, 10);
-    expect(ds.displayRows.length, 10);
-    await ds.more(testing.Context(), 10);
-    expect(ds.pageInfo(testing.Context()), '1 - 20 of many');
-    expect(ds.length, 20);
-    expect(ds.displayRows.length, 20);
-    await ds.refresh(testing.Context());
-    expect(ds.pageInfo(testing.Context()), '1 - 22 of many');
+    await view.load(testing.Context());
+    await view.refresh(testing.Context());
+    expect(view.pageInfo(testing.Context()), '1 - 10 of many');
+    expect(view.length, 10);
+    expect(view.displayRows.length, 10);
+    await view.more(testing.Context(), 10);
+    expect(view.pageInfo(testing.Context()), '1 - 20 of many');
+    expect(view.length, 20);
+    expect(view.displayRows.length, 20);
+    await view.refresh(testing.Context());
+    expect(view.pageInfo(testing.Context()), '1 - 22 of many');
   });
 }

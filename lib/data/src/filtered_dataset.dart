@@ -156,8 +156,8 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> reset(BuildContext context) async {
-    await _dataset.reset(context);
+  Future<void> reset() async {
+    await _dataset.reset();
     _result = [];
   }
 

@@ -117,7 +117,7 @@ abstract class DataView<T extends pb.Object> {
     }
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
-      dataset.reset(context);
+      dataset.reset();
       selectedRows.clear();
       isReset = true;
     }

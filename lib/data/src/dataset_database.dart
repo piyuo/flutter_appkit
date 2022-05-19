@@ -129,10 +129,10 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> reset(BuildContext context) async {
+  Future<void> reset() async {
     _index = [];
-    await _database.reset();
     internalNoRefresh = false;
+    await _database.reset();
   }
 
   /// update set row into dataset and move row to first
@@ -159,9 +159,8 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     for (String id in list) {
       final row = await _database.getObject(id, dataBuilder);
       if (row == null) {
-        // data is missing
-        _index = [];
-        internalNoRefresh = false;
+        // data is missing, reset data
+        await reset();
         return [];
       }
       source.add(row);

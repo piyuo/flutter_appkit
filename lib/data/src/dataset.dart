@@ -122,7 +122,7 @@ abstract class Dataset<T extends pb.Object> {
   /// ```dart
   /// await dataset.reset();
   /// ```
-  Future<void> reset(BuildContext context);
+  Future<void> reset();
 
   /// update set a single row into dataset and move row to first
   /// ```dart

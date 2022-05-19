@@ -32,6 +32,7 @@ void main() {
         },
       );
       await view.load(testing.Context());
+      await view.refresh(testing.Context());
 
       // should read 10 rows
       expect(view.length, 10);
@@ -63,7 +64,7 @@ void main() {
 
     test('should not reset on refresh', () async {
       int idCount = 0;
-      final ds = ContinuousFullView<sample.Person>(
+      final view = ContinuousFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -79,12 +80,13 @@ void main() {
                   ));
         },
       );
-      await ds.load(testing.Context());
-      expect(ds.noMore, true);
-      expect(ds.length, 10);
-      await ds.refresh(testing.Context());
-      expect(ds.noMore, true);
-      expect(ds.length, 20);
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.noMore, true);
+      expect(view.length, 10);
+      await view.refresh(testing.Context());
+      expect(view.noMore, true);
+      expect(view.length, 20);
     });
 
     test('should send anchor to refresher', () async {
@@ -93,7 +95,7 @@ void main() {
       google.Timestamp? _anchorTimestamp;
       String? _anchorId;
 
-      final ds = ContinuousFullView<sample.Person>(
+      final view = ContinuousFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -112,19 +114,20 @@ void main() {
                   ));
         },
       );
-      await ds.load(testing.Context());
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
       expect(_limit, 10);
       expect(_anchorTimestamp, isNull);
       expect(_anchorId, isNull);
 
-      await ds.refresh(testing.Context());
+      await view.refresh(testing.Context());
       expect(_limit, 10);
       expect(_anchorTimestamp, isNotNull);
       expect(_anchorId, '1');
     });
 
     test('should save state', () async {
-      final cs = ContinuousFullView<sample.Person>(
+      final view = ContinuousFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -132,22 +135,24 @@ void main() {
           return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
         },
       );
-      await cs.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
-      final cs2 = ContinuousFullView<sample.Person>(
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
+      final view2 = ContinuousFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
-      await cs2.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
+      await view2.load(testing.Context());
+      await view2.refresh(testing.Context());
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
     });
 
     test('should goto page', () async {
-      final cs = ContinuousFullView<sample.Person>(
+      final view = ContinuousFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
@@ -155,9 +160,10 @@ void main() {
           return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
         },
       );
-      await cs.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
+      await view.load(testing.Context());
+      await view.refresh(testing.Context());
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
       final cs2 = ContinuousFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
@@ -165,8 +171,8 @@ void main() {
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
       await cs2.load(testing.Context());
-      expect(cs.length, 1);
-      expect(cs.rowsPerPage, 10);
+      expect(view.length, 1);
+      expect(view.rowsPerPage, 10);
     });
   });
 }

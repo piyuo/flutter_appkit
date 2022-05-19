@@ -159,7 +159,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> reset(BuildContext context) async {
+  Future<void> reset() async {
     final deletedRows = _index;
     internalNoMore = false;
     internalNoRefresh = false;
@@ -199,9 +199,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
       final row = await cache.getObject(id, dataBuilder);
       if (row == null) {
         // data is missing
-        _index = [];
-        internalNoMore = false;
-        internalNoRefresh = false;
+        await reset();
         return [];
       }
       source.add(row);

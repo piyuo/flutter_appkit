@@ -98,7 +98,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> reset(BuildContext context) async {
+  Future<void> reset() async {
     _rows.clear();
   }
 
