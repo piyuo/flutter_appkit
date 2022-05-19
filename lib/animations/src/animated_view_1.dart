@@ -28,11 +28,14 @@ class AnimatedViewProvider with ChangeNotifier {
   ///     );
   /// ```
   AnimatedViewProvider(count) {
-    itemCount = count;
+    _itemCount = count;
   }
 
   /// itemCount is total item count
   int _itemCount = 0;
+
+  /// itemCount return item count
+  int get itemCount => _itemCount;
 
   set itemCount(int value) {
     _itemCount = value;
