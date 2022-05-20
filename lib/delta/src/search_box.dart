@@ -35,6 +35,7 @@ class SearchBox extends StatelessWidget {
     this.keyboardType,
     this.focusNode,
     this.prefixIcon,
+    this.enabled = true,
   }) : super(key: key);
 
   /// controller is text editing controller for search bar
@@ -55,6 +56,9 @@ class SearchBox extends StatelessWidget {
   /// prefixIcon is control's prefix widget
   final Widget? prefixIcon;
 
+  /// enabled is text filed's enabled
+  final bool enabled;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
@@ -62,6 +66,7 @@ class SearchBox extends StatelessWidget {
         child: Consumer<TextEditingController>(
             builder: (context, provide, child) => TypeAheadField<SearchSuggestion>(
                   textFieldConfiguration: TextFieldConfiguration(
+                    enabled: enabled,
                     controller: controller,
                     focusNode: focusNode,
                     maxLength: 60,
