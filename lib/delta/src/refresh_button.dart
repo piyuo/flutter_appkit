@@ -4,14 +4,24 @@ import 'package:provider/provider.dart';
 import 'extensions.dart';
 import 'indicator.dart';
 
+/// RefreshButtonController control refresh button show refreshing animation
 class RefreshButtonController extends ValueNotifier<bool> {
-  /// RefreshButtonController control refresh button is refreshing
+  /// RefreshButtonController control refresh button show refreshing animation
   RefreshButtonController() : super(false);
 }
 
+/// RefreshButton show icon button with refreshing animation
+/// ```dart
+/// Consumer<RefreshButtonController>(
+///     builder: (context, provide, child) => Column(children: [
+///        RefreshButton(
+///            onPressed: () async {
+///              await Future.delayed(const Duration(seconds: 5));
+///            }),
+///        ]))
+/// ```
 class RefreshButton extends StatelessWidget {
-  /// RefreshButton show animation when refreshing, must have provide [RefreshButtonController]
-  ///
+  /// RefreshButton show icon button with refreshing animation
   /// ```dart
   /// Consumer<RefreshButtonController>(
   ///     builder: (context, provide, child) => Column(children: [
@@ -29,7 +39,7 @@ class RefreshButton extends StatelessWidget {
   }) : super(key: key);
 
   /// onRefresh call when user press button
-  final Future<void> Function() onPressed;
+  final Future<void> Function()? onPressed;
 
   /// size is icon size
   final double size;
@@ -49,14 +59,16 @@ class RefreshButton extends StatelessWidget {
                   : const Icon(
                       Icons.refresh,
                     ),
-              onPressed: () async {
-                controller.value = true;
-                try {
-                  await onPressed();
-                } finally {
-                  controller.value = false;
-                }
-              },
+              onPressed: onPressed != null
+                  ? () async {
+                      controller.value = true;
+                      try {
+                        await onPressed!();
+                      } finally {
+                        controller.value = false;
+                      }
+                    }
+                  : null,
               tooltip: context.i18n.refreshButtonText,
             ));
   }
