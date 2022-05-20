@@ -39,3 +39,4 @@ export 'src/shimmer.dart';
 export 'src/menu_button.dart';
 export 'src/button_panel.dart';
 export 'src/search_trigger.dart';
+export 'src/types.dart';
