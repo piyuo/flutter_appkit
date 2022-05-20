@@ -54,6 +54,11 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// ```
   @override
   String pageInfo(BuildContext context) {
+    if (length == 0) {
+      // no data to display
+      return context.i18n.notesRowsPerPage;
+    }
+
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
     if (noMore) {
