@@ -65,6 +65,7 @@ class I18nProvider with ChangeNotifier {
     _I18nDelegate(),
     LibLocalizations.delegate,
     GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
   ];
 }
