@@ -47,6 +47,10 @@ class ContinuousDataView<T extends pb.Object> extends DataView<T> {
   /// ```
   @override
   String pageInfo(BuildContext context) {
+    if (length == 0) {
+      // no data to display
+      return '';
+    }
     final info = '1 - $length ';
     if (noMore) {
       return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
