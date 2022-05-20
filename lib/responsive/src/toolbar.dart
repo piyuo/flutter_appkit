@@ -35,7 +35,7 @@ class Toolbar<T> extends StatelessWidget {
   /// ```
   const Toolbar({
     required this.items,
-    required this.onPressed,
+    this.onPressed,
     this.color,
     this.activeColor,
     this.iconColor,
@@ -47,7 +47,7 @@ class Toolbar<T> extends StatelessWidget {
   final List<ToolItem<T>> items;
 
   /// onPressed callback when user click on item
-  final ToolCallback<T> onPressed;
+  final ToolCallback<T>? onPressed;
 
   /// color of toolbar
   final Color? color;
@@ -95,9 +95,7 @@ class Toolbar<T> extends StatelessWidget {
               offset: const Offset(0, 45),
               itemBuilder: (context) => popItems,
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              onSelected: (value) {
-                onPressed(value);
-              },
+              onSelected: onPressed != null ? (value) => onPressed!(value) : null,
             ),
           );
         }
@@ -116,7 +114,7 @@ class Toolbar<T> extends StatelessWidget {
 Widget _buildBarItem<T>(
   BuildContext context,
   ToolItem<T> item,
-  ToolCallback<T> callback,
+  ToolCallback<T>? callback,
   Color? activeColor,
 ) {
   if (item is ToolSpacer<T>) {
@@ -144,7 +142,7 @@ Widget _buildBarItem<T>(
             : item.icon != null
                 ? Icon(item.icon!)
                 : Text(item.label, style: TextStyle(color: color)),
-        onPressed: item.value != null ? () => callback(item.value!) : null,
+        onPressed: item.value != null && callback != null ? () => callback(item.value!) : null,
         tooltip: item.label,
       ),
     );
@@ -159,7 +157,7 @@ Widget _buildBarItem<T>(
           color: color,
           icon: item.icon != null ? Icon(item.icon!) : null,
           label: item.text != null ? Text(item.text!, style: TextStyle(color: color)) : null,
-          onPressed: item.selection != null ? (value) => callback(value) : null,
+          onPressed: item.selection != null && callback != null ? (value) => callback(value) : null,
           selectedValue: item.value,
           selection: item.selection != null ? item.selection! : {},
         ));
