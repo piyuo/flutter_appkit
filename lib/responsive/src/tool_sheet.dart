@@ -3,10 +3,10 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'tools.dart';
 
-/// showToolMenu show tool sheet, let user choose item easily on mobile phone device
+/// showToolSheet show tool sheet, let user choose item easily on mobile phone device
 ///
 ///  ```dart
-/// final value = await showToolMenu<String>(
+/// await showToolSheet<String>(
 ///       context,
 ///       items: [
 ///         ToolButton(
@@ -17,9 +17,9 @@ import 'tools.dart';
 ///     ],
 ///     );
 ///  ```
-Future<T?> showToolMenu<T>(
+Future<void> showToolSheet(
   BuildContext context, {
-  required List<ToolItem<T>> items,
+  required List<ToolItem> items,
   Color? color,
   Color? activeColor,
   Color? iconColor,
@@ -27,29 +27,30 @@ Future<T?> showToolMenu<T>(
   double initHeight = 0.7,
   double maxHeight = 0.92,
 }) async {
-  return await dialog.showSlideSheet<T>(
+  return await dialog.showSlideSheet(
     context,
     padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
     constraints: constraints,
     initHeight: initHeight,
     maxHeight: maxHeight,
     color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade900),
-    children: items.map((item) => _buildSheetItem(context, item)).toList(),
+    children: items.map((item) => _buildItemOnSheet(context, item)).toList(),
   );
 }
 
-Widget _buildSheetItem<T>(
+/// _buildItemOnSheet build item on sheet
+Widget _buildItemOnSheet(
   BuildContext context,
-  ToolItem<T> item,
+  ToolItem item,
 ) {
-  if (item is ToolButton<T>) {
+  if (item is ToolButton) {
     return Padding(
         padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
             primary: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
-            onPrimary: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade200),
+            onPrimary: context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade100),
             shadowColor: Colors.transparent,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             elevation: 0,
@@ -60,43 +61,46 @@ Widget _buildSheetItem<T>(
             ),
             Icon(item.icon, size: 28),
           ]),
-          onPressed: () => item.value != null ? Navigator.pop(context, item.value!) : null,
+          onPressed: item.onPressed != null
+              ? () {
+                  item.onPressed!();
+                  Navigator.pop(context);
+                }
+              : null,
         ));
   }
 
-  if (item is ToolSelection<T>) {
-    return item.selection == null
-        ? const SizedBox()
-        : Padding(
-            padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(left: 10, bottom: 10),
-                    child: Text(
-                      item.label,
-                      style: const TextStyle(fontSize: 15, color: Colors.grey),
-                    )),
-                delta.ButtonPanel<T>(
-                  checkedValues: item.value != null ? [item.value!] : null,
-                  onPressed: (value) => Navigator.pop(context, value),
-                  children: item.selection!.map((T key, String value) {
-                    return MapEntry<T, Widget>(
-                        key,
-                        Row(children: [
-                          Expanded(
-                            child: Text(value, style: const TextStyle(fontSize: 18)),
-                          ),
-                          Icon(item.icon),
-                        ]));
-                  }),
-                )
-              ],
-            ));
+  if (item is ToolSelection) {
+    return Padding(
+        padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(left: 10, bottom: 10),
+                child: Text(
+                  item.label,
+                  style: const TextStyle(fontSize: 15, color: Colors.grey),
+                )),
+            delta.ButtonPanel(
+              checkedValues: item.selectedValue != null ? [item.selectedValue!] : null,
+              onPressed: (value) => Navigator.pop(context, value),
+              children: item.selection.map((key, value) {
+                return MapEntry(
+                    key,
+                    Row(children: [
+                      Expanded(
+                        child: Text(value, style: const TextStyle(fontSize: 18)),
+                      ),
+                      Icon(item.icon),
+                    ]));
+              }),
+            )
+          ],
+        ));
   }
 
-  if (item is ToolSpacer<T>) {
+  if (item is ToolSpacer) {
     return Padding(
       padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
       child: const Divider(),

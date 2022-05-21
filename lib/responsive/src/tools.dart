@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// ToolCallback define the callback for toolbar button
-typedef ToolCallback<T> = void Function(T value);
-
 /// ToolItem define item in toolbar
-abstract class ToolItem<T> {
+abstract class ToolItem {
   /// ToolItem define item in toolbar
   ToolItem({required this.width, this.space});
 
@@ -16,13 +13,12 @@ abstract class ToolItem<T> {
 }
 
 /// ToolControl define control item in toolbar
-abstract class ToolControl<T> extends ToolItem<T> {
+abstract class ToolControl extends ToolItem {
   /// ToolControl define control item in toolbar
   ToolControl({
+    required this.label,
     required double width,
     double? space,
-    this.value,
-    required this.label,
     this.text,
     this.icon,
   }) : super(width: width, space: space);
@@ -35,9 +31,6 @@ abstract class ToolControl<T> extends ToolItem<T> {
 
   /// label of control
   final String label;
-
-  /// value of control
-  final T? value;
 }
 
 /// ToolButton define button item in toolbar
@@ -49,7 +42,7 @@ abstract class ToolControl<T> extends ToolItem<T> {
 ///   space: 10,
 ///  ),
 /// ```
-class ToolButton<T> extends ToolControl<T> {
+class ToolButton extends ToolControl {
   /// ToolButton define button item in toolbar
   /// ```dart
   /// ToolButton(
@@ -63,13 +56,16 @@ class ToolButton<T> extends ToolControl<T> {
     double width = 38,
     double? space,
     required String label,
-    required T? value,
+    this.onPressed,
     String? text,
     IconData? icon,
     this.active = false,
-  }) : super(width: width, label: label, value: value, space: space, text: text, icon: icon);
+  }) : super(width: width, label: label, space: space, text: text, icon: icon);
 
   final bool active;
+
+  /// onPressed called when user press button
+  final VoidCallback? onPressed;
 }
 
 /// ToolSelection define item in toolbar
@@ -85,7 +81,7 @@ class ToolButton<T> extends ToolControl<T> {
 ///   },
 /// ),
 /// ```
-class ToolSelection<T> extends ToolControl<T> {
+class ToolSelection extends ToolControl {
   /// ToolSelection define item in toolbar
   /// ```dart
   ///  ToolSelection<String>(
@@ -104,19 +100,26 @@ class ToolSelection<T> extends ToolControl<T> {
     double? space,
     required String label,
     required this.selection,
+    this.onPressed,
+    this.selectedValue,
     String? text,
     IconData? icon,
-    T? value,
   }) : super(width: width, label: label, icon: icon, space: space, text: text);
 
-  final Map<T, String>? selection;
+  final Map<dynamic, String> selection;
+
+  /// onPressed called when user press button
+  final void Function(dynamic value)? onPressed;
+
+  /// selectedValue is selection selected value
+  dynamic selectedValue;
 }
 
 /// ToolSpacer show expanded space on toolbar
 /// ```dart
 /// ToolSpacer(),
 /// ```
-class ToolSpacer<T> extends ToolItem<T> {
+class ToolSpacer extends ToolItem {
   /// ToolSpacer show expanded space on toolbar
   /// ```dart
   /// ToolSpacer(),

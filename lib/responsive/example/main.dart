@@ -22,13 +22,13 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _foldPanel(context),
+              child: _toolbar(context),
             ),
             Wrap(
               children: [
                 testing.ExampleButton(label: 'fold panel', builder: () => _foldPanel(context)),
                 testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
-                testing.ExampleButton(label: 'tool menu', builder: () => _showToolMenu(context)),
+                testing.ExampleButton(label: 'tool sheet', builder: () => _showToolSheet(context)),
                 testing.ExampleButton(label: 'padding to center', builder: () => _paddingToCenter(context)),
                 testing.ExampleButton(
                     label: 'layout dynamic bottom side', builder: () => _layoutDynamicBottomSide(context)),
@@ -143,31 +143,30 @@ class ResponsiveExample extends StatelessWidget {
 
   Widget _toolbar(BuildContext context) {
     return Column(children: [
-      Toolbar<String>(
-        color: Colors.blue.shade300,
-        activeColor: Colors.blue,
-        onPressed: (index) => debugPrint('just press $index'),
+      Toolbar(
+//        color: Colors.blue.shade300,
+        //      activeColor: Colors.blue,
         items: [
           ToolButton(
             label: 'New File',
             icon: Icons.new_label,
-            value: 'new_file',
+            onPressed: () => debugPrint('new_file pressed'),
             space: 10,
           ),
           ToolButton(
             label: 'List View',
             icon: Icons.list,
-            value: 'list_view',
+            onPressed: () => debugPrint('list_view pressed'),
             active: true,
           ),
           ToolButton(
             label: 'Grid View',
             icon: Icons.grid_view,
-            value: 'grid_view',
+            onPressed: () => debugPrint('grid_view pressed'),
             active: false,
             space: 10,
           ),
-          ToolSelection<String>(
+          ToolSelection(
             width: 150,
             text: 'page 2 of more',
             label: 'rows per page',
@@ -176,153 +175,64 @@ class ResponsiveExample extends StatelessWidget {
               '20': '20 rows',
               '50': '50 rows',
             },
+            onPressed: (value) => debugPrint('$value pressed'),
           ),
-          ToolSelection<String>(
+          ToolSelection(
             width: 120,
             text: 'Disabled',
-            label: '',
+            label: 'disabled',
             selection: {
               '10': '10 rows',
             },
           ),
           ToolButton(
-            label: 'delete4',
+            label: 'disabled',
             icon: Icons.delete,
-            value: 'delete4',
           ),
           ToolSpacer(),
           ToolButton(
             label: 'Back',
             icon: Icons.chevron_left,
-            value: 'back',
+            onPressed: () => debugPrint('back pressed'),
           ),
           ToolButton(
             label: 'Next',
             icon: Icons.chevron_right,
-            value: 'next',
+            onPressed: () => debugPrint('next pressed'),
           ),
           ToolButton(
             label: 'Disabled',
             icon: Icons.cabin,
-            value: null,
+            onPressed: () => debugPrint('disabled pressed'),
             space: 10,
           ),
         ],
       ),
-/*      Row(children: [
-        Expanded(
-            child: Toolbar<String>(
-                color: Colors.blue.shade300,
-                activeColor: Colors.blue,
-                onPressed: (index) => debugPrint('just press $index'),
-                items: [
-              ToolButton(
-                label: 'New File',
-                icon: Icons.new_label,
-                value: 'new_file',
-                space: 10,
-              ),
-              ToolButton(
-                label: 'List View',
-                icon: Icons.list,
-                value: 'list_view',
-                active: true,
-              ),
-              ToolButton(
-                label: 'Grid View',
-                icon: Icons.grid_view,
-                value: 'grid_view',
-                active: false,
-                space: 10,
-              ),
-              ToolSelection<String>(
-                width: 120,
-                text: '2',
-                label: 'rows per page',
-                selection: {
-                  '10': '10 rows',
-                  '20': '20 rows',
-                  '50': '50 rows',
-                },
-              ),
-              ToolSpacer(),
-              ToolButton(
-                label: 'Back',
-                icon: Icons.chevron_left,
-                value: 'back',
-              ),
-              ToolButton(
-                label: 'Next',
-                icon: Icons.chevron_right,
-                value: 'next',
-              ),
-              ToolButton(
-                label: 'Disabled',
-                icon: Icons.cabin,
-                value: null,
-                space: 10,
-              ),
-            ])),
-        const SizedBox(width: 450),
-      ]),
-      Row(children: [
-        Expanded(
-            child: Toolbar<String>(
-                mainAxisAlignment: MainAxisAlignment.center,
-                color: Colors.blue.shade300,
-                activeColor: Colors.blue,
-                onPressed: (index) => debugPrint('just press $index'),
-                items: [
-              ToolButton(
-                label: 'New File',
-                icon: Icons.new_label,
-                value: 'new_file',
-                space: 10,
-              ),
-              ToolButton(
-                label: 'List View',
-                icon: Icons.list,
-                value: 'list_view',
-                active: true,
-              ),
-              ToolButton(
-                label: 'Grid View',
-                icon: Icons.grid_view,
-                value: 'grid_view',
-                active: false,
-                space: 10,
-              ),
-            ])),
-        const SizedBox(width: 450),
-      ])
-    */
     ]);
   }
 
-  Widget _showToolMenu(BuildContext context) {
+  Widget _showToolSheet(BuildContext context) {
     return OutlinedButton(
-      child: const Text('tool menu'),
+      child: const Text('show tool sheet'),
       onPressed: () async {
-        final value = await showToolMenu<String>(
+        await showToolSheet(
           context,
           items: [
             ToolButton(
               label: 'New File',
               icon: Icons.new_label,
-              value: 'new_file',
+              onPressed: () => debugPrint('new_file pressed'),
             ),
             ToolButton(
               label: 'Disabled',
               icon: Icons.cabin,
-              value: null,
             ),
             ToolButton(
               label: 'abc',
               icon: Icons.abc_outlined,
-              value: 'abc',
+              onPressed: () => debugPrint('abc pressed'),
             ),
             ToolSelection(
-              value: '20',
               label: 'Rows per page',
               icon: Icons.table_rows,
               selection: {
@@ -330,16 +240,16 @@ class ResponsiveExample extends StatelessWidget {
                 '20': '20 rows2',
                 '50': '50 rows2',
               },
+              onPressed: (value) => debugPrint('$value pressed'),
             ),
             ToolSpacer(),
             ToolButton(
               label: 'hi',
               icon: Icons.hail,
-              value: 'hi',
+              onPressed: () => debugPrint('hi pressed'),
             ),
           ],
         );
-        debugPrint('just press $value');
       },
     );
   }

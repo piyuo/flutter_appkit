@@ -6,28 +6,26 @@ const _buttonMoreWidth = 50;
 
 /// Toolbar show button and selection on bar, show menu if bar is not long enough
 /// ```dart
-/// Toolbar<String>(
-///  onPressed: (index) => debugPrint('just press $index'),
+/// Toolbar(
 ///  items: [
 ///    ToolButton(
 ///      label: 'New File',
 ///      icon: Icons.new_label,
-///      value: 'new_file',
+///      onPressed: () => debugPrint('new_file pressed'),
 ///      space: 10,
 ///    ),
 ///  ],
 ///),
 /// ```
-class Toolbar<T> extends StatelessWidget {
+class Toolbar extends StatelessWidget {
   /// Toolbar show button and selection on bar, show menu if bar is not long enough
   /// ```dart
-  /// Toolbar<String>(
-  ///  onPressed: (index) => debugPrint('just press $index'),
+  /// Toolbar(
   ///  items: [
   ///    ToolButton(
   ///      label: 'New File',
   ///      icon: Icons.new_label,
-  ///      value: 'new_file',
+  ///      onPressed: () => debugPrint('new_file pressed'),
   ///      space: 10,
   ///    ),
   ///  ],
@@ -35,7 +33,6 @@ class Toolbar<T> extends StatelessWidget {
   /// ```
   const Toolbar({
     required this.items,
-    this.onPressed,
     this.color,
     this.activeColor,
     this.iconColor,
@@ -44,10 +41,7 @@ class Toolbar<T> extends StatelessWidget {
   }) : super(key: key);
 
   /// children contain tool item need show on toolbar
-  final List<ToolItem<T>> items;
-
-  /// onPressed callback when user click on item
-  final ToolCallback<T>? onPressed;
+  final List<ToolItem> items;
 
   /// color of toolbar
   final Color? color;
@@ -66,10 +60,10 @@ class Toolbar<T> extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         double maxWidth = constraints.maxWidth - _buttonMoreWidth;
-        var barItems = <ToolItem<T>>[];
-        var menuItems = <ToolItem<T>>[];
+        var barItems = <ToolItem>[];
+        var menuItems = <ToolItem>[];
         double width = 0;
-        for (ToolItem<T> item in items) {
+        for (ToolItem item in items) {
           width += item.width + (item.space ?? 0);
           if (width > maxWidth) {
             menuItems.add(item);
@@ -78,16 +72,16 @@ class Toolbar<T> extends StatelessWidget {
           }
         }
 
-        final buttons = barItems.map((item) => _buildBarItem(context, item, onPressed, activeColor)).toList();
+        final buttons = barItems.map((item) => _buildItemOnBar(context, item, activeColor)).toList();
         if (menuItems.isNotEmpty) {
-          var popItems = <PopupMenuEntry<T>>[];
+          var popItems = <PopupMenuEntry>[];
           for (int i = 0; i < menuItems.length; i++) {
-            ToolItem<T> item = menuItems[i];
-            popItems.addAll(_buildMenuItem(context, item, i == 0, i == menuItems.length - 1));
+            ToolItem item = menuItems[i];
+            popItems.addAll(_buildItemOnMenu(context, item, i == 0, i == menuItems.length - 1));
           }
 
           buttons.add(
-            PopupMenuButton<T>(
+            PopupMenuButton(
               icon: Icon(
                 Icons.keyboard_double_arrow_right,
                 color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
@@ -95,7 +89,7 @@ class Toolbar<T> extends StatelessWidget {
               offset: const Offset(0, 45),
               itemBuilder: (context) => popItems,
               tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              onSelected: onPressed != null ? (value) => onPressed!(value) : null,
+              //onSelected: onPressed != null ? (value) => onPressed!(value) : null,
             ),
           );
         }
@@ -111,18 +105,18 @@ class Toolbar<T> extends StatelessWidget {
   }
 }
 
-Widget _buildBarItem<T>(
+/// _buildItemOnBar build item widget on bar
+Widget _buildItemOnBar(
   BuildContext context,
-  ToolItem<T> item,
-  ToolCallback<T>? callback,
+  ToolItem item,
   Color? activeColor,
 ) {
-  if (item is ToolSpacer<T>) {
+  if (item is ToolSpacer) {
     return const Spacer();
   }
 
   final color = context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400);
-  if (item is ToolButton<T>) {
+  if (item is ToolButton) {
     return Container(
       margin: item.space != null ? EdgeInsets.only(right: item.space!) : null,
       width: item.width,
@@ -142,24 +136,24 @@ Widget _buildBarItem<T>(
             : item.icon != null
                 ? Icon(item.icon!)
                 : Text(item.label, style: TextStyle(color: color)),
-        onPressed: item.value != null && callback != null ? () => callback(item.value!) : null,
+        onPressed: item.onPressed != null ? () => item.onPressed!() : null,
         tooltip: item.label,
       ),
     );
   }
 
-  if (item is ToolSelection<T>) {
+  if (item is ToolSelection) {
     return Container(
         margin: item.space != null ? EdgeInsets.only(right: item.space!) : null,
         width: item.width,
-        child: delta.MenuButton<T>(
+        child: delta.MenuButton(
           padding: EdgeInsets.zero,
           color: color,
           icon: item.icon != null ? Icon(item.icon!) : null,
           label: item.text != null ? Text(item.text!, style: TextStyle(color: color)) : null,
-          onPressed: item.selection != null && callback != null ? (value) => callback(value) : null,
-          selectedValue: item.value,
-          selection: item.selection != null ? item.selection! : {},
+          onPressed: item.onPressed,
+          selectedValue: item.selectedValue,
+          selection: item.selection,
         ));
   }
 
@@ -168,22 +162,22 @@ Widget _buildBarItem<T>(
 }
 
 /// _buildMenuItem build menu item for toolbar popup menu
-List<PopupMenuEntry<T>> _buildMenuItem<T>(
+List<PopupMenuEntry> _buildItemOnMenu(
   BuildContext context,
-  ToolItem<T> item,
+  ToolItem item,
   bool first,
   bool last,
 ) {
-  if (item is ToolSpacer<T>) {
+  if (item is ToolSpacer) {
     return [const PopupMenuDivider()];
   }
 
   final color = context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300);
-  if (item is ToolButton<T>) {
+  if (item is ToolButton) {
     return [
       PopupMenuItem(
-          value: item.value,
-          enabled: item.value != null,
+          enabled: item.onPressed != null,
+          onTap: item.onPressed,
           child: Row(
             children: [
               Icon(
@@ -199,29 +193,29 @@ List<PopupMenuEntry<T>> _buildMenuItem<T>(
     ];
   }
 
-  if (item is ToolSelection<T>) {
+  if (item is ToolSelection) {
     return [
       if (!first) const PopupMenuDivider(),
       PopupMenuItem(
-        value: item.value,
+        value: item.selectedValue,
         child: Text(item.label),
         enabled: false,
       ),
-      if (item.selection != null)
-        ...item.selection!.entries.map((entry) {
-          return PopupMenuItem<T>(
-            value: entry.key,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 28,
-                  child: item.value == entry.key ? const Icon(Icons.check, size: 18) : null,
-                ),
-                Text(entry.value),
-              ],
-            ),
-          );
-        }).toList(),
+      ...item.selection.entries.map((entry) {
+        return PopupMenuItem(
+          value: entry.key,
+          onTap: item.onPressed != null ? () => item.onPressed!(entry.key) : null,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 28,
+                child: item.selectedValue == entry.key ? const Icon(Icons.check, size: 18) : null,
+              ),
+              Text(entry.value),
+            ],
+          ),
+        );
+      }).toList(),
       if (!last) const PopupMenuDivider()
     ];
   }
