@@ -34,8 +34,6 @@ main() {
                   name: id,
                   entity: pb.Entity(id: id),
                 ),
-            setter: (context, person) async => person,
-            remover: (context, person) async => true,
             dataBuilder: () => sample.Person(
                   name: 'new item',
                   entity: pb.Entity(id: 'new_item_id'),
@@ -44,7 +42,7 @@ main() {
       ChangeNotifierProvider<NotesViewProvider<sample.Person>>(
         create: (context) => NotesViewProvider<sample.Person>(
           caption: "Notes",
-          deleteLabel: context.i18n.notesDeleteButtonLabel,
+          deleteLabel: context.i18n.deleteButtonText,
           deleteIcon: Icons.delete,
           listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -175,7 +173,7 @@ class NotesExample extends StatelessWidget {
                 actions: [
                   NotesViewMenuButton(
                       controller: notesController,
-                      deleteLabel: context.i18n.notesDeleteButtonLabel,
+                      deleteLabel: context.i18n.deleteButtonText,
                       deleteIcon: Icons.delete,
                       tools: [
                         responsive.ToolButton(

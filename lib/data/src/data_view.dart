@@ -214,4 +214,10 @@ abstract class DataView<T extends pb.Object> {
     }
     await dataset.delete(context, selectedRows);
   }
+
+  /// update item in dataset
+  @mustCallSuper
+  Future<void> update(BuildContext context, T row) async {
+    await dataset.update(context, row);
+  }
 }

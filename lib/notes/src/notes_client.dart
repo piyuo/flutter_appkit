@@ -10,14 +10,10 @@ class NotesClientProvider<T extends pb.Object> with ChangeNotifier {
   NotesClientProvider({
     required pb.Builder<T> dataBuilder,
     required data.DataClientGetter<T> getter,
-    data.DataClientSetter<T>? setter,
-    data.DataClientRemover<T>? remover,
   }) {
     dataClient = data.DataClient(
       dataBuilder: dataBuilder,
       getter: getter,
-      setter: setter,
-      remover: remover,
     );
   }
 
@@ -52,7 +48,7 @@ class NotesClientProvider<T extends pb.Object> with ChangeNotifier {
     if (item == null) {
       return false;
     }
-    final result = await dataClient.save(context, item);
+    final result = await dataClient.update(context, item);
     await eventbus.broadcast(context, NotesViewRefillEvent());
     return result;
   }

@@ -138,4 +138,12 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
       pageIndex = paginator.pageCount - 1;
     }
   }
+
+  /// update item in dataset
+  @override
+  @mustCallSuper
+  Future<void> update(BuildContext context, T row) async {
+    await super.update(context, row);
+    await gotoPage(context, 0);
+  }
 }

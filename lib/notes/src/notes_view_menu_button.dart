@@ -54,7 +54,7 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                   ),
                   if (deleteLabel != null)
                     responsive.ToolButton(
-                      label: context.i18n.notesDeleteButtonLabel,
+                      label: context.i18n.deleteButtonText,
                       icon: deleteIcon ?? Icons.delete,
                       onPressed: () => controller.onDelete(context),
                     ),
