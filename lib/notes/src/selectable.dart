@@ -25,7 +25,7 @@ abstract class Selectable<T> extends StatelessWidget {
     this.headerBuilder,
     this.footerBuilder,
     this.newItem,
-    this.isReadyToShow = true,
+    this.isReady = true,
     Key? key,
   }) : super(key: key);
 
@@ -63,7 +63,7 @@ abstract class Selectable<T> extends StatelessWidget {
   final T? newItem;
 
   /// isReadyToShow is true mean list is ready to show
-  final bool isReadyToShow;
+  final bool isReady;
 
   /// _buildItemWithDecoration build item with decoration
   Widget _buildItemWithDecoration(BuildContext context, T item, bool isSelected) => itemDecorationBuilder(

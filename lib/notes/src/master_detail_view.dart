@@ -1,59 +1,45 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:split_view/split_view.dart';
 import 'selectable.dart';
 import 'dynamic_list.dart';
 import 'dynamic_grid.dart';
-import 'checkable_header.dart';
-
-/// MasterDetailViewAction is the action that that MasterDetailView generates
-enum MasterDetailViewAction {
-  refresh,
-  more,
-  listView,
-  gridView,
-  delete,
-  add,
-  toggleCheckMode,
-  previousPage,
-  nextPage,
-  rows10,
-  rows20,
-  rows50
-}
 
 class MasterDetailView<T> extends StatelessWidget {
   /// MasterDetailView show basic master detail view with select/check function, it need [delta.RefreshButtonController]
   const MasterDetailView({
     required this.listBuilder,
     this.listDecorationBuilder = defaultListDecorationBuilder,
-    required this.gridBuilder,
     this.gridDecorationBuilder = defaultGridDecorationBuilder,
+    required this.gridBuilder,
     required this.detailBuilder,
     required this.items,
     required this.selectedItems,
-    required this.onBarAction,
+    this.leftBarBuilder,
+    this.rightBarBuilder,
+    this.touchBottomBarBuilder,
+    this.mouseBottomBarBuilder,
+    this.selectionBarBuilder,
     this.headerBuilder,
     this.footerBuilder,
-    this.isLoading = false,
+    this.onRefresh,
+    this.onMore,
     this.onItemTapped,
     this.onItemSelected,
     this.onItemChecked,
     this.gridItemWidth = 240,
-    this.information,
-    this.hasNextPage = true,
-    this.hasPrevPage = true,
     this.isCheckMode = false,
     this.isListView = true,
-    this.supportRefresh = true,
-    this.supportLoadMore = true,
     this.deleteLabel,
     this.deleteIcon,
     this.newItem,
-    this.isReadyToShow = true,
+    this.isReady = true,
+    this.gridScrollController,
+    this.listScrollController,
+    this.gridAnimatedViewScrollController,
+    this.listAnimatedViewScrollController,
     Key? key,
   }) : super(key: key);
 
@@ -65,6 +51,18 @@ class MasterDetailView<T> extends StatelessWidget {
 
   /// newItem is not null mean user is editing a new item
   final T? newItem;
+
+  /// listScrollController is scroll controller for list
+  final ScrollController? listScrollController;
+
+  /// listAnimatedViewScrollController is animated view scroll controller for list
+  final ScrollController? listAnimatedViewScrollController;
+
+  /// gridScrollController is scroll controller for grid
+  final ScrollController? gridScrollController;
+
+  /// gridAnimatedViewScrollController is animated view scroll controller for grid
+  final ScrollController? gridAnimatedViewScrollController;
 
   /// listBuilder is the builder for list view
   final ItemBuilder<T> listBuilder;
@@ -85,16 +83,31 @@ class MasterDetailView<T> extends StatelessWidget {
   final Widget Function(T) detailBuilder;
 
   /// headerBuilder is the builder for header
-  final Widget Function()? headerBuilder;
+  final delta.WidgetBuilder? headerBuilder;
 
   /// footerBuilder is the builder for footer
-  final Widget Function()? footerBuilder;
+  final delta.WidgetBuilder? footerBuilder;
 
-  /// isLoading is the flag to indicate if loading
-  final bool isLoading;
+  /// selectionBarBuilder build selection on bar
+  final delta.WidgetBuilder? selectionBarBuilder;
 
-  /// pagingInfo is current page info if not in phone design
-  final String? information;
+  /// leftBarBuilder build left part on bar
+  final delta.WidgetBuilder? leftBarBuilder;
+
+  /// rightBarBuilder build right part on bar
+  final delta.WidgetBuilder? rightBarBuilder;
+
+  /// touchBottomBarBuilder build bottom bar on touch mode
+  final delta.WidgetBuilder? touchBottomBarBuilder;
+
+  /// mouseBottomBarBuilder build bottom bar on mouse mode
+  final delta.WidgetBuilder? mouseBottomBarBuilder;
+
+  /// onRefresh called when user pull down refresh
+  final delta.FutureCallback<void>? onRefresh;
+
+  /// onMore called when user pull up to load more data
+  final delta.FutureCallback<void>? onMore;
 
   /// onItemTapped is callback when item is tapped
   final void Function(T item)? onItemTapped;
@@ -105,15 +118,6 @@ class MasterDetailView<T> extends StatelessWidget {
   /// onItemChecked is the callback for item checked
   final void Function(List<T> items)? onItemChecked;
 
-  /// onBarAction is the callback for bar action
-  final Future<void> Function(MasterDetailViewAction action, {ItemBuilder<T>? builder}) onBarAction;
-
-  /// nextPageEnabled is the flag to indicate if next page is enabled
-  final bool hasNextPage;
-
-  /// prevPageEnabled is the flag to indicate if prev page is enabled
-  final bool hasPrevPage;
-
   /// checkMode is a boolean value that indicates whether the list is in check mode
   final bool isCheckMode;
 
@@ -122,12 +126,6 @@ class MasterDetailView<T> extends StatelessWidget {
 
   /// isGridView return true if it's grid view
   bool get isGridView => !isListView;
-
-  /// supportRefresh is true will support refresh in pull refresh list
-  final bool supportRefresh;
-
-  /// supportLoadMore is true will support load more in pull refresh list
-  final bool supportLoadMore;
 
   /// isSplitView is true if in split view
   bool get isSplitView => isListView && !responsive.phoneScreen;
@@ -138,27 +136,30 @@ class MasterDetailView<T> extends StatelessWidget {
   /// deleteIcon is the icon for delete button
   final IconData? deleteIcon;
 
-  /// isReadyToShow is true mean list is ready to show
-  final bool isReadyToShow;
+  /// isReady is true mean list is ready to show
+  final bool isReady;
+
 
   /// buildList build list and split view
   Widget buildList(BuildContext context) {
     return Column(
       children: [
-        if (isCheckMode && !isSplitView) _buildSelectionHeader(context),
+        if (selectionBarBuilder != null && isCheckMode && !isSplitView) selectionBarBuilder!(),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: DynamicList<T>(
-              isReadyToShow: isReadyToShow,
+              scrollController: listScrollController,
+              animatedViewScrollController: listAnimatedViewScrollController,
+              isReady: isReady,
               isCheckMode: isCheckMode,
               newItem: newItem,
               items: items,
               selectedItems: selectedItems,
               itemBuilder: listBuilder,
               itemDecorationBuilder: listDecorationBuilder,
-              onRefresh: supportRefresh ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
-              onLoadMore: supportLoadMore ? () => onBarAction.call(MasterDetailViewAction.more) : null,
+              onRefresh: onRefresh,
+              onLoadMore: onMore,
               headerBuilder: isCheckMode
                   ? null
                   : () => Padding(
@@ -171,8 +172,10 @@ class MasterDetailView<T> extends StatelessWidget {
             ),
           ),
         ),
-        if (responsive.phoneScreen && !context.isPreferMouse && !isCheckMode) _buildBottomTouchBar(context),
-        if (responsive.phoneScreen && context.isPreferMouse && !isCheckMode) _buildBottomMouseBar(context),
+        if (touchBottomBarBuilder != null && responsive.phoneScreen && !context.isPreferMouse && !isCheckMode)
+          touchBottomBarBuilder!(),
+        if (mouseBottomBarBuilder != null && responsive.phoneScreen && context.isPreferMouse && !isCheckMode)
+          mouseBottomBarBuilder!(),
       ],
     );
   }
@@ -180,35 +183,38 @@ class MasterDetailView<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      if (isLoading) {
-        return const delta.LoadingDisplay();
-      }
       if (isGridView) {
         return Column(
           children: [
-            if (isCheckMode) _buildSelectionHeader(context),
-            if (context.isPreferMouse && !isCheckMode && responsive.notPhoneScreen)
+            if (selectionBarBuilder != null && isCheckMode) selectionBarBuilder!(),
+            if (rightBarBuilder != null &&
+                leftBarBuilder != null &&
+                context.isPreferMouse &&
+                !isCheckMode &&
+                responsive.notPhoneScreen)
               Row(
                 children: [
-                  SizedBox(width: 272, child: _buildLeftBar(context)),
+                  SizedBox(width: 272, child: leftBarBuilder!()),
                   const SizedBox(height: 30, child: VerticalDivider(color: Colors.grey)),
-                  Expanded(child: _buildRightBar(context)),
+                  Expanded(child: rightBarBuilder!()),
                 ],
               ),
             Expanded(
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: DynamicGrid<T>(
+                      scrollController: gridScrollController,
+                      animatedViewScrollController: gridAnimatedViewScrollController,
                       crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
-                      isReadyToShow: isReadyToShow,
+                      isReady: isReady,
                       isCheckMode: isCheckMode,
                       newItem: newItem,
                       items: items,
                       selectedItems: selectedItems,
                       itemBuilder: gridBuilder,
                       itemDecorationBuilder: gridDecorationBuilder,
-                      onRefresh: supportRefresh ? () => onBarAction.call(MasterDetailViewAction.refresh) : null,
-                      onLoadMore: supportLoadMore ? () => onBarAction.call(MasterDetailViewAction.more) : null,
+                      onRefresh: onRefresh,
+                      onLoadMore: onMore,
                       headerBuilder: () => Padding(
                           padding: EdgeInsets.only(
                               top: context.isPreferMouse && !isCheckMode && responsive.notPhoneScreen ? 0 : 10),
@@ -222,8 +228,10 @@ class MasterDetailView<T> extends StatelessWidget {
                       onItemSelected: (selectedItems) => onItemSelected?.call(selectedItems),
                       onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
                     ))),
-            if (responsive.phoneScreen && !context.isPreferMouse && !isCheckMode) _buildBottomTouchBar(context),
-            if (responsive.phoneScreen && context.isPreferMouse && !isCheckMode) _buildBottomMouseBar(context),
+            if (touchBottomBarBuilder != null && responsive.phoneScreen && !context.isPreferMouse && !isCheckMode)
+              touchBottomBarBuilder!(),
+            if (mouseBottomBarBuilder != null && responsive.phoneScreen && context.isPreferMouse && !isCheckMode)
+              mouseBottomBarBuilder!(),
           ],
         );
       }
@@ -241,7 +249,7 @@ class MasterDetailView<T> extends StatelessWidget {
               : selectedItems[0];
 
       return Column(children: [
-        if (isCheckMode) _buildSelectionHeader(context),
+        if (selectionBarBuilder != null && isCheckMode) selectionBarBuilder!(),
         Expanded(
             child: SplitView(
           gripSize: 5,
@@ -272,7 +280,7 @@ class MasterDetailView<T> extends StatelessWidget {
           children: [
             Column(
               children: [
-                if (!isCheckMode && context.isPreferMouse) _buildLeftBar(context),
+                if (leftBarBuilder != null && !isCheckMode && context.isPreferMouse) leftBarBuilder!(),
                 Expanded(
                   child: buildList(context),
                 ),
@@ -280,7 +288,7 @@ class MasterDetailView<T> extends StatelessWidget {
             ),
             Column(
               children: [
-                if (!isCheckMode && context.isPreferMouse) _buildRightBar(context),
+                if (rightBarBuilder != null && !isCheckMode && context.isPreferMouse) rightBarBuilder!(),
                 if (activeItem != null)
                   Expanded(
                     child: detailBuilder(activeItem),
@@ -292,198 +300,5 @@ class MasterDetailView<T> extends StatelessWidget {
         ))
       ]);
     });
-  }
-
-  /// _buildItemWithDecoration build item with decoration
-  Widget _buildItemWithDecoration(BuildContext context, T item, bool isSelected) {
-    return isListView
-        ? listDecorationBuilder(
-            context,
-            child: listBuilder(context, item, isSelected),
-            checkMode: isCheckMode,
-            isSelected: isSelected,
-          )
-        : gridDecorationBuilder(
-            context,
-            child: gridBuilder(context, item, isSelected),
-            checkMode: isCheckMode,
-            isSelected: isSelected,
-          );
-  }
-
-  /// _buildSelectionHeader in selection view
-  Widget _buildSelectionHeader(BuildContext context) {
-    return CheckableHeader(
-      selectedItemCount: selectedItems.length,
-      isAllSelected: selectedItems.length == items.length,
-      onSelectAll: () => onItemChecked?.call(items),
-      onUnselectAll: () => onItemChecked?.call([]),
-      onCancel: () => onBarAction.call(MasterDetailViewAction.toggleCheckMode),
-      actions: [
-        if (deleteLabel != null)
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              primary: Colors.grey.shade900,
-            ),
-            label: Text(deleteLabel!),
-            icon: Icon(deleteIcon ?? Icons.delete),
-            onPressed: selectedItems.isNotEmpty
-                ? () async {
-                    await onBarAction.call(
-                      MasterDetailViewAction.delete,
-                      builder: _buildItemWithDecoration,
-                    );
-                  }
-                : null,
-          ),
-      ],
-    );
-  }
-
-  /// _buildLeftBar in split view
-  Widget _buildLeftBar(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(width: 10),
-        delta.RefreshButton(
-          onPressed: () async => await onBarAction(MasterDetailViewAction.refresh),
-        ),
-        Expanded(
-          child: responsive.Toolbar<MasterDetailViewAction>(
-            onPressed: (action) {
-              onBarAction.call(action, builder: _buildItemWithDecoration);
-            },
-            items: [
-              responsive.ToolButton(
-                label: context.i18n.notesViewAsListLabel,
-                icon: Icons.view_headline,
-                value: MasterDetailViewAction.listView,
-                active: isListView,
-              ),
-              responsive.ToolButton(
-                label: context.i18n.notesViewAsGridLabel,
-                icon: Icons.grid_view,
-                value: MasterDetailViewAction.gridView,
-                active: !isListView,
-                space: 10,
-              ),
-              responsive.ToolButton(
-                label: context.i18n.notesSelectButtonLabel,
-                icon: Icons.check_circle_outline,
-                value: MasterDetailViewAction.toggleCheckMode,
-              ),
-              responsive.ToolSpacer(),
-              if (deleteLabel != null)
-                responsive.ToolButton(
-                  label: deleteLabel!,
-                  icon: deleteIcon ?? Icons.delete,
-                  value: MasterDetailViewAction.delete,
-                ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// _buildPaginator build paginator
-  List<responsive.ToolItem<MasterDetailViewAction>> _buildPaginator(BuildContext context) {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    return [
-      if (information != null)
-        responsive.ToolSelection<MasterDetailViewAction>(
-          width: 180,
-          label: localizations.rowsPerPageTitle,
-          text: information!,
-          selection: {
-            MasterDetailViewAction.rows10: context.i18n.notesRowsPerPage.replace1('10'),
-            MasterDetailViewAction.rows20: context.i18n.notesRowsPerPage.replace1('20'),
-            MasterDetailViewAction.rows50: context.i18n.notesRowsPerPage.replace1('50'),
-          },
-        ),
-      responsive.ToolButton(
-        label: localizations.previousPageTooltip,
-        icon: Icons.chevron_left,
-        value: hasPrevPage ? MasterDetailViewAction.previousPage : null,
-      ),
-      responsive.ToolButton(
-        label: localizations.nextPageTooltip,
-        icon: Icons.chevron_right,
-        value: hasNextPage ? MasterDetailViewAction.nextPage : null,
-      ),
-    ];
-  }
-
-  /// _buildRightBar in split view
-  Widget _buildRightBar(BuildContext context) {
-    return responsive.Toolbar<MasterDetailViewAction>(
-      onPressed: onBarAction,
-      items: [
-        responsive.ToolButton(
-          label: context.i18n.notesNewButtonLabel,
-          icon: Icons.add,
-          value: MasterDetailViewAction.add,
-        ),
-        if (items.isNotEmpty) responsive.ToolSpacer(),
-        if (items.isNotEmpty) ..._buildPaginator(context),
-      ],
-    );
-  }
-
-  /// _buildBottomTouchBar build list bottom bar for touch device
-  Widget _buildBottomTouchBar(BuildContext context) {
-    final buttonStyle = TextStyle(
-      fontSize: 15,
-      color: Colors.orange.shade700,
-    );
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 18),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
-      ),
-      child: Row(children: [
-        TextButton(
-          child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
-          style: isCheckMode
-              ? ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
-                  ),
-                )
-              : null,
-          onPressed: () async => await onBarAction.call(MasterDetailViewAction.toggleCheckMode),
-        ),
-        information != null
-            ? Expanded(
-                child: Text(information!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
-                    )),
-              )
-            : const Spacer(),
-        TextButton(
-          child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
-          onPressed: () => onBarAction.call(MasterDetailViewAction.add),
-        ),
-      ]),
-    );
-  }
-
-  Widget _buildBottomMouseBar(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 18),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
-        ),
-        child: responsive.Toolbar<MasterDetailViewAction>(
-          mainAxisAlignment: MainAxisAlignment.center,
-          onPressed: onBarAction,
-          items: [
-            if (items.isNotEmpty) ..._buildPaginator(context),
-          ],
-        ));
   }
 }

@@ -62,10 +62,11 @@ class DynamicGrid<T> extends Selectable<T> {
     Color? borderColor,
     this.onRefresh,
     this.onLoadMore,
-    this.controller,
+    this.scrollController,
+    this.animatedViewScrollController,
     this.crossAxisCount = 2,
     T? newItem,
-    bool isReadyToShow = true,
+    bool isReady = true,
     Key? key,
   }) : super(
           items: items,
@@ -79,7 +80,7 @@ class DynamicGrid<T> extends Selectable<T> {
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
           newItem: newItem,
-          isReadyToShow: isReadyToShow,
+          isReady: isReady,
           key: key,
         );
 
@@ -89,19 +90,11 @@ class DynamicGrid<T> extends Selectable<T> {
   /// ondLoadMore is the callback function when user load more the list
   final Future<void> Function()? onLoadMore;
 
-  /// An object that can be used to control the position to which this scroll
-  /// view is scrolled.
-  ///
-  /// Must be null if [primary] is true.
-  ///
-  /// A [ScrollController] serves several purposes. It can be used to control
-  /// the initial scroll position (see [ScrollController.initialScrollOffset]).
-  /// It can be used to control whether the scroll view should automatically
-  /// save and restore its scroll position in the [PageStorage] (see
-  /// [ScrollController.keepScrollOffset]). It can be used to read the current
-  /// scroll position (see [ScrollController.offset]), or change it (see
-  /// [ScrollController.animateTo]).
-  final ScrollController? controller;
+  /// scrollController is list scroll controller
+  final ScrollController? scrollController;
+
+  /// animatedViewScrollController is animated view scroll controller inside list
+  final ScrollController? animatedViewScrollController;
 
   /// crossAxisCount is the number of children in the cross axis.
   final int crossAxisCount;
@@ -133,16 +126,15 @@ class DynamicGrid<T> extends Selectable<T> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isReadyToShow) {
+    if (!isReady) {
       return const delta.LoadingDisplay();
     }
-    var scrollController = controller ?? ScrollController();
     return Stack(
       fit: StackFit.expand,
       children: [
-        if (items.isEmpty) const delta.NoDataDisplay(),
+        if (isReady && items.isEmpty) const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
         delta.RefreshMoreView(
-            scrollController: context.isTouchSupported ? scrollController : ScrollController(),
+            scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,
             itemCount: rowCount,
@@ -158,7 +150,7 @@ class DynamicGrid<T> extends Selectable<T> {
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 5,
-                controller: context.isTouchSupported ? scrollController : ScrollController(),
+                controller: animatedViewScrollController,
                 shrinkWrap: true,
                 itemBuilder: (bool isListView, int index) {
                   if (newItem != null) {

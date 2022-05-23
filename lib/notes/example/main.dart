@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:beamer/beamer.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
@@ -7,6 +8,7 @@ import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/animations/animations.dart' as animations;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/unique/unique.dart' as unique;
@@ -25,40 +27,122 @@ main() {
   app.start(
     appName: 'notes',
     onBeforeStart: () async {},
-    providers: [],
+    providers: [
+      ChangeNotifierProvider<NotesClientProvider<sample.Person>>(
+        create: (context) => NotesClientProvider<sample.Person>(
+            getter: (context, id) async => sample.Person(
+                  name: id,
+                  entity: pb.Entity(id: id),
+                ),
+            setter: (context, person) async => person,
+            remover: (context, person) async => true,
+            dataBuilder: () => sample.Person(
+                  name: 'new item',
+                  entity: pb.Entity(id: 'new_item_id'),
+                )),
+      ),
+      ChangeNotifierProvider<NotesViewProvider<sample.Person>>(
+        create: (context) => NotesViewProvider<sample.Person>(
+          caption: "Notes",
+          deleteLabel: context.i18n.notesDeleteButtonLabel,
+          deleteIcon: Icons.delete,
+          listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Text('list:$person'),
+          ),
+          gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+            child: Text('grid:$person'),
+          ),
+          detailBuilder: (sample.Person person) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            child: Column(
+              children: [
+                Text('${person.name} - $person'),
+                ElevatedButton(
+                  child: const Text('Save'),
+                  onPressed: () async {
+                    if (person.name == 'new item') {
+                      person.name = 'saved item';
+                      //     await _dataset.insert(context, [person]);
+                      await NotesViewProvider.of<sample.Person>(context).refill(context);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          detailBeamName: "/",
+          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+            stepCount++;
+            return List.generate(
+              stepCount == 1 ? 1 : 1,
+              (i) {
+                final uuid = unique.uuid();
+                return sample.Person(
+                  name: uuid,
+                  entity: pb.Entity(id: uuid),
+                );
+              },
+            );
+          },
+          adder: (context) async {
+            final uuid = unique.uuid();
+            return sample.Person(
+              name: 'new item',
+              entity: pb.Entity(id: uuid),
+            );
+          },
+          isSaved: (person) {
+            return true;
+          },
+          isRemovable: (person) {
+            return true;
+          },
+          remover: (context, persons) async => true,
+          dataBuilder: () => sample.Person(),
+          onSearch: (text) => debugPrint('search:$text'),
+          onSearchBegin: () => debugPrint('search begin'),
+          onSearchEnd: () => debugPrint('search end'),
+          tags: [
+            Tag(
+              label: 'Inbox',
+              value: 'inbox',
+              icon: Icons.inbox,
+              count: 0,
+            ),
+            Tag(
+              label: 'VIPs',
+              value: 'vips',
+              icon: Icons.verified_user,
+              count: 1,
+              selected: true,
+            ),
+            Tag(
+              label: 'Sent',
+              value: 'sent',
+              icon: Icons.send,
+              count: 20,
+            ),
+            Tag(
+              label: 'All',
+              value: 'all',
+              icon: Icons.all_inbox,
+              count: 120,
+              category: 'iCloud',
+            ),
+          ],
+        ),
+      ),
+    ],
     routes: {
       '/': (context, state, _) => const NotesExample(),
       '/:id': (context, state, _) {
         final id = state.pathParameters['id']!;
-        return NotesBeamPage<sample.Person>(
-          id: id,
+        return BeamPage(
+          key: ValueKey(id),
           title: 'Detail',
-          child: Scaffold(
-            appBar: AppBar(title: const Text('Detail')),
-            body: SafeArea(
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  child: Column(children: [
-                    Text('beam: detail view for $id'),
-                    ElevatedButton(
-                        child: const Text('Save'),
-                        onPressed: () async {
-                          if (id == 'new') {
-                            final person = sample.Person(
-                              name: 'beam item',
-                              entity: pb.Entity(id: unique.uuid()),
-                            );
-                            final dataset2 = data.DatasetDatabase<sample.Person>(
-                              await database.open('test'),
-                              dataBuilder: () => sample.Person(),
-                            );
-                            await dataset2.load();
-                            await dataset2.insert(context, [person]);
-                          }
-                        })
-                  ])),
-            ),
-          ),
+          child: _notesItem(context, id),
         );
       },
     },
@@ -81,141 +165,63 @@ class NotesExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<NotesController<sample.Person>>(
-            create: (context) => NotesController<sample.Person>(
-              detailBeamName: "/",
-              loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-                stepCount++;
-                return List.generate(
-                  stepCount == 1 ? 1 : 1,
-                  (i) {
-                    final uuid = unique.uuid();
-                    return sample.Person(
-                      name: uuid,
-                      entity: pb.Entity(id: uuid),
-                    );
-                  },
-                );
-              },
-              adder: (context) async {
-                final uuid = unique.uuid();
-                return sample.Person(
-                  name: 'new item',
-                  entity: pb.Entity(id: uuid),
-                );
-              },
-              isSaved: (person) {
-                return true;
-              },
-              isRemovable: (person) {
-                return true;
-              },
-              remover: (context, persons) async => true,
-              dataBuilder: () => sample.Person(),
-              onSearch: (text) => debugPrint('search:$text'),
-              onSearchBegin: () => debugPrint('search begin'),
-              onSearchEnd: () => debugPrint('search end'),
-              tags: [
-                Tag(
-                  label: 'Inbox',
-                  value: 'inbox',
-                  icon: Icons.inbox,
-                  count: 0,
-                ),
-                Tag(
-                  label: 'VIPs',
-                  value: 'vips',
-                  icon: Icons.verified_user,
-                  count: 1,
-                  selected: true,
-                ),
-                Tag(
-                  label: 'Sent',
-                  value: 'sent',
-                  icon: Icons.send,
-                  count: 20,
-                ),
-                Tag(
-                  label: 'All',
-                  value: 'all',
-                  icon: Icons.all_inbox,
-                  count: 120,
-                  category: 'iCloud',
-                ),
-              ],
-            ),
-          )
-        ],
-        child: Consumer<NotesController<sample.Person>>(builder: (context, notesController, _) {
-          return ChangeNotifierProvider<database.DatabaseProvider>(
-              create: (context) {
-                return database.DatabaseProvider(
-                  name: 'test',
-                  databaseBuilder: (name) async => await database.open('test'),
-                )..load().then((database) => notesController.load(
-                    context,
-                    data.DatasetDatabase<sample.Person>(
-                      database,
-                      dataBuilder: () => sample.Person(),
-                    )));
-              },
-              child: Consumer<database.DatabaseProvider>(
-                  builder: (context, databaseProvider, _) => Scaffold(
-                        appBar: AppBar(
-                          elevation: 1,
-                          title: const Text('Example Application'),
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.grey.shade800,
-                          actions: [
-                            NotesButton(
-                              controller: notesController,
-                              deleteLabel: context.i18n.notesDeleteButtonLabel,
-                              deleteIcon: Icons.delete,
-                            ),
-                          ],
+    return Consumer<NotesViewProvider<sample.Person>>(
+        builder: (context, notesController, _) => Scaffold(
+              appBar: AppBar(
+                elevation: 1,
+                title: const Text('Example Application'),
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.grey.shade800,
+                actions: [
+                  NotesViewMenuButton(
+                      controller: notesController,
+                      deleteLabel: context.i18n.notesDeleteButtonLabel,
+                      deleteIcon: Icons.delete,
+                      tools: [
+                        responsive.ToolButton(
+                          label: 'hello',
+                          icon: Icons.favorite,
+                          onPressed: () => debugPrint('hello'),
                         ),
-                        body: SafeArea(
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: _notesView(context),
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    testing.ExampleButton(label: 'simple list', builder: () => _simpleList(context)),
-                                    testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
-                                    testing.ExampleButton(
-                                        label: 'checkable grid', builder: () => _checkableGrid(context)),
-                                    testing.ExampleButton(
-                                        label: 'checkable list', builder: () => _checkableList(context)),
-                                    testing.ExampleButton(label: 'dynamic list', builder: () => _dynamicList(context)),
-                                    testing.ExampleButton(label: 'dynamic grid', builder: () => _dynamicGrid(context)),
-                                    testing.ExampleButton(
-                                        label: 'master detail view', builder: () => _masterDetailView(context)),
-                                    testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
-                                    testing.ExampleButton(
-                                        label: 'show filter view', builder: () => _showFilterView(context)),
-                                    testing.ExampleButton(
-                                        label: 'filter split view', builder: () => _filterSplitView(context)),
-                                    testing.ExampleButton(label: 'folder view', builder: () => _folderView(context)),
-                                    testing.ExampleButton(
-                                        label: 'selection header', builder: () => _selectionHeader(context)),
+                      ]),
+                ],
+              ),
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: _notesView(context),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          testing.ExampleButton(label: 'simple list', builder: () => _simpleList(context)),
+                          testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
+                          testing.ExampleButton(label: 'checkable grid', builder: () => _checkableGrid(context)),
+                          testing.ExampleButton(label: 'checkable list', builder: () => _checkableList(context)),
+                          testing.ExampleButton(label: 'dynamic list', builder: () => _dynamicList(context)),
+                          testing.ExampleButton(label: 'dynamic grid', builder: () => _dynamicGrid(context)),
+                          testing.ExampleButton(label: 'master detail view', builder: () => _masterDetailView(context)),
+                          testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
+                          OutlinedButton(
+                              child: const Text('scroll to top'),
+                              onPressed: () => NotesViewProvider.of<sample.Person>(context).scrollToTop()),
+                          testing.ExampleButton(label: 'show filter view', builder: () => _showFilterView(context)),
+                          testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
+                          testing.ExampleButton(label: 'folder view', builder: () => _folderView(context)),
+                          testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
 //                  testing.ExampleButton(label: 'data explorer', builder: () => _tableView(context)),
-                                    testing.ExampleButton(
-                                        label: 'loading data', builder: () => _loadingMasterDetailView(context)),
-                                    testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )));
-        }));
+                          testing.ExampleButton(
+                              label: 'loading data', builder: () => _loadingMasterDetailView(context)),
+                          testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ));
   }
 
   Widget _simpleList(BuildContext context) {
@@ -450,7 +456,6 @@ class NotesExample extends StatelessWidget {
                     ),
                     controller: _searchBoxController,
                   ),
-                  information: '1-6 of 6',
                   items: const ['a', 'b', 'c', 'd', 'e'],
                   selectedItems: const ['a'],
                   listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
@@ -465,12 +470,6 @@ class NotesExample extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                     child: Center(child: Text('detail view for $item')),
                   ),
-                  onBarAction: (MasterDetailViewAction action, {ItemBuilder<String>? builder}) async {
-                    debugPrint('$action pressed');
-                    if (action == MasterDetailViewAction.refresh) {
-                      await Future.delayed(const Duration(seconds: 10));
-                    }
-                  },
                   onItemSelected: (items) {
                     selectedController.items = items;
                   },
@@ -599,7 +598,6 @@ class NotesExample extends StatelessWidget {
                 ],
               ),
               child: MasterDetailView<String>(
-                information: '1-6 of 6',
                 items: const ['a', 'b', 'c', 'd', 'e'],
                 selectedItems: const ['a'],
                 listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
@@ -614,12 +612,6 @@ class NotesExample extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                   child: Center(child: Text('detail view for $item')),
                 ),
-                onBarAction: (MasterDetailViewAction action, {ItemBuilder<String>? builder}) async {
-                  debugPrint('$action pressed');
-                  if (action == MasterDetailViewAction.refresh) {
-                    await Future.delayed(const Duration(seconds: 10));
-                  }
-                },
                 onItemSelected: (items) {
                   selectedController.items = items;
                 },
@@ -676,51 +668,74 @@ class NotesExample extends StatelessWidget {
           //      )
         ],
         child: MasterDetailView<String>(
-          isLoading: true,
           items: const [],
           selectedItems: const [],
           listBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
           gridBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
           detailBuilder: (String item) => const Text('detail view'),
-          onBarAction: (MasterDetailViewAction action, {ItemBuilder<String>? builder}) async =>
-              debugPrint('$action pressed'),
         ));
   }
 
   Widget _notesView(BuildContext context) {
-    return Consumer<NotesController<sample.Person>>(
-      builder: (context, notesController, child) => NotesView<sample.Person>(
-        controller: notesController,
-        caption: "Notes",
-        deleteLabel: context.i18n.notesDeleteButtonLabel,
-        deleteIcon: Icons.delete,
-        listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          child: Text('list:${person.name}'),
-        ),
-        gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
-          padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-          child: Text('grid:$person'),
-        ),
-        detailBuilder: (sample.Person person) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          child: Column(
-            children: [
-              Text('${person.name} - $person'),
-              ElevatedButton(
-                child: const Text('Save'),
-                onPressed: () async {
-                  if (person.name == 'new item') {
-                    person.name = 'saved item';
-                    //     await _dataset.insert(context, [person]);
-                    await notesController.refill(context);
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return ChangeNotifierProvider<database.DatabaseProvider>(
+        create: (_) {
+          return database.DatabaseProvider(
+            name: 'test',
+            databaseBuilder: (name) async => await database.open('test'),
+          )..load().then((database) {
+              NotesViewProvider.of<sample.Person>(context).load(
+                  context,
+                  data.DatasetDatabase<sample.Person>(
+                    database,
+                    dataBuilder: () => sample.Person(),
+                  ));
+            });
+        },
+        child: Consumer<database.DatabaseProvider>(
+          builder: (context, databaseProvider, _) => NotesView<sample.Person>(tools: [
+            responsive.ToolButton(
+              label: 'hello',
+              icon: Icons.favorite,
+              onPressed: () => debugPrint('hello'),
+            ),
+          ]),
+        ));
   }
+}
+
+Widget _notesItem(BuildContext context, String id) {
+  return ChangeNotifierProvider<database.DatabaseProvider>(
+      create: (context) {
+        return database.DatabaseProvider(
+          name: 'test',
+          databaseBuilder: (name) async => await database.open('test'),
+        )..load().then((database) async {
+            NotesClientProvider.of<sample.Person>(context).load(context,
+                dataset: data.DatasetDatabase<sample.Person>(
+                  database,
+                  dataBuilder: () => sample.Person(),
+                ),
+                id: id);
+          });
+      },
+      child: Consumer<database.DatabaseProvider>(
+          builder: (context, databaseProvider, _) => Scaffold(
+                appBar: AppBar(title: const Text('Detail')),
+                body: SafeArea(
+                  child: Center(
+                    child: NotesClient<sample.Person>(
+                        builder: (context, person) => Column(children: [
+                              Text('beam: detail view for $person'),
+                              ElevatedButton(
+                                  child: const Text('Save'),
+                                  onPressed: () async {
+                                    person.name = 'saved item';
+                                    person.entity.updateTime = DateTime.now().utcTimestamp;
+                                    await NotesClientProvider.of<sample.Person>(context).save(context, item: person);
+                                    Beamer.of(context).beamBack();
+                                  })
+                            ])),
+                  ),
+                ),
+              )));
 }
