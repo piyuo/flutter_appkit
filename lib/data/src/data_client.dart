@@ -49,7 +49,7 @@ class DataClient<T extends pb.Object> {
 
   /// load dataset, get data if id present
   /// ```dart
-  /// await client.load(testing.Context(),'id-123');
+  /// await client.load(testing.Context(), ds, 'id-123');
   /// ```
   Future<T> load(BuildContext context, {required Dataset<T> dataset, required String id}) async {
     _dataset = dataset;
@@ -68,6 +68,12 @@ class DataClient<T extends pb.Object> {
     }
     return dataBuilder();
   }
+
+  /// setDataset only set dataset,it used when load data is not need
+  /// ```dart
+  /// await client.setDataset(ds);
+  /// ```
+  void setDataset(Dataset<T> dataset) => _dataset = dataset;
 
   /// delete data from cache, only delete cache when remover return true
   /// ```dart
