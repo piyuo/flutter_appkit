@@ -2,7 +2,6 @@
     "notesSelectButtonLabel":"Select",
     "notesDeselectButtonLabel":"Deselect",
     "notesNewButtonLabel":"New",
-    "notesDeleteButtonLabel":"Delete",
     "notesViewAsListLabel":"View as List",
     "notesViewAsGridLabel":"View as Grid",
     "notesRowsPerPage":"%1 Rows per page",

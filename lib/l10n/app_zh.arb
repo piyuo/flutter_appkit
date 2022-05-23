@@ -2,7 +2,6 @@
     "notesSelectButtonLabel":"选取",
     "notesDeselectButtonLabel":"取消选取",
     "notesNewButtonLabel":"新增",
-    "notesDeleteButtonLabel":"刪除",
     "notesViewAsListLabel":"以列表形式查看",
     "notesViewAsGridLabel":"以網格形式查看",
     "notesRowsPerPage":"每頁顯示 %1 項",

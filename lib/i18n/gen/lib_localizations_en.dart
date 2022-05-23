@@ -1,3 +1,6 @@
+
+
+
 import 'lib_localizations.dart';
 
 /// The translations for English (`en`).
@@ -12,9 +15,6 @@ class LibLocalizationsEn extends LibLocalizations {
 
   @override
   String get notesNewButtonLabel => 'New';
-
-  @override
-  String get notesDeleteButtonLabel => 'Delete';
 
   @override
   String get notesViewAsListLabel => 'View as List';
@@ -338,8 +338,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get printerFindIP => 'How to Print Printer\'s IP Address';
 
   @override
-  String get bluetoothPrinterNotSupport =>
-      'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';
+  String get bluetoothPrinterNotSupport => 'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';
 
   @override
   String get bluetoothPrinterHint => 'Click Search to select bluetooth device';
@@ -363,8 +362,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get noName => 'no name';
 
   @override
-  String get errorConnect =>
-      'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
+  String get errorConnect => 'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
 
   @override
   String get errorTimeout => 'Printer connection timeout, make sure printer is turned on';
@@ -385,8 +383,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get errorUnknown => 'Unknown error';
 
   @override
-  String get testTicketInstruction =>
-      'change Paper Size in Printer Settings (58mm <-> 80mm) if receipt content not fitting page';
+  String get testTicketInstruction => 'change Paper Size in Printer Settings (58mm <-> 80mm) if receipt content not fitting page';
 
   @override
   String get testTicketTitle => 'piyuo.com';
