@@ -47,13 +47,15 @@ class DataClient<T extends pb.Object> {
   /// getter get data from remote service
   final DataClientGetter<T> getter;
 
-  /// load dataset, get data if id present
+  /// load dataset if not set, get data if id present
   /// ```dart
   /// await client.load(testing.Context(), ds, 'id-123');
   /// ```
   Future<T> load(BuildContext context, {required Dataset<T> dataset, required String id}) async {
-    _dataset = dataset;
-    await _dataset!.load();
+    if (_dataset == null) {
+      _dataset = dataset;
+      await _dataset!.load();
+    }
     if (id.isNotEmpty) {
       var data = await dataset.read(id);
       if (data != null) {
