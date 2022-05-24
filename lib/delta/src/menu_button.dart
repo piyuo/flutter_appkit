@@ -39,6 +39,7 @@ class MenuButton<T> extends StatelessWidget {
     this.color,
     this.padding,
     this.mainAxisAlignment = MainAxisAlignment.center,
+    this.initialValue,
     Key? key,
   }) : super(key: key);
 
@@ -65,6 +66,9 @@ class MenuButton<T> extends StatelessWidget {
 
   /// mainAxisAlignment is button mainAxisAlignment
   final MainAxisAlignment mainAxisAlignment;
+
+  /// initialValue set popup menu initial value
+  final T? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +107,7 @@ class MenuButton<T> extends StatelessWidget {
               final _value = await showMenu(
                 context: context,
                 position: position,
+                initialValue: initialValue,
                 items: selection.entries
                     .map(
                       (entry) => PopupMenuItem(
