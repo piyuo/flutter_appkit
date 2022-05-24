@@ -67,10 +67,11 @@ class DialogExample extends StatelessWidget {
         child: Wrap(children: [
           ElevatedButton(
             child: const Text('alert'),
-            onPressed: () => alert(
-              context,
-              'hi',
-            ),
+            onPressed: () => alert(context, 'hi'),
+          ),
+          ElevatedButton(
+            child: const Text('alert no blurry'),
+            onPressed: () => alert(context, 'hi', blurry: false),
           ),
           ElevatedButton(
             child: const Text('alert warning'),

@@ -44,6 +44,7 @@ Future<bool?> alert(
   bool buttonSave = false,
   bool buttonClose = false,
   bool scrollContent = false,
+  bool blurry = true,
 }) async {
   if (!kReleaseMode && _disableAlert) {
     return null;
@@ -148,7 +149,7 @@ Future<bool?> alert(
           elevation: 0,
           backgroundColor: Colors.transparent,
           child: BlurryContainer(
-            enableBlurry: false,
+            enableBlurry: blurry,
             shadow: BoxShadow(
               color: context.themeColor(dark: const Color(0x66000011), light: const Color(0x66bbbbcc)),
               blurRadius: 15,
