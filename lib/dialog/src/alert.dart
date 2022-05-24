@@ -166,7 +166,7 @@ Future<bool?> alert(
               color: context.themeColor(dark: Colors.white24, light: Colors.black26),
             ),
             backgroundColor: context.themeColor(
-                dark: const Color.fromRGBO(75, 75, 78, 0.5), light: const Color.fromRGBO(252, 252, 255, 0.4)),
+                dark: const Color.fromRGBO(75, 75, 78, 0.85), light: const Color.fromRGBO(252, 252, 255, 0.85)),
             child: ConstrainedBox(
               constraints: const BoxConstraints(
                 minWidth: 240,
