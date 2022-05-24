@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'blurry_container.dart';
 
 const keyAlertButtonYes = Key('alertBtnYes');
 
@@ -146,7 +147,8 @@ Future<bool?> alert(
         return Dialog(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          child: delta.BlurryContainer(
+          child: BlurryContainer(
+            enableBlurry: false,
             shadow: BoxShadow(
               color: context.themeColor(dark: const Color(0x66000011), light: const Color(0x66bbbbcc)),
               blurRadius: 15,
