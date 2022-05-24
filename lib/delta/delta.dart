@@ -3,7 +3,6 @@ library delta;
 export 'src/test.dart';
 export 'src/pixel_ratio.dart';
 export 'src/page_route.dart';
-export 'src/blurry_container.dart';
 export 'src/extensions.dart';
 export 'src/web_image.dart';
 export 'src/search_bar.dart';
