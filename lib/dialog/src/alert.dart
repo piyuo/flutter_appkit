@@ -50,19 +50,14 @@ Future<bool?> alert(
     return null;
   }
 
-  Widget _showButton(
-    Key key,
-    String? text,
-    Color color,
-    Color textColor,
-    bool? value,
-  ) {
+  Widget _showButton(Key key, String? text, Color color, Color textColor, FocusNode focusNode, bool? value) {
     return text != null
         ? Container(
             margin: const EdgeInsets.only(bottom: 10),
             width: double.infinity,
             height: 42,
             child: ElevatedButton(
+              focusNode: focusNode,
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all(1),
                 shape: MaterialStateProperty.all(
@@ -109,7 +104,7 @@ Future<bool?> alert(
         : const SizedBox();
   }
 
-  assentButtonColor = assentButtonColor ?? (warning ? Colors.red.shade400 : const Color(0xee2091eb));
+  assentButtonColor = assentButtonColor ?? (warning ? Colors.red.shade400 : Colors.blue.shade700);
   buttonColor = buttonColor ??
       context.themeColor(
         dark: const Color(0xcc6a7073),
@@ -139,12 +134,21 @@ Future<bool?> alert(
   if (yes == null && no == null && cancel == null) {
     cancel = context.i18n.closeButtonText;
   }
-  return await showDialog<bool?>(
+  FocusNode yesFocusNode = FocusNode();
+  FocusNode noFocusNode = FocusNode();
+  FocusNode cancelFocusNode = FocusNode();
+  if (yes != null) {
+    yesFocusNode.requestFocus();
+  } else {
+    cancelFocusNode.requestFocus();
+  }
+
+  final result = await showDialog<bool?>(
       context: context,
       barrierColor: context.themeColor(
           dark: const Color.fromRGBO(25, 25, 28, 0.6), light: const Color.fromRGBO(230, 230, 238, 0.6)),
       barrierDismissible: false,
-      builder: (BuildContext ctx) {
+      builder: (BuildContext context) {
         return Dialog(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -199,28 +203,17 @@ Future<bool?> alert(
                           _showMessage(title != null || icon != null || warning),
                           _showFooter(),
                         ]),
-                  _showButton(
-                    keyAlertButtonYes,
-                    yes,
-                    assentButtonColor!,
-                    Colors.white,
-                    true,
-                  ),
-                  _showButton(
-                    keyAlertButtonNo,
-                    no,
-                    buttonColor!,
-                    context.themeColor(dark: Colors.blue.shade50, light: Colors.black54),
-                    false,
-                  ),
+                  _showButton(keyAlertButtonYes, yes, assentButtonColor!, Colors.white, yesFocusNode, true),
+                  _showButton(keyAlertButtonNo, no, buttonColor!,
+                      context.themeColor(dark: Colors.blue.shade50, light: Colors.black54), noFocusNode, false),
                   const SizedBox(height: 10),
                   _showButton(
-                    keyAlertButtonCancel,
-                    cancel,
-                    yes != null ? buttonColor : assentButtonColor,
-                    yes != null ? context.themeColor(dark: Colors.blue.shade50, light: Colors.black54) : Colors.white,
-                    null,
-                  ),
+                      keyAlertButtonCancel,
+                      cancel,
+                      yes != null ? buttonColor : assentButtonColor,
+                      yes != null ? context.themeColor(dark: Colors.blue.shade50, light: Colors.black54) : Colors.white,
+                      cancelFocusNode,
+                      null),
                   if (emailUs)
                     Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -251,6 +244,10 @@ Future<bool?> alert(
           ),
         );
       });
+  yesFocusNode.dispose();
+  noFocusNode.dispose();
+  cancelFocusNode.dispose();
+  return result;
 }
 
 /// confirm show on/cancel dialog, return true if it's ok
