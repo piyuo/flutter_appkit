@@ -10,7 +10,7 @@ class Submit extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.fontSize = 16,
-    this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 14),
+    this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.elevation = 2,
     this.color,
   }) : super(key: key);

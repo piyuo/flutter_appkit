@@ -10,7 +10,7 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.focusNode,
     this.fontSize = 16,
-    this.padding = const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.color,
   }) : super(key: key);
 
