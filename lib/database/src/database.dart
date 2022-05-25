@@ -111,8 +111,11 @@ class Database {
   /// var list2 = database.getStringList('l');
   /// ```
   Future<List<String>?> getStringList(String key) async {
-    List<dynamic> list = await _box.get(key);
-    return list.map((item) => item.toString()).toList();
+    final list = await _box.get(key);
+    if (list is List<dynamic>) {
+      return list.map((item) => item.toString()).toList();
+    }
+    return null;
   }
 
   /// getDateTime return the value associated with the given [key]
