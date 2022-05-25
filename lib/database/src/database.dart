@@ -110,7 +110,10 @@ class Database {
   /// ```dart
   /// var list2 = database.getStringList('l');
   /// ```
-  Future<List<String>?> getStringList(String key) async => await _box.get(key);
+  Future<List<String>?> getStringList(String key) async {
+    List<dynamic> list = await _box.get(key);
+    return list.map((item) => item.toString()).toList();
+  }
 
   /// getDateTime return the value associated with the given [key]
   /// ```dart
