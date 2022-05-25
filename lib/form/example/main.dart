@@ -200,33 +200,61 @@ class FormExample extends StatelessWidget {
                       requiredField: true,
                     ),
                     br(),
-                    Button(
-                      width: 240,
+                    Submit(
                       key: const Key('submitForm'),
-                      label: 'Submit form',
-                      form: _keyForm,
-                      onClick: () async {
+                      label: 'Submit',
+                      formKey: _keyForm,
+                      onPressed: () async {
                         debugPrint('form submitted');
                         await Future.delayed(const Duration(seconds: 5));
                       },
                     ),
                     br(),
+                    Submit(
+                      key: const Key('submitFormColor'),
+                      color: Colors.green,
+                      label: 'Submit',
+                      formKey: _keyForm,
+                      onPressed: () async {
+                        debugPrint('form submitted');
+                        await Future.delayed(const Duration(seconds: 5));
+                      },
+                    ),
+                    br(),
+                    Submit(
+                      key: const Key('submitDisabled'),
+                      label: 'Submit',
+                      formKey: _keyForm,
+                    ),
+                    br(),
                     Button(
-                      elevation: 0,
-                      color: Colors.red.shade400,
-                      key: const Key('submitLong'),
+                      key: const Key('buttonLong'),
                       label: 'Submit very long waiting form',
-                      onClick: () async {
+                      onPressed: () async {
                         await Future.delayed(const Duration(seconds: 5));
                       },
                     ),
                     br(),
                     Button(
-                      elevation: 0,
+                      color: Colors.red.shade400,
+                      key: const Key('submitLong'),
+                      label: 'Submit very long waiting form',
+                      onPressed: () async {
+                        await Future.delayed(const Duration(seconds: 5));
+                      },
+                    ),
+                    br(),
+                    Button(
+                      color: Colors.red.shade400,
+                      key: const Key('submitDisabled2'),
+                      label: 'Submit very long waiting form',
+                    ),
+                    br(),
+                    Button(
                       color: Colors.green.shade400,
                       key: const Key('submitSelect'),
                       label: 'Select',
-                      onClick: () async {
+                      onPressed: () async {
                         await Future.delayed(const Duration(seconds: 1));
                       },
                     ),

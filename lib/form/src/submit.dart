@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/delta/delta.dart' as delta;
 
-/// Button is form button, it will be submit button if form is not null
-class Button extends StatefulWidget {
-  const Button({
+/// Submit is form submit button
+class Submit extends StatefulWidget {
+  const Submit({
     required Key key, // all submit must have key, it's important for test and identify field
     required this.label,
+    required this.formKey,
     this.onPressed,
     this.focusNode,
     this.fontSize = 16,
-    this.padding = const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 14),
+    this.elevation = 2,
     this.color,
   }) : super(key: key);
 
@@ -29,28 +30,29 @@ class Button extends StatefulWidget {
   /// focusNode is focusNode set to button
   final FocusNode? focusNode;
 
+  /// form is form key, button will call form.validate() if form is not null
+  final GlobalKey<FormState> formKey;
+
+  /// button elevation, if elevation is 0 use outlined button
+  final double elevation;
+
   /// color is text and outline color
   final Color? color;
 
   @override
-  State<StatefulWidget> createState() => _ButtonState();
+  State<StatefulWidget> createState() => _SubmitState();
 }
 
-class _ButtonState extends State<Button> {
+class _SubmitState extends State<Submit> {
   /// _pressed is true when button is pressed
   bool _pressed = false;
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    return ElevatedButton(
       focusNode: widget.focusNode,
-      style: OutlinedButton.styleFrom(
-        primary: widget.color ?? context.invertedColor,
-        side: BorderSide(
-          color: widget.onPressed != null ? widget.color ?? context.invertedColor : Colors.grey,
-          style: BorderStyle.solid,
-          width: 1,
-        ),
+      style: ElevatedButton.styleFrom(
+        primary: widget.color != null && widget.onPressed != null ? widget.color : null,
         padding: widget.padding,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
@@ -61,13 +63,16 @@ class _ButtonState extends State<Button> {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: widget.onPressed != null ? widget.color ?? context.invertedColor : Colors.grey,
           fontSize: widget.fontSize,
         ),
       ),
       onPressed: widget.onPressed != null
           ? () async {
               if (_pressed) {
+                return;
+              }
+
+              if (!widget.formKey.currentState!.validate()) {
                 return;
               }
 
