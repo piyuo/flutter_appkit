@@ -84,11 +84,11 @@ class PlaceExampleState extends State<PlaceExample> {
                           latlng: types.LatLng(104.06534639982326, 30.648558245938407),
                         ),
                         form.p(),
-                        form.Button(
+                        form.Submit(
                           key: const Key('submit'),
                           label: 'Submit form',
-                          form: _keyForm,
-                          onClick: () async {},
+                          formKey: _keyForm,
+                          onPressed: () async {},
                         ),
                         PlaceField(
                           key: const Key('test-place-value'),

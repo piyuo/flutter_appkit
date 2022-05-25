@@ -43,11 +43,11 @@ void main() {
                 focusNode: place2Focus,
                 hint: '(Optional) Floor/Room/Building number',
               ),
-              form.Button(
+              form.Submit(
                 key: const Key('submit'),
                 label: 'submit',
-                form: _keyForm,
-                onClick: () async {},
+                formKey: _keyForm,
+                onPressed: () async {},
               ),
             ],
           ),
