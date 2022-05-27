@@ -14,7 +14,7 @@ class MasterDetailView<T> extends StatelessWidget {
     this.listDecorationBuilder = defaultListDecorationBuilder,
     this.gridDecorationBuilder = defaultGridDecorationBuilder,
     required this.gridBuilder,
-    required this.detailBuilder,
+    required this.contentBuilder,
     required this.items,
     required this.selectedItems,
     this.leftBarBuilder,
@@ -32,8 +32,6 @@ class MasterDetailView<T> extends StatelessWidget {
     this.gridItemWidth = 240,
     this.isCheckMode = false,
     this.isListView = true,
-    this.deleteLabel,
-    this.deleteIcon,
     this.newItem,
     this.isReady = true,
     this.gridScrollController,
@@ -79,8 +77,8 @@ class MasterDetailView<T> extends StatelessWidget {
   /// gridItemWidth is the width of grid item
   final int gridItemWidth;
 
-  /// detailBuilder is the builder for detail view
-  final Widget Function(T) detailBuilder;
+  /// contentBuilder is the builder for content
+  final Widget Function() contentBuilder;
 
   /// headerBuilder is the builder for header
   final delta.WidgetBuilder? headerBuilder;
@@ -130,15 +128,8 @@ class MasterDetailView<T> extends StatelessWidget {
   /// isSplitView is true if in split view
   bool get isSplitView => isListView && !responsive.phoneScreen;
 
-  /// deleteLabel is the label for delete button
-  final String? deleteLabel;
-
-  /// deleteIcon is the icon for delete button
-  final IconData? deleteIcon;
-
   /// isReady is true mean list is ready to show
   final bool isReady;
-
 
   /// buildList build list and split view
   Widget buildList(BuildContext context) {
@@ -240,13 +231,13 @@ class MasterDetailView<T> extends StatelessWidget {
         return buildList(context);
       }
 
-      final activeItem = (newItem != null)
+/*      final activeItem = (newItem != null)
           ? newItem
           : selectedItems.isEmpty
               ? items.isEmpty
                   ? null
                   : items[0]
-              : selectedItems[0];
+              : selectedItems[0];*/
 
       return Column(children: [
         if (selectionBarBuilder != null && isCheckMode) selectionBarBuilder!(),
@@ -289,10 +280,9 @@ class MasterDetailView<T> extends StatelessWidget {
             Column(
               children: [
                 if (rightBarBuilder != null && !isCheckMode && context.isPreferMouse) rightBarBuilder!(),
-                if (activeItem != null)
-                  Expanded(
-                    child: detailBuilder(activeItem),
-                  )
+                Expanded(
+                  child: contentBuilder(),
+                )
               ],
             ),
           ],

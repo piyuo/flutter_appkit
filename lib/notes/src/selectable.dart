@@ -182,7 +182,7 @@ Widget defaultGridDecorationBuilder(
     margin: isSelected ? const EdgeInsets.fromLTRB(4, 0, 4, 4) : const EdgeInsets.fromLTRB(5, 1, 5, 5),
     clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       border: Border.all(
         width: isSelected ? 2 : 1,
@@ -192,8 +192,8 @@ Widget defaultGridDecorationBuilder(
                 dark: Colors.blueAccent.shade200,
               )
             : context.themeColor(
-                light: Colors.grey.shade300,
-                dark: Colors.grey.shade800,
+                light: Colors.grey.shade400,
+                dark: Colors.grey.shade700,
               ),
       ),
     ),

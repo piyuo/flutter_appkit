@@ -6,7 +6,6 @@ import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/animations/animations.dart' as animations;
-import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/database/database.dart' as database;
@@ -28,22 +27,36 @@ main() {
     appName: 'notes',
     onBeforeStart: () async {},
     providers: [
-      ChangeNotifierProvider<NotesClientProvider<sample.Person>>(
-        create: (context) => NotesClientProvider<sample.Person>(
+      ChangeNotifierProvider<NoteController<sample.Person>>(
+        create: (context) => NoteController<sample.Person>(
             getter: (context, id) async => sample.Person(
                   name: id,
                   entity: pb.Entity(id: id),
                 ),
+            contentBuilder: (person) => Column(children: [
+                  Text('beam: detail view for $person'),
+                  Builder(
+                    builder: (context) {
+                      return ElevatedButton(
+                          child: const Text('change content'),
+                          onPressed: () async {
+                            final client = NoteController.of<sample.Person>(context);
+                            client.isDirty = true;
+                          });
+                    },
+                  ),
+                ]),
+            removeHandler: (context, persons) async => true,
+            archiveHandler: (context, persons) async => true,
+            saveHandler: (context, persons) async => true,
             dataBuilder: () => sample.Person(
                   name: 'new item',
                   entity: pb.Entity(id: 'new_item_id'),
                 )),
       ),
-      ChangeNotifierProvider<NotesViewProvider<sample.Person>>(
-        create: (context) => NotesViewProvider<sample.Person>(
+      ChangeNotifierProvider<NotesProvider<sample.Person>>(
+        create: (context) => NotesProvider<sample.Person>(
           caption: "Notes",
-          deleteLabel: context.i18n.deleteButtonText,
-          deleteIcon: Icons.delete,
           listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Text('list:$person'),
@@ -51,24 +64,6 @@ main() {
           gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
             child: Text('grid:$person'),
-          ),
-          detailBuilder: (sample.Person person) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            child: Column(
-              children: [
-                Text('${person.name} - $person'),
-                ElevatedButton(
-                  child: const Text('Save'),
-                  onPressed: () async {
-                    if (person.name == 'new item') {
-                      person.name = 'saved item';
-                      //     await _dataset.insert(context, [person]);
-                      await NotesViewProvider.of<sample.Person>(context).refill(context);
-                    }
-                  },
-                ),
-              ],
-            ),
           ),
           detailBeamName: "/",
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -91,13 +86,8 @@ main() {
               entity: pb.Entity(id: uuid),
             );
           },
-          isSaved: (person) {
-            return true;
-          },
-          isRemovable: (person) {
-            return true;
-          },
-          remover: (context, persons) async => true,
+          removeHandler: (context, persons) async => true,
+          archiveHandler: (context, persons) async => true,
           dataBuilder: () => sample.Person(),
           onSearch: (text) => debugPrint('search:$text'),
           onSearchBegin: () => debugPrint('search begin'),
@@ -163,7 +153,7 @@ class NotesExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<NotesViewProvider<sample.Person>>(
+    return Consumer<NotesProvider<sample.Person>>(
         builder: (context, notesController, _) => Scaffold(
               appBar: AppBar(
                 elevation: 1,
@@ -171,17 +161,13 @@ class NotesExample extends StatelessWidget {
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.grey.shade800,
                 actions: [
-                  NotesViewMenuButton(
-                      controller: notesController,
-                      deleteLabel: context.i18n.deleteButtonText,
-                      deleteIcon: Icons.delete,
-                      tools: [
-                        responsive.ToolButton(
-                          label: 'hello',
-                          icon: Icons.favorite,
-                          onPressed: () => debugPrint('hello'),
-                        ),
-                      ]),
+                  NotesMenuButton(controller: notesController, tools: [
+                    responsive.ToolButton(
+                      label: 'hello',
+                      icon: Icons.favorite,
+                      onPressed: () => debugPrint('hello'),
+                    ),
+                  ]),
                 ],
               ),
               body: SafeArea(
@@ -194,6 +180,14 @@ class NotesExample extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
+                          OutlinedButton(
+                            child: const Text('toggle isDirty'),
+                            onPressed: () {
+                              final client = NoteController.of<sample.Person>(context);
+                              client.isDirty = !client.isDirty;
+                              debugPrint('isDirty: ${client.isDirty}');
+                            },
+                          ),
                           testing.ExampleButton(label: 'simple list', builder: () => _simpleList(context)),
                           testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
                           testing.ExampleButton(label: 'checkable grid', builder: () => _checkableGrid(context)),
@@ -204,12 +198,11 @@ class NotesExample extends StatelessWidget {
                           testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
                           OutlinedButton(
                               child: const Text('scroll to top'),
-                              onPressed: () => NotesViewProvider.of<sample.Person>(context).scrollToTop()),
+                              onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
                           testing.ExampleButton(label: 'show filter view', builder: () => _showFilterView(context)),
                           testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
                           testing.ExampleButton(label: 'folder view', builder: () => _folderView(context)),
                           testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
-//                  testing.ExampleButton(label: 'data explorer', builder: () => _tableView(context)),
                           testing.ExampleButton(
                               label: 'loading data', builder: () => _loadingMasterDetailView(context)),
                           testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
@@ -464,9 +457,9 @@ class NotesExample extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                     child: Text('grid:' + item),
                   ),
-                  detailBuilder: (String item) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    child: Center(child: Text('detail view for $item')),
+                  contentBuilder: () => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    child: Center(child: Text('content view')),
                   ),
                   onItemSelected: (items) {
                     selectedController.items = items;
@@ -606,9 +599,9 @@ class NotesExample extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                   child: Text('grid:' + item),
                 ),
-                detailBuilder: (String item) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  child: Center(child: Text('detail view for $item')),
+                contentBuilder: () => const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  child: Center(child: Text('content view')),
                 ),
                 onItemSelected: (items) {
                   selectedController.items = items;
@@ -670,7 +663,7 @@ class NotesExample extends StatelessWidget {
           selectedItems: const [],
           listBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
           gridBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
-          detailBuilder: (String item) => const Text('detail view'),
+          contentBuilder: () => const Text('detail view'),
         ));
   }
 
@@ -681,7 +674,7 @@ class NotesExample extends StatelessWidget {
             name: 'test',
             databaseBuilder: (name) async => await database.open('test'),
           )..load().then((database) {
-              NotesViewProvider.of<sample.Person>(context).load(
+              NotesProvider.of<sample.Person>(context).load(
                   context,
                   data.DatasetDatabase<sample.Person>(
                     database,
@@ -690,13 +683,22 @@ class NotesExample extends StatelessWidget {
             });
         },
         child: Consumer<database.DatabaseProvider>(
-          builder: (context, databaseProvider, _) => NotesView<sample.Person>(tools: [
-            responsive.ToolButton(
-              label: 'hello',
-              icon: Icons.favorite,
-              onPressed: () => debugPrint('hello'),
-            ),
-          ]),
+          builder: (context, databaseProvider, _) => NotesView<sample.Person>(
+            leftTools: [
+              responsive.ToolButton(
+                label: 'hello',
+                icon: Icons.favorite,
+                onPressed: () => debugPrint('hello'),
+              ),
+            ],
+            rightTools: [
+              responsive.ToolButton(
+                label: 'hello',
+                icon: Icons.ac_unit,
+                onPressed: () => debugPrint('hi'),
+              ),
+            ],
+          ),
         ));
   }
 }
@@ -708,7 +710,7 @@ Widget _notesItem(BuildContext context, String id) {
           name: 'test',
           databaseBuilder: (name) async => await database.open('test'),
         )..load().then((database) async {
-            NotesClientProvider.of<sample.Person>(context).load(context,
+            NoteController.of<sample.Person>(context).load(context,
                 dataset: data.DatasetDatabase<sample.Person>(
                   database,
                   dataBuilder: () => sample.Person(),
@@ -718,21 +720,12 @@ Widget _notesItem(BuildContext context, String id) {
       },
       child: Consumer<database.DatabaseProvider>(
           builder: (context, databaseProvider, _) => Scaffold(
-                appBar: AppBar(title: const Text('Detail')),
-                body: SafeArea(
+                appBar: AppBar(title: const Text('Detail'), actions: const [
+                  NoteMenuButton<sample.Person>(),
+                ]),
+                body: const SafeArea(
                   child: Center(
-                    child: NotesClient<sample.Person>(
-                        builder: (context, person) => Column(children: [
-                              Text('beam: detail view for $person'),
-                              ElevatedButton(
-                                  child: const Text('Save'),
-                                  onPressed: () async {
-                                    person.name = 'saved item';
-                                    person.entity.updateTime = DateTime.now().utcTimestamp;
-                                    await NotesClientProvider.of<sample.Person>(context).save(context, item: person);
-                                    Beamer.of(context).beamBack();
-                                  })
-                            ])),
+                    child: NoteContainer<sample.Person>(),
                   ),
                 ),
               )));

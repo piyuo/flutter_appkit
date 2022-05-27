@@ -8,32 +8,23 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/animations/animations.dart' as animations;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'tag.dart';
-import 'master_detail_view.dart';
 import 'selectable.dart';
+import 'types.dart';
+import 'note_controller.dart';
 
-/// NotesViewRefillEvent will let NotesViewProvider to refill the list
-class NotesViewRefillEvent extends eventbus.Event {}
-
-/// NotesViewProviderRemover remove list of selected rows
-typedef NotesViewProviderRemover<T> = Future<bool> Function(BuildContext context, List<T> item);
-
-/// Notes controller will load dataset to display but not close it, you need close dataset if need
-class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
-  NotesViewProvider({
+/// NotesProvider provide notes for notes view
+class NotesProvider<T extends pb.Object> with ChangeNotifier {
+  NotesProvider({
     required this.listBuilder,
     required this.gridBuilder,
-    required this.detailBuilder,
     required this.dataBuilder,
     required this.loader,
     required this.adder,
-    required this.remover,
-    required this.isSaved,
-    required this.isRemovable,
+    required this.removeHandler,
+    required this.archiveHandler,
     this.listDecorationBuilder = defaultListDecorationBuilder,
     this.gridDecorationBuilder = defaultGridDecorationBuilder,
     this.caption,
-    this.deleteLabel,
-    this.deleteIcon,
     this.tags = const [],
     this.onTagChanged,
     this.onSearchChanged,
@@ -70,17 +61,8 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
   /// gridDecorationBuilder is a grid decoration builder
   final ItemDecorationBuilder<T> gridDecorationBuilder;
 
-  /// detailBuilder is the builder for detail view
-  final Widget Function(T) detailBuilder;
-
   /// caption on top of search box
   final String? caption;
-
-  /// deleteLabel is the label for delete button
-  final String? deleteLabel;
-
-  /// deleteIcon is the icon for delete button
-  final IconData? deleteIcon;
 
   /// dataBuilder
   final pb.Builder<T> dataBuilder;
@@ -90,9 +72,6 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
 
   /// dataView data view to display data
   data.DataView<T>? dataView;
-
-  /// dataset used in data view
-  data.Dataset<T>? dataset;
 
   /// refreshButtonController is refresh button controller
   final refreshButtonController = delta.RefreshButtonController();
@@ -121,14 +100,11 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
   /// adder create new item
   final delta.FutureContextCallback adder;
 
-  /// isSaved is true if row is saved and ready to move to other row
-  final bool Function(T row) isSaved;
+  /// removeHandler not null will show delete button
+  final NotesHandler? removeHandler;
 
-  /// remover remove item
-  final NotesViewProviderRemover remover;
-
-  /// isRemovable check if item is removable, return true will delete the row
-  final bool Function(List<T> row) isRemovable;
+  /// archiveHandler not null will show archive button
+  final NotesHandler? archiveHandler;
 
   /// newItem is not null mean user is editing a new item
   T? newItem;
@@ -175,9 +151,9 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
   /// gridAnimatedViewScrollController is animated view scroll controller for grid
   final ScrollController gridAnimatedViewScrollController = ScrollController();
 
-  /// of get [NotesViewProvider] from context
-  static NotesViewProvider<T> of<T extends pb.Object>(BuildContext context) {
-    return Provider.of<NotesViewProvider<T>>(context, listen: false);
+  /// of get [NotesProvider] from context
+  static NotesProvider<T> of<T extends pb.Object>(BuildContext context) {
+    return Provider.of<NotesProvider<T>>(context, listen: false);
   }
 
   /// scrollToTop scroll to top
@@ -232,11 +208,12 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
   /// setDefaultSelected will select first row if no row selected
   void setDefaultSelected(BuildContext context) {
     if (dataView != null && dataView!.selectedRows.isEmpty && dataView!.displayRows.isNotEmpty) {
-      if (onRowExit(null)) {
-        final first = dataView!.displayRows.first;
-        dataView!.selectRows([first]);
-        onItemSelected?.call(context, first);
-      }
+      final first = dataView!.displayRows.first;
+      dataView!.selectRows([first]);
+      onItemSelected?.call(context, first);
+      final client = NoteController.of<T>(context);
+      client.resetCurrent();
+      client.loadByView(context, dataset: dataView!.dataset, row: first);
     }
   }
 
@@ -248,35 +225,43 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// onSelectItems call when user select rows
-  void onSelectItems(BuildContext context, List<T> selectedRows) {
-    if (!onItemChecked(context, selectedRows)) {
+  /// onItemsSelected call when user select items
+  Future<void> onItemsSelected(BuildContext context, List<T> selectedRows) async {
+    if (selectedRows.isEmpty) {
       return;
     }
-    final newRow = selectedRows.first;
-    onItemSelected?.call(context, newRow);
+    final first = selectedRows.first;
+    final client = NoteController.of<T>(context);
+    final result = await client.loadByView(context, dataset: dataView!.dataset, row: first);
+    if (result) {
+      if (!onItemChecked(context, selectedRows)) {
+        return;
+      }
+      onItemSelected?.call(context, first);
+    }
   }
 
   /// onItemChecked called when user select item, return true if new item has been selected
   bool onItemChecked(BuildContext context, List<T> selectedRows) {
-    final oldRow = dataView!.selectedRows.isNotEmpty ? dataView!.selectedRows.first : null;
-    if (!onRowExit(oldRow)) {
-      return false;
-    }
     dataView!.selectRows(selectedRows);
     notifyListeners();
     return true;
   }
 
-  /// onRowExit return true if row allow to exit
+/*
+  final oldRow = dataView!.selectedRows.isNotEmpty ? dataView!.selectedRows.first : null;
+    if (!onRowExit(oldRow)) {
+      return false;
+    }
+    /// onRowExit return true if row allow to exit
   bool onRowExit(T? oldRow) {
-    if (oldRow != null && !isSaved(oldRow)) {
+    if (oldRow != null && needSave(oldRow)) {
       return false;
     }
     newItem = null;
     return true;
   }
-
+*/
   /// isSplitView is true if in split view
   bool get isSplitView => isListView && !responsive.phoneScreen;
 
@@ -386,36 +371,53 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// onDelete called when user press delete button
-  Future<void> onDelete(BuildContext context) async {
+  /// remove called when user press remove button
+  Future<void> remove(BuildContext context) async {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    if (isRemovable(dataView!.selectedRows)) {
-      final deleted = await remover(context, dataView!.selectedRows);
+    if (removeHandler != null && dataView != null) {
+      final deleted = await removeHandler!(context, dataView!.selectedRows);
       if (deleted) {
-        await dataView!.delete(context);
-        int removeCount = 0;
-        for (int i = 0; i < dataView!.displayRows.length; i++) {
-          final row = dataView!.displayRows[i];
-          if (dataView!.selectedRows.contains(row)) {
-            final child = _buildDeletedItemWithDecoration(context, row, true);
-            animatedViewController.removeAnimation(i - removeCount, isListView, child);
-            removeCount++;
-          }
-        }
-        await dataView!.fill();
-        dataView!.selectRows([]);
-        animatedViewController.onAnimationDone(() {
-          setDefaultSelected(context);
-//              debugPrint('animated item count: ${animatedViewController.itemCount}/${dataView!.displayRows.length}');
-          animatedViewController.itemCount = dataView!.displayRows.length;
-          notifyListeners();
-        });
+        await _delete(context);
+        debugPrint('selected items removed');
       }
     }
-    notifyListeners();
-    debugPrint('onToggleCheckMode');
+  }
+
+  /// archive called when user press archive button
+  Future<void> archive(BuildContext context) async {
+    if (isCheckMode) {
+      isCheckMode = false;
+    }
+    if (archiveHandler != null && dataView != null) {
+      final archived = await archiveHandler!(context, dataView!.selectedRows);
+      if (archived) {
+        await _delete(context);
+        debugPrint('selected items archived');
+      }
+    }
+  }
+
+  /// _delete remove selected item from data view
+  Future<void> _delete(BuildContext context) async {
+    await dataView!.delete(context);
+    int removeCount = 0;
+    for (int i = 0; i < dataView!.displayRows.length; i++) {
+      final row = dataView!.displayRows[i];
+      if (dataView!.selectedRows.contains(row)) {
+        final child = _buildDeletedItemWithDecoration(context, row, true);
+        animatedViewController.removeAnimation(i - removeCount, isListView, child);
+        removeCount++;
+      }
+    }
+    await dataView!.fill();
+    dataView!.selectRows([]);
+    animatedViewController.onAnimationDone(() {
+      setDefaultSelected(context);
+      animatedViewController.itemCount = dataView!.displayRows.length;
+      notifyListeners();
+    });
   }
 
   /// onNextPage called when user press next button

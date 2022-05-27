@@ -2,25 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'notes_view_provider.dart';
+import 'notes_provider.dart';
 
-class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
-  const NotesViewMenuButton({
+/// NotesMenuButton is menu button for notes view
+class NotesMenuButton<T extends pb.Object> extends StatelessWidget {
+  const NotesMenuButton({
     required this.controller,
     this.tools,
-    this.deleteLabel,
-    this.deleteIcon,
     Key? key,
   }) : super(key: key);
 
-  /// controller is the [NotesViewProvider]
-  final NotesViewProvider<T> controller;
-
-  /// deleteLabel is the label for delete button
-  final String? deleteLabel;
-
-  /// deleteIcon is the icon for delete button
-  final IconData? deleteIcon;
+  /// controller is the [NotesProvider]
+  final NotesProvider<T> controller;
 
   /// tools is extra tools for master detail view
   final List<responsive.ToolItem>? tools;
@@ -52,11 +45,17 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                     icon: controller.isCheckMode ? Icons.circle_outlined : Icons.check_circle_outline,
                     onPressed: controller.onToggleCheckMode,
                   ),
-                  if (deleteLabel != null)
+                  if (controller.archiveHandler != null)
+                    responsive.ToolButton(
+                      label: context.i18n.archiveButtonText,
+                      icon: Icons.archive,
+                      onPressed: () => controller.archive(context),
+                    ),
+                  if (controller.removeHandler != null)
                     responsive.ToolButton(
                       label: context.i18n.deleteButtonText,
-                      icon: deleteIcon ?? Icons.delete,
-                      onPressed: () => controller.onDelete(context),
+                      icon: Icons.delete,
+                      onPressed: () => controller.remove(context),
                     ),
                   responsive.ToolSpacer(),
                   if (tools != null) ...tools!,

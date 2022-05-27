@@ -4,23 +4,28 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/responsive/responsive.dart' as responsive;
-import 'notes_view_provider.dart';
+import 'notes_provider.dart';
 import 'master_detail_view.dart';
 import 'tag_split_view.dart';
 import 'tag_view.dart';
 import 'checkable_header.dart';
+import 'note_controller.dart';
+import 'note_container.dart';
 
 class NotesView<T extends pb.Object> extends StatelessWidget {
   const NotesView({
-    this.tools,
+    this.leftTools,
+    this.rightTools,
     Key? key,
   }) : super(key: key);
 
-  /// tools is extra tools for master detail view
-  final List<responsive.ToolItem>? tools;
+  /// leftTools is extra tools on left part on bar
+  final List<responsive.ToolItem>? leftTools;
 
-  List<responsive.ToolItem> _buildPaginator(
-      BuildContext context, NotesViewProvider<T> controller, String pageInfoText) {
+  /// rightTools is extra tools on right part on bar
+  final List<responsive.ToolItem>? rightTools;
+
+  List<responsive.ToolItem> _buildPaginator(BuildContext context, NotesProvider<T> controller, String pageInfoText) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return [
       responsive.ToolSelection(
@@ -51,8 +56,9 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final linkColor = context.themeColor(light: Colors.blue.shade400, dark: Colors.blue.shade500);
-    return Consumer<NotesViewProvider<T>>(
-        builder: (context, controller, _) => LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+    return Consumer2<NotesProvider<T>, NoteController<T>>(
+        builder: (context, controller, clientProvider, _) =>
+            LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
               final pageInfoText = controller.pageInfo(context);
               final searchBox = delta.SearchBox(
                 enabled: controller.isReady,
@@ -98,7 +104,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                         gridBuilder: controller.gridBuilder,
                         listDecorationBuilder: controller.listDecorationBuilder,
                         gridDecorationBuilder: controller.gridDecorationBuilder,
-                        detailBuilder: controller.detailBuilder,
+                        contentBuilder: () => NoteContainer<T>(isRemoveButtonVisible: false),
                         onRefresh: context.isTouchSupported && controller.isReady && !controller.noRefresh
                             ? () => controller.refresh(context)
                             : null,
@@ -190,12 +196,19 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                                       icon: Icons.check_circle_outline,
                                       onPressed: controller.isNotEmpty ? controller.onToggleCheckMode : null,
                                     ),
+                                    if (leftTools != null) ...leftTools!,
                                     responsive.ToolSpacer(),
-                                    if (controller.deleteLabel != null)
+                                    if (controller.archiveHandler != null)
                                       responsive.ToolButton(
-                                        label: controller.deleteLabel!,
-                                        icon: controller.deleteIcon ?? Icons.delete,
-                                        onPressed: controller.isNotEmpty ? () => controller.onDelete(context) : null,
+                                        label: context.i18n.archiveButtonText,
+                                        icon: Icons.archive,
+                                        onPressed: controller.isNotEmpty ? () => controller.archive(context) : null,
+                                      ),
+                                    if (controller.removeHandler != null)
+                                      responsive.ToolButton(
+                                        label: context.i18n.deleteButtonText,
+                                        icon: Icons.delete,
+                                        onPressed: controller.isNotEmpty ? () => controller.remove(context) : null,
                                       ),
                                   ],
                                 ),
@@ -211,7 +224,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                                 icon: Icons.add,
                                 onPressed: () => controller.onAdd(context),
                               ),
-                              if (tools != null) ...tools!,
+                              if (rightTools != null) ...rightTools!,
                               responsive.ToolSpacer(),
                               ..._buildPaginator(context, controller, pageInfoText),
                             ],
@@ -280,15 +293,26 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                             onUnselectAll: () => controller.onItemChecked(context, []),
                             onCancel: () => controller.onToggleCheckMode(),
                             actions: [
-                              if (controller.deleteLabel != null)
+                              if (controller.archiveHandler != null)
                                 TextButton.icon(
                                   style: TextButton.styleFrom(
                                     primary: Colors.grey.shade900,
                                   ),
-                                  label: Text(controller.deleteLabel!),
-                                  icon: Icon(controller.deleteIcon ?? Icons.delete),
+                                  label: Text(context.i18n.archiveButtonText),
+                                  icon: const Icon(Icons.archive),
                                   onPressed: controller.dataView!.selectedRows.isNotEmpty
-                                      ? () => controller.onDelete(context)
+                                      ? () => controller.archive(context)
+                                      : null,
+                                ),
+                              if (controller.removeHandler != null)
+                                TextButton.icon(
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.grey.shade900,
+                                  ),
+                                  label: Text(context.i18n.deleteButtonText),
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: controller.dataView!.selectedRows.isNotEmpty
+                                      ? () => controller.remove(context)
                                       : null,
                                 ),
                             ],
@@ -298,10 +322,8 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                         isCheckMode: controller.isCheckMode,
                         isListView: controller.isListView,
                         onItemChecked: (selected) => controller.onItemChecked(context, selected),
-                        onItemSelected: (selected) => controller.onSelectItems(context, selected),
+                        onItemSelected: (selected) => controller.onItemsSelected(context, selected),
                         onItemTapped: (selected) => controller.onItemTapped(context, selected),
-                        deleteLabel: controller.deleteLabel,
-                        deleteIcon: controller.deleteIcon,
                       )));
             }));
   }
