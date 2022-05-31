@@ -8,6 +8,9 @@ class LibLocalizationsZh extends LibLocalizations {
   LibLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get formWarning => '有些项目需要输入';
+
+  @override
   String get notesSelectButtonLabel => '选取';
 
   @override
@@ -440,6 +443,9 @@ class LibLocalizationsZh extends LibLocalizations {
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class LibLocalizationsZhTw extends LibLocalizationsZh {
   LibLocalizationsZhTw(): super('zh_TW');
+
+  @override
+  String get formWarning => '有些項目需要輸入';
 
   @override
   String get notesSelectButtonLabel => '選擇';

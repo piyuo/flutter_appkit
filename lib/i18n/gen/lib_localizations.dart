@@ -95,6 +95,12 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @formWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'There are items that require your attention'**
+  String get formWarning;
+
   /// No description provided for @notesSelectButtonLabel.
   ///
   /// In en, this message translates to:
