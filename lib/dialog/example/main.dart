@@ -366,15 +366,18 @@ class DialogExample extends StatelessWidget {
         ),
       ),
       ElevatedButton(
-        child: const Text('banner'),
-        onPressed: () => banner(
+        child: const Text('show banner'),
+        onPressed: () => showBanner(
           context,
           const Text(
             'this record has been deleted',
-            style: TextStyle(fontSize: 18, color: Colors.black),
           ),
           leading: const Icon(Icons.warning, color: Colors.black),
         ),
+      ),
+      ElevatedButton(
+        child: const Text('dismiss banner'),
+        onPressed: () => dismissBanner(context),
       ),
     ]);
   }
