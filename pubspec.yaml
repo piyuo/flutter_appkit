@@ -72,7 +72,6 @@ dependencies:
   reactive_pinput: ^0.4.0
   reactive_phone_form_field: ^0.6.0
   reactive_raw_autocomplete: ^0.3.0
-  reactive_flutter_rating_bar: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

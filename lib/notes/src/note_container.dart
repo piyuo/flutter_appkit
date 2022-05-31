@@ -33,7 +33,6 @@ class NoteContainer<T extends pb.Object> extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: form.Submit(
                     key: const Key('submit'),
-                    formKey: controller.formKey,
                     label: 'Submit',
                     onPressed: controller.isDirty
                         ? () async {

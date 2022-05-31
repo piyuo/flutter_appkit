@@ -6,7 +6,6 @@ import 'package:reactive_touch_spin/reactive_touch_spin.dart';
 import 'package:reactive_pinput/reactive_pinput.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
-import 'package:reactive_flutter_rating_bar/reactive_flutter_rating_bar.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:intl/intl.dart';

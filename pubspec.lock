@@ -480,13 +480,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.6"
-  flutter_rating_bar:
-    dependency: transitive
-    description:
-      name: flutter_rating_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.1"
   flutter_spinkit:
     dependency: transitive
     description:
@@ -1057,13 +1050,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
-  reactive_flutter_rating_bar:
-    dependency: "direct main"
-    description:
-      name: reactive_flutter_rating_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   reactive_forms:
     dependency: "direct main"
     description:
