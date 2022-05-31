@@ -67,6 +67,7 @@ dependencies:
   bottom_sheet: ^2.0.0
   animations: ^2.0.2
   reactive_forms: ^13.0.0
+  flutter_rating_bar: ^4.0.1
   reactive_date_range_picker: ^0.4.0
   reactive_touch_spin: ^0.6.0
   reactive_pinput: ^0.4.0

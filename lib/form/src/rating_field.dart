@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-export 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 /// A [RatingField] is rating field
 /// ```dart
 /// RatingField<double>(
