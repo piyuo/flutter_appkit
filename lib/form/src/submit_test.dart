@@ -5,45 +5,73 @@ import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'submit.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 void main() {
   setUp(() {});
-
   group('[submit]', () {
     testWidgets('should click', (WidgetTester tester) async {
-      bool clicked = false;
-      final formKey = GlobalKey<FormState>();
+      bool submitted = false;
+      final form = fb.group({
+        'name': [''],
+      });
       await testing.mockApp(tester,
-          child: Form(
-              key: formKey,
-              child: Submit(
-                key: const Key('Button'),
-                formKey: formKey,
-                label: 'button',
+          child: Scaffold(
+              body: ReactiveForm(
+            formGroup: form,
+            child: Column(children: [
+              ReactiveTextField(
+                formControlName: 'name',
+                decoration: const InputDecoration(
+                  labelText: 'Your name',
+                  hintText: 'please input your name',
+                ),
+              ),
+              Submit(
+                label: 'submit',
                 onPressed: () async {
-                  clicked = true;
+                  submitted = true;
                 },
-              )));
+              )
+            ]),
+          )));
+
+      await tester.enterText(find.byType(ReactiveTextField), 'john');
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(Submit));
       await tester.pumpAndSettle();
-      expect(clicked, true); // second item value
+      expect(form.control('name').value, 'john'); // second item value
+      expect(submitted, isTrue); // second item value
     });
 
     testWidgets('should show loading', (WidgetTester tester) async {
-      final formKey = GlobalKey<FormState>();
+      final form = fb.group({
+        'name': [''],
+      });
       await testing.mockApp(tester,
-          child: Form(
-              key: formKey,
-              child: Submit(
-                key: const Key('Button'),
-                formKey: formKey,
-                label: 'button',
+          child: Scaffold(
+              body: ReactiveForm(
+            formGroup: form,
+            child: Column(children: [
+              ReactiveTextField(
+                formControlName: 'name',
+                decoration: const InputDecoration(
+                  labelText: 'Your name',
+                  hintText: 'please input your name',
+                ),
+              ),
+              Submit(
+                label: 'submit',
                 onPressed: () async {
                   await Future.delayed(const Duration(milliseconds: 100));
                 },
-              )));
+              )
+            ]),
+          )));
       dialog.expectNoToast();
-      await tester.tap(find.byKey(const Key('Button')));
+      await tester.enterText(find.byType(ReactiveTextField), 'john');
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(Submit));
       await tester.pump(const Duration(milliseconds: 50));
       dialog.expectToast();
       //wait for click finish

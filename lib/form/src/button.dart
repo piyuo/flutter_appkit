@@ -3,15 +3,15 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 
 /// Button is form button, it will be submit button if form is not null
-class Button extends StatefulWidget {
+class Button extends StatelessWidget {
   const Button({
-    required Key key, // all submit must have key, it's important for test and identify field
     required this.label,
     this.onPressed,
     this.focusNode,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.color,
+    Key? key, // all submit must have key, it's important for test and identify field
   }) : super(key: key);
 
   /// padding is button padding
@@ -33,54 +33,36 @@ class Button extends StatefulWidget {
   final Color? color;
 
   @override
-  State<StatefulWidget> createState() => _ButtonState();
-}
-
-class _ButtonState extends State<Button> {
-  /// _pressed is true when button is pressed
-  bool _pressed = false;
-
-  @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      focusNode: widget.focusNode,
+      focusNode: focusNode,
       style: OutlinedButton.styleFrom(
-        primary: widget.color ?? context.invertedColor,
+        primary: color ?? context.invertedColor,
         side: BorderSide(
-          color: widget.onPressed != null ? widget.color ?? context.invertedColor : Colors.grey,
+          color: onPressed != null ? color ?? context.invertedColor : Colors.grey,
           style: BorderStyle.solid,
           width: 1,
         ),
-        padding: widget.padding,
+        padding: padding,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
         ),
       ),
       child: Text(
-        widget.label,
+        label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: widget.onPressed != null ? widget.color ?? context.invertedColor : Colors.grey,
-          fontSize: widget.fontSize,
+          color: onPressed != null ? color ?? context.invertedColor : Colors.grey,
+          fontSize: fontSize,
         ),
       ),
-      onPressed: widget.onPressed != null
+      onPressed: onPressed != null
           ? () async {
-              if (_pressed) {
-                return;
-              }
-
               dialog.toastLoading(context);
-              setState(() {
-                _pressed = true;
-              });
               try {
-                await widget.onPressed?.call();
+                await onPressed?.call();
               } finally {
-                setState(() {
-                  _pressed = false;
-                });
                 dialog.dismiss();
               }
             }

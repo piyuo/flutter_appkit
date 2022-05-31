@@ -1,41 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'email_field.dart';
-import 'button.dart';
+import 'submit.dart';
 
 void main() {
-  final _keyForm = GlobalKey<FormState>();
+  setUp(() {});
 
-  final controller = TextEditingController();
-
-  final focusNode = FocusNode();
-
-  final dummyController = TextEditingController();
-
-  final dummyFocusNode = FocusNode();
-
-  setUp(() {
-    controller.text = '';
-  });
-
-  Widget testTarget() {
+  Widget testTarget(FormGroup form, ValidationMessagesFunction? validationMessages) {
     return MaterialApp(
       home: Scaffold(
-        body: Form(
-          key: _keyForm,
+        body: ReactiveForm(
+          formGroup: form,
           child: Column(
             children: [
               EmailField(
-                key: const Key('test-email'),
-                controller: controller,
-                focusNode: focusNode,
-                label: 'email',
+                formControlName: 'email',
               ),
-              TextField(
-                controller: dummyController,
-                focusNode: dummyFocusNode,
-              ),
-              Button(
+              Submit(
                 key: const Key('submit'),
                 label: 'submit',
                 onPressed: () async {},
@@ -47,42 +29,63 @@ void main() {
     );
   }
 
-  group('[email-field]', () {
-    testWidgets('should pass value to controller', (WidgetTester tester) async {
-      await tester.pumpWidget(testTarget());
+  group('[email_field]', () {
+    testWidgets('should pass value to form', (WidgetTester tester) async {
+      final form = fb.group({
+        'email': [''],
+      });
+
+      await tester.pumpWidget(testTarget(form, null));
       await tester.enterText(find.byType(EmailField), 'a@b.c');
       await tester.pumpAndSettle();
-      expect(controller.text, 'a@b.c'); //email error
+      expect(form.control('email').value, 'a@b.c'); //email error
     });
 
-    testWidgets('should have email empty error when click submit', (WidgetTester tester) async {
-      await tester.pumpWidget(testTarget());
-      await tester.tap(find.byType(Button));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('johndoe@domain.com'), findsOneWidget); //email error
-    });
-
-    testWidgets('should have email empty error', (WidgetTester tester) async {
-      await tester.pumpWidget(testTarget());
-      expect(_keyForm.currentState!.validate(), false);
-      await tester.pumpAndSettle();
-      expect(find.textContaining('johndoe@domain.com'), findsOneWidget); //email error
+    testWidgets('should have email required error when click submit', (WidgetTester tester) async {
+      final form = fb.group({
+        'email': [
+          Validators.required,
+        ],
+      });
+      await tester.pumpWidget(testTarget(
+          form,
+          (control) => {
+                ValidationMessage.required: 'The email must not be empty',
+              }));
+      expect(form.hasErrors, true);
     });
 
     testWidgets('should have email format error', (WidgetTester tester) async {
-      await tester.pumpWidget(testTarget());
-      await tester.enterText(find.byType(EmailField), 'a@b');
-      expect(_keyForm.currentState!.validate(), false);
+      final form = fb.group({
+        'email': [
+          Validators.email,
+        ],
+      });
+      await tester.pumpWidget(testTarget(
+          form,
+          (control) => {
+                ValidationMessage.email: 'The email must be valid like johndoe@domain.com',
+              }));
+      await tester.enterText(find.byType(EmailField), 'a');
       await tester.pumpAndSettle();
-      expect(find.textContaining('johndoe@domain.com'), findsOneWidget); //email error
+      expect(form.hasErrors, true);
     });
 
     testWidgets('should have suggestion', (WidgetTester tester) async {
-      await tester.pumpWidget(testTarget());
-      focusNode.requestFocus();
+      final form = fb.group({
+        'email': [
+          Validators.email,
+        ],
+      });
+      await tester.pumpWidget(testTarget(
+          form,
+          (control) => {
+                ValidationMessage.email: 'The email must be valid like johndoe@domain.com',
+              }));
+      final email = form.control('email');
+      email.focus();
       await tester.enterText(find.byType(EmailField), 'a@q.cc');
-      expect(_keyForm.currentState!.validate(), true);
-      dummyFocusNode.requestFocus();
+      email.unfocus();
       await tester.pumpAndSettle();
       expect(find.byType(RichText), findsWidgets);
     });
