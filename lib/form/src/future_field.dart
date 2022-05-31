@@ -21,7 +21,7 @@ class FutureField<T> extends ReactiveFormField<T, T> {
   /// ),
   /// ```
   FutureField({
-    Future<T?> Function(T? value)? onPressed,
+    Future<T?> Function(BuildContext context, T? value)? onPressed,
     required Widget Function(T?) valueBuilder,
     Key? key,
     String? formControlName,
@@ -52,7 +52,7 @@ class FutureField<T> extends ReactiveFormField<T, T> {
               child: GestureDetector(
                   onTap: onPressed != null
                       ? () async {
-                          final value = await onPressed(field.value);
+                          final value = await onPressed(field.context, field.value);
                           field.control.markAsTouched();
                           field.didChange(value);
                         }
