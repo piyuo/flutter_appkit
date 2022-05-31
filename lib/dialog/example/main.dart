@@ -32,11 +32,12 @@ class DialogExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
           child: Column(
         children: [
           Expanded(
-            child: _showSlideSheet(context),
+            child: _showBanner(context),
           ),
           Wrap(
             children: [
@@ -44,6 +45,7 @@ class DialogExample extends StatelessWidget {
               testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
               testing.ExampleButton(label: 'loading', builder: () => _loading(context)),
               testing.ExampleButton(label: 'sheet', builder: () => _showSlideSheet(context)),
+              testing.ExampleButton(label: 'banner', builder: () => _showBanner(context)),
               testing.ExampleButton(label: 'route', builder: () => _route(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
             ],
@@ -365,6 +367,11 @@ class DialogExample extends StatelessWidget {
           ]),
         ),
       ),
+    ]);
+  }
+
+  Widget _showBanner(BuildContext context) {
+    return Wrap(children: [
       ElevatedButton(
         child: const Text('show banner'),
         onPressed: () => showBanner(

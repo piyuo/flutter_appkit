@@ -40,7 +40,7 @@ Future<void> showBanner(
           ),
           onPressed: () {
             timer.cancel();
-            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+            dismissBanner(context);
             completer.complete();
           },
         ),
