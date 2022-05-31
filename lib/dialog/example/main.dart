@@ -376,6 +376,10 @@ class DialogExample extends StatelessWidget {
         ),
       ),
       ElevatedButton(
+        child: const Text('show form error banner'),
+        onPressed: () => showErrorBanner(context, 'There are items that require your attention'),
+      ),
+      ElevatedButton(
         child: const Text('dismiss banner'),
         onPressed: () => dismissBanner(context),
       ),

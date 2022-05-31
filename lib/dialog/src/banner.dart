@@ -54,3 +54,18 @@ Future<void> showBanner(
 void dismissBanner(BuildContext context) {
   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
 }
+
+/// showErrorBanner show a simple text banner when form has error
+Future<void> showErrorBanner(BuildContext context, String message) {
+  return showBanner(
+    context,
+    Text(message,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+        )),
+    backgroundColor: Colors.red.shade400,
+    color: Colors.white,
+    leading: const Icon(Icons.warning, color: Colors.white),
+  );
+}
