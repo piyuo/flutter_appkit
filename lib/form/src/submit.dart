@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Submit is form submit button
@@ -7,7 +8,8 @@ class Submit extends StatelessWidget {
   const Submit({
     required this.label,
     this.onPressed,
-    this.focusNode,
+    this.showBannerWhenError = true,
+    this.showLoadingToast = true,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.elevation = 2,
@@ -27,8 +29,11 @@ class Submit extends StatelessWidget {
   /// onPressed called when user pressed button
   final Future<void> Function()? onPressed;
 
-  /// focusNode is focusNode set to button
-  final FocusNode? focusNode;
+  /// showBannerWhenError show banner when error
+  final bool showBannerWhenError;
+
+  /// showLoadingToast show loading toast
+  final bool showLoadingToast;
 
   /// button elevation, if elevation is 0 use outlined button
   final double elevation;
@@ -39,10 +44,16 @@ class Submit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveFormConsumer(
-      builder: (context, form, child) => ElevatedButton(
-        focusNode: focusNode,
+      builder: (context, formGroup, child) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: color != null && onPressed != null ? color : null,
+          primary: formGroup.valid
+              ? color
+              : context.themeColor(
+                  light: Colors.grey.shade300,
+                  dark: Colors.grey.shade800,
+                ),
+          onPrimary: formGroup.valid ? null : Colors.grey.shade500,
+          elevation: formGroup.valid ? elevation : 0,
           padding: padding,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
@@ -56,20 +67,48 @@ class Submit extends StatelessWidget {
             fontSize: fontSize,
           ),
         ),
-        onPressed: onPressed != null && form.valid && form.enabled && form.dirty
-            ? () async {
-                dialog.toastLoading(context);
-                try {
-                  form.markAsDisabled();
-                  await onPressed?.call();
-                  form.markAsPristine();
-                } finally {
-                  form.markAsEnabled();
-                  dialog.dismiss();
-                }
-              }
+        onPressed: onPressed != null && formGroup.enabled
+            ? () => submit(
+                  context,
+                  formGroup,
+                  onPressed: onPressed!,
+                  showBannerWhenError: showBannerWhenError,
+                  showLoadingToast: showLoadingToast,
+                )
             : null,
       ),
     );
+  }
+}
+
+/// submit form, return true if form is submitted
+Future<bool> submit(
+  BuildContext context,
+  FormGroup formGroup, {
+  required Future<void> Function() onPressed,
+  bool showBannerWhenError = true,
+  bool showLoadingToast = true,
+}) async {
+  if (!formGroup.valid || !formGroup.dirty) {
+    if (showBannerWhenError) {
+      dialog.showErrorBanner(context, 'There are items that require your attention');
+    }
+    formGroup.markAllAsTouched();
+    return false;
+  }
+
+  if (showLoadingToast) {
+    dialog.toastLoading(context);
+  }
+  try {
+    formGroup.markAsDisabled();
+    await onPressed.call();
+    formGroup.markAsPristine();
+    return true;
+  } finally {
+    formGroup.markAsEnabled();
+    if (showLoadingToast) {
+      dialog.dismiss();
+    }
   }
 }

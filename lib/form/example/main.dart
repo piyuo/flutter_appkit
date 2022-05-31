@@ -18,7 +18,7 @@ main() => app.start(
       },
     );
 
-final form = fb.group({
+final formGroup = fb.group({
   'rating': FormControl<double>(value: 2.5),
   'raw': FormControl<String>(value: null),
   'phone': FormControl<PhoneNumber>(
@@ -91,7 +91,7 @@ class FormExample extends StatelessWidget {
 
   Widget _newForm(BuildContext context) {
     return ReactiveForm(
-      formGroup: form,
+      formGroup: formGroup,
       child: Column(
         children: <Widget>[
           RatingField<double>(
@@ -156,7 +156,7 @@ class FormExample extends StatelessWidget {
             color: Colors.green,
             label: 'Submit',
             onPressed: () async {
-              debugPrint(form.value.toString());
+              debugPrint(formGroup.value.toString());
             },
           ),
           FutureField<String>(
@@ -219,7 +219,7 @@ class FormExample extends StatelessWidget {
                   icon: const Icon(Icons.bluetooth),
                   label: const Text('Search'),
                   onPressed: () {
-                    form.control('selection').value = 'option 1';
+                    formGroup.control('selection').value = 'option 1';
                   }),
             ),
             readOnly: true,
