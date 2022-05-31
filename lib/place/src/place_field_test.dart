@@ -1,52 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/form/form.dart' as form;
-import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/assets/assets.dart' as asset;
+import 'package:reactive_forms/reactive_forms.dart';
 import 'place_field.dart';
 import 'show_search.dart';
 
 void main() {
-  final _keyForm = GlobalKey<FormState>();
-
-  final placeController = ValueNotifier<types.Place?>(null);
-
-  final place2Controller = TextEditingController();
-
-  final FocusNode placeFocus = FocusNode();
-
-  final FocusNode place2Focus = FocusNode();
-
   setUp(() {
     // ignore: invalid_use_of_visible_for_testing_member
     asset.mock('{"enterAddr":""}');
   });
 
-  Widget testTarget() {
+  Widget testTarget(FormGroup formGroup) {
     return MaterialApp(
       home: Scaffold(
-        body: Form(
-          key: _keyForm,
+        body: ReactiveForm(
+          formGroup: formGroup,
           child: Column(
             children: [
               PlaceField(
-                key: const Key('test-place'),
-                controller: placeController,
-                label: 'Address',
-                focusNode: placeFocus,
-                nextFocusNode: place2Focus,
-                requiredField: true,
-              ),
-              form.InputField(
-                key: const Key('test-place2'),
-                controller: place2Controller,
-                focusNode: place2Focus,
-                hint: '(Optional) Floor/Room/Building number',
+                formControlName: 'place',
               ),
               form.Submit(
-                key: const Key('submit'),
                 label: 'submit',
-                formKey: _keyForm,
                 onPressed: () async {},
               ),
             ],
@@ -56,9 +33,13 @@ void main() {
     );
   }
 
-  group('[place-field]', () {
+  group('[place_field]', () {
     testWidgets('should show search', (WidgetTester tester) async {
-      await tester.pumpWidget(testTarget());
+      final form = fb.group({
+        'email': [''],
+      });
+
+      await tester.pumpWidget(testTarget(form));
 
       // show search
       await tester.tap(find.byType(PlaceField));
