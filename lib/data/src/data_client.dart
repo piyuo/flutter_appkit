@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'dataset.dart';
 
-/// DataClientGetter get data from remote service
+/// DataClientLoader load data from remote service
 /// ```dart
 /// getter: (context, id) async {
 ///   return sample.Person();
 /// },
 /// ```
-typedef DataClientGetter<T> = Future<T?> Function(BuildContext context, String id);
+typedef DataClientLoader<T> = Future<T?> Function(BuildContext context, String id);
 
 /// DataClient provide a way to access data though dataset
 /// ```dart
@@ -35,7 +35,7 @@ class DataClient<T extends pb.Object> {
   /// ```
   DataClient({
     required this.dataBuilder,
-    required this.getter,
+    required this.loader,
   });
 
   /// dataBuilder build new row
@@ -44,8 +44,8 @@ class DataClient<T extends pb.Object> {
   /// _dataset keep all rows in dataset
   late Dataset<T> dataset;
 
-  /// getter get data from remote service
-  final DataClientGetter<T> getter;
+  /// loader get data from remote service
+  final DataClientLoader<T> loader;
 
   /// load dataset if not set, get data if id present
   /// ```dart
@@ -61,7 +61,7 @@ class DataClient<T extends pb.Object> {
         return data;
       }
 
-      data = await getter(context, id);
+      data = await loader(context, id);
       if (data != null) {
         dataset.insert(context, [data]);
         return data;

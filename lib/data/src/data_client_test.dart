@@ -18,7 +18,7 @@ void main() {
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
-        getter: (context, id) async {
+        loader: (context, id) async {
           isGet = true;
           return sample.Person(entity: pb.Entity(id: 'myId'));
         },
@@ -38,7 +38,7 @@ void main() {
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
-        getter: (context, id) async {
+        loader: (context, id) async {
           isGet = true;
           return sample.Person(entity: pb.Entity(id: 'myId'));
         },
@@ -55,7 +55,7 @@ void main() {
       await dataset.load(testing.Context());
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
-        getter: (context, id) async => null,
+        loader: (context, id) async => null,
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
@@ -77,7 +77,7 @@ void main() {
 
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
-        getter: (context, id) async => null,
+        loader: (context, id) async => null,
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
@@ -99,7 +99,7 @@ void main() {
 
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
-        getter: (context, id) async => null,
+        loader: (context, id) async => null,
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'existsPerson');
       expect(result, isNotNull);
