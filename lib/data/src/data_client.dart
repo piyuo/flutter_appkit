@@ -42,7 +42,7 @@ class DataClient<T extends pb.Object> {
   final pb.Builder<T> dataBuilder;
 
   /// _dataset keep all rows in dataset
-  late Dataset<T> _dataset;
+  late Dataset<T> dataset;
 
   /// getter get data from remote service
   final DataClientGetter<T> getter;
@@ -52,8 +52,8 @@ class DataClient<T extends pb.Object> {
   /// await client.load(testing.Context(), ds, 'id-123');
   /// ```
   Future<T> load(BuildContext context, {required Dataset<T> dataset, required String id}) async {
-    _dataset = dataset;
-    await _dataset.load(context);
+    this.dataset = dataset;
+    await dataset.load(context);
 
     if (id.isNotEmpty) {
       var data = await dataset.read(id);
@@ -74,21 +74,5 @@ class DataClient<T extends pb.Object> {
   /// ```dart
   /// await client.setDataset(ds);
   /// ```
-  void setDataset(Dataset<T> dataset) => _dataset = dataset;
-
-  /// delete data from cache, only delete cache when remover return true
-  /// ```dart
-  /// await client.delete(context, person);
-  /// ```
-  Future<void> delete(BuildContext context, T row) async {
-    await _dataset.delete(context, [row]);
-  }
-
-  /// insert rows to dataset
-  /// ```dart
-  /// await client.insert(context, list);
-  /// ```
-  Future<void> insert(BuildContext context, List<T> rows) async {
-    await _dataset.insert(context, rows);
-  }
+  void setDataset(Dataset<T> dataset) => this.dataset = dataset;
 }

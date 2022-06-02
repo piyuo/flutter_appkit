@@ -62,7 +62,7 @@ void main() {
       expect(dataset.isEmpty, true);
 
       final person = sample.Person()..name = 'john';
-      await dataClient.insert(testing.Context(), [person]);
+      await dataClient.dataset.insert(testing.Context(), [person]);
       final firstPerson = await dataset.first;
       expect(firstPerson!.name, 'john');
     });
@@ -84,7 +84,7 @@ void main() {
       expect(dataset.isNotEmpty, true);
 
       final person = sample.Person()..name = 'john';
-      await dataClient.insert(testing.Context(), [person]);
+      await dataClient.dataset.insert(testing.Context(), [person]);
       final firstPerson = await dataset.first;
       expect(firstPerson!.name, 'john');
     });
@@ -105,7 +105,7 @@ void main() {
       expect(result, isNotNull);
       expect(dataset.isNotEmpty, true);
 
-      await dataClient.delete(testing.Context(), person);
+      await dataClient.dataset.delete(testing.Context(), [person]);
       final firstPerson = await dataset.first;
       expect(firstPerson, isNull);
     });
