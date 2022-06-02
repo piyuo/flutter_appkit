@@ -311,8 +311,9 @@ void main() {
       bool? lastIsRefresh;
       int? lastLimit;
       String? lastAnchorId;
+      final dataset = DatasetRam(dataBuilder: () => sample.Person());
       final view = PagedFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        dataset,
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
@@ -348,7 +349,7 @@ void main() {
       expect(lastAnchorId, isNull);
 
       await view.refresh(testing.Context());
-      await view.setRowsPerPage(testing.Context(), 20);
+      await dataset.setRowsPerPage(testing.Context(), 20);
       expect(view.rowsPerPage, 20);
       expect(lastIsRefresh, true);
       expect(lastLimit, 10);
@@ -358,7 +359,7 @@ void main() {
       lastIsRefresh = null;
       lastLimit = null;
       lastAnchorId = null;
-      await view.setRowsPerPage(testing.Context(), 10);
+      await dataset.setRowsPerPage(testing.Context(), 10);
       expect(view.rowsPerPage, 10);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
@@ -372,7 +373,7 @@ void main() {
       expect(lastAnchorId, isNull);
 
       await view.refresh(testing.Context());
-      await view.setRowsPerPage(testing.Context(), 30);
+      await dataset.setRowsPerPage(testing.Context(), 30);
       expect(view.rowsPerPage, 30);
       expect(lastIsRefresh, true);
       expect(lastLimit, 10);

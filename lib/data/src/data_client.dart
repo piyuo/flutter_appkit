@@ -42,7 +42,7 @@ class DataClient<T extends pb.Object> {
   final pb.Builder<T> dataBuilder;
 
   /// _dataset keep all rows in dataset
-  Dataset<T>? _dataset;
+  late Dataset<T> _dataset;
 
   /// getter get data from remote service
   final DataClientGetter<T> getter;
@@ -52,10 +52,9 @@ class DataClient<T extends pb.Object> {
   /// await client.load(testing.Context(), ds, 'id-123');
   /// ```
   Future<T> load(BuildContext context, {required Dataset<T> dataset, required String id}) async {
-    if (_dataset == null) {
-      _dataset = dataset;
-      await _dataset!.load();
-    }
+    _dataset = dataset;
+    await _dataset.load(context);
+
     if (id.isNotEmpty) {
       var data = await dataset.read(id);
       if (data != null) {
@@ -64,7 +63,7 @@ class DataClient<T extends pb.Object> {
 
       data = await getter(context, id);
       if (data != null) {
-        dataset.update(context, data);
+        dataset.insert(context, [data]);
         return data;
       }
     }
@@ -81,24 +80,15 @@ class DataClient<T extends pb.Object> {
   /// ```dart
   /// await client.delete(context, person);
   /// ```
-  Future<bool> delete(BuildContext context, T row) async {
-    if (_dataset == null) {
-      return false;
-    }
-    await _dataset!.delete(context, [row]);
-    return true;
+  Future<void> delete(BuildContext context, T row) async {
+    await _dataset.delete(context, [row]);
   }
 
-  /// update data to cache, only update cache when setter return true
+  /// insert rows to dataset
   /// ```dart
-  /// final person = sample.Person()..name = 'john';
-  /// await client.update(context, person);
+  /// await client.insert(context, list);
   /// ```
-  Future<bool> update(BuildContext context, T row) async {
-    if (_dataset == null) {
-      return false;
-    }
-    await _dataset!.update(context, row);
-    return true;
+  Future<void> insert(BuildContext context, List<T> rows) async {
+    await _dataset.insert(context, rows);
   }
 }

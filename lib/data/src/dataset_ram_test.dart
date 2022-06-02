@@ -106,21 +106,6 @@ void main() {
       expect(obj2, isNull);
     });
 
-    test('should set row and move to first', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await dataset.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
-      expect(dataset.length, 1);
-      await dataset.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'first')));
-      expect(dataset.length, 1);
-      await dataset.update(testing.Context(), sample.Person(entity: pb.Entity(id: 'second')));
-      expect(dataset.length, 2);
-      expect((await dataset.first)!.entityID, 'second');
-      final obj = await dataset.read('first');
-      expect(obj, isNotNull);
-      final obj2 = await dataset.read('second');
-      expect(obj2, isNotNull);
-    });
-
     test('should use forEach to iterate all row', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);

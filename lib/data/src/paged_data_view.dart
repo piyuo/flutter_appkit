@@ -15,7 +15,19 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
           _dataset,
           loader: loader,
           dataBuilder: dataBuilder,
-        );
+        ) {
+    _dataset.onInsert = (context, _) async => await gotoPage(context, 0);
+    _dataset.onDelete = (context, _) async {
+      final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
+      if (pageIndex >= paginator.pageCount) {
+        pageIndex = paginator.pageCount - 1;
+      }
+    };
+    _dataset.onRowsPerPageChanged = (context) async {
+      pageIndex = 0;
+      await gotoPage(context, 0);
+    };
+  }
 
   /// pageIndex is current page index
   int pageIndex = 0;
@@ -115,35 +127,5 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
       //the page is not fill with enough data, load more data
       await more(context, rowsPerPage - expectRowsCount);
     }
-  }
-
-  /// setRowsPerPage set rows per page and change page index to 0
-  /// ```dart
-  /// await setRowsPerPage(context, 20);
-  /// ```
-  @override
-  Future<void> setRowsPerPage(BuildContext context, int value) async {
-    pageIndex = 0;
-    await dataset.setRowsPerPage(context, value);
-    await gotoPage(context, 0);
-  }
-
-  /// delete selected item in dataset
-  @override
-  @mustCallSuper
-  Future<void> delete(BuildContext context) async {
-    await super.delete(context);
-    final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
-    if (pageIndex >= paginator.pageCount) {
-      pageIndex = paginator.pageCount - 1;
-    }
-  }
-
-  /// update item in dataset
-  @override
-  @mustCallSuper
-  Future<void> update(BuildContext context, T row) async {
-    await super.update(context, row);
-    await gotoPage(context, 0);
   }
 }

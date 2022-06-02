@@ -25,8 +25,12 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   List<T> _result = [];
 
   /// load dataset content
+  @mustCallSuper
   @override
-  Future<void> load() async => await _dataset.load();
+  Future<void> load(BuildContext context) async {
+    await _dataset.load(context);
+    await super.load(context);
+  }
 
   /// setFilters set filter to dataset
   /// ```dart
@@ -121,8 +125,10 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
     await _dataset.insert(context, list);
     if (hasFilter) {
       final matched = getMatchRows(list);
+      removeDuplicateInTarget(matched, _result);
       _result.insertAll(0, matched);
     }
+    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -135,8 +141,10 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
     await _dataset.add(context, list);
     if (hasFilter) {
       final matched = getMatchRows(list);
+      removeDuplicateInTarget(matched, _result);
       _result.addAll(matched);
     }
+    await super.add(context, list);
   }
 
   /// add rows into ram
@@ -148,6 +156,7 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> delete(BuildContext context, List<T> list) async {
     await _dataset.delete(context, list);
     _result.removeWhere((item) => list.contains(item));
+    await super.delete(context, list);
   }
 
   /// clear dataset
@@ -159,22 +168,7 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> reset() async {
     await _dataset.reset();
     _result = [];
-  }
-
-  /// setRow set row into dataset and move row to first
-  /// ```dart
-  /// await dataset.setRow(row);
-  /// ```
-  @override
-  @mustCallSuper
-  Future<void> update(BuildContext context, T row) async {
-    await _dataset.update(context, row);
-    if (hasFilter) {
-      _result.remove(row);
-      if (match(row)) {
-        _result.insert(0, row);
-      }
-    }
+    await super.reset();
   }
 
   /// getRowByID return object by id

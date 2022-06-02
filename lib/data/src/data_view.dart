@@ -106,7 +106,7 @@ abstract class DataView<T extends pb.Object> {
   Future<void> load(BuildContext context) async {
     selectedRows = [];
     displayRows = [];
-    await dataset.load();
+    await dataset.load(context);
   }
 
   /// onRefresh reset dataset but not on full view mode, return true if reset dataset
@@ -134,7 +134,7 @@ abstract class DataView<T extends pb.Object> {
       debugPrint('[data_view] no refresh already');
       return false;
     }
-    await dataset.load(); // someone may change dataset so reload it
+    await dataset.load(context); // someone may change dataset so reload it
     T? anchor = await dataset.first;
     final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
     if (downloadRows.isNotEmpty) {
@@ -166,12 +166,6 @@ abstract class DataView<T extends pb.Object> {
     }
     return false;
   }
-
-  /// setRowsPerPage set rows per page and change page index to 0
-  /// ```dart
-  /// await setRowsPerPage(context, 20);
-  /// ```
-  Future<void> setRowsPerPage(BuildContext context, int value);
 
   /// isRowSelected return true when row is selected
   /// ```dart
@@ -213,11 +207,5 @@ abstract class DataView<T extends pb.Object> {
       return;
     }
     await dataset.delete(context, selectedRows);
-  }
-
-  /// update item in dataset
-  @mustCallSuper
-  Future<void> update(BuildContext context, T row) async {
-    await dataset.update(context, row);
   }
 }

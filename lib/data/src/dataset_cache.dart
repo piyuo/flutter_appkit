@@ -68,12 +68,14 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   Future<T?> get last async => _index.isNotEmpty ? await cache.getObject(_index.last, dataBuilder) : null;
 
   /// load dataset content
+  @mustCallSuper
   @override
-  Future<void> load() async {
+  Future<void> load(BuildContext context) async {
     _index = await cache.getStringList('$name$keyIndex') ?? [];
     internalRowsPerPage = await cache.getInt('$name$keyRowsPerPage') ?? 10;
     internalNoRefresh = await cache.getBool('$name$keyNoRefresh') ?? false;
     internalNoMore = await cache.getBool('$name$keyNoMore') ?? false;
+    await super.load(context);
   }
 
   /// save dataset cache
@@ -119,6 +121,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await cache.setObject(row.entityID, row);
     }
+    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -135,6 +138,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await cache.setObject(row.entityID, row);
     }
+    await super.add(context, list);
   }
 
   /// remove rows from dataset
@@ -151,6 +155,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
       }
     }
     await save(context);
+    await super.delete(context, list);
   }
 
   /// reset dataset
@@ -173,18 +178,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
         break;
       }
     }
-  }
-
-  /// update set row into dataset and move row to first
-  /// ```dart
-  /// await dataset.update(row);
-  /// ```
-  @override
-  Future<void> update(BuildContext context, T row) async {
-    _index.removeWhere((id) => row.entityID == id);
-    _index.insert(0, row.entityID);
-    await save(context);
-    await cache.setObject(row.entityID, row);
+    await super.reset();
   }
 
   /// range return sublist of rows, return null if something went wrong

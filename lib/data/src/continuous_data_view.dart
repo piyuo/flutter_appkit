@@ -24,13 +24,6 @@ class ContinuousDataView<T extends pb.Object> extends DataView<T> {
     return isReset;
   }
 
-  /// setRowsPerPage set rows per page and change page index to 0
-  /// ```dart
-  /// await setRowsPerPage(context, 20);
-  /// ```
-  @override
-  Future<void> setRowsPerPage(BuildContext context, int value) async {}
-
   /// fill display rows
   /// ```dart
   /// await ds.fill();

@@ -483,13 +483,14 @@ void main() {
       expect(dataView.pageInfo(testing.Context()), '21 - 22 of 22');
     });
 
-    test('should set rows per page', () async {
+    test('should change when rows per page changed', () async {
       int step = 0;
       bool? lastIsRefresh;
       int? lastLimit;
       String? lastAnchorId;
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
+        dataset,
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           lastIsRefresh = isRefresh;
@@ -522,7 +523,7 @@ void main() {
       expect(lastLimit, 10);
       expect(lastAnchorId, isNull);
 
-      await dataView.setRowsPerPage(testing.Context(), 20);
+      await dataset.setRowsPerPage(testing.Context(), 20);
       expect(dataView.rowsPerPage, 20);
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);
@@ -532,7 +533,7 @@ void main() {
       lastIsRefresh = null;
       lastLimit = null;
       lastAnchorId = null;
-      await dataView.setRowsPerPage(testing.Context(), 10);
+      await dataset.setRowsPerPage(testing.Context(), 10);
       expect(dataView.rowsPerPage, 10);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
@@ -545,7 +546,7 @@ void main() {
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
 
-      await dataView.setRowsPerPage(testing.Context(), 30);
+      await dataset.setRowsPerPage(testing.Context(), 30);
       expect(dataView.rowsPerPage, 30);
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);

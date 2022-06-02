@@ -40,20 +40,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @override
   Future<T?> get last async => _rows.isNotEmpty ? _rows.last : null;
 
-  /// load dataset content
-  @override
-  Future<void> load() async {}
-
-  /// _removeDuplicate remove duplicate row in the list
-  void _removeDuplicate(T newRow, List<T> list) {
-    for (T row in list) {
-      if (row.entityID == newRow.entityID) {
-        list.remove(row);
-        break;
-      }
-    }
-  }
-
   /// insert list of rows into ram
   /// ```dart
   /// await dataset.insert([sample.Person()]);
@@ -61,10 +47,9 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @override
   @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
-    for (T row in list) {
-      _removeDuplicate(row, _rows);
-    }
+    removeDuplicateInTarget(list, _rows);
     _rows.insertAll(0, list);
+    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -74,10 +59,9 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @override
   @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
-    for (T row in list) {
-      _removeDuplicate(row, _rows);
-    }
+    removeDuplicateInTarget(list, _rows);
     _rows.addAll(list);
+    await super.add(context, list);
   }
 
   /// remove rows from dataset
@@ -90,6 +74,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       _rows.remove(row);
     }
+    await super.delete(context, list);
   }
 
   /// reset dataset
@@ -100,17 +85,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @mustCallSuper
   Future<void> reset() async {
     _rows.clear();
-  }
-
-  /// setRow set row into dataset and move row to first
-  /// ```dart
-  /// await dataset.setRow(row);
-  /// ```
-  @override
-  @mustCallSuper
-  Future<void> update(BuildContext context, T row) async {
-    _removeDuplicate(row, _rows);
-    _rows.insert(0, row);
+    await super.reset();
   }
 
   /// range return sublist of rows, return null if something went wrong

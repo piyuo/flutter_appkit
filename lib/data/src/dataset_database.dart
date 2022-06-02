@@ -48,10 +48,12 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
 
   /// load dataset content
   @override
-  Future<void> load() async {
+  @mustCallSuper
+  Future<void> load(BuildContext context) async {
     _index = await _database.getStringList(keyIndex) ?? [];
     internalRowsPerPage = await _database.getInt(keyRowsPerPage) ?? 10;
     internalNoRefresh = await _database.getBool(keyNoRefresh) ?? false;
+    await super.load(context);
   }
 
   /// save dataset cache
@@ -89,6 +91,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
+    await super.insert(context, list);
   }
 
   /// add list of rows into dataset database
@@ -105,6 +108,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await _database.setObject(row.entityID, row);
     }
+    await super.add(context, list);
   }
 
   /// delete rows from dataset
@@ -121,6 +125,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
       }
     }
     await save(context);
+    await super.delete(context, list);
   }
 
   /// reset dataset database
@@ -133,19 +138,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     _index = [];
     internalNoRefresh = false;
     await _database.reset();
-  }
-
-  /// update set row into dataset and move row to first
-  /// ```dart
-  /// await dataset.update(row);
-  /// ```
-  @override
-  @mustCallSuper
-  Future<void> update(BuildContext context, T row) async {
-    _index.removeWhere((id) => row.entityID == id);
-    _index.insert(0, row.entityID);
-    await save(context);
-    await _database.setObject(row.entityID, row);
+    await super.reset();
   }
 
   /// range return sublist of rows, return null if something went wrong

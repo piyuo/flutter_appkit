@@ -52,7 +52,7 @@ void main() {
 
     test('should save data', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await dataset.load();
+      await dataset.load(testing.Context());
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
         getter: (context, id) async => null,
@@ -62,15 +62,14 @@ void main() {
       expect(dataset.isEmpty, true);
 
       final person = sample.Person()..name = 'john';
-      final success = await dataClient.update(testing.Context(), person);
-      expect(success, isTrue);
+      await dataClient.insert(testing.Context(), [person]);
       final firstPerson = await dataset.first;
       expect(firstPerson!.name, 'john');
     });
 
     test('should put first in dataset when save data', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await dataset.load();
+      await dataset.load(testing.Context());
       final exists = sample.Person()
         ..name = 'exists'
         ..entity = pb.Entity(id: 'existsPerson');
@@ -85,15 +84,14 @@ void main() {
       expect(dataset.isNotEmpty, true);
 
       final person = sample.Person()..name = 'john';
-      final success = await dataClient.update(testing.Context(), person);
-      expect(success, isTrue);
+      await dataClient.insert(testing.Context(), [person]);
       final firstPerson = await dataset.first;
       expect(firstPerson!.name, 'john');
     });
 
     test('should delete data', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
-      await dataset.load();
+      await dataset.load(testing.Context());
       final person = sample.Person()
         ..name = 'john'
         ..entity = pb.Entity(id: 'existsPerson');
@@ -107,8 +105,7 @@ void main() {
       expect(result, isNotNull);
       expect(dataset.isNotEmpty, true);
 
-      final success = await dataClient.delete(testing.Context(), person);
-      expect(success, isTrue);
+      await dataClient.delete(testing.Context(), person);
       final firstPerson = await dataset.first;
       expect(firstPerson, isNull);
     });
