@@ -12,3 +12,4 @@ export 'src/dataset.dart';
 export 'src/dataset_database.dart';
 export 'src/dataset_cache.dart';
 export 'src/dataset_ram.dart';
+export 'src/data_action.dart';
