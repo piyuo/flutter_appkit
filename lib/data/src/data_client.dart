@@ -89,8 +89,8 @@ class DataClient<T extends pb.Object> {
     await dataset.insert(context, list);
   }
 
-  /// activate data from deleted/archived to active
-  Future<void> activate(BuildContext context, List<T> list) async {
+  /// restore data from deleted/archived to active
+  Future<void> restore(BuildContext context, List<T> list) async {
     for (final item in list) {
       item.markAsActive();
     }
