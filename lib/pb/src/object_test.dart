@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/src/common/common.dart' as common;
+import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'dart:convert';
 
 void main() {
@@ -41,6 +42,14 @@ void main() {
       final buf3 = obj3.writeToBuffer();
       expect(listEquals(buf, buf2), false);
       expect(listEquals(buf, buf3), true);
+    });
+
+    test('should have model', () {
+      final person = sample.Person();
+      expect(person.hasModel, isTrue);
+      expect(person.id, isNotEmpty);
+      expect(person.lastUpdateTime, isNotNull);
+      expect(person.isActive, isTrue);
     });
   });
 }
