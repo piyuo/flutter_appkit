@@ -4,11 +4,14 @@ import 'dataset.dart';
 
 /// DataClientLoader load data from remote service
 /// ```dart
-/// getter: (context, id) async {
+/// loader: (context, id) async {
 ///   return sample.Person();
 /// },
 /// ```
 typedef DataClientLoader<T> = Future<T?> Function(BuildContext context, String id);
+
+/// DataClientSaver save data to remote service
+typedef DataClientSaver<T> = Future<void> Function(BuildContext context, List<T> list);
 
 /// DataClient provide a way to access data though dataset
 /// ```dart
@@ -36,6 +39,7 @@ class DataClient<T extends pb.Object> {
   DataClient({
     required this.dataBuilder,
     required this.loader,
+    required this.saver,
   });
 
   /// dataBuilder build new row
@@ -46,6 +50,9 @@ class DataClient<T extends pb.Object> {
 
   /// loader get data from remote service
   final DataClientLoader<T> loader;
+
+  /// saver save data to remote service
+  final DataClientSaver<T> saver;
 
   /// load dataset if not set, get data if id present
   /// ```dart
@@ -75,4 +82,37 @@ class DataClient<T extends pb.Object> {
   /// await client.setDataset(ds);
   /// ```
   void setDataset(Dataset<T> dataset) => this.dataset = dataset;
+
+  /// save data to dataset and remote service
+  Future<void> save(BuildContext context, List<T> list) async {
+    await saver(context, list);
+    await dataset.insert(context, list);
+  }
+
+  /// activate data from deleted/archived to active
+  Future<void> activate(BuildContext context, List<T> list) async {
+    for (final item in list) {
+      item.markAsActive();
+    }
+    await saver(context, list);
+    await dataset.insert(context, list);
+  }
+
+  /// delete data from dataset and remote service
+  Future<void> delete(BuildContext context, List<T> list) async {
+    for (final item in list) {
+      item.markAsDeleted();
+    }
+    await saver(context, list);
+    await dataset.delete(context, list);
+  }
+
+  /// archive data from dataset and remote service
+  Future<void> archive(BuildContext context, List<T> list) async {
+    for (final item in list) {
+      item.markAsArchived();
+    }
+    await saver(context, list);
+    await dataset.delete(context, list);
+  }
 }

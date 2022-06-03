@@ -21,6 +21,7 @@ void main() {
           isGet = true;
           return sample.Person()..id = 'myId';
         },
+        saver: (_, __) async {},
       );
 
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'myId');
@@ -41,6 +42,7 @@ void main() {
           isGet = true;
           return sample.Person();
         },
+        saver: (_, __) async {},
       );
 
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
@@ -49,12 +51,13 @@ void main() {
       expect(dataset.isEmpty, true);
     });
 
-    test('should save data', () async {
+    test('should change when insert data', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
         loader: (context, id) async => null,
+        saver: (_, __) async {},
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
@@ -75,6 +78,7 @@ void main() {
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
         loader: (context, id) async => null,
+        saver: (_, __) async {},
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
@@ -97,12 +101,85 @@ void main() {
       final dataClient = DataClient<sample.Person>(
         dataBuilder: () => sample.Person(),
         loader: (context, id) async => null,
+        saver: (_, __) async {},
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'existsPerson');
       expect(result, isNotNull);
       expect(dataset.isNotEmpty, true);
 
       await dataClient.dataset.delete(testing.Context(), [person]);
+      final firstPerson = await dataset.first;
+      expect(firstPerson, isNull);
+    });
+
+    test('should save data', () async {
+      sample.Person? saved;
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final person = sample.Person()
+        ..name = 'john'
+        ..id = 'person1';
+      dataset.add(testing.Context(), [person]);
+
+      final dataClient = DataClient<sample.Person>(
+        dataBuilder: () => sample.Person(),
+        loader: (context, id) async => null,
+        saver: (_, items) async {
+          saved = items[0];
+        },
+      );
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'person1');
+      result.name = 'jo';
+      dataClient.save(testing.Context(), [result]);
+      expect(saved, isNotNull);
+      expect(saved!.name, 'jo');
+      final firstPerson = await dataset.first;
+      expect(firstPerson!.name, 'jo');
+    });
+
+    test('should delete data', () async {
+      sample.Person? saved;
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final person = sample.Person()
+        ..name = 'john'
+        ..id = 'person1';
+      dataset.add(testing.Context(), [person]);
+
+      final dataClient = DataClient<sample.Person>(
+        dataBuilder: () => sample.Person(),
+        loader: (context, id) async => null,
+        saver: (_, items) async {
+          saved = items[0];
+        },
+      );
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'person1');
+      await dataClient.delete(testing.Context(), [result]);
+      expect(saved, isNotNull);
+      expect(saved!.id, 'person1');
+      expect(saved!.isDeleted, isTrue);
+      final firstPerson = await dataset.first;
+      expect(firstPerson, isNull);
+    });
+
+    test('should archive data', () async {
+      sample.Person? saved;
+      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final person = sample.Person()
+        ..name = 'john'
+        ..id = 'person1';
+      dataset.add(testing.Context(), [person]);
+
+      final dataClient = DataClient<sample.Person>(
+        dataBuilder: () => sample.Person(),
+        loader: (context, id) async => null,
+        saver: (_, items) async {
+          saved = items[0];
+        },
+      );
+      final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'person1');
+      await dataClient.archive(testing.Context(), [result]);
+      expect(saved, isNotNull);
+      expect(saved!.id, 'person1');
+      expect(saved!.isArchived, isTrue);
       final firstPerson = await dataset.first;
       expect(firstPerson, isNull);
     });
