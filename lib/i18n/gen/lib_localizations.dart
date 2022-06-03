@@ -263,6 +263,12 @@ abstract class LibLocalizations {
   /// **'Delete'**
   String get deleteButtonText;
 
+  /// No description provided for @restoreButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restoreButtonText;
+
   /// No description provided for @saveButtonText.
   ///
   /// In en, this message translates to:

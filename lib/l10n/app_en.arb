@@ -27,6 +27,7 @@
     "addButtonText":"Add",
     "unselectAllButtonText":"Unselect All",
     "deleteButtonText":"Delete",
+    "restoreButtonText":"Restore",
     "saveButtonText":"Save",
     "backButtonText":"Back",
     "errorTitle": "Error",

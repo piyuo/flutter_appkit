@@ -27,6 +27,7 @@
     "addButtonText":"新增",
     "unselectAllButtonText":"取消所有選取",
     "deleteButtonText":"刪除",
+    "restoreButtonText":"還原",
     "saveButtonText":"存檔",
     "backButtonText":"返回",
     "errorTitle": "錯誤",

@@ -92,6 +92,9 @@ class LibLocalizationsEn extends LibLocalizations {
   String get deleteButtonText => 'Delete';
 
   @override
+  String get restoreButtonText => 'Restore';
+
+  @override
   String get saveButtonText => 'Save';
 
   @override

@@ -92,6 +92,9 @@ class LibLocalizationsZh extends LibLocalizations {
   String get deleteButtonText => '删除';
 
   @override
+  String get restoreButtonText => '还原';
+
+  @override
   String get saveButtonText => '存档';
 
   @override
@@ -527,6 +530,9 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get deleteButtonText => '刪除';
+
+  @override
+  String get restoreButtonText => '還原';
 
   @override
   String get saveButtonText => '存檔';
