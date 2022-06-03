@@ -179,7 +179,7 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   Future<T?> read(String id) async {
     if (hasFilter) {
       for (final item in _result) {
-        if (item.entityID == id) {
+        if (item.id == id) {
           return item;
         }
       }
@@ -221,7 +221,7 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   bool isIDExists(String id) {
     if (hasFilter) {
       for (final item in _result) {
-        if (item.entityID == id) {
+        if (item.id == id) {
           return true;
         }
       }

@@ -114,12 +114,12 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   @override
   @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
-    final downloadID = list.map((row) => row.entityID).toList();
+    final downloadID = list.map((row) => row.id).toList();
     _index.removeWhere((element) => downloadID.contains(element));
     _index.insertAll(0, downloadID);
     await save(context);
     for (T row in list) {
-      await cache.setObject(row.entityID, row);
+      await cache.setObject(row.id, row);
     }
     await super.insert(context, list);
   }
@@ -131,12 +131,12 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   @override
   @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
-    final downloadID = list.map((row) => row.entityID).toList();
+    final downloadID = list.map((row) => row.id).toList();
     downloadID.removeWhere((element) => _index.contains(element));
     _index.addAll(downloadID);
     await save(context);
     for (T row in list) {
-      await cache.setObject(row.entityID, row);
+      await cache.setObject(row.id, row);
     }
     await super.add(context, list);
   }
@@ -149,9 +149,9 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   @mustCallSuper
   Future<void> delete(BuildContext context, List<T> list) async {
     for (T row in list) {
-      if (_index.contains(row.entityID)) {
-        _index.remove(row.entityID);
-        await cache.delete(row.entityID);
+      if (_index.contains(row.id)) {
+        _index.remove(row.id);
+        await cache.delete(row.id);
       }
     }
     await save(context);

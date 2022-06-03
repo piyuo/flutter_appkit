@@ -12,10 +12,10 @@ import 'dart:typed_data' as $typed_data;
 const StringResponse$json = const {
   '1': 'StringResponse',
   '2': const [
-    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
   ],
 };
 
 /// Descriptor for `StringResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List stringResponseDescriptor = $convert.base64Decode('Cg5TdHJpbmdSZXNwb25zZRIOCgJpZBgBIAEoCVICaWQSFAoFdmFsdWUYAiABKAlSBXZhbHVl');
+final $typed_data.Uint8List stringResponseDescriptor = $convert.base64Decode('Cg5TdHJpbmdSZXNwb25zZRISCgRuYW1lGAEgASgJUgRuYW1lEhQKBXZhbHVlGAIgASgJUgV2YWx1ZQ==');

@@ -136,7 +136,7 @@ abstract class DataView<T extends pb.Object> {
     }
     await dataset.load(context); // someone may change dataset so reload it
     T? anchor = await dataset.first;
-    final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.entityUpdateTime, anchor?.entityID);
+    final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.lastUpdateTime, anchor?.id);
     if (downloadRows.isNotEmpty) {
       debugPrint('[data_view] refresh ${downloadRows.length} rows');
     }
@@ -154,7 +154,7 @@ abstract class DataView<T extends pb.Object> {
       return false;
     }
     T? anchor = await dataset.last;
-    final downloadRows = await loader(context, false, limit, anchor?.entityUpdateTime, anchor?.entityID);
+    final downloadRows = await loader(context, false, limit, anchor?.lastUpdateTime, anchor?.id);
     if (downloadRows.length < limit) {
       debugPrint('[data_view] has no more data');
       await dataset.setNoMore(context, true);
@@ -179,7 +179,7 @@ abstract class DataView<T extends pb.Object> {
   /// ```
   void selectRows(List<T> rows) {
     selectedRows.clear();
-    rows.removeWhere((row) => !dataset.isIDExists(row.entityID));
+    rows.removeWhere((row) => !dataset.isIDExists(row.id));
     selectedRows.addAll(rows);
   }
 
@@ -189,7 +189,7 @@ abstract class DataView<T extends pb.Object> {
   /// ```
   void selectRow(T row, bool selected) {
     selectedRows.remove(row);
-    if (selected && dataset.isIDExists(row.entityID)) {
+    if (selected && dataset.isIDExists(row.id)) {
       selectedRows.add(row);
     }
   }

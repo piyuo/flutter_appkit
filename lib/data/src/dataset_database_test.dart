@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/meta/sample/sample.dart' as sample;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'dataset_database.dart';
@@ -55,50 +54,50 @@ void main() {
     test('should remove duplicate when insert', () async {
       final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      await dataset.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
       // remove duplicate
-      await dataset.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
-      await dataset.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await dataset.insert(testing.Context(), [sample.Person()..id = 'second']);
       expect(dataset.length, 2);
-      expect((await dataset.first)!.entityID, 'second');
-      expect((await dataset.last)!.entityID, 'first');
+      expect((await dataset.first)!.id, 'second');
+      expect((await dataset.last)!.id, 'first');
     });
 
     test('should remove data', () async {
       final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      await dataset.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      await dataset.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
-      await dataset.insert(testing.Context(), [sample.Person(entity: pb.Entity(id: 'third'))]);
+      await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.insert(testing.Context(), [sample.Person()..id = 'second']);
+      await dataset.insert(testing.Context(), [sample.Person()..id = 'third']);
       expect(dataset.length, 3);
 
       await dataset.delete(testing.Context(), [
-        sample.Person(entity: pb.Entity(id: 'first')),
-        sample.Person(entity: pb.Entity(id: 'third')),
+        sample.Person()..id = 'first',
+        sample.Person()..id = 'third',
       ]);
 
       expect(dataset.length, 1);
-      expect((await dataset.first)!.entityID, 'second');
+      expect((await dataset.first)!.id, 'second');
     });
 
     test('should remove duplicate when add', () async {
       final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
       // remove duplicate
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
       expect(dataset.length, 2);
-      expect((await dataset.first)!.entityID, 'first');
-      expect((await dataset.last)!.entityID, 'second');
+      expect((await dataset.first)!.id, 'first');
+      expect((await dataset.last)!.id, 'second');
     });
 
     test('should get sub rows', () async {
@@ -107,8 +106,8 @@ void main() {
       var rows = await dataset.range(0);
       expect(rows.length, 0);
 
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
       rows = await dataset.range(0);
       expect(rows.length, 2);
       rows = await dataset.range(0, 2);
@@ -120,8 +119,8 @@ void main() {
     test('should save state', () async {
       final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
       await dataset.setNoMore(testing.Context(), true);
       await dataset.setRowsPerPage(testing.Context(), 21);
 
@@ -130,17 +129,17 @@ void main() {
       expect(dataset2.noMore, true);
       expect(dataset2.rowsPerPage, 21);
       expect(dataset2.length, 2);
-      expect((await dataset2.first)!.entityID, 'first');
-      expect((await dataset2.last)!.entityID, 'second');
+      expect((await dataset2.first)!.id, 'first');
+      expect((await dataset2.last)!.id, 'second');
     });
 
     test('should get row by id', () async {
       final dataset = DatasetDatabase(await database.open('test'), dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      await dataset.add(testing.Context(), List.generate(2, (i) => sample.Person(entity: pb.Entity(id: '$i'))));
+      await dataset.add(testing.Context(), List.generate(2, (i) => sample.Person()..id = '$i'));
       final obj = await dataset.read('1');
       expect(obj, isNotNull);
-      expect(obj!.entityID, '1');
+      expect(obj!.id, '1');
       final obj2 = await dataset.read('not-exist');
       expect(obj2, isNull);
     });
@@ -148,14 +147,14 @@ void main() {
     test('should use forEach to iterate all row', () async {
       final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'second'))]);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
 
       var count = 0;
       var id = '';
       await dataset.forEach((row) {
         count++;
-        id = row.entityID;
+        id = row.id;
       });
       expect(count, 2);
       expect(id, 'second');
@@ -164,7 +163,7 @@ void main() {
     test('should check id exists', () async {
       final dataset = DatasetDatabase<sample.Person>(await database.open('test'), dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      await dataset.add(testing.Context(), [sample.Person(entity: pb.Entity(id: 'first'))]);
+      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.isIDExists('first'), isTrue);
       expect(dataset.isIDExists('notExists'), isFalse);
     });

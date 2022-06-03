@@ -12,7 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class CmdReverseGeocoding extends pb.Object {
   $core.int mapIdXXX() => 1002;
-  namespace() => 'sys';
+  get namespace => 'sys';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CmdReverseGeocoding', createEmptyInstance: create)
     ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)

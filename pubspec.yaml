@@ -22,6 +22,7 @@ dependencies:
   meta: ^1.7.0
   provider: ^6.0.1
   intl: ^0.17.0
+  uuid: ^3.0.6
   url_launcher: ^6.0.17
   auto_size_text: ^3.0.0
   flutter_easyloading: ^3.0.3

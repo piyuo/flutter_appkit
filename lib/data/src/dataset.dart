@@ -188,7 +188,7 @@ abstract class Dataset<T extends pb.Object> {
 void removeDuplicateInTarget(List source, List target) {
   for (final s in source) {
     for (final t in target) {
-      if (s.entityID == t.entityID) {
+      if (s.id == t.id) {
         target.remove(t);
         break;
       }

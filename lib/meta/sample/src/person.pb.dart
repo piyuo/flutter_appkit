@@ -10,16 +10,17 @@ import 'package:libcli/pb/pb.dart' as pb;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'package:libcli/pb/src/common/src/entity.pb.dart' as $0;
+import 'package:libcli/pb/src/common/src/model.pb.dart' as $0;
 
 class Person extends pb.Object {
   $core.int mapIdXXX() => 1001;
-  getEntity() => entity;
-  void setEntity(e) => entity = e;
-  namespace() => 'sample';
+  get hasModel => true;
+  get model => m;
+  set model(v) => m = v!;
+  get namespace => 'sample';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Person', createEmptyInstance: create)
-    ..aOM<$0.Entity>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'entity', subBuilder: $0.Entity.create)
+    ..aOM<$0.Model>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'm', subBuilder: $0.Model.create)
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'age', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
@@ -27,13 +28,13 @@ class Person extends pb.Object {
 
   Person._() : super();
   factory Person({
-    $0.Entity? entity,
+    $0.Model? m,
     $core.String? name,
     $core.int? age,
   }) {
     final _result = create();
-    if (entity != null) {
-      _result.entity = entity;
+    if (m != null) {
+      _result.m = m;
     }
     if (name != null) {
       _result.name = name;
@@ -65,15 +66,15 @@ class Person extends pb.Object {
   static Person? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $0.Entity get entity => $_getN(0);
+  $0.Model get m => $_getN(0);
   @$pb.TagNumber(1)
-  set entity($0.Entity v) { setField(1, v); }
+  set m($0.Model v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasEntity() => $_has(0);
+  $core.bool hasM() => $_has(0);
   @$pb.TagNumber(1)
-  void clearEntity() => clearField(1);
+  void clearM() => clearField(1);
   @$pb.TagNumber(1)
-  $0.Entity ensureEntity() => $_ensure(0);
+  $0.Model ensureM() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);

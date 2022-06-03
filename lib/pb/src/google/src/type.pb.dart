@@ -19,7 +19,7 @@ export 'type.pbenum.dart';
 
 class Type extends pb.Object {
   $core.int mapIdXXX() => 1010;
-  namespace() => 'google';
+  get namespace => 'google';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Type', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'google.protobuf'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')

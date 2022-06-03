@@ -102,7 +102,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @override
   Future<T?> read(String id) async {
     for (T row in _rows) {
-      if (row.entityID == id) {
+      if (row.id == id) {
         return row;
       }
     }
@@ -125,5 +125,5 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// await dataset.isIDExists();
   /// ```
   @override
-  bool isIDExists(String id) => _rows.any((row) => row.entityID == id);
+  bool isIDExists(String id) => _rows.any((row) => row.id == id);
 }

@@ -12,24 +12,22 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class GeoSuggestion extends pb.Object {
   $core.int mapIdXXX() => 1005;
-
-  $core.int compareTo(pb.Object other) => other is GeoSuggestion ? other.id.compareTo(this.id) : -1;
-  namespace() => 'sys';
+  get namespace => 'sys';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GeoSuggestion', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'key')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'text')
     ..hasRequiredFields = false
   ;
 
   GeoSuggestion._() : super();
   factory GeoSuggestion({
-    $core.String? id,
+    $core.String? key,
     $core.String? text,
   }) {
     final _result = create();
-    if (id != null) {
-      _result.id = id;
+    if (key != null) {
+      _result.key = key;
     }
     if (text != null) {
       _result.text = text;
@@ -58,13 +56,13 @@ class GeoSuggestion extends pb.Object {
   static GeoSuggestion? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get id => $_getSZ(0);
+  $core.String get key => $_getSZ(0);
   @$pb.TagNumber(1)
-  set id($core.String v) { $_setString(0, v); }
+  set key($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasKey() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearKey() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get text => $_getSZ(1);

@@ -12,7 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class SourceContext extends pb.Object {
   $core.int mapIdXXX() => 1007;
-  namespace() => 'google';
+  get namespace => 'google';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SourceContext', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'google.protobuf'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fileName')

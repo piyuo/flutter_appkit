@@ -12,7 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class OK extends pb.Object {
   $core.int mapIdXXX() => 2;
-  namespace() => 'common';
+  get namespace => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OK', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'text')

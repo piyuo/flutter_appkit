@@ -90,7 +90,7 @@ abstract class Service {
     }
     if (result is FirewallPass) {
       // auto add access token
-      if (action.needAccessToken() && accessTokenBuilder != null) {
+      if (action.accessTokenRequired && accessTokenBuilder != null) {
         final accessToken = await accessTokenBuilder!(context);
         if (accessToken != null) {
           action.setAccessToken(accessToken);

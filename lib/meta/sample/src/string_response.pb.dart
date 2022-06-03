@@ -12,24 +12,22 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class StringResponse extends pb.Object {
   $core.int mapIdXXX() => 1003;
-
-  $core.int compareTo(pb.Object other) => other is StringResponse ? other.id.compareTo(this.id) : -1;
-  namespace() => 'sample';
+  get namespace => 'sample';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'StringResponse', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value')
     ..hasRequiredFields = false
   ;
 
   StringResponse._() : super();
   factory StringResponse({
-    $core.String? id,
+    $core.String? name,
     $core.String? value,
   }) {
     final _result = create();
-    if (id != null) {
-      _result.id = id;
+    if (name != null) {
+      _result.name = name;
     }
     if (value != null) {
       _result.value = value;
@@ -58,13 +56,13 @@ class StringResponse extends pb.Object {
   static StringResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get id => $_getSZ(0);
+  $core.String get name => $_getSZ(0);
   @$pb.TagNumber(1)
-  set id($core.String v) { $_setString(0, v); }
+  set name($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasName() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearName() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get value => $_getSZ(1);

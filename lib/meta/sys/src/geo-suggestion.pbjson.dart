@@ -12,10 +12,10 @@ import 'dart:typed_data' as $typed_data;
 const GeoSuggestion$json = const {
   '1': 'GeoSuggestion',
   '2': const [
-    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
     const {'1': 'text', '3': 2, '4': 1, '5': 9, '10': 'text'},
   ],
 };
 
 /// Descriptor for `GeoSuggestion`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List geoSuggestionDescriptor = $convert.base64Decode('Cg1HZW9TdWdnZXN0aW9uEg4KAmlkGAEgASgJUgJpZBISCgR0ZXh0GAIgASgJUgR0ZXh0');
+final $typed_data.Uint8List geoSuggestionDescriptor = $convert.base64Decode('Cg1HZW9TdWdnZXN0aW9uEhAKA2tleRgBIAEoCVIDa2V5EhIKBHRleHQYAiABKAlSBHRleHQ=');

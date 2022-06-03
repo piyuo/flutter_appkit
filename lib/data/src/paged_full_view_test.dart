@@ -3,7 +3,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/pb/src/google/google.dart' as google;
 import 'paged_full_view.dart';
 import 'dataset_ram.dart';
@@ -28,7 +27,7 @@ void main() {
             limit = 2;
           }
           refreshCount++;
-          return List.generate(limit, (i) => sample.Person(entity: pb.Entity(id: '$refreshCount$i')));
+          return List.generate(limit, (i) => sample.Person()..id = '$refreshCount$i');
         },
       );
       await view.load(testing.Context());
@@ -53,8 +52,7 @@ void main() {
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test2',
         dataBuilder: () => sample.Person(),
-        loader: (context, _, __, anchorTimestamp, anchorId) async =>
-            [sample.Person(entity: pb.Entity(id: 'duplicate'))],
+        loader: (context, _, __, anchorTimestamp, anchorId) async => [sample.Person()..id = 'duplicate'],
       );
       await view.load(testing.Context());
       await view.refresh(testing.Context());
@@ -63,21 +61,12 @@ void main() {
     });
 
     test('should not reset on refresh', () async {
-      int idCount = 0;
       final view = PagedFullView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
-          idCount++;
-          return List.generate(
-              10,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: idCount.toString(),
-                      updateTime: DateTime.now().utcTimestamp,
-                    ),
-                  ));
+          return List.generate(10, (index) => sample.Person());
         },
       );
       await view.load(testing.Context());
@@ -104,14 +93,7 @@ void main() {
           _anchorTimestamp = anchorTimestamp;
           _anchorId = anchorId;
           idCount++;
-          return List.generate(
-              10,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: idCount.toString(),
-                      updateTime: DateTime.now().utcTimestamp,
-                    ),
-                  ));
+          return List.generate(10, (index) => sample.Person()..id = idCount.toString());
         },
       );
       await view.load(testing.Context());
@@ -132,7 +114,7 @@ void main() {
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
-          return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
+          return [sample.Person()..id = 'only'];
         },
       );
       await view.load(testing.Context());
@@ -157,7 +139,7 @@ void main() {
         id: 'test',
         dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
-          return [sample.Person(entity: pb.Entity(id: 'only', updateTime: DateTime.now().utcTimestamp))];
+          return [sample.Person()];
         },
       );
       await view.load(testing.Context());
@@ -186,17 +168,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 1) {
             // next page
             step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'next' + index.toString())));
+            return List.generate(2, (index) => sample.Person());
           }
           if (step == 2) {
             // refresh
             step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'refresh' + index.toString())));
+            return List.generate(2, (index) => sample.Person());
           }
           return [];
         },
@@ -264,19 +246,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 1) {
             // first refresh
             step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstRefresh' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 2) {
             // second refresh
             step++;
-            return List.generate(
-                2, (index) => sample.Person(entity: pb.Entity(id: 'secondRefresh' + index.toString())));
+            return List.generate(2, (index) => sample.Person());
           }
           return [];
         },
@@ -323,19 +303,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person()..id = 'init' + index.toString());
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstRefresh' + index.toString())));
+            return List.generate(limit, (index) => sample.Person()..id = 'firstRefresh' + index.toString());
           }
           if (step == 2) {
             // second refresh
             step++;
-            return List.generate(
-                2, (index) => sample.Person(entity: pb.Entity(id: 'secondRefresh' + index.toString())));
+            return List.generate(2, (index) => sample.Person()..id = 'secondRefresh' + index.toString());
           }
           return [];
         },

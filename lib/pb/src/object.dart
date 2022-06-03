@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/pb/src/google/google.dart' as google;
+import 'package:libcli/generator/generator.dart' as generator;
 
 /// Builder function will create empty object instance
 typedef Builder<T> = T Function();
@@ -12,6 +14,16 @@ typedef ObjectBuilder<Object> = Object Function(int id, List<int> bytes);
 /// Object is data transfer object that use protobuf format
 ///
 abstract class Object extends $pb.GeneratedMessage implements Comparable<Object> {
+  Object() {
+    if (hasModel) {
+      model = common.Model(
+        s: common.Model_ModelState.ModelActive,
+        i: generator.uuid(),
+        t: google.Timestamp(),
+      );
+    }
+  }
+
   /// mapIdXXX return map id let service create object by id
   int mapIdXXX();
 
@@ -47,41 +59,52 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   }
 
   /// namespace return object namespace, usually is package name
-  String namespace() => '';
+  String get namespace => '';
 
-  /// getEntity return object defined entity
-  common.Entity? getEntity() => null;
+  /// hasModel return true if model is defined
+  bool get hasModel => false;
 
-  /// setEntity set object defined entity
-  void setEntity(common.Entity e) {}
+  /// model is defined model
+  common.Model? get model => null;
 
-  /// entityID return entity id
-  String get entityID {
-    assert(getEntity() != null, '$runtimeType not define entity');
-    return getEntity()!.id;
-  }
+  /// model is defined model
+  set model(common.Model? value) {}
 
-  /// entityUpdateTime return entity update time stamp
-  google.Timestamp get entityUpdateTime {
-    assert(getEntity() != null, '$runtimeType not define entity');
-    return getEntity()!.updateTime;
-  }
+  /// id is model id
+  String get id => model != null ? model!.i : '';
 
-  /// entityNotGoingToChange return true if entity not going to change
-  bool get entityNotGoingToChange {
-    assert(getEntity() != null, '$runtimeType not define entity');
-    return getEntity()!.notGoingToChange;
-  }
+  /// id is model id
+  @visibleForTesting
+  set id(value) => model != null ? model!.i = value : null;
 
-  /// entityDeleted return true if entity mask as deleted
-  bool get entityDeleted {
-    assert(getEntity() != null, '$runtimeType not define entity');
-    return getEntity()!.deleted;
-  }
+  /// lastUpdateTime is model last update time
+  google.Timestamp get lastUpdateTime => model != null ? model!.t : google.Timestamp();
+
+  /// lastUpdateTime is model last update time
+  @visibleForTesting
+  set lastUpdateTime(value) => model != null ? model!.t = value : null;
+
+  /// isActive return true if model mask as active
+  bool get isActive => model != null ? model!.s == common.Model_ModelState.ModelActive : false;
+
+  /// isDeleted return true if model mask as deleted
+  bool get isDeleted => model != null ? model!.s == common.Model_ModelState.ModelDeleted : false;
+
+  /// isArchived return true if model mask as archived
+  bool get isArchived => model != null ? model!.s == common.Model_ModelState.ModelArchived : false;
+
+  /// markAsDeleted mark object as deleted
+  void markAsDeleted() => model != null ? model!.s = common.Model_ModelState.ModelDeleted : null;
+
+  /// markAsArchived mark object as archived
+  void markAsArchived() => model != null ? model!.s = common.Model_ModelState.ModelArchived : null;
+
+  /// markAsActive mark object as active
+  void markAsActive() => model != null ? model!.s = common.Model_ModelState.ModelActive : null;
 
   /// setAccessToken set access token
   void setAccessToken(String token) {}
 
-  /// needAccessToken return true if action object need access token
-  bool needAccessToken() => false;
+  /// accessTokenRequired return true if action object need access token
+  bool get accessTokenRequired => false;
 }

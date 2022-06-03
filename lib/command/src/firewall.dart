@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/memory/memory.dart' as memory;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/unique/unique.dart' as unique;
+import 'package:libcli/generator/generator.dart' as generator;
 
 /// _blockList keep action need block
 final _blockList = memory.MemoryCache();
@@ -109,7 +109,7 @@ pb.Object firewallBegin(pb.Object action) {
   memory.delete(memoryKeyLastResponse);
 
   // add call count for OVERFLOW detection
-  memory.set(memoryKeyCall + unique.randomNumber(6), null, expire: maxAllowPostDuration);
+  memory.set(memoryKeyCall + generator.randomNumber(6), null, expire: maxAllowPostDuration);
   return FirewallPass();
 }
 

@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
 import 'package:libcli/pb/src/google/google.dart' as google;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/database/database.dart' as database;
 import 'data_view.dart';
 import 'paged_data_view.dart';
@@ -18,7 +17,7 @@ class OrderSampleDataView extends PagedDataView<sample.Person> {
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             loaderIsRefresh = isRefresh;
             loaderLimit = limit;
-            return List.generate(returnCount, (i) => sample.Person(entity: pb.Entity(id: '$returnID-$i')));
+            return List.generate(returnCount, (i) => sample.Person());
           },
         );
 
@@ -108,8 +107,7 @@ void main() {
       final ds = PagedDataView<sample.Person>(
         DatasetRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
-            [sample.Person(entity: pb.Entity(id: 'duplicate'))],
+        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [sample.Person()],
       );
       await ds.load(testing.Context());
       await ds.refresh(testing.Context());
@@ -125,21 +123,9 @@ void main() {
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
-            return List.generate(
-                limit,
-                (index) => sample.Person(
-                      entity: pb.Entity(
-                        id: index.toString(),
-                      ),
-                    ));
+            return List.generate(limit, (index) => sample.Person());
           }
-          return List.generate(
-              limit,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: 'more' + index.toString(),
-                    ),
-                  ));
+          return List.generate(limit, (index) => sample.Person());
         },
       );
       await dataView.load(testing.Context());
@@ -161,21 +147,9 @@ void main() {
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
-            return List.generate(
-                limit,
-                (index) => sample.Person(
-                      entity: pb.Entity(
-                        id: index.toString(),
-                      ),
-                    ));
+            return List.generate(limit, (index) => sample.Person());
           }
-          return List.generate(
-              1,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: 'more' + index.toString(),
-                    ),
-                  ));
+          return List.generate(1, (index) => sample.Person());
         },
       );
       await dataView.load(testing.Context());
@@ -204,13 +178,9 @@ void main() {
           _anchorId = anchorId;
           idCount++;
           return List.generate(
-              limit,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: idCount.toString(),
-                      updateTime: DateTime.now().utcTimestamp,
-                    ),
-                  ));
+            limit,
+            (index) => sample.Person()..id = idCount.toString(),
+          );
         },
       );
       await dataView.load(testing.Context());
@@ -248,14 +218,7 @@ void main() {
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
-            return List.generate(
-                limit,
-                (index) => sample.Person(
-                      entity: pb.Entity(
-                        id: index.toString(),
-                        updateTime: DateTime.now().utcTimestamp,
-                      ),
-                    ));
+            return List.generate(limit, (index) => sample.Person());
           }
           moreCount++;
           return [];
@@ -283,24 +246,10 @@ void main() {
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
-            return List.generate(
-                limit,
-                (index) => sample.Person(
-                      entity: pb.Entity(
-                        id: index.toString(),
-                        updateTime: DateTime.now().utcTimestamp,
-                      ),
-                    ));
+            return List.generate(limit, (index) => sample.Person());
           }
           moreCount++;
-          return List.generate(
-              1,
-              (index) => sample.Person(
-                    entity: pb.Entity(
-                      id: index.toString(),
-                      updateTime: DateTime.now().utcTimestamp,
-                    ),
-                  ));
+          return List.generate(1, (index) => sample.Person());
         },
       );
       await dataView.load(testing.Context());
@@ -321,14 +270,14 @@ void main() {
         DatasetRam(dataBuilder: () => sample.Person()),
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          return List.generate(10, (i) => sample.Person(entity: pb.Entity(id: '$i')));
+          return List.generate(10, (i) => sample.Person()..id = '$i');
         },
       );
       await dataView.load(testing.Context());
       await dataView.refresh(testing.Context());
       expect(dataView.displayRows.length, 10);
       expect(dataView.selectedRows.length, 0);
-      dataView.selectRows([sample.Person(entity: pb.Entity(id: '5'))]);
+      dataView.selectRows([sample.Person()..id = '5']);
       expect(dataView.selectedRows.length, 1);
       dataView.selectRows([]);
       expect(dataView.selectedRows.length, 0);
@@ -347,7 +296,7 @@ void main() {
         dataset,
         dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-          return List.generate(10, (i) => sample.Person(entity: pb.Entity(id: '$i')));
+          return List.generate(10, (i) => sample.Person());
         },
       );
       await dataView.load(testing.Context());
@@ -368,17 +317,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 1) {
             // next page
             step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'next' + index.toString())));
+            return List.generate(2, (index) => sample.Person());
           }
           if (step == 2) {
             // refresh
             step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'refresh' + index.toString())));
+            return List.generate(2, (index) => sample.Person());
           }
           return [];
         },
@@ -446,18 +395,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 2) {
             // second more
             step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'secondMore' + index.toString())));
+            return List.generate(2, (index) => sample.Person());
           }
           return [];
         },
@@ -499,18 +447,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person()..id = 'init' + index.toString());
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
+            return List.generate(limit, (index) => sample.Person()..id = 'firstMore' + index.toString());
           }
           if (step == 2) {
             // second refresh
             step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'secondMore' + index.toString())));
+            return List.generate(2, (index) => sample.Person()..id = 'secondMore' + index.toString());
           }
           return [];
         },

@@ -12,11 +12,11 @@ import 'dart:typed_data' as $typed_data;
 const Person$json = const {
   '1': 'Person',
   '2': const [
-    const {'1': 'entity', '3': 1, '4': 1, '5': 11, '6': '.Entity', '10': 'entity'},
+    const {'1': 'm', '3': 1, '4': 1, '5': 11, '6': '.Model', '10': 'm'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'age', '3': 3, '4': 1, '5': 5, '10': 'age'},
   ],
 };
 
 /// Descriptor for `Person`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List personDescriptor = $convert.base64Decode('CgZQZXJzb24SHwoGZW50aXR5GAEgASgLMgcuRW50aXR5UgZlbnRpdHkSEgoEbmFtZRgCIAEoCVIEbmFtZRIQCgNhZ2UYAyABKAVSA2FnZQ==');
+final $typed_data.Uint8List personDescriptor = $convert.base64Decode('CgZQZXJzb24SFAoBbRgBIAEoCzIGLk1vZGVsUgFtEhIKBG5hbWUYAiABKAlSBG5hbWUSEAoDYWdlGAMgASgFUgNhZ2U=');

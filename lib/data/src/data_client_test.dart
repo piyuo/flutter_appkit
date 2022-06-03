@@ -3,7 +3,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'data_client.dart';
 import 'dataset_ram.dart';
 
@@ -20,7 +19,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         loader: (context, id) async {
           isGet = true;
-          return sample.Person(entity: pb.Entity(id: 'myId'));
+          return sample.Person()..id = 'myId';
         },
       );
 
@@ -30,7 +29,7 @@ void main() {
       expect(dataset.length, 1);
 
       final row = await dataset.read('myId');
-      expect(row!.entityID, 'myId');
+      expect(row!.id, 'myId');
     });
 
     test('should load no data with null id', () async {
@@ -40,7 +39,7 @@ void main() {
         dataBuilder: () => sample.Person(),
         loader: (context, id) async {
           isGet = true;
-          return sample.Person(entity: pb.Entity(id: 'myId'));
+          return sample.Person();
         },
       );
 
@@ -70,9 +69,7 @@ void main() {
     test('should put first in dataset when save data', () async {
       final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
       await dataset.load(testing.Context());
-      final exists = sample.Person()
-        ..name = 'exists'
-        ..entity = pb.Entity(id: 'existsPerson');
+      final exists = sample.Person()..name = 'exists';
       dataset.add(testing.Context(), [exists]);
 
       final dataClient = DataClient<sample.Person>(
@@ -94,7 +91,7 @@ void main() {
       await dataset.load(testing.Context());
       final person = sample.Person()
         ..name = 'john'
-        ..entity = pb.Entity(id: 'existsPerson');
+        ..id = 'existsPerson';
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(

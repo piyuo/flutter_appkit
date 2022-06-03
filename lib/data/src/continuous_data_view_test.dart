@@ -3,7 +3,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/meta/sample/sample.dart' as sample;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/database/database.dart' as database;
 import 'continuous_data_view.dart';
 import 'dataset_ram.dart';
@@ -27,23 +26,22 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 1) {
             // first nextPage
             step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 2) {
             // second nextPage
             step++;
-            return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'secondMore' + index.toString())));
+            return List.generate(2, (index) => sample.Person());
           }
           if (step == 3) {
             // first more
             step++;
-            return List.generate(3, (index) => sample.Person(entity: pb.Entity(id: 'secondMore' + index.toString())));
+            return List.generate(3, (index) => sample.Person());
           }
           return [];
         },
@@ -70,13 +68,12 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(
-                limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
+            return List.generate(limit, (index) => sample.Person());
           }
           return [];
         },
@@ -104,17 +101,17 @@ void main() {
         if (step == 0) {
           // init
           step++;
-          return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'init' + index.toString())));
+          return List.generate(limit, (index) => sample.Person());
         }
         if (step == 1) {
           // first more
           step++;
-          return List.generate(limit, (index) => sample.Person(entity: pb.Entity(id: 'firstMore' + index.toString())));
+          return List.generate(limit, (index) => sample.Person());
         }
         if (step == 2) {
           // refresh
           step++;
-          return List.generate(2, (index) => sample.Person(entity: pb.Entity(id: 'firstRefresh' + index.toString())));
+          return List.generate(2, (index) => sample.Person());
         }
         return [];
       },

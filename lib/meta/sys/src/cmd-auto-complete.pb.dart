@@ -12,7 +12,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class CmdAutoComplete extends pb.Object {
   $core.int mapIdXXX() => 1000;
-  namespace() => 'sys';
+  get namespace => 'sys';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CmdAutoComplete', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sessionToken', protoName: 'sessionToken')
