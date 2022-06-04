@@ -108,6 +108,11 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   /// accessTokenRequired return true if action object need access token
   bool get accessTokenRequired => false;
 
+  /// isFieldExists return true if filed is exists
+  bool isFieldExists(String key) {
+    return getTagNumber(key) != null;
+  }
+
   /// [] override to get field value
   operator [](String key) {
     final tagNumber = getTagNumber(key);

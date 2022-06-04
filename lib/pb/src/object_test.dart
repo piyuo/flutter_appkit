@@ -56,6 +56,8 @@ void main() {
       final person = sample.Person();
       person.name = 'ian';
       person.age = 4;
+      expect(person.isFieldExists('notExists'), isFalse);
+      expect(person.isFieldExists('name'), isTrue);
       expect(person['notExists'], isNull);
       expect(person['name'], 'ian');
       expect(person['age'], 4);
