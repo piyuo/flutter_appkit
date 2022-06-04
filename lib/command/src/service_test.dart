@@ -8,7 +8,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/command/src/protobuf.dart';
 import 'package:libcli/command/src/firewall.dart';
 

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/command/src/events.dart';
 import 'package:libcli/command/src/http.dart';
 import 'package:libcli/command/src/service.dart';

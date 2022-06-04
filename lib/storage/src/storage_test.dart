@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import 'storage.dart';
 
 void main() {

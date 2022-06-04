@@ -1,5 +1,5 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import 'package:flutter_test/flutter_test.dart';
 import 'database.dart';
 import 'db.dart';

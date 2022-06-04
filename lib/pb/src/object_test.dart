@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/src/common/common.dart' as common;
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import 'dart:convert';
 
 void main() {

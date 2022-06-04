@@ -1,4 +1,4 @@
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import 'package:flutter/material.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/database/database.dart' as database;

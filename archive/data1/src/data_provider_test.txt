@@ -5,7 +5,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/db/db.dart' as db;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import 'data_provider.dart';
 
 void main() {

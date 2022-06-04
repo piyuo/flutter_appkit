@@ -8,7 +8,7 @@ import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/unique/unique.dart' as unique;
-import 'package:libcli/meta/sample/sample.dart' as sample;
+import 'package:libcli/sample/sample.dart' as sample;
 import '../data.dart';
 
 main() => app.start(
