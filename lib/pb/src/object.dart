@@ -107,4 +107,22 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
 
   /// accessTokenRequired return true if action object need access token
   bool get accessTokenRequired => false;
+
+  /// [] override to get field value
+  operator [](String key) {
+    final tagNumber = getTagNumber(key);
+    if (tagNumber == null) {
+      return null;
+    }
+    return getField(tagNumber);
+  }
+
+  /// [] override to set field value
+  operator []=(String key, dynamic value) {
+    final tagNumber = getTagNumber(key);
+    if (tagNumber == null) {
+      return;
+    }
+    return setField(tagNumber, value);
+  }
 }

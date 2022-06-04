@@ -51,5 +51,19 @@ void main() {
       expect(person.lastUpdateTime, isNotNull);
       expect(person.isActive, isTrue);
     });
+
+    test('should get/set field by name', () {
+      final person = sample.Person();
+      person.name = 'ian';
+      person.age = 4;
+      expect(person['notExists'], isNull);
+      expect(person['name'], 'ian');
+      expect(person['age'], 4);
+
+      person['name'] = 'iris';
+      person['age'] = 3;
+      expect(person.name, 'iris');
+      expect(person.age, 3);
+    });
   });
 }
