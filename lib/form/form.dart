@@ -5,5 +5,6 @@ export 'src/button.dart';
 export 'src/email_field.dart';
 export 'src/email_field.dart';
 export 'src/tags.dart';
+export 'src/binding.dart';
 export 'src/future_field.dart';
 export 'src/rating_field.dart';

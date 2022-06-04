@@ -41,6 +41,7 @@ class Person extends pb.Object {
     ..p<$core.double>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'floatListValue', $pb.PbFieldType.PF, protoName: 'floatListValue')
     ..p<$core.double>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'doubleListValue', $pb.PbFieldType.PD, protoName: 'doubleListValue')
     ..p<$core.bool>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'boolListValue', $pb.PbFieldType.PB, protoName: 'boolListValue')
+    ..pc<$1.Timestamp>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestampListValue', $pb.PbFieldType.PM, protoName: 'timestampListValue', subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -62,6 +63,7 @@ class Person extends pb.Object {
     $core.Iterable<$core.double>? floatListValue,
     $core.Iterable<$core.double>? doubleListValue,
     $core.Iterable<$core.bool>? boolListValue,
+    $core.Iterable<$1.Timestamp>? timestampListValue,
   }) {
     final _result = create();
     if (m != null) {
@@ -111,6 +113,9 @@ class Person extends pb.Object {
     }
     if (boolListValue != null) {
       _result.boolListValue.addAll(boolListValue);
+    }
+    if (timestampListValue != null) {
+      _result.timestampListValue.addAll(timestampListValue);
     }
     return _result;
   }
@@ -246,5 +251,8 @@ class Person extends pb.Object {
 
   @$pb.TagNumber(16)
   $core.List<$core.bool> get boolListValue => $_getList(15);
+
+  @$pb.TagNumber(17)
+  $core.List<$1.Timestamp> get timestampListValue => $_getList(16);
 }
 
