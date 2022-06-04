@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/src/google/google.dart' as google;
+import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
 
 /// RowBuilder build table row cells

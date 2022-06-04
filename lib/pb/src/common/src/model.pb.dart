@@ -11,7 +11,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 // ignore: implementation_imports
-import 'package:libcli/pb/src/google/src/timestamp.pb.dart' as $0;
+import 'package:libcli/google/src/timestamp.pb.dart' as $0;
 
 import 'model.pbenum.dart';
 

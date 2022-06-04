@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
-import 'package:libcli/pb/src/google/google.dart' as google;
+import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/generator/generator.dart' as generator;
 
 /// Builder function will create empty object instance

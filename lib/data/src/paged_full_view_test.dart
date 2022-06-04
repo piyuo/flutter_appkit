@@ -3,7 +3,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/pb/src/google/google.dart' as google;
+import 'package:libcli/google/google.dart' as google;
 import 'paged_full_view.dart';
 import 'dataset_ram.dart';
 

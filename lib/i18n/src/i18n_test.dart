@@ -6,7 +6,7 @@ import 'i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/assets/assets.dart' as asset;
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:libcli/pb/google.dart' as google;
+import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/storage/storage.dart' as storage;
 
 void main() {

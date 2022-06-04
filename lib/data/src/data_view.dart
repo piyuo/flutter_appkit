@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/pb/src/google/google.dart' as google;
+import 'package:libcli/google/google.dart' as google;
 import 'dataset.dart';
 
 /// DataViewLoader can refresh or load more data by anchor and limit

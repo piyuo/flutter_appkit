@@ -1,4 +1,4 @@
-import 'package:libcli/pb/google.dart' as google;
+import 'package:libcli/google/google.dart' as google;
 
 extension TimestampOnDateTime on DateTime {
   /// timestamp return google timestamp
