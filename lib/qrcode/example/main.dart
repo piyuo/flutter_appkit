@@ -48,7 +48,7 @@ class QRCodeExample extends StatelessWidget {
   }
 
   Widget _generator() {
-    return const Generator(
+    return const QRImage(
       data: 'http://cacake.piyuo.com/location=12348234234s',
     );
   }
