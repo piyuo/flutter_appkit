@@ -5,16 +5,16 @@ import 'filter.dart';
 
 /// FilteredDataset filter data from Dataset
 /// ```dart
-/// final dsRam = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+/// final dsRam = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
 /// final filter = FilteredDataset(dsRam);
 /// ```
 class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// FilteredDataset filter data from Dataset
   /// ```dart
-  /// final dsRam = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+  /// final dsRam = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
   /// final filter = FilteredDataset(dsRam);
   /// ```
-  FilteredDataset(this._dataset) : super(dataBuilder: _dataset.dataBuilder);
+  FilteredDataset(this._dataset) : super(objectBuilder: _dataset.objectBuilder);
 
   /// _dataset is dataset need to be filter
   final Dataset<T> _dataset;

@@ -12,8 +12,7 @@ import 'dataset_ram.dart';
 class OrderSampleDataView extends PagedDataView<sample.Person> {
   OrderSampleDataView()
       : super(
-          DatasetRam(dataBuilder: () => sample.Person()),
-          dataBuilder: () => sample.Person(),
+          DatasetRam(objectBuilder: () => sample.Person()),
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             loaderIsRefresh = isRefresh;
             loaderLimit = limit;
@@ -105,8 +104,7 @@ void main() {
 
     test('should remove duplicate data when refresh', () async {
       final ds = PagedDataView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [sample.Person()],
       );
       await ds.load(testing.Context());
@@ -118,8 +116,7 @@ void main() {
     test('should keep more and cache when receive enough data', () async {
       int refreshCount = 0;
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -142,8 +139,7 @@ void main() {
     test('should no keep more when receive less data', () async {
       int refreshCount = 0;
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
@@ -169,8 +165,7 @@ void main() {
       String? _anchorId;
 
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           _isRefresh = isRefresh;
           _limit = limit;
@@ -213,8 +208,7 @@ void main() {
       int moreCount = 0;
       int counter = 0;
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
@@ -241,8 +235,7 @@ void main() {
       int moreCount = 0;
       int counter = 0;
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
@@ -267,8 +260,7 @@ void main() {
 
     test('should select rows', () async {
       DataView dataView = PagedDataView(
-        DatasetRam(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(10, (i) => sample.Person()..id = '$i');
         },
@@ -291,10 +283,9 @@ void main() {
     });
 
     test('should fill display rows', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final dataView = PagedDataView<sample.Person>(
         dataset,
-        dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(10, (i) => sample.Person());
         },
@@ -311,8 +302,7 @@ void main() {
     test('should load next/prev/last/first page', () async {
       int step = 0;
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam<sample.Person>(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
@@ -389,8 +379,7 @@ void main() {
     test('should goto page and show info', () async {
       int step = 0;
       final dataView = PagedDataView<sample.Person>(
-        DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam<sample.Person>(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
@@ -436,10 +425,9 @@ void main() {
       bool? lastIsRefresh;
       int? lastLimit;
       String? lastAnchorId;
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final dataView = PagedDataView<sample.Person>(
         dataset,
-        dataBuilder: () => sample.Person(),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           lastIsRefresh = isRefresh;
           lastLimit = limit;

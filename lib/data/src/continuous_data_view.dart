@@ -9,11 +9,9 @@ class ContinuousDataView<T extends pb.Object> extends DataView<T> {
   ContinuousDataView(
     Dataset<T> _dataset, {
     required DataViewLoader<T> loader,
-    required pb.Builder<T> dataBuilder,
   }) : super(
           _dataset,
           loader: loader,
-          dataBuilder: dataBuilder,
         );
 
   /// onRefresh called when refresh

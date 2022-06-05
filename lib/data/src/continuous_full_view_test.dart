@@ -18,9 +18,8 @@ void main() {
     test('should refresh on start', () async {
       int refreshCount = 0;
       ContinuousFullView view = ContinuousFullView(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
           int limit = 10;
           if (refreshCount == 1) {
@@ -49,9 +48,8 @@ void main() {
 
     test('should remove duplicate data when refresh', () async {
       final ds = ContinuousFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test2',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [sample.Person()],
       );
       await ds.load(testing.Context());
@@ -62,9 +60,8 @@ void main() {
 
     test('should not reset on refresh', () async {
       final view = ContinuousFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
           return List.generate(10, (index) => sample.Person());
         },
@@ -85,9 +82,8 @@ void main() {
       String? _anchorId;
 
       final view = ContinuousFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
           _limit = 10;
           _anchorTimestamp = anchorTimestamp;
@@ -110,9 +106,8 @@ void main() {
 
     test('should save state', () async {
       final view = ContinuousFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
           return [sample.Person()];
         },
@@ -122,9 +117,8 @@ void main() {
       expect(view.length, 1);
       expect(view.rowsPerPage, 10);
       final view2 = ContinuousFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
       await view2.load(testing.Context());
@@ -135,9 +129,8 @@ void main() {
 
     test('should goto page', () async {
       final view = ContinuousFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async {
           return [sample.Person()];
         },
@@ -147,9 +140,8 @@ void main() {
       expect(view.length, 1);
       expect(view.rowsPerPage, 10);
       final cs2 = ContinuousFullView<sample.Person>(
-        DatasetRam(dataBuilder: () => sample.Person()),
+        DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
-        dataBuilder: () => sample.Person(),
         loader: (context, _, __, anchorTimestamp, anchorId) async => [],
       );
       await cs2.load(testing.Context());

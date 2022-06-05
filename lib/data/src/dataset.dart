@@ -15,17 +15,17 @@ const keyNoRefresh = '__nr';
 
 /// Dataset keep rows for later use
 /// ```dart
-/// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+/// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
 /// await dataset.load();
 /// ```
 abstract class Dataset<T extends pb.Object> {
   /// Dataset keep rows for later use
   /// ```dart
-  /// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+  /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
   /// await dataset.load();
   /// ```
   Dataset({
-    required this.dataBuilder,
+    required this.objectBuilder,
     this.onInsert,
     this.onDelete,
     this.onLoad,
@@ -33,11 +33,11 @@ abstract class Dataset<T extends pb.Object> {
     this.onRowsPerPageChanged,
   });
 
-  /// dataBuilder build data
+  /// objectBuilder build data
   /// ```dart
-  /// dataBuilder: () => sample.Person()
+  /// objectBuilder: () => sample.Person()
   /// ```
-  final pb.Builder<T> dataBuilder;
+  final pb.Builder<T> objectBuilder;
 
   /// onLoad is callback when dataset is loaded
   Future<void> Function(BuildContext context, List<T> list)? onLoad;

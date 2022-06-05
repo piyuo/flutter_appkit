@@ -13,7 +13,7 @@ void main() {
 
   group('[dataset_ram]', () {
     test('should init and clear data', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       expect(dataset.internalNoMore, false);
       expect(dataset.rowsPerPage, 10);
       expect(dataset.length, 0);
@@ -34,7 +34,7 @@ void main() {
     });
 
     test('should remove duplicate when insert', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
@@ -49,7 +49,7 @@ void main() {
     });
 
     test('should remove data', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
       await dataset.insert(testing.Context(), [sample.Person()..id = 'second']);
       await dataset.insert(testing.Context(), [sample.Person()..id = 'third']);
@@ -65,7 +65,7 @@ void main() {
     });
 
     test('should remove duplicate when add', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
@@ -80,7 +80,7 @@ void main() {
     });
 
     test('should get sub rows', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       var rows = await dataset.range(0);
       expect(rows.length, 0);
 
@@ -96,7 +96,7 @@ void main() {
     });
 
     test('should get row by id', () async {
-      final dataset = DatasetRam(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam(objectBuilder: () => sample.Person());
       dataset.add(testing.Context(), List.generate(2, (i) => sample.Person()..id = '$i'));
       final obj = await dataset.read('1');
       expect(obj, isNotNull);
@@ -106,7 +106,7 @@ void main() {
     });
 
     test('should use forEach to iterate all row', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
 
@@ -121,7 +121,7 @@ void main() {
     });
 
     test('should check id exists', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.isIDExists('first'), isTrue);
       expect(dataset.isIDExists('notExists'), isFalse);

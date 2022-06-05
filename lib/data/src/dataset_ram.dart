@@ -4,16 +4,16 @@ import 'dataset.dart';
 
 /// DatasetRam keep data in ram
 /// ```dart
-/// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+/// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
 /// ```
 class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// DatasetRam keep data in ram
   /// ```dart
-  /// final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+  /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
   /// ```
   DatasetRam({
-    required pb.Builder<T> dataBuilder,
-  }) : super(dataBuilder: dataBuilder);
+    required pb.Builder<T> objectBuilder,
+  }) : super(objectBuilder: objectBuilder);
 
   /// _rows keep all rows in ram
   // ignore: prefer_final_fields

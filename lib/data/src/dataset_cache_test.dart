@@ -23,7 +23,7 @@ void main() {
 
   group('[dataset_cache]', () {
     test('should init and clear data', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       expect(dataset.noMore, false);
       expect(dataset.rowsPerPage, 10);
@@ -44,11 +44,11 @@ void main() {
       expect(await dataset.last, isNull);
     });
     test('should reload', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       expect(dataset.length, 0);
 
-      final dataset2 = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset2 = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset2.load(testing.Context());
       await dataset2.add(testing.Context(), [sample.Person(name: 'hi')]);
 
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('should remove data', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
       await dataset.insert(testing.Context(), [sample.Person()..id = 'second']);
@@ -74,7 +74,7 @@ void main() {
     });
 
     test('should remove duplicate when insert', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
@@ -90,7 +90,7 @@ void main() {
     });
 
     test('should remove duplicate when add', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.length, 1);
@@ -106,7 +106,7 @@ void main() {
     });
 
     test('should get sub rows', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       var rows = await dataset.range(0);
       expect(rows.length, 0);
@@ -122,14 +122,14 @@ void main() {
       expect(rowsAll.length, 2);
     });
     test('should save state', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
       await dataset.setNoMore(testing.Context(), true);
       await dataset.setRowsPerPage(testing.Context(), 21);
 
-      final dataset2 = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset2 = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset2.load(testing.Context());
       expect(dataset2.noMore, true);
       expect(dataset2.rowsPerPage, 21);
@@ -138,7 +138,7 @@ void main() {
       expect((await dataset2.last)!.id, 'second');
     });
     test('should get row by id', () async {
-      final dataset = DatasetCache(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       await dataset.add(testing.Context(), List.generate(2, (i) => sample.Person()..id = '$i'));
       final obj = await dataset.read('1');
@@ -149,7 +149,7 @@ void main() {
     });
 
     test('should use forEach to iterate all row', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
@@ -165,7 +165,7 @@ void main() {
     });
 
     test('should check id exists', () async {
-      final dataset = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+      final dataset = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       expect(dataset.isIDExists('first'), isTrue);

@@ -15,8 +15,7 @@ typedef DataViewLoader<T> = Future<List<T>> Function(
 /// DataView read data save to local, manage paging and select row
 /// ```dart
 /// final dataView = DataView<sample.Person>(
-///   DatasetRam(dataBuilder: () => sample.Person()),
-///   dataBuilder: () => sample.Person(),
+///   DatasetRam(
 ///   loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
 ///     [sample.Person(entity: pb.Entity(id: 'duplicate'))],
 /// );
@@ -26,8 +25,7 @@ abstract class DataView<T extends pb.Object> {
   /// DataView read data save to local, manage paging and select row
   /// ```dart
   /// final dataView = DataView<sample.Person>(
-  ///   DatasetRam(dataBuilder: () => sample.Person()),
-  ///   dataBuilder: () => sample.Person(),
+  ///   DatasetRam(
   ///   loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
   ///     [sample.Person(entity: pb.Entity(id: 'duplicate'))],
   /// );
@@ -36,11 +34,7 @@ abstract class DataView<T extends pb.Object> {
   DataView(
     this.dataset, {
     required this.loader,
-    required this.dataBuilder,
   });
-
-  /// dataBuilder build data
-  final pb.Builder<T> dataBuilder;
 
   /// loader can refresh or load more data by anchor and limit
   final DataViewLoader<T> loader;

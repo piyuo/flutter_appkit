@@ -664,7 +664,7 @@ class NotesExample extends StatelessWidget {
                   context,
                   data.DatasetDatabase<sample.Person>(
                     database,
-                    dataBuilder: () => sample.Person(),
+                    objectBuilder: () => sample.Person(),
                   ));
             });
         },
@@ -700,7 +700,7 @@ Widget _notesItem(BuildContext context, String id) {
             NoteFormController.of<sample.Person>(context).load(context,
                 dataset: data.DatasetDatabase<sample.Person>(
                   database,
-                  dataBuilder: () => sample.Person(),
+                  objectBuilder: () => sample.Person(),
                 ),
                 id: id);
           });

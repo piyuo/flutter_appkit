@@ -12,7 +12,6 @@ import 'paginator.dart';
 /// ```dart
 /// final ds = PagedFullView<sample.Person>(
 ///   id: 'test',
-///   dataBuilder: () => sample.Person(),
 ///   loader: (context, _, __, anchorTimestamp, anchorId) async =>
 ///     [sample.Person(entity: pb.Entity(id: 'duplicate'))],
 ///   );
@@ -23,7 +22,6 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
   /// ```dart
   /// final ds = PagedFullView<sample.Person>(
   ///   id: 'test',
-  ///   dataBuilder: () => sample.Person(),
   ///   loader: (context, _, __, anchorTimestamp, anchorId) async =>
   ///     [sample.Person(entity: pb.Entity(id: 'duplicate'))],
   ///   );
@@ -33,11 +31,9 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
     Dataset<T> _dataset, {
     BuildContext? context,
     required String id,
-    required pb.Builder<T> dataBuilder,
     required DataViewLoader<T> loader,
   }) : super(
           _dataset,
-          dataBuilder: dataBuilder,
           loader: loader,
         ) {
     _dataset.internalNoMore = true;

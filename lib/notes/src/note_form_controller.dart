@@ -24,7 +24,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     this.showRestoreButton = false,
   }) {
     dataClient = data.DataClient(
-      dataBuilder: dataBuilder,
+      objectBuilder: dataBuilder,
       loader: loader,
       saver: saver,
     );

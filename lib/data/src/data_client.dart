@@ -16,7 +16,7 @@ typedef DataClientSaver<T> = Future<void> Function(BuildContext context, List<T>
 /// DataClient provide a way to access data though dataset
 /// ```dart
 /// final dc = DataClient<sample.Person>(
-///   dataBuilder: () => sample.Person(),
+///   objectBuilder: () => sample.Person(),
 ///   getter: (context, id) async => null,
 ///   setter: (context, sample.Person person) async {
 ///     person.name = 'john';
@@ -28,7 +28,7 @@ class DataClient<T extends pb.Object> {
   /// DataClient provide a way to access data though dataset
   /// ```dart
   /// final dc = DataClient<sample.Person>(
-  ///   dataBuilder: () => sample.Person(),
+  ///   objectBuilder: () => sample.Person(),
   ///   getter: (context, id) async => null,
   ///   setter: (context, sample.Person person) async {
   ///     person.name = 'john';
@@ -37,13 +37,13 @@ class DataClient<T extends pb.Object> {
   /// );
   /// ```
   DataClient({
-    required this.dataBuilder,
+    required this.objectBuilder,
     required this.loader,
     required this.saver,
   });
 
-  /// dataBuilder build new row
-  final pb.Builder<T> dataBuilder;
+  /// objectBuilder build new row
+  final pb.Builder<T> objectBuilder;
 
   /// _dataset keep all rows in dataset
   late Dataset<T> dataset;
@@ -74,7 +74,7 @@ class DataClient<T extends pb.Object> {
         return data;
       }
     }
-    return dataBuilder();
+    return objectBuilder();
   }
 
   /// setDataset only set dataset,it used when load data is not need

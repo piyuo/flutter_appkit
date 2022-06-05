@@ -28,19 +28,19 @@ Future<void> deleteDatasetCache(String id) async {
 
 /// DatasetCache keep data in cache
 /// ```dart
-/// final ds = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+/// final ds = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
 /// await ds.load();
 /// ```
 class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// DatasetCache keep data in cache
   /// ```dart
-  /// final ds = DatasetCache<sample.Person>(name: 'test', dataBuilder: () => sample.Person());
+  /// final ds = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
   /// await ds.load();
   /// ```
   DatasetCache({
     required this.name,
-    required pb.Builder<T> dataBuilder,
-  }) : super(dataBuilder: dataBuilder);
+    required pb.Builder<T> objectBuilder,
+  }) : super(objectBuilder: objectBuilder);
 
   /// name use for database or cache id
   final String name;
@@ -58,14 +58,14 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// await dataset.first;
   /// ```
   @override
-  Future<T?> get first async => _index.isNotEmpty ? await cache.getObject(_index.first, dataBuilder) : null;
+  Future<T?> get first async => _index.isNotEmpty ? await cache.getObject(_index.first, objectBuilder) : null;
 
   /// last return last row
   /// ```dart
   /// await dataset.last;
   /// ```
   @override
-  Future<T?> get last async => _index.isNotEmpty ? await cache.getObject(_index.last, dataBuilder) : null;
+  Future<T?> get last async => _index.isNotEmpty ? await cache.getObject(_index.last, objectBuilder) : null;
 
   /// load dataset content
   @mustCallSuper
@@ -190,7 +190,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
-      final row = await cache.getObject(id, dataBuilder);
+      final row = await cache.getObject(id, objectBuilder);
       if (row == null) {
         // data is missing
         await reset();
@@ -209,7 +209,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
-        return await cache.getObject(row, dataBuilder);
+        return await cache.getObject(row, objectBuilder);
       }
     }
     return null;
@@ -222,7 +222,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> forEach(void Function(T) callback) async {
     for (String id in _index) {
-      final obj = await cache.getObject(id, dataBuilder);
+      final obj = await cache.getObject(id, objectBuilder);
       if (obj != null) {
         callback(obj);
       }

@@ -13,7 +13,7 @@ void main() {
 
   group('[dataset]', () {
     test('should count page row', () async {
-      final dataset = DatasetRam(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam(objectBuilder: () => sample.Person());
       expect(dataset.internalNoMore, false);
       expect(dataset.rowsPerPage, 10);
       expect(dataset.length, 0);

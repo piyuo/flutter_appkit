@@ -13,10 +13,10 @@ void main() {
 
   group('[data_client]', () {
     test('should load data with id by getter', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async {
           isGet = true;
           return sample.Person()..id = 'myId';
@@ -34,10 +34,10 @@ void main() {
     });
 
     test('should load no data with null id', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async {
           isGet = true;
           return sample.Person();
@@ -52,10 +52,10 @@ void main() {
     });
 
     test('should change when insert data', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, __) async {},
       );
@@ -70,13 +70,13 @@ void main() {
     });
 
     test('should put first in dataset when save data', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       final exists = sample.Person()..name = 'exists';
       dataset.add(testing.Context(), [exists]);
 
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, __) async {},
       );
@@ -91,7 +91,7 @@ void main() {
     });
 
     test('should delete data', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       final person = sample.Person()
         ..name = 'john'
@@ -99,7 +99,7 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, __) async {},
       );
@@ -114,14 +114,14 @@ void main() {
 
     test('should save data', () async {
       sample.Person? saved;
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final person = sample.Person()
         ..name = 'john'
         ..id = 'person1';
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, items) async {
           saved = items[0];
@@ -138,14 +138,14 @@ void main() {
 
     test('should delete data', () async {
       sample.Person? saved;
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final person = sample.Person()
         ..name = 'john'
         ..id = 'person1';
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, items) async {
           saved = items[0];
@@ -162,14 +162,14 @@ void main() {
 
     test('should archive data', () async {
       sample.Person? saved;
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final person = sample.Person()
         ..name = 'john'
         ..id = 'person1';
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        dataBuilder: () => sample.Person(),
+        objectBuilder: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, items) async {
           saved = items[0];

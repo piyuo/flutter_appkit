@@ -10,11 +10,9 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   PagedDataView(
     Dataset<T> _dataset, {
     required DataViewLoader<T> loader,
-    required pb.Builder<T> dataBuilder,
   }) : super(
           _dataset,
           loader: loader,
-          dataBuilder: dataBuilder,
         ) {
     _dataset.onInsert = (context, _) async => await gotoPage(context, 0);
     _dataset.onDelete = (context, _) async {

@@ -15,7 +15,7 @@ void main() {
 
   group('[filtered_dataset]', () {
     test('should show all dataset row when no query', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
 
@@ -26,7 +26,7 @@ void main() {
     });
 
     test('should filter keyword', () async {
-      final dataset = DatasetRam<sample.Person>(dataBuilder: () => sample.Person());
+      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
       await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
 

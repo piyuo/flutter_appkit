@@ -20,8 +20,7 @@ void main() {
     test('should display all rows', () async {
       int step = 0;
       final view = ContinuousDataView<sample.Person>(
-        DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam<sample.Person>(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
@@ -62,8 +61,7 @@ void main() {
     test('should fill display rows when load more', () async {
       int step = 0;
       final view = ContinuousDataView<sample.Person>(
-        DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
-        dataBuilder: () => sample.Person(),
+        DatasetRam<sample.Person>(objectBuilder: () => sample.Person()),
         loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
@@ -95,8 +93,7 @@ void main() {
   test('should refresh after load more', () async {
     int step = 0;
     final view = ContinuousDataView<sample.Person>(
-      DatasetRam<sample.Person>(dataBuilder: () => sample.Person()),
-      dataBuilder: () => sample.Person(),
+      DatasetRam<sample.Person>(objectBuilder: () => sample.Person()),
       loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
         if (step == 0) {
           // init

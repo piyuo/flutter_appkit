@@ -10,11 +10,9 @@ class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
   ContinuousFullView(
     Dataset<T> _dataset, {
     required String id,
-    required pb.Builder<T> dataBuilder,
     required DataViewLoader<T> loader,
   }) : super(
           _dataset,
-          dataBuilder: dataBuilder,
           loader: loader,
         ) {
     _dataset.internalNoMore = true;
