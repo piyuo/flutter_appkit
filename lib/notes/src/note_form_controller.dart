@@ -13,7 +13,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   NoteFormController({
     required this.formGroup,
     required this.formBuilder,
-    required pb.Builder<T> dataBuilder,
+    required pb.Builder<T> objectBuilder,
     required data.DataClientLoader<T> loader,
     required data.DataClientSaver<T> saver,
     this.formLoader,
@@ -24,7 +24,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     this.showRestoreButton = false,
   }) {
     dataClient = data.DataClient(
-      objectBuilder: dataBuilder,
+      objectBuilder: objectBuilder,
       loader: loader,
       saver: saver,
     );

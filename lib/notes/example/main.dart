@@ -54,7 +54,7 @@ main() {
                     },
                   ),
                 ])),
-            dataBuilder: () => sample.Person()),
+            objectBuilder: () => sample.Person()),
       ),
       ChangeNotifierProvider<NotesViewProvider<sample.Person>>(
         create: (context) => NotesViewProvider<sample.Person>(
@@ -83,7 +83,6 @@ main() {
             final no = generator.randomNumber(6);
             return sample.Person(name: 'new person $no');
           },
-          objectBuilder: () => sample.Person(),
           onSearch: (text) => debugPrint('search:$text'),
           onSearchBegin: () => debugPrint('search begin'),
           onSearchEnd: () => debugPrint('search end'),

@@ -15,7 +15,6 @@ import 'note_form_controller.dart';
 /// NotesViewProvider provide notes for notes view
 class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
   NotesViewProvider({
-    required this.objectBuilder,
     required this.loader,
     required this.adder,
     this.listBuilder,
@@ -65,9 +64,6 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
 
   /// caption on top of search box
   final String? caption;
-
-  /// objectBuilder is the builder for object
-  final pb.Builder<T> objectBuilder;
 
   /// loader
   final data.DataViewLoader<T> loader;
@@ -174,12 +170,10 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
     dataView = context.isPreferMouse
         ? data.PagedDataView<T>(
             dataset,
-            dataBuilder: objectBuilder,
             loader: loader,
           )
         : data.ContinuousDataView<T>(
             dataset,
-            dataBuilder: objectBuilder,
             loader: loader,
           );
 
