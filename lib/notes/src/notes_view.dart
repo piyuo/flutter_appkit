@@ -4,7 +4,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/responsive/responsive.dart' as responsive;
-import 'notes_view_provider.dart';
+import 'notes_provider.dart';
 import 'master_detail_view.dart';
 import 'tag_split_view.dart';
 import 'tag_view.dart';
@@ -14,11 +14,19 @@ import 'note_form.dart';
 
 class NotesView<T extends pb.Object> extends StatelessWidget {
   const NotesView({
+    required this.notesProvider,
+    required this.formController,
     this.leftTools,
     this.rightTools,
     this.tagViewHeader,
     Key? key,
   }) : super(key: key);
+
+  /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
+  final NotesProvider<T> notesProvider;
+
+  /// formController is form controller, don't direct consume it, this provider maybe inhibit by other provider
+  final NoteFormController<T> formController;
 
   /// leftTools is extra tools on left part on bar
   final List<responsive.ToolItem>? leftTools;
@@ -29,8 +37,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   /// tagViewHeader is header for tag view
   final Widget? tagViewHeader;
 
-  List<responsive.ToolItem> _buildPaginator(
-      BuildContext context, NotesViewProvider<T> controller, String pageInfoText) {
+  List<responsive.ToolItem> _buildPaginator(BuildContext context, NotesProvider<T> controller, String pageInfoText) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return [
       responsive.ToolSelection(
@@ -61,296 +68,293 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final linkColor = context.themeColor(light: Colors.blue.shade400, dark: Colors.blue.shade500);
-    return Consumer2<NotesViewProvider<T>, NoteFormController<T>>(
-        builder: (context, provide, formController, _) =>
-            LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              final pageInfoText = provide.pageInfo(context);
-              final searchBox = delta.SearchBox(
-                enabled: provide.isReady,
-                prefixIcon: provide.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
-                    ? null
-                    : IconButton(
-                        icon: Icon(Icons.menu, color: provide.isReady ? Colors.blue : null),
-                        onPressed: provide.isReady
-                            ? () => showTagView<String>(
-                                  context,
-                                  onTagSelected: (value) => provide.setSelectedTag(value),
-                                  tags: provide.tags,
-                                  header: tagViewHeader,
-                                )
-                            : null,
-                      ),
-                controller: provide.searchController,
-              );
-              return MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider.value(
-                      value: provide.refreshButtonController,
-                    ),
-                    ChangeNotifierProvider.value(
-                      value: provide.animatedViewController,
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      final pageInfoText = notesProvider.pageInfo(context);
+      final searchBox = delta.SearchBox(
+        enabled: notesProvider.isReady,
+        prefixIcon: notesProvider.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
+            ? null
+            : IconButton(
+                icon: Icon(Icons.menu, color: notesProvider.isReady ? Colors.blue : null),
+                onPressed: notesProvider.isReady
+                    ? () => showTagView<String>(
+                          context,
+                          onTagSelected: (value) => notesProvider.setSelectedTag(value),
+                          tags: notesProvider.tags,
+                          header: tagViewHeader,
+                        )
+                    : null,
+              ),
+        controller: notesProvider.searchController,
+      );
+      return MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(
+              value: notesProvider.refreshButtonController,
+            ),
+            ChangeNotifierProvider.value(
+              value: notesProvider.animatedViewController,
+            )
+          ],
+          child: TagSplitView(
+              tagView: notesProvider.tags.isNotEmpty
+                  ? TagView<String>(
+                      onTagSelected: notesProvider.setSelectedTag,
+                      tags: notesProvider.tags,
+                      header: tagViewHeader,
                     )
-                  ],
-                  child: TagSplitView(
-                      tagView: provide.tags.isNotEmpty
-                          ? TagView<String>(
-                              onTagSelected: provide.setSelectedTag,
-                              tags: provide.tags,
-                              header: tagViewHeader,
+                  : null,
+              child: MasterDetailView<T>(
+                isReady: notesProvider.isReady,
+                items: notesProvider.dataView != null ? notesProvider.dataView!.displayRows : [],
+                selectedItems: notesProvider.dataView != null ? notesProvider.dataView!.selectedRows : [],
+                listScrollController: notesProvider.listScrollController,
+                gridScrollController: notesProvider.gridScrollController,
+                listAnimatedViewScrollController: notesProvider.listAnimatedViewScrollController,
+                gridAnimatedViewScrollController: notesProvider.gridAnimatedViewScrollController,
+                listBuilder: notesProvider.listBuilder,
+                gridBuilder: notesProvider.gridBuilder,
+                listDecorationBuilder: notesProvider.listDecorationBuilder,
+                gridDecorationBuilder: notesProvider.gridDecorationBuilder,
+                contentBuilder: () => NoteForm<T>(formController: formController),
+                onRefresh: context.isTouchSupported && notesProvider.isReady && !notesProvider.noRefresh
+                    ? () => notesProvider.refresh(context)
+                    : null,
+                onMore: context.isTouchSupported && notesProvider.isReady && !notesProvider.noMore
+                    ? () => notesProvider.loadMore(context)
+                    : null,
+                headerBuilder: () => Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: responsive.FoldPanel(
+                    builder: (isColumn) => [
+                      if (notesProvider.caption != null)
+                        Padding(
+                            padding: isColumn ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+                            child: Text(notesProvider.caption!,
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis,
+                                ))),
+                      isColumn
+                          ? searchBox
+                          : Align(
+                              alignment: Alignment.centerRight,
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 320),
+                                child: searchBox,
+                              ),
                             )
-                          : null,
-                      child: MasterDetailView<T>(
-                        isReady: provide.isReady,
-                        items: provide.dataView != null ? provide.dataView!.displayRows : [],
-                        selectedItems: provide.dataView != null ? provide.dataView!.selectedRows : [],
-                        listScrollController: provide.listScrollController,
-                        gridScrollController: provide.gridScrollController,
-                        listAnimatedViewScrollController: provide.listAnimatedViewScrollController,
-                        gridAnimatedViewScrollController: provide.gridAnimatedViewScrollController,
-                        listBuilder: provide.listBuilder,
-                        gridBuilder: provide.gridBuilder,
-                        listDecorationBuilder: provide.listDecorationBuilder,
-                        gridDecorationBuilder: provide.gridDecorationBuilder,
-                        contentBuilder: () => NoteForm<T>(),
-                        onRefresh: context.isTouchSupported && provide.isReady && !provide.noRefresh
-                            ? () => provide.refresh(context)
-                            : null,
-                        onMore: context.isTouchSupported && provide.isReady && !provide.noMore
-                            ? () => provide.loadMore(context)
-                            : null,
-                        headerBuilder: () => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: responsive.FoldPanel(
-                            builder: (isColumn) => [
-                              if (provide.caption != null)
-                                Padding(
-                                    padding: isColumn ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
-                                    child: Text(provide.caption!,
-                                        style: const TextStyle(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.bold,
-                                          overflow: TextOverflow.ellipsis,
-                                        ))),
-                              isColumn
-                                  ? searchBox
-                                  : Align(
-                                      alignment: Alignment.centerRight,
-                                      child: ConstrainedBox(
-                                        constraints: const BoxConstraints(maxWidth: 320),
-                                        child: searchBox,
-                                      ),
-                                    )
-                            ],
+                    ],
+                  ),
+                ),
+                footerBuilder: notesProvider.hasNextPage || notesProvider.hasPreviousPage
+                    ? () => Column(children: [
+                          if (!notesProvider.isListView) const Divider(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: LayoutBuilder(
+                                builder: (BuildContext context, BoxConstraints constraints) => Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        if (notesProvider.hasPreviousPage)
+                                          TextButton.icon(
+                                            icon: Icon(Icons.chevron_left, color: linkColor),
+                                            label: constraints.maxWidth < 300
+                                                ? const SizedBox()
+                                                : Text(localizations.previousPageTooltip,
+                                                    style: TextStyle(color: linkColor)),
+                                            onPressed: () => notesProvider.onPreviousPage(context),
+                                          ),
+                                        if (notesProvider.hasNextPage)
+                                          TextButton.icon(
+                                            icon: constraints.maxWidth < 300
+                                                ? const SizedBox()
+                                                : Text(localizations.nextPageTooltip,
+                                                    style: TextStyle(color: linkColor)),
+                                            label: Icon(Icons.chevron_right, color: linkColor),
+                                            onPressed: () => notesProvider.onNextPage(context),
+                                          ),
+                                      ],
+                                    )),
                           ),
-                        ),
-                        footerBuilder: provide.hasNextPage || provide.hasPreviousPage
-                            ? () => Column(children: [
-                                  if (!provide.isListView) const Divider(),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                    child: LayoutBuilder(
-                                        builder: (BuildContext context, BoxConstraints constraints) => Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                if (provide.hasPreviousPage)
-                                                  TextButton.icon(
-                                                    icon: Icon(Icons.chevron_left, color: linkColor),
-                                                    label: constraints.maxWidth < 300
-                                                        ? const SizedBox()
-                                                        : Text(localizations.previousPageTooltip,
-                                                            style: TextStyle(color: linkColor)),
-                                                    onPressed: () => provide.onPreviousPage(context),
-                                                  ),
-                                                if (provide.hasNextPage)
-                                                  TextButton.icon(
-                                                    icon: constraints.maxWidth < 300
-                                                        ? const SizedBox()
-                                                        : Text(localizations.nextPageTooltip,
-                                                            style: TextStyle(color: linkColor)),
-                                                    label: Icon(Icons.chevron_right, color: linkColor),
-                                                    onPressed: () => provide.onNextPage(context),
-                                                  ),
-                                              ],
-                                            )),
-                                  ),
-                                ])
-                            : null,
-                        leftBarBuilder: () {
-                          return Row(
-                            children: [
-                              const SizedBox(width: 10),
-                              delta.RefreshButton(
-                                onPressed: provide.isReady ? () async => await provide.refresh(context) : null,
-                              ),
-                              Expanded(
-                                child: responsive.Toolbar(
-                                  items: [
-                                    if (provide.hasListView && provide.hasGridView)
-                                      responsive.ToolButton(
-                                        label: context.i18n.notesViewAsListLabel,
-                                        icon: Icons.view_headline,
-                                        onPressed: provide.isReady ? provide.onListView : null,
-                                        active: provide.isListView,
-                                      ),
-                                    if (provide.hasListView && provide.hasGridView)
-                                      responsive.ToolButton(
-                                        label: context.i18n.notesViewAsGridLabel,
-                                        icon: Icons.grid_view,
-                                        onPressed: provide.isReady ? provide.onGridView : null,
-                                        active: !provide.isListView,
-                                        space: 10,
-                                      ),
-                                    responsive.ToolButton(
-                                      label: context.i18n.notesSelectButtonLabel,
-                                      icon: Icons.check_circle_outline,
-                                      onPressed: provide.isNotEmpty ? provide.onToggleCheckMode : null,
-                                    ),
-                                    if (leftTools != null) ...leftTools!,
-                                    responsive.ToolSpacer(),
-                                    if (formController.showArchiveButton)
-                                      responsive.ToolButton(
-                                        label: context.i18n.archiveButtonText,
-                                        icon: Icons.archive,
-                                        onPressed: provide.isNotEmpty ? () => provide.onArchive(context) : null,
-                                      ),
-                                    if (formController.showDeleteButton)
-                                      responsive.ToolButton(
-                                        label: context.i18n.deleteButtonText,
-                                        icon: Icons.delete,
-                                        onPressed: provide.isNotEmpty ? () => provide.onDelete(context) : null,
-                                      ),
-                                    if (formController.showRestoreButton)
-                                      responsive.ToolButton(
-                                        label: context.i18n.restoreButtonText,
-                                        icon: Icons.restore,
-                                        onPressed: provide.isNotEmpty ? () => provide.onRestore(context) : null,
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                        rightBarBuilder: () {
-                          return responsive.Toolbar(
-                            items: [
+                        ])
+                    : null,
+                leftBarBuilder: () {
+                  return Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      delta.RefreshButton(
+                        onPressed: notesProvider.isReady ? () async => await notesProvider.refresh(context) : null,
+                      ),
+                      Expanded(
+                        child: responsive.Toolbar(
+                          items: [
+                            if (notesProvider.hasListView && notesProvider.hasGridView)
                               responsive.ToolButton(
-                                label: context.i18n.notesNewButtonLabel,
-                                icon: Icons.add,
-                                onPressed: () => provide.onAdd(context),
+                                label: context.i18n.notesViewAsListLabel,
+                                icon: Icons.view_headline,
+                                onPressed: notesProvider.isReady ? notesProvider.onListView : null,
+                                active: notesProvider.isListView,
                               ),
-                              if (rightTools != null) ...rightTools!,
-                              responsive.ToolSpacer(),
-                              ..._buildPaginator(context, provide, pageInfoText),
-                            ],
-                          );
-                        },
-                        touchBottomBarBuilder: () {
-                          final buttonStyle = TextStyle(
-                            fontSize: 15,
-                            color: provide.isReady ? Colors.blue.shade700 : Colors.grey,
-                          );
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 18),
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(10)),
-                              color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
+                            if (notesProvider.hasListView && notesProvider.hasGridView)
+                              responsive.ToolButton(
+                                label: context.i18n.notesViewAsGridLabel,
+                                icon: Icons.grid_view,
+                                onPressed: notesProvider.isReady ? notesProvider.onGridView : null,
+                                active: !notesProvider.isListView,
+                                space: 10,
+                              ),
+                            responsive.ToolButton(
+                              label: context.i18n.notesSelectButtonLabel,
+                              icon: Icons.check_circle_outline,
+                              onPressed: notesProvider.isNotEmpty ? notesProvider.onToggleCheckMode : null,
                             ),
-                            child: Row(children: [
-                              TextButton(
-                                child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
-                                style: provide.isCheckMode
-                                    ? ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(
-                                          context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
-                                        ),
-                                      )
-                                    : null,
-                                onPressed: provide.isReady ? provide.onToggleCheckMode : null,
+                            if (leftTools != null) ...leftTools!,
+                            responsive.ToolSpacer(),
+                            if (formController.showArchiveButton)
+                              responsive.ToolButton(
+                                label: context.i18n.archiveButtonText,
+                                icon: Icons.archive,
+                                onPressed: notesProvider.isNotEmpty ? () => notesProvider.onArchive(context) : null,
                               ),
-                              pageInfoText.isNotEmpty
-                                  ? Expanded(
-                                      child: Text(pageInfoText,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: context.themeColor(
-                                                light: Colors.grey.shade600, dark: Colors.grey.shade400),
-                                          )),
-                                    )
-                                  : const Spacer(),
-                              TextButton(
-                                child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
-                                onPressed: provide.isReady ? () => provide.onAdd(context) : null,
+                            if (formController.showDeleteButton)
+                              responsive.ToolButton(
+                                label: context.i18n.deleteButtonText,
+                                icon: Icons.delete,
+                                onPressed: notesProvider.isNotEmpty ? () => notesProvider.onDelete(context) : null,
                               ),
-                            ]),
-                          );
-                        },
-                        mouseBottomBarBuilder: () {
-                          return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 18),
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
+                            if (formController.showRestoreButton)
+                              responsive.ToolButton(
+                                label: context.i18n.restoreButtonText,
+                                icon: Icons.restore,
+                                onPressed: notesProvider.isNotEmpty ? () => notesProvider.onRestore(context) : null,
                               ),
-                              child: responsive.Toolbar(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                items: [
-                                  ..._buildPaginator(context, provide, pageInfoText),
-                                ],
-                              ));
-                        },
-                        selectionBarBuilder: () {
-                          return CheckableHeader(
-                            selectedItemCount: provide.dataView!.selectedRows.length,
-                            isAllSelected:
-                                provide.dataView!.selectedRows.length == provide.dataView!.displayRows.length,
-                            onSelectAll: () => provide.onItemChecked(context, provide.dataView!.displayRows),
-                            onUnselectAll: () => provide.onItemChecked(context, []),
-                            onCancel: () => provide.onToggleCheckMode(),
-                            actions: [
-                              if (formController.showArchiveButton)
-                                TextButton.icon(
-                                  style: TextButton.styleFrom(
-                                    primary: Colors.grey.shade900,
-                                  ),
-                                  label: Text(context.i18n.archiveButtonText),
-                                  icon: const Icon(Icons.archive),
-                                  onPressed: provide.dataView!.selectedRows.isNotEmpty
-                                      ? () => provide.onArchive(context)
-                                      : null,
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                rightBarBuilder: () {
+                  return responsive.Toolbar(
+                    items: [
+                      responsive.ToolButton(
+                        label: context.i18n.notesNewButtonLabel,
+                        icon: Icons.add,
+                        onPressed: () => notesProvider.onAdd(context),
+                      ),
+                      if (rightTools != null) ...rightTools!,
+                      responsive.ToolSpacer(),
+                      ..._buildPaginator(context, notesProvider, pageInfoText),
+                    ],
+                  );
+                },
+                touchBottomBarBuilder: () {
+                  final buttonStyle = TextStyle(
+                    fontSize: 15,
+                    color: notesProvider.isReady ? Colors.blue.shade700 : Colors.grey,
+                  );
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 18),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
+                    ),
+                    child: Row(children: [
+                      TextButton(
+                        child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
+                        style: notesProvider.isCheckMode
+                            ? ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                  context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
                                 ),
-                              if (formController.showDeleteButton)
-                                TextButton.icon(
-                                  style: TextButton.styleFrom(
-                                    primary: Colors.grey.shade900,
-                                  ),
-                                  label: Text(context.i18n.deleteButtonText),
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: provide.dataView!.selectedRows.isNotEmpty
-                                      ? () => provide.onDelete(context)
-                                      : null,
-                                ),
-                              if (formController.showRestoreButton)
-                                TextButton.icon(
-                                  style: TextButton.styleFrom(
-                                    primary: Colors.grey.shade900,
-                                  ),
-                                  label: Text(context.i18n.restoreButtonText),
-                                  icon: const Icon(Icons.restore),
-                                  onPressed: provide.dataView!.selectedRows.isNotEmpty
-                                      ? () => provide.onRestore(context)
-                                      : null,
-                                ),
-                            ],
-                          );
-                        },
-                        newItem: provide.newItem,
-                        isCheckMode: provide.isCheckMode,
-                        isListView: provide.isListView,
-                        onItemChecked: (selected) => provide.onItemChecked(context, selected),
-                        onItemSelected: (selected) => provide.onItemsSelected(context, selected),
-                        onItemTapped: (selected) => provide.onItemTapped(context, selected),
-                      )));
-            }));
+                              )
+                            : null,
+                        onPressed: notesProvider.isReady ? notesProvider.onToggleCheckMode : null,
+                      ),
+                      pageInfoText.isNotEmpty
+                          ? Expanded(
+                              child: Text(pageInfoText,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
+                                  )),
+                            )
+                          : const Spacer(),
+                      TextButton(
+                        child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
+                        onPressed: notesProvider.isReady ? () => notesProvider.onAdd(context) : null,
+                      ),
+                    ]),
+                  );
+                },
+                mouseBottomBarBuilder: () {
+                  return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 18),
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
+                      ),
+                      child: responsive.Toolbar(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        items: [
+                          ..._buildPaginator(context, notesProvider, pageInfoText),
+                        ],
+                      ));
+                },
+                selectionBarBuilder: () {
+                  return CheckableHeader(
+                    selectedItemCount: notesProvider.dataView!.selectedRows.length,
+                    isAllSelected:
+                        notesProvider.dataView!.selectedRows.length == notesProvider.dataView!.displayRows.length,
+                    onSelectAll: () => notesProvider.onItemChecked(context, notesProvider.dataView!.displayRows),
+                    onUnselectAll: () => notesProvider.onItemChecked(context, []),
+                    onCancel: () => notesProvider.onToggleCheckMode(),
+                    actions: [
+                      if (formController.showArchiveButton)
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            primary: Colors.grey.shade900,
+                          ),
+                          label: Text(context.i18n.archiveButtonText),
+                          icon: const Icon(Icons.archive),
+                          onPressed: notesProvider.dataView!.selectedRows.isNotEmpty
+                              ? () => notesProvider.onArchive(context)
+                              : null,
+                        ),
+                      if (formController.showDeleteButton)
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            primary: Colors.grey.shade900,
+                          ),
+                          label: Text(context.i18n.deleteButtonText),
+                          icon: const Icon(Icons.delete),
+                          onPressed: notesProvider.dataView!.selectedRows.isNotEmpty
+                              ? () => notesProvider.onDelete(context)
+                              : null,
+                        ),
+                      if (formController.showRestoreButton)
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            primary: Colors.grey.shade900,
+                          ),
+                          label: Text(context.i18n.restoreButtonText),
+                          icon: const Icon(Icons.restore),
+                          onPressed: notesProvider.dataView!.selectedRows.isNotEmpty
+                              ? () => notesProvider.onRestore(context)
+                              : null,
+                        ),
+                    ],
+                  );
+                },
+                newItem: notesProvider.newItem,
+                isCheckMode: notesProvider.isCheckMode,
+                isListView: notesProvider.isListView,
+                onItemChecked: (selected) => notesProvider.onItemChecked(context, selected),
+                onItemSelected: (selected) => notesProvider.onItemsSelected(context, selected),
+                onItemTapped: (selected) => notesProvider.onItemTapped(context, selected),
+              )));
+    });
   }
 }

@@ -56,18 +56,17 @@ main() {
                 ])),
             objectBuilder: () => sample.Person()),
       ),
-      ChangeNotifierProvider<NotesViewProvider<sample.Person>>(
-        create: (context) => NotesViewProvider<sample.Person>(
+      ChangeNotifierProvider<NotesProvider<sample.Person>>(
+        create: (context) => NotesProvider<sample.Person>(
           caption: "Notes",
           listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Text('list:$person'),
           ),
-          /*
           gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
             child: Text('grid:$person'),
-          ),*/
+          ),
           detailBeamName: "/",
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
@@ -183,7 +182,7 @@ class NotesExample extends StatelessWidget {
                   testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
                   OutlinedButton(
                       child: const Text('scroll to top'),
-                      onPressed: () => NotesViewProvider.of<sample.Person>(context).scrollToTop()),
+                      onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
                   testing.ExampleButton(label: 'show filter view', builder: () => _showFilterView(context)),
                   testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
                   testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
@@ -658,7 +657,7 @@ class NotesExample extends StatelessWidget {
           return database.DatabaseProvider(
             name: 'test',
           )..load().then((database) {
-              NotesViewProvider.of<sample.Person>(context).load(
+              NotesProvider.of<sample.Person>(context).load(
                   context,
                   data.DatasetDatabase<sample.Person>(
                     database,
@@ -666,8 +665,10 @@ class NotesExample extends StatelessWidget {
                   ));
             });
         },
-        child: Consumer<database.DatabaseProvider>(
-          builder: (context, databaseProvider, _) => NotesView<sample.Person>(
+        child: Consumer3<database.DatabaseProvider, NotesProvider<sample.Person>, NoteFormController<sample.Person>>(
+          builder: (context, databaseProvider, notesProvider, formController, _) => NotesView<sample.Person>(
+            notesProvider: notesProvider,
+            formController: formController,
             tagViewHeader: const Text('hello world'),
             leftTools: [
               responsive.ToolButton(
@@ -702,14 +703,14 @@ Widget _notesItem(BuildContext context, String id) {
                 id: id);
           });
       },
-      child: Consumer<database.DatabaseProvider>(
-          builder: (context, databaseProvider, _) => Scaffold(
+      child: Consumer2<database.DatabaseProvider, NoteFormController<sample.Person>>(
+          builder: (context, databaseProvider, formController, _) => Scaffold(
                 appBar: AppBar(title: const Text('Detail'), actions: const [
                   NoteFormMenuButton<sample.Person>(),
                 ]),
-                body: const SafeArea(
+                body: SafeArea(
                   child: Center(
-                    child: NoteForm<sample.Person>(),
+                    child: NoteForm<sample.Person>(formController: formController),
                   ),
                 ),
               )));

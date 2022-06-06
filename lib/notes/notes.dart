@@ -1,7 +1,7 @@
 library notes;
 
 export 'src/types.dart';
-export 'src/notes_view_provider.dart';
+export 'src/notes_provider.dart';
 export 'src/selectable.dart';
 export 'src/simple_list.dart';
 export 'src/simple_grid.dart';

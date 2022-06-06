@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'notes_view_provider.dart';
+import 'notes_provider.dart';
 import 'note_form_controller.dart';
 
 /// NotesViewMenuButton is menu button for notes view
@@ -18,7 +18,7 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<NotesViewProvider<T>, NoteFormController<T>>(
+    return Consumer2<NotesProvider<T>, NoteFormController<T>>(
         builder: (context, provide, formController, _) => IconButton(
               icon: const Icon(Icons.pending_outlined),
               onPressed: provide.isReady

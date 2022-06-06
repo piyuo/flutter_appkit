@@ -12,9 +12,9 @@ import 'selectable.dart';
 import 'types.dart';
 import 'note_form_controller.dart';
 
-/// NotesViewProvider provide notes for notes view
-class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
-  NotesViewProvider({
+/// NotesProvider provide notes for notes view
+class NotesProvider<T extends pb.Object> with ChangeNotifier {
+  NotesProvider({
     required this.loader,
     required this.adder,
     this.listBuilder,
@@ -149,9 +149,9 @@ class NotesViewProvider<T extends pb.Object> with ChangeNotifier {
   /// gridAnimatedViewScrollController is animated view scroll controller for grid
   final ScrollController gridAnimatedViewScrollController = ScrollController();
 
-  /// of get [NotesViewProvider] from context
-  static NotesViewProvider<T> of<T extends pb.Object>(BuildContext context) {
-    return Provider.of<NotesViewProvider<T>>(context, listen: false);
+  /// of get [NotesProvider] from context
+  static NotesProvider<T> of<T extends pb.Object>(BuildContext context) {
+    return Provider.of<NotesProvider<T>>(context, listen: false);
   }
 
   /// scrollToTop scroll to top
