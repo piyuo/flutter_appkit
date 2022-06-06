@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'database.dart';
-
-/// DatabaseBuilder build database
-typedef DatabaseBuilder = Future<Database> Function(String name);
+import 'helper.dart';
 
 /// _name is current database name
 String _name = '';
@@ -43,14 +41,10 @@ void resetDatabaseUsage() {
 class DatabaseProvider with ChangeNotifier {
   DatabaseProvider({
     required this.name,
-    required this.databaseBuilder,
   });
 
   /// name is database name
   final String name;
-
-  /// databaseBuilder is database builder
-  final DatabaseBuilder databaseBuilder;
 
   /// database is current database
   Database get database => _database!;
@@ -74,7 +68,7 @@ class DatabaseProvider with ChangeNotifier {
       resetDatabaseUsage();
     }
     _name = name;
-    _database ??= await databaseBuilder(name);
+    _database ??= await open(name);
     _inc();
     return _database!;
   }

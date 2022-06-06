@@ -8,29 +8,23 @@ void main() {
   setUpAll(() async {
     resetDatabaseUsage();
     await initForTest();
-    await delete('test_db');
-    await delete('test2_db');
+    await delete('test');
+    await delete('test2');
   });
 
   tearDown(() async {
-    await delete('test_db');
-    await delete('test2_db');
+    await delete('test');
+    await delete('test2');
   });
 
   group('[database_provider]', () {
     test('should keep track database usage', () async {
-      final provide = DatabaseProvider(
-        name: 'test',
-        databaseBuilder: (name) async => await open('test_db'),
-      );
+      final provide = DatabaseProvider(name: 'test');
       await provide.load();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 1);
 
-      final provide2 = DatabaseProvider(
-        name: 'test',
-        databaseBuilder: (name) async => await open('test_db'),
-      );
+      final provide2 = DatabaseProvider(name: 'test');
       await provide2.load();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 2);
@@ -42,18 +36,12 @@ void main() {
     });
 
     test('should reset when database name changed', () async {
-      final provide = DatabaseProvider(
-        name: 'test',
-        databaseBuilder: (name) async => await open('test_db'),
-      );
+      final provide = DatabaseProvider(name: 'test');
       await provide.load();
       expect(provide.name, 'test');
       expect(databaseUsageCount, 1);
 
-      final provide2 = DatabaseProvider(
-        name: 'test2',
-        databaseBuilder: (name) async => await open('test2_db'),
-      );
+      final provide2 = DatabaseProvider(name: 'test2');
       await provide2.load();
       expect(provide2.name, 'test2');
       expect(databaseUsageCount, 1);

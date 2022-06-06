@@ -657,7 +657,6 @@ class NotesExample extends StatelessWidget {
         create: (_) {
           return database.DatabaseProvider(
             name: 'test',
-            databaseBuilder: (name) async => await database.open('test'),
           )..load().then((database) {
               NotesViewProvider.of<sample.Person>(context).load(
                   context,
@@ -694,7 +693,6 @@ Widget _notesItem(BuildContext context, String id) {
       create: (context) {
         return database.DatabaseProvider(
           name: 'test',
-          databaseBuilder: (name) async => await database.open('test'),
         )..load().then((database) async {
             NoteFormController.of<sample.Person>(context).load(context,
                 dataset: data.DatasetDatabase<sample.Person>(
