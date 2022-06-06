@@ -52,7 +52,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// formControllerBuilder return form controller
-  NoteFormController Function() formControllerBuilder;
+  NoteFormController Function(BuildContext) formControllerBuilder;
 
   /// listBuilder is the builder for list view
   final ItemBuilder<T>? listBuilder;
@@ -211,7 +211,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       final first = dataView!.displayRows.first;
       dataView!.selectRows([first]);
       onItemSelected?.call(context, first);
-      formControllerBuilder().loadByView(context, dataset: dataView!.dataset, row: first);
+      formControllerBuilder(context).loadByView(context, dataset: dataView!.dataset, row: first);
     }
   }
 
@@ -229,7 +229,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     final first = selectedRows.first;
-    final result = await formControllerBuilder().loadByView(context, dataset: dataView!.dataset, row: first);
+    final result = await formControllerBuilder(context).loadByView(context, dataset: dataView!.dataset, row: first);
     if (result) {
       if (!onItemChecked(context, selectedRows)) {
         return;
@@ -373,7 +373,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    formControllerBuilder().delete(context, dataView!.selectedRows);
+    formControllerBuilder(context).delete(context, dataView!.selectedRows);
     _showDeleteAnimation(context);
   }
 
@@ -382,7 +382,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    formControllerBuilder().archive(context, dataView!.selectedRows);
+    formControllerBuilder(context).archive(context, dataView!.selectedRows);
     _showDeleteAnimation(context);
   }
 
@@ -391,7 +391,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    formControllerBuilder().restore(context, dataView!.selectedRows);
+    formControllerBuilder(context).restore(context, dataView!.selectedRows);
     _showDeleteAnimation(context);
   }
 
