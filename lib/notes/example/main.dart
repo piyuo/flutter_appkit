@@ -153,13 +153,18 @@ class NotesExample extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey.shade800,
         actions: [
-          NotesViewMenuButton<sample.Person>(tools: [
-            responsive.ToolButton(
-              label: 'hello',
-              icon: Icons.favorite,
-              onPressed: () => debugPrint('hello'),
-            ),
-          ])
+          Consumer2<NotesProvider<sample.Person>, NoteFormController<sample.Person>>(
+              builder: (context, viewProvider, formController, _) => NotesViewMenuButton<sample.Person>(
+                    viewProvider: viewProvider,
+                    formController: formController,
+                    tools: [
+                      responsive.ToolButton(
+                        label: 'hello',
+                        icon: Icons.favorite,
+                        onPressed: () => debugPrint('hello'),
+                      ),
+                    ],
+                  ))
         ],
       ),
       body: SafeArea(
@@ -667,7 +672,7 @@ class NotesExample extends StatelessWidget {
         },
         child: Consumer3<database.DatabaseProvider, NotesProvider<sample.Person>, NoteFormController<sample.Person>>(
           builder: (context, databaseProvider, notesProvider, formController, _) => NotesView<sample.Person>(
-            notesProvider: notesProvider,
+            viewProvider: notesProvider,
             formController: formController,
             tagViewHeader: const Text('hello world'),
             leftTools: [
@@ -705,8 +710,10 @@ Widget _notesItem(BuildContext context, String id) {
       },
       child: Consumer2<database.DatabaseProvider, NoteFormController<sample.Person>>(
           builder: (context, databaseProvider, formController, _) => Scaffold(
-                appBar: AppBar(title: const Text('Detail'), actions: const [
-                  NoteFormMenuButton<sample.Person>(),
+                appBar: AppBar(title: const Text('Detail'), actions: [
+                  Consumer<NoteFormController<sample.Person>>(
+                      builder: (context, formController, _) =>
+                          NoteFormMenuButton<sample.Person>(formController: formController)),
                 ]),
                 body: SafeArea(
                   child: Center(
