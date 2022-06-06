@@ -15,6 +15,7 @@ import 'note_form_controller.dart';
 /// NotesProvider provide notes for notes view
 class NotesProvider<T extends pb.Object> with ChangeNotifier {
   NotesProvider({
+    required this.formControllerBuilder,
     required this.loader,
     required this.adder,
     this.listBuilder,
@@ -49,6 +50,9 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       isListView = false;
     }
   }
+
+  /// formControllerBuilder return form controller
+  NoteFormController Function() formControllerBuilder;
 
   /// listBuilder is the builder for list view
   final ItemBuilder<T>? listBuilder;
@@ -207,8 +211,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       final first = dataView!.displayRows.first;
       dataView!.selectRows([first]);
       onItemSelected?.call(context, first);
-      final formController = NoteFormController.of<T>(context);
-      formController.loadByView(context, dataset: dataView!.dataset, row: first);
+      formControllerBuilder().loadByView(context, dataset: dataView!.dataset, row: first);
     }
   }
 
@@ -226,8 +229,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     final first = selectedRows.first;
-    final client = NoteFormController.of<T>(context);
-    final result = await client.loadByView(context, dataset: dataView!.dataset, row: first);
+    final result = await formControllerBuilder().loadByView(context, dataset: dataView!.dataset, row: first);
     if (result) {
       if (!onItemChecked(context, selectedRows)) {
         return;
@@ -371,8 +373,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    final formController = NoteFormController.of<T>(context);
-    formController.delete(context, dataView!.selectedRows);
+    formControllerBuilder().delete(context, dataView!.selectedRows);
     _showDeleteAnimation(context);
   }
 
@@ -381,8 +382,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    final formController = NoteFormController.of<T>(context);
-    formController.archive(context, dataView!.selectedRows);
+    formControllerBuilder().archive(context, dataView!.selectedRows);
     _showDeleteAnimation(context);
   }
 
@@ -391,8 +391,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    final formController = NoteFormController.of<T>(context);
-    formController.restore(context, dataView!.selectedRows);
+    formControllerBuilder().restore(context, dataView!.selectedRows);
     _showDeleteAnimation(context);
   }
 

@@ -59,6 +59,7 @@ main() {
       ChangeNotifierProvider<NotesProvider<sample.Person>>(
         create: (context) => NotesProvider<sample.Person>(
           caption: "Notes",
+          formControllerBuilder: () => NoteFormController.of<sample.Person>(context),
           listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Text('list:$person'),
