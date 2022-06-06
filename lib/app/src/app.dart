@@ -70,6 +70,7 @@ set userID(String value) {
 void start({
   required String appName,
   required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
+  String initialRoute = '/',
   LocalizationsDelegate<dynamic>? l10nDelegate,
   List<SingleChildWidget>? providers,
   String backendBranch = branchMaster,
@@ -93,6 +94,7 @@ void start({
 
   // put delegate outside of build to avoid hot reload error
   final beamerDelegate = BeamerDelegate(
+    initialPath: initialRoute,
     locationBuilder: RoutesLocationBuilder(
       routes: routes,
     ),

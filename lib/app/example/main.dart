@@ -7,34 +7,38 @@ import 'package:beamer/beamer.dart';
 import '../app.dart';
 
 main() {
-  start(appName: 'app', routes: {
-    '/': (context, state, data) => const BeamPage(
-          key: ValueKey('home'),
-          title: 'Home',
-          child: AppExample(color: null),
-        ),
-    '/other/:id': (context, state, data) {
-      final id = state.pathParameters['id']!;
-      return BeamPage(
-        key: ValueKey('other-$id'),
-        title: 'other',
-        child: AppExample(
-          color: Colors.red,
-          data: {
-            'id': id,
-          },
-        ),
-      );
-    },
-    '/other': (context, state, data) => BeamPage(
-          key: const ValueKey('other'),
+  start(
+    appName: 'app',
+//    initialRoute: '/other/',
+    routes: {
+      '/': (context, state, data) => const BeamPage(
+            key: ValueKey('home'),
+            title: 'Home',
+            child: AppExample(color: null),
+          ),
+      '/other/:id': (context, state, data) {
+        final id = state.pathParameters['id']!;
+        return BeamPage(
+          key: ValueKey('other-$id'),
           title: 'other',
           child: AppExample(
             color: Colors.red,
-            data: data,
+            data: {
+              'id': id,
+            },
           ),
-        ),
-  });
+        );
+      },
+      '/other': (context, state, data) => BeamPage(
+            key: const ValueKey('other'),
+            title: 'other',
+            child: AppExample(
+              color: Colors.red,
+              data: data,
+            ),
+          ),
+    },
+  );
 }
 
 class AppExample extends StatefulWidget {
