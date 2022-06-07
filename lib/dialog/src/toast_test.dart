@@ -30,13 +30,13 @@ void main() {
   group('[toast]', () {
     testWidgets('should show loading and dismiss', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) async => await toastLoading(context)),
+        sampleApp(onPressed: (context) async => await toastWait(context)),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
-      dismiss();
+      dismissToast();
       await tester.pumpAndSettle();
       expectNoToast();
     });
@@ -49,7 +49,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
-      dismiss();
+      dismissToast();
       await tester.pumpAndSettle();
       expectNoToast();
     });
@@ -57,20 +57,16 @@ void main() {
     testWidgets('should show info toast', (WidgetTester tester) async {
       await tester.pumpWidget(
         sampleApp(
-            onPressed: (context) async => await toastInfo(context,
-                autoHide: const Duration(milliseconds: 50),
-                text: 'network is slow than usual',
-                widget: const Icon(
-                  Icons.wifi,
-                  size: 36,
-                  color: Colors.red,
-                ))),
+            onPressed: (context) async => await toastInfo(
+                  context,
+                  'network is slow than usual',
+                )),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 20));
       expectToast();
 
-      dismiss();
+      dismissToast();
       await tester.pumpAndSettle();
       expectNoToast();
     });
@@ -83,7 +79,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
-      dismiss();
+      dismissToast();
       await tester.pumpAndSettle();
       expectNoToast();
     });
@@ -96,7 +92,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 50));
       expectToast();
 
-      dismiss();
+      dismissToast();
       await tester.pumpAndSettle();
       expectNoToast();
     });

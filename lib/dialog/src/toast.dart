@@ -6,7 +6,6 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// _applyTheme apply theme before show toast
-///
 void _applyTheme(
   BuildContext context, {
   EasyLoadingIndicatorType indicatorType = EasyLoadingIndicatorType.fadingCircle,
@@ -52,7 +51,6 @@ void _applyTheme(
 }
 
 /// toastWidget toast a widget
-///
 Future<void> toastWidget(
   BuildContext context,
   Widget child,
@@ -65,9 +63,19 @@ Future<void> toastWidget(
       ]));
 }
 
-/// toastLoading show loading toast
-///
-Future<void> toastLoading(
+/// toastMask
+Future<void> toastMask(BuildContext context) async {
+  _applyTheme(
+    context,
+    indicatorType: EasyLoadingIndicatorType.fadingCircle,
+  );
+  return await EasyLoading.show(
+    dismissOnTap: false,
+  );
+}
+
+/// toastWait show wait toast
+Future<void> toastWait(
   BuildContext context, {
   String? text,
 }) async {
@@ -77,12 +85,12 @@ Future<void> toastLoading(
   );
   return await EasyLoading.show(
     status: text ?? context.i18n.hintPleaseWait,
-    maskType: EasyLoadingMaskType.clear,
+    maskType: EasyLoadingMaskType.black,
+    dismissOnTap: false,
   );
 }
 
 /// toastDone show done toast
-///
 Future<void> toastDone(BuildContext context, {String? text}) async {
   _applyTheme(context);
   return await EasyLoading.showSuccess(
@@ -92,26 +100,11 @@ Future<void> toastDone(BuildContext context, {String? text}) async {
   );
 }
 
-/// toastSearching show search toast
-///
-Future<void> toastSearching(
-  BuildContext context, {
-  String? text,
-}) async {
-  _applyTheme(
-    context,
-    indicatorType: EasyLoadingIndicatorType.threeBounce,
-  );
-  return await EasyLoading.show(
-    status: text,
-    maskType: EasyLoadingMaskType.clear,
-  );
-}
-
+/// toastProgress show progress toast
 Future<void> toastProgress(BuildContext context, double value, {String? text}) async {
   _applyTheme(context);
   if (value >= 1) {
-    dismiss();
+    dismissToast();
   }
 
   return await EasyLoading.showProgress(
@@ -121,28 +114,29 @@ Future<void> toastProgress(BuildContext context, double value, {String? text}) a
   );
 }
 
-/// info
-///
-Future<void> toastInfo(BuildContext context,
-    {String? text, Widget? widget, Duration autoHide = const Duration(milliseconds: 2000)}) async {
+/// toastInfo
+Future<void> toastInfo(
+  BuildContext context,
+  String text, {
+  Widget? widget,
+  Duration autoHideDuration = const Duration(milliseconds: 2000),
+}) async {
   _applyTheme(context);
 
   if (kReleaseMode) {
     // only auto hide in release mode, cause timer will break test
-    Future.delayed(autoHide, () {
-      dismiss();
+    Future.delayed(autoHideDuration, () {
+      dismissToast();
     });
   }
 
-  return await EasyLoading.show(
-    status: text,
-    indicator: widget,
+  return await EasyLoading.showInfo(
+    text,
     dismissOnTap: true,
   );
 }
 
 /// toastError show error toast
-///
 Future<void> toastError(BuildContext context, String text) async {
   _applyTheme(context);
   EasyLoading.instance
@@ -158,8 +152,7 @@ Future<void> toastError(BuildContext context, String text) async {
   );
 }
 
-/// dismiss toast
-///
-Future<void> dismiss() {
-  return EasyLoading.dismiss();
+/// dismissToast dismiss toast
+Future<void> dismissToast() {
+  return EasyLoading.dismiss(animation: true);
 }

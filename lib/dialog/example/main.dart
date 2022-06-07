@@ -37,15 +37,15 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _showBanner(context),
+            child: _toast(context),
           ),
           Wrap(
             children: [
               testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
               testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
-              testing.ExampleButton(label: 'loading', builder: () => _loading(context)),
-              testing.ExampleButton(label: 'sheet', builder: () => _showSlideSheet(context)),
-              testing.ExampleButton(label: 'banner', builder: () => _showBanner(context)),
+              testing.ExampleButton(label: 'toast', builder: () => _toast(context)),
+              testing.ExampleButton(label: 'slide sheet', builder: () => _slideSheet(context)),
+              testing.ExampleButton(label: 'banner', builder: () => _banner(context)),
               testing.ExampleButton(label: 'route', builder: () => _route(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
             ],
@@ -200,16 +200,8 @@ class DialogExample extends StatelessWidget {
     );
   }
 
-  Widget _loading(BuildContext context) {
+  Widget _toast(BuildContext context) {
     return Wrap(children: [
-      ElevatedButton(
-        child: const Text('searching'),
-        onPressed: () async {
-          toastSearching(context, text: 'Searching ...');
-          await Future.delayed(const Duration(seconds: 3));
-          dismiss();
-        },
-      ),
       ElevatedButton(
         child: const Text('Done'),
         onPressed: () async {
@@ -217,45 +209,47 @@ class DialogExample extends StatelessWidget {
         },
       ),
       ElevatedButton(
-        child: const Text('with loading'),
+        child: const Text('mask'),
         onPressed: () async {
-          withLoading(context, () async {
-            await Future.delayed(const Duration(seconds: 3));
-          });
-        },
-      ),
-      ElevatedButton(
-        child: const Text('with loading then done'),
-        onPressed: () async {
-          withLoadingThenDone(context, () async {
-            await Future.delayed(const Duration(seconds: 3));
-            return true;
-          });
-        },
-      ),
-      ElevatedButton(
-        child: const Text('toast loading'),
-        onPressed: () async {
-          toastLoading(context);
+          toastMask(context);
           await Future.delayed(const Duration(seconds: 3));
-          dismiss();
+          dismissToast();
         },
       ),
       ElevatedButton(
-        child: const Text('toast loading then OK'),
+        child: const Text('wait for'),
         onPressed: () async {
-          toastLoading(context);
+          toastWaitFor(
+            context,
+            callback: () async {
+              await Future.delayed(const Duration(seconds: 3));
+            },
+          );
+        },
+      ),
+      ElevatedButton(
+        child: const Text('toast wait'),
+        onPressed: () async {
+          toastWait(context);
+          await Future.delayed(const Duration(seconds: 3));
+          dismissToast();
+        },
+      ),
+      ElevatedButton(
+        child: const Text('toast wait then OK'),
+        onPressed: () async {
+          toastWait(context);
           await Future.delayed(const Duration(seconds: 1));
-          dismiss();
+          dismissToast();
           toastDone(context);
         },
       ),
       ElevatedButton(
         child: const Text('loading text'),
         onPressed: () async {
-          toastLoading(context, text: 'loading');
+          toastWait(context, text: 'loading');
           await Future.delayed(const Duration(seconds: 3));
-          dismiss();
+          dismissToast();
         },
       ),
       ElevatedButton(
@@ -282,7 +276,7 @@ class DialogExample extends StatelessWidget {
       ),
       ElevatedButton(
         child: const Text('dismiss'),
-        onPressed: () => dismiss(),
+        onPressed: () => dismissToast(),
       ),
       ElevatedButton(
         child: const Text('toast'),
@@ -294,28 +288,25 @@ class DialogExample extends StatelessWidget {
       ),
       ElevatedButton(
         child: const Text('info'),
-        onPressed: () => toastInfo(context,
-            text: 'network is slow than usual',
-            widget: const Icon(
-              Icons.wifi,
-              size: 68,
-              color: Colors.blue,
-            )),
+        onPressed: () => toastInfo(
+          context,
+          'network is slow than usual',
+        ),
       ),
       ElevatedButton(
         child: const Text('slow network'),
         onPressed: () async {
-          toastLoading(context);
+          toastWait(context);
           await Future.delayed(const Duration(seconds: 3));
-          toastLoading(context, text: 'network is slow');
+          toastWait(context, text: 'network is slow');
           await Future.delayed(const Duration(seconds: 3));
-          dismiss();
+          dismissToast();
         },
       ),
     ]);
   }
 
-  Widget _showSlideSheet(BuildContext context) {
+  Widget _slideSheet(BuildContext context) {
     return Wrap(children: [
       ElevatedButton(
         child: const Text('show slide sheet'),
@@ -370,7 +361,7 @@ class DialogExample extends StatelessWidget {
     ]);
   }
 
-  Widget _showBanner(BuildContext context) {
+  Widget _banner(BuildContext context) {
     return Wrap(children: [
       ElevatedButton(
         child: const Text('show banner'),
