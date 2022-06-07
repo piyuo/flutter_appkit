@@ -91,19 +91,13 @@ Future<bool> submit(
   bool showLoadingToast = true,
 }) async {
   if (!formGroup.dirty && formGroup.valid) {
-    dialog.showBanner(context, Text(context.i18n.formSavedBanner));
+    dialog.showInfoBanner(context, context.i18n.formSavedBanner);
     return false;
   }
 
   if (!formGroup.valid) {
     if (showBannerWhenError) {
-      dialog.showErrorBanner(
-          context,
-          Text(context.i18n.formAttentionBanner,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              )));
+      dialog.showWarningBanner(context, context.i18n.formAttentionBanner);
     }
     formGroup.markAllAsTouched();
     return false;
