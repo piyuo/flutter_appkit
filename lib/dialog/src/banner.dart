@@ -55,13 +55,25 @@ void dismissBanner(BuildContext context) {
   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
 }
 
-/// showErrorBanner show a simple text banner when form has error
-Future<void> showErrorBanner(BuildContext context, Widget message) {
-  return showBanner(
-    context,
-    message,
-    backgroundColor: Colors.red.shade400,
-    color: Colors.white,
-    leading: const Icon(Icons.warning, color: Colors.white),
-  );
-}
+/// showWarningBanner show a simple text banner when error
+Future<void> showWarningBanner(BuildContext context, String message) => showBanner(
+      context,
+      Text(message,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          )),
+      leading: const Icon(Icons.info_outline, color: Colors.white),
+    );
+
+/// showWarningBanner show a simple text banner when error
+Future<void> showInfoBanner(BuildContext context, String message) => showBanner(
+      context,
+      Text(message,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+          )),
+      backgroundColor: Colors.green.shade400,
+      color: Colors.white,
+    );

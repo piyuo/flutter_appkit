@@ -20,8 +20,33 @@ void disableAlert() {
   _disableAlert = true;
 }
 
+/// emailUsLink show link to email us
+/// ```dart
+/// emailUsLink(context);
+/// ```
+Widget emailUsLink(BuildContext context) => InkWell(
+      onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.email,
+            color: Colors.blueAccent,
+            size: 18,
+          ),
+          const SizedBox(width: 10),
+          Text(
+            context.i18n.errorEmailUsLink,
+            style: const TextStyle(fontSize: 16, color: Colors.blueAccent),
+          ),
+        ],
+      ),
+    );
+
 /// alert show alert dialog, return true if it's ok or yes
-///
+/// ```dart
+/// alert(context, 'hello world1', warning: true)
+/// ```
 Future<bool?> alert(
   BuildContext context,
   String message, {
@@ -214,30 +239,7 @@ Future<bool?> alert(
                       yes != null ? context.themeColor(dark: Colors.blue.shade50, light: Colors.black54) : Colors.white,
                       cancelFocusNode,
                       null),
-                  if (emailUs)
-                    Container(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
-                              child: const Icon(
-                                Icons.email,
-                                color: Colors.blueAccent,
-                                size: 18,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            InkWell(
-                                child: GestureDetector(
-                                    onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
-                                    child: Text(
-                                      context.i18n.errorEmailUsLink,
-                                      style: const TextStyle(fontSize: 16, color: Colors.blueAccent),
-                                    ))),
-                          ],
-                        )),
+                  if (emailUs) Container(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: emailUsLink(context)),
                 ],
               ),
             ),

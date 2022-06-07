@@ -383,14 +383,12 @@ class DialogExample extends StatelessWidget {
         ),
       ),
       ElevatedButton(
-        child: const Text('show form error banner'),
-        onPressed: () => showErrorBanner(
-            context,
-            const Text('There are items that require your attention',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ))),
+        child: const Text('show warning banner'),
+        onPressed: () => showWarningBanner(context, 'This is warning banner'),
+      ),
+      ElevatedButton(
+        child: const Text('show info banner'),
+        onPressed: () => showInfoBanner(context, 'This is info banner'),
       ),
       ElevatedButton(
         child: const Text('dismiss banner'),
