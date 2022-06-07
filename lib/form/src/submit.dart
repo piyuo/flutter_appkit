@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Submit is form submit button
@@ -89,9 +90,20 @@ Future<bool> submit(
   bool showBannerWhenError = true,
   bool showLoadingToast = true,
 }) async {
-  if (!formGroup.valid || !formGroup.dirty) {
+  if (!formGroup.dirty && formGroup.valid) {
+    dialog.showBanner(context, Text(context.i18n.formSavedBanner));
+    return false;
+  }
+
+  if (!formGroup.valid) {
     if (showBannerWhenError) {
-      dialog.showErrorBanner(context, 'There are items that require your attention');
+      dialog.showErrorBanner(
+          context,
+          Text(context.i18n.formAttentionBanner,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              )));
     }
     formGroup.markAllAsTouched();
     return false;
