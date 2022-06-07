@@ -1,7 +1,7 @@
 library form;
 
 export 'src/submit.dart';
-export 'src/button.dart';
+export 'src/form_button.dart';
 export 'src/email_field.dart';
 export 'src/email_field.dart';
 export 'src/tags.dart';

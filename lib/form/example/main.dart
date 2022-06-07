@@ -348,7 +348,7 @@ class FormExample extends StatelessWidget {
           br(),
           const Submit(label: 'Submit'),
           br(),
-          Button(
+          FormButton(
             color: Colors.red.shade400,
             label: 'Submit very long waiting form',
             onPressed: () async {
@@ -356,7 +356,7 @@ class FormExample extends StatelessWidget {
             },
           ),
           br(),
-          Button(
+          FormButton(
             color: Colors.red.shade400,
             label: 'Submit very long waiting form',
           ),

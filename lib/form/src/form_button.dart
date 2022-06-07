@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 
-/// Button is form button, it will be submit button if form is not null
-class Button extends StatelessWidget {
-  const Button({
+/// FormButton is form button
+class FormButton extends StatelessWidget {
+  const FormButton({
     required this.label,
     this.onPressed,
     this.focusNode,
