@@ -8,7 +8,10 @@ class LibLocalizationsEn extends LibLocalizations {
   LibLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get formWarning => 'There are items that require your attention';
+  String get formSavedBanner => 'Your changes have been saved';
+
+  @override
+  String get formAttentionBanner => 'There are items that require your attention';
 
   @override
   String get notesSelectButtonLabel => 'Select';

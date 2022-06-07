@@ -1,5 +1,6 @@
 {
-    "formWarning":"There are items that require your attention",
+    "formSavedBanner":"Your changes have been saved",
+    "formAttentionBanner":"There are items that require your attention",
     "notesSelectButtonLabel":"Select",
     "notesDeselectButtonLabel":"Deselect",
     "notesNewButtonLabel":"New",

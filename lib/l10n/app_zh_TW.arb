@@ -1,5 +1,6 @@
 {
-    "formWarning":"有些項目需要輸入",
+    "formSavedBanner":"您的修改已經儲存",
+    "formAttentionBanner":"您還有些項目需要輸入",
     "notesSelectButtonLabel":"選擇",
     "notesDeselectButtonLabel":"取消選擇",
     "notesNewButtonLabel":"新增",

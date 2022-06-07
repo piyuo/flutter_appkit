@@ -95,11 +95,17 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
-  /// No description provided for @formWarning.
+  /// No description provided for @formSavedBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Your changes have been saved'**
+  String get formSavedBanner;
+
+  /// No description provided for @formAttentionBanner.
   ///
   /// In en, this message translates to:
   /// **'There are items that require your attention'**
-  String get formWarning;
+  String get formAttentionBanner;
 
   /// No description provided for @notesSelectButtonLabel.
   ///
