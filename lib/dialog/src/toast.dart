@@ -130,8 +130,9 @@ Future<void> toastInfo(
     });
   }
 
-  return await EasyLoading.showInfo(
-    text,
+  return await EasyLoading.show(
+    status: text,
+    indicator: widget,
     dismissOnTap: true,
   );
 }

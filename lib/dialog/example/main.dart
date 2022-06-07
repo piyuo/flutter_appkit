@@ -288,10 +288,12 @@ class DialogExample extends StatelessWidget {
       ),
       ElevatedButton(
         child: const Text('info'),
-        onPressed: () => toastInfo(
-          context,
-          'network is slow than usual',
-        ),
+        onPressed: () => toastInfo(context, 'network is slow than usual',
+            widget: const Icon(
+              Icons.wifi,
+              size: 68,
+              color: Colors.blue,
+            )),
       ),
       ElevatedButton(
         child: const Text('slow network'),
