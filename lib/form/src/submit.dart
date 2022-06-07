@@ -46,7 +46,7 @@ class Submit extends StatelessWidget {
     return ReactiveFormConsumer(
       builder: (context, formGroup, child) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: formGroup.valid
+          primary: formGroup.valid && formGroup.dirty
               ? color
               : context.themeColor(
                   light: Colors.grey.shade300,
