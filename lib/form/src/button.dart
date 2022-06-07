@@ -58,14 +58,12 @@ class Button extends StatelessWidget {
         ),
       ),
       onPressed: onPressed != null
-          ? () async {
-              dialog.toastLoading(context);
-              try {
-                await onPressed?.call();
-              } finally {
-                dialog.dismiss();
-              }
-            }
+          ? () => dialog.toastWaitFor(
+                context,
+                callback: () async {
+                  await onPressed?.call();
+                },
+              )
           : null,
     );
   }

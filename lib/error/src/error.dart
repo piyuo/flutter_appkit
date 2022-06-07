@@ -117,13 +117,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
   } else if (e is command.SlowNetworkEvent) {
-    dialog.toastInfo(context,
-        text: context.i18n.errorNetworkSlowMessage,
-        widget: const Icon(
-          Icons.wifi,
-          size: 68,
-          color: Colors.white,
-        ));
+    dialog.toastInfo(context, context.i18n.errorNetworkSlowMessage);
   } else if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.alert(

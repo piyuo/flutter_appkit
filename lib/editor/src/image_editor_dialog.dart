@@ -53,14 +53,14 @@ class ImageEditorDialog extends StatelessWidget {
       ),
       child: Consumer<ImageEditorProvider>(builder: (context, provide, child) {
         onSave() async {
-          dialog.toastLoading(context);
-          try {
-            final bytes = await provide.crop();
-            debugPrint('${bytes.length}');
-            Navigator.pop(context, bytes);
-          } finally {
-            dialog.dismiss();
-          }
+          dialog.toastWaitFor(
+            context,
+            callback: () async {
+              final bytes = await provide.crop();
+              debugPrint('${bytes.length}');
+              Navigator.pop(context, bytes);
+            },
+          );
         }
 
         return Scaffold(

@@ -9,8 +9,6 @@ class Submit extends StatelessWidget {
   const Submit({
     required this.label,
     this.onPressed,
-    this.showBannerWhenError = true,
-    this.showLoadingToast = true,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.elevation = 2,
@@ -29,12 +27,6 @@ class Submit extends StatelessWidget {
 
   /// onPressed called when user pressed button
   final Future<void> Function()? onPressed;
-
-  /// showBannerWhenError show banner when error
-  final bool showBannerWhenError;
-
-  /// showLoadingToast show loading toast
-  final bool showLoadingToast;
 
   /// button elevation, if elevation is 0 use outlined button
   final double elevation;
@@ -73,8 +65,6 @@ class Submit extends StatelessWidget {
                   context,
                   formGroup,
                   onPressed: onPressed!,
-                  showBannerWhenError: showBannerWhenError,
-                  showLoadingToast: showLoadingToast,
                 )
             : null,
       ),
@@ -87,8 +77,6 @@ Future<bool> submit(
   BuildContext context,
   FormGroup formGroup, {
   required Future<void> Function() onPressed,
-  bool showBannerWhenError = true,
-  bool showLoadingToast = true,
 }) async {
   if (!formGroup.dirty && formGroup.valid) {
     dialog.showInfoBanner(context, context.i18n.formSavedBanner);
@@ -96,16 +84,12 @@ Future<bool> submit(
   }
 
   if (!formGroup.valid) {
-    if (showBannerWhenError) {
-      dialog.showWarningBanner(context, context.i18n.formAttentionBanner);
-    }
+    dialog.showWarningBanner(context, context.i18n.formAttentionBanner);
     formGroup.markAllAsTouched();
     return false;
   }
 
-  if (showLoadingToast) {
-    dialog.toastLoading(context);
-  }
+  dialog.toastWait(context);
   try {
     formGroup.markAsDisabled();
     await onPressed.call();
@@ -113,8 +97,6 @@ Future<bool> submit(
     return true;
   } finally {
     formGroup.markAsEnabled();
-    if (showLoadingToast) {
-      dialog.dismiss();
-    }
+    dialog.toastDone(context);
   }
 }
