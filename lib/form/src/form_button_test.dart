@@ -19,7 +19,7 @@ void main() {
             },
           ));
       await tester.tap(find.byType(FormButton));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // need wait done toast
       expect(clicked, true); // second item value
     });
   });

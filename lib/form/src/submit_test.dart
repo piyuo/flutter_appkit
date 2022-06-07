@@ -39,7 +39,7 @@ void main() {
       await tester.enterText(find.byType(ReactiveTextField), 'john');
       await tester.pumpAndSettle();
       await tester.tap(find.byType(Submit));
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
       expect(form.control('name').value, 'john'); // second item value
       expect(submitted, isTrue); // second item value
     });
@@ -72,10 +72,10 @@ void main() {
       await tester.enterText(find.byType(ReactiveTextField), 'john');
       await tester.pumpAndSettle();
       await tester.tap(find.byType(Submit));
-      await tester.pump(const Duration(milliseconds: 50));
+      await tester.pump(const Duration(seconds: 3));
       dialog.expectToast();
       //wait for click finish
-      await tester.pump(const Duration(milliseconds: 101));
+      await tester.pump(const Duration(seconds: 3));
     });
   });
 }
