@@ -84,7 +84,12 @@ Future<bool> submit(
   }
 
   if (!formGroup.valid) {
-    dialog.showWarningBanner(context, context.i18n.formAttentionBanner);
+    dialog.showWarningBanner(
+      context,
+      context.i18n.formAttentionBanner,
+      backgroundColor: Colors.red.shade400,
+      color: Colors.white,
+    );
     formGroup.markAllAsTouched();
     return false;
   }
