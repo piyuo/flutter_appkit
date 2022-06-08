@@ -45,8 +45,8 @@ class Submit extends StatelessWidget {
                   light: Colors.grey.shade300,
                   dark: Colors.grey.shade800,
                 ),
-          onPrimary: formGroup.valid ? null : Colors.grey.shade500,
-          elevation: formGroup.valid ? elevation : 0,
+          onPrimary: formGroup.valid && formGroup.dirty ? null : Colors.grey.shade500,
+          elevation: formGroup.valid && formGroup.dirty ? elevation : 0,
           padding: padding,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
