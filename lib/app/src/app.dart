@@ -5,11 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/cache/cache.dart' as cache;
-import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
-import '../../dialog/src/global_context_support.dart';
+import 'error.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 const branchMaster = 'master';
@@ -111,7 +110,7 @@ void start({
       await onBeforeStart();
     }
     // run app
-    return error.watch(() => runApp(LifecycleWatcher(
+    return watch(() => runApp(LifecycleWatcher(
             child: MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),

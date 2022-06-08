@@ -1,7 +1,12 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/log/log.dart' as log;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../app.dart';
@@ -97,6 +102,10 @@ class AppExampleState extends State<AppExample> {
                 label: 'set page title',
                 useScaffold: false,
                 builder: () => _setPageTitle(context),
+              ),
+              testing.ExampleButton(
+                label: 'error',
+                builder: () => _error(context),
               ),
             ]))
       ],
@@ -248,8 +257,104 @@ class AppExampleState extends State<AppExample> {
         )));
   }
 }
-/*        OutlinedButton(
-            child: const Text('goto app in new tab'),
-            onPressed: () {
-              gotoApp(context, '/other', newTab: true, args: {'app': 'newTab'});
-            }),*/
+
+Widget _error(BuildContext context) {
+  return Wrap(
+    children: [
+      ElevatedButton(
+          child: const Text('throw exception'),
+          onPressed: () {
+            watch(() => throw Exception('mock exception'));
+          }),
+      ElevatedButton(
+          child: const Text('throw exception twice'),
+          onPressed: () {
+            watch(() {
+              Future.delayed(const Duration(seconds: 3), () {
+                throw Exception('second exception');
+              });
+              throw Exception('first exception');
+            });
+          }),
+      ElevatedButton(
+          child: const Text('firewall block'),
+          onPressed: () {
+            eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
+          }),
+      ElevatedButton(
+          child: const Text('no internet'),
+          onPressed: () async {
+            try {
+              throw const SocketException('wifi off');
+            } catch (e) {
+              var contract = command.InternetRequiredContract(exception: e, url: 'http://mock');
+              contract.isInternetConnected = () async {
+                return false;
+              };
+              var ok = await eventbus.broadcast(context, contract);
+              dialog.toastInfo(context, ok ? 'retry' : 'cancel');
+            }
+          }),
+      ElevatedButton(
+          child: const Text('service not available'),
+          onPressed: () async {
+            var contract = command.InternetRequiredContract(url: 'http://mock');
+            contract.isInternetConnected = () async {
+              return true;
+            };
+            contract.isGoogleCloudFunctionAvailable = () async {
+              return true;
+            };
+            await eventbus.broadcast(context, contract);
+          }),
+      ElevatedButton(
+          child: const Text('internet blocked'),
+          onPressed: () async {
+            var contract = command.InternetRequiredContract(url: 'http://mock');
+            contract.isInternetConnected = () async {
+              return true;
+            };
+            contract.isGoogleCloudFunctionAvailable = () async {
+              return false;
+            };
+            await eventbus.broadcast(context, contract);
+          }),
+      ElevatedButton(
+          child: const Text('internal server error'),
+          onPressed: () {
+            eventbus.broadcast(context, command.InternalServerErrorEvent());
+          }),
+      ElevatedButton(
+          child: const Text('server not ready'),
+          onPressed: () {
+            eventbus.broadcast(context, command.ServerNotReadyEvent());
+          }),
+      ElevatedButton(
+          child: const Text('bad request'),
+          onPressed: () {
+            eventbus.broadcast(context, command.BadRequestEvent());
+          }),
+      ElevatedButton(
+          child: const Text('client timeout'),
+          onPressed: () async {
+            try {
+              throw TimeoutException('client timeout');
+            } catch (e) {
+              var ok = await eventbus.broadcast(
+                  context, command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
+              dialog.toastInfo(context, ok ? 'retry' : 'cancel');
+            }
+          }),
+      ElevatedButton(
+          child: const Text('deadline exceeded'),
+          onPressed: () async {
+            var ok =
+                await eventbus.broadcast(context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
+            dialog.toastInfo(context, ok ? 'retry' : 'cancel');
+          }),
+      ElevatedButton(
+          child: const Text('slow network'), onPressed: () => eventbus.broadcast(context, command.SlowNetworkEvent())),
+      ElevatedButton(child: const Text('disk error'), onPressed: () => throw log.DiskErrorException()),
+    ],
+  );
+}

@@ -54,7 +54,9 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
       await dialog.alert(
         dialog.globalContext,
         dialog.globalContext.i18n.errorDiskErrorMessage,
-        icon: Icons.priority_high,
+        warning: true,
+        footer: e.toString(),
+        emailUs: true,
       );
       return;
     }
@@ -87,7 +89,8 @@ String firewallBlockMessage(BuildContext context, String reason) {
 
 @visibleForTesting
 Future<void> listened(BuildContext context, dynamic e) async {
-//  debugPrint('error-service listened ${e.runtimeType}');
+  debugPrint('[app] listened ${e.runtimeType}');
+
   if (e is command.FirewallBlockEvent) {
     dialog.alert(
       context,
@@ -95,28 +98,39 @@ Future<void> listened(BuildContext context, dynamic e) async {
       warning: true,
       emailUs: true,
     );
-  } else if (e is command.InternalServerErrorEvent) {
+    return;
+  }
+  if (e is command.InternalServerErrorEvent) {
     dialog.alert(
       context,
       '500 internal server error',
       warning: true,
       emailUs: true,
     );
-  } else if (e is command.ServerNotReadyEvent) {
+    return;
+  }
+
+  if (e is command.ServerNotReadyEvent) {
     dialog.alert(
       context,
       '501 server not ready',
       warning: true,
       emailUs: true,
     );
-  } else if (e is command.BadRequestEvent) {
+    return;
+  }
+
+  if (e is command.BadRequestEvent) {
     dialog.alert(
       context,
       '400 bad request',
       warning: true,
       emailUs: true,
     );
-  } else if (e is command.SlowNetworkEvent) {
+    return;
+  }
+
+  if (e is command.SlowNetworkEvent) {
     dialog.toastInfo(
       context,
       context.i18n.errorNetworkSlowMessage,
@@ -126,7 +140,10 @@ Future<void> listened(BuildContext context, dynamic e) async {
         color: Colors.white,
       ),
     );
-  } else if (e is command.RequestTimeoutContract) {
+    return;
+  }
+
+  if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.alert(
       context,
@@ -138,7 +155,10 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
     e.complete(result == true);
-  } else if (e is command.InternetRequiredContract) {
+    return;
+  }
+
+  if (e is command.InternetRequiredContract) {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.alert(
@@ -158,19 +178,22 @@ Future<void> listened(BuildContext context, dynamic e) async {
         );
       }
       e.complete(false);
-    } else {
-      var result = await dialog.alert(
-        context,
-        context.i18n.errorNetworkNoInternetMessage,
-        icon: Icons.wifi_off,
-        footer: e.exception?.toString(),
-        yes: context.i18n.retryButtonText,
-        cancel: context.i18n.cancelButtonText,
-      );
-      e.complete(result == true);
+      return;
     }
-  } else if (e is eventbus.EmailSupportEvent) {
+    var result = await dialog.alert(
+      context,
+      context.i18n.errorNetworkNoInternetMessage,
+      icon: Icons.wifi_off,
+      footer: e.exception?.toString(),
+      yes: context.i18n.retryButtonText,
+      cancel: context.i18n.cancelButtonText,
+    );
+    e.complete(result == true);
+    return;
+  }
+  if (e is eventbus.EmailSupportEvent) {
     final em = ErrorEmail();
     em.launchMailTo();
+    return;
   }
 }
