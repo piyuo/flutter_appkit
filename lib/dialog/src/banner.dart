@@ -56,7 +56,13 @@ void dismissBanner(BuildContext context) {
 }
 
 /// showWarningBanner show a simple text banner when error
-Future<void> showWarningBanner(BuildContext context, String message) => showBanner(
+Future<void> showWarningBanner(
+  BuildContext context,
+  String message, {
+  Color? color,
+  Color? backgroundColor,
+}) =>
+    showBanner(
       context,
       Text(message,
           style: const TextStyle(
@@ -64,16 +70,24 @@ Future<void> showWarningBanner(BuildContext context, String message) => showBann
             color: Colors.white,
           )),
       leading: const Icon(Icons.info_outline, color: Colors.white),
+      color: color,
+      backgroundColor: backgroundColor,
     );
 
 /// showWarningBanner show a simple text banner when error
-Future<void> showInfoBanner(BuildContext context, String message) => showBanner(
+Future<void> showInfoBanner(
+  BuildContext context,
+  String message, {
+  Color? color,
+  Color? backgroundColor,
+}) =>
+    showBanner(
       context,
       Text(message,
           style: const TextStyle(
             fontSize: 16,
             color: Colors.white,
           )),
-      backgroundColor: Colors.green.shade400,
-      color: Colors.white,
+      backgroundColor: backgroundColor ?? Colors.green.shade400,
+      color: color ?? Colors.white,
     );
