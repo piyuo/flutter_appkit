@@ -6,8 +6,7 @@ void main() {
 
   group('[dialog]', () {
     test('should init', () async {
-      var dialogProvider = DialogProvider();
-      expect(dialogProvider.init(), isNotNull);
+      expect(init(), isNotNull);
     });
   });
 }
