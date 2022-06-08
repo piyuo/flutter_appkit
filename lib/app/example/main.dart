@@ -69,6 +69,12 @@ class AppExampleState extends State<AppExample> {
         Container(
             color: Colors.black,
             child: Wrap(children: [
+              OutlinedButton(
+                child: const Text('show alert use global context'),
+                onPressed: () {
+                  dialog.alert(dialog.globalContext, 'hello');
+                },
+              ),
               testing.ExampleButton(
                 label: 'routing',
                 useScaffold: false,

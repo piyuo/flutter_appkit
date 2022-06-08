@@ -12,9 +12,9 @@ eventbus.Subscription? subscribed;
 var showCatchedAlert = false;
 
 /// watch global exception
-///
-///      errorHandler.watch(suspect);
-///
+/// ```dart
+/// errorHandler.watch(suspect);
+/// ```
 void watch(Function suspect) {
   final originalOnError = FlutterError.onError;
   FlutterError.onError = (FlutterErrorDetails details) async {
@@ -52,16 +52,16 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   try {
     if (e is log.DiskErrorException) {
       await dialog.alert(
-        dialog.rootContext,
-        dialog.rootContext.i18n.errorDiskErrorMessage,
+        dialog.globalContext,
+        dialog.globalContext.i18n.errorDiskErrorMessage,
         icon: Icons.priority_high,
       );
       return;
     }
 
     await dialog.alert(
-      dialog.rootContext,
-      dialog.rootContext.i18n.errorNotified,
+      dialog.globalContext,
+      dialog.globalContext.i18n.errorNotified,
       warning: true,
       footer: e.toString(),
       emailUs: true,
@@ -117,7 +117,15 @@ Future<void> listened(BuildContext context, dynamic e) async {
       emailUs: true,
     );
   } else if (e is command.SlowNetworkEvent) {
-    dialog.toastInfo(context, context.i18n.errorNetworkSlowMessage);
+    dialog.toastInfo(
+      context,
+      context.i18n.errorNetworkSlowMessage,
+      widget: const Icon(
+        Icons.wifi,
+        size: 68,
+        color: Colors.white,
+      ),
+    );
   } else if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.alert(

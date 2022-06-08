@@ -123,14 +123,8 @@ class ErrorExample extends StatelessWidget {
                   }),
               ElevatedButton(
                   child: const Text('slow network'),
-                  onPressed: () {
-                    eventbus.broadcast(context, command.SlowNetworkEvent());
-                  }),
-              ElevatedButton(
-                  child: const Text('disk error'),
-                  onPressed: () {
-                    throw log.DiskErrorException();
-                  }),
+                  onPressed: () => eventbus.broadcast(context, command.SlowNetworkEvent())),
+              ElevatedButton(child: const Text('disk error'), onPressed: () => throw log.DiskErrorException()),
             ],
           ),
         ],

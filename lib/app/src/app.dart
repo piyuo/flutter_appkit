@@ -9,6 +9,7 @@ import 'package:libcli/error/error.dart' as error;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
+import '../../dialog/src/global_context_support.dart';
 
 /// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 const branchMaster = 'master';
@@ -113,14 +114,13 @@ void start({
     return error.watch(() => runApp(LifecycleWatcher(
             child: MultiProvider(
           providers: [
-            Provider(create: (_) => dialog.DialogProvider()),
             ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
             if (providers != null) ...providers,
           ],
-          child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
-            builder: (context, dialogProvider, i18nProvider, __) => MaterialApp.router(
-              scaffoldMessengerKey: dialogProvider.scaffoldMessengerKey,
-              builder: dialogProvider.init(),
+          child: Consumer<i18n.I18nProvider>(
+            builder: (context, i18nProvider, __) => dialog.GlobalContextSupport(
+                child: MaterialApp.router(
+              builder: dialog.init(),
               debugShowCheckedModeBanner: false,
               theme: theme ??
                   ThemeData(
@@ -157,7 +157,7 @@ void start({
               backButtonDispatcher: BeamerBackButtonDispatcher(
                 delegate: beamerDelegate,
               ),
-            ),
+            )),
           ),
         ))));
   });

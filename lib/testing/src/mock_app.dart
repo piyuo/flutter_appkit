@@ -44,15 +44,13 @@ Future<void> mockApp(
 
   await tester.pumpWidget(MultiProvider(
       providers: [
-        Provider(create: (_) => dialog.DialogProvider()),
         ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
         if (providers != null) ...providers,
       ],
-      child: Consumer2<dialog.DialogProvider, i18n.I18nProvider>(
-        builder: (context, dialogProvider, i18nProvider, _) => MaterialApp(
+      child: Consumer<i18n.I18nProvider>(
+        builder: (context, i18nProvider, _) => MaterialApp(
           navigatorObservers: [navigatorObserver],
-          navigatorKey: dialogProvider.navigatorKey,
-          builder: dialogProvider.init(),
+          builder: dialog.init(),
           home: providers != null
               ? MultiProvider(
                   providers: providers,
