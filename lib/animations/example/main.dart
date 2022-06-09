@@ -8,7 +8,7 @@ import '../animations.dart';
 
 var scrollController = ScrollController();
 
-final GlobalKey<AnimatedGridState> gridKey = GlobalKey<AnimatedGridState>();
+final GlobalKey<AnimateGridState> gridKey = GlobalKey<AnimateGridState>();
 
 var gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -212,7 +212,7 @@ class _AnimationExampleState extends State<AnimationExample> {
             }),
       ]),
       Expanded(
-          child: AnimatedGrid(
+          child: AnimateGrid(
         key: gridKey,
         mainAxisSpacing: 5,
         crossAxisSpacing: 20,
@@ -316,9 +316,9 @@ class _AnimationExampleState extends State<AnimationExample> {
   }
 
   Widget _animatedViewInList() {
-    return ChangeNotifierProvider<AnimatedViewProvider>(
-      create: (context) => AnimatedViewProvider(gridItems.length),
-      child: Consumer<AnimatedViewProvider>(
+    return ChangeNotifierProvider<AnimateViewProvider>(
+      create: (context) => AnimateViewProvider(gridItems.length),
+      child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
                   OutlinedButton(
@@ -375,7 +375,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                   ),
                 ]),
                 const Expanded(
-                    child: AnimatedView(
+                    child: AnimateView(
                   itemBuilder: itemBuilder,
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 20,
@@ -386,9 +386,9 @@ class _AnimationExampleState extends State<AnimationExample> {
   }
 
   Widget _animatedViewInGrid() {
-    return ChangeNotifierProvider<AnimatedViewProvider>(
-      create: (context) => AnimatedViewProvider(gridItems.length),
-      child: Consumer<AnimatedViewProvider>(
+    return ChangeNotifierProvider<AnimateViewProvider>(
+      create: (context) => AnimateViewProvider(gridItems.length),
+      child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
                   OutlinedButton(
@@ -445,7 +445,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                   ),
                 ]),
                 const Expanded(
-                    child: AnimatedView(
+                    child: AnimateView(
                   itemBuilder: itemBuilder,
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 20,
@@ -456,9 +456,9 @@ class _AnimationExampleState extends State<AnimationExample> {
   }
 
   Widget _animatedViewInListView() {
-    return ChangeNotifierProvider<AnimatedViewProvider>(
-      create: (context) => AnimatedViewProvider(gridItems.length),
-      child: Consumer<AnimatedViewProvider>(
+    return ChangeNotifierProvider<AnimateViewProvider>(
+      create: (context) => AnimateViewProvider(gridItems.length),
+      child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 OutlinedButton(
                   child: const Text('insert'),
@@ -486,7 +486,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                               child: const Center(child: Text('footer')),
                             );
                           }
-                          return AnimatedView(
+                          return AnimateView(
                             controller: scrollController,
                             itemBuilder: itemBuilder,
                             shrinkWrap: true,

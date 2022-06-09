@@ -26,8 +26,8 @@ class _ActiveItem implements Comparable<_ActiveItem> {
 
 /// A scrolling container that animates items when they are inserted or removed.
 ///
-/// This widget's [AnimatedGridState] can be used to dynamically insert or
-/// remove items. To refer to the [AnimatedGridState] either provide a
+/// This widget's [AnimateGridState] can be used to dynamically insert or
+/// remove items. To refer to the [AnimateGridState] either provide a
 /// [GlobalKey] or use the static [of] method from an item's input callback.
 ///
 /// This widget is similar to one created by [ListView.builder].
@@ -35,7 +35,7 @@ class _ActiveItem implements Comparable<_ActiveItem> {
 /// {@youtube 560 315 https://www.youtube.com/watch?v=ZtfItHwFlZ8}
 ///
 /// {@tool dartpad}
-/// This sample application uses an [AnimatedGrid] to create an effect when
+/// This sample application uses an [AnimateGrid] to create an effect when
 /// items are removed or added to the list.
 ///
 /// ** See code in examples/api/lib/widgets/animated_list/animated_list.0.dart **
@@ -45,10 +45,10 @@ class _ActiveItem implements Comparable<_ActiveItem> {
 ///
 ///  * [SliverAnimatedGrid], a sliver that animates items when they are inserted
 ///    or removed from a list.
-class AnimatedGrid extends StatefulWidget {
+class AnimateGrid extends StatefulWidget {
   /// Creates a scrolling container that animates items when they are inserted
   /// or removed.
-  const AnimatedGrid({
+  const AnimateGrid({
     Key? key,
     required this.itemBuilder,
     this.initialItemCount = 0,
@@ -85,11 +85,11 @@ class AnimatedGrid extends StatefulWidget {
   /// The [AnimatedGridItemBuilder] index parameter indicates the item's
   /// position in the list. The value of the index parameter will be between 0
   /// and [initialItemCount] plus the total number of items that have been
-  /// inserted with [AnimatedGridState.insertItem] and less the total number of
-  /// items that have been removed with [AnimatedGridState.removeItem].
+  /// inserted with [AnimateGridState.insertItem] and less the total number of
+  /// items that have been removed with [AnimateGridState.removeItem].
   ///
   /// Implementations of this callback should assume that
-  /// [AnimatedGridState.removeItem] removes an item immediately.
+  /// [AnimateGridState.removeItem] removes an item immediately.
   final AnimatedListItemBuilder itemBuilder;
 
   /// {@template flutter.widgets.animatedGrid.initialItemCount}
@@ -179,10 +179,10 @@ class AnimatedGrid extends StatefulWidget {
   /// The state from the closest instance of this class that encloses the given
   /// context.
   ///
-  /// This method is typically used by [AnimatedGrid] item widgets that insert
+  /// This method is typically used by [AnimateGrid] item widgets that insert
   /// or remove items in response to user input.
   ///
-  /// If no [AnimatedGrid] surrounds the context given, then this function will
+  /// If no [AnimateGrid] surrounds the context given, then this function will
   /// assert in debug mode and throw an exception in release mode.
   ///
   /// This method can be expensive (it walks the element tree).
@@ -191,8 +191,8 @@ class AnimatedGrid extends StatefulWidget {
   ///
   ///  * [maybeOf], a similar function that will return null if no
   ///    [AnimatedGrid] ancestor is found.
-  static AnimatedGridState of(BuildContext context) {
-    final AnimatedGridState? result = context.findAncestorStateOfType<AnimatedGridState>();
+  static AnimateGridState of(BuildContext context) {
+    final AnimateGridState? result = context.findAncestorStateOfType<AnimateGridState>();
     assert(() {
       if (result == null) {
         throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -217,31 +217,31 @@ class AnimatedGrid extends StatefulWidget {
   /// The state from the closest instance of this class that encloses the given
   /// context.
   ///
-  /// This method is typically used by [AnimatedGrid] item widgets that insert
+  /// This method is typically used by [AnimateGrid] item widgets that insert
   /// or remove items in response to user input.
   ///
-  /// If no [AnimatedGrid] surrounds the context given, then this function will
+  /// If no [AnimateGrid] surrounds the context given, then this function will
   /// return null.
   ///
   /// This method can be expensive (it walks the element tree).
   ///
   /// See also:
   ///
-  ///  * [of], a similar function that will throw if no [AnimatedGrid] ancestor
+  ///  * [of], a similar function that will throw if no [AnimateGrid] ancestor
   ///    is found.
-  static AnimatedGridState? maybeOf(BuildContext context) {
-    return context.findAncestorStateOfType<AnimatedGridState>();
+  static AnimateGridState? maybeOf(BuildContext context) {
+    return context.findAncestorStateOfType<AnimateGridState>();
   }
 
   @override
-  AnimatedGridState createState() => AnimatedGridState();
+  AnimateGridState createState() => AnimateGridState();
 }
 
 /// The state for a scrolling container that animates items when they are
 /// inserted or removed.
 ///
 /// When an item is inserted with [insertItem] an animation begins running. The
-/// animation is passed to [AnimatedGrid.itemBuilder] whenever the item's widget
+/// animation is passed to [AnimateGrid.itemBuilder] whenever the item's widget
 /// is needed.
 ///
 /// When an item is removed with [removeItem] its animation is reversed.
@@ -249,7 +249,7 @@ class AnimatedGrid extends StatefulWidget {
 /// parameter.
 ///
 /// An app that needs to insert or remove items in response to an event
-/// can refer to the [AnimatedGrid]'s state with a global key:
+/// can refer to the [AnimateGrid]'s state with a global key:
 ///
 /// ```dart
 /// GlobalKey<AnimatedGridState> listKey = GlobalKey<AnimatedGridState>();
@@ -259,9 +259,9 @@ class AnimatedGrid extends StatefulWidget {
 /// listKey.currentState.insert(123);
 /// ```
 ///
-/// [AnimatedGrid] item input handlers can also refer to their [AnimatedGridState]
-/// with the static [AnimatedGrid.of] method.
-class AnimatedGridState extends State<AnimatedGrid> with TickerProviderStateMixin<AnimatedGrid> {
+/// [AnimateGrid] item input handlers can also refer to their [AnimateGridState]
+/// with the static [AnimateGrid.of] method.
+class AnimateGridState extends State<AnimateGrid> with TickerProviderStateMixin<AnimateGrid> {
   final GlobalKey<SliverAnimatedGridState> _sliverAnimatedGridKey = GlobalKey();
 
   set itemCount(int value) {
@@ -269,7 +269,7 @@ class AnimatedGridState extends State<AnimatedGrid> with TickerProviderStateMixi
   }
 
   /// Insert an item at [index] and start an animation that will be passed
-  /// to [AnimatedGrid.itemBuilder] when the item is visible.
+  /// to [AnimateGrid.itemBuilder] when the item is visible.
   ///
   /// This method's semantics are the same as Dart's [List.insert] method:
   /// it increases the length of the list by one and shifts all items at or
@@ -282,7 +282,7 @@ class AnimatedGridState extends State<AnimatedGrid> with TickerProviderStateMixi
   /// to [builder] when the item is visible.
   ///
   /// Items are removed immediately. After an item has been removed, its index
-  /// will no longer be passed to the [AnimatedGrid.itemBuilder]. However the
+  /// will no longer be passed to the [AnimateGrid.itemBuilder]. However the
   /// item will still appear in the list for [duration] and during that time
   /// [builder] must construct its widget as needed.
   ///
@@ -339,7 +339,7 @@ class AnimatedGridState extends State<AnimatedGrid> with TickerProviderStateMixi
 ///
 ///  * [SliverList], which does not animate items when they are inserted or
 ///    removed.
-///  * [AnimatedGrid], a non-sliver scrolling container that animates items when
+///  * [AnimateGrid], a non-sliver scrolling container that animates items when
 ///    they are inserted or removed.
 class SliverAnimatedGrid extends StatefulWidget {
   /// Creates a sliver that animates items when they are inserted or removed.

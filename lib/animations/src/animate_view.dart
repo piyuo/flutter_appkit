@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'animated_grid.dart';
+import 'animate_grid.dart';
 import 'shifter.dart';
 
-/// AnimatedViewItemBuilder is item builder for list or grid
-typedef AnimatedViewItemBuilder = Widget Function(bool isListView, int index);
+/// AnimateViewItemBuilder is item builder for list or grid
+typedef AnimateViewItemBuilder = Widget Function(bool isListView, int index);
 
 /// AnimatedViewProvider control view's animation
 /// ```dart
@@ -16,8 +16,8 @@ typedef AnimatedViewItemBuilder = Widget Function(bool isListView, int index);
 ///                 )),
 ///     );
 /// ```
-class AnimatedViewProvider with ChangeNotifier {
-  /// AnimatedViewProvider control view's animation
+class AnimateViewProvider with ChangeNotifier {
+  /// AnimateViewProvider control view's animation
   /// ```dart
   /// return ChangeNotifierProvider<AnimatedViewProvider>(
   ///       create: (context) => AnimatedViewProvider(gridItems.length),
@@ -27,7 +27,7 @@ class AnimatedViewProvider with ChangeNotifier {
   ///                 )),
   ///     );
   /// ```
-  AnimatedViewProvider(count) {
+  AnimateViewProvider(count) {
     _itemCount = count;
   }
 
@@ -52,13 +52,13 @@ class AnimatedViewProvider with ChangeNotifier {
   bool _shifterVertical = false;
 
   /// _gridKey is the key of the animated grid
-  GlobalKey<AnimatedGridState> _gridKey = GlobalKey<AnimatedGridState>();
+  GlobalKey<AnimateGridState> _gridKey = GlobalKey<AnimateGridState>();
 
   /// refreshPageAnimation show refresh page animation
   void refreshPageAnimation() {
     _shifterReverse = true;
     _shifterVertical = true;
-    _gridKey = GlobalKey<AnimatedGridState>();
+    _gridKey = GlobalKey<AnimateGridState>();
     notifyListeners();
   }
 
@@ -66,7 +66,7 @@ class AnimatedViewProvider with ChangeNotifier {
   void nextPageAnimation() {
     _shifterReverse = false;
     _shifterVertical = false;
-    _gridKey = GlobalKey<AnimatedGridState>();
+    _gridKey = GlobalKey<AnimateGridState>();
     notifyListeners();
   }
 
@@ -74,7 +74,7 @@ class AnimatedViewProvider with ChangeNotifier {
   void prevPageAnimation() {
     _shifterReverse = true;
     _shifterVertical = false;
-    _gridKey = GlobalKey<AnimatedGridState>();
+    _gridKey = GlobalKey<AnimateGridState>();
     notifyListeners();
   }
 
@@ -125,16 +125,16 @@ Widget _sizeIt(Widget child, animation) {
   );
 }
 
-/// AnimatedView show animation list or grid
+/// AnimateView show animation list or grid
 /// ```dart
-/// AnimatedView<int>(items: gridItems)
+/// AnimateView<int>(items: gridItems)
 /// ```
-class AnimatedView extends StatelessWidget {
-  /// AnimatedView show animation list or grid
+class AnimateView extends StatelessWidget {
+  /// AnimateView show animation list or grid
   /// ```dart
-  /// AnimatedView<int>(items: gridItems)
+  /// AnimateView<int>(items: gridItems)
   /// ```
-  const AnimatedView({
+  const AnimateView({
     required this.itemBuilder,
     this.crossAxisCount = 1,
     this.shrinkWrap = false,
@@ -146,7 +146,7 @@ class AnimatedView extends StatelessWidget {
   }) : super(key: key);
 
   /// itemBuilder is the item builder
-  final AnimatedViewItemBuilder itemBuilder;
+  final AnimateViewItemBuilder itemBuilder;
 
   /// crossAxisCount is 1 will show list view, others is grid view
   final int crossAxisCount;
@@ -195,12 +195,12 @@ class AnimatedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AnimatedViewProvider>(
+    return Consumer<AnimateViewProvider>(
       builder: (context, provide, _) => Shifter(
         reverse: provide._shifterReverse,
         vertical: provide._shifterVertical,
         newChildKey: provide._gridKey,
-        child: AnimatedGrid(
+        child: AnimateGrid(
           controller: controller,
           shrinkWrap: shrinkWrap,
           mainAxisSpacing: mainAxisSpacing,
