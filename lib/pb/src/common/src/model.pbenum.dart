@@ -10,12 +10,16 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Model_ModelState extends $pb.ProtobufEnum {
-  static const Model_ModelState ModelActive = Model_ModelState._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelActive');
-  static const Model_ModelState ModelArchived = Model_ModelState._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelArchived');
-  static const Model_ModelState ModelDeleted = Model_ModelState._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelDeleted');
+  static const Model_ModelState ModelJustCreated = Model_ModelState._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelJustCreated');
+  static const Model_ModelState ModelActive = Model_ModelState._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelActive');
+  static const Model_ModelState ModelDraft = Model_ModelState._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelDraft');
+  static const Model_ModelState ModelArchived = Model_ModelState._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelArchived');
+  static const Model_ModelState ModelDeleted = Model_ModelState._(4, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ModelDeleted');
 
   static const $core.List<Model_ModelState> values = <Model_ModelState> [
+    ModelJustCreated,
     ModelActive,
+    ModelDraft,
     ModelArchived,
     ModelDeleted,
   ];

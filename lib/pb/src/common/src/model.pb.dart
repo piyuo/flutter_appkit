@@ -24,7 +24,7 @@ class Model extends pb.Object {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Model', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'i')
     ..aOM<$0.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 't', subBuilder: $0.Timestamp.create)
-    ..e<Model_ModelState>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 's', $pb.PbFieldType.OE, defaultOrMaker: Model_ModelState.ModelActive, valueOf: Model_ModelState.valueOf, enumValues: Model_ModelState.values)
+    ..e<Model_ModelState>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 's', $pb.PbFieldType.OE, defaultOrMaker: Model_ModelState.ModelJustCreated, valueOf: Model_ModelState.valueOf, enumValues: Model_ModelState.values)
     ..hasRequiredFields = false
   ;
 

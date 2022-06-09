@@ -23,11 +23,13 @@ const Model$json = const {
 const Model_ModelState$json = const {
   '1': 'ModelState',
   '2': const [
-    const {'1': 'ModelActive', '2': 0},
-    const {'1': 'ModelArchived', '2': 1},
-    const {'1': 'ModelDeleted', '2': 2},
+    const {'1': 'ModelJustCreated', '2': 0},
+    const {'1': 'ModelActive', '2': 1},
+    const {'1': 'ModelDraft', '2': 2},
+    const {'1': 'ModelArchived', '2': 3},
+    const {'1': 'ModelDeleted', '2': 4},
   ],
 };
 
 /// Descriptor for `Model`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List modelDescriptor = $convert.base64Decode('CgVNb2RlbBIMCgFpGAEgASgJUgFpEigKAXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgF0Eh8KAXMYAyABKA4yES5Nb2RlbC5Nb2RlbFN0YXRlUgFzIkIKCk1vZGVsU3RhdGUSDwoLTW9kZWxBY3RpdmUQABIRCg1Nb2RlbEFyY2hpdmVkEAESEAoMTW9kZWxEZWxldGVkEAI=');
+final $typed_data.Uint8List modelDescriptor = $convert.base64Decode('CgVNb2RlbBIMCgFpGAEgASgJUgFpEigKAXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgF0Eh8KAXMYAyABKA4yES5Nb2RlbC5Nb2RlbFN0YXRlUgFzImgKCk1vZGVsU3RhdGUSFAoQTW9kZWxKdXN0Q3JlYXRlZBAAEg8KC01vZGVsQWN0aXZlEAESDgoKTW9kZWxEcmFmdBACEhEKDU1vZGVsQXJjaGl2ZWQQAxIQCgxNb2RlbERlbGV0ZWQQBA==');
