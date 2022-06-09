@@ -84,11 +84,13 @@ class AnimateViewProvider with ChangeNotifier {
   }
 
   /// removeAnimation show remove animation
-  void removeAnimation(int index, bool isSizeAnimation, Widget child) {
+  void removeAnimation(int index, bool isListView, Widget Function(bool isListView, int index) itemBuilder) {
     if (index != -1) {
       _gridKey.currentState!.removeItem(
         index,
-        (_, animation) => isSizeAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
+        (context, animation) => isListView
+            ? _sizeIt(itemBuilder(isListView, index), animation)
+            : _slideIt(itemBuilder(isListView, index), animation),
         duration: animatedDuration,
       );
     }

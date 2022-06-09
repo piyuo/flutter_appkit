@@ -29,7 +29,7 @@ Widget itemBuilder(bool isListView, int index) {
   }
   return Card(
     child: Center(
-      child: Text('Item $item'),
+      child: Text('grid item $item'),
     ),
   );
 }
@@ -337,17 +337,15 @@ class _AnimationExampleState extends State<AnimationExample> {
                   OutlinedButton(
                       child: const Text('remove'),
                       onPressed: () {
-                        Widget child = itemBuilder(true, 0);
                         gridItems.removeAt(0);
-                        provide.removeAnimation(0, true, child);
+                        provide.removeAnimation(0, true, itemBuilder);
                         provide.onAnimationDone(() => debugPrint('animation done'));
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () {
-                      Widget child = itemBuilder(true, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, true, child);
+                      provide.removeAnimation(2, true, itemBuilder);
                       gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
@@ -407,19 +405,19 @@ class _AnimationExampleState extends State<AnimationExample> {
                   OutlinedButton(
                       child: const Text('remove'),
                       onPressed: () {
-                        Widget child = itemBuilder(true, 0);
                         gridItems.removeAt(0);
-                        provide.removeAnimation(0, false, child);
+                        provide.removeAnimation(0, false, itemBuilder);
                         provide.onAnimationDone(() => debugPrint('animation done'));
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () {
-                      Widget child = itemBuilder(true, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, true, child);
-                      gridItems.insert(0, 2);
-                      provide.insertAnimation();
+                      provide.removeAnimation(2, false, itemBuilder);
+                      provide.onAnimationDone(() {
+                        gridItems.insert(0, 2);
+                        provide.insertAnimation();
+                      });
                     },
                   ),
                   OutlinedButton(
