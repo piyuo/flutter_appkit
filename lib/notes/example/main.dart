@@ -36,25 +36,31 @@ main() {
     providers: [
       ChangeNotifierProvider<NoteFormController<sample.Person>>(
         create: (context) => NoteFormController<sample.Person>(
-            formGroup: formGroup,
-            loader: (context, id) async => sample.Person(name: id)..id = id,
-            saver: (context, persons) async {},
-            formBuilder: (person) => Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(children: [
-                  Text('beam: detail view for $person'),
-                  ReactiveTextField(
-                    formControlName: 'name',
-                    decoration: const InputDecoration(
-                      labelText: 'Your name',
-                      hintText: 'please input your name',
-                    ),
-                    validationMessages: (control) => {
-                      ValidationMessage.required: 'The name must not be empty',
-                    },
+          formGroup: formGroup,
+          showDeleteButton: true,
+          loader: (context, id) async => sample.Person(name: id)..id = id,
+          saver: (context, persons) async {},
+          formBuilder: (person) => Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(children: [
+                Text('beam: detail view for $person'),
+                ReactiveTextField(
+                  formControlName: 'name',
+                  decoration: const InputDecoration(
+                    labelText: 'Your name',
+                    hintText: 'please input your name',
                   ),
-                ])),
-            objectBuilder: () => sample.Person()),
+                  validationMessages: (control) => {
+                    ValidationMessage.required: 'The name must not be empty',
+                  },
+                ),
+              ])),
+          objectBuilder: () => sample.Person(),
+          creator: (context) async {
+            final no = generator.randomNumber(6);
+            return sample.Person(name: 'new person $no');
+          },
+        ),
       ),
       ChangeNotifierProvider<NotesProvider<sample.Person>>(
         create: (context) => NotesProvider<sample.Person>(
@@ -68,7 +74,7 @@ main() {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
             child: Text('grid:$person'),
           ),
-          detailBeamName: "/",
+          //         detailBeamName: "/",
           loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
             stepCount++;
             return List.generate(
@@ -78,10 +84,6 @@ main() {
                 return sample.Person(name: uuid);
               },
             );
-          },
-          adder: (context) async {
-            final no = generator.randomNumber(6);
-            return sample.Person(name: 'new person $no');
           },
           onSearch: (text) => debugPrint('search:$text'),
           onSearchBegin: () => debugPrint('search begin'),
@@ -124,7 +126,7 @@ main() {
         return BeamPage(
           key: ValueKey(id),
           title: 'Detail',
-          child: _notesItem(context, id),
+          child: _noteItem(context, id),
         );
       },
     },
@@ -289,9 +291,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _dynamicList(BuildContext context) {
-    return ChangeNotifierProvider<animations.AnimatedViewProvider>(
-        create: (context) => animations.AnimatedViewProvider(animationListItems.length),
-        child: Consumer<animations.AnimatedViewProvider>(
+    return ChangeNotifierProvider<animations.AnimateViewProvider>(
+        create: (context) => animations.AnimateViewProvider(animationListItems.length),
+        child: Consumer<animations.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -323,9 +325,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _pullRefresh(BuildContext context) {
-    return ChangeNotifierProvider<animations.AnimatedViewProvider>(
-        create: (context) => animations.AnimatedViewProvider(15),
-        child: Consumer<animations.AnimatedViewProvider>(
+    return ChangeNotifierProvider<animations.AnimateViewProvider>(
+        create: (context) => animations.AnimateViewProvider(15),
+        child: Consumer<animations.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -350,9 +352,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _dynamicGrid(BuildContext context) {
-    return ChangeNotifierProvider<animations.AnimatedViewProvider>(
-        create: (context) => animations.AnimatedViewProvider(animationListItems.length),
-        child: Consumer<animations.AnimatedViewProvider>(
+    return ChangeNotifierProvider<animations.AnimateViewProvider>(
+        create: (context) => animations.AnimateViewProvider(animationListItems.length),
+        child: Consumer<animations.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -386,8 +388,8 @@ class NotesExample extends StatelessWidget {
   Widget _masterDetailView(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<animations.AnimatedViewProvider>(
-            create: (context) => animations.AnimatedViewProvider(5),
+          ChangeNotifierProvider<animations.AnimateViewProvider>(
+            create: (context) => animations.AnimateViewProvider(5),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
@@ -535,8 +537,8 @@ class NotesExample extends StatelessWidget {
   Widget _filterSplitView(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<animations.AnimatedViewProvider>(
-            create: (context) => animations.AnimatedViewProvider(5),
+          ChangeNotifierProvider<animations.AnimateViewProvider>(
+            create: (context) => animations.AnimateViewProvider(5),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
@@ -695,7 +697,7 @@ class NotesExample extends StatelessWidget {
   }
 }
 
-Widget _notesItem(BuildContext context, String id) {
+Widget _noteItem(BuildContext context, String id) {
   return ChangeNotifierProvider<database.DatabaseProvider>(
       create: (context) {
         return database.DatabaseProvider(

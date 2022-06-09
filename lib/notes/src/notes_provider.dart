@@ -17,7 +17,6 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   NotesProvider({
     required this.formControllerBuilder,
     required this.loader,
-    required this.adder,
     this.listBuilder,
     this.gridBuilder,
     this.listDecorationBuilder = defaultListDecorationBuilder,
@@ -26,8 +25,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     this.tags = const [],
     this.onTagChanged,
     this.onSearchChanged,
-    this.onItemSelected,
-    this.detailBeamName = '/',
+    this.formRoute = '', // e.g '/products', don't end with /
     required this.onSearch,
     this.onSearchBegin,
     this.onSearchEnd,
@@ -38,11 +36,13 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       onSearchBegin: onSearchBegin,
       onSearchEnd: onSearchEnd,
     );
-    subscription = eventbus.listen<NotesViewRefillEvent>((BuildContext context, event) async {
+    subscription = eventbus.listen<NotesRefillEvent>((BuildContext context, event) async {
       if (dataView != null) {
+        creating = null;
         await dataView!.load(context);
         await refill(context);
         scrollToTop();
+        notifyListeners();
       }
     });
 
@@ -52,7 +52,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// formControllerBuilder return form controller
-  NoteFormController Function(BuildContext) formControllerBuilder;
+  NoteFormController<T> Function(BuildContext) formControllerBuilder;
 
   /// listBuilder is the builder for list view
   final ItemBuilder<T>? listBuilder;
@@ -78,8 +78,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   /// refreshButtonController is refresh button controller
   final refreshButtonController = delta.RefreshButtonController();
 
-  /// animatedViewController control view animation
-  final animatedViewController = animations.AnimatedViewProvider(0);
+  /// animateViewController control view animation
+  final animateViewController = animations.AnimateViewProvider(0);
 
   /// _searchController is search box controller
   final searchController = TextEditingController();
@@ -105,20 +105,11 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   /// onSearchChanged called when search changed, return true if need refresh
   final Future<bool> Function(String value)? onSearchChanged;
 
-  /// adder create new item
-  final delta.FutureContextCallback adder;
+  /// creating is the new item creator
+  T? creating;
 
-  /// newItem is not null mean user is editing a new item
-  T? newItem;
-
-  /// onItemSelected called when row is selected and ready to show on detail
-  final void Function(BuildContext context, T item)? onItemSelected;
-
-  /// detailBeamName is the beam location name of detail and name must end with "/" like '/user/'
-  final String detailBeamName;
-
-  /// isReady is true mean content is ready to show
-  bool get isReady => dataView != null;
+  /// formRoute is the route name form, e.g '/products', don't end with /
+  final String formRoute;
 
   /// isEmpty is true mean content is empty
   bool get isEmpty => !isNotEmpty;
@@ -182,7 +173,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
           );
 
     await dataView!.refresh(context);
-    animatedViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.itemCount = dataView!.displayRows.length;
     setDefaultSelected(context);
     notifyListeners();
   }
@@ -192,7 +183,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     subscription?.cancel();
     searchTrigger.dispose();
     refreshButtonController.dispose();
-    animatedViewController.dispose();
+    animateViewController.dispose();
     super.dispose();
   }
 
@@ -210,31 +201,33 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (dataView != null && dataView!.selectedRows.isEmpty && dataView!.displayRows.isNotEmpty) {
       final first = dataView!.displayRows.first;
       dataView!.selectRows([first]);
-      onItemSelected?.call(context, first);
       formControllerBuilder(context).loadByView(context, dataset: dataView!.dataset, row: first);
     }
+  }
+
+  /// isReadyToShow return true if provider is ready to show
+  bool get isReadyToShow => dataView != null;
+
+  /// isReadyForAction return true if provider is ready to do any action
+  Future<bool> isReadyForAction(context) async => dataView != null && await _allowToExit(context);
+
+  /// _allowToExit return true if form controller allow to exit
+  Future<bool> _allowToExit(context) async {
+    if (dataView == null || dataView!.selectedRows.isEmpty || !isSplitView) {
+      return true;
+    }
+    final result = await formControllerBuilder(context).allowToExit(context);
+    if (result == true && creating != null) {
+      creating = null;
+    }
+    return result;
   }
 
   /// onItemTapped called when user tap item
   void onItemTapped(BuildContext context, T selectedRow) {
     if (!isSplitView) {
-      context.beamToNamed('$detailBeamName${selectedRow.id}/');
+      context.beamToNamed('$formRoute/${selectedRow.id}');
       return;
-    }
-  }
-
-  /// onItemsSelected call when user select items
-  Future<void> onItemsSelected(BuildContext context, List<T> selectedRows) async {
-    if (selectedRows.isEmpty) {
-      return;
-    }
-    final first = selectedRows.first;
-    final result = await formControllerBuilder(context).loadByView(context, dataset: dataView!.dataset, row: first);
-    if (result) {
-      if (!onItemChecked(context, selectedRows)) {
-        return;
-      }
-      onItemSelected?.call(context, first);
     }
   }
 
@@ -245,20 +238,43 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     return true;
   }
 
-/*
-  final oldRow = dataView!.selectedRows.isNotEmpty ? dataView!.selectedRows.first : null;
-    if (!onRowExit(oldRow)) {
-      return false;
+  /// onItemsSelected call when user select items
+  Future<void> onItemsSelected(BuildContext context, List<T> selectedRows) async {
+    if (!await isReadyForAction(context) || selectedRows.isEmpty) {
+      return;
     }
-    /// onRowExit return true if row allow to exit
-  bool onRowExit(T? oldRow) {
-    if (oldRow != null && needSave(oldRow)) {
-      return false;
+
+    final first = selectedRows.first;
+    await formControllerBuilder(context).loadByView(context, dataset: dataView!.dataset, row: first);
+    if (!onItemChecked(context, selectedRows)) {
+      return;
     }
-    newItem = null;
-    return true;
   }
-*/
+
+  /// onCreateNew called when user press new button
+  Future<void> onCreateNew(BuildContext context) async {
+    if (!await isReadyForAction(context)) {
+      return;
+    }
+
+    if (!await formControllerBuilder(context).allowToExit(context)) {
+      return;
+    }
+
+    if (!isSplitView) {
+      context.beamToNamed('$formRoute/_');
+      return;
+    }
+
+    dataView?.selectRows([]);
+    creating = await formControllerBuilder(context).creator(context);
+    animateViewController.itemCount = dataView!.displayRows.length + 1;
+    animateViewController.insertAnimation();
+    await formControllerBuilder(context).loadByView(context, dataset: dataView!.dataset, row: creating!);
+    notifyListeners();
+    debugPrint('onAdd');
+  }
+
   /// isSplitView is true if in split view
   bool get isSplitView => isListView && !responsive.phoneScreen;
 
@@ -271,9 +287,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   /// refill let dataset refill data, the data may changed or deleted
   Future<void> refill(BuildContext context) async {
     await dataView!.fill();
-    newItem = null;
     setDefaultSelected(context);
-    animatedViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.itemCount = dataView!.displayRows.length;
     notifyListeners();
   }
 
@@ -296,7 +311,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// refresh called when user tap refresh button
   Future<void> refresh(BuildContext context) async {
-    if (dataView == null) {
+    if (!await isReadyForAction(context)) {
       return;
     }
     final originLength = dataView!.length;
@@ -308,18 +323,17 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     final diff = dataView!.length - originLength;
     setDefaultSelected(context);
     if (isReset || (diff > 0 && !firstPage)) {
-      animatedViewController.refreshPageAnimation();
-      animatedViewController.itemCount = dataView!.displayRows.length;
+      animateViewController.refreshPageAnimation();
+      animateViewController.itemCount = dataView!.displayRows.length;
     } else if (diff > 0) {
       if (dataView!.isDisplayRowsFullPage) {
-        animatedViewController.itemCount = dataView!.rowsPerPage - diff;
+        animateViewController.itemCount = dataView!.rowsPerPage - diff;
       }
       for (int i = 0; i < diff; i++) {
-        animatedViewController.insertAnimation();
+        animateViewController.insertAnimation();
       }
     }
     notifyListeners();
-    debugPrint('onRefresh');
   }
 
   /// loadMore called when user pull down to load more data
@@ -328,14 +342,14 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await dataView!.more(context, dataView!.rowsPerPage);
-    animatedViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.itemCount = dataView!.displayRows.length;
     notifyListeners();
     debugPrint('onMore');
   }
 
   /// onToggleCheckMode called when user toggle check mode
-  Future<void> onToggleCheckMode() async {
-    if (dataView == null) {
+  Future<void> onToggleCheckMode(BuildContext context) async {
+    if (!await isReadyForAction(context)) {
       return;
     }
     isCheckMode = !isCheckMode;
@@ -351,7 +365,10 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// onListView called when user set to list view
-  Future<void> onListView() async {
+  Future<void> onListView(BuildContext context) async {
+    if (!await isReadyForAction(context)) {
+      return;
+    }
     if (!isListView) {
       isListView = true;
       notifyListeners();
@@ -360,7 +377,10 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// onGridView called when user set to grid view
-  Future<void> onGridView() async {
+  Future<void> onGridView(BuildContext context) async {
+    if (!await isReadyForAction(context)) {
+      return;
+    }
     if (isListView) {
       isListView = false;
       notifyListeners();
@@ -373,8 +393,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    formControllerBuilder(context).delete(context, dataView!.selectedRows);
-    _showDeleteAnimation(context);
+    await formControllerBuilder(context).delete(context, dataView!.selectedRows);
+    await _showDeleteAnimation(context);
   }
 
   /// onArchive called when user press archive button
@@ -382,8 +402,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    formControllerBuilder(context).archive(context, dataView!.selectedRows);
-    _showDeleteAnimation(context);
+    await formControllerBuilder(context).archive(context, dataView!.selectedRows);
+    await _showDeleteAnimation(context);
   }
 
   /// onRestore called when user press restore button
@@ -391,8 +411,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (isCheckMode) {
       isCheckMode = false;
     }
-    formControllerBuilder(context).restore(context, dataView!.selectedRows);
-    _showDeleteAnimation(context);
+    await formControllerBuilder(context).restore(context, dataView!.selectedRows);
+    await _showDeleteAnimation(context);
   }
 
   /// _showDeleteAnimation delete selected item from data view
@@ -402,15 +422,15 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       final row = dataView!.displayRows[i];
       if (dataView!.selectedRows.contains(row)) {
         final child = _buildDeletedItemWithDecoration(context, row, true);
-        animatedViewController.removeAnimation(i - removeCount, isListView, child);
+        animateViewController.removeAnimation(i - removeCount, isListView, child);
         removeCount++;
       }
     }
     await dataView!.fill();
     dataView!.selectRows([]);
-    animatedViewController.onAnimationDone(() {
+    animateViewController.onAnimationDone(() {
       setDefaultSelected(context);
-      animatedViewController.itemCount = dataView!.displayRows.length;
+      animateViewController.itemCount = dataView!.displayRows.length;
       notifyListeners();
     });
   }
@@ -422,8 +442,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).nextPage(context);
-      animatedViewController.itemCount = dataView!.displayRows.length;
-      animatedViewController.nextPageAnimation();
+      animateViewController.itemCount = dataView!.displayRows.length;
+      animateViewController.nextPageAnimation();
     }
     notifyListeners();
     debugPrint('onNextPage');
@@ -436,29 +456,11 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).prevPage(context);
-      animatedViewController.itemCount = dataView!.displayRows.length;
-      animatedViewController.prevPageAnimation();
+      animateViewController.itemCount = dataView!.displayRows.length;
+      animateViewController.prevPageAnimation();
     }
     notifyListeners();
     debugPrint('onPreviousPage');
-  }
-
-  /// onAdd called when user press add button
-  Future<void> onAdd(BuildContext context) async {
-    if (dataView == null) {
-      return;
-    }
-    if (!isSplitView) {
-      context.beamToNamed('${detailBeamName}new/');
-      return;
-    }
-
-    dataView?.selectRows([]);
-    newItem = await adder(context);
-    animatedViewController.itemCount = dataView!.displayRows.length + 1;
-    animatedViewController.insertAnimation();
-    notifyListeners();
-    debugPrint('onAdd');
   }
 
   /// onSetRowsPerPage called when user set rows per page
@@ -467,7 +469,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await dataView!.dataset.setRowsPerPage(context, rowsPerPage);
-    animatedViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.itemCount = dataView!.displayRows.length;
     notifyListeners();
     debugPrint('onSetRowsPerPage:$rowsPerPage');
   }

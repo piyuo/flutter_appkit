@@ -24,7 +24,7 @@ abstract class Selectable<T> extends StatelessWidget {
     this.onItemChecked,
     this.headerBuilder,
     this.footerBuilder,
-    this.newItem,
+    this.creating,
     this.isReady = true,
     Key? key,
   }) : super(key: key);
@@ -59,8 +59,8 @@ abstract class Selectable<T> extends StatelessWidget {
   /// footerBuilder build footer widget
   final Widget Function()? footerBuilder;
 
-  /// newItem is not null mean user is editing a new item
-  final T? newItem;
+  /// creating is not null mean user is editing a new item
+  final T? creating;
 
   /// isReadyToShow is true mean list is ready to show
   final bool isReady;
@@ -76,9 +76,9 @@ abstract class Selectable<T> extends StatelessWidget {
   /// buildItem is build item by itemIndex
   Widget buildItem(BuildContext context, T item) {
     var isSelected = false;
-    if (newItem != null && item == newItem) {
+    if (creating != null && item == creating) {
       isSelected = true;
-    } else if (newItem == null && selectedItems.contains(item)) {
+    } else if (creating == null && selectedItems.contains(item)) {
       isSelected = true;
     }
     if (onItemSelected != null || onItemChecked != null) {
@@ -179,7 +179,7 @@ Widget defaultGridDecorationBuilder(
   final selectableItem = Container(
     width: double.infinity,
     height: double.infinity,
-    margin: isSelected ? const EdgeInsets.fromLTRB(4, 0, 4, 4) : const EdgeInsets.fromLTRB(5, 1, 5, 5),
+    margin: isSelected ? const EdgeInsets.fromLTRB(4, 5, 4, 9) : const EdgeInsets.fromLTRB(5, 6, 5, 10),
     clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
       color: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/form/form.dart' as form;
 import 'types.dart';
+
+const creatingID = '_';
 
 /// NoteFormController load single item and provide a way to save/delete/archive it
 class NoteFormController<T extends pb.Object> with ChangeNotifier {
@@ -16,6 +19,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     required pb.Builder<T> objectBuilder,
     required data.DataClientLoader<T> loader,
     required data.DataClientSaver<T> saver,
+    required this.creator,
     this.formLoader,
     this.formSaver,
     this.shimmerBuilder,
@@ -50,6 +54,9 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
 
   /// dataView data view to display data
   late data.DataClient<T> dataClient;
+
+  /// creator create new item
+  final delta.FutureContextCallback<T> creator;
 
   /// current is current loaded item
   T? current;
@@ -89,29 +96,28 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// await client.load(testing.Context(), 'object_id');
   /// ```
   Future<T> load(BuildContext context, {required data.Dataset<T> dataset, required String id}) async {
-    current = await dataClient.load(context, dataset: dataset, id: id);
+    current = id != creatingID ? await dataClient.load(context, dataset: dataset, id: id) : await creator(context);
     _itemToForm();
     notifyListeners();
     return current!;
   }
 
-  /// loadByView load data set and _item data from notes view, return true mean _item data is changed
+  /// loadByView load data set and _item data from notes view,return false mean current data is editing can't leave,  return true mean _item data is changed
   /// ```dart
   /// client.loadByView(testing.Context());
   /// ```
-  Future<bool> loadByView(BuildContext context, {required data.Dataset<T> dataset, required T row}) async {
-    if (!await onExit(context)) {
-      return false;
+  Future<void> loadByView(BuildContext context, {required data.Dataset<T> dataset, required T row}) async {
+    if (current != null && current!.id == row.id) {
+      return;
     }
     dataClient.setDataset(dataset);
     current = row;
     _itemToForm();
     notifyListeners();
-    return true;
   }
 
-  /// onExit call when exit _item data, return true mean can exit
-  Future<bool> onExit(BuildContext context) async {
+  /// allowToExit is true mean can exit
+  Future<bool> allowToExit(BuildContext context) async {
     if (formGroup.dirty) {
       var result = await dialog.alert(context, 'Content is changed, save it?',
           buttonYes: true, buttonNo: true, buttonCancel: true, blurry: false);
@@ -134,21 +140,21 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// delete called when user press remove button
   Future<void> delete(BuildContext context, List<T> list) async {
     await dataClient.delete(context, list);
-    eventbus.broadcast(context, NotesViewRefillEvent());
+    await eventbus.broadcast(context, NotesRefillEvent());
     debugPrint('item removed');
   }
 
   /// archive called when user press archive button
   Future<void> archive(BuildContext context, List<T> list) async {
     await dataClient.archive(context, list);
-    eventbus.broadcast(context, NotesViewRefillEvent());
+    await eventbus.broadcast(context, NotesRefillEvent());
     debugPrint('item archived');
   }
 
   /// restore called when user press restore button
   Future<void> restore(BuildContext context, List<T> list) async {
     await dataClient.restore(context, list);
-    eventbus.broadcast(context, NotesViewRefillEvent());
+    await eventbus.broadcast(context, NotesRefillEvent());
     debugPrint('item restored');
   }
 
@@ -170,8 +176,8 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// onSubmit called when user press submit button or submit been called, return true mean submit success
   Future<bool> onSubmit(BuildContext context) async {
     _formToItem();
-    dataClient.save(context, [current!]);
-    await eventbus.broadcast(context, NotesViewRefillEvent());
+    await dataClient.save(context, [current!]);
+    await eventbus.broadcast(context, NotesRefillEvent());
     notifyListeners();
     debugPrint('item saved');
     return true;

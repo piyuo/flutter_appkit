@@ -62,7 +62,7 @@ class DynamicList<T> extends Selectable<T> {
     this.onLoadMore,
     this.scrollController,
     this.animatedViewScrollController,
-    T? newItem,
+    T? creating,
     bool isReady = true,
     Key? key,
   }) : super(
@@ -76,7 +76,7 @@ class DynamicList<T> extends Selectable<T> {
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
-          newItem: newItem,
+          creating: creating,
           isReady: isReady,
           key: key,
         );
@@ -129,13 +129,13 @@ class DynamicList<T> extends Selectable<T> {
                 return const delta.LoadingDisplay();
               }
 
-              return animations.AnimatedView(
+              return animations.AnimateView(
                 controller: animatedViewScrollController,
                 shrinkWrap: true,
                 itemBuilder: (bool isListView, int index) {
-                  if (newItem != null) {
+                  if (creating != null) {
                     if (index == 0) {
-                      return buildItem(context, newItem!);
+                      return buildItem(context, creating!);
                     } else {
                       index--;
                     }

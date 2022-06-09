@@ -79,7 +79,7 @@ class DynamicGrid<T> extends Selectable<T> {
           onItemChecked: onItemChecked,
           headerBuilder: headerBuilder,
           footerBuilder: footerBuilder,
-          newItem: newItem,
+          creating: newItem,
           isReady: isReady,
           key: key,
         );
@@ -146,16 +146,16 @@ class DynamicGrid<T> extends Selectable<T> {
                 return buildFooter(context);
               }
 
-              return animations.AnimatedView(
+              return animations.AnimateView(
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 5,
                 controller: animatedViewScrollController,
                 shrinkWrap: true,
                 itemBuilder: (bool isListView, int index) {
-                  if (newItem != null) {
+                  if (creating != null) {
                     if (index == 0) {
-                      return buildItem(context, newItem!);
+                      return buildItem(context, creating!);
                     } else {
                       index--;
                     }

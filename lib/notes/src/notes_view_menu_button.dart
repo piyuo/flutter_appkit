@@ -27,7 +27,7 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.pending_outlined),
-      onPressed: viewProvider.isReady
+      onPressed: viewProvider.isReadyToShow
           ? () => responsive.showToolSheet(
                 context,
                 items: [
@@ -42,14 +42,16 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                           ? context.i18n.notesViewAsGridLabel
                           : context.i18n.notesViewAsListLabel,
                       icon: viewProvider.isListView ? Icons.grid_view : Icons.view_headline,
-                      onPressed: viewProvider.isListView ? viewProvider.onGridView : viewProvider.onListView,
+                      onPressed: viewProvider.isListView
+                          ? () => viewProvider.onGridView(context)
+                          : () => viewProvider.onListView(context),
                     ),
                   responsive.ToolButton(
                     label: viewProvider.isCheckMode
                         ? context.i18n.notesDeselectButtonLabel
                         : context.i18n.notesSelectButtonLabel,
                     icon: viewProvider.isCheckMode ? Icons.circle_outlined : Icons.check_circle_outline,
-                    onPressed: viewProvider.onToggleCheckMode,
+                    onPressed: () => viewProvider.onToggleCheckMode(context),
                   ),
                   if (formController.showArchiveButton)
                     responsive.ToolButton(
@@ -74,7 +76,7 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                   responsive.ToolButton(
                     label: context.i18n.notesNewButtonLabel,
                     icon: Icons.add,
-                    onPressed: () => viewProvider.onAdd(context),
+                    onPressed: () => viewProvider.onCreateNew(context),
                   ),
                 ],
               )

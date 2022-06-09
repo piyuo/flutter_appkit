@@ -32,7 +32,7 @@ class MasterDetailView<T> extends StatelessWidget {
     this.gridItemWidth = 240,
     this.isCheckMode = false,
     this.isListView = true,
-    this.newItem,
+    this.creating,
     this.isReady = true,
     this.gridScrollController,
     this.listScrollController,
@@ -47,8 +47,8 @@ class MasterDetailView<T> extends StatelessWidget {
   /// selectedItems is the list of selected items
   final List<T> selectedItems;
 
-  /// newItem is not null mean user is editing a new item
-  final T? newItem;
+  /// creating is not null mean user is editing a new item
+  final T? creating;
 
   /// listScrollController is scroll controller for list
   final ScrollController? listScrollController;
@@ -144,7 +144,7 @@ class MasterDetailView<T> extends StatelessWidget {
               animatedViewScrollController: listAnimatedViewScrollController,
               isReady: isReady,
               isCheckMode: isCheckMode,
-              newItem: newItem,
+              creating: creating,
               items: items,
               selectedItems: selectedItems,
               itemBuilder: listBuilder!,
@@ -199,7 +199,7 @@ class MasterDetailView<T> extends StatelessWidget {
                       crossAxisCount: max(constraints.maxWidth ~/ gridItemWidth, 2),
                       isReady: isReady,
                       isCheckMode: isCheckMode,
-                      newItem: newItem,
+                      newItem: creating,
                       items: items,
                       selectedItems: selectedItems,
                       itemBuilder: gridBuilder!,
