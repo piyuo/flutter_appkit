@@ -185,7 +185,7 @@ class MasterDetailView<T> extends StatelessWidget {
                 responsive.notPhoneScreen)
               Row(
                 children: [
-                  SizedBox(width: 272, child: leftBarBuilder!()),
+                  SizedBox(width: 300, child: leftBarBuilder!()),
                   const SizedBox(height: 30, child: VerticalDivider(color: Colors.grey)),
                   Expanded(child: rightBarBuilder!()),
                 ],

@@ -211,7 +211,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                               onPressed: viewProvider.isNotEmpty ? () => viewProvider.onToggleCheckMode(context) : null,
                             ),
                             if (leftTools != null) ...leftTools!,
-                            responsive.ToolSpacer(),
+                            if (viewProvider.isListView) responsive.ToolSpacer(),
                             if (formController.showArchiveButton)
                               responsive.ToolButton(
                                 label: context.i18n.archiveButtonText,

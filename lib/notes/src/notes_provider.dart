@@ -390,15 +390,22 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onDelete called when user press delete button
   Future<void> onDelete(BuildContext context) async {
+    if (!await isReadyForAction(context)) {
+      return;
+    }
+
     if (isCheckMode) {
       isCheckMode = false;
     }
-    await formControllerBuilder(context).delete(context, dataView!.selectedRows);
+    //await formControllerBuilder(context).delete(context, dataView!.selectedRows);
     await _showDeleteAnimation(context);
   }
 
   /// onArchive called when user press archive button
   Future<void> onArchive(BuildContext context) async {
+    if (!await isReadyForAction(context)) {
+      return;
+    }
     if (isCheckMode) {
       isCheckMode = false;
     }
@@ -408,6 +415,9 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onRestore called when user press restore button
   Future<void> onRestore(BuildContext context) async {
+    if (!await isReadyForAction(context)) {
+      return;
+    }
     if (isCheckMode) {
       isCheckMode = false;
     }
@@ -421,23 +431,22 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     for (int i = 0; i < dataView!.displayRows.length; i++) {
       final row = dataView!.displayRows[i];
       if (dataView!.selectedRows.contains(row)) {
-        animateViewController.removeAnimation(
-            i - removeCount, isListView, (isListView, index) => _buildDeletedItemWithDecoration(context, row, true));
+        final removedItem = _buildDeletedItemWithDecoration(context, row, true);
+        animateViewController.removeAnimation(i - removeCount, isListView, removedItem);
         removeCount++;
       }
     }
     await dataView!.fill();
     dataView!.selectRows([]);
-    animateViewController.onAnimationDone(() {
-      setDefaultSelected(context);
-      animateViewController.itemCount = dataView!.displayRows.length;
-      notifyListeners();
-    });
+    await animateViewController.waitForAnimationDone();
+    setDefaultSelected(context);
+    animateViewController.itemCount = dataView!.displayRows.length;
+    notifyListeners();
   }
 
   /// onNextPage called when user press next button
   Future<void> onNextPage(BuildContext context) async {
-    if (dataView == null) {
+    if (!await isReadyForAction(context)) {
       return;
     }
     if (dataView is data.PagedDataView) {
@@ -451,7 +460,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onPreviousPage called when user press previous button
   Future<void> onPreviousPage(BuildContext context) async {
-    if (dataView == null) {
+    if (!await isReadyForAction(context)) {
       return;
     }
     if (dataView is data.PagedDataView) {
@@ -465,7 +474,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onSetRowsPerPage called when user set rows per page
   Future<void> setRowsPerPage(BuildContext context, int rowsPerPage) async {
-    if (dataView == null) {
+    if (!await isReadyForAction(context)) {
       return;
     }
     await dataView!.dataset.setRowsPerPage(context, rowsPerPage);

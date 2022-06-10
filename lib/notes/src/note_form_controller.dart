@@ -140,8 +140,8 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// delete called when user press remove button
   Future<void> delete(BuildContext context, List<T> list) async {
     await dataClient.delete(context, list);
-    await eventbus.broadcast(context, NotesRefillEvent());
-    debugPrint('item removed');
+    //await eventbus.broadcast(context, NotesRefillEvent());
+    debugPrint('item deleted');
   }
 
   /// archive called when user press archive button
