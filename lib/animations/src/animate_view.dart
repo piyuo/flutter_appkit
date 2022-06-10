@@ -94,10 +94,10 @@ class AnimateViewProvider with ChangeNotifier {
     }
   }
 
-  /// onAnimationDone called when animated duration is passed
-  void onAnimationDone(VoidCallback callback) {
+  /// waitForAnimationDone will wait for animation done
+  Future<void> waitForAnimationDone() async {
     // wait a little longer to make sure animation is done
-    Future.delayed(Duration(milliseconds: animatedDuration.inMilliseconds + 300), callback);
+    await Future.delayed(Duration(milliseconds: animatedDuration.inMilliseconds + 300));
   }
 }
 

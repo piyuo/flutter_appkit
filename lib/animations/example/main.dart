@@ -336,11 +336,12 @@ class _AnimationExampleState extends State<AnimationExample> {
                   ),
                   OutlinedButton(
                       child: const Text('remove'),
-                      onPressed: () {
+                      onPressed: () async {
                         Widget removedItem = itemBuilder(true, 2);
                         gridItems.removeAt(2);
                         provide.removeAnimation(2, true, removedItem);
-                        provide.onAnimationDone(() => debugPrint('animation done'));
+                        await provide.waitForAnimationDone();
+                        debugPrint('animation done');
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
@@ -406,22 +407,22 @@ class _AnimationExampleState extends State<AnimationExample> {
                   ),
                   OutlinedButton(
                       child: const Text('remove'),
-                      onPressed: () {
+                      onPressed: () async {
                         Widget removedItem = itemBuilder(false, 2);
                         gridItems.removeAt(0);
                         provide.removeAnimation(0, false, removedItem);
-                        provide.onAnimationDone(() => debugPrint('animation done'));
+                        await provide.waitForAnimationDone();
+                        debugPrint('animation done');
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
-                    onPressed: () {
+                    onPressed: () async {
                       Widget removedItem = itemBuilder(false, 2);
                       gridItems.removeAt(2);
                       provide.removeAnimation(2, false, removedItem);
-                      provide.onAnimationDone(() {
-                        gridItems.insert(0, 2);
-                        provide.insertAnimation();
-                      });
+                      await provide.waitForAnimationDone();
+                      gridItems.insert(0, 2);
+                      provide.insertAnimation();
                     },
                   ),
                   OutlinedButton(
