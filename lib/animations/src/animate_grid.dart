@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // The default insert/remove animation duration.
-const Duration animatedDuration = Duration(milliseconds: 5380);
+const Duration animatedDuration = Duration(milliseconds: 380);
 
 // Incoming and outgoing AnimatedGrid items.
 class _ActiveItem implements Comparable<_ActiveItem> {
