@@ -64,7 +64,7 @@ class _AnimationExampleState extends State<AnimationExample> {
         child: Column(
           children: [
             Expanded(
-              child: _animatedViewInGrid(),
+              child: _animatedViewInList(),
             ),
             SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -337,15 +337,17 @@ class _AnimationExampleState extends State<AnimationExample> {
                   OutlinedButton(
                       child: const Text('remove'),
                       onPressed: () {
-                        gridItems.removeAt(0);
-                        provide.removeAnimation(0, true, itemBuilder);
+                        Widget removedItem = itemBuilder(true, 2);
+                        gridItems.removeAt(2);
+                        provide.removeAnimation(2, true, removedItem);
                         provide.onAnimationDone(() => debugPrint('animation done'));
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () {
+                      Widget removedItem = itemBuilder(true, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, true, itemBuilder);
+                      provide.removeAnimation(2, true, removedItem);
                       gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
@@ -405,15 +407,17 @@ class _AnimationExampleState extends State<AnimationExample> {
                   OutlinedButton(
                       child: const Text('remove'),
                       onPressed: () {
+                        Widget removedItem = itemBuilder(false, 2);
                         gridItems.removeAt(0);
-                        provide.removeAnimation(0, false, itemBuilder);
+                        provide.removeAnimation(0, false, removedItem);
                         provide.onAnimationDone(() => debugPrint('animation done'));
                       }),
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () {
+                      Widget removedItem = itemBuilder(false, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, false, itemBuilder);
+                      provide.removeAnimation(2, false, removedItem);
                       provide.onAnimationDone(() {
                         gridItems.insert(0, 2);
                         provide.insertAnimation();
