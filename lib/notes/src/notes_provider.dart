@@ -421,8 +421,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     for (int i = 0; i < dataView!.displayRows.length; i++) {
       final row = dataView!.displayRows[i];
       if (dataView!.selectedRows.contains(row)) {
-        final child = _buildDeletedItemWithDecoration(context, row, true);
-        animateViewController.removeAnimation(i - removeCount, isListView, child);
+        animateViewController.removeAnimation(
+            i - removeCount, isListView, (isListView, index) => _buildDeletedItemWithDecoration(context, row, true));
         removeCount++;
       }
     }
