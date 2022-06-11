@@ -11,18 +11,14 @@ class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
     Dataset<T> _dataset, {
     required String id,
     required DataViewLoader<T> loader,
-  }) : super(
-          _dataset,
-          loader: loader,
-        ) {
+  }) : super(_dataset, loader: loader) {
     _dataset.internalNoMore = true;
   }
 
   /// onRefresh called when refresh
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    await dataset.insert(context, downloadRows);
-    await fill();
+    await insert(context, downloadRows);
     return false; // table do not reset dataset
   }
 

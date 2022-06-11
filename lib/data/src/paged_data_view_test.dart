@@ -410,13 +410,13 @@ void main() {
       expect(dataView.pageInfo(testing.Context()), '21 - 22 of 22');
       expect(dataView.length, 22);
 
-      await dataView.gotoPage(testing.Context(), 0);
+      await dataView.goto(testing.Context(), 0);
       expect(dataView.pageInfo(testing.Context()), '1 - 10 of 22');
 
-      await dataView.gotoPage(testing.Context(), 1);
+      await dataView.goto(testing.Context(), 1);
       expect(dataView.pageInfo(testing.Context()), '11 - 20 of 22');
 
-      await dataView.gotoPage(testing.Context(), 2);
+      await dataView.goto(testing.Context(), 2);
       expect(dataView.pageInfo(testing.Context()), '21 - 22 of 22');
     });
 
@@ -458,7 +458,7 @@ void main() {
       expect(lastLimit, 10);
       expect(lastAnchorId, isNull);
 
-      await dataset.setRowsPerPage(testing.Context(), 20);
+      await dataView.setRowsPerPage(testing.Context(), 20);
       expect(dataView.rowsPerPage, 20);
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);
@@ -468,20 +468,21 @@ void main() {
       lastIsRefresh = null;
       lastLimit = null;
       lastAnchorId = null;
-      await dataset.setRowsPerPage(testing.Context(), 10);
+      await dataView.setRowsPerPage(testing.Context(), 10);
       expect(dataView.rowsPerPage, 10);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
       expect(dataView.length, 20);
 
-      await dataView.gotoPage(testing.Context(), 1);
+      await dataView.goto(testing.Context(), 1);
+      await dataView.fill();
       expect(dataView.pageIndex, 1);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
 
-      await dataset.setRowsPerPage(testing.Context(), 30);
+      await dataView.setRowsPerPage(testing.Context(), 30);
       expect(dataView.rowsPerPage, 30);
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);

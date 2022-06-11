@@ -9,18 +9,7 @@ class ContinuousDataView<T extends pb.Object> extends DataView<T> {
   ContinuousDataView(
     Dataset<T> _dataset, {
     required DataViewLoader<T> loader,
-  }) : super(
-          _dataset,
-          loader: loader,
-        );
-
-  /// onRefresh called when refresh
-  @override
-  Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    final isReset = await super.onRefresh(context, downloadRows);
-    await fill();
-    return isReset;
-  }
+  }) : super(_dataset, loader: loader);
 
   /// fill display rows
   /// ```dart

@@ -266,13 +266,13 @@ void main() {
       await view.nextPage(testing.Context());
       expect(view.pageInfo(testing.Context()), '21 - 22 of 22');
 
-      await view.gotoPage(testing.Context(), 0);
+      await view.goto(testing.Context(), 0);
       expect(view.pageInfo(testing.Context()), '1 - 10 of 22');
 
-      await view.gotoPage(testing.Context(), 1);
+      await view.goto(testing.Context(), 1);
       expect(view.pageInfo(testing.Context()), '11 - 20 of 22');
 
-      await view.gotoPage(testing.Context(), 2);
+      await view.goto(testing.Context(), 2);
       expect(view.pageInfo(testing.Context()), '21 - 22 of 22');
     });
 
@@ -333,7 +333,7 @@ void main() {
       expect(lastAnchorId, isNull);
       expect(view.length, 20);
 
-      await view.gotoPage(testing.Context(), 1);
+      await view.goto(testing.Context(), 1);
       expect(view.pageIndex, 1);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);

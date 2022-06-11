@@ -80,7 +80,7 @@ abstract class Dataset<T extends pb.Object> {
 
   /// setRowsPerPage set current rows per page
   @mustCallSuper
-  Future<void> setRowsPerPage(BuildContext context, value) async {
+  Future<void> setRowsPerPage(BuildContext context, int value) async {
     internalRowsPerPage = value;
     await onRowsPerPageChanged?.call(context);
   }

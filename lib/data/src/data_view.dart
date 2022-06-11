@@ -12,7 +12,8 @@ import 'dataset.dart';
 typedef DataViewLoader<T> = Future<List<T>> Function(
     BuildContext context, bool isRefresh, int limit, google.Timestamp? anchorTime, String? anchorId);
 
-/// DataView read data save to local, manage paging and select row
+/// DataView read data save to local, manage paging and select row,
+/// all dataset operation insert/update/delete must go through view
 /// ```dart
 /// final dataView = DataView<sample.Person>(
 ///   DatasetRam(
@@ -103,6 +104,66 @@ abstract class DataView<T extends pb.Object> {
     await dataset.load(context);
   }
 
+  /// onInsert called after insert row
+  Future<void> onInsert(BuildContext context, List<T> list) async {
+    await fill();
+  }
+
+  /// insert data to dataset
+  @mustCallSuper
+  Future<void> insert(BuildContext context, List<T> list) async {
+    await dataset.insert(context, list);
+    await onInsert(context, list);
+  }
+
+  /// onAdd called after add row
+  Future<void> onAdd(BuildContext context, List<T> list) async {
+    await fill();
+  }
+
+  /// add data to dataset
+  @mustCallSuper
+  Future<void> add(BuildContext context, List<T> list) async {
+    await dataset.add(context, list);
+    await onAdd(context, list);
+  }
+
+  /// onDelete called after delete row
+  Future<void> onDelete(BuildContext context, List<T> list) async {
+    await fill();
+  }
+
+  /// delete data to dataset
+  @mustCallSuper
+  Future<void> delete(BuildContext context, List<T> list) async {
+    await dataset.delete(context, list);
+    await onDelete(context, list);
+  }
+
+  /// onReset called after reset
+  Future<void> onReset(BuildContext context) async {
+    await fill();
+  }
+
+  /// reset dataset
+  @mustCallSuper
+  Future<void> reset(BuildContext context) async {
+    await dataset.reset();
+    await onReset(context);
+  }
+
+  /// onSetRowsPerPage called setRowsPerPage
+  Future<void> onSetRowsPerPage(BuildContext context, int value) async {
+    await fill();
+  }
+
+  /// setRowsPerPage set dataset rows per page
+  @mustCallSuper
+  Future<void> setRowsPerPage(BuildContext context, int value) async {
+    await dataset.setRowsPerPage(context, value);
+    await onSetRowsPerPage(context, value);
+  }
+
   /// onRefresh reset dataset but not on full view mode, return true if reset dataset
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
     bool isReset = false;
@@ -115,11 +176,11 @@ abstract class DataView<T extends pb.Object> {
       selectedIDs.clear();
       isReset = true;
     }
-    await dataset.insert(context, downloadRows);
+    await insert(context, downloadRows);
     return isReset;
   }
 
-  /// refresh seeking new data from data loader, return true if has new data
+  /// refresh seeking new data from data loader, return true if reset
   /// ```dart
   /// await ds.refresh(context);
   /// ```
@@ -154,8 +215,7 @@ abstract class DataView<T extends pb.Object> {
       await dataset.setNoMore(context, true);
     }
     if (downloadRows.isNotEmpty) {
-      await dataset.add(context, downloadRows);
-      await fill();
+      await add(context, downloadRows);
       return true;
     }
     return false;

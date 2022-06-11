@@ -42,8 +42,7 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
   /// onRefresh reset dataset, but not on full view mode
   @override
   Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    await dataset.insert(context, downloadRows);
-    await gotoPage(context, 0);
+    await insert(context, downloadRows);
     return false; // table do not reset dataset
   }
 
