@@ -227,14 +227,34 @@ abstract class DataView<T extends pb.Object> {
   /// ```
   bool isRowSelected(T row) => selectedIDs.contains(row.id);
 
-  /// selectRows select rows
+  /// setSelectedRows select rows
   /// ```dart
-  /// selectRows([sample.Person(entity: pb.Entity(id: '5'))]);
+  /// setSelectedRows([sample.Person(entity: pb.Entity(id: '5'))]);
   /// ```
-  void selectRows(List<T> rows) {
+  void setSelectedRows(List<T> rows) {
     selectedIDs.clear();
     rows.removeWhere((row) => !dataset.isIDExists(row.id));
     selectedIDs.addAll(rows.map((row) => row.id));
+  }
+
+  /// selectedCount return selected rows count
+  int get selectedCount => selectedIDs.length;
+
+  /// hasSelectedRows return true when has selected rows
+  bool get hasSelectedRows => selectedIDs.isNotEmpty;
+
+  /// getSelectedRows return selected rows
+  /// ```dart
+  /// getSelectedRows(['5']);
+  /// ```
+  List<T> getSelectedRows() {
+    final rows = <T>[];
+    for (final row in displayRows) {
+      if (selectedIDs.contains(row.id)) {
+        rows.add(row);
+      }
+    }
+    return rows;
   }
 
   /// selectRow select a row

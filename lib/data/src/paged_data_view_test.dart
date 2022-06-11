@@ -269,9 +269,9 @@ void main() {
       await dataView.refresh(testing.Context());
       expect(dataView.displayRows.length, 10);
       expect(dataView.selectedIDs.length, 0);
-      dataView.selectRows([sample.Person()..id = '5']);
+      dataView.setSelectedRows([sample.Person()..id = '5']);
       expect(dataView.selectedIDs.length, 1);
-      dataView.selectRows([]);
+      dataView.setSelectedRows([]);
       expect(dataView.selectedIDs.length, 0);
 
       dataView.selectRow(dataView.displayRows.first, true);
