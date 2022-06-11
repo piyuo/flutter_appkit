@@ -116,11 +116,11 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<T> list) async {
-    for (T row in list) {
-      if (_index.contains(row.id)) {
-        _index.remove(row.id);
-        await _database.delete(row.id);
+  Future<void> delete(BuildContext context, List<String> list) async {
+    for (String id in list) {
+      if (_index.contains(id)) {
+        _index.remove(id);
+        await _database.delete(id);
       }
     }
     await save(context);

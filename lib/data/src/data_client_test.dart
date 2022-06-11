@@ -107,7 +107,7 @@ void main() {
       expect(result, isNotNull);
       expect(dataset.isNotEmpty, true);
 
-      await dataClient.dataset.delete(testing.Context(), [person]);
+      await dataClient.delete(testing.Context(), [person]);
       final firstPerson = await dataset.first;
       expect(firstPerson, isNull);
     });

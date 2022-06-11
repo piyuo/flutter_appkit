@@ -69,10 +69,8 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<T> list) async {
-    for (T row in list) {
-      _rows.remove(row);
-    }
+  Future<void> delete(BuildContext context, List<String> list) async {
+    _rows.removeWhere((row) => list.contains(row.id));
   }
 
   /// reset dataset

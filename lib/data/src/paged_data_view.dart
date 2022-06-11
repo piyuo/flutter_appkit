@@ -29,7 +29,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
 
   /// onDelete called after delete row
   @override
-  Future<void> onDelete(BuildContext context, List<T> list) async {
+  Future<void> onDelete(BuildContext context, List<String> list) async {
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     if (pageIndex >= paginator.pageCount) {
       pageIndex = paginator.pageCount - 1;

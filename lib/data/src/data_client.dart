@@ -104,7 +104,7 @@ class DataClient<T extends pb.Object> {
       item.markAsDeleted();
     }
     await saver(context, list);
-    await dataset.delete(context, list);
+    await dataset.delete(context, list.map((row) => row.id).toList());
   }
 
   /// archive data from dataset and remote service
@@ -113,6 +113,6 @@ class DataClient<T extends pb.Object> {
       item.markAsArchived();
     }
     await saver(context, list);
-    await dataset.delete(context, list);
+    await dataset.delete(context, list.map((row) => row.id).toList());
   }
 }

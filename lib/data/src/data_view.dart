@@ -129,15 +129,23 @@ abstract class DataView<T extends pb.Object> {
   }
 
   /// onDelete called after delete row
-  Future<void> onDelete(BuildContext context, List<T> list) async {
+  Future<void> onDelete(BuildContext context, List<String> list) async {
     await fill();
   }
 
   /// delete data to dataset
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<T> list) async {
+  Future<void> delete(BuildContext context, List<String> list) async {
     await dataset.delete(context, list);
     await onDelete(context, list);
+  }
+
+  /// delete data to dataset
+  @mustCallSuper
+  Future<void> deleteRows(BuildContext context, List<T> list) async {
+    List<String> ids = list.map((row) => row.id).toList();
+    await dataset.delete(context, ids);
+    await onDelete(context, ids);
   }
 
   /// onReset called after reset

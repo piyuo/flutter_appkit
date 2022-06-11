@@ -55,10 +55,7 @@ void main() {
       await dataset.insert(testing.Context(), [sample.Person()..id = 'third']);
       expect(dataset.length, 3);
 
-      await dataset.delete(testing.Context(), [
-        sample.Person()..id = 'first',
-        sample.Person()..id = 'third',
-      ]);
+      await dataset.delete(testing.Context(), ['first', 'third']);
 
       expect(dataset.length, 1);
       expect((await dataset.first)!.id, 'second');

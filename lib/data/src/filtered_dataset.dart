@@ -152,7 +152,7 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<T> list) async {
+  Future<void> delete(BuildContext context, List<String> list) async {
     await _dataset.delete(context, list);
     _result.removeWhere((item) => list.contains(item));
   }

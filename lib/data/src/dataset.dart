@@ -119,21 +119,25 @@ abstract class Dataset<T extends pb.Object> {
   /// ```dart
   /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
-  @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {}
 
-  /// delete list of rows from dataset
+  /// delete list of rows from dataset using row id
   /// ```dart
   /// await dataset.delete(list);
   /// ```
-  @mustCallSuper
-  Future<void> delete(BuildContext context, List<T> list);
+  Future<void> delete(BuildContext context, List<String> list);
+
+  /// delete list of rows from dataset using row id
+  /// ```dart
+  /// await dataset.delete(list);
+  /// ```
+  Future<void> deleteRows(BuildContext context, List<T> list) async =>
+      await delete(context, list.map((row) => row.id).toList());
 
   /// reset dataset
   /// ```dart
   /// await dataset.reset();
   /// ```
-  @mustCallSuper
   Future<void> reset();
 
   /// read return row by id
