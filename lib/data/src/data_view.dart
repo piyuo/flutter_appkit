@@ -42,8 +42,8 @@ abstract class DataView<T extends pb.Object> {
   /// dataset keep all rows in dataset
   Dataset<T> dataset;
 
-  /// selectedRows keep all selected rows
-  List<T> selectedRows = [];
+  /// selectedRows keep all selected item id
+  List<String> selectedIDs = [];
 
   /// displayRows is rows to display
   List<T> displayRows = [];
@@ -98,7 +98,7 @@ abstract class DataView<T extends pb.Object> {
   /// load dataset
   @mustCallSuper
   Future<void> load(BuildContext context) async {
-    selectedRows = [];
+    selectedIDs = [];
     displayRows = [];
     await dataset.load(context);
   }
@@ -112,7 +112,7 @@ abstract class DataView<T extends pb.Object> {
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
       dataset.reset();
-      selectedRows.clear();
+      selectedIDs.clear();
       isReset = true;
     }
     await dataset.insert(context, downloadRows);
@@ -165,16 +165,16 @@ abstract class DataView<T extends pb.Object> {
   /// ```dart
   /// final selected = dataView.isRowSelected(dataView.displayRows.first);
   /// ```
-  bool isRowSelected(T row) => selectedRows.contains(row);
+  bool isRowSelected(T row) => selectedIDs.contains(row.id);
 
   /// selectRows select rows
   /// ```dart
   /// selectRows([sample.Person(entity: pb.Entity(id: '5'))]);
   /// ```
   void selectRows(List<T> rows) {
-    selectedRows.clear();
+    selectedIDs.clear();
     rows.removeWhere((row) => !dataset.isIDExists(row.id));
-    selectedRows.addAll(rows);
+    selectedIDs.addAll(rows.map((row) => row.id));
   }
 
   /// selectRow select a row
@@ -182,9 +182,9 @@ abstract class DataView<T extends pb.Object> {
   /// selectRow(dataView.displayRows.first, true);
   /// ```
   void selectRow(T row, bool selected) {
-    selectedRows.remove(row);
+    selectedIDs.remove(row.id);
     if (selected && dataset.isIDExists(row.id)) {
-      selectedRows.add(row);
+      selectedIDs.add(row.id);
     }
   }
 

@@ -268,17 +268,17 @@ void main() {
       await dataView.load(testing.Context());
       await dataView.refresh(testing.Context());
       expect(dataView.displayRows.length, 10);
-      expect(dataView.selectedRows.length, 0);
+      expect(dataView.selectedIDs.length, 0);
       dataView.selectRows([sample.Person()..id = '5']);
-      expect(dataView.selectedRows.length, 1);
+      expect(dataView.selectedIDs.length, 1);
       dataView.selectRows([]);
-      expect(dataView.selectedRows.length, 0);
+      expect(dataView.selectedIDs.length, 0);
 
       dataView.selectRow(dataView.displayRows.first, true);
-      expect(dataView.selectedRows.length, 1);
+      expect(dataView.selectedIDs.length, 1);
       expect(dataView.isRowSelected(dataView.displayRows.first), true);
       dataView.selectRow(dataView.displayRows.first, false);
-      expect(dataView.selectedRows.length, 0);
+      expect(dataView.selectedIDs.length, 0);
       expect(dataView.isRowSelected(dataView.displayRows.first), false);
     });
 
