@@ -91,7 +91,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await _database.setObject(row.id, row);
     }
-    await super.insert(context, list);
   }
 
   /// add list of rows into dataset database
@@ -125,7 +124,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
       }
     }
     await save(context);
-    await super.delete(context, list);
   }
 
   /// reset dataset database
@@ -138,7 +136,6 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     _index = [];
     internalNoRefresh = false;
     await _database.reset();
-    await super.reset();
   }
 
   /// range return sublist of rows, return null if something went wrong

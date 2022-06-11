@@ -128,7 +128,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
       removeDuplicateInTarget(matched, _result);
       _result.insertAll(0, matched);
     }
-    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -156,7 +155,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> delete(BuildContext context, List<T> list) async {
     await _dataset.delete(context, list);
     _result.removeWhere((item) => list.contains(item));
-    await super.delete(context, list);
   }
 
   /// clear dataset
@@ -168,7 +166,6 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   Future<void> reset() async {
     await _dataset.reset();
     _result = [];
-    await super.reset();
   }
 
   /// getRowByID return object by id

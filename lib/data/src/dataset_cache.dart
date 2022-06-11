@@ -121,7 +121,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       await cache.setObject(row.id, row);
     }
-    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -155,7 +154,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
       }
     }
     await save(context);
-    await super.delete(context, list);
   }
 
   /// reset dataset
@@ -178,7 +176,6 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
         break;
       }
     }
-    await super.reset();
   }
 
   /// range return sublist of rows, return null if something went wrong

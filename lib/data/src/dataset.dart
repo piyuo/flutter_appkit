@@ -26,10 +26,6 @@ abstract class Dataset<T extends pb.Object> {
   /// ```
   Dataset({
     required this.objectBuilder,
-    this.onInsert,
-    this.onDelete,
-    this.onLoad,
-    this.onReset,
     this.onRowsPerPageChanged,
   });
 
@@ -38,18 +34,6 @@ abstract class Dataset<T extends pb.Object> {
   /// objectBuilder: () => sample.Person()
   /// ```
   final pb.Builder<T> objectBuilder;
-
-  /// onLoad is callback when dataset is loaded
-  Future<void> Function(BuildContext context, List<T> list)? onLoad;
-
-  /// onInsert is callback when insert row
-  Future<void> Function(BuildContext context, List<T> list)? onInsert;
-
-  /// onDelete is callback when delete row
-  Future<void> Function(BuildContext context, List<T> list)? onDelete;
-
-  /// onReset is callback when reset
-  Future<void> Function()? onReset;
 
   /// onRowsPerPageChanged is callback when rows per page changed
   Future<void> Function(BuildContext)? onRowsPerPageChanged;
@@ -129,10 +113,7 @@ abstract class Dataset<T extends pb.Object> {
   /// ```dart
   /// await dataset.insert([sample.Person()]);
   /// ```
-  @mustCallSuper
-  Future<void> insert(BuildContext context, List<T> list) async {
-    await onInsert?.call(context, list);
-  }
+  Future<void> insert(BuildContext context, List<T> list);
 
   /// add list of rows into dataset, it will avoid duplicate rows
   /// ```dart
@@ -146,18 +127,14 @@ abstract class Dataset<T extends pb.Object> {
   /// await dataset.delete(list);
   /// ```
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<T> list) async {
-    await onDelete?.call(context, list);
-  }
+  Future<void> delete(BuildContext context, List<T> list);
 
   /// reset dataset
   /// ```dart
   /// await dataset.reset();
   /// ```
   @mustCallSuper
-  Future<void> reset() async {
-    await onReset?.call();
-  }
+  Future<void> reset();
 
   /// read return row by id
   /// ```dart

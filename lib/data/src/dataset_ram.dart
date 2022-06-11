@@ -49,7 +49,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   Future<void> insert(BuildContext context, List<T> list) async {
     removeDuplicateInTarget(list, _rows);
     _rows.insertAll(0, list);
-    await super.insert(context, list);
   }
 
   /// add rows into ram
@@ -74,7 +73,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
     for (T row in list) {
       _rows.remove(row);
     }
-    await super.delete(context, list);
   }
 
   /// reset dataset
@@ -85,7 +83,6 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   @mustCallSuper
   Future<void> reset() async {
     _rows.clear();
-    await super.reset();
   }
 
   /// range return sublist of rows, return null if something went wrong
