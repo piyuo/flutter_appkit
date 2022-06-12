@@ -24,7 +24,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   @override
   Future<void> onInsert(BuildContext context, List<T> list) async {
     pageIndex = 0;
-    super.onInsert(context, list);
+    await super.onInsert(context, list);
   }
 
   /// onDelete called after delete row
@@ -34,7 +34,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
     if (pageIndex >= paginator.pageCount) {
       pageIndex = paginator.pageCount - 1;
     }
-    super.onDelete(context, list);
+    await super.onDelete(context, list);
   }
 
   /// setRowsPerPage set dataset rows per page
@@ -42,7 +42,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   Future<void> onSetRowsPerPage(BuildContext context, int value) async {
     pageIndex = 0;
     await goto(context, 0);
-    super.onSetRowsPerPage(context, value);
+    await super.onSetRowsPerPage(context, value);
   }
 
   /// fill display rows
