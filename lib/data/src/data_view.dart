@@ -112,8 +112,10 @@ abstract class DataView<T extends pb.Object> {
   /// insert data to dataset
   @mustCallSuper
   Future<void> insert(BuildContext context, List<T> list) async {
-    await dataset.insert(context, list);
-    await onInsert(context, list);
+    if (list.isNotEmpty) {
+      await dataset.insert(context, list);
+      await onInsert(context, list);
+    }
   }
 
   /// onAdd called after add row
@@ -124,8 +126,10 @@ abstract class DataView<T extends pb.Object> {
   /// add data to dataset
   @mustCallSuper
   Future<void> add(BuildContext context, List<T> list) async {
-    await dataset.add(context, list);
-    await onAdd(context, list);
+    if (list.isNotEmpty) {
+      await dataset.add(context, list);
+      await onAdd(context, list);
+    }
   }
 
   /// onDelete called after delete row
@@ -136,8 +140,10 @@ abstract class DataView<T extends pb.Object> {
   /// delete data to dataset
   @mustCallSuper
   Future<void> delete(BuildContext context, List<String> list) async {
-    await dataset.delete(context, list);
-    await onDelete(context, list);
+    if (list.isNotEmpty) {
+      await dataset.delete(context, list);
+      await onDelete(context, list);
+    }
   }
 
   /// delete data to dataset
