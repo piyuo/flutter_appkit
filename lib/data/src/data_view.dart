@@ -99,8 +99,6 @@ abstract class DataView<T extends pb.Object> {
   /// load dataset
   @mustCallSuper
   Future<void> load(BuildContext context) async {
-    selectedIDs = [];
-    displayRows = [];
     await dataset.load(context);
   }
 
@@ -190,7 +188,12 @@ abstract class DataView<T extends pb.Object> {
       selectedIDs.clear();
       isReset = true;
     }
-    await insert(context, downloadRows);
+    if (downloadRows.isNotEmpty) {
+      // insert will call fill()
+      await insert(context, downloadRows);
+    } else {
+      await fill();
+    }
     return isReset;
   }
 
