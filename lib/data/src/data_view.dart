@@ -235,6 +235,12 @@ abstract class DataView<T extends pb.Object> {
   /// ```
   bool isRowSelected(T row) => selectedIDs.contains(row.id);
 
+  /// selectedCount return selected rows count
+  int get selectedCount => selectedIDs.length;
+
+  /// hasSelectedRows return true when has selected rows
+  bool get hasSelectedRows => selectedIDs.isNotEmpty;
+
   /// setSelectedRows select rows
   /// ```dart
   /// setSelectedRows([sample.Person(entity: pb.Entity(id: '5'))]);
@@ -245,15 +251,9 @@ abstract class DataView<T extends pb.Object> {
     selectedIDs.addAll(rows.map((row) => row.id));
   }
 
-  /// selectedCount return selected rows count
-  int get selectedCount => selectedIDs.length;
-
-  /// hasSelectedRows return true when has selected rows
-  bool get hasSelectedRows => selectedIDs.isNotEmpty;
-
   /// getSelectedRows return selected rows
   /// ```dart
-  /// getSelectedRows(['5']);
+  /// getSelectedRows();
   /// ```
   List<T> getSelectedRows() {
     final rows = <T>[];
@@ -263,6 +263,16 @@ abstract class DataView<T extends pb.Object> {
       }
     }
     return rows;
+  }
+
+  /// setSelectedRows select rows
+  /// ```dart
+  /// setSelectedRows(['5']);
+  /// ```
+  void setSelected(List<String> ids) {
+    selectedIDs.clear();
+    ids.removeWhere((id) => !dataset.isIDExists(id));
+    selectedIDs.addAll(ids);
   }
 
   /// selectRow select a row

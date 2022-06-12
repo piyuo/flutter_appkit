@@ -32,6 +32,10 @@ void main() {
       expect(selected[0].id, '2');
       expect(dataView.isRowSelected(selected[0]), isTrue);
       expect(dataView.isRowSelected(dataView.displayRows[0]), isFalse);
+
+      dataView.setSelected(['1']);
+      expect(dataView.selectedCount, 1);
+      expect(dataView.isRowSelected(dataView.displayRows[1]), isTrue);
     });
   });
 }
