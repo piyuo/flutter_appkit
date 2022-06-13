@@ -8,6 +8,12 @@ class LibLocalizationsEn extends LibLocalizations {
   LibLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get formContentChangedText => 'Content is changed, save it?';
+
+  @override
+  String get formSubmitButtonText => 'Submit';
+
+  @override
   String get formSavedBanner => 'Your changes have been saved';
 
   @override

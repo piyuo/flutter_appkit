@@ -1,4 +1,6 @@
 {
+    "formContentChangedText":"內容已更改, 是否送出?",
+    "formSubmitButtonText":"送出",
     "formSavedBanner":"您的修改已經儲存",
     "formAttentionBanner":"您還有些項目需要輸入",
     "notesSelectButtonLabel":"選擇",

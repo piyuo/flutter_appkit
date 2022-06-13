@@ -95,6 +95,18 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @formContentChangedText.
+  ///
+  /// In en, this message translates to:
+  /// **'Content is changed, save it?'**
+  String get formContentChangedText;
+
+  /// No description provided for @formSubmitButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get formSubmitButtonText;
+
   /// No description provided for @formSavedBanner.
   ///
   /// In en, this message translates to:

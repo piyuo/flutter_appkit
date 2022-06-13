@@ -8,6 +8,12 @@ class LibLocalizationsZh extends LibLocalizations {
   LibLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get formContentChangedText => '内容已更改, 是否提交?';
+
+  @override
+  String get formSubmitButtonText => '提交';
+
+  @override
   String get formSavedBanner => '您的修改已经保存';
 
   @override
@@ -449,6 +455,12 @@ class LibLocalizationsZh extends LibLocalizations {
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class LibLocalizationsZhTw extends LibLocalizationsZh {
   LibLocalizationsZhTw(): super('zh_TW');
+
+  @override
+  String get formContentChangedText => '內容已更改, 是否送出?';
+
+  @override
+  String get formSubmitButtonText => '送出';
 
   @override
   String get formSavedBanner => '您的修改已經儲存';

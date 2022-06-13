@@ -1,4 +1,6 @@
 {
+    "formContentChangedText":"Content is changed, save it?",
+    "formSubmitButtonText":"Submit",
     "formSavedBanner":"Your changes have been saved",
     "formAttentionBanner":"There are items that require your attention",
     "notesSelectButtonLabel":"Select",
