@@ -5,7 +5,7 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'submit.dart';
 
 /// allowToExit is true mean form can exit
-Future<bool> allowToExit(
+Future<bool> isAllowToExit(
   BuildContext context, {
   required FormGroup formGroup,
   required Future<void> Function() submitCallback,
