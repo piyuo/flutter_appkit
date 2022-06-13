@@ -28,7 +28,7 @@ class DataClient<T extends pb.Object> {
   /// DataClient provide a way to access data though dataset
   /// ```dart
   /// final dc = DataClient<sample.Person>(
-  ///   objectBuilder: () => sample.Person(),
+  ///   creator: () => sample.Person(),
   ///   getter: (context, id) async => null,
   ///   setter: (context, sample.Person person) async {
   ///     person.name = 'john';
@@ -37,13 +37,13 @@ class DataClient<T extends pb.Object> {
   /// );
   /// ```
   DataClient({
-    required this.objectBuilder,
+    required this.creator,
     required this.loader,
     required this.saver,
   });
 
-  /// objectBuilder build new row
-  final pb.Builder<T> objectBuilder;
+  /// creator create new row
+  final pb.Builder<T> creator;
 
   /// _dataset keep all rows in dataset
   late Dataset<T> dataset;
@@ -56,13 +56,13 @@ class DataClient<T extends pb.Object> {
 
   /// load dataset if not set, get data if id present
   /// ```dart
-  /// await client.load(testing.Context(), ds, 'id-123');
+  /// await client.load(testing.Context(), dataset:ds, id:'id-123');
   /// ```
-  Future<T> load(BuildContext context, {required Dataset<T> dataset, required String id}) async {
+  Future<T> load(BuildContext context, {required Dataset<T> dataset, String? id}) async {
     this.dataset = dataset;
     await dataset.load(context);
 
-    if (id.isNotEmpty) {
+    if (id != null && id.length > 1) {
       var data = await dataset.read(id);
       if (data != null) {
         return data;
@@ -74,7 +74,7 @@ class DataClient<T extends pb.Object> {
         return data;
       }
     }
-    return objectBuilder();
+    return creator();
   }
 
   /// setDataset only set dataset,it used when load data is not need

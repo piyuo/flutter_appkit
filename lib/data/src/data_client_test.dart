@@ -16,7 +16,7 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async {
           isGet = true;
           return sample.Person()..id = 'myId';
@@ -37,7 +37,7 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async {
           isGet = true;
           return sample.Person();
@@ -55,7 +55,7 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, __) async {},
       );
@@ -76,7 +76,7 @@ void main() {
       dataset.add(testing.Context(), [exists]);
 
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, __) async {},
       );
@@ -99,7 +99,7 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, __) async {},
       );
@@ -121,7 +121,7 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, items) async {
           saved = items[0];
@@ -145,7 +145,7 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, items) async {
           saved = items[0];
@@ -169,7 +169,7 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        objectBuilder: () => sample.Person(),
+        creator: () => sample.Person(),
         loader: (context, id) async => null,
         saver: (_, items) async {
           saved = items[0];
