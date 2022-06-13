@@ -60,6 +60,7 @@ class FormButton extends StatelessWidget {
       onPressed: onPressed != null
           ? () => dialog.toastWaitFor(
                 context,
+                showDone: false,
                 callback: () async {
                   await onPressed?.call();
                 },
