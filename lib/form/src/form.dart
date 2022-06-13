@@ -8,14 +8,14 @@ import 'submit.dart';
 Future<bool> allowToExit(
   BuildContext context, {
   required FormGroup formGroup,
-  required Future<void> Function() saveCallback,
+  required Future<void> Function() submitCallback,
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.alert(context, context.i18n.formContentChangedText,
         buttonYes: true, buttonNo: true, buttonCancel: true, blurry: false);
     if (result == true) {
       // user want save
-      bool ok = await submit(context, formGroup: formGroup, callback: saveCallback);
+      bool ok = await submit(context, formGroup: formGroup, callback: submitCallback);
       if (!ok) {
         return false;
       }
