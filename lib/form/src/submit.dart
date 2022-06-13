@@ -63,8 +63,8 @@ class Submit extends StatelessWidget {
         onPressed: onPressed != null && formGroup.enabled
             ? () => submit(
                   context,
-                  formGroup,
-                  onPressed: onPressed!,
+                  formGroup: formGroup,
+                  callback: onPressed!,
                 )
             : null,
       ),
@@ -74,9 +74,9 @@ class Submit extends StatelessWidget {
 
 /// submit form, return true if form is submitted
 Future<bool> submit(
-  BuildContext context,
-  FormGroup formGroup, {
-  required Future<void> Function() onPressed,
+  BuildContext context, {
+  required FormGroup formGroup,
+  required Future<void> Function() callback,
 }) async {
   if (!formGroup.dirty && formGroup.valid) {
     dialog.showInfoBanner(context, context.i18n.formSavedBanner);
@@ -97,7 +97,7 @@ Future<bool> submit(
   dialog.toastWait(context);
   try {
     formGroup.markAsDisabled();
-    await onPressed.call();
+    await callback.call();
     formGroup.markAsPristine();
     return true;
   } finally {
