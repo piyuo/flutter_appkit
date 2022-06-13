@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'dataset.dart';
 
 /// DataClientLoader load data from remote service
@@ -42,11 +43,11 @@ class DataClient<T extends pb.Object> {
     required this.saver,
   });
 
-  /// creator create new row
-  final pb.Builder<T> creator;
-
   /// _dataset keep all rows in dataset
   late Dataset<T> dataset;
+
+  /// creator create new row
+  final delta.FutureContextCallback<T> creator;
 
   /// loader get data from remote service
   final DataClientLoader<T> loader;
@@ -74,7 +75,7 @@ class DataClient<T extends pb.Object> {
         return data;
       }
     }
-    return creator();
+    return creator(context);
   }
 
   /// setDataset only set dataset,it used when load data is not need
