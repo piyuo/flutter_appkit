@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Submit is form submit button
 class Submit extends StatelessWidget {
   const Submit({
-    this.label,
+    required this.label,
     this.onPressed,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
@@ -23,7 +23,7 @@ class Submit extends StatelessWidget {
   final double fontSize;
 
   /// label is button text
-  final String? label;
+  final String label;
 
   /// onPressed called when user pressed button
   final Future<void> Function()? onPressed;
@@ -53,7 +53,7 @@ class Submit extends StatelessWidget {
           ),
         ),
         child: Text(
-          label ?? context.i18n.formSubmitButtonText,
+          label,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -63,8 +63,8 @@ class Submit extends StatelessWidget {
         onPressed: onPressed != null && formGroup.enabled
             ? () => submit(
                   context,
-                  formGroup: formGroup,
-                  callback: onPressed!,
+                  formGroup,
+                  onPressed: onPressed!,
                 )
             : null,
       ),
@@ -74,9 +74,9 @@ class Submit extends StatelessWidget {
 
 /// submit form, return true if form is submitted
 Future<bool> submit(
-  BuildContext context, {
-  required FormGroup formGroup,
-  required Future<void> Function() callback,
+  BuildContext context,
+  FormGroup formGroup, {
+  required Future<void> Function() onPressed,
 }) async {
   if (!formGroup.dirty && formGroup.valid) {
     dialog.showInfoBanner(context, context.i18n.formSavedBanner);
@@ -97,7 +97,7 @@ Future<bool> submit(
   dialog.toastWait(context);
   try {
     formGroup.markAsDisabled();
-    await callback.call();
+    await onPressed.call();
     formGroup.markAsPristine();
     return true;
   } finally {

@@ -83,14 +83,15 @@ class FormExample extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: _newForm(context),
+          child: _form(context),
         ),
       ),
     );
   }
 
-  Widget _newForm(BuildContext context) {
-    return ReactiveForm(
+  Widget _form(BuildContext context) {
+    return ShimmerForm(
+      showShimmer: false,
       formGroup: formGroup,
       child: Column(
         children: <Widget>[

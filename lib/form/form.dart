@@ -1,6 +1,6 @@
 library form;
 
-export 'src/form.dart';
+export 'src/shimmer_form.dart';
 export 'src/submit.dart';
 export 'src/form_button.dart';
 export 'src/email_field.dart';
