@@ -37,7 +37,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _toast(context),
+            child: _slideSheet(context),
           ),
           Wrap(
             children: [
@@ -317,7 +317,6 @@ class DialogExample extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 500),
           children: [
             const Text('Title'),
-            const SizedBox(height: 30),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(

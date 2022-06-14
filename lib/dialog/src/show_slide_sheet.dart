@@ -20,7 +20,7 @@ Future<T?> showSlideSheet<T>(
   Color? color,
   Color closeButtonColor = Colors.grey,
   BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
-  EdgeInsets padding = const EdgeInsets.fromLTRB(16, 16, 16, 0),
+  EdgeInsets padding = const EdgeInsets.fromLTRB(20, 50, 20, 0),
   double initHeight = 0.7,
   double maxHeight = 0.92,
 }) async {
