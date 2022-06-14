@@ -10,6 +10,7 @@ class NoteForm<T extends pb.Object> extends StatelessWidget {
     required this.formController,
     Key? key,
     this.showSubmitButton = true,
+    this.onWillPop,
   }) : super(key: key);
 
   /// showSubmitButton is true mean show submit button
@@ -17,6 +18,9 @@ class NoteForm<T extends pb.Object> extends StatelessWidget {
 
   /// formController is form controller, don't direct consume it, this provider maybe inhibit by other provider
   final NoteFormController<T> formController;
+
+  /// onWillPop provides a way to intercept the back button
+  final WillPopCallback? onWillPop;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class NoteForm<T extends pb.Object> extends StatelessWidget {
     return form.ShimmerForm(
         showShimmer: formController.formState == NotesFormState.loading,
         formGroup: formController.formGroup,
+        onWillPop: onWillPop,
         child: Column(
           children: [
             formController.buildForm(context),

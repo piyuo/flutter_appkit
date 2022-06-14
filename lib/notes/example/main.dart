@@ -736,9 +736,9 @@ Widget _noteItem(BuildContext context, String id) {
                 ]),
                 body: SafeArea(
                   child: Center(
-                    child: WillPopScope(
+                    child: NoteForm<sample.Person>(
+                      formController: formController,
                       onWillPop: () async => formController.isAllowToExit(context),
-                      child: NoteForm<sample.Person>(formController: formController),
                     ),
                   ),
                 ),
