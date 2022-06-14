@@ -25,7 +25,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   final NotesProvider<T> viewProvider;
 
   /// contentForm is form to show content
-  final NoteForm contentForm;
+  final NoteForm<T> contentForm;
 
   /// leftTools is extra tools on left part on bar
   final List<responsive.ToolItem>? leftTools;
