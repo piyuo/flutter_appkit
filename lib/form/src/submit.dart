@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Submit is form submit button
 class Submit extends StatelessWidget {
   const Submit({
-    required this.label,
+    this.label,
     this.onPressed,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
@@ -23,7 +23,7 @@ class Submit extends StatelessWidget {
   final double fontSize;
 
   /// label is button text
-  final String label;
+  final String? label;
 
   /// onPressed called when user pressed button
   final Future<void> Function()? onPressed;
@@ -53,7 +53,7 @@ class Submit extends StatelessWidget {
           ),
         ),
         child: Text(
-          label,
+          label ?? context.i18n.formSubmitButtonText,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
