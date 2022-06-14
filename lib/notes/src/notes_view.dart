@@ -9,7 +9,6 @@ import 'master_detail_view.dart';
 import 'tag_split_view.dart';
 import 'tag_view.dart';
 import 'checkable_header.dart';
-import 'note_form.dart';
 
 class NotesView<T extends pb.Object> extends StatelessWidget {
   const NotesView({

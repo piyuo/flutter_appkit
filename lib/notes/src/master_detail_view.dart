@@ -246,7 +246,7 @@ class MasterDetailView<T> extends StatelessWidget {
           gripSize: 5,
           gripColor: context.themeColor(
             light: Colors.grey.shade100,
-            dark: Colors.grey.shade800,
+            dark: Colors.grey[850]!,
           ),
           gripColorActive: context.themeColor(
             light: Colors.grey.shade300,
@@ -261,7 +261,7 @@ class MasterDetailView<T> extends StatelessWidget {
               viewMode: SplitViewMode.Horizontal,
               color: context.themeColor(
                 light: Colors.grey.shade400,
-                dark: Colors.grey,
+                dark: Colors.grey.shade600,
               )),
           activeIndicator: const SplitIndicator(
             viewMode: SplitViewMode.Horizontal,

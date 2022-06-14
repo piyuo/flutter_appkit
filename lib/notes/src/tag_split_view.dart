@@ -29,10 +29,10 @@ class TagSplitView extends StatelessWidget {
               gripSize: 5,
               gripColor: context.themeColor(
                 light: Colors.grey.shade300,
-                dark: Colors.grey.shade800,
+                dark: Colors.grey.shade900,
               ),
               gripColorActive: context.themeColor(
-                light: Colors.grey.shade300,
+                light: Colors.grey.shade400,
                 dark: Colors.grey.shade800,
               ),
               controller: SplitViewController(
@@ -44,7 +44,7 @@ class TagSplitView extends StatelessWidget {
                   viewMode: SplitViewMode.Horizontal,
                   color: context.themeColor(
                     light: Colors.grey.shade400,
-                    dark: Colors.grey,
+                    dark: Colors.grey.shade600,
                   )),
               activeIndicator: const SplitIndicator(
                 viewMode: SplitViewMode.Horizontal,

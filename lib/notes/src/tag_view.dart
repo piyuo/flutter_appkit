@@ -4,7 +4,7 @@ import 'tag.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 
 Color tagViewBackgroundColor(BuildContext context) =>
-    context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800);
+    context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900);
 
 class TagView<T> extends StatelessWidget {
   /// TagView is a widget that displays a tag

@@ -162,8 +162,6 @@ class NotesExample extends StatelessWidget {
       appBar: AppBar(
         elevation: 1,
         title: const Text('Example Application'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.grey.shade800,
         actions: [
           Consumer<NotesProvider<sample.Person>>(builder: (context, viewProvider, _) {
             return NotesViewMenuButton<sample.Person>(
