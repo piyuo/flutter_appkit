@@ -14,7 +14,7 @@ import 'note_form.dart';
 class NotesView<T extends pb.Object> extends StatelessWidget {
   const NotesView({
     required this.viewProvider,
-    required this.contentForm,
+    required this.contentBuilder,
     this.leftTools,
     this.rightTools,
     this.tagViewHeader,
@@ -24,8 +24,8 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
   final NotesProvider<T> viewProvider;
 
-  /// contentForm is form to show content
-  final NoteForm<T> contentForm;
+  /// contentBuilder is content builder
+  final Widget Function() contentBuilder;
 
   /// leftTools is extra tools on left part on bar
   final List<responsive.ToolItem>? leftTools;
@@ -115,7 +115,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                 gridBuilder: viewProvider.gridBuilder,
                 listDecorationBuilder: viewProvider.listDecorationBuilder,
                 gridDecorationBuilder: viewProvider.gridDecorationBuilder,
-                contentBuilder: () => contentForm,
+                contentBuilder: contentBuilder,
                 onRefresh: context.isTouchSupported && viewProvider.isReadyToShow && !viewProvider.noRefresh
                     ? () => viewProvider.refresh(context)
                     : null,
