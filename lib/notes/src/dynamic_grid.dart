@@ -148,7 +148,7 @@ class DynamicGrid<T> extends Selectable<T> {
 
               return animations.AnimateView(
                 crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 20,
+                crossAxisSpacing: 40,
                 mainAxisSpacing: 5,
                 controller: animatedViewScrollController,
                 shrinkWrap: true,
