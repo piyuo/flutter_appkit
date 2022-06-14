@@ -80,6 +80,11 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                     icon: Icons.add,
                     onPressed: () => viewProvider.onCreateNew(context),
                   ),
+                  responsive.ToolButton(
+                    label: context.i18n.formSubmitButtonText,
+                    icon: Icons.cloud_upload,
+                    onPressed: () => viewProvider.formController.submit(context),
+                  ),
                 ],
               )
           : null,
