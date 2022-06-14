@@ -25,7 +25,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     required data.DataClientSaver<T> saver,
     this.formLoader,
     this.formSaver,
-    this.shimmerBuilder,
     this.showArchiveButton = false,
     this.showDeleteButton = false,
     this.showRestoreButton = false,
@@ -57,9 +56,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
 
   /// formBuilder build item form
   final Widget Function(BuildContext context, NoteFormController<T> controller) formBuilder;
-
-  /// shimmerBuilder build shimmer item
-  final Widget Function(BuildContext)? shimmerBuilder;
 
   /// dataView data view to display data
   late data.DataClient<T> dataClient;
@@ -246,7 +242,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     await dataClient.save(context, [current!]);
     await eventbus.broadcast(context, NotesRefillEvent(isNew: isNewItem));
     notifyListeners();
-    debugPrint('item saved');
     return true;
   }
 }

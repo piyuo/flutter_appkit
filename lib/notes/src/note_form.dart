@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
@@ -21,13 +20,6 @@ class NoteForm<T extends pb.Object> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (formController.formState == NotesFormState.loading) {
-      if (formController.shimmerBuilder != null) {
-        return formController.shimmerBuilder!(context);
-      }
-      return const delta.LoadingDisplay(showAnimation: true);
-    }
-
     if (formController.formState == NotesFormState.formEmpty) {
       return const SizedBox();
     }
@@ -36,7 +28,8 @@ class NoteForm<T extends pb.Object> extends StatelessWidget {
       return const delta.NoDataDisplay();
     }
 
-    return ReactiveForm(
+    return form.ShimmerForm(
+        showShimmer: formController.formState == NotesFormState.loading,
         formGroup: formController.formGroup,
         child: Column(
           children: [

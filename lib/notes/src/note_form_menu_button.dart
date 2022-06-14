@@ -52,8 +52,8 @@ class NoteFormMenuButton<T extends pb.Object> extends StatelessWidget {
                   responsive.ToolSpacer(),
                   if (tools != null) ...tools!,
                   responsive.ToolButton(
-                    label: context.i18n.saveButtonText,
-                    icon: Icons.save,
+                    label: context.i18n.formSubmitButtonText,
+                    icon: Icons.cloud_upload,
                     onPressed: () => formController.submit(context),
                   ),
                 ],
