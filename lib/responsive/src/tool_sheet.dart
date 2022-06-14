@@ -63,8 +63,8 @@ Widget _buildItemOnSheet(
           ]),
           onPressed: item.onPressed != null
               ? () {
-                  item.onPressed!();
                   Navigator.pop(context);
+                  item.onPressed!();
                 }
               : null,
         ));
