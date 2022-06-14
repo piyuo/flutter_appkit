@@ -63,8 +63,8 @@ class Submit extends StatelessWidget {
         onPressed: onPressed != null && formGroup.enabled
             ? () => submit(
                   context,
-                  formGroup,
-                  onPressed: onPressed!,
+                  formGroup: formGroup,
+                  callback: onPressed!,
                 )
             : null,
       ),
@@ -74,9 +74,9 @@ class Submit extends StatelessWidget {
 
 /// submit form, return true if form is submitted
 Future<bool> submit(
-  BuildContext context,
-  FormGroup formGroup, {
-  required Future<void> Function() onPressed,
+  BuildContext context, {
+  required FormGroup formGroup,
+  required Future<void> Function() callback,
 }) async {
   if (!formGroup.dirty && formGroup.valid) {
     dialog.showInfoBanner(context, context.i18n.formSavedBanner);
@@ -97,11 +97,36 @@ Future<bool> submit(
   dialog.toastWait(context);
   try {
     formGroup.markAsDisabled();
-    await onPressed.call();
+    await callback.call();
     formGroup.markAsPristine();
     return true;
   } finally {
     formGroup.markAsEnabled();
     dialog.toastDone(context);
   }
+}
+
+/// isAllowToExit is true mean form can exit
+Future<bool> isAllowToExit(
+  BuildContext context, {
+  required FormGroup formGroup,
+  required Future<void> Function() submitCallback,
+}) async {
+  if (formGroup.dirty) {
+    var result = await dialog.alert(context, context.i18n.formContentChangedText,
+        buttonYes: true, buttonNo: true, buttonCancel: true, blurry: false);
+    if (result == true) {
+      // user want save
+      bool ok = await submit(context, formGroup: formGroup, callback: submitCallback);
+      if (!ok) {
+        return false;
+      }
+    } else if (result == false) {
+      // discard content
+      formGroup.reset();
+    } else if (result == null) {
+      return false;
+    }
+  }
+  return true;
 }
