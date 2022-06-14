@@ -9,13 +9,12 @@ import 'master_detail_view.dart';
 import 'tag_split_view.dart';
 import 'tag_view.dart';
 import 'checkable_header.dart';
-import 'note_form_controller.dart';
 import 'note_form.dart';
 
 class NotesView<T extends pb.Object> extends StatelessWidget {
   const NotesView({
     required this.viewProvider,
-    required this.formController,
+    required this.contentForm,
     this.leftTools,
     this.rightTools,
     this.tagViewHeader,
@@ -25,8 +24,8 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
   final NotesProvider<T> viewProvider;
 
-  /// formController is form controller, don't direct consume it, this provider maybe inhibit by other provider
-  final NoteFormController<T> formController;
+  /// contentForm is form to show content
+  final NoteForm contentForm;
 
   /// leftTools is extra tools on left part on bar
   final List<responsive.ToolItem>? leftTools;
@@ -116,7 +115,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                 gridBuilder: viewProvider.gridBuilder,
                 listDecorationBuilder: viewProvider.listDecorationBuilder,
                 gridDecorationBuilder: viewProvider.gridDecorationBuilder,
-                contentBuilder: () => NoteForm<T>(formController: formController),
+                contentBuilder: () => contentForm,
                 onRefresh: context.isTouchSupported && viewProvider.isReadyToShow && !viewProvider.noRefresh
                     ? () => viewProvider.refresh(context)
                     : null,
@@ -212,19 +211,19 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                             ),
                             if (leftTools != null) ...leftTools!,
                             if (viewProvider.isListView) responsive.ToolSpacer(),
-                            if (formController.showArchiveButton)
+                            if (viewProvider.formController.showArchiveButton)
                               responsive.ToolButton(
                                 label: context.i18n.archiveButtonText,
                                 icon: Icons.archive,
                                 onPressed: viewProvider.isAllowDelete ? () => viewProvider.onArchive(context) : null,
                               ),
-                            if (formController.showDeleteButton)
+                            if (viewProvider.formController.showDeleteButton)
                               responsive.ToolButton(
                                 label: context.i18n.deleteButtonText,
                                 icon: Icons.delete,
                                 onPressed: viewProvider.isAllowDelete ? () => viewProvider.onDelete(context) : null,
                               ),
-                            if (formController.showRestoreButton)
+                            if (viewProvider.formController.showRestoreButton)
                               responsive.ToolButton(
                                 label: context.i18n.restoreButtonText,
                                 icon: Icons.restore,
@@ -311,7 +310,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     onUnselectAll: () => viewProvider.onItemChecked(context, []),
                     onCancel: () => viewProvider.onToggleCheckMode(context),
                     actions: [
-                      if (formController.showArchiveButton)
+                      if (viewProvider.formController.showArchiveButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             primary: Colors.grey.shade900,
@@ -321,7 +320,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                           onPressed:
                               viewProvider.dataView!.hasSelectedRows ? () => viewProvider.onArchive(context) : null,
                         ),
-                      if (formController.showDeleteButton)
+                      if (viewProvider.formController.showDeleteButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             primary: Colors.grey.shade900,
@@ -331,7 +330,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                           onPressed:
                               viewProvider.dataView!.hasSelectedRows ? () => viewProvider.onDelete(context) : null,
                         ),
-                      if (formController.showRestoreButton)
+                      if (viewProvider.formController.showRestoreButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             primary: Colors.grey.shade900,
