@@ -340,7 +340,6 @@ class FormExample extends StatelessWidget {
           const Divider(),
           br(),
           Submit(
-            label: 'Submit',
             onPressed: () async {
               await Future.delayed(const Duration(seconds: 5));
               debugPrint('form submitted');
