@@ -25,13 +25,13 @@ void watch(Function suspect) {
     originalOnError?.call(details);
   };
 
-  runZonedGuarded<Future<void>>(() async {
-    suspect();
-  },
-      (Object e, StackTrace stack) async => await catched(
-            e,
-            stack,
-          ));
+  runZonedGuarded<Future<void>>(
+    () async => suspect(),
+    (Object e, StackTrace stack) async => await catched(
+      e,
+      stack,
+    ),
+  );
 
   subscribed ??= eventbus.listen(listened);
 }

@@ -22,10 +22,14 @@ void main() {
     required void Function(BuildContext context) onPressed,
   }) {
     return Builder(
-        builder: (BuildContext context) => TextButton(
-              key: keyBtn,
-              child: const Text('button'),
-              onPressed: () => onPressed(context),
+        builder: (BuildContext context) => dialog.GlobalContextSupport(
+              child: MaterialApp(
+                home: TextButton(
+                  key: keyBtn,
+                  child: const Text('button'),
+                  onPressed: () => onPressed(context),
+                ),
+              ),
             ));
   }
 
