@@ -75,6 +75,12 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// saveHandler not null will show save button
   final void Function(FormGroup formGroup, T item)? formSaver;
 
+  @override
+  void dispose() {
+    formGroup.dispose();
+    super.dispose();
+  }
+
   /// _isDirty is true mean form data is ready to save
   //bool get _isDirty => formGroup.valid && formGroup.dirty;
 
