@@ -8,7 +8,7 @@ export 'src/test.dart';
 export 'src/route.dart';
 export 'src/hypertext.extension.dart';
 export 'src/single_selection_dialog.dart';
-export 'src/banner.dart';
+export 'src/show_banner.dart';
 export 'src/show_side.dart';
 export 'src/show_slide_sheet.dart';
 export 'src/check_list_dialog.dart';

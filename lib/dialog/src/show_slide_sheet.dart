@@ -6,13 +6,13 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 /// showSlideSheet show popup sheet from the bottom
 /// ```dart
 /// final result = await showSlideSheet(
-///      context,
-///      children: const [
-///        SizedBox(height: 30),
-///        SizedBox(height: 80, child: Placeholder()),
-///        SizedBox(height: 120),
-///      ],
-///    )
+///   context,
+///   children: const [
+///     SizedBox(height: 30),
+///     SizedBox(height: 80, child: Placeholder()),
+///     SizedBox(height: 120),
+///   ],
+/// )
 /// ```
 Future<T?> showSlideSheet<T>(
   BuildContext context, {

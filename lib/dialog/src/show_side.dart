@@ -5,13 +5,13 @@ import 'package:libcli/delta/delta.dart' as delta;
 /// showSheet show popup sheet from the bottom
 /// ```dart
 /// final result = await showSide(
-///      context,
-///      child: Column(children: const [
-///        SizedBox(height: 30),
-///        SizedBox(height: 80, child: Placeholder()),
-///        SizedBox(height: 120),
-///      ]),
-///    )
+///   context,
+///   child: Column(children: const [
+///     SizedBox(height: 30),
+///     SizedBox(height: 80, child: Placeholder()),
+///     SizedBox(height: 120),
+///   ]),
+/// )
 /// ```
 Future<T?> showSide<T>(
   BuildContext context, {

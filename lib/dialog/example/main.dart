@@ -37,7 +37,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _slideSheet(context),
+            child: _banner(context),
           ),
           Wrap(
             children: [
@@ -371,7 +371,6 @@ class DialogExample extends StatelessWidget {
           const Text(
             'this record has been deleted',
           ),
-          leading: const Icon(Icons.warning, color: Colors.black),
         ),
       ),
       ElevatedButton(
