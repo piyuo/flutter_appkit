@@ -225,7 +225,9 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     var nextRow = _findRowInDisplayRowByID(defaultSelectedID);
     nextRow = nextRow ?? dataView!.displayRows.first;
     dataView!.setSelectedRows([nextRow]);
-    formController.loadByView(context, dataset: dataView!.dataset, row: nextRow);
+    if (isSplitView) {
+      formController.loadByView(context, dataset: dataView!.dataset, row: nextRow);
+    }
   }
 
   /// _findRowInDisplayRowByID find row in display row by id
@@ -304,8 +306,10 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
 
-    final first = selectedRows.first;
-    await formController.loadByView(context, dataset: dataView!.dataset, row: first);
+    if (isSplitView) {
+      final first = selectedRows.first;
+      await formController.loadByView(context, dataset: dataView!.dataset, row: first);
+    }
     if (!onItemChecked(context, selectedRows)) {
       return;
     }
