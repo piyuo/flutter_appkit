@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_date_range_picker/reactive_date_range_picker.dart';
 import 'package:reactive_touch_spin/reactive_touch_spin.dart';
-import 'package:reactive_pinput/reactive_pinput.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
 import 'package:libcli/app/app.dart' as app;
@@ -90,6 +89,25 @@ class FormExample extends StatelessWidget {
   }
 
   Widget _form(BuildContext context) {
+    final defaultPinTheme = PinTheme(
+      width: 45,
+      height: 45,
+      textStyle: const TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400),
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+      border: Border.all(color: Colors.blue, width: 2),
+    );
+    final submittedPinTheme = defaultPinTheme.copyDecorationWith(
+      border: Border.all(color: Colors.grey.shade300, width: 1),
+    );
+    final followingPinTheme = defaultPinTheme.copyDecorationWith(
+//      border: Border.all(color: Colors.grey, width: 1),
+        //    borderRadius: BorderRadius.circular(8),
+        );
     return ShimmerForm(
       showShimmer: false,
       formGroup: formGroup,
@@ -148,10 +166,22 @@ class FormExample extends StatelessWidget {
             formControlName: 'phone',
             focusNode: FocusNode(),
           ),
-          ReactivePinPut<String>(
-            formControlName: 'input',
-            length: 5,
-          ),
+          p(),
+          FormPinPut<String>(
+              formControlName: 'input',
+              length: 6,
+              autofocus: true,
+              defaultPinTheme: defaultPinTheme,
+              focusedPinTheme: focusedPinTheme,
+              submittedPinTheme: submittedPinTheme,
+              followingPinTheme: followingPinTheme,
+              pinAnimationType: PinAnimationType.fade,
+              showCursor: false,
+              androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
+              hapticFeedbackType: HapticFeedbackType.lightImpact,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ]),
           br(),
           Submit(
             color: Colors.green,
@@ -340,6 +370,7 @@ class FormExample extends StatelessWidget {
           const Divider(),
           br(),
           Submit(
+            label: 'Submit',
             onPressed: () async {
               await Future.delayed(const Duration(seconds: 5));
               debugPrint('form submitted');

@@ -981,12 +981,12 @@ packages:
     source: hosted
     version: "0.13.0"
   pinput:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pinput
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.9"
+    version: "2.2.11"
   platform:
     dependency: transitive
     description:
@@ -1071,13 +1071,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
-  reactive_pinput:
-    dependency: "direct main"
-    description:
-      name: reactive_pinput
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
   reactive_raw_autocomplete:
     dependency: "direct main"
     description:
