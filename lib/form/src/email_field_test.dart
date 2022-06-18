@@ -20,7 +20,7 @@ void main() {
               Submit(
                 key: const Key('submit'),
                 label: 'submit',
-                onPressed: () async {},
+                onSubmit: (context) async {},
               ),
             ],
           ),

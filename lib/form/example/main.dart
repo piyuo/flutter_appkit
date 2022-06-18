@@ -186,7 +186,7 @@ class FormExample extends StatelessWidget {
           Submit(
             color: Colors.green,
             label: 'Submit',
-            onPressed: () async {
+            onSubmit: (context) async {
               debugPrint(formGroup.value.toString());
             },
           ),
@@ -371,7 +371,7 @@ class FormExample extends StatelessWidget {
           br(),
           Submit(
             label: 'Submit',
-            onPressed: () async {
+            onSubmit: (context) async {
               await Future.delayed(const Duration(seconds: 5));
               debugPrint('form submitted');
             },

@@ -29,7 +29,7 @@ void main() {
               ),
               Submit(
                 label: 'submit',
-                onPressed: () async {
+                onSubmit: (context) async {
                   submitted = true;
                 },
               )
@@ -62,7 +62,7 @@ void main() {
               ),
               Submit(
                 label: 'submit',
-                onPressed: () async {
+                onSubmit: (context) async {
                   await Future.delayed(const Duration(milliseconds: 100));
                 },
               )

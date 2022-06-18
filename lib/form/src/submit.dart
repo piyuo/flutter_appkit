@@ -8,7 +8,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class Submit extends StatelessWidget {
   const Submit({
     this.label,
-    this.onPressed,
+    this.onSubmit,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.elevation = 2,
@@ -25,8 +25,8 @@ class Submit extends StatelessWidget {
   /// label is button text
   final String? label;
 
-  /// onPressed called when user pressed button
-  final Future<void> Function()? onPressed;
+  /// onSubmit called when user pressed button to submit form
+  final delta.FutureContextCallback<void>? onSubmit;
 
   /// button elevation, if elevation is 0 use outlined button
   final double elevation;
@@ -60,11 +60,11 @@ class Submit extends StatelessWidget {
             fontSize: fontSize,
           ),
         ),
-        onPressed: onPressed != null && formGroup.enabled
+        onPressed: onSubmit != null && formGroup.enabled
             ? () => submit(
                   context,
                   formGroup: formGroup,
-                  callback: onPressed!,
+                  callback: onSubmit!,
                 )
             : null,
       ),
@@ -76,7 +76,7 @@ class Submit extends StatelessWidget {
 Future<bool> submit(
   BuildContext context, {
   required FormGroup formGroup,
-  required Future<void> Function() callback,
+  required delta.FutureContextCallback<void> callback,
 }) async {
   if (!formGroup.dirty && formGroup.valid) {
     dialog.showInfoBanner(context, context.i18n.formSavedBanner);
@@ -97,7 +97,7 @@ Future<bool> submit(
   dialog.toastWait(context);
   try {
     formGroup.markAsDisabled();
-    await callback.call();
+    await callback.call(context);
     formGroup.markAsPristine();
     return true;
   } finally {
@@ -110,7 +110,7 @@ Future<bool> submit(
 Future<bool> isAllowToExit(
   BuildContext context, {
   required FormGroup formGroup,
-  required Future<void> Function() submitCallback,
+  required delta.FutureContextCallback<void> submitCallback,
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.alert(context, context.i18n.formContentChangedText,
