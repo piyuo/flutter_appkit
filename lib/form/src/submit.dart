@@ -25,8 +25,8 @@ class Submit extends StatelessWidget {
   /// label is button text
   final String? label;
 
-  /// onSubmit called when user pressed button to submit form
-  final delta.FutureContextCallback<void>? onSubmit;
+  /// onSubmit called when user pressed button to submit form, return true will show done animation
+  final delta.FutureContextCallback<bool>? onSubmit;
 
   /// button elevation, if elevation is 0 use outlined button
   final double elevation;
@@ -76,7 +76,7 @@ class Submit extends StatelessWidget {
 Future<bool> submit(
   BuildContext context, {
   required FormGroup formGroup,
-  required delta.FutureContextCallback<void> callback,
+  required delta.FutureContextCallback<bool> callback,
 }) async {
   if (!formGroup.dirty && formGroup.valid) {
     dialog.showInfoBanner(context, context.i18n.formSavedBanner);
@@ -94,15 +94,18 @@ Future<bool> submit(
     return false;
   }
 
+  bool result = false;
   dialog.toastWait(context);
   try {
     formGroup.markAsDisabled();
-    await callback.call(context);
-    formGroup.markAsPristine();
-    return true;
+    result = await callback.call(context);
+    return result;
   } finally {
     formGroup.markAsEnabled();
-    dialog.toastDone(context);
+    if (result) {
+      formGroup.markAsPristine();
+      dialog.toastDone(context);
+    }
   }
 }
 
@@ -110,7 +113,7 @@ Future<bool> submit(
 Future<bool> isAllowToExit(
   BuildContext context, {
   required FormGroup formGroup,
-  required delta.FutureContextCallback<void> submitCallback,
+  required delta.FutureContextCallback<bool> submitCallback,
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.alert(context, context.i18n.formContentChangedText,

@@ -188,6 +188,7 @@ class FormExample extends StatelessWidget {
             label: 'Submit',
             onSubmit: (context) async {
               debugPrint(formGroup.value.toString());
+              return true;
             },
           ),
           FutureField<String>(
@@ -374,6 +375,7 @@ class FormExample extends StatelessWidget {
             onSubmit: (context) async {
               await Future.delayed(const Duration(seconds: 5));
               debugPrint('form submitted');
+              return true;
             },
           ),
           br(),
