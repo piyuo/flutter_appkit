@@ -75,7 +75,7 @@ class PlaceExampleState extends State<PlaceExample> {
                         form.p(),
                         form.Submit(
                           label: 'Submit',
-                          onSubmit: (context) async {},
+                          onSubmit: (context) async => true,
                         ),
                         PlaceField(
                           formControlName: 'address',
