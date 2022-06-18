@@ -43,7 +43,7 @@ class NoteForm<T extends pb.Object> extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: form.Submit(
-                  onPressed: () => formController.onSubmit(context),
+                  onSubmit: formController.onSubmit,
                 ),
               )
           ],

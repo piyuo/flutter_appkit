@@ -223,7 +223,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   Future<bool> isAllowToExit(BuildContext context) async => await form.isAllowToExit(
         context,
         formGroup: formGroup,
-        submitCallback: () => onSubmit(context),
+        submitCallback: onSubmit,
       );
 
   /// submit form, return true if form is submit success
@@ -232,7 +232,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       return await form.submit(
         context,
         formGroup: formGroup,
-        callback: () => onSubmit(context),
+        callback: onSubmit,
       );
     }
     return false;
