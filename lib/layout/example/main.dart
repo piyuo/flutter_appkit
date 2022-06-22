@@ -33,7 +33,6 @@ class LayoutExample extends StatelessWidget {
       Wrap(
         children: [
           testing.ExampleButton(label: 'sliver scaffold', builder: () => _sliverScaffold(context), useScaffold: false),
-          testing.ExampleButton(label: 'slideshow', builder: () => _slideshow(context)),
           testing.ExampleButton(label: 'wall', builder: () => _wall(context)),
           testing.ExampleButton(label: 'side panel', builder: () => _sidePanel(context)),
           testing.ExampleButton(label: 'story line', builder: () => _storyLine(context)),
@@ -238,16 +237,6 @@ class LayoutExample extends StatelessWidget {
           color: Colors.orange,
           child: const Text('hello4'),
         ),
-      ],
-    );
-  }
-
-  Widget _slideshow(BuildContext context) {
-    return const Slideshow(
-      urls: [
-        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
-        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-2?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617741434000',
-        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-3?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617741419000',
       ],
     );
   }
