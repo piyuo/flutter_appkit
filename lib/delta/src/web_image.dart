@@ -41,6 +41,9 @@ class _WebImageController with ChangeNotifier {
 
 /// WebImage display image from url,display loading and failed place holder and cache image for period of time
 /// you can use SizedBox() to set width and height
+/// ```dart
+/// WebImage('https://image-url'),
+/// ```
 class WebImage extends StatelessWidget {
   const WebImage(
     this.url, {
@@ -55,6 +58,7 @@ class WebImage extends StatelessWidget {
   /// cacheMaxAge is image cache age, default is 360 days
   final Duration cacheMaxAge;
 
+  /// borderRadius is image border radius
   final double borderRadius;
 
   Widget _icon(

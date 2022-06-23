@@ -74,7 +74,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _menuButton(context),
+                          child: _webImage(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -193,15 +193,29 @@ class DeltaExample extends StatelessWidget {
         ),
         height: double.infinity,
         child: Row(
-          children: const [
+          children: [
             SizedBox(
               width: 300,
               height: 300,
-              child: WebImage(
-                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000'),
+              child: Image.network(
+                  'https://images.pexels.com/photos/2657960/pexels-photo-2657960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
             ),
-            SizedBox(width: 20),
-            SizedBox(
+            const SizedBox(
+              width: 300,
+              height: 300,
+              child: WebImage(
+                borderRadius: 0,
+                'https://images.pexels.com/photos/2657960/pexels-photo-2657960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+              ),
+            ),
+            const SizedBox(
+              width: 300,
+              height: 300,
+              child: WebImage(
+                  'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+            ),
+            const SizedBox(width: 20),
+            const SizedBox(
               width: 300,
               height: 300,
               child: WebImage(
