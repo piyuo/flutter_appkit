@@ -194,34 +194,30 @@ class DeltaExample extends StatelessWidget {
         height: double.infinity,
         child: Row(
           children: [
-            SizedBox(
+            Image.network(
+              'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
               width: 300,
               height: 300,
-              child: Image.network(
-                  'https://images.pexels.com/photos/2657960/pexels-photo-2657960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
             ),
-            const SizedBox(
+            WebImage(
               width: 300,
               height: 300,
-              child: WebImage(
-                borderRadius: 0,
-                'https://images.pexels.com/photos/2657960/pexels-photo-2657960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              ),
+              border: Border.all(color: Colors.red, width: 1),
+              shape: BoxShape.rectangle,
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+              'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             ),
-            const SizedBox(
+            const WebImage(
+              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
               width: 300,
               height: 300,
-              child: WebImage(
-                  'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
             ),
             const SizedBox(width: 20),
-            const SizedBox(
+            const WebImage(
+              'https://not-really-exists',
               width: 300,
               height: 300,
-              child: WebImage(
-                'https://not-really-exists',
-              ),
-            )
+            ),
           ],
         ));
   }
