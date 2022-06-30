@@ -1,3 +1,5 @@
+  amap_flutter_map: ^3.0.0 # 高德地圖
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
