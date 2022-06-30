@@ -37,7 +37,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _banner(context),
+            child: _slideSheet(context),
           ),
           Wrap(
             children: [

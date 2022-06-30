@@ -29,6 +29,7 @@ Future<T?> showSlideSheet<T>(
     maxHeight: maxHeight,
     context: context,
     anchors: [initHeight, maxHeight],
+    bottomSheetColor: Colors.transparent,
     builder: (
       BuildContext context,
       ScrollController scrollController,
