@@ -1,4 +1,4 @@
-library animations;
+library animate_view;
 
 export 'src/shifter.dart';
 export 'src/axis_animation.dart';
