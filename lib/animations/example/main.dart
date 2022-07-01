@@ -339,7 +339,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                       onPressed: () async {
                         Widget removedItem = itemBuilder(true, 2);
                         gridItems.removeAt(2);
-                        provide.removeAnimation(2, true, removedItem);
+                        provide.removeAnimation(2, removedItem, true);
                         await provide.waitForAnimationDone();
                         debugPrint('animation done');
                       }),
@@ -348,7 +348,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                     onPressed: () {
                       Widget removedItem = itemBuilder(true, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, true, removedItem);
+                      provide.removeAnimation(2, removedItem, true);
                       gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
@@ -375,9 +375,9 @@ class _AnimationExampleState extends State<AnimationExample> {
                     },
                   ),
                 ]),
-                const Expanded(
+                Expanded(
                     child: AnimateView(
-                  itemBuilder: itemBuilder,
+                  itemBuilder: (index) => itemBuilder(true, index),
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 20,
                   crossAxisCount: 1,
@@ -410,7 +410,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                       onPressed: () async {
                         Widget removedItem = itemBuilder(false, 2);
                         gridItems.removeAt(0);
-                        provide.removeAnimation(0, false, removedItem);
+                        provide.removeAnimation(0, removedItem, false);
                         await provide.waitForAnimationDone();
                         debugPrint('animation done');
                       }),
@@ -419,7 +419,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                     onPressed: () async {
                       Widget removedItem = itemBuilder(false, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, false, removedItem);
+                      provide.removeAnimation(2, removedItem, false);
                       await provide.waitForAnimationDone();
                       gridItems.insert(0, 2);
                       provide.insertAnimation();
@@ -447,9 +447,9 @@ class _AnimationExampleState extends State<AnimationExample> {
                     },
                   ),
                 ]),
-                const Expanded(
+                Expanded(
                     child: AnimateView(
-                  itemBuilder: itemBuilder,
+                  itemBuilder: (index) => itemBuilder(false, index),
                   mainAxisSpacing: 15,
                   crossAxisSpacing: 20,
                   crossAxisCount: 3,
@@ -491,7 +491,7 @@ class _AnimationExampleState extends State<AnimationExample> {
                           }
                           return AnimateView(
                             controller: scrollController,
-                            itemBuilder: itemBuilder,
+                            itemBuilder: (index) => itemBuilder(true, index),
                             shrinkWrap: true,
                           );
                         })),

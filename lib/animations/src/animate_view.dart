@@ -3,9 +3,6 @@ import 'package:provider/provider.dart';
 import 'animate_grid.dart';
 import 'shifter.dart';
 
-/// AnimateViewItemBuilder is item builder for list or grid
-typedef AnimateViewItemBuilder = Widget Function(bool isListView, int index);
-
 /// AnimatedViewProvider control view's animation
 /// ```dart
 /// return ChangeNotifierProvider<AnimatedViewProvider>(
@@ -84,11 +81,11 @@ class AnimateViewProvider with ChangeNotifier {
   }
 
   /// removeAnimation show remove animation
-  void removeAnimation(int index, bool isListView, Widget child) {
+  void removeAnimation(int index, Widget child, bool sizeOrSlideAnimation) {
     if (index != -1) {
       _gridKey.currentState!.removeItem(
         index,
-        (context, animation) => isListView ? _sizeIt(child, animation) : _slideIt(child, animation),
+        (context, animation) => sizeOrSlideAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
         duration: animatedDuration,
       );
     }
@@ -145,8 +142,8 @@ class AnimateView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// itemBuilder is the item builder
-  final AnimateViewItemBuilder itemBuilder;
+  /// itemBuilder is builder use index to build item
+  final Widget Function(int index) itemBuilder;
 
   /// crossAxisCount is 1 will show list view, others is grid view
   final int crossAxisCount;
@@ -190,9 +187,6 @@ class AnimateView extends StatelessWidget {
   /// [ScrollController.animateTo]).
   final ScrollController? controller;
 
-  /// isListView return true if crossAxisCount is 1
-  bool get isListView => crossAxisCount == 1;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AnimateViewProvider>(
@@ -210,7 +204,7 @@ class AnimateView extends StatelessWidget {
           crossAxisCount: crossAxisCount,
           initialItemCount: provide._itemCount,
           itemBuilder: (context, index, animation) {
-            Widget widget = itemBuilder(isListView, index);
+            Widget widget = itemBuilder(index);
             return _slideIt(widget, animation);
           },
         ),
