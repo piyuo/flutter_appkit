@@ -5,7 +5,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/animations/animations.dart' as animations;
+import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'tag.dart';
 import 'selectable.dart';
@@ -86,7 +86,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   final refreshButtonController = delta.RefreshButtonController();
 
   /// animateViewController control view animation
-  final animateViewController = animations.AnimateViewProvider(0);
+  final animateViewController = animate_view.AnimateViewProvider();
 
   /// _searchController is search box controller
   final searchController = TextEditingController();
@@ -183,7 +183,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
           );
 
     await dataView!.refresh(context);
-    animateViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.setLength(dataView!.displayRows.length, notify: false);
     _setDefaultSelected(context);
     notifyListeners();
   }
@@ -331,7 +331,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
 
     dataView?.selectedIDs = [];
-    animateViewController.itemCount = dataView!.displayRows.length + 1;
+    animateViewController.setLength(dataView!.displayRows.length + 1, notify: false);
     animateViewController.insertAnimation();
     creating = await formController.loadNewByView(context, dataView!.dataset);
     notifyListeners();
@@ -359,7 +359,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     await dataView!.fill();
     _setDefaultSelected(context, defaultSelectedID: defaultSelectedID);
-    animateViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.setLength(dataView!.displayRows.length, notify: false);
     notifyListeners();
   }
 
@@ -395,10 +395,10 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     _setDefaultSelected(context);
     if (isReset || (diff > 0 && !firstPage)) {
       animateViewController.refreshPageAnimation();
-      animateViewController.itemCount = dataView!.displayRows.length;
+      animateViewController.setLength(dataView!.displayRows.length, notify: false);
     } else if (diff > 0) {
       if (dataView!.isDisplayRowsFullPage) {
-        animateViewController.itemCount = dataView!.rowsPerPage - diff;
+        animateViewController.setLength(dataView!.rowsPerPage - diff, notify: false);
       }
       for (int i = 0; i < diff; i++) {
         animateViewController.insertAnimation();
@@ -413,7 +413,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await dataView!.more(context, dataView!.rowsPerPage);
-    animateViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.setLength(dataView!.displayRows.length, notify: false);
     notifyListeners();
     debugPrint('onMore');
   }
@@ -495,7 +495,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     animateViewController.removeAnimation(0, removedItem, isListView);
     notifyListeners();
     await animateViewController.waitForAnimationDone();
-    animateViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.setLength(dataView!.displayRows.length, notify: false);
     _setDefaultSelected(context);
     notifyListeners();
   }
@@ -516,7 +516,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
     await animateViewController.waitForAnimationDone();
     await dataView!.fill();
-    animateViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.setLength(dataView!.displayRows.length, notify: false);
     _setDefaultSelected(context, defaultSelectedID: defaultSelectedID);
     notifyListeners();
   }
@@ -528,7 +528,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).nextPage(context);
-      animateViewController.itemCount = dataView!.displayRows.length;
+      animateViewController.setLength(dataView!.displayRows.length, notify: false);
       animateViewController.nextPageAnimation();
     }
     notifyListeners();
@@ -542,7 +542,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).prevPage(context);
-      animateViewController.itemCount = dataView!.displayRows.length;
+      animateViewController.setLength(dataView!.displayRows.length, notify: false);
       animateViewController.prevPageAnimation();
     }
     notifyListeners();
@@ -555,7 +555,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await dataView!.dataset.setRowsPerPage(context, rowsPerPage);
-    animateViewController.itemCount = dataView!.displayRows.length;
+    animateViewController.setLength(dataView!.displayRows.length, notify: false);
     notifyListeners();
     debugPrint('onSetRowsPerPage:$rowsPerPage');
   }

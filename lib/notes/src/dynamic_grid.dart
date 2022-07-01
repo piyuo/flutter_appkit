@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/animations/animations.dart' as animations;
+import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'selectable.dart';
 
@@ -146,7 +146,7 @@ class DynamicGrid<T> extends Selectable<T> {
                 return buildFooter(context);
               }
 
-              return animations.AnimateView(
+              return animate_view.AnimateView(
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: 40,
                 mainAxisSpacing: 5,

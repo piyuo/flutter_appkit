@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
-import '../animations.dart';
+import '../animate_view.dart';
 
 var scrollController = ScrollController();
 

@@ -8,7 +8,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/animations/animations.dart' as animations;
+import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/database/database.dart' as database;
@@ -299,9 +299,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _dynamicList(BuildContext context) {
-    return ChangeNotifierProvider<animations.AnimateViewProvider>(
-        create: (context) => animations.AnimateViewProvider(animationListItems.length),
-        child: Consumer<animations.AnimateViewProvider>(
+    return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
+        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length, notify: false),
+        child: Consumer<animate_view.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -333,9 +333,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _pullRefresh(BuildContext context) {
-    return ChangeNotifierProvider<animations.AnimateViewProvider>(
-        create: (context) => animations.AnimateViewProvider(15),
-        child: Consumer<animations.AnimateViewProvider>(
+    return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
+        create: (context) => animate_view.AnimateViewProvider()..setLength(15, notify: false),
+        child: Consumer<animate_view.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -360,9 +360,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _dynamicGrid(BuildContext context) {
-    return ChangeNotifierProvider<animations.AnimateViewProvider>(
-        create: (context) => animations.AnimateViewProvider(animationListItems.length),
-        child: Consumer<animations.AnimateViewProvider>(
+    return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
+        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length, notify: false),
+        child: Consumer<animate_view.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -396,8 +396,8 @@ class NotesExample extends StatelessWidget {
   Widget _masterDetailView(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<animations.AnimateViewProvider>(
-            create: (context) => animations.AnimateViewProvider(5),
+          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
+            create: (context) => animate_view.AnimateViewProvider()..setLength(5, notify: false),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
@@ -545,8 +545,8 @@ class NotesExample extends StatelessWidget {
   Widget _filterSplitView(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<animations.AnimateViewProvider>(
-            create: (context) => animations.AnimateViewProvider(5),
+          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
+            create: (context) => animate_view.AnimateViewProvider()..setLength(5, notify: false),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
