@@ -4,42 +4,37 @@ import 'animate_grid.dart';
 import 'shifter.dart';
 
 /// AnimatedViewProvider control view's animation
-/// ```dart
-/// return ChangeNotifierProvider<AnimatedViewProvider>(
-///       create: (context) => AnimatedViewProvider(gridItems.length),
-///       child: Consumer<AnimatedViewProvider>(
-///           builder: (context, provide, child) => AnimatedView(
-///                   itemBuilder: itemBuilder,
-///                 )),
-///     );
-/// ```
 class AnimateViewProvider with ChangeNotifier {
   /// AnimateViewProvider control view's animation
   /// ```dart
   /// return ChangeNotifierProvider<AnimatedViewProvider>(
-  ///       create: (context) => AnimatedViewProvider(gridItems.length),
+  ///       create: (context) => AnimateViewProvider()..setItemCount(gridItems.length, notify: false),
   ///       child: Consumer<AnimatedViewProvider>(
   ///           builder: (context, provide, child) => AnimatedView(
   ///                   itemBuilder: itemBuilder,
   ///                 )),
   ///     );
   /// ```
-  AnimateViewProvider(count) {
-    _itemCount = count;
-  }
+  AnimateViewProvider();
 
-  /// itemCount is total item count
-  int _itemCount = 0;
+  /// _length is items length in view
+  int _length = 0;
 
-  /// itemCount return item count
-  int get itemCount => _itemCount;
+  /// length return items length in view
+  int get length => _length;
 
-  set itemCount(int value) {
-    _itemCount = value;
-    if (_gridKey.currentState != null) {
-      _gridKey.currentState!.itemCount = _itemCount;
+  /// setLength set new item length in view
+  void setLength(int value, {bool notify = true}) {
+    if (_length == value) {
+      return;
     }
-    notifyListeners();
+    _length = value;
+    if (_gridKey.currentState != null) {
+      _gridKey.currentState!.itemCount = _length;
+    }
+    if (notify) {
+      notifyListeners();
+    }
   }
 
   /// _shifterReverse is true will reverse shifter animation
@@ -202,7 +197,7 @@ class AnimateView extends StatelessWidget {
           childAspectRatio: childAspectRatio,
           key: provide._gridKey,
           crossAxisCount: crossAxisCount,
-          initialItemCount: provide._itemCount,
+          initialItemCount: provide._length,
           itemBuilder: (context, index, animation) {
             Widget widget = itemBuilder(index);
             return _slideIt(widget, animation);

@@ -317,14 +317,14 @@ class _AnimationExampleState extends State<AnimationExample> {
 
   Widget _animatedViewInList() {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider(gridItems.length),
+      create: (context) => AnimateViewProvider()..setLength(gridItems.length, notify: false),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
                   OutlinedButton(
                     child: const Text('update item count'),
                     onPressed: () {
-                      provide.itemCount = 5;
+                      provide.setLength(5);
                     },
                   ),
                   OutlinedButton(
@@ -388,14 +388,14 @@ class _AnimationExampleState extends State<AnimationExample> {
 
   Widget _animatedViewInGrid() {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider(gridItems.length),
+      create: (context) => AnimateViewProvider()..setLength(gridItems.length, notify: false),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
                   OutlinedButton(
                     child: const Text('update item count'),
                     onPressed: () {
-                      provide.itemCount = 5;
+                      provide.setLength(5);
                     },
                   ),
                   OutlinedButton(
@@ -460,7 +460,7 @@ class _AnimationExampleState extends State<AnimationExample> {
 
   Widget _animatedViewInListView() {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider(gridItems.length),
+      create: (context) => AnimateViewProvider()..setLength(gridItems.length, notify: false),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 OutlinedButton(
