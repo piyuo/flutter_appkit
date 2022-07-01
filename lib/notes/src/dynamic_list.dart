@@ -132,7 +132,7 @@ class DynamicList<T> extends Selectable<T> {
               return animations.AnimateView(
                 controller: animatedViewScrollController,
                 shrinkWrap: true,
-                itemBuilder: (bool isListView, int index) {
+                itemBuilder: (int index) {
                   if (creating != null) {
                     if (index == 0) {
                       return buildItem(context, creating!);
