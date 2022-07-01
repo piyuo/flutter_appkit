@@ -300,7 +300,7 @@ class NotesExample extends StatelessWidget {
 
   Widget _dynamicList(BuildContext context) {
     return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length, notify: false),
+        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length),
         child: Consumer<animate_view.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
@@ -334,7 +334,7 @@ class NotesExample extends StatelessWidget {
 
   Widget _pullRefresh(BuildContext context) {
     return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-        create: (context) => animate_view.AnimateViewProvider()..setLength(15, notify: false),
+        create: (context) => animate_view.AnimateViewProvider()..setLength(15),
         child: Consumer<animate_view.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
@@ -361,7 +361,7 @@ class NotesExample extends StatelessWidget {
 
   Widget _dynamicGrid(BuildContext context) {
     return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length, notify: false),
+        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length),
         child: Consumer<animate_view.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
@@ -397,7 +397,7 @@ class NotesExample extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-            create: (context) => animate_view.AnimateViewProvider()..setLength(5, notify: false),
+            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
@@ -546,7 +546,7 @@ class NotesExample extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-            create: (context) => animate_view.AnimateViewProvider()..setLength(5, notify: false),
+            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),

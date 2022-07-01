@@ -183,7 +183,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
           );
 
     await dataView!.refresh(context);
-    animateViewController.setLength(dataView!.displayRows.length, notify: false);
+    animateViewController.setLength(dataView!.displayRows.length);
     _setDefaultSelected(context);
     notifyListeners();
   }
@@ -331,7 +331,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
 
     dataView?.selectedIDs = [];
-    animateViewController.setLength(dataView!.displayRows.length + 1, notify: false);
+    animateViewController.setLength(dataView!.displayRows.length + 1);
     animateViewController.insertAnimation();
     creating = await formController.loadNewByView(context, dataView!.dataset);
     notifyListeners();
@@ -359,7 +359,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     await dataView!.fill();
     _setDefaultSelected(context, defaultSelectedID: defaultSelectedID);
-    animateViewController.setLength(dataView!.displayRows.length, notify: false);
+    animateViewController.setLength(dataView!.displayRows.length);
     notifyListeners();
   }
 
@@ -395,10 +395,10 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     _setDefaultSelected(context);
     if (isReset || (diff > 0 && !firstPage)) {
       animateViewController.refreshPageAnimation();
-      animateViewController.setLength(dataView!.displayRows.length, notify: false);
+      animateViewController.setLength(dataView!.displayRows.length);
     } else if (diff > 0) {
       if (dataView!.isDisplayRowsFullPage) {
-        animateViewController.setLength(dataView!.rowsPerPage - diff, notify: false);
+        animateViewController.setLength(dataView!.rowsPerPage - diff);
       }
       for (int i = 0; i < diff; i++) {
         animateViewController.insertAnimation();
@@ -413,7 +413,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await dataView!.more(context, dataView!.rowsPerPage);
-    animateViewController.setLength(dataView!.displayRows.length, notify: false);
+    animateViewController.setLength(dataView!.displayRows.length);
     notifyListeners();
     debugPrint('onMore');
   }
@@ -495,7 +495,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     animateViewController.removeAnimation(0, removedItem, isListView);
     notifyListeners();
     await animateViewController.waitForAnimationDone();
-    animateViewController.setLength(dataView!.displayRows.length, notify: false);
+    animateViewController.setLength(dataView!.displayRows.length);
     _setDefaultSelected(context);
     notifyListeners();
   }
@@ -516,7 +516,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
     await animateViewController.waitForAnimationDone();
     await dataView!.fill();
-    animateViewController.setLength(dataView!.displayRows.length, notify: false);
+    animateViewController.setLength(dataView!.displayRows.length);
     _setDefaultSelected(context, defaultSelectedID: defaultSelectedID);
     notifyListeners();
   }
@@ -528,7 +528,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).nextPage(context);
-      animateViewController.setLength(dataView!.displayRows.length, notify: false);
+      animateViewController.setLength(dataView!.displayRows.length);
       animateViewController.nextPageAnimation();
     }
     notifyListeners();
@@ -542,7 +542,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).prevPage(context);
-      animateViewController.setLength(dataView!.displayRows.length, notify: false);
+      animateViewController.setLength(dataView!.displayRows.length);
       animateViewController.prevPageAnimation();
     }
     notifyListeners();
@@ -555,7 +555,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await dataView!.dataset.setRowsPerPage(context, rowsPerPage);
-    animateViewController.setLength(dataView!.displayRows.length, notify: false);
+    animateViewController.setLength(dataView!.displayRows.length);
     notifyListeners();
     debugPrint('onSetRowsPerPage:$rowsPerPage');
   }
