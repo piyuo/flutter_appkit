@@ -23,8 +23,8 @@ class AnimateViewProvider with ChangeNotifier {
   /// length return items length in view
   int get length => _length;
 
-  /// setLength set new item length in view
-  void setLength(int value, {bool notify = true}) {
+  /// setLength set new item length in view, notify is true will notify listener
+  void setLength(int value, {bool notify = false}) {
     if (_length == value) {
       return;
     }
