@@ -22,7 +22,7 @@ Future<T?> showSlideSheet<T>(
   BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
   EdgeInsets padding = const EdgeInsets.fromLTRB(20, 50, 20, 0),
   double initHeight = 0.7,
-  double maxHeight = 0.92,
+  double maxHeight = 0.9,
   Widget? title,
   double titleLeft = 15,
   double titleTop = 10,
@@ -31,7 +31,10 @@ Future<T?> showSlideSheet<T>(
     initHeight: initHeight,
     maxHeight: maxHeight,
     context: context,
-    anchors: [initHeight, maxHeight],
+    anchors: [
+      initHeight,
+      if (maxHeight != initHeight) maxHeight,
+    ],
     bottomSheetColor: Colors.transparent,
     builder: (BuildContext context, ScrollController scrollController, double bottomSheetOffset) => SafeArea(
         bottom: false,

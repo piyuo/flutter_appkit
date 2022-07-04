@@ -316,6 +316,8 @@ class DialogExample extends StatelessWidget {
           context,
           constraints: const BoxConstraints(maxWidth: 500),
           title: Text('Your Order', style: TextStyle(fontSize: 24, color: context.invertedColor)),
+          initHeight: 0.9,
+          maxHeight: 0.9,
           builder: (context, scrollController) => ListView(
             controller: scrollController,
             children: [
