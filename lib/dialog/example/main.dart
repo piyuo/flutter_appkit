@@ -315,27 +315,30 @@ class DialogExample extends StatelessWidget {
         onPressed: () => showSlideSheet(
           context,
           constraints: const BoxConstraints(maxWidth: 500),
-          children: [
-            const Text('Title'),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                  child: const Text('Close'),
-                  onPressed: () => Navigator.pop(context),
-                )),
-            const SizedBox(height: 20),
-            const SizedBox(height: 180, child: Placeholder()),
-            const SizedBox(height: 20),
-            const SizedBox(height: 180, child: Placeholder()),
-            const SizedBox(height: 20),
-            const SizedBox(height: 180, child: Placeholder()),
-            const SizedBox(height: 20),
-            const SizedBox(height: 180, child: Placeholder()),
-            const SizedBox(height: 20),
-            const SizedBox(height: 180, child: Placeholder()),
-            const Text('hello world'),
-            const SizedBox(height: 20),
-          ],
+          builder: (context, scrollController) => ListView(
+            controller: scrollController,
+            children: [
+              const Text('Title'),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                    child: const Text('Close'),
+                    onPressed: () => Navigator.pop(context),
+                  )),
+              const SizedBox(height: 20),
+              const SizedBox(height: 180, child: Placeholder()),
+              const SizedBox(height: 20),
+              const SizedBox(height: 180, child: Placeholder()),
+              const SizedBox(height: 20),
+              const SizedBox(height: 180, child: Placeholder()),
+              const SizedBox(height: 20),
+              const SizedBox(height: 180, child: Placeholder()),
+              const SizedBox(height: 20),
+              const SizedBox(height: 180, child: Placeholder()),
+              const Text('hello world'),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
       ElevatedButton(

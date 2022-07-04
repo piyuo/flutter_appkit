@@ -7,16 +7,16 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 /// ```dart
 /// final result = await showSlideSheet(
 ///   context,
-///   children: const [
-///     SizedBox(height: 30),
-///     SizedBox(height: 80, child: Placeholder()),
-///     SizedBox(height: 120),
-///   ],
-/// )
+///   builder: (context, scrollController) => ListView(
+///      controller: scrollController,
+///      children: const [
+///        Text('sheetContent'),
+///      ],
+///   ))
 /// ```
 Future<T?> showSlideSheet<T>(
   BuildContext context, {
-  required List<Widget> children,
+  required Widget Function(BuildContext context, ScrollController scrollController) builder,
   Color? color,
   Color closeButtonColor = Colors.grey,
   BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
@@ -30,46 +30,37 @@ Future<T?> showSlideSheet<T>(
     context: context,
     anchors: [initHeight, maxHeight],
     bottomSheetColor: Colors.transparent,
-    builder: (
-      BuildContext context,
-      ScrollController scrollController,
-      double bottomSheetOffset,
-    ) =>
-        SafeArea(
-            bottom: false,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: ConstrainedBox(
-                constraints: constraints,
-                child: Stack(children: [
-                  Container(
-                    padding: padding,
-                    decoration: BoxDecoration(
-                      color: color ??
-                          context.themeColor(
-                            light: Colors.white,
-                            dark: Colors.grey.shade800,
-                          ),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                    ),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      controller: scrollController,
-                      children: children,
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: IconButton(
-                      iconSize: 32,
-                      color: closeButtonColor,
-                      icon: const Icon(Icons.cancel_rounded),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                ]),
+    builder: (BuildContext context, ScrollController scrollController, double bottomSheetOffset) => SafeArea(
+        bottom: false,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: ConstrainedBox(
+            constraints: constraints,
+            child: Stack(children: [
+              Container(
+                padding: padding,
+                decoration: BoxDecoration(
+                  color: color ??
+                      context.themeColor(
+                        light: Colors.white,
+                        dark: Colors.grey.shade800,
+                      ),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                child: builder(context, scrollController),
               ),
-            )),
+              Positioned(
+                right: 0,
+                top: 0,
+                child: IconButton(
+                  iconSize: 32,
+                  color: closeButtonColor,
+                  icon: const Icon(Icons.cancel_rounded),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+            ]),
+          ),
+        )),
   );
 }

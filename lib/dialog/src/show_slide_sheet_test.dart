@@ -16,9 +16,12 @@ void main() {
             onPressed: () => showSlideSheet(
               context,
               constraints: const BoxConstraints(maxWidth: 500),
-              children: [
-                const Text('sheetContent'),
-              ],
+              builder: (context, scrollController) => ListView(
+                controller: scrollController,
+                children: const [
+                  Text('sheetContent'),
+                ],
+              ),
             ),
           );
         }),
