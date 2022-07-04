@@ -34,7 +34,10 @@ Future<void> showToolSheet(
     initHeight: initHeight,
     maxHeight: maxHeight,
     color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade900),
-    children: items.map((item) => _buildItemOnSheet(context, item)).toList(),
+    builder: (context, scrollController) => ListView(
+      controller: scrollController,
+      children: items.map((item) => _buildItemOnSheet(context, item)).toList(),
+    ),
   );
 }
 
@@ -63,8 +66,8 @@ Widget _buildItemOnSheet(
           ]),
           onPressed: item.onPressed != null
               ? () {
-                  Navigator.pop(context);
                   item.onPressed!();
+                  Navigator.pop(context);
                 }
               : null,
         ));
