@@ -23,6 +23,9 @@ Future<T?> showSlideSheet<T>(
   EdgeInsets padding = const EdgeInsets.fromLTRB(20, 50, 20, 0),
   double initHeight = 0.7,
   double maxHeight = 0.92,
+  Widget? title,
+  double titleLeft = 15,
+  double titleTop = 10,
 }) async {
   return await showFlexibleBottomSheet<T>(
     initHeight: initHeight,
@@ -59,6 +62,12 @@ Future<T?> showSlideSheet<T>(
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
+              if (title != null)
+                Positioned(
+                  left: titleLeft,
+                  top: titleTop,
+                  child: title,
+                ),
             ]),
           ),
         )),

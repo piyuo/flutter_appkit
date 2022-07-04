@@ -315,6 +315,7 @@ class DialogExample extends StatelessWidget {
         onPressed: () => showSlideSheet(
           context,
           constraints: const BoxConstraints(maxWidth: 500),
+          title: Text('Your Order', style: TextStyle(fontSize: 24, color: context.invertedColor)),
           builder: (context, scrollController) => ListView(
             controller: scrollController,
             children: [
