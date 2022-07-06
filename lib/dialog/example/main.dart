@@ -311,10 +311,16 @@ class DialogExample extends StatelessWidget {
   Widget _slideSheet(BuildContext context) {
     return Wrap(children: [
       ElevatedButton(
-        child: const Text('show slide sheet'),
+        child: const Text('show sheet'),
         onPressed: () => showSlideSheet(
           context,
           constraints: const BoxConstraints(maxWidth: 500),
+          closeButton: IconButton(
+            iconSize: 48,
+            color: context.invertedColor,
+            icon: const Icon(Icons.cancel),
+            onPressed: () => Navigator.pop(context),
+          ),
           title: Text('Your Order', style: TextStyle(fontSize: 24, color: context.invertedColor)),
           initHeight: 0.9,
           maxHeight: 0.9,

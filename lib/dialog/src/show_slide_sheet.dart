@@ -18,7 +18,7 @@ Future<T?> showSlideSheet<T>(
   BuildContext context, {
   required Widget Function(BuildContext context, ScrollController scrollController) builder,
   Color? color,
-  Color closeButtonColor = Colors.grey,
+  Widget? closeButton,
   BoxConstraints constraints = const BoxConstraints(maxWidth: 600),
   EdgeInsets padding = const EdgeInsets.fromLTRB(20, 50, 20, 0),
   double initHeight = 0.7,
@@ -58,12 +58,13 @@ Future<T?> showSlideSheet<T>(
               Positioned(
                 right: 0,
                 top: 0,
-                child: IconButton(
-                  iconSize: 32,
-                  color: closeButtonColor,
-                  icon: const Icon(Icons.cancel_rounded),
-                  onPressed: () => Navigator.pop(context),
-                ),
+                child: closeButton ??
+                    IconButton(
+                      iconSize: 32,
+                      color: Colors.grey,
+                      icon: const Icon(Icons.cancel_rounded),
+                      onPressed: () => Navigator.pop(context),
+                    ),
               ),
               if (title != null)
                 Positioned(
