@@ -24,11 +24,10 @@ Future<void> showToolSheet(
   Color? activeColor,
   Color? iconColor,
   double maxWidth = 600,
-  double heightFactor = 0.7,
+  double heightFactor = 0.85,
 }) async {
   return await dialog.showSheet(
     context,
-    padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
     maxWidth: maxWidth,
     heightFactor: heightFactor,
     builder: () => ListView(

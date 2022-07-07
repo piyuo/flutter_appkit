@@ -22,10 +22,11 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _toolbar(context),
+              child: _showDialog(context),
             ),
             Wrap(
               children: [
+                testing.ExampleButton(label: 'show dialog', builder: () => _showDialog(context)),
                 testing.ExampleButton(label: 'fold panel', builder: () => _foldPanel(context)),
                 testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
                 testing.ExampleButton(label: 'tool sheet', builder: () => _showToolSheet(context)),
@@ -56,6 +57,31 @@ class ResponsiveExample extends StatelessWidget {
                 child: Text('$isColumn'),
               )),
             ]);
+  }
+
+  Widget _showDialog(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('show dialog'),
+      onPressed: () => showResponsiveDialog<void>(
+        context,
+        builder: () => ListView(
+          children: const [
+            SizedBox(height: 20),
+            SizedBox(height: 180, child: Placeholder()),
+            SizedBox(height: 20),
+            SizedBox(height: 180, child: Placeholder()),
+            SizedBox(height: 20),
+            SizedBox(height: 180, child: Placeholder()),
+            SizedBox(height: 20),
+            SizedBox(height: 180, child: Placeholder()),
+            SizedBox(height: 20),
+            SizedBox(height: 180, child: Placeholder()),
+            Text('hello world'),
+            SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _paddingToCenter(BuildContext context) {
