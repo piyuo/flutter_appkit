@@ -40,12 +40,12 @@ Future<T?> showPopup<T>(
                   BoxDecoration(
                     color: backgroundColor ??
                         context.themeColor(
-                          light: Colors.white,
+                          light: Colors.grey.shade100,
                           dark: Colors.grey.shade800,
                         ),
                     borderRadius: borderRadius,
                   ),
-              child: buildDialogContent(
+              child: _buildDialogContent(
                 context,
                 builder: builder,
                 topBuilder: topBuilder,
@@ -68,8 +68,61 @@ Future<T?> showPopup<T>(
   );
 }
 
+/// showSheet show popup sheet from the bottom
+/// ```dart
+/// final result = await showSheet(
+///   context,
+///   heightFactor: 0.8,
+///   builder: () => ListView(
+///   children: const [
+///     SizedBox(height: 20),
+///     SizedBox(height: 180, child: Placeholder()),
+///     Text('hello world'),
+///     SizedBox(height: 20),
+///   ],
+///   );
+/// ```
+Future<T?> showSheet<T>(
+  BuildContext context, {
+  required Widget Function() builder,
+  Decoration? decoration,
+  Widget Function()? topBuilder,
+  Widget Function()? bottomBuilder,
+  EdgeInsets? padding,
+  double? maxWidth,
+  double? heightFactor,
+  Color? backgroundColor,
+  BorderRadiusGeometry? borderRadius,
+}) async {
+  return await showModalBottomSheet<T>(
+    context: context,
+    backgroundColor: backgroundColor ??
+        context.themeColor(
+          light: Colors.grey.shade100,
+          dark: Colors.grey.shade800,
+        ),
+    constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(borderRadius: borderRadius ?? const BorderRadius.vertical(top: Radius.circular(16))),
+    builder: (BuildContext context) => FractionallySizedBox(
+      heightFactor: heightFactor ?? 0.7,
+      child: SafeArea(
+        bottom: false,
+        child: _buildDialogContent(
+          context,
+          builder: () => builder(),
+          topBuilder: topBuilder,
+          bottomBuilder: bottomBuilder,
+          decoration: decoration,
+          padding: padding ?? const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        ),
+      ),
+    ),
+  );
+}
+
 /// buildDialogContent return a widget that will be shown in the dialog or bottom of the sheet
-Widget buildDialogContent<T>(
+Widget _buildDialogContent<T>(
   BuildContext context, {
   required Widget Function() builder,
   Widget Function()? topBuilder,
