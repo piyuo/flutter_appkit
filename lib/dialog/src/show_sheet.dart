@@ -6,16 +6,15 @@ import 'show_popup.dart';
 /// ```dart
 /// final result = await showSheet(
 ///   context,
-/// titleBuilder: () => Positioned(
-///     left: 15,
-///     top: 10,
-///     child: Text('Your Order', style: TextStyle(fontSize: 24, color: context.invertedColor))),
-///   builder: (context, scrollController) => ListView(
-///      controller: scrollController,
-///      children: const [
-///        Text('sheetContent'),
-///      ],
-///   ))
+///   heightFactor: 0.8,
+///   builder: () => ListView(
+///   children: const [
+///     SizedBox(height: 20),
+///     SizedBox(height: 180, child: Placeholder()),
+///     Text('hello world'),
+///     SizedBox(height: 20),
+///   ],
+///   );
 /// ```
 Future<T?> showSheet<T>(
   BuildContext context, {

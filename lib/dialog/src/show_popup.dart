@@ -6,16 +6,15 @@ import 'package:libcli/delta/delta.dart' as delta;
 /// ```dart
 /// final result = await showPopup(
 ///   context,
-/// titleBuilder: () => Positioned(
-///     left: 15,
-///     top: 10,
-///     child: Text('Your Order', style: TextStyle(fontSize: 24, color: context.invertedColor))),
-///   builder: (context) => ListView(
-///      controller: scrollController,
-///      children: const [
-///        Text('sheetContent'),
-///      ],
-///   ))
+///   heightFactor: 0.8,
+///   builder: () => ListView(
+///   children: const [
+///     SizedBox(height: 20),
+///     SizedBox(height: 180, child: Placeholder()),
+///     Text('hello world'),
+///     SizedBox(height: 20),
+///   ],
+///   );
 /// ```
 Future<T?> showPopup<T>(
   BuildContext context, {
