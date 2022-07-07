@@ -22,18 +22,18 @@ Future<T?> showPopup<T>(
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
   Decoration? decoration,
-  double maxWidth = 600,
-  double heightFactor = 0.7,
-  EdgeInsets padding = const EdgeInsets.fromLTRB(20, 0, 20, 20),
+  double? maxWidth,
+  double? heightFactor,
+  EdgeInsets? padding,
   Color? backgroundColor,
-  BorderRadiusGeometry borderRadius = const BorderRadius.all(Radius.circular(16)),
+  BorderRadiusGeometry? borderRadius = const BorderRadius.all(Radius.circular(16)),
 }) async {
   Widget build() => FractionallySizedBox(
-      heightFactor: heightFactor,
+      heightFactor: heightFactor ?? 0.7,
       child: Align(
           alignment: Alignment.center,
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxWidth),
+            constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
             child: Container(
               clipBehavior: Clip.antiAlias,
               decoration: decoration ??
@@ -51,7 +51,7 @@ Future<T?> showPopup<T>(
                 topBuilder: topBuilder,
                 bottomBuilder: bottomBuilder,
                 decoration: decoration,
-                padding: padding,
+                padding: padding ?? const EdgeInsets.fromLTRB(20, 0, 20, 20),
               ),
             ),
           )));
