@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'show_popup.dart';
 
 /// showSheet show popup sheet from the bottom
@@ -25,10 +26,16 @@ Future<T?> showSheet<T>(
   EdgeInsets padding = const EdgeInsets.fromLTRB(20, 0, 20, 20),
   double maxWidth = 600,
   double heightFactor = 0.7,
+  Color? backgroundColor,
   BorderRadiusGeometry borderRadius = const BorderRadius.vertical(top: Radius.circular(16)),
 }) async {
   return await showModalBottomSheet<T>(
     context: context,
+    backgroundColor: backgroundColor ??
+        context.themeColor(
+          light: Colors.white,
+          dark: Colors.grey.shade800,
+        ),
     constraints: BoxConstraints(maxWidth: maxWidth),
     isScrollControlled: true,
     shape: RoundedRectangleBorder(borderRadius: borderRadius),

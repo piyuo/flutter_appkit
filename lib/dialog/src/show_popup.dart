@@ -25,6 +25,7 @@ Future<T?> showPopup<T>(
   double maxWidth = 600,
   double heightFactor = 0.7,
   EdgeInsets padding = const EdgeInsets.fromLTRB(20, 0, 20, 20),
+  Color? backgroundColor,
   BorderRadiusGeometry borderRadius = const BorderRadius.all(Radius.circular(16)),
 }) async {
   Widget build() => FractionallySizedBox(
@@ -37,10 +38,11 @@ Future<T?> showPopup<T>(
               clipBehavior: Clip.antiAlias,
               decoration: decoration ??
                   BoxDecoration(
-                    color: context.themeColor(
-                      light: Colors.white,
-                      dark: Colors.grey.shade800,
-                    ),
+                    color: backgroundColor ??
+                        context.themeColor(
+                          light: Colors.white,
+                          dark: Colors.grey.shade800,
+                        ),
                     borderRadius: borderRadius,
                   ),
               child: buildDialogContent(
