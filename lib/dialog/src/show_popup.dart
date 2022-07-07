@@ -26,7 +26,7 @@ Future<T?> showPopup<T>(
   double? heightFactor,
   EdgeInsets? padding,
   Color? backgroundColor,
-  BorderRadiusGeometry? borderRadius = const BorderRadius.all(Radius.circular(16)),
+  BorderRadiusGeometry? borderRadius,
 }) async {
   Widget build() => FractionallySizedBox(
       heightFactor: heightFactor ?? 0.7,
@@ -43,7 +43,7 @@ Future<T?> showPopup<T>(
                           light: Colors.grey.shade100,
                           dark: Colors.grey.shade800,
                         ),
-                    borderRadius: borderRadius,
+                    borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(16)),
                   ),
               child: _buildDialogContent(
                 context,
