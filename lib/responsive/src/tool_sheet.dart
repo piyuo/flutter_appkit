@@ -23,19 +23,15 @@ Future<void> showToolSheet(
   Color? color,
   Color? activeColor,
   Color? iconColor,
-  BoxConstraints constraints = const BoxConstraints(maxWidth: 450),
-  double initHeight = 0.7,
-  double maxHeight = 0.92,
+  double maxWidth = 600,
+  double heightFactor = 0.7,
 }) async {
-  return await dialog.showSlideSheet(
+  return await dialog.showSheet(
     context,
     padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
-    constraints: constraints,
-    initHeight: initHeight,
-    maxHeight: maxHeight,
-    color: context.themeColor(light: Colors.grey.shade50, dark: Colors.grey.shade900),
-    builder: (context, scrollController) => ListView(
-      controller: scrollController,
+    maxWidth: maxWidth,
+    heightFactor: heightFactor,
+    builder: () => ListView(
       children: items.map((item) => _buildItemOnSheet(context, item)).toList(),
     ),
   );
