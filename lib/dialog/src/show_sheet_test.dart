@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'dialog.dart';
-import 'show_slide_sheet.dart';
+import 'show_sheet.dart';
 
 void main() {
   setUp(() async {});
@@ -13,11 +13,9 @@ void main() {
         home: Builder(builder: (BuildContext context) {
           return MaterialButton(
             child: const Text('button'),
-            onPressed: () => showSlideSheet(
+            onPressed: () => showSheet(
               context,
-              constraints: const BoxConstraints(maxWidth: 500),
-              builder: (context, scrollController) => ListView(
-                controller: scrollController,
+              builder: () => ListView(
                 children: const [
                   Text('sheetContent'),
                 ],

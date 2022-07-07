@@ -37,14 +37,14 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _slideSheet(context),
+            child: _show(context),
           ),
           Wrap(
             children: [
               testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
               testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
               testing.ExampleButton(label: 'toast', builder: () => _toast(context)),
-              testing.ExampleButton(label: 'slide sheet', builder: () => _slideSheet(context)),
+              testing.ExampleButton(label: 'show', builder: () => _show(context)),
               testing.ExampleButton(label: 'banner', builder: () => _banner(context)),
               testing.ExampleButton(label: 'route', builder: () => _route(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
@@ -308,44 +308,95 @@ class DialogExample extends StatelessWidget {
     ]);
   }
 
-  Widget _slideSheet(BuildContext context) {
+  Widget _show(BuildContext context) {
     return Wrap(children: [
       ElevatedButton(
-        child: const Text('show sheet'),
-        onPressed: () => showSlideSheet(
+        child: const Text('show popup'),
+        onPressed: () => showPopup(
           context,
-          constraints: const BoxConstraints(maxWidth: 500),
-          closeButton: IconButton(
-            iconSize: 48,
-            color: context.invertedColor,
-            icon: const Icon(Icons.cancel),
-            onPressed: () => Navigator.pop(context),
+          topBuilder: () => Row(children: [
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text('Your Order',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: context.invertedColor,
+                      ))),
+            ),
+            IconButton(
+              iconSize: 48,
+              color: context.invertedColor,
+              icon: const Icon(Icons.cancel),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ]),
+          bottomBuilder: () => Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: ElevatedButton(
+                child: const Text('Close'),
+                onPressed: () => Navigator.pop(context),
+              )),
+          builder: () => ListView(
+            children: const [
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              Text('hello world'),
+              SizedBox(height: 20),
+            ],
           ),
-          title: Text('Your Order', style: TextStyle(fontSize: 24, color: context.invertedColor)),
-          initHeight: 0.9,
-          maxHeight: 0.9,
-          builder: (context, scrollController) => ListView(
-            controller: scrollController,
-            children: [
-              const Text('Title'),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ElevatedButton(
-                    child: const Text('Close'),
-                    onPressed: () => Navigator.pop(context),
-                  )),
-              const SizedBox(height: 20),
-              const SizedBox(height: 180, child: Placeholder()),
-              const SizedBox(height: 20),
-              const SizedBox(height: 180, child: Placeholder()),
-              const SizedBox(height: 20),
-              const SizedBox(height: 180, child: Placeholder()),
-              const SizedBox(height: 20),
-              const SizedBox(height: 180, child: Placeholder()),
-              const SizedBox(height: 20),
-              const SizedBox(height: 180, child: Placeholder()),
-              const Text('hello world'),
-              const SizedBox(height: 20),
+        ),
+      ),
+      ElevatedButton(
+        child: const Text('show sheet'),
+        onPressed: () => showSheet(
+          context,
+          topBuilder: () => Row(children: [
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text('Your Order',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: context.invertedColor,
+                      ))),
+            ),
+            IconButton(
+              iconSize: 48,
+              color: context.invertedColor,
+              icon: const Icon(Icons.cancel),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ]),
+          bottomBuilder: () => Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: ElevatedButton(
+                child: const Text('Close'),
+                onPressed: () => Navigator.pop(context),
+              )),
+          heightFactor: 0.8,
+          builder: () => ListView(
+            children: const [
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              Text('hello world'),
+              SizedBox(height: 20),
             ],
           ),
         ),
