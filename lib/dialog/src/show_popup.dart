@@ -96,6 +96,7 @@ Future<T?> showSheet<T>(
 }) async {
   return await showModalBottomSheet<T>(
     context: context,
+    clipBehavior: Clip.antiAlias,
     backgroundColor: backgroundColor ??
         context.themeColor(
           light: Colors.grey.shade100,
