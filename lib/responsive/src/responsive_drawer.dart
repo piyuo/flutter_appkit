@@ -37,51 +37,52 @@ class ResponsiveDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: phoneScreen ? const EdgeInsets.all(40) : null,
-        constraints: phoneScreen ? null : const BoxConstraints(maxWidth: 350),
-        decoration: BoxDecoration(
-          color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade900),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.18),
-              spreadRadius: 2,
-              blurRadius: 1,
-            )
-          ],
-          borderRadius: phoneScreen
-              ? const BorderRadius.all(Radius.circular(20.0))
-              : isEndDrawer
-                  ? const BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
-                    )
-                  : const BorderRadius.only(
-                      topRight: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
+    return SafeArea(
+        child: Container(
+            margin: phoneScreen ? const EdgeInsets.symmetric(vertical: 40, horizontal: 25) : null,
+            constraints: phoneScreen ? null : const BoxConstraints(maxWidth: 350),
+            decoration: BoxDecoration(
+              color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade900),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.18),
+                  spreadRadius: 2,
+                  blurRadius: 1,
+                )
+              ],
+              borderRadius: phoneScreen
+                  ? const BorderRadius.all(Radius.circular(20.0))
+                  : isEndDrawer
+                      ? const BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          bottomLeft: Radius.circular(20.0),
+                        )
+                      : const BorderRadius.only(
+                          topRight: Radius.circular(20.0),
+                          bottomRight: Radius.circular(20.0),
+                        ),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: ListView.builder(
+              itemBuilder: (_, index) {
+                if (index == 0) {
+                  return ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
                     ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: ListView.builder(
-          itemBuilder: (_, index) {
-            if (index == 0) {
-              return ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
-              );
-            }
+                  );
+                }
 
-            return itemBuilder(context, index - 1);
-          },
-          itemCount: itemCount + 1,
-          padding: const EdgeInsets.only(left: 40),
-        ));
+                return itemBuilder(context, index - 1);
+              },
+              itemCount: itemCount + 1,
+              padding: const EdgeInsets.only(left: 40),
+            )));
   }
 }
