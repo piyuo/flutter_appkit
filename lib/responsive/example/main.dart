@@ -18,6 +18,20 @@ class ResponsiveExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      drawer: ResponsiveDrawer(
+        itemCount: 1,
+        itemBuilder: (context, index) => ListTile(
+          title: Text('$index'),
+        ),
+      ),
+      endDrawer: ResponsiveDrawer(
+        isEndDrawer: true,
+        itemCount: 1,
+        itemBuilder: (context, index) => ListTile(
+          title: Text('$index'),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
