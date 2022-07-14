@@ -188,11 +188,11 @@ class DeltaExample extends StatelessWidget {
   Widget _webImage(BuildContext context) {
     return Container(
         color: context.themeColor(
-          light: Colors.white,
-          dark: Colors.black87,
+          light: Colors.grey.shade100,
+          dark: Colors.grey.shade900,
         ),
         height: double.infinity,
-        child: Row(
+        child: Wrap(
           children: [
             Image.network(
               'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
@@ -214,7 +214,12 @@ class DeltaExample extends StatelessWidget {
             ),
             const SizedBox(width: 20),
             const WebImage(
-              'https://not-really-exists',
+              'https://not-exists',
+              width: 300,
+              height: 300,
+            ),
+            const WebImage(
+              '',
               width: 300,
               height: 300,
             ),

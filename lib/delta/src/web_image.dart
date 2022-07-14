@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:libcli/log/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
 import 'extensions.dart';
+import 'shimmer.dart';
 
 /// webImageData get binary image data from url
 Future<Uint8List?> webImageData(String url) async {
@@ -104,21 +105,6 @@ class WebImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget _icon(IconData? icon) {
-      return SizedBox(
-          width: width,
-          height: height,
-          child: FittedBox(
-            child: Icon(
-              icon,
-              color: context.themeColor(
-                dark: Colors.grey.shade800,
-                light: Colors.grey.shade400,
-              ),
-            ),
-          ));
-    }
-
     return ExtendedImage.network(
       url,
       fit: fit,
@@ -134,14 +120,26 @@ class WebImage extends StatelessWidget {
       loadStateChanged: (ExtendedImageState state) {
         switch (state.extendedImageLoadState) {
           case LoadState.loading:
-            return null;
+            return ShimmerScope(
+                child: Container(
+              width: width,
+              height: height,
+              color: Colors.grey,
+            ));
 
           case LoadState.completed:
             return null;
 
           case LoadState.failed:
             log.log('[web_image] missing $url');
-            return _icon(Icons.broken_image);
+            return Container(
+              width: width,
+              height: height,
+              color: context.themeColor(
+                light: Colors.grey.shade300,
+                dark: Colors.grey.shade700,
+              ),
+            );
         }
       },
     );
