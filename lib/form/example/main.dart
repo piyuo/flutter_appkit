@@ -47,6 +47,7 @@ final formGroup = fb.group({
   'switch': [false],
   'progress': [50.0, Validators.min(50.0)],
   'checkbox': [true],
+  'checkbox2': [true],
   'sendNotifications': [false, Validators.required],
   'dateTime': DateTime.now(),
   'time': TimeOfDay.now(),
@@ -104,10 +105,6 @@ class FormExample extends StatelessWidget {
     final submittedPinTheme = defaultPinTheme.copyDecorationWith(
       border: Border.all(color: Colors.grey.shade300, width: 1),
     );
-    final followingPinTheme = defaultPinTheme.copyDecorationWith(
-//      border: Border.all(color: Colors.grey, width: 1),
-        //    borderRadius: BorderRadius.circular(8),
-        );
     return ShimmerForm(
       showShimmer: false,
       formGroup: formGroup,
@@ -174,7 +171,6 @@ class FormExample extends StatelessWidget {
               defaultPinTheme: defaultPinTheme,
               focusedPinTheme: focusedPinTheme,
               submittedPinTheme: submittedPinTheme,
-              followingPinTheme: followingPinTheme,
               pinAnimationType: PinAnimationType.fade,
               showCursor: false,
               androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
@@ -299,8 +295,14 @@ class FormExample extends StatelessWidget {
             formControlName: 'switch',
           ),
           ReactiveCheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
             formControlName: 'checkbox',
-            title: const Text('check this'),
+            title: const Text('check option1'),
+          ),
+          ReactiveCheckboxListTile(
+            controlAffinity: ListTileControlAffinity.leading,
+            formControlName: 'checkbox2',
+            title: const Text('check option2'),
           ),
           ReactiveRadioListTile(
             title: const Text('Send notifications'),
@@ -358,13 +360,13 @@ class FormExample extends StatelessWidget {
             formControlName: 'touchSpin',
             valueAccessor: NumValueAccessor(),
             displayFormat: NumberFormat()..minimumFractionDigits = 0,
-            min: 5,
-            max: 100,
-            step: 5,
+            min: 1,
+            max: 99,
+            step: 1,
             textStyle: const TextStyle(fontSize: 18),
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.all(0),
-              labelText: "Search amount",
+              labelText: "Order quantity",
               helperText: '',
             ),
           ),
