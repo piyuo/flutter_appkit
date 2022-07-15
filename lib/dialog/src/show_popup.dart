@@ -21,6 +21,7 @@ Future<T?> showPopup<T>(
   required Widget Function() builder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
+  Widget Function(Widget)? wrapBuilder,
   Decoration? decoration,
   double? maxWidth,
   double? heightFactor,
@@ -50,6 +51,7 @@ Future<T?> showPopup<T>(
                 builder: builder,
                 topBuilder: topBuilder,
                 bottomBuilder: bottomBuilder,
+                wrapBuilder: wrapBuilder,
                 decoration: decoration,
                 padding: padding ?? const EdgeInsets.fromLTRB(20, 0, 20, 20),
               ),
@@ -88,6 +90,7 @@ Future<T?> showSheet<T>(
   Decoration? decoration,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
+  Widget Function(Widget)? wrapBuilder,
   EdgeInsets? padding,
   double? maxWidth,
   double? heightFactor,
@@ -114,6 +117,7 @@ Future<T?> showSheet<T>(
           builder: () => builder(),
           topBuilder: topBuilder,
           bottomBuilder: bottomBuilder,
+          wrapBuilder: wrapBuilder,
           decoration: decoration,
           padding: padding ?? const EdgeInsets.fromLTRB(20, 0, 20, 20),
         ),
@@ -128,10 +132,11 @@ Widget _buildDialogContent<T>(
   required Widget Function() builder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
+  Widget Function(Widget)? wrapBuilder,
   Decoration? decoration,
   EdgeInsets padding = const EdgeInsets.fromLTRB(20, 0, 20, 20),
 }) {
-  return Column(
+  final content = Column(
     children: [
       topBuilder != null
           ? topBuilder()
@@ -153,4 +158,9 @@ Widget _buildDialogContent<T>(
       bottomBuilder != null ? bottomBuilder() : const SizedBox(),
     ],
   );
+
+  if (wrapBuilder != null) {
+    return wrapBuilder(content);
+  }
+  return content;
 }
