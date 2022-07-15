@@ -41,7 +41,7 @@ Future<T?> showPopup<T>(
                     color: backgroundColor ??
                         context.themeColor(
                           light: Colors.grey.shade100,
-                          dark: Colors.grey.shade800,
+                          dark: Colors.grey.shade900,
                         ),
                     borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(16)),
                   ),
@@ -100,7 +100,7 @@ Future<T?> showSheet<T>(
     backgroundColor: backgroundColor ??
         context.themeColor(
           light: Colors.grey.shade100,
-          dark: Colors.grey.shade800,
+          dark: Colors.grey.shade900,
         ),
     constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
     isScrollControlled: true,
