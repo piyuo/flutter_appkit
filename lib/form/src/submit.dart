@@ -12,6 +12,7 @@ class Submit extends StatelessWidget {
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.elevation = 2,
+    this.showToast = true,
     this.color,
     Key? key, // all submit must have key, it's important for test and identify field
   }) : super(key: key);
@@ -33,6 +34,9 @@ class Submit extends StatelessWidget {
 
   /// color is text and outline color
   final Color? color;
+
+  /// show toast is true will show toast on submit
+  final bool showToast;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +69,7 @@ class Submit extends StatelessWidget {
                   context,
                   formGroup: formGroup,
                   callback: onSubmit!,
+                  showToast: showToast,
                 )
             : null,
       ),
@@ -72,17 +77,15 @@ class Submit extends StatelessWidget {
   }
 }
 
-/// submit form, return true if form is submitted
-Future<bool> submit(
+/// validate form and show error message to user
+bool validate(
   BuildContext context, {
   required FormGroup formGroup,
-  required delta.FutureContextCallback<bool> callback,
-}) async {
+}) {
   if (!formGroup.dirty && formGroup.valid) {
     dialog.showInfoBanner(context, context.i18n.formSavedBanner);
     return false;
   }
-
   if (!formGroup.valid) {
     dialog.showWarningBanner(
       context,
@@ -93,9 +96,18 @@ Future<bool> submit(
     formGroup.markAllAsTouched();
     return false;
   }
+  return true;
+}
 
+/// submit form, return true if form is submitted
+Future<bool> submit(
+  BuildContext context, {
+  required FormGroup formGroup,
+  required delta.FutureContextCallback<bool> callback,
+  bool showToast = true,
+}) async {
   bool result = false;
-  dialog.toastWait(context);
+  if (showToast) dialog.toastWait(context);
   try {
     formGroup.markAsDisabled();
     result = await callback.call(context);
@@ -104,7 +116,7 @@ Future<bool> submit(
     formGroup.markAsEnabled();
     if (result) {
       formGroup.markAsPristine();
-      dialog.toastDone(context);
+      if (showToast) dialog.toastDone(context);
     }
   }
 }
