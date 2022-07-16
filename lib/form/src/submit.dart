@@ -13,6 +13,7 @@ class Submit extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.elevation = 2,
     this.showToast = true,
+    this.onlySubmitOnDirty = true,
     this.color,
     Key? key, // all submit must have key, it's important for test and identify field
   }) : super(key: key);
@@ -38,41 +39,50 @@ class Submit extends StatelessWidget {
   /// show toast is true will show toast on submit
   final bool showToast;
 
+  /// onlySubmitOnDirty is true will only submit when form is dirty
+  final bool onlySubmitOnDirty;
+
   @override
   Widget build(BuildContext context) {
     return ReactiveFormConsumer(
-      builder: (context, formGroup, child) => ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: formGroup.valid && formGroup.dirty
-              ? color
-              : context.themeColor(
-                  light: Colors.grey.shade300,
-                  dark: Colors.grey.shade800,
-                ),
-          onPrimary: formGroup.valid && formGroup.dirty ? null : Colors.grey.shade500,
-          elevation: formGroup.valid && formGroup.dirty ? elevation : 0,
-          padding: padding,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+      builder: (context, formGroup, child) {
+        bool valid = formGroup.valid;
+        if (onlySubmitOnDirty) {
+          valid = valid && formGroup.dirty;
+        }
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: valid
+                ? color
+                : context.themeColor(
+                    light: Colors.grey.shade300,
+                    dark: Colors.grey.shade800,
+                  ),
+            onPrimary: valid ? null : Colors.grey.shade500,
+            elevation: valid ? elevation : 0,
+            padding: padding,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
           ),
-        ),
-        child: Text(
-          label ?? context.i18n.formSubmitButtonText,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: fontSize,
+          child: Text(
+            label ?? context.i18n.formSubmitButtonText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: fontSize,
+            ),
           ),
-        ),
-        onPressed: onSubmit != null && formGroup.enabled
-            ? () => submit(
-                  context,
-                  formGroup: formGroup,
-                  callback: onSubmit!,
-                  showToast: showToast,
-                )
-            : null,
-      ),
+          onPressed: onSubmit != null && formGroup.enabled
+              ? () => submit(
+                    context,
+                    formGroup: formGroup,
+                    callback: onSubmit!,
+                    showToast: showToast,
+                  )
+              : null,
+        );
+      },
     );
   }
 }
