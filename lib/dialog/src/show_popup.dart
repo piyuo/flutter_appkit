@@ -44,6 +44,14 @@ Future<T?> showPopup<T>(
                           light: Colors.grey.shade100,
                           dark: Colors.grey.shade900,
                         ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                        offset: const Offset(3, 3), // changes position of shadow
+                      )
+                    ],
                     borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(16)),
                   ),
               child: _buildDialogContent(
@@ -100,6 +108,7 @@ Future<T?> showSheet<T>(
   return await showModalBottomSheet<T>(
     context: context,
     clipBehavior: Clip.antiAlias,
+    elevation: 8,
     backgroundColor: backgroundColor ??
         context.themeColor(
           light: Colors.grey.shade100,
