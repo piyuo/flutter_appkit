@@ -3,12 +3,15 @@ import 'package:provider/provider.dart';
 import 'animate_grid.dart';
 import 'shifter.dart';
 
+/// shakeShift is for shift animation
+const shakeShift = 10.0;
+
 /// AnimatedViewProvider control view's animation
 class AnimateViewProvider with ChangeNotifier {
   /// AnimateViewProvider control view's animation
   /// ```dart
   /// return ChangeNotifierProvider<AnimatedViewProvider>(
-  ///       create: (context) => AnimateViewProvider()..setItemCount(gridItems.length, notify: false),
+  ///       create: (context) => AnimateViewProvider()..setItemCount(gridItems.length),
   ///       child: Consumer<AnimatedViewProvider>(
   ///           builder: (context, provide, child) => AnimatedView(
   ///                   itemBuilder: itemBuilder,
@@ -86,6 +89,17 @@ class AnimateViewProvider with ChangeNotifier {
     }
   }
 
+  /// shakeAnimation show shake animation
+  void shakeAnimation(int index) {
+    if (index != -1) {
+      _gridKey.currentState!.shakeItem(
+        index,
+        (context, animation, child) => _shakeIt(child, animation),
+        duration: animatedDuration,
+      );
+    }
+  }
+
   /// waitForAnimationDone will wait for animation done
   Future<void> waitForAnimationDone() async {
     // wait a little longer to make sure animation is done
@@ -115,6 +129,21 @@ Widget _sizeIt(Widget child, animation) {
     sizeFactor: animation,
     child: child,
   );
+}
+
+/// _shakeIt is shake animation
+Widget _shakeIt(Widget child, animation) {
+  final curve = CurveTween(curve: Curves.elasticIn);
+  double shake(double animation) => 2 * (0.5 - (0.5 - curve.transform(animation)).abs());
+  return AnimatedBuilder(
+      animation: animation,
+      builder: (buildContext, _) {
+        final aValue = shake(animation.value) * shakeShift;
+        return Transform.translate(
+          child: child,
+          offset: Offset(aValue, 0),
+        );
+      });
 }
 
 /// AnimateView show animation list or grid

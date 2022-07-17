@@ -8,16 +8,25 @@ import 'package:flutter/material.dart';
 // The default insert/remove animation duration.
 const Duration animatedDuration = Duration(milliseconds: 380);
 
+/// AnimatedListShakeItemBuilder is for shake animation
+typedef AnimatedListShakeItemBuilder = Widget Function(BuildContext context, Animation<double> animation, Widget child);
+
 // Incoming and outgoing AnimatedGrid items.
 class _ActiveItem implements Comparable<_ActiveItem> {
-  _ActiveItem.incoming(this.controller, this.itemIndex) : removedItemBuilder = null;
-  _ActiveItem.outgoing(this.controller, this.itemIndex, this.removedItemBuilder);
+  _ActiveItem.incoming(this.controller, this.itemIndex)
+      : removedItemBuilder = null,
+        shakeItemBuilder = null;
+  _ActiveItem.outgoing(this.controller, this.itemIndex, this.removedItemBuilder) : shakeItemBuilder = null;
+  _ActiveItem.shaking(this.controller, this.itemIndex, this.shakeItemBuilder) : removedItemBuilder = null;
   _ActiveItem.index(this.itemIndex)
       : controller = null,
-        removedItemBuilder = null;
+        removedItemBuilder = null,
+        shakeItemBuilder = null;
 
   final AnimationController? controller;
   final AnimatedListRemovedItemBuilder? removedItemBuilder;
+  final AnimatedListShakeItemBuilder? shakeItemBuilder;
+
   int itemIndex;
 
   @override
@@ -293,6 +302,10 @@ class AnimateGridState extends State<AnimateGrid> with TickerProviderStateMixin<
     _sliverAnimatedGridKey.currentState!.removeItem(index, builder, duration: duration);
   }
 
+  void shakeItem(int index, AnimatedListShakeItemBuilder builder, {Duration duration = animatedDuration}) {
+    _sliverAnimatedGridKey.currentState!.shakeItem(index, builder, duration: duration);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -469,6 +482,7 @@ class SliverAnimatedGrid extends StatefulWidget {
 class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProviderStateMixin {
   final List<_ActiveItem> _incomingItems = <_ActiveItem>[];
   final List<_ActiveItem> _outgoingItems = <_ActiveItem>[];
+  final List<_ActiveItem> _shakeItems = <_ActiveItem>[];
   int itemCount = 0;
 
   @override
@@ -607,7 +621,39 @@ class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProvi
     });
   }
 
+  /// shakeItem shake item
+  void shakeItem(int index, AnimatedListShakeItemBuilder builder, {Duration duration = animatedDuration}) {
+    final int itemIndex = _indexToItemIndex(index);
+    assert(itemIndex >= 0 && itemIndex < itemCount);
+    if (_activeItemAt(_shakeItems, itemIndex) != null) {
+      // already shake
+      return;
+    }
+
+    final AnimationController controller = AnimationController(duration: duration, value: 1.0, vsync: this);
+    final _ActiveItem outgoingItem = _ActiveItem.shaking(controller, itemIndex, builder);
+    setState(() {
+      _shakeItems.add(outgoingItem);
+    });
+
+    controller.reverse().then<void>((_) {
+      _removeActiveItemAt(_shakeItems, outgoingItem.itemIndex)!.controller!.dispose();
+    });
+  }
+
   Widget _itemBuilder(BuildContext context, int itemIndex) {
+    final _ActiveItem? shakeItem = _activeItemAt(_shakeItems, itemIndex);
+    if (shakeItem != null) {
+      return shakeItem.shakeItemBuilder!(
+          context,
+          shakeItem.controller!.view,
+          widget.itemBuilder(
+            context,
+            _itemIndexToIndex(itemIndex),
+            kAlwaysCompleteAnimation,
+          ));
+    }
+
     final _ActiveItem? outgoingItem = _activeItemAt(_outgoingItems, itemIndex);
     if (outgoingItem != null) {
       return outgoingItem.removedItemBuilder!(

@@ -317,7 +317,7 @@ class _AnimationExampleState extends State<AnimationExample> {
 
   Widget _animatedViewInList() {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider()..setLength(gridItems.length, notify: false),
+      create: (context) => AnimateViewProvider()..setLength(gridItems.length),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
@@ -325,6 +325,12 @@ class _AnimationExampleState extends State<AnimationExample> {
                     child: const Text('update item count'),
                     onPressed: () {
                       provide.setLength(5);
+                    },
+                  ),
+                  OutlinedButton(
+                    child: const Text('shake'),
+                    onPressed: () {
+                      provide.shakeAnimation(2);
                     },
                   ),
                   OutlinedButton(
@@ -388,7 +394,7 @@ class _AnimationExampleState extends State<AnimationExample> {
 
   Widget _animatedViewInGrid() {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider()..setLength(gridItems.length, notify: false),
+      create: (context) => AnimateViewProvider()..setLength(gridItems.length),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
@@ -460,7 +466,7 @@ class _AnimationExampleState extends State<AnimationExample> {
 
   Widget _animatedViewInListView() {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider()..setLength(gridItems.length, notify: false),
+      create: (context) => AnimateViewProvider()..setLength(gridItems.length),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 OutlinedButton(
