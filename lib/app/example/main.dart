@@ -11,8 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../app.dart';
 
-main() {
-  start(
+main() async {
+  await start(
     appName: 'app',
 //    initialRoute: '/other/',
     routes: {

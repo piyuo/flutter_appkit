@@ -67,7 +67,7 @@ set userID(String value) {
 }
 
 /// start application
-void start({
+Future<void> start({
   required String appName,
   required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
   String initialRoute = '/',
@@ -78,7 +78,7 @@ void start({
   ThemeData? theme,
   ThemeData? darkTheme,
   Future<void> Function()? onBeforeStart,
-}) {
+}) async {
   WidgetsFlutterBinding.ensureInitialized();
   // init cache && db
   log.log('[app] start $appName, branch=$branch');
@@ -100,66 +100,63 @@ void start({
     ),
   );
 
-  Future.microtask(() async {
-    // init database path
-    await database.init();
-    // init cache
-    await cache.init();
+  await database.init();
+  // init cache
+  await cache.init();
 
-    if (onBeforeStart != null) {
-      await onBeforeStart();
-    }
-    // run app
-    return watch(() => runApp(LifecycleWatcher(
-            child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
-            if (providers != null) ...providers,
-          ],
-          child: Consumer<i18n.I18nProvider>(
-            builder: (context, i18nProvider, __) => dialog.GlobalContextSupport(
-                child: MaterialApp.router(
-              builder: dialog.init(),
-              debugShowCheckedModeBanner: false,
-              theme: theme ??
-                  ThemeData(
-                    brightness: Brightness.light,
-                    colorScheme: ColorScheme.fromSwatch(
-                      primarySwatch: Colors.blue,
-                    ),
-                    appBarTheme: AppBarTheme(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.grey.shade700,
-                      elevation: 1,
-                    ),
+  if (onBeforeStart != null) {
+    await onBeforeStart();
+  }
+  // run app
+  return watch(() => runApp(LifecycleWatcher(
+          child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
+          if (providers != null) ...providers,
+        ],
+        child: Consumer<i18n.I18nProvider>(
+          builder: (context, i18nProvider, __) => dialog.GlobalContextSupport(
+              child: MaterialApp.router(
+            builder: dialog.init(),
+            debugShowCheckedModeBanner: false,
+            theme: theme ??
+                ThemeData(
+                  brightness: Brightness.light,
+                  colorScheme: ColorScheme.fromSwatch(
+                    primarySwatch: Colors.blue,
                   ),
-              darkTheme: darkTheme ??
-                  ThemeData(
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.grey.shade700,
+                    elevation: 1,
+                  ),
+                ),
+            darkTheme: darkTheme ??
+                ThemeData(
+                  brightness: Brightness.dark,
+                  colorScheme: ColorScheme.fromSwatch(
+                    primarySwatch: Colors.blue,
                     brightness: Brightness.dark,
-                    colorScheme: ColorScheme.fromSwatch(
-                      primarySwatch: Colors.blue,
-                      brightness: Brightness.dark,
-                    ),
-                    appBarTheme: AppBarTheme(
-                      foregroundColor: Colors.grey.shade100,
-                      elevation: 1,
-                    ),
                   ),
-              locale: i18nProvider.overrideLocale,
-              localizationsDelegates: [
-                if (l10nDelegate != null) l10nDelegate,
-                ...i18nProvider.localizationsDelegates,
-              ],
-              supportedLocales: i18nProvider.supportedLocales,
-              routeInformationParser: BeamerParser(),
-              routerDelegate: beamerDelegate,
-              backButtonDispatcher: BeamerBackButtonDispatcher(
-                delegate: beamerDelegate,
-              ),
-            )),
-          ),
-        ))));
-  });
+                  appBarTheme: AppBarTheme(
+                    foregroundColor: Colors.grey.shade100,
+                    elevation: 1,
+                  ),
+                ),
+            locale: i18nProvider.overrideLocale,
+            localizationsDelegates: [
+              if (l10nDelegate != null) l10nDelegate,
+              ...i18nProvider.localizationsDelegates,
+            ],
+            supportedLocales: i18nProvider.supportedLocales,
+            routeInformationParser: BeamerParser(),
+            routerDelegate: beamerDelegate,
+            backButtonDispatcher: BeamerBackButtonDispatcher(
+              delegate: beamerDelegate,
+            ),
+          )),
+        ),
+      ))));
 }
 
 /// LifecycleWatcher watch app life cycle
