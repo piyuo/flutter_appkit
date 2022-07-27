@@ -61,6 +61,7 @@ Future<T?> showPopup<T>(
                         itemBuilder: (_, index) => itemBuilder(index),
                       )
                     : itemBuilder(0),
+                closeButtonBuilder: closeButtonBuilder,
                 topBuilder: topBuilder,
                 bottomBuilder: bottomBuilder,
                 decoration: decoration,
@@ -143,6 +144,7 @@ Future<T?> showSheet<T>(
                     ),
                   )
                 : itemBuilder(0),
+            closeButtonBuilder: closeButtonBuilder,
             topBuilder: topBuilder,
             bottomBuilder: bottomBuilder,
             decoration: decoration,
