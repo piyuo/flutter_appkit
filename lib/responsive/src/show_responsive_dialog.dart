@@ -30,6 +30,7 @@ Future<T?> showResponsiveDialog<T>(
   double? heightFactor = 0.7,
   Color? backgroundColor,
   BorderRadiusGeometry? borderRadius,
+  EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
   if (phoneScreen) {
     return await dialog.showSheet<T>(
@@ -41,6 +42,7 @@ Future<T?> showResponsiveDialog<T>(
       topBuilder: topBuilder,
       wrapBuilder: wrapBuilder,
       bottomBuilder: bottomBuilder,
+      padding: padding,
       maxWidth: maxWidth ?? 600,
       heightFactor: heightFactor,
       backgroundColor: backgroundColor,
@@ -57,6 +59,7 @@ Future<T?> showResponsiveDialog<T>(
     topBuilder: topBuilder,
     bottomBuilder: bottomBuilder,
     wrapBuilder: wrapBuilder,
+    padding: padding,
     maxWidth: maxWidth ?? 800,
     heightFactor: heightFactor,
     backgroundColor: backgroundColor,
