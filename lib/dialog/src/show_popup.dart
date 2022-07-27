@@ -22,6 +22,7 @@ Future<T?> showPopup<T>(
   Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
+  Widget Function(Widget)? wrapBuilder,
   Decoration? decoration,
   double? maxWidth,
   double? heightFactor,
@@ -56,6 +57,7 @@ Future<T?> showPopup<T>(
                   ),
               child: _buildContent(
                 context,
+                wrapBuilder: wrapBuilder,
                 padding: padding,
                 builder: () => itemCount > 1
                     ? ListView.builder(
@@ -134,6 +136,7 @@ Future<T?> showSheet<T>(
           bottom: false,
           child: _buildContent(
             context,
+            wrapBuilder: wrapBuilder,
             padding: padding,
             builder: () => itemCount > 1
                 ? DraggableScrollableSheet(
@@ -161,6 +164,7 @@ Future<T?> showSheet<T>(
 Widget _buildContent<T>(
   BuildContext context, {
   required Widget Function() builder,
+  Widget Function(Widget)? wrapBuilder,
   Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
@@ -169,7 +173,7 @@ Widget _buildContent<T>(
 }) {
   final content = Stack(
     children: [
-      Padding(padding: padding, child: builder()),
+      Padding(padding: padding, child: wrapBuilder != null ? wrapBuilder(builder()) : builder()),
       if (closeButtonBuilder != null) closeButtonBuilder(),
       if (closeButtonBuilder == null)
         Positioned(

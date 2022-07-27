@@ -56,6 +56,7 @@ Future<T?> showResponsiveDialog<T>(
     decoration: decoration,
     topBuilder: topBuilder,
     bottomBuilder: bottomBuilder,
+    wrapBuilder: wrapBuilder,
     maxWidth: maxWidth ?? 800,
     heightFactor: heightFactor,
     backgroundColor: backgroundColor,
