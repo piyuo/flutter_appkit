@@ -37,7 +37,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _alert(context),
+            child: _showPopup(context),
           ),
           Wrap(
             children: [
@@ -314,6 +314,7 @@ class DialogExample extends StatelessWidget {
         child: const Text('show popup'),
         onPressed: () => showPopup(
           context,
+          padding: const EdgeInsets.only(top: 20),
           bottomBuilder: () => Positioned(
               bottom: 20,
               left: 0,
@@ -357,6 +358,7 @@ class DialogExample extends StatelessWidget {
         child: const Text('show sheet'),
         onPressed: () => showSheet(
           context,
+          padding: const EdgeInsets.only(top: 20),
           bottomBuilder: () => Positioned(
               bottom: 20,
               left: 0,
@@ -369,7 +371,6 @@ class DialogExample extends StatelessWidget {
           heightFactor: 0.8,
           itemBuilder: (_) => Column(
             children: const [
-              SizedBox(height: 20),
               SizedBox(height: 180, child: Placeholder()),
               Text('hello world'),
               SizedBox(height: 20),

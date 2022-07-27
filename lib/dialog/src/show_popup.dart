@@ -27,6 +27,7 @@ Future<T?> showPopup<T>(
   double? heightFactor,
   Color? backgroundColor,
   BorderRadiusGeometry? borderRadius,
+  EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
   Widget build() => FractionallySizedBox(
       heightFactor: heightFactor ?? 0.7,
@@ -55,6 +56,7 @@ Future<T?> showPopup<T>(
                   ),
               child: _buildContent(
                 context,
+                padding: padding,
                 builder: () => itemCount > 1
                     ? ListView.builder(
                         itemCount: itemCount,
@@ -108,6 +110,7 @@ Future<T?> showSheet<T>(
   double? heightFactor,
   Color? backgroundColor,
   BorderRadiusGeometry? borderRadius,
+  EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
   return await showModalBottomSheet<T>(
     context: context,
@@ -131,10 +134,11 @@ Future<T?> showSheet<T>(
           bottom: false,
           child: _buildContent(
             context,
+            padding: padding,
             builder: () => itemCount > 1
                 ? DraggableScrollableSheet(
                     initialChildSize: 1,
-                    minChildSize: 0.95,
+                    minChildSize: 0.9,
                     maxChildSize: 1,
                     snap: true,
                     builder: (_, controller) => ListView.builder(
@@ -160,11 +164,12 @@ Widget _buildContent<T>(
   Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
+  EdgeInsetsGeometry padding = EdgeInsets.zero,
   Decoration? decoration,
 }) {
   final content = Stack(
     children: [
-      builder(),
+      Padding(padding: padding, child: builder()),
       if (closeButtonBuilder != null) closeButtonBuilder(),
       if (closeButtonBuilder == null)
         Positioned(
