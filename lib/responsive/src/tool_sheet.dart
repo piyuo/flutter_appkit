@@ -30,9 +30,8 @@ Future<void> showToolSheet(
     context,
     maxWidth: maxWidth,
     heightFactor: heightFactor,
-    builder: () => ListView(
-      children: items.map((item) => _buildItemOnSheet(context, item)).toList(),
-    ),
+    itemCount: items.length,
+    itemBuilder: (index) => _buildItemOnSheet(context, items[index]),
   );
 }
 

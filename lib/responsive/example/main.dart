@@ -78,22 +78,20 @@ class ResponsiveExample extends StatelessWidget {
       child: const Text('show dialog'),
       onPressed: () => showResponsiveDialog<void>(
         context,
-        builder: () => ListView(
-          children: const [
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            Text('hello world'),
-            SizedBox(height: 20),
-          ],
-        ),
+        itemCount: 11,
+        itemBuilder: (index) => const [
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          Text('hello world'),
+          SizedBox(height: 20),
+        ][index],
       ),
     );
   }

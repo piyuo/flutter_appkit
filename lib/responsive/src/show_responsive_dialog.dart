@@ -8,23 +8,24 @@ import 'responsive1.dart';
 /// final result = await showDialog(
 ///   context,
 ///   heightFactor: 0.8,
-///   builder: () => ListView(
-///   children: const [
+///   itemCount:4,
+///   itemBuilder: (index) => const [
 ///     SizedBox(height: 20),
 ///     SizedBox(height: 180, child: Placeholder()),
 ///     Text('hello world'),
 ///     SizedBox(height: 20),
-///   ],
+///   ][index]
 ///   );
 /// ```
 Future<T?> showResponsiveDialog<T>(
   BuildContext context, {
-  required Widget Function() builder,
+  int itemCount = 1,
+  required Widget Function(int) itemBuilder,
+  Widget Function()? closeButtonBuilder,
   Decoration? decoration,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
   Widget Function(Widget)? wrapBuilder,
-  EdgeInsets? padding,
   double? maxWidth,
   double? heightFactor = 0.7,
   Color? backgroundColor,
@@ -33,12 +34,13 @@ Future<T?> showResponsiveDialog<T>(
   if (phoneScreen) {
     return await dialog.showSheet<T>(
       context,
-      builder: builder,
+      itemCount: itemCount,
+      itemBuilder: itemBuilder,
+      closeButtonBuilder: closeButtonBuilder,
       decoration: decoration,
       topBuilder: topBuilder,
       wrapBuilder: wrapBuilder,
       bottomBuilder: bottomBuilder,
-      padding: padding,
       maxWidth: maxWidth ?? 600,
       heightFactor: heightFactor,
       backgroundColor: backgroundColor,
@@ -48,12 +50,12 @@ Future<T?> showResponsiveDialog<T>(
 
   return await dialog.showPopup<T>(
     context,
-    builder: builder,
+    itemCount: itemCount,
+    itemBuilder: itemBuilder,
+    closeButtonBuilder: closeButtonBuilder,
     decoration: decoration,
     topBuilder: topBuilder,
     bottomBuilder: bottomBuilder,
-    wrapBuilder: wrapBuilder,
-    padding: padding,
     maxWidth: maxWidth ?? 800,
     heightFactor: heightFactor,
     backgroundColor: backgroundColor,
