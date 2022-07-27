@@ -173,7 +173,7 @@ Widget _buildContent<T>(
 }) {
   final content = Stack(
     children: [
-      Padding(padding: padding, child: wrapBuilder != null ? wrapBuilder(builder()) : builder()),
+      Padding(padding: padding, child: builder()),
       if (closeButtonBuilder != null) closeButtonBuilder(),
       if (closeButtonBuilder == null)
         Positioned(
@@ -201,5 +201,8 @@ Widget _buildContent<T>(
     ],
   );
 
+  if (wrapBuilder != null) {
+    return wrapBuilder(content);
+  }
   return content;
 }
