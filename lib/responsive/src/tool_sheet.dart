@@ -28,49 +28,40 @@ Future<void> showToolSheet(
 }) async {
   return await dialog.showSheet(
     context,
+    padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
     maxWidth: maxWidth,
     heightFactor: heightFactor,
     itemCount: items.length,
-    itemBuilder: (index) => _buildItemOnSheet(context, items[index]),
-  );
-}
-
-/// _buildItemOnSheet build item on sheet
-Widget _buildItemOnSheet(
-  BuildContext context,
-  ToolItem item,
-) {
-  if (item is ToolButton) {
-    return Padding(
-        padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-            primary: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
-            onPrimary: context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade100),
-            shadowColor: Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            elevation: 0,
-          ),
-          child: Row(children: [
-            Expanded(
-              child: Text(item.text ?? item.label, style: const TextStyle(fontSize: 18)),
+    itemBuilder: (index) {
+      final item = items[index];
+      Widget? widget;
+      if (item is ToolButton) {
+        widget = ListTile(
+          tileColor: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
             ),
-            Icon(item.icon, size: 28),
-          ]),
-          onPressed: item.onPressed != null
+          ),
+          enableFeedback: true,
+          textColor: item.onPressed == null ? Colors.grey : null,
+          iconColor: item.onPressed == null ? Colors.grey : null,
+          onTap: item.onPressed != null
               ? () {
                   item.onPressed!();
                   Navigator.pop(context);
                 }
               : null,
-        ));
-  }
+          title: Text(item.text ?? item.label,
+              style: const TextStyle(
+                fontSize: 18,
+              )),
+          trailing: Icon(item.icon, size: 28),
+        );
+      }
 
-  if (item is ToolSelection) {
-    return Padding(
-        padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
-        child: Column(
+      if (item is ToolSelection) {
+        widget = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -94,16 +85,17 @@ Widget _buildItemOnSheet(
               }),
             )
           ],
-        ));
-  }
+        );
+      }
 
-  if (item is ToolSpacer) {
-    return Padding(
-      padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
-      child: const Divider(),
-    );
-  }
+      if (item is ToolSpacer) {
+        widget = const Divider();
+      }
 
-  assert(false, '$item is not implement in _buildSheetItem');
-  return const SizedBox();
+      return Padding(
+        padding: EdgeInsets.only(top: 15, bottom: item.space != null ? item.space! : 0),
+        child: widget,
+      );
+    },
+  );
 }

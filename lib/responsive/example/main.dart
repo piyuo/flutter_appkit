@@ -36,11 +36,11 @@ class ResponsiveExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _showDialog(context),
+              child: _showResponsiveDialog(context),
             ),
             Wrap(
               children: [
-                testing.ExampleButton(label: 'show dialog', builder: () => _showDialog(context)),
+                testing.ExampleButton(label: 'show responsive dialog', builder: () => _showResponsiveDialog(context)),
                 testing.ExampleButton(label: 'fold panel', builder: () => _foldPanel(context)),
                 testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
                 testing.ExampleButton(label: 'tool sheet', builder: () => _showToolSheet(context)),
@@ -73,9 +73,9 @@ class ResponsiveExample extends StatelessWidget {
             ]);
   }
 
-  Widget _showDialog(BuildContext context) {
+  Widget _showResponsiveDialog(BuildContext context) {
     return OutlinedButton(
-      child: const Text('show dialog'),
+      child: const Text('show responsive dialog'),
       onPressed: () => showResponsiveDialog<void>(
         context,
         itemCount: 11,
@@ -277,14 +277,20 @@ class ResponsiveExample extends StatelessWidget {
                 '10': '10 rows2',
                 '20': '20 rows2',
                 '50': '50 rows2',
+                '100': '100 rows2',
+                '200': '200 rows2',
               },
               onPressed: (value) => debugPrint('$value pressed'),
             ),
-            ToolSpacer(),
             ToolButton(
               label: 'hi',
               icon: Icons.hail,
               onPressed: () => debugPrint('hi pressed'),
+            ),
+            ToolButton(
+              label: 'hello',
+              icon: Icons.handshake,
+              onPressed: () => debugPrint('hello pressed'),
             ),
           ],
         );
