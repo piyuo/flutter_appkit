@@ -172,10 +172,10 @@ Future<bool?> alert(
       context: context,
       barrierColor: context.themeColor(
           dark: const Color.fromRGBO(25, 25, 28, 0.6), light: const Color.fromRGBO(230, 230, 238, 0.6)),
-      barrierDismissible: false,
+      //barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
-          elevation: 0,
+          elevation: 2,
           backgroundColor: Colors.transparent,
           child: BlurryContainer(
             enableBlurry: blurry,

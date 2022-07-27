@@ -7,25 +7,24 @@ import 'package:libcli/delta/delta.dart' as delta;
 /// final result = await showPopup(
 ///   context,
 ///   heightFactor: 0.8,
-///   builder: () => ListView(
-///   children: const [
+///   itemBuilder: (index) => const [
 ///     SizedBox(height: 20),
 ///     SizedBox(height: 180, child: Placeholder()),
 ///     Text('hello world'),
 ///     SizedBox(height: 20),
-///   ],
+///   ][index],
 ///   );
 /// ```
 Future<T?> showPopup<T>(
   BuildContext context, {
-  required Widget Function() builder,
+  int itemCount = 1,
+  required Widget Function(int) itemBuilder,
+  Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
-  Widget Function(Widget)? wrapBuilder,
   Decoration? decoration,
   double? maxWidth,
   double? heightFactor,
-  EdgeInsets? padding,
   Color? backgroundColor,
   BorderRadiusGeometry? borderRadius,
 }) async {
@@ -54,14 +53,17 @@ Future<T?> showPopup<T>(
                     ],
                     borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(16)),
                   ),
-              child: _buildDialogContent(
+              child: _buildContent(
                 context,
-                builder: builder,
+                builder: () => itemCount > 1
+                    ? ListView.builder(
+                        itemCount: itemCount,
+                        itemBuilder: (_, index) => itemBuilder(index),
+                      )
+                    : itemBuilder(0),
                 topBuilder: topBuilder,
                 bottomBuilder: bottomBuilder,
-                wrapBuilder: wrapBuilder,
                 decoration: decoration,
-                padding: padding ?? const EdgeInsets.fromLTRB(20, 0, 20, 20),
               ),
             ),
           )));
@@ -83,23 +85,24 @@ Future<T?> showPopup<T>(
 /// final result = await showSheet(
 ///   context,
 ///   heightFactor: 0.8,
-///   builder: () => ListView(
-///   children: const [
+///   itemCount:4,
+///   itemBuilder: (index) => const [
 ///     SizedBox(height: 20),
 ///     SizedBox(height: 180, child: Placeholder()),
 ///     Text('hello world'),
 ///     SizedBox(height: 20),
-///   ],
+///   ][index]
 ///   );
 /// ```
 Future<T?> showSheet<T>(
   BuildContext context, {
-  required Widget Function() builder,
+  int itemCount = 1,
+  required Widget Function(int) itemBuilder,
   Decoration? decoration,
+  Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
   Widget Function(Widget)? wrapBuilder,
-  EdgeInsets? padding,
   double? maxWidth,
   double? heightFactor,
   Color? backgroundColor,
@@ -116,60 +119,76 @@ Future<T?> showSheet<T>(
         ),
     constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
     isScrollControlled: true,
-    shape: RoundedRectangleBorder(borderRadius: borderRadius ?? const BorderRadius.vertical(top: Radius.circular(16))),
+    shape: RoundedRectangleBorder(
+        borderRadius: borderRadius ??
+            const BorderRadius.vertical(
+              top: Radius.circular(20),
+            )),
     builder: (BuildContext context) => FractionallySizedBox(
       heightFactor: heightFactor ?? 0.7,
       child: SafeArea(
-        bottom: false,
-        child: _buildDialogContent(
-          context,
-          builder: () => builder(),
-          topBuilder: topBuilder,
-          bottomBuilder: bottomBuilder,
-          wrapBuilder: wrapBuilder,
-          decoration: decoration,
-          padding: padding ?? const EdgeInsets.fromLTRB(20, 0, 20, 20),
-        ),
-      ),
+          bottom: false,
+          child: _buildContent(
+            context,
+            builder: () => itemCount > 1
+                ? DraggableScrollableSheet(
+                    initialChildSize: 1,
+                    minChildSize: 0.95,
+                    maxChildSize: 1,
+                    snap: true,
+                    builder: (_, controller) => ListView.builder(
+                      controller: controller,
+                      itemCount: itemCount,
+                      itemBuilder: (_, index) => itemBuilder(index),
+                    ),
+                  )
+                : itemBuilder(0),
+            topBuilder: topBuilder,
+            bottomBuilder: bottomBuilder,
+            decoration: decoration,
+          )),
     ),
   );
 }
 
-/// buildDialogContent return a widget that will be shown in the dialog or bottom of the sheet
-Widget _buildDialogContent<T>(
+/// _buildContent return a widget that will be shown in the dialog or bottom of the sheet
+Widget _buildContent<T>(
   BuildContext context, {
   required Widget Function() builder,
+  Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
-  Widget Function(Widget)? wrapBuilder,
   Decoration? decoration,
-  EdgeInsets padding = const EdgeInsets.fromLTRB(20, 0, 20, 20),
 }) {
-  final content = Column(
+  final content = Stack(
     children: [
-      topBuilder != null
-          ? topBuilder()
-          : Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                iconSize: 32,
-                color: Colors.grey,
-                icon: const Icon(Icons.cancel_rounded),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ),
-      Expanded(
-        child: Padding(
-          padding: padding,
-          child: builder(),
+      builder(),
+      if (closeButtonBuilder != null) closeButtonBuilder(),
+      if (closeButtonBuilder == null)
+        Positioned(
+          top: 13,
+          right: 14,
+          child: Container(
+            width: 19,
+            height: 19,
+            color: Colors.white,
+          ),
         ),
-      ),
+      if (closeButtonBuilder == null)
+        Positioned(
+          top: -3,
+          right: -3,
+          child: IconButton(
+            iconSize: 38,
+            color: Colors.black,
+            icon: const Icon(Icons.cancel),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+      topBuilder != null ? topBuilder() : const SizedBox(),
       bottomBuilder != null ? bottomBuilder() : const SizedBox(),
     ],
   );
 
-  if (wrapBuilder != null) {
-    return wrapBuilder(content);
-  }
   return content;
 }
