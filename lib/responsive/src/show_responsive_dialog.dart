@@ -29,7 +29,7 @@ Future<T?> showResponsiveDialog<T>(
   double? maxWidth,
   double? heightFactor = 0.7,
   Color? backgroundColor,
-  BorderRadiusGeometry? borderRadius,
+  double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
   if (phoneScreen) {
