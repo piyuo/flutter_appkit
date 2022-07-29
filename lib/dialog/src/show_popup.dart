@@ -27,7 +27,7 @@ Future<T?> showPopup<T>(
   double? maxWidth,
   double? heightFactor,
   Color? backgroundColor,
-  BorderRadiusGeometry? borderRadius,
+  double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
   Widget build() => FractionallySizedBox(
@@ -53,7 +53,7 @@ Future<T?> showPopup<T>(
                         offset: const Offset(3, 3), // changes position of shadow
                       )
                     ],
-                    borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(16)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
                   ),
               child: _buildContent(
                 context,
@@ -111,7 +111,7 @@ Future<T?> showSheet<T>(
   double? maxWidth,
   double? heightFactor,
   Color? backgroundColor,
-  BorderRadiusGeometry? borderRadius,
+  double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
   return await showModalBottomSheet<T>(
@@ -126,10 +126,9 @@ Future<T?> showSheet<T>(
     constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
-        borderRadius: borderRadius ??
-            const BorderRadius.vertical(
-              top: Radius.circular(20),
-            )),
+        borderRadius: BorderRadius.vertical(
+      top: Radius.circular(borderRadius ?? 16),
+    )),
     builder: (BuildContext context) => FractionallySizedBox(
       heightFactor: heightFactor ?? 0.7,
       child: SafeArea(
