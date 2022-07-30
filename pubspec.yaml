@@ -65,9 +65,9 @@ dependencies:
   animations: ^2.0.2
   reactive_forms: ^13.0.0
   flutter_rating_bar: ^4.0.1
-  reactive_date_range_picker: ^0.4.0
+  reactive_date_range_picker: ^0.4.1
   reactive_touch_spin: ^0.6.0
-  reactive_phone_form_field: ^0.6.0
+  reactive_phone_form_field: ^0.8.0
   reactive_raw_autocomplete: ^0.3.0
   pinput: ^2.2.11
 dev_dependencies:
