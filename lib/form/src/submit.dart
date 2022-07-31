@@ -45,7 +45,7 @@ class Submit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveFormConsumer(
-      builder: (context, formGroup, child) {
+      builder: (context, formGroup, _) {
         bool valid = formGroup.valid;
         if (onlySubmitOnDirty) {
           valid = valid && formGroup.dirty;
