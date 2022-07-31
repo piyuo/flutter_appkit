@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Submit is form submit button
 class Submit extends StatelessWidget {
   const Submit({
-    this.label,
+    this.child,
     this.onSubmit,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
@@ -24,8 +24,8 @@ class Submit extends StatelessWidget {
   /// fontSize is button font size
   final double fontSize;
 
-  /// label is button text
-  final String? label;
+  /// child is button text
+  final Widget? child;
 
   /// onSubmit called when user pressed button to submit form, return true will show done animation
   final delta.FutureContextCallback<bool>? onSubmit;
@@ -65,14 +65,15 @@ class Submit extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
             ),
           ),
-          child: Text(
-            label ?? context.i18n.formSubmitButtonText,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: fontSize,
-            ),
-          ),
+          child: child ??
+              Text(
+                context.i18n.formSubmitButtonText,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: fontSize,
+                ),
+              ),
           onPressed: onSubmit != null && formGroup.enabled
               ? () => submit(
                     context,

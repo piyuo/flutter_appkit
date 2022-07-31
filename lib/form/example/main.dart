@@ -181,7 +181,6 @@ class FormExample extends StatelessWidget {
           br(),
           Submit(
             color: Colors.green,
-            label: 'Submit',
             onSubmit: (context) async {
               debugPrint(formGroup.value.toString());
               return true;
@@ -373,7 +372,6 @@ class FormExample extends StatelessWidget {
           const Divider(),
           br(),
           Submit(
-            label: 'Submit',
             onSubmit: (context) async {
               await Future.delayed(const Duration(seconds: 5));
               debugPrint('form submitted');
@@ -381,7 +379,7 @@ class FormExample extends StatelessWidget {
             },
           ),
           br(),
-          const Submit(label: 'Submit'),
+          const Submit(child: Text('my Submit')),
           br(),
           FormButton(
             color: Colors.red.shade400,

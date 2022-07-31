@@ -19,7 +19,6 @@ void main() {
               ),
               Submit(
                 key: const Key('submit'),
-                label: 'submit',
                 onSubmit: (context) async => true,
               ),
             ],
