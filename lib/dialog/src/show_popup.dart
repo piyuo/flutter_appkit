@@ -23,7 +23,6 @@ Future<T?> showPopup<T>(
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
   Widget Function(Widget)? wrapBuilder,
-  Decoration? decoration,
   double? maxWidth,
   double? heightFactor,
   Color? backgroundColor,
@@ -38,23 +37,22 @@ Future<T?> showPopup<T>(
             constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
             child: Container(
               clipBehavior: Clip.antiAlias,
-              decoration: decoration ??
-                  BoxDecoration(
-                    color: backgroundColor ??
-                        context.themeColor(
-                          light: Colors.grey.shade100,
-                          dark: Colors.grey.shade900,
-                        ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: const Offset(3, 3), // changes position of shadow
-                      )
-                    ],
-                    borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
-                  ),
+              decoration: BoxDecoration(
+                color: backgroundColor ??
+                    context.themeColor(
+                      light: Colors.grey.shade100,
+                      dark: Colors.grey.shade900,
+                    ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: const Offset(3, 3), // changes position of shadow
+                  )
+                ],
+                borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
+              ),
               child: _buildContent(
                 context,
                 wrapBuilder: wrapBuilder,
@@ -68,7 +66,6 @@ Future<T?> showPopup<T>(
                 closeButtonBuilder: closeButtonBuilder,
                 topBuilder: topBuilder,
                 bottomBuilder: bottomBuilder,
-                decoration: decoration,
               ),
             ),
           )));
@@ -103,7 +100,6 @@ Future<T?> showSheet<T>(
   BuildContext context, {
   int itemCount = 1,
   required Widget Function(int) itemBuilder,
-  Decoration? decoration,
   Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
@@ -153,7 +149,6 @@ Future<T?> showSheet<T>(
             closeButtonBuilder: closeButtonBuilder,
             topBuilder: topBuilder,
             bottomBuilder: bottomBuilder,
-            decoration: decoration,
           )),
     ),
   );
@@ -168,7 +163,6 @@ Widget _buildContent<T>(
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
-  Decoration? decoration,
 }) {
   final content = Stack(
     children: [
