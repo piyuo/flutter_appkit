@@ -363,21 +363,22 @@ class _AnimationExampleState extends State<AnimationExample> {
                     child: const Text('next page'),
                     onPressed: () {
                       gridItems = [11, 12, 13];
-                      provide.nextPageAnimation();
+
+                      provide.nextPageAnimation(3);
                     },
                   ),
                   OutlinedButton(
                     child: const Text('prev page'),
                     onPressed: () {
                       gridItems = [21, 22, 23, 24, 25];
-                      provide.prevPageAnimation();
+                      provide.prevPageAnimation(5);
                     },
                   ),
                   OutlinedButton(
                     child: const Text('refresh'),
                     onPressed: () {
                       gridItems = [31, 32, 33, 34, 35];
-                      provide.refreshPageAnimation();
+                      provide.refreshPageAnimation(5);
                     },
                   ),
                 ]),
@@ -435,21 +436,21 @@ class _AnimationExampleState extends State<AnimationExample> {
                     child: const Text('next page'),
                     onPressed: () {
                       gridItems = [11, 12, 13];
-                      provide.nextPageAnimation();
+                      provide.nextPageAnimation(3);
                     },
                   ),
                   OutlinedButton(
                     child: const Text('prev page'),
                     onPressed: () {
                       gridItems = [21, 22, 23, 24, 25];
-                      provide.prevPageAnimation();
+                      provide.prevPageAnimation(5);
                     },
                   ),
                   OutlinedButton(
                     child: const Text('refresh'),
                     onPressed: () {
                       gridItems = [31, 32, 33, 34, 35];
-                      provide.refreshPageAnimation();
+                      provide.refreshPageAnimation(5);
                     },
                   ),
                 ]),

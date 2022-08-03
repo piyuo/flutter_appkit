@@ -28,9 +28,6 @@ class AnimateViewProvider with ChangeNotifier {
 
   /// setLength set new item length in view, notify is true will notify listener
   void setLength(int value, {bool notify = false}) {
-    if (_length == value) {
-      return;
-    }
     _length = value;
     if (_gridKey.currentState != null) {
       _gridKey.currentState!.itemCount = _length;
@@ -50,31 +47,35 @@ class AnimateViewProvider with ChangeNotifier {
   GlobalKey<AnimateGridState> _gridKey = GlobalKey<AnimateGridState>();
 
   /// refreshPageAnimation show refresh page animation
-  void refreshPageAnimation() {
+  void refreshPageAnimation(newPageLength) {
     _shifterReverse = true;
     _shifterVertical = true;
     _gridKey = GlobalKey<AnimateGridState>();
+    _length = newPageLength;
     notifyListeners();
   }
 
   /// nextPageAnimation show next page animation
-  void nextPageAnimation() {
+  void nextPageAnimation(int nextPageLength) {
     _shifterReverse = false;
     _shifterVertical = false;
     _gridKey = GlobalKey<AnimateGridState>();
+    _length = nextPageLength;
     notifyListeners();
   }
 
   /// prevPageAnimation show prev page animation
-  void prevPageAnimation() {
+  void prevPageAnimation(int prevPageLength) {
     _shifterReverse = true;
     _shifterVertical = false;
     _gridKey = GlobalKey<AnimateGridState>();
+    _length = prevPageLength;
     notifyListeners();
   }
 
   /// insertAnimation show insert animation
   void insertAnimation() {
+    _length++;
     _gridKey.currentState!.insertItem(0, duration: animatedDuration);
   }
 
@@ -86,6 +87,7 @@ class AnimateViewProvider with ChangeNotifier {
         (context, animation) => sizeOrSlideAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
         duration: animatedDuration,
       );
+      _length--;
     }
   }
 

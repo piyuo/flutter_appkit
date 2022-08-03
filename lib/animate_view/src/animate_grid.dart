@@ -277,6 +277,8 @@ class AnimateGridState extends State<AnimateGrid> with TickerProviderStateMixin<
     _sliverAnimatedGridKey.currentState!.itemCount = value;
   }
 
+  int get itemCount => _sliverAnimatedGridKey.currentState!.itemCount;
+
   /// Insert an item at [index] and start an animation that will be passed
   /// to [AnimateGrid.itemBuilder] when the item is visible.
   ///
