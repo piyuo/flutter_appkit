@@ -36,7 +36,7 @@ Future<T?> showPopup<T>(
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
   Widget build() => FractionallySizedBox(
-      heightFactor: heightFactor ?? 0.7,
+      heightFactor: heightFactor ?? 0.85,
       child: Align(
           alignment: Alignment.center,
           child: ConstrainedBox(
@@ -119,7 +119,7 @@ Future<T?> showSheet<T>(
   MediaQueryData query = MediaQuery.of(context);
   double screenWidth = query.size.width;
   Widget _builder(BuildContext context) => FractionallySizedBox(
-        heightFactor: heightFactor ?? 0.7,
+        heightFactor: heightFactor ?? 0.85,
         child: SafeArea(
             bottom: false,
             child: _buildDialogWithContent(

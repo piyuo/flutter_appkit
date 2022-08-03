@@ -368,7 +368,6 @@ class DialogExample extends StatelessWidget {
                 child: const Text('Close'),
                 onPressed: () => Navigator.pop(context),
               ))),
-          heightFactor: 0.95,
           backgroundColor: Colors.red,
           itemBuilder: (_) => Column(
             children: [
