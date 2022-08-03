@@ -394,8 +394,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     final diff = dataView!.length - originLength;
     _setDefaultSelected(context);
     if (isReset || (diff > 0 && !firstPage)) {
-      animateViewController.refreshPageAnimation();
-      animateViewController.setLength(dataView!.displayRows.length);
+      animateViewController.refreshPageAnimation(dataView!.displayRows.length);
     } else if (diff > 0) {
       if (dataView!.isDisplayRowsFullPage) {
         animateViewController.setLength(dataView!.rowsPerPage - diff);
@@ -528,8 +527,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).nextPage(context);
-      animateViewController.setLength(dataView!.displayRows.length);
-      animateViewController.nextPageAnimation();
+      animateViewController.nextPageAnimation(dataView!.displayRows.length);
     }
     notifyListeners();
     debugPrint('onNextPage');
@@ -542,8 +540,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     if (dataView is data.PagedDataView) {
       await (dataView as data.PagedDataView).prevPage(context);
-      animateViewController.setLength(dataView!.displayRows.length);
-      animateViewController.prevPageAnimation();
+      animateViewController.prevPageAnimation(dataView!.displayRows.length);
     }
     notifyListeners();
     debugPrint('onPreviousPage');
