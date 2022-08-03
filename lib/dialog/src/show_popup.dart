@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+/// cupertinoBottomSheet wrap child so showSheet can work normally
+Widget cupertinoBottomSheet(Widget child) {
+  return CupertinoScaffold(body: child);
+}
 
 /// showPopup show popup dialog
 /// ```dart
@@ -46,26 +52,24 @@ Future<T?> showPopup<T>(
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 3,
-                    blurRadius: 5,
-                    offset: const Offset(3, 3), // changes position of shadow
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: const Offset(1, 1), // changes position of shadow
                   )
                 ],
                 borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
               ),
-              child: _buildContent(
+              child: _buildDialogWithContent(
                 context,
-                wrapBuilder: wrapBuilder,
-                padding: padding,
-                builder: () => itemCount > 1
-                    ? ListView.builder(
-                        itemCount: itemCount,
-                        itemBuilder: (_, index) => itemBuilder(index),
-                      )
-                    : itemBuilder(0),
+                itemCount: itemCount,
+                itemBuilder: itemBuilder,
                 closeButtonBuilder: closeButtonBuilder,
                 topBuilder: topBuilder,
                 bottomBuilder: bottomBuilder,
+                wrapBuilder: wrapBuilder,
+                backgroundColor: backgroundColor,
+                borderRadius: borderRadius,
+                padding: padding,
               ),
             ),
           )));
@@ -108,65 +112,92 @@ Future<T?> showSheet<T>(
   double? heightFactor,
   Color? backgroundColor,
   double? borderRadius,
+  bool expand = false,
+  bool fromRoot = true,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
-  return await showModalBottomSheet<T>(
-    context: context,
-    clipBehavior: Clip.antiAlias,
-    elevation: 8,
-    backgroundColor: backgroundColor ??
-        context.themeColor(
-          light: Colors.grey.shade100,
-          dark: Colors.grey.shade900,
-        ),
-    constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
-    isScrollControlled: true,
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-      top: Radius.circular(borderRadius ?? 16),
-    )),
-    builder: (BuildContext context) => FractionallySizedBox(
-      heightFactor: heightFactor ?? 0.7,
-      child: SafeArea(
-          bottom: false,
-          child: _buildContent(
-            context,
-            wrapBuilder: wrapBuilder,
-            padding: padding,
-            builder: () => itemCount > 1
-                ? DraggableScrollableSheet(
-                    initialChildSize: 1,
-                    minChildSize: 0.9,
-                    maxChildSize: 1,
-                    snap: true,
-                    builder: (_, controller) => ListView.builder(
-                      controller: controller,
-                      itemCount: itemCount,
-                      itemBuilder: (_, index) => itemBuilder(index),
-                    ),
+  MediaQueryData query = MediaQuery.of(context);
+  double screenWidth = query.size.width;
+  Widget _builder(BuildContext context) => FractionallySizedBox(
+        heightFactor: heightFactor ?? 0.7,
+        child: SafeArea(
+            bottom: false,
+            child: _buildDialogWithContent(
+              context,
+              itemCount: itemCount,
+              itemBuilder: itemBuilder,
+              closeButtonBuilder: closeButtonBuilder,
+              topBuilder: topBuilder,
+              bottomBuilder: bottomBuilder,
+              wrapBuilder: wrapBuilder,
+              backgroundColor: backgroundColor,
+              borderRadius: borderRadius,
+              padding: padding,
+              controller: ModalScrollController.of(context),
+            )),
+      );
+
+  return screenWidth <= 600
+      ? fromRoot
+          // bottom sheet from root
+          ? await CupertinoScaffold.showCupertinoModalBottomSheet<T>(
+              context: context,
+              backgroundColor: backgroundColor ??
+                  context.themeColor(
+                    light: Colors.grey.shade100,
+                    dark: Colors.grey.shade900,
+                  ),
+              expand: expand,
+              builder: _builder,
+            )
+          // bottom sheet from current context
+          : await showCupertinoModalBottomSheet<T>(
+              context: context,
+              expand: expand,
+              builder: _builder,
+            )
+      // bottom sheet dialog for large screen
+      : await showCustomModalBottomSheet<T>(
+          context: context,
+          containerWidget: (_, animation, child) => LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) => constraints.maxWidth > 600
+                ? Padding(
+                    padding: EdgeInsets.symmetric(horizontal: ((constraints.maxWidth - 600) / 2), vertical: 20),
+                    child: child,
                   )
-                : itemBuilder(0),
-            closeButtonBuilder: closeButtonBuilder,
-            topBuilder: topBuilder,
-            bottomBuilder: bottomBuilder,
-          )),
-    ),
-  );
+                : child,
+          ),
+          elevation: 8,
+          expand: expand,
+          builder: _builder,
+        );
 }
 
-/// _buildContent return a widget that will be shown in the dialog or bottom of the sheet
-Widget _buildContent<T>(
+/// _buildDialogWithContent build dialog and content
+Widget _buildDialogWithContent(
   BuildContext context, {
-  required Widget Function() builder,
-  Widget Function(Widget)? wrapBuilder,
+  int itemCount = 1,
+  required Widget Function(int) itemBuilder,
   Widget Function()? closeButtonBuilder,
   Widget Function()? topBuilder,
   Widget Function()? bottomBuilder,
+  Widget Function(Widget)? wrapBuilder,
+  Color? backgroundColor,
+  double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
+  ScrollController? controller,
 }) {
   final content = Stack(
     children: [
-      Padding(padding: padding, child: builder()),
+      Padding(
+          padding: padding,
+          child: itemCount > 1
+              ? ListView.builder(
+                  controller: controller,
+                  itemCount: itemCount,
+                  itemBuilder: (_, index) => itemBuilder(index),
+                )
+              : itemBuilder(0)),
       if (closeButtonBuilder != null) closeButtonBuilder(),
       if (closeButtonBuilder == null)
         Positioned(
@@ -185,7 +216,13 @@ Widget _buildContent<T>(
           child: IconButton(
             iconSize: 38,
             color: Colors.black,
-            icon: const Icon(Icons.cancel),
+            icon: const Icon(Icons.cancel, shadows: [
+              BoxShadow(
+                color: Colors.black26,
+                offset: Offset(2, 2),
+                blurRadius: 5,
+              ),
+            ]),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -197,5 +234,25 @@ Widget _buildContent<T>(
   if (wrapBuilder != null) {
     return wrapBuilder(content);
   }
-  return content;
+
+  return Container(
+    clipBehavior: Clip.antiAlias,
+    decoration: BoxDecoration(
+      color: backgroundColor ??
+          context.themeColor(
+            light: Colors.grey.shade100,
+            dark: Colors.grey.shade900,
+          ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.2),
+          spreadRadius: 1,
+          blurRadius: 2,
+          offset: const Offset(1, 1), // changes position of shadow
+        )
+      ],
+      borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
+    ),
+    child: content,
+  );
 }

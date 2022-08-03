@@ -11,7 +11,7 @@ import '../dialog.dart';
 main() => app.start(
       appName: 'dialog',
       routes: {
-        '/': (context, state, data) => const DialogExample(),
+        '/': (context, state, data) => cupertinoBottomSheet(const DialogExample()),
       },
     );
 
@@ -368,12 +368,21 @@ class DialogExample extends StatelessWidget {
                 child: const Text('Close'),
                 onPressed: () => Navigator.pop(context),
               ))),
-          heightFactor: 0.8,
+          heightFactor: 0.95,
+          backgroundColor: Colors.red,
           itemBuilder: (_) => Column(
-            children: const [
-              SizedBox(height: 180, child: Placeholder()),
-              Text('hello world'),
-              SizedBox(height: 20),
+            children: [
+              const SizedBox(height: 180, child: Placeholder()),
+              const Text('hello world'),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                  child: const Text('show sheet'),
+                  onPressed: () => showSheet(
+                        context,
+                        fromRoot: false,
+                        heightFactor: 0.95,
+                        itemBuilder: (_) => const Text('hello'),
+                      ))
             ],
           ),
         ),
