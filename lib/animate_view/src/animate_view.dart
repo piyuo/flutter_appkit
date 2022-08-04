@@ -158,6 +158,7 @@ class AnimateView extends StatelessWidget {
   /// AnimateView<int>(items: gridItems)
   /// ```
   const AnimateView({
+    required this.animateViewProvider,
     required this.itemBuilder,
     this.crossAxisCount = 1,
     this.shrinkWrap = false,
@@ -167,6 +168,9 @@ class AnimateView extends StatelessWidget {
     this.childAspectRatio = 1,
     Key? key,
   }) : super(key: key);
+
+  /// animateViewProvider is the provider of the animate view
+  final AnimateViewProvider animateViewProvider;
 
   /// itemBuilder is builder use index to build item
   final Widget Function(int index) itemBuilder;
@@ -215,25 +219,23 @@ class AnimateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AnimateViewProvider>(
-      builder: (context, provide, _) => Shifter(
-        reverse: provide._shifterReverse,
-        vertical: provide._shifterVertical,
-        newChildKey: provide._gridKey,
-        child: AnimateGrid(
-          controller: controller,
-          shrinkWrap: shrinkWrap,
-          mainAxisSpacing: mainAxisSpacing,
-          crossAxisSpacing: crossAxisSpacing,
-          childAspectRatio: childAspectRatio,
-          key: provide._gridKey,
-          crossAxisCount: crossAxisCount,
-          initialItemCount: provide._length,
-          itemBuilder: (context, index, animation) {
-            Widget widget = itemBuilder(index);
-            return _slideIt(widget, animation);
-          },
-        ),
+    return Shifter(
+      reverse: animateViewProvider._shifterReverse,
+      vertical: animateViewProvider._shifterVertical,
+      newChildKey: animateViewProvider._gridKey,
+      child: AnimateGrid(
+        controller: controller,
+        shrinkWrap: shrinkWrap,
+        mainAxisSpacing: mainAxisSpacing,
+        crossAxisSpacing: crossAxisSpacing,
+        childAspectRatio: childAspectRatio,
+        key: animateViewProvider._gridKey,
+        crossAxisCount: crossAxisCount,
+        initialItemCount: animateViewProvider._length,
+        itemBuilder: (context, index, animation) {
+          Widget widget = itemBuilder(index);
+          return _slideIt(widget, animation);
+        },
       ),
     );
   }

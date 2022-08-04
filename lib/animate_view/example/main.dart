@@ -382,13 +382,16 @@ class _AnimationExampleState extends State<AnimationExample> {
                     },
                   ),
                 ]),
-                Expanded(
-                    child: AnimateView(
-                  itemBuilder: (index) => itemBuilder(true, index),
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 20,
-                  crossAxisCount: 1,
-                )),
+                Consumer<AnimateViewProvider>(
+                  builder: (context, provide, _) => Expanded(
+                      child: AnimateView(
+                    animateViewProvider: provide,
+                    itemBuilder: (index) => itemBuilder(true, index),
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 20,
+                    crossAxisCount: 1,
+                  )),
+                ),
               ])),
     );
   }
@@ -454,13 +457,16 @@ class _AnimationExampleState extends State<AnimationExample> {
                     },
                   ),
                 ]),
-                Expanded(
-                    child: AnimateView(
-                  itemBuilder: (index) => itemBuilder(false, index),
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 20,
-                  crossAxisCount: 3,
-                )),
+                Consumer<AnimateViewProvider>(
+                  builder: (context, provide, _) => Expanded(
+                      child: AnimateView(
+                    animateViewProvider: provide,
+                    itemBuilder: (index) => itemBuilder(false, index),
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 20,
+                    crossAxisCount: 3,
+                  )),
+                ),
               ])),
     );
   }
@@ -496,10 +502,13 @@ class _AnimationExampleState extends State<AnimationExample> {
                               child: const Center(child: Text('footer')),
                             );
                           }
-                          return AnimateView(
-                            controller: scrollController,
-                            itemBuilder: (index) => itemBuilder(true, index),
-                            shrinkWrap: true,
+                          return Consumer<AnimateViewProvider>(
+                            builder: (context, provide, _) => AnimateView(
+                              animateViewProvider: provide,
+                              controller: scrollController,
+                              itemBuilder: (index) => itemBuilder(true, index),
+                              shrinkWrap: true,
+                            ),
                           );
                         })),
               ])),
