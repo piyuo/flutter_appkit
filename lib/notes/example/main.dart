@@ -314,6 +314,7 @@ class NotesExample extends StatelessWidget {
                   ),
                   Expanded(
                     child: DynamicList<String>(
+                      animateViewProvider: provide,
                       headerBuilder: () => delta.SearchBox(
                         controller: _searchBoxController,
                       ),
@@ -341,6 +342,7 @@ class NotesExample extends StatelessWidget {
                 child: Column(children: [
                   Expanded(
                       child: DynamicList<String>(
+                    animateViewProvider: provide,
                     items: const ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'],
                     selectedItems: const ['b'],
                     onRefresh: () async {
@@ -375,6 +377,7 @@ class NotesExample extends StatelessWidget {
                   ),
                   Expanded(
                     child: DynamicGrid<String>(
+                      animateViewProvider: provide,
                       headerBuilder: () => delta.SearchBox(
                         controller: _searchBoxController,
                       ),
@@ -406,8 +409,9 @@ class NotesExample extends StatelessWidget {
             create: (context) => _SelectedController(),
           )
         ],
-        child: Consumer<_SelectedController>(
-            builder: (context, selectedController, child) => MasterDetailView<String>(
+        child: Consumer2<_SelectedController, animate_view.AnimateViewProvider>(
+            builder: (context, selectedController, animateViewProvider, child) => MasterDetailView<String>(
+                  animateViewProvider: animateViewProvider,
                   headerBuilder: () => delta.SearchBox(
                     prefixIcon: IconButton(
                       icon: const Icon(Icons.menu),
@@ -555,8 +559,8 @@ class NotesExample extends StatelessWidget {
             create: (context) => _SelectedController(),
           )
         ],
-        child: Consumer<_SelectedController>(
-          builder: (context, selectedController, child) => TagSplitView(
+        child: Consumer2<_SelectedController, animate_view.AnimateViewProvider>(
+          builder: (context, selectedController, animateViewProvider, child) => TagSplitView(
               tagView: TagView<SampleFilter>(
                 onTagSelected: (value) => debugPrint('$value selected'),
                 tags: [
@@ -589,6 +593,7 @@ class NotesExample extends StatelessWidget {
                 ],
               ),
               child: MasterDetailView<String>(
+                animateViewProvider: animateViewProvider,
                 items: const ['a', 'b', 'c', 'd', 'e'],
                 selectedItems: const ['a'],
                 listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
@@ -654,35 +659,43 @@ class NotesExample extends StatelessWidget {
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
           ),
-//          ChangeNotifierProvider<NotesController>(
-          //          create: (context) => NotesController(),
-          //      )
+          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
+            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
+          ),
         ],
-        child: MasterDetailView<String>(
-          items: const [],
-          selectedItems: const [],
-          listBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
-          gridBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
-          contentBuilder: () => const Text('detail view'),
-        ));
+        child: Consumer<animate_view.AnimateViewProvider>(
+            builder: (context, animateViewProvider, _) => MasterDetailView<String>(
+                  animateViewProvider: animateViewProvider,
+                  items: const [],
+                  selectedItems: const [],
+                  listBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
+                  gridBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
+                  contentBuilder: () => const Text('detail view'),
+                )));
   }
 
   Widget _notesView(BuildContext context) {
-    return ChangeNotifierProvider<database.DatabaseProvider>(
-        create: (_) {
-          return database.DatabaseProvider(
-            name: 'test',
-          )..load().then((database) {
-              NotesProvider.of<sample.Person>(context).load(
-                  context,
-                  data.DatasetDatabase<sample.Person>(
-                    database,
-                    objectBuilder: () => sample.Person(),
-                  ));
-            });
-        },
-        child: Consumer2<database.DatabaseProvider, NotesProvider<sample.Person>>(
-          builder: (context, databaseProvider, notesProvider, _) => NotesView<sample.Person>(
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<database.DatabaseProvider>(create: (_) {
+            return database.DatabaseProvider(
+              name: 'test',
+            )..load().then((database) {
+                NotesProvider.of<sample.Person>(context).load(
+                    context,
+                    data.DatasetDatabase<sample.Person>(
+                      database,
+                      objectBuilder: () => sample.Person(),
+                    ));
+              });
+          }),
+          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
+            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
+          ),
+        ],
+        child: Consumer3<database.DatabaseProvider, NotesProvider<sample.Person>, animate_view.AnimateViewProvider>(
+          builder: (context, databaseProvider, notesProvider, animateViewProvider, _) => NotesView<sample.Person>(
+            animateViewProvider: animateViewProvider,
             viewProvider: notesProvider,
             contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
             tagViewHeader: const Text('hello world'),

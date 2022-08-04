@@ -4,6 +4,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/responsive/responsive.dart' as responsive;
+import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'notes_provider.dart';
 import 'master_detail_view.dart';
 import 'tag_split_view.dart';
@@ -12,6 +13,7 @@ import 'checkable_header.dart';
 
 class NotesView<T extends pb.Object> extends StatelessWidget {
   const NotesView({
+    required this.animateViewProvider,
     required this.viewProvider,
     required this.contentBuilder,
     this.leftTools,
@@ -19,6 +21,9 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     this.tagViewHeader,
     Key? key,
   }) : super(key: key);
+
+  /// animateViewProvider is the provider of the animate view
+  final animate_view.AnimateViewProvider animateViewProvider;
 
   /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
   final NotesProvider<T> viewProvider;
@@ -103,6 +108,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     )
                   : null,
               child: MasterDetailView<T>(
+                animateViewProvider: animateViewProvider,
                 isReady: viewProvider.isReadyToShow,
                 items: viewProvider.dataView != null ? viewProvider.dataView!.displayRows : [],
                 selectedItems: viewProvider.dataView != null ? viewProvider.dataView!.getSelectedRows() : [],

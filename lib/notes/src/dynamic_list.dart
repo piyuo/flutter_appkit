@@ -47,6 +47,7 @@ class DynamicList<T> extends Selectable<T> {
   ///                )));
   /// ```
   const DynamicList({
+    required this.animateViewProvider,
     required List<T> items,
     required List<T> selectedItems,
     bool isCheckMode = false,
@@ -80,6 +81,9 @@ class DynamicList<T> extends Selectable<T> {
           isReady: isReady,
           key: key,
         );
+
+  /// animateViewProvider is the provider of the animate view
+  final animate_view.AnimateViewProvider animateViewProvider;
 
   /// onRefresh is the callback function when user refresh the list
   final Future<void> Function()? onRefresh;
@@ -130,6 +134,7 @@ class DynamicList<T> extends Selectable<T> {
               }
 
               return animate_view.AnimateView(
+                animateViewProvider: animateViewProvider,
                 controller: animatedViewScrollController,
                 shrinkWrap: true,
                 itemBuilder: (int index) {

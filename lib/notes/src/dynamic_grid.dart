@@ -47,6 +47,7 @@ class DynamicGrid<T> extends Selectable<T> {
   ///                )));
   /// ```
   const DynamicGrid({
+    required this.animateViewProvider,
     required List<T> items,
     required List<T> selectedItems,
     bool isCheckMode = false,
@@ -92,6 +93,9 @@ class DynamicGrid<T> extends Selectable<T> {
 
   /// scrollController is list scroll controller
   final ScrollController? scrollController;
+
+  /// animateViewProvider is the provider of the animate view
+  final animate_view.AnimateViewProvider animateViewProvider;
 
   /// animatedViewScrollController is animated view scroll controller inside list
   final ScrollController? animatedViewScrollController;
@@ -147,6 +151,7 @@ class DynamicGrid<T> extends Selectable<T> {
               }
 
               return animate_view.AnimateView(
+                animateViewProvider: animateViewProvider,
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: 40,
                 mainAxisSpacing: 5,
