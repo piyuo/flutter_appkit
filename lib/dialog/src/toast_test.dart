@@ -24,7 +24,7 @@ void main() {
   group('[toast]', () {
     testWidgets('should show loading and dismiss', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) async => await toastWait(context)),
+        sampleApp(onPressed: (context) => toastWait(context)),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));
@@ -37,7 +37,7 @@ void main() {
 
     testWidgets('should show progress and dismiss', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) async => await toastProgress(context, 0)),
+        sampleApp(onPressed: (context) => toastProgress(context, 0)),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));
@@ -51,7 +51,7 @@ void main() {
     testWidgets('should show info toast', (WidgetTester tester) async {
       await tester.pumpWidget(
         sampleApp(
-            onPressed: (context) async => await toastInfo(
+            onPressed: (context) async => toastInfo(
                   context,
                   'network is slow than usual',
                 )),
@@ -67,7 +67,7 @@ void main() {
 
     testWidgets('should show ok toast', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) async => await toastDone(context, text: 'hi')),
+        sampleApp(onPressed: (context) => toastDone(context, text: 'hi')),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));
@@ -80,7 +80,7 @@ void main() {
 
     testWidgets('should show wrong toast', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) async => await toastError(context, 'something wrong')),
+        sampleApp(onPressed: (context) => toastError(context, 'something wrong')),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));

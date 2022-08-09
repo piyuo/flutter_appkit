@@ -141,8 +141,8 @@ Widget _shakeIt(Widget child, animation) {
       builder: (buildContext, _) {
         final aValue = shake(animation.value) * shakeShift;
         return Transform.translate(
-          child: child,
           offset: Offset(aValue, 0),
+          child: child,
         );
       });
 }

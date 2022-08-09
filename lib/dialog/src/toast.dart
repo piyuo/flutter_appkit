@@ -51,12 +51,12 @@ void _applyTheme(
 }
 
 /// toastWidget toast a widget
-Future<void> toastWidget(
+void toastWidget(
   BuildContext context,
   Widget child,
-) async {
+) {
   _applyTheme(context);
-  return await EasyLoading.show(
+  EasyLoading.show(
       maskType: EasyLoadingMaskType.clear,
       indicator: Column(children: [
         child,
@@ -64,26 +64,26 @@ Future<void> toastWidget(
 }
 
 /// toastMask
-Future<void> toastMask(BuildContext context) async {
+void toastMask(BuildContext context) {
   _applyTheme(
     context,
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
-  return await EasyLoading.show(
+  EasyLoading.show(
     dismissOnTap: false,
   );
 }
 
 /// toastWait show wait toast
-Future<void> toastWait(
+void toastWait(
   BuildContext context, {
   String? text,
-}) async {
+}) {
   _applyTheme(
     context,
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
-  return await EasyLoading.show(
+  EasyLoading.show(
     status: text ?? context.i18n.hintPleaseWait,
     maskType: EasyLoadingMaskType.black,
     dismissOnTap: false,
@@ -91,9 +91,9 @@ Future<void> toastWait(
 }
 
 /// toastDone show done toast
-Future<void> toastDone(BuildContext context, {String? text}) async {
+void toastDone(BuildContext context, {String? text}) {
   _applyTheme(context);
-  return await EasyLoading.showSuccess(
+  EasyLoading.showSuccess(
     text ?? context.i18n.hintDone,
     maskType: EasyLoadingMaskType.none,
     dismissOnTap: true,
@@ -101,26 +101,26 @@ Future<void> toastDone(BuildContext context, {String? text}) async {
 }
 
 /// toastProgress show progress toast
-Future<void> toastProgress(BuildContext context, double value, {String? text}) async {
+void toastProgress(BuildContext context, double value, {String? text}) {
   _applyTheme(context);
   if (value >= 1) {
     dismissToast();
   }
 
-  return await EasyLoading.showProgress(
+  EasyLoading.showProgress(
     value,
-    status: text ?? (value * 100).round().toString() + ' %',
+    status: text ?? '${(value * 100).round()} %',
     maskType: EasyLoadingMaskType.clear,
   );
 }
 
 /// toastInfo
-Future<void> toastInfo(
+void toastInfo(
   BuildContext context,
   String text, {
   Widget? widget,
   Duration autoHideDuration = const Duration(milliseconds: 2000),
-}) async {
+}) {
   _applyTheme(context);
 
   if (kReleaseMode) {
@@ -130,7 +130,7 @@ Future<void> toastInfo(
     });
   }
 
-  return await EasyLoading.show(
+  EasyLoading.show(
     status: text,
     indicator: widget,
     dismissOnTap: true,
@@ -138,14 +138,14 @@ Future<void> toastInfo(
 }
 
 /// toastError show error toast
-Future<void> toastError(BuildContext context, String text) async {
+void toastError(BuildContext context, String text) {
   _applyTheme(context);
   EasyLoading.instance
     ..backgroundColor = Colors.red[700]
     ..loadingStyle = EasyLoadingStyle.custom
     ..indicatorColor = Colors.white
     ..textColor = Colors.white;
-  return await EasyLoading.showError(
+  EasyLoading.showError(
     text,
     maskType: EasyLoadingMaskType.none,
     duration: const Duration(seconds: 5),

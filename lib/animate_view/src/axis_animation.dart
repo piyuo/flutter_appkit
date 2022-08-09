@@ -57,7 +57,6 @@ class AxisAnimation extends StatelessWidget {
       reverse: reverse,
       transitionBuilder: (Widget child, Animation<double> animation, Animation<double> secondaryAnimation) {
         return SharedAxisTransition(
-          child: child,
           animation: animation,
           secondaryAnimation: secondaryAnimation,
           transitionType: type == AxisAnimationType.horizontal
@@ -65,6 +64,7 @@ class AxisAnimation extends StatelessWidget {
               : type == AxisAnimationType.vertical
                   ? SharedAxisTransitionType.vertical
                   : SharedAxisTransitionType.scaled,
+          child: child,
         );
       },
       child: child,

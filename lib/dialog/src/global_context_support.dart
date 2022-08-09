@@ -37,11 +37,11 @@ class GlobalContextSupport extends StatelessWidget {
     Key? key,
     required this.child,
   }) : super(key: key);
-
+/*
   _GlobalContextSupportState? of(BuildContext context) {
     return context.findAncestorStateOfType<_GlobalContextSupportState>();
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return _GlobalContextSupport(child: child);

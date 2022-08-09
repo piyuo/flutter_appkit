@@ -82,13 +82,13 @@ class _DocPage extends StatelessWidget {
                       child: Align(
                           alignment: Alignment.center,
                           child: ElevatedButton(
-                            child: Text(context.i18n.backButtonText),
                             style: ButtonStyle(
                                 padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(40, 20, 40, 20)),
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                                 )),
                             onPressed: () => Navigator.pop(context),
+                            child: Text(context.i18n.backButtonText),
                           )),
                     )
                   ]),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
@@ -256,7 +258,7 @@ class DialogExample extends StatelessWidget {
         child: const Text('progress'),
         onPressed: () async {
           for (int i = 0; i <= 10; i++) {
-            await toastProgress(context, i / 10);
+            toastProgress(context, i / 10);
             await Future.delayed(const Duration(milliseconds: 500));
           }
         },
@@ -269,7 +271,7 @@ class DialogExample extends StatelessWidget {
             if (i > 5) {
               text = 'creating';
             }
-            await toastProgress(context, i / 10, text: text);
+            toastProgress(context, i / 10, text: text);
             await Future.delayed(const Duration(milliseconds: 500));
           }
         },
@@ -315,7 +317,7 @@ class DialogExample extends StatelessWidget {
         onPressed: () => showPopup(
           context,
           padding: const EdgeInsets.only(top: 20),
-          bottomBuilder: () => Positioned(
+          bottomBuilder: (context) => Positioned(
               bottom: 20,
               left: 0,
               right: 0,
@@ -324,7 +326,7 @@ class DialogExample extends StatelessWidget {
                 child: const Text('Close'),
                 onPressed: () => Navigator.pop(context),
               ))),
-          itemBuilder: (index) => Column(
+          itemBuilder: (context, index) => Column(
             children: const [
               SizedBox(height: 180, child: Placeholder()),
               SizedBox(height: 20),
@@ -339,7 +341,7 @@ class DialogExample extends StatelessWidget {
         onPressed: () => showPopup(
           context,
           itemCount: 11,
-          itemBuilder: (index) => const [
+          itemBuilder: (context, index) => const [
             SizedBox(height: 180, child: Placeholder()),
             SizedBox(height: 20),
             SizedBox(height: 180, child: Placeholder()),
@@ -359,7 +361,7 @@ class DialogExample extends StatelessWidget {
         onPressed: () => showSheet(
           context,
           padding: const EdgeInsets.only(top: 20),
-          bottomBuilder: () => Positioned(
+          bottomBuilder: (context) => Positioned(
               bottom: 20,
               left: 0,
               right: 0,
@@ -369,7 +371,7 @@ class DialogExample extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
               ))),
           backgroundColor: Colors.red,
-          itemBuilder: (_) => Column(
+          itemBuilder: (context, _) => Column(
             children: [
               const SizedBox(height: 180, child: Placeholder()),
               const Text('hello world'),
@@ -380,7 +382,7 @@ class DialogExample extends StatelessWidget {
                         context,
                         fromRoot: false,
                         heightFactor: 0.95,
-                        itemBuilder: (_) => const Text('hello'),
+                        itemBuilder: (context, _) => const Text('hello'),
                       ))
             ],
           ),
@@ -392,7 +394,7 @@ class DialogExample extends StatelessWidget {
           context,
           heightFactor: 0.8,
           itemCount: 11,
-          itemBuilder: (index) => const [
+          itemBuilder: (context, index) => const [
             SizedBox(height: 180, child: Placeholder()),
             SizedBox(height: 20),
             SizedBox(height: 180, child: Placeholder()),

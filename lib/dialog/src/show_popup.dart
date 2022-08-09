@@ -24,18 +24,18 @@ Widget cupertinoBottomSheet(Widget child) {
 Future<T?> showPopup<T>(
   BuildContext context, {
   int itemCount = 1,
-  required Widget Function(int) itemBuilder,
-  Widget Function()? closeButtonBuilder,
-  Widget Function()? topBuilder,
-  Widget Function()? bottomBuilder,
-  Widget Function(Widget)? wrapBuilder,
+  required delta.WidgetContextIndexBuilder itemBuilder,
+  delta.WidgetContextBuilder? closeButtonBuilder,
+  delta.WidgetContextBuilder? topBuilder,
+  delta.WidgetContextBuilder? bottomBuilder,
+  delta.WidgetContextWrapBuilder? wrapBuilder,
   double? maxWidth,
   double? heightFactor,
   Color? backgroundColor,
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
-  Widget build() => FractionallySizedBox(
+  Widget _build(BuildContext ctx) => FractionallySizedBox(
       heightFactor: heightFactor ?? 0.85,
       child: Align(
           alignment: Alignment.center,
@@ -60,7 +60,7 @@ Future<T?> showPopup<T>(
                 borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
               ),
               child: _buildDialogWithContent(
-                context,
+                ctx,
                 itemCount: itemCount,
                 itemBuilder: itemBuilder,
                 closeButtonBuilder: closeButtonBuilder,
@@ -80,9 +80,9 @@ Future<T?> showPopup<T>(
     barrierLabel: '',
     transitionBuilder: (ctx, a1, a2, child) {
       var curve = Curves.easeInOut.transform(a1.value);
-      return Transform.scale(scale: curve, child: build());
+      return Transform.scale(scale: curve, child: _build(ctx));
     },
-    pageBuilder: (context, a1, a2) => build(),
+    pageBuilder: (ctx, a1, a2) => _build(ctx),
   );
 }
 
@@ -103,11 +103,11 @@ Future<T?> showPopup<T>(
 Future<T?> showSheet<T>(
   BuildContext context, {
   int itemCount = 1,
-  required Widget Function(int) itemBuilder,
-  Widget Function()? closeButtonBuilder,
-  Widget Function()? topBuilder,
-  Widget Function()? bottomBuilder,
-  Widget Function(Widget)? wrapBuilder,
+  required delta.WidgetContextIndexBuilder itemBuilder,
+  delta.WidgetContextBuilder? closeButtonBuilder,
+  delta.WidgetContextBuilder? topBuilder,
+  delta.WidgetContextBuilder? bottomBuilder,
+  delta.WidgetContextWrapBuilder? wrapBuilder,
   double? maxWidth,
   double? heightFactor,
   Color? backgroundColor,
@@ -118,12 +118,12 @@ Future<T?> showSheet<T>(
 }) async {
   MediaQueryData query = MediaQuery.of(context);
   double screenWidth = query.size.width;
-  Widget _builder(BuildContext context) => FractionallySizedBox(
+  Widget _builder(BuildContext ctx) => FractionallySizedBox(
         heightFactor: heightFactor ?? 0.85,
         child: SafeArea(
             bottom: false,
             child: _buildDialogWithContent(
-              context,
+              ctx,
               itemCount: itemCount,
               itemBuilder: itemBuilder,
               closeButtonBuilder: closeButtonBuilder,
@@ -177,11 +177,11 @@ Future<T?> showSheet<T>(
 Widget _buildDialogWithContent(
   BuildContext context, {
   int itemCount = 1,
-  required Widget Function(int) itemBuilder,
-  Widget Function()? closeButtonBuilder,
-  Widget Function()? topBuilder,
-  Widget Function()? bottomBuilder,
-  Widget Function(Widget)? wrapBuilder,
+  required delta.WidgetContextIndexBuilder itemBuilder,
+  delta.WidgetContextBuilder? closeButtonBuilder,
+  delta.WidgetContextBuilder? topBuilder,
+  delta.WidgetContextBuilder? bottomBuilder,
+  delta.WidgetContextWrapBuilder? wrapBuilder,
   Color? backgroundColor,
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
@@ -195,10 +195,10 @@ Widget _buildDialogWithContent(
               ? ListView.builder(
                   controller: controller,
                   itemCount: itemCount,
-                  itemBuilder: (_, index) => itemBuilder(index),
+                  itemBuilder: (_, index) => itemBuilder(context, index),
                 )
-              : itemBuilder(0)),
-      if (closeButtonBuilder != null) closeButtonBuilder(),
+              : itemBuilder(context, 0)),
+      if (closeButtonBuilder != null) closeButtonBuilder(context),
       if (closeButtonBuilder == null)
         Positioned(
           top: 13,
@@ -226,13 +226,13 @@ Widget _buildDialogWithContent(
             onPressed: () => Navigator.pop(context),
           ),
         ),
-      topBuilder != null ? topBuilder() : const SizedBox(),
-      bottomBuilder != null ? bottomBuilder() : const SizedBox(),
+      topBuilder != null ? topBuilder(context) : const SizedBox(),
+      bottomBuilder != null ? bottomBuilder(context) : const SizedBox(),
     ],
   );
 
   if (wrapBuilder != null) {
-    return wrapBuilder(content);
+    return wrapBuilder(context, content);
   }
 
   return Container(
