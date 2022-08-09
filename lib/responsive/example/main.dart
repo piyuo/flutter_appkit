@@ -79,7 +79,7 @@ class ResponsiveExample extends StatelessWidget {
       onPressed: () => showResponsiveDialog<void>(
         context,
         itemCount: 11,
-        itemBuilder: (index) => const [
+        itemBuilder: (context, index) => const [
           SizedBox(height: 180, child: Placeholder()),
           SizedBox(height: 20),
           SizedBox(height: 180, child: Placeholder()),

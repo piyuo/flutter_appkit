@@ -32,7 +32,7 @@ Future<void> showToolSheet(
     maxWidth: maxWidth,
     heightFactor: heightFactor,
     itemCount: items.length,
-    itemBuilder: (index) {
+    itemBuilder: (context, index) {
       final item = items[index];
       Widget? widget;
       if (item is ToolButton) {

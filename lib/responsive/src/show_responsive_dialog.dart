@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'responsive1.dart';
 
 /// showResponsiveDialog responsive show popup if big screen, bottom sheet in small screen
@@ -20,11 +21,11 @@ import 'responsive1.dart';
 Future<T?> showResponsiveDialog<T>(
   BuildContext context, {
   int itemCount = 1,
-  required Widget Function(int) itemBuilder,
-  Widget Function()? closeButtonBuilder,
-  Widget Function()? topBuilder,
-  Widget Function()? bottomBuilder,
-  Widget Function(Widget)? wrapBuilder,
+  required delta.WidgetContextIndexBuilder itemBuilder,
+  delta.WidgetContextBuilder? closeButtonBuilder,
+  delta.WidgetContextBuilder? topBuilder,
+  delta.WidgetContextBuilder? bottomBuilder,
+  delta.WidgetContextWrapBuilder? wrapBuilder,
   double? maxWidth,
   double? heightFactor = 0.7,
   Color? backgroundColor,
