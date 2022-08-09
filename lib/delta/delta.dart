@@ -1,5 +1,6 @@
 library delta;
 
+export 'src/types.dart';
 export 'src/test.dart';
 export 'src/pixel_ratio.dart';
 export 'src/page_route.dart';
@@ -38,4 +39,3 @@ export 'src/shimmer.dart';
 export 'src/menu_button.dart';
 export 'src/button_panel.dart';
 export 'src/search_trigger.dart';
-export 'src/types.dart';
