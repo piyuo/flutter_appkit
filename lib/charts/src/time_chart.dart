@@ -42,13 +42,14 @@ class TimeChart extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-          Expanded(
+          const Expanded(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0, left: 6.0),
-              child: LineChart(
+              child: /*LineChart(
                 sampleData1(context),
                 swapAnimationDuration: const Duration(milliseconds: 250),
-              ),
+              )*/
+                  SizedBox(),
             ),
           ),
           const SizedBox(
@@ -58,7 +59,7 @@ class TimeChart extends StatelessWidget {
       ),
     );
   }
-
+/*
   LineChartData sampleData1(BuildContext context) => LineChartData(
         lineTouchData: lineTouchData1,
         gridData: FlGridData(
@@ -181,7 +182,7 @@ class TimeChart extends StatelessWidget {
           FlSpot(12, 200.2),
           FlSpot(13, 100.8),
         ],
-      );
+      );*/
 }
 
 List<Color> gradientColors = [
