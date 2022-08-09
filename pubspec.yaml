@@ -22,7 +22,8 @@ dependencies:
   protobuf: ^2.0.1
   shared_preferences: ^2.0.12
   meta: ^1.7.0
-  provider: ^6.0.1
+  provider: ^6.0.3
+  nested: ^1.0.0
   intl: ^0.17.0
   uuid: ^3.0.6
   url_launcher: ^6.0.17
@@ -77,6 +78,8 @@ dev_dependencies:
   mockito: ^5.1.0
   analyzer: ^3.4.1
   flutter_lints: ^2.0.1
+dependency_overrides:
+  analyzer: ^4.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
