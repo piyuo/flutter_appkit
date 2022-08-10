@@ -37,10 +37,10 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       onSearchBegin: onSearchBegin,
       onSearchEnd: onSearchEnd,
     );
-    subscription = eventbus.listen<NotesRefillEvent>((BuildContext context, event) async {
+    subscription = eventbus.listen<NotesRefillEvent>((event) async {
       if (dataView != null) {
         creating = null;
-        await dataView!.load(context);
+        await dataView!.load(delta.globalContext);
         if (event.isNew) {
           dataView!.selectedIDs = [];
         }
@@ -48,7 +48,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
         if (!event.isRemove) {
           scrollToTop();
         }
-        await refill(context, isRemove: event.isRemove);
+        await refill(delta.globalContext, isRemove: event.isRemove);
         notifyListeners();
       }
     });

@@ -150,7 +150,7 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         const SizedBox(height: 40),
         InkWell(
-            onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
+            onTap: () => eventbus.broadcast(eventbus.EmailSupportEvent()),
             child: Icon(
               Icons.email,
               color: Colors.orange[200],
@@ -158,7 +158,7 @@ class AwaitErrorMessage extends StatelessWidget {
             )),
         const SizedBox(width: 10),
         InkWell(
-            onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
+            onTap: () => eventbus.broadcast(eventbus.EmailSupportEvent()),
             child: Text(
               context.i18n.errorEmailUsLink,
               textAlign: TextAlign.center,

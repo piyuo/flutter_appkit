@@ -165,7 +165,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await deleteByView(context, [current!]);
-    await eventbus.broadcast(context, NotesRefillEvent(isRemove: true));
+    await eventbus.broadcast(NotesRefillEvent(isRemove: true));
     Navigator.of(context).pop();
   }
 
@@ -179,7 +179,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await archiveByView(context, list);
-    await eventbus.broadcast(context, NotesRefillEvent(isRemove: true));
+    await eventbus.broadcast(NotesRefillEvent(isRemove: true));
     Navigator.of(context).pop();
   }
 
@@ -193,7 +193,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await restoreByView(context, list);
-    await eventbus.broadcast(context, NotesRefillEvent(isRemove: true));
+    await eventbus.broadcast(NotesRefillEvent(isRemove: true));
     Navigator.of(context).pop();
   }
 
@@ -240,7 +240,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   Future<bool> onSubmit(BuildContext context) async {
     _formToItem();
     await dataClient.save(context, [current!]);
-    await eventbus.broadcast(context, NotesRefillEvent(isNew: isNewItem));
+    await eventbus.broadcast(NotesRefillEvent(isNew: isNewItem));
     notifyListeners();
     return true;
   }
