@@ -53,7 +53,6 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   try {
     if (e is log.DiskErrorException) {
       await dialog.alert(
-        delta.globalContext,
         delta.globalContext.i18n.errorDiskErrorMessage,
         warning: true,
         footer: e.toString(),
@@ -63,7 +62,6 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
     }
 
     await dialog.alert(
-      delta.globalContext,
       delta.globalContext.i18n.errorNotified,
       warning: true,
       footer: e.toString(),
@@ -94,7 +92,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
 
   if (e is command.FirewallBlockEvent) {
     dialog.alert(
-      context,
       firewallBlockMessage(context, e.reason),
       warning: true,
       emailUs: true,
@@ -103,7 +100,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
   }
   if (e is command.InternalServerErrorEvent) {
     dialog.alert(
-      context,
       '500 internal server error',
       warning: true,
       emailUs: true,
@@ -113,7 +109,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
 
   if (e is command.ServerNotReadyEvent) {
     dialog.alert(
-      context,
       '501 server not ready',
       warning: true,
       emailUs: true,
@@ -123,7 +118,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
 
   if (e is command.BadRequestEvent) {
     dialog.alert(
-      context,
       '400 bad request',
       warning: true,
       emailUs: true,
@@ -147,7 +141,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
   if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.alert(
-      context,
       context.i18n.errorNetworkTimeoutMessage,
       yes: context.i18n.retryButtonText,
       cancel: context.i18n.cancelButtonText,
@@ -163,7 +156,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.alert(
-          context,
           context.i18n.errorNetworkNoServiceMessage,
           icon: Icons.cloud_off,
           footer: e.exception?.toString(),
@@ -171,7 +163,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
         ); //service not available
       } else {
         dialog.alert(
-          context,
           context.i18n.errorNetworkBlockedMessage,
           footer: e.exception?.toString(),
           icon: Icons.cloud_off,
@@ -182,7 +173,6 @@ Future<void> listened(BuildContext context, dynamic e) async {
       return;
     }
     var result = await dialog.alert(
-      context,
       context.i18n.errorNetworkNoInternetMessage,
       icon: Icons.wifi_off,
       footer: e.exception?.toString(),

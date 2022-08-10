@@ -32,7 +32,6 @@ Future<bool> ask(
   }
 
   final gotoSetting = await dialog.alert(
-    context,
     context.i18n.permissionAsk.replaceAll('%1', name),
     icon: icon,
     iconColor: context.themeColor(

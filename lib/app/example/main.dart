@@ -80,7 +80,7 @@ class AppExampleState extends State<AppExample> {
               OutlinedButton(
                 child: const Text('show alert use global context'),
                 onPressed: () {
-                  dialog.alert(delta.globalContext, 'hello');
+                  dialog.alert('hello');
                 },
               ),
               testing.ExampleButton(
@@ -182,7 +182,7 @@ class AppExampleState extends State<AppExample> {
         OutlinedButton(
             child: const Text('show alert'),
             onPressed: () {
-              dialog.alert(context, 'hello');
+              dialog.alert('hello');
             }),
       ])),
     );
@@ -241,7 +241,7 @@ class AppExampleState extends State<AppExample> {
     return OutlinedButton(
       child: const Text('alert'),
       onPressed: () {
-        dialog.alert(context, 'hello');
+        dialog.alert('hello');
       },
     );
   }

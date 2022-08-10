@@ -69,7 +69,7 @@ class ImageUploadController with ChangeNotifier {
     try {
       String? error = await onUpload(context, file, firstFile);
       if (error != null) {
-        dialog.alert(context, error);
+        dialog.alert(error);
         return;
       }
     } finally {

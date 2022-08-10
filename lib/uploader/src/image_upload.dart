@@ -52,7 +52,7 @@ class ImageUpload extends StatelessWidget {
             operation: DragOperation.copy,
             onCreated: (DropzoneViewController ctrl) => controller.setDropController(ctrl),
             onError: (String? ev) {
-              if (ev != null) dialog.alert(context, ev);
+              if (ev != null) dialog.alert(ev);
             },
             onDrop: (dynamic ev) async => await controller.dropImage(context, ev),
             onHover: () => controller.setDragging(context, true),

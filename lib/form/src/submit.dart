@@ -93,12 +93,11 @@ bool validate(
   required FormGroup formGroup,
 }) {
   if (!formGroup.dirty && formGroup.valid) {
-    dialog.showInfoBanner(context, context.i18n.formSavedBanner);
+    dialog.showInfoBanner(context.i18n.formSavedBanner);
     return false;
   }
   if (!formGroup.valid) {
     dialog.showWarningBanner(
-      context,
       context.i18n.formAttentionBanner,
       backgroundColor: Colors.red.shade400,
       color: Colors.white,
@@ -137,7 +136,7 @@ Future<bool> isAllowToExit(
   required delta.FutureContextCallback<bool> submitCallback,
 }) async {
   if (formGroup.dirty) {
-    var result = await dialog.alert(context, context.i18n.formContentChangedText,
+    var result = await dialog.alert(context.i18n.formContentChangedText,
         buttonYes: true, buttonNo: true, buttonCancel: true, blurry: false);
     if (result == true) {
       // user want save

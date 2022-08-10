@@ -45,7 +45,7 @@ class ShowSearchProvider with ChangeNotifier {
           var suggestion = _suggestions[text];
           final loc = await _geoClient.getLocation(context, suggestion!.id);
           if (loc == null) {
-            dialog.alert(context, 'cant get location, please try another address');
+            dialog.alert('cant get location, please try another address');
             return;
           }
           showLocationToConfirm(loc);
@@ -70,7 +70,7 @@ class ShowSearchProvider with ChangeNotifier {
         }
 
         if (_locations.isEmpty) {
-          dialog.alert(context, context.i18n.placeErrorLocateYourAddress);
+          dialog.alert(context.i18n.placeErrorLocateYourAddress);
           return;
         }
 
