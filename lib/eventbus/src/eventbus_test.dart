@@ -21,7 +21,7 @@ main() {
 
   group('[eventbus]', () {
     test('should remove all listeners', () async {
-      listen<String>((BuildContext ctx, event) async {
+      listen<String>((event) async {
         expect(event, 'hi');
       });
       expect(getListenerCount(), 1);
@@ -30,7 +30,7 @@ main() {
     });
 
     test('should safe cancel subscription', () async {
-      var sub = listen<String>((BuildContext ctx, event) async {
+      var sub = listen<String>((event) async {
         expect(event, 'hi');
       });
       expect(getListenerCount(), 1);
@@ -42,63 +42,63 @@ main() {
 
     test('should broadcast', () async {
       String listened = '';
-      listen<MyEvent>((BuildContext ctx, event) async {
+      listen<MyEvent>((event) async {
         expect(event is MyEvent, true);
         var my = event as MyEvent;
         listened = my.value;
       });
-      await broadcast(testing.Context(), MyEvent()..value = 'hi');
+      await broadcast(MyEvent()..value = 'hi');
       expect(listened, 'hi');
     });
 
     test('should listen on type', () async {
       dynamic eventType;
-      listen<MyEvent>((BuildContext ctx, event) async {
+      listen<MyEvent>((event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(testing.Context(), MyEvent());
+      await broadcast(MyEvent());
       expect(eventType, MyEvent);
     });
 
     test('should not listened', () async {
       dynamic eventType;
-      listen<MyEvent>((BuildContext ctx, event) async {
+      listen<MyEvent>((event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(testing.Context(), MyEvent2());
+      await broadcast(MyEvent2());
       expect(eventType, null);
     });
 
     test('should listen all', () async {
       dynamic eventType;
-      listen((BuildContext ctx, event) async {
+      listen((event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(testing.Context(), MyEvent());
+      await broadcast(MyEvent());
       expect(eventType, MyEvent);
-      await broadcast(testing.Context(), MyEvent2());
+      await broadcast(MyEvent2());
       expect(eventType, MyEvent2);
     });
 
     test('should isolate error', () async {
       dynamic eventType;
-      listen<MyEvent>((_, event) async {
+      listen<MyEvent>((event) async {
         throw 'fail';
       });
-      listen<MyEvent>((_, event) async {
+      listen<MyEvent>((event) async {
         eventType = event.runtimeType;
       });
-      await broadcast(testing.Context(), MyEvent());
+      await broadcast(MyEvent());
       expect(eventType, MyEvent);
     });
 
     test('should unsubscribe', () async {
       dynamic eventType;
-      var sub = listen<MyEvent>((_, event) async {
+      var sub = listen<MyEvent>((event) async {
         eventType = event.runtimeType;
       });
       sub.cancel();
-      await broadcast(testing.Context(), MyEvent());
+      await broadcast(MyEvent());
       expect(eventType, null);
     });
   });

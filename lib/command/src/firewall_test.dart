@@ -11,14 +11,14 @@ void main() {
 
   group('[command-firewall]', () {
     test('should pass firewall', () async {
-      final cmd = pb.Error()..code = "pass-" + generator.randomNumber(5);
+      final cmd = pb.Error()..code = "pass-${generator.randomNumber(5)}";
       final response = firewallBegin(cmd);
       expect(response is FirewallPass, true);
     });
 
     test('should block IN_FLIGHT', () async {
-      final cmd = pb.Error()..code = "flight-" + generator.randomNumber(5);
-      final cmd2 = pb.Error()..code = "not-flight-" + generator.randomNumber(5);
+      final cmd = pb.Error()..code = "flight-${generator.randomNumber(5)}";
+      final cmd2 = pb.Error()..code = "not-flight-${generator.randomNumber(5)}";
       expect(firewallBegin(cmd) is FirewallPass, true);
       expect(firewallBegin(cmd) is FirewallBlock, true); // check again
       expect(firewallBegin(cmd2) is FirewallPass, true); // other command will pass
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('should get response from cache', () async {
-      final cmd = pb.Error()..code = "cache-" + generator.randomNumber(5);
+      final cmd = pb.Error()..code = "cache-${generator.randomNumber(5)}";
       expect(firewallBegin(cmd) is FirewallPass, true);
       firewallEnd(cmd, pb.Error()..code = 'hi');
       final response = firewallBegin(cmd);
@@ -42,14 +42,14 @@ void main() {
     test('should block when command overflow', () async {
       maxAllowPostDuration = const Duration(milliseconds: 900);
       for (int i = 0; i < maxAllowPostCount; i++) {
-        final cmdID = "not-overflow-" + generator.randomNumber(5);
+        final cmdID = "not-overflow-${generator.randomNumber(5)}";
         final cmd = pb.Error()..code = cmdID;
         firewallBegin(cmd) is FirewallPass;
         firewallEnd(cmd, pb.Error()); // set complete
       }
       final countBeforeExpire = memory.length;
       expect(countBeforeExpire >= maxAllowPostCount, true);
-      final cmdID2 = "overflow-" + generator.randomNumber(5);
+      final cmdID2 = "overflow-${generator.randomNumber(5)}";
       final cmd2 = pb.Error()..code = cmdID2;
       expect(firewallBegin(cmd2) is FirewallBlock, true);
       await Future.delayed(const Duration(seconds: 1));

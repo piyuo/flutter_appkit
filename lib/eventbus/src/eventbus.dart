@@ -18,12 +18,12 @@ class Listener {
   final dynamic eventType;
 
   /// callback called when event happen
-  final Future<void> Function(BuildContext context, dynamic event) callback;
+  final Future<void> Function(dynamic event) callback;
 
   /// listen all event and run callback when event type is match
-  Future<void> listen(BuildContext context, dynamic event) async {
+  Future<void> listen(dynamic event) async {
     if (eventType == dynamic || eventType == event.runtimeType) {
-      await callback(context, event);
+      await callback(event);
     }
   }
 }
@@ -61,7 +61,7 @@ int getListenerCount() {
 /// sub.cancel();
 /// ```
 Subscription listen<T>(
-  Future<void> Function(BuildContext, dynamic) func,
+  Future<void> Function(dynamic) func,
 ) {
   if (T == dynamic) {
     log.log('[eventbus] listen all event');
@@ -82,14 +82,14 @@ Subscription listen<T>(
 /// });
 /// eventbus.broadcast(ctx,MockEventA('a1'));
 /// ```
-Future<bool> broadcast(BuildContext context, Event event) async {
+Future<bool> broadcast(Event event) async {
   latest = event;
   log.log('[eventbus] broadcast ${event.runtimeType}');
 
   for (var i = _listeners.length - 1; i >= 0; i--) {
     final listener = _listeners[i];
     try {
-      await listener.listen(context, event);
+      await listener.listen(event);
     } catch (e, s) {
       log.error(e, s);
     }

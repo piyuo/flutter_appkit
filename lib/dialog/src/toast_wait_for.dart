@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'toast.dart';
 
 /// toastWaitFor show wait toast when callback running
