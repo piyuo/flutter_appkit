@@ -18,10 +18,10 @@ class SwipeContainer extends StatefulWidget {
   final ValueNotifier<int?> controller;
 
   @override
-  _SwipeContainerState createState() => _SwipeContainerState();
+  SwipeContainerState createState() => SwipeContainerState();
 }
 
-class _SwipeContainerState extends State<SwipeContainer> {
+class SwipeContainerState extends State<SwipeContainer> {
   final PageController pager = PageController(initialPage: 0);
 
   @override

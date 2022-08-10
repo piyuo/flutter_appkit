@@ -14,12 +14,12 @@ class CountUp extends StatefulWidget {
   final int yellowLight;
 
   @override
-  _CountUpState createState() => _CountUpState();
+  CountUpState createState() => CountUpState();
 }
 
 enum Light { green, yellow, red }
 
-class _CountUpState extends State<CountUp> {
+class CountUpState extends State<CountUp> {
   @override
   void initState() {
     begin = DateTime.now();

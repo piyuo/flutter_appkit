@@ -110,6 +110,12 @@ class FormExample extends StatelessWidget {
       formGroup: formGroup,
       child: Column(
         children: <Widget>[
+          OutlinedButton(
+            child: const Text('is allow to exit'),
+            onPressed: () {
+              isAllowToExit(context, formGroup: formGroup, submitCallback: (context) async => true);
+            },
+          ),
           RatingField<double>(
             formControlName: 'rating',
             allowHalfRating: true,
@@ -120,14 +126,13 @@ class FormExample extends StatelessWidget {
           ),
           ReactiveRawAutocomplete<String, String>(
             formControlName: 'raw',
-            // options: _options,
             optionsBuilder: (TextEditingValue textEditingValue) {
-              List<String> _options = <String>[
+              List<String> options = <String>[
                 'aardvark',
                 'bobcat',
                 'chameleon',
               ];
-              return _options.where((String option) {
+              return options.where((String option) {
                 return option.contains(textEditingValue.text.toLowerCase());
               });
             },

@@ -74,6 +74,7 @@ dependencies:
   reactive_raw_autocomplete: ^0.3.0
   pinput: ^2.2.11
   modal_bottom_sheet: ^2.1.0
+  http_client_helper: ^2.0.3
 dev_dependencies:
   mockito: ^5.1.0
   analyzer: ^3.4.1

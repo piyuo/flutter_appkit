@@ -104,7 +104,7 @@ class MenuButton<T> extends StatelessWidget {
                 ),
                 Offset(0, -button.size.height) & overlay.size,
               );
-              final _value = await showMenu(
+              final value = await showMenu(
                 context: context,
                 position: position,
                 initialValue: initialValue,
@@ -125,8 +125,8 @@ class MenuButton<T> extends StatelessWidget {
                     )
                     .toList(),
               );
-              if (_value != null) {
-                onPressed?.call(_value);
+              if (value != null) {
+                onPressed?.call(value);
               }
             }
           : null,

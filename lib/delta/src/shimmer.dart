@@ -21,8 +21,8 @@ class ShimmerScope extends StatelessWidget {
         ? Shimmer.fromColors(
             baseColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
             highlightColor: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade600),
-            child: child,
             enabled: true,
+            child: child,
           )
         : child;
   }

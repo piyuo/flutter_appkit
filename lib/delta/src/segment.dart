@@ -25,10 +25,10 @@ class Segment<T extends Object> extends StatefulWidget {
   }
 
   @override
-  _SegmentState createState() => _SegmentState<T>();
+  SegmentState createState() => SegmentState<T>();
 }
 
-class _SegmentState<T extends Object> extends State<Segment<T>> {
+class SegmentState<T extends Object> extends State<Segment<T>> {
   @override
   void initState() {
     widget.controller.addListener(_onValueChanged);

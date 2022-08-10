@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'check.dart';
 
 void main() {
-  final _keyForm = GlobalKey<FormState>();
+  final keyForm = GlobalKey<FormState>();
 
   final controller = ValueNotifier<bool>(false);
 
@@ -15,7 +15,7 @@ void main() {
     return MaterialApp(
       home: Scaffold(
         body: Form(
-          key: _keyForm,
+          key: keyForm,
           child: Column(
             children: [
               Check(

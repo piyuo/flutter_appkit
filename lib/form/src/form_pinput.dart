@@ -4,7 +4,6 @@ import 'package:pinput/pinput.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 export 'package:pinput/pinput.dart';
-export 'package:smart_auth/smart_auth.dart';
 
 class FormPinPut<T> extends ReactiveFormField<T, String> {
   FormPinPut({

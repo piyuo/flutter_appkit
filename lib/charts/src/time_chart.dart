@@ -1,6 +1,6 @@
-import 'package:fl_chart/fl_chart.dart';
+//import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
+//import 'package:libcli/delta/delta.dart' as delta;
 
 class TimeChart extends StatelessWidget {
   const TimeChart({
@@ -44,7 +44,7 @@ class TimeChart extends StatelessWidget {
             ),
           const Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(right: 16.0, left: 6.0),
+              padding: EdgeInsets.only(right: 16.0, left: 6.0),
               child: /*LineChart(
                 sampleData1(context),
                 swapAnimationDuration: const Duration(milliseconds: 250),

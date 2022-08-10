@@ -11,10 +11,10 @@ class AwaitOnTap extends StatefulWidget {
   final Future Function() onAwaitTap;
 
   @override
-  _AwaitOnTapState createState() => _AwaitOnTapState();
+  AwaitOnTapState createState() => AwaitOnTapState();
 }
 
-class _AwaitOnTapState extends State<AwaitOnTap> {
+class AwaitOnTapState extends State<AwaitOnTap> {
   bool _running = false;
 
   @override

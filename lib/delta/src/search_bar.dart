@@ -66,7 +66,7 @@ class SearchBar extends StatelessWidget {
                       }
                       provide.cursorReposition();
                     },
-                    fieldViewBuilder: (BuildContext context, TextEditingController controller, FocusNode _focusNode,
+                    fieldViewBuilder: (BuildContext context, TextEditingController controller, FocusNode focusNode2,
                         VoidCallback onFieldSubmitted) {
                       return TextField(
                         keyboardType: keyboardType,
@@ -116,7 +116,7 @@ class SearchBar extends StatelessWidget {
                           hintText: hint,
                         ),
                         controller: provide._innerController,
-                        focusNode: _focusNode,
+                        focusNode: focusNode2,
                         //                    onSubmitted: (String text) {
                         //                        print('submit search');
 //                        },

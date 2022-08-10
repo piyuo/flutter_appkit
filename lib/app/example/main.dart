@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -143,14 +145,14 @@ class AppExampleState extends State<AppExample> {
               );
             }),
         const BeamLink(
-          child: Text('link:goto app'),
           path: '/other',
+          child: Text('link:goto app'),
         ),
         const BeamLink(
-          child: Text('link:goto app in new tab'),
           path: '/other',
           newTab: true,
           beamBack: true,
+          child: Text('link:goto app in new tab'),
         ),
         OutlinedButton(
             child: const Text('root pop'),

@@ -44,8 +44,8 @@ class ShimmerForm extends StatelessWidget {
       enabled: showShimmer,
       child: ReactiveForm(
         formGroup: formGroup,
-        child: child,
         onWillPop: onWillPop,
+        child: child,
       ),
     );
   }

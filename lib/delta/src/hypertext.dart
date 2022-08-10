@@ -19,8 +19,8 @@ void testModeBackNormal() {
   testMode = false;
 }
 
-class _Span {
-  _Span(
+class Span {
+  Span(
     this.text, {
     this.onTap,
     this.bold = false,
@@ -34,7 +34,7 @@ class _Span {
 }
 
 class Hypertext extends StatefulWidget {
-  final List<_Span> children = [];
+  final List<Span> children = [];
 
   final Color? color;
 
@@ -53,11 +53,11 @@ class Hypertext extends StatefulWidget {
   }) : super(key: key);
 
   void span(String text) {
-    children.add(_Span(text));
+    children.add(Span(text));
   }
 
   void bold(String text) {
-    children.add(_Span(text, bold: true));
+    children.add(Span(text, bold: true));
   }
 
   void link(
@@ -69,7 +69,7 @@ class Hypertext extends StatefulWidget {
       text,
       onTap: (_, __) {
         if (!url!.startsWith('http')) {
-          url = 'http://' + url!;
+          url = 'http://${url!}';
         }
         util.openUrl(url!);
       },
@@ -81,13 +81,13 @@ class Hypertext extends StatefulWidget {
     Function(BuildContext, TapUpDetails)? onTap,
   }) {
     if (children.isNotEmpty) {
-      children.add(_Span(" "));
+      children.add(Span(" "));
     }
-    children.add(_Span(
+    children.add(Span(
       text,
       onTap: onTap,
     ));
-    children.add(_Span(" "));
+    children.add(Span(" "));
   }
 
   @override
@@ -158,7 +158,7 @@ class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin
     var linkColor = isDark ? Colors.lightBlue.shade300 : Colors.lightBlue.shade800;
     return RichText(
       text: TextSpan(
-        children: widget.children.map((_Span span) {
+        children: widget.children.map((Span span) {
           var textColor = widget.color ?? const Color.fromRGBO(134, 134, 139, 1);
           var boldColor = widget.boldColor ?? bColor;
           var color = span.bold == true ? boldColor : textColor;

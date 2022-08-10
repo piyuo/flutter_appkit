@@ -56,9 +56,10 @@ class ImageEditorDialog extends StatelessWidget {
           dialog.toastWaitFor(
             context,
             callback: () async {
+              final navigator = Navigator.of(context);
               final bytes = await provide.crop();
               debugPrint('${bytes.length}');
-              Navigator.pop(context, bytes);
+              navigator.pop();
             },
           );
         }
@@ -69,8 +70,8 @@ class ImageEditorDialog extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: TextButton(
-                  child: Text(context.i18n.imageSaveButtonText),
                   onPressed: onSave,
+                  child: Text(context.i18n.imageSaveButtonText),
                 ),
               )
             ],
@@ -108,8 +109,8 @@ class ImageEditorDialog extends StatelessWidget {
                             style: ButtonStyle(
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)))),
-                            child: Text(context.i18n.imageSaveButtonText),
                             onPressed: onSave,
+                            child: Text(context.i18n.imageSaveButtonText),
                           ),
                         )
                       ]),

@@ -65,6 +65,13 @@ class Submit extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
             ),
           ),
+          onPressed: onSubmit != null && formGroup.enabled
+              ? () => submit(
+                    formGroup: formGroup,
+                    callback: onSubmit!,
+                    showToast: showToast,
+                  )
+              : null,
           child: child ??
               Text(
                 context.i18n.formSubmitButtonText,
@@ -74,14 +81,6 @@ class Submit extends StatelessWidget {
                   fontSize: fontSize,
                 ),
               ),
-          onPressed: onSubmit != null && formGroup.enabled
-              ? () => submit(
-                    context,
-                    formGroup: formGroup,
-                    callback: onSubmit!,
-                    showToast: showToast,
-                  )
-              : null,
         );
       },
     );
@@ -111,23 +110,22 @@ bool validate(
 }
 
 /// submit form, return true if form is submitted
-Future<bool> submit(
-  BuildContext context, {
+Future<bool> submit({
   required FormGroup formGroup,
   required delta.FutureContextCallback<bool> callback,
   bool showToast = true,
 }) async {
   bool result = false;
-  if (showToast) dialog.toastWait(context);
+  if (showToast) dialog.toastWait(dialog.globalContext);
   try {
     formGroup.markAsDisabled();
-    result = await callback.call(context);
+    result = await callback.call(dialog.globalContext);
     return result;
   } finally {
     formGroup.markAsEnabled();
     if (result) {
       formGroup.markAsPristine();
-      if (showToast) dialog.toastDone(context);
+      if (showToast) dialog.toastDone(dialog.globalContext);
     }
   }
 }
@@ -143,7 +141,7 @@ Future<bool> isAllowToExit(
         buttonYes: true, buttonNo: true, buttonCancel: true, blurry: false);
     if (result == true) {
       // user want save
-      bool ok = await submit(context, formGroup: formGroup, callback: submitCallback);
+      bool ok = await submit(formGroup: formGroup, callback: submitCallback);
       if (!ok) {
         return false;
       }

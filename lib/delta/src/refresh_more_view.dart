@@ -53,10 +53,10 @@ class RefreshMoreView extends StatefulWidget {
   final ScrollController? scrollController;
 
   @override
-  _RefreshMoreViewState createState() => _RefreshMoreViewState();
+  RefreshMoreViewState createState() => RefreshMoreViewState();
 }
 
-class _RefreshMoreViewState extends State<RefreshMoreView> {
+class RefreshMoreViewState extends State<RefreshMoreView> {
   /// _busy is true will not execute onRefresh or onLoad
   bool _busy = false;
 
@@ -98,11 +98,11 @@ class _RefreshMoreViewState extends State<RefreshMoreView> {
             footer: widget.onLoadMore != null ? BallPulseFooter(color: Theme.of(context).colorScheme.primary) : null,
             onRefresh: widget.onRefresh,
             onLoad: widget.onLoadMore,
+            scrollController: widget.scrollController,
             child: ListView.builder(
               itemCount: widget.itemCount,
               itemBuilder: widget.itemBuilder,
             ),
-            scrollController: widget.scrollController,
           )
         : ListView.builder(
             controller: widget.scrollController,

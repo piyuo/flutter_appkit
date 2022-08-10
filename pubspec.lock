@@ -582,7 +582,7 @@ packages:
     source: hosted
     version: "0.13.5"
   http_client_helper:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http_client_helper
       url: "https://pub.dartlang.org"

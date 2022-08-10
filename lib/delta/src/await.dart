@@ -34,10 +34,10 @@ class Await extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AwaitState createState() => _AwaitState();
+  AwaitState createState() => AwaitState();
 }
 
-class _AwaitState extends State<Await> {
+class AwaitState extends State<Await> {
   @override
   void initState() {
     Future.microtask(() => reload(context));

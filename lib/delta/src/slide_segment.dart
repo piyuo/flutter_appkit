@@ -25,10 +25,10 @@ class SlideSegment<T> extends StatefulWidget {
   }
 
   @override
-  _SlideSegmentState createState() => _SlideSegmentState<T>();
+  SlideSegmentState createState() => SlideSegmentState<T>();
 }
 
-class _SlideSegmentState<T> extends State<SlideSegment<T>> {
+class SlideSegmentState<T> extends State<SlideSegment<T>> {
   @override
   void initState() {
     widget.controller.addListener(_onValueChanged);

@@ -48,6 +48,14 @@ class FormButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(25),
         ),
       ),
+      onPressed: onPressed != null
+          ? () => dialog.toastWaitFor(
+                context,
+                callback: () async {
+                  await onPressed?.call();
+                },
+              )
+          : null,
       child: Text(
         label,
         maxLines: 1,
@@ -57,14 +65,6 @@ class FormButton extends StatelessWidget {
           fontSize: fontSize,
         ),
       ),
-      onPressed: onPressed != null
-          ? () => dialog.toastWaitFor(
-                context,
-                callback: () async {
-                  await onPressed?.call();
-                },
-              )
-          : null,
     );
   }
 }
