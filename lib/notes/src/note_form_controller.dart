@@ -230,7 +230,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   Future<bool> submit(BuildContext context) async {
     if (formGroup.valid && formGroup.dirty) {
       return await form.submit(
-        context,
         formGroup: formGroup,
         callback: onSubmit,
       );
