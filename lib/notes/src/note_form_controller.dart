@@ -20,7 +20,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   NoteFormController({
     required this.formGroup,
     required this.formBuilder,
-    required delta.FutureContextCallback<T> creator,
+    required delta.FutureCallback<T> creator,
     required data.DataClientLoader<T> loader,
     required data.DataClientSaver<T> saver,
     this.formLoader,
@@ -115,9 +115,9 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
 
   /// loadByView load data set and _item data from notes view,return false mean current data is editing can't leave,  return true mean _item data is changed
   /// ```dart
-  /// client.loadByView(testing.Context());
+  /// client.loadByView();
   /// ```
-  Future<void> loadByView(BuildContext context, {required data.Dataset<T> dataset, required T row}) async {
+  Future<void> loadByView({required data.Dataset<T> dataset, required T row}) async {
     if (current != null && current!.id == row.id) {
       return;
     }
@@ -131,10 +131,10 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  /// loadEmpty load form empty. not data to display
+  /// loadNewByView load form empty. not data to display
   Future<T> loadNewByView(BuildContext context, data.Dataset<T> dataset) async {
-    final creating = await dataClient.creator(context);
-    await loadByView(context, dataset: dataset, row: creating);
+    final creating = await dataClient.creator();
+    await loadByView(dataset: dataset, row: creating);
     formGroup.markAsDirty();
     isNewItem = true;
     return creating;

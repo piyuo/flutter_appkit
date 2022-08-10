@@ -33,8 +33,8 @@ final formGroup = fb.group({
 NoteFormController<sample.Person> buildNoteFormController() => NoteFormController<sample.Person>(
       formGroup: formGroup,
       showDeleteButton: true,
-      loader: (context, id) async => sample.Person(name: id)..id = id,
-      saver: (context, persons) async {
+      loader: (id) async => sample.Person(name: id)..id = id,
+      saver: (persons) async {
         await Future.delayed(const Duration(seconds: 3));
       },
       formBuilder: (context, controller) => Padding(
@@ -52,11 +52,11 @@ NoteFormController<sample.Person> buildNoteFormController() => NoteFormControlle
               },
             ),
             OutlinedButton(
-              child: const Text('delete'),
               onPressed: controller.isAllowDelete ? () async => await controller.delete(context) : null,
+              child: const Text('delete'),
             ),
           ])),
-      creator: (context) async {
+      creator: () async {
         final no = generator.randomNumber(6);
         return sample.Person(name: 'new person $no');
       },
@@ -224,8 +224,8 @@ class NotesExample extends StatelessWidget {
                 controller: _searchBoxController,
               ),
               footerBuilder: () => Container(
-                child: const Text('footer'),
                 color: Colors.red,
+                child: const Text('footer'),
               ),
               items: const ['a', 'b', 'c', 'd', 'e'],
               selectedItems: const ['b'],
@@ -283,8 +283,8 @@ class NotesExample extends StatelessWidget {
             controller: _searchBoxController,
           ),
           footerBuilder: () => Container(
-            child: const Text('footer'),
             color: Colors.red,
+            child: const Text('footer'),
           ),
           checkMode: true,
           items: const ['a', 'b', 'c', 'd', 'e'],
@@ -319,8 +319,8 @@ class NotesExample extends StatelessWidget {
                         controller: _searchBoxController,
                       ),
                       footerBuilder: () => Container(
-                        child: const Text('footer'),
                         color: Colors.red,
+                        child: const Text('footer'),
                       ),
                       items: animationListItems,
                       selectedItems: const ['b'],
@@ -382,8 +382,8 @@ class NotesExample extends StatelessWidget {
                         controller: _searchBoxController,
                       ),
                       footerBuilder: () => Container(
-                        child: const Text('footer'),
                         color: Colors.red,
+                        child: const Text('footer'),
                       ),
                       items: animationListItems,
                       selectedItems: const ['b'],

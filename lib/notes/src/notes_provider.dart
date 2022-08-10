@@ -226,7 +226,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     nextRow = nextRow ?? dataView!.displayRows.first;
     dataView!.setSelectedRows([nextRow]);
     if (isSplitView) {
-      formController.loadByView(context, dataset: dataView!.dataset, row: nextRow);
+      formController.loadByView(dataset: dataView!.dataset, row: nextRow);
     }
   }
 
@@ -308,7 +308,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
     if (isSplitView) {
       final first = selectedRows.first;
-      await formController.loadByView(context, dataset: dataView!.dataset, row: first);
+      await formController.loadByView(dataset: dataView!.dataset, row: first);
     }
     if (!onItemChecked(context, selectedRows)) {
       return;
