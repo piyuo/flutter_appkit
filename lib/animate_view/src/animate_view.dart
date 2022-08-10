@@ -43,7 +43,7 @@ class AnimateViewProvider with ChangeNotifier {
   bool _shifterVertical = false;
 
   /// _gridKey is the key of the animated grid
-  GlobalKey<AnimateGridState> _gridKey = GlobalKey<AnimateGridState>();
+  GlobalKey<AnimateGridState> _gridKey = GlobalKey<AnimateGridState>(debugLabel: 'animateGridKey');
 
   /// refreshPageAnimation show refresh page animation
   void refreshPageAnimation(newPageLength) {
