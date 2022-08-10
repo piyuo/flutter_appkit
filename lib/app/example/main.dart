@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
@@ -79,7 +80,7 @@ class AppExampleState extends State<AppExample> {
               OutlinedButton(
                 child: const Text('show alert use global context'),
                 onPressed: () {
-                  dialog.alert(dialog.globalContext, 'hello');
+                  dialog.alert(delta.globalContext, 'hello');
                 },
               ),
               testing.ExampleButton(

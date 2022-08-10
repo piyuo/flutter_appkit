@@ -8,6 +8,7 @@ import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'error.dart';
 
@@ -22,7 +23,7 @@ void main() {
     required void Function(BuildContext context) onPressed,
   }) {
     return Builder(
-        builder: (BuildContext context) => dialog.GlobalContextSupport(
+        builder: (BuildContext context) => delta.GlobalContextSupport(
               child: MaterialApp(
                 home: TextButton(
                   key: keyBtn,

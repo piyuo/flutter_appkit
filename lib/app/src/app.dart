@@ -6,6 +6,7 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
 import 'error.dart';
@@ -115,7 +116,7 @@ Future<void> start({
           if (providers != null) ...providers,
         ],
         child: Consumer<i18n.I18nProvider>(
-          builder: (context, i18nProvider, __) => dialog.GlobalContextSupport(
+          builder: (context, i18nProvider, __) => delta.GlobalContextSupport(
               child: MaterialApp.router(
             builder: dialog.init(),
             debugShowCheckedModeBanner: false,

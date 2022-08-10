@@ -35,8 +35,8 @@ class BeamLink extends StatelessWidget {
         target: newTab ? LinkTarget.blank : LinkTarget.self,
         builder: (_, followLink) {
           return InkWell(
-            child: child,
             onTap: followLink,
+            child: child,
           );
         },
       );

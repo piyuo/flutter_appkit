@@ -200,7 +200,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// deleteByView called by view
   Future<void> deleteByView(BuildContext context, List<T> list) async {
     await dialog.toastWaitFor(
-      context,
       showDone: false,
       callback: () => dataClient.delete(context, list),
     );

@@ -54,7 +54,6 @@ class ImageEditorDialog extends StatelessWidget {
       child: Consumer<ImageEditorProvider>(builder: (context, provide, child) {
         onSave() async {
           dialog.toastWaitFor(
-            context,
             callback: () async {
               final navigator = Navigator.of(context);
               final bytes = await provide.crop();

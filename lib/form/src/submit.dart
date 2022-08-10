@@ -116,16 +116,16 @@ Future<bool> submit({
   bool showToast = true,
 }) async {
   bool result = false;
-  if (showToast) dialog.toastWait(dialog.globalContext);
+  if (showToast) dialog.toastWait();
   try {
     formGroup.markAsDisabled();
-    result = await callback.call(dialog.globalContext);
+    result = await callback.call(delta.globalContext);
     return result;
   } finally {
     formGroup.markAsEnabled();
     if (result) {
       formGroup.markAsPristine();
-      if (showToast) dialog.toastDone(dialog.globalContext);
+      if (showToast) dialog.toastDone();
     }
   }
 }

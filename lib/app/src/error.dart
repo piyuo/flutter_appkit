@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
@@ -52,8 +53,8 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   try {
     if (e is log.DiskErrorException) {
       await dialog.alert(
-        dialog.globalContext,
-        dialog.globalContext.i18n.errorDiskErrorMessage,
+        delta.globalContext,
+        delta.globalContext.i18n.errorDiskErrorMessage,
         warning: true,
         footer: e.toString(),
         emailUs: true,
@@ -62,8 +63,8 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
     }
 
     await dialog.alert(
-      dialog.globalContext,
-      dialog.globalContext.i18n.errorNotified,
+      delta.globalContext,
+      delta.globalContext.i18n.errorNotified,
       warning: true,
       footer: e.toString(),
       emailUs: true,
