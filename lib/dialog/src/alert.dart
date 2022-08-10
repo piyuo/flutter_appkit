@@ -25,7 +25,7 @@ void disableAlert() {
 /// emailUsLink(context);
 /// ```
 Widget emailUsLink(BuildContext context) => InkWell(
-      onTap: () => eventbus.broadcast(context, eventbus.EmailSupportEvent()),
+      onTap: () => eventbus.broadcast(eventbus.EmailSupportEvent()),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

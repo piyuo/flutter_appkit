@@ -255,7 +255,7 @@ class DialogExample extends StatelessWidget {
         child: const Text('progress'),
         onPressed: () async {
           for (int i = 0; i <= 10; i++) {
-            toastProgress(context, i / 10);
+            toastProgress(i / 10);
             await Future.delayed(const Duration(milliseconds: 500));
           }
         },
@@ -268,7 +268,7 @@ class DialogExample extends StatelessWidget {
             if (i > 5) {
               text = 'creating';
             }
-            toastProgress(context, i / 10, text: text);
+            toastProgress(i / 10, text: text);
             await Future.delayed(const Duration(milliseconds: 500));
           }
         },
@@ -283,11 +283,11 @@ class DialogExample extends StatelessWidget {
       ),
       ElevatedButton(
         child: const Text('fail'),
-        onPressed: () => toastError(context, 'item already exist'),
+        onPressed: () => toastError('item already exist'),
       ),
       ElevatedButton(
         child: const Text('info'),
-        onPressed: () => toastInfo(context, 'network is slow than usual',
+        onPressed: () => toastInfo('network is slow than usual',
             widget: const Icon(
               Icons.wifi,
               size: 68,

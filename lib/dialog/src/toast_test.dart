@@ -39,7 +39,7 @@ void main() {
 
     testWidgets('should show progress and dismiss', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) => toastProgress(context, 0)),
+        sampleApp(onPressed: (context) => toastProgress(0)),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));
@@ -54,7 +54,6 @@ void main() {
       await tester.pumpWidget(
         sampleApp(
             onPressed: (context) async => toastInfo(
-                  context,
                   'network is slow than usual',
                 )),
       );
@@ -82,7 +81,7 @@ void main() {
 
     testWidgets('should show wrong toast', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) => toastError(context, 'something wrong')),
+        sampleApp(onPressed: (context) => toastError('something wrong')),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));

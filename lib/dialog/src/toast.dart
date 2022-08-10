@@ -6,17 +6,16 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// _applyTheme apply theme before show toast
-void _applyTheme(
-  BuildContext context, {
+void _applyTheme({
   EasyLoadingIndicatorType indicatorType = EasyLoadingIndicatorType.fadingCircle,
 }) {
-  var mediaQuery = MediaQuery.of(context);
-  var color = context.themeColor(light: Colors.white, dark: Colors.black);
+  var mediaQuery = MediaQuery.of(delta.globalContext);
+  var color = delta.globalContext.themeColor(light: Colors.white, dark: Colors.black);
 
   EasyLoading.instance
     ..indicatorSize = 140.0
     ..radius = 26.0
-    ..backgroundColor = context.themeColor(
+    ..backgroundColor = delta.globalContext.themeColor(
       light: Colors.black.withOpacity(0.7),
       dark: Colors.white.withOpacity(0.7),
     )
@@ -54,7 +53,7 @@ void _applyTheme(
 void toastWidget(
   Widget child,
 ) {
-  _applyTheme(delta.globalContext);
+  _applyTheme();
   EasyLoading.show(
       maskType: EasyLoadingMaskType.clear,
       indicator: Column(children: [
@@ -65,7 +64,6 @@ void toastWidget(
 /// toastMask
 void toastMask() {
   _applyTheme(
-    delta.globalContext,
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
   EasyLoading.show(
@@ -78,7 +76,6 @@ void toastWait({
   String? text,
 }) {
   _applyTheme(
-    delta.globalContext,
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
   EasyLoading.show(
@@ -90,7 +87,7 @@ void toastWait({
 
 /// toastDone show done toast
 void toastDone({String? text}) {
-  _applyTheme(delta.globalContext);
+  _applyTheme();
   EasyLoading.showSuccess(
     text ?? delta.globalContext.i18n.hintDone,
     maskType: EasyLoadingMaskType.none,
@@ -99,8 +96,8 @@ void toastDone({String? text}) {
 }
 
 /// toastProgress show progress toast
-void toastProgress(BuildContext context, double value, {String? text}) {
-  _applyTheme(context);
+void toastProgress(double value, {String? text}) {
+  _applyTheme();
   if (value >= 1) {
     dismissToast();
   }
@@ -114,12 +111,11 @@ void toastProgress(BuildContext context, double value, {String? text}) {
 
 /// toastInfo
 void toastInfo(
-  BuildContext context,
   String text, {
   Widget? widget,
   Duration autoHideDuration = const Duration(milliseconds: 2000),
 }) {
-  _applyTheme(context);
+  _applyTheme();
 
   if (kReleaseMode) {
     // only auto hide in release mode, cause timer will break test
@@ -136,8 +132,8 @@ void toastInfo(
 }
 
 /// toastError show error toast
-void toastError(BuildContext context, String text) {
-  _applyTheme(context);
+void toastError(String text) {
+  _applyTheme();
   EasyLoading.instance
     ..backgroundColor = Colors.red[700]
     ..loadingStyle = EasyLoadingStyle.custom
