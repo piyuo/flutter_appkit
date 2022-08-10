@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/delta/delta.dart' as delta;
 
 /// showBanner show a simple text banner
 /// ```dart
@@ -13,20 +14,19 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 /// );
 /// ```
 Future<void> showBanner(
-  BuildContext context,
   Widget child, {
   Color? color,
   Color? backgroundColor,
   Widget? leading,
 }) {
-  dismissBanner(context);
+  dismissBanner(delta.globalContext);
   final completer = Completer();
   Timer timer = Timer(const Duration(seconds: 15), () {
-    dismissBanner(context);
+    dismissBanner(delta.globalContext);
     completer.complete();
   });
 
-  ScaffoldMessenger.of(context).showMaterialBanner(
+  ScaffoldMessenger.of(delta.globalContext).showMaterialBanner(
     MaterialBanner(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       content: child,
@@ -35,12 +35,12 @@ Future<void> showBanner(
       actions: <Widget>[
         TextButton(
           child: Text(
-            context.i18n.closeButtonText,
+            delta.globalContext.i18n.closeButtonText,
             style: TextStyle(color: color ?? Colors.brown, fontWeight: FontWeight.bold),
           ),
           onPressed: () {
             timer.cancel();
-            dismissBanner(context);
+            dismissBanner(delta.globalContext);
             completer.complete();
           },
         ),
@@ -57,13 +57,11 @@ void dismissBanner(BuildContext context) {
 
 /// showWarningBanner show a simple text banner when error
 Future<void> showWarningBanner(
-  BuildContext context,
   String message, {
   Color? color,
   Color? backgroundColor,
 }) =>
     showBanner(
-      context,
       Text(message,
           style: const TextStyle(
             fontSize: 16,
@@ -76,13 +74,11 @@ Future<void> showWarningBanner(
 
 /// showWarningBanner show a simple text banner when error
 Future<void> showInfoBanner(
-  BuildContext context,
   String message, {
   Color? color,
   Color? backgroundColor,
 }) =>
     showBanner(
-      context,
       Text(message,
           style: const TextStyle(
             fontSize: 16,

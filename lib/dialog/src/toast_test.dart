@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'toast.dart';
 import 'dialog.dart';
 import 'test.dart';
@@ -10,14 +11,15 @@ void main() {
   Widget sampleApp({
     required void Function(BuildContext context) onPressed,
   }) {
-    return MaterialApp(
-      builder: init(),
-      home: Builder(builder: (BuildContext ctx) {
-        return MaterialButton(
-          child: const Text('button'),
-          onPressed: () => onPressed(ctx),
-        );
-      }),
+    return delta.GlobalContextSupport(
+      child: MaterialApp(
+          builder: init(),
+          home: Builder(builder: (BuildContext ctx) {
+            return MaterialButton(
+              child: const Text('button'),
+              onPressed: () => onPressed(ctx),
+            );
+          })),
     );
   }
 

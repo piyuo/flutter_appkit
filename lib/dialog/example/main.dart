@@ -71,29 +71,28 @@ class DialogExample extends StatelessWidget {
         child: Wrap(children: [
           ElevatedButton(
             child: const Text('alert'),
-            onPressed: () => alert(context, 'hi'),
+            onPressed: () => alert('hi'),
           ),
           ElevatedButton(
             child: const Text('alert no blurry'),
-            onPressed: () => alert(context, 'hi', blurry: false),
+            onPressed: () => alert('hi', blurry: false),
           ),
           ElevatedButton(
             child: const Text('alert warning'),
-            onPressed: () => alert(context, 'hello world1', warning: true),
+            onPressed: () => alert('hello world1', warning: true),
           ),
           ElevatedButton(
             child: const Text('alert title'),
-            onPressed: () => alert(context, 'hello world', title: 'title'),
+            onPressed: () => alert('hello world', title: 'title'),
           ),
           ElevatedButton(
             child: const Text('alert title/footer'),
-            onPressed: () => alert(context, 'hello world', title: 'title', footer: 'footer'),
+            onPressed: () => alert('hello world', title: 'title', footer: 'footer'),
           ),
           ElevatedButton(
             child: const Text('alert yes/no/cancel'),
             onPressed: () async {
               var result = await alert(
-                context,
                 'do you want delete this document?',
                 buttonYes: true,
                 buttonNo: true,
@@ -124,12 +123,11 @@ class DialogExample extends StatelessWidget {
           ),
           ElevatedButton(
             child: const Text('alert warning email us'),
-            onPressed: () => alert(context, 'error message', footer: 'description', emailUs: true, warning: true),
+            onPressed: () => alert('error message', footer: 'description', emailUs: true, warning: true),
           ),
           ElevatedButton(
             child: const Text('alert long content'),
             onPressed: () => alert(
-              context,
               'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily',
               title: 'this is a very long title. it should cover 2 line',
               footer:
@@ -437,7 +435,6 @@ class DialogExample extends StatelessWidget {
       ElevatedButton(
         child: const Text('show banner'),
         onPressed: () => showBanner(
-          context,
           const Text(
             'this record has been deleted',
           ),
@@ -445,11 +442,11 @@ class DialogExample extends StatelessWidget {
       ),
       ElevatedButton(
         child: const Text('show warning banner'),
-        onPressed: () => showWarningBanner(context, 'This is warning banner'),
+        onPressed: () => showWarningBanner('This is warning banner'),
       ),
       ElevatedButton(
         child: const Text('show info banner'),
-        onPressed: () => showInfoBanner(context, 'This is info banner'),
+        onPressed: () => showInfoBanner('This is info banner'),
       ),
       ElevatedButton(
         child: const Text('dismiss banner'),

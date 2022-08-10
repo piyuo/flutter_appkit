@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'dialog.dart';
 import 'show_banner.dart';
 
@@ -9,7 +10,8 @@ void main() {
   group('[show_banner]', () {
     testWidgets('should show content', (WidgetTester tester) async {
       BuildContext? appContext;
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(delta.GlobalContextSupport(
+          child: MaterialApp(
         builder: init(),
         home: Builder(builder: (BuildContext context) {
           return Scaffold(
@@ -19,12 +21,11 @@ void main() {
                   onPressed: () async {
                     appContext = context;
                     await showBanner(
-                      context,
                       const Text('sheetContent'),
                     );
                   }));
         }),
-      ));
+      )));
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle(const Duration(seconds: 3));
       expect(find.byType(MaterialBanner), findsOneWidget);

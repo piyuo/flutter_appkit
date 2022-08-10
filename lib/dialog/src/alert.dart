@@ -48,7 +48,6 @@ Widget emailUsLink(BuildContext context) => InkWell(
 /// alert(context, 'hello world1', warning: true)
 /// ```
 Future<bool?> alert(
-  BuildContext context,
   String message, {
   bool warning = false,
   IconData? icon,
@@ -92,9 +91,7 @@ Future<bool?> alert(
               ),
               key: key,
               child: Text(text),
-              onPressed: () {
-                Navigator.of(context).pop(value);
-              },
+              onPressed: () => Navigator.of(delta.globalContext).pop(value),
             ),
           )
         : const SizedBox();
@@ -131,33 +128,33 @@ Future<bool?> alert(
 
   assentButtonColor = assentButtonColor ?? (warning ? Colors.red.shade400 : Colors.blue.shade700);
   buttonColor = buttonColor ??
-      context.themeColor(
+      delta.globalContext.themeColor(
         dark: const Color(0xcc6a7073),
         light: Colors.grey,
       );
   if (buttonOK) {
-    yes = context.i18n.okButtonText;
+    yes = delta.globalContext.i18n.okButtonText;
   }
   if (buttonCancel) {
-    cancel = context.i18n.cancelButtonText;
+    cancel = delta.globalContext.i18n.cancelButtonText;
   }
   if (buttonYes) {
-    yes = context.i18n.yesButtonText;
+    yes = delta.globalContext.i18n.yesButtonText;
   }
   if (buttonNo) {
-    no = context.i18n.noButtonText;
+    no = delta.globalContext.i18n.noButtonText;
   }
   if (buttonRetry) {
-    yes = context.i18n.retryButtonText;
+    yes = delta.globalContext.i18n.retryButtonText;
   }
   if (buttonSave) {
-    yes = context.i18n.saveButtonText;
+    yes = delta.globalContext.i18n.saveButtonText;
   }
   if (buttonClose) {
-    cancel = context.i18n.closeButtonText;
+    cancel = delta.globalContext.i18n.closeButtonText;
   }
   if (yes == null && no == null && cancel == null) {
-    cancel = context.i18n.closeButtonText;
+    cancel = delta.globalContext.i18n.closeButtonText;
   }
   FocusNode yesFocusNode = FocusNode();
   FocusNode noFocusNode = FocusNode();
@@ -169,9 +166,9 @@ Future<bool?> alert(
   }
 
   final result = await showDialog<bool?>(
-      context: context,
-      barrierColor: context.themeColor(
-          dark: const Color.fromRGBO(25, 25, 28, 0.6), light: const Color.fromRGBO(230, 230, 238, 0.6)),
+      context: delta.globalContext,
+      barrierColor: delta.globalContext
+          .themeColor(dark: const Color.fromRGBO(25, 25, 28, 0.6), light: const Color.fromRGBO(230, 230, 238, 0.6)),
       //barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
@@ -264,7 +261,6 @@ Future<bool?> confirm(
   bool buttonCancel = true,
 }) async {
   return alert(
-    context,
     message,
     icon: icon,
     iconColor: iconColor,

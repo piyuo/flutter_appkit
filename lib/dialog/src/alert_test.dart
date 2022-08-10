@@ -25,7 +25,7 @@ void main() {
     testWidgets('should alert with close', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        child: createSample(onPressed: (context) => alert(context, 'hello')),
+        child: createSample(onPressed: (context) => alert('hello')),
       );
 
       expect(find.byType(MaterialButton), findsOneWidget);
@@ -44,7 +44,6 @@ void main() {
         tester,
         child: createSample(
             onPressed: (context) async => result = await alert(
-                  context,
                   'hello',
                   yes: 'ok',
                   cancel: 'cancel',
@@ -69,7 +68,6 @@ void main() {
         tester,
         child: createSample(
             onPressed: (context) async => result = await alert(
-                  context,
                   'hello',
                   yes: 'ok',
                   cancel: 'cancel',
@@ -93,7 +91,6 @@ void main() {
         tester,
         child: createSample(
             onPressed: (context) async => await alert(
-                  context,
                   'hello',
                   yes: 'yes',
                   cancel: 'no',
@@ -109,7 +106,7 @@ void main() {
     testWidgets('should alert error', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        child: createSample(onPressed: (context) async => await alert(context, 'error message', title: 'error')),
+        child: createSample(onPressed: (context) async => await alert('error message', title: 'error')),
       );
 
       expect(find.byType(MaterialButton), findsOneWidget);
