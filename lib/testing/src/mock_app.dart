@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart' as widgets;
@@ -7,6 +9,7 @@ import 'package:nested/nested.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/storage/storage.dart' as storage;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'navigator.dart';
 
 /// Context used for mock BuildContext
@@ -48,24 +51,25 @@ Future<void> mockApp(
         if (providers != null) ...providers,
       ],
       child: Consumer<i18n.I18nProvider>(
-        builder: (context, i18nProvider, _) => MaterialApp(
-          navigatorObservers: [navigatorObserver],
-          builder: dialog.init(),
-          home: providers != null
-              ? MultiProvider(
-                  providers: providers,
-                  child: child,
-                )
-              : child,
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: [
-            if (l10nDelegate != null) l10nDelegate,
-            ...i18nProvider.localizationsDelegates,
-          ],
-          supportedLocales: const [
-            Locale('en', 'US'),
-          ],
-        ),
-      )));
+          builder: (context, i18nProvider, _) => delta.GlobalContextSupport(
+                child: MaterialApp(
+                  navigatorObservers: [navigatorObserver],
+                  builder: dialog.init(),
+                  home: providers != null
+                      ? MultiProvider(
+                          providers: providers,
+                          child: child,
+                        )
+                      : child,
+                  debugShowCheckedModeBanner: false,
+                  localizationsDelegates: [
+                    if (l10nDelegate != null) l10nDelegate,
+                    ...i18nProvider.localizationsDelegates,
+                  ],
+                  supportedLocales: const [
+                    Locale('en', 'US'),
+                  ],
+                ),
+              ))));
   await tester.pumpAndSettle();
 }
