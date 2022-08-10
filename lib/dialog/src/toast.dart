@@ -52,10 +52,9 @@ void _applyTheme(
 
 /// toastWidget toast a widget
 void toastWidget(
-  BuildContext context,
   Widget child,
 ) {
-  _applyTheme(context);
+  _applyTheme(delta.globalContext);
   EasyLoading.show(
       maskType: EasyLoadingMaskType.clear,
       indicator: Column(children: [
@@ -64,9 +63,9 @@ void toastWidget(
 }
 
 /// toastMask
-void toastMask(BuildContext context) {
+void toastMask() {
   _applyTheme(
-    context,
+    delta.globalContext,
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
   EasyLoading.show(
@@ -75,26 +74,25 @@ void toastMask(BuildContext context) {
 }
 
 /// toastWait show wait toast
-void toastWait(
-  BuildContext context, {
+void toastWait({
   String? text,
 }) {
   _applyTheme(
-    context,
+    delta.globalContext,
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
   EasyLoading.show(
-    status: text ?? context.i18n.hintPleaseWait,
+    status: text ?? delta.globalContext.i18n.hintPleaseWait,
     maskType: EasyLoadingMaskType.black,
     dismissOnTap: false,
   );
 }
 
 /// toastDone show done toast
-void toastDone(BuildContext context, {String? text}) {
-  _applyTheme(context);
+void toastDone({String? text}) {
+  _applyTheme(delta.globalContext);
   EasyLoading.showSuccess(
-    text ?? context.i18n.hintDone,
+    text ?? delta.globalContext.i18n.hintDone,
     maskType: EasyLoadingMaskType.none,
     dismissOnTap: true,
   );

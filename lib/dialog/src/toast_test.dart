@@ -24,7 +24,7 @@ void main() {
   group('[toast]', () {
     testWidgets('should show loading and dismiss', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) => toastWait(context)),
+        sampleApp(onPressed: (context) => toastWait()),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));
@@ -67,7 +67,7 @@ void main() {
 
     testWidgets('should show ok toast', (WidgetTester tester) async {
       await tester.pumpWidget(
-        sampleApp(onPressed: (context) => toastDone(context, text: 'hi')),
+        sampleApp(onPressed: (context) => toastDone(text: 'hi')),
       );
       await tester.tap(find.byType(MaterialButton));
       await tester.pump(const Duration(milliseconds: 50));

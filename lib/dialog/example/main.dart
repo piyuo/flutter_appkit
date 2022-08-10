@@ -39,7 +39,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _showPopup(context),
+            child: _toast(context),
           ),
           Wrap(
             children: [
@@ -100,11 +100,11 @@ class DialogExample extends StatelessWidget {
                 buttonCancel: true,
               );
               if (result == true) {
-                toastDone(context, text: 'yes');
+                toastDone(text: 'yes');
               } else if (result == false) {
-                toastDone(context, text: 'no');
+                toastDone(text: 'no');
               } else if (result == null) {
-                toastDone(context, text: 'cancel');
+                toastDone(text: 'cancel');
               }
             },
           ),
@@ -116,9 +116,9 @@ class DialogExample extends StatelessWidget {
                 'save this document?',
               );
               if (result == true) {
-                toastDone(context, text: 'ok');
+                toastDone(text: 'ok');
               } else if (result == null) {
-                toastDone(context, text: 'cancel');
+                toastDone(text: 'cancel');
               }
             },
           ),
@@ -207,13 +207,13 @@ class DialogExample extends StatelessWidget {
       ElevatedButton(
         child: const Text('Done'),
         onPressed: () async {
-          toastDone(context);
+          toastDone();
         },
       ),
       ElevatedButton(
         child: const Text('mask'),
         onPressed: () async {
-          toastMask(context);
+          toastMask();
           await Future.delayed(const Duration(seconds: 3));
           dismissToast();
         },
@@ -222,7 +222,6 @@ class DialogExample extends StatelessWidget {
         child: const Text('wait for'),
         onPressed: () async {
           toastWaitFor(
-            context,
             callback: () async {
               await Future.delayed(const Duration(seconds: 3));
             },
@@ -232,7 +231,7 @@ class DialogExample extends StatelessWidget {
       ElevatedButton(
         child: const Text('toast wait'),
         onPressed: () async {
-          toastWait(context);
+          toastWait();
           await Future.delayed(const Duration(seconds: 3));
           dismissToast();
         },
@@ -240,16 +239,16 @@ class DialogExample extends StatelessWidget {
       ElevatedButton(
         child: const Text('toast wait then OK'),
         onPressed: () async {
-          toastWait(context);
+          toastWait();
           await Future.delayed(const Duration(seconds: 1));
           dismissToast();
-          toastDone(context);
+          toastDone();
         },
       ),
       ElevatedButton(
         child: const Text('loading text'),
         onPressed: () async {
-          toastWait(context, text: 'loading');
+          toastWait(text: 'loading');
           await Future.delayed(const Duration(seconds: 3));
           dismissToast();
         },
@@ -282,7 +281,7 @@ class DialogExample extends StatelessWidget {
       ),
       ElevatedButton(
         child: const Text('toast'),
-        onPressed: () => toastDone(context, text: 'add item to cart'),
+        onPressed: () => toastDone(text: 'add item to cart'),
       ),
       ElevatedButton(
         child: const Text('fail'),
@@ -300,9 +299,9 @@ class DialogExample extends StatelessWidget {
       ElevatedButton(
         child: const Text('slow network'),
         onPressed: () async {
-          toastWait(context);
+          toastWait();
           await Future.delayed(const Duration(seconds: 3));
-          toastWait(context, text: 'network is slow');
+          toastWait(text: 'network is slow');
           await Future.delayed(const Duration(seconds: 3));
           dismissToast();
         },
