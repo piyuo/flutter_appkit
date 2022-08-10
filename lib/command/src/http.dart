@@ -31,14 +31,14 @@ class Request {
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
 ///
-Future<pb.Object> post(BuildContext ctx, Request request, pb.Builder? builder) async {
+Future<pb.Object> post(Request request, pb.Builder? builder) async {
   Completer<pb.Object> completer = Completer<pb.Object>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
-      eventbus.broadcast(ctx, SlowNetworkEvent());
+      eventbus.broadcast(SlowNetworkEvent());
     }
   });
-  doPost(ctx, request, builder).then((response) {
+  doPost(request, builder).then((response) {
     timer.cancel();
     completer.complete(response);
   });
@@ -55,7 +55,7 @@ Future<pb.Object> post(BuildContext ctx, Request request, pb.Builder? builder) a
 ///     req.timeout = 9000;
 ///     var bytes = await commandHttp.doPost(req);
 ///
-Future<pb.Object> doPost(BuildContext context, Request r, pb.Builder? builder) async {
+Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
   try {
     var headers = await doRequestHeaders();
     Uint8List bytes = encode(r.action);
@@ -71,31 +71,31 @@ Future<pb.Object> doPost(BuildContext context, Request r, pb.Builder? builder) a
     log.log('[http] caught $msg');
     switch (resp.statusCode) {
       case 500: //internal server error
-        return await giveup(context, InternalServerErrorEvent()); //body is err id
+        return await giveup(InternalServerErrorEvent()); //body is err id
       case 501: //the remote service is not properly setup
-        return await giveup(context, ServerNotReadyEvent()); //body is err id
+        return await giveup(ServerNotReadyEvent()); //body is err id
       case 504: //service context deadline exceeded
         log.log('[http] caught 504 deadline exceeded ${r.url}, body:${resp.body}');
-        return await retry(context, builder,
+        return await retry(builder,
             contract: RequestTimeoutContract(isServer: true, errorID: resp.body, url: r.url),
             request: r); //body is err id
       case 511: //access token required
-        return await retry(context, builder, contract: CAccessTokenRequired(), request: r);
+        return await retry(builder, contract: CAccessTokenRequired(), request: r);
       case 412: //access token expired
-        return await retry(context, builder, contract: CAccessTokenExpired(), request: r);
+        return await retry(builder, contract: CAccessTokenExpired(), request: r);
       case 402: //payment token expired
-        return await retry(context, builder, contract: CPaymentTokenRequired(), request: r);
+        return await retry(builder, contract: CPaymentTokenRequired(), request: r);
       case 400: //bad request
-        return await giveup(context, BadRequestEvent()); //body is err id
+        return await giveup(BadRequestEvent()); //body is err id
     }
     //unknown status code
     throw Exception('unknown $msg');
   } on SocketException catch (e) {
     log.log('[http] failed to connect ${r.url} cause $e');
-    return await retry(context, builder, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
+    return await retry(builder, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
   } on TimeoutException catch (e) {
     log.log('[http] connect timeout ${r.url} cause $e');
-    return await retry(context, builder,
+    return await retry(builder,
         contract: RequestTimeoutContract(isServer: false, exception: e, url: r.url), request: r);
   }
   //throw everything else
@@ -111,8 +111,8 @@ Future<pb.Object> doPost(BuildContext context, Request r, pb.Builder? builder) a
 ///
 ///     commandHttp.giveup(ctx,BadRequestEvent());
 ///
-Future<pb.Object> giveup(BuildContext ctx, dynamic e) async {
-  eventbus.broadcast(ctx, e);
+Future<pb.Object> giveup(dynamic e) async {
+  eventbus.broadcast(e);
   return pb.empty;
 }
 
@@ -121,14 +121,13 @@ Future<pb.Object> giveup(BuildContext ctx, dynamic e) async {
 ///     await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 ///
 Future<pb.Object> retry(
-  BuildContext context,
   pb.Builder? builder, {
   required eventbus.Contract contract,
   required Request request,
 }) async {
-  if (await eventbus.broadcast(context, contract)) {
+  if (await eventbus.broadcast(contract)) {
     log.log('[http] try again');
-    return await doPost(context, request, builder);
+    return await doPost(request, builder);
   }
   return pb.empty;
 }

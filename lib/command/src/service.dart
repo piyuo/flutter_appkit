@@ -104,7 +104,6 @@ abstract class Service {
       pb.Object? returnObj;
       try {
         returnObj = await post(
-            context,
             Request(
               service: this,
               client: client,
@@ -127,7 +126,7 @@ abstract class Service {
       }
     } else if (result is FirewallBlock) {
       log.log('[command] block ${result.reason} ${action.jsonString}');
-      eventbus.broadcast(context, FirewallBlockEvent(result.reason));
+      eventbus.broadcast(FirewallBlockEvent(result.reason));
       return result;
     }
     //cached object

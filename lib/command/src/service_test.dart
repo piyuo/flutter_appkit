@@ -14,7 +14,7 @@ import 'package:libcli/command/src/firewall.dart';
 
 void main() {
   dynamic lastEvent;
-  eventbus.listen<FirewallBlockEvent>((BuildContext ctx, event) async {
+  eventbus.listen<FirewallBlockEvent>((event) async {
     lastEvent = event;
   });
 

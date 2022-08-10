@@ -4,7 +4,6 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/command/src/events.dart';
 import 'package:libcli/command/src/http.dart';
@@ -15,13 +14,13 @@ void main() {
   setUp(() async {
     contract = null;
     eventbus.clearListeners();
-    eventbus.listen((_, e) async {
+    eventbus.listen((e) async {
       if (e is eventbus.Contract) {
         contract = e;
       }
     });
 
-    eventbus.listen<eventbus.Contract>((_, e) async {
+    eventbus.listen<eventbus.Contract>((e) async {
       e.complete(true);
     });
   });
@@ -32,7 +31,7 @@ void main() {
         throw Exception('mock');
       }));
       expect(() async {
-        await doPost(testing.Context(), req, () => sample.StringResponse());
+        await doPost(req, () => sample.StringResponse());
       }, throwsException);
     });
 
@@ -44,7 +43,7 @@ void main() {
       var req = _fakeSampleRequest(client);
 
       req.timeout = const Duration(milliseconds: 1);
-      var obj = await doPost(testing.Context(), req, () => sample.StringResponse());
+      var obj = await doPost(req, () => sample.StringResponse());
       expect(obj is pb.Empty, true);
       expect(contract is RequestTimeoutContract, true);
     });
