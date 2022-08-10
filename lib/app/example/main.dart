@@ -281,7 +281,7 @@ Widget _error(BuildContext context) {
       ElevatedButton(
           child: const Text('firewall block'),
           onPressed: () {
-            eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
+            eventbus.broadcast(command.FirewallBlockEvent('BLOCK_SHORT'));
           }),
       ElevatedButton(
           child: const Text('no internet'),
@@ -293,8 +293,8 @@ Widget _error(BuildContext context) {
               contract.isInternetConnected = () async {
                 return false;
               };
-              var ok = await eventbus.broadcast(context, contract);
-              dialog.toastInfo(context, ok ? 'retry' : 'cancel');
+              var ok = await eventbus.broadcast(contract);
+              dialog.toastInfo(ok ? 'retry' : 'cancel');
             }
           }),
       ElevatedButton(
@@ -307,7 +307,7 @@ Widget _error(BuildContext context) {
             contract.isGoogleCloudFunctionAvailable = () async {
               return true;
             };
-            await eventbus.broadcast(context, contract);
+            await eventbus.broadcast(contract);
           }),
       ElevatedButton(
           child: const Text('internet blocked'),
@@ -319,22 +319,22 @@ Widget _error(BuildContext context) {
             contract.isGoogleCloudFunctionAvailable = () async {
               return false;
             };
-            await eventbus.broadcast(context, contract);
+            await eventbus.broadcast(contract);
           }),
       ElevatedButton(
           child: const Text('internal server error'),
           onPressed: () {
-            eventbus.broadcast(context, command.InternalServerErrorEvent());
+            eventbus.broadcast(command.InternalServerErrorEvent());
           }),
       ElevatedButton(
           child: const Text('server not ready'),
           onPressed: () {
-            eventbus.broadcast(context, command.ServerNotReadyEvent());
+            eventbus.broadcast(command.ServerNotReadyEvent());
           }),
       ElevatedButton(
           child: const Text('bad request'),
           onPressed: () {
-            eventbus.broadcast(context, command.BadRequestEvent());
+            eventbus.broadcast(command.BadRequestEvent());
           }),
       ElevatedButton(
           child: const Text('client timeout'),
@@ -342,20 +342,19 @@ Widget _error(BuildContext context) {
             try {
               throw TimeoutException('client timeout');
             } catch (e) {
-              var ok = await eventbus.broadcast(
-                  context, command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
-              dialog.toastInfo(context, ok ? 'retry' : 'cancel');
+              var ok = await eventbus
+                  .broadcast(command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
+              dialog.toastInfo(ok ? 'retry' : 'cancel');
             }
           }),
       ElevatedButton(
           child: const Text('deadline exceeded'),
           onPressed: () async {
-            var ok =
-                await eventbus.broadcast(context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
-            dialog.toastInfo(context, ok ? 'retry' : 'cancel');
+            var ok = await eventbus.broadcast(command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
+            dialog.toastInfo(ok ? 'retry' : 'cancel');
           }),
       ElevatedButton(
-          child: const Text('slow network'), onPressed: () => eventbus.broadcast(context, command.SlowNetworkEvent())),
+          child: const Text('slow network'), onPressed: () => eventbus.broadcast(command.SlowNetworkEvent())),
       ElevatedButton(child: const Text('disk error'), onPressed: () => throw log.DiskErrorException()),
     ],
   );

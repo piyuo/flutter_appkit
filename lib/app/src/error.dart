@@ -87,12 +87,12 @@ String firewallBlockMessage(BuildContext context, String reason) {
 }
 
 @visibleForTesting
-Future<void> listened(BuildContext context, dynamic e) async {
+Future<void> listened(dynamic e) async {
   debugPrint('[app] listened ${e.runtimeType}');
 
   if (e is command.FirewallBlockEvent) {
     dialog.alert(
-      firewallBlockMessage(context, e.reason),
+      firewallBlockMessage(delta.globalContext, e.reason),
       warning: true,
       emailUs: true,
     );
@@ -127,8 +127,7 @@ Future<void> listened(BuildContext context, dynamic e) async {
 
   if (e is command.SlowNetworkEvent) {
     dialog.toastInfo(
-      context,
-      context.i18n.errorNetworkSlowMessage,
+      delta.globalContext.i18n.errorNetworkSlowMessage,
       widget: const Icon(
         Icons.wifi,
         size: 68,
@@ -141,9 +140,9 @@ Future<void> listened(BuildContext context, dynamic e) async {
   if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.alert(
-      context.i18n.errorNetworkTimeoutMessage,
-      yes: context.i18n.retryButtonText,
-      cancel: context.i18n.cancelButtonText,
+      delta.globalContext.i18n.errorNetworkTimeoutMessage,
+      yes: delta.globalContext.i18n.retryButtonText,
+      cancel: delta.globalContext.i18n.cancelButtonText,
       icon: Icons.alarm,
       footer: errorCode,
       emailUs: true,
@@ -156,14 +155,14 @@ Future<void> listened(BuildContext context, dynamic e) async {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.alert(
-          context.i18n.errorNetworkNoServiceMessage,
+          delta.globalContext.i18n.errorNetworkNoServiceMessage,
           icon: Icons.cloud_off,
           footer: e.exception?.toString(),
           emailUs: true,
         ); //service not available
       } else {
         dialog.alert(
-          context.i18n.errorNetworkBlockedMessage,
+          delta.globalContext.i18n.errorNetworkBlockedMessage,
           footer: e.exception?.toString(),
           icon: Icons.cloud_off,
           emailUs: true,
@@ -173,11 +172,11 @@ Future<void> listened(BuildContext context, dynamic e) async {
       return;
     }
     var result = await dialog.alert(
-      context.i18n.errorNetworkNoInternetMessage,
+      delta.globalContext.i18n.errorNetworkNoInternetMessage,
       icon: Icons.wifi_off,
       footer: e.exception?.toString(),
-      yes: context.i18n.retryButtonText,
-      cancel: context.i18n.cancelButtonText,
+      yes: delta.globalContext.i18n.retryButtonText,
+      cancel: delta.globalContext.i18n.cancelButtonText,
     );
     e.complete(result == true);
     return;

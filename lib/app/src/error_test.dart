@@ -54,7 +54,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.FirewallBlockEvent('BLOCK_SHORT'));
+          await eventbus.broadcast(command.FirewallBlockEvent('BLOCK_SHORT'));
         }),
       );
 
@@ -90,7 +90,7 @@ void main() {
           contract.isGoogleCloudFunctionAvailable = () async {
             return true;
           };
-          await eventbus.broadcast(context, contract);
+          await eventbus.broadcast(contract);
         }),
       );
 
@@ -112,7 +112,7 @@ void main() {
           contract.isGoogleCloudFunctionAvailable = () async {
             return false;
           };
-          await eventbus.broadcast(context, contract);
+          await eventbus.broadcast(contract);
         }),
       );
 
@@ -127,7 +127,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.InternalServerErrorEvent());
+          await eventbus.broadcast(command.InternalServerErrorEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -141,7 +141,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.ServerNotReadyEvent());
+          await eventbus.broadcast(command.ServerNotReadyEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -155,7 +155,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.BadRequestEvent());
+          await eventbus.broadcast(command.BadRequestEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -172,8 +172,7 @@ void main() {
           try {
             throw TimeoutException('client timeout');
           } catch (e) {
-            await eventbus.broadcast(
-                context, command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
+            await eventbus.broadcast(command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
           }
         }),
       );
@@ -188,7 +187,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
+          await eventbus.broadcast(command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -215,7 +214,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(context, command.SlowNetworkEvent());
+          await eventbus.broadcast(command.SlowNetworkEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
