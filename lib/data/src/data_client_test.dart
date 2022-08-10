@@ -16,12 +16,12 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async {
+        creator: () async => sample.Person(),
+        loader: (id) async {
           isGet = true;
           return sample.Person()..id = 'myId';
         },
-        saver: (_, __) async {},
+        saver: (_) async {},
       );
 
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'myId');
@@ -37,12 +37,12 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       bool isGet = false;
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async {
+        creator: () async => sample.Person(),
+        loader: (id) async {
           isGet = true;
           return sample.Person();
         },
-        saver: (_, __) async {},
+        saver: (_) async {},
       );
 
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
@@ -55,9 +55,9 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.load(testing.Context());
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async => null,
-        saver: (_, __) async {},
+        creator: () async => sample.Person(),
+        loader: (id) async => null,
+        saver: (_) async {},
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
@@ -76,9 +76,9 @@ void main() {
       dataset.add(testing.Context(), [exists]);
 
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async => null,
-        saver: (_, __) async {},
+        creator: () async => sample.Person(),
+        loader: (context) async => null,
+        saver: (_) async {},
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: '');
       expect(result, isNotNull);
@@ -99,9 +99,9 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async => null,
-        saver: (_, __) async {},
+        creator: () async => sample.Person(),
+        loader: (context) async => null,
+        saver: (_) async {},
       );
       final result = await dataClient.load(testing.Context(), dataset: dataset, id: 'existsPerson');
       expect(result, isNotNull);
@@ -121,9 +121,9 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async => null,
-        saver: (_, items) async {
+        creator: () async => sample.Person(),
+        loader: (context) async => null,
+        saver: (items) async {
           saved = items[0];
         },
       );
@@ -145,9 +145,9 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async => null,
-        saver: (_, items) async {
+        creator: () async => sample.Person(),
+        loader: (id) async => null,
+        saver: (items) async {
           saved = items[0];
         },
       );
@@ -169,9 +169,9 @@ void main() {
       dataset.add(testing.Context(), [person]);
 
       final dataClient = DataClient<sample.Person>(
-        creator: (context) async => sample.Person(),
-        loader: (context, id) async => null,
-        saver: (_, items) async {
+        creator: () async => sample.Person(),
+        loader: (id) async => null,
+        saver: (items) async {
           saved = items[0];
         },
       );

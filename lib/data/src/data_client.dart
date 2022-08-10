@@ -9,29 +9,19 @@ import 'dataset.dart';
 ///   return sample.Person();
 /// },
 /// ```
-typedef DataClientLoader<T> = Future<T?> Function(BuildContext context, String id);
+typedef DataClientLoader<T> = Future<T?> Function(String id);
 
 /// DataClientSaver save data to remote service
-typedef DataClientSaver<T> = Future<void> Function(BuildContext context, List<T> list);
+typedef DataClientSaver<T> = Future<void> Function(List<T> list);
 
 /// DataClient provide a way to access data though dataset
-/// ```dart
-/// final dc = DataClient<sample.Person>(
-///   objectBuilder: () => sample.Person(),
-///   getter: (context, id) async => null,
-///   setter: (context, sample.Person person) async {
-///     person.name = 'john';
-///     return person;
-///   },
-/// );
-/// ```
 class DataClient<T extends pb.Object> {
   /// DataClient provide a way to access data though dataset
   /// ```dart
   /// final dc = DataClient<sample.Person>(
   ///   creator: () => sample.Person(),
-  ///   getter: (context, id) async => null,
-  ///   setter: (context, sample.Person person) async {
+  ///   loader: (id) async => null,
+  ///   saver: (sample.Person person) async {
   ///     person.name = 'john';
   ///     return person;
   ///   },
@@ -47,7 +37,7 @@ class DataClient<T extends pb.Object> {
   late Dataset<T> dataset;
 
   /// creator create new row
-  final delta.FutureContextCallback<T> creator;
+  final delta.FutureCallback<T> creator;
 
   /// loader get data from remote service
   final DataClientLoader<T> loader;
@@ -69,13 +59,13 @@ class DataClient<T extends pb.Object> {
         return data;
       }
 
-      data = await loader(context, id);
+      data = await loader(id);
       if (data != null) {
         dataset.insert(context, [data]);
         return data;
       }
     }
-    return creator(context);
+    return creator();
   }
 
   /// setDataset only set dataset,it used when load data is not need
@@ -86,7 +76,7 @@ class DataClient<T extends pb.Object> {
 
   /// save data to dataset and remote service
   Future<void> save(BuildContext context, List<T> list) async {
-    await saver(context, list);
+    await saver(list);
     await dataset.insert(context, list);
   }
 
@@ -95,7 +85,7 @@ class DataClient<T extends pb.Object> {
     for (final item in list) {
       item.markAsActive();
     }
-    await saver(context, list);
+    await saver(list);
     await dataset.insert(context, list);
   }
 
@@ -104,7 +94,7 @@ class DataClient<T extends pb.Object> {
     for (final item in list) {
       item.markAsDeleted();
     }
-    await saver(context, list);
+    await saver(list);
     await dataset.delete(context, list.map((row) => row.id).toList());
   }
 
@@ -113,7 +103,7 @@ class DataClient<T extends pb.Object> {
     for (final item in list) {
       item.markAsArchived();
     }
-    await saver(context, list);
+    await saver(list);
     await dataset.delete(context, list.map((row) => row.id).toList());
   }
 }
