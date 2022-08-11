@@ -29,8 +29,70 @@ final formGroup = fb.group({
   'age': FormControl<int>(),
 });
 
+animate_view.AnimateViewProvider _animateViewProvider = animate_view.AnimateViewProvider()..setLength(5);
+
+NotesProvider<sample.Person> _notesProvider = NotesProvider<sample.Person>(
+  animateViewProvider: _animateViewProvider,
+  caption: "Notes",
+  formController: createFormController(),
+  listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+    child: Text('list:$person'),
+  ),
+  gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
+    padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+    child: Text('grid:$person'),
+  ),
+  //         detailBeamName: "/",
+  loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
+    if (stepCount == 0) {
+      stepCount++;
+      return [];
+    }
+    stepCount++;
+    return List.generate(
+      stepCount == 1 ? 1 : 1,
+      (i) {
+        final uuid = generator.randomNumber(6);
+        return sample.Person(name: uuid);
+      },
+    );
+  },
+  onSearch: (text) => debugPrint('search:$text'),
+  onSearchBegin: () => debugPrint('search begin'),
+  onSearchEnd: () => debugPrint('search end'),
+  tags: [
+    Tag(
+      label: 'Inbox',
+      value: 'inbox',
+      icon: Icons.inbox,
+      count: 0,
+    ),
+    Tag(
+      label: 'VIPs',
+      value: 'vips',
+      icon: Icons.verified_user,
+      count: 1,
+      selected: true,
+    ),
+    Tag(
+      label: 'Sent',
+      value: 'sent',
+      icon: Icons.send,
+      count: 20,
+    ),
+    Tag(
+      label: 'All',
+      value: 'all',
+      icon: Icons.all_inbox,
+      count: 120,
+      category: 'iCloud',
+    ),
+  ],
+);
+
 /// build note form controller
-NoteFormController<sample.Person> buildNoteFormController() => NoteFormController<sample.Person>(
+NoteFormController<sample.Person> createFormController() => NoteFormController<sample.Person>(
       formGroup: formGroup,
       showDeleteButton: true,
       loader: (id) async => sample.Person(name: id)..id = id,
@@ -61,73 +123,10 @@ NoteFormController<sample.Person> buildNoteFormController() => NoteFormControlle
         return sample.Person(name: 'new person $no');
       },
     );
-
 main() {
   app.start(
     appName: 'notes',
     onBeforeStart: () async {},
-    providers: [
-      ChangeNotifierProvider<NotesProvider<sample.Person>>(
-        create: (context) => NotesProvider<sample.Person>(
-          caption: "Notes",
-          formController: buildNoteFormController(),
-          listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: Text('list:$person'),
-          ),
-          gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-            child: Text('grid:$person'),
-          ),
-          //         detailBeamName: "/",
-          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-            if (stepCount == 0) {
-              stepCount++;
-              return [];
-            }
-            stepCount++;
-            return List.generate(
-              stepCount == 1 ? 1 : 1,
-              (i) {
-                final uuid = generator.randomNumber(6);
-                return sample.Person(name: uuid);
-              },
-            );
-          },
-          onSearch: (text) => debugPrint('search:$text'),
-          onSearchBegin: () => debugPrint('search begin'),
-          onSearchEnd: () => debugPrint('search end'),
-          tags: [
-            Tag(
-              label: 'Inbox',
-              value: 'inbox',
-              icon: Icons.inbox,
-              count: 0,
-            ),
-            Tag(
-              label: 'VIPs',
-              value: 'vips',
-              icon: Icons.verified_user,
-              count: 1,
-              selected: true,
-            ),
-            Tag(
-              label: 'Sent',
-              value: 'sent',
-              icon: Icons.send,
-              count: 20,
-            ),
-            Tag(
-              label: 'All',
-              value: 'all',
-              icon: Icons.all_inbox,
-              count: 120,
-              category: 'iCloud',
-            ),
-          ],
-        ),
-      ),
-    ],
     routes: {
       '/': (context, state, _) => const NotesExample(),
       '/:id': (context, state, _) {
@@ -163,19 +162,17 @@ class NotesExample extends StatelessWidget {
         elevation: 1,
         title: const Text('Example Application'),
         actions: [
-          Consumer<NotesProvider<sample.Person>>(builder: (context, viewProvider, _) {
-            return NotesViewMenuButton<sample.Person>(
-              viewProvider: viewProvider,
-              formController: viewProvider.formController,
-              tools: [
-                responsive.ToolButton(
-                  label: 'hello',
-                  icon: Icons.favorite,
-                  onPressed: () => debugPrint('hello'),
-                ),
-              ],
-            );
-          })
+          NotesViewMenuButton<sample.Person>(
+            viewProvider: _notesProvider,
+            formController: _notesProvider.formController,
+            tools: [
+              responsive.ToolButton(
+                label: 'hello',
+                icon: Icons.favorite,
+                onPressed: () => debugPrint('hello'),
+              ),
+            ],
+          )
         ],
       ),
       body: SafeArea(
@@ -454,11 +451,11 @@ class NotesExample extends StatelessWidget {
                   selectedItems: const ['a'],
                   listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                    child: Text('list:' + item),
+                    child: Text('list:$item'),
                   ),
                   gridBuilder: (BuildContext context, String item, bool isSelected) => Container(
                     padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
-                    child: Text('grid:' + item),
+                    child: Text('grid:$item'),
                   ),
                   contentBuilder: () => const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
@@ -598,11 +595,11 @@ class NotesExample extends StatelessWidget {
                 selectedItems: const ['a'],
                 listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Text('list:' + item),
+                  child: Text('list:$item'),
                 ),
                 gridBuilder: (BuildContext context, String item, bool isSelected) => Container(
                   padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
-                  child: Text('grid:' + item),
+                  child: Text('grid:$item'),
                 ),
                 contentBuilder: () => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
@@ -675,54 +672,60 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _notesView(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<database.DatabaseProvider>(create: (_) {
-            return database.DatabaseProvider(
-              name: 'test',
-            )..load().then((database) {
-                NotesProvider.of<sample.Person>(context).load(
-                    context,
-                    data.DatasetDatabase<sample.Person>(
-                      database,
-                      objectBuilder: () => sample.Person(),
-                    ));
-              });
-          }),
-          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
-          ),
-        ],
-        child: Consumer3<database.DatabaseProvider, NotesProvider<sample.Person>, animate_view.AnimateViewProvider>(
-          builder: (context, databaseProvider, notesProvider, animateViewProvider, _) => NotesView<sample.Person>(
-            animateViewProvider: animateViewProvider,
-            viewProvider: notesProvider,
-            contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
-            tagViewHeader: const Text('hello world'),
-            leftTools: [
-              responsive.ToolButton(
-                label: 'hello',
-                icon: Icons.favorite,
-                onPressed: () => debugPrint('hello'),
-              ),
-            ],
-            rightTools: [
-              responsive.ToolButton(
-                label: 'hello',
-                icon: Icons.ac_unit,
-                onPressed: () => debugPrint('hi'),
-              ),
-            ],
-          ),
-        ));
+    return ChangeNotifierProvider<animate_view.AnimateViewProvider>.value(
+        value: _animateViewProvider,
+        child: Consumer<animate_view.AnimateViewProvider>(
+            builder: (context, animateViewProvider, _) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
+                        value: _notesProvider,
+                      ),
+                      ChangeNotifierProvider<database.DatabaseProvider>(create: (_) {
+                        return database.DatabaseProvider(
+                          name: 'test',
+                        )..load().then((database) {
+                            _notesProvider.load(
+                                context,
+                                data.DatasetDatabase<sample.Person>(
+                                  database,
+                                  objectBuilder: () => sample.Person(),
+                                ));
+                          });
+                      }),
+                    ],
+                    child: Consumer2<database.DatabaseProvider, NotesProvider<sample.Person>>(
+                      builder: (context, databaseProvider, notesProvider, _) => NotesView<sample.Person>(
+                        animateViewProvider: animateViewProvider,
+                        viewProvider: notesProvider,
+                        contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
+                        tagViewHeader: const Text('hello world'),
+                        leftTools: [
+                          responsive.ToolButton(
+                            label: 'hello',
+                            icon: Icons.favorite,
+                            onPressed: () => debugPrint('hello'),
+                          ),
+                        ],
+                        rightTools: [
+                          responsive.ToolButton(
+                            label: 'hello',
+                            icon: Icons.ac_unit,
+                            onPressed: () => debugPrint('hi'),
+                          ),
+                        ],
+                      ),
+                    ))));
   }
 }
 
 Widget _noteItem(BuildContext context, String id) {
   return MultiProvider(
       providers: [
+        ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
+          value: _notesProvider,
+        ),
         ChangeNotifierProvider<NoteFormController<sample.Person>>(
-          create: (context) => buildNoteFormController(),
+          create: (context) => createFormController(),
         ),
         ChangeNotifierProvider<database.DatabaseProvider>(
           create: (context) {

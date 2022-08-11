@@ -62,9 +62,9 @@ class CheckableHeader extends StatelessWidget {
                 Text(context.i18n.notesItemSelectedLabel.replace1(selectedItemCount.toString()),
                     style: const TextStyle(fontSize: 16, color: Colors.white), maxLines: 1),
                 TextButton(
+                  onPressed: onCancel,
                   child: Text(context.i18n.closeButtonText,
                       style: TextStyle(fontSize: 16, color: Colors.blueGrey.shade300)),
-                  onPressed: onCancel,
                 ),
                 const Spacer(),
                 if (actions != null) ...actions!,

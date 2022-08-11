@@ -4,28 +4,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'selectable.dart';
 
 /// DynamicGrid is animation + refresh more, need AnimatedViewProvider
-/// ```dart
-///return ChangeNotifierProvider<animations.AnimatedViewProvider>(
-///    create: (context) => animations.AnimatedViewProvider(),
-///    child: Consumer<animations.AnimatedViewProvider>(
-///        builder: (context, provide, child) => DynamicGrid<String>(
-///                  headerBuilder: () => delta.SearchBox(
-///                    controller: _searchBoxController,
-///                  ),
-///                  footerBuilder: () => Container(
-///                    child: const Text('footer'),
-///                    color: Colors.red,
-///                  ),
-///                  items: animationListItems,
-///                  selectedItems: const ['b'],
-///                  itemBuilder: (String item, bool isSelected) => Container(
-///                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-///                    child: Text(item),
-///                  ),
-///                )));
-/// ```
 class DynamicGrid<T> extends Selectable<T> {
-  /// DynamicGrid is animation + refresh more, need AnimatedViewProvider
   /// ```dart
   ///return ChangeNotifierProvider<animations.AnimatedViewProvider>(
   ///    create: (context) => animations.AnimatedViewProvider(),
@@ -160,7 +139,7 @@ class DynamicGrid<T> extends Selectable<T> {
                 itemBuilder: (int index) {
                   if (creating != null) {
                     if (index == 0) {
-                      return buildItem(context, creating!);
+                      return buildItem(context, creating as T);
                     } else {
                       index--;
                     }

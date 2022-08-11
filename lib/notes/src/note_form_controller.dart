@@ -100,7 +100,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// await client.load(testing.Context(), 'object_id');
   /// ```
   Future<T> load(BuildContext context, {required data.Dataset<T> dataset, required String id}) async {
-    current = await dataClient.load(context, dataset: dataset, id: id);
+    current = await dataClient.load(dataset: dataset, id: id);
     formState = current != null ? NotesFormState.loaded : NotesFormState.formNotExists;
     if (current != null) {
       _itemToForm();
@@ -201,18 +201,18 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   Future<void> deleteByView(BuildContext context, List<T> list) async {
     await dialog.toastWaitFor(
       showDone: false,
-      callback: () => dataClient.delete(context, list),
+      callback: () => dataClient.delete(list),
     );
   }
 
   /// archiveByView called by view
   Future<void> archiveByView(BuildContext context, List<T> list) async {
-    await dataClient.archive(context, list);
+    await dataClient.archive(list);
   }
 
   /// restoreByView called by view
   Future<void> restoreByView(BuildContext context, List<T> list) async {
-    await dataClient.restore(context, list);
+    await dataClient.restore(list);
   }
 
   /// buildForm use formBuilder to build form
@@ -239,7 +239,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// onSubmit called when user press submit button or submit been called, return true mean submit success
   Future<bool> onSubmit(BuildContext context) async {
     _formToItem();
-    await dataClient.save(context, [current!]);
+    await dataClient.save([current!]);
     await eventbus.broadcast(NotesRefillEvent(isNew: isNewItem));
     notifyListeners();
     return true;

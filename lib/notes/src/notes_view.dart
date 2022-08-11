@@ -96,7 +96,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
               value: viewProvider.refreshButtonController,
             ),
             ChangeNotifierProvider.value(
-              value: viewProvider.animateViewController,
+              value: viewProvider.animateViewProvider,
             )
           ],
           child: TagSplitView(
@@ -272,7 +272,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     ),
                     child: Row(children: [
                       TextButton(
-                        child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
                         style: viewProvider.isCheckMode
                             ? ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
@@ -281,6 +280,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                               )
                             : null,
                         onPressed: viewProvider.isReadyToShow ? () => viewProvider.onToggleCheckMode(context) : null,
+                        child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
                       ),
                       pageInfoText.isNotEmpty
                           ? Expanded(
@@ -292,8 +292,8 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                             )
                           : const Spacer(),
                       TextButton(
-                        child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
                         onPressed: viewProvider.isReadyToShow ? () => viewProvider.onCreateNew(context) : null,
+                        child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
                       ),
                     ]),
                   );

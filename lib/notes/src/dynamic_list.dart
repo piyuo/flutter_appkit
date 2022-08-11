@@ -114,7 +114,8 @@ class DynamicList<T> extends Selectable<T> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        if (isReady && items.isEmpty) const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
+        if (isReady && items.isEmpty && creating == null)
+          const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
         delta.RefreshMoreView(
             scrollController: scrollController,
             onRefresh: onRefresh,
@@ -140,7 +141,7 @@ class DynamicList<T> extends Selectable<T> {
                 itemBuilder: (int index) {
                   if (creating != null) {
                     if (index == 0) {
-                      return buildItem(context, creating!);
+                      return buildItem(context, creating as T);
                     } else {
                       index--;
                     }
