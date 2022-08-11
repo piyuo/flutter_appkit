@@ -74,13 +74,14 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _webImage(context),
+                          child: _mounted(context),
                         ),
                         SizedBox(
                           height: 100,
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
+                                testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(label: 'refresh more', builder: () => _refreshMoreView(context)),
                                 testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
@@ -122,6 +123,16 @@ class DeltaExample extends StatelessWidget {
                     ),
                   ),
                 )));
+  }
+
+  Widget _mounted(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('safely navigator pop'),
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SecondRoute()),
+      ),
+    );
   }
 
   Widget _searchTrigger(BuildContext context) {
@@ -849,5 +860,26 @@ class WrongPage extends StatelessWidget {
                   [provide],
                   child: Container(),
                 )));
+  }
+}
+
+class SecondRoute extends StatelessWidget {
+  const SecondRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Second Route'),
+      ),
+      body: Center(
+        child: Mounted(
+          builder: (context, mounted, safePop) => ElevatedButton(
+            onPressed: () => safePop(),
+            child: const Text('Go back!'),
+          ),
+        ),
+      ),
+    );
   }
 }
