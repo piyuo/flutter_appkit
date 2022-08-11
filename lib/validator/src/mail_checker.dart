@@ -85,7 +85,7 @@ class MailChecker {
       //Here we parse TLDs like .com, .co.uk
       for (int i = 1; i < domainParts.length; i++) {
         //Include everything in tld except first element (which is domain, not tld)
-        tld += domainParts[i] + '.';
+        tld += '${domainParts[i]}.';
       }
       if (domainParts.length >= 2) {
         tld = tld.substring(0, tld.length - 1); //remove '.' in, for example, 'com.'
@@ -130,7 +130,7 @@ class MailChecker {
       String? closestDomain = _findClosestDomain(emailParts.domain, domains);
       if (closestDomain != null) {
         if (closestDomain != emailParts.domain) {
-          return MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
+          return MailCheckerSuggestion(emailParts.address, closestDomain, "${emailParts.address}@$closestDomain");
         }
       } else {
         //not a close match...mis-spell tld?
@@ -139,7 +139,7 @@ class MailChecker {
           //May be mis-spelled TLD
           String domain = emailParts.domain;
           closestDomain = domain.substring(0, domain.lastIndexOf(emailParts.topLevelDomain)) + closestTopLevelDomain;
-          return MailCheckerSuggestion(emailParts.address, closestDomain, emailParts.address + "@" + closestDomain);
+          return MailCheckerSuggestion(emailParts.address, closestDomain, "${emailParts.address}@$closestDomain");
         }
       }
     }
@@ -229,7 +229,7 @@ class MailCheckerEmail {
   const MailCheckerEmail(this.address, this.domain, this.topLevelDomain);
 
   @override
-  String toString() => address + " " + domain + " " + topLevelDomain;
+  String toString() => "$address $domain $topLevelDomain";
 }
 
 /// A class you should not have to create with new keyword. It is returned by [MailChecker.suggest] and has three attributes:

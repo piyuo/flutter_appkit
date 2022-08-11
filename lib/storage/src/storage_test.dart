@@ -85,12 +85,12 @@ void main() {
       await setStringWithExp('k', 'a', exp);
 
       // check exp key
-      var expInPref = await getDateTime('k' + expirationExt);
+      var expInPref = await getDateTime('k$expirationExt');
       expect(exp, expInPref);
       final str = await getStringWithExp('k');
       expect(str, 'a');
       expect(await containsKey('k'), true);
-      expect(await containsKey('k' + expirationExt), true);
+      expect(await containsKey('k$expirationExt'), true);
 
       // let key expired
       await Future.delayed(const Duration(seconds: 1));
@@ -98,7 +98,7 @@ void main() {
       expect(str2, null);
 
       expect(await containsKey('k'), false);
-      expect(await containsKey('k' + expirationExt), false);
+      expect(await containsKey('k$expirationExt'), false);
     });
 
     test('should get/set datetime', () async {

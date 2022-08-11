@@ -68,7 +68,7 @@ void error(dynamic e, StackTrace? stacktrace) {
 ///
 @visibleForTesting
 String get header {
-  var user = app.userID.isEmpty ? '' : app.userID + '@';
+  var user = app.userID.isEmpty ? '' : '${app.userID}@';
   var head = user + app.appName;
   if (head.isNotEmpty) {
     head += ':';
@@ -116,11 +116,11 @@ String _beautyLine(String l) {
 
   if (l.startsWith('#')) {
     var i = l.indexOf(' ');
-    return 'at ' + l.substring(i, l.length).trim();
+    return 'at ${l.substring(i, l.length).trim()}';
   }
   var list = l.split('.dart');
   if (list.length == 2) {
-    var file = list[0].trim().replaceAll(' ', '_') + '.dart';
+    var file = '${list[0].trim().replaceAll(' ', '_')}.dart';
     var pos = list[1].trim().replaceAll(' ', '_');
     return 'at $file ($pos)';
   }
