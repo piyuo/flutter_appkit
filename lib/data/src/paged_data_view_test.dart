@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/database/database.dart' as database;
@@ -13,7 +12,7 @@ class OrderSampleDataView extends PagedDataView<sample.Person> {
   OrderSampleDataView()
       : super(
           DatasetRam(objectBuilder: () => sample.Person()),
-          loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+          loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
             loaderIsRefresh = isRefresh;
             loaderLimit = limit;
             return List.generate(returnCount, (i) => sample.Person());
@@ -43,8 +42,8 @@ void main() {
       OrderSampleDataView.returnCount = 10;
       OrderSampleDataView.returnID = 'A';
       final dataView = OrderSampleDataView();
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       // should read 10 rows
       expect(dataView.length, 10);
       expect(dataView.displayRows.length, 10);
@@ -54,7 +53,7 @@ void main() {
 
       OrderSampleDataView.returnCount = 2;
       OrderSampleDataView.returnID = 'B';
-      await dataView.refresh(testing.Context());
+      await dataView.refresh();
       expect(dataView.length, 12);
       expect(dataView.displayRows.length, 10);
       expect(dataView.isEmpty, false);
@@ -66,8 +65,8 @@ void main() {
       OrderSampleDataView.loaderIsRefresh = false;
       OrderSampleDataView.loaderLimit = 0;
       final dateView = OrderSampleDataView();
-      await dateView.load(testing.Context());
-      await dateView.refresh(testing.Context());
+      await dateView.load();
+      await dateView.refresh();
       expect(OrderSampleDataView.loaderIsRefresh, true);
       expect(OrderSampleDataView.loaderLimit, 10);
       expect(dateView.noMore, true);
@@ -78,25 +77,25 @@ void main() {
       OrderSampleDataView.loaderIsRefresh = false;
       OrderSampleDataView.loaderLimit = 0;
       final dataView = OrderSampleDataView();
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.noMore, false);
       // know no more data at first
       OrderSampleDataView.returnCount = 9;
       final dataView2 = OrderSampleDataView();
-      await dataView2.load(testing.Context());
-      await dataView2.refresh(testing.Context());
+      await dataView2.load();
+      await dataView2.refresh();
       expect(dataView2.noMore, true);
     });
 
     test('should reset on refresh', () async {
       OrderSampleDataView.returnCount = 10;
       final dataView = OrderSampleDataView();
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.noMore, false);
       expect(dataView.length, 10);
-      final result = await dataView.refresh(testing.Context());
+      final result = await dataView.refresh();
       expect(result, true);
       expect(dataView.noMore, false);
       expect(dataView.length, 10);
@@ -105,10 +104,10 @@ void main() {
     test('should remove duplicate data when refresh', () async {
       final ds = PagedDataView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async => [sample.Person()],
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async => [sample.Person()],
       );
-      await ds.load(testing.Context());
-      await ds.refresh(testing.Context());
+      await ds.load();
+      await ds.refresh();
       // second refresh will delete duplicate data
       expect(ds.length, 1);
     });
@@ -117,7 +116,7 @@ void main() {
       int refreshCount = 0;
       final dataView = PagedDataView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
             return List.generate(limit, (index) => sample.Person());
@@ -125,12 +124,12 @@ void main() {
           return List.generate(limit, (index) => sample.Person());
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.noMore, false);
       expect(dataView.displayRows.length, 10);
       // second refresh will trigger reset
-      await dataView.more(testing.Context(), 2);
+      await dataView.more(2);
       expect(dataView.noMore, false);
       expect(dataView.length, 12);
       expect(dataView.displayRows.length, 10);
@@ -140,7 +139,7 @@ void main() {
       int refreshCount = 0;
       final dataView = PagedDataView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           if (refreshCount == 0) {
             refreshCount++;
             return List.generate(limit, (index) => sample.Person());
@@ -148,11 +147,11 @@ void main() {
           return List.generate(1, (index) => sample.Person());
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.noMore, false);
       // second refresh will trigger reset
-      await dataView.more(testing.Context(), 2);
+      await dataView.more(2);
       expect(dataView.noMore, true);
       expect(dataView.length, 11);
     });
@@ -166,7 +165,7 @@ void main() {
 
       final dataView = PagedDataView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           _isRefresh = isRefresh;
           _limit = limit;
           _anchorTimestamp = anchorTimestamp;
@@ -178,26 +177,26 @@ void main() {
           );
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(_isRefresh, true);
       expect(_limit, 10);
       expect(_anchorTimestamp, isNull);
       expect(_anchorId, isNull);
 
-      await dataView.more(testing.Context(), 1);
+      await dataView.more(1);
       expect(_isRefresh, false);
       expect(_limit, 1);
       expect(_anchorTimestamp, isNotNull);
       expect(_anchorId, '1');
 
-      await dataView.more(testing.Context(), 1);
+      await dataView.more(1);
       expect(_isRefresh, false);
       expect(_limit, 1);
       expect(_anchorTimestamp, isNotNull);
       expect(_anchorId, '2');
 
-      await dataView.refresh(testing.Context());
+      await dataView.refresh();
       expect(_isRefresh, true);
       expect(_limit, 10);
       expect(_anchorTimestamp, isNotNull);
@@ -209,7 +208,7 @@ void main() {
       int counter = 0;
       final dataView = PagedDataView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
             return List.generate(limit, (index) => sample.Person());
@@ -218,15 +217,15 @@ void main() {
           return [];
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.noMore, false);
 
-      await dataView.more(testing.Context(), 1);
+      await dataView.more(1);
       expect(dataView.noMore, true);
       expect(moreCount, 1);
 
-      await dataView.more(testing.Context(), 1);
+      await dataView.more(1);
       expect(dataView.noMore, true);
       expect(moreCount, 1);
     });
@@ -236,7 +235,7 @@ void main() {
       int counter = 0;
       final dataView = PagedDataView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           if (counter == 0) {
             counter++;
             return List.generate(limit, (index) => sample.Person());
@@ -245,15 +244,15 @@ void main() {
           return List.generate(1, (index) => sample.Person());
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.noMore, false);
 
-      await dataView.more(testing.Context(), 2);
+      await dataView.more(2);
       expect(dataView.noMore, true);
       expect(moreCount, 1);
 
-      await dataView.more(testing.Context(), 2);
+      await dataView.more(2);
       expect(dataView.noMore, true);
       expect(moreCount, 1);
     });
@@ -261,12 +260,12 @@ void main() {
     test('should select rows', () async {
       DataView dataView = PagedDataView(
         DatasetRam(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(10, (i) => sample.Person()..id = '$i');
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.displayRows.length, 10);
       expect(dataView.selectedIDs.length, 0);
       dataView.setSelectedRows([sample.Person()..id = '5']);
@@ -286,13 +285,13 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final dataView = PagedDataView<sample.Person>(
         dataset,
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(10, (i) => sample.Person());
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
-      await dataset.setRowsPerPage(testing.Context(), 5);
+      await dataView.load();
+      await dataView.refresh();
+      await dataset.setRowsPerPage(5);
       dataView.pageIndex = 0;
 
       await dataView.fill();
@@ -303,7 +302,7 @@ void main() {
       int step = 0;
       final dataView = PagedDataView<sample.Person>(
         DatasetRam<sample.Person>(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
             step++;
@@ -322,8 +321,8 @@ void main() {
           return [];
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.isFirstPage, true);
       expect(dataView.hasPrevPage, false);
       expect(dataView.hasNextPage, true);
@@ -334,7 +333,7 @@ void main() {
       expect(dataView.pageIndex, 0);
       expect(dataView.length, 10);
 
-      await dataView.nextPage(testing.Context());
+      await dataView.nextPage();
       expect(dataView.isFirstPage, false);
       expect(dataView.hasPrevPage, true);
       expect(dataView.hasNextPage, false);
@@ -345,7 +344,7 @@ void main() {
       expect(dataView.pageIndex, 1);
       expect(dataView.length, 12);
 
-      await dataView.prevPage(testing.Context());
+      await dataView.prevPage();
       expect(dataView.hasPrevPage, false);
       expect(dataView.hasNextPage, true);
       expect(dataView.displayRows.length, 10);
@@ -355,7 +354,7 @@ void main() {
       expect(dataView.pageIndex, 0);
       expect(dataView.length, 12);
 
-      await dataView.refresh(testing.Context());
+      await dataView.refresh();
       expect(dataView.hasPrevPage, false);
       expect(dataView.hasNextPage, true);
       expect(dataView.displayRows.length, 10);
@@ -365,7 +364,7 @@ void main() {
       expect(dataView.pageIndex, 0);
       expect(dataView.length, 14);
 
-      await dataView.refresh(testing.Context());
+      await dataView.refresh();
       expect(dataView.hasPrevPage, false);
       expect(dataView.hasNextPage, true);
       expect(dataView.displayRows.length, 10);
@@ -380,7 +379,7 @@ void main() {
       int step = 0;
       final dataView = PagedDataView<sample.Person>(
         DatasetRam<sample.Person>(objectBuilder: () => sample.Person()),
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           if (step == 0) {
             // init
             step++;
@@ -399,25 +398,25 @@ void main() {
           return [];
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
-      expect(dataView.pageInfo(testing.Context()), '1 - 10 of many');
+      await dataView.load();
+      await dataView.refresh();
+      expect(dataView.pageInfo(), '1 - 10 of many');
       expect(dataView.length, 10);
-      await dataView.nextPage(testing.Context());
-      expect(dataView.pageInfo(testing.Context()), '11 - 20 of many');
+      await dataView.nextPage();
+      expect(dataView.pageInfo(), '11 - 20 of many');
       expect(dataView.length, 20);
-      await dataView.nextPage(testing.Context());
-      expect(dataView.pageInfo(testing.Context()), '21 - 22 of 22');
+      await dataView.nextPage();
+      expect(dataView.pageInfo(), '21 - 22 of 22');
       expect(dataView.length, 22);
 
-      await dataView.goto(testing.Context(), 0);
-      expect(dataView.pageInfo(testing.Context()), '1 - 10 of 22');
+      await dataView.goto(0);
+      expect(dataView.pageInfo(), '1 - 10 of 22');
 
-      await dataView.goto(testing.Context(), 1);
-      expect(dataView.pageInfo(testing.Context()), '11 - 20 of 22');
+      await dataView.goto(1);
+      expect(dataView.pageInfo(), '11 - 20 of 22');
 
-      await dataView.goto(testing.Context(), 2);
-      expect(dataView.pageInfo(testing.Context()), '21 - 22 of 22');
+      await dataView.goto(2);
+      expect(dataView.pageInfo(), '21 - 22 of 22');
     });
 
     test('should change when rows per page changed', () async {
@@ -428,7 +427,7 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final dataView = PagedDataView<sample.Person>(
         dataset,
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           lastIsRefresh = isRefresh;
           lastLimit = limit;
           lastAnchorId = anchorId;
@@ -450,15 +449,15 @@ void main() {
           return [];
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.length, 10);
       expect(dataView.rowsPerPage, 10);
       expect(lastIsRefresh, true);
       expect(lastLimit, 10);
       expect(lastAnchorId, isNull);
 
-      await dataView.setRowsPerPage(testing.Context(), 20);
+      await dataView.setRowsPerPage(20);
       expect(dataView.rowsPerPage, 20);
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);
@@ -468,21 +467,21 @@ void main() {
       lastIsRefresh = null;
       lastLimit = null;
       lastAnchorId = null;
-      await dataView.setRowsPerPage(testing.Context(), 10);
+      await dataView.setRowsPerPage(10);
       expect(dataView.rowsPerPage, 10);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
       expect(dataView.length, 20);
 
-      await dataView.goto(testing.Context(), 1);
+      await dataView.goto(1);
       await dataView.fill();
       expect(dataView.pageIndex, 1);
       expect(lastIsRefresh, isNull);
       expect(lastLimit, isNull);
       expect(lastAnchorId, isNull);
 
-      await dataView.setRowsPerPage(testing.Context(), 30);
+      await dataView.setRowsPerPage(30);
       expect(dataView.rowsPerPage, 30);
       expect(lastIsRefresh, false);
       expect(lastLimit, 10);

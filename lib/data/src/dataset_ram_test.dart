@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/testing/testing.dart' as testing;
 import 'dataset_ram.dart';
 
 void main() {
@@ -19,7 +18,7 @@ void main() {
       expect(dataset.length, 0);
       expect(await dataset.first, isNull);
       expect(await dataset.last, isNull);
-      await dataset.add(testing.Context(), [sample.Person(name: 'hi')]);
+      await dataset.add([sample.Person(name: 'hi')]);
       expect(dataset.internalNoMore, false);
       expect(dataset.rowsPerPage, 10);
       expect(dataset.length, 1);
@@ -35,14 +34,14 @@ void main() {
 
     test('should remove duplicate when insert', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.insert([sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
       // remove duplicate
-      await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.insert([sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
-      await dataset.insert(testing.Context(), [sample.Person()..id = 'second']);
+      await dataset.insert([sample.Person()..id = 'second']);
       expect(dataset.length, 2);
       expect((await dataset.first)!.id, 'second');
       expect((await dataset.last)!.id, 'first');
@@ -50,12 +49,12 @@ void main() {
 
     test('should remove data', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.insert(testing.Context(), [sample.Person()..id = 'first']);
-      await dataset.insert(testing.Context(), [sample.Person()..id = 'second']);
-      await dataset.insert(testing.Context(), [sample.Person()..id = 'third']);
+      await dataset.insert([sample.Person()..id = 'first']);
+      await dataset.insert([sample.Person()..id = 'second']);
+      await dataset.insert([sample.Person()..id = 'third']);
       expect(dataset.length, 3);
 
-      await dataset.delete(testing.Context(), ['first', 'third']);
+      await dataset.delete(['first', 'third']);
 
       expect(dataset.length, 1);
       expect((await dataset.first)!.id, 'second');
@@ -63,14 +62,14 @@ void main() {
 
     test('should remove duplicate when add', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.add([sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
       // remove duplicate
-      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.add([sample.Person()..id = 'first']);
       expect(dataset.length, 1);
 
-      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
+      await dataset.add([sample.Person()..id = 'second']);
       expect(dataset.length, 2);
       expect((await dataset.first)!.id, 'first');
       expect((await dataset.last)!.id, 'second');
@@ -81,8 +80,8 @@ void main() {
       var rows = await dataset.range(0);
       expect(rows.length, 0);
 
-      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
-      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
+      await dataset.add([sample.Person()..id = 'first']);
+      await dataset.add([sample.Person()..id = 'second']);
       rows = await dataset.range(0);
       expect(rows.length, 2);
       rows = await dataset.range(0, 2);
@@ -94,7 +93,7 @@ void main() {
 
     test('should get row by id', () async {
       final dataset = DatasetRam(objectBuilder: () => sample.Person());
-      dataset.add(testing.Context(), List.generate(2, (i) => sample.Person()..id = '$i'));
+      dataset.add(List.generate(2, (i) => sample.Person()..id = '$i'));
       final obj = await dataset.read('1');
       expect(obj, isNotNull);
       expect(obj!.id, '1');
@@ -104,8 +103,8 @@ void main() {
 
     test('should use forEach to iterate all row', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
-      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
+      await dataset.add([sample.Person()..id = 'first']);
+      await dataset.add([sample.Person()..id = 'second']);
 
       var count = 0;
       var id = '';
@@ -119,7 +118,7 @@ void main() {
 
     test('should check id exists', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
+      await dataset.add([sample.Person()..id = 'first']);
       expect(dataset.isIDExists('first'), isTrue);
       expect(dataset.isIDExists('notExists'), isFalse);
     });

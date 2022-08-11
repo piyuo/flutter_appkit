@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/testing/testing.dart' as testing;
 import 'dataset_ram.dart';
 import 'filtered_dataset.dart';
 import 'filter.dart';
@@ -16,8 +15,8 @@ void main() {
   group('[filtered_dataset]', () {
     test('should show all dataset row when no query', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
-      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
+      await dataset.add([sample.Person()..id = 'first']);
+      await dataset.add([sample.Person()..id = 'second']);
 
       final filter = FilteredDataset(dataset);
       expect(filter.length, 2);
@@ -27,8 +26,8 @@ void main() {
 
     test('should filter keyword', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.add(testing.Context(), [sample.Person()..id = 'first']);
-      await dataset.add(testing.Context(), [sample.Person()..id = 'second']);
+      await dataset.add([sample.Person()..id = 'first']);
+      await dataset.add([sample.Person()..id = 'second']);
 
       final filter = FilteredDataset(dataset);
       await filter.setFilters([FullTextFilter('first')]);
@@ -36,18 +35,18 @@ void main() {
       expect((await filter.first)!.id, 'first');
 
       // show keep filter when insert new data
-      await filter.insert(testing.Context(), [sample.Person()..id = 'third']);
+      await filter.insert([sample.Person()..id = 'third']);
       expect(filter.length, 1);
       expect((await filter.first)!.id, 'first');
-      await filter.insert(testing.Context(), [sample.Person()..id = 'first2']);
+      await filter.insert([sample.Person()..id = 'first2']);
       expect(filter.length, 2);
       expect((await filter.first)!.id, 'first2');
 
       // show keep filter when add new data
-      await filter.add(testing.Context(), [sample.Person()..id = 'thirdAdd']);
+      await filter.add([sample.Person()..id = 'thirdAdd']);
       expect(filter.length, 2);
       expect((await filter.first)!.id, 'first2');
-      await filter.add(testing.Context(), [sample.Person()..id = 'first3']);
+      await filter.add([sample.Person()..id = 'first3']);
       expect(filter.length, 3);
       expect((await filter.first)!.id, 'first2');
       expect((await filter.last)!.id, 'first3');

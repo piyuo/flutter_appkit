@@ -5,7 +5,7 @@ import 'dataset.dart';
 
 /// DataClientLoader load data from remote service
 /// ```dart
-/// loader: (context, id) async {
+/// loader: ( id) async {
 ///   return sample.Person();
 /// },
 /// ```
@@ -49,9 +49,9 @@ class DataClient<T extends pb.Object> {
   /// ```dart
   /// await client.load(testing.Context(), dataset:ds, id:'id-123');
   /// ```
-  Future<T> load(BuildContext context, {required Dataset<T> dataset, String? id}) async {
+  Future<T> load({required Dataset<T> dataset, String? id}) async {
     this.dataset = dataset;
-    await dataset.load(context);
+    await dataset.load();
 
     if (id != null && id.length > 1) {
       var data = await dataset.read(id);
@@ -61,7 +61,7 @@ class DataClient<T extends pb.Object> {
 
       data = await loader(id);
       if (data != null) {
-        dataset.insert(context, [data]);
+        dataset.insert([data]);
         return data;
       }
     }
@@ -75,35 +75,35 @@ class DataClient<T extends pb.Object> {
   void setDataset(Dataset<T> dataset) => this.dataset = dataset;
 
   /// save data to dataset and remote service
-  Future<void> save(BuildContext context, List<T> list) async {
+  Future<void> save(List<T> list) async {
     await saver(list);
-    await dataset.insert(context, list);
+    await dataset.insert(list);
   }
 
   /// restore data from deleted/archived to active
-  Future<void> restore(BuildContext context, List<T> list) async {
+  Future<void> restore(List<T> list) async {
     for (final item in list) {
       item.markAsActive();
     }
     await saver(list);
-    await dataset.insert(context, list);
+    await dataset.insert(list);
   }
 
   /// delete data from dataset and remote service
-  Future<void> delete(BuildContext context, List<T> list) async {
+  Future<void> delete(List<T> list) async {
     for (final item in list) {
       item.markAsDeleted();
     }
     await saver(list);
-    await dataset.delete(context, list.map((row) => row.id).toList());
+    await dataset.delete(list.map((row) => row.id).toList());
   }
 
   /// archive data from dataset and remote service
-  Future<void> archive(BuildContext context, List<T> list) async {
+  Future<void> archive(List<T> list) async {
     for (final item in list) {
       item.markAsArchived();
     }
     await saver(list);
-    await dataset.delete(context, list.map((row) => row.id).toList());
+    await dataset.delete(list.map((row) => row.id).toList());
   }
 }

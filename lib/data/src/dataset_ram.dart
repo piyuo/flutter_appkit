@@ -46,7 +46,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> insert(BuildContext context, List<T> list) async {
+  Future<void> insert(List<T> list) async {
     removeDuplicateInTarget(list, _rows);
     _rows.insertAll(0, list);
   }
@@ -57,10 +57,10 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> add(BuildContext context, List<T> list) async {
+  Future<void> add(List<T> list) async {
     removeDuplicateInTarget(list, _rows);
     _rows.addAll(list);
-    await super.add(context, list);
+    await super.add(list);
   }
 
   /// remove rows from dataset
@@ -69,7 +69,7 @@ class DatasetRam<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<String> list) async {
+  Future<void> delete(List<String> list) async {
     _rows.removeWhere((row) => list.contains(row.id));
   }
 

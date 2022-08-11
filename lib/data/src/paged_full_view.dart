@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'data_view.dart';
 import 'paged_data_view.dart';
 import 'dataset.dart';
@@ -28,33 +29,33 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
   /// await ds.start(testing.Context());
   /// ```
   PagedFullView(
-    Dataset<T> _dataset, {
+    Dataset<T> dataset, {
     BuildContext? context,
     required String id,
     required DataViewLoader<T> loader,
   }) : super(
-          _dataset,
+          dataset,
           loader: loader,
         ) {
-    _dataset.internalNoMore = true;
+    dataset.internalNoMore = true;
   }
 
   /// onRefresh reset dataset, but not on full view mode
   @override
-  Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    await insert(context, downloadRows);
+  Future<bool> onRefresh(List<T> downloadRows) async {
+    await insert(downloadRows);
     return false; // table do not reset dataset
   }
 
   @override
-  Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {}
+  Future<void> loadMoreBeforeGotoPage(int index) async {}
 
   /// more seeking more data from data loader, return true if has more data
   /// ```dart
   /// await ds.more(testing.Context(), 2);
   /// ```
   @override
-  Future<bool> more(BuildContext context, int limit) async {
+  Future<bool> more(int limit) async {
     return false;
   }
 
@@ -67,9 +68,8 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
 
   /// pagingInfo return text page info like '1-10 of 19'
   @override
-  String pageInfo(BuildContext context) {
+  String pageInfo() {
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
-    return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ' +
-        context.i18n.pagingCount.replaceAll('%1', dataset.length.toString());
+    return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ${delta.globalContext.i18n.pagingCount.replaceAll('%1', dataset.length.toString())}';
   }
 }

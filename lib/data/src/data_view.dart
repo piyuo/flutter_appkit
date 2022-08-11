@@ -10,20 +10,10 @@ import 'dataset.dart';
 /// },
 /// ```
 typedef DataViewLoader<T> = Future<List<T>> Function(
-    BuildContext context, bool isRefresh, int limit, google.Timestamp? anchorTime, String? anchorId);
+    bool isRefresh, int limit, google.Timestamp? anchorTime, String? anchorId);
 
 /// DataView read data save to local, manage paging and select row,
-/// all dataset operation insert/update/delete must go through view
-/// ```dart
-/// final dataView = DataView<sample.Person>(
-///   DatasetRam(
-///   loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async =>
-///     [sample.Person(entity: pb.Entity(id: 'duplicate'))],
-/// );
-/// await dataView.open(testing.Context());
-/// ```
 abstract class DataView<T extends pb.Object> {
-  /// DataView read data save to local, manage paging and select row
   /// ```dart
   /// final dataView = DataView<sample.Person>(
   ///   DatasetRam(
@@ -68,7 +58,7 @@ abstract class DataView<T extends pb.Object> {
   bool get noRefresh => dataset.noRefresh;
 
   /// setNoRefresh set true mean  no need to refresh data, it will only use data in dataset
-  Future<void> setNoRefresh(BuildContext context, value) async => dataset.setNoRefresh(context, value);
+  Future<void> setNoRefresh(value) async => dataset.setNoRefresh(value);
 
   /// noMore return true if no more data to add
   bool get noMore => dataset.noMore;
@@ -80,7 +70,7 @@ abstract class DataView<T extends pb.Object> {
   /// ```dart
   /// ds.setDataset(context,dataset);
   /// ```
-  void setDataset(BuildContext context, Dataset<T> source) {
+  void setDataset(Dataset<T> source) {
     dataset = source;
   }
 
@@ -94,93 +84,93 @@ abstract class DataView<T extends pb.Object> {
   /// ```dart
   /// expect(ds.pageInfo(testing.Context()), '1-10 of many');
   /// ```
-  String pageInfo(BuildContext context);
+  String pageInfo();
 
   /// load dataset
   @mustCallSuper
-  Future<void> load(BuildContext context) async {
-    await dataset.load(context);
+  Future<void> load() async {
+    await dataset.load();
   }
 
   /// onInsert called after insert row
-  Future<void> onInsert(BuildContext context, List<T> list) async {
+  Future<void> onInsert(List<T> list) async {
     await fill();
   }
 
   /// insert data to dataset
   @mustCallSuper
-  Future<void> insert(BuildContext context, List<T> list) async {
+  Future<void> insert(List<T> list) async {
     if (list.isNotEmpty) {
-      await dataset.insert(context, list);
-      await onInsert(context, list);
+      await dataset.insert(list);
+      await onInsert(list);
     }
   }
 
   /// onAdd called after add row
-  Future<void> onAdd(BuildContext context, List<T> list) async {
+  Future<void> onAdd(List<T> list) async {
     await fill();
   }
 
   /// add data to dataset
   @mustCallSuper
-  Future<void> add(BuildContext context, List<T> list) async {
+  Future<void> add(List<T> list) async {
     if (list.isNotEmpty) {
-      await dataset.add(context, list);
-      await onAdd(context, list);
+      await dataset.add(list);
+      await onAdd(list);
     }
   }
 
   /// onDelete called after delete row
-  Future<void> onDelete(BuildContext context, List<String> list) async {
+  Future<void> onDelete(List<String> list) async {
     await fill();
   }
 
   /// delete data to dataset
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<String> list) async {
+  Future<void> delete(List<String> list) async {
     if (list.isNotEmpty) {
-      await dataset.delete(context, list);
-      await onDelete(context, list);
+      await dataset.delete(list);
+      await onDelete(list);
     }
   }
 
   /// delete data to dataset
   @mustCallSuper
-  Future<void> deleteRows(BuildContext context, List<T> list) async {
+  Future<void> deleteRows(List<T> list) async {
     List<String> ids = list.map((row) => row.id).toList();
-    await dataset.delete(context, ids);
-    await onDelete(context, ids);
+    await dataset.delete(ids);
+    await onDelete(ids);
   }
 
   /// onReset called after reset
-  Future<void> onReset(BuildContext context) async {
+  Future<void> onReset() async {
     await fill();
   }
 
   /// reset dataset
   @mustCallSuper
-  Future<void> reset(BuildContext context) async {
+  Future<void> reset() async {
     await dataset.reset();
-    await onReset(context);
+    await onReset();
   }
 
   /// onSetRowsPerPage called setRowsPerPage
-  Future<void> onSetRowsPerPage(BuildContext context, int value) async {
+  Future<void> onSetRowsPerPage(int value) async {
     await fill();
   }
 
   /// setRowsPerPage set dataset rows per page
   @mustCallSuper
-  Future<void> setRowsPerPage(BuildContext context, int value) async {
-    await dataset.setRowsPerPage(context, value);
-    await onSetRowsPerPage(context, value);
+  Future<void> setRowsPerPage(int value) async {
+    await dataset.setRowsPerPage(value);
+    await onSetRowsPerPage(value);
   }
 
   /// onRefresh reset dataset but not on full view mode, return true if reset dataset
-  Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
+  Future<bool> onRefresh(List<T> downloadRows) async {
     bool isReset = false;
     if (dataset.isEmpty && downloadRows.length < dataset.rowsPerPage) {
-      await dataset.setNoMore(context, true);
+      await dataset.setNoMore(true);
     }
     if (downloadRows.length == rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
@@ -190,7 +180,7 @@ abstract class DataView<T extends pb.Object> {
     }
     if (downloadRows.isNotEmpty) {
       // insert will call fill()
-      await insert(context, downloadRows);
+      await insert(downloadRows);
     } else {
       await fill();
     }
@@ -201,18 +191,18 @@ abstract class DataView<T extends pb.Object> {
   /// ```dart
   /// await ds.refresh(context);
   /// ```
-  Future<bool> refresh(BuildContext context) async {
+  Future<bool> refresh() async {
     if (dataset.noRefresh) {
       debugPrint('[data_view] no refresh already');
       return false;
     }
-    await dataset.load(context); // someone may change dataset so reload it
+    await dataset.load(); // someone may change dataset so reload it
     T? anchor = await dataset.first;
-    final downloadRows = await loader(context, true, dataset.rowsPerPage, anchor?.lastUpdateTime, anchor?.id);
+    final downloadRows = await loader(true, dataset.rowsPerPage, anchor?.lastUpdateTime, anchor?.id);
     if (downloadRows.isNotEmpty) {
       debugPrint('[data_view] refresh ${downloadRows.length} rows');
     }
-    bool isReset = await onRefresh(context, downloadRows);
+    bool isReset = await onRefresh(downloadRows);
     return isReset;
   }
 
@@ -220,19 +210,19 @@ abstract class DataView<T extends pb.Object> {
   /// ```dart
   /// await ds.more(testing.Context(), 2);
   /// ```
-  Future<bool> more(BuildContext context, int limit) async {
+  Future<bool> more(int limit) async {
     if (dataset.noMore) {
       debugPrint('[data_view] no more already');
       return false;
     }
     T? anchor = await dataset.last;
-    final downloadRows = await loader(context, false, limit, anchor?.lastUpdateTime, anchor?.id);
+    final downloadRows = await loader(false, limit, anchor?.lastUpdateTime, anchor?.id);
     if (downloadRows.length < limit) {
       debugPrint('[data_view] has no more data');
-      await dataset.setNoMore(context, true);
+      await dataset.setNoMore(true);
     }
     if (downloadRows.isNotEmpty) {
-      await add(context, downloadRows);
+      await add(downloadRows);
       return true;
     }
     return false;

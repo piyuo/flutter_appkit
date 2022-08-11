@@ -36,7 +36,7 @@ abstract class Dataset<T extends pb.Object> {
   final pb.Builder<T> objectBuilder;
 
   /// onRowsPerPageChanged is callback when rows per page changed
-  Future<void> Function(BuildContext)? onRowsPerPageChanged;
+  Future<void> Function()? onRowsPerPageChanged;
 
   /// internalNoRefresh mean dataset has no need to refresh data, it will only use data in dataset
   bool internalNoRefresh = false;
@@ -45,7 +45,7 @@ abstract class Dataset<T extends pb.Object> {
   bool get noRefresh => internalNoRefresh;
 
   /// setNoRefresh set true mean dataset has no need to refresh data, it will only use data in dataset
-  Future<void> setNoRefresh(BuildContext context, value) async => internalNoRefresh = value;
+  Future<void> setNoRefresh(value) async => internalNoRefresh = value;
 
   /// internalNoMore mean dataset has no need to load more data, it will only use data in dataset
   bool internalNoMore = false;
@@ -54,7 +54,7 @@ abstract class Dataset<T extends pb.Object> {
   bool get noMore => internalNoMore;
 
   /// setNoMore set true mean dataset has no need to load more data, it will only use data in dataset
-  Future<void> setNoMore(BuildContext context, value) async => internalNoMore = value;
+  Future<void> setNoMore(value) async => internalNoMore = value;
 
   /// internalRowsPerPage is current rows per page
   int internalRowsPerPage = 10;
@@ -64,9 +64,9 @@ abstract class Dataset<T extends pb.Object> {
 
   /// setRowsPerPage set current rows per page
   @mustCallSuper
-  Future<void> setRowsPerPage(BuildContext context, int value) async {
+  Future<void> setRowsPerPage(int value) async {
     internalRowsPerPage = value;
-    await onRowsPerPageChanged?.call(context);
+    await onRowsPerPageChanged?.call();
   }
 
   /// all return all rows, return null if something went wrong
@@ -107,32 +107,31 @@ abstract class Dataset<T extends pb.Object> {
 
   /// load dataset content
   @mustCallSuper
-  Future<void> load(BuildContext context) async {}
+  Future<void> load() async {}
 
   /// insert list of rows into dataset, it will avoid duplicate rows
   /// ```dart
   /// await dataset.insert([sample.Person()]);
   /// ```
-  Future<void> insert(BuildContext context, List<T> list);
+  Future<void> insert(List<T> list);
 
   /// add list of rows into dataset, it will avoid duplicate rows
   /// ```dart
   /// await dataset.add([sample.Person(name: 'hi')]);
   /// ```
-  Future<void> add(BuildContext context, List<T> list) async {}
+  Future<void> add(List<T> list) async {}
 
   /// delete list of rows from dataset using row id
   /// ```dart
   /// await dataset.delete(list);
   /// ```
-  Future<void> delete(BuildContext context, List<String> list);
+  Future<void> delete(List<String> list);
 
   /// delete list of rows from dataset using row id
   /// ```dart
   /// await dataset.delete(list);
   /// ```
-  Future<void> deleteRows(BuildContext context, List<T> list) async =>
-      await delete(context, list.map((row) => row.id).toList());
+  Future<void> deleteRows(List<T> list) async => await delete(list.map((row) => row.id).toList());
 
   /// reset dataset
   /// ```dart

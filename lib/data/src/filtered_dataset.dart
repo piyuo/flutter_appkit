@@ -27,9 +27,9 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// load dataset content
   @mustCallSuper
   @override
-  Future<void> load(BuildContext context) async {
-    await _dataset.load(context);
-    await super.load(context);
+  Future<void> load() async {
+    await _dataset.load();
+    await super.load();
   }
 
   /// setFilters set filter to dataset
@@ -121,8 +121,8 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> insert(BuildContext context, List<T> list) async {
-    await _dataset.insert(context, list);
+  Future<void> insert(List<T> list) async {
+    await _dataset.insert(list);
     if (hasFilter) {
       final matched = getMatchRows(list);
       removeDuplicateInTarget(matched, _result);
@@ -136,14 +136,14 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> add(BuildContext context, List<T> list) async {
-    await _dataset.add(context, list);
+  Future<void> add(List<T> list) async {
+    await _dataset.add(list);
     if (hasFilter) {
       final matched = getMatchRows(list);
       removeDuplicateInTarget(matched, _result);
       _result.addAll(matched);
     }
-    await super.add(context, list);
+    await super.add(list);
   }
 
   /// add rows into ram
@@ -152,8 +152,8 @@ class FilteredDataset<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<String> list) async {
-    await _dataset.delete(context, list);
+  Future<void> delete(List<String> list) async {
+    await _dataset.delete(list);
     _result.removeWhere((item) => list.contains(item));
   }
 

@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
-import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'data_view.dart';
 import 'continuous_data_view.dart';
@@ -8,17 +7,17 @@ import 'dataset.dart';
 
 class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
   ContinuousFullView(
-    Dataset<T> _dataset, {
+    Dataset<T> dataset, {
     required String id,
     required DataViewLoader<T> loader,
-  }) : super(_dataset, loader: loader) {
-    _dataset.internalNoMore = true;
+  }) : super(dataset, loader: loader) {
+    dataset.internalNoMore = true;
   }
 
   /// onRefresh called when refresh
   @override
-  Future<bool> onRefresh(BuildContext context, List<T> downloadRows) async {
-    await insert(context, downloadRows);
+  Future<bool> onRefresh(List<T> downloadRows) async {
+    await insert(downloadRows);
     return false; // table do not reset dataset
   }
 
@@ -27,7 +26,7 @@ class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
   /// await ds.more(testing.Context(), 2);
   /// ```
   @override
-  Future<bool> more(BuildContext context, int limit) async {
+  Future<bool> more(int limit) async {
     return false;
   }
 }

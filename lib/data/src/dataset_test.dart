@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/testing/testing.dart' as testing;
 import 'dataset_ram.dart';
 
 void main() {
@@ -19,7 +18,7 @@ void main() {
       expect(dataset.length, 0);
       expect(dataset.isEmpty, true);
       expect(dataset.isNotEmpty, false);
-      dataset.add(testing.Context(), [sample.Person()]);
+      dataset.add([sample.Person()]);
       expect(dataset.internalNoMore, false);
       expect(dataset.rowsPerPage, 10);
       expect(dataset.length, 1);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'dataset.dart';
 import 'paginator.dart';
@@ -7,7 +8,7 @@ import 'data_view.dart';
 
 /// PagedDataView is view to display paging data
 class PagedDataView<T extends pb.Object> extends DataView<T> {
-  PagedDataView(Dataset<T> _dataset, {required DataViewLoader<T> loader}) : super(_dataset, loader: loader);
+  PagedDataView(Dataset<T> dataset, {required DataViewLoader<T> loader}) : super(dataset, loader: loader);
 
   /// pageIndex is current page index
   int pageIndex = 0;
@@ -15,34 +16,34 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// load dataset
   @override
   @mustCallSuper
-  Future<void> load(BuildContext context) async {
+  Future<void> load() async {
     pageIndex = 0;
-    await super.load(context);
+    await super.load();
   }
 
   /// onInsert called after insert row
   @override
-  Future<void> onInsert(BuildContext context, List<T> list) async {
+  Future<void> onInsert(List<T> list) async {
     pageIndex = 0;
-    await super.onInsert(context, list);
+    await super.onInsert(list);
   }
 
   /// onDelete called after delete row
   @override
-  Future<void> onDelete(BuildContext context, List<String> list) async {
+  Future<void> onDelete(List<String> list) async {
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     if (pageIndex >= paginator.pageCount) {
       pageIndex = paginator.pageCount - 1;
     }
-    await super.onDelete(context, list);
+    await super.onDelete(list);
   }
 
   /// setRowsPerPage set dataset rows per page
   @override
-  Future<void> onSetRowsPerPage(BuildContext context, int value) async {
+  Future<void> onSetRowsPerPage(int value) async {
     pageIndex = 0;
-    await goto(context, 0);
-    await super.onSetRowsPerPage(context, value);
+    await goto(0);
+    await super.onSetRowsPerPage(value);
   }
 
   /// fill display rows
@@ -62,7 +63,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
   /// ```
   @override
-  String pageInfo(BuildContext context) {
+  String pageInfo() {
     if (length == 0) {
       // no data to display
       return '';
@@ -71,9 +72,9 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
     if (noMore) {
-      return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
+      return info + delta.globalContext.i18n.pagingCount.replaceAll('%1', length.toString());
     }
-    return info + context.i18n.pagingMany;
+    return info + delta.globalContext.i18n.pagingMany;
   }
 
   /// isFirstPage return true if it is first page
@@ -92,8 +93,8 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// ```dart
   /// await nextPage(context);
   /// ```
-  Future<void> nextPage(BuildContext context) async {
-    await goto(context, pageIndex + 1);
+  Future<void> nextPage() async {
+    await goto(pageIndex + 1);
     await fill();
   }
 
@@ -101,8 +102,8 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// ```dart
   /// await prevPage(context);
   /// ```
-  Future<void> prevPage(BuildContext context) async {
-    await goto(context, pageIndex - 1);
+  Future<void> prevPage() async {
+    await goto(pageIndex - 1);
     await fill();
   }
 
@@ -110,8 +111,8 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// ```dart
   /// await goto(context, 2);
   /// ```
-  Future<void> goto(BuildContext context, int index) async {
-    await loadMoreBeforeGotoPage(context, index);
+  Future<void> goto(int index) async {
+    await loadMoreBeforeGotoPage(index);
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     pageIndex = index;
     if (pageIndex < 0) {
@@ -123,11 +124,11 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   }
 
   /// loadMoreBeforeGotoPage load more data before goto page
-  Future<void> loadMoreBeforeGotoPage(BuildContext context, int index) async {
+  Future<void> loadMoreBeforeGotoPage(int index) async {
     final expectRowsCount = length - index * rowsPerPage;
     if (expectRowsCount < rowsPerPage && !noMore) {
       //the page is not fill with enough data, load more data
-      await more(context, rowsPerPage - expectRowsCount);
+      await more(rowsPerPage - expectRowsCount);
     }
   }
 }

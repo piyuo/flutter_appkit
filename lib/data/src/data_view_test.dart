@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'dataset_ram.dart';
 import 'paged_data_view.dart';
-import 'package:libcli/testing/testing.dart' as testing;
 
 void main() {
   setUpAll(() async {});
@@ -16,12 +15,12 @@ void main() {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final dataView = PagedDataView<sample.Person>(
         dataset,
-        loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
+        loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
           return List.generate(limit, (index) => sample.Person()..id = index.toString());
         },
       );
-      await dataView.load(testing.Context());
-      await dataView.refresh(testing.Context());
+      await dataView.load();
+      await dataView.refresh();
       expect(dataView.hasSelectedRows, isFalse);
 
       dataView.setSelectedRows([dataView.displayRows[2]]);

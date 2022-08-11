@@ -70,16 +70,16 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// load dataset content
   @mustCallSuper
   @override
-  Future<void> load(BuildContext context) async {
+  Future<void> load() async {
     _index = await cache.getStringList('$name$keyIndex') ?? [];
     internalRowsPerPage = await cache.getInt('$name$keyRowsPerPage') ?? 10;
     internalNoRefresh = await cache.getBool('$name$keyNoRefresh') ?? false;
     internalNoMore = await cache.getBool('$name$keyNoMore') ?? false;
-    await super.load(context);
+    await super.load();
   }
 
   /// save dataset cache
-  Future<void> save(BuildContext context) async {
+  Future<void> save() async {
     await cache.setStringList('$name$keyIndex', _index);
     await cache.setInt('$name$keyRowsPerPage', internalRowsPerPage);
     await cache.setBool('$name$keyNoMore', internalNoMore);
@@ -88,23 +88,23 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
 
   /// setRowsPerPage set current rows per page
   @override
-  Future<void> setRowsPerPage(BuildContext context, value) async {
-    await super.setRowsPerPage(context, value);
-    await save(context);
+  Future<void> setRowsPerPage(value) async {
+    await super.setRowsPerPage(value);
+    await save();
   }
 
   /// setNoRefresh set true mean  no need to refresh data, it will only use data in dataset
   @override
-  Future<void> setNoRefresh(BuildContext context, value) async {
-    await super.setNoRefresh(context, value);
-    await save(context);
+  Future<void> setNoRefresh(value) async {
+    await super.setNoRefresh(value);
+    await save();
   }
 
   /// setNoMore mean no need to load more data, it will only use data in dataset
   @override
-  Future<void> setNoMore(BuildContext context, value) async {
-    await super.setNoMore(context, value);
-    await save(context);
+  Future<void> setNoMore(value) async {
+    await super.setNoMore(value);
+    await save();
   }
 
   /// insert list of rows into ram
@@ -113,11 +113,11 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> insert(BuildContext context, List<T> list) async {
+  Future<void> insert(List<T> list) async {
     final downloadID = list.map((row) => row.id).toList();
     _index.removeWhere((element) => downloadID.contains(element));
     _index.insertAll(0, downloadID);
-    await save(context);
+    await save();
     for (T row in list) {
       await cache.setObject(row.id, row);
     }
@@ -129,15 +129,15 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> add(BuildContext context, List<T> list) async {
+  Future<void> add(List<T> list) async {
     final downloadID = list.map((row) => row.id).toList();
     downloadID.removeWhere((element) => _index.contains(element));
     _index.addAll(downloadID);
-    await save(context);
+    await save();
     for (T row in list) {
       await cache.setObject(row.id, row);
     }
-    await super.add(context, list);
+    await super.add(list);
   }
 
   /// remove rows from dataset
@@ -146,14 +146,14 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// ```
   @override
   @mustCallSuper
-  Future<void> delete(BuildContext context, List<String> list) async {
+  Future<void> delete(List<String> list) async {
     for (String id in list) {
       if (_index.contains(id)) {
         _index.remove(id);
         await cache.delete(id);
       }
     }
-    await save(context);
+    await save();
   }
 
   /// reset dataset
