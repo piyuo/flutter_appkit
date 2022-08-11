@@ -77,31 +77,31 @@ void main() {
 
     test('should send anchor to refresher', () async {
       int idCount = 0;
-      int? _limit;
-      google.Timestamp? _anchorTimestamp;
-      String? _anchorId;
+      int? limitResult;
+      google.Timestamp? anchorTimestampResult;
+      String? anchorIdResult;
 
       final view = PagedFullView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
         loader: (_, __, anchorTimestamp, anchorId) async {
-          _limit = 10;
-          _anchorTimestamp = anchorTimestamp;
-          _anchorId = anchorId;
+          limitResult = 10;
+          anchorTimestampResult = anchorTimestamp;
+          anchorIdResult = anchorId;
           idCount++;
           return List.generate(10, (index) => sample.Person()..id = idCount.toString());
         },
       );
       await view.load();
       await view.refresh();
-      expect(_limit, 10);
-      expect(_anchorTimestamp, isNull);
-      expect(_anchorId, isNull);
+      expect(limitResult, 10);
+      expect(anchorTimestampResult, isNull);
+      expect(anchorIdResult, isNull);
 
       await view.refresh();
-      expect(_limit, 10);
-      expect(_anchorTimestamp, isNotNull);
-      expect(_anchorId, '1');
+      expect(limitResult, 10);
+      expect(anchorTimestampResult, isNotNull);
+      expect(anchorIdResult, '1');
     });
 
     test('should save state', () async {
@@ -292,17 +292,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person()..id = 'init' + index.toString());
+            return List.generate(limit, (index) => sample.Person()..id = 'init$index');
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(limit, (index) => sample.Person()..id = 'firstRefresh' + index.toString());
+            return List.generate(limit, (index) => sample.Person()..id = 'firstRefresh$index');
           }
           if (step == 2) {
             // second refresh
             step++;
-            return List.generate(2, (index) => sample.Person()..id = 'secondRefresh' + index.toString());
+            return List.generate(2, (index) => sample.Person()..id = 'secondRefresh$index');
           }
           return [];
         },

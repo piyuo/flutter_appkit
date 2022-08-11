@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
 import 'continuous_full_view.dart';
@@ -77,31 +76,31 @@ void main() {
 
     test('should send anchor to refresher', () async {
       int idCount = 0;
-      int? _limit;
-      google.Timestamp? _anchorTimestamp;
-      String? _anchorId;
+      int? limitResult;
+      google.Timestamp? anchorTimestampResult;
+      String? anchorIdResult;
 
       final view = ContinuousFullView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
         loader: (_, __, anchorTimestamp, anchorId) async {
-          _limit = 10;
-          _anchorTimestamp = anchorTimestamp;
-          _anchorId = anchorId;
+          limitResult = 10;
+          anchorTimestampResult = anchorTimestamp;
+          anchorIdResult = anchorId;
           idCount++;
           return List.generate(10, (index) => sample.Person()..id = idCount.toString());
         },
       );
       await view.load();
       await view.refresh();
-      expect(_limit, 10);
-      expect(_anchorTimestamp, isNull);
-      expect(_anchorId, isNull);
+      expect(limitResult, 10);
+      expect(anchorTimestampResult, isNull);
+      expect(anchorIdResult, isNull);
 
       await view.refresh();
-      expect(_limit, 10);
-      expect(_anchorTimestamp, isNotNull);
-      expect(_anchorId, '1');
+      expect(limitResult, 10);
+      expect(anchorTimestampResult, isNotNull);
+      expect(anchorIdResult, '1');
     });
 
     test('should save state', () async {

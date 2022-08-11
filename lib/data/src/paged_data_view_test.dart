@@ -159,18 +159,18 @@ void main() {
 
     test('should send anchor to data loader', () async {
       int idCount = 0;
-      bool? _isRefresh;
-      int? _limit;
-      google.Timestamp? _anchorTimestamp;
-      String? _anchorId;
+      bool? isRefreshResult;
+      int? limitResult;
+      google.Timestamp? anchorTimestampResult;
+      String? anchorIdResult;
 
       final dataView = PagedDataView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
         loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
-          _isRefresh = isRefresh;
-          _limit = limit;
-          _anchorTimestamp = anchorTimestamp;
-          _anchorId = anchorId;
+          isRefreshResult = isRefresh;
+          limitResult = limit;
+          anchorTimestampResult = anchorTimestamp;
+          anchorIdResult = anchorId;
           idCount++;
           return List.generate(
             limit,
@@ -180,28 +180,28 @@ void main() {
       );
       await dataView.load();
       await dataView.refresh();
-      expect(_isRefresh, true);
-      expect(_limit, 10);
-      expect(_anchorTimestamp, isNull);
-      expect(_anchorId, isNull);
+      expect(isRefreshResult, true);
+      expect(limitResult, 10);
+      expect(anchorTimestampResult, isNull);
+      expect(anchorIdResult, isNull);
 
       await dataView.more(1);
-      expect(_isRefresh, false);
-      expect(_limit, 1);
-      expect(_anchorTimestamp, isNotNull);
-      expect(_anchorId, '1');
+      expect(isRefreshResult, false);
+      expect(limitResult, 1);
+      expect(anchorTimestampResult, isNotNull);
+      expect(anchorIdResult, '1');
 
       await dataView.more(1);
-      expect(_isRefresh, false);
-      expect(_limit, 1);
-      expect(_anchorTimestamp, isNotNull);
-      expect(_anchorId, '2');
+      expect(isRefreshResult, false);
+      expect(limitResult, 1);
+      expect(anchorTimestampResult, isNotNull);
+      expect(anchorIdResult, '2');
 
       await dataView.refresh();
-      expect(_isRefresh, true);
-      expect(_limit, 10);
-      expect(_anchorTimestamp, isNotNull);
-      expect(_anchorId, '1');
+      expect(isRefreshResult, true);
+      expect(limitResult, 10);
+      expect(anchorTimestampResult, isNotNull);
+      expect(anchorIdResult, '1');
     });
 
     test('should no more on when receive empty data', () async {
@@ -435,17 +435,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person()..id = 'init' + index.toString());
+            return List.generate(limit, (index) => sample.Person()..id = 'init$index');
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(limit, (index) => sample.Person()..id = 'firstMore' + index.toString());
+            return List.generate(limit, (index) => sample.Person()..id = 'firstMore$index');
           }
           if (step == 2) {
             // second refresh
             step++;
-            return List.generate(2, (index) => sample.Person()..id = 'secondMore' + index.toString());
+            return List.generate(2, (index) => sample.Person()..id = 'secondMore$index');
           }
           return [];
         },
