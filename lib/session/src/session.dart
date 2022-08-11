@@ -5,13 +5,13 @@ import 'session_provider.dart';
 ///
 ///     final token = await session.getAccessToken(context);
 ///
-Future<String?> getAccessToken(BuildContext context) async => SessionProvider.of(context).getAccessToken(context);
+Future<String?> getAccessToken(BuildContext context) async => SessionProvider.of(context).getAccessToken();
 
 /// isLogin return true if user is login
 ///
 ///     final logIn = await session.isLogin(context);
 ///
-Future<bool> isLogin(BuildContext context) async => SessionProvider.of(context).isLogin(context);
+Future<bool> isLogin(BuildContext context) async => SessionProvider.of(context).isLogin();
 
 /// login to save token
 ///

@@ -3,11 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:libcli/storage/storage.dart' as storage;
 
 /// AccessTokenRefresher should use refresh token to exchange new access token, must call loginByRefresh()
-typedef AccessTokenRefresher = Future<void> Function(
-    BuildContext context, String refreshToken, SessionProvider session);
+typedef AccessTokenRefresher = Future<void> Function(String refreshToken, SessionProvider session);
 
 /// LoginBack should let user log back in, must call login()
-typedef LoginBack = Future<void> Function(BuildContext context, SessionProvider session);
+typedef LoginBack = Future<void> Function(SessionProvider session);
 
 /// _prefixSession is session key in storage
 const _prefixSession = 'session';
@@ -102,22 +101,22 @@ class SessionProvider {
 
   /// isLogin return true if login and session is valid, it will refresh access token if expired
   ///
-  ///     var valid = await provide.isLogin(context);
+  ///     var valid = await provide.isLogin();
   ///
-  Future<bool> isLogin(BuildContext context) async {
+  Future<bool> isLogin() async {
     await _load();
     if (hasValidAccessToken) {
       return true;
     }
 
     if (onAccessTokenRefresh != null && hasValidRefreshToken) {
-      await onAccessTokenRefresh!(context, _data![_refreshToken], this);
+      await onAccessTokenRefresh!(_data![_refreshToken], this);
       if (hasValidAccessToken) {
         return true;
       }
     }
     if (onLoginBack != null) {
-      await onLoginBack!(context, this);
+      await onLoginBack!(this);
       if (hasValidAccessToken) {
         return true;
       }
@@ -130,8 +129,8 @@ class SessionProvider {
   ///
   ///     final token = await provide.getAccessToken(context);
   ///
-  Future<String?> getAccessToken(BuildContext context) async {
-    if (await isLogin(context)) {
+  Future<String?> getAccessToken() async {
+    if (await isLogin()) {
       return _data![_accessToken];
     }
     return null;
@@ -195,8 +194,8 @@ class SessionProvider {
   ///
   ///     await provide.set(context, 'region', 'en');
   ///
-  Future<void> set(BuildContext context, String key, dynamic value) async {
-    if (await isLogin(context)) {
+  Future<void> set(String key, dynamic value) async {
+    if (await isLogin()) {
       _data![key] = value;
       await _save();
     }
@@ -206,8 +205,8 @@ class SessionProvider {
   ///
   ///     final region = await provide.get(context, 'region');
   ///
-  Future<T?> get<T>(BuildContext context, String key) async {
-    if (await isLogin(context)) {
+  Future<T?> get<T>(String key) async {
+    if (await isLogin()) {
       return _data![key];
     }
     return null;

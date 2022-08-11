@@ -1,7 +1,5 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/storage/storage.dart' as storage;
 import 'session_provider.dart';
 
@@ -15,7 +13,7 @@ void main() {
   group('[session_provider]', () {
     test('should keep session data', () async {
       final provide = SessionProvider();
-      final valid = await provide.isLogin(testing.Context());
+      final valid = await provide.isLogin();
       final aExpired = DateTime.now().add(const Duration(seconds: 300));
       final rExpired = DateTime.now().add(const Duration(seconds: 100));
       expect(valid, false);
@@ -25,25 +23,25 @@ void main() {
         refreshToken: 'fakeRefreshToken',
         refreshTokenExpired: rExpired,
       );
-      final valid2 = await provide.isLogin(testing.Context());
+      final valid2 = await provide.isLogin();
       expect(valid2, true);
 
-      await provide.set(testing.Context(), 'region', 'en');
-      final region = await provide.get(testing.Context(), 'region');
+      await provide.set('region', 'en');
+      final region = await provide.get('region');
       expect(region, 'en');
 
       final provide2 = SessionProvider();
-      expect(await provide2.getAccessToken(testing.Context()), 'fakeAccessToken');
+      expect(await provide2.getAccessToken(), 'fakeAccessToken');
       expect(provide2.hasValidAccessToken, true);
       expect(provide2.hasValidRefreshToken, true);
-      expect(await provide2.get(testing.Context(), 'region'), 'en');
+      expect(await provide2.get('region'), 'en');
       provide.logout();
 
       final provide3 = SessionProvider();
-      expect(await provide3.getAccessToken(testing.Context()), null);
+      expect(await provide3.getAccessToken(), null);
       expect(provide3.hasValidAccessToken, false);
       expect(provide3.hasValidRefreshToken, false);
-      expect(await provide3.get(testing.Context(), 'region'), null);
+      expect(await provide3.get('region'), null);
     });
 
     test('should trigger refresh/login back/logout event', () async {
@@ -52,11 +50,11 @@ void main() {
       int backCount = 0;
       int logoutCount = 0;
       final provide = SessionProvider(
-        onAccessTokenRefresh: (BuildContext context, String refreshToken, _) async {
+        onAccessTokenRefresh: (String refreshToken, _) async {
           rToken = refreshToken;
           refreshCount++;
         },
-        onLoginBack: (BuildContext context, _) async {
+        onLoginBack: (_) async {
           backCount++;
         },
         onLogout: () async {
@@ -69,7 +67,7 @@ void main() {
         refreshToken: 'refreshAccessToken',
         refreshTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
       );
-      var valid = await provide.isLogin(testing.Context());
+      var valid = await provide.isLogin();
       expect(valid, false);
       expect(refreshCount, 1);
       expect(rToken, 'refreshAccessToken');
@@ -82,14 +80,14 @@ void main() {
       int backCount = 0;
       int logoutCount = 0;
       final provide = SessionProvider(
-        onAccessTokenRefresh: (BuildContext context, String refreshToken, SessionProvider session) async {
+        onAccessTokenRefresh: (String refreshToken, SessionProvider session) async {
           refreshCount++;
           await session.loginByRefresh(
             accessToken: 'fakeAccessToken2',
             accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
           );
         },
-        onLoginBack: (BuildContext context, SessionProvider session) async {
+        onLoginBack: (SessionProvider session) async {
           backCount++;
         },
         onLogout: () async {
@@ -102,7 +100,7 @@ void main() {
         refreshToken: 'refreshAccessToken',
         refreshTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
       );
-      var valid = await provide.isLogin(testing.Context());
+      var valid = await provide.isLogin();
       expect(valid, true);
       expect(refreshCount, 1);
       expect(backCount, 0);
@@ -114,10 +112,10 @@ void main() {
       int backCount = 0;
       int logoutCount = 0;
       final provide = SessionProvider(
-        onAccessTokenRefresh: (BuildContext context, String refreshToken, SessionProvider session) async {
+        onAccessTokenRefresh: (String refreshToken, SessionProvider session) async {
           refreshCount++;
         },
-        onLoginBack: (BuildContext context, SessionProvider session) async {
+        onLoginBack: (SessionProvider session) async {
           backCount++;
           await session.login(
             accessToken: 'fakeAccessToken2',
@@ -136,7 +134,7 @@ void main() {
         refreshToken: 'refreshAccessToken',
         refreshTokenExpired: DateTime.now().add(const Duration(seconds: -30)),
       );
-      var valid = await provide.isLogin(testing.Context());
+      var valid = await provide.isLogin();
       expect(valid, true);
       expect(refreshCount, 0);
       expect(backCount, 1);
