@@ -63,7 +63,7 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
   /// expect(ds.pageInfo(testing.Context()), '1 - 10 of many');
   /// ```
   @override
-  String pageInfo() {
+  String pageInfo(BuildContext context) {
     if (length == 0) {
       // no data to display
       return '';
@@ -72,9 +72,9 @@ class PagedDataView<T extends pb.Object> extends DataView<T> {
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
     final info = '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ';
     if (noMore) {
-      return info + delta.globalContext.i18n.pagingCount.replaceAll('%1', length.toString());
+      return info + context.i18n.pagingCount.replaceAll('%1', length.toString());
     }
-    return info + delta.globalContext.i18n.pagingMany;
+    return info + context.i18n.pagingMany;
   }
 
   /// isFirstPage return true if it is first page

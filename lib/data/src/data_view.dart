@@ -84,7 +84,7 @@ abstract class DataView<T extends pb.Object> {
   /// ```dart
   /// expect(ds.pageInfo(testing.Context()), '1-10 of many');
   /// ```
-  String pageInfo();
+  String pageInfo(BuildContext context);
 
   /// load dataset
   @mustCallSuper

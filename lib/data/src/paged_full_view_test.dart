@@ -3,6 +3,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'paged_full_view.dart';
 import 'dataset_ram.dart';
 
@@ -252,27 +253,27 @@ void main() {
       );
       await view.load();
       await view.refresh();
-      expect(view.pageInfo(), '1 - 10 of 10');
+      expect(view.pageInfo(testing.Context()), '1 - 10 of 10');
       expect(view.length, 10);
       await view.refresh();
       await view.nextPage();
-      expect(view.pageInfo(), '11 - 20 of 20');
+      expect(view.pageInfo(testing.Context()), '11 - 20 of 20');
       expect(view.length, 20);
       await view.refresh();
       expect(view.length, 22);
       //refresh will goto page 0, so we need 2 next page
       await view.nextPage();
       await view.nextPage();
-      expect(view.pageInfo(), '21 - 22 of 22');
+      expect(view.pageInfo(testing.Context()), '21 - 22 of 22');
 
       await view.goto(0);
-      expect(view.pageInfo(), '1 - 10 of 22');
+      expect(view.pageInfo(testing.Context()), '1 - 10 of 22');
 
       await view.goto(1);
-      expect(view.pageInfo(), '11 - 20 of 22');
+      expect(view.pageInfo(testing.Context()), '11 - 20 of 22');
 
       await view.goto(2);
-      expect(view.pageInfo(), '21 - 22 of 22');
+      expect(view.pageInfo(testing.Context()), '21 - 22 of 22');
     });
 
     test('should set rows per page', () async {

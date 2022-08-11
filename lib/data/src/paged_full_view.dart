@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'data_view.dart';
 import 'paged_data_view.dart';
 import 'dataset.dart';
@@ -68,8 +67,8 @@ class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
 
   /// pagingInfo return text page info like '1-10 of 19'
   @override
-  String pageInfo() {
+  String pageInfo(BuildContext context) {
     final paginator = Paginator(rowCount: dataset.length, rowsPerPage: dataset.rowsPerPage);
-    return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ${delta.globalContext.i18n.pagingCount.replaceAll('%1', dataset.length.toString())}';
+    return '${paginator.getBeginIndex(pageIndex) + 1} - ${paginator.getEndIndex(pageIndex)} ${context.i18n.pagingCount.replaceAll('%1', dataset.length.toString())}';
   }
 }

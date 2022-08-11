@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/database/database.dart' as database;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'data_view.dart';
 import 'paged_data_view.dart';
 import 'dataset_ram.dart';
@@ -400,23 +401,23 @@ void main() {
       );
       await dataView.load();
       await dataView.refresh();
-      expect(dataView.pageInfo(), '1 - 10 of many');
+      expect(dataView.pageInfo(testing.Context()), '1 - 10 of many');
       expect(dataView.length, 10);
       await dataView.nextPage();
-      expect(dataView.pageInfo(), '11 - 20 of many');
+      expect(dataView.pageInfo(testing.Context()), '11 - 20 of many');
       expect(dataView.length, 20);
       await dataView.nextPage();
-      expect(dataView.pageInfo(), '21 - 22 of 22');
+      expect(dataView.pageInfo(testing.Context()), '21 - 22 of 22');
       expect(dataView.length, 22);
 
       await dataView.goto(0);
-      expect(dataView.pageInfo(), '1 - 10 of 22');
+      expect(dataView.pageInfo(testing.Context()), '1 - 10 of 22');
 
       await dataView.goto(1);
-      expect(dataView.pageInfo(), '11 - 20 of 22');
+      expect(dataView.pageInfo(testing.Context()), '11 - 20 of 22');
 
       await dataView.goto(2);
-      expect(dataView.pageInfo(), '21 - 22 of 22');
+      expect(dataView.pageInfo(testing.Context()), '21 - 22 of 22');
     });
 
     test('should change when rows per page changed', () async {
