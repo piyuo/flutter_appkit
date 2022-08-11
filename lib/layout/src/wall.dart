@@ -54,9 +54,9 @@ class Tile extends StatelessWidget {
     return onTap != null
         ? InkWell(
             onTap: onTap,
-            child: child,
             customBorder: shape,
             splashColor: borderColor,
+            child: child,
           )
         : child;
   }

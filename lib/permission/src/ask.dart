@@ -13,6 +13,11 @@ Future<bool> ask(
   required String name,
   required IconData icon,
 }) async {
+  final iconColor = context.themeColor(
+    light: Colors.grey.shade900,
+    dark: Colors.grey.shade100,
+  );
+
   try {
     var status = await permission.status;
     if (status.isGranted) {
@@ -34,10 +39,7 @@ Future<bool> ask(
   final gotoSetting = await dialog.alert(
     context.i18n.permissionAsk.replaceAll('%1', name),
     icon: icon,
-    iconColor: context.themeColor(
-      light: Colors.grey.shade900,
-      dark: Colors.grey.shade100,
-    ),
+    iconColor: iconColor,
     yes: context.i18n.permissionGotoSetting,
     buttonCancel: true,
   );

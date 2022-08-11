@@ -133,7 +133,7 @@ class SimpleStory extends Story {
                     ),
                     children: <InlineSpan>[
                       TextSpan(
-                        text: story.title != null ? ' ' + story.title! : '',
+                        text: story.title != null ? ' ${story.title!}' : '',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,

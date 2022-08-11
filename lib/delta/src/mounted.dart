@@ -7,7 +7,7 @@ class Mounted extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  final Widget Function(BuildContext context, bool mounted, Function() safePop) builder;
+  final Widget Function(BuildContext context, bool mounted) builder;
 
   @override
   MountedState createState() => MountedState();
@@ -16,13 +16,6 @@ class Mounted extends StatefulWidget {
 class MountedState extends State<Mounted> {
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, mounted, safePop);
-  }
-
-  /// safeNavigatorPop will check mounted to safely pop navigator
-  void safePop() {
-    if (mounted) {
-      Navigator.pop(context);
-    }
+    return widget.builder(context, mounted);
   }
 }

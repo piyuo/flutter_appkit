@@ -198,8 +198,8 @@ List<PopupMenuEntry> _buildItemOnMenu(
       if (!first) const PopupMenuDivider(),
       PopupMenuItem(
         value: item.selectedValue,
-        child: Text(item.label),
         enabled: false,
+        child: Text(item.label),
       ),
       ...item.selection.entries.map((entry) {
         return PopupMenuItem(

@@ -173,9 +173,9 @@ class ResponsiveExample extends StatelessWidget {
 
   Widget _responsive(BuildContext context) {
     return Responsive(
-      phoneScreen: () => Container(child: const Text('phone'), color: Colors.red),
-      notPhoneScreen: () => Container(child: const Text('not phone'), color: Colors.blue),
-      bigScreen: () => Container(child: const Text('big screen'), color: Colors.green),
+      phoneScreen: () => Container(color: Colors.red, child: const Text('phone')),
+      notPhoneScreen: () => Container(color: Colors.blue, child: const Text('not phone')),
+      bigScreen: () => Container(color: Colors.green, child: const Text('big screen')),
     );
   }
 

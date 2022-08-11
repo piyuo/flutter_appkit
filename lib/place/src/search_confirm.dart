@@ -14,10 +14,10 @@ Widget confirmButton(BuildContext context, double width, double height, double f
       padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(0, 12, 0, 12)),
       fixedSize: MaterialStateProperty.all(Size(width, height)),
     ),
+    onPressed: onClick,
     child: Text(
       text,
       style: TextStyle(fontSize: fontSize),
     ),
-    onPressed: onClick,
   );
 }

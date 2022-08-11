@@ -874,8 +874,12 @@ class SecondRoute extends StatelessWidget {
       ),
       body: Center(
         child: Mounted(
-          builder: (context, mounted, safePop) => ElevatedButton(
-            onPressed: () => safePop(),
+          builder: (
+            context,
+            mounted,
+          ) =>
+              ElevatedButton(
+            onPressed: () => Navigator.pop(context),
             child: const Text('Go back!'),
           ),
         ),
