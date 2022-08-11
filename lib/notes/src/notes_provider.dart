@@ -49,7 +49,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
         if (!event.isRemove) {
           scrollToTop();
         }
-        await refill(delta.globalContext, isRemove: event.isRemove);
+        await refill(isRemove: event.isRemove);
         notifyListeners();
       }
     });
@@ -185,7 +185,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
     await dataView!.refresh();
     animateViewProvider.setLength(dataView!.displayRows.length);
-    _setDefaultSelected(context);
+    _setDefaultSelected();
     notifyListeners();
   }
 
@@ -214,7 +214,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   Future<bool> isReadyForAction(context) async => dataView != null && await _isAllowToExit(context);
 
   /// _setDefaultSelected will select first row if no row selected
-  void _setDefaultSelected(BuildContext context, {String? defaultSelectedID}) {
+  void _setDefaultSelected({String? defaultSelectedID}) {
     if (dataView == null || dataView!.hasSelectedRows) {
       return;
     }
@@ -281,7 +281,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     final allowed = await formController.isAllowToExit(context);
     if (allowed == true && creating != null) {
-      await _showNewItemDeleteAnimation(context);
+      await _showNewItemDeleteAnimation();
     }
     return allowed;
   }
@@ -295,7 +295,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// onItemChecked called when user select item, return true if new item has been selected
-  bool onItemChecked(BuildContext context, List<T> selectedRows) {
+  bool onItemChecked(List<T> selectedRows) {
     dataView!.setSelectedRows(selectedRows);
     notifyListeners();
     return true;
@@ -311,7 +311,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       final first = selectedRows.first;
       await formController.loadByView(dataset: dataView!.dataset, row: first);
     }
-    if (!onItemChecked(context, selectedRows)) {
+    if (!onItemChecked(selectedRows)) {
       return;
     }
   }
@@ -349,7 +349,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   bool get hasPreviousPage => dataView is data.PagedDataView ? (dataView as data.PagedDataView).hasPrevPage : false;
 
   /// refill let dataset refill data, the data may changed or deleted
-  Future<void> refill(BuildContext context, {bool isRemove = false}) async {
+  Future<void> refill({bool isRemove = false}) async {
     if (dataView == null) {
       return;
     }
@@ -359,23 +359,23 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       dataView!.selectedIDs = [];
     }
     await dataView!.fill();
-    _setDefaultSelected(context, defaultSelectedID: defaultSelectedID);
+    _setDefaultSelected(defaultSelectedID: defaultSelectedID);
     animateViewProvider.setLength(dataView!.displayRows.length);
     notifyListeners();
   }
 
   /// _buildDeletedItemWithDecoration build item with decoration
-  Widget _buildDeletedItemWithDecoration(BuildContext context, T item, bool isSelected) {
+  Widget _buildDeletedItemWithDecoration(T item, bool isSelected) {
     return isListView
         ? listDecorationBuilder(
-            context,
-            child: listBuilder!(context, item, isSelected),
+            delta.globalContext,
+            child: listBuilder!(item, isSelected),
             checkMode: isCheckMode,
             isSelected: isSelected,
           )
         : gridDecorationBuilder(
-            context,
-            child: gridBuilder!(context, item, isSelected),
+            delta.globalContext,
+            child: gridBuilder!(item, isSelected),
             checkMode: isCheckMode,
             isSelected: isSelected,
           );
@@ -393,7 +393,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     final isReset = await dataView!.refresh();
     final diff = dataView!.length - originLength;
-    _setDefaultSelected(context);
+    _setDefaultSelected();
     if (isReset || (diff > 0 && !firstPage)) {
       animateViewProvider.refreshPageAnimation(dataView!.displayRows.length);
     } else if (diff > 0) {
@@ -464,7 +464,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       BuildContext context, Future<void> Function(BuildContext context, List<T> list) callback) async {
     if (creating != null) {
       // don't ask user just delete, avoid isReadyForAction to delete creating first
-      await _showNewItemDeleteAnimation(context);
+      await _showNewItemDeleteAnimation();
       return;
     }
 
@@ -476,7 +476,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       isCheckMode = false;
     }
     await callback(context, dataView!.getSelectedRows());
-    await _showDeleteAnimation(context);
+    await _showDeleteAnimation();
   }
 
   /// onDelete called when user press delete button
@@ -489,25 +489,25 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   Future<void> onRestore(BuildContext context) async => await _tryRemove(context, formController.restoreByView);
 
   /// _showNewItemDeleteAnimation show animation remove new item from data view
-  Future<void> _showNewItemDeleteAnimation(BuildContext context) async {
-    final removedItem = _buildDeletedItemWithDecoration(context, creating!, true);
+  Future<void> _showNewItemDeleteAnimation() async {
+    final removedItem = _buildDeletedItemWithDecoration(creating!, true);
     creating = null;
     animateViewProvider.removeAnimation(0, removedItem, isListView);
     notifyListeners();
     await animateViewProvider.waitForAnimationDone();
     animateViewProvider.setLength(dataView!.displayRows.length);
-    _setDefaultSelected(context);
+    _setDefaultSelected();
     notifyListeners();
   }
 
   /// _showDeleteAnimation show animation remove selected item from data view
-  Future<void> _showDeleteAnimation(BuildContext context) async {
+  Future<void> _showDeleteAnimation() async {
     int removeCount = 0;
     final defaultSelectedID = _findNextSelectedID();
     for (int i = 0; i < dataView!.displayRows.length; i++) {
       final row = dataView!.displayRows[i];
       if (dataView!.isRowSelected(row)) {
-        final removedItem = _buildDeletedItemWithDecoration(context, row, true);
+        final removedItem = _buildDeletedItemWithDecoration(row, true);
         animateViewProvider.removeAnimation(i - removeCount, removedItem, isListView);
         removeCount++;
       }
@@ -517,7 +517,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     await animateViewProvider.waitForAnimationDone();
     await dataView!.fill();
     animateViewProvider.setLength(dataView!.displayRows.length);
-    _setDefaultSelected(context, defaultSelectedID: defaultSelectedID);
+    _setDefaultSelected(defaultSelectedID: defaultSelectedID);
     notifyListeners();
   }
 

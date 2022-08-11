@@ -35,11 +35,11 @@ NotesProvider<sample.Person> _notesProvider = NotesProvider<sample.Person>(
   animateViewProvider: _animateViewProvider,
   caption: "Notes",
   formController: createFormController(),
-  listBuilder: (BuildContext context, sample.Person person, bool isSelected) => Padding(
+  listBuilder: (sample.Person person, bool isSelected) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
     child: Text('list:$person'),
   ),
-  gridBuilder: (BuildContext context, sample.Person person, bool isSelected) => Container(
+  gridBuilder: (sample.Person person, bool isSelected) => Container(
     padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
     child: Text('grid:$person'),
   ),
@@ -226,7 +226,7 @@ class NotesExample extends StatelessWidget {
               ),
               items: const ['a', 'b', 'c', 'd', 'e'],
               selectedItems: const ['b'],
-              itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+              itemBuilder: (String item, bool isSelected) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Text(item),
               ),
@@ -245,7 +245,7 @@ class NotesExample extends StatelessWidget {
           checkMode: true,
           items: const ['a', 'b', 'c', 'd', 'e'],
           selectedItems: const ['b'],
-          itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+          itemBuilder: (String item, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Text(item),
           ),
@@ -264,7 +264,7 @@ class NotesExample extends StatelessWidget {
         ),
         items: const ['a', 'b', 'c', 'd', 'e'],
         selectedItems: const ['b'],
-        itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+        itemBuilder: (String item, bool isSelected) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Text(item),
         ),
@@ -286,7 +286,7 @@ class NotesExample extends StatelessWidget {
           checkMode: true,
           items: const ['a', 'b', 'c', 'd', 'e'],
           selectedItems: const ['b'],
-          itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+          itemBuilder: (String item, bool isSelected) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
             child: Text(item),
           ),
@@ -321,7 +321,7 @@ class NotesExample extends StatelessWidget {
                       ),
                       items: animationListItems,
                       selectedItems: const ['b'],
-                      itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+                      itemBuilder: (String item, bool isSelected) => Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Text(item),
                       ),
@@ -350,7 +350,7 @@ class NotesExample extends StatelessWidget {
                       await Future.delayed(const Duration(seconds: 3));
                       debugPrint('load more');
                     },
-                    itemBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+                    itemBuilder: (String item, bool isSelected) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                       child: Text(item),
                     ),
@@ -384,7 +384,7 @@ class NotesExample extends StatelessWidget {
                       ),
                       items: animationListItems,
                       selectedItems: const ['b'],
-                      itemBuilder: (BuildContext context, String item, bool isSelected) => Container(
+                      itemBuilder: (String item, bool isSelected) => Container(
                         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Text(item),
                       ),
@@ -449,11 +449,11 @@ class NotesExample extends StatelessWidget {
                   ),
                   items: const ['a', 'b', 'c', 'd', 'e'],
                   selectedItems: const ['a'],
-                  listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+                  listBuilder: (String item, bool isSelected) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     child: Text('list:$item'),
                   ),
-                  gridBuilder: (BuildContext context, String item, bool isSelected) => Container(
+                  gridBuilder: (String item, bool isSelected) => Container(
                     padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                     child: Text('grid:$item'),
                   ),
@@ -593,11 +593,11 @@ class NotesExample extends StatelessWidget {
                 animateViewProvider: animateViewProvider,
                 items: const ['a', 'b', 'c', 'd', 'e'],
                 selectedItems: const ['a'],
-                listBuilder: (BuildContext context, String item, bool isSelected) => Padding(
+                listBuilder: (String item, bool isSelected) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                   child: Text('list:$item'),
                 ),
-                gridBuilder: (BuildContext context, String item, bool isSelected) => Container(
+                gridBuilder: (String item, bool isSelected) => Container(
                   padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
                   child: Text('grid:$item'),
                 ),
@@ -665,8 +665,8 @@ class NotesExample extends StatelessWidget {
                   animateViewProvider: animateViewProvider,
                   items: const [],
                   selectedItems: const [],
-                  listBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
-                  gridBuilder: (BuildContext context, String item, bool isSelected) => const SizedBox(),
+                  listBuilder: (String item, bool isSelected) => const SizedBox(),
+                  gridBuilder: (String item, bool isSelected) => const SizedBox(),
                   contentBuilder: () => const Text('detail view'),
                 )));
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 
 /// ItemBuilder build item to display
-typedef ItemBuilder<T> = Widget Function(BuildContext context, T item, bool isSelected);
+typedef ItemBuilder<T> = Widget Function(T item, bool isSelected);
 
 /// ItemDecorationBuilder build item decoration when selected or checked
 typedef ItemDecorationBuilder<T> = Widget Function(
@@ -68,7 +68,7 @@ abstract class Selectable<T> extends StatelessWidget {
   /// _buildItemWithDecoration build item with decoration
   Widget _buildItemWithDecoration(BuildContext context, T item, bool isSelected) => itemDecorationBuilder(
         context,
-        child: itemBuilder(context, item, isSelected),
+        child: itemBuilder(item, isSelected),
         checkMode: checkMode,
         isSelected: isSelected,
       );

@@ -316,8 +316,8 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                   return CheckableHeader(
                     selectedItemCount: viewProvider.dataView!.selectedCount,
                     isAllSelected: viewProvider.dataView!.selectedCount == viewProvider.dataView!.displayRows.length,
-                    onSelectAll: () => viewProvider.onItemChecked(context, viewProvider.dataView!.displayRows),
-                    onUnselectAll: () => viewProvider.onItemChecked(context, []),
+                    onSelectAll: () => viewProvider.onItemChecked(viewProvider.dataView!.displayRows),
+                    onUnselectAll: () => viewProvider.onItemChecked([]),
                     onCancel: () => viewProvider.onToggleCheckMode(context),
                     actions: [
                       if (viewProvider.formController.showArchiveButton)
@@ -356,7 +356,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                 creating: viewProvider.creating,
                 isCheckMode: viewProvider.isCheckMode,
                 isListView: viewProvider.isListView,
-                onItemChecked: (selected) => viewProvider.onItemChecked(context, selected),
+                onItemChecked: (selected) => viewProvider.onItemChecked(selected),
                 onItemSelected: (selected) => viewProvider.onItemsSelected(context, selected),
                 onItemTapped: (selected) => viewProvider.onItemTapped(context, selected),
               )));
