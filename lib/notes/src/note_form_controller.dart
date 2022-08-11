@@ -166,7 +166,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     }
     await deleteByView(context, [current!]);
     await eventbus.broadcast(NotesRefillEvent(isRemove: true));
-    Navigator.of(context).pop();
   }
 
   /// archive called when user press archive button
@@ -180,7 +179,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     }
     await archiveByView(context, list);
     await eventbus.broadcast(NotesRefillEvent(isRemove: true));
-    Navigator.of(context).pop();
   }
 
   /// restore called when user press restore button
@@ -194,7 +192,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     }
     await restoreByView(context, list);
     await eventbus.broadcast(NotesRefillEvent(isRemove: true));
-    Navigator.of(context).pop();
   }
 
   /// deleteByView called by view

@@ -99,25 +99,32 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
       saver: (persons) async {
         await Future.delayed(const Duration(seconds: 3));
       },
-      formBuilder: (context, controller) => Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(children: [
-            Text('beam: detail view for ${formGroup.value}'),
-            ReactiveTextField(
-              formControlName: 'name',
-              decoration: const InputDecoration(
-                labelText: 'Your name',
-                hintText: 'please input your name',
+      formBuilder: (context, controller) => delta.Mounted(
+        builder: (context, mounted, safePop) => Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(children: [
+              Text('beam: detail view for ${formGroup.value}'),
+              ReactiveTextField(
+                formControlName: 'name',
+                decoration: const InputDecoration(
+                  labelText: 'Your name',
+                  hintText: 'please input your name',
+                ),
+                validationMessages: (control) => {
+                  ValidationMessage.required: 'The name must not be empty',
+                },
               ),
-              validationMessages: (control) => {
-                ValidationMessage.required: 'The name must not be empty',
-              },
-            ),
-            OutlinedButton(
-              onPressed: controller.isAllowDelete ? () async => await controller.delete(context) : null,
-              child: const Text('delete'),
-            ),
-          ])),
+              OutlinedButton(
+                onPressed: controller.isAllowDelete
+                    ? () async {
+                        await controller.delete(context);
+                        safePop();
+                      }
+                    : null,
+                child: const Text('delete'),
+              ),
+            ])),
+      ),
       creator: () async {
         final no = generator.randomNumber(6);
         return sample.Person(name: 'new person $no');

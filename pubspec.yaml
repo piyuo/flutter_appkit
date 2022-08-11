@@ -29,7 +29,7 @@ dependencies:
   url_launcher: ^6.0.17
   auto_size_text: ^3.0.0
   flutter_easyloading: ^3.0.5
-  flutter_markdown: ^0.6.8
+  flutter_markdown: ^0.6.10+3
   location: ^4.3.0 # device lat lng
   apple_maps_flutter: ^1.0.1
   google_maps_flutter: ^2.1.2

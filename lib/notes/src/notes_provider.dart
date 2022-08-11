@@ -592,5 +592,5 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   Future<T?> getRowByID(String id) async => await dataView?.getRowByID(id);
 
   /// pageInfo return data view's page info
-  String pageInfo(BuildContext context) => dataView != null ? dataView!.pageInfo() : '';
+  String pageInfo(BuildContext context) => dataView != null ? dataView!.pageInfo(context) : '';
 }
