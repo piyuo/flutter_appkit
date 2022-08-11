@@ -4,7 +4,7 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'uploader.dart';
 import 'image_pick.dart';
 import 'image_drop.dart';
-import 'file.dart';
+import 'abstract_file.dart';
 
 /// ImageUploadController upload single image through uploader
 class ImageUploadController with ChangeNotifier {
@@ -38,32 +38,27 @@ class ImageUploadController with ChangeNotifier {
     return null;
   }
 
-  /// pickImage pick image from device and upload
-  Future<void> pickImage(BuildContext context) async {
-    final picked = await imagePick(context);
-    if (picked != null) {
-      startUpload(context, picked);
-    }
+  /// pickImage pick image from device and return file
+  Future<AbstractFile?> pickImage(BuildContext context) async {
+    return await imagePick();
   }
 
-  /// dropImage accept dropped image and upload
-  Future<void> dropImage(BuildContext context, dynamic file) async {
+  /// dropImage accept dropped image and return file
+  Future<AbstractFile?> dropImage(BuildContext context, dynamic file) async {
     dragging = false;
     if (_dropController == null) {
       notifyListeners();
-      return;
+      return null;
     }
-
-    final dropped = await imageDrop(context, _dropController!, file);
-    startUpload(context, dropped);
+    return await imageDrop(context, _dropController!, file);
   }
 
   /// onUpload upload image though uploader, child may override this method
-  Future<String?> onUpload(BuildContext context, File file, String? replaceFilename) =>
-      uploader.upload(context, file, replaceFilename);
+  Future<String?> onUpload(BuildContext context, AbstractFile file, String? replaceFilename) =>
+      uploader.upload(file, replaceFilename);
 
-  /// startUpload start upload file to cloud
-  Future<void> startUpload(BuildContext context, File file) async {
+  /// upload start upload file to cloud
+  Future<void> upload(BuildContext context, AbstractFile file) async {
     busy = true;
     notifyListeners();
     try {

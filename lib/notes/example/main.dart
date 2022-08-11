@@ -100,7 +100,7 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
         await Future.delayed(const Duration(seconds: 3));
       },
       formBuilder: (context, controller) => delta.Mounted(
-        builder: (context, mounted, safePop) => Padding(
+        builder: (context, mounted) => Padding(
             padding: const EdgeInsets.all(20),
             child: Column(children: [
               Text('beam: detail view for ${formGroup.value}'),
@@ -118,7 +118,9 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
                 onPressed: controller.isAllowDelete
                     ? () async {
                         await controller.delete(context);
-                        safePop();
+                        if (mounted) {
+                          Navigator.pop(context);
+                        }
                       }
                     : null,
                 child: const Text('delete'),

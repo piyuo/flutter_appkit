@@ -43,7 +43,7 @@ class UploaderExample extends StatelessWidget {
                 filenames: [
 //                'iphone-card-40-iphone13problue-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948813000',
                 ],
-                uploadFunc: (context, bytes, deleteFilename) async {
+                imageUploader: (bytes, deleteFilename) async {
                   await Future.delayed(const Duration(seconds: 2));
                   return 'iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
                 },
@@ -65,7 +65,7 @@ class UploaderExample extends StatelessWidget {
                 filenames: [
                   'iphone-card-40-iphone13problue-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948813000',
                 ],
-                uploadFunc: (context, bytes, deleteFilename) async {
+                imageUploader: (bytes, deleteFilename) async {
                   await Future.delayed(const Duration(seconds: 2));
                   return 'iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
                 },
@@ -85,7 +85,7 @@ class UploaderExample extends StatelessWidget {
         create: (context) => ImageUploadEditor(
               uploader: Uploader(
                 filenames: [],
-                uploadFunc: (context, bytes, deleteFilename) async {
+                imageUploader: (bytes, deleteFilename) async {
                   await Future.delayed(const Duration(seconds: 2));
                   return 'iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
                 },

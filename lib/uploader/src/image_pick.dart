@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'file.dart';
+import 'abstract_file.dart';
 
-class GalleryFile extends File {
+class GalleryFile extends AbstractFile {
   GalleryFile({
     required this.picked,
   });
@@ -20,8 +20,7 @@ class GalleryFile extends File {
 }
 
 /// imagePick pick a image from device gallery, return null if not select or image type wrong
-Future<GalleryFile?> imagePick(
-  BuildContext context, {
+Future<GalleryFile?> imagePick({
   Size preferSize = const Size(1280, 1280),
 }) async {
   final XFile? picked = await ImagePicker().pickImage(

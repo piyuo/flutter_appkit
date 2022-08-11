@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
-import 'file.dart';
+import 'abstract_file.dart';
 
-class DropFile extends File {
+class DropFile extends AbstractFile {
   DropFile({
     required this.dropController,
     required this.dropFile,

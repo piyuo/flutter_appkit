@@ -1,8 +1,8 @@
 import 'package:mime/mime.dart';
 import 'dart:typed_data';
 
-abstract class File {
-  File({this.mimeType = ''});
+abstract class AbstractFile {
+  AbstractFile({this.mimeType = ''});
 
   /// mime type of file
   String mimeType;
@@ -35,7 +35,7 @@ abstract class File {
   }
 }
 
-class MemoryFile extends File {
+class MemoryFile extends AbstractFile {
   MemoryFile({
     required String mimeType,
     required this.bytes,

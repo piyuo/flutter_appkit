@@ -1,6 +1,6 @@
 library uploader;
 
-export 'src/file.dart';
+export 'src/abstract_file.dart';
 export 'src/image_drop.dart';
 export 'src/image_pick.dart';
 export 'src/image_upload.dart';

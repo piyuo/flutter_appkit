@@ -177,10 +177,9 @@ class ImageUpload extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: FloatingActionButton(
-                child: const Icon(Icons.file_upload_rounded, size: 42),
-                //padding: EdgeInsets.zero,
                 tooltip: context.i18n.uploadButtonText,
                 onPressed: () => controller.pickImage(context),
+                child: const Icon(Icons.file_upload_rounded, size: 42),
               ),
             ),
           ],
@@ -195,52 +194,63 @@ class ImageUpload extends StatelessWidget {
           light: Colors.grey.shade200,
           dark: Colors.grey.shade800,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-                onTap: () => controller.pickImage(context),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Icon(
-                    controller.dragging ? Icons.add : Icons.file_upload_rounded,
-                    size: 52,
-                    color: iconColor,
-                  ),
-                )),
-            if (!controller.dragging)
-              InkWell(
-                  onTap: () => controller.pickImage(context),
-                  child: RichText(
-                      text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: context.i18n.uploadDrop,
-                        style: TextStyle(
-                          color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
-                          fontSize: 14,
+        child: delta.Mounted(
+            builder: (context, mounted) => Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                        onTap: () async {
+                          final file = await controller.pickImage(context);
+                          if (file != null && mounted) {
+                            await controller.upload(context, file);
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Icon(
+                            controller.dragging ? Icons.add : Icons.file_upload_rounded,
+                            size: 52,
+                            color: iconColor,
+                          ),
+                        )),
+                    if (!controller.dragging)
+                      InkWell(
+                          onTap: () async {
+                            final file = await controller.pickImage(context);
+                            if (file != null && mounted) {
+                              await controller.upload(context, file);
+                            }
+                          },
+                          child: RichText(
+                              text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: context.i18n.uploadDrop,
+                                style: TextStyle(
+                                  color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              TextSpan(
+                                text: context.i18n.uploadBrowse,
+                                style: TextStyle(
+                                  color: Colors.blue.shade600,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ))),
+                    if (!controller.dragging) const SizedBox(height: 10),
+                    if (!controller.dragging && description != null)
+                      Text(
+                        description!,
+                        style: const TextStyle(
+                          color: Colors.grey,
                         ),
                       ),
-                      TextSpan(
-                        text: context.i18n.uploadBrowse,
-                        style: TextStyle(
-                          color: Colors.blue.shade600,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  ))),
-            if (!controller.dragging) const SizedBox(height: 10),
-            if (!controller.dragging && description != null)
-              Text(
-                description!,
-                style: const TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-          ],
-        ));
+                  ],
+                )));
   }
 
   @override

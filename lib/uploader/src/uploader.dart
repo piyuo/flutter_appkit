@@ -2,17 +2,20 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'file.dart';
+import 'abstract_file.dart';
 
-typedef UploadFunc = Future<String?> Function(BuildContext context, Uint8List bytes, String? deleteFilename);
+typedef ImageUploader = Future<String?> Function(Uint8List bytes, String? deleteFilename);
 
-typedef DeleteFunc = Future<void> Function(BuildContext context, String filename);
+typedef ImageRemover = Future<void> Function(String filename);
+
+/// UploaderErrorCode define error code return by upload
+enum UploaderErrorCode { ok, uploadImageTooBig, uploadImageNotValid }
 
 class Uploader with ChangeNotifier {
   Uploader({
     required this.filenames,
-    required this.uploadFunc,
-    this.deleteFunc,
+    required this.imageUploader,
+    this.imageRemover,
     this.fileSizeMax = 5 * 1024 * 1024, // max 5MB
     this.acceptMIME = const ['image/png', 'image/jpeg', 'image/gif'],
   });
@@ -25,9 +28,9 @@ class Uploader with ChangeNotifier {
   /// filenames keep all filenames
   List<String> filenames;
 
-  final UploadFunc uploadFunc;
+  final ImageUploader imageUploader;
 
-  final DeleteFunc? deleteFunc;
+  final ImageRemover? imageRemover;
 
   bool get isEmpty {
     return filenames.isEmpty;
@@ -37,30 +40,44 @@ class Uploader with ChangeNotifier {
     return filenames.isNotEmpty;
   }
 
+  /// _errorUploadImageTooBig keep error message for later use
+  String? _errorUploadImageTooBig;
+
+  /// _errorUploadImageNotValid keep error message for later use
+  String? _errorUploadImageNotValid;
+
+  void prepare(BuildContext context) {
+    // get error message now, cause no context can be use in upload
+    _errorUploadImageTooBig = context.i18n.uploadImageTooBig;
+    _errorUploadImageNotValid = context.i18n.uploadImageNotValid;
+  }
+
   /// validate file, return null if OK, return error message if something wrong
-  Future<String?> validate(BuildContext context, File file) async {
+  Future<String?> validate(AbstractFile file) async {
+    assert(_errorUploadImageTooBig != null && _errorUploadImageNotValid != null, 'call prepare first');
     final fileSize = await file.getFileSize();
     final yourSize = i18n.formatBytes(fileSize, 1);
     if (fileSize > fileSizeMax) {
       final limit = i18n.formatBytes(fileSizeMax, 1);
-      return context.i18n.uploadImageTooBig.replaceAll('%1', yourSize).replaceAll('%2', limit);
+      return _errorUploadImageTooBig!.replaceAll('%1', yourSize).replaceAll('%2', limit);
     }
     if (!acceptMIME.contains(file.mimeType)) {
-      return context.i18n.uploadImageNotValid;
+      return _errorUploadImageNotValid!;
     }
 
     debugPrint('upload ${file.mimeType} $yourSize');
     return null;
   }
 
-  Future<String?> upload(BuildContext context, File file, String? deleteFilename) async {
-    final error = await validate(context, file);
+  Future<String?> upload(AbstractFile file, String? deleteFilename) async {
+    assert(_errorUploadImageTooBig != null && _errorUploadImageNotValid != null, 'call prepare first');
+    final error = await validate(file);
     if (error != null) {
       return error;
     }
 
     final bytes = await file.readAsBytes();
-    String? result = await uploadFunc(context, bytes, deleteFilename);
+    String? result = await imageUploader(bytes, deleteFilename);
     if (result == null) {
       return null;
     }
@@ -73,8 +90,8 @@ class Uploader with ChangeNotifier {
   }
 
   Future<void> delete(BuildContext context, String filename) async {
-    assert(deleteFunc != null, 'must set delete function');
-    await deleteFunc!(context, filename);
+    assert(imageRemover != null, 'must set delete function');
+    await imageRemover!(filename);
     filenames.remove(filename);
     notifyListeners();
   }

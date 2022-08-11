@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/editor/editor.dart' as editor;
 import 'uploader.dart';
 import 'image_upload_controller.dart';
-import 'file.dart';
+import 'abstract_file.dart';
 
 /// ImageUploadController upload single image through uploader
 class ImageUploadEditor extends ImageUploadController {
@@ -15,7 +15,7 @@ class ImageUploadEditor extends ImageUploadController {
 
   /// onUpload upload image though uploader, child may override this method
   @override
-  Future<String?> onUpload(BuildContext context, File file, String? replaceFilename) async {
+  Future<String?> onUpload(BuildContext context, AbstractFile file, String? replaceFilename) async {
     final result = await editor.showImageEditor(
       context,
       cropAspectRatio: cropAspectRatio,
@@ -26,9 +26,9 @@ class ImageUploadEditor extends ImageUploadController {
         mimeType: file.mimeType,
         bytes: result,
       );
-      return uploader.upload(context, mf, replaceFilename);
+      return uploader.upload(mf, replaceFilename);
     }
 
-    return uploader.upload(context, file, replaceFilename);
+    return uploader.upload(file, replaceFilename);
   }
 }
