@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/sys/sys.dart' as sys;
 import 'package:libcli/types/types.dart' as types;
-import 'package:libcli/locate/locate.dart' as locate;
+import 'package:libcli/location/location.dart' as location;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'search_bar.dart';
@@ -96,7 +96,7 @@ class ShowSearchProvider with ChangeNotifier {
     }
     _barProvider.setValue(place.address, []);
 
-    locate.deviceLatLng().then((latlng) {
+    location.deviceLatLng().then((latlng) {
       if (_stopDeviceLatlng) {
         return;
       }
@@ -120,7 +120,7 @@ class ShowSearchProvider with ChangeNotifier {
   }
 
   /// _mapProvider control map value
-  final locate.MapProvider _mapProvider = locate.mapProvider();
+  final location.MapProvider _mapProvider = location.mapProvider();
 
   /// _confirmProvider control confirm button
   late final ConfirmButtonProvider _confirmButtonProvider;
