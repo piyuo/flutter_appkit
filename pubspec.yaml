@@ -30,7 +30,8 @@ dependencies:
   auto_size_text: ^3.0.0
   flutter_easyloading: ^3.0.5
   flutter_markdown: ^0.6.10+3
-  location: ^4.3.0 # device lat lng
+  #location: ^4.3.0 # device lat lng
+  geolocator: ^9.0.1
   apple_maps_flutter: ^1.0.1
   google_maps_flutter: ^2.1.2
   google_maps_flutter_web: ^0.4.0+1
