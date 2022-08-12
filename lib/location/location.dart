@@ -1,4 +1,4 @@
-library locate;
+library location;
 
 export 'src/location.dart';
 export 'src/map.dart';

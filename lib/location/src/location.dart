@@ -5,8 +5,6 @@ import 'package:libcli/log/log.dart' as log;
 
 /// deviceLatLng return device location info, return empty if can't not get device location (user not allow)
 /// this function is slow, it may takes few seconds to complete
-///
-
 Future<types.LatLng> deviceLatLng() async {
   bool serviceEnabled;
   LocationPermission permissionGranted;
@@ -16,7 +14,6 @@ Future<types.LatLng> deviceLatLng() async {
   if (!serviceEnabled) {
     return types.LatLng.empty;
   }
-
   permissionGranted = await Geolocator.checkPermission();
   if (permissionGranted == LocationPermission.denied) {
     permissionGranted = await Geolocator.requestPermission();
