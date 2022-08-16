@@ -4,7 +4,6 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/responsive/responsive.dart' as responsive;
-import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'notes_provider.dart';
 import 'master_detail_view.dart';
 import 'tag_split_view.dart';
@@ -13,8 +12,7 @@ import 'checkable_header.dart';
 
 class NotesView<T extends pb.Object> extends StatelessWidget {
   const NotesView({
-    required this.animateViewProvider,
-    required this.viewProvider,
+    required this.notesProvider,
     required this.contentBuilder,
     this.leftTools,
     this.rightTools,
@@ -22,11 +20,8 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  /// animateViewProvider is the provider of the animate view
-  final animate_view.AnimateViewProvider animateViewProvider;
-
   /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
-  final NotesProvider<T> viewProvider;
+  final NotesProvider<T> notesProvider;
 
   /// contentBuilder is content builder
   final Widget Function() contentBuilder;
@@ -72,69 +67,69 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final linkColor = context.themeColor(light: Colors.blue.shade400, dark: Colors.blue.shade500);
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-      final pageInfoText = viewProvider.pageInfo(context);
+      final pageInfoText = notesProvider.pageInfo(context);
       final searchBox = delta.SearchBox(
-        enabled: viewProvider.isReadyToShow,
-        prefixIcon: viewProvider.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
+        enabled: notesProvider.isReadyToShow,
+        prefixIcon: notesProvider.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
             ? null
             : IconButton(
-                icon: Icon(Icons.menu, color: viewProvider.isReadyToShow ? Colors.blue : null),
-                onPressed: viewProvider.isReadyToShow
+                icon: Icon(Icons.menu, color: notesProvider.isReadyToShow ? Colors.blue : null),
+                onPressed: notesProvider.isReadyToShow
                     ? () => showTagView<String>(
                           context,
-                          onTagSelected: (value) => viewProvider.setSelectedTag(value),
-                          tags: viewProvider.tags,
+                          onTagSelected: (value) => notesProvider.setSelectedTag(value),
+                          tags: notesProvider.tags,
                           header: tagViewHeader,
                         )
                     : null,
               ),
-        controller: viewProvider.searchController,
+        controller: notesProvider.searchController,
       );
       return MultiProvider(
           providers: [
             ChangeNotifierProvider.value(
-              value: viewProvider.refreshButtonController,
+              value: notesProvider.refreshButtonController,
             ),
             ChangeNotifierProvider.value(
-              value: viewProvider.animateViewProvider,
+              value: notesProvider.animateViewProvider,
             )
           ],
           child: TagSplitView(
-              tagView: viewProvider.tags.isNotEmpty
+              tagView: notesProvider.tags.isNotEmpty
                   ? TagView<String>(
-                      onTagSelected: viewProvider.setSelectedTag,
-                      tags: viewProvider.tags,
+                      onTagSelected: notesProvider.setSelectedTag,
+                      tags: notesProvider.tags,
                       header: tagViewHeader,
                     )
                   : null,
               child: MasterDetailView<T>(
-                animateViewProvider: animateViewProvider,
-                isReady: viewProvider.isReadyToShow,
-                items: viewProvider.dataView != null ? viewProvider.dataView!.displayRows : [],
-                selectedItems: viewProvider.dataView != null ? viewProvider.dataView!.getSelectedRows() : [],
-                listScrollController: viewProvider.listScrollController,
-                gridScrollController: viewProvider.gridScrollController,
-                listAnimatedViewScrollController: viewProvider.listAnimatedViewScrollController,
-                gridAnimatedViewScrollController: viewProvider.gridAnimatedViewScrollController,
-                listBuilder: viewProvider.listBuilder,
-                gridBuilder: viewProvider.gridBuilder,
-                listDecorationBuilder: viewProvider.listDecorationBuilder,
-                gridDecorationBuilder: viewProvider.gridDecorationBuilder,
+                animateViewProvider: notesProvider.animateViewProvider,
+                isReady: notesProvider.isReadyToShow,
+                items: notesProvider.dataView != null ? notesProvider.dataView!.displayRows : [],
+                selectedItems: notesProvider.dataView != null ? notesProvider.dataView!.getSelectedRows() : [],
+                listScrollController: notesProvider.listScrollController,
+                gridScrollController: notesProvider.gridScrollController,
+                listAnimatedViewScrollController: notesProvider.listAnimatedViewScrollController,
+                gridAnimatedViewScrollController: notesProvider.gridAnimatedViewScrollController,
+                listBuilder: notesProvider.listBuilder,
+                gridBuilder: notesProvider.gridBuilder,
+                listDecorationBuilder: notesProvider.listDecorationBuilder,
+                gridDecorationBuilder: notesProvider.gridDecorationBuilder,
                 contentBuilder: contentBuilder,
-                onRefresh: context.isTouchSupported && viewProvider.isReadyToShow && !viewProvider.noRefresh
-                    ? () => viewProvider.refresh(context)
+                onRefresh: context.isTouchSupported && notesProvider.isReadyToShow && !notesProvider.noRefresh
+                    ? () => notesProvider.refresh(context)
                     : null,
-                onMore: context.isTouchSupported && viewProvider.isReadyToShow && !viewProvider.noMore
-                    ? () => viewProvider.loadMore(context)
+                onMore: context.isTouchSupported && notesProvider.isReadyToShow && !notesProvider.noMore
+                    ? () => notesProvider.loadMore(context)
                     : null,
                 headerBuilder: () => Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: responsive.FoldPanel(
                     builder: (isColumn) => [
-                      if (viewProvider.caption != null)
+                      if (notesProvider.caption != null)
                         Padding(
                             padding: isColumn ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
-                            child: Text(viewProvider.caption!,
+                            child: Text(notesProvider.caption!,
                                 style: const TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -152,32 +147,32 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     ],
                   ),
                 ),
-                footerBuilder: viewProvider.hasNextPage || viewProvider.hasPreviousPage
+                footerBuilder: notesProvider.hasNextPage || notesProvider.hasPreviousPage
                     ? () => Column(children: [
-                          if (!viewProvider.isListView) const Divider(),
+                          if (!notesProvider.isListView) const Divider(),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: LayoutBuilder(
                                 builder: (BuildContext context, BoxConstraints constraints) => Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        if (viewProvider.hasPreviousPage)
+                                        if (notesProvider.hasPreviousPage)
                                           TextButton.icon(
                                             icon: Icon(Icons.chevron_left, color: linkColor),
                                             label: constraints.maxWidth < 300
                                                 ? const SizedBox()
                                                 : Text(localizations.previousPageTooltip,
                                                     style: TextStyle(color: linkColor)),
-                                            onPressed: () => viewProvider.onPreviousPage(context),
+                                            onPressed: () => notesProvider.onPreviousPage(context),
                                           ),
-                                        if (viewProvider.hasNextPage)
+                                        if (notesProvider.hasNextPage)
                                           TextButton.icon(
                                             icon: constraints.maxWidth < 300
                                                 ? const SizedBox()
                                                 : Text(localizations.nextPageTooltip,
                                                     style: TextStyle(color: linkColor)),
                                             label: Icon(Icons.chevron_right, color: linkColor),
-                                            onPressed: () => viewProvider.onNextPage(context),
+                                            onPressed: () => notesProvider.onNextPage(context),
                                           ),
                                       ],
                                     )),
@@ -189,50 +184,52 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     children: [
                       const SizedBox(width: 10),
                       delta.RefreshButton(
-                        onPressed: viewProvider.isReadyToShow ? () async => await viewProvider.refresh(context) : null,
+                        onPressed:
+                            notesProvider.isReadyToShow ? () async => await notesProvider.refresh(context) : null,
                       ),
                       Expanded(
                         child: responsive.Toolbar(
                           items: [
-                            if (viewProvider.hasListView && viewProvider.hasGridView)
+                            if (notesProvider.hasListView && notesProvider.hasGridView)
                               responsive.ToolButton(
                                 label: context.i18n.notesViewAsListLabel,
                                 icon: Icons.view_headline,
-                                onPressed: viewProvider.isReadyToShow ? () => viewProvider.onListView(context) : null,
-                                active: viewProvider.isListView,
+                                onPressed: notesProvider.isReadyToShow ? () => notesProvider.onListView(context) : null,
+                                active: notesProvider.isListView,
                               ),
-                            if (viewProvider.hasListView && viewProvider.hasGridView)
+                            if (notesProvider.hasListView && notesProvider.hasGridView)
                               responsive.ToolButton(
                                 label: context.i18n.notesViewAsGridLabel,
                                 icon: Icons.grid_view,
-                                onPressed: viewProvider.isReadyToShow ? () => viewProvider.onGridView(context) : null,
-                                active: !viewProvider.isListView,
+                                onPressed: notesProvider.isReadyToShow ? () => notesProvider.onGridView(context) : null,
+                                active: !notesProvider.isListView,
                                 space: 10,
                               ),
                             responsive.ToolButton(
                               label: context.i18n.notesSelectButtonLabel,
                               icon: Icons.check_circle_outline,
-                              onPressed: viewProvider.isNotEmpty ? () => viewProvider.onToggleCheckMode(context) : null,
+                              onPressed:
+                                  notesProvider.isNotEmpty ? () => notesProvider.onToggleCheckMode(context) : null,
                             ),
                             if (leftTools != null) ...leftTools!,
-                            if (viewProvider.isListView) responsive.ToolSpacer(),
-                            if (viewProvider.formController.showArchiveButton)
+                            if (notesProvider.isListView) responsive.ToolSpacer(),
+                            if (notesProvider.formController.showArchiveButton)
                               responsive.ToolButton(
                                 label: context.i18n.archiveButtonText,
                                 icon: Icons.archive,
-                                onPressed: viewProvider.isAllowDelete ? () => viewProvider.onArchive(context) : null,
+                                onPressed: notesProvider.isAllowDelete ? () => notesProvider.onArchive(context) : null,
                               ),
-                            if (viewProvider.formController.showDeleteButton)
+                            if (notesProvider.formController.showDeleteButton)
                               responsive.ToolButton(
                                 label: context.i18n.deleteButtonText,
                                 icon: Icons.delete,
-                                onPressed: viewProvider.isAllowDelete ? () => viewProvider.onDelete(context) : null,
+                                onPressed: notesProvider.isAllowDelete ? () => notesProvider.onDelete(context) : null,
                               ),
-                            if (viewProvider.formController.showRestoreButton)
+                            if (notesProvider.formController.showRestoreButton)
                               responsive.ToolButton(
                                 label: context.i18n.restoreButtonText,
                                 icon: Icons.restore,
-                                onPressed: viewProvider.isAllowDelete ? () => viewProvider.onRestore(context) : null,
+                                onPressed: notesProvider.isAllowDelete ? () => notesProvider.onRestore(context) : null,
                               ),
                           ],
                         ),
@@ -246,23 +243,23 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       responsive.ToolButton(
                         label: context.i18n.notesNewButtonLabel,
                         icon: Icons.add,
-                        onPressed: () => viewProvider.onCreateNew(context),
+                        onPressed: () => notesProvider.onCreateNew(context),
                       ),
                       responsive.ToolButton(
                         label: context.i18n.formSubmitButtonText,
                         icon: Icons.cloud_upload,
-                        onPressed: () => viewProvider.formController.submit(context),
+                        onPressed: () => notesProvider.formController.submit(context),
                       ),
                       if (rightTools != null) ...rightTools!,
                       responsive.ToolSpacer(),
-                      ..._buildPaginator(context, viewProvider, pageInfoText),
+                      ..._buildPaginator(context, notesProvider, pageInfoText),
                     ],
                   );
                 },
                 touchBottomBarBuilder: () {
                   final buttonStyle = TextStyle(
                     fontSize: 15,
-                    color: viewProvider.isReadyToShow ? Colors.blue.shade700 : Colors.grey,
+                    color: notesProvider.isReadyToShow ? Colors.blue.shade700 : Colors.grey,
                   );
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 18),
@@ -272,14 +269,14 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     ),
                     child: Row(children: [
                       TextButton(
-                        style: viewProvider.isCheckMode
+                        style: notesProvider.isCheckMode
                             ? ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                   context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
                                 ),
                               )
                             : null,
-                        onPressed: viewProvider.isReadyToShow ? () => viewProvider.onToggleCheckMode(context) : null,
+                        onPressed: notesProvider.isReadyToShow ? () => notesProvider.onToggleCheckMode(context) : null,
                         child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
                       ),
                       pageInfoText.isNotEmpty
@@ -292,7 +289,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                             )
                           : const Spacer(),
                       TextButton(
-                        onPressed: viewProvider.isReadyToShow ? () => viewProvider.onCreateNew(context) : null,
+                        onPressed: notesProvider.isReadyToShow ? () => notesProvider.onCreateNew(context) : null,
                         child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
                       ),
                     ]),
@@ -308,19 +305,19 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       child: responsive.Toolbar(
                         mainAxisAlignment: MainAxisAlignment.center,
                         items: [
-                          ..._buildPaginator(context, viewProvider, pageInfoText),
+                          ..._buildPaginator(context, notesProvider, pageInfoText),
                         ],
                       ));
                 },
                 selectionBarBuilder: () {
                   return CheckableHeader(
-                    selectedItemCount: viewProvider.dataView!.selectedCount,
-                    isAllSelected: viewProvider.dataView!.selectedCount == viewProvider.dataView!.displayRows.length,
-                    onSelectAll: () => viewProvider.onItemChecked(viewProvider.dataView!.displayRows),
-                    onUnselectAll: () => viewProvider.onItemChecked([]),
-                    onCancel: () => viewProvider.onToggleCheckMode(context),
+                    selectedItemCount: notesProvider.dataView!.selectedCount,
+                    isAllSelected: notesProvider.dataView!.selectedCount == notesProvider.dataView!.displayRows.length,
+                    onSelectAll: () => notesProvider.onItemChecked(notesProvider.dataView!.displayRows),
+                    onUnselectAll: () => notesProvider.onItemChecked([]),
+                    onCancel: () => notesProvider.onToggleCheckMode(context),
                     actions: [
-                      if (viewProvider.formController.showArchiveButton)
+                      if (notesProvider.formController.showArchiveButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             primary: Colors.grey.shade900,
@@ -328,9 +325,9 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                           label: Text(context.i18n.archiveButtonText),
                           icon: const Icon(Icons.archive),
                           onPressed:
-                              viewProvider.dataView!.hasSelectedRows ? () => viewProvider.onArchive(context) : null,
+                              notesProvider.dataView!.hasSelectedRows ? () => notesProvider.onArchive(context) : null,
                         ),
-                      if (viewProvider.formController.showDeleteButton)
+                      if (notesProvider.formController.showDeleteButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             primary: Colors.grey.shade900,
@@ -338,9 +335,9 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                           label: Text(context.i18n.deleteButtonText),
                           icon: const Icon(Icons.delete),
                           onPressed:
-                              viewProvider.dataView!.hasSelectedRows ? () => viewProvider.onDelete(context) : null,
+                              notesProvider.dataView!.hasSelectedRows ? () => notesProvider.onDelete(context) : null,
                         ),
-                      if (viewProvider.formController.showRestoreButton)
+                      if (notesProvider.formController.showRestoreButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
                             primary: Colors.grey.shade900,
@@ -348,17 +345,17 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                           label: Text(context.i18n.restoreButtonText),
                           icon: const Icon(Icons.restore),
                           onPressed:
-                              viewProvider.dataView!.hasSelectedRows ? () => viewProvider.onRestore(context) : null,
+                              notesProvider.dataView!.hasSelectedRows ? () => notesProvider.onRestore(context) : null,
                         ),
                     ],
                   );
                 },
-                creating: viewProvider.creating,
-                isCheckMode: viewProvider.isCheckMode,
-                isListView: viewProvider.isListView,
-                onItemChecked: (selected) => viewProvider.onItemChecked(selected),
-                onItemSelected: (selected) => viewProvider.onItemsSelected(context, selected),
-                onItemTapped: (selected) => viewProvider.onItemTapped(context, selected),
+                creating: notesProvider.creating,
+                isCheckMode: notesProvider.isCheckMode,
+                isListView: notesProvider.isListView,
+                onItemChecked: (selected) => notesProvider.onItemChecked(selected),
+                onItemSelected: (selected) => notesProvider.onItemsSelected(context, selected),
+                onItemTapped: (selected) => notesProvider.onItemTapped(context, selected),
               )));
     });
   }

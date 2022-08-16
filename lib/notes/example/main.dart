@@ -704,8 +704,7 @@ class NotesExample extends StatelessWidget {
                     ],
                     child: Consumer2<database.DatabaseProvider, NotesProvider<sample.Person>>(
                       builder: (context, databaseProvider, notesProvider, _) => NotesView<sample.Person>(
-                        animateViewProvider: animateViewProvider,
-                        viewProvider: notesProvider,
+                        notesProvider: notesProvider,
                         contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
                         tagViewHeader: const Text('hello world'),
                         leftTools: [
