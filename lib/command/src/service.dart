@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/log/log.dart' as log;
@@ -10,10 +9,10 @@ import 'package:libcli/command/src/url.dart';
 import 'package:libcli/command/src/http.dart';
 
 /// Sender define send function use in service, only for test
-typedef Sender = Future<pb.Object> Function(BuildContext context, pb.Object command, {pb.Builder? builder});
+typedef Sender = Future<pb.Object> Function(pb.Object command, {pb.Builder? builder});
 
 /// AccessTokenProvider define access token provider
-typedef AccessTokenBuilder = Future<String?> Function(BuildContext context);
+typedef AccessTokenBuilder = Future<String?> Function();
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -67,12 +66,12 @@ abstract class Service {
   ///
   ///     var response = await service.send(EchoAction());
   ///
-  Future<pb.Object> send(BuildContext context, pb.Object command, {pb.Builder? builder}) async {
+  Future<pb.Object> send(pb.Object command, {pb.Builder? builder}) async {
     if (sender != null) {
-      return sender!(context, command, builder: builder);
+      return sender!(command, builder: builder);
     }
     http.Client client = http.Client();
-    return await sendByClient(context, command, client, builder);
+    return await sendByClient(command, client, builder);
   }
 
   /// sender can set custom send handler for test
@@ -80,10 +79,9 @@ abstract class Service {
 
   /// sendByClient send action to remote service,return object if success, return null if exception happen
   ///
-  ///     var response = await service.sendByClient(client, EchoAction());
+  ///     var response = await service.sendByClient(EchoAction());
   ///
-  Future<pb.Object> sendByClient(
-      BuildContext context, pb.Object action, http.Client client, pb.Builder? builder) async {
+  Future<pb.Object> sendByClient(pb.Object action, http.Client client, pb.Builder? builder) async {
     dynamic result = FirewallPass;
     if (!ignoreFirewall) {
       result = firewallBegin(action);
@@ -91,7 +89,7 @@ abstract class Service {
     if (result is FirewallPass) {
       // auto add access token
       if (action.accessTokenRequired && accessTokenBuilder != null) {
-        final accessToken = await accessTokenBuilder!(context);
+        final accessToken = await accessTokenBuilder!();
         if (accessToken != null) {
           action.setAccessToken(accessToken);
         } else {

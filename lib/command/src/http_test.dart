@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
@@ -90,8 +89,7 @@ void main() {
 
       await post(
           Request(
-            service: _FakeOkService()
-              ..sender = (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK(),
+            service: _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
             client: client,
             action: pb.OK(),
             url: 'http://mock',
@@ -109,8 +107,7 @@ void main() {
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await post(
           Request(
-            service: _FakeOkService()
-              ..sender = (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK(),
+            service: _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
             client: client,
             action: pb.OK(),
             url: 'http://mock',
@@ -157,8 +154,7 @@ class _FakeOkService extends Service {
 
 /// _fakeRequest return a fake service request
 Request _fakeOkRequest(MockClient client) {
-  _FakeOkService service = _FakeOkService()
-    ..sender = (BuildContext ctx, pb.Object command, {pb.Builder? builder}) async => pb.OK();
+  _FakeOkService service = _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK();
   return Request(
     service: service,
     client: client,

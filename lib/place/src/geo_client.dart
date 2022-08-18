@@ -16,7 +16,6 @@ class GeoClient {
   ///
   Future<List<sys.GeoSuggestion>> autoComplete(BuildContext ctx, String input, types.LatLng l) async {
     var response = await sysService.send(
-      ctx,
       sys.CmdAutoComplete(
         sessionToken: sessionToken,
         input: input,
@@ -39,7 +38,6 @@ class GeoClient {
   ///
   Future<sys.GeoLocation?> getLocation(BuildContext ctx, String suggestionID) async {
     var response = await sysService.send(
-      ctx,
       sys.CmdGetLocation(
         sessionToken: sessionToken,
         suggestionID: suggestionID,
@@ -59,7 +57,6 @@ class GeoClient {
   ///
   Future<List<sys.GeoLocation>> reverseGeocoding(BuildContext ctx, types.LatLng l) async {
     var response = await sysService.send(
-      ctx,
       sys.CmdReverseGeocoding(
         lat: l.lat,
         lng: l.lng,
