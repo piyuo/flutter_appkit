@@ -7,7 +7,7 @@ class Mounted extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  final Widget Function(BuildContext context, bool mounted) builder;
+  final Widget Function(BuildContext context, bool Function() mounted) builder;
 
   @override
   MountedState createState() => MountedState();
@@ -16,6 +16,6 @@ class Mounted extends StatefulWidget {
 class MountedState extends State<Mounted> {
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, mounted);
+    return widget.builder(context, () => mounted);
   }
 }
