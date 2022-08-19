@@ -1,6 +1,7 @@
 library delta;
 
 export 'src/global_context_support.dart';
+export 'src/mounted.dart';
 export 'src/types.dart';
 export 'src/test.dart';
 export 'src/pixel_ratio.dart';
@@ -40,4 +41,3 @@ export 'src/shimmer.dart';
 export 'src/menu_button.dart';
 export 'src/button_panel.dart';
 export 'src/search_trigger.dart';
-export 'src/mounted.dart';

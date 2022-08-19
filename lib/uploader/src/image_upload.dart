@@ -195,12 +195,13 @@ class ImageUpload extends StatelessWidget {
           dark: Colors.grey.shade800,
         ),
         child: delta.Mounted(
-            builder: (context, mounted) => Column(
+            builder: (context, isMounted) => Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
                         onTap: () async {
                           final file = await controller.pickImage(context);
+                          final mounted = isMounted();
                           if (file != null && mounted) {
                             await controller.upload(context, file);
                           }
@@ -217,6 +218,7 @@ class ImageUpload extends StatelessWidget {
                       InkWell(
                           onTap: () async {
                             final file = await controller.pickImage(context);
+                            final mounted = isMounted();
                             if (file != null && mounted) {
                               await controller.upload(context, file);
                             }
