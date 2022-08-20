@@ -18,7 +18,7 @@ dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  http: ^0.13.4
+  http: ^0.13.5
   protobuf: ^2.0.1
   shared_preferences: ^2.0.12
   meta: ^1.7.0
@@ -60,14 +60,14 @@ dependencies:
   flutter_typeahead: ^4.0.0
   slide_countdown: ^0.2.12
   fl_chart: ^0.55.1
-  badges: ^2.0.2
+  badges: ^2.0.3
   beamer: ^1.5.2
   hive: ^2.1.0
   cupertino_listview: ^2.0.0
   split_view: ^3.1.0
   drag_select_grid_view: ^0.6.1
   animations: ^2.0.2
-  reactive_forms: ^13.0.0
+  reactive_forms: ^14.1.0
   flutter_rating_bar: ^4.0.1
   reactive_date_range_picker: ^0.4.1
   reactive_touch_spin: ^0.6.0
