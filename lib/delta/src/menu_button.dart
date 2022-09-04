@@ -75,7 +75,7 @@ class MenuButton<T> extends StatelessWidget {
     final foregroundColor = color ?? context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade200);
     return TextButton.icon(
       style: TextButton.styleFrom(
-        primary: foregroundColor,
+        foregroundColor: foregroundColor,
         padding: padding,
       ),
       label: Row(

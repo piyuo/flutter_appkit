@@ -52,13 +52,13 @@ class Submit extends StatelessWidget {
         }
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: valid
+            backgroundColor: valid
                 ? color
                 : context.themeColor(
                     light: Colors.grey.shade300,
                     dark: Colors.grey.shade800,
                   ),
-            onPrimary: valid ? null : Colors.grey.shade500,
+            foregroundColor: valid ? null : Colors.grey.shade500,
             elevation: valid ? elevation : 0,
             padding: padding,
             shape: RoundedRectangleBorder(

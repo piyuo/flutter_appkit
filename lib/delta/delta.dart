@@ -1,7 +1,7 @@
 library delta;
 
-export 'src/global_context_support.dart';
 export 'src/mounted.dart';
+export 'src/global_context_support.dart';
 export 'src/types.dart';
 export 'src/test.dart';
 export 'src/pixel_ratio.dart';

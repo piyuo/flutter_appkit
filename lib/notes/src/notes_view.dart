@@ -320,7 +320,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       if (notesProvider.formController.showArchiveButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
-                            primary: Colors.grey.shade900,
+                            foregroundColor: Colors.grey.shade900,
                           ),
                           label: Text(context.i18n.archiveButtonText),
                           icon: const Icon(Icons.archive),
@@ -330,7 +330,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       if (notesProvider.formController.showDeleteButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
-                            primary: Colors.grey.shade900,
+                            foregroundColor: Colors.grey.shade900,
                           ),
                           label: Text(context.i18n.deleteButtonText),
                           icon: const Icon(Icons.delete),
@@ -340,7 +340,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       if (notesProvider.formController.showRestoreButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
-                            primary: Colors.grey.shade900,
+                            foregroundColor: Colors.grey.shade900,
                           ),
                           label: Text(context.i18n.restoreButtonText),
                           icon: const Icon(Icons.restore),

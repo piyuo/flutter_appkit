@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/foundation.dart';

@@ -7,7 +7,7 @@ export 'src/test.dart';
 export 'src/route.dart';
 export 'src/hypertext.extension.dart';
 export 'src/single_selection_dialog.dart';
-export 'src/show_popup.dart';
+export 'src/show_popup_sheet.dart';
 export 'src/show_more.dart';
 export 'src/show_banner.dart';
 export 'src/show_side.dart';

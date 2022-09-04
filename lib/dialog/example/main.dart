@@ -39,14 +39,14 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _toast(context),
+            child: _showPopupSheet(context),
           ),
           Wrap(
             children: [
               testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
               testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
               testing.ExampleButton(label: 'toast', builder: () => _toast(context)),
-              testing.ExampleButton(label: 'show', builder: () => _showPopup(context)),
+              testing.ExampleButton(label: 'show', builder: () => _showPopupSheet(context)),
               testing.ExampleButton(label: 'banner', builder: () => _banner(context)),
               testing.ExampleButton(label: 'route', builder: () => _route(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
@@ -307,7 +307,7 @@ class DialogExample extends StatelessWidget {
     ]);
   }
 
-  Widget _showPopup(BuildContext context) {
+  Widget _showPopupSheet(BuildContext context) {
     return Wrap(children: [
       ElevatedButton(
         child: const Text('show popup'),
@@ -367,7 +367,7 @@ class DialogExample extends StatelessWidget {
                 child: const Text('Close'),
                 onPressed: () => Navigator.pop(context),
               ))),
-          backgroundColor: Colors.red,
+//          backgroundColor: Colors.red,
           itemBuilder: (context, _) => Column(
             children: [
               const SizedBox(height: 180, child: Placeholder()),

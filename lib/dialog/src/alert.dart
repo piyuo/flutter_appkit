@@ -74,7 +74,7 @@ Future<bool?> alert(
     return null;
   }
 
-  Widget _showButton(Key key, String? text, Color color, Color textColor, FocusNode focusNode, bool? value) {
+  Widget showButton(Key key, String? text, Color color, Color textColor, FocusNode focusNode, bool? value) {
     return text != null
         ? Container(
             margin: const EdgeInsets.only(bottom: 10),
@@ -97,7 +97,7 @@ Future<bool?> alert(
         : const SizedBox();
   }
 
-  Widget _showTitle() {
+  Widget showTitle() {
     return title != null
         ? Container(
             alignment: Alignment.center,
@@ -108,7 +108,7 @@ Future<bool?> alert(
         : const SizedBox();
   }
 
-  Widget _showMessage(bool titleExists) {
+  Widget showMessage(bool titleExists) {
     return Container(
       alignment: Alignment.center,
       padding: titleExists ? const EdgeInsets.only(bottom: 30) : const EdgeInsets.symmetric(vertical: 30),
@@ -116,7 +116,7 @@ Future<bool?> alert(
     );
   }
 
-  Widget _showFooter() {
+  Widget showFooter() {
     return footer != null
         ? Container(
             alignment: Alignment.center,
@@ -213,23 +213,23 @@ Future<bool?> alert(
                           child: SingleChildScrollView(
                             child: ListBody(
                               children: <Widget>[
-                                _showTitle(),
-                                _showMessage(title != null || icon != null || warning),
-                                _showFooter(),
+                                showTitle(),
+                                showMessage(title != null || icon != null || warning),
+                                showFooter(),
                               ],
                             ),
                           ),
                         )
                       : Column(children: [
-                          _showTitle(),
-                          _showMessage(title != null || icon != null || warning),
-                          _showFooter(),
+                          showTitle(),
+                          showMessage(title != null || icon != null || warning),
+                          showFooter(),
                         ]),
-                  _showButton(keyAlertButtonYes, yes, assentButtonColor!, Colors.white, yesFocusNode, true),
-                  _showButton(keyAlertButtonNo, no, buttonColor!,
+                  showButton(keyAlertButtonYes, yes, assentButtonColor!, Colors.white, yesFocusNode, true),
+                  showButton(keyAlertButtonNo, no, buttonColor!,
                       context.themeColor(dark: Colors.blue.shade50, light: Colors.black54), noFocusNode, false),
                   const SizedBox(height: 10),
-                  _showButton(
+                  showButton(
                       keyAlertButtonCancel,
                       cancel,
                       yes != null ? buttonColor : assentButtonColor,

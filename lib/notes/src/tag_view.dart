@@ -76,7 +76,7 @@ class TagView<T> extends StatelessWidget {
               return TextButton(
                 onPressed: onTagSelected != null && !item.selected ? () => onTagSelected!(item.value) : null,
                 style: TextButton.styleFrom(
-                  primary: Colors.grey,
+                  foregroundColor: Colors.grey,
                   backgroundColor: item.selected
                       ? context.themeColor(
                           light: Colors.grey.shade400,

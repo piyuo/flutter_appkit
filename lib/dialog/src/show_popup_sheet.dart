@@ -35,7 +35,7 @@ Future<T?> showPopup<T>(
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
-  Widget _build(BuildContext ctx) => FractionallySizedBox(
+  Widget build(BuildContext ctx) => FractionallySizedBox(
       heightFactor: heightFactor ?? 0.85,
       child: Align(
           alignment: Alignment.center,
@@ -80,9 +80,9 @@ Future<T?> showPopup<T>(
     barrierLabel: '',
     transitionBuilder: (ctx, a1, a2, child) {
       var curve = Curves.easeInOut.transform(a1.value);
-      return Transform.scale(scale: curve, child: _build(ctx));
+      return Transform.scale(scale: curve, child: build(ctx));
     },
-    pageBuilder: (ctx, a1, a2) => _build(ctx),
+    pageBuilder: (ctx, a1, a2) => build(ctx),
   );
 }
 
@@ -118,7 +118,7 @@ Future<T?> showSheet<T>(
 }) async {
   MediaQueryData query = MediaQuery.of(context);
   double screenWidth = query.size.width;
-  Widget _builder(BuildContext ctx) => FractionallySizedBox(
+  Widget builder(BuildContext ctx) => FractionallySizedBox(
         heightFactor: heightFactor ?? 0.85,
         child: SafeArea(
             bottom: false,
@@ -148,13 +148,13 @@ Future<T?> showSheet<T>(
                     dark: Colors.grey.shade900,
                   ),
               expand: expand,
-              builder: _builder,
+              builder: builder,
             )
           // bottom sheet from current context
           : await showCupertinoModalBottomSheet<T>(
               context: context,
               expand: expand,
-              builder: _builder,
+              builder: builder,
             )
       // bottom sheet dialog for large screen
       : await showCustomModalBottomSheet<T>(
@@ -169,7 +169,7 @@ Future<T?> showSheet<T>(
           ),
           elevation: 8,
           expand: expand,
-          builder: _builder,
+          builder: builder,
         );
 }
 

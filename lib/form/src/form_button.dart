@@ -37,7 +37,7 @@ class FormButton extends StatelessWidget {
     return OutlinedButton(
       focusNode: focusNode,
       style: OutlinedButton.styleFrom(
-        primary: color ?? context.invertedColor,
+        foregroundColor: color ?? context.invertedColor,
         side: BorderSide(
           color: onPressed != null ? color ?? context.invertedColor : Colors.grey,
           style: BorderStyle.solid,

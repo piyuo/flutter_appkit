@@ -11,6 +11,7 @@ void main() {
       expect(currencySymbol, '\$');
       expect(currencyName, 'USD');
       expect(formatCurrency(10.99), '\$10.99');
+      expect(formatNumber(1000.00), '1,000');
       expect(formatNumber(1000.99), '1,000.99');
       expect(formatNumber(-1000.99), '-1,000.99');
       expect(formatPercentage(.99), '99%');

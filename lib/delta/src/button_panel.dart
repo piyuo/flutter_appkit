@@ -60,8 +60,9 @@ class ButtonPanel<T> extends StatelessWidget {
             bottomLeft: i == children.entries.length - 1 ? const Radius.circular(15) : Radius.zero,
             bottomRight: i == children.entries.length - 1 ? const Radius.circular(15) : Radius.zero,
           )),
-          primary: backgroundColor ?? context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
-          onPrimary: foregroundColor ?? context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade200),
+          backgroundColor: backgroundColor ?? context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
+          foregroundColor:
+              foregroundColor ?? context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade200),
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
           elevation: 0,

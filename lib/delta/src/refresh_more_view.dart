@@ -71,7 +71,7 @@ class RefreshMoreViewState extends State<RefreshMoreView> {
     }
 
     int itemCount = widget.itemCount + (widget.onRefresh != null ? 1 : 0) + (widget.onLoadMore != null ? 1 : 0);
-    Widget _button(String text, Future<void> Function() callback) => TextButton.icon(
+    Widget button(String text, Future<void> Function() callback) => TextButton.icon(
           label: Text(text, style: const TextStyle(color: Colors.grey)),
           icon: const Icon(Icons.refresh, color: Colors.grey),
           onPressed: () async {
@@ -84,7 +84,7 @@ class RefreshMoreViewState extends State<RefreshMoreView> {
           },
         );
 
-    Widget _indicator() => Align(
+    Widget indicator() => Align(
         alignment: Alignment.center,
         child: SizedBox(
           height: 28,
@@ -111,12 +111,12 @@ class RefreshMoreViewState extends State<RefreshMoreView> {
               if (widget.onRefresh != null && index == 0) {
                 return Padding(
                     padding: const EdgeInsets.fromLTRB(20, 15, 20, 8),
-                    child: _busy ? _indicator() : _button('Refresh', widget.onRefresh!));
+                    child: _busy ? indicator() : button('Refresh', widget.onRefresh!));
               }
               if (widget.onLoadMore != null && index == itemCount - 1) {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 15),
-                  child: _busy ? _indicator() : _button('Load more', widget.onLoadMore!),
+                  child: _busy ? indicator() : button('Load more', widget.onLoadMore!),
                 );
               }
               if (widget.onRefresh != null) {

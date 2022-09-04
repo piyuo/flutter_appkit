@@ -635,7 +635,7 @@ class NotesExample extends StatelessWidget {
         actions: [
           TextButton.icon(
             style: TextButton.styleFrom(
-              primary: Colors.grey.shade900,
+              foregroundColor: Colors.grey.shade900,
             ),
             label: const Text('Archive'),
             icon: const Icon(Icons.archive),
@@ -644,7 +644,7 @@ class NotesExample extends StatelessWidget {
           SizedBox(height: 20, child: VerticalDivider(width: 5, color: Colors.grey.shade900)),
           TextButton.icon(
             style: TextButton.styleFrom(
-              primary: Colors.grey.shade900,
+              foregroundColor: Colors.grey.shade900,
             ),
             label: const Text('Delete'),
             icon: const Icon(Icons.delete),

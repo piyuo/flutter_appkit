@@ -65,11 +65,11 @@ Future<Map> loadMap({required String assetName, BuildContext? context, String? p
 ///
 @visibleForTesting
 void mock(String text) {
-  Future<String> _loadStringMock({required String assetName, BuildContext? context, String? package}) async {
+  Future<String> loadStringMock({required String assetName, BuildContext? context, String? package}) async {
     return text;
   }
 
-  loadString = _loadStringMock;
+  loadString = loadStringMock;
 }
 
 /// mockDone stop mock
