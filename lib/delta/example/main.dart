@@ -74,7 +74,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _mounted(context),
+                          child: _webImage(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -211,6 +211,7 @@ class DeltaExample extends StatelessWidget {
               height: 300,
             ),
             WebImage(
+              opacity: const AlwaysStoppedAnimation<double>(0.5),
               width: 300,
               height: 300,
               border: Border.all(color: Colors.red, width: 1),

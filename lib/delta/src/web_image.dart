@@ -37,6 +37,7 @@ class WebImage extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.opacity,
   }) : super(key: key);
 
   /// url is image url
@@ -103,6 +104,9 @@ class WebImage extends StatelessWidget {
   /// fit is how image fit box
   final BoxFit? fit;
 
+  /// opacity is image opacity
+  final Animation<double>? opacity;
+
   @override
   Widget build(BuildContext context) {
     return ExtendedImage.network(
@@ -111,6 +115,7 @@ class WebImage extends StatelessWidget {
       width: width,
       height: height,
       cache: true,
+      opacity: opacity,
       cacheMaxAge: cacheMaxAge,
       borderRadius: borderRadius,
       shape: shape,
