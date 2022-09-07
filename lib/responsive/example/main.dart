@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/dialog/dialog.dart' as dialog;
 import '../responsive.dart';
 
 main() {
   app.start(
     appName: 'responsive',
     routes: {
-      '/': (context, state, data) => const ResponsiveExample(),
+      '/': (context, state, data) => dialog.cupertinoBottomSheet(const ResponsiveExample()),
     },
   );
 }
