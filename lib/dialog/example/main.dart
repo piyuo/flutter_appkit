@@ -46,7 +46,7 @@ class DialogExample extends StatelessWidget {
               testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
               testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
               testing.ExampleButton(label: 'toast', builder: () => _toast(context)),
-              testing.ExampleButton(label: 'show', builder: () => _showPopupSheet(context)),
+              testing.ExampleButton(label: 'show popup/sheet', builder: () => _showPopupSheet(context)),
               testing.ExampleButton(label: 'banner', builder: () => _banner(context)),
               testing.ExampleButton(label: 'route', builder: () => _route(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
