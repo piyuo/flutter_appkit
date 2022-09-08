@@ -75,12 +75,14 @@ class AnimateViewProvider with ChangeNotifier {
   /// insertAnimation show insert animation
   void insertAnimation({int? index}) {
     _length++;
-    _gridKey.currentState!.insertItem(index ?? 0, duration: animatedDuration);
+    if (_gridKey.currentState != null) {
+      _gridKey.currentState!.insertItem(index ?? 0, duration: animatedDuration);
+    }
   }
 
   /// removeAnimation show remove animation
   void removeAnimation(int index, Widget child, bool sizeOrSlideAnimation) {
-    if (index != -1) {
+    if (index != -1 && _gridKey.currentState != null) {
       _gridKey.currentState!.removeItem(
         index,
         (context, animation) => sizeOrSlideAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
@@ -92,7 +94,7 @@ class AnimateViewProvider with ChangeNotifier {
 
   /// shakeAnimation show shake animation
   void shakeAnimation(int index) {
-    if (index != -1) {
+    if (index != -1 && _gridKey.currentState != null) {
       _gridKey.currentState!.shakeItem(
         index,
         (context, animation, child) => _shakeIt(child, animation),
