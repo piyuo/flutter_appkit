@@ -34,6 +34,19 @@ void main() {
       await delete('test_bool');
     });
 
+    test('should set/get map', () async {
+      final database = await open('test_int');
+      await database.setMap('k', {
+        'a': 1,
+        'b': ['x', 'y']
+      });
+      final value = await database.getMap('k');
+      expect(value!['a'], 1);
+      expect(value['b'][0], 'x');
+      expect(value['b'][1], 'y');
+      await delete('test_int');
+    });
+
     test('should set/get int', () async {
       final database = await open('test_int');
       await database.setInt('k', 1);

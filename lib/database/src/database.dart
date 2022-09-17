@@ -40,6 +40,12 @@ class Database {
   /// ```
   bool contains(String key) => _box.containsKey(key);
 
+  /// setInt save map to database
+  /// ```dart
+  /// await database.setMap('key', {'a': 1}));
+  /// ```
+  Future<void> setMap(String key, Map<String, dynamic> value) async => await _box.put(key, value);
+
   /// setInt save int to database
   /// ```dart
   /// await database.setInt('key', 1);
@@ -87,6 +93,12 @@ class Database {
   /// final value = database.getBool('k');
   /// ```
   Future<bool?> getBool(String key) async => await _box.get(key);
+
+  /// getMap return the value associated with the given [key]
+  /// ```dart
+  ///  final value = database.getMap('k');
+  /// ```
+  Future<Map<dynamic, dynamic>?> getMap(String key) async => await _box.get(key);
 
   /// getInt return the value associated with the given [key]
   /// ```dart
