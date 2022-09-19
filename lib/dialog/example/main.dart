@@ -314,6 +314,7 @@ class DialogExample extends StatelessWidget {
         onPressed: () => showPopup(
           context,
           padding: const EdgeInsets.only(top: 20),
+          //maxHeight: 100,
           bottomBuilder: (context) => Positioned(
               bottom: 20,
               left: 0,
@@ -358,6 +359,7 @@ class DialogExample extends StatelessWidget {
         onPressed: () => showSheet(
           context,
           padding: const EdgeInsets.only(top: 20),
+//          maxHeight: 100,
           bottomBuilder: (context) => Positioned(
               bottom: 20,
               left: 0,

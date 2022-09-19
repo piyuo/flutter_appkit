@@ -30,6 +30,7 @@ Future<T?> showPopup<T>(
   delta.WidgetContextBuilder? bottomBuilder,
   delta.WidgetContextWrapBuilder? wrapBuilder,
   double? maxWidth,
+  double? maxHeight,
   double? heightFactor,
   Color? backgroundColor,
   double? borderRadius,
@@ -40,7 +41,7 @@ Future<T?> showPopup<T>(
       child: Align(
           alignment: Alignment.center,
           child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxWidth ?? 600),
+            constraints: BoxConstraints(maxWidth: maxWidth ?? 600, maxHeight: maxHeight ?? double.infinity),
             child: Container(
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
@@ -109,6 +110,7 @@ Future<T?> showSheet<T>(
   delta.WidgetContextBuilder? bottomBuilder,
   delta.WidgetContextWrapBuilder? wrapBuilder,
   double? maxWidth,
+  double? maxHeight,
   double? heightFactor,
   Color? backgroundColor,
   double? borderRadius,
@@ -118,7 +120,9 @@ Future<T?> showSheet<T>(
 }) async {
   MediaQueryData query = MediaQuery.of(context);
   double screenWidth = query.size.width;
-  Widget builder(BuildContext ctx) => FractionallySizedBox(
+  Widget builder(BuildContext ctx) => ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth ?? double.infinity, maxHeight: maxHeight ?? double.infinity),
+      child: FractionallySizedBox(
         heightFactor: heightFactor ?? 0.85,
         child: SafeArea(
             bottom: false,
@@ -135,7 +139,7 @@ Future<T?> showSheet<T>(
               padding: padding,
               //controller: ModalScrollController.of(context), no use for now, it will cause problem with change layout
             )),
-      );
+      ));
 
   return screenWidth <= 600
       ? fromRoot
