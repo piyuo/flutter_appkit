@@ -35,5 +35,9 @@ void main() {
       expect(formatBytes(2 * 1024 * 1024 * 1024, 2), '2.00 GB');
       expect(formatBytes(2 * 1024 * 1024 * 1024 * 1024, 2), '2.00 TB');
     });
+
+    test('should format currency', () async {
+      expect(formatCurrency(10), '\$10.00');
+    });
   });
 }
