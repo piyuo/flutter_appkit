@@ -26,7 +26,7 @@ class FutureField<T> extends ReactiveFormField<T, T> {
     Key? key,
     String? formControlName,
     FormControl<T>? formControl,
-    ValidationMessagesFunction<T>? validationMessages,
+    Map<String, ValidationMessageFunction>? validationMessages,
     ShowErrorsFunction? showErrors,
     InputDecoration decoration = const InputDecoration(),
   }) : super(

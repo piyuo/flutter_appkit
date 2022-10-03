@@ -201,8 +201,8 @@ class FormExample extends StatelessWidget {
               labelText: 'future name',
               hintText: 'please input future name',
             ),
-            validationMessages: (control) => {
-              ValidationMessage.required: 'The name must not be empty',
+            validationMessages: {
+              ValidationMessage.required: (error) => 'The name must not be empty',
             },
           ),
           br(),
@@ -212,8 +212,8 @@ class FormExample extends StatelessWidget {
               labelText: 'Your name',
               hintText: 'please input your name',
             ),
-            validationMessages: (control) => {
-              ValidationMessage.required: 'The name must not be empty',
+            validationMessages: {
+              ValidationMessage.required: (error) => 'The name must not be empty',
             },
           ),
           EmailField(
@@ -222,9 +222,9 @@ class FormExample extends StatelessWidget {
               labelText: 'Your email',
               hintText: 'please input your email',
             ),
-            validationMessages: (control) => {
-              ValidationMessage.required: 'The email must not be empty',
-              ValidationMessage.email:
+            validationMessages: {
+              ValidationMessage.required: (error) => 'The email must not be empty',
+              ValidationMessage.email: (error) =>
                   context.i18n.fieldValueInvalid.replaceAll('%1', 'Your email').replaceAll('%2', 'johndoe@domain.com'),
             },
           ),
@@ -237,8 +237,8 @@ class FormExample extends StatelessWidget {
               labelText: 'Your address',
               hintText: 'please input your address',
             ),
-            validationMessages: (control) => {
-              ValidationMessage.required: 'The address must not be empty',
+            validationMessages: {
+              ValidationMessage.required: (error) => 'The address must not be empty',
             },
           ),
           ReactiveTextField(
@@ -255,16 +255,16 @@ class FormExample extends StatelessWidget {
                   }),
             ),
             readOnly: true,
-            validationMessages: (control) => {
-              ValidationMessage.required: 'The email must not be empty',
+            validationMessages: {
+              ValidationMessage.required: (error) => 'The email must not be empty',
             },
           ),
           ReactiveTextField(
             formControlName: 'password',
             obscureText: true,
-            validationMessages: (control) => {
-              ValidationMessage.required: 'The password must not be empty',
-              ValidationMessage.minLength: 'The password min length is 8',
+            validationMessages: {
+              ValidationMessage.required: (error) => 'The password must not be empty',
+              ValidationMessage.minLength: (error) => 'The password min length is 8',
             },
           ),
           ReactiveDropdownField<int>(

@@ -13,7 +13,7 @@ class PlaceField extends form.FutureField<types.Place> {
     Key? key,
     String? formControlName,
     FormControl<types.Place>? formControl,
-    ValidationMessagesFunction<types.Place>? validationMessages,
+    Map<String, ValidationMessageFunction>? validationMessages,
     ShowErrorsFunction? showErrors,
     InputDecoration decoration = const InputDecoration(),
   }) : super(

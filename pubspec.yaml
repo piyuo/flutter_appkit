@@ -19,65 +19,65 @@ dependencies:
   flutter_test:
     sdk: flutter
   http: ^0.13.5
-  protobuf: ^2.0.1
-  shared_preferences: ^2.0.12
-  meta: ^1.7.0
+  protobuf: ^2.1.0
+  meta: ^1.8.0
   provider: ^6.0.3
   nested: ^1.0.0
   intl: ^0.17.0
   uuid: ^3.0.6
-  url_launcher: ^6.0.17
-  auto_size_text: ^3.0.0
-  flutter_easyloading: ^3.0.5
-  flutter_markdown: ^0.6.10+3
-  #location: ^4.3.0 # device lat lng
-  geolocator: ^9.0.1
-  apple_maps_flutter: ^1.0.1
-  google_maps_flutter: ^2.1.2
-  google_maps_flutter_web: ^0.4.0+1
-  extended_image: ^6.0.1
-  flutter_staggered_grid_view: ^0.6.1
-  flutter_easyrefresh: ^2.2.1
-  flutter_dropzone: ^3.0.3
   shimmer: ^2.0.0
-  dotted_border: ^2.0.0+1
-  image_picker: ^0.8.5+3
-  mime: ^1.0.1
-  flutter_quill: ^6.0.6+1
-  image: ^3.1.0
-  image_editor: ^1.0.2
-  qr_flutter: ^4.0.0
-  mobile_scanner: ^2.0.0
-  permission_handler: ^10.0.0
-  just_audio: ^0.9.28
+  dotted_border: ^2.0.0+2
+  dotted_decoration: ^2.0.0
+  mime: ^1.0.2
   universal_html: ^2.0.8
   universal_platform: ^1.0.0+1
-  loading_indicator: ^3.0.2
-  synchronized: ^3.0.0
+  shared_preferences: ^2.0.15
+  url_launcher: ^6.1.6
+  auto_size_text: ^3.0.0
+  flutter_easyloading: ^3.0.5
+  flutter_markdown: ^0.6.12
+  #location: ^4.3.0 # device lat lng
+  geolocator: ^9.0.2
+  apple_maps_flutter: ^1.2.0
+  google_maps_flutter: ^2.2.1
+  google_maps_flutter_web: ^0.4.0+3
+  extended_image: ^6.3.1
+  flutter_staggered_grid_view: ^0.6.2
+  flutter_easyrefresh: ^2.2.2
+  flutter_dropzone: ^3.0.5
+  image_picker: ^0.8.5+3
+  flutter_quill: ^6.0.6+1
+  image: ^3.2.0
+  image_editor: ^1.1.0
+  qr_flutter: ^4.0.0
+  mobile_scanner: ^2.0.0
+  permission_handler: ^10.0.2
+  just_audio: ^0.9.29
+  loading_indicator: ^3.1.0
+  synchronized: ^3.0.0+3
   date_field: ^3.0.1
-  dotted_decoration: ^2.0.0
-  webview_flutter: ^3.0.0
-  flutter_typeahead: ^4.0.0
-  slide_countdown: ^0.2.12
-  fl_chart: ^0.55.1
+  webview_flutter: ^3.0.4
+  flutter_typeahead: ^4.1.1
+  slide_countdown: ^0.3.4
+  fl_chart: ^0.55.2
   badges: ^2.0.3
-  beamer: ^1.5.2
-  hive: ^2.1.0
+  beamer: ^1.5.3
+  hive: ^2.2.3
   cupertino_listview: ^2.0.0
-  split_view: ^3.1.0
+  split_view: ^3.2.1
   drag_select_grid_view: ^0.6.1
-  animations: ^2.0.2
-  reactive_forms: ^13.0.0
+  animations: ^2.0.5
+  reactive_forms: ^14.1.0
   flutter_rating_bar: ^4.0.1
-  reactive_date_range_picker: ^0.4.1
-  reactive_touch_spin: ^0.6.0
-  reactive_phone_form_field: ^0.8.0
-  reactive_raw_autocomplete: ^0.3.0
-  pinput: ^2.2.11
-  modal_bottom_sheet: ^2.1.0
+  reactive_date_range_picker: ^0.5.0
+  reactive_touch_spin: ^0.7.0
+  reactive_phone_form_field: ^0.9.0
+  reactive_raw_autocomplete: ^0.4.0
+  pinput: ^2.2.13
+  modal_bottom_sheet: ^2.1.2
   http_client_helper: ^2.0.3
   path_provider: ^2.0.11
-  clock: ^1.1.0
+  clock: ^1.1.1
 dev_dependencies:
   mockito: ^5.3.0
   flutter_lints: ^2.0.1

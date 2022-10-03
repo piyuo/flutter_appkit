@@ -110,8 +110,8 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
                   labelText: 'Your name',
                   hintText: 'please input your name',
                 ),
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The name must not be empty',
+                validationMessages: {
+                  ValidationMessage.required: (error) => 'The name must not be empty',
                 },
               ),
               OutlinedButton(

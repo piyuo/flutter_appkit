@@ -7,7 +7,7 @@ import 'submit.dart';
 void main() {
   setUp(() {});
 
-  Widget testTarget(FormGroup form, ValidationMessagesFunction? validationMessages) {
+  Widget testTarget(FormGroup form, Map<String, ValidationMessageFunction>? validationMessages) {
     return MaterialApp(
       home: Scaffold(
         body: ReactiveForm(
@@ -46,11 +46,9 @@ void main() {
           Validators.required,
         ],
       });
-      await tester.pumpWidget(testTarget(
-          form,
-          (control) => {
-                ValidationMessage.required: 'The email must not be empty',
-              }));
+      await tester.pumpWidget(testTarget(form, {
+        ValidationMessage.required: (error) => 'The email must not be empty',
+      }));
       expect(form.hasErrors, true);
     });
 
@@ -60,11 +58,9 @@ void main() {
           Validators.email,
         ],
       });
-      await tester.pumpWidget(testTarget(
-          form,
-          (control) => {
-                ValidationMessage.email: 'The email must be valid like johndoe@domain.com',
-              }));
+      await tester.pumpWidget(testTarget(form, {
+        ValidationMessage.email: (error) => 'The email must be valid like johndoe@domain.com',
+      }));
       await tester.enterText(find.byType(EmailField), 'a');
       await tester.pumpAndSettle();
       expect(form.hasErrors, true);
@@ -76,11 +72,9 @@ void main() {
           Validators.email,
         ],
       });
-      await tester.pumpWidget(testTarget(
-          form,
-          (control) => {
-                ValidationMessage.email: 'The email must be valid like johndoe@domain.com',
-              }));
+      await tester.pumpWidget(testTarget(form, {
+        ValidationMessage.email: (control) => 'The email must be valid like johndoe@domain.com',
+      }));
       final email = form.control('email');
       email.focus();
       await tester.enterText(find.byType(EmailField), 'a@q.cc');
