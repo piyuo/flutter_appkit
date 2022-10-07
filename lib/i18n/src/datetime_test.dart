@@ -1,11 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'datetime.dart';
+import 'package:libcli/google/google.dart' as google;
 import 'i18n.dart';
 
 void main() {
-  setUp(() async {});
-
   group('[i18n]', () {
     test('should get date format', () async {
       await changeDateFormatting('en_US');
@@ -38,7 +37,7 @@ void main() {
     });
 
     test('should init date formatting', () async {
-      var date = DateTime.utc(1989, 11, 9, 23, 30);
+      var date = DateTime(1989, 11, 9, 23, 30);
 
       await changeDateFormatting('en_US');
       String str = DateFormat.yMMMd().format(date);
@@ -53,7 +52,7 @@ void main() {
 
     test('should with locale', () async {
       await changeDateFormatting('en_US');
-      var date = DateTime.utc(1989, 11, 9, 23, 30);
+      var date = DateTime(1989, 11, 9, 23, 30);
       withLocale('en_US', () {
         var str3 = DateFormat.jm().format(date);
         expect(str3, '11:30 PM');
@@ -90,7 +89,7 @@ void main() {
 
     test('should convert date to string', () async {
       await changeDateFormatting('en_US');
-      var date = DateTime.utc(2021, 1, 2, 23, 30);
+      var date = DateTime(2021, 1, 2, 23, 30);
       var str = formatDate(date);
       expect(str, 'January 2, 2021');
 
@@ -115,7 +114,7 @@ void main() {
 
     test('should convert time to string', () async {
       await changeDateFormatting('en_US');
-      var date = DateTime.utc(2021, 1, 2, 23, 30);
+      var date = DateTime(2021, 1, 2, 23, 30);
       var str = formatTime(date);
       expect(str, '11:30 PM');
 
@@ -126,13 +125,58 @@ void main() {
 
     test('should convert date time to string', () async {
       await changeDateFormatting('en_US');
-      var date = DateTime.utc(2021, 1, 2, 23, 30);
+      var date = DateTime(2021, 1, 2, 23, 30);
       var str = formatDateTime(date);
       expect(str, 'January 2, 2021 11:30 PM');
 
       await changeDateFormatting('zh_CN');
       str = formatDateTime(date);
       expect(str, '2021年1月2日 下午11:30');
+    });
+
+    test('should format timestamp', () async {
+      await changeDateFormatting('en_US');
+      final stamp = google.Timestamp.fromDateTime(DateTime(2021, 1, 2, 23, 30).toUtc());
+      var str = formatDateStamp(stamp);
+      expect(str, 'January 2, 2021');
+      str = formatDateTimeStamp(stamp);
+      expect(str, 'January 2, 2021 11:30 PM');
+      str = formatTimeStamp(stamp);
+      expect(str, '11:30 PM');
+
+      await changeDateFormatting('zh_CN');
+      str = formatDateStamp(stamp);
+      expect(str, '2021年1月2日');
+      str = formatDateTimeStamp(stamp);
+      expect(str, '2021年1月2日 下午11:30');
+      str = formatTimeStamp(stamp);
+      expect(str, '下午11:30');
+    });
+
+    test('should format duration', () async {
+      await changeDateFormatting('en_US');
+      const dur = Duration(
+        days: 5,
+        hours: 23,
+        minutes: 59,
+        seconds: 59,
+        milliseconds: 999,
+        microseconds: 999,
+      );
+      const min12sec35 = Duration(
+        minutes: 12,
+        seconds: 35,
+      );
+      expect(formatDuration(dur), '5 days 23 hours 59 minutes 59 seconds');
+      expect(formatDuration(min12sec35), '12 minutes 35 seconds');
+
+      await changeDateFormatting('zh_CN');
+      expect(formatDuration(dur), '5日 23小时 59分 59秒');
+      expect(formatDuration(min12sec35), '12分 35秒');
+
+      await changeDateFormatting('zh_TW');
+      expect(formatDuration(dur), '5日 23小時 59分鐘 59秒');
+      expect(formatDuration(min12sec35), '12分鐘 35秒');
     });
   });
 }

@@ -1,100 +1,129 @@
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:duration/duration.dart';
+import 'package:duration/locale.dart';
+import 'package:libcli/google/google.dart' as google;
 import 'i18n.dart';
 
 /// changeDateFormatting change locale and load date formatting resource
-///
-///     await changeDateFormatting('en_US');
-///
+/// ```dart
+/// await changeDateFormatting('en_US');
+/// ```
 Future<void> changeDateFormatting(String locale) async {
   Intl.defaultLocale = locale;
   await initializeDateFormatting(locale, null);
 }
 
 /// dateFormat return current date format
-///
 DateFormat get dateFormat {
   return DateFormat.yMMMMd(localeName);
 }
 
 /// datePattern return current date pattern
-///
-///     expect(datePattern, 'MMMM d, y');
-///
+/// ```dart
+/// expect(datePattern, 'MMMM d, y');
+/// ```
 String get datePattern {
   return dateFormat.pattern ?? '';
 }
 
 /// timeFormat return current time format
-///
 DateFormat get timeFormat {
   return DateFormat.jm(localeName);
 }
 
 /// timePattern return current time pattern
-///
-///     expect(timePattern, 'h:mm a');
-///
+/// ```dart
+/// expect(timePattern, 'h:mm a');
+/// ```
 String get timePattern {
   return timeFormat.pattern ?? '';
 }
 
 /// dateTimeFormat return current date time format
-///
 DateFormat get dateTimeFormat {
   return DateFormat.yMMMMd(localeName).add_jm();
 }
 
 /// dateTimePattern return current date time pattern
-///
-///      expect(dateTimePattern, 'MMMM d, y h:mm a');
-///
+/// ```dart
+/// expect(dateTimePattern, 'MMMM d, y h:mm a');
+/// ```
 String get dateTimePattern {
   return dateTimeFormat.pattern ?? '';
 }
 
 /// formatTimeFixed convert hour and minute to local string
-///
-///      var str = formatTimeFixed(07, 30);
-///      expect(str, '7:30 AM');
-///
+/// ```dart
+/// var str = formatTimeFixed(07, 30);
+/// expect(str, '7:30 AM');
+/// ```
 String formatTimeFixed(int hour, int minute) {
-  var date = DateTime.utc(2001, 1, 1, hour, minute);
+  var date = DateTime(2001, 1, 1, hour, minute);
   return timeFormat.format(date);
 }
 
 /// formatDate convert date to local string
-///
-///     var str = formatDate(date);
-///     expect(str, 'Jan 2, 2021');
-///
-String formatDate(DateTime date) {
-  return dateFormat.format(date);
-}
+/// ```dart
+/// var str = formatDate(date);
+/// expect(str, 'Jan 2, 2021');
+/// ```
+String formatDate(DateTime date) => dateFormat.format(date);
 
 /// parseDate parse string to date
-///
-///     final date = parseDate('January 2, 2021');
-///     expect(date.year, 2021);
-///
-DateTime parseDate(String date) {
-  return dateFormat.parse(date);
-}
+/// ```dart
+/// final date = parseDate('January 2, 2021');
+/// expect(date.year, 2021);
+/// ```
+DateTime parseDate(String date) => dateFormat.parse(date);
 
 /// formatDateTime convert date and time to local string
-///
-///      var str = formatDateTime(date);
-///      expect(str, 'January 2, 2021 11:30 PM');
-///
-String formatDateTime(DateTime date) {
-  return dateTimeFormat.format(date);
-}
+/// ```dart
+///  var str = formatDateTime(date);
+///  expect(str, 'January 2, 2021 11:30 PM');
+/// ```
+String formatDateTime(DateTime datetime) => dateTimeFormat.format(datetime);
 
 /// formatTime convert time to local string
-///
-///     var str = formatTime(date);
-///     expect(str, '11:30 PM');
-///
-String formatTime(DateTime date) {
-  return timeFormat.format(date);
+/// ```dart
+/// var str = formatTime(date);
+/// expect(str, '11:30 PM');
+/// ```
+String formatTime(DateTime time) => timeFormat.format(time);
+
+/// formatDateStamp convert stamp to local date string
+/// ```dart
+/// var str = formatDateStamp(stamp);
+/// expect(str, 'Jan 2, 2021');
+/// ```
+String formatDateStamp(google.Timestamp stamp) => formatDate(stamp.toDateTime().toLocal());
+
+/// formatDateTimeStamp convert stamp to local date time string
+/// ```dart
+///  var str = formatDateTimeStamp(stamp);
+///  expect(str, 'January 2, 2021 11:30 PM');
+/// ```
+String formatDateTimeStamp(google.Timestamp stamp) => formatDateTime(stamp.toDateTime().toLocal());
+
+/// formatTime convert stamp to local time string
+/// ```dart
+/// var str = formatTimeStamp(stamp);
+/// expect(str, '11:30 PM');
+/// ```
+String formatTimeStamp(google.Timestamp stamp) => formatTime(stamp.toDateTime().toLocal());
+
+/// formatDuration convert duration to local string
+/// ```dart
+/// expect(formatDuration(dur), '5 days 23 hours 59 minutes 59 seconds');
+/// ```
+String formatDuration(Duration duration) {
+  final l = locale;
+  DurationLocale? dl;
+  if (localeName == 'zh_TW') {
+    dl = chineseTraditionalLocale;
+  } else {
+    dl = DurationLocale.fromLanguageCode(l.languageCode);
+    dl ??= englishLocale;
+  }
+  return prettyDuration(duration, locale: dl);
 }
