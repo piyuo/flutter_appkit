@@ -154,9 +154,9 @@ class Database {
   /// ```
   Future<void> delete(String key) async => await _box.delete(key);
 
-  /// reset clear everything in box
+  /// clear everything in box
   /// ```dart
-  /// await database.reset();
+  /// await database.clear();
   /// ```
   Future<void> reset() async {
     for (var key in _box.keys) {
