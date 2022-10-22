@@ -23,6 +23,7 @@ class ResponsiveDrawer extends StatelessWidget {
     required this.itemBuilder,
     required this.itemCount,
     this.isEndDrawer = false,
+    this.padding = EdgeInsets.zero,
     Key? key,
   }) : super(key: key);
 
@@ -34,6 +35,9 @@ class ResponsiveDrawer extends StatelessWidget {
 
   /// isEndDrawer is true mean this is end drawer
   final bool isEndDrawer;
+
+  /// padding is padding for drawer
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +86,7 @@ class ResponsiveDrawer extends StatelessWidget {
                 return itemBuilder(context, index - 1);
               },
               itemCount: itemCount + 1,
-              padding: const EdgeInsets.only(left: 40),
+              padding: padding,
             )));
   }
 }
