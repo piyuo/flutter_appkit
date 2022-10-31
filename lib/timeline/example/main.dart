@@ -1,0 +1,51 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import 'package:flutter/material.dart';
+import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/testing/testing.dart' as testing;
+import '../timeline.dart';
+
+main() => app.start(
+      appName: 'barcode',
+      routes: {
+        '/': (context, state, data) => const Example(),
+      },
+    );
+
+class Example extends StatelessWidget {
+  const Example({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Wrap(
+            children: [
+              Container(
+                width: 590,
+                child: _timeline(),
+              ),
+              testing.ExampleButton(
+                label: 'timeline',
+                builder: () => _timeline(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _timeline() {
+    return Timeline(
+      completedIndex: 1,
+      showLabel: true,
+      steps: [
+        TimelineStep(label: 'Create Order'),
+        TimelineStep(label: 'Go to Store', icon: Icons.store, color: Colors.pink),
+        TimelineStep(label: 'Pick up', icon: Icons.fastfood, color: Colors.blue),
+      ],
+    );
+  }
+}
