@@ -1,7 +1,7 @@
+import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/i18n/i18n.dart' as i18n;
@@ -69,23 +69,20 @@ class ImageUpload extends StatelessWidget {
               width: mediaQuerySize.width,
               child: Container(
                 margin: const EdgeInsets.all(10),
-                child: DottedBorder(
-                  color: Colors.black12,
-                  strokeWidth: 10,
-                  borderType: BorderType.RRect,
-                  dashPattern: const <double>[10, 5],
-                  radius: const Radius.circular(25),
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Text(context.i18n.uploadDrop,
-                            style: const TextStyle(
-                              fontSize: 64,
-                              color: Colors.black38,
-                            )),
-                      )),
+                decoration: DottedDecoration(
+                  shape: Shape.box,
+                  borderRadius: BorderRadius.circular(25),
                 ),
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Text(context.i18n.uploadDrop,
+                          style: const TextStyle(
+                            fontSize: 64,
+                            color: Colors.black38,
+                          )),
+                    )),
               )),
       ],
     );
@@ -118,13 +115,13 @@ class ImageUpload extends StatelessWidget {
               ]
             : null,
       ),
-      child: DottedBorder(
-        color: Colors.black12,
-        strokeWidth: controller.dragging ? 0 : 4,
-        borderType: BorderType.RRect,
-        dashPattern: const <double>[15, 10],
-        radius: const Radius.circular(20),
+      child: Container(
         padding: const EdgeInsets.all(20),
+        decoration: DottedDecoration(
+          color: Colors.black12,
+          shape: Shape.box,
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: SizedBox.expand(child: child),
       ),
     );
