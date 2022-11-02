@@ -22,7 +22,7 @@ class Example extends StatelessWidget {
         child: SingleChildScrollView(
           child: Wrap(
             children: [
-              Container(
+              SizedBox(
                 width: 590,
                 child: _timeline(),
               ),
@@ -38,14 +38,19 @@ class Example extends StatelessWidget {
   }
 
   Widget _timeline() {
-    return Timeline(
-      completedIndex: 1,
-      showLabel: true,
-      steps: [
-        TimelineStep(label: 'Create Order'),
-        TimelineStep(label: 'Go to Store', icon: Icons.store, color: Colors.pink),
-        TimelineStep(label: 'Pick up', icon: Icons.fastfood, color: Colors.blue),
-      ],
-    );
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Timeline(
+          completedIndex: 0,
+          showLabel: true,
+          steps: [
+            TimelineStep(label: 'Create Order'),
+            TimelineStep(label: 'Go to Store', icon: Icons.store),
+            TimelineStep(
+              label: 'Pick up',
+              icon: Icons.fastfood,
+            ),
+          ],
+        ));
   }
 }
