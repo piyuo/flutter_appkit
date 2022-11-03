@@ -38,7 +38,7 @@ class Example extends StatelessWidget {
   }
 
   Widget _timeline() {
-    return Padding(
+    return Container(
         padding: const EdgeInsets.all(20),
         child: Timeline(
           completedIndex: -1,

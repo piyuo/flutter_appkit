@@ -42,7 +42,7 @@ class Timeline extends StatelessWidget {
     this.nodeIcon = Icons.check_outlined,
     this.nodeSize = 16,
     this.nodeThickness = 2,
-    this.padding = const EdgeInsets.only(bottom: 25),
+    this.padding = EdgeInsets.zero,
     this.lineHeight = 2,
     this.lineLength = 60,
     this.shape = BoxShape.circle,
