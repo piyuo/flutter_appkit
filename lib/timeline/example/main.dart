@@ -41,7 +41,7 @@ class Example extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(20),
         child: Timeline(
-          completedIndex: 0,
+          completedIndex: -1,
           showLabel: true,
           steps: [
             TimelineStep(label: 'Create Order'),

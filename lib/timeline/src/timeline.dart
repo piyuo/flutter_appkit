@@ -7,7 +7,7 @@ class TimelineStep {
   TimelineStep({
     this.label,
     this.icon,
-    this.color = Colors.white,
+    this.color = Colors.grey,
     this.show = true,
   });
 
@@ -37,14 +37,14 @@ class Timeline extends StatelessWidget {
     this.inActiveLineColor = Colors.grey,
     this.activeNodeIconColor = Colors.green,
     this.inActiveNodeIconColor = Colors.transparent,
-    this.iconSize = 22,
+    this.iconSize = 18,
     this.nodeIconSize = 12,
     this.nodeIcon = Icons.check_outlined,
-    this.nodeSize = 18,
+    this.nodeSize = 16,
     this.nodeThickness = 2,
     this.padding = const EdgeInsets.only(bottom: 25),
     this.lineHeight = 2,
-    this.lineLength = 80,
+    this.lineLength = 60,
     this.shape = BoxShape.circle,
     this.activeLabelStyle,
     this.inActiveLabelStyle,
@@ -132,10 +132,10 @@ class Timeline extends StatelessWidget {
   TextStyle getTextStyle(int index) {
     if (isCompleted(index)) {
       //return active text style
-      return activeLabelStyle ?? TextStyle(color: activeLineColor, fontSize: 12);
+      return activeLabelStyle ?? TextStyle(color: activeLineColor, fontSize: 8);
     } else {
       //return inactive text style
-      return inActiveLabelStyle ?? TextStyle(color: inActiveLineColor, fontSize: 12);
+      return inActiveLabelStyle ?? TextStyle(color: inActiveLineColor, fontSize: 8);
     }
   }
 
@@ -183,14 +183,16 @@ class Timeline extends StatelessWidget {
                                 )),
                       if (showLabel)
                         Positioned(
-                          top: 28,
-                          left: -((lineLength / 2) - 10),
+                          top: 20,
+                          left: -((lineLength / 2) - 5),
                           child: Container(
+//                              color: Colors.red,
                               alignment: Alignment.center,
-                              width: lineLength,
+                              width: lineLength + 10,
                               child: steps[index].label != null
                                   ? AutoSizeText(
-                                      maxLines: 1,
+                                      maxLines: 2,
+                                      minFontSize: 10,
                                       steps[index].label!,
                                       style: getTextStyle(index),
                                     )
@@ -208,7 +210,7 @@ class Timeline extends StatelessWidget {
                 lineThickness: lineHeight,
                 dashLength: 10.0,
                 dashColor: isNextCompleted(index) ? activeLineColor : inActiveLineColor,
-                dashGapLength: isNextCompleted(index) ? 0 : 6,
+                dashGapLength: isNextCompleted(index) ? 0 : 5,
                 dashGapColor: Colors.transparent,
               ),
           ],
