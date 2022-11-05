@@ -37,14 +37,14 @@ class Timeline extends StatelessWidget {
     this.inActiveLineColor = Colors.grey,
     this.activeNodeIconColor = Colors.green,
     this.inActiveNodeIconColor = Colors.transparent,
-    this.iconSize = 18,
+    this.iconSize = 20,
     this.nodeIconSize = 12,
     this.nodeIcon = Icons.check_outlined,
     this.nodeSize = 16,
     this.nodeThickness = 2,
     this.padding = EdgeInsets.zero,
     this.lineHeight = 2,
-    this.lineLength = 60,
+    this.lineLength = 85,
     this.shape = BoxShape.circle,
     this.activeLabelStyle,
     this.inActiveLabelStyle,
@@ -132,10 +132,10 @@ class Timeline extends StatelessWidget {
   TextStyle getTextStyle(int index) {
     if (isCompleted(index)) {
       //return active text style
-      return activeLabelStyle ?? TextStyle(color: activeLineColor, fontSize: 8);
+      return activeLabelStyle ?? TextStyle(color: activeLineColor, fontSize: 12);
     } else {
       //return inactive text style
-      return inActiveLabelStyle ?? TextStyle(color: inActiveLineColor, fontSize: 8);
+      return inActiveLabelStyle ?? TextStyle(color: inActiveLineColor, fontSize: 12);
     }
   }
 
@@ -183,10 +183,9 @@ class Timeline extends StatelessWidget {
                                 )),
                       if (showLabel)
                         Positioned(
-                          top: 20,
+                          top: 25,
                           left: -((lineLength / 2) - 5),
                           child: Container(
-//                              color: Colors.red,
                               alignment: Alignment.center,
                               width: lineLength + 10,
                               child: steps[index].label != null
