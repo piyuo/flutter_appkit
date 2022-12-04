@@ -36,12 +36,15 @@ Future<bool> ask(
     return true;
   }
 
-  final gotoSetting = await dialog.alert(
-    context.i18n.permissionAsk.replaceAll('%1', name),
+  final gotoSetting = await dialog.show(
+    content: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: Text(context.i18n.permissionAsk.replaceAll('%1', name)),
+    ),
     icon: icon,
     iconColor: iconColor,
     yes: context.i18n.permissionGotoSetting,
-    buttonCancel: true,
+    showCancel: true,
   );
   if (gotoSetting == true) {
     openAppSettings();
