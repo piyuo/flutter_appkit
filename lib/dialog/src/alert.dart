@@ -50,11 +50,11 @@ Widget emailUsLink(BuildContext context) => InkWell(
 /// ```
 Future<bool?> show({
   required Widget content,
-  bool warning = false,
   IconData? icon,
   Color? iconColor,
   String? title,
   String? footer,
+  bool warning = false,
   bool emailUs = false,
   String? yes,
   String? no,
@@ -237,6 +237,8 @@ Future<bool?> alert(
   String? title,
   bool showOK = true,
   bool showCancel = false,
+  bool warning = false,
+  bool emailUs = false,
 }) async {
   return show(
     content: Align(
@@ -250,6 +252,8 @@ Future<bool?> alert(
     title: title,
     showOK: showOK,
     showCancel: showCancel,
+    warning: warning,
+    emailUs: emailUs,
   );
 }
 
