@@ -25,7 +25,7 @@ void main() {
     testWidgets('should alert with close', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        child: createSample(onPressed: (context) => alert('hello')),
+        child: createSample(onPressed: (context) => alert('hello', showCancel: true)),
       );
 
       expect(find.byType(MaterialButton), findsOneWidget);
@@ -43,8 +43,8 @@ void main() {
       await testing.mockApp(
         tester,
         child: createSample(
-            onPressed: (context) async => result = await alert(
-                  'hello',
+            onPressed: (context) async => result = await show(
+                  content: const Text('hello'),
                   yes: 'ok',
                   cancel: 'cancel',
                 )),
@@ -67,8 +67,8 @@ void main() {
       await testing.mockApp(
         tester,
         child: createSample(
-            onPressed: (context) async => result = await alert(
-                  'hello',
+            onPressed: (context) async => result = await show(
+                  content: const Text('hello'),
                   yes: 'ok',
                   cancel: 'cancel',
                 )),
@@ -90,8 +90,8 @@ void main() {
       await testing.mockApp(
         tester,
         child: createSample(
-            onPressed: (context) async => await alert(
-                  'hello',
+            onPressed: (context) async => await show(
+                  content: const Text('hello'),
                   yes: 'yes',
                   cancel: 'no',
                 )),
@@ -106,8 +106,36 @@ void main() {
     testWidgets('should alert error', (WidgetTester tester) async {
       await testing.mockApp(
         tester,
-        child: createSample(onPressed: (context) async => await alert('error message', title: 'error')),
+        child: createSample(
+            onPressed: (context) async => await show(content: const Text('error message'), title: 'error')),
       );
+
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsOneWidget);
+    });
+
+    testWidgets('should prompt', (WidgetTester tester) async {
+      await testing.mockApp(tester,
+          child: createSample(
+            onPressed: (context) async => await prompt(
+              label: 'Your name',
+              initialValue: 'John',
+            ),
+          ));
+
+      expect(find.byType(MaterialButton), findsOneWidget);
+      await tester.tap(find.byType(MaterialButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsOneWidget);
+    });
+
+    testWidgets('should promptInt', (WidgetTester tester) async {
+      await testing.mockApp(tester,
+          child: createSample(
+            onPressed: (context) async => await promptInt(),
+          ));
 
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));

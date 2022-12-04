@@ -39,7 +39,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _showPopupSheet(context),
+            child: _alert(context),
           ),
           Wrap(
             children: [
@@ -71,32 +71,35 @@ class DialogExample extends StatelessWidget {
         child: Wrap(children: [
           ElevatedButton(
             child: const Text('alert'),
-            onPressed: () => alert('hi'),
-          ),
-          ElevatedButton(
-            child: const Text('alert no blurry'),
-            onPressed: () => alert('hi', blurry: false),
-          ),
-          ElevatedButton(
-            child: const Text('alert warning'),
-            onPressed: () => alert('hello world1', warning: true),
+            onPressed: () => alert('hi', showCancel: true),
           ),
           ElevatedButton(
             child: const Text('alert title'),
-            onPressed: () => alert('hello world', title: 'title'),
+            onPressed: () => alert('hi', title: 'title'),
           ),
           ElevatedButton(
-            child: const Text('alert title/footer'),
-            onPressed: () => alert('hello world', title: 'title', footer: 'footer'),
+            child: const Text('show no blurry'),
+            onPressed: () => show(content: const Text('hi'), blurry: false),
           ),
           ElevatedButton(
-            child: const Text('alert yes/no/cancel'),
+            child: const Text('show warning'),
+            onPressed: () => show(content: const Text('hi'), warning: true),
+          ),
+          ElevatedButton(
+            child: const Text('show title/footer'),
+            onPressed: () => show(content: const Text('hi'), title: 'title', footer: 'footer'),
+          ),
+          ElevatedButton(
+            child: const Text('show yes/no/cancel'),
             onPressed: () async {
-              var result = await alert(
-                'do you want delete this document?',
-                buttonYes: true,
-                buttonNo: true,
-                buttonCancel: true,
+              var result = await show(
+                content: const Padding(
+                  padding: EdgeInsets.all(30),
+                  child: Text('do you want delete this document?'),
+                ),
+                showYes: true,
+                showNo: true,
+                showCancel: true,
               );
               if (result == true) {
                 toastDone(text: 'yes');
@@ -111,7 +114,6 @@ class DialogExample extends StatelessWidget {
             child: const Text('confirm'),
             onPressed: () async {
               var result = await confirm(
-                context,
                 'save this document?',
               );
               if (result == true) {
@@ -123,12 +125,14 @@ class DialogExample extends StatelessWidget {
           ),
           ElevatedButton(
             child: const Text('alert warning email us'),
-            onPressed: () => alert('error message', footer: 'description', emailUs: true, warning: true),
+            onPressed: () =>
+                show(content: const Text('error message'), footer: 'description', emailUs: true, warning: true),
           ),
           ElevatedButton(
             child: const Text('alert long content'),
-            onPressed: () => alert(
-              'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily',
+            onPressed: () => show(
+              content: const Text(
+                  'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily'),
               title: 'this is a very long title. it should cover 2 line',
               footer:
                   'this is a very long footer, it should cover 3 or 4 more line. we need test long message can read easily',
@@ -136,6 +140,27 @@ class DialogExample extends StatelessWidget {
               scrollContent: true,
               icon: Icons.alarm,
             ),
+          ),
+          ElevatedButton(
+            child: const Text('prompt'),
+            onPressed: () async {
+              final text = await prompt(
+                label: 'Your name',
+                initialValue: 'John',
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+              );
+              debugPrint('$text');
+            },
+          ),
+          ElevatedButton(
+            child: const Text('promptInt'),
+            onPressed: () async {
+              final number = await promptInt(
+                label: 'Quantity',
+              );
+              debugPrint('$number');
+            },
           ),
         ]));
   }

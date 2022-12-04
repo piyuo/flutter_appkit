@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
@@ -43,12 +44,12 @@ Widget emailUsLink(BuildContext context) => InkWell(
       ),
     );
 
-/// alert show alert dialog, return true if it's ok or yes
+/// show dialog, return true if it's ok or yes
 /// ```dart
-/// alert(context, 'hello world1', warning: true)
+/// show(content:Text('hi'), warning: true)
 /// ```
-Future<bool?> alert(
-  String message, {
+Future<bool?> show({
+  required Widget content,
   bool warning = false,
   IconData? icon,
   Color? iconColor,
@@ -60,34 +61,34 @@ Future<bool?> alert(
   String? cancel,
   Color? assentButtonColor,
   Color? buttonColor,
-  bool buttonOK = false,
-  bool buttonCancel = false,
-  bool buttonYes = false,
-  bool buttonNo = false,
-  bool buttonRetry = false,
-  bool buttonSave = false,
-  bool buttonClose = false,
+  bool showOK = false,
+  bool showCancel = false,
+  bool showYes = false,
+  bool showNo = false,
+  bool showRetry = false,
+  bool showSave = false,
+  bool showClose = false,
   bool scrollContent = false,
   bool blurry = true,
+  bool keyboardFocus = true,
 }) async {
   if (!kReleaseMode && _disableAlert) {
     return null;
   }
 
-  Widget showButton(Key key, String? text, Color color, Color textColor, FocusNode focusNode, bool? value) {
+  Widget createButton(Key key, String? text, Color color, Color textColor, bool autofocus, bool? value) {
     return text != null
         ? Container(
             margin: const EdgeInsets.only(bottom: 10),
             width: double.infinity,
             height: 42,
             child: ElevatedButton(
-              focusNode: focusNode,
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all(1),
-                shape: MaterialStateProperty.all(
-                    const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0)))),
-                backgroundColor: MaterialStateProperty.all(color),
-                textStyle: MaterialStateProperty.all(TextStyle(color: color)),
+              autofocus: keyboardFocus && autofocus,
+              style: ElevatedButton.styleFrom(
+                elevation: 1,
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                backgroundColor: color,
+                textStyle: TextStyle(color: color),
               ),
               key: key,
               child: Text(text),
@@ -97,26 +98,17 @@ Future<bool?> alert(
         : const SizedBox();
   }
 
-  Widget showTitle() {
+  Widget createTitle() {
     return title != null
-        ? Container(
+        ? Align(
             alignment: Alignment.center,
-            padding: const EdgeInsets.only(bottom: 20),
             child: Text(title,
                 textAlign: TextAlign.center, style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
           )
         : const SizedBox();
   }
 
-  Widget showMessage(bool titleExists) {
-    return Container(
-      alignment: Alignment.center,
-      padding: titleExists ? const EdgeInsets.only(bottom: 30) : const EdgeInsets.symmetric(vertical: 30),
-      child: Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17.0)),
-    );
-  }
-
-  Widget showFooter() {
+  Widget createFooter() {
     return footer != null
         ? Container(
             alignment: Alignment.center,
@@ -132,40 +124,32 @@ Future<bool?> alert(
         dark: const Color(0xcc6a7073),
         light: Colors.grey,
       );
-  if (buttonOK) {
+  if (showOK) {
     yes = delta.globalContext.i18n.okButtonText;
   }
-  if (buttonCancel) {
+  if (showCancel) {
     cancel = delta.globalContext.i18n.cancelButtonText;
   }
-  if (buttonYes) {
+  if (showYes) {
     yes = delta.globalContext.i18n.yesButtonText;
   }
-  if (buttonNo) {
+  if (showNo) {
     no = delta.globalContext.i18n.noButtonText;
   }
-  if (buttonRetry) {
+  if (showRetry) {
     yes = delta.globalContext.i18n.retryButtonText;
   }
-  if (buttonSave) {
+  if (showSave) {
     yes = delta.globalContext.i18n.saveButtonText;
   }
-  if (buttonClose) {
+  if (showClose) {
     cancel = delta.globalContext.i18n.closeButtonText;
   }
   if (yes == null && no == null && cancel == null) {
     cancel = delta.globalContext.i18n.closeButtonText;
   }
-  FocusNode yesFocusNode = FocusNode();
-  FocusNode noFocusNode = FocusNode();
-  FocusNode cancelFocusNode = FocusNode();
-  if (yes != null) {
-    yesFocusNode.requestFocus();
-  } else {
-    cancelFocusNode.requestFocus();
-  }
 
-  final result = await showDialog<bool?>(
+  return await showDialog<bool?>(
       context: delta.globalContext,
       barrierColor: delta.globalContext
           .themeColor(dark: const Color.fromRGBO(25, 25, 28, 0.6), light: const Color.fromRGBO(230, 230, 238, 0.6)),
@@ -177,10 +161,11 @@ Future<bool?> alert(
           child: BlurryContainer(
             enableBlurry: blurry,
             shadow: BoxShadow(
-              color: context.themeColor(dark: const Color(0x66000011), light: const Color(0x66bbbbcc)),
-              blurRadius: 15,
-              spreadRadius: 8,
-              offset: const Offset(0, 10),
+              color: context.themeColor(
+                  dark: const Color.fromARGB(51, 0, 0, 17), light: const Color.fromARGB(102, 117, 117, 118)),
+              blurRadius: 5,
+              spreadRadius: 3,
+              offset: const Offset(2, 2),
             ),
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             borderRadius: BorderRadius.circular(10),
@@ -213,28 +198,28 @@ Future<bool?> alert(
                           child: SingleChildScrollView(
                             child: ListBody(
                               children: <Widget>[
-                                showTitle(),
-                                showMessage(title != null || icon != null || warning),
-                                showFooter(),
+                                createTitle(),
+                                content,
+                                createFooter(),
                               ],
                             ),
                           ),
                         )
                       : Column(children: [
-                          showTitle(),
-                          showMessage(title != null || icon != null || warning),
-                          showFooter(),
+                          createTitle(),
+                          content,
+                          createFooter(),
                         ]),
-                  showButton(keyAlertButtonYes, yes, assentButtonColor!, Colors.white, yesFocusNode, true),
-                  showButton(keyAlertButtonNo, no, buttonColor!,
-                      context.themeColor(dark: Colors.blue.shade50, light: Colors.black54), noFocusNode, false),
+                  createButton(keyAlertButtonYes, yes, assentButtonColor!, Colors.white, true, true),
+                  createButton(keyAlertButtonNo, no, buttonColor!,
+                      context.themeColor(dark: Colors.blue.shade50, light: Colors.black54), false, false),
                   const SizedBox(height: 10),
-                  showButton(
+                  createButton(
                       keyAlertButtonCancel,
                       cancel,
                       yes != null ? buttonColor : assentButtonColor,
                       yes != null ? context.themeColor(dark: Colors.blue.shade50, light: Colors.black54) : Colors.white,
-                      cancelFocusNode,
+                      yes == null,
                       null),
                   if (emailUs) Container(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: emailUsLink(context)),
                 ],
@@ -243,29 +228,101 @@ Future<bool?> alert(
           ),
         );
       });
-  yesFocusNode.dispose();
-  noFocusNode.dispose();
-  cancelFocusNode.dispose();
-  return result;
+}
+
+/// alert show text dialog, return true if it's ok
+Future<bool?> alert(
+  String message, {
+  IconData? icon,
+  String? title,
+  bool showOK = true,
+  bool showCancel = false,
+}) async {
+  return show(
+    content: Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30),
+        child: Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17.0)),
+      ),
+    ),
+    icon: icon,
+    title: title,
+    showOK: showOK,
+    showCancel: showCancel,
+  );
 }
 
 /// confirm show on/cancel dialog, return true if it's ok
-///
 Future<bool?> confirm(
-  BuildContext context,
   String message, {
   IconData? icon,
-  Color iconColor = const Color.fromRGBO(239, 91, 93, 1),
   String? title,
-  bool buttonOK = true,
-  bool buttonCancel = true,
+  bool showOK = true,
+  bool showCancel = true,
 }) async {
   return alert(
     message,
     icon: icon,
-    iconColor: iconColor,
     title: title,
-    buttonOK: buttonOK,
-    buttonCancel: buttonCancel,
+    showOK: showOK,
+    showCancel: showCancel,
   );
+}
+
+/// prompt let user input text, return true if it's ok
+Future<String?> prompt({
+  String? label,
+  String? initialValue,
+  int? maxLength,
+  TextInputType? keyboardType,
+  TextInputAction textInputAction = TextInputAction.done,
+  List<TextInputFormatter>? inputFormatters,
+}) async {
+  final controller = TextEditingController(text: initialValue);
+  final result = await show(
+    content: Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: TextField(
+          inputFormatters: inputFormatters,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          autofocus: true,
+          controller: controller,
+          maxLength: maxLength,
+          onSubmitted: (_) => Navigator.of(delta.globalContext).pop(true),
+          decoration: InputDecoration(
+            labelText: label,
+          ),
+        ),
+      ),
+    ),
+    keyboardFocus: false,
+    showOK: true,
+  );
+  if (result == true) {
+    return controller.text;
+  }
+  return null;
+}
+
+/// promptInt let user input integer, return true if it's ok
+Future<int?> promptInt({
+  String? label,
+  int? initialValue,
+  int? maxLength,
+}) async {
+  final result = await prompt(
+    label: label,
+    initialValue: initialValue?.toString(),
+    maxLength: maxLength,
+    keyboardType: TextInputType.number,
+    inputFormatters: [
+      //FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      FilteringTextInputFormatter.digitsOnly,
+    ],
+  );
+  return result == null ? null : int.tryParse(result);
 }
