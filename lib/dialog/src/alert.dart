@@ -232,6 +232,7 @@ Future<bool?> alert(
   bool showCancel = false,
   bool warning = false,
   bool emailUs = false,
+  bool blurry = true,
 }) async {
   /*
   Align(
@@ -249,6 +250,7 @@ Future<bool?> alert(
     showCancel: showCancel,
     warning: warning,
     emailUs: emailUs,
+    blurry: blurry,
   );
 }
 
