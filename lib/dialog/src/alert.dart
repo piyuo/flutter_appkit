@@ -49,7 +49,8 @@ Widget emailUsLink(BuildContext context) => InkWell(
 /// show(content:Text('hi'), warning: true)
 /// ```
 Future<bool?> show({
-  required Widget content,
+  Widget? content,
+  String? textContent,
   IconData? icon,
   Color? iconColor,
   String? title,
@@ -68,54 +69,42 @@ Future<bool?> show({
   bool showRetry = false,
   bool showSave = false,
   bool showClose = false,
-  bool scrollContent = false,
   bool blurry = true,
   bool keyboardFocus = true,
 }) async {
+  assert(content != null || textContent != null, 'must have content or textContent');
   if (!kReleaseMode && _disableAlert) {
     return null;
   }
 
-  Widget createButton(Key key, String? text, Color color, Color textColor, bool autofocus, bool? value) {
-    return text != null
-        ? Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            width: double.infinity,
-            height: 42,
-            child: ElevatedButton(
-              autofocus: keyboardFocus && autofocus,
-              style: ElevatedButton.styleFrom(
-                elevation: 1,
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                backgroundColor: color,
-                textStyle: TextStyle(color: color),
-              ),
-              key: key,
-              child: Text(text),
-              onPressed: () => Navigator.of(delta.globalContext).pop(value),
-            ),
-          )
-        : const SizedBox();
-  }
+  content = content ??
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Text(
+          textContent!,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 17),
+        ),
+      );
 
-  Widget createTitle() {
-    return title != null
-        ? Align(
-            alignment: Alignment.center,
-            child: Text(title,
-                textAlign: TextAlign.center, style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
-          )
-        : const SizedBox();
-  }
-
-  Widget createFooter() {
-    return footer != null
-        ? Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(footer, textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
-          )
-        : const SizedBox();
+  Widget createButton(Key key, String text, Color color, Color textColor, bool autofocus, bool? value) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      width: double.infinity,
+      height: 42,
+      child: ElevatedButton(
+        autofocus: keyboardFocus && autofocus,
+        style: ElevatedButton.styleFrom(
+          elevation: 1,
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          backgroundColor: color,
+          textStyle: TextStyle(color: color),
+        ),
+        key: key,
+        child: Text(text),
+        onPressed: () => Navigator.of(delta.globalContext).pop(value),
+      ),
+    );
   }
 
   assentButtonColor = assentButtonColor ?? (warning ? Colors.red.shade400 : Colors.blue.shade700);
@@ -192,35 +181,39 @@ Future<bool?> show({
                         size: 64,
                       ),
                     ),
-                  scrollContent
-                      ? SizedBox(
-                          height: 200,
-                          child: SingleChildScrollView(
-                            child: ListBody(
-                              children: <Widget>[
-                                createTitle(),
-                                content,
-                                createFooter(),
-                              ],
-                            ),
-                          ),
-                        )
-                      : Column(children: [
-                          createTitle(),
-                          content,
-                          createFooter(),
-                        ]),
-                  createButton(keyAlertButtonYes, yes, assentButtonColor!, Colors.white, true, true),
-                  createButton(keyAlertButtonNo, no, buttonColor!,
-                      context.themeColor(dark: Colors.blue.shade50, light: Colors.black54), false, false),
-                  const SizedBox(height: 10),
-                  createButton(
-                      keyAlertButtonCancel,
-                      cancel,
-                      yes != null ? buttonColor : assentButtonColor,
-                      yes != null ? context.themeColor(dark: Colors.blue.shade50, light: Colors.black54) : Colors.white,
-                      yes == null,
-                      null),
+                  Column(children: [
+                    if (title != null)
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
+                      ),
+                    content!,
+                    if (footer != null)
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text(footer,
+                            textAlign: TextAlign.center, style: TextStyle(fontSize: 16.0, color: Colors.grey[600])),
+                      )
+                  ]),
+                  if (yes != null) const SizedBox(height: 20),
+                  if (yes != null) createButton(keyAlertButtonYes, yes, assentButtonColor!, Colors.white, true, true),
+                  if (no != null)
+                    createButton(keyAlertButtonNo, no, buttonColor!,
+                        context.themeColor(dark: Colors.blue.shade50, light: Colors.black54), false, false),
+                  if (cancel != null) const SizedBox(height: 10),
+                  if (cancel != null)
+                    createButton(
+                        keyAlertButtonCancel,
+                        cancel,
+                        yes != null ? buttonColor! : assentButtonColor!,
+                        yes != null
+                            ? context.themeColor(dark: Colors.blue.shade50, light: Colors.black54)
+                            : Colors.white,
+                        yes == null,
+                        null),
                   if (emailUs) Container(padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), child: emailUsLink(context)),
                 ],
               ),
@@ -240,14 +233,16 @@ Future<bool?> alert(
   bool warning = false,
   bool emailUs = false,
 }) async {
-  return show(
-    content: Align(
+  /*
+  Align(
       alignment: Alignment.center,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30),
         child: Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17.0)),
       ),
-    ),
+    )*/
+  return show(
+    textContent: message,
     icon: icon,
     title: title,
     showOK: showOK,
@@ -285,22 +280,16 @@ Future<String?> prompt({
 }) async {
   final controller = TextEditingController(text: initialValue);
   final result = await show(
-    content: Align(
-      alignment: Alignment.center,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: TextField(
-          inputFormatters: inputFormatters,
-          keyboardType: keyboardType,
-          textInputAction: textInputAction,
-          autofocus: true,
-          controller: controller,
-          maxLength: maxLength,
-          onSubmitted: (_) => Navigator.of(delta.globalContext).pop(true),
-          decoration: InputDecoration(
-            labelText: label,
-          ),
-        ),
+    content: TextField(
+      inputFormatters: inputFormatters,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      autofocus: true,
+      controller: controller,
+      maxLength: maxLength,
+      onSubmitted: (_) => Navigator.of(delta.globalContext).pop(true),
+      decoration: InputDecoration(
+        labelText: label,
       ),
     ),
     keyboardFocus: false,

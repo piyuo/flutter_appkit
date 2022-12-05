@@ -79,24 +79,21 @@ class DialogExample extends StatelessWidget {
           ),
           ElevatedButton(
             child: const Text('show no blurry'),
-            onPressed: () => show(content: const Text('hi'), blurry: false),
+            onPressed: () => show(textContent: 'hi', blurry: false),
           ),
           ElevatedButton(
             child: const Text('show warning'),
-            onPressed: () => show(content: const Text('hi'), warning: true),
+            onPressed: () => show(textContent: 'hi', warning: true),
           ),
           ElevatedButton(
             child: const Text('show title/footer'),
-            onPressed: () => show(content: const Text('hi'), title: 'title', footer: 'footer'),
+            onPressed: () => show(textContent: 'hi', title: 'title', footer: 'footer'),
           ),
           ElevatedButton(
             child: const Text('show yes/no/cancel'),
             onPressed: () async {
               var result = await show(
-                content: const Padding(
-                  padding: EdgeInsets.all(30),
-                  child: Text('do you want delete this document?'),
-                ),
+                textContent: 'do you want delete this document?',
                 showYes: true,
                 showNo: true,
                 showCancel: true,
@@ -125,19 +122,20 @@ class DialogExample extends StatelessWidget {
           ),
           ElevatedButton(
             child: const Text('alert warning email us'),
-            onPressed: () =>
-                show(content: const Text('error message'), footer: 'description', emailUs: true, warning: true),
+            onPressed: () => show(textContent: 'error message', footer: 'description', emailUs: true, warning: true),
           ),
           ElevatedButton(
             child: const Text('alert long content'),
             onPressed: () => show(
-              content: const Text(
-                  'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily'),
+              content: const SizedBox(
+                  height: 30,
+                  child: SingleChildScrollView(
+                      child: Text(
+                          'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily'))),
               title: 'this is a very long title. it should cover 2 line',
               footer:
                   'this is a very long footer, it should cover 3 or 4 more line. we need test long message can read easily',
               emailUs: true,
-              scrollContent: true,
               icon: Icons.alarm,
             ),
           ),
