@@ -53,12 +53,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   try {
     if (e is log.DiskErrorException) {
       await dialog.show(
-        content: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30),
-          child: Text(
-            delta.globalContext.i18n.errorDiskErrorMessage,
-          ),
-        ),
+        textContent: delta.globalContext.i18n.errorDiskErrorMessage,
         warning: true,
         footer: e.toString(),
         emailUs: true,
@@ -67,12 +62,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
     }
 
     await dialog.show(
-      content: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        child: Text(
-          delta.globalContext.i18n.errorNotified,
-        ),
-      ),
+      textContent: delta.globalContext.i18n.errorNotified,
       warning: true,
       footer: e.toString(),
       emailUs: true,
@@ -150,12 +140,7 @@ Future<void> listened(dynamic e) async {
   if (e is command.RequestTimeoutContract) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.show(
-      content: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        child: Text(
-          delta.globalContext.i18n.errorNetworkTimeoutMessage,
-        ),
-      ),
+      textContent: delta.globalContext.i18n.errorNetworkTimeoutMessage,
       yes: delta.globalContext.i18n.retryButtonText,
       cancel: delta.globalContext.i18n.cancelButtonText,
       icon: Icons.alarm,
@@ -170,24 +155,14 @@ Future<void> listened(dynamic e) async {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.show(
-          content: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Text(
-              delta.globalContext.i18n.errorNetworkNoServiceMessage,
-            ),
-          ),
+          textContent: delta.globalContext.i18n.errorNetworkNoServiceMessage,
           icon: Icons.cloud_off,
           footer: e.exception?.toString(),
           emailUs: true,
         ); //service not available
       } else {
         dialog.show(
-          content: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Text(
-              delta.globalContext.i18n.errorNetworkBlockedMessage,
-            ),
-          ),
+          textContent: delta.globalContext.i18n.errorNetworkBlockedMessage,
           footer: e.exception?.toString(),
           icon: Icons.cloud_off,
           emailUs: true,
@@ -197,12 +172,7 @@ Future<void> listened(dynamic e) async {
       return;
     }
     var result = await dialog.show(
-      content: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        child: Text(
-          delta.globalContext.i18n.errorNetworkNoInternetMessage,
-        ),
-      ),
+      textContent: delta.globalContext.i18n.errorNetworkNoInternetMessage,
       icon: Icons.wifi_off,
       footer: e.exception?.toString(),
       yes: delta.globalContext.i18n.retryButtonText,

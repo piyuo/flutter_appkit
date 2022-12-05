@@ -137,14 +137,7 @@ Future<bool> isAllowToExit(
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.show(
-        content: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30),
-          child: Text(context.i18n.formContentChangedText),
-        ),
-        showYes: true,
-        showNo: true,
-        showCancel: true,
-        blurry: false);
+        textContent: context.i18n.formContentChangedText, showYes: true, showNo: true, showCancel: true, blurry: false);
     if (result == true) {
       // user want save
       bool ok = await submit(formGroup: formGroup, callback: submitCallback);

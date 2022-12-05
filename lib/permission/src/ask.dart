@@ -37,10 +37,7 @@ Future<bool> ask(
   }
 
   final gotoSetting = await dialog.show(
-    content: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
-      child: Text(context.i18n.permissionAsk.replaceAll('%1', name)),
-    ),
+    textContent: context.i18n.permissionAsk.replaceAll('%1', name),
     icon: icon,
     iconColor: iconColor,
     yes: context.i18n.permissionGotoSetting,
