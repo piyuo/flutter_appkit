@@ -289,9 +289,14 @@ Future<String?> prompt({
       autofocus: true,
       controller: controller,
       maxLength: maxLength,
-      onSubmitted: (_) => Navigator.of(delta.globalContext).pop(true),
+      onSubmitted: (newText) {
+        if (newText.isNotEmpty) {
+          Navigator.of(delta.globalContext).pop(true);
+        }
+      },
       decoration: InputDecoration(
         labelText: label,
+        counterText: '',
       ),
     ),
     keyboardFocus: false,
@@ -315,7 +320,6 @@ Future<int?> promptInt({
     maxLength: maxLength,
     keyboardType: TextInputType.number,
     inputFormatters: [
-      //FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
       FilteringTextInputFormatter.digitsOnly,
     ],
   );

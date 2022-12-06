@@ -156,6 +156,7 @@ class DialogExample extends StatelessWidget {
             onPressed: () async {
               final number = await promptInt(
                 label: 'Quantity',
+                maxLength: 2,
               );
               debugPrint('$number');
             },
