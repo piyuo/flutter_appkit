@@ -10,6 +10,12 @@ clone source code to local.
 git clone git@github.com:piyuo/libcli.git
 ```
 
+## Update dependencies
+
+```bash
+flutter pub upgrade --major-versions
+```
+
 ## Project
 
 using project libcli.code-workspace
