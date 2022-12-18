@@ -144,7 +144,6 @@ class Timeline extends StatelessWidget {
     return Padding(
       padding: padding,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           for (int index = 0; index < steps.length; index++) ...[
             steps[index].show
