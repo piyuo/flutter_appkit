@@ -32,8 +32,8 @@ class Badge extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(6, 1, 6, 3),
       showBadge: text != null && text!.isNotEmpty,
       position: onBottom
-          ? badges.BadgePosition.bottomEnd(bottom: -8, end: -8)
-          : badges.BadgePosition.topEnd(top: -8, end: -8),
+          ? badges.BadgePosition.bottomEnd(bottom: -4, end: -4)
+          : badges.BadgePosition.topEnd(top: -4, end: -4),
       elevation: 3,
       shape: badges.BadgeShape.square,
       borderRadius: const BorderRadius.all(Radius.circular(15)),
