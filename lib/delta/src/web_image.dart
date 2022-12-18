@@ -105,9 +105,6 @@ class WebImage extends StatelessWidget {
   final BoxFit? fit;
 
   /// opacity is image opacity
-  /// ```dart
-  /// opacity: const AlwaysStoppedAnimation<double>(0.5)
-  /// ```
   final Animation<double>? opacity;
 
   @override

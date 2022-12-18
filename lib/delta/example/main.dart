@@ -74,7 +74,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _webImage(context),
+                          child: _badge(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -360,21 +360,37 @@ class DeltaExample extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(20),
           child: Badge(
-            badgeContent: '2',
+            text: '2',
+            onBottom: true,
+            child: Icon(Icons.shopping_bag, size: 24),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Badge(
+            text: '22',
+            onBottom: true,
+            child: Icon(Icons.shopping_bag, size: 24),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Badge(
+            text: '2',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Badge(
-            badgeContent: '12',
+            text: '12',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Badge(
-            badgeContent: '112',
+            text: '112',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
