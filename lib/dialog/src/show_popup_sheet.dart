@@ -49,7 +49,7 @@ Future<T?> showPopup<T>(
               closeButtonBuilder: closeButtonBuilder,
               topBuilder: topBuilder,
               bottomBuilder: bottomBuilder,
-              wrapBuilder: wrapBuilder,
+              wrapper: wrapBuilder,
               backgroundColor: backgroundColor,
               borderRadius: borderRadius,
               padding: padding,
@@ -114,7 +114,7 @@ Future<T?> showSheet<T>(
               closeButtonBuilder: closeButtonBuilder,
               topBuilder: topBuilder,
               bottomBuilder: bottomBuilder,
-              wrapBuilder: wrapBuilder,
+              wrapper: wrapBuilder,
               backgroundColor: backgroundColor,
               borderRadius: borderRadius,
               padding: padding,
@@ -166,13 +166,13 @@ Widget _buildDialogWithContent(
   delta.WidgetContextBuilder? closeButtonBuilder,
   delta.WidgetContextBuilder? topBuilder,
   delta.WidgetContextBuilder? bottomBuilder,
-  delta.WidgetContextWrapBuilder? wrapBuilder,
+  delta.WidgetContextWrapBuilder? wrapper,
   Color? backgroundColor,
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
   ScrollController? controller,
 }) {
-  final content = Stack(
+  Widget content = Stack(
     children: [
       Padding(
           padding: padding,
@@ -217,10 +217,10 @@ Widget _buildDialogWithContent(
     ],
   );
 
-  if (wrapBuilder != null) {
-    return wrapBuilder(context, content);
+  if (wrapper != null) {
+    content = wrapper(context, content);
   }
-
+  content = Material(child: content); // add Material to make BouncingScrollPhysics happy
   return Container(
     clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
@@ -239,6 +239,6 @@ Widget _buildDialogWithContent(
       ],
       borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
     ),
-    child: Material(child: content),
+    child: content,
   );
 }
