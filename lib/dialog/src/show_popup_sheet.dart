@@ -197,6 +197,7 @@ Widget _buildDialogWithContent(
           padding: padding,
           child: itemCount > 1
               ? ListView.builder(
+                  padding: EdgeInsets.zero,
                   controller: controller,
                   itemCount: itemCount,
                   itemBuilder: (_, index) => itemBuilder(context, index),
