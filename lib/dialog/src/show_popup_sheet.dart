@@ -42,36 +42,17 @@ Future<T?> showPopup<T>(
           alignment: Alignment.center,
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth ?? 600, maxHeight: maxHeight ?? double.infinity),
-            child: Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                color: backgroundColor ??
-                    context.themeColor(
-                      light: Colors.grey.shade100,
-                      dark: Colors.grey.shade900,
-                    ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 2,
-                    offset: const Offset(1, 1), // changes position of shadow
-                  )
-                ],
-                borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
-              ),
-              child: _buildDialogWithContent(
-                ctx,
-                itemCount: itemCount,
-                itemBuilder: itemBuilder,
-                closeButtonBuilder: closeButtonBuilder,
-                topBuilder: topBuilder,
-                bottomBuilder: bottomBuilder,
-                wrapBuilder: wrapBuilder,
-                backgroundColor: backgroundColor,
-                borderRadius: borderRadius,
-                padding: padding,
-              ),
+            child: _buildDialogWithContent(
+              ctx,
+              itemCount: itemCount,
+              itemBuilder: itemBuilder,
+              closeButtonBuilder: closeButtonBuilder,
+              topBuilder: topBuilder,
+              bottomBuilder: bottomBuilder,
+              wrapBuilder: wrapBuilder,
+              backgroundColor: backgroundColor,
+              borderRadius: borderRadius,
+              padding: padding,
             ),
           )));
 
@@ -251,13 +232,13 @@ Widget _buildDialogWithContent(
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.2),
-          spreadRadius: 1,
-          blurRadius: 2,
-          offset: const Offset(1, 1), // changes position of shadow
+          spreadRadius: 3,
+          blurRadius: 5,
+          offset: const Offset(2, 2), // changes position of shadow
         )
       ],
       borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
     ),
-    child: content,
+    child: Material(child: content),
   );
 }
