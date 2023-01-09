@@ -12,8 +12,8 @@ typedef WidgetBuilder = Widget Function();
 /// WidgetContextBuilder build widget with context
 typedef WidgetContextBuilder = Widget Function(BuildContext context);
 
-/// WidgetContextWrapBuilder build widget with context and child
-typedef WidgetContextWrapBuilder = Widget Function(BuildContext context, Widget child);
+/// WidgetContextWrapper wrap widget with context and child
+typedef WidgetContextWrapper = Widget Function(BuildContext context, Widget child);
 
 /// WidgetContextIndexBuilder build widget with context and index
 typedef WidgetContextIndexBuilder = Widget Function(BuildContext context, int index);
