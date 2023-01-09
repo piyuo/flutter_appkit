@@ -220,15 +220,17 @@ Widget _buildDialogWithContent(
   if (wrapper != null) {
     content = wrapper(context, content);
   }
-  content = Material(child: content); // add Material to make BouncingScrollPhysics happy
+  content = Material(
+    color: backgroundColor ??
+        context.themeColor(
+          light: Colors.grey.shade100,
+          dark: Colors.grey.shade900,
+        ),
+    child: content,
+  ); // add Material to make BouncingScrollPhysics happy
   return Container(
     clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
-      color: backgroundColor ??
-          context.themeColor(
-            light: Colors.grey.shade100,
-            dark: Colors.grey.shade900,
-          ),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.2),
