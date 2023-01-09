@@ -118,7 +118,13 @@ Future<void> start({
         child: Consumer<i18n.I18nProvider>(
           builder: (context, i18nProvider, __) => delta.GlobalContextSupport(
               child: MaterialApp.router(
-            builder: dialog.init(),
+            builder: (context, child) {
+              dialog.init();
+              return ScrollConfiguration(
+                behavior: const ScrollBehaviorModified(),
+                child: child!,
+              );
+            },
             debugShowCheckedModeBanner: false,
             theme: theme ??
                 ThemeData(
@@ -211,5 +217,22 @@ class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBinding
   @override
   Widget build(BuildContext context) {
     return widget.child;
+  }
+}
+
+class ScrollBehaviorModified extends ScrollBehavior {
+  const ScrollBehaviorModified();
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    switch (getPlatform(context)) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+      case TargetPlatform.android:
+        return const BouncingScrollPhysics();
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return const ClampingScrollPhysics();
+    }
   }
 }
