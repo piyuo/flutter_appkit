@@ -1,11 +1,17 @@
-
-
-
 import 'lib_localizations.dart';
 
 /// The translations for Chinese (`zh`).
 class LibLocalizationsZh extends LibLocalizations {
   LibLocalizationsZh([String locale = 'zh']) : super(locale);
+
+  @override
+  String get tomorrow => '明天';
+
+  @override
+  String get yesterday => '昨天';
+
+  @override
+  String get today => '今天';
 
   @override
   String get formContentChangedText => '内容已更改, 是否提交?';
@@ -455,6 +461,15 @@ class LibLocalizationsZh extends LibLocalizations {
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class LibLocalizationsZhTw extends LibLocalizationsZh {
   LibLocalizationsZhTw(): super('zh_TW');
+
+  @override
+  String get tomorrow => '明天';
+
+  @override
+  String get yesterday => '昨天';
+
+  @override
+  String get today => '今天';
 
   @override
   String get formContentChangedText => '內容已更改, 是否送出?';

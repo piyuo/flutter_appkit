@@ -1,11 +1,17 @@
-
-
-
 import 'lib_localizations.dart';
 
 /// The translations for English (`en`).
 class LibLocalizationsEn extends LibLocalizations {
   LibLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get tomorrow => 'Tomorrow';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get today => 'Today';
 
   @override
   String get formContentChangedText => 'Content is changed, save it?';

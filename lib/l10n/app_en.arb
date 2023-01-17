@@ -1,4 +1,7 @@
 {
+    "tomorrow": "Tomorrow",
+    "yesterday": "Yesterday",
+    "today": "Today",
     "formContentChangedText":"Content is changed, save it?",
     "formSubmitButtonText":"Submit",
     "formSavedBanner":"Your changes have been saved",

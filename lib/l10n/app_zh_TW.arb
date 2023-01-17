@@ -1,4 +1,7 @@
 {
+    "tomorrow": "明天",
+    "yesterday": "昨天",
+    "today": "今天",
     "formContentChangedText":"內容已更改, 是否送出?",
     "formSubmitButtonText":"送出",
     "formSavedBanner":"您的修改已經儲存",

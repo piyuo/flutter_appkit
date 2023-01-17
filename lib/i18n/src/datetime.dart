@@ -1,9 +1,27 @@
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:duration/duration.dart';
 import 'package:duration/locale.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'i18n.dart';
+
+extension DateHelpers on DateTime {
+  /// difference return the difference (in full days) between today
+  int get difference {
+    DateTime now = DateTime.now();
+    return DateTime(year, month, day).difference(DateTime(now.year, now.month, now.day)).inDays;
+  }
+
+  /// isToday return true if the date is today
+  bool get isToday => difference == 0;
+
+  /// isYesterday return true if the date is yester
+  bool get isYesterday => difference == -1;
+
+  /// isTomorrow return true if the date is tomorrow
+  bool get isTomorrow => difference == 1;
+}
 
 /// changeDateFormatting change locale and load date formatting resource
 /// ```dart
@@ -126,4 +144,42 @@ String formatDuration(Duration duration) {
     dl ??= englishLocale;
   }
   return prettyDuration(duration, locale: dl);
+}
+
+/// formatWeekday convert date to local weekday string
+/// ```dart
+/// expect(formatWeekday(date), 'Monday');
+/// ```
+String formatWeekday(DateTime date) {
+  return DateFormat.EEEE(localeName).format(date);
+}
+
+/// formatWeekdayShort convert date to local weekday short string
+/// ```dart
+/// expect(formatWeekdayShort(date), 'Monday');
+/// ```
+String formatWeekdayShort(DateTime date) {
+  return DateFormat.E(localeName).format(date);
+}
+
+/// prettyWeekday convert date to local weekday string but show yesterday, today and tomorrow
+/// ```dart
+/// expect(prettyWeekday(date), 'Monday');
+/// ```
+String prettyWeekday(BuildContext context, DateTime date) {
+  if (date.isToday) return context.i18n.today;
+  if (date.isTomorrow) return context.i18n.tomorrow;
+  if (date.isYesterday) return context.i18n.yesterday;
+  return formatWeekday(date);
+}
+
+/// prettyWeekdayShort convert date to local weekday short string but show yesterday, today and tomorrow
+/// ```dart
+/// expect(prettyWeekdayShort(date), 'Monday');
+/// ```
+String prettyWeekdayShort(BuildContext context, DateTime date) {
+  if (date.isToday) return context.i18n.today;
+  if (date.isTomorrow) return context.i18n.tomorrow;
+  if (date.isYesterday) return context.i18n.yesterday;
+  return formatWeekdayShort(date);
 }

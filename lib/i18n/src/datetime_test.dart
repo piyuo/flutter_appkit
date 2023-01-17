@@ -1,11 +1,23 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'datetime.dart';
 import 'package:libcli/google/google.dart' as google;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'i18n.dart';
 
 void main() {
   group('[i18n]', () {
+    test('should check yesterday/today/tomorrow', () async {
+      var now = DateTime.now();
+      expect(now.isToday, isTrue);
+      now = DateTime.now().add(const Duration(days: 1));
+      expect(now.isTomorrow, isTrue);
+      now = DateTime.now().add(const Duration(days: -1));
+      expect(now.isYesterday, isTrue);
+    });
+
     test('should get date format', () async {
       await changeDateFormatting('en_US');
       var df = dateFormat;
@@ -178,5 +190,45 @@ void main() {
       expect(formatDuration(dur), '5日 23小時 59分鐘 59秒');
       expect(formatDuration(min12sec35), '12分鐘 35秒');
     });
+  });
+
+  test('should format weekday', () async {
+    await changeDateFormatting('en_US');
+    var date = DateTime(2023, 1, 16);
+    var str = formatWeekday(date);
+    expect(str, 'Monday');
+
+    await changeDateFormatting('zh_CN');
+    str = formatWeekday(date);
+    expect(str, '星期一');
+  });
+
+  test('should format weekday in short', () async {
+    await changeDateFormatting('en_US');
+    var date = DateTime(2023, 1, 16);
+    var str = formatWeekdayShort(date);
+    expect(str, 'Mon');
+
+    await changeDateFormatting('zh_CN');
+    str = formatWeekdayShort(date);
+    expect(str, '周一');
+  });
+
+  test('should return pretty weekday', () async {
+    await changeDateFormatting('en_US');
+    var now = DateTime.now();
+    expect(prettyWeekday(testing.Context(), now), 'Today');
+    expect(prettyWeekday(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
+    expect(prettyWeekday(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
+    expect(prettyWeekday(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
+  });
+
+  test('should return pretty weekday short', () async {
+    await changeDateFormatting('en_US');
+    var now = DateTime.now();
+    expect(prettyWeekdayShort(testing.Context(), now), 'Today');
+    expect(prettyWeekdayShort(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
+    expect(prettyWeekdayShort(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
+    expect(prettyWeekdayShort(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
   });
 }

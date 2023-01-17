@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -9,14 +8,14 @@ import 'package:intl/intl.dart' as intl;
 import 'lib_localizations_en.dart';
 import 'lib_localizations_zh.dart';
 
-/// Callers can lookup localized strings with an instance of LibLocalizations returned
-/// by `LibLocalizations.of(context)`.
+/// Callers can lookup localized strings with an instance of LibLocalizations
+/// returned by `LibLocalizations.of(context)`.
 ///
 /// Applications need to include `LibLocalizations.delegate()` in their app's
-/// localizationDelegates list, and the locales they support in the app's
-/// supportedLocales list. For example:
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
 ///
-/// ```
+/// ```dart
 /// import 'gen/lib_localizations.dart';
 ///
 /// return MaterialApp(
@@ -31,14 +30,14 @@ import 'lib_localizations_zh.dart';
 /// Please make sure to update your pubspec.yaml to include the following
 /// packages:
 ///
-/// ```
+/// ```yaml
 /// dependencies:
 ///   # Internationalization support.
 ///   flutter_localizations:
 ///     sdk: flutter
 ///   intl: any # Use the pinned version from flutter_localizations
 ///
-///   # rest of dependencies
+///   # Rest of dependencies
 /// ```
 ///
 /// ## iOS Applications
@@ -94,6 +93,24 @@ abstract class LibLocalizations {
     Locale('zh'),
     Locale('zh', 'TW')
   ];
+
+  /// No description provided for @tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
 
   /// No description provided for @formContentChangedText.
   ///
