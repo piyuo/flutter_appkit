@@ -6,6 +6,12 @@ import 'package:duration/locale.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'i18n.dart';
 
+/// minDateTime return the minimum date
+DateTime get minDateTime => DateTime.utc(-271821, 04, 20);
+
+/// maxDateTime return the maximum date
+DateTime get maxDateTime => DateTime.utc(275760, 09, 13);
+
 extension DateHelpers on DateTime {
   /// difference return the difference (in full days) between today
   int get difference {
@@ -21,6 +27,18 @@ extension DateHelpers on DateTime {
 
   /// isTomorrow return true if the date is tomorrow
   bool get isTomorrow => difference == 1;
+
+  /// isMin return true if the date is min
+  /// ```dart
+  /// expect(now.isMin, isTrue);
+  /// ```
+  bool get isMin => compareTo(minDateTime) == 0;
+
+  /// isMax return true if the date is max
+  /// ```dart
+  /// expect(now.isMax, isTrue);
+  /// ```
+  bool get isMax => compareTo(maxDateTime) == 0;
 }
 
 /// changeDateFormatting change locale and load date formatting resource

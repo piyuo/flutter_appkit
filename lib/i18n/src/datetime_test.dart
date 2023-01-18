@@ -9,6 +9,16 @@ import 'i18n.dart';
 
 void main() {
   group('[i18n]', () {
+    test('should check min and max value', () async {
+      var now = DateTime.now();
+      expect(now.isMax, isFalse);
+      expect(now.isMin, isFalse);
+      expect(minDateTime.isMin, isTrue);
+      expect(minDateTime.isMax, isFalse);
+      expect(maxDateTime.isMin, isFalse);
+      expect(maxDateTime.isMax, isTrue);
+    });
+
     test('should check yesterday/today/tomorrow', () async {
       var now = DateTime.now();
       expect(now.isToday, isTrue);
