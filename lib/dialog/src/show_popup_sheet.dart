@@ -187,8 +187,8 @@ Widget _buildDialogWithContent(
       if (closeButtonBuilder != null) closeButtonBuilder(context),
       if (closeButtonBuilder == null)
         Positioned(
-          top: 13,
-          right: 14,
+          top: 16,
+          right: 17,
           child: Container(
             width: 19,
             height: 19,
@@ -197,8 +197,8 @@ Widget _buildDialogWithContent(
         ),
       if (closeButtonBuilder == null)
         Positioned(
-          top: -3,
-          right: -3,
+          top: 0,
+          right: 0,
           child: IconButton(
             iconSize: 38,
             color: Colors.black,
