@@ -19,6 +19,12 @@ extension DateHelpers on DateTime {
     return DateTime(year, month, day).difference(DateTime(now.year, now.month, now.day)).inDays;
   }
 
+  /// isSameDay return true if the date is same day with other day. (ignore time)
+  /// ```dart
+  /// expect(DateTime(2023, 1, 18).isSameDay(DateTime(2023, 1, 18)), isTrue);
+  /// ```
+  bool isSameDay(DateTime other) => year == other.year && month == other.month && day == other.day;
+
   /// isToday return true if the date is today
   bool get isToday => difference == 0;
 
