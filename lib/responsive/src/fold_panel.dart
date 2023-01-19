@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'responsive1.dart';
+import 'responsive.dart';
 
 /// FoldPanel show two widget on top/bottom in small screen, left/right on big screen
 /// ```dart

@@ -14,6 +14,9 @@ const phoneScreenMax = 600.0;
 /// bigScreenDesignMin is min width to use big screen design
 const bigScreenMin = 1100.0;
 
+/// space is proper space for phone screen and bigger screen
+double get space => phoneScreen ? 10 : 20;
+
 /// phoneScreen return true if phone screen
 bool get phoneScreen => screenSize.width < phoneScreenMax;
 
