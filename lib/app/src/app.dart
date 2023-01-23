@@ -108,6 +108,15 @@ Future<void> start({
   if (onBeforeStart != null) {
     await onBeforeStart();
   }
+
+  if (providers != null) {
+    for (final provider in providers) {
+      if (provider is AppProvider) {
+        await (provider as AppProvider).load();
+      }
+    }
+  }
+
   // run app
   return watch(() => runApp(LifecycleWatcher(
           child: MultiProvider(
@@ -164,6 +173,11 @@ Future<void> start({
           )),
         ),
       ))));
+}
+
+/// AppProvider will load when start app
+abstract class AppProvider with ChangeNotifier {
+  Future<void> load();
 }
 
 /// LifecycleWatcher watch app life cycle
