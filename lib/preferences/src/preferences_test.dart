@@ -49,6 +49,11 @@ void main() {
       await delete('k');
       result = await getBool('k');
       expect(result, null);
+
+      await setBool('k', false);
+      await setBool('k', null);
+      result = await getBool('k');
+      expect(result, null);
     });
 
     test('should get/set Int', () async {
@@ -56,6 +61,11 @@ void main() {
       var result = await getInt('k');
       expect(result, 1);
       await delete('k');
+      result = await getInt('k');
+      expect(result, null);
+
+      await setInt('k', 1);
+      await setInt('k', null);
       result = await getInt('k');
       expect(result, null);
     });
@@ -67,6 +77,11 @@ void main() {
       await delete('k');
       result = await getDouble('k');
       expect(result, null);
+
+      await setDouble('k', 1.1);
+      await setDouble('k', null);
+      result = await getDouble('k');
+      expect(result, null);
     });
 
     test('should get/set string', () async {
@@ -74,6 +89,11 @@ void main() {
       var result = await getString('k');
       expect(result, 'a');
       await delete('k');
+      result = await getString('k');
+      expect(result, null);
+
+      await setString('k', 'a');
+      await setString('k', null);
       result = await getString('k');
       expect(result, null);
     });
@@ -110,6 +130,11 @@ void main() {
       expect(result.toString().substring(0, 19), shortStr);
       expect(result, value);
       await delete('k');
+      result = await getDateTime('k');
+      expect(result, null);
+
+      await setDateTime('k', value);
+      await setDateTime('k', null);
       result = await getDateTime('k');
       expect(result, null);
     });

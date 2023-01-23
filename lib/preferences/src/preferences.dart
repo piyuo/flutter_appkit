@@ -53,9 +53,13 @@ Future<bool?> getBool(String key) async {
 /// ```dart
 /// await preferences.setBool('k',true);
 /// ```
-Future<void> setBool(String key, bool value) async {
+Future<void> setBool(String key, bool? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
+  if (value == null) {
+    delete(key);
+    return;
+  }
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setBool(key, value);
   if (!result) {
@@ -77,9 +81,13 @@ Future<int?> getInt(String key) async {
 /// ```dart
 /// await preferences.setInt('k',1);
 /// ```
-Future<void> setInt(String key, int value) async {
+Future<void> setInt(String key, int? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
+  if (value == null) {
+    delete(key);
+    return;
+  }
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setInt(key, value);
   if (!result) {
@@ -101,9 +109,13 @@ Future<double?> getDouble(String key) async {
 /// ```dart
 /// await preferences.setDouble('k',1);
 /// ```
-Future<void> setDouble(String key, double value) async {
+Future<void> setDouble(String key, double? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
+  if (value == null) {
+    delete(key);
+    return;
+  }
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setDouble(key, value);
   if (!result) {
@@ -125,9 +137,13 @@ Future<String?> getString(String key) async {
 /// ```dart
 /// await preferences.setString('k','value');
 /// ```
-Future<void> setString(String key, String value) async {
+Future<void> setString(String key, String? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
+  if (value == null) {
+    delete(key);
+    return;
+  }
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setString(key, value);
   if (!result) {
@@ -178,8 +194,12 @@ Future<DateTime?> getDateTime(String key) async {
 /// ```dart
 /// await preferences.setDateTime('k', DateTime.now());
 /// ```
-setDateTime(String key, DateTime value) async {
+setDateTime(String key, DateTime? value) async {
   assert(key.isNotEmpty);
+  if (value == null) {
+    delete(key);
+    return;
+  }
   String formatted = value.toString().substring(0, 19);
   return await setString(key, formatted);
 }
