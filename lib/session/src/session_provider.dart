@@ -150,6 +150,7 @@ class SessionProvider {
     required DateTime accessTokenExpired,
     String? refreshToken,
     DateTime? refreshTokenExpired,
+    Map<String, dynamic>? extra,
   }) async {
     assert(accessToken.isNotEmpty);
     await _load();
@@ -157,10 +158,13 @@ class SessionProvider {
     _data![_kAccessTokenExpiredKey] = accessTokenExpired;
     _data![_kRefreshTokenKey] = refreshToken;
     _data![_kRefreshTokenExpiredKey] = refreshTokenExpired;
+    if (extra != null) {
+      _data!.addAll(extra);
+    }
     _save();
   }
 
-  /// loginByRefresh login only refresh access token
+  /// loginByRefreshToken login by refresh token and refresh access token
   /// ```dart
   /// await session.loginByRefresh(
   ///   accessToken: 'fakeAccessToken2',

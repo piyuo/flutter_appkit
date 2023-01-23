@@ -22,6 +22,7 @@ void main() {
         accessTokenExpired: aExpired,
         refreshToken: 'fakeRefreshToken',
         refreshTokenExpired: rExpired,
+        extra: {'a': 'b'},
       );
       final valid2 = await provide.isLogin();
       expect(valid2, true);
@@ -29,6 +30,9 @@ void main() {
       await provide.set('region', 'en');
       final region = await provide.get('region');
       expect(region, 'en');
+
+      final extra = await provide.get('a');
+      expect(extra, 'b');
 
       final provide2 = SessionProvider();
       expect(await provide2.getAccessToken(), 'fakeAccessToken');
