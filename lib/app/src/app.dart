@@ -11,20 +11,20 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
 import 'error.dart';
 
-/// branchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
-const branchMaster = 'master';
+/// kBranchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
+const kBranchMaster = 'master';
 
-/// branchBeta We will branch from master for a new beta release at the beginning of the month, usually the first Monday
-const branchBeta = 'beta';
+/// kBranchBeta We will branch from master for a new beta release at the beginning of the month, usually the first Monday
+const kBranchBeta = 'beta';
 
-/// branchStable is a a branch that has been stabilized on beta will become our next stable branch and we will create a stable release from that branch. We recommend that you use this channel for all production app releases.
-const branchStable = 'stable';
+/// kBranchStable is a a branch that has been stabilized on beta will become our next stable branch and we will create a stable release from that branch. We recommend that you use this channel for all production app releases.
+const kBranchStable = 'stable';
 
-/// branchDebug is a a branch that always direct remove service url to http://localhost:8080
-const branchDebug = 'debug';
+/// kBranchDebug is a a branch that always direct remove service url to http://localhost:8080
+const kBranchDebug = 'debug';
 
 /// _branch used in command pattern, determine which branch to use, default is master branch
-String _branch = branchMaster;
+String _branch = kBranchMaster;
 
 /// branch used in command pattern, determine which branch to use, default is master branch
 String get branch => _branch;
@@ -74,7 +74,7 @@ Future<void> start({
   String initialRoute = '/',
   LocalizationsDelegate<dynamic>? l10nDelegate,
   List<SingleChildWidget>? providers,
-  String backendBranch = branchMaster,
+  String backendBranch = kBranchMaster,
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
   ThemeData? darkTheme,
@@ -107,14 +107,6 @@ Future<void> start({
 
   if (onBeforeStart != null) {
     await onBeforeStart();
-  }
-
-  if (providers != null) {
-    for (final provider in providers) {
-      if (provider is AppProvider) {
-        await (provider as AppProvider).load();
-      }
-    }
   }
 
   // run app

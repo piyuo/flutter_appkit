@@ -16,12 +16,12 @@ String serviceRegion = '';
 ///
 String serviceUrl(String funcName) {
   if (!kReleaseMode) {
-    if (app.branch == app.branchDebug) {
+    if (app.branch == app.kBranchDebug) {
       return 'http://localhost:8080/?q';
     }
   }
 
-  if (app.branch == app.branchStable) {
+  if (app.branch == app.kBranchStable) {
     String region = serviceRegion;
     if (region.isEmpty) {
       region = determineRegion();
