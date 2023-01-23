@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/storage/storage.dart' as storage;
+import 'package:libcli/preferences/preferences.dart' as storage;
 
 /// AccessTokenRefresher should use refresh token to exchange new access token, must call loginByRefresh()
 typedef AccessTokenRefresher = Future<void> Function(String refreshToken, SessionProvider session);

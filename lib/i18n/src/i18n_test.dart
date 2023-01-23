@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/assets/assets.dart' as asset;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libcli/google/google.dart' as google;
-import 'package:libcli/storage/storage.dart' as storage;
+import 'package:libcli/preferences/preferences.dart' as storage;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

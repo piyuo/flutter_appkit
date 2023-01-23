@@ -1,6 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/storage/storage.dart' as storage;
+import 'package:libcli/preferences/preferences.dart' as storage;
 import 'session_provider.dart';
 
 void main() {

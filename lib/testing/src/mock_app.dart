@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:nested/nested.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/storage/storage.dart' as storage;
+import 'package:libcli/preferences/preferences.dart' as storage;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'navigator.dart';

@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'storage.dart';
+import 'preferences.dart';
 
 void main() {
   // ignore: invalid_use_of_visible_for_testing_member
   initForTest({});
   setUp(() async {});
 
-  group('[storage]', () {
+  group('[preferences]', () {
     test('should clear', () async {
       await setBool('k', true);
       var found = await containsKey('k');

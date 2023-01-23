@@ -5,7 +5,7 @@ import 'datetime.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/storage/storage.dart' as storage;
+import 'package:libcli/preferences/preferences.dart' as storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
