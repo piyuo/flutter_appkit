@@ -82,7 +82,7 @@ void main() {
       final provide = SessionProvider(
         onAccessTokenRefresh: (String refreshToken, SessionProvider session) async {
           refreshCount++;
-          await session.loginByRefresh(
+          await session.loginByRefreshToken(
             accessToken: 'fakeAccessToken2',
             accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
           );

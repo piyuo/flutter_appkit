@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/preferences/preferences.dart' as storage;
+import 'package:libcli/preferences/preferences.dart' as preferences;
 
 /// AccessTokenRefresher should use refresh token to exchange new access token, must call loginByRefresh()
 typedef AccessTokenRefresher = Future<void> Function(String refreshToken, SessionProvider session);
@@ -8,20 +8,20 @@ typedef AccessTokenRefresher = Future<void> Function(String refreshToken, Sessio
 /// LoginBack should let user log back in, must call login()
 typedef LoginBack = Future<void> Function(SessionProvider session);
 
-/// _prefixSession is session key in storage
-const _prefixSession = 'session';
+/// _kSessionKey is session key in storage
+const _kSessionKey = '_S';
 
-/// _prefixSession is session key in storage
-const _accessToken = '_AT';
+/// _kAccessTokenKey is access token key in storage
+const _kAccessTokenKey = '_A';
 
-/// _accessTokenExpired is access token expired key in session
-const _accessTokenExpired = '_ATE';
+/// _kAccessTokenExpiredKey is access token expired key to track when access token expired
+const _kAccessTokenExpiredKey = '_AE';
 
-/// _refreshToken is refresh token key in session
-const _refreshToken = '_RT';
+/// _kRefreshTokenKey is refresh token key in session
+const _kRefreshTokenKey = '_R';
 
-/// _refreshToken is refresh token expired key in session
-const _refreshTokenExpired = '_RTE';
+/// _kRefreshTokenExpiredKey is refresh token expired key to track when refresh token expired
+const _kRefreshTokenExpiredKey = '_RE';
 
 class SessionProvider {
   SessionProvider({
@@ -49,15 +49,15 @@ class SessionProvider {
 
   /// _load load data from storage
   Future<void> _load() async {
-    _data = await storage.getMap(_prefixSession);
+    _data = await preferences.getMap(_kSessionKey);
     _data ??= {};
-    var expired = _data![_accessTokenExpired];
+    var expired = _data![_kAccessTokenExpiredKey];
     if (expired != null) {
-      _data![_accessTokenExpired] = DateTime.fromMillisecondsSinceEpoch(expired);
+      _data![_kAccessTokenExpiredKey] = DateTime.fromMillisecondsSinceEpoch(expired);
     }
-    expired = _data![_refreshTokenExpired];
+    expired = _data![_kRefreshTokenExpiredKey];
     if (expired != null) {
-      _data![_refreshTokenExpired] = DateTime.fromMillisecondsSinceEpoch(expired);
+      _data![_kRefreshTokenExpiredKey] = DateTime.fromMillisecondsSinceEpoch(expired);
     }
   }
 
@@ -65,24 +65,24 @@ class SessionProvider {
   Future<void> _save() async {
     if (_data != null && _data!.isNotEmpty) {
       var map = <String, dynamic>{}..addAll(_data!);
-      var expired = map[_accessTokenExpired];
+      var expired = map[_kAccessTokenExpiredKey];
       if (expired != null) {
-        map[_accessTokenExpired] = expired.millisecondsSinceEpoch;
+        map[_kAccessTokenExpiredKey] = expired.millisecondsSinceEpoch;
       }
-      expired = map[_refreshTokenExpired];
+      expired = map[_kRefreshTokenExpiredKey];
       if (expired != null) {
-        map[_refreshTokenExpired] = expired.millisecondsSinceEpoch;
+        map[_kRefreshTokenExpiredKey] = expired.millisecondsSinceEpoch;
       }
-      await storage.setMap(_prefixSession, map);
+      await preferences.setMap(_kSessionKey, map);
       return;
     }
-    await storage.delete(_prefixSession);
+    await preferences.delete(_kSessionKey);
   }
 
   /// hasValidAccessToken return true when valid access token is in session
   @visibleForTesting
   bool get hasValidAccessToken {
-    final expired = _data![_accessTokenExpired];
+    final expired = _data![_kAccessTokenExpiredKey];
     if (expired != null && expired.isAfter(DateTime.now())) {
       return true;
     }
@@ -92,7 +92,7 @@ class SessionProvider {
   /// hasValidRefreshToken return true when valid refresh token is in session
   @visibleForTesting
   bool get hasValidRefreshToken {
-    final expired = _data![_refreshTokenExpired];
+    final expired = _data![_kRefreshTokenExpiredKey];
     if (expired != null && expired.isAfter(DateTime.now())) {
       return true;
     }
@@ -100,9 +100,9 @@ class SessionProvider {
   }
 
   /// isLogin return true if login and session is valid, it will refresh access token if expired
-  ///
-  ///     var valid = await provide.isLogin();
-  ///
+  /// ```dart
+  /// var valid = await provide.isLogin();
+  /// ```
   Future<bool> isLogin() async {
     await _load();
     if (hasValidAccessToken) {
@@ -110,7 +110,7 @@ class SessionProvider {
     }
 
     if (onAccessTokenRefresh != null && hasValidRefreshToken) {
-      await onAccessTokenRefresh!(_data![_refreshToken], this);
+      await onAccessTokenRefresh!(_data![_kRefreshTokenKey], this);
       if (hasValidAccessToken) {
         return true;
       }
@@ -126,25 +126,25 @@ class SessionProvider {
   }
 
   /// getAccessToken return access token if session is valid, it will refresh access token if expired
-  ///
-  ///     final token = await provide.getAccessToken(context);
-  ///
+  /// ```dart
+  /// final token = await provide.getAccessToken(context);
+  /// ```
   Future<String?> getAccessToken() async {
     if (await isLogin()) {
-      return _data![_accessToken];
+      return _data![_kAccessTokenKey];
     }
     return null;
   }
 
   /// login to save token
-  ///
-  ///     await provide.login(
-  ///        accessToken: 'fakeAccessToken',
-  ///        accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
-  ///        refreshToken: 'fakeAccessToken',
-  ///        refreshTokenExpired: rExpired,
-  ///      );
-  ///
+  /// ```dart
+  /// await provide.login(
+  ///    accessToken: 'fakeAccessToken',
+  ///    accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
+  ///    refreshToken: 'fakeAccessToken',
+  ///    refreshTokenExpired: rExpired,
+  ///  );
+  /// ```
   Future<void> login({
     required String accessToken,
     required DateTime accessTokenExpired,
@@ -153,35 +153,35 @@ class SessionProvider {
   }) async {
     assert(accessToken.isNotEmpty);
     await _load();
-    _data![_accessToken] = accessToken;
-    _data![_accessTokenExpired] = accessTokenExpired;
-    _data![_refreshToken] = refreshToken;
-    _data![_refreshTokenExpired] = refreshTokenExpired;
+    _data![_kAccessTokenKey] = accessToken;
+    _data![_kAccessTokenExpiredKey] = accessTokenExpired;
+    _data![_kRefreshTokenKey] = refreshToken;
+    _data![_kRefreshTokenExpiredKey] = refreshTokenExpired;
     _save();
   }
 
   /// loginByRefresh login only refresh access token
-  ///
-  ///     await session.loginByRefresh(
-  ///       accessToken: 'fakeAccessToken2',
-  ///       accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
-  ///     );
-  ///
-  Future<void> loginByRefresh({
+  /// ```dart
+  /// await session.loginByRefresh(
+  ///   accessToken: 'fakeAccessToken2',
+  ///   accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
+  /// );
+  /// ```
+  Future<void> loginByRefreshToken({
     required String accessToken,
     required DateTime accessTokenExpired,
   }) async {
     assert(accessToken.isNotEmpty);
     await _load();
-    _data![_accessToken] = accessToken;
-    _data![_accessTokenExpired] = accessTokenExpired;
+    _data![_kAccessTokenKey] = accessToken;
+    _data![_kAccessTokenExpiredKey] = accessTokenExpired;
     _save();
   }
 
   /// logout session
-  ///
-  ///     provide.logout();
-  ///
+  /// ```dart
+  /// provide.logout();
+  /// ```
   Future<void> logout() async {
     if (onLogout != null) {
       onLogout!();
@@ -191,9 +191,9 @@ class SessionProvider {
   }
 
   /// set value to session
-  ///
-  ///     await provide.set(context, 'region', 'en');
-  ///
+  /// ```dart
+  /// await provide.set(context, 'region', 'en');
+  /// ```
   Future<void> set(String key, dynamic value) async {
     if (await isLogin()) {
       _data![key] = value;
@@ -202,9 +202,9 @@ class SessionProvider {
   }
 
   /// get value from session
-  ///
-  ///     final region = await provide.get(context, 'region');
-  ///
+  /// ```dart
+  /// final region = await provide.get(context, 'region');
+  /// ```
   Future<T?> get<T>(String key) async {
     if (await isLogin()) {
       return _data![key];
