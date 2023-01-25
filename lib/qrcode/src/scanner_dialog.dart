@@ -1,19 +1,20 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/permission/permission.dart' as permission;
+//import 'package:libcli/permission/permission.dart' as permission;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'scanner.dart';
 
 /// showScanner return scanned QR code or null if not scanned
 Future<String?> showScanner(BuildContext context) async {
-  if (await permission.camera(context)) {
-    return await Navigator.push<String?>(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const ScannerDialog(),
-        ));
-  }
-  return null;
+// todo:need check permission
+//  if (await permission.camera) {
+  return await Navigator.push<String?>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const ScannerDialog(),
+      ));
+//  }
+//  return null;
 }
 
 class ScannerDialog extends StatelessWidget {

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-/// QRImage generate qr code image
+/// Generator generate qr code image
 /// ```dart
-/// final image=const QRImage(
+/// final image=const Generator(
 ///   data: 'http://cacake.piyuo.com/location=12348234234s',
 /// )
 /// ```
-class QRImage extends StatelessWidget {
-  /// QRImage generate qr code image
+class Generator extends StatelessWidget {
+  /// Generator generate qr code image
   /// ```dart
-  /// final image=const QRImage(
+  /// final image=const Generator(
   ///   data: 'http://cacake.piyuo.com/location=12348234234s',
   /// )
   /// ```
-  const QRImage({
+  const Generator({
     required this.data,
     this.advertiseOrReceipt = true,
     this.size = 300,
