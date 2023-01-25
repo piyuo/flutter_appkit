@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
@@ -21,7 +19,7 @@ class FormPinPut<T> extends ReactiveFormField<T, String> {
     TextCapitalization textCapitalization = TextCapitalization.none,
     TextInputAction? textInputAction,
     bool autofocus = false,
-    ToolbarOptions toolbarOptions = const ToolbarOptions(paste: true),
+    EditableTextContextMenuBuilder? contextMenuBuilder,
     bool obscureText = false,
     List<TextInputFormatter> inputFormatters = const [],
     Brightness? keyboardAppearance,
@@ -88,7 +86,7 @@ class FormPinPut<T> extends ReactiveFormField<T, String> {
               keyboardType: keyboardType,
               textInputAction: textInputAction,
               textCapitalization: textCapitalization,
-              toolbarOptions: toolbarOptions,
+              contextMenuBuilder: contextMenuBuilder,
               autofocus: autofocus,
               onTap: onTap,
               obscureText: obscureText,

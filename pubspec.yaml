@@ -73,7 +73,7 @@ dependencies:
   reactive_touch_spin: ^0.7.0
   reactive_phone_form_field: ^0.10.0
   reactive_raw_autocomplete: ^0.5.0
-  pinput: ^2.2.21
+  pinput: ^2.2.23
   modal_bottom_sheet: ^2.1.2
   http_client_helper: ^2.0.3
   path_provider: ^2.0.11
