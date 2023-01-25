@@ -2,6 +2,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/preferences/preferences.dart' as storage;
 import 'session_provider.dart';
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/preferences/preferences.dart' as preferences;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -11,137 +13,226 @@ void main() {
   });
 
   group('[session_provider]', () {
-    test('should keep session data', () async {
-      final provide = SessionProvider();
-      final valid = await provide.isLogin();
-      final aExpired = DateTime.now().add(const Duration(seconds: 300));
-      final rExpired = DateTime.now().add(const Duration(seconds: 100));
-      expect(valid, false);
-      await provide.login(
-        accessToken: 'fakeAccessToken',
-        accessTokenExpired: aExpired,
-        refreshToken: 'fakeRefreshToken',
-        refreshTokenExpired: rExpired,
-        extra: {'a': 'b'},
+    test('should save/load token', () async {
+      final expired = DateTime.now().add(const Duration(seconds: 300));
+      final token = Token(
+        key: 'key',
+        expired: expired,
       );
-      final valid2 = await provide.isLogin();
-      expect(valid2, true);
+      await token.save('test');
 
-      await provide.set('region', 'en');
-      final region = await provide.get('region');
-      expect(region, 'en');
-
-      final extra = await provide.get('a');
-      expect(extra, 'b');
-
-      final provide2 = SessionProvider();
-      expect(await provide2.getAccessToken(), 'fakeAccessToken');
-      expect(provide2.hasValidAccessToken, true);
-      expect(provide2.hasValidRefreshToken, true);
-      expect(await provide2.get('region'), 'en');
-      provide.logout();
-
-      final provide3 = SessionProvider();
-      expect(await provide3.getAccessToken(), null);
-      expect(provide3.hasValidAccessToken, false);
-      expect(provide3.hasValidRefreshToken, false);
-      expect(await provide3.get('region'), null);
+      final token2 = await Token.load('test');
+      expect(token.key, token2!.key);
+      expect(token.expired.day, token2.expired.day);
+      await preferences.delete('test');
     });
 
-    test('should trigger refresh/login back/logout event', () async {
-      String? rToken;
+    test('should save/load session', () async {
+      final aExpired = DateTime.now().add(const Duration(seconds: 300));
+      final rExpired = DateTime.now().add(const Duration(seconds: 100));
+      final session = Session(
+        accessToken: Token(
+          key: 'fakeAccessKey',
+          expired: aExpired,
+        ),
+        refreshToken: Token(
+          key: 'fakeRefreshKey',
+          expired: rExpired,
+        ),
+        args: {
+          'user': 'user1',
+          'img': 'img1',
+          'region': 'region1',
+        },
+      );
+      await session.save();
+
+      final session2 = await Session.load();
+      expect(session.accessToken.key, session2!.accessToken.key);
+      expect(session.accessToken.expired.minute, session2.accessToken.expired.minute);
+      expect(session.refreshToken!.key, session2.refreshToken!.key);
+      expect(session.refreshToken!.expired.second, session2.refreshToken!.expired.second);
+      expect(session['user'], session2['user']);
+      expect(session['img'], session2['img']);
+      expect(session['region'], session2['region']);
+    });
+
+    test('should keep session data', () async {
+      final sessionProvider = SessionProvider(loader: (_) async => null);
+      final aExpired = DateTime.now().add(const Duration(seconds: 300));
+      final rExpired = DateTime.now().add(const Duration(seconds: 100));
+      expect(await sessionProvider.session, isNull);
+      await sessionProvider.login(Session(
+        accessToken: Token(
+          key: 'fakeAccessKey',
+          expired: aExpired,
+        ),
+        refreshToken: Token(
+          key: 'fakeRefreshKey',
+          expired: rExpired,
+        ),
+        args: {
+          'user': 'user1',
+          'img': 'img1',
+          'region': 'region1',
+        },
+      ));
+      final session = await sessionProvider.session;
+      expect(session, isNotNull);
+      expect(session!['user'], 'user1');
+      expect(session['img'], 'img1');
+      expect(session['region'], 'region1');
+
+      final sessionProvider2 = SessionProvider(loader: (_) async => null);
+      await sessionProvider2.load();
+      final session2 = await sessionProvider2.session;
+      expect(session2, isNotNull);
+      expect(session2!.isValid, isTrue);
+      expect(session2.accessToken.key, 'fakeAccessKey');
+      expect(session2.accessToken.isValid, isTrue);
+      expect(session2.refreshToken, isNotNull);
+      expect(session2.refreshToken!.key, 'fakeRefreshKey');
+      expect(session2.refreshToken!.isValid, true);
+      expect(session2['user'], 'user1');
+      expect(session2['img'], 'img1');
+      expect(session2['region'], 'region1');
+      sessionProvider2.logout();
+
+      final sessionProvider3 = SessionProvider(loader: (_) async => null);
+      expect(await sessionProvider3.session, isNull);
+    });
+
+    test('should trigger session loader event', () async {
+      String? rKey;
       int refreshCount = 0;
-      int backCount = 0;
+      int loginCount = 0;
       int logoutCount = 0;
-      final provide = SessionProvider(
-        onAccessTokenRefresh: (String refreshToken, _) async {
-          rToken = refreshToken;
-          refreshCount++;
-        },
-        onLoginBack: (_) async {
-          backCount++;
-        },
-        onLogout: () async {
+
+      eventbus.listen((event) async {
+        if (event is LoginEvent) {
+          loginCount++;
+        } else if (event is LogoutEvent) {
           logoutCount++;
+        }
+      });
+
+      final sessionProvider = SessionProvider(
+        loader: (Token? refreshToken) async {
+          rKey = refreshToken!.key;
+          refreshCount++;
+          return null;
         },
       );
-      await provide.login(
-        accessToken: 'fakeAccessToken',
-        accessTokenExpired: DateTime.now().add(const Duration(seconds: -30)),
-        refreshToken: 'refreshAccessToken',
-        refreshTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
+
+      await sessionProvider.login(
+        Session(
+          accessToken: Token(
+            key: 'fakeAccessKey',
+            expired: DateTime.now().add(const Duration(seconds: -30)),
+          ),
+          refreshToken: Token(
+            key: 'fakeRefreshKey',
+            expired: DateTime.now().add(const Duration(seconds: 30)),
+          ),
+        ),
       );
-      var valid = await provide.isLogin();
-      expect(valid, false);
+      var session = await sessionProvider.session;
+      expect(session, isNull);
       expect(refreshCount, 1);
-      expect(rToken, 'refreshAccessToken');
-      expect(backCount, 1);
+      expect(rKey, 'fakeRefreshKey');
+      expect(loginCount, 1);
       expect(logoutCount, 1);
     });
 
-    test('should refresh success', () async {
+    test('should refresh a new session', () async {
       int refreshCount = 0;
-      int backCount = 0;
+      int loginCount = 0;
       int logoutCount = 0;
-      final provide = SessionProvider(
-        onAccessTokenRefresh: (String refreshToken, SessionProvider session) async {
+
+      eventbus.listen((event) async {
+        if (event is LoginEvent) {
+          loginCount++;
+        } else if (event is LogoutEvent) {
+          logoutCount++;
+        }
+      });
+
+      final sessionProvider = SessionProvider(
+        loader: (Token? refreshToken) async {
           refreshCount++;
-          await session.loginByRefreshToken(
-            accessToken: 'fakeAccessToken2',
-            accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
+          return Session(
+            accessToken: Token(
+              key: 'fakeAccessKey2',
+              expired: DateTime.now().add(const Duration(seconds: 30)),
+            ),
+            refreshToken: refreshToken,
           );
         },
-        onLoginBack: (SessionProvider session) async {
-          backCount++;
-        },
-        onLogout: () async {
-          logoutCount++;
-        },
       );
-      await provide.login(
-        accessToken: 'fakeAccessToken',
-        accessTokenExpired: DateTime.now().add(const Duration(seconds: -30)),
-        refreshToken: 'refreshAccessToken',
-        refreshTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
+
+      await sessionProvider.login(
+        Session(
+          accessToken: Token(
+            key: 'fakeAccessKey',
+            expired: DateTime.now().add(const Duration(seconds: -30)),
+          ),
+          refreshToken: Token(
+            key: 'fakeRefreshKey',
+            expired: DateTime.now().add(const Duration(seconds: 30)),
+          ),
+        ),
       );
-      var valid = await provide.isLogin();
-      expect(valid, true);
+      var session = await sessionProvider.session;
+      expect(session, isNotNull);
       expect(refreshCount, 1);
-      expect(backCount, 0);
+      expect(loginCount, 1);
       expect(logoutCount, 0);
     });
 
-    test('should login back success', () async {
+    test('should refresh new access and refresh token', () async {
       int refreshCount = 0;
-      int backCount = 0;
+      int loginCount = 0;
       int logoutCount = 0;
-      final provide = SessionProvider(
-        onAccessTokenRefresh: (String refreshToken, SessionProvider session) async {
+      eventbus.listen((event) async {
+        if (event is LoginEvent) {
+          loginCount++;
+        } else if (event is LogoutEvent) {
+          logoutCount++;
+        }
+      });
+
+      final sessionProvider = SessionProvider(
+        loader: (Token? refreshToken) async {
           refreshCount++;
-        },
-        onLoginBack: (SessionProvider session) async {
-          backCount++;
-          await session.login(
-            accessToken: 'fakeAccessToken2',
-            accessTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
-            refreshToken: 'fakeRefreshToken2',
-            refreshTokenExpired: DateTime.now().add(const Duration(seconds: 30)),
+          return Session(
+            accessToken: Token(
+              key: 'access2',
+              expired: DateTime.now().add(const Duration(seconds: 30)),
+            ),
+            refreshToken: Token(
+              key: 'refresh2',
+              expired: DateTime.now().add(const Duration(seconds: 30)),
+            ),
           );
         },
-        onLogout: () async {
-          logoutCount++;
-        },
       );
-      await provide.login(
-        accessToken: 'fakeAccessToken',
-        accessTokenExpired: DateTime.now().add(const Duration(seconds: -30)),
-        refreshToken: 'refreshAccessToken',
-        refreshTokenExpired: DateTime.now().add(const Duration(seconds: -30)),
+      await sessionProvider.login(
+        Session(
+          accessToken: Token(
+            key: 'access1',
+            expired: DateTime.now().add(const Duration(seconds: -30)),
+          ),
+          refreshToken: Token(
+            key: 'refresh1',
+            expired: DateTime.now().add(const Duration(seconds: -30)),
+          ),
+        ),
       );
-      var valid = await provide.isLogin();
-      expect(valid, true);
-      expect(refreshCount, 0);
-      expect(backCount, 1);
+      var session = await sessionProvider.session;
+      expect(session, isNotNull);
+      expect(session!.refreshToken!.key, 'refresh2');
+      expect(refreshCount, 1);
+      expect(loginCount, 1);
       expect(logoutCount, 0);
     });
   });
