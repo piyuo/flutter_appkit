@@ -89,16 +89,15 @@ class Submit extends StatelessWidget {
 
 /// validate form and show error message to user
 bool validate(
-  BuildContext context, {
-  required FormGroup formGroup,
-}) {
+  FormGroup formGroup,
+) {
   if (!formGroup.dirty && formGroup.valid) {
-    dialog.showInfoBanner(context.i18n.formSavedBanner);
+    dialog.showInfoBanner(delta.globalContext.i18n.formSavedBanner);
     return false;
   }
   if (!formGroup.valid) {
     dialog.showWarningBanner(
-      context.i18n.formAttentionBanner,
+      delta.globalContext.i18n.formAttentionBanner,
       backgroundColor: Colors.red.shade400,
       color: Colors.white,
     );
@@ -130,14 +129,17 @@ Future<bool> submit({
 }
 
 /// isAllowToExit is true mean form can exit
-Future<bool> isAllowToExit(
-  BuildContext context, {
+Future<bool> isAllowToExit({
   required FormGroup formGroup,
   required delta.FutureContextCallback<bool> submitCallback,
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.show(
-        textContent: context.i18n.formContentChangedText, showYes: true, showNo: true, showCancel: true, blurry: false);
+        textContent: delta.globalContext.i18n.formContentChangedText,
+        showYes: true,
+        showNo: true,
+        showCancel: true,
+        blurry: false);
     if (result == true) {
       // user want save
       bool ok = await submit(formGroup: formGroup, callback: submitCallback);

@@ -109,7 +109,7 @@ class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin
     var theme = Theme.of(context);
     final RenderBox referenceBox = context.findRenderObject() as RenderBox;
     splash = InkSplash(
-        controller: Material.of(context) as MaterialInkController,
+        controller: Material.of(context),
         textDirection: TextDirection.ltr,
         containedInkWell: true,
         referenceBox: referenceBox,

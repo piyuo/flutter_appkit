@@ -113,7 +113,7 @@ class FormExample extends StatelessWidget {
           OutlinedButton(
             child: const Text('is allow to exit'),
             onPressed: () {
-              isAllowToExit(context, formGroup: formGroup, submitCallback: (context) async => true);
+              isAllowToExit(formGroup: formGroup, submitCallback: (context) async => true);
             },
           ),
           RatingField<double>(

@@ -96,7 +96,7 @@ class MenuButton<T> extends StatelessWidget {
               // This offset should depend on the largest text and this is tricky when
               // the menu items are changed
               final RenderBox button = context.findRenderObject() as RenderBox;
-              final RenderBox overlay = Overlay.of(context)!.context.findRenderObject() as RenderBox;
+              final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
               final RelativeRect position = RelativeRect.fromRect(
                 Rect.fromPoints(
                   button.localToGlobal(Offset.zero, ancestor: overlay),

@@ -24,7 +24,7 @@ class _ActiveItem implements Comparable<_ActiveItem> {
         shakeItemBuilder = null;
 
   final AnimationController? controller;
-  final AnimatedListRemovedItemBuilder? removedItemBuilder;
+  final AnimatedRemovedItemBuilder? removedItemBuilder;
   final AnimatedListShakeItemBuilder? shakeItemBuilder;
 
   int itemIndex;
@@ -99,7 +99,7 @@ class AnimateGrid extends StatefulWidget {
   ///
   /// Implementations of this callback should assume that
   /// [AnimateGridState.removeItem] removes an item immediately.
-  final AnimatedListItemBuilder itemBuilder;
+  final AnimatedItemBuilder itemBuilder;
 
   /// {@template flutter.widgets.animatedGrid.initialItemCount}
   /// The number of items the list will start with.
@@ -300,7 +300,7 @@ class AnimateGridState extends State<AnimateGrid> with TickerProviderStateMixin<
   /// This method's semantics are the same as Dart's [List.remove] method:
   /// it decreases the length of the list by one and shifts all items at or
   /// before [index] towards the beginning of the list.
-  void removeItem(int index, AnimatedListRemovedItemBuilder builder, {Duration duration = animatedDuration}) {
+  void removeItem(int index, AnimatedRemovedItemBuilder builder, {Duration duration = animatedDuration}) {
     _sliverAnimatedGridKey.currentState!.removeItem(index, builder, duration: duration);
   }
 
@@ -381,7 +381,7 @@ class SliverAnimatedGrid extends StatefulWidget {
   ///
   /// Implementations of this callback should assume that
   /// [SliverAnimatedGridState.removeItem] removes an item immediately.
-  final AnimatedListItemBuilder itemBuilder;
+  final AnimatedItemBuilder itemBuilder;
 
   /// {@macro flutter.widgets.animatedGrid.initialItemCount}
   final int initialItemCount;
@@ -592,7 +592,7 @@ class SliverAnimatedGridState extends State<SliverAnimatedGrid> with TickerProvi
   /// This method's semantics are the same as Dart's [List.remove] method:
   /// it decreases the length of the list by one and shifts all items at or
   /// before [index] towards the beginning of the list.
-  void removeItem(int index, AnimatedListRemovedItemBuilder builder, {Duration duration = animatedDuration}) {
+  void removeItem(int index, AnimatedRemovedItemBuilder builder, {Duration duration = animatedDuration}) {
     final int itemIndex = _indexToItemIndex(index);
     assert(itemIndex >= 0 && itemIndex < itemCount);
     assert(_activeItemAt(_outgoingItems, itemIndex) == null);

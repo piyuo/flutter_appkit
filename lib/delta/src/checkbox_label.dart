@@ -32,8 +32,8 @@ class CheckboxLabel extends StatelessWidget {
 
   Widget _text(BuildContext context) {
     TextStyle style = onChanged == null
-        ? Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).disabledColor)
-        : Theme.of(context).textTheme.bodyText1!;
+        ? Theme.of(context).textTheme.bodyLarge!.copyWith(color: Theme.of(context).disabledColor)
+        : Theme.of(context).textTheme.bodyLarge!;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
