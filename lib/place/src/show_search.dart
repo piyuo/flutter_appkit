@@ -4,6 +4,7 @@ import 'package:libcli/sys/sys.dart' as sys;
 import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/location/location.dart' as location;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'search_bar.dart';
 import 'search_view.dart';
@@ -70,7 +71,7 @@ class ShowSearchProvider with ChangeNotifier {
         }
 
         if (_locations.isEmpty) {
-          dialog.alert(context.i18n.placeErrorLocateYourAddress);
+          dialog.alert(delta.globalContext.i18n.placeErrorLocateYourAddress);
           return;
         }
 

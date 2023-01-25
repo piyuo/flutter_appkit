@@ -61,37 +61,37 @@ class DeltaExample extends StatelessWidget {
         OutlinedButton(
             child: const Text('bluetooth permission'),
             onPressed: () async {
-              var result = await bluetooth(context);
+              var result = await bluetooth;
               debugPrint(result ? 'got permission' : 'denied');
             }),
         OutlinedButton(
             child: const Text('camera permission'),
             onPressed: () async {
-              var result = await camera(context);
+              var result = await camera;
               debugPrint(result ? 'got permission' : 'denied');
             }),
         OutlinedButton(
             child: const Text('photo permission'),
             onPressed: () async {
-              var result = await photo(context);
+              var result = await photo;
               debugPrint(result ? 'got permission' : 'denied');
             }),
         OutlinedButton(
             child: const Text('location permission'),
             onPressed: () async {
-              var result = await location(context);
+              var result = await location;
               debugPrint(result ? 'got permission' : 'denied');
             }),
         OutlinedButton(
             child: const Text('notification permission'),
             onPressed: () async {
-              var result = await notification(context);
+              var result = await notification;
               debugPrint(result ? 'got permission' : 'denied');
             }),
         OutlinedButton(
             child: const Text('microphone permission'),
             onPressed: () async {
-              var result = await microphone(context);
+              var result = await microphone;
               debugPrint(result ? 'got permission' : 'denied');
             }),
       ],

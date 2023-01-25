@@ -7,13 +7,12 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// askPermission return true if user grant permission
-Future<bool> ask(
-  BuildContext context, {
+Future<bool> ask({
   required Permission permission,
   required String name,
   required IconData icon,
 }) async {
-  final iconColor = context.themeColor(
+  final iconColor = delta.globalContext.themeColor(
     light: Colors.grey.shade900,
     dark: Colors.grey.shade100,
   );
@@ -37,10 +36,10 @@ Future<bool> ask(
   }
 
   final gotoSetting = await dialog.show(
-    textContent: context.i18n.permissionAsk.replaceAll('%1', name),
+    textContent: delta.globalContext.i18n.permissionAsk.replaceAll('%1', name),
     icon: icon,
     iconColor: iconColor,
-    yes: context.i18n.permissionGotoSetting,
+    yes: delta.globalContext.i18n.permissionGotoSetting,
     showCancel: true,
   );
   if (gotoSetting == true) {

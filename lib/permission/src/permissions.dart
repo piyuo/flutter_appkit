@@ -2,52 +2,71 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'ask.dart';
 
 /// bluetooth return true if user grant bluetooth permission
-Future<bool> bluetooth(BuildContext context) => ask(
-      context,
+/// ```dart
+/// if (await bluetooth)
+///  // do something
+/// ```
+Future<bool> get bluetooth => ask(
       permission: Permission.bluetoothConnect,
-      name: context.i18n.permissionBluetooth,
+      name: delta.globalContext.i18n.permissionBluetooth,
       icon: Icons.bluetooth,
     );
 
 /// camera return true if user grant camera permission
-Future<bool> camera(BuildContext context) => ask(
-      context,
+/// ```dart
+/// if (await camera)
+///  // do something
+/// ```
+Future<bool> get camera => ask(
       permission: Permission.camera,
-      name: context.i18n.permissionCamera,
+      name: delta.globalContext.i18n.permissionCamera,
       icon: Icons.camera,
     );
 
 /// photo return true if user grant photo permission
-Future<bool> photo(BuildContext context) => ask(
-      context,
+/// ```dart
+/// if (await photo)
+///  // do something
+/// ```
+Future<bool> get photo => ask(
       permission: Permission.photos,
-      name: context.i18n.permissionBluetooth,
+      name: delta.globalContext.i18n.permissionBluetooth,
       icon: Icons.photo,
     );
 
 /// location return true if user grant location permission
-Future<bool> location(BuildContext context) => ask(
-      context,
+/// ```dart
+/// if (await location)
+///  // do something
+/// ```
+Future<bool> get location => ask(
       permission: Permission.location,
-      name: context.i18n.permissionLocation,
+      name: delta.globalContext.i18n.permissionLocation,
       icon: Icons.location_on,
     );
 
 /// notification return true if user grant notification permission
-Future<bool> notification(BuildContext context) => ask(
-      context,
+/// ```dart
+/// if (await notification)
+///  // do something
+/// ```
+Future<bool> get notification => ask(
       permission: Permission.accessNotificationPolicy,
-      name: context.i18n.permissionNotification,
+      name: delta.globalContext.i18n.permissionNotification,
       icon: Icons.notifications,
     );
 
 /// microphone return true if user grant microphone permission
-Future<bool> microphone(BuildContext context) => ask(
-      context,
+/// ```dart
+/// if (await microphone)
+///  // do something
+/// ```
+Future<bool> get microphone => ask(
       permission: Permission.microphone,
-      name: context.i18n.permissionMic,
+      name: delta.globalContext.i18n.permissionMic,
       icon: Icons.mic,
     );
