@@ -211,7 +211,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   bool get isReadyToShow => dataView != null;
 
   /// isReadyForAction return true if provider is ready to do any action
-  Future<bool> isReadyForAction(context) async => dataView != null && await _isAllowToExit(context);
+  Future<bool> isReadyForAction() async => dataView != null && await _isAllowToExit();
 
   /// _setDefaultSelected will select first row if no row selected
   void _setDefaultSelected({String? defaultSelectedID}) {
@@ -275,11 +275,11 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// _isAllowToExit return true if form controller allow to exit
-  Future<bool> _isAllowToExit(context) async {
+  Future<bool> _isAllowToExit() async {
     if (dataView == null || !isSplitView || (!dataView!.hasSelectedRows && creating == null)) {
       return true;
     }
-    final allowed = await formController.isAllowToExit(context);
+    final allowed = await formController.isAllowToExit();
     if (allowed == true && creating != null) {
       await _showNewItemDeleteAnimation();
     }
@@ -303,7 +303,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onItemsSelected call when user select items
   Future<void> onItemsSelected(BuildContext context, List<T> selectedRows) async {
-    if (!await isReadyForAction(context) || selectedRows.isEmpty) {
+    if (!await isReadyForAction() || selectedRows.isEmpty) {
       return;
     }
 
@@ -318,23 +318,24 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onCreateNew called when user press new button
   Future<void> onCreateNew(BuildContext context) async {
-    if (!await isReadyForAction(context)) {
+    final beamer = Beamer.of(context);
+    if (!await isReadyForAction()) {
       return;
     }
 
-    if (!await formController.isAllowToExit(context)) {
+    if (!await formController.isAllowToExit()) {
       return;
     }
 
     if (!isSplitView) {
-      context.beamToNamed('$formRoute/_');
+      beamer.beamToNamed('$formRoute/_');
       return;
     }
 
     dataView?.selectedIDs = [];
     animateViewProvider.setLength(dataView!.displayRows.length + 1);
     animateViewProvider.insertAnimation();
-    creating = await formController.loadNewByView(context, dataView!.dataset);
+    creating = await formController.loadNewByView(dataView!.dataset);
     notifyListeners();
     debugPrint('onAdd');
   }
@@ -383,7 +384,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// refresh called when user tap refresh button
   Future<void> refresh(BuildContext context) async {
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
     final originLength = dataView!.length;
@@ -420,7 +421,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onToggleCheckMode called when user toggle check mode
   Future<void> onToggleCheckMode(BuildContext context) async {
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
     isCheckMode = !isCheckMode;
@@ -437,7 +438,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onListView called when user set to list view
   Future<void> onListView(BuildContext context) async {
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
     if (!isListView) {
@@ -449,7 +450,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onGridView called when user set to grid view
   Future<void> onGridView(BuildContext context) async {
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
     if (isListView) {
@@ -460,33 +461,32 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// _tryRemove try to remove select item, return true if can remove
-  Future<void> _tryRemove(
-      BuildContext context, Future<void> Function(BuildContext context, List<T> list) callback) async {
+  Future<void> _tryRemove(Future<void> Function(List<T> list) callback) async {
     if (creating != null) {
       // don't ask user just delete, avoid isReadyForAction to delete creating first
       await _showNewItemDeleteAnimation();
       return;
     }
 
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
 
     if (isCheckMode) {
       isCheckMode = false;
     }
-    await callback(context, dataView!.getSelectedRows());
+    await callback(dataView!.getSelectedRows());
     await _showDeleteAnimation();
   }
 
   /// onDelete called when user press delete button
-  Future<void> onDelete(BuildContext context) async => await _tryRemove(context, formController.deleteByView);
+  Future<void> onDelete(BuildContext context) async => await _tryRemove(formController.deleteByView);
 
   /// onArchive called when user press archive button
-  Future<void> onArchive(BuildContext context) async => await _tryRemove(context, formController.archiveByView);
+  Future<void> onArchive(BuildContext context) async => await _tryRemove(formController.archiveByView);
 
   /// onRestore called when user press restore button
-  Future<void> onRestore(BuildContext context) async => await _tryRemove(context, formController.restoreByView);
+  Future<void> onRestore(BuildContext context) async => await _tryRemove(formController.restoreByView);
 
   /// _showNewItemDeleteAnimation show animation remove new item from data view
   Future<void> _showNewItemDeleteAnimation() async {
@@ -523,7 +523,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onNextPage called when user press next button
   Future<void> onNextPage(BuildContext context) async {
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
     if (dataView is data.PagedDataView) {
@@ -536,7 +536,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onPreviousPage called when user press previous button
   Future<void> onPreviousPage(BuildContext context) async {
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
     if (dataView is data.PagedDataView) {
@@ -549,7 +549,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onSetRowsPerPage called when user set rows per page
   Future<void> setRowsPerPage(BuildContext context, int rowsPerPage) async {
-    if (!await isReadyForAction(context)) {
+    if (!await isReadyForAction()) {
       return;
     }
     await dataView!.dataset.setRowsPerPage(rowsPerPage);

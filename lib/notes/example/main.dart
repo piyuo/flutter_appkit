@@ -763,7 +763,7 @@ Widget _noteItem(BuildContext context, String id) {
                   child: Center(
                     child: NoteForm<sample.Person>(
                       formController: formController,
-                      onWillPop: () async => formController.isAllowToExit(context),
+                      onWillPop: () async => formController.isAllowToExit(),
                     ),
                   ),
                 ),

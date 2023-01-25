@@ -132,7 +132,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   }
 
   /// loadNewByView load form empty. not data to display
-  Future<T> loadNewByView(BuildContext context, data.Dataset<T> dataset) async {
+  Future<T> loadNewByView(data.Dataset<T> dataset) async {
     final creating = await dataClient.creator();
     await loadByView(dataset: dataset, row: creating);
     formGroup.markAsDirty();
@@ -164,7 +164,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       await NotesProvider.of<T>(context).onDelete(context);
       return;
     }
-    await deleteByView(context, [current!]);
+    await deleteByView([current!]);
     await eventbus.broadcast(NotesRefillEvent(isRemove: true));
   }
 
@@ -177,7 +177,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       await NotesProvider.of<T>(context).onArchive(context);
       return;
     }
-    await archiveByView(context, list);
+    await archiveByView(list);
     await eventbus.broadcast(NotesRefillEvent(isRemove: true));
   }
 
@@ -190,12 +190,12 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       await NotesProvider.of<T>(context).onRestore(context);
       return;
     }
-    await restoreByView(context, list);
+    await restoreByView(list);
     await eventbus.broadcast(NotesRefillEvent(isRemove: true));
   }
 
   /// deleteByView called by view
-  Future<void> deleteByView(BuildContext context, List<T> list) async {
+  Future<void> deleteByView(List<T> list) async {
     await dialog.toastWaitFor(
       showDone: false,
       callback: () => dataClient.delete(list),
@@ -203,12 +203,12 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   }
 
   /// archiveByView called by view
-  Future<void> archiveByView(BuildContext context, List<T> list) async {
+  Future<void> archiveByView(List<T> list) async {
     await dataClient.archive(list);
   }
 
   /// restoreByView called by view
-  Future<void> restoreByView(BuildContext context, List<T> list) async {
+  Future<void> restoreByView(List<T> list) async {
     await dataClient.restore(list);
   }
 
@@ -216,8 +216,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   Widget buildForm(BuildContext context) => formBuilder(context, this);
 
   /// isAllowToExit is true mean can exit
-  Future<bool> isAllowToExit(BuildContext context) async => await form.isAllowToExit(
-        context,
+  Future<bool> isAllowToExit() async => await form.isAllowToExit(
         formGroup: formGroup,
         submitCallback: onSubmit,
       );

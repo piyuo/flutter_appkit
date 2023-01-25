@@ -8,7 +8,6 @@ export 'src/simple_grid.dart';
 export 'src/dynamic_list.dart';
 export 'src/dynamic_grid.dart';
 export 'src/master_detail_view.dart';
-export 'src/selectable.dart';
 export 'src/checkable_header.dart';
 export 'src/tag.dart';
 export 'src/tag_view.dart';
