@@ -1,6 +1,4 @@
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/app/app.dart' as app;
-import 'package:flutter/foundation.dart';
 
 /// serviceMark
 ///
@@ -9,28 +7,6 @@ String baseDomain = 'piyuo.com';
 /// serviceRegion is set if service need tie to specify region, usually when user sign in and they need to to same region where they create the account
 ///
 String serviceRegion = '';
-
-/// serviceUrl return service url base on app.branch
-///
-///     String url = serviceUrl('sys'); // https://auth-us.piyuo.com , https://auth-us-master.piyuo.com
-///
-String serviceUrl(String funcName) {
-  if (!kReleaseMode) {
-    if (app.branch == app.kBranchDebug) {
-      return 'http://localhost:8080/?q';
-    }
-  }
-
-  if (app.branch == app.kBranchStable) {
-    String region = serviceRegion;
-    if (region.isEmpty) {
-      region = determineRegion();
-    }
-    return 'https://$funcName-${region.toLowerCase()}.$baseDomain/?q';
-  }
-  // always use US when not in stable branch
-  return 'https://$funcName-us-${app.branch}.$baseDomain/?q';
-}
 
 /// determineRegion return data center region base on user prefer country in user locale
 ///
