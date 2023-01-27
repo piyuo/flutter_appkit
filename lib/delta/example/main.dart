@@ -30,7 +30,6 @@ main() {
   );
 
   app.start(
-    appName: 'delta',
     routes: {
       '/': (context, state, data) => const DeltaExample(),
     },

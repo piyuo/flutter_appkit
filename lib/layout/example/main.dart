@@ -16,7 +16,6 @@ main() {
   );
 
   app.start(
-    appName: 'layout',
     routes: {
       '/': (context, state, data) => const LayoutExample(),
     },

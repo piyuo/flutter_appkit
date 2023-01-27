@@ -7,7 +7,6 @@ import 'package:libcli/app/app.dart' as app;
 import '../uploader.dart';
 
 main() => app.start(
-      appName: 'uploader',
       routes: {
         '/': (context, state, data) => const UploaderExample(),
       },

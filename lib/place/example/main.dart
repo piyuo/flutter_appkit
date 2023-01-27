@@ -7,7 +7,6 @@ import '../src/open_in_map.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 main() => app.start(
-      appName: 'place',
       routes: {
         '/': (context, state, data) => const PlaceExample(),
       },

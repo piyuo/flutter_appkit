@@ -6,7 +6,6 @@ import 'package:libcli/app/app.dart' as app;
 import '../location.dart';
 
 main() => app.start(
-      appName: 'location',
       routes: {
         '/': (context, state, data) => const LocationExample(),
       },

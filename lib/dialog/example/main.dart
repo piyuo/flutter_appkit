@@ -10,7 +10,6 @@ import 'package:libcli/testing/testing.dart' as testing;
 import '../dialog.dart';
 
 main() => app.start(
-      appName: 'dialog',
       routes: {
         '/': (context, state, data) => cupertinoBottomSheet(const DialogExample()),
       },

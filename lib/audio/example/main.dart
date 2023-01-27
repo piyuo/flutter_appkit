@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import '../src/audio.dart';
 
 main() => app.start(
-      appName: 'audio',
       routes: {
         '/': (context, state, data) => const AudioExample(),
       },

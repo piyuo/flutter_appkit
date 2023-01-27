@@ -6,7 +6,6 @@ import '../responsive.dart';
 
 main() {
   app.start(
-    appName: 'responsive',
     routes: {
       '/': (context, state, data) => dialog.cupertinoBottomSheet(const ResponsiveExample()),
     },

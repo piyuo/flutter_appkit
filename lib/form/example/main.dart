@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 import '../form.dart';
 
 main() => app.start(
-      appName: 'form',
       routes: {
         '/': (context, state, data) => const FormExample(),
       },
