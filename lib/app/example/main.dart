@@ -15,7 +15,8 @@ import '../app.dart';
 
 main() async {
   await start(
-    appName: 'app',
+    name: 'app',
+    builder: () async => const [],
 //    initialRoute: '/other/',
     routes: {
       '/': (context, state, data) => const BeamPage(

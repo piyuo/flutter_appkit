@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'app.dart';
 
 /// LoginEvent is event when user login through UI
 class LoginEvent extends eventbus.Event {}
@@ -123,7 +122,7 @@ class Session {
   }
 }
 
-class SessionProvider extends AppProvider {
+class SessionProvider with ChangeNotifier {
   SessionProvider({
     required this.loader,
   });

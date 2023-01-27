@@ -68,23 +68,31 @@ set userID(String value) {
 }
 
 /// start application
+/// ```dart
+///   await start(
+///    name: 'app',
+///    builder: () async => const [],
+///    routes: {
+///      '/': (context, state, data) => const HomeScreen(),
+///    },
+///   );
+/// ```
 Future<void> start({
-  required String appName,
+  required String name,
   required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
+  required Future<List<SingleChildWidget>> Function() builder,
   String initialRoute = '/',
   LocalizationsDelegate<dynamic>? l10nDelegate,
-  List<SingleChildWidget>? providers,
   String backendBranch = kBranchMaster,
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
   ThemeData? darkTheme,
-  Future<void> Function()? onBeforeStart,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   // init cache && db
-  log.log('[app] start $appName, branch=$branch');
+  log.log('[app] start $name, branch=$branch');
   _branch = branch;
-  _appName = appName;
+  _appName = name;
   _serviceEmail = serviceEmail;
   //Provider.debugCheckInvalidValueType = null;
 
@@ -105,16 +113,15 @@ Future<void> start({
   // init cache
   await cache.init();
 
-  if (onBeforeStart != null) {
-    await onBeforeStart();
-  }
+  // build app provider
+  final providers = await builder();
 
   // run app
   return watch(() => runApp(LifecycleWatcher(
           child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
-          if (providers != null) ...providers,
+          ...providers,
         ],
         child: Consumer<i18n.I18nProvider>(
           builder: (context, i18nProvider, __) => delta.GlobalContextSupport(
@@ -165,11 +172,6 @@ Future<void> start({
           )),
         ),
       ))));
-}
-
-/// AppProvider will load when start app
-abstract class AppProvider with ChangeNotifier {
-  Future<void> load();
 }
 
 /// LifecycleWatcher watch app life cycle
