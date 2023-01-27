@@ -78,9 +78,9 @@ set userID(String value) {
 ///   );
 /// ```
 Future<void> start({
-  required String name,
   required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
-  required Future<List<SingleChildWidget>> Function() builder,
+  String name = '',
+  Future<List<SingleChildWidget>> Function()? builder,
   String initialRoute = '/',
   LocalizationsDelegate<dynamic>? l10nDelegate,
   String backendBranch = kBranchMaster,
@@ -114,7 +114,7 @@ Future<void> start({
   await cache.init();
 
   // build app provider
-  final providers = await builder();
+  final providers = builder == null ? [] : await builder();
 
   // run app
   return watch(() => runApp(LifecycleWatcher(
