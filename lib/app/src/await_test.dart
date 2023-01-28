@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'async_provider.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'await.dart';
 
 void main() {
@@ -76,7 +76,7 @@ class MockOkView extends StatelessWidget {
   }
 }
 
-class MockProvider extends AsyncProvider {
+class MockProvider extends delta.AsyncProvider {
   @override
   Future<void> load(BuildContext context) async {
     await Future.delayed(const Duration(milliseconds: 1), () {});

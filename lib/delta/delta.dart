@@ -11,7 +11,6 @@ export 'src/web_image.dart';
 export 'src/search_bar.dart';
 export 'src/hypertext.dart';
 export 'src/async_provider.dart';
-export 'src/await.dart';
 export 'src/popup.dart';
 export 'src/refresh_more_view.dart';
 export 'src/await_on_tap.dart';

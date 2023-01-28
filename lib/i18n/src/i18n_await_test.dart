@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/app/app.dart' as app;
 import 'test.dart';
 import 'package:libcli/assets/assets.dart' as asset;
 
@@ -48,7 +49,7 @@ class TestWidget extends StatelessWidget {
         ),
       ],
       child: Consumer<MockProvider>(
-          builder: (context, mock, child) => delta.Await(
+          builder: (context, mock, child) => app.Await(
                 [mock],
                 child: widget(mock),
               )),

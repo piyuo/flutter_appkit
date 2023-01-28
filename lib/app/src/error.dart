@@ -8,6 +8,11 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'error_email.dart';
 
+///EmailSupportEvent happen when user click 'Email Us' link
+class EmailSupportEvent {
+  EmailSupportEvent();
+}
+
 eventbus.Subscription? subscribed;
 
 var showCatchedAlert = false;
@@ -139,15 +144,12 @@ Future<void> listened(dynamic e) async {
 
   if (e is command.RequestTimeoutEvent) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
-    var result = await dialog.show(
+    await dialog.show(
       textContent: delta.globalContext.i18n.errorNetworkTimeoutMessage,
-      yes: delta.globalContext.i18n.retryButtonText,
-      cancel: delta.globalContext.i18n.cancelButtonText,
       icon: Icons.alarm,
       footer: errorCode,
       emailUs: true,
     );
-    e.complete(result == true);
     return;
   }
 
@@ -168,20 +170,16 @@ Future<void> listened(dynamic e) async {
           emailUs: true,
         );
       }
-      e.complete(false);
       return;
     }
-    var result = await dialog.show(
+    await dialog.show(
       textContent: delta.globalContext.i18n.errorNetworkNoInternetMessage,
       icon: Icons.wifi_off,
       footer: e.exception?.toString(),
-      yes: delta.globalContext.i18n.retryButtonText,
-      cancel: delta.globalContext.i18n.cancelButtonText,
     );
-    e.complete(result == true);
     return;
   }
-  if (e is eventbus.EmailSupportEvent) {
+  if (e is EmailSupportEvent) {
     final em = ErrorEmail();
     em.launchMailTo();
     return;

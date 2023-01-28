@@ -4,10 +4,10 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 
 /// LoginEvent is event when user login through UI
-class LoginEvent extends eventbus.Event {}
+class LoginEvent {}
 
 /// LogoutEvent is event when user logout
-class LogoutEvent extends eventbus.Event {}
+class LogoutEvent {}
 
 /// SessionLoader called when session expired,
 /// you should use refresh key to exchange new access token, or display UI to let user log back in
@@ -139,7 +139,6 @@ class SessionProvider with ChangeNotifier {
   }
 
   /// _load load data from storage
-  @override
   Future<void> load() async {
     _session = await Session.load();
   }

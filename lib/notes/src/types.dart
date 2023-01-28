@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 
 /// NotesRefillEvent let NotesProvider to refill the list
-class NotesRefillEvent extends eventbus.Event {
+class NotesRefillEvent {
   NotesRefillEvent({
     this.isRemove = false,
     this.isNew = false,

@@ -294,8 +294,7 @@ Widget _error(BuildContext context) {
               contract.isInternetConnected = () async {
                 return false;
               };
-              var ok = await eventbus.broadcast(contract);
-              dialog.toastInfo(ok ? 'retry' : 'cancel');
+              await eventbus.broadcast(contract);
             }
           }),
       ElevatedButton(
@@ -343,16 +342,13 @@ Widget _error(BuildContext context) {
             try {
               throw TimeoutException('client timeout');
             } catch (e) {
-              var ok = await eventbus
-                  .broadcast(command.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
-              dialog.toastInfo(ok ? 'retry' : 'cancel');
+              await eventbus.broadcast(command.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
             }
           }),
       ElevatedButton(
           child: const Text('deadline exceeded'),
           onPressed: () async {
-            var ok = await eventbus.broadcast(command.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
-            dialog.toastInfo(ok ? 'retry' : 'cancel');
+            await eventbus.broadcast(command.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
           }),
       ElevatedButton(
           child: const Text('slow network'), onPressed: () => eventbus.broadcast(command.SlowNetworkEvent())),

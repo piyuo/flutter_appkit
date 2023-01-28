@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'async_provider.dart';
-import 'extensions.dart';
+import 'error.dart';
 
 /// Await load provider in list
-///
 class Await extends StatefulWidget {
-  final List<AsyncProvider> list;
+  final List<delta.AsyncProvider> list;
 
   final Widget child;
 
@@ -45,40 +44,39 @@ class AwaitState extends State<Await> {
   }
 
   /// status return wait if there is a provider need wait, return error if provider is error
-  ///
-  AsyncStatus status() {
+  delta.AsyncStatus status() {
     for (var p in widget.list) {
-      if (p.asyncStatus == AsyncStatus.loading || p.asyncStatus == AsyncStatus.none) {
+      if (p.asyncStatus == delta.AsyncStatus.loading || p.asyncStatus == delta.AsyncStatus.none) {
         log.log('[await] loading');
-        return AsyncStatus.loading;
-      } else if (p.asyncStatus == AsyncStatus.error) {
+        return delta.AsyncStatus.loading;
+      } else if (p.asyncStatus == delta.AsyncStatus.error) {
         log.log('[await] error');
-        return AsyncStatus.error;
+        return delta.AsyncStatus.error;
       }
     }
     log.log('[await] ready');
-    return AsyncStatus.ready;
+    return delta.AsyncStatus.ready;
   }
 
   /// reload provider in list, but skip ready provider
   ///
   void reload(BuildContext context) {
     for (var provider in widget.list) {
-      if (provider.asyncStatus == AsyncStatus.error) {
+      if (provider.asyncStatus == delta.AsyncStatus.error) {
         log.log('[await] reload ${provider.runtimeType}');
-        provider.asyncStatus = AsyncStatus.none;
+        provider.asyncStatus = delta.AsyncStatus.none;
       }
 
-      if (provider.asyncStatus == AsyncStatus.none) {
-        provider.asyncStatus = AsyncStatus.loading;
+      if (provider.asyncStatus == delta.AsyncStatus.none) {
+        provider.asyncStatus = delta.AsyncStatus.loading;
         Future.microtask(() {
           provider.load(context).then((_) {
-            provider.asyncStatus = AsyncStatus.ready;
+            provider.asyncStatus = delta.AsyncStatus.ready;
             provider.notifyListeners();
             log.log('[await] ${provider.runtimeType} loaded');
           }).catchError((e, s) async {
             log.error(e, s);
-            provider.asyncStatus = AsyncStatus.error;
+            provider.asyncStatus = delta.AsyncStatus.error;
             provider.notifyListeners();
           });
         });
@@ -86,14 +84,12 @@ class AwaitState extends State<Await> {
     }
   }
 
-  /// build widget
-  ///
   @override
   Widget build(BuildContext context) {
     switch (status()) {
-      case AsyncStatus.ready:
+      case delta.AsyncStatus.ready:
         return widget.child;
-      case AsyncStatus.error:
+      case delta.AsyncStatus.error:
         return widget.error != null ? widget.error! : const AwaitErrorMessage();
       default:
         return widget.progress != null
@@ -150,7 +146,7 @@ class AwaitErrorMessage extends StatelessWidget {
         ),
         const SizedBox(height: 40),
         InkWell(
-            onTap: () => eventbus.broadcast(eventbus.EmailSupportEvent()),
+            onTap: () => eventbus.broadcast(EmailSupportEvent()),
             child: Icon(
               Icons.email,
               color: Colors.orange[200],
@@ -158,7 +154,7 @@ class AwaitErrorMessage extends StatelessWidget {
             )),
         const SizedBox(width: 10),
         InkWell(
-            onTap: () => eventbus.broadcast(eventbus.EmailSupportEvent()),
+            onTap: () => eventbus.broadcast(EmailSupportEvent()),
             child: Text(
               context.i18n.errorEmailUsLink,
               textAlign: TextAlign.center,

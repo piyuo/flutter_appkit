@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/app/app.dart' as app;
 import 'blurry_container.dart';
 
 const keyAlertButtonYes = Key('alertBtnYes');
@@ -26,7 +27,7 @@ void disableAlert() {
 /// emailUsLink(context);
 /// ```
 Widget emailUsLink(BuildContext context) => InkWell(
-      onTap: () => eventbus.broadcast(eventbus.EmailSupportEvent()),
+      onTap: () => eventbus.broadcast(app.EmailSupportEvent()),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

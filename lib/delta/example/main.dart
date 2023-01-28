@@ -106,8 +106,6 @@ class DeltaExample extends StatelessWidget {
                                 testing.ExampleButton(label: 'web image data', builder: () => _webImageData(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
                                 testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
-                                testing.ExampleButton(label: 'await wait', builder: () => _awaitWait(context)),
-                                testing.ExampleButton(label: 'await error', builder: () => _awaitError(context)),
                                 testing.ExampleButton(label: 'popup', builder: () => _popup(context)),
                                 testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
@@ -584,28 +582,6 @@ class DeltaExample extends StatelessWidget {
     );
   }
 
-  Widget _awaitError(BuildContext context) {
-    return TextButton(
-      child: const Text('provider with problem'),
-      onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return const WrongPage();
-        }));
-      },
-    );
-  }
-
-  Widget _awaitWait(BuildContext context) {
-    return TextButton(
-      child: const Text('provider need wait 30\'s'),
-      onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return const WaitPage();
-        }));
-      },
-    );
-  }
-
   Widget _switching(BuildContext context) {
     return Switching(controller: _switchController);
   }
@@ -832,50 +808,6 @@ class DeltaExample extends StatelessWidget {
                 ),
               ])),
     );
-  }
-}
-
-class WaitProvider extends AsyncProvider {
-  @override
-  Future<void> load(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 30));
-  }
-}
-
-class WaitPage extends StatelessWidget {
-  const WaitPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WaitProvider>(
-        create: (context) => WaitProvider(),
-        child: Consumer<WaitProvider>(
-            builder: (context, provide, child) => Await(
-                  [provide],
-                  child: Container(),
-                )));
-  }
-}
-
-class WrongProvider extends AsyncProvider {
-  @override
-  Future<void> load(BuildContext context) async {
-    throw Exception('load error');
-  }
-}
-
-class WrongPage extends StatelessWidget {
-  const WrongPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WrongProvider>(
-        create: (context) => WrongProvider(),
-        child: Consumer<WrongProvider>(
-            builder: (context, provide, child) => Await(
-                  [provide],
-                  child: Container(),
-                )));
   }
 }
 
