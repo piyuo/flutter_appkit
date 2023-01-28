@@ -5,17 +5,13 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/src/firewall.dart';
-import 'package:libcli/command/src/url.dart';
 import 'package:libcli/command/src/http.dart';
 
 /// Sender define send function use in service, only for test
 typedef Sender = Future<pb.Object> Function(pb.Object command, {pb.Builder? builder});
 
 /// AccessKeyBuilder return access key for action
-typedef AccessKeyBuilder = Future<String?> Function();
-
-/// AccessKeyRemover remove invalid access key
-typedef AccessKeyRemover = Future<void> Function();
+typedef AccessTokenBuilder = Future<String?> Function();
 
 /// Service communicate with server with command using protobuf and command pattern
 /// simplify the network call to request and response
@@ -53,22 +49,39 @@ abstract class Service {
         return 'http://localhost:$debugPort';
       }
     }
-    String region = regionBuilder != null ? '-${regionBuilder!()}' : '';
-    String branch = branchBuilder != null ? '-${branchBuilder!()}' : '';
-    return 'https://$serviceName$region$branch.$baseDomain/?q'; // add ? to avoid cache
+    assert(urlBuilder != null, 'urlBuilder must not be null');
+    assert(accessTokenBuilder != null, 'accessKeyBuilder should not be null');
+    assert(acceptLanguage != null, 'acceptLanguage should not be null');
+    //String region = regionBuilder != null ? '-${regionBuilder!()}' : '';
+    //String branch = branchBuilder != null ? '-${branchBuilder!()}' : '';
+    //return 'https://$serviceName$region$branch.$baseDomain/?q'; // add ? to avoid cache
+    //import 'package:libcli/command/src/url.dart';
+    return urlBuilder!();
   }
 
-  /// accessKeyBuilder return access key that action need
-  AccessKeyBuilder? accessKeyBuilder;
+  /// accessTokenBuilder return access token that action need
+  /// ```dart
+  /// accessTokenBuilder = () async => null;
+  /// ```
+  AccessTokenBuilder? accessTokenBuilder;
 
-  /// accessKeyRemover called when access key is invalid
-  AccessKeyRemover? accessKeyRemover;
+  /// invalidTokenHandler called when access token is invalid
+  Future<void> Function(String? invalidKey)? invalidTokenHandler;
 
-  /// regionBuilder return region that action need
-  String Function()? regionBuilder;
+  /// urlBuilder return region that action need
+  /// ```dart
+  /// urlBuilder = () => 'http://mock';
+  /// ```
+  String Function()? urlBuilder;
 
-  /// branchBuilder return branch that action need
-  String Function()? branchBuilder;
+  /// acceptLanguage set the locale the remote service use
+  /// ```dart
+  /// acceptLanguage = () => 'en-US';
+  /// ```
+  String Function()? acceptLanguage;
+
+  /// sender can set custom send handler for test
+  Sender? sender;
 
   /// send action to remote service, no need to handle exception, all exception are contract to eventBus
   /// ```dart
@@ -82,9 +95,6 @@ abstract class Service {
     return await sendByClient(command, client, builder);
   }
 
-  /// sender can set custom send handler for test
-  Sender? sender;
-
   /// sendByClient send action to remote service,return object if success, return null if exception happen
   /// ```dart
   /// var response = await service.sendByClient(EchoAction());
@@ -95,18 +105,6 @@ abstract class Service {
       result = firewallBegin(action);
     }
     if (result is FirewallPass) {
-      // auto add access token
-      if (action.accessTokenRequired) {
-        assert(accessKeyBuilder != null, 'accessKeyBuilder should not be null');
-        final accessToken = await accessKeyBuilder!();
-        if (accessToken != null) {
-          action.setAccessToken(accessToken);
-        } else {
-          // no access token
-          return pb.Error();
-        }
-      }
-
       log.log('[command] send ${action.jsonString} to $url');
       pb.Object? returnObj;
       try {
@@ -120,16 +118,6 @@ abstract class Service {
               slow: Duration(milliseconds: slow),
             ),
             builder);
-        if (returnObj is pb.Error) {
-          // todo:add invalid access token
-          if (returnObj.code == 'invalidAccessToken') {
-            // remove invalid access token
-            if (accessKeyRemover != null) {
-              await accessKeyRemover!();
-            }
-          }
-        }
-
         return returnObj;
       } finally {
         if (!ignoreFirewall) {

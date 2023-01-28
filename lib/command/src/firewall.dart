@@ -8,18 +8,15 @@ import 'package:libcli/generator/generator.dart' as generator;
 final _blockList = memory.MemoryCache();
 
 /// FirewallBlockEvent happen when command send has been block by command service internal firewall
-///
 class FirewallBlockEvent extends eventbus.Event {
   String reason;
   FirewallBlockEvent(this.reason);
 }
 
 /// FirewallPass is firewall return result
-///
 class FirewallPass extends pb.Empty {}
 
 /// FirewallBlock is firewall return result
-///
 class FirewallBlock extends pb.Empty {
   String reason;
   FirewallBlock(this.reason);
@@ -70,7 +67,6 @@ var blockLongDuration = const Duration(days: 1);
 ///   3. it will cache "LAST_RESPONSE", return last response if same request happen in 30 seconds
 ///   4. it will block command for 1 minutes when receive server "BLOCK_SHORT"
 ///   5. it will block command for 24 hour when receive server "BLOCK_LONG"
-///
 pb.Object firewallBegin(pb.Object action) {
   if (firewallDisable) {
     return FirewallPass();
@@ -114,7 +110,6 @@ pb.Object firewallBegin(pb.Object action) {
 }
 
 /// firewallPostComplete must be call when post complete
-///
 void firewallEnd(pb.Object action, pb.Object? response) {
   if (firewallDisable) {
     return;

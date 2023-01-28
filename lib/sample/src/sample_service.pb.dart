@@ -4,15 +4,18 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/command/command.dart';
 
-
- /// SampleService define sample service, source .proto can be found in /pb/sample
- ///
- ///     final service = SampleService()..sender = (context, action) async {
- ///         return StringResponse()..value = 'fake';
- ///     };
- ///
- class SampleService extends Service {
-  SampleService(): super('sample');
+/// SampleService define sample service, source .proto can be found in /pb/sample
+/// ```dart
+/// final service = SampleService()..sender = (context, action) async {
+///     return StringResponse()..value = 'fake';
+/// };
+/// ```
+class SampleService extends Service {
+  SampleService() : super('sample') {
+    urlBuilder = () => 'http://mock';
+    accessTokenBuilder = () async => null;
+    acceptLanguage = () => 'en-US';
+  }
 
   /// of get SampleService from context
   static SampleService of(BuildContext context) {

@@ -35,49 +35,48 @@ void main() {
     });
 
     test('should handle 500, internal server error', () async {
-      var req = _fakeOkRequest(statusMock(500));
+      var req = _fakeOkRequest(statusMockClient(500));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(eventHappening is InternalServerErrorEvent, true);
     });
 
     test('should handle 501, service is not properly setup', () async {
-      var req = _fakeOkRequest(statusMock(501));
+      var req = _fakeOkRequest(statusMockClient(501));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(eventHappening is ServerNotReadyEvent, true);
     });
 
     test('should handle 504, service context deadline exceeded', () async {
-      var req = _fakeOkRequest(statusMock(504));
+      var req = _fakeOkRequest(statusMockClient(504));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
       expect(contractHappening is RequestTimeoutContract, true);
     });
 
     test('should retry 511 and ok, access token required', () async {
-      var req = _fakeOkRequest(statusMock(511));
+      var req = _fakeOkRequest(statusMockClient(511));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
-      expect(contractHappening is CAccessTokenRequired, true);
+      expect(response is pb.OK, true);
+      expect(_fakeService!.invalidTokenHandlerCallCount, 1);
     });
-
     test('should retry 412 and ok, access token expired', () async {
-      var req = _fakeOkRequest(statusMock(412));
+      var req = _fakeOkRequest(statusMockClient(412));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
-      expect(contractHappening is CAccessTokenExpired, true);
+      expect(response is pb.OK, true);
+      expect(_fakeService!.invalidTokenHandlerCallCount, 1);
     });
 
     test('should retry 402 and ok, payment token expired', () async {
-      var req = _fakeOkRequest(statusMock(402));
+      var req = _fakeOkRequest(statusMockClient(402));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
-      expect(contractHappening is CPaymentTokenRequired, true);
+      expect(response is pb.OK, true);
+      expect(_fakeService!.invalidTokenHandlerCallCount, 1);
     });
 
     test('should handle unknown status', () async {
-      var req = _fakeOkRequest(statusMock(101));
+      var req = _fakeOkRequest(statusMockClient(101));
       expect(() async => {await doPost(req, () => sample.StringResponse())}, throwsException);
     });
 
@@ -131,7 +130,7 @@ MockClient statusOkMock() {
   });
 }
 
-MockClient statusMock(int status) {
+MockClient statusMockClient(int status) {
   bool badNews = true;
   var resp = http.Response('mock', status);
   return MockClient((request) async {
@@ -139,7 +138,7 @@ MockClient statusMock(int status) {
       if (badNews) {
         resp = http.Response('', status);
       } else {
-        resp = http.Response('ok', 200);
+        resp = http.Response.bytes(encode(pb.OK()), 200);
       }
       badNews = !badNews;
     }
@@ -149,14 +148,35 @@ MockClient statusMock(int status) {
 
 /// _FakeService only return pb.OK object
 class _FakeOkService extends Service {
-  _FakeOkService() : super('mock');
+  _FakeOkService() : super('mock') {
+    urlBuilder = () {
+      urlBuilderCallCount++;
+      return 'http://mock';
+    };
+    accessTokenBuilder = () async {
+      accessTokenBuilderCallCount++;
+      return 'mockAccessToken';
+    };
+    invalidTokenHandler = (invalidToken) async {
+      invalidTokenHandlerCallCount++;
+    };
+    acceptLanguage = () => 'en-US';
+  }
+
+  int urlBuilderCallCount = 0;
+
+  int accessTokenBuilderCallCount = 0;
+
+  int invalidTokenHandlerCallCount = 0;
 }
+
+_FakeOkService? _fakeService;
 
 /// _fakeRequest return a fake service request
 Request _fakeOkRequest(MockClient client) {
-  _FakeOkService service = _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK();
+  _fakeService = _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK();
   return Request(
-    service: service,
+    service: _fakeService!,
     client: client,
     action: pb.OK(),
     url: 'http://mock',

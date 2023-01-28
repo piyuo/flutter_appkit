@@ -137,6 +137,7 @@ withLocale(String newLocaleName, Function() function) {
   Intl.withLocale(newLocaleName, function);
 }
 
+/*
 /// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
 ///
 /// var id = localeToAcceptLanguage(Locale('en','US'));
@@ -144,7 +145,7 @@ withLocale(String newLocaleName, Function() function) {
 String localeToAcceptLanguage(Locale value) {
   return '${value.languageCode}-${value.countryCode}';
 }
-
+*/
 /// stringToLocale 'en_US' to Locale(''en,'US')
 ///
 Locale stringToLocale(String value) {
