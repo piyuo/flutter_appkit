@@ -16,6 +16,15 @@ class NoAccessTokenEvent extends eventbus.Event {}
 /// TooManyRetryEvent happen when action retry count exceed limit
 class TooManyRetryEvent extends eventbus.Event {}
 
+/// AccessTokenRevokedEvent happen when access token is revoked
+class AccessTokenRevokedEvent extends eventbus.Event {
+  AccessTokenRevokedEvent(this.invalidToken);
+  final String? invalidToken;
+}
+
+/// ForceLogOutEvent happen when remote service force user to logout
+class ForceLogOutEvent extends eventbus.Event {}
+
 /// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
 class RequestTimeoutContract extends eventbus.Contract {
   final String url;

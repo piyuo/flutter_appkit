@@ -112,17 +112,14 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
         return await giveup(ServerNotReadyEvent()); //body is err id
       case 504: // service context deadline exceeded
         log.log('[http] caught 504 deadline exceeded ${r.url}, body:${resp.body}');
-        return await retry(builder,
-            contract: RequestTimeoutContract(isServer: true, errorID: resp.body, url: r.url),
-            request: r); //body is err id
+        return await retry(
+            builder, RequestTimeoutContract(isServer: true, errorID: resp.body, url: r.url), r); //body is err id
       // todo: handle 511 on remote
       case 511: // force logout
-        await r.service.forceLogoutHandler?.call();
-        return await retry(builder, request: r);
+        return await retry(builder, ForceLogOutEvent(), r);
       case 412: // access token expired
       case 402: // payment token expired
-        await r.service.invalidTokenHandler?.call(accessToken);
-        return await retry(builder, request: r);
+        return await retry(builder, AccessTokenRevokedEvent(accessToken), r);
       case 400: // bad request
         return await giveup(BadRequestEvent()); //body is err id
     }
@@ -130,11 +127,10 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
     throw Exception('unknown $msg');
   } on SocketException catch (e) {
     log.log('[http] failed to connect ${r.url} cause $e');
-    return await retry(builder, contract: InternetRequiredContract(exception: e, url: r.url), request: r);
+    return await retry(builder, InternetRequiredContract(exception: e, url: r.url), r);
   } on TimeoutException catch (e) {
     log.log('[http] connect timeout ${r.url} cause $e');
-    return await retry(builder,
-        contract: RequestTimeoutContract(isServer: false, exception: e, url: r.url), request: r);
+    return await retry(builder, RequestTimeoutContract(isServer: false, exception: e, url: r.url), r);
   }
   //throw everything else
   //catch (e, s) {
@@ -158,25 +154,13 @@ Future<pb.Object> giveup(dynamic e) async {
 /// ```dart
 /// await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 /// ```
-Future<pb.Object> retry(
-  pb.Builder? builder, {
-  eventbus.Contract? contract,
-  required Request request,
-}) async {
+Future<pb.Object> retry(pb.Builder? builder, eventbus.Event event, Request request) async {
   if (request.isRetry) {
     // if already in retry, giveup
     return await giveup(TooManyRetryEvent());
   }
   request.isRetry = true;
-
-  bool result = true;
-  if (contract != null) {
-    result = await eventbus.broadcast(contract);
-  }
-
-  if (result) {
-    log.log('[http] try again');
-    return await doPost(request, builder);
-  }
-  return pb.empty;
+  await eventbus.broadcast(event);
+  log.log('[http] try again');
+  return await doPost(request, builder);
 }

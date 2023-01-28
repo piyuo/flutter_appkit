@@ -55,24 +55,24 @@ void main() {
       expect(contractHappening is RequestTimeoutContract, true);
     });
 
-    test('should retry 511 and ok, access token required', () async {
+    test('should retry 511 and ok, logout required', () async {
       var req = _fakeOkRequest(statusMockClient(511));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.OK, true);
-      expect(_fakeService!.forceLogoutHandlerCallCount, 1);
+      expect(eventHappening is ForceLogOutEvent, isTrue);
     });
     test('should retry 412 and ok, access token expired', () async {
       var req = _fakeOkRequest(statusMockClient(412));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.OK, true);
-      expect(_fakeService!.invalidTokenHandlerCallCount, 1);
+      expect(eventHappening is AccessTokenRevokedEvent, isTrue);
     });
 
     test('should retry 402 and ok, payment token expired', () async {
       var req = _fakeOkRequest(statusMockClient(402));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.OK, true);
-      expect(_fakeService!.invalidTokenHandlerCallCount, 1);
+      expect(eventHappening is AccessTokenRevokedEvent, isTrue);
     });
 
     test('should handle unknown status', () async {
@@ -157,22 +157,12 @@ class _FakeOkService extends Service {
       accessTokenBuilderCallCount++;
       return 'mockAccessToken';
     };
-    forceLogoutHandler = () async {
-      forceLogoutHandlerCallCount++;
-    };
-    invalidTokenHandler = (invalidToken) async {
-      invalidTokenHandlerCallCount++;
-    };
     acceptLanguage = () => 'en-US';
   }
 
   int urlBuilderCallCount = 0;
 
   int accessTokenBuilderCallCount = 0;
-
-  int invalidTokenHandlerCallCount = 0;
-
-  int forceLogoutHandlerCallCount = 0;
 }
 
 _FakeOkService? _fakeService;
