@@ -112,11 +112,10 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
         return await giveup(ServerNotReadyEvent()); //body is err id
       case 504: // service context deadline exceeded
         log.log('[http] caught 504 deadline exceeded ${r.url}, body:${resp.body}');
-        return await retry(
-            builder, RequestTimeoutContract(isServer: true, errorID: resp.body, url: r.url), r); //body is err id
+        return await giveup(RequestTimeoutEvent(isServer: true, errorID: resp.body, url: r.url)); //body is err id
       // todo: handle 511 on remote
       case 511: // force logout
-        return await retry(builder, ForceLogOutEvent(), r);
+        return await giveup(ForceLogOutEvent());
       case 412: // access token expired
       case 402: // payment token expired
         return await retry(builder, AccessTokenRevokedEvent(accessToken), r);
@@ -127,10 +126,10 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
     throw Exception('unknown $msg');
   } on SocketException catch (e) {
     log.log('[http] failed to connect ${r.url} cause $e');
-    return await retry(builder, InternetRequiredContract(exception: e, url: r.url), r);
+    return await giveup(InternetRequiredEvent(exception: e, url: r.url));
   } on TimeoutException catch (e) {
     log.log('[http] connect timeout ${r.url} cause $e');
-    return await retry(builder, RequestTimeoutContract(isServer: false, exception: e, url: r.url), r);
+    return await giveup(RequestTimeoutEvent(isServer: false, exception: e, url: r.url));
   }
   //throw everything else
   //catch (e, s) {

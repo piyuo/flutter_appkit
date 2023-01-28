@@ -39,7 +39,7 @@ void main() {
       req.timeout = const Duration(milliseconds: 1);
       var obj = await doPost(req, () => sample.StringResponse());
       expect(obj is pb.Empty, true);
-      expect(lastEvent is RequestTimeoutContract, true);
+      expect(lastEvent is RequestTimeoutEvent, true);
     });
   });
 }

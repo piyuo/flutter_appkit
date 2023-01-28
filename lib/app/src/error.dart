@@ -137,7 +137,7 @@ Future<void> listened(dynamic e) async {
     return;
   }
 
-  if (e is command.RequestTimeoutContract) {
+  if (e is command.RequestTimeoutEvent) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     var result = await dialog.show(
       textContent: delta.globalContext.i18n.errorNetworkTimeoutMessage,
@@ -151,7 +151,7 @@ Future<void> listened(dynamic e) async {
     return;
   }
 
-  if (e is command.InternetRequiredContract) {
+  if (e is command.InternetRequiredEvent) {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.show(

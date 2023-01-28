@@ -47,7 +47,7 @@ void main() {
       var req = _fakeOkRequest(statusMockClient(504));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
-      expect(contractHappening is RequestTimeoutContract, true);
+      expect(contractHappening is RequestTimeoutEvent, true);
     });
 
     test('should retry 511 and ok, logout required', () async {

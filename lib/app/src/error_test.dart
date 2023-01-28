@@ -83,7 +83,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          var contract = command.InternetRequiredContract(url: 'http://mock');
+          var contract = command.InternetRequiredEvent(url: 'http://mock');
           contract.isInternetConnected = () async {
             return true;
           };
@@ -105,7 +105,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          var contract = command.InternetRequiredContract(url: 'http://mock');
+          var contract = command.InternetRequiredEvent(url: 'http://mock');
           contract.isInternetConnected = () async {
             return true;
           };
@@ -172,7 +172,7 @@ void main() {
           try {
             throw TimeoutException('client timeout');
           } catch (e) {
-            await eventbus.broadcast(command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
+            await eventbus.broadcast(command.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
           }
         }),
       );
@@ -187,7 +187,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
+          await eventbus.broadcast(command.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);

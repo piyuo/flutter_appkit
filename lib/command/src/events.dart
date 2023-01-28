@@ -24,8 +24,8 @@ class AccessTokenRevokedEvent {
 /// ForceLogOutEvent happen when remote service force user to logout
 class ForceLogOutEvent {}
 
-/// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
-class RequestTimeoutContract {
+/// RequestTimeoutEvent happen when [TimeoutException] is thrown or [service meet context deadline exceed]
+class RequestTimeoutEvent {
   final String url;
   final bool isServer;
   final dynamic exception;
@@ -33,7 +33,7 @@ class RequestTimeoutContract {
   /// errorID will be set if is server timeout
   final String errorID;
 
-  RequestTimeoutContract({
+  RequestTimeoutEvent({
     this.exception,
     required this.url,
     required this.isServer,
@@ -44,14 +44,11 @@ class RequestTimeoutContract {
 /// SlowNetworkEvent happen when command [execute longer than usual]
 class SlowNetworkEvent {}
 
-/// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
-class ERefuseSignin {}
-
-/// InternetRequiredContract happen when [SocketException] [internet not connected], listener need let user connect to the internet then report back
-class InternetRequiredContract {
+/// InternetRequiredEvent happen when [SocketException] [internet not connected], listener need let user connect to the internet then report back
+class InternetRequiredEvent {
   final dynamic exception;
   final String url;
-  InternetRequiredContract({
+  InternetRequiredEvent({
     this.exception,
     required this.url,
   });

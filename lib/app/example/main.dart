@@ -290,7 +290,7 @@ Widget _error(BuildContext context) {
             try {
               throw const SocketException('wifi off');
             } catch (e) {
-              var contract = command.InternetRequiredContract(exception: e, url: 'http://mock');
+              var contract = command.InternetRequiredEvent(exception: e, url: 'http://mock');
               contract.isInternetConnected = () async {
                 return false;
               };
@@ -301,7 +301,7 @@ Widget _error(BuildContext context) {
       ElevatedButton(
           child: const Text('service not available'),
           onPressed: () async {
-            var contract = command.InternetRequiredContract(url: 'http://mock');
+            var contract = command.InternetRequiredEvent(url: 'http://mock');
             contract.isInternetConnected = () async {
               return true;
             };
@@ -313,7 +313,7 @@ Widget _error(BuildContext context) {
       ElevatedButton(
           child: const Text('internet blocked'),
           onPressed: () async {
-            var contract = command.InternetRequiredContract(url: 'http://mock');
+            var contract = command.InternetRequiredEvent(url: 'http://mock');
             contract.isInternetConnected = () async {
               return true;
             };
@@ -344,14 +344,14 @@ Widget _error(BuildContext context) {
               throw TimeoutException('client timeout');
             } catch (e) {
               var ok = await eventbus
-                  .broadcast(command.RequestTimeoutContract(isServer: false, exception: e, url: 'http://mock'));
+                  .broadcast(command.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
               dialog.toastInfo(ok ? 'retry' : 'cancel');
             }
           }),
       ElevatedButton(
           child: const Text('deadline exceeded'),
           onPressed: () async {
-            var ok = await eventbus.broadcast(command.RequestTimeoutContract(isServer: true, url: 'http://mock'));
+            var ok = await eventbus.broadcast(command.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
             dialog.toastInfo(ok ? 'retry' : 'cancel');
           }),
       ElevatedButton(
