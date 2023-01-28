@@ -154,7 +154,7 @@ Future<pb.Object> giveup(dynamic e) async {
 /// ```dart
 /// await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 /// ```
-Future<pb.Object> retry(pb.Builder? builder, eventbus.Event event, Request request) async {
+Future<pb.Object> retry(pb.Builder? builder, dynamic event, Request request) async {
   if (request.isRetry) {
     // if already in retry, giveup
     return await giveup(TooManyRetryEvent());

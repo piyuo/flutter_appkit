@@ -2,13 +2,12 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'eventbus.dart';
-import 'types.dart';
 
-class MyEvent extends Event {
+class MyEvent {
   String value = '';
 }
 
-class MyEvent2 extends Event {
+class MyEvent2 {
   String value = '';
 }
 

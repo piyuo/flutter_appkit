@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:libcli/log/log.dart' as log;
-import 'types.dart';
-
-/// latestEvent is used for testing purpose
-@visibleForTesting
-Event? latest;
 
 /// Listener is listener for event bus
 class Listener {
@@ -82,8 +77,7 @@ Subscription listen<T>(
 /// });
 /// eventbus.broadcast(ctx,MockEventA('a1'));
 /// ```
-Future<bool> broadcast(Event event) async {
-  latest = event;
+Future<void> broadcast(dynamic event) async {
   log.log('[eventbus] broadcast ${event.runtimeType}');
 
   for (var i = _listeners.length - 1; i >= 0; i--) {
@@ -93,11 +87,11 @@ Future<bool> broadcast(Event event) async {
     } catch (e, s) {
       log.error(e, s);
     }
-    if (event is Contract && event.isComplete) {
-      break;
-    }
+//    if (event is Contract && event.isComplete) {
+    //    break;
+    //}
   }
-
+  /*
   if (event is Contract) {
     if (event.isComplete == false) {
       log.log('[eventbus] caught no listener for ${event.runtimeType}');
@@ -106,4 +100,5 @@ Future<bool> broadcast(Event event) async {
     return event.ok;
   }
   return false;
+  */
 }

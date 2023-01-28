@@ -15,15 +15,10 @@ void main() {
   dynamic eventHappening;
 
   setUp(() async {
-    contractHappening = null;
     eventHappening = null;
     eventbus.clearListeners();
     eventbus.listen((e) async {
-      if (e is eventbus.Contract) {
-        contractHappening = e;
-      } else {
-        eventHappening = e;
-      }
+      eventHappening = e;
     });
   });
 

@@ -9,19 +9,13 @@ import 'package:libcli/command/src/events.dart';
 import 'package:libcli/command/src/http.dart';
 
 void main() {
-  dynamic contract;
+  dynamic lastEvent;
 
   setUp(() async {
-    contract = null;
+    lastEvent = null;
     eventbus.clearListeners();
     eventbus.listen((e) async {
-      if (e is eventbus.Contract) {
-        contract = e;
-      }
-    });
-
-    eventbus.listen<eventbus.Contract>((e) async {
-      e.complete(true);
+      lastEvent = e;
     });
   });
 
@@ -45,7 +39,7 @@ void main() {
       req.timeout = const Duration(milliseconds: 1);
       var obj = await doPost(req, () => sample.StringResponse());
       expect(obj is pb.Empty, true);
-      expect(contract is RequestTimeoutContract, true);
+      expect(lastEvent is RequestTimeoutContract, true);
     });
   });
 }

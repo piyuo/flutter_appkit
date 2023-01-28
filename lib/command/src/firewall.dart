@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/memory/memory.dart' as memory;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/generator/generator.dart' as generator;
@@ -8,7 +7,7 @@ import 'package:libcli/generator/generator.dart' as generator;
 final _blockList = memory.MemoryCache();
 
 /// FirewallBlockEvent happen when command send has been block by command service internal firewall
-class FirewallBlockEvent extends eventbus.Event {
+class FirewallBlockEvent {
   String reason;
   FirewallBlockEvent(this.reason);
 }

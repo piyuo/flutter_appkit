@@ -1,32 +1,31 @@
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/util/util.dart' as util;
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
-class InternalServerErrorEvent extends eventbus.Event {}
+class InternalServerErrorEvent {}
 
 /// ServerNotReadyEvent happen when [service return 501 the remote service is not properly setup], need let user know their network is slow than usual
-class ServerNotReadyEvent extends eventbus.Event {}
+class ServerNotReadyEvent {}
 
 /// BadRequestEvent happen when [service return 400 bad request], need let user know their network is slow than usual
-class BadRequestEvent extends eventbus.Event {}
+class BadRequestEvent {}
 
 /// NoAccessTokenEvent happen when action need access token and service cannot provide one
-class NoAccessTokenEvent extends eventbus.Event {}
+class NoAccessTokenEvent {}
 
 /// TooManyRetryEvent happen when action retry count exceed limit
-class TooManyRetryEvent extends eventbus.Event {}
+class TooManyRetryEvent {}
 
 /// AccessTokenRevokedEvent happen when access token is revoked
-class AccessTokenRevokedEvent extends eventbus.Event {
+class AccessTokenRevokedEvent {
   AccessTokenRevokedEvent(this.invalidToken);
   final String? invalidToken;
 }
 
 /// ForceLogOutEvent happen when remote service force user to logout
-class ForceLogOutEvent extends eventbus.Event {}
+class ForceLogOutEvent {}
 
 /// RequestTimeoutContract happen when [TimeoutException] is thrown or [service meet context deadline exceed]
-class RequestTimeoutContract extends eventbus.Contract {
+class RequestTimeoutContract {
   final String url;
   final bool isServer;
   final dynamic exception;
@@ -43,13 +42,13 @@ class RequestTimeoutContract extends eventbus.Contract {
 }
 
 /// SlowNetworkEvent happen when command [execute longer than usual]
-class SlowNetworkEvent extends eventbus.Event {}
+class SlowNetworkEvent {}
 
 /// ERefuseSignin happen when [user refuse to  sign in], let user know they need signin or register account
-class ERefuseSignin extends eventbus.Event {}
+class ERefuseSignin {}
 
 /// InternetRequiredContract happen when [SocketException] [internet not connected], listener need let user connect to the internet then report back
-class InternetRequiredContract extends eventbus.Contract {
+class InternetRequiredContract {
   final dynamic exception;
   final String url;
   InternetRequiredContract({
