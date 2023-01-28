@@ -59,7 +59,7 @@ void main() {
       var req = _fakeOkRequest(statusMockClient(511));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.OK, true);
-      expect(_fakeService!.invalidTokenHandlerCallCount, 1);
+      expect(_fakeService!.forceLogoutHandlerCallCount, 1);
     });
     test('should retry 412 and ok, access token expired', () async {
       var req = _fakeOkRequest(statusMockClient(412));
@@ -157,6 +157,9 @@ class _FakeOkService extends Service {
       accessTokenBuilderCallCount++;
       return 'mockAccessToken';
     };
+    forceLogoutHandler = () async {
+      forceLogoutHandlerCallCount++;
+    };
     invalidTokenHandler = (invalidToken) async {
       invalidTokenHandlerCallCount++;
     };
@@ -168,6 +171,8 @@ class _FakeOkService extends Service {
   int accessTokenBuilderCallCount = 0;
 
   int invalidTokenHandlerCallCount = 0;
+
+  int forceLogoutHandlerCallCount = 0;
 }
 
 _FakeOkService? _fakeService;

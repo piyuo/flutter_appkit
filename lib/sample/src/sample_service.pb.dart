@@ -15,6 +15,7 @@ class SampleService extends Service {
     urlBuilder = () => 'http://mock';
     accessTokenBuilder = () async => null;
     acceptLanguage = () => 'en-US';
+    forceLogoutHandler = () async {};
   }
 
   /// of get SampleService from context

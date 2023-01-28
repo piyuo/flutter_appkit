@@ -115,7 +115,10 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
         return await retry(builder,
             contract: RequestTimeoutContract(isServer: true, errorID: resp.body, url: r.url),
             request: r); //body is err id
-      case 511: // access token required
+      // todo: handle 511 on remote
+      case 511: // force logout
+        await r.service.forceLogoutHandler?.call();
+        return await retry(builder, request: r);
       case 412: // access token expired
       case 402: // payment token expired
         await r.service.invalidTokenHandler?.call(accessToken);

@@ -51,6 +51,7 @@ abstract class Service {
     }
     assert(urlBuilder != null, 'urlBuilder must not be null');
     assert(accessTokenBuilder != null, 'accessKeyBuilder should not be null');
+    assert(forceLogoutHandler != null, 'forceLogoutHandler should not be null');
     assert(acceptLanguage != null, 'acceptLanguage should not be null');
     //String region = regionBuilder != null ? '-${regionBuilder!()}' : '';
     //String branch = branchBuilder != null ? '-${branchBuilder!()}' : '';
@@ -67,6 +68,9 @@ abstract class Service {
 
   /// invalidTokenHandler called when access token is invalid
   Future<void> Function(String? invalidKey)? invalidTokenHandler;
+
+  /// forceLogoutHandler called when remote service force logout
+  Future<void> Function()? forceLogoutHandler;
 
   /// urlBuilder return region that action need
   /// ```dart
