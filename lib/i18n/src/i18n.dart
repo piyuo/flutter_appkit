@@ -88,30 +88,27 @@ class _I18nDelegate extends LocalizationsDelegate<Locale> {
 
 extension I18nString on String {
   /// replace1 replace %1 to value
-  ///
-  ///     str.replace1('value1');
-  ///
+  /// ```dart
+  /// str.replace1('value1');
+  /// ```
   String replace1(String value) => replaceAll('%1', value);
 
   /// replace2 replace %1 to value1 and %2 to value2
-  ///
-  ///     str.replace2('value1','value2');
-  ///
+  /// ```dart
+  /// str.replace2('value1','value2');
+  /// ```
   String replace2(String value1, String value2) => replaceAll('%1', value1).replaceAll('%2', value2);
 
   /// replace2 replace %1 to value1 and %2 to value2 and %3 to value3
-  ///
-  ///     str.replace3('value1','value2','value3');
-  ///
+  /// ```dart
+  /// str.replace3('value1','value2','value3');
+  /// ```
   String replace3(String value1, String value2, String value3) =>
       replaceAll('%1', value1).replaceAll('%2', value2).replaceAll('%3', value3);
 }
 
 extension I18nBuildContext on BuildContext {
   /// i18n return AppLocalizations of current context
-  ///
-  ///     context.i18n;
-  ///
   LibLocalizations get i18n => Localizations.of<LibLocalizations>(this, LibLocalizations) ?? LibLocalizationsEn();
 }
 
@@ -132,20 +129,18 @@ void mockLocale(String newLocaleName) => Intl.defaultLocale = newLocaleName;
 String get countryCode => locale.countryCode ?? 'US';
 
 /// withLocale run function in Intl zone
-///
 withLocale(String newLocaleName, Function() function) {
   Intl.withLocale(newLocaleName, function);
 }
 
-/*
 /// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
-///
+/// ```dart
 /// var id = localeToAcceptLanguage(Locale('en','US'));
-///
+/// ```
 String localeToAcceptLanguage(Locale value) {
   return '${value.languageCode}-${value.countryCode}';
 }
-*/
+
 /// stringToLocale 'en_US' to Locale(''en,'US')
 ///
 Locale stringToLocale(String value) {
@@ -155,9 +150,9 @@ Locale stringToLocale(String value) {
 }
 
 /// timestamp create TimeStamp and convert datetime to utc, if datetime is null use DateTime.now()
-///
-///      var t = timestamp();
-///
+/// ```dart
+/// var t = timestamp();
+/// ```
 google.Timestamp timestamp({
   DateTime? datetime,
 }) {
@@ -166,50 +161,49 @@ google.Timestamp timestamp({
 }
 
 /// I18nTime add time function to TimeStamp
-///
 extension I18nTime on google.Timestamp {
   /// local return local datetime
-  ///
-  ///     var d = DateTime(2021, 1, 2, 23, 30);
-  ///     var t = timestamp();
-  ///     t.local = d;
-  ///     expect(t.local, d);
-  ///
+  /// ```dart
+  /// var d = DateTime(2021, 1, 2, 23, 30);
+  /// var t = timestamp();
+  /// t.local = d;
+  /// expect(t.local, d);
+  /// ```
   DateTime get local {
     return toDateTime().toLocal();
   }
 
   /// local set local datetime
-  ///
-  ///     var d = DateTime(2021, 1, 2, 23, 30);
-  ///     var t = timestamp();
-  ///     t.local = d;
-  ///     expect(t.local, d);
-  ///
+  /// ```dart
+  /// var d = DateTime(2021, 1, 2, 23, 30);
+  /// var t = timestamp();
+  /// t.local = d;
+  /// expect(t.local, d);
+  /// ```
   set local(DateTime d) {
     google_mixin.TimestampMixin.setFromDateTime(this, d.toUtc());
   }
 
   /// localDateString return local date string in current locale
-  ///
-  ///     expect(t.localDateString, 'Jan 2, 2021');
-  ///
+  /// ```dart
+  /// expect(t.localDateString, 'Jan 2, 2021');
+  /// ```
   String get localDateString {
     return formatDate(local);
   }
 
   /// localDateTimeString return local date time string in current locale
-  ///
-  ///     expect(t.localTimeString, '11:30 PM');
-  ///
+  /// ```dart
+  /// expect(t.localTimeString, '11:30 PM');
+  /// ```
   String get localDateTimeString {
     return formatDateTime(local);
   }
 
   /// localDateString return local time string in current locale
-  ///
-  ///     expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
-  ///
+  /// ```dart
+  /// expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
+  /// ```
   String get localTimeString {
     return formatTime(local);
   }

@@ -37,7 +37,8 @@ void main() {
     });
 
     test('should format currency', () async {
-      expect(formatCurrency(10), '\$10.00');
+      Intl.defaultLocale = 'zh_CN';
+      expect(formatCurrency(10), '¥10.00');
     });
   });
 }
