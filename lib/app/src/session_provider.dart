@@ -93,6 +93,9 @@ class Session {
   /// operator []= set args
   operator []=(String i, dynamic value) => args[i] = value; // set
 
+  /// containsKey check if args contains key
+  bool containsKey(String key) => args.containsKey(key);
+
   /// save session to preferences
   Future<void> save() async {
     await accessTicket.save(_kAccessToken);
