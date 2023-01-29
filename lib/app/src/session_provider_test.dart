@@ -62,7 +62,7 @@ void main() {
       final sessionProvider = SessionProvider(loader: (_) async => null);
       final aExpired = DateTime.now().add(const Duration(seconds: 300));
       final rExpired = DateTime.now().add(const Duration(seconds: 100));
-      expect(await sessionProvider.session, isNull);
+      expect(await sessionProvider.getSession(), isNull);
       await sessionProvider.login(Session(
         accessTicket: Ticket(
           token: 'fakeAccessKey',
@@ -78,7 +78,7 @@ void main() {
           'region': 'region1',
         },
       ));
-      final session = await sessionProvider.session;
+      final session = await sessionProvider.getSession();
       expect(session, isNotNull);
       expect(session!['user'], 'user1');
       expect(session['img'], 'img1');
@@ -86,7 +86,7 @@ void main() {
 
       final sessionProvider2 = SessionProvider(loader: (_) async => null);
       await sessionProvider2.load();
-      final session2 = await sessionProvider2.session;
+      final session2 = await sessionProvider2.getSession();
       expect(session2, isNotNull);
       expect(session2!.isValid, isTrue);
       expect(session2.accessTicket.token, 'fakeAccessKey');
@@ -100,7 +100,7 @@ void main() {
       sessionProvider2.logout();
 
       final sessionProvider3 = SessionProvider(loader: (_) async => null);
-      expect(await sessionProvider3.session, isNull);
+      expect(await sessionProvider3.getSession(), isNull);
     });
 
     test('should trigger session loader event', () async {
@@ -137,7 +137,7 @@ void main() {
           ),
         ),
       );
-      var session = await sessionProvider.session;
+      var session = await sessionProvider.getSession();
       expect(session, isNull);
       expect(refreshCount, 1);
       expect(rKey, 'fakeRefreshKey');
@@ -183,7 +183,7 @@ void main() {
           ),
         ),
       );
-      var session = await sessionProvider.session;
+      var session = await sessionProvider.getSession();
       expect(session, isNotNull);
       expect(refreshCount, 1);
       expect(loginCount, 1);
@@ -229,7 +229,7 @@ void main() {
           ),
         ),
       );
-      var session = await sessionProvider.session;
+      var session = await sessionProvider.getSession();
       expect(session, isNotNull);
       expect(session!.refreshTicket!.token, 'refresh2');
       expect(refreshCount, 1);
@@ -250,12 +250,12 @@ void main() {
         ),
       );
 
-      var session = await sessionProvider.session;
+      var session = await sessionProvider.getSession();
       expect(session, isNotNull);
       await eventbus.broadcast(command.AccessTokenRevokedEvent('invalid'));
       expect(session!.isValid, isFalse);
 
-      var session2 = await sessionProvider.session;
+      var session2 = await sessionProvider.getSession();
       expect(session2, isNull);
     });
 
@@ -276,12 +276,12 @@ void main() {
         ),
       );
 
-      var session = await sessionProvider.session;
+      var session = await sessionProvider.getSession();
       expect(session, isNotNull);
       await eventbus.broadcast(command.ForceLogOutEvent());
       expect(session!.isValid, isFalse);
 
-      var session2 = await sessionProvider.session;
+      var session2 = await sessionProvider.getSession();
       expect(session2, isNull);
     });
   });

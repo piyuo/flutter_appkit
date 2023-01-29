@@ -117,8 +117,8 @@ class Session {
     return null;
   }
 
-  /// delete session from preferences
-  static Future<void> delete() async {
+  /// remove session from preferences
+  static Future<void> remove() async {
     await preferences.remove(_kAccessToken);
     await preferences.remove(_kRefreshToken);
     await preferences.remove(_kArgs);
@@ -166,8 +166,8 @@ class SessionProvider with ChangeNotifier {
     _session = await Session.load();
   }
 
-  /// session return session if valid
-  Future<Session?> get session async {
+  /// getSession return session if valid
+  Future<Session?> getSession() async {
     if (_session != null && _session!.isValid) {
       return _session;
     }
@@ -214,7 +214,7 @@ class SessionProvider with ChangeNotifier {
     bool hasSession = _session != null;
     _session?.accessTicket.token = '';
     _session = null;
-    await Session.delete();
+    await Session.remove();
     if (hasSession) {
       await eventbus.broadcast(LogoutEvent());
     }
