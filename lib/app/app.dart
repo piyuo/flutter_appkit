@@ -6,3 +6,4 @@ export 'src/beam_link.dart';
 export 'src/error.dart';
 export 'src/session_provider.dart';
 export 'src/await.dart';
+export 'src/backend_branch.dart';

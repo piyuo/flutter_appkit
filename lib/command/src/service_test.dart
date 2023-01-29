@@ -60,7 +60,6 @@ void main() {
     });
 
     test('should return null when send wrong action to test server', () async {
-      app.branch = app.kBranchMaster;
       final service = sample.SampleService()
         ..sender = (action, {builder}) async {
           throw Exception('mock');

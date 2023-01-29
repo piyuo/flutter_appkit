@@ -11,27 +11,6 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
 import 'error.dart';
 
-/// kBranchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
-const kBranchMaster = 'master';
-
-/// kBranchBeta We will branch from master for a new beta release at the beginning of the month, usually the first Monday
-const kBranchBeta = 'beta';
-
-/// kBranchStable is a a branch that has been stabilized on beta will become our next stable branch and we will create a stable release from that branch. We recommend that you use this channel for all production app releases.
-const kBranchStable = 'stable';
-
-/// kBranchDebug is a a branch that always direct remove service url to http://localhost:8080
-const kBranchDebug = 'debug';
-
-/// _branch used in command pattern, determine which branch to use, default is master branch
-String _branch = kBranchMaster;
-
-/// branch used in command pattern, determine which branch to use, default is master branch
-String get branch => _branch;
-
-@visibleForTesting
-set branch(String value) => _branch = value;
-
 /// _appName is application name, used in log
 String _appName = '';
 
@@ -83,15 +62,12 @@ Future<void> start({
   Future<List<SingleChildWidget>> Function()? builder,
   String initialRoute = '/',
   LocalizationsDelegate<dynamic>? l10nDelegate,
-  String backendBranch = kBranchMaster,
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
   ThemeData? darkTheme,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   // init cache && db
-  log.log('[app] start $name, branch=$branch');
-  _branch = branch;
   _appName = name;
   _serviceEmail = serviceEmail;
   //Provider.debugCheckInvalidValueType = null;
