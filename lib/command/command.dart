@@ -5,4 +5,3 @@ export 'src/http.dart';
 export 'src/protobuf.dart';
 export 'src/events.dart';
 export 'src/firewall.dart';
-export 'src/util.dart';
