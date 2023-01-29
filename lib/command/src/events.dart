@@ -9,8 +9,8 @@ class ServerNotReadyEvent {}
 /// BadRequestEvent happen when [service return 400 bad request], need let user know their network is slow than usual
 class BadRequestEvent {}
 
-/// NoAccessTokenEvent happen when action need access token and service cannot provide one
-class NoAccessTokenEvent {}
+/// NeedLoginEvent happen when action need access token and user need login
+class NeedLoginEvent {}
 
 /// TooManyRetryEvent happen when action retry count exceed limit
 class TooManyRetryEvent {}

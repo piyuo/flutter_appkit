@@ -89,7 +89,7 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
     if (r.action.accessTokenRequired) {
       accessToken = await r.service.accessTokenBuilder!();
       if (accessToken == null) {
-        return await giveup(NoAccessTokenEvent());
+        return await giveup(NeedLoginEvent());
       }
       r.action.setAccessToken(accessToken);
     }
