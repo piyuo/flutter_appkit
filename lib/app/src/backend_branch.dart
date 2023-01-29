@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
 
 /// kBranchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
@@ -21,13 +19,22 @@ const kBranchKey = '_branch';
 String? _branch;
 
 /// getBackendBranch used in command pattern, determine which branch to use, default is stable branch
-Future<String?> getBackendBranch() async {
+Future<String> getBackendBranch() async {
   _branch ??= await preferences.getString(kBranchKey) ?? kBranchStable;
-  return _branch;
+  return _branch!;
 }
 
-@visibleForTesting
-set branch(String value) {
+/// getBackendBranchUrl return branch url
+Future<String> getBackendBranchUrl() async {
+  final branch = await getBackendBranch();
+  if (branch.isEmpty) {
+    return branch;
+  }
+  return '-$branch';
+}
+
+/// setBackendBranch set branch
+Future<void> setBackendBranch(String value) async {
   _branch = value;
   if (_branch == kBranchStable) {
     preferences.remove(kBranchKey);
