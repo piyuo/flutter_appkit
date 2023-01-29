@@ -2,11 +2,13 @@
 
 import 'dart:io';
 import 'dart:async';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
 import 'package:intl/intl.dart';
@@ -110,6 +112,8 @@ class AppExampleState extends State<AppExample> {
                 label: 'error',
                 builder: () => _error(context),
               ),
+              testing.ExampleButton(label: 'await wait', builder: () => _awaitWait(context)),
+              testing.ExampleButton(label: 'await error', builder: () => _awaitError(context)),
             ]))
       ],
     ));
@@ -225,6 +229,28 @@ class AppExampleState extends State<AppExample> {
               });
             }),
       ],
+    );
+  }
+
+  Widget _awaitError(BuildContext context) {
+    return TextButton(
+      child: const Text('provider with problem'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return const WrongPage();
+        }));
+      },
+    );
+  }
+
+  Widget _awaitWait(BuildContext context) {
+    return TextButton(
+      child: const Text('provider need wait 30\'s'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return const WaitPage();
+        }));
+      },
     );
   }
 
@@ -355,4 +381,48 @@ Widget _error(BuildContext context) {
       ElevatedButton(child: const Text('disk error'), onPressed: () => throw log.DiskErrorException()),
     ],
   );
+}
+
+class WaitProvider extends delta.AsyncProvider {
+  @override
+  Future<void> load(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 30));
+  }
+}
+
+class WaitPage extends StatelessWidget {
+  const WaitPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<WaitProvider>(
+        create: (context) => WaitProvider(),
+        child: Consumer<WaitProvider>(
+            builder: (context, provide, child) => Await(
+                  [provide],
+                  child: Container(),
+                )));
+  }
+}
+
+class WrongProvider extends delta.AsyncProvider {
+  @override
+  Future<void> load(BuildContext context) async {
+    throw Exception('load error');
+  }
+}
+
+class WrongPage extends StatelessWidget {
+  const WrongPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<WrongProvider>(
+        create: (context) => WrongProvider(),
+        child: Consumer<WrongProvider>(
+            builder: (context, provide, child) => Await(
+                  [provide],
+                  child: Container(),
+                )));
+  }
 }
