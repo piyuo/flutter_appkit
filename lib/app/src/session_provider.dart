@@ -166,7 +166,10 @@ class SessionProvider with ChangeNotifier {
     _session = await Session.load();
   }
 
-  /// getSession return session if valid
+  /// currentSession return current session, it won't check or refresh session if not valid
+  Session? get currentSession => _session;
+
+  /// getSession return session if valid and it will refresh session if expired
   Future<Session?> getSession() async {
     if (_session != null && _session!.isValid) {
       return _session;
