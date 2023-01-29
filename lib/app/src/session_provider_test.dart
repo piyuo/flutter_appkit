@@ -25,7 +25,7 @@ void main() {
       final token2 = await Ticket.load('test');
       expect(token.token, token2!.token);
       expect(token.expired.day, token2.expired.day);
-      await preferences.delete('test');
+      await preferences.remove('test');
     });
 
     test('should save/load session', () async {

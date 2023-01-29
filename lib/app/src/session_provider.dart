@@ -119,9 +119,9 @@ class Session {
 
   /// delete session from preferences
   static Future<void> delete() async {
-    await preferences.delete(_kAccessToken);
-    await preferences.delete(_kRefreshToken);
-    await preferences.delete(_kArgs);
+    await preferences.remove(_kAccessToken);
+    await preferences.remove(_kRefreshToken);
+    await preferences.remove(_kArgs);
   }
 }
 

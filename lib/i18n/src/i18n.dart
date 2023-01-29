@@ -48,7 +48,7 @@ class I18nProvider with ChangeNotifier {
       if (newLocale != null) {
         await storage.setStringWithExp(_prefKeyTempLocale, newLocale.toString(), tomorrow);
       } else {
-        await storage.delete(_prefKeyTempLocale);
+        await storage.remove(_prefKeyTempLocale);
       }
       overrideLocale = newLocale;
     }

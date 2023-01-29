@@ -23,7 +23,7 @@ void main() {
       await setBool('k', true);
       found = await containsKey('k');
       expect(found, true);
-      await delete('k');
+      await remove('k');
       found = await containsKey('k');
       expect(found, false);
     });
@@ -33,7 +33,7 @@ void main() {
       var result = await getBool('k');
       expect(result, true);
 
-      await delete('k');
+      await remove('k');
       result = await getBool('k');
       expect(result, null);
     });
@@ -46,7 +46,7 @@ void main() {
       await setBool('k', false);
       result = await getBool('k');
       expect(result, false);
-      await delete('k');
+      await remove('k');
       result = await getBool('k');
       expect(result, null);
 
@@ -60,7 +60,7 @@ void main() {
       await setInt('k', 1);
       var result = await getInt('k');
       expect(result, 1);
-      await delete('k');
+      await remove('k');
       result = await getInt('k');
       expect(result, null);
 
@@ -74,7 +74,7 @@ void main() {
       await setDouble('k', 1.1);
       var result = await getDouble('k');
       expect(result, 1.1);
-      await delete('k');
+      await remove('k');
       result = await getDouble('k');
       expect(result, null);
 
@@ -88,7 +88,7 @@ void main() {
       await setString('k', 'a');
       var result = await getString('k');
       expect(result, 'a');
-      await delete('k');
+      await remove('k');
       result = await getString('k');
       expect(result, null);
 
@@ -129,7 +129,7 @@ void main() {
       var result = await getDateTime('k');
       expect(result.toString().substring(0, 19), shortStr);
       expect(result, value);
-      await delete('k');
+      await remove('k');
       result = await getDateTime('k');
       expect(result, null);
 
@@ -144,7 +144,7 @@ void main() {
       await setStringList('k', list);
       var result = await getStringList('k');
       expect(result![1], 'b');
-      await delete('k');
+      await remove('k');
       result = await getStringList('k');
       expect(result, null);
     });
@@ -157,7 +157,7 @@ void main() {
       await setMap('k', map);
       var result = await getMap('k');
       expect(result!['b'], 2);
-      await delete('k');
+      await remove('k');
       result = await getMap('k');
       expect(result, null);
     });
@@ -181,7 +181,7 @@ void main() {
       expect(result[1]['a'], 'a');
       expect(result[0]['b'], 2);
       expect(result[1]['b'], 'b');
-      await delete('k');
+      await remove('k');
       result = await getMapList('k');
       expect(result, null);
     });
@@ -192,7 +192,7 @@ void main() {
       var p = await getObject<sample.Person>('p', () => sample.Person());
       expect(p, isNotNull);
       expect(p!.name, person.name);
-      await delete('p');
+      await remove('p');
       var p2 = await getObject<sample.Person>('p', () => sample.Person());
       expect(p2, isNull);
     });

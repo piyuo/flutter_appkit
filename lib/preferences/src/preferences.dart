@@ -28,11 +28,11 @@ Future<bool> containsKey(String key) async {
   return instance.containsKey(key);
 }
 
-/// delete value from preferences
+/// remove value from preferences
 /// ```dart
-/// var result = await preferences.delete('k');
+/// var result = await preferences.remove('k');
 /// ```
-Future<bool> delete(String key) async {
+Future<bool> remove(String key) async {
   assert(key.isNotEmpty);
   log.log('[preferences] remove $key');
   final instance = await SharedPreferences.getInstance();
@@ -57,7 +57,7 @@ Future<void> setBool(String key, bool? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
   if (value == null) {
-    delete(key);
+    remove(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -85,7 +85,7 @@ Future<void> setInt(String key, int? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
   if (value == null) {
-    delete(key);
+    remove(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -113,7 +113,7 @@ Future<void> setDouble(String key, double? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
   if (value == null) {
-    delete(key);
+    remove(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -141,7 +141,7 @@ Future<void> setString(String key, String? value) async {
   assert(key.isNotEmpty);
   log.log('[preferences] set $key=$value');
   if (value == null) {
-    delete(key);
+    remove(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -161,8 +161,8 @@ Future<String?> getStringWithExp(String key) async {
     final now = DateTime.now();
     if (exp.isBefore(now)) {
       //expired
-      delete(key);
-      delete(key + expirationExt);
+      remove(key);
+      remove(key + expirationExt);
       return null;
     }
   }
@@ -197,7 +197,7 @@ Future<DateTime?> getDateTime(String key) async {
 setDateTime(String key, DateTime? value) async {
   assert(key.isNotEmpty);
   if (value == null) {
-    delete(key);
+    remove(key);
     return;
   }
   String formatted = value.toString().substring(0, 19);
