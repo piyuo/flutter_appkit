@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:libcli/types/types.dart' as types;
-import 'package:libcli/location/location.dart' as location;
+import 'map.dart';
 
 /// PlaceField let user set his place, it contain address, lat/lng and address tags
 class OpenInMap extends StatelessWidget {
@@ -25,7 +25,7 @@ class OpenInMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () async {
-          var url = location.mapUrl(address, latlng);
+          var url = mapUrl(address, latlng);
           final uri = Uri.parse(url);
           await launchUrl(uri);
         },

@@ -5,32 +5,39 @@ import 'package:libcli/log/log.dart' as log;
 
 /// deviceLatLng return device location info, return empty if can't not get device location (user not allow)
 /// this function is slow, it may takes few seconds to complete
+/// ```dart
+/// final latLng = await deviceLatLng();
+/// ```
 Future<types.LatLng> deviceLatLng() async {
-  bool serviceEnabled;
-  LocationPermission permissionGranted;
-  Position locationData;
-
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
     return types.LatLng.empty;
   }
-  permissionGranted = await Geolocator.checkPermission();
-  if (permissionGranted == LocationPermission.denied) {
-    permissionGranted = await Geolocator.requestPermission();
-    if (permissionGranted == LocationPermission.denied) {
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      log.log('Location services are disabled.');
       return types.LatLng.empty;
     }
   }
 
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately.
+    log.log('Location permissions are permanently denied, we cannot request permissions.');
+    return types.LatLng.empty;
+  }
+
   try {
-    locationData = await Geolocator.getCurrentPosition();
+    Position locationData = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
     return types.LatLng(locationData.latitude, locationData.longitude);
   } catch (e, s) {
     log.error(e, s);
   }
   return types.LatLng.empty;
 }
-
 
 /*
 Future<types.LatLng> deviceLatLng() async {

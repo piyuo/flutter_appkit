@@ -74,6 +74,7 @@ class MapGoogle extends Map {
   Widget build(BuildContext context) {
     return Consumer<MapProvider>(builder: (context, mapProvider, child) {
       final impl = mapProvider.impl as GoogleImpl;
+
       return mapProvider.latlng.isEmpty
           ? Container(color: Colors.grey[300])
           : GoogleMap(
