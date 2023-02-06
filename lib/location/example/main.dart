@@ -65,7 +65,7 @@ class LocationExample extends StatelessWidget {
           child: Wrap(
             children: [
               Container(
-                child: _locateTextField(),
+                child: _deviceLatLng(),
               ),
               testing.ExampleButton(
                 label: 'get location',

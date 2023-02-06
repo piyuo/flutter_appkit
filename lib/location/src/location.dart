@@ -38,38 +38,3 @@ Future<types.LatLng> deviceLatLng() async {
   }
   return types.LatLng.empty;
 }
-
-/*
-Future<types.LatLng> deviceLatLng() async {
-  Location location = Location();
-
-  bool serviceEnabled;
-  PermissionStatus permissionGranted;
-  LocationData locationData;
-
-  serviceEnabled = await location.serviceEnabled();
-  if (!serviceEnabled) {
-    serviceEnabled = await location.requestService();
-    if (!serviceEnabled) {
-      return types.LatLng.empty;
-    }
-  }
-
-  permissionGranted = await location.hasPermission();
-  if (permissionGranted == PermissionStatus.denied) {
-    permissionGranted = await location.requestPermission();
-    if (permissionGranted != PermissionStatus.granted) {
-      return types.LatLng.empty;
-    }
-  }
-
-  try {
-    locationData = await location.getLocation();
-    return types.LatLng(locationData.latitude!, locationData.longitude!);
-  } catch (e, s) {
-    log.error(e, s);
-  }
-  return types.LatLng.empty;
-}
-
-*/
