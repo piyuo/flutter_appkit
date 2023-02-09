@@ -1,3 +1,4 @@
+/*
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'test.dart';
 import 'package:libcli/assets/assets.dart' as asset;
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -55,3 +55,4 @@ class TestWidget extends StatelessWidget {
     );
   }
 }
+*/

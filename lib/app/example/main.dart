@@ -2,13 +2,11 @@
 
 import 'dart:io';
 import 'dart:async';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
 import 'package:intl/intl.dart';
@@ -73,7 +71,8 @@ class AppExampleState extends State<AppExample> {
         child: Column(
       children: [
         Expanded(
-          child: _routing(context, widget.data),
+          child: _waitThenReady(context),
+          // child: _routing(context, widget.data),
           //child: _setPageTitle(context),
         ),
         Container(
@@ -112,8 +111,8 @@ class AppExampleState extends State<AppExample> {
                 label: 'error',
                 builder: () => _error(context),
               ),
-              testing.ExampleButton(label: 'await wait', builder: () => _awaitWait(context)),
-              testing.ExampleButton(label: 'await error', builder: () => _awaitError(context)),
+              testing.ExampleButton(label: 'wait then ready', builder: () => _waitThenReady(context)),
+              testing.ExampleButton(label: 'wait then error', builder: () => _waitThenError(context)),
             ]))
       ],
     ));
@@ -232,23 +231,36 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
-  Widget _awaitError(BuildContext context) {
+  Widget _waitThenError(BuildContext context) {
     return TextButton(
       child: const Text('provider with problem'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return const WrongPage();
+          return Wait(
+            future: () async {
+              await Future.delayed(const Duration(seconds: 3));
+              throw Exception('error');
+            },
+            child: Container(width: 100, height: 100, color: Colors.red),
+          );
         }));
       },
     );
   }
 
-  Widget _awaitWait(BuildContext context) {
+  Widget _waitThenReady(BuildContext context) {
     return TextButton(
-      child: const Text('provider need wait 30\'s'),
+      child: const Text('provider need wait 3 seconds'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return const WaitPage();
+          return Wait(
+            future: () async => await Future.delayed(const Duration(seconds: 3)),
+            child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.green,
+                child: const Text('Ready', style: TextStyle(color: Colors.white))),
+          );
         }));
       },
     );
@@ -381,48 +393,4 @@ Widget _error(BuildContext context) {
       ElevatedButton(child: const Text('disk error'), onPressed: () => throw log.DiskErrorException()),
     ],
   );
-}
-
-class WaitProvider extends delta.AsyncProvider {
-  @override
-  Future<void> load(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 30));
-  }
-}
-
-class WaitPage extends StatelessWidget {
-  const WaitPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WaitProvider>(
-        create: (context) => WaitProvider(),
-        child: Consumer<WaitProvider>(
-            builder: (context, provide, child) => Await(
-                  [provide],
-                  child: Container(),
-                )));
-  }
-}
-
-class WrongProvider extends delta.AsyncProvider {
-  @override
-  Future<void> load(BuildContext context) async {
-    throw Exception('load error');
-  }
-}
-
-class WrongPage extends StatelessWidget {
-  const WrongPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WrongProvider>(
-        create: (context) => WrongProvider(),
-        child: Consumer<WrongProvider>(
-            builder: (context, provide, child) => Await(
-                  [provide],
-                  child: Container(),
-                )));
-  }
 }
