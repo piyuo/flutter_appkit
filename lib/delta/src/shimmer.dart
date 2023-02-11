@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:shimmer/shimmer.dart' as shimmer;
 import 'extensions.dart';
 
 class ShimmerScope extends StatelessWidget {
@@ -18,7 +18,7 @@ class ShimmerScope extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return enabled
-        ? Shimmer.fromColors(
+        ? shimmer.Shimmer.fromColors(
             baseColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
             highlightColor: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade600),
             enabled: true,
@@ -28,56 +28,38 @@ class ShimmerScope extends StatelessWidget {
   }
 }
 
-/// ShimmerSpot display shimmer with custom width and height
-class ShimmerSpot extends StatelessWidget {
-  const ShimmerSpot({
-    this.builder,
-    this.width,
-    this.height,
-    Key? key,
-    this.enabled = true,
+/// Shimmer display shimmer with custom width and height
+class Shimmer extends StatelessWidget {
+  const Shimmer({
+    this.width = 200,
+    this.height = 58,
+    this.radius = 10,
     this.margin = const EdgeInsets.all(5),
-    this.radius = 5,
+    Key? key,
   }) : super(key: key);
 
-  /// builder only called when flicker is done
-  final Widget Function()? builder;
-
-  /// enabled is true will show shimmer
-  final bool enabled;
-
   /// width is shimmer width
-  final double? width;
+  final double width;
 
   /// height is shimmer height
-  final double? height;
+  final double height;
 
   /// radius is shimmer radius
-  final double? radius;
+  final double radius;
 
   /// margin for place holder, make place holder smaller than actual widget
   final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_if_null_operators
-    final h = height == null
-        ? width == null
-            ? 28.0
-            : null
-        : height;
-    return enabled
-        ? Container(
-            decoration: BoxDecoration(
-              color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
-              borderRadius: radius != null ? BorderRadius.all(Radius.circular(radius!)) : null,
-            ),
-            margin: margin,
-            width: width,
-            height: h, // avoid empty container
-          )
-        : builder != null
-            ? builder!()
-            : const SizedBox();
+    return Container(
+      decoration: BoxDecoration(
+        color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
+        borderRadius: BorderRadius.all(Radius.circular(radius)),
+      ),
+      margin: margin,
+      width: width,
+      height: height,
+    );
   }
 }

@@ -73,7 +73,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _badge(context),
+                          child: _shimmer(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -313,8 +313,8 @@ class DeltaExample extends StatelessWidget {
   Widget _shimmer(BuildContext context) {
     return ShimmerScope(
         child: Column(children: [
-      ShimmerSpot(width: 120, height: 30, builder: () => const Text('done')),
-      ShimmerSpot(width: 120, height: 30, builder: () => const Text('done'), radius: 15),
+      const Shimmer(),
+      const Shimmer(width: 120, height: 30, radius: 15),
       FittedBox(
           child: Icon(
         Icons.image,
