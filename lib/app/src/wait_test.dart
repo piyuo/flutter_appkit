@@ -14,9 +14,9 @@ void main() {
       await tester.pumpWidget(MaterialApp(
         home: Wait(
           future: () async {},
-          loading: const MockLoadingView(),
-          error: const MockErrorView(),
-          child: const MockReadyView(),
+          loadingBuilder: () => const MockLoadingView(),
+          errorBuilder: () => const MockErrorView(),
+          builder: () => const MockReadyView(),
         ),
       ));
       await tester.pumpAndSettle();
@@ -34,9 +34,9 @@ void main() {
           future: () async {
             throw Exception();
           },
-          loading: const MockLoadingView(),
-          error: const MockErrorView(),
-          child: const MockReadyView(),
+          loadingBuilder: () => const MockLoadingView(),
+          errorBuilder: () => const MockErrorView(),
+          builder: () => const MockReadyView(),
         ),
       ));
       await tester.pumpAndSettle();

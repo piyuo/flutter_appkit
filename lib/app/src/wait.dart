@@ -20,23 +20,23 @@ class Wait extends StatefulWidget {
   ///
   const Wait({
     required this.future,
-    required this.child,
-    this.loading,
-    this.error,
+    required this.builder,
+    this.loadingBuilder,
+    this.errorBuilder,
     Key? key,
   }) : super(key: key);
 
   /// future to wait
   final Future<void> Function() future;
 
-  /// child to show when future complete
-  final Widget child;
+  /// builder build widget to show when future complete
+  final Widget Function() builder;
 
-  /// error to show when future throw exception
-  final Widget? error;
+  /// errorBuilder build widget to show when future throw exception
+  final Widget Function()? errorBuilder;
 
-  /// loading to show when future still loading
-  final Widget? loading;
+  /// loadingBuilder build widget to show when future still loading
+  final Widget Function()? loadingBuilder;
 
   @override
   WaitState createState() => WaitState();
@@ -70,12 +70,12 @@ class WaitState extends State<Wait> {
   Widget build(BuildContext context) {
     switch (_status) {
       case WaitStatus.ready:
-        return widget.child;
+        return widget.builder();
       case WaitStatus.error:
-        return widget.error != null ? widget.error! : const WaitErrorMessage();
+        return widget.errorBuilder != null ? widget.errorBuilder!() : const WaitErrorMessage();
       default:
-        return widget.loading != null
-            ? widget.loading!
+        return widget.loadingBuilder != null
+            ? widget.loadingBuilder!()
             : Scaffold(
                 body: Center(
                   child: Icon(

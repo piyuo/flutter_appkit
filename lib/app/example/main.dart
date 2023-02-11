@@ -241,7 +241,7 @@ class AppExampleState extends State<AppExample> {
               await Future.delayed(const Duration(seconds: 3));
               throw Exception('error');
             },
-            child: Container(width: 100, height: 100, color: Colors.red),
+            builder: () => Container(width: 100, height: 100, color: Colors.red),
           );
         }));
       },
@@ -249,17 +249,22 @@ class AppExampleState extends State<AppExample> {
   }
 
   Widget _waitThenReady(BuildContext context) {
+    buildChild(isReady) {
+      return Container(
+          width: 100,
+          height: 100,
+          color: isReady ? Colors.green : Colors.pink,
+          child: Text(isReady ? 'Ready' : 'Loading...', style: const TextStyle(color: Colors.white)));
+    }
+
     return TextButton(
       child: const Text('provider need wait 3 seconds'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
           return Wait(
             future: () async => await Future.delayed(const Duration(seconds: 3)),
-            child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.green,
-                child: const Text('Ready', style: TextStyle(color: Colors.white))),
+            loadingBuilder: () => buildChild(false),
+            builder: () => buildChild(true),
           );
         }));
       },
