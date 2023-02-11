@@ -31,18 +31,18 @@ class ShimmerScope extends StatelessWidget {
 /// Shimmer display shimmer with custom width and height
 class Shimmer extends StatelessWidget {
   const Shimmer({
-    this.width = 200,
-    this.height = 58,
+    this.width,
+    this.height,
     this.radius = 10,
-    this.margin = const EdgeInsets.all(5),
+    this.margin = EdgeInsets.zero,
     Key? key,
   }) : super(key: key);
 
   /// width is shimmer width
-  final double width;
+  final double? width;
 
   /// height is shimmer height
-  final double height;
+  final double? height;
 
   /// radius is shimmer radius
   final double radius;
