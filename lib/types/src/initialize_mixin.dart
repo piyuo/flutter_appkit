@@ -5,7 +5,7 @@ mixin InitializeMixin {
 
   Future<void> Function()? initFuture;
 
-  /// init stores by brand id
+  /// init start initFuture
   Future<void> init() async {
     if (isReady) {
       return;
