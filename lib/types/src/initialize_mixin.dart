@@ -10,7 +10,7 @@ mixin InitializeMixin {
     if (isReady) {
       return;
     }
-    initFuture?.call();
+    await initFuture?.call();
     isReady = true;
   }
 }
