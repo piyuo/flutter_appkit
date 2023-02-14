@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/types/types.dart' as types;
 
 /// LoginEvent is event when user login through UI
 class LoginEvent {}
@@ -138,10 +139,15 @@ class Session {
 }
 
 /// SessionProvider keep session and provide session to other widget
-class SessionProvider with ChangeNotifier {
+class SessionProvider with ChangeNotifier, types.InitializeMixin {
   SessionProvider({
     required this.loader,
   }) {
+    initFuture = () async {
+      _session = await Session.load();
+      debugPrint('$_session');
+    };
+
     subscription = eventbus.listen((event) async {
       if (event is command.AccessTokenRevokedEvent) {
         if (_session != null) {
@@ -171,11 +177,6 @@ class SessionProvider with ChangeNotifier {
   /// of get SessionProvider from context
   static SessionProvider of(BuildContext context) {
     return Provider.of<SessionProvider>(context, listen: false);
-  }
-
-  /// _load load data from storage
-  Future<void> load() async {
-    _session = await Session.load();
   }
 
   /// currentSession return current session, it won't check or refresh session if not valid

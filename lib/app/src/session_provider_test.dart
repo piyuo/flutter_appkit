@@ -85,7 +85,7 @@ void main() {
       expect(session['region'], 'region1');
 
       final sessionProvider2 = SessionProvider(loader: (_) async => null);
-      await sessionProvider2.load();
+      await sessionProvider2.init();
       final session2 = await sessionProvider2.getSession();
       expect(session2, isNotNull);
       expect(session2!.isValid, isTrue);
