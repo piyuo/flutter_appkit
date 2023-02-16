@@ -100,7 +100,7 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
     await doResponseHeaders(resp.headers);
 
     if (resp.statusCode == 200) {
-      return decode(resp.bodyBytes, r.service, builder);
+      return decode(resp.bodyBytes, builder);
     }
 
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';

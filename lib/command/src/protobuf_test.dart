@@ -3,7 +3,6 @@ import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/command/src/protobuf.dart';
 
 void main() {
-  var service = sample.SampleService();
   group('[command-protobuf]', () {
     test('should encode Object', () {
       sample.CmdEcho echoAction = sample.CmdEcho();
@@ -16,8 +15,7 @@ void main() {
       sample.StringResponse response = sample.StringResponse();
       response.value = 'hi';
       List<int> bytes = encode(response);
-      sample.StringResponse decodeAction =
-          decode(bytes, service, () => sample.StringResponse()) as sample.StringResponse;
+      sample.StringResponse decodeAction = decode(bytes, () => sample.StringResponse()) as sample.StringResponse;
       expect(decodeAction.value, 'hi');
     });
 
@@ -26,7 +24,7 @@ void main() {
       echoAction.value = 'hi';
       List<int> bytes = encode(echoAction);
       bytes[bytes.length - 1] = 255;
-      expect(() => decode(bytes, service, () => sample.StringResponse()), throwsException);
+      expect(() => decode(bytes, () => sample.StringResponse()), throwsException);
     });
   });
 }
