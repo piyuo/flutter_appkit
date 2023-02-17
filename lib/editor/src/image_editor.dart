@@ -38,8 +38,9 @@ class ImageEditorProvider with ChangeNotifier {
     _editorKey.currentState!.reset();
   }
 
+  // todo:need crop
   /// crop current image and return new one
-  Future<Uint8List> crop() => cropImageDataWithDartLibrary(state: _editorKey.currentState!);
+  //Future<Uint8List> crop() => cropImageDataWithDartLibrary(state: _editorKey.currentState!);
 }
 
 class ImageEditor extends StatelessWidget {

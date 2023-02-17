@@ -56,8 +56,8 @@ class ImageEditorDialog extends StatelessWidget {
           dialog.toastWaitFor(
             callback: () async {
               Navigator.of(context).pop();
-              final bytes = await provide.crop();
-              debugPrint('${bytes.length}');
+              //final bytes = await provide.crop();
+              //debugPrint('${bytes.length}');
             },
           );
         }

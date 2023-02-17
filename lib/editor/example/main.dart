@@ -78,8 +78,8 @@ class EditorExample extends StatelessWidget {
             ElevatedButton(
                 child: const Text('test crop'),
                 onPressed: () async {
-                  final bytes = await provide.crop();
-                  provide.setBytes(bytes);
+                  //final bytes = await provide.crop();
+                  //provide.setBytes(bytes);
                 }),
             ElevatedButton(
                 child: const Text('image editor dialog'),
