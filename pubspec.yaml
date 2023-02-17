@@ -58,7 +58,7 @@ dependencies:
   loading_indicator: ^3.1.0
   synchronized: ^3.0.0+3
   date_field: ^3.0.1
-  webview_flutter: ^3.0.4
+  webview_flutter: ^4.0.2
   flutter_typeahead: ^4.1.1
   slide_countdown: ^0.3.4
   fl_chart: ^0.55.2
