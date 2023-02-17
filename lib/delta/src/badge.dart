@@ -29,15 +29,17 @@ class NotificationBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return badges.Badge(
-      padding: const EdgeInsets.fromLTRB(6, 1, 6, 3),
+      badgeStyle: badges.BadgeStyle(
+        padding: const EdgeInsets.fromLTRB(6, 1, 6, 3),
+        elevation: 3,
+        shape: badges.BadgeShape.square,
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        badgeColor: color.withOpacity(.9),
+      ),
       showBadge: text != null && text!.isNotEmpty,
       position: onBottom
           ? badges.BadgePosition.bottomEnd(bottom: -4, end: -4)
           : badges.BadgePosition.topEnd(top: -4, end: -4),
-      elevation: 3,
-      shape: badges.BadgeShape.square,
-      borderRadius: const BorderRadius.all(Radius.circular(15)),
-      badgeColor: color.withOpacity(.9),
       badgeContent: text != null
           ? Text(
               text!,

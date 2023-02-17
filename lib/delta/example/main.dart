@@ -73,7 +73,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _shimmer(context),
+                          child: _notificationBadge(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -90,7 +90,7 @@ class DeltaExample extends StatelessWidget {
                                 testing.ExampleButton(label: 'shimmer', builder: () => _shimmer(context)),
                                 testing.ExampleButton(label: 'wait', builder: () => _wait(context)),
                                 testing.ExampleButton(label: 'wait error', builder: () => _waitError(context)),
-                                testing.ExampleButton(label: 'countdown', builder: () => _badge(context)),
+                                testing.ExampleButton(label: 'countdown', builder: () => _notificationBadge(context)),
                                 testing.ExampleButton(label: 'countdown', builder: () => _countdown(context)),
                                 testing.ExampleButton(label: 'search box', builder: () => _searchBox(context)),
                                 testing.ExampleButton(label: 'redirect to url', builder: () => _redirectToUrl(context)),
@@ -351,7 +351,7 @@ class DeltaExample extends StatelessWidget {
     );
   }
 
-  Widget _badge(BuildContext context) {
+  Widget _notificationBadge(BuildContext context) {
     return Column(
       children: const [
         Padding(
