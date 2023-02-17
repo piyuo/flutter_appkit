@@ -25,12 +25,10 @@ class ScannerProvider with ChangeNotifier {
     super.dispose();
   }
 
-  void onDetect(Barcode barcode, MobileScannerArguments? args) {
-    if (barcode.rawValue == null) {
-      debugPrint('Failed to scan Barcode');
-    } else {
-      final String code = barcode.rawValue!;
-      debugPrint('Barcode found: $code');
+  void onDetect(BarcodeCapture capture) {
+    final List<Barcode> barCodes = capture.barcodes;
+    for (final barcode in barCodes) {
+      debugPrint('Barcode found! ${barcode.rawValue}');
       onCodeScanned(barcode.rawValue);
     }
   }
@@ -69,7 +67,6 @@ class Scanner extends StatelessWidget {
         return _noAccessToCamera(context);
       }
       return MobileScanner(
-        allowDuplicates: false,
         controller: provide._controller,
         onDetect: provide.onDetect,
       );

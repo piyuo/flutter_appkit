@@ -104,7 +104,7 @@ class SearchBox extends StatelessWidget {
                     }
                     return await onSuggestion!(value);
                   },
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                  /*suggestionsBoxDecoration: SuggestionsBoxDecoration(
                     elevation: 1,
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
@@ -117,7 +117,7 @@ class SearchBox extends StatelessWidget {
                       dark: Colors.grey.shade900.withOpacity(0.95),
                     ),
                     clipBehavior: Clip.antiAlias,
-                  ),
+                  ),*/
                   itemBuilder: (context, suggestion) {
                     return ListTile(
                       horizontalTitleGap: 0,
