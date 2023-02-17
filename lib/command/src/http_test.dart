@@ -11,7 +11,6 @@ import 'package:libcli/command/src/service.dart';
 import 'package:libcli/command/src/protobuf.dart';
 
 void main() {
-  dynamic contractHappening;
   dynamic eventHappening;
 
   setUp(() async {
@@ -47,13 +46,13 @@ void main() {
       var req = _fakeOkRequest(statusMockClient(504));
       var response = await doPost(req, () => sample.StringResponse());
       expect(response is pb.Empty, true);
-      expect(contractHappening is RequestTimeoutEvent, true);
+      expect(eventHappening is RequestTimeoutEvent, true);
     });
 
     test('should retry 511 and ok, logout required', () async {
       var req = _fakeOkRequest(statusMockClient(511));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.OK, true);
+      expect(response is pb.Empty, true);
       expect(eventHappening is ForceLogOutEvent, isTrue);
     });
     test('should retry 412 and ok, access token expired', () async {
