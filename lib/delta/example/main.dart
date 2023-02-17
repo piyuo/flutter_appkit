@@ -357,7 +357,7 @@ class DeltaExample extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(20),
           child: NotificationBadge(
-            text: '2',
+            badgeText: '2',
             onBottom: true,
             child: Icon(Icons.shopping_bag, size: 24),
           ),
@@ -365,7 +365,7 @@ class DeltaExample extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(20),
           child: NotificationBadge(
-            text: '22',
+            badgeText: '22',
             onBottom: true,
             child: Icon(Icons.shopping_bag, size: 24),
           ),
@@ -373,27 +373,30 @@ class DeltaExample extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(20),
           child: NotificationBadge(
-            text: '2',
+            badgeText: '2',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
           child: NotificationBadge(
-            text: '12',
+            badgeText: '12',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
           child: NotificationBadge(
-            text: '112',
+            badgeText: '112',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
           child: Badge(
+            backgroundColor: Colors.blue,
+            //alignment: AlignmentDirectional(-1.0, -1.0),
+            label: Text('xx', style: TextStyle(fontSize: 10)),
             child: Text('Empty', style: TextStyle(fontSize: 20)),
           ),
         )

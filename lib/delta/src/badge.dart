@@ -1,51 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
+/// NotificationBadge is a widget that shows a badge on top of another widget.
+/// ```dart
+/// NotificationBadge(
+///  badgeText: '1',
+///  badgeText: '112',
+///  child: Text('Badge', style: TextStyle(fontSize: 20)),
+/// )
+/// ```
 class NotificationBadge extends StatelessWidget {
   const NotificationBadge({
     required this.child,
-    this.text,
+    this.badgeText,
     this.color = Colors.red,
-    this.textColor = Colors.white,
+    this.badgeTextColor = Colors.white,
     this.onBottom = false,
     Key? key,
   }) : super(key: key);
 
-  /// child for badge
-  final Widget child;
+  /// badge value
+  final String? badgeText;
 
-  /// text for badge
-  final String? text;
+  /// text color for badge
+  final Color badgeTextColor;
 
   /// color for badge
   final Color color;
 
-  /// text color for badge
-  final Color textColor;
-
   /// onBottom is true will show badge on bottom
   final bool onBottom;
+
+  /// child for badge
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return badges.Badge(
+      /*badgeAnimation: const badges.BadgeAnimation.size(
+        animationDuration: Duration(seconds: 1),
+        colorChangeAnimationDuration: Duration(seconds: 1),
+        loopAnimation: false,
+        curve: Curves.fastOutSlowIn,
+        colorChangeAnimationCurve: Curves.easeInCubic,
+      ),*/
       badgeStyle: badges.BadgeStyle(
-        padding: const EdgeInsets.fromLTRB(6, 1, 6, 3),
+        padding: const EdgeInsets.fromLTRB(5, 1, 4, 3),
         elevation: 3,
         shape: badges.BadgeShape.square,
         borderRadius: const BorderRadius.all(Radius.circular(15)),
         badgeColor: color.withOpacity(.9),
       ),
-      showBadge: text != null && text!.isNotEmpty,
+      showBadge: badgeText != null && badgeText!.isNotEmpty,
       position: onBottom
           ? badges.BadgePosition.bottomEnd(bottom: -4, end: -4)
           : badges.BadgePosition.topEnd(top: -4, end: -4),
-      badgeContent: text != null
+      badgeContent: badgeText != null
           ? Text(
-              text!,
+              badgeText!,
               style: TextStyle(
-                color: textColor,
-                fontSize: 13,
+                color: badgeTextColor,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
               ),
             )
           : null,
