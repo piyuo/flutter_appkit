@@ -21,7 +21,7 @@ void main() {
     });
   });
 
-  group('[command-http]', () {
+  group('[command_http]', () {
     test('should return object', () async {
       var req = _fakeOkRequest(statusOkMock());
       var obj = await doPost(req, () => pb.OK());

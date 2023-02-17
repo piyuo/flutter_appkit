@@ -19,7 +19,7 @@ void main() {
     });
   });
 
-  group('[command-http-error]', () {
+  group('[command_http_error]', () {
     test('should throw exception when something wrong in request()', () async {
       var req = _fakeSampleRequest(MockClient((request) async {
         throw Exception('mock');

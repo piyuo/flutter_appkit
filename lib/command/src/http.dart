@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/command/src/events.dart';
-import 'package:libcli/command/src/protobuf.dart';
-import 'package:libcli/command/src/service.dart';
+import 'events.dart';
+import 'protobuf.dart';
+import 'service.dart';
 
 /// Request for post()
 class Request {
@@ -51,12 +51,6 @@ Future<Map<String, String>> doRequestHeaders(String acceptLanguage) async {
   return headers;
 }
 
-Future<void> doResponseHeaders(Map<String, String> headers) async {
-  /*var c = headers['set-cookie'];
-  if (c != null && c.isNotEmpty) {
-  }*/
-}
-
 /// post call doPost() and broadcast network slow if request time is longer than slow
 Future<pb.Object> post(Request request, pb.Builder? builder) async {
   Completer<pb.Object> completer = Completer<pb.Object>();
@@ -97,7 +91,6 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
     Uint8List bytes = encode(r.action);
     var uri = Uri.parse(r.url);
     var resp = await r.client.post(uri, headers: headers, body: bytes).timeout(r.timeout);
-    await doResponseHeaders(resp.headers);
 
     if (resp.statusCode == 200) {
       return decode(resp.bodyBytes, builder);

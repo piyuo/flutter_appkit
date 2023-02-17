@@ -2,11 +2,11 @@ import 'dart:typed_data';
 import 'package:libcli/pb/pb.dart' as pb;
 
 /// encode protobuf object into bytes
-///
-///     EchoAction echoAction = EchoAction();
-///     echoAction.text = 'hi';
-///     List<int> bytes = commandProtobuf.encode(echoAction);
-///
+/// ```dart
+/// EchoAction echoAction = EchoAction();
+/// echoAction.text = 'hi';
+/// List<int> bytes = commandProtobuf.encode(echoAction);
+/// ```
 Uint8List encode(pb.Object obj) {
   Uint8List bytes = obj.writeToBuffer();
   Uint8List list = Uint8List(bytes.length + 2);
@@ -18,10 +18,10 @@ Uint8List encode(pb.Object obj) {
 }
 
 /// decode bytes array to protobuf object, set builder if result is anything other than common objects
-///
-///     EchoAction decodeAction = commandProtobuf.decode(bytes, builder);
-///     expect(decodeAction.text, 'hi');
-///
+/// ```dart
+/// EchoAction decodeAction = commandProtobuf.decode(bytes, builder);
+/// expect(decodeAction.text, 'hi');
+/// ```
 pb.Object decode(List<int> bytes, pb.Builder? builder) {
   List<int> protoBytes = bytes.sublist(0, bytes.length - 2);
   Uint8List idBytes = Uint8List.fromList(bytes.sublist(bytes.length - 2, bytes.length));

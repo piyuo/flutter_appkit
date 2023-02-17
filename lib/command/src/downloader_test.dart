@@ -6,7 +6,7 @@ import 'downloader.dart';
 import 'protobuf.dart';
 
 void main() {
-  group('[downloader_test]', () {
+  group('[command_downloader_test]', () {
     test('should return OK', () async {
       final downloader = Downloader(
         fileGetter: (String url, Duration timeout) async => encode(pb.OK()),

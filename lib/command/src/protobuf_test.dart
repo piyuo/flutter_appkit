@@ -3,7 +3,7 @@ import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/command/src/protobuf.dart';
 
 void main() {
-  group('[command-protobuf]', () {
+  group('[command_protobuf]', () {
     test('should encode Object', () {
       sample.CmdEcho echoAction = sample.CmdEcho();
       echoAction.value = 'hi';

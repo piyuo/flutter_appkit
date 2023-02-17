@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/command/src/firewall.dart';
-import 'package:libcli/command/src/http.dart';
+import 'firewall.dart';
+import 'http.dart';
 
 /// Sender define send function use in service, only for test
 typedef Sender = Future<pb.Object> Function(pb.Object command, {pb.Builder? builder});

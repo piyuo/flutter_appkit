@@ -9,7 +9,7 @@ void main() {
     cacheDuration = const Duration(seconds: 1);
   });
 
-  group('[command-firewall]', () {
+  group('[command_firewall]', () {
     test('should pass firewall', () async {
       final cmd = pb.Error()..code = "pass-${generator.randomNumber(5)}";
       final response = firewallBegin(cmd);
