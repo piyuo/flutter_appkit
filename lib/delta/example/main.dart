@@ -73,7 +73,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _webImage(context),
+                          child: _redirectToUrl(context),
                         ),
                         SizedBox(
                           height: 100,
