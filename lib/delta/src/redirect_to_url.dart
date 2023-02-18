@@ -12,7 +12,7 @@ Future<void> redirectToURL(
   String? caption,
 }) async {
   if (kIsWeb) {
-    html.window.open(url, '_self');
+    html.window.open(url, '_blank');
     return;
   }
 
