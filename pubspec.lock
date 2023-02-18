@@ -357,10 +357,10 @@ packages:
     dependency: "direct main"
     description:
       name: fl_chart
-      sha256: "749b3342ea3e95cbf61a0fec31a62606e837377b8b6d0caa7367a7ef80f38b7d"
+      sha256: "155556c4aba56c8474308d51b4e5446b80a07db9ab66a3cb74aff05c110df982"
       url: "https://pub.dev"
     source: hosted
-    version: "0.55.2"
+    version: "0.60.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -495,10 +495,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_quill
-      sha256: "1d4d882b4c451a742fccfca4c804883bc5b099bddfe2d2c41b947a41488c22d8"
+      sha256: "8eea4e900a466d8cd8f96de3dfa24c3a54740d62e0cf27a5b0c2c572e8f0e480"
       url: "https://pub.dev"
     source: hosted
-    version: "6.4.2"
+    version: "6.4.3"
   flutter_rating_bar:
     dependency: "direct main"
     description:
@@ -721,10 +721,10 @@ packages:
     dependency: transitive
     description:
       name: i18n_extension
-      sha256: "8ab52a56a5151817f7278450ff60e504b04a33110515d0f1f06d621dfa5b5783"
+      sha256: f3b60575f30ba835d405fcb41ac28ce8efe7caa5812fd93074eaffae7877cb70
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.0"
+    version: "7.0.0"
   image:
     dependency: "direct main"
     description:
@@ -801,10 +801,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.18.0"
   js:
     dependency: transitive
     description:
@@ -897,10 +897,10 @@ packages:
     dependency: "direct main"
     description:
       name: meta
-      sha256: "6c268b42ed578a53088d834796959e4a1814b5e9e164f147f580a386e5decf42"
+      sha256: "12307e7f0605ce3da64cf0db90e5fcab0869f3ca03f76be6bb2991ce0a55e82b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.0"
+    version: "1.9.0"
   mime:
     dependency: "direct main"
     description:
@@ -1202,42 +1202,42 @@ packages:
     dependency: "direct main"
     description:
       name: reactive_date_range_picker
-      sha256: "9873245990c51ec8168d55391d1a7924fb0cc6dee1be56afdb05cd768af818d1"
+      sha256: "9241f8c28f7c3e5161f466d0b37d3eca42766220261af0887f4458c7316ba4ac"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.6.0"
   reactive_forms:
     dependency: "direct main"
     description:
       name: reactive_forms
-      sha256: a6dc324c7f69d278163ecefa7d30a7f8af4e0854d4d8d1bdaae1f6baede358af
+      sha256: f81d29d633efcd254aaa18e877c1851e767e02d4fd2ee0b32de1e1574ef075d7
       url: "https://pub.dev"
     source: hosted
-    version: "14.1.0"
+    version: "14.2.0"
   reactive_phone_form_field:
     dependency: "direct main"
     description:
       name: reactive_phone_form_field
-      sha256: "13f88c4ce7ef1f7e33c459027b9956b18e282bc3a230c3e5510559ba53957bec"
+      sha256: "5a9e36fab7cd2d29c089d2c7b24d97dbd2441172318033d4dd32e30173aa82c8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.0"
+    version: "0.11.0"
   reactive_raw_autocomplete:
     dependency: "direct main"
     description:
       name: reactive_raw_autocomplete
-      sha256: "4fa9775e3f9007d3682806bb453b54e86614ea750f7726f505e1af0ec86712b1"
+      sha256: "26cbbaa94950e3a967d8a9893be61cf6f7fb521805e58db351714d68db80ad08"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.6.0"
   reactive_touch_spin:
     dependency: "direct main"
     description:
       name: reactive_touch_spin
-      sha256: "304053f1f38c87e1e4ea43f768f01cd423c3f56f8a07c707580ff30991afc392"
+      sha256: "348af65d8324a6e63a7c5c86166b362f4b2c2f3e9222e8db11d6e9ce97e7e4fb"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0"
+    version: "0.8.0"
   rxdart:
     dependency: transitive
     description:
@@ -1327,10 +1327,10 @@ packages:
     dependency: "direct main"
     description:
       name: slide_countdown
-      sha256: "7a96c3677d80c00379ae4c7fa56b78f8b2d3045de8a1947a9a6faf9e67b0194f"
+      sha256: "875af3ece988a1131a43636e78912f856d516cf7fdda3db403e0d3749e4bed71"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.4"
+    version: "0.5.0"
   smart_auth:
     dependency: transitive
     description:
@@ -1391,10 +1391,10 @@ packages:
     dependency: transitive
     description:
       name: stream_duration
-      sha256: "80f669b86c1cc5f5bd42fb58fd7cc32d29f4bcd60ab9cfb1308292e6be254b8a"
+      sha256: "7a3a6b268dfa7a8a884cda40fbe34a67c78b91ed217c257653be93fb9e1805a3"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4"
+    version: "3.0.0"
   stream_transform:
     dependency: transitive
     description:
