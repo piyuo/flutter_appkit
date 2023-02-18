@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
-import 'image_editor_helper.dart';
+//import 'image_editor_helper.dart';
 
 class ImageEditorProvider with ChangeNotifier {
   ImageEditorProvider({

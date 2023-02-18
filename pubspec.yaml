@@ -22,10 +22,10 @@ dependencies:
   hive: ^2.2.3
   http: ^0.13.5
   protobuf: ^2.1.0
-  meta: ^1.8.0
+  meta: ^1.9.0
   provider: ^6.0.3
   nested: ^1.0.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   uuid: ^3.0.7
   shimmer: ^2.0.0
   dotted_decoration: ^2.0.0
@@ -48,7 +48,7 @@ dependencies:
   flutter_easyrefresh: ^2.2.2
   flutter_dropzone: ^3.0.5
   image_picker: ^0.8.5+3
-  flutter_quill: ^6.0.6+1
+  flutter_quill: ^6.4.3
   image: ^4.0.15
   image_editor: ^1.1.0
   qr_flutter: ^4.0.0
@@ -60,19 +60,19 @@ dependencies:
   date_field: ^3.0.1
   webview_flutter: ^4.0.2
   flutter_typeahead: ^4.1.1
-  slide_countdown: ^0.3.4
-  fl_chart: ^0.55.2
+  slide_countdown: ^0.5.0
+  fl_chart: ^0.60.0
   badges: ^3.0.2
   cupertino_listview: ^2.0.0
   split_view: ^3.2.1
   drag_select_grid_view: ^0.6.1
   animations: ^2.0.5
-  reactive_forms: ^14.1.0
+  reactive_forms: ^14.2.0
   flutter_rating_bar: ^4.0.1
-  reactive_date_range_picker: ^0.5.0
-  reactive_touch_spin: ^0.7.0
-  reactive_phone_form_field: ^0.10.0
-  reactive_raw_autocomplete: ^0.5.0
+  reactive_date_range_picker: ^0.6.0
+  reactive_touch_spin: ^0.8.0
+  reactive_phone_form_field: ^0.11.0
+  reactive_raw_autocomplete: ^0.6.0
   pinput: ^2.2.23
   #modal_bottom_sheet: ^2.1.2
   modal_bottom_sheet:
