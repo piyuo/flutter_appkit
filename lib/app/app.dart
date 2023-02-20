@@ -8,3 +8,4 @@ export 'src/session_provider.dart';
 export 'src/wait.dart';
 export 'src/backend_branch.dart';
 export 'src/datacenter_region.dart';
+export 'src/initialize_mixin.dart';

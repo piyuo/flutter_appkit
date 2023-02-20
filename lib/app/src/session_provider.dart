@@ -4,6 +4,7 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/types/types.dart' as types;
+import 'initialize_mixin.dart';
 
 /// LoginEvent is event when user login through UI
 class LoginEvent {}
@@ -139,7 +140,7 @@ class Session {
 }
 
 /// SessionProvider keep session and provide session to other widget
-class SessionProvider with ChangeNotifier, types.InitializeMixin {
+class SessionProvider with ChangeNotifier, InitializeMixin {
   SessionProvider({
     required this.loader,
   }) {
