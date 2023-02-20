@@ -1,4 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
@@ -32,6 +34,24 @@ void main() {
       } catch (e) {
         expect(e, isA<AssertionError>());
         // more expect statements can go here
+      }
+    });
+
+    test('should throw socket exception when getFile not found', () async {
+      try {
+        await getFile('http://not_found/not_found', const Duration(seconds: 1));
+        fail("exception not thrown");
+      } catch (e) {
+        expect(e, isA<SocketException>());
+      }
+    });
+
+    test('should throw timeout exception when getFile timeout', () async {
+      try {
+        await getFile('http://starbucks.com', const Duration(microseconds: 1));
+        fail("exception not thrown");
+      } catch (e) {
+        expect(e, isA<TimeoutException>());
       }
     });
   });
