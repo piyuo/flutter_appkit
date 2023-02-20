@@ -11,7 +11,7 @@ void main() {
       final downloader = Downloader(
         fileGetter: (String url, Duration timeout) async => encode(pb.OK()),
       );
-      final obj = await downloader.download(
+      final obj = await downloader.download<pb.OK>(
         'https://piyuo.com/brand/index.pb',
         () => pb.OK(),
       );

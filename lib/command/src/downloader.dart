@@ -25,10 +25,10 @@ class Downloader {
   /// ```dart
   /// download('https://piyuo.com/brand/index.pb');
   /// ```
-  Future<pb.Object?> download(String url, pb.Builder? builder) async {
+  Future<T?> download<T extends pb.Object>(String url, pb.Builder<T>? builder) async {
     final bytes = await fileGetter(url, timeout);
     if (bytes != null) {
-      return decode(bytes, builder);
+      return decode(bytes, builder) as T;
     }
     return null;
   }
