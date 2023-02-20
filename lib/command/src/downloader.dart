@@ -37,11 +37,7 @@ class Downloader {
 /// getFile is a default fileGetter, use http to get file, return null if cannot get file
 Future<Uint8List?> getFile(String url, Duration timeout) async {
   http.Client client = http.Client();
-  var resp = await client.post(
-    Uri.parse(url),
-    headers: {'Content-Type': 'multipart/form-data'},
-  ).timeout(timeout);
-
+  var resp = await client.get(Uri.parse(url)).timeout(timeout);
   if (resp.statusCode == 200) {
     return resp.bodyBytes;
   }
