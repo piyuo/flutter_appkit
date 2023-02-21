@@ -58,7 +58,7 @@ void log(String message) {
 /// ```
 void error(dynamic e, StackTrace? stacktrace) {
   try {
-    _lastMessage = e.toString().replaceAll('Exception: ', '');
+    _lastMessage = e.toString();
   } catch (_) {
     _lastMessage = e.runtimeType.toString();
   }
