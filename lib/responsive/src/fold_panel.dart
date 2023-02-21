@@ -50,6 +50,6 @@ class FoldPanel extends StatelessWidget {
               children: builder(true),
             )
           : Row(
-              children: builder(false).map((child) => Expanded(child: child)).toList(),
+              children: builder(false),
             ));
 }
