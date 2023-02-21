@@ -72,7 +72,7 @@ class AppExampleState extends State<AppExample> {
         child: Column(
       children: [
         Expanded(
-          child: _waitThenReady(context),
+          child: _networkErrorScreen(context),
           // child: _routing(context, widget.data),
           //child: _setPageTitle(context),
         ),
@@ -84,6 +84,14 @@ class AppExampleState extends State<AppExample> {
                 onPressed: () {
                   dialog.alert('hello');
                 },
+              ),
+              testing.ExampleButton(
+                label: 'error screen',
+                builder: () => _errorScreen(context),
+              ),
+              testing.ExampleButton(
+                label: 'network error screen',
+                builder: () => _networkErrorScreen(context),
               ),
               testing.ExampleButton(
                 label: 'routing',
@@ -112,11 +120,31 @@ class AppExampleState extends State<AppExample> {
                 label: 'error',
                 builder: () => _error(context),
               ),
-              testing.ExampleButton(label: 'wait then ready', builder: () => _waitThenReady(context)),
-              testing.ExampleButton(label: 'wait then error', builder: () => _waitThenError(context)),
+              testing.ExampleButton(label: 'startScreen ready', builder: () => _startScreenReady(context)),
+              testing.ExampleButton(label: 'startScreen error', builder: () => _startScreenError(context)),
+              testing.ExampleButton(
+                  label: 'startScreen network error', builder: () => _startScreenNetworkError(context)),
             ]))
       ],
     ));
+  }
+
+  Widget _errorScreen(BuildContext context) {
+    try {
+      throw Exception('http://piyuo.com/my_burger/.pb not found');
+    } catch (e, s) {
+      log.error(e, s);
+    }
+    return ErrorScreen(onRetry: () {});
+  }
+
+  Widget _networkErrorScreen(BuildContext context) {
+    try {
+      throw Exception('http://piyuo.com/my_burger/.pb not found');
+    } catch (e, s) {
+      log.error(e, s);
+    }
+    return NetworkErrorScreen(onRetry: () {});
   }
 
   Widget _routing(BuildContext context, dynamic data) {
@@ -232,12 +260,12 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
-  Widget _waitThenError(BuildContext context) {
+  Widget _startScreenError(BuildContext context) {
     return TextButton(
-      child: const Text('provider with problem'),
+      child: const Text('start screen error'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return Wait(
+          return StartScreen(
             future: () async {
               await Future.delayed(const Duration(seconds: 3));
               throw Exception('error');
@@ -249,7 +277,24 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
-  Widget _waitThenReady(BuildContext context) {
+  Widget _startScreenNetworkError(BuildContext context) {
+    return TextButton(
+      child: const Text('start screen network error'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return StartScreen(
+            future: () async {
+              await Future.delayed(const Duration(seconds: 3));
+              throw const RetryableException('error'); //TimeoutException('error');
+            },
+            builder: () => Container(width: 100, height: 100, color: Colors.red),
+          );
+        }));
+      },
+    );
+  }
+
+  Widget _startScreenReady(BuildContext context) {
     buildChild(isReady) {
       return Container(
           width: 100,
@@ -262,7 +307,7 @@ class AppExampleState extends State<AppExample> {
       child: const Text('provider need wait 3 seconds'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return Wait(
+          return StartScreen(
             future: () async => await Future.delayed(const Duration(seconds: 3)),
             loadingBuilder: () => buildChild(false),
             builder: () => buildChild(true),

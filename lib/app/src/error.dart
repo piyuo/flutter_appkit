@@ -4,9 +4,9 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
-import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'error_email.dart';
 
 ///EmailSupportEvent happen when user click 'Email Us' link

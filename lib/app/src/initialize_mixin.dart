@@ -1,3 +1,4 @@
+
 /// InitializeMixin is a mixin that mean class need init() before use
 mixin InitializeMixin {
   /// isReady is true if ready to use
