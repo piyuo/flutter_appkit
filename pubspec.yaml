@@ -61,7 +61,7 @@ dependencies:
   webview_flutter: ^4.0.2
   flutter_typeahead: ^4.1.1
   slide_countdown: ^0.5.0
-  fl_chart: ^0.60.0
+  fl_chart: ^0.61.0
   badges: ^3.0.2
   cupertino_listview: ^2.0.0
   split_view: ^3.2.1
@@ -71,7 +71,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   reactive_date_range_picker: ^0.6.0
   reactive_touch_spin: ^0.8.0
-  reactive_phone_form_field: ^0.11.0
+  reactive_phone_form_field: ^0.12.0
   reactive_raw_autocomplete: ^0.6.0
   pinput: ^2.2.23
   #modal_bottom_sheet: ^2.1.2
