@@ -9,6 +9,15 @@ String _lastMessage = '';
 /// lastMessage is last error message, it will used by error screen
 String get lastMessage => _lastMessage;
 
+/// _lastStackTrace is last stack trace, it will used by error screen
+String _lastStackTrace = '';
+
+/// lastStackTrace is last stack trace, it will used by error screen
+String get lastStackTrace => _lastStackTrace;
+
+/// printLastError print last error message and stack trace
+String printLastError() => '$_lastMessage\n$_lastStackTrace';
+
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
 String safeJsonEncode(Object object) {
   try {
@@ -54,14 +63,14 @@ void error(dynamic e, StackTrace? stacktrace) {
     _lastMessage = e.runtimeType.toString();
   }
   var out = '$header caught $_lastMessage';
-  String stack = stacktrace == null ? '' : beautyStack(stacktrace);
-  if (stack.isNotEmpty) {
-    out += '\n$stack';
+  _lastStackTrace = stacktrace == null ? '' : beautyStack(stacktrace);
+  if (_lastStackTrace.isNotEmpty) {
+    out += '\n$_lastStackTrace';
   }
   debugPrint(out);
   pushLog(
     message: _lastMessage,
-    stacktrace: stack,
+    stacktrace: _lastStackTrace,
   );
 }
 
