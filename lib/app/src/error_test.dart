@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/log/log.dart' as log;
@@ -200,7 +201,7 @@ void main() {
       await testing.mockApp(
         tester,
         child: createSample(onPressed: (context) async {
-          watch(() => throw log.DiskErrorException());
+          watch(() => throw preferences.DiskErrorException());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);

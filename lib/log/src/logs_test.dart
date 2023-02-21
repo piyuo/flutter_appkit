@@ -24,7 +24,7 @@ void main() {
     test('should print logs', () {
       logs.clear();
       pushLog(message: 'first message');
-      pushLog(message: 'second message', stacktrace: 'stacktrace', states: 'states');
+      pushLog(message: 'second message', stacktrace: 'stacktrace');
       String text = printLogs();
       expect(text.isNotEmpty, true);
       logs.clear();

@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/pb/pb.dart' as pb;
 
+/// DiskErrorException happen when there is a [disk error] when save data to disk may be not enough space or permission
+class DiskErrorException implements Exception {}
+
 /// _expirationExt is for setStringWithExpiration, we need extra expiration time
 const expirationExt = '_EXP';
 
@@ -63,7 +66,7 @@ Future<void> setBool(String key, bool? value) async {
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setBool(key, value);
   if (!result) {
-    throw log.DiskErrorException();
+    throw DiskErrorException();
   }
 }
 
@@ -91,7 +94,7 @@ Future<void> setInt(String key, int? value) async {
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setInt(key, value);
   if (!result) {
-    throw log.DiskErrorException();
+    throw DiskErrorException();
   }
 }
 
@@ -119,7 +122,7 @@ Future<void> setDouble(String key, double? value) async {
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setDouble(key, value);
   if (!result) {
-    throw log.DiskErrorException();
+    throw DiskErrorException();
   }
 }
 
@@ -147,7 +150,7 @@ Future<void> setString(String key, String? value) async {
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setString(key, value);
   if (!result) {
-    throw log.DiskErrorException();
+    throw DiskErrorException();
   }
 }
 
@@ -224,7 +227,7 @@ setStringList(String key, List<String> value) async {
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setStringList(key, value);
   if (!result) {
-    throw log.DiskErrorException();
+    throw DiskErrorException();
   }
 }
 

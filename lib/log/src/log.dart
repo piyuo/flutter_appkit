@@ -3,9 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'logs.dart';
 
+/// _lastMessage is last error message, it will used by error screen
+String _lastMessage = '';
+
+/// lastMessage is last error message, it will used by error screen
+String get lastMessage => _lastMessage;
+
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
-///
-///
 String safeJsonEncode(Object object) {
   try {
     return jsonEncode(object);
@@ -16,9 +20,9 @@ String safeJsonEncode(Object object) {
 }
 
 /// debug only print message in development. code will be remove at release mode
-///
-///     debug('something done');
-///
+/// ```dart
+///  debug('something done');
+/// ```
 void debug(String message) {
   if (!kReleaseMode) {
     debugPrint('$header $message');
@@ -26,9 +30,9 @@ void debug(String message) {
 }
 
 /// log normal but significant events , such as start up, shut down, or a configuration change.
-///
-///     log('something done');
-///
+/// ```dart
+/// log('something done');
+/// ```
 void log(String message) {
 //  if (!kReleaseMode) {}
   debugPrint('$header $message');
@@ -36,36 +40,35 @@ void log(String message) {
 }
 
 /// error print error message to console and keep log
-///
-///     try {
-///       throw Exception('my error');
-///     } catch (e, s) {
-///       error( e, s);
-///     }
-///
+/// ```dart
+/// try {
+///   throw Exception('my error');
+/// } catch (e, s) {
+///   error( e, s);
+/// }
+/// ```
 void error(dynamic e, StackTrace? stacktrace) {
-  String message = '';
   try {
-    message = e.toString().replaceAll('Exception: ', '');
+    _lastMessage = e.toString().replaceAll('Exception: ', '');
   } catch (_) {
-    message = e.runtimeType.toString();
+    _lastMessage = e.runtimeType.toString();
   }
-  var out = '$header caught $message';
+  var out = '$header caught $_lastMessage';
   String stack = stacktrace == null ? '' : beautyStack(stacktrace);
   if (stack.isNotEmpty) {
     out += '\n$stack';
   }
   debugPrint(out);
   pushLog(
-    message: message,
+    message: _lastMessage,
     stacktrace: stack,
   );
 }
 
 /// header return  user@application:
-///
-///     print(header); // 'kevin@piyuo: hello world'
-///
+/// ```dart
+/// print(header); // 'kevin@piyuo: hello world'
+/// ```
 @visibleForTesting
 String get header {
   var user = app.userID.isEmpty ? '' : '${app.userID}@';
@@ -77,11 +80,12 @@ String get header {
 }
 
 ///beautyStack return simple format stack trace
-///
+/// ```dart
 ///	catch (e, s) {
 ///	String text = beautyStack(s);
 ///	expect(text.length > 0, true);
 ///	}
+/// ```
 String beautyStack(StackTrace stack) {
   final buffer = StringBuffer();
   List<String> lines = stack.toString().split('\n');
@@ -102,11 +106,13 @@ String beautyStack(StackTrace stack) {
 }
 
 ///beautyLine return line that accept by google stack driver format
-///
+/// ```dart
 ///	beautyLine(l);
+/// ```
 @visibleForTesting
 String beautyLine(String l) {
-  return _beautyLine(l).replaceAll('file:///Users/cc/Dropbox/prj/fl/', '');
+  return _beautyLine(l);
+  //.replaceAll('file:///Users/cc/Dropbox/prj/fl/', '');
 }
 
 String _beautyLine(String l) {
@@ -128,9 +134,6 @@ String _beautyLine(String l) {
 }
 
 /// isLineUsable check line to see if we need it for debug
-///
-///	line := "/convey/doc.go:75"
-///	So(isLineUsable(line), ShouldBeFalse)
 @visibleForTesting
 bool isLineUsable(String line) {
   List<String> containKeywords = [
@@ -162,9 +165,9 @@ bool isLineUsable(String line) {
 }
 
 /// toString encode object into string
-///
-///     toString(state);
-///
+/// ```dart
+///  toString(state);
+/// ```
 String toString(dynamic value) {
   if (value != null) {
     var text = value.toString().replaceAll('\n', '');

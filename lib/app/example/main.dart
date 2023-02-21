@@ -7,6 +7,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
 import 'package:intl/intl.dart';
@@ -395,7 +396,7 @@ Widget _error(BuildContext context) {
           }),
       ElevatedButton(
           child: const Text('slow network'), onPressed: () => eventbus.broadcast(command.SlowNetworkEvent())),
-      ElevatedButton(child: const Text('disk error'), onPressed: () => throw log.DiskErrorException()),
+      ElevatedButton(child: const Text('disk error'), onPressed: () => throw preferences.DiskErrorException()),
     ],
   );
 }
