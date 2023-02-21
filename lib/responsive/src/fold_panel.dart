@@ -36,20 +36,27 @@ class FoldPanel extends StatelessWidget {
   /// ```
   const FoldPanel({
     required this.builder,
+    this.columnCrossAxisAlignment = CrossAxisAlignment.center,
+    this.rowMainAxisAlignment = MainAxisAlignment.center,
     Key? key,
   }) : super(key: key);
 
   /// children show column in small screen, row on big screen
   final List<Widget> Function(bool isColumn) builder;
 
+  final CrossAxisAlignment columnCrossAxisAlignment;
+
+  final MainAxisAlignment rowMainAxisAlignment;
+
   @override
   Widget build(BuildContext context) => LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) => isPhoneScreen(constraints.maxWidth)
           ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: columnCrossAxisAlignment,
               children: builder(true),
             )
           : Row(
+              mainAxisAlignment: rowMainAxisAlignment,
               children: builder(false),
             ));
 }
