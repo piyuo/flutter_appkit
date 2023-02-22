@@ -18,7 +18,7 @@ class Downloader {
   /// timeout define request timeout in ms
   final Duration timeout;
 
-  /// fileGetter is a function that get file from remote service
+  /// fileGetter is a function that get file from remote service, return null if cannot get file
   final Future<Uint8List?> Function(String url, Duration timeout) fileGetter;
 
   /// download protobuf file from remote service and return object
@@ -26,9 +26,13 @@ class Downloader {
   /// download('https://piyuo.com/brand/index.pb');
   /// ```
   Future<T?> download<T extends pb.Object>(String url, pb.Builder<T>? builder) async {
-    final bytes = await fileGetter(url, timeout);
-    if (bytes != null) {
-      return decode(bytes, builder) as T;
+    try {
+      final bytes = await fileGetter(url, timeout);
+      if (bytes != null) {
+        return decode(bytes, builder) as T;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
     return null;
   }
