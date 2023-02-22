@@ -120,10 +120,10 @@ class AppExampleState extends State<AppExample> {
                 label: 'error',
                 builder: () => _error(context),
               ),
-              testing.ExampleButton(label: 'startScreen ready', builder: () => _startScreenReady(context)),
-              testing.ExampleButton(label: 'startScreen error', builder: () => _startScreenError(context)),
+              testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
+              testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
               testing.ExampleButton(
-                  label: 'startScreen network error', builder: () => _startScreenNetworkError(context)),
+                  label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
             ]))
       ],
     ));
@@ -260,12 +260,12 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
-  Widget _startScreenError(BuildContext context) {
+  Widget _loadingScreenError(BuildContext context) {
     return TextButton(
-      child: const Text('start screen error'),
+      child: const Text('loading screen error'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return StartScreen(
+          return LoadingScreen(
             future: () async {
               await Future.delayed(const Duration(seconds: 3));
               throw Exception('error');
@@ -277,12 +277,12 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
-  Widget _startScreenNetworkError(BuildContext context) {
+  Widget _loadingScreenNetworkError(BuildContext context) {
     return TextButton(
-      child: const Text('start screen network error'),
+      child: const Text('loading screen network error'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return StartScreen(
+          return LoadingScreen(
             future: () async {
               await Future.delayed(const Duration(seconds: 3));
               throw const RetryableException('error'); //TimeoutException('error');
@@ -294,7 +294,7 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
-  Widget _startScreenReady(BuildContext context) {
+  Widget _loadingScreenReady(BuildContext context) {
     buildChild(isReady) {
       return Container(
           width: 100,
@@ -307,9 +307,9 @@ class AppExampleState extends State<AppExample> {
       child: const Text('provider need wait 3 seconds'),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return StartScreen(
+          return LoadingScreen(
             future: () async => await Future.delayed(const Duration(seconds: 3)),
-            loadingBuilder: () => buildChild(false),
+            loadingWidgetBuilder: () => buildChild(false),
             builder: () => buildChild(true),
           );
         }));

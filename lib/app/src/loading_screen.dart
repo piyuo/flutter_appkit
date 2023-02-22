@@ -23,9 +23,9 @@ class RetryableException implements Exception {
 /// _Status is status of wait future
 enum _Status { loading, error, networkError, ready }
 
-/// _StartScreenProvider control [StartScreen]
-class _StartScreenProvider with ChangeNotifier {
-  _StartScreenProvider(this.future, this.allowRetry) {
+/// _LoadingScreenProvider control [LoadingScreen]
+class _LoadingScreenProvider with ChangeNotifier {
+  _LoadingScreenProvider(this.future, this.allowRetry) {
     Future.microtask(load);
   }
 
@@ -78,8 +78,8 @@ class _StartScreenProvider with ChangeNotifier {
   }
 }
 
-/// StartScreen wait for a future to complete
-class StartScreen extends StatelessWidget {
+/// LoadingScreen wait for a future to complete
+class LoadingScreen extends StatelessWidget {
   /// Wait for a future to complete
   ///
   /// show progress indicator when future still loading
@@ -88,12 +88,10 @@ class StartScreen extends StatelessWidget {
   ///
   /// show child view when provider successfully load
   ///
-  const StartScreen({
+  const LoadingScreen({
     required this.future,
     required this.builder,
-    this.loadingBuilder,
-    this.errorBuilder,
-    this.networkErrorBuilder,
+    this.loadingWidgetBuilder,
     this.allowRetry = true,
     Key? key,
   }) : super(key: key);
@@ -104,38 +102,28 @@ class StartScreen extends StatelessWidget {
   /// builder build widget to show when future complete
   final Widget Function() builder;
 
-  /// errorBuilder build widget to show when future throw exception
-  final Widget Function()? errorBuilder;
-
-  /// networkErrorBuilder build widget to show when future throw network exception
-  final Widget Function()? networkErrorBuilder;
-
-  /// loadingBuilder build widget to show when future still loading
-  final Widget Function()? loadingBuilder;
+  /// loadingWidgetBuilder build widget to show when future still loading
+  final Widget Function()? loadingWidgetBuilder;
 
   /// allowRetry is true if allow retry when future throw exception
   final bool allowRetry;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<_StartScreenProvider>(
-        create: (_) => _StartScreenProvider(future, allowRetry),
-        child: Consumer<_StartScreenProvider>(
-          builder: (context, startScreenProvider, child) {
-            switch (startScreenProvider.status) {
+    return ChangeNotifierProvider<_LoadingScreenProvider>(
+        create: (_) => _LoadingScreenProvider(future, allowRetry),
+        child: Consumer<_LoadingScreenProvider>(
+          builder: (context, loadingScreenProvider, child) {
+            switch (loadingScreenProvider.status) {
               case _Status.ready:
                 return builder();
               case _Status.error:
-                return errorBuilder != null
-                    ? errorBuilder!()
-                    : ErrorScreen(onRetry: allowRetry ? startScreenProvider.retry : null);
+                return ErrorScreen(onRetry: allowRetry ? loadingScreenProvider.retry : null);
               case _Status.networkError:
-                return networkErrorBuilder != null
-                    ? networkErrorBuilder!()
-                    : NetworkErrorScreen(onRetry: startScreenProvider.retry);
+                return NetworkErrorScreen(onRetry: loadingScreenProvider.retry);
               default:
-                return loadingBuilder != null
-                    ? loadingBuilder!()
+                return loadingWidgetBuilder != null
+                    ? loadingWidgetBuilder!()
                     : Scaffold(
                         body: Center(
                           child: Icon(
