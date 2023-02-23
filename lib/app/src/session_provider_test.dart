@@ -16,14 +16,14 @@ void main() {
   group('[session_provider]', () {
     test('should save/load token', () async {
       final expired = DateTime.now().add(const Duration(seconds: 300));
-      final token = Ticket(
-        token: 'key',
+      final token = Token(
+        value: 'key',
         expired: expired,
       );
       await token.save('test');
 
-      final token2 = await Ticket.load('test');
-      expect(token.token, token2!.token);
+      final token2 = await Token.load('test');
+      expect(token.value, token2!.value);
       expect(token.expired.day, token2.expired.day);
       await preferences.remove('test');
     });
@@ -32,12 +32,12 @@ void main() {
       final aExpired = DateTime.now().add(const Duration(seconds: 300));
       final rExpired = DateTime.now().add(const Duration(seconds: 100));
       final session = Session(
-        accessTicket: Ticket(
-          token: 'fakeAccessKey',
+        accessToken: Token(
+          value: 'fakeAccessKey',
           expired: aExpired,
         ),
-        refreshTicket: Ticket(
-          token: 'fakeRefreshKey',
+        refreshToken: Token(
+          value: 'fakeRefreshKey',
           expired: rExpired,
         ),
         args: {
@@ -49,10 +49,10 @@ void main() {
       await session.save();
 
       final session2 = await Session.load();
-      expect(session.accessTicket.token, session2!.accessTicket.token);
-      expect(session.accessTicket.expired.minute, session2.accessTicket.expired.minute);
-      expect(session.refreshTicket!.token, session2.refreshTicket!.token);
-      expect(session.refreshTicket!.expired.second, session2.refreshTicket!.expired.second);
+      expect(session.accessToken.value, session2!.accessToken.value);
+      expect(session.accessToken.expired.minute, session2.accessToken.expired.minute);
+      expect(session.refreshToken!.value, session2.refreshToken!.value);
+      expect(session.refreshToken!.expired.second, session2.refreshToken!.expired.second);
       expect(session['user'], session2['user']);
       expect(session['img'], session2['img']);
       expect(session['region'], session2['region']);
@@ -64,12 +64,12 @@ void main() {
       final rExpired = DateTime.now().add(const Duration(seconds: 100));
       expect(await sessionProvider.getValidSession(), isNull);
       await sessionProvider.login(Session(
-        accessTicket: Ticket(
-          token: 'fakeAccessKey',
+        accessToken: Token(
+          value: 'fakeAccessKey',
           expired: aExpired,
         ),
-        refreshTicket: Ticket(
-          token: 'fakeRefreshKey',
+        refreshToken: Token(
+          value: 'fakeRefreshKey',
           expired: rExpired,
         ),
         args: {
@@ -89,11 +89,11 @@ void main() {
       final session2 = await sessionProvider2.getValidSession();
       expect(session2, isNotNull);
       expect(session2!.isValid, isTrue);
-      expect(session2.accessTicket.token, 'fakeAccessKey');
-      expect(session2.accessTicket.isValid, isTrue);
-      expect(session2.refreshTicket, isNotNull);
-      expect(session2.refreshTicket!.token, 'fakeRefreshKey');
-      expect(session2.refreshTicket!.isValid, true);
+      expect(session2.accessToken.value, 'fakeAccessKey');
+      expect(session2.accessToken.isValid, isTrue);
+      expect(session2.refreshToken, isNotNull);
+      expect(session2.refreshToken!.value, 'fakeRefreshKey');
+      expect(session2.refreshToken!.isValid, true);
       expect(session2['user'], 'user1');
       expect(session2['img'], 'img1');
       expect(session2['region'], 'region1');
@@ -118,8 +118,8 @@ void main() {
       });
 
       final sessionProvider = SessionProvider(
-        loader: (Ticket? refreshToken) async {
-          rKey = refreshToken!.token;
+        loader: (Token? refreshToken) async {
+          rKey = refreshToken!.value;
           refreshCount++;
           return null;
         },
@@ -127,12 +127,12 @@ void main() {
 
       await sessionProvider.login(
         Session(
-          accessTicket: Ticket(
-            token: 'fakeAccessKey',
+          accessToken: Token(
+            value: 'fakeAccessKey',
             expired: DateTime.now().add(const Duration(seconds: -30)),
           ),
-          refreshTicket: Ticket(
-            token: 'fakeRefreshKey',
+          refreshToken: Token(
+            value: 'fakeRefreshKey',
             expired: DateTime.now().add(const Duration(seconds: 30)),
           ),
         ),
@@ -159,26 +159,26 @@ void main() {
       });
 
       final sessionProvider = SessionProvider(
-        loader: (Ticket? refreshToken) async {
+        loader: (Token? refreshToken) async {
           refreshCount++;
           return Session(
-            accessTicket: Ticket(
-              token: 'fakeAccessKey2',
+            accessToken: Token(
+              value: 'fakeAccessKey2',
               expired: DateTime.now().add(const Duration(seconds: 30)),
             ),
-            refreshTicket: refreshToken,
+            refreshToken: refreshToken,
           );
         },
       );
 
       await sessionProvider.login(
         Session(
-          accessTicket: Ticket(
-            token: 'fakeAccessKey',
+          accessToken: Token(
+            value: 'fakeAccessKey',
             expired: DateTime.now().add(const Duration(seconds: -30)),
           ),
-          refreshTicket: Ticket(
-            token: 'fakeRefreshKey',
+          refreshToken: Token(
+            value: 'fakeRefreshKey',
             expired: DateTime.now().add(const Duration(seconds: 30)),
           ),
         ),
@@ -203,15 +203,15 @@ void main() {
       });
 
       final sessionProvider = SessionProvider(
-        loader: (Ticket? refreshToken) async {
+        loader: (Token? refreshToken) async {
           refreshCount++;
           return Session(
-            accessTicket: Ticket(
-              token: 'access2',
+            accessToken: Token(
+              value: 'access2',
               expired: DateTime.now().add(const Duration(seconds: 30)),
             ),
-            refreshTicket: Ticket(
-              token: 'refresh2',
+            refreshToken: Token(
+              value: 'refresh2',
               expired: DateTime.now().add(const Duration(seconds: 30)),
             ),
           );
@@ -219,19 +219,19 @@ void main() {
       );
       await sessionProvider.login(
         Session(
-          accessTicket: Ticket(
-            token: 'access1',
+          accessToken: Token(
+            value: 'access1',
             expired: DateTime.now().add(const Duration(seconds: -30)),
           ),
-          refreshTicket: Ticket(
-            token: 'refresh1',
+          refreshToken: Token(
+            value: 'refresh1',
             expired: DateTime.now().add(const Duration(seconds: 30)),
           ),
         ),
       );
       var session = await sessionProvider.getValidSession();
       expect(session, isNotNull);
-      expect(session!.refreshTicket!.token, 'refresh2');
+      expect(session!.refreshToken!.value, 'refresh2');
       expect(refreshCount, 1);
       expect(loginCount, 1);
       expect(logoutCount, 0);
@@ -239,12 +239,12 @@ void main() {
 
     test('should handle AccessTokenRevokedEvent', () async {
       final sessionProvider = SessionProvider(
-        loader: (Ticket? refreshToken) async => null,
+        loader: (Token? refreshToken) async => null,
       );
       await sessionProvider.login(
         Session(
-          accessTicket: Ticket(
-            token: 'access',
+          accessToken: Token(
+            value: 'access',
             expired: DateTime.now().add(const Duration(seconds: 30)),
           ),
         ),
@@ -261,16 +261,16 @@ void main() {
 
     test('should handle ForceLogOutEvent', () async {
       final sessionProvider = SessionProvider(
-        loader: (Ticket? refreshToken) async => null,
+        loader: (Token? refreshToken) async => null,
       );
       await sessionProvider.login(
         Session(
-          accessTicket: Ticket(
-            token: 'access',
+          accessToken: Token(
+            value: 'access',
             expired: DateTime.now().add(const Duration(seconds: 30)),
           ),
-          refreshTicket: Ticket(
-            token: 'refresh',
+          refreshToken: Token(
+            value: 'refresh',
             expired: DateTime.now().add(const Duration(seconds: 30)),
           ),
         ),

@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/preferences/preferences.dart' as preferences;

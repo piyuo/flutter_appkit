@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
-import 'package:libcli/types/types.dart' as types;
 import 'initialize_mixin.dart';
 
 /// LoginEvent is event when user login through UI
@@ -15,7 +14,7 @@ class LogoutEvent {}
 /// SessionLoader called when session expired,
 /// you should use refresh key to exchange new access token, or display UI to let user log back in
 /// return null if you want to logout, or return new session
-typedef SessionLoader = Future<Session?> Function(Ticket? refreshTicket);
+typedef SessionLoader = Future<Session?> Function(Token? refreshToken);
 
 /// _kAccessToken is access token key in preferences
 const _kAccessToken = 'A';
@@ -26,11 +25,11 @@ const _kRefreshToken = 'R';
 /// _kArgs is args key in preferences
 const _kArgs = 'G';
 
-/// _kTicketToken is token key
-const _kTicketToken = 'T';
+/// _kTokenValue is token value key
+const _kTokenValue = 'V';
 
-/// _kTicketExpired is expired key
-const _kTicketExpired = 'E';
+/// _kTokenExpired is token expired key
+const _kTokenExpired = 'E';
 
 /// kSessionUserName is the key for the user name in the session.
 const kSessionUserName = 'uName';
@@ -41,37 +40,37 @@ const kSessionUserPhoto = 'uPhoto';
 /// kSessionRegion is the key for the region in the session.
 const kSessionRegion = 'region';
 
-/// Ticket keep token and expired time
-class Ticket {
-  Ticket({
-    required this.token,
+/// Token keep value and expired time
+class Token {
+  Token({
+    required this.value,
     required this.expired,
   });
 
-  /// token is access token or refresh token
-  String token;
+  /// value is access token value or refresh token value
+  String value;
 
   /// expired is access key expired time
   DateTime expired;
 
   /// isValid check if token is valid
-  bool get isValid => token.isNotEmpty && expired.isAfter(DateTime.now());
+  bool get isValid => value.isNotEmpty && expired.isAfter(DateTime.now());
 
   /// save save token to storage
   Future<void> save(String prefix) async {
     await preferences.setMap(prefix, {
-      _kTicketToken: token,
-      _kTicketExpired: expired.millisecondsSinceEpoch,
+      _kTokenValue: value,
+      _kTokenExpired: expired.millisecondsSinceEpoch,
     });
   }
 
   /// load load token from storage
-  static Future<Ticket?> load(String prefix) async {
+  static Future<Token?> load(String prefix) async {
     final data = await preferences.getMap(prefix);
     if (data != null) {
-      return Ticket(
-        token: data[_kTicketToken],
-        expired: DateTime.fromMillisecondsSinceEpoch(data[_kTicketExpired]),
+      return Token(
+        value: data[_kTokenValue],
+        expired: DateTime.fromMillisecondsSinceEpoch(data[_kTokenExpired]),
       );
     }
     return null;
@@ -81,22 +80,22 @@ class Ticket {
 /// Session keep access token, refresh token and extra data
 class Session {
   Session({
-    required this.accessTicket,
-    this.refreshTicket,
+    required this.accessToken,
+    this.refreshToken,
     this.args = const {},
   });
 
-  /// accessTicket key access token and expired time
-  Ticket accessTicket;
+  /// accessToken keep access token value and expired time
+  Token accessToken;
 
-  /// refreshTicket keep refresh token and expired time
-  Ticket? refreshTicket;
+  /// refreshToken keep refresh token value and expired time
+  Token? refreshToken;
 
   /// isValid return true if access token is valid
-  bool get isValid => accessTicket.isValid;
+  bool get isValid => accessToken.isValid;
 
   /// canRefresh return true if there is refresh token and it is valid
-  bool get canRefresh => refreshTicket != null && refreshTicket!.isValid;
+  bool get canRefresh => refreshToken != null && refreshToken!.isValid;
 
   /// args can keep extra data like region, language, etc
   Map<String, dynamic> args;
@@ -112,9 +111,9 @@ class Session {
 
   /// save session to preferences
   Future<void> save() async {
-    await accessTicket.save(_kAccessToken);
-    if (refreshTicket != null) {
-      await refreshTicket!.save(_kRefreshToken);
+    await accessToken.save(_kAccessToken);
+    if (refreshToken != null) {
+      await refreshToken!.save(_kRefreshToken);
     }
     if (args.isNotEmpty) {
       await preferences.setMap(_kArgs, args);
@@ -123,11 +122,11 @@ class Session {
 
   /// load session from preferences
   static Future<Session?> load() async {
-    final accessTicket = await Ticket.load(_kAccessToken);
-    if (accessTicket != null) {
+    final accessToken = await Token.load(_kAccessToken);
+    if (accessToken != null) {
       return Session(
-        accessTicket: accessTicket,
-        refreshTicket: await Ticket.load(_kRefreshToken),
+        accessToken: accessToken,
+        refreshToken: await Token.load(_kRefreshToken),
         args: await preferences.getMap(_kArgs) ?? {},
       );
     }
@@ -156,7 +155,7 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
     subscription = eventbus.listen((event) async {
       if (event is command.AccessTokenRevokedEvent) {
         if (session != null) {
-          session!.accessTicket.token = '';
+          session!.accessToken.value = '';
         }
       }
       if (event is command.ForceLogOutEvent) {
@@ -192,8 +191,8 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
 
     // access token not valid, try load new session
     if (session != null && session!.canRefresh) {
-      final refreshTicket = session!.refreshTicket!;
-      final newSession = await loader(refreshTicket);
+      final refreshToken = session!.refreshToken!;
+      final newSession = await loader(refreshToken);
       if (newSession != null) {
         // session get updated
         await login(newSession);
@@ -229,7 +228,7 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
   /// ```
   Future<void> logout() async {
     bool hasSession = session != null;
-    session?.accessTicket.token = '';
+    session?.accessToken.value = '';
     session = null;
     await Session.remove();
     if (hasSession) {
