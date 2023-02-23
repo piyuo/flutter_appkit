@@ -16,29 +16,32 @@ class LogoutEvent {}
 /// return null if you want to logout, or return new session
 typedef SessionLoader = Future<Session?> Function(Token? refreshToken);
 
-/// _kAccessToken is access token key in preferences
-const _kAccessToken = 'A';
+/// _kUserIdKey is user id key in preferences
+const _kUserIdKey = 'U';
 
-/// _kRefreshToken is refresh token key in preferences
-const _kRefreshToken = 'R';
+/// _kAccessTokenKey is access token key in preferences
+const _kAccessTokenKey = 'A';
 
-/// _kArgs is args key in preferences
-const _kArgs = 'G';
+/// _kRefreshTokenKey is refresh token key in preferences
+const _kRefreshTokenKey = 'R';
 
-/// _kTokenValue is token value key
-const _kTokenValue = 'V';
+/// _kArgsKey is args key in preferences
+const _kArgsKey = 'G';
 
-/// _kTokenExpired is token expired key
-const _kTokenExpired = 'E';
+/// _kTokenValueKey is token value key
+const _kTokenValueKey = 'V';
 
-/// kSessionUserName is the key for the user name in the session.
-const kSessionUserName = 'uName';
+/// _kTokenExpiredKey is token expired key
+const _kTokenExpiredKey = 'E';
 
-/// kSessionUserPhoto is the key for the user photo in the session.
-const kSessionUserPhoto = 'uPhoto';
+/// kSessionUserNameKey is the key for the user name in the session.
+const kSessionUserNameKey = 'uName';
 
-/// kSessionRegion is the key for the region in the session.
-const kSessionRegion = 'region';
+/// kSessionUserPhotoKey is the key for the user photo in the session.
+const kSessionUserPhotoKey = 'uPhoto';
+
+/// kSessionRegionKey is the key for the region in the session.
+const kSessionRegionKey = 'region';
 
 /// Token keep value and expired time
 class Token {
@@ -59,8 +62,8 @@ class Token {
   /// save save token to storage
   Future<void> save(String prefix) async {
     await preferences.setMap(prefix, {
-      _kTokenValue: value,
-      _kTokenExpired: expired.millisecondsSinceEpoch,
+      _kTokenValueKey: value,
+      _kTokenExpiredKey: expired.millisecondsSinceEpoch,
     });
   }
 
@@ -69,8 +72,8 @@ class Token {
     final data = await preferences.getMap(prefix);
     if (data != null) {
       return Token(
-        value: data[_kTokenValue],
-        expired: DateTime.fromMillisecondsSinceEpoch(data[_kTokenExpired]),
+        value: data[_kTokenValueKey],
+        expired: DateTime.fromMillisecondsSinceEpoch(data[_kTokenExpiredKey]),
       );
     }
     return null;
@@ -80,10 +83,14 @@ class Token {
 /// Session keep access token, refresh token and extra data
 class Session {
   Session({
+    required this.userId,
     required this.accessToken,
     this.refreshToken,
     this.args = const {},
   });
+
+  /// userId usually is user's email address like 'john@gmail.com'
+  String userId;
 
   /// accessToken keep access token value and expired time
   Token accessToken;
@@ -111,23 +118,26 @@ class Session {
 
   /// save session to preferences
   Future<void> save() async {
-    await accessToken.save(_kAccessToken);
+    await preferences.setString(_kUserIdKey, userId);
+    await accessToken.save(_kAccessTokenKey);
     if (refreshToken != null) {
-      await refreshToken!.save(_kRefreshToken);
+      await refreshToken!.save(_kRefreshTokenKey);
     }
     if (args.isNotEmpty) {
-      await preferences.setMap(_kArgs, args);
+      await preferences.setMap(_kArgsKey, args);
     }
   }
 
   /// load session from preferences
   static Future<Session?> load() async {
-    final accessToken = await Token.load(_kAccessToken);
-    if (accessToken != null) {
+    final accessToken = await Token.load(_kAccessTokenKey);
+    final maybeUserId = await preferences.getString(_kUserIdKey);
+    if (maybeUserId != null && accessToken != null) {
       return Session(
+        userId: maybeUserId,
         accessToken: accessToken,
-        refreshToken: await Token.load(_kRefreshToken),
-        args: await preferences.getMap(_kArgs) ?? {},
+        refreshToken: await Token.load(_kRefreshTokenKey),
+        args: await preferences.getMap(_kArgsKey) ?? {},
       );
     }
     return null;
@@ -135,9 +145,9 @@ class Session {
 
   /// remove session from preferences
   static Future<void> remove() async {
-    await preferences.remove(_kAccessToken);
-    await preferences.remove(_kRefreshToken);
-    await preferences.remove(_kArgs);
+    await preferences.remove(_kAccessTokenKey);
+    await preferences.remove(_kRefreshTokenKey);
+    await preferences.remove(_kArgsKey);
   }
 }
 

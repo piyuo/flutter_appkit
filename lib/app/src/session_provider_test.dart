@@ -32,6 +32,7 @@ void main() {
       final aExpired = DateTime.now().add(const Duration(seconds: 300));
       final rExpired = DateTime.now().add(const Duration(seconds: 100));
       final session = Session(
+        userId: 'user1',
         accessToken: Token(
           value: 'fakeAccessKey',
           expired: aExpired,
@@ -56,6 +57,7 @@ void main() {
       expect(session['user'], session2['user']);
       expect(session['img'], session2['img']);
       expect(session['region'], session2['region']);
+      expect(session.userId, 'user1');
     });
 
     test('should keep session data', () async {
@@ -64,6 +66,7 @@ void main() {
       final rExpired = DateTime.now().add(const Duration(seconds: 100));
       expect(await sessionProvider.getValidSession(), isNull);
       await sessionProvider.login(Session(
+        userId: 'user1',
         accessToken: Token(
           value: 'fakeAccessKey',
           expired: aExpired,
@@ -127,6 +130,7 @@ void main() {
 
       await sessionProvider.login(
         Session(
+          userId: 'user1',
           accessToken: Token(
             value: 'fakeAccessKey',
             expired: DateTime.now().add(const Duration(seconds: -30)),
@@ -162,6 +166,7 @@ void main() {
         loader: (Token? refreshToken) async {
           refreshCount++;
           return Session(
+            userId: 'user1',
             accessToken: Token(
               value: 'fakeAccessKey2',
               expired: DateTime.now().add(const Duration(seconds: 30)),
@@ -173,6 +178,7 @@ void main() {
 
       await sessionProvider.login(
         Session(
+          userId: 'user1',
           accessToken: Token(
             value: 'fakeAccessKey',
             expired: DateTime.now().add(const Duration(seconds: -30)),
@@ -206,6 +212,7 @@ void main() {
         loader: (Token? refreshToken) async {
           refreshCount++;
           return Session(
+            userId: 'user1',
             accessToken: Token(
               value: 'access2',
               expired: DateTime.now().add(const Duration(seconds: 30)),
@@ -219,6 +226,7 @@ void main() {
       );
       await sessionProvider.login(
         Session(
+          userId: 'user1',
           accessToken: Token(
             value: 'access1',
             expired: DateTime.now().add(const Duration(seconds: -30)),
@@ -243,6 +251,7 @@ void main() {
       );
       await sessionProvider.login(
         Session(
+          userId: 'user1',
           accessToken: Token(
             value: 'access',
             expired: DateTime.now().add(const Duration(seconds: 30)),
@@ -265,6 +274,7 @@ void main() {
       );
       await sessionProvider.login(
         Session(
+          userId: 'user1',
           accessToken: Token(
             value: 'access',
             expired: DateTime.now().add(const Duration(seconds: 30)),
