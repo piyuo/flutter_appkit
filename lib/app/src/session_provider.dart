@@ -95,6 +95,9 @@ class Session {
   /// isValid return true if access token is valid
   bool get isValid => accessTicket.isValid;
 
+  /// canRefresh return true if there is refresh token and it is valid
+  bool get canRefresh => refreshTicket != null && refreshTicket!.isValid;
+
   /// args can keep extra data like region, language, etc
   Map<String, dynamic> args;
 
@@ -143,16 +146,17 @@ class Session {
 class SessionProvider with ChangeNotifier, InitializeMixin {
   SessionProvider({
     required this.loader,
+    this.session,
   }) {
     initFuture = () async {
-      _session = await Session.load();
-      debugPrint('$_session');
+      session = await Session.load();
+      debugPrint('$session');
     };
 
     subscription = eventbus.listen((event) async {
       if (event is command.AccessTokenRevokedEvent) {
-        if (_session != null) {
-          _session!.accessTicket.token = '';
+        if (session != null) {
+          session!.accessTicket.token = '';
         }
       }
       if (event is command.ForceLogOutEvent) {
@@ -167,44 +171,40 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
     super.dispose();
   }
 
-  late eventbus.Subscription subscription;
-
-  /// loader called when session expired and need refresh
-  final SessionLoader loader;
-
-  /// _session is session
-  Session? _session;
-
   /// of get SessionProvider from context
   static SessionProvider of(BuildContext context) {
     return Provider.of<SessionProvider>(context, listen: false);
   }
 
-  /// currentSession return current session, it won't check or refresh session if not valid
-  Session? get currentSession => _session;
+  late eventbus.Subscription subscription;
 
-  /// getSession return session if valid and it will refresh session if expired
-  Future<Session?> getSession() async {
-    if (_session != null && _session!.isValid) {
-      return _session;
+  /// loader called when session expired and need refresh
+  final SessionLoader loader;
+
+  /// _session is current session, it may not valid if expired, use getValidSession to get valid session
+  Session? session;
+
+  /// getValidSession return valid session if valid and it will refresh session if expired
+  Future<Session?> getValidSession() async {
+    if (session != null && session!.isValid) {
+      return session;
     }
 
     // access token not valid, try load new session
-    final refreshTicket = _session != null && _session!.refreshTicket != null && _session!.refreshTicket!.isValid
-        ? _session!.refreshTicket!
-        : null;
-    final newSession = await loader(refreshTicket);
-    if (newSession == null) {
-      // logout
-      if (_session != null) {
+    if (session != null && session!.canRefresh) {
+      final refreshTicket = session!.refreshTicket!;
+      final newSession = await loader(refreshTicket);
+      if (newSession != null) {
+        // session get updated
+        await login(newSession);
+        return session;
+      }
+
+      if (newSession == null) {
         await logout();
       }
-      return null;
     }
-
-    // session get updated
-    await login(newSession);
-    return _session;
+    return null;
   }
 
   /// login new session
@@ -213,10 +213,10 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
   ///    session: Session(),
   ///  );
   /// ```
-  Future<void> login(Session session) async {
-    bool noSession = _session == null;
-    _session = session;
-    await _session!.save();
+  Future<void> login(Session newSession) async {
+    bool noSession = session == null;
+    session = newSession;
+    await session!.save();
     if (noSession) {
       await eventbus.broadcast(LoginEvent());
     }
@@ -228,9 +228,9 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
   /// sessionProvider.logout();
   /// ```
   Future<void> logout() async {
-    bool hasSession = _session != null;
-    _session?.accessTicket.token = '';
-    _session = null;
+    bool hasSession = session != null;
+    session?.accessTicket.token = '';
+    session = null;
     await Session.remove();
     if (hasSession) {
       await eventbus.broadcast(LogoutEvent());
