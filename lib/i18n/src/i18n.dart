@@ -1,4 +1,5 @@
 // ignore: implementation_imports
+import 'dart:ui' as ui;
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:libcli/google/google.dart' as google;
 import 'datetime.dart';
@@ -72,10 +73,13 @@ String get localeName => Intl.defaultLocale ?? 'en';
 /// locale is current locale, it set by Intl.defaultLocale
 Locale get locale => stringToLocale(localeName);
 
-/// setLocale override current locale
-void setLocale(String newLocaleName) {
-  Intl.defaultLocale = newLocaleName;
+/// locale is current locale, it set by Intl.defaultLocale
+set locale(Locale newLocale) {
+  Intl.defaultLocale = newLocale.toString();
 }
+
+/// setLocale override current locale
+void setLocale(String newLocaleName) {}
 
 /// mockLocale mock intl default locale
 @visibleForTesting
