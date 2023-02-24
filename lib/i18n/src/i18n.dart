@@ -4,71 +4,22 @@ import 'package:libcli/google/google.dart' as google;
 import 'datetime.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:libcli/preferences/preferences.dart' as storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
 import '../gen/lib_localizations_en.dart';
 
-const _prefKeyTempLocale = 'locale';
+/// supportedLocales return i18n package supported locales
+Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
 
-/// I18nProvider used to redraw when user change locale
-class I18nProvider with ChangeNotifier {
-  I18nProvider() {
-    //try to load temp locale
-    Future.microtask(loadTemporaryLocale);
-  }
-
-  /// overrideLocale is locale used to override system locale
-  Locale? _overrideLocale;
-
-  Locale? get overrideLocale => _overrideLocale;
-
-  set overrideLocale(Locale? newLocale) {
-    if (_overrideLocale != newLocale) {
-      _overrideLocale = newLocale;
-      notifyListeners();
-    }
-  }
-
-  /// loadTemporaryLocale call when app start, try to load temp locale
-  Future<void> loadTemporaryLocale() async {
-    final localeTemp = await storage.getStringWithExp(_prefKeyTempLocale);
-    if (localeTemp != null) {
-      overrideLocale = stringToLocale(localeTemp);
-    }
-  }
-
-  /// overrideLocaleTemporary override locale for 24 hour, cause when web mode
-  /// if user change one page's locale, other page need reflect change
-  Future<void> overrideLocaleTemporary(Locale? newLocale) async {
-    if (overrideLocale != newLocale) {
-      final tomorrow = DateTime.now().add(const Duration(hours: 24));
-      if (newLocale != null) {
-        await storage.setStringWithExp(_prefKeyTempLocale, newLocale.toString(), tomorrow);
-      } else {
-        await storage.remove(_prefKeyTempLocale);
-      }
-      overrideLocale = newLocale;
-    }
-  }
-
-  /// of get I18nProvider from context
-  static I18nProvider of(BuildContext context) {
-    return Provider.of<I18nProvider>(context, listen: false);
-  }
-
-  Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
-
-  Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
-    _I18nDelegate(),
-    LibLocalizations.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
-}
+/// localizationsDelegates return i18n package localizations delegates
+Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
+  _I18nDelegate(),
+  LibLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
+];
 
 /// _I18nDelegate used to get localized change events
 class _I18nDelegate extends LocalizationsDelegate<Locale> {
@@ -120,6 +71,11 @@ String get localeName => Intl.defaultLocale ?? 'en';
 
 /// locale is current locale, it set by Intl.defaultLocale
 Locale get locale => stringToLocale(localeName);
+
+/// setLocale override current locale
+void setLocale(String newLocaleName) {
+  Intl.defaultLocale = newLocaleName;
+}
 
 /// mockLocale mock intl default locale
 @visibleForTesting
