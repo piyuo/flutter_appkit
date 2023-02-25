@@ -45,27 +45,34 @@ Future<void> mockApp(
   useTestFont(tester);
   storage.initForTest({});
 
-  await tester.pumpWidget(MultiProvider(
-      providers: providers ?? [],
-      child: delta.GlobalContextSupport(
-        child: MaterialApp(
-          navigatorObservers: [navigatorObserver],
-          builder: dialog.init(),
-          home: providers != null
-              ? MultiProvider(
-                  providers: providers,
-                  child: child,
-                )
-              : child,
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: [
-            if (l10nDelegate != null) l10nDelegate,
-            ...i18n.localizationsDelegates,
-          ],
-          supportedLocales: const [
-            Locale('en', 'US'),
-          ],
-        ),
-      )));
+  final materialApp = delta.GlobalContextSupport(
+    child: MaterialApp(
+      navigatorObservers: [navigatorObserver],
+      builder: dialog.init(),
+      home: providers != null
+          ? MultiProvider(
+              providers: providers,
+              child: child,
+            )
+          : child,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        if (l10nDelegate != null) l10nDelegate,
+        ...i18n.localizationsDelegates,
+      ],
+      supportedLocales: const [
+        Locale('en', 'US'),
+      ],
+    ),
+  );
+
+  await tester.pumpWidget(
+    providers != null
+        ? MultiProvider(
+            providers: providers,
+            child: materialApp,
+          )
+        : materialApp,
+  );
   await tester.pumpAndSettle();
 }
