@@ -28,7 +28,7 @@ class AudioProvider with ChangeNotifier {
   ///      playURL('file-examples-com.github.io/asset/audio/file');
   ///
   Future<void> playRemoteAsset(String serverPath) async {
-    await _player.setUrl('https://{serverPath}_${i18n.localeName}.mp4');
+    await _player.setUrl('https://{serverPath}_${i18n.localeKey}.mp4');
     _player.play();
   }
 
@@ -37,7 +37,7 @@ class AudioProvider with ChangeNotifier {
   ///     playAsset('new_order');
   ///
   Future<void> playAsset(String assetName) async {
-    await _player.setAsset('asset/audio/${assetName}_${i18n.localeName}.mp4');
+    await _player.setAsset('asset/audio/${assetName}_${i18n.localeKey}.mp4');
     _player.play();
   }
 }

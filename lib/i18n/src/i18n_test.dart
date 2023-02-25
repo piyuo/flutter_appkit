@@ -22,7 +22,7 @@ void main() {
 
   group('[i18n]', () {
     test('should get default locale en', () async {
-      expect(localeName, 'en');
+      expect(localeKey, 'en');
     });
 
     test('should get local date', () async {

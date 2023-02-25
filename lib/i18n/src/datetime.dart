@@ -58,7 +58,7 @@ Future<void> changeDateFormatting(String locale) async {
 
 /// dateFormat return current date format
 DateFormat get dateFormat {
-  return DateFormat.yMMMMd(localeName);
+  return DateFormat.yMMMMd(localeKey);
 }
 
 /// datePattern return current date pattern
@@ -71,7 +71,7 @@ String get datePattern {
 
 /// timeFormat return current time format
 DateFormat get timeFormat {
-  return DateFormat.jm(localeName);
+  return DateFormat.jm(localeKey);
 }
 
 /// timePattern return current time pattern
@@ -84,7 +84,7 @@ String get timePattern {
 
 /// dateTimeFormat return current date time format
 DateFormat get dateTimeFormat {
-  return DateFormat.yMMMMd(localeName).add_jm();
+  return DateFormat.yMMMMd(localeKey).add_jm();
 }
 
 /// dateTimePattern return current date time pattern
@@ -161,7 +161,7 @@ String formatTimeStamp(google.Timestamp stamp) => formatTime(stamp.toDateTime().
 String formatDuration(Duration duration) {
   final l = locale;
   DurationLocale? dl;
-  if (localeName == 'zh_TW') {
+  if (localeKey == 'zh_TW') {
     dl = chineseTraditionalLocale;
   } else {
     dl = DurationLocale.fromLanguageCode(l.languageCode);
@@ -175,7 +175,7 @@ String formatDuration(Duration duration) {
 /// expect(formatWeekday(date), 'Monday');
 /// ```
 String formatWeekday(DateTime date) {
-  return DateFormat.EEEE(localeName).format(date);
+  return DateFormat.EEEE(localeKey).format(date);
 }
 
 /// formatWeekdayShort convert date to local weekday short string
@@ -183,7 +183,7 @@ String formatWeekday(DateTime date) {
 /// expect(formatWeekdayShort(date), 'Monday');
 /// ```
 String formatWeekdayShort(DateTime date) {
-  return DateFormat.E(localeName).format(date);
+  return DateFormat.E(localeKey).format(date);
 }
 
 /// prettyWeekday convert date to local weekday string but show yesterday, today and tomorrow

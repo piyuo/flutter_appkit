@@ -4,7 +4,7 @@ import 'dart:math';
 
 /// numberFormat return current number format
 NumberFormat get numberFormat {
-  return NumberFormat.decimalPattern(localeName);
+  return NumberFormat.decimalPattern(localeKey);
 }
 
 /// numberFormat return current currency format
@@ -12,7 +12,7 @@ NumberFormat currencyFormat({
   int? decimalDigits,
 }) {
   return NumberFormat.simpleCurrency(
-    locale: localeName,
+    locale: localeKey,
     decimalDigits: decimalDigits,
   );
 }
@@ -57,7 +57,7 @@ String formatNumber(dynamic value) {
 /// expect(formatPercentage(.99), '99%');
 /// ```
 String formatPercentage(dynamic value) {
-  return NumberFormat.percentPattern(localeName).format(value);
+  return NumberFormat.percentPattern(localeKey).format(value);
 }
 
 /// formatBytes format value to computer size like bytes, KB, MB, GB, TB

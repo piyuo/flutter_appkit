@@ -63,14 +63,11 @@ extension I18nBuildContext on BuildContext {
   LibLocalizations get i18n => Localizations.of<LibLocalizations>(this, LibLocalizations) ?? LibLocalizationsEn();
 }
 
-/// localeName return current locale name
-String get localeName => Intl.defaultLocale ?? 'en';
-
-/// localeName return current locale name
-//set localeName(String value) => Intl.defaultLocale = value;
+/// localeKey return current locale name, like 'en_US'
+String get localeKey => Intl.defaultLocale ?? 'en';
 
 /// locale is current locale, it set by Intl.defaultLocale
-Locale get locale => stringToLocale(localeName);
+Locale get locale => stringToLocale(localeKey);
 
 /// mockLocale mock intl default locale
 @visibleForTesting
