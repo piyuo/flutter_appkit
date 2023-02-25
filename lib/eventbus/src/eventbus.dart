@@ -58,16 +58,12 @@ int getListenerCount() {
 Subscription listen<T>(
   Future<void> Function(dynamic) func,
 ) {
-  if (T == dynamic) {
-    log.log('[eventbus] listen all event');
-  } else {
+  if (T != dynamic) {
     log.log('[eventbus] listen $T');
   }
-
-  var listener = Listener(eventType: T, callback: func);
+  final listener = Listener(eventType: T, callback: func);
   _listeners.add(listener);
-  var sub = Subscription(listener);
-  return sub;
+  return Subscription(listener);
 }
 
 /// broadcast a new event or contract on the event bus with the specified [event].
@@ -87,18 +83,5 @@ Future<void> broadcast(dynamic event) async {
     } catch (e, s) {
       log.error(e, s);
     }
-//    if (event is Contract && event.isComplete) {
-    //    break;
-    //}
   }
-  /*
-  if (event is Contract) {
-    if (event.isComplete == false) {
-      log.log('[eventbus] caught no listener for ${event.runtimeType}');
-      event.complete(false);
-    }
-    return event.ok;
-  }
-  return false;
-  */
 }
