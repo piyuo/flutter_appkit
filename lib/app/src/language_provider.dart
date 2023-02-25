@@ -13,13 +13,11 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
   LanguageProvider(this._locales) {
     initFuture = () async {
       _preferredLocale = await loadPreferredLocale();
-      if (_preferredLocale != null) {
-        if (!isPreferredLocaleValid) {
-          await setPreferredLocale(null);
-          return;
-        }
-        notifyListeners();
+      if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
+        await setPreferredLocale(null);
+        return;
       }
+      notifyListeners();
     };
   }
 
@@ -47,13 +45,10 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
     return _locales;
   }
 
-  /// isPreferredLocaleValid check preferred locale is valid
-  bool get isPreferredLocaleValid {
-    if (_preferredLocale == null) {
-      return true;
-    }
+  /// isLocaleValid check a locale is valid
+  bool isLocaleValid(Locale aLocale) {
     for (Locale locale in _locales) {
-      if (locale == _preferredLocale!) {
+      if (locale == aLocale) {
         return true;
       }
     }
@@ -63,7 +58,7 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
   /// setLocales set supported locales
   Future<void> setLocales(List<Locale> newLocales) async {
     _locales = newLocales;
-    if (!isPreferredLocaleValid) {
+    if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
       _preferredLocale = null;
       await setPreferredLocale(null);
     }
@@ -88,7 +83,7 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
       return;
     }
 
-    if (_preferredLocale == newLocale || !isPreferredLocaleValid) {
+    if (_preferredLocale == newLocale || !isLocaleValid(newLocale)) {
       return;
     }
     _preferredLocale = newLocale;
