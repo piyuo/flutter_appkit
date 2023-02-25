@@ -1,5 +1,4 @@
 // ignore: implementation_imports
-import 'dart:ui' as ui;
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:libcli/google/google.dart' as google;
 import 'datetime.dart';
@@ -72,14 +71,6 @@ String get localeName => Intl.defaultLocale ?? 'en';
 
 /// locale is current locale, it set by Intl.defaultLocale
 Locale get locale => stringToLocale(localeName);
-
-/// locale is current locale, it set by Intl.defaultLocale
-set locale(Locale newLocale) {
-  Intl.defaultLocale = newLocale.toString();
-}
-
-/// setLocale override current locale
-void setLocale(String newLocaleName) {}
 
 /// mockLocale mock intl default locale
 @visibleForTesting
@@ -168,79 +159,3 @@ extension I18nTime on google.Timestamp {
     return formatTime(local);
   }
 }
-
-/*
-/// setLocale override locale, return true if locale actually changed, we always use system locale but if user choose override it will effect for 24 hours
-Future<bool> setLocale(
-  String newLocaleName, {
-  BuildContext? context,
-  bool remember = false,
-}) async {
-  if (newLocaleName != localeName) {
-    Intl.defaultLocale = newLocaleName;
-
-    if (remember) {
-      final tomorrow = DateTime.now().add(const Duration(hours: 24));
-      await pref.setStringWithExp(prefLocaleKey, newLocaleName, tomorrow);
-    }
-    log.log('[i18n] locale=$newLocaleName');
-    if (context != null) {
-      await eventbus.broadcast(context, I18nChangedEvent());
-    }
-    return true;
-  }
-  return false;
-}
-
-class I18nChangedEvent extends eventbus.Event {}
-
-*/
-/*
-/// mock a locale
-///
-///     mock(Locale('en', 'US'), '{"title": "mock"}');
-///
-//@visibleForTesting
-//void mock(Locale locale, String map) {
-//  _locale = locale;
-// ignore:invalid_use_of_visible_for_testing_member
-//  asset.mock(map);
-//}
-
-/// askSupportedLocales ask what kind of locales we support
-///
-List<Locale> askSupportedLocales() {
-  return _supportedLocales.map((id) => stringToLocale(id)).toList();
-}
-
-/// isLocaleSupported check locale is supported
-///
-///
-bool isLocaleSupported(Locale locale) {
-  var id = localeToString(locale);
-  return _supportedLocales.contains(id);
-}
-
-/// determineLocale select best locale for user and save user country to vars
-///
-/// https://api.flutter.dev/flutter/widgets/LocaleListResolutionCallback.html
-///
-/// The locales list is the device's preferred locales when the app started, or the device's preferred locales the user selected after the app was started. This list is in order of preference. If this list is null or empty, then Flutter has not yet received the locale information from the platform.
-///
-Locale determineLocale(List<Locale>? locales) {
-  Locale bestLocale = const Locale('en', us);
-  if (locales != null && locales.isNotEmpty) {
-    bestLocale = locales[0];
-    _country = bestLocale.countryCode ?? us;
-    for (var locale in locales) {
-      if (isLocaleSupported(locale)) {
-        bestLocale = locale;
-        break;
-      }
-    }
-  }
-  //best locale: ${localeToId(bestLocale)}
-  log.log('[i18n] country=$_country');
-  return bestLocale;
-}
-*/

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'logs.dart';
 
 /// _lastMessage is last error message, it will used by error screen
@@ -80,7 +81,15 @@ void error(dynamic e, StackTrace? stacktrace) {
 /// ```
 @visibleForTesting
 String get header {
-  var user = app.userID.isEmpty ? '' : '${app.userID}@';
+  var user = '';
+  try {
+    final sessionProvider = app.SessionProvider.of(delta.globalContext);
+    final session = sessionProvider.session;
+    if (session != null) {
+      user = '${session.userId}@';
+    }
+  } catch (_) {}
+
   var head = user + app.appName;
   if (head.isNotEmpty) {
     head += ':';

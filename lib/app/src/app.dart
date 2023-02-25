@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/dialog/dialog.dart' as dialog;
@@ -10,6 +9,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
 import 'error.dart';
+import 'language_provider.dart';
 
 /// _appName is application name, used in log
 String _appName = '';
@@ -29,23 +29,6 @@ String get serviceEmail => _serviceEmail;
 /// RouterBuilder used in web to build a route
 typedef RouteBuilder = Widget Function(BuildContext context, Map<String, String> arguments);
 
-String _userID = '';
-
-/// userID is user identity
-/// ```dart
-/// vars.userID='user-store'
-/// ```
-String get userID => _userID;
-
-/// userID is user identity
-/// ```dart
-/// vars.userID='user-store'
-/// ```
-set userID(String value) {
-  log.log('[app] set userID=$value');
-  _userID = value;
-}
-
 /// start application
 /// ```dart
 ///   await start(
@@ -61,7 +44,8 @@ Future<void> start({
   String name = '',
   Future<List<SingleChildWidget>> Function()? builder,
   String initialRoute = '/',
-  LocalizationsDelegate<dynamic>? l10nDelegate,
+  Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
+  Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
   ThemeData? darkTheme,
@@ -91,58 +75,41 @@ Future<void> start({
 
   // build app provider
   final providers = builder == null ? <SingleChildWidget>[] : await builder();
-
   // run app
   return watch(() => runApp(LifecycleWatcher(
           child: MultiProvider(
-        providers: providers,
-        child: delta.GlobalContextSupport(
-            child: MaterialApp.router(
-          builder: (context, child) {
-            dialog.init();
-            return ScrollConfiguration(
-              behavior: const ScrollBehaviorModified(),
-              child: child!,
-            );
-          },
-          debugShowCheckedModeBanner: false,
-          theme: theme ??
-              ThemeData(
-                brightness: Brightness.light,
-                colorScheme: ColorScheme.fromSwatch(
-                  primarySwatch: Colors.blue,
-                ),
-                appBarTheme: AppBarTheme(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.grey.shade700,
-                  elevation: 1,
-                ),
-              ),
-          darkTheme: darkTheme ??
-              ThemeData(
-                brightness: Brightness.dark,
-                colorScheme: ColorScheme.fromSwatch(
-                  primarySwatch: Colors.blue,
-                  brightness: Brightness.dark,
-                ),
-                appBarTheme: AppBarTheme(
-                  foregroundColor: Colors.grey.shade100,
-                  elevation: 1,
-                ),
-              ),
-          locale: i18n.locale,
-          localizationsDelegates: [
-            if (l10nDelegate != null) l10nDelegate,
-            ...i18n.localizationsDelegates,
+              providers: [
+            ChangeNotifierProvider<LanguageProvider>(
+              create: (context) => LanguageProvider(supportedLocales.toList()),
+            ),
+            ...providers,
           ],
-          supportedLocales: i18n.supportedLocales,
-          routeInformationParser: BeamerParser(),
-          routerDelegate: beamerDelegate,
-          backButtonDispatcher: BeamerBackButtonDispatcher(
-            delegate: beamerDelegate,
-          ),
-        )),
-      ))));
+              child: Consumer<LanguageProvider>(
+                builder: (context, languageProvider, child) => delta.GlobalContextSupport(
+                    child: MaterialApp.router(
+                  builder: (context, child) {
+                    dialog.init();
+                    return ScrollConfiguration(
+                      behavior: const ScrollBehaviorModified(),
+                      child: child!,
+                    );
+                  },
+                  debugShowCheckedModeBanner: false,
+                  theme: theme,
+                  darkTheme: darkTheme,
+                  locale: languageProvider.preferredLocale,
+                  localizationsDelegates: [
+                    ...localizationsDelegates,
+                    ...i18n.localizationsDelegates,
+                  ],
+                  supportedLocales: languageProvider.supportedLocales,
+                  routeInformationParser: BeamerParser(),
+                  routerDelegate: beamerDelegate,
+                  backButtonDispatcher: BeamerBackButtonDispatcher(
+                    delegate: beamerDelegate,
+                  ),
+                )),
+              )))));
 }
 
 /// LifecycleWatcher watch app life cycle

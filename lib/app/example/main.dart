@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -19,7 +17,13 @@ main() async {
   await start(
     name: 'app',
     builder: () async => const [],
-//    initialRoute: '/other/',
+    supportedLocales: const [
+      Locale('en'),
+      Locale('en', 'US'),
+      Locale('zh'),
+      Locale('zh', 'CN'),
+      Locale('zh', 'TW'),
+    ],
     routes: {
       '/': (context, state, data) => const BeamPage(
             key: ValueKey('home'),
@@ -69,65 +73,71 @@ class AppExample extends StatefulWidget {
 class AppExampleState extends State<AppExample> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Column(
-      children: [
-        Expanded(
-          child: _languageProvider(context),
-          // child: _routing(context, widget.data),
-          //child: _setPageTitle(context),
-        ),
-        Container(
-            color: Colors.black,
-            child: Wrap(children: [
-              OutlinedButton(
-                child: const Text('show alert use global context'),
-                onPressed: () {
-                  dialog.alert('hello');
-                },
-              ),
-              testing.ExampleButton(
-                label: 'error screen',
-                builder: () => _errorScreen(context),
-              ),
-              testing.ExampleButton(
-                label: 'network error screen',
-                builder: () => _networkErrorScreen(context),
-              ),
-              testing.ExampleButton(
-                label: 'routing',
-                useScaffold: false,
-                builder: () => _routing(context, widget.data),
-              ),
-              testing.ExampleButton(
-                label: 'localization',
-                builder: () => _languageProvider(context),
-              ),
-              testing.ExampleButton(
-                label: 'test root context with dialog',
-                builder: () => _testRootContext(context),
-              ),
-              testing.ExampleButton(
-                label: 'scroll behavior',
-                useScaffold: false,
-                builder: () => _scrollBehavior(context),
-              ),
-              testing.ExampleButton(
-                label: 'set page title',
-                useScaffold: false,
-                builder: () => _setPageTitle(context),
-              ),
-              testing.ExampleButton(
-                label: 'error',
-                builder: () => _error(context),
-              ),
-              testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
-              testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
-              testing.ExampleButton(
-                  label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
-            ]))
-      ],
-    ));
+    return LoadingScreen(
+      future: () async {
+        final languageProvider = LanguageProvider.of(context);
+        await languageProvider.init();
+      },
+      builder: () => SafeArea(
+          child: Column(
+        children: [
+          Expanded(
+            child: _languageProvider(context),
+            // child: _routing(context, widget.data),
+            //child: _setPageTitle(context),
+          ),
+          Container(
+              color: Colors.black,
+              child: Wrap(children: [
+                OutlinedButton(
+                  child: const Text('show alert use global context'),
+                  onPressed: () {
+                    dialog.alert('hello');
+                  },
+                ),
+                testing.ExampleButton(
+                  label: 'error screen',
+                  builder: () => _errorScreen(context),
+                ),
+                testing.ExampleButton(
+                  label: 'network error screen',
+                  builder: () => _networkErrorScreen(context),
+                ),
+                testing.ExampleButton(
+                  label: 'routing',
+                  useScaffold: false,
+                  builder: () => _routing(context, widget.data),
+                ),
+                testing.ExampleButton(
+                  label: 'localization',
+                  builder: () => _languageProvider(context),
+                ),
+                testing.ExampleButton(
+                  label: 'test root context with dialog',
+                  builder: () => _testRootContext(context),
+                ),
+                testing.ExampleButton(
+                  label: 'scroll behavior',
+                  useScaffold: false,
+                  builder: () => _scrollBehavior(context),
+                ),
+                testing.ExampleButton(
+                  label: 'set page title',
+                  useScaffold: false,
+                  builder: () => _setPageTitle(context),
+                ),
+                testing.ExampleButton(
+                  label: 'error',
+                  builder: () => _error(context),
+                ),
+                testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
+                testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
+                testing.ExampleButton(
+                    label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
+              ]))
+        ],
+      )),
+    );
   }
 
   Widget _errorScreen(BuildContext context) {
@@ -222,40 +232,37 @@ class AppExampleState extends State<AppExample> {
   }
 
   Widget _languageProvider(BuildContext context) {
-    return ChangeNotifierProvider<LanguageProvider>(
-        create: (context) => LanguageProvider(),
-        child: Consumer<LanguageProvider>(builder: (context, languageProvider, child) {
-          String defaultLocale = Intl.defaultLocale ?? '';
-
-          return Column(
-            children: [
-              Text(context.i18n.okButtonText),
-              Text(Localizations.localeOf(context).toString()),
-              Text('intl.defaultLocale=$defaultLocale'),
-              Text('current locale=${i18n.localeName}, date=${i18n.formatDate(DateTime.now())}'),
-              OutlinedButton(
-                  child: const Text('get locale to system default'),
-                  onPressed: () {
-                    languageProvider.setPreferredLocale(null);
-                  }),
-              OutlinedButton(
-                  child: const Text('change locale to en'),
-                  onPressed: () {
-                    languageProvider.setPreferredLocale(const Locale('en'));
-                  }),
-              OutlinedButton(
-                  child: const Text('change locale to zh'),
-                  onPressed: () {
-                    languageProvider.setPreferredLocale(const Locale('zh'));
-                  }),
-              OutlinedButton(
-                  child: const Text('change locale to zh_TW'),
-                  onPressed: () {
-                    languageProvider.setPreferredLocale(const Locale('zh', 'tw'));
-                  }),
-            ],
-          );
-        }));
+    return Consumer<LanguageProvider>(builder: (context, languageProvider, child) {
+      String defaultLocale = Intl.defaultLocale ?? '';
+      return Column(
+        children: [
+          Text(context.i18n.okButtonText),
+          Text(Localizations.localeOf(context).toString()),
+          Text('intl.defaultLocale=$defaultLocale'),
+          Text('current locale=${i18n.localeName}, date=${i18n.formatDate(DateTime.now())}'),
+          OutlinedButton(
+              child: const Text('get locale to system default'),
+              onPressed: () {
+                languageProvider.setPreferredLocale(null);
+              }),
+          OutlinedButton(
+              child: const Text('change locale to en'),
+              onPressed: () {
+                languageProvider.setPreferredLocale(const Locale('en'));
+              }),
+          OutlinedButton(
+              child: const Text('change locale to zh'),
+              onPressed: () {
+                languageProvider.setPreferredLocale(const Locale('zh', 'CN'));
+              }),
+          OutlinedButton(
+              child: const Text('change locale to zh_TW'),
+              onPressed: () {
+                languageProvider.setPreferredLocale(const Locale('zh', 'TW'));
+              }),
+        ],
+      );
+    });
   }
 
   Widget _loadingScreenError(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as storage;
@@ -9,14 +10,54 @@ const _kPreferredLocaleKey = 'locale';
 
 /// LanguageProvider provide a way to change locale
 class LanguageProvider with ChangeNotifier, InitializeMixin {
-  LanguageProvider() {
+  LanguageProvider(this._initialLocales) {
     initFuture = () async {
-      final locale = await loadPreferredLocale();
-      if (locale != null) {
-        i18n.locale = locale;
+      _preferredLocale = await loadPreferredLocale();
+      if (_preferredLocale != null) {
+        if (!isPreferredLocaleValid) {
+          await setPreferredLocale(null);
+          return;
+        }
         notifyListeners();
       }
     };
+  }
+
+  /// _initialLocales is application initial supported locales
+  final List<Locale> _initialLocales;
+
+  /// _preferredLocale is user preferred locale
+  Locale? _preferredLocale;
+
+  /// preferredLocale return preferred locale
+  Locale? get preferredLocale => _preferredLocale;
+
+  /// supportedLocales return supported locales
+  Iterable<Locale> get supportedLocales {
+    if (_preferredLocale != null && _preferredLocale != _initialLocales.first) {
+      // move preferred locale to first
+      for (Locale locale in _initialLocales) {
+        if (locale == _preferredLocale!) {
+          _initialLocales.remove(locale);
+          _initialLocales.insert(0, _preferredLocale!);
+          break;
+        }
+      }
+    }
+    return _initialLocales;
+  }
+
+  /// isPreferredLocaleValid check preferred locale is valid
+  bool get isPreferredLocaleValid {
+    if (_preferredLocale == null) {
+      return true;
+    }
+    for (Locale locale in _initialLocales) {
+      if (locale == _preferredLocale!) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /// loadPreferredLocale load preferred locale from storage
@@ -31,16 +72,17 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
   /// overrideLocaleTemporary override locale for 24 hour, cause when web mode
   /// if user change one page's locale, other page need reflect change
   Future<void> setPreferredLocale(Locale? newLocale) async {
-    final locale = await loadPreferredLocale();
-    if (locale == newLocale) {
+    if (newLocale == null) {
+      _preferredLocale = null;
+      await storage.remove(_kPreferredLocaleKey);
       return;
     }
 
-    if (newLocale != null) {
-      await storage.setString(_kPreferredLocaleKey, newLocale.toString());
-    } else {
-      await storage.remove(_kPreferredLocaleKey);
+    if (_preferredLocale == newLocale || !isPreferredLocaleValid) {
+      return;
     }
+    _preferredLocale = newLocale;
+    await storage.setString(_kPreferredLocaleKey, newLocale.toString());
     notifyListeners();
   }
 

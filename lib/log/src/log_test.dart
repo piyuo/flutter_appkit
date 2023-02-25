@@ -7,14 +7,12 @@ void main() {
     test('should log', () async {
       // ignore: invalid_use_of_visible_for_testing_member
       app.appName = 'log_test';
-      app.userID = 'developer';
       log('hi');
     });
 
     test('should error', () async {
       // ignore: invalid_use_of_visible_for_testing_member
       app.appName = 'log_test';
-      app.userID = 'developer';
       try {
         throw Exception('my error');
       } catch (e, s) {
@@ -25,9 +23,8 @@ void main() {
     test('should create head', () {
       // ignore: invalid_use_of_visible_for_testing_member
       app.appName = 'piyuo-web-index';
-      app.userID = '111-222';
       // ignore: invalid_use_of_visible_for_testing_member
-      expect(header, '111-222@piyuo-web-index:');
+      expect(header, 'piyuo-web-index:');
     });
 
     test('should beautify stack trace', () async {
