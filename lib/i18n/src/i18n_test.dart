@@ -61,6 +61,7 @@ void main() {
       expect(t.localDateTimeString, '2021年1月2日 下午11:30');
     });
 
+/*
     test('should override system locale', () async {
       var i18nProvider = I18nProvider();
       try {
@@ -74,7 +75,6 @@ void main() {
       }
     });
 
-/*
     test('should set/get locale', () async {
       setLocale('zh_CN');
       expect(localeName, 'zh_CN');

@@ -90,63 +90,58 @@ Future<void> start({
   await cache.init();
 
   // build app provider
-  final providers = builder == null ? [] : await builder();
+  final providers = builder == null ? <SingleChildWidget>[] : await builder();
 
   // run app
   return watch(() => runApp(LifecycleWatcher(
           child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
-          ...providers,
-        ],
-        child: Consumer<i18n.I18nProvider>(
-          builder: (context, i18nProvider, __) => delta.GlobalContextSupport(
-              child: MaterialApp.router(
-            builder: (context, child) {
-              dialog.init();
-              return ScrollConfiguration(
-                behavior: const ScrollBehaviorModified(),
-                child: child!,
-              );
-            },
-            debugShowCheckedModeBanner: false,
-            theme: theme ??
-                ThemeData(
-                  brightness: Brightness.light,
-                  colorScheme: ColorScheme.fromSwatch(
-                    primarySwatch: Colors.blue,
-                  ),
-                  appBarTheme: AppBarTheme(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.grey.shade700,
-                    elevation: 1,
-                  ),
+        providers: providers,
+        child: delta.GlobalContextSupport(
+            child: MaterialApp.router(
+          builder: (context, child) {
+            dialog.init();
+            return ScrollConfiguration(
+              behavior: const ScrollBehaviorModified(),
+              child: child!,
+            );
+          },
+          debugShowCheckedModeBanner: false,
+          theme: theme ??
+              ThemeData(
+                brightness: Brightness.light,
+                colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.blue,
                 ),
-            darkTheme: darkTheme ??
-                ThemeData(
+                appBarTheme: AppBarTheme(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.grey.shade700,
+                  elevation: 1,
+                ),
+              ),
+          darkTheme: darkTheme ??
+              ThemeData(
+                brightness: Brightness.dark,
+                colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.blue,
                   brightness: Brightness.dark,
-                  colorScheme: ColorScheme.fromSwatch(
-                    primarySwatch: Colors.blue,
-                    brightness: Brightness.dark,
-                  ),
-                  appBarTheme: AppBarTheme(
-                    foregroundColor: Colors.grey.shade100,
-                    elevation: 1,
-                  ),
                 ),
-            locale: i18nProvider.overrideLocale,
-            localizationsDelegates: [
-              if (l10nDelegate != null) l10nDelegate,
-              ...i18nProvider.localizationsDelegates,
-            ],
-            supportedLocales: i18nProvider.supportedLocales,
-            routeInformationParser: BeamerParser(),
-            routerDelegate: beamerDelegate,
-            backButtonDispatcher: BeamerBackButtonDispatcher(
-              delegate: beamerDelegate,
-            ),
-          )),
-        ),
+                appBarTheme: AppBarTheme(
+                  foregroundColor: Colors.grey.shade100,
+                  elevation: 1,
+                ),
+              ),
+          locale: i18n.locale,
+          localizationsDelegates: [
+            if (l10nDelegate != null) l10nDelegate,
+            ...i18n.localizationsDelegates,
+          ],
+          supportedLocales: i18n.supportedLocales,
+          routeInformationParser: BeamerParser(),
+          routerDelegate: beamerDelegate,
+          backButtonDispatcher: BeamerBackButtonDispatcher(
+            delegate: beamerDelegate,
+          ),
+        )),
       ))));
 }
 

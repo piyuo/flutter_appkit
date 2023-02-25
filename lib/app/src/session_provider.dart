@@ -149,6 +149,11 @@ class Session {
     await preferences.remove(_kRefreshTokenKey);
     await preferences.remove(_kArgsKey);
   }
+
+  @override
+  String toString() {
+    return 'Session{userId: $userId, accessToken: ${accessToken.expired}, refreshToken: ${refreshToken?.expired}, args: $args}';
+  }
 }
 
 /// SessionProvider keep session and provide session to other widget
@@ -159,7 +164,9 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
   }) {
     initFuture = () async {
       session = await Session.load();
-      debugPrint('$session');
+      if (session != null) {
+        debugPrint('load $session');
+      }
     };
 
     subscription = eventbus.listen((event) async {

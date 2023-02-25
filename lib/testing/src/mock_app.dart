@@ -46,30 +46,26 @@ Future<void> mockApp(
   storage.initForTest({});
 
   await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => i18n.I18nProvider()),
-        if (providers != null) ...providers,
-      ],
-      child: Consumer<i18n.I18nProvider>(
-          builder: (context, i18nProvider, _) => delta.GlobalContextSupport(
-                child: MaterialApp(
-                  navigatorObservers: [navigatorObserver],
-                  builder: dialog.init(),
-                  home: providers != null
-                      ? MultiProvider(
-                          providers: providers,
-                          child: child,
-                        )
-                      : child,
-                  debugShowCheckedModeBanner: false,
-                  localizationsDelegates: [
-                    if (l10nDelegate != null) l10nDelegate,
-                    ...i18nProvider.localizationsDelegates,
-                  ],
-                  supportedLocales: const [
-                    Locale('en', 'US'),
-                  ],
-                ),
-              ))));
+      providers: providers ?? [],
+      child: delta.GlobalContextSupport(
+        child: MaterialApp(
+          navigatorObservers: [navigatorObserver],
+          builder: dialog.init(),
+          home: providers != null
+              ? MultiProvider(
+                  providers: providers,
+                  child: child,
+                )
+              : child,
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: [
+            if (l10nDelegate != null) l10nDelegate,
+            ...i18n.localizationsDelegates,
+          ],
+          supportedLocales: const [
+            Locale('en', 'US'),
+          ],
+        ),
+      )));
   await tester.pumpAndSettle();
 }

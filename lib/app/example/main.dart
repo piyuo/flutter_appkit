@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
@@ -72,7 +73,7 @@ class AppExampleState extends State<AppExample> {
         child: Column(
       children: [
         Expanded(
-          child: _networkErrorScreen(context),
+          child: _languageProvider(context),
           // child: _routing(context, widget.data),
           //child: _setPageTitle(context),
         ),
@@ -100,7 +101,7 @@ class AppExampleState extends State<AppExample> {
               ),
               testing.ExampleButton(
                 label: 'localization',
-                builder: () => _localization(context),
+                builder: () => _languageProvider(context),
               ),
               testing.ExampleButton(
                 label: 'test root context with dialog',
@@ -220,44 +221,41 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
-  Widget _localization(BuildContext context) {
-    String defaultLocale = Intl.defaultLocale ?? '';
-    return Column(
-      children: [
-        Text(context.i18n.okButtonText),
-        Text(Localizations.localeOf(context).toString()),
-        Text('intl.defaultLocale=$defaultLocale'),
-        Text('current locale=${i18n.localeName}, date=${i18n.formatDate(DateTime.now())}'),
-        OutlinedButton(
-            child: const Text('get locale to system default'),
-            onPressed: () {
-              setState(() {
-                i18n.I18nProvider.of(context).overrideLocaleTemporary(null);
-              });
-            }),
-        OutlinedButton(
-            child: const Text('change locale to en'),
-            onPressed: () {
-              setState(() {
-                i18n.I18nProvider.of(context).overrideLocaleTemporary(const Locale('en'));
-              });
-            }),
-        OutlinedButton(
-            child: const Text('change locale to zh'),
-            onPressed: () {
-              setState(() {
-                i18n.I18nProvider.of(context).overrideLocaleTemporary(const Locale('zh'));
-              });
-            }),
-        OutlinedButton(
-            child: const Text('change locale to zh_TW'),
-            onPressed: () {
-              setState(() {
-                i18n.I18nProvider.of(context).overrideLocaleTemporary(const Locale('zh', 'TW'));
-              });
-            }),
-      ],
-    );
+  Widget _languageProvider(BuildContext context) {
+    return ChangeNotifierProvider<LanguageProvider>(
+        create: (context) => LanguageProvider(),
+        child: Consumer<LanguageProvider>(builder: (context, languageProvider, child) {
+          String defaultLocale = Intl.defaultLocale ?? '';
+
+          return Column(
+            children: [
+              Text(context.i18n.okButtonText),
+              Text(Localizations.localeOf(context).toString()),
+              Text('intl.defaultLocale=$defaultLocale'),
+              Text('current locale=${i18n.localeName}, date=${i18n.formatDate(DateTime.now())}'),
+              OutlinedButton(
+                  child: const Text('get locale to system default'),
+                  onPressed: () {
+                    languageProvider.setPreferredLocale(null);
+                  }),
+              OutlinedButton(
+                  child: const Text('change locale to en'),
+                  onPressed: () {
+                    languageProvider.setPreferredLocale(const Locale('en'));
+                  }),
+              OutlinedButton(
+                  child: const Text('change locale to zh'),
+                  onPressed: () {
+                    languageProvider.setPreferredLocale(const Locale('zh'));
+                  }),
+              OutlinedButton(
+                  child: const Text('change locale to zh_TW'),
+                  onPressed: () {
+                    languageProvider.setPreferredLocale(const Locale('zh', 'tw'));
+                  }),
+            ],
+          );
+        }));
   }
 
   Widget _loadingScreenError(BuildContext context) {
