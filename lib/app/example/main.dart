@@ -242,24 +242,19 @@ class AppExampleState extends State<AppExample> {
           Text('current locale=${i18n.localeName}, date=${i18n.formatDate(DateTime.now())}'),
           OutlinedButton(
               child: const Text('get locale to system default'),
-              onPressed: () {
-                languageProvider.setPreferredLocale(null);
-              }),
+              onPressed: () => languageProvider.setPreferredLocale(null)),
           OutlinedButton(
               child: const Text('change locale to en'),
-              onPressed: () {
-                languageProvider.setPreferredLocale(const Locale('en'));
-              }),
+              onPressed: () => languageProvider.setPreferredLocale(const Locale('en'))),
           OutlinedButton(
               child: const Text('change locale to zh'),
-              onPressed: () {
-                languageProvider.setPreferredLocale(const Locale('zh', 'CN'));
-              }),
+              onPressed: () => languageProvider.setPreferredLocale(const Locale('zh', 'CN'))),
           OutlinedButton(
               child: const Text('change locale to zh_TW'),
-              onPressed: () {
-                languageProvider.setPreferredLocale(const Locale('zh', 'TW'));
-              }),
+              onPressed: () => languageProvider.setPreferredLocale(const Locale('zh', 'TW'))),
+          OutlinedButton(
+              child: const Text('set support locales to en'),
+              onPressed: () => languageProvider.setLocales([const Locale('en', 'US')])),
         ],
       );
     });

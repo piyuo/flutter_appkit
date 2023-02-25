@@ -10,7 +10,7 @@ const _kPreferredLocaleKey = 'locale';
 
 /// LanguageProvider provide a way to change locale
 class LanguageProvider with ChangeNotifier, InitializeMixin {
-  LanguageProvider(this._initialLocales) {
+  LanguageProvider(this._locales) {
     initFuture = () async {
       _preferredLocale = await loadPreferredLocale();
       if (_preferredLocale != null) {
@@ -23,8 +23,8 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
     };
   }
 
-  /// _initialLocales is application initial supported locales
-  final List<Locale> _initialLocales;
+  /// _locales is supported locales
+  List<Locale> _locales;
 
   /// _preferredLocale is user preferred locale
   Locale? _preferredLocale;
@@ -34,17 +34,17 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
 
   /// supportedLocales return supported locales
   Iterable<Locale> get supportedLocales {
-    if (_preferredLocale != null && _preferredLocale != _initialLocales.first) {
+    if (_preferredLocale != null && _preferredLocale != _locales.first) {
       // move preferred locale to first
-      for (Locale locale in _initialLocales) {
+      for (Locale locale in _locales) {
         if (locale == _preferredLocale!) {
-          _initialLocales.remove(locale);
-          _initialLocales.insert(0, _preferredLocale!);
+          _locales.remove(locale);
+          _locales.insert(0, _preferredLocale!);
           break;
         }
       }
     }
-    return _initialLocales;
+    return _locales;
   }
 
   /// isPreferredLocaleValid check preferred locale is valid
@@ -52,12 +52,22 @@ class LanguageProvider with ChangeNotifier, InitializeMixin {
     if (_preferredLocale == null) {
       return true;
     }
-    for (Locale locale in _initialLocales) {
+    for (Locale locale in _locales) {
       if (locale == _preferredLocale!) {
         return true;
       }
     }
     return false;
+  }
+
+  /// setLocales set supported locales
+  Future<void> setLocales(List<Locale> newLocales) async {
+    _locales = newLocales;
+    if (!isPreferredLocaleValid) {
+      _preferredLocale = null;
+      await setPreferredLocale(null);
+    }
+    notifyListeners();
   }
 
   /// loadPreferredLocale load preferred locale from storage
