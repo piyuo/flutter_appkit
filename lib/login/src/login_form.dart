@@ -37,7 +37,7 @@ class LoginForm extends StatelessWidget {
                     (int index) {
                       final type = _buttons[index];
                       return Padding(
-                          padding: const EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.only(bottom: 20),
                           child: SignInButton(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
