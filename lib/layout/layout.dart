@@ -1,6 +1,5 @@
 library layout;
 
-export 'src/wall.dart';
 export 'src/side_panel.dart';
 export 'src/story_line.dart';
 export 'src/sliver_scaffold.dart';

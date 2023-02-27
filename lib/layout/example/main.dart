@@ -28,11 +28,10 @@ class LayoutExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: _wall(context)),
+      Expanded(child: _sliverScaffold(context)),
       Wrap(
         children: [
           testing.ExampleButton(label: 'sliver scaffold', builder: () => _sliverScaffold(context), useScaffold: false),
-          testing.ExampleButton(label: 'wall', builder: () => _wall(context)),
           testing.ExampleButton(label: 'side panel', builder: () => _sidePanel(context)),
           testing.ExampleButton(label: 'story line', builder: () => _storyLine(context)),
           testing.ExampleButton(label: 'listing', builder: () => _listing(context)),
@@ -235,98 +234,6 @@ class LayoutExample extends StatelessWidget {
           height: 200,
           color: Colors.orange,
           child: const Text('hello4'),
-        ),
-      ],
-    );
-  }
-
-  Widget _wall(BuildContext context) {
-    return Wall(
-      tiles: [
-        listTile(
-          children: [
-            listTitle('Popular'),
-            listItem(
-              imageUrl:
-                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
-              title: 'iMac 1',
-              text1: 'first M1 iMac',
-              text2: '\$999',
-            ),
-            listItem(
-              imageUrl:
-                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
-              title: 'iMac 1',
-              text1: 'first M1 iMac',
-              text2: '\$999',
-            ),
-            listItem(
-              imageUrl:
-                  'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
-              title: 'iMac 1',
-              text1: 'first M1 iMac',
-              text2: '\$999',
-            ),
-          ],
-        ),
-        buttonTile(
-          Icons.takeout_dining,
-          text: 'Take out',
-          description: 'my take out order',
-          iconColor: Colors.red[700],
-        ),
-        buttonTile(
-          Icons.delivery_dining,
-          text: 'Dine in',
-          description: 'my dine in order',
-          iconColor: Colors.blue[700],
-        ),
-        buttonTile(
-          Icons.qr_code,
-          x: 6,
-          y: 4,
-          description: 'QR Code',
-          iconColor: Colors.grey,
-        ),
-        linkTile(
-          x: 10,
-          text: 'Coupon',
-          description: 'check your coupon',
-          next: true,
-          color: Colors.black,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.green.shade300,
-                Colors.yellow.shade200,
-              ],
-              begin: const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: const [0.0, 1.0],
-              tileMode: TileMode.clamp,
-            ),
-          ),
-          icon: Icons.place,
-          iconColor: Colors.red,
-        ),
-        imageTile(
-          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-touch-id-blue-gallery-1?wid=2000&hei=1536&fmt=jpeg&qlt=95&.v=1617486478000',
-          x: 16,
-          y: 16,
-        ),
-        Tile(
-          builder: (_) => const SizedBox(),
-          onTap: () => debugPrint('1'),
-        ),
-        Tile(
-          x: 8,
-          y: 4,
-          builder: (_) => const SizedBox(),
-        ),
-        Tile(
-          x: 4,
-          y: 8,
-          builder: (_) => const SizedBox(),
         ),
       ],
     );
