@@ -74,6 +74,7 @@ dependencies:
   reactive_phone_form_field: ^0.12.0
   reactive_raw_autocomplete: ^0.6.0
   pinput: ^2.2.23
+  sign_button: ^2.0.3
   #modal_bottom_sheet: ^2.1.2
   modal_bottom_sheet:
    git:
