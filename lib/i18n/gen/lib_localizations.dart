@@ -94,6 +94,72 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
+  /// No description provided for @codeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Email'**
+  String get codeLabel;
+
+  /// No description provided for @codeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'An 6-digit code has been sent to '**
+  String get codeSent;
+
+  /// No description provided for @codeChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get codeChange;
+
+  /// No description provided for @codeReceive.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t receive the code?  '**
+  String get codeReceive;
+
+  /// No description provided for @codeResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get codeResend;
+
+  /// No description provided for @codeResendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder'**
+  String get codeResendEmail;
+
+  /// No description provided for @codeErrorCodeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The verification code you entered is not valid'**
+  String get codeErrorCodeInvalid;
+
+  /// No description provided for @codeErrorCodeMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The verification code you entered is not correct'**
+  String get codeErrorCodeMismatch;
+
+  /// No description provided for @codeErrorNoCode.
+  ///
+  /// In en, this message translates to:
+  /// **'The verification code has expired. Please go back and try verify email again'**
+  String get codeErrorNoCode;
+
+  /// No description provided for @codeErrorEnterBlockShort.
+  ///
+  /// In en, this message translates to:
+  /// **'You have entered an incorrect verification code too many times. Try again later'**
+  String get codeErrorEnterBlockShort;
+
+  /// No description provided for @codeErrorEnterBlockLong.
+  ///
+  /// In en, this message translates to:
+  /// **'You have entered an incorrect verification code too many times. Try again tomorrow'**
+  String get codeErrorEnterBlockLong;
+
   /// No description provided for @tomorrow.
   ///
   /// In en, this message translates to:
