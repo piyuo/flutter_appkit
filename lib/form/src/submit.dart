@@ -113,6 +113,11 @@ Future<bool> submit({
   required delta.FutureContextCallback<bool> callback,
   bool showToast = true,
 }) async {
+  if (!formGroup.valid) {
+    formGroup.markAllAsTouched();
+    return false;
+  }
+
   bool result = false;
   if (showToast) dialog.toastWait();
   try {
@@ -121,10 +126,8 @@ Future<bool> submit({
     return result;
   } finally {
     formGroup.markAsEnabled();
-    if (result) {
-      formGroup.markAsPristine();
-      if (showToast) dialog.toastDone();
-    }
+    formGroup.markAsPristine();
+    if (showToast) dialog.toastDone();
   }
 }
 
