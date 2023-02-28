@@ -73,7 +73,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _redirectToUrl(context),
+                          child: _mounted(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -106,7 +106,6 @@ class DeltaExample extends StatelessWidget {
                                 testing.ExampleButton(label: 'web image data', builder: () => _webImageData(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
                                 testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
-                                testing.ExampleButton(label: 'popup', builder: () => _popup(context)),
                                 testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
                                 testing.ExampleButton(label: 'switch', builder: () => _switching(context)),
@@ -672,30 +671,6 @@ class DeltaExample extends StatelessWidget {
               message:
                   'An error message is information displayed when an unforeseen problem occurs, usually on a computer or other device. On modern operating systems with graphical, error messages are often displayed using dialog boxes. Error messages are used when user intervention is required, to indicate that a desired operation has failed, or to relay important warnings (such as warning a computer user that they are almost out of hard disk space). Error messages are seen widely throughout computing, and are part of every operating system or computer hardware device. Proper design of error messages is an important topic in usability and other fields of human–computer interaction'),
         ]));
-  }
-
-  Widget _popup(BuildContext context) {
-    final GlobalKey btnPopup = GlobalKey();
-    return ElevatedButton(
-      key: btnPopup,
-      child: const Text('popup'),
-      onPressed: () {
-        var rect = getWidgetGlobalRect(btnPopup);
-        popup(context,
-            rect: Rect.fromLTWH(rect.left, rect.bottom, rect.width, 200),
-            child: Container(
-              color: Colors.green,
-              child: Center(
-                  child: InkWell(
-                onTap: () => debugPrint('hello'),
-                child: const Text(
-                  'hello',
-                  style: TextStyle(fontSize: 22),
-                ),
-              )),
-            ));
-      },
-    );
   }
 
   Widget _menuButton(BuildContext context) {

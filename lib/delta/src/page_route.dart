@@ -1,17 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'test.dart';
-
-/// safeTestMaterialRoute return no animation route when testing
-///
-Route safeTestMaterialRoute(Widget widget) {
-  if (!kReleaseMode && isMock()) {
-    return NoAnimRouteBuilder(widget);
-  }
-  return MaterialPageRoute(
-    builder: (ctx) => widget,
-  );
-}
 
 class NoAnimRouteBuilder extends PageRouteBuilder {
   final Widget page;

@@ -69,7 +69,7 @@ class Wait<T> extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
-                          style: OutlinedButton.styleFrom(
+                          style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
                               vertical: 15,
                               horizontal: 40,
