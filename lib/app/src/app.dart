@@ -77,39 +77,41 @@ Future<void> start({
   final providers = builder == null ? <SingleChildWidget>[] : await builder();
   // run app
   return watch(() => runApp(LifecycleWatcher(
-          child: MultiProvider(
-              providers: [
+        child: MultiProvider(
+          providers: [
             ChangeNotifierProvider<LanguageProvider>(
               create: (context) => LanguageProvider(supportedLocales.toList()),
             ),
             ...providers,
           ],
-              child: Consumer<LanguageProvider>(
-                builder: (context, languageProvider, child) => delta.GlobalContextSupport(
-                    child: MaterialApp.router(
-                  builder: (context, child) {
-                    dialog.init();
-                    return ScrollConfiguration(
-                      behavior: const ScrollBehaviorModified(),
-                      child: child!,
-                    );
-                  },
-                  debugShowCheckedModeBanner: false,
-                  theme: theme,
-                  darkTheme: darkTheme,
-                  locale: languageProvider.preferredLocale,
-                  localizationsDelegates: [
-                    ...localizationsDelegates,
-                    ...i18n.localizationsDelegates,
-                  ],
-                  supportedLocales: languageProvider.supportedLocales,
-                  routeInformationParser: BeamerParser(),
-                  routerDelegate: beamerDelegate,
-                  backButtonDispatcher: BeamerBackButtonDispatcher(
-                    delegate: beamerDelegate,
-                  ),
-                )),
-              )))));
+          child: Consumer<LanguageProvider>(
+            builder: (context, languageProvider, child) => delta.GlobalContextSupport(
+                child: MaterialApp.router(
+              builder: (context, child) {
+                Widget childWrap = dialog.init()(context, child);
+                return ScrollConfiguration(
+                  behavior: const ScrollBehaviorModified(),
+                  child: childWrap,
+                );
+              },
+              debugShowCheckedModeBanner: false,
+              theme: theme,
+              darkTheme: darkTheme,
+              locale: languageProvider.preferredLocale,
+              localizationsDelegates: [
+                ...localizationsDelegates,
+                ...i18n.localizationsDelegates,
+              ],
+              supportedLocales: languageProvider.supportedLocales,
+              routeInformationParser: BeamerParser(),
+              routerDelegate: beamerDelegate,
+              backButtonDispatcher: BeamerBackButtonDispatcher(
+                delegate: beamerDelegate,
+              ),
+            )),
+          ),
+        ),
+      )));
 }
 
 /// LifecycleWatcher watch app life cycle
