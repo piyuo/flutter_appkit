@@ -12,7 +12,8 @@ class Submit extends StatelessWidget {
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
     this.elevation = 2,
-    this.showToast = true,
+    this.showToastWait = true,
+    this.showToastDone = true,
     this.onlySubmitOnDirty = true,
     this.color,
     Key? key, // all submit must have key, it's important for test and identify field
@@ -36,8 +37,11 @@ class Submit extends StatelessWidget {
   /// color is text and outline color
   final Color? color;
 
-  /// show toast is true will show toast on submit
-  final bool showToast;
+  /// showToastWait show wait toast when submit
+  final bool showToastWait;
+
+  /// showToastDone show toast done after submit
+  final bool showToastDone;
 
   /// onlySubmitOnDirty is true will only submit when form is dirty
   final bool onlySubmitOnDirty;
@@ -69,7 +73,8 @@ class Submit extends StatelessWidget {
               ? () => submit(
                     formGroup: formGroup,
                     callback: onSubmit!,
-                    showToast: showToast,
+                    showWait: showToastWait,
+                    showDone: showToastDone,
                   )
               : null,
           child: child ??
@@ -111,7 +116,8 @@ bool validate(
 Future<bool> submit({
   required FormGroup formGroup,
   required delta.FutureContextCallback<bool> callback,
-  bool showToast = true,
+  bool showWait = true,
+  bool showDone = true,
 }) async {
   if (!formGroup.valid) {
     formGroup.markAllAsTouched();
@@ -119,7 +125,7 @@ Future<bool> submit({
   }
 
   bool result = false;
-  if (showToast) dialog.toastWait();
+  if (showWait) dialog.toastWait();
   try {
     formGroup.markAsDisabled();
     result = await callback.call(delta.globalContext);
@@ -127,7 +133,11 @@ Future<bool> submit({
   } finally {
     formGroup.markAsEnabled();
     formGroup.markAsPristine();
-    if (showToast) dialog.toastDone();
+    if (showDone) {
+      dialog.toastDone();
+    } else {
+      dialog.dismissToast();
+    }
   }
 }
 
