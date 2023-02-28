@@ -94,71 +94,71 @@ abstract class LibLocalizations {
     Locale('zh', 'TW')
   ];
 
-  /// No description provided for @codeLabel.
+  /// No description provided for @loginCodeScreenLabel.
   ///
   /// In en, this message translates to:
   /// **'Verify Your Email'**
-  String get codeLabel;
+  String get loginCodeScreenLabel;
 
-  /// No description provided for @codeSent.
+  /// No description provided for @loginCodeScreenSent.
   ///
   /// In en, this message translates to:
   /// **'An 6-digit code has been sent to '**
-  String get codeSent;
+  String get loginCodeScreenSent;
 
-  /// No description provided for @codeChange.
+  /// No description provided for @loginCodeScreenChange.
   ///
   /// In en, this message translates to:
   /// **'Change'**
-  String get codeChange;
+  String get loginCodeScreenChange;
 
-  /// No description provided for @codeReceive.
+  /// No description provided for @loginCodeScreenReceive.
   ///
   /// In en, this message translates to:
   /// **'Don\'t receive the code?  '**
-  String get codeReceive;
+  String get loginCodeScreenReceive;
 
-  /// No description provided for @codeResend.
+  /// No description provided for @loginCodeScreenResend.
   ///
   /// In en, this message translates to:
   /// **'Resend'**
-  String get codeResend;
+  String get loginCodeScreenResend;
 
-  /// No description provided for @codeResendEmail.
+  /// No description provided for @loginCodeScreenResendEmail.
   ///
   /// In en, this message translates to:
   /// **'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder'**
-  String get codeResendEmail;
+  String get loginCodeScreenResendEmail;
 
-  /// No description provided for @codeErrorCodeInvalid.
+  /// No description provided for @loginCodeScreenErrorCodeInvalid.
   ///
   /// In en, this message translates to:
   /// **'The verification code you entered is not valid'**
-  String get codeErrorCodeInvalid;
+  String get loginCodeScreenErrorCodeInvalid;
 
-  /// No description provided for @codeErrorCodeMismatch.
+  /// No description provided for @loginCodeScreenErrorCodeMismatch.
   ///
   /// In en, this message translates to:
   /// **'The verification code you entered is not correct'**
-  String get codeErrorCodeMismatch;
+  String get loginCodeScreenErrorCodeMismatch;
 
-  /// No description provided for @codeErrorNoCode.
+  /// No description provided for @loginCodeScreenErrorNoCode.
   ///
   /// In en, this message translates to:
   /// **'The verification code has expired. Please go back and try verify email again'**
-  String get codeErrorNoCode;
+  String get loginCodeScreenErrorNoCode;
 
-  /// No description provided for @codeErrorEnterBlockShort.
+  /// No description provided for @loginCodeScreenErrorEnterBlockShort.
   ///
   /// In en, this message translates to:
   /// **'You have entered an incorrect verification code too many times. Try again later'**
-  String get codeErrorEnterBlockShort;
+  String get loginCodeScreenErrorEnterBlockShort;
 
-  /// No description provided for @codeErrorEnterBlockLong.
+  /// No description provided for @loginCodeScreenErrorEnterBlockLong.
   ///
   /// In en, this message translates to:
   /// **'You have entered an incorrect verification code too many times. Try again tomorrow'**
-  String get codeErrorEnterBlockLong;
+  String get loginCodeScreenErrorEnterBlockLong;
 
   /// No description provided for @tomorrow.
   ///

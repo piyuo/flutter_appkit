@@ -5,37 +5,37 @@ class LibLocalizationsEn extends LibLocalizations {
   LibLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get codeLabel => 'Verify Your Email';
+  String get loginCodeScreenLabel => 'Verify Your Email';
 
   @override
-  String get codeSent => 'An 6-digit code has been sent to ';
+  String get loginCodeScreenSent => 'An 6-digit code has been sent to ';
 
   @override
-  String get codeChange => 'Change';
+  String get loginCodeScreenChange => 'Change';
 
   @override
-  String get codeReceive => 'Don\'t receive the code?  ';
+  String get loginCodeScreenReceive => 'Don\'t receive the code?  ';
 
   @override
-  String get codeResend => 'Resend';
+  String get loginCodeScreenResend => 'Resend';
 
   @override
-  String get codeResendEmail => 'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder';
+  String get loginCodeScreenResendEmail => 'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder';
 
   @override
-  String get codeErrorCodeInvalid => 'The verification code you entered is not valid';
+  String get loginCodeScreenErrorCodeInvalid => 'The verification code you entered is not valid';
 
   @override
-  String get codeErrorCodeMismatch => 'The verification code you entered is not correct';
+  String get loginCodeScreenErrorCodeMismatch => 'The verification code you entered is not correct';
 
   @override
-  String get codeErrorNoCode => 'The verification code has expired. Please go back and try verify email again';
+  String get loginCodeScreenErrorNoCode => 'The verification code has expired. Please go back and try verify email again';
 
   @override
-  String get codeErrorEnterBlockShort => 'You have entered an incorrect verification code too many times. Try again later';
+  String get loginCodeScreenErrorEnterBlockShort => 'You have entered an incorrect verification code too many times. Try again later';
 
   @override
-  String get codeErrorEnterBlockLong => 'You have entered an incorrect verification code too many times. Try again tomorrow';
+  String get loginCodeScreenErrorEnterBlockLong => 'You have entered an incorrect verification code too many times. Try again tomorrow';
 
   @override
   String get tomorrow => 'Tomorrow';
