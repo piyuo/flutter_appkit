@@ -1,19 +1,34 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class NoAnimRouteBuilder extends PageRouteBuilder {
-  final Widget page;
-
-  NoAnimRouteBuilder(this.page)
-      : super(
-            opaque: false,
-            pageBuilder: (context, animation, secondaryAnimation) => page,
-            transitionDuration: const Duration(milliseconds: 0),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => child);
+/// pushRoute push widget with new route, it will use NoAnimRouteBuilder in debug mode
+Future<T?> pushRoute<T extends Object?>(BuildContext context, Widget widget) async {
+  dynamic route;
+  if (!kReleaseMode) {
+    route = NoAnimRouteBuilder<T>(widget);
+  } else {
+    route = MaterialPageRoute<T>(
+      builder: (ctx) => widget,
+    );
+  }
+  return Navigator.of(context).push(route);
 }
 
-class FadeRouteBuilder extends PageRouteBuilder {
-  final Widget page;
+/// NoAnimRouteBuilder is a PageRouteBuilder with no animation
+class NoAnimRouteBuilder<T extends Object?> extends PageRouteBuilder<T> {
+  NoAnimRouteBuilder(this.widget)
+      : super(
+            opaque: false,
+            pageBuilder: (context, animation, secondaryAnimation) => widget,
+            transitionDuration: const Duration(milliseconds: 0),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => child);
 
+  /// widget is the Widget to show;
+  final Widget widget;
+}
+
+/// FadeRouteBuilder is a PageRouteBuilder with fade animation
+class FadeRouteBuilder<T extends Object?> extends PageRouteBuilder<T> {
   FadeRouteBuilder(this.page)
       : super(
             pageBuilder: (context, animation, secondaryAnimation) => page,
@@ -25,11 +40,13 @@ class FadeRouteBuilder extends PageRouteBuilder {
                   )),
                   child: child,
                 ));
+
+  /// widget is the Widget to show;
+  final Widget page;
 }
 
-class SlideTopRouteBuilder extends PageRouteBuilder {
-  final Widget page;
-
+/// SlideTopRouteBuilder is a PageRouteBuilder with slide top animation
+class SlideTopRouteBuilder<T extends Object?> extends PageRouteBuilder<T> {
   SlideTopRouteBuilder(this.page)
       : super(
             pageBuilder: (context, animation, secondaryAnimation) => page,
@@ -39,11 +56,13 @@ class SlideTopRouteBuilder extends PageRouteBuilder {
                       .animate(CurvedAnimation(parent: animation, curve: Curves.fastOutSlowIn)),
                   child: child,
                 ));
+
+  /// widget is the Widget to show;
+  final Widget page;
 }
 
-class SizeRoute extends PageRouteBuilder {
-  final Widget page;
-
+/// SizeRoute is a PageRouteBuilder with scale animation
+class SizeRoute<T extends Object?> extends PageRouteBuilder<T> {
   SizeRoute(this.page)
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
@@ -53,4 +72,7 @@ class SizeRoute extends PageRouteBuilder {
             child: child,
           ),
         );
+
+  /// widget is the Widget to show;
+  final Widget page;
 }

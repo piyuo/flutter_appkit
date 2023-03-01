@@ -3,7 +3,6 @@ library delta;
 export 'src/mounted.dart';
 export 'src/global_context_support.dart';
 export 'src/types.dart';
-export 'src/pixel_ratio.dart';
 export 'src/page_route.dart';
 export 'src/extensions.dart';
 export 'src/web_image.dart';
