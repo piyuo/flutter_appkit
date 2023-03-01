@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:libcli/testing/testing.dart' as testing;
 
 /// pushRoute push widget with new route, it will use NoAnimRouteBuilder in debug mode
 Future<T?> pushRoute<T extends Object?>(
@@ -8,7 +9,7 @@ Future<T?> pushRoute<T extends Object?>(
   bool replacement = false,
 }) async {
   dynamic route;
-  if (!kReleaseMode) {
+  if (!kReleaseMode && testing.isTestMode) {
     route = NoAnimRouteBuilder<T>(widget);
   } else {
     route = MaterialPageRoute<T>(
