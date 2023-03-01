@@ -88,8 +88,6 @@ class DeltaExample extends StatelessWidget {
                                     label: 'is touch enabled?', builder: () => _isTouchSupported(context)),
                                 testing.ExampleButton(label: 'no data', builder: () => _noData(context)),
                                 testing.ExampleButton(label: 'shimmer', builder: () => _shimmer(context)),
-                                testing.ExampleButton(label: 'wait', builder: () => _wait(context)),
-                                testing.ExampleButton(label: 'wait error', builder: () => _waitError(context)),
                                 testing.ExampleButton(label: 'countdown', builder: () => _notificationBadge(context)),
                                 testing.ExampleButton(label: 'countdown', builder: () => _countdown(context)),
                                 testing.ExampleButton(label: 'search box', builder: () => _searchBox(context)),
@@ -324,30 +322,6 @@ class DeltaExample extends StatelessWidget {
         ),
       )),
     ]));
-  }
-
-  Widget _wait(BuildContext context) {
-    return Wait<String>(
-      waitFor: () async {
-        await Future.delayed(const Duration(seconds: 3));
-        return 'hello world';
-      },
-      builder: (context, text) => Text(text ?? 'no data'),
-    );
-  }
-
-  Widget _waitError(BuildContext context) {
-    return Wait<String>(
-      waitFor: () async {
-        await Future.delayed(const Duration(seconds: 3));
-        if (errorCount <= 1) {
-          errorCount++;
-          throw Exception('error');
-        }
-        return 'ok';
-      },
-      builder: (context, text) => Text(text ?? 'no data'),
-    );
   }
 
   Widget _notificationBadge(BuildContext context) {
