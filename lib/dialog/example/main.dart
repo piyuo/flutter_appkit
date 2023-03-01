@@ -37,7 +37,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _showPopupSheet(context),
+            child: _toast(context),
           ),
           Wrap(
             children: [
@@ -48,10 +48,35 @@ class DialogExample extends StatelessWidget {
               testing.ExampleButton(label: 'banner', builder: () => _banner(context)),
               testing.ExampleButton(label: 'route', builder: () => _route(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
+              testing.ExampleButton(label: 'popup', builder: () => _popup(context)),
             ],
           ),
         ],
       )),
+    );
+  }
+
+  Widget _popup(BuildContext context) {
+    final GlobalKey btnPopup = GlobalKey();
+    return ElevatedButton(
+      key: btnPopup,
+      child: const Text('popup'),
+      onPressed: () {
+        var rect = getWidgetGlobalRect(btnPopup);
+        popup(context,
+            rect: Rect.fromLTWH(rect.left, rect.bottom, rect.width, 200),
+            child: Container(
+              color: Colors.green,
+              child: Center(
+                  child: InkWell(
+                onTap: () => debugPrint('hello'),
+                child: const Text(
+                  'hello',
+                  style: TextStyle(fontSize: 22),
+                ),
+              )),
+            ));
+      },
     );
   }
 
@@ -186,7 +211,7 @@ class DialogExample extends StatelessWidget {
           key: btnShowMoreOffset,
           child: const Text('show more offset'),
           onPressed: () {
-            var rect = delta.getWidgetGlobalRect(btnShowMoreOffset);
+            var rect = getWidgetGlobalRect(btnShowMoreOffset);
             showMore(
               context,
               size: const Size(180, 120),
@@ -206,7 +231,7 @@ class DialogExample extends StatelessWidget {
           key: btnShowMoreText,
           child: const Text('show more text'),
           onPressed: () {
-            var rect = delta.getWidgetGlobalRect(btnShowMoreText);
+            var rect = getWidgetGlobalRect(btnShowMoreText);
             showMoreText(
               context,
               targetRect: rect,

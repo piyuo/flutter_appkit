@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
+import 'popup.dart';
 import 'dialog.dart';
 import 'show_more.dart';
 
@@ -18,7 +18,7 @@ void main() {
               key: btnShowMore,
               child: const Text('button'),
               onPressed: () {
-                var rect = delta.getWidgetGlobalRect(btnShowMore);
+                var rect = getWidgetGlobalRect(btnShowMore);
                 showMore(
                   context,
                   size: const Size(180, 120),

@@ -1,20 +1,21 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'popup.dart';
 
 const arrowHeight = 12.0;
 const arrowWidth = 24.0;
 
 /// targetShowMore show small popup below or above target
 ///
-delta.Popup targetShowMore(
+Popup targetShowMore(
   BuildContext context, {
   required Widget child,
   required Size size, // size is child size
   required GlobalKey targetKey,
   Color? backgroundColor,
 }) {
-  Rect targetRect = delta.getWidgetGlobalRect(targetKey);
+  Rect targetRect = getWidgetGlobalRect(targetKey);
   return showMore(
     context,
     child: child,
@@ -26,7 +27,7 @@ delta.Popup targetShowMore(
 
 /// showMore show small popup below or above rect
 ///
-delta.Popup showMore(
+Popup showMore(
   BuildContext context, {
   required Widget child,
   required Size size, // size is child size
@@ -61,7 +62,7 @@ delta.Popup showMore(
     triangleInBottom = true;
   }
 
-  return delta.Popup()
+  return Popup()
     ..showWidget(
       context,
       child: Stack(

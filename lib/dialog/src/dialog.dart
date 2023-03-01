@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-Widget Function(BuildContext, Widget?) init() {
+Widget Function(BuildContext, Widget? child) init() {
   /// init toast
   return EasyLoading.init(builder: (ctx, w) {
     return MaxScaleTextWidget(

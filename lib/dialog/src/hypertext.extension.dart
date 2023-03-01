@@ -33,13 +33,7 @@ extension HypertextDialog on delta.Hypertext {
   }) {
     return action(
       text,
-      onTap: (BuildContext context, _) {
-        Navigator.of(context).push(
-          delta.safeTestMaterialRoute(
-            _DocPage(docName: docName, title: text),
-          ),
-        );
-      },
+      onTap: (BuildContext context, _) => delta.pushRoute(context, _DocPage(docName: docName, title: text)),
     );
   }
 }
