@@ -2,7 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// pushRoute push widget with new route, it will use NoAnimRouteBuilder in debug mode
-Future<T?> pushRoute<T extends Object?>(BuildContext context, Widget widget) async {
+Future<T?> pushRoute<T extends Object?>(
+  BuildContext context,
+  Widget widget, {
+  bool replacement = false,
+}) async {
   dynamic route;
   if (!kReleaseMode) {
     route = NoAnimRouteBuilder<T>(widget);
@@ -10,6 +14,9 @@ Future<T?> pushRoute<T extends Object?>(BuildContext context, Widget widget) asy
     route = MaterialPageRoute<T>(
       builder: (ctx) => widget,
     );
+  }
+  if (replacement) {
+    return Navigator.of(context).pushReplacement(route);
   }
   return Navigator.of(context).push(route);
 }

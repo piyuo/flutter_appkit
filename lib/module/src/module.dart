@@ -35,22 +35,17 @@ class Module {
   }
 }
 
+/// switch to new view
 void switchView(
   BuildContext context,
   Widget widget, {
-  bool replace = false,
+  bool replacement = false,
 }) {
-  var navigator = Navigator.of(context);
   final moduleProvider = Provider.of<Module>(context, listen: false);
   var newWidget = Provider.value(
     value: moduleProvider,
     builder: (context, child) => widget,
   );
 
-  var route = delta.safeTestMaterialRoute(newWidget);
-  if (replace) {
-    navigator.pushReplacement(route);
-    return;
-  }
-  navigator.push(route);
+  delta.pushRoute(context, newWidget, replacement: replacement);
 }
