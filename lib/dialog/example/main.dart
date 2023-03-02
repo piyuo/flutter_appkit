@@ -11,7 +11,7 @@ import '../dialog.dart';
 
 main() => app.start(
       routes: {
-        '/': (context, state, data) => cupertinoBottomSheet(const DialogExample()),
+        '/': (context, _, __) => cupertinoBottomSheet(const DialogExample()),
       },
     );
 
@@ -37,7 +37,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _toast(context),
+            child: _tooltip(context),
           ),
           Wrap(
             children: [
@@ -199,12 +199,7 @@ class DialogExample extends StatelessWidget {
             size: const Size(180, 180),
             child: Container(
                 alignment: Alignment.center,
-                child: const Text('hello world',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      decoration: TextDecoration.none,
-                    ))),
+                child: Text('hello world', style: TextStyle(color: context.invertedColor))),
           ),
         ),
         ElevatedButton(
@@ -218,12 +213,7 @@ class DialogExample extends StatelessWidget {
               targetRect: rect,
               child: Container(
                   alignment: Alignment.center,
-                  child: const Text('hello world',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                        decoration: TextDecoration.none,
-                      ))),
+                  child: Text('hello world', style: TextStyle(color: context.invertedColor))),
             );
           },
         ),
@@ -240,9 +230,6 @@ class DialogExample extends StatelessWidget {
             );
           },
         ),
-        delta.Hypertext(fontSize: 13)
-          ..moreText('more text', content: 'hello world')
-          ..moreDoc('more on doc', docName: 'privacy')
       ],
     );
   }

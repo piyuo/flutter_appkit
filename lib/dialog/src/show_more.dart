@@ -7,7 +7,6 @@ const arrowHeight = 12.0;
 const arrowWidth = 24.0;
 
 /// targetShowMore show small popup below or above target
-///
 Popup targetShowMore(
   BuildContext context, {
   required Widget child,
@@ -26,7 +25,6 @@ Popup targetShowMore(
 }
 
 /// showMore show small popup below or above rect
-///
 Popup showMore(
   BuildContext context, {
   required Widget child,
@@ -100,24 +98,23 @@ Popup showMore(
 }
 
 /// showMoreText show more text popup
-///
 void showMoreText(
   BuildContext context, {
   required String text,
   required Size size,
   required Rect targetRect,
+  TextStyle? textStyle,
 }) {
   showMore(
     context,
     targetRect: targetRect,
     size: size,
-    child: Center(
-        child: Text(text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none,
-            ))),
+    child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          text,
+          style: textStyle ?? TextStyle(color: context.invertedColor),
+        )),
   );
 }
 

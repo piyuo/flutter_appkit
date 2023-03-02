@@ -5,7 +5,6 @@ export 'src/alert.dart';
 export 'src/toast.dart';
 export 'src/test.dart';
 export 'src/route.dart';
-export 'src/hypertext.extension.dart';
 export 'src/single_selection_dialog.dart';
 export 'src/show_popup_sheet.dart';
 export 'src/show_more.dart';
