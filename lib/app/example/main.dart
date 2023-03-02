@@ -9,6 +9,7 @@ import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../app.dart';
@@ -88,53 +89,60 @@ class AppExampleState extends State<AppExample> {
           ),
           Container(
               color: Colors.black,
-              child: Wrap(children: [
-                OutlinedButton(
-                  child: const Text('show alert use global context'),
-                  onPressed: () {
-                    dialog.alert('hello');
-                  },
-                ),
-                testing.ExampleButton(
-                  label: 'error screen',
-                  builder: () => _errorScreen(context),
-                ),
-                testing.ExampleButton(
-                  label: 'network error screen',
-                  builder: () => _networkErrorScreen(context),
-                ),
-                testing.ExampleButton(
-                  label: 'routing',
-                  useScaffold: false,
-                  builder: () => _routing(context, widget.data),
-                ),
-                testing.ExampleButton(
-                  label: 'localization',
-                  builder: () => _languageProvider(context),
-                ),
-                testing.ExampleButton(
-                  label: 'test root context with dialog',
-                  builder: () => _testRootContext(context),
-                ),
-                testing.ExampleButton(
-                  label: 'scroll behavior',
-                  useScaffold: false,
-                  builder: () => _scrollBehavior(context),
-                ),
-                testing.ExampleButton(
-                  label: 'set page title',
-                  useScaffold: false,
-                  builder: () => _setPageTitle(context),
-                ),
-                testing.ExampleButton(
-                  label: 'error',
-                  builder: () => _error(context),
-                ),
-                testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
-                testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
-                testing.ExampleButton(
-                    label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
-              ]))
+              child: Wrap(
+                children: [
+                  OutlinedButton(
+                    child: const Text('show alert use global context'),
+                    onPressed: () {
+                      dialog.alert('hello');
+                    },
+                  ),
+                  testing.ExampleButton(
+                    label: 'error screen',
+                    builder: () => _errorScreen(context),
+                  ),
+                  testing.ExampleButton(
+                    label: 'network error screen',
+                    builder: () => _networkErrorScreen(context),
+                  ),
+                  testing.ExampleButton(
+                    label: 'routing',
+                    useScaffold: false,
+                    builder: () => _routing(context, widget.data),
+                  ),
+                  testing.ExampleButton(
+                    label: 'localization',
+                    builder: () => _languageProvider(context),
+                  ),
+                  testing.ExampleButton(
+                    label: 'test root context with dialog',
+                    builder: () => _testRootContext(context),
+                  ),
+                  testing.ExampleButton(
+                    label: 'scroll behavior',
+                    useScaffold: false,
+                    builder: () => _scrollBehavior(context),
+                  ),
+                  testing.ExampleButton(
+                    label: 'set page title',
+                    useScaffold: false,
+                    builder: () => _setPageTitle(context),
+                  ),
+                  testing.ExampleButton(
+                    label: 'error',
+                    builder: () => _error(context),
+                  ),
+                  testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
+                  testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
+                  testing.ExampleButton(
+                      label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
+                  delta.Hypertext(fontSize: 13)
+                    ..moreText('what is ChatGPT?',
+                        content:
+                            'ChatGPT is a sibling model to InstructGPT, which is trained to follow an instruction in a prompt and provide a detailed response')
+                    ..moreDoc('privacy terms', docName: 'privacy')
+                ],
+              ))
         ],
       )),
     );
