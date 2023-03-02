@@ -725,9 +725,6 @@ class DeltaExample extends StatelessWidget {
 
   Widget _indicator(BuildContext context) {
     return Column(children: [
-      Busy(
-        controller: _busyController,
-      ),
       OutlinedButton(
         child: const Text('toggle busy'),
         onPressed: () {

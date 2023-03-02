@@ -21,7 +21,6 @@ export 'src/slide_segment.dart';
 export 'src/segment.dart';
 export 'src/segment_container.dart';
 export 'src/swipe_container.dart';
-export 'src/busy.dart';
 export 'src/error_box.dart';
 export 'src/error_label.dart';
 export 'src/tap_on_button_hint.dart';
