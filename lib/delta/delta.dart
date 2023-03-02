@@ -8,7 +8,6 @@ export 'src/extensions.dart';
 export 'src/web_image.dart';
 export 'src/search_bar.dart';
 export 'src/hypertext.dart';
-export 'src/async_provider.dart';
 export 'src/refresh_more_view.dart';
 export 'src/await_on_tap.dart';
 export 'src/tap_breaker.dart';
