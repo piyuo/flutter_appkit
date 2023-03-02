@@ -1,112 +1,187 @@
-import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:libcli/util/util.dart' as util;
+import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/app/app.dart' as app;
 
-/// _testMode true should return success, false return error, otherwise behave normal
-///
-bool testMode = false;
-
-// testModeAlwaySuccess will let every function success
-//
-void testModeAlwaySuccess() {
-  testMode = true;
-}
-
-// TestModeBackNormal stop test mode and back to normal
-//
-void testModeBackNormal() {
-  testMode = false;
-}
-
+/// Span is a part of Hypertext
 class Span {
-  Span(
-    this.text, {
-    this.onTap,
-    this.bold = false,
+  const Span({
+    required this.text,
+    this.textStyle,
   });
 
-  final bool bold;
-
+  /// text to show
   final String text;
 
-  final void Function(BuildContext, TapUpDetails)? onTap;
-}
+  /// textStyle is the text style of normal text
+  final TextStyle? textStyle;
 
-class Hypertext extends StatefulWidget {
-  final List<Span> children = [];
-
-  final Color? color;
-
-  final Color? boldColor;
-
-  final Color? linkColor;
-
-  final double? fontSize;
-
-  Hypertext({
-    Key? key,
-    this.color,
-    this.boldColor,
-    this.linkColor,
-    this.fontSize = 16,
-  }) : super(key: key);
-
-  void span(String text) {
-    children.add(Span(text));
-  }
-
-  void bold(String text) {
-    children.add(Span(text, bold: true));
-  }
-
-  void link(
-    String text, {
-    String? url,
-  }) {
-    url = url ?? text;
-    return action(
-      text,
-      onTap: (_, __) {
-        if (!url!.startsWith('http')) {
-          url = 'http://${url!}';
-        }
-        util.openUrl(url!);
-      },
+  TextSpan build(BuildContext context) {
+    return TextSpan(
+      text: text,
+      style: textStyle ?? Theme.of(context).textTheme.bodyMedium,
     );
   }
-
-  void action(
-    String text, {
-    Function(BuildContext, TapUpDetails)? onTap,
-  }) {
-    if (children.isNotEmpty) {
-      children.add(Span(" "));
-    }
-    children.add(Span(
-      text,
-      onTap: onTap,
-    ));
-    children.add(Span(" "));
-  }
-
-  @override
-  HyperTextState createState() => HyperTextState();
 }
 
-class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin {
-  final Set<InkSplash?> _splashes = HashSet<InkSplash?>();
-
-  InkSplash? _currentSplash;
-
-  InkSplash? splash;
+/// Span is a part of Hypertext
+class Bold extends Span {
+  const Bold({
+    required String text,
+    TextStyle? textStyle,
+  }) : super(text: text, textStyle: textStyle);
 
   @override
-  bool get wantKeepAlive => (_splashes.isNotEmpty);
+  TextSpan build(BuildContext context) {
+    return TextSpan(
+      text: text,
+      style: textStyle ?? Theme.of(context).textTheme.titleMedium,
+    );
+  }
+}
 
-  //if InkSplash not show animation, properly because parent Container set background color
+/// Link is a part of Hypertext, it can be clicked
+class Link extends Span {
+  const Link({
+    required String text,
+    required this.onPressed,
+    TextStyle? textStyle,
+  }) : super(text: text, textStyle: textStyle);
+
+  /// onTap callback
+  final void Function(BuildContext context, TapUpDetails details) onPressed;
+
+  @override
+  TextSpan build(BuildContext context) {
+    //if InkSplash not show animation, properly because parent Container set background color
+    TapGestureRecognizer? recognizer;
+    recognizer = TapGestureRecognizer()..onTapUp = (TapUpDetails details) => onPressed(context, details);
+    return TextSpan(
+      text: text,
+      recognizer: recognizer,
+      style: textStyle ?? const TextStyle(color: Colors.blue),
+    );
+  }
+}
+
+/// Url is a part of Hypertext, it can be clicked and open url
+class Url extends Link {
+  Url({
+    required String text,
+    this.url,
+    TextStyle? textStyle,
+  }) : super(
+          text: text,
+          textStyle: textStyle,
+          onPressed: (_, __) {
+            var openUrl = url ?? text;
+            if (!openUrl.startsWith('http')) {
+              openUrl = 'http://$openUrl';
+            }
+            util.openUrl(openUrl);
+          },
+        );
+
+  /// url is the url to open
+  final String? url;
+}
+
+/// PopText is a part of Hypertext, it can be clicked and show popup text content
+class PopText extends Link {
+  PopText({
+    required String text,
+    required this.content,
+    this.popupSize = const Size(240, 180),
+    TextStyle? textStyle,
+  }) : super(
+          text: text,
+          textStyle: textStyle,
+          onPressed: (context, details) => dialog.showMoreText(
+            context,
+            text: content,
+            targetRect: Rect.fromLTWH(details.globalPosition.dx, details.globalPosition.dy, 0, 15),
+            size: popupSize,
+          ),
+        );
+
+  /// content is text content to show
+  final String content;
+
+  /// popupSize is the size of popup window
+  final Size popupSize;
+}
+
+/// DocumentLink is a part of Hypertext, it can be clicked and show document content
+class DocumentLink extends Link {
+  DocumentLink({
+    required String text,
+    required this.docName,
+    TextStyle? textStyle,
+  }) : super(
+          text: text,
+          textStyle: textStyle,
+          onPressed: (context, details) => delta.pushRoute(context, app.DocumentViewer(docName: docName, title: text)),
+        );
+
+  /// docPath document path
+  final String docName;
+}
+
+/// Hypertext is a widget to show text with bold and link
+class Hypertext extends StatelessWidget {
+  const Hypertext({
+    Key? key,
+    this.children = const [],
+  }) : super(key: key);
+
+  /// children is a list of Span
+  final List<Span> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: children.map((Span span) => span.build(context)).toList(),
+      ),
+    );
+  }
+}
+
+
+
+/*
+    recognizer = TapGestureRecognizer()
+      ..onTapCancel = state._handleTapCancel
+      ..onTapUp = (TapUpDetails details) {
+        state._handleTap();
+        onPressed();
+      }
+      ..onTap = () {}
+      ..onTapDown = state._handleTapDown;
+
+class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return RichText(
+      text: TextSpan(
+        children: widget.children.map((Span span) => span.build(context, this)).toList(),
+      ),
+    );
+  }
+}
+
+final Set<InkSplash?> _splashes = HashSet<InkSplash?>();
+
+  /// _currentSplash is the current splash
+  InkSplash? _currentSplash;
+
+  /// splash is the current splash
+  InkSplash? splash;
+
   void _handleTapDown(TapDownDetails details) {
-    var theme = Theme.of(context);
     final RenderBox referenceBox = context.findRenderObject() as RenderBox;
     splash = InkSplash(
         controller: Material.of(context),
@@ -114,7 +189,7 @@ class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin
         containedInkWell: true,
         referenceBox: referenceBox,
         position: referenceBox.globalToLocal(details.globalPosition),
-        color: theme.splashColor,
+        color: Theme.of(context).splashColor,
         onRemoved: () {
           assert(_splashes.contains(splash));
           _splashes.remove(splash);
@@ -138,6 +213,9 @@ class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin
   }
 
   @override
+  bool get wantKeepAlive => (_splashes.isNotEmpty);
+
+  @override
   void deactivate() {
     final Set<InkSplash?> splashes = _splashes;
     _splashes.clear();
@@ -150,45 +228,8 @@ class HyperTextState extends State<Hypertext> with AutomaticKeepAliveClientMixin
     super.deactivate();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    var bColor = isDark ? Colors.white : Colors.black;
-    var linkColor = isDark ? Colors.lightBlue.shade300 : Colors.lightBlue.shade800;
-    return RichText(
-      text: TextSpan(
-        children: widget.children.map((Span span) {
-          var textColor = widget.color ?? const Color.fromRGBO(134, 134, 139, 1);
-          var boldColor = widget.boldColor ?? bColor;
-          var color = span.bold == true ? boldColor : textColor;
-          TapGestureRecognizer? recognizer;
-          if (span.onTap != null) {
-            color = widget.linkColor ?? linkColor;
-            recognizer = TapGestureRecognizer()
-              ..onTapCancel = _handleTapCancel
-              ..onTapUp = (TapUpDetails details) {
-                _handleTap();
-                if (span.onTap != null) {
-                  span.onTap!(context, details);
-                }
-              }
-              ..onTap = () {}
-              ..onTapDown = _handleTapDown;
-          }
-          return TextSpan(
-            text: span.text,
-            recognizer: recognizer,
-            style: TextStyle(
-              fontSize: widget.fontSize,
-              decoration: span.onTap != null ? TextDecoration.underline : null,
-              color: color,
-              fontWeight: span.bold == true ? FontWeight.w600 : FontWeight.normal,
-              height: 1.6,
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
+
+
+
+
+*/

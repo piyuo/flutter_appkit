@@ -30,6 +30,14 @@ main() {
   );
 
   app.start(
+    theme: ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+    ),
+    darkTheme: ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+    ),
     routes: {
       '/': (context, state, data) => const DeltaExample(),
     },
@@ -73,7 +81,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _mounted(context),
+                          child: _hypertext(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -549,13 +557,20 @@ class DeltaExample extends StatelessWidget {
 
   Widget _hypertext(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Hypertext(fontSize: 13)
-        ..span('click to print to console')
-        ..action('privacy', onTap: (_, __) => debugPrint('hello world'))
-        ..span('click to open url')
-        ..link('starbucks', url: 'https://www.starbucks.com'),
-    );
+        padding: const EdgeInsets.all(20),
+        child: Hypertext(
+          children: [
+            const Span(text: 'click to print to console '),
+            const Bold(text: 'click to print to console'),
+            Link(text: ' say hello ', onPressed: (context, details) => debugPrint('hello world')),
+            PopText(
+                text: 'what is ChatGPT?',
+                content:
+                    'ChatGPT is a sibling model to InstructGPT, which is trained to follow an instruction in a prompt and provide a detailed response'),
+            DocumentLink(text: ' privacy terms ', docName: 'privacy'),
+            Url(text: 'http://starbucks.com'),
+          ],
+        ));
   }
 
   Widget _switching(BuildContext context) {
