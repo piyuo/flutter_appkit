@@ -1,5 +1,6 @@
 library types;
 
+export 'src/types.dart';
 export 'src/place.dart';
 export 'src/latlng.dart';
 export 'src/bool_provider.dart';
