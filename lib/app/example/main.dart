@@ -136,11 +136,6 @@ class AppExampleState extends State<AppExample> {
                   testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
                   testing.ExampleButton(
                       label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
-                  delta.Hypertext(fontSize: 13)
-                    ..moreText('what is ChatGPT?',
-                        content:
-                            'ChatGPT is a sibling model to InstructGPT, which is trained to follow an instruction in a prompt and provide a detailed response')
-                    ..moreDoc('privacy terms', docName: 'privacy')
                 ],
               ))
         ],
