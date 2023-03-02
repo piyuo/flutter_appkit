@@ -187,7 +187,7 @@ class NotesExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _notesView(context),
+              child: _simpleGrid(context),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -267,9 +267,9 @@ class NotesExample extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: SimpleGrid<String>(
         crossAxisCount: 2,
-        headerBuilder: () => delta.SearchBox(
+/*        headerBuilder: () => delta.SearchBox(
           controller: _searchBoxController,
-        ),
+        ),*/
         items: const ['a', 'b', 'c', 'd', 'e'],
         selectedItems: const ['b'],
         itemBuilder: (String item, bool isSelected) => Padding(

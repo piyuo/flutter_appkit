@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -24,11 +25,11 @@ Widget cupertinoBottomSheet(Widget child) {
 Future<T?> showPopup<T>(
   BuildContext context, {
   int itemCount = 1,
-  required delta.WidgetContextIndexBuilder itemBuilder,
-  delta.WidgetContextBuilder? closeButtonBuilder,
-  delta.WidgetContextBuilder? topBuilder,
-  delta.WidgetContextBuilder? bottomBuilder,
-  delta.WidgetContextWrapper? wrapper,
+  required types.WidgetContextIndexBuilder itemBuilder,
+  types.WidgetContextBuilder? closeButtonBuilder,
+  types.WidgetContextBuilder? topBuilder,
+  types.WidgetContextBuilder? bottomBuilder,
+  types.WidgetContextWrapper? wrapper,
   double? maxWidth,
   double? maxHeight,
   double? heightFactor,
@@ -85,11 +86,11 @@ Future<T?> showPopup<T>(
 Future<T?> showSheet<T>(
   BuildContext context, {
   int itemCount = 1,
-  required delta.WidgetContextIndexBuilder itemBuilder,
-  delta.WidgetContextBuilder? closeButtonBuilder,
-  delta.WidgetContextBuilder? topBuilder,
-  delta.WidgetContextBuilder? bottomBuilder,
-  delta.WidgetContextWrapper? wrapper,
+  required types.WidgetContextIndexBuilder itemBuilder,
+  types.WidgetContextBuilder? closeButtonBuilder,
+  types.WidgetContextBuilder? topBuilder,
+  types.WidgetContextBuilder? bottomBuilder,
+  types.WidgetContextWrapper? wrapper,
   double? maxWidth,
   double? maxHeight,
   double? heightFactor,
@@ -162,11 +163,11 @@ Future<T?> showSheet<T>(
 Widget _buildDialogWithContent(
   BuildContext context, {
   int itemCount = 1,
-  required delta.WidgetContextIndexBuilder itemBuilder,
-  delta.WidgetContextBuilder? closeButtonBuilder,
-  delta.WidgetContextBuilder? topBuilder,
-  delta.WidgetContextBuilder? bottomBuilder,
-  delta.WidgetContextWrapper? wrapper,
+  required types.WidgetContextIndexBuilder itemBuilder,
+  types.WidgetContextBuilder? closeButtonBuilder,
+  types.WidgetContextBuilder? topBuilder,
+  types.WidgetContextBuilder? bottomBuilder,
+  types.WidgetContextWrapper? wrapper,
   Color? backgroundColor,
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
