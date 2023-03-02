@@ -20,7 +20,7 @@ void main() {
     asset.mockDone();
   });
 
-  group('[i18n]', () {
+  group('[i18n.i18n_test]', () {
     test('should get default locale en', () async {
       expect(localeKey, 'en');
     });
@@ -57,8 +57,8 @@ void main() {
 
       mockLocale('zh_CN');
       expect(t.localDateString, '2021年1月2日');
-      expect(t.localTimeString, '下午11:30');
-      expect(t.localDateTimeString, '2021年1月2日 下午11:30');
+      expect(t.localTimeString, '23:30');
+      expect(t.localDateTimeString, '2021年1月2日 23:30');
     });
 
 /*

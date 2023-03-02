@@ -5,7 +5,7 @@ import 'number.dart';
 void main() {
   setUp(() async {});
 
-  group('[i18n_format]', () {
+  group('[i18n.number_test]', () {
     test('should get english number format', () async {
       expect(numberFormat, isNotNull);
       expect(currencySymbol, '\$');

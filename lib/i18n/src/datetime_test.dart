@@ -8,7 +8,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'i18n.dart';
 
 void main() {
-  group('[i18n]', () {
+  group('[i18n.datetime_test]', () {
     test('should check is same day', () async {
       expect(DateTime(2023, 1, 18).isSameDay(DateTime(2023, 1, 18)), isTrue);
       expect(DateTime(2023, 1, 18).isSameDay(DateTime(2023, 1, 18, 01, 01)), isTrue);
@@ -148,7 +148,7 @@ void main() {
 
       await changeDateFormatting('zh_CN');
       str = formatTime(date);
-      expect(str, '下午11:30');
+      expect(str, '23:30');
     });
 
     test('should convert date time to string', () async {
@@ -157,9 +157,13 @@ void main() {
       var str = formatDateTime(date);
       expect(str, 'January 2, 2021 11:30 PM');
 
-      await changeDateFormatting('zh_CN');
+      await changeDateFormatting('zh_TW');
       str = formatDateTime(date);
       expect(str, '2021年1月2日 下午11:30');
+
+      await changeDateFormatting('zh_CN');
+      str = formatDateTime(date);
+      expect(str, '2021年1月2日 23:30');
     });
 
     test('should format timestamp', () async {
@@ -176,9 +180,9 @@ void main() {
       str = formatDateStamp(stamp);
       expect(str, '2021年1月2日');
       str = formatDateTimeStamp(stamp);
-      expect(str, '2021年1月2日 下午11:30');
+      expect(str, '2021年1月2日 23:30');
       str = formatTimeStamp(stamp);
-      expect(str, '下午11:30');
+      expect(str, '23:30');
     });
 
     test('should format duration', () async {
