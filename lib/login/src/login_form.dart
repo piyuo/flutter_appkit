@@ -1,7 +1,10 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_button/sign_button.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:text_divider/text_divider.dart';
+import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'login_form_provider.dart';
 
@@ -17,38 +20,74 @@ class LoginForm extends StatelessWidget {
 
   List<LoginType> get _buttons {
     if (UniversalPlatform.isAndroid) {
-      return [LoginType.google, LoginType.facebook, LoginType.email];
+      return [LoginType.google, LoginType.facebook];
     }
-    return [LoginType.apple, LoginType.google, LoginType.facebook, LoginType.email];
+    return [LoginType.apple, LoginType.google, LoginType.facebook];
   }
 
   @override
   Widget build(BuildContext context) {
     final allButtons = _allSocialButton(context);
+
     return ChangeNotifierProvider<LoginFormProvider>(
         create: (context) => LoginFormProvider(),
-        child: Consumer<LoginFormProvider>(
-            builder: (context, loginFormProvider, child) => Center(
-                    child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 300), //SET max width
-                  child: Column(
-                      children: List.generate(
+        child: Consumer<LoginFormProvider>(builder: (context, loginFormProvider, child) {
+          Widget createSignin(LoginType loginType, ButtonType buttonType, VoidCallback onPressed) => SignInButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: 12,
+              width: 260,
+              buttonSize: ButtonSize.medium,
+              buttonType: buttonType,
+              onPressed: onPressed);
+
+          return ReactiveForm(
+              formGroup: loginFormProvider.formGroup,
+              child: Center(
+                  child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 280), //SET max width
+                child: Column(children: [
+                  ...List.generate(
                     _buttons.length,
                     (int index) {
-                      final type = _buttons[index];
+                      final loginType = _buttons[index];
                       return Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: SignInButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: 12,
-                              width: 260,
-                              buttonSize: ButtonSize.medium,
-                              buttonType: allButtons[type]!,
-                              onPressed: () => loginFormProvider.onButtonPressed(context, type)));
+                        padding: const EdgeInsets.only(top: 20),
+                        child: createSignin(loginType, allButtons[loginType]!,
+                            () => loginFormProvider.onButtonPressed(context, loginType)),
+                      );
                     },
-                  )),
-                ))));
+                  ),
+                  const SizedBox(height: 30),
+                  TextDivider.horizontal(text: const Text('OR', style: TextStyle(color: Colors.grey))),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: form.EmailField(
+                      formControlName: emailField,
+                      decoration: const InputDecoration(
+                        labelText: 'Email Address',
+                        hintText: 'Enter your email address',
+                      ),
+                      validationMessages: {
+                        ValidationMessage.required: (error) =>
+                            'Email Address required', //context.l10n.signupAccountEmailRequired,
+                        ValidationMessage.email: (error) =>
+                            'Email Address invalid', //context.l10n.signupAccountEmailInvalid
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  createSignin(
+                      LoginType.email,
+                      ButtonType.mail,
+                      () => form.submit(
+                          showDone: false,
+                          formGroup: loginFormProvider.formGroup,
+                          callback: loginFormProvider.onEmailSignin)),
+                ]),
+              )));
+        }));
   }
 }

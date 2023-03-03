@@ -9,7 +9,6 @@ import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../app.dart';

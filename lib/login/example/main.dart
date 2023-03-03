@@ -31,20 +31,25 @@ class LayoutExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Expanded(child: _loginForm(context)),
-      Wrap(
-        children: [
-          testing.ExampleButton(label: 'login form', builder: () => _loginForm(context), useScaffold: false),
-        ],
-      )
-    ]);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Layout Example'),
+      ),
+      body: Column(children: [
+        Expanded(child: _loginForm(context)),
+        Wrap(
+          children: [
+            testing.ExampleButton(label: 'login form', builder: () => _loginForm(context), useScaffold: false),
+          ],
+        )
+      ]),
+    );
   }
 
   Widget _loginForm(BuildContext context) {
     return Column(children: [
       Container(
-        color: Colors.grey.shade800,
+        color: Colors.grey.shade100,
         padding: const EdgeInsets.all(40),
         child: const LoginForm(),
       ),

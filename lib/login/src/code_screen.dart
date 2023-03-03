@@ -1,0 +1,122 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:libcli/form/form.dart' as form;
+import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/i18n/i18n.dart' as i18n;
+//import 'package:pinput/pin_put/pin_put.dart';
+import 'code_screen_provider.dart';
+
+/// CodeScreen verify email by check code is correct
+class CodeScreen extends StatelessWidget {
+  const CodeScreen({required this.email, Key? key}) : super(key: key);
+
+  final String email;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<CodeScreenProvider>(
+      create: (context) => CodeScreenProvider(email: email),
+      child: Scaffold(
+        appBar: AppBar(
+          //backToRoot: true,
+          centerTitle: true,
+          title: const Text('Verify code'),
+        ),
+        body: Consumer<CodeScreenProvider>(
+          builder: (context, model, _) {
+            final defaultPinTheme = form.PinTheme(
+              width: 45,
+              height: 45,
+              textStyle: const TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.w600),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade400),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            );
+            final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+              border: Border.all(color: Colors.blue, width: 2),
+            );
+            final submittedPinTheme = defaultPinTheme.copyDecorationWith(
+              border: Border.all(color: Colors.grey.shade300, width: 1),
+            );
+
+            return SafeArea(
+              right: false,
+              bottom: false,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 480), //SET max width
+                  child: SingleChildScrollView(
+                    child: ReactiveForm(
+                      formGroup: model.formGroup,
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 20),
+                          app.Hypertext(children: [
+                            app.Span(text: context.i18n.loginCodeScreenSent),
+                            app.Bold(text: model.email),
+                            app.Link(
+                                text: context.i18n.loginCodeScreenChange,
+                                onPressed: (_, __) {
+                                  return Navigator.of(context).pop();
+                                }),
+                          ]),
+                          const SizedBox(height: 10),
+                          app.Hypertext(children: [
+                            app.Span(text: context.i18n.loginCodeScreenReceive),
+                            app.Link(
+                              text: context.i18n.loginCodeScreenChange,
+                              onPressed: (context, __) => model.onResendCode(context),
+                            ),
+                          ]),
+                          form.p(),
+                          Center(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 340, minWidth: 320),
+                              child: form.FormPinPut<String>(
+                                  formControlName: codeField,
+                                  length: 6,
+                                  autofocus: true,
+                                  defaultPinTheme: defaultPinTheme,
+                                  focusedPinTheme: focusedPinTheme,
+                                  submittedPinTheme: submittedPinTheme,
+                                  pinAnimationType: form.PinAnimationType.fade,
+                                  showCursor: false,
+                                  androidSmsAutofillMethod: form.AndroidSmsAutofillMethod.smsRetrieverApi,
+                                  hapticFeedbackType: form.HapticFeedbackType.lightImpact,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                  ]),
+                            ),
+                          ),
+                          form.p(),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: Visibility(
+                                visible: model.status != VerifyStatus.wait,
+                                child: model.status == VerifyStatus.busy
+                                    ? CircularProgressIndicator(
+                                        semanticsLabel: 'Loading',
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]!))
+                                    : Icon(
+                                        Icons.check_circle,
+                                        color: Colors.greenAccent[700],
+                                        size: 42,
+                                      )),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

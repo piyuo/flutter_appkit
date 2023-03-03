@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/app/app.dart' as app;
+import 'code_screen.dart';
 
 /// LoginType define the type of login
 enum LoginType { apple, google, facebook, email }
 
+/// EMailField is email field name
+const emailField = 'email';
+
 /// LoginFormProvider is a provider for login form
 class LoginFormProvider with ChangeNotifier {
-  LoginFormProvider();
-
   @override
   void dispose() {
-    locationController.dispose();
-    locationFocusNode.dispose();
+    formGroup.dispose();
     super.dispose();
   }
 
-  final TextEditingController locationController = TextEditingController();
-
-  final FocusNode locationFocusNode = FocusNode();
+  final formGroup = fb.group({
+    emailField: [
+      '',
+      Validators.required,
+      Validators.email,
+    ],
+  });
 
   /// of get BranchModel from context
   static LoginFormProvider of(BuildContext context) {
@@ -46,6 +52,13 @@ class LoginFormProvider with ChangeNotifier {
         'region': 'region1',
       },
     )));
-    notifyListeners();
+  }
+
+  /// onEmailSignin is called when user choose email to login
+  Future<bool> onEmailSignin(BuildContext context) async {
+    final email = formGroup.control(emailField).value as String;
+    //await Future.delayed(Duration(seconds: 2));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CodeScreen(email: email)));
+    return false;
   }
 }

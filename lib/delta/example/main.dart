@@ -111,7 +111,6 @@ class DeltaExample extends StatelessWidget {
                                     label: 'web image provider', builder: () => _webImageProvider(context)),
                                 testing.ExampleButton(label: 'web image data', builder: () => _webImageData(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
-                                testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
                                 testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
                                 testing.ExampleButton(label: 'switch', builder: () => _switching(context)),
