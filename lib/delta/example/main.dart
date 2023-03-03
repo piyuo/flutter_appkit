@@ -81,7 +81,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _hypertext(context),
+                          child: _mounted(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -551,24 +551,6 @@ class DeltaExample extends StatelessWidget {
               fillColor: Colors.green,
               controller: _checkController,
             ),
-          ],
-        ));
-  }
-
-  Widget _hypertext(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(20),
-        child: Hypertext(
-          children: [
-            const Span(text: 'click to print to console '),
-            const Bold(text: 'click to print to console'),
-            Link(text: ' say hello ', onPressed: (context, details) => debugPrint('hello world')),
-            PopText(
-                text: 'what is ChatGPT?',
-                content:
-                    'ChatGPT is a sibling model to InstructGPT, which is trained to follow an instruction in a prompt and provide a detailed response'),
-            DocumentLink(text: ' privacy terms ', docName: 'privacy'),
-            Url(text: 'http://starbucks.com'),
           ],
         ));
   }

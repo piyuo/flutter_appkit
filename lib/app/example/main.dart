@@ -83,7 +83,7 @@ class AppExampleState extends State<AppExample> {
           child: Column(
         children: [
           Expanded(
-            child: _languageProvider(context),
+            child: _hypertext(context),
             // child: _routing(context, widget.data),
             //child: _setPageTitle(context),
           ),
@@ -136,11 +136,30 @@ class AppExampleState extends State<AppExample> {
                   testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
                   testing.ExampleButton(
                       label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
+                  testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
                 ],
               ))
         ],
       )),
     );
+  }
+
+  Widget _hypertext(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Hypertext(
+          children: [
+            const Span(text: 'click to print to console '),
+            const Bold(text: 'click to print to console'),
+            Link(text: ' say hello ', onPressed: (context, details) => debugPrint('hello world')),
+            PopText(
+                text: 'what is ChatGPT?',
+                content:
+                    'ChatGPT is a sibling model to InstructGPT, which is trained to follow an instruction in a prompt and provide a detailed response'),
+            DocumentLink(text: ' privacy terms ', docName: 'privacy'),
+            Url(text: 'http://starbucks.com'),
+          ],
+        ));
   }
 
   Widget _errorScreen(BuildContext context) {
