@@ -81,7 +81,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _segment(context),
+                          child: _noData(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -100,9 +100,6 @@ class DeltaExample extends StatelessWidget {
                                 testing.ExampleButton(label: 'countdown', builder: () => _countdown(context)),
                                 testing.ExampleButton(label: 'search box', builder: () => _searchBox(context)),
                                 testing.ExampleButton(label: 'redirect to url', builder: () => _redirectToUrl(context)),
-                                testing.ExampleButton(
-                                    label: 'tap on button hint', builder: () => _tapOnButtonHint(context)),
-                                testing.ExampleButton(label: 'await on tap', builder: () => _awaitOnTap(context)),
                                 testing.ExampleButton(label: 'refresh button', builder: () => _refreshButton(context)),
                                 testing.ExampleButton(label: 'indicator', builder: () => _indicator(context)),
                                 testing.ExampleButton(label: 'tap breaker', builder: () => _tapBreaker(context)),
@@ -154,23 +151,6 @@ class DeltaExample extends StatelessWidget {
     return OutlinedButton(
       child: const Text('redirect to url'),
       onPressed: () => redirectToURL(context, 'https://starbucks.com', caption: 'starbucks.com'),
-    );
-  }
-
-  Widget _tapOnButtonHint(BuildContext context) {
-    return const TapOnButtonHint('Printer');
-  }
-
-  Widget _awaitOnTap(BuildContext context) {
-    return AwaitOnTap(
-      child: Row(children: const [
-        Icon(Icons.menu),
-        Text('hello'),
-      ]),
-      onAwaitTap: () async {
-        await Future.delayed(const Duration(seconds: 2));
-        debugPrint('clicked');
-      },
     );
   }
 
