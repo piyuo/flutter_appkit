@@ -58,6 +58,7 @@ class CodeScreen extends StatelessWidget {
                           app.Hypertext(children: [
                             app.Span(text: context.i18n.loginCodeScreenSent),
                             app.Bold(text: model.email),
+                            const app.Span(text: '  '),
                             app.Link(
                                 text: context.i18n.loginCodeScreenChange,
                                 onPressed: (_, __) {

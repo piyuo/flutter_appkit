@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/app/app.dart' as app;
-import 'code_screen.dart';
 
 /// LoginType define the type of login
 enum LoginType { apple, google, facebook, email }
@@ -31,12 +30,12 @@ class LoginFormProvider with ChangeNotifier {
     return Provider.of<LoginFormProvider>(context, listen: false);
   }
 
-  /// onButtonPressed is called when the button is pressed
-  void onButtonPressed(BuildContext context, LoginType type) {
+  /// onSocialLogin is called when the social button is pressed
+  Future<void> onSocialLogin(BuildContext context, LoginType type) async {
     final sessionProvider = app.SessionProvider.of(context);
     final aExpired = DateTime.now().add(const Duration(minutes: 300));
     final rExpired = DateTime.now().add(const Duration(minutes: 800));
-    sessionProvider.login((app.Session(
+    await sessionProvider.login((app.Session(
       userId: 'user1',
       accessToken: app.Token(
         value: 'access',
@@ -54,11 +53,6 @@ class LoginFormProvider with ChangeNotifier {
     )));
   }
 
-  /// onEmailSignin is called when user choose email to login
-  Future<bool> onEmailSignin(BuildContext context) async {
-    final email = formGroup.control(emailField).value as String;
-    //await Future.delayed(Duration(seconds: 2));
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CodeScreen(email: email)));
-    return false;
-  }
+  /// onEmailLogin is called when user choose email to login
+  Future<void> onEmailLogin(BuildContext context) async {}
 }

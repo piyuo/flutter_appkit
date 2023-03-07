@@ -7,6 +7,7 @@ import 'package:text_divider/text_divider.dart';
 import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'login_form_provider.dart';
+import 'code_screen.dart';
 
 Map<LoginType, ButtonType> _allSocialButton(BuildContext context) => {
       LoginType.apple: context.isDark ? ButtonType.appleDark : ButtonType.apple,
@@ -55,7 +56,7 @@ class LoginForm extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(top: 20),
                         child: createSignin(loginType, allButtons[loginType]!,
-                            () => loginFormProvider.onButtonPressed(context, loginType)),
+                            () => loginFormProvider.onSocialLogin(context, loginType)),
                       );
                     },
                   ),
@@ -83,9 +84,18 @@ class LoginForm extends StatelessWidget {
                       LoginType.email,
                       ButtonType.mail,
                       () => form.submit(
-                          showDone: false,
-                          formGroup: loginFormProvider.formGroup,
-                          callback: loginFormProvider.onEmailSignin)),
+                            showDone: false,
+                            formGroup: loginFormProvider.formGroup,
+                            callback: (_) async {
+                              final email = loginFormProvider.formGroup.control(emailField).value as String;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CodeScreen(email: email),
+                                  ));
+                              return false;
+                            },
+                          )),
                 ]),
               )));
         }));
