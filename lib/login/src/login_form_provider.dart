@@ -11,6 +11,12 @@ const emailField = 'email';
 
 /// LoginFormProvider is a provider for login form
 class LoginFormProvider with ChangeNotifier {
+  LoginFormProvider({
+    required this.onLoginSucceeded,
+  });
+
+  final VoidCallback onLoginSucceeded;
+
   @override
   void dispose() {
     formGroup.dispose();
@@ -51,6 +57,7 @@ class LoginFormProvider with ChangeNotifier {
         'region': 'region1',
       },
     )));
+    onLoginSucceeded();
   }
 
   /// onEmailLogin is called when user choose email to login

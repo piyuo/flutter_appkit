@@ -16,8 +16,15 @@ Map<LoginType, ButtonType> _allSocialButton(BuildContext context) => {
       LoginType.email: ButtonType.mail,
     };
 
+/// LoginForm is a login form
 class LoginForm extends StatelessWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  const LoginForm({
+    required this.onLoginSucceeded,
+    Key? key,
+  }) : super(key: key);
+
+  /// onLoginSucceeded is called when login succeeded
+  final VoidCallback onLoginSucceeded;
 
   List<LoginType> get _buttons {
     if (UniversalPlatform.isAndroid) {
@@ -31,7 +38,7 @@ class LoginForm extends StatelessWidget {
     final allButtons = _allSocialButton(context);
 
     return ChangeNotifierProvider<LoginFormProvider>(
-        create: (context) => LoginFormProvider(),
+        create: (context) => LoginFormProvider(onLoginSucceeded: onLoginSucceeded),
         child: Consumer<LoginFormProvider>(builder: (context, loginFormProvider, child) {
           Widget createSignin(LoginType loginType, ButtonType buttonType, VoidCallback onPressed) => SignInButton(
               shape: RoundedRectangleBorder(

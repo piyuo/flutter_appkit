@@ -51,7 +51,7 @@ class LayoutExample extends StatelessWidget {
       Container(
         color: Colors.grey.shade100,
         padding: const EdgeInsets.all(40),
-        child: const LoginForm(),
+        child: LoginForm(onLoginSucceeded: () => debugPrint('login succeeded')),
       ),
     ]);
   }
