@@ -40,7 +40,10 @@ Widget? buildBackButton() {
 }
 
 /// buildTitle will return text widget for app bar title and set html title if in web mode
-Widget buildTitle(String title) {
+Widget? buildTitle(String? title) {
+  if (title == null) {
+    return null;
+  }
   if (kIsWeb) {
     html.document.title = title;
   }
