@@ -1,7 +1,7 @@
 library app;
 
 export 'src/app.dart';
-export 'src/beam_back.dart';
+export 'src/web_app.dart';
 export 'src/beam_link.dart';
 export 'src/error.dart';
 export 'src/language_provider.dart';

@@ -78,75 +78,75 @@ class AppExampleState extends State<AppExample> {
         final languageProvider = LanguageProvider.of(context);
         await languageProvider.init();
       },
-      builder: () => SafeArea(
-          child: Column(
-        children: [
-          Expanded(
-            child: _openWebUrl(context),
-            // child: _routing(context, widget.data),
-            //child: _setPageTitle(context),
+      builder: () => Scaffold(
+          appBar: AppBar(
+            backgroundColor: widget.color,
+            leading: buildBackButton(),
+            title: buildTitle('Hello World'),
           ),
-          Container(
-              color: Colors.black,
-              child: Wrap(
-                children: [
-                  OutlinedButton(
-                    child: const Text('show alert use global context'),
-                    onPressed: () {
-                      dialog.alert('hello');
-                    },
-                  ),
-                  testing.ExampleButton(label: 'open web url', builder: () => _openWebUrl(context)),
-                  testing.ExampleButton(
-                    label: 'error screen',
-                    builder: () => _errorScreen(context),
-                  ),
-                  testing.ExampleButton(
-                    label: 'network error screen',
-                    builder: () => _networkErrorScreen(context),
-                  ),
-                  testing.ExampleButton(
-                    label: 'routing',
-                    useScaffold: false,
-                    builder: () => _routing(context, widget.data),
-                  ),
-                  testing.ExampleButton(
-                    label: 'localization',
-                    builder: () => _languageProvider(context),
-                  ),
-                  testing.ExampleButton(
-                    label: 'test root context with dialog',
-                    builder: () => _testRootContext(context),
-                  ),
-                  testing.ExampleButton(
-                    label: 'scroll behavior',
-                    useScaffold: false,
-                    builder: () => _scrollBehavior(context),
-                  ),
-                  testing.ExampleButton(
-                    label: 'set page title',
-                    useScaffold: false,
-                    builder: () => _setPageTitle(context),
-                  ),
-                  testing.ExampleButton(
-                    label: 'error',
-                    builder: () => _error(context),
-                  ),
-                  testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
-                  testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
-                  testing.ExampleButton(
-                      label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
-                  testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
-                ],
-              ))
-        ],
-      )),
+          body: Column(
+            children: [
+              Expanded(
+                child: _webApp(context),
+                // child: _routing(context, widget.data),
+                //child: _setPageTitle(context),
+              ),
+              Container(
+                  color: Colors.black,
+                  child: Wrap(
+                    children: [
+                      OutlinedButton(
+                        child: const Text('show alert use global context'),
+                        onPressed: () {
+                          dialog.alert('hello');
+                        },
+                      ),
+                      testing.ExampleButton(label: 'open web url', builder: () => _openWebUrl(context)),
+                      testing.ExampleButton(
+                        label: 'error screen',
+                        builder: () => _errorScreen(context),
+                      ),
+                      testing.ExampleButton(
+                        label: 'network error screen',
+                        builder: () => _networkErrorScreen(context),
+                      ),
+                      testing.ExampleButton(
+                        label: 'web_app',
+                        useScaffold: false,
+                        builder: () => _webApp(context),
+                      ),
+                      testing.ExampleButton(
+                        label: 'localization',
+                        builder: () => _languageProvider(context),
+                      ),
+                      testing.ExampleButton(
+                        label: 'test root context with dialog',
+                        builder: () => _testRootContext(context),
+                      ),
+                      testing.ExampleButton(
+                        label: 'scroll behavior',
+                        useScaffold: false,
+                        builder: () => _scrollBehavior(context),
+                      ),
+                      testing.ExampleButton(
+                        label: 'error',
+                        builder: () => _error(context),
+                      ),
+                      testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
+                      testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
+                      testing.ExampleButton(
+                          label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
+                      testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
+                    ],
+                  ))
+            ],
+          )),
     );
   }
 
   Widget _openWebUrl(BuildContext context) {
     return OutlinedButton(
-      child: const Text('redirect to url'),
+      child: const Text('open web url'),
       onPressed: () => openWebUrl(context, 'https://starbucks.com', caption: 'starbucks.com'),
     );
   }
@@ -188,25 +188,26 @@ class AppExampleState extends State<AppExample> {
     return NetworkErrorScreen(onRetry: () {});
   }
 
-  Widget _routing(BuildContext context, dynamic data) {
+  Widget _webApp(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: widget.color,
-        leading: beamBack(context),
-      ),
       body: SingleChildScrollView(
           child: Column(children: [
-        if (data != null) Text('id=${data["id"]}'),
         OutlinedButton(
-            child: const Text('beam to other'),
-            onPressed: () {
-              context.beamToNamed('/other');
-            }),
+          child: const Text('redirect to other'),
+          onPressed: () => redirect(context, '/other'),
+        ),
         OutlinedButton(
-            child: const Text('beam to other with path param'),
-            onPressed: () {
-              context.beamToNamed('/other/2fb83m');
-            }),
+          child: const Text('go back'),
+          onPressed: () => goBack(context),
+        ),
+        OutlinedButton(
+          child: const Text('go home'),
+          onPressed: () => goHome(context),
+        ),
+        OutlinedButton(
+          child: const Text('redirect to other with path param'),
+          onPressed: () => redirect(context, '/other/2fb83m'),
+        ),
         OutlinedButton(
             child: const Text('beam to other with data'),
             onPressed: () {
@@ -228,11 +229,6 @@ class AppExampleState extends State<AppExample> {
           beamBack: true,
           child: Text('link:goto app in new tab'),
         ),
-        OutlinedButton(
-            child: const Text('root pop'),
-            onPressed: () {
-              rootPop(context);
-            }),
         OutlinedButton(
             child: const Text('navigator push'),
             onPressed: () {
@@ -343,15 +339,6 @@ class AppExampleState extends State<AppExample> {
             builder: () => buildChild(true),
           );
         }));
-      },
-    );
-  }
-
-  Widget _setPageTitle(BuildContext context) {
-    return OutlinedButton(
-      child: const Text('set page title'),
-      onPressed: () {
-        setWebPageTitle('hello');
       },
     );
   }
