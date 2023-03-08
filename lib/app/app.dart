@@ -13,3 +13,4 @@ export 'src/initialize_mixin.dart';
 export 'src/error_screen.dart';
 export 'src/network_error_screen.dart';
 export 'src/hypertext.dart';
+export 'src/open_web_url.dart';

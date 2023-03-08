@@ -5,8 +5,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
-/// redirectToURL open web view in iOS/Android, redirect in web mode
-Future<void> redirectToURL(
+/// b open web view in iOS/Android, open new page in web mode
+Future<void> openWebUrl(
   BuildContext context,
   String url, {
   String? caption,

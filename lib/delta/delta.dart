@@ -17,7 +17,6 @@ export 'src/checkbox_label.dart';
 export 'src/round_checkbox.dart';
 export 'src/segment.dart';
 export 'src/error_box.dart';
-export 'src/redirect_to_url.dart';
 export 'src/search_box.dart';
 export 'src/count_down.dart';
 export 'src/badge.dart';

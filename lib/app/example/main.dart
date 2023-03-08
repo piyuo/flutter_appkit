@@ -82,7 +82,7 @@ class AppExampleState extends State<AppExample> {
           child: Column(
         children: [
           Expanded(
-            child: _hypertext(context),
+            child: _openWebUrl(context),
             // child: _routing(context, widget.data),
             //child: _setPageTitle(context),
           ),
@@ -96,6 +96,7 @@ class AppExampleState extends State<AppExample> {
                       dialog.alert('hello');
                     },
                   ),
+                  testing.ExampleButton(label: 'open web url', builder: () => _openWebUrl(context)),
                   testing.ExampleButton(
                     label: 'error screen',
                     builder: () => _errorScreen(context),
@@ -143,13 +144,21 @@ class AppExampleState extends State<AppExample> {
     );
   }
 
+  Widget _openWebUrl(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('redirect to url'),
+      onPressed: () => openWebUrl(context, 'https://starbucks.com', caption: 'starbucks.com'),
+    );
+  }
+
   Widget _hypertext(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(20),
         child: Hypertext(
           children: [
             const Span(text: 'click to print to console '),
-            const Bold(text: 'click to print to console'),
+            const Bold(text: 'bold'),
+            const Bold(text: '         '),
             Link(text: ' say hello ', onPressed: (context, details) => debugPrint('hello world')),
             PopText(
                 text: 'what is ChatGPT?',
