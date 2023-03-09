@@ -39,16 +39,13 @@ Widget? buildBackButton() {
   return null;
 }
 
-/// buildTitle will return text widget for app bar title and set html title if in web mode
-Widget? buildTitle(String? title) {
-  if (title == null) {
-    return null;
-  }
+/// setWebPageTitle will set html page title if run in web mode
+void setWebPageTitle(String title) {
   if (kIsWeb) {
     html.document.title = title;
   }
-  return Text(title);
 }
+
 /*
 /// isRootCanPop return true if root page still can go back to previous page
 bool isRootCanPop(BuildContext context) {

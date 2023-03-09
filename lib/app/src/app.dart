@@ -8,17 +8,18 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
+import 'web_app.dart';
 import 'error.dart';
 import 'language_provider.dart';
 
-/// _appName is application name, used in log
-String _appName = '';
+/// _appTitle is application title use in log and web page title
+String _appTitle = '';
 
 /// appName is application name, used in log
-String get appName => _appName;
+String get appName => _appTitle;
 
 @visibleForTesting
-set appName(String value) => _appName = value;
+set appName(String value) => _appTitle = value;
 
 /// _serviceEmail is service email, alert dialog will guide user to send email
 String _serviceEmail = '';
@@ -41,7 +42,7 @@ typedef RouteBuilder = Widget Function(BuildContext context, Map<String, String>
 /// ```
 Future<void> start({
   required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
-  String name = '',
+  required String title,
   Future<List<SingleChildWidget>> Function()? builder,
   String initialRoute = '/',
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
@@ -52,12 +53,13 @@ Future<void> start({
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   // init cache && db
-  _appName = name;
+  _appTitle = title;
   _serviceEmail = serviceEmail;
   //Provider.debugCheckInvalidValueType = null;
 
   //routes
   if (kIsWeb) {
+    setWebPageTitle(title);
     Beamer.setPathUrlStrategy();
   }
 

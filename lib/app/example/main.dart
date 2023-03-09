@@ -15,7 +15,7 @@ import '../app.dart';
 
 main() async {
   await start(
-    name: 'app',
+    title: 'app',
     builder: () async => const [],
     supportedLocales: const [
       Locale('en'),
@@ -82,7 +82,7 @@ class AppExampleState extends State<AppExample> {
           appBar: AppBar(
             backgroundColor: widget.color,
             leading: buildBackButton(),
-            title: buildTitle('Hello World'),
+            title: const Text('Hello World'),
           ),
           body: Column(
             children: [
