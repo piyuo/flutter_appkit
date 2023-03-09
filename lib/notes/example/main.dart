@@ -135,6 +135,7 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
     );
 main() {
   app.start(
+    title: 'notes example',
     routes: {
       '/': (context, state, _) => const NotesExample(),
       '/:id': (context, state, _) {

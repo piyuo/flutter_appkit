@@ -38,6 +38,7 @@ final FocusNode _focusNode2 = FocusNode();
 
 main() {
   app.start(
+    title: 'location example',
     routes: {
       '/': (context, state, data) => const LocationExample(),
     },

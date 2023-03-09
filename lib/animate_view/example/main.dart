@@ -35,6 +35,7 @@ Widget itemBuilder(bool isListView, int index) {
 }
 
 main() => app.start(
+      title: 'animate_view example',
       routes: {
         '/': (context, state, data) => const AnimationExample(),
       },

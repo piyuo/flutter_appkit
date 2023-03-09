@@ -15,7 +15,7 @@ import '../app.dart';
 
 main() async {
   await start(
-    title: 'app',
+    title: 'app example',
     builder: () async => const [],
     supportedLocales: const [
       Locale('en'),

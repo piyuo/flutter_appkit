@@ -11,6 +11,7 @@ main() {
   });
 
   app.start(
+    title: 'permission example',
     routes: {
       '/': (context, state, data) => const DeltaExample(),
     },

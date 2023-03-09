@@ -15,6 +15,7 @@ main() {
   );
 
   app.start(
+    title: 'login example',
     routes: {
       '/': (context, _, __) => const LayoutExample(),
     },
