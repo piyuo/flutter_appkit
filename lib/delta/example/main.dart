@@ -40,7 +40,7 @@ main() {
   );
 
   app.start(
-    title: 'delta example',
+    appName: 'delta example',
     theme: ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
@@ -49,7 +49,7 @@ main() {
       useMaterial3: true,
       brightness: Brightness.dark,
     ),
-    routes: {
+    routesBuilder: () => {
       '/': (context, state, data) => const DeltaExample(),
     },
   );

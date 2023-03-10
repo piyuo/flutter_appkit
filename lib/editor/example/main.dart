@@ -9,8 +9,8 @@ import '../src/image_editor.dart';
 import '../src/image_editor_dialog.dart';
 
 main() => app.start(
-      title: 'editor example',
-      routes: {
+      appName: 'editor example',
+      routesBuilder: () => {
         '/': (context, state, data) => const EditorExample(),
       },
     );

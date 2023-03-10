@@ -90,7 +90,7 @@ String get header {
     }
   } catch (_) {}
 
-  var head = user + app.appName;
+  var head = user;
   if (head.isNotEmpty) {
     head += ':';
   }

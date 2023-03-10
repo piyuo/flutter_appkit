@@ -15,7 +15,7 @@ import '../app.dart';
 
 main() async {
   await start(
-    title: 'app example',
+    appName: 'app example',
     builder: () async => const [],
     supportedLocales: const [
       Locale('en'),
@@ -24,31 +24,29 @@ main() async {
       Locale('zh', 'CN'),
       Locale('zh', 'TW'),
     ],
-    routes: {
-      '/': (context, state, data) => const BeamPage(
-            key: ValueKey('home'),
-            title: 'Home',
-            child: AppExample(color: null),
+    routesBuilder: () => {
+      '/': (context, state, data) => BeamPage(
+            key: const ValueKey('home'),
+            title: 'home [${i18n.localeKey}]',
+            child: const AppExample(
+              color: null,
+            ),
           ),
       '/other/:id': (context, state, data) {
         final id = state.pathParameters['id']!;
         return BeamPage(
           key: ValueKey('other-$id'),
-          title: 'other',
-          child: AppExample(
+          title: 'other-$id [${i18n.localeKey}]',
+          child: const AppExample(
             color: Colors.red,
-            data: {
-              'id': id,
-            },
           ),
         );
       },
       '/other': (context, state, data) => BeamPage(
             key: const ValueKey('other'),
-            title: 'other',
-            child: AppExample(
+            title: 'other [${i18n.localeKey}]',
+            child: const AppExample(
               color: Colors.red,
-              data: data,
             ),
           ),
     },
@@ -58,13 +56,10 @@ main() async {
 class AppExample extends StatefulWidget {
   const AppExample({
     required this.color,
-    this.data,
     Key? key,
   }) : super(key: key);
 
   final Color? color;
-
-  final dynamic data;
 
   @override
   State<StatefulWidget> createState() => AppExampleState();

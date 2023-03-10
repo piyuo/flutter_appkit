@@ -2,24 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/database/database.dart' as database;
-import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/log/log.dart' as log;
 import 'package:beamer/beamer.dart';
-import 'web_app.dart';
+import 'package:universal_html/html.dart' as html;
 import 'error.dart';
 import 'language_provider.dart';
-
-/// _appTitle is application title use in log and web page title
-String _appTitle = '';
-
-/// appName is application name, used in log
-String get appName => _appTitle;
-
-@visibleForTesting
-set appName(String value) => _appTitle = value;
 
 /// _serviceEmail is service email, alert dialog will guide user to send email
 String _serviceEmail = '';
@@ -28,23 +18,25 @@ String _serviceEmail = '';
 String get serviceEmail => _serviceEmail;
 
 /// RouterBuilder used in web to build a route
-typedef RouteBuilder = Widget Function(BuildContext context, Map<String, String> arguments);
+//typedef RouteBuilder = Widget Function(BuildContext context, Map<String, String> arguments);
+
+typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> Function();
 
 /// start application
 /// ```dart
 ///   await start(
 ///    name: 'app',
 ///    builder: () async => const [],
-///    routes: {
+///    routesBuilder: () => {
 ///      '/': (context, state, data) => const HomeScreen(),
 ///    },
 ///   );
 /// ```
 Future<void> start({
-  required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
-  required String title,
-  Future<List<SingleChildWidget>> Function()? builder,
+  required String appName,
+  required RoutesBuilder routesBuilder,
   String initialRoute = '/',
+  Future<List<SingleChildWidget>> Function()? builder,
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String serviceEmail = 'support@piyuo.com',
@@ -53,27 +45,20 @@ Future<void> start({
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   // init cache && db
-  _appTitle = title;
+  log.log('$appName starting');
   _serviceEmail = serviceEmail;
   //Provider.debugCheckInvalidValueType = null;
 
   //routes
   if (kIsWeb) {
-    setWebPageTitle(title);
     Beamer.setPathUrlStrategy();
   }
 
   // put delegate outside of build to avoid hot reload error
   final beamerDelegate = BeamerDelegate(
     initialPath: initialRoute,
-    locationBuilder: RoutesLocationBuilder(
-      routes: routes,
-    ),
+    locationBuilder: RoutesLocationBuilder(routes: routesBuilder()),
   );
-
-  await database.init();
-  // init cache
-  await cache.init();
 
   // build app provider
   final providers = builder == null ? <SingleChildWidget>[] : await builder();
@@ -87,30 +72,32 @@ Future<void> start({
             ...providers,
           ],
           child: Consumer<LanguageProvider>(
-            builder: (context, languageProvider, child) => delta.GlobalContextSupport(
-                child: MaterialApp.router(
-              builder: (context, child) {
-                Widget childWrap = dialog.init()(context, child);
-                return ScrollConfiguration(
-                  behavior: const ScrollBehaviorModified(),
-                  child: childWrap,
-                );
-              },
-              debugShowCheckedModeBanner: false,
-              theme: theme,
-              darkTheme: darkTheme,
-              locale: languageProvider.preferredLocale,
-              localizationsDelegates: [
-                ...localizationsDelegates,
-                ...i18n.localizationsDelegates,
-              ],
-              supportedLocales: languageProvider.supportedLocales,
-              routeInformationParser: BeamerParser(),
-              routerDelegate: beamerDelegate,
-              backButtonDispatcher: BeamerBackButtonDispatcher(
-                delegate: beamerDelegate,
-              ),
-            )),
+            builder: (context, languageProvider, child) {
+              return delta.GlobalContextSupport(
+                  child: MaterialApp.router(
+                builder: (context, child) {
+                  Widget childWrap = dialog.init()(context, child);
+                  return ScrollConfiguration(
+                    behavior: const ScrollBehaviorModified(),
+                    child: childWrap,
+                  );
+                },
+                debugShowCheckedModeBanner: false,
+                theme: theme,
+                darkTheme: darkTheme,
+                locale: languageProvider.preferredLocale,
+                localizationsDelegates: [
+                  ...localizationsDelegates,
+                  ...i18n.localizationsDelegates,
+                ],
+                supportedLocales: languageProvider.supportedLocales,
+                routeInformationParser: BeamerParser(),
+                routerDelegate: beamerDelegate,
+                backButtonDispatcher: BeamerBackButtonDispatcher(
+                  delegate: beamerDelegate,
+                ),
+              ));
+            },
           ),
         ),
       )));
@@ -186,3 +173,80 @@ class ScrollBehaviorModified extends ScrollBehavior {
     }
   }
 }
+
+/// redirect to other section of app, it open route in native mode, redirect to web url in web mode
+void redirect(
+  BuildContext context,
+  String path,
+) {
+  if (kIsWeb) {
+    final l = html.window.location;
+    l.href = ('${l.protocol}//${l.host}$path');
+    return;
+  }
+  Beamer.of(context).beamToNamed(path);
+}
+
+/// goHome go to home page
+void goHome(BuildContext context) => redirect(context, '/');
+
+/// goBack go to previous page
+void goBack(BuildContext context) {
+  if (kIsWeb) {
+    html.window.history.back();
+    return;
+  }
+  Beamer.of(context).beamBack();
+}
+
+/// buildBackButton put back button in app entry Scaffold.appBar
+Widget? buildBackButton() {
+  if (kIsWeb && html.window.location.pathname != '/' && html.window.history.length > 1) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back_ios_new),
+      onPressed: () => html.window.history.back(),
+    );
+  }
+  return null;
+}
+
+/// setWebPageTitle will set html page title if run in web mode
+void setWebPageTitle(String title) {
+  if (kIsWeb) {
+    html.document.title = title;
+  }
+}
+
+/*
+/// isRootCanPop return true if root page still can go back to previous page
+bool isRootCanPop(BuildContext context) {
+  return html.window.location.pathname == '/' && html.window.location.href.contains('back=1');
+}
+
+/// rootPop go back to previous page
+void rootPop(BuildContext context) {
+  if (html.window.history.length > 0) {
+    log.debug('[app] back history');
+    html.window.history.back();
+  }
+  log.debug('[app] close tab');
+  html.window.close();
+}
+
+ */
+
+
+/*
+  await database.init();
+  // init cache
+  await cache.init();
+*/
+/*
+  final beamerDelegate = BeamerDelegate(
+    initialPath: initialRoute,
+    locationBuilder: (RouteInformation info, BeamParameters? param) {
+      final routesLocationBuilder = RoutesLocationBuilder(routes: routesBuilder());
+      return routesLocationBuilder(info, param);
+    },
+  );
+*/

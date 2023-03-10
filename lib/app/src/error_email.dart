@@ -9,7 +9,6 @@ class ErrorEmail {
 
   final String _body = '''
 
-Application:\n    $appName
 
 Debug Information
 ------------------------------------------------

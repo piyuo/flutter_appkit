@@ -6,8 +6,8 @@ import 'package:libcli/testing/testing.dart' as testing;
 import '../timeline.dart';
 
 main() => app.start(
-      title: 'timeline example',
-      routes: {
+      appName: 'timeline example',
+      routesBuilder: () => {
         '/': (context, state, data) => const Example(),
       },
     );

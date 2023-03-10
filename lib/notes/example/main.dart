@@ -135,8 +135,8 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
     );
 main() {
   app.start(
-    title: 'notes example',
-    routes: {
+    appName: 'notes example',
+    routesBuilder: () => {
       '/': (context, state, _) => const NotesExample(),
       '/:id': (context, state, _) {
         final id = state.pathParameters['id']!;

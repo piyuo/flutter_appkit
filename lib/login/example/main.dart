@@ -15,8 +15,8 @@ main() {
   );
 
   app.start(
-    title: 'login example',
-    routes: {
+    appName: 'login example',
+    routesBuilder: () => {
       '/': (context, _, __) => const LayoutExample(),
     },
     builder: () async => [

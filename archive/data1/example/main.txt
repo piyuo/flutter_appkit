@@ -13,7 +13,7 @@ import '../data.dart';
 
 main() => app.start(
       appName: 'data',
-      routes: {
+      routesBuilder: () => {
         '/': (context, state, data) => const DataExample(),
       },
     );

@@ -6,8 +6,8 @@ import 'package:libcli/app/app.dart' as app;
 import '../charts.dart';
 
 main() => app.start(
-      title: 'charts example',
-      routes: {
+      appName: 'charts example',
+      routesBuilder: () => {
         '/': (context, state, data) => const ChartsExample(),
       },
     );

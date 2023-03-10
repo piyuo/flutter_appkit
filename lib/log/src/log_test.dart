@@ -6,13 +6,11 @@ void main() {
   group('[log]', () {
     test('should log', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      app.appName = 'log_test';
       log('hi');
     });
 
     test('should error', () async {
       // ignore: invalid_use_of_visible_for_testing_member
-      app.appName = 'log_test';
       try {
         throw Exception('my error');
       } catch (e, s) {
@@ -21,8 +19,6 @@ void main() {
     });
 
     test('should create head', () {
-      // ignore: invalid_use_of_visible_for_testing_member
-      app.appName = 'piyuo-web-index';
       // ignore: invalid_use_of_visible_for_testing_member
       expect(header, 'piyuo-web-index:');
     });
