@@ -100,7 +100,7 @@ void main() {
       expect(session2['user'], 'user1');
       expect(session2['img'], 'img1');
       expect(session2['region'], 'region1');
-      sessionProvider2.logout();
+      await sessionProvider2.logout();
 
       final sessionProvider3 = SessionProvider(loader: (_) async => null);
       expect(await sessionProvider3.getValidSession(), isNull);

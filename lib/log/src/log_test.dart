@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/app/app.dart' as app;
 import 'log.dart';
 
 void main() {
@@ -16,11 +15,6 @@ void main() {
       } catch (e, s) {
         error(e, s);
       }
-    });
-
-    test('should create head', () {
-      // ignore: invalid_use_of_visible_for_testing_member
-      expect(header, 'piyuo-web-index:');
     });
 
     test('should beautify stack trace', () async {

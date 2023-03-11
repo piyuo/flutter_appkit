@@ -45,7 +45,7 @@ Future<void> start({
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   // init cache && db
-  log.log('$appName starting');
+  log.log('[app] $appName');
   _serviceEmail = serviceEmail;
   //Provider.debugCheckInvalidValueType = null;
 

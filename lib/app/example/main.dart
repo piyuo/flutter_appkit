@@ -82,7 +82,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
             children: [
               Expanded(
-                child: _webApp(context),
+                child: _sessionProvider(context),
                 // child: _routing(context, widget.data),
                 //child: _setPageTitle(context),
               ),
@@ -111,8 +111,12 @@ class AppExampleState extends State<AppExample> {
                         builder: () => _webApp(context),
                       ),
                       testing.ExampleButton(
-                        label: 'localization',
+                        label: 'language provider',
                         builder: () => _languageProvider(context),
+                      ),
+                      testing.ExampleButton(
+                        label: 'session provider',
+                        builder: () => _sessionProvider(context),
                       ),
                       testing.ExampleButton(
                         label: 'test root context with dialog',
@@ -279,6 +283,42 @@ class AppExampleState extends State<AppExample> {
         ],
       );
     });
+  }
+
+  Widget _sessionProvider(BuildContext context) {
+    return ChangeNotifierProvider<SessionProvider>(
+        create: (context) => SessionProvider(loader: (_) async => null),
+        child: Consumer<SessionProvider>(builder: (context, sessionProvider, child) {
+          return Column(
+            children: [
+              OutlinedButton(
+                  child: const Text('login'),
+                  onPressed: () async {
+                    await sessionProvider.login(Session(
+                      userId: 'user1',
+                      accessToken: Token(
+                        value: 'fakeAccess',
+                        expired: DateTime.now().add(const Duration(seconds: 300)),
+                      ),
+                      refreshToken: Token(
+                        value: 'fakeRefresh',
+                        expired: DateTime.now().add(const Duration(seconds: 300)),
+                      ),
+                      args: {
+                        'user': 'user1',
+                        'img': 'img1',
+                        'region': 'region1',
+                      },
+                    ));
+                  }),
+              OutlinedButton(
+                  child: const Text('logout'),
+                  onPressed: () async {
+                    await sessionProvider.logout();
+                  }),
+            ],
+          );
+        }));
   }
 
   Widget _loadingScreenError(BuildContext context) {

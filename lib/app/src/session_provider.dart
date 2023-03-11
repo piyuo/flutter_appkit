@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/log/log.dart' as log;
 import 'initialize_mixin.dart';
 
 /// LoginEvent is event when user login through UI
@@ -230,12 +231,13 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
   ///  );
   /// ```
   Future<void> login(Session newSession) async {
-    bool noSession = session == null;
+    bool noPreviousSession = session == null;
     session = newSession;
     await session!.save();
-    if (noSession) {
+    if (noPreviousSession) {
       await eventbus.broadcast(LoginEvent());
     }
+    log.log('[app] login ${newSession.userId}');
     notifyListeners();
   }
 
@@ -245,6 +247,9 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
   /// ```
   Future<void> logout() async {
     bool hasSession = session != null;
+    if (hasSession) {
+      log.log('[app] logout ${session!.userId}');
+    }
     session?.accessToken.value = '';
     session = null;
     await Session.remove();

@@ -25,7 +25,7 @@ void main() {
       logs.clear();
       pushLog(message: 'first message');
       pushLog(message: 'second message', stacktrace: 'stacktrace');
-      String text = printLogs();
+      String text = printLogs(maxCount: 10);
       expect(text.isNotEmpty, true);
       logs.clear();
     });

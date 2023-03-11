@@ -38,14 +38,19 @@ void pushLog({
 }
 
 /// printLogs print all logs
-String printLogs() {
+String printLogs({int maxCount = 50}) {
   var buffer = StringBuffer();
+  int index = 0;
   for (Log log in logs) {
     buffer.writeln('${log.when}: ${log.message}');
     if (log.stacktrace != null) {
       buffer.writeln(log.stacktrace);
     }
     buffer.writeln();
+    if (index > maxCount) {
+      break;
+    }
+    index++;
   }
   return buffer.toString();
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:beamer/beamer.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'logs.dart';
@@ -35,7 +36,7 @@ String safeJsonEncode(Object object) {
 /// ```
 void debug(String message) {
   if (!kReleaseMode) {
-    debugPrint('$header $message');
+    debugPrint(message);
   }
 }
 
@@ -45,7 +46,7 @@ void debug(String message) {
 /// ```
 void log(String message) {
 //  if (!kReleaseMode) {}
-  debugPrint('$header $message');
+  debugPrint(message);
   pushLog(message: message);
 }
 
@@ -63,7 +64,7 @@ void error(dynamic e, StackTrace? stacktrace) {
   } catch (_) {
     _lastMessage = e.runtimeType.toString();
   }
-  var out = '$header caught $_lastMessage';
+  var out = 'caught $_lastMessage';
   _lastStackTrace = stacktrace == null ? '' : beautyStack(stacktrace);
   if (_lastStackTrace.isNotEmpty) {
     out += '\n$_lastStackTrace';
@@ -73,28 +74,6 @@ void error(dynamic e, StackTrace? stacktrace) {
     message: _lastMessage,
     stacktrace: _lastStackTrace,
   );
-}
-
-/// header return  user@application:
-/// ```dart
-/// print(header); // 'kevin@piyuo: hello world'
-/// ```
-@visibleForTesting
-String get header {
-  var user = '';
-  try {
-    final sessionProvider = app.SessionProvider.of(delta.globalContext);
-    final session = sessionProvider.session;
-    if (session != null) {
-      user = '${session.userId}@';
-    }
-  } catch (_) {}
-
-  var head = user;
-  if (head.isNotEmpty) {
-    head += ':';
-  }
-  return head;
 }
 
 ///beautyStack return simple format stack trace
@@ -195,3 +174,29 @@ String toString(dynamic value) {
   }
   return '';
 }
+
+/*/// header return  user@application:
+/// ```dart
+/// print(header); // 'kevin@piyuo: hello world'
+/// ```
+@visibleForTesting
+String get header {
+  var user = '';
+  try {
+    final beamState = Beamer.of(context).currentBeamLocation.state as BeamState;
+    final bookId = beamState.pathParameters['bookId'];
+
+    final sessionProvider = app.SessionProvider.of(delta.globalContext);
+    final session = sessionProvider.session;
+    if (session != null) {
+      user = '${session.userId}@';
+    }
+  } catch (_) {}
+
+  var head = user;
+  if (head.isNotEmpty) {
+    head += ':';
+  }
+  return head;
+}
+ */
