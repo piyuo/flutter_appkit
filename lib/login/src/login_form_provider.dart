@@ -52,9 +52,7 @@ class LoginFormProvider with ChangeNotifier {
         expired: rExpired,
       ),
       args: {
-        'user': 'user1',
-        'img': 'img1',
-        'region': 'region1',
+        app.kSessionUserNameKey: 'userName1',
       },
     )));
     onLoginSucceeded();
