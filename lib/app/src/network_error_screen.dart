@@ -55,7 +55,7 @@ class NetworkErrorScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         AutoSizeText(
-                          log.lastMessage,
+                          log.lastException,
                           maxLines: 2,
                           textAlign: TextAlign.center,
                           style: const TextStyle(

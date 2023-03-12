@@ -2,11 +2,28 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'logs.dart';
 
-/// _lastMessage is last error message, it will used by error screen
-String _lastMessage = '';
+/// _lastException is last exception, it will used by error screen
+dynamic _lastException;
 
-/// lastMessage is last error message, it will used by error screen
-String get lastMessage => _lastMessage;
+/// lastException is last exception, it will used by error screen
+dynamic get lastException => _lastException;
+
+/// lastException is last exception, it will used by error screen
+/// ```dart
+/// expect(lastExceptionMessage, 'hi');
+/// ```
+String? get lastExceptionMessage {
+  if (_lastException == null) {
+    return null;
+  }
+  try {
+    if (_lastException is Exception) {
+      return _lastException.message;
+    }
+    return _lastException.toString();
+  } catch (_) {}
+  return _lastException.runtimeType.toString();
+}
 
 /// _lastStackTrace is last stack trace, it will used by error screen
 String _lastStackTrace = '';
@@ -15,7 +32,7 @@ String _lastStackTrace = '';
 String get lastStackTrace => _lastStackTrace;
 
 /// printLastError print last error message and stack trace
-String printLastError() => '$_lastMessage\n$_lastStackTrace';
+String printLastError() => '$_lastException\n$_lastStackTrace';
 
 /// safeJsonEncode return json of object, return object.toString() if can't encode json
 String safeJsonEncode(Object object) {
@@ -56,19 +73,21 @@ void log(String message) {
 /// }
 /// ```
 void error(dynamic e, StackTrace? stacktrace) {
+  _lastException = e;
+  var message = '';
   try {
-    _lastMessage = e.toString();
+    message = e.toString();
   } catch (_) {
-    _lastMessage = e.runtimeType.toString();
+    message = e.runtimeType.toString();
   }
-  var out = 'caught $_lastMessage';
+  var out = 'caught $message';
   _lastStackTrace = stacktrace == null ? '' : beautyStack(stacktrace);
   if (_lastStackTrace.isNotEmpty) {
     out += '\n$_lastStackTrace';
   }
   debugPrint(out);
   pushLog(
-    message: _lastMessage,
+    message: message,
     stacktrace: _lastStackTrace,
   );
 }

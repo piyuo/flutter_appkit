@@ -40,6 +40,17 @@ void main() {
       String str = toString(MockObject);
       expect(str, isNotEmpty);
     });
+
+    test('should get last message', () async {
+      try {
+        throw Exception('hi');
+      } catch (e, s) {
+        error(e, s);
+        expect(lastException, isNotNull);
+        expect(lastStackTrace, isNotEmpty);
+        expect(lastExceptionMessage, 'hi');
+      }
+    });
   });
 }
 
