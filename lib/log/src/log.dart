@@ -5,8 +5,11 @@ import 'logs.dart';
 /// _lastException is last exception, it will used by error screen
 dynamic _lastException;
 
-/// lastException is last exception, it will used by error screen
+/// lastException is last exception
 dynamic get lastException => _lastException;
+
+/// lastExceptionToString is last exception to string, it will used by error screen
+String get lastExceptionToString => exceptionToString(_lastException);
 
 /// lastException is last exception, it will used by error screen
 /// ```dart
@@ -64,6 +67,17 @@ void log(String message) {
   pushLog(message: message);
 }
 
+/// exceptionToString return string of exception
+String exceptionToString(dynamic e) {
+  var message = '';
+  try {
+    message = e.toString();
+  } catch (_) {
+    message = e.runtimeType.toString();
+  }
+  return message;
+}
+
 /// error print error message to console and keep log
 /// ```dart
 /// try {
@@ -74,12 +88,7 @@ void log(String message) {
 /// ```
 void error(dynamic e, StackTrace? stacktrace) {
   _lastException = e;
-  var message = '';
-  try {
-    message = e.toString();
-  } catch (_) {
-    message = e.runtimeType.toString();
-  }
+  var message = exceptionToString(e);
   var out = 'caught $message';
   _lastStackTrace = stacktrace == null ? '' : beautyStack(stacktrace);
   if (_lastStackTrace.isNotEmpty) {
