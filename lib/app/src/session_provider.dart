@@ -163,13 +163,6 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
     required this.loader,
     this.session,
   }) {
-    initFuture = () async {
-      session = await Session.load();
-      if (session != null) {
-        debugPrint('load $session');
-      }
-    };
-
     subscription = eventbus.listen((event) async {
       if (event is command.AccessTokenRevokedEvent) {
         if (session != null) {
@@ -186,6 +179,21 @@ class SessionProvider with ChangeNotifier, InitializeMixin {
   void dispose() {
     subscription.cancel();
     super.dispose();
+  }
+
+  /// initWithRefresh  init session and refresh session if expired
+  Future<void> initWithRefresh() async {
+    initFuture = () async {
+      session = await Session.load();
+      if (session != null) {
+        await getValidSession();
+      }
+      if (session != null && session!.isValid) {
+        log.log('[app] session ${session!.userId}');
+      }
+    };
+    await init();
+    notifyListeners();
   }
 
   /// of get SessionProvider from context
