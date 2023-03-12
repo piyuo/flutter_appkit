@@ -49,7 +49,7 @@ class ErrorScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         AutoSizeText(
-                          log.lastException,
+                          log.lastExceptionToString,
                           maxLines: 2,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
