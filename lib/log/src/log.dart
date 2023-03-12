@@ -69,6 +69,9 @@ void log(String message) {
 
 /// exceptionToString return string of exception
 String exceptionToString(dynamic e) {
+  if (e == null) {
+    return '';
+  }
   var message = '';
   try {
     message = e.toString();
