@@ -10,15 +10,19 @@ const _kPreferredLocaleKey = 'locale';
 
 /// LanguageProvider provide a way to change locale
 class LanguageProvider with ChangeNotifier, InitializeMixin {
-  LanguageProvider(this._locales) {
+  LanguageProvider(this._locales);
+
+  /// initWithPreferredLocale init with preferred locale
+  Future<void> initWithPreferredLocale() async {
     initFuture = () async {
       _preferredLocale = await loadPreferredLocale();
       if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
         await setPreferredLocale(null);
         return;
       }
-      notifyListeners();
     };
+    await init();
+    notifyListeners();
   }
 
   /// _locales is supported locales
