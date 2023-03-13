@@ -49,7 +49,7 @@ dependencies:
   flutter_easyrefresh: ^2.2.2
   flutter_dropzone: ^3.0.5
   image_picker: ^0.8.5+3
-  flutter_quill: ^6.4.3
+  flutter_quill: ^7.0.1
   image: ^4.0.15
   image_editor: ^1.1.0
   qr_flutter: ^4.0.0
