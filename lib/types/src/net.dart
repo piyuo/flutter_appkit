@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// _lookup return true if url can be lookup

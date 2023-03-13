@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:universal_io/io.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;

@@ -1,5 +1,6 @@
-import 'dart:io';
 import 'dart:async';
+// ignore: depend_on_referenced_packages
+import 'package:universal_io/io.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;

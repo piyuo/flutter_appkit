@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
-import 'dart:io';
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:universal_io/io.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'downloader.dart';
