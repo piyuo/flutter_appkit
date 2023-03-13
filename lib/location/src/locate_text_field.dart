@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/types/types.dart' as types;
+import 'package:libcli/general/general.dart' as types;
 import 'location.dart';
 
 class LocateTextProvider with ChangeNotifier {

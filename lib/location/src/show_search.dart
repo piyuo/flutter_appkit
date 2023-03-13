@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/sys/sys.dart' as sys;
-import 'package:libcli/types/types.dart' as types;
+import 'package:libcli/general/general.dart' as types;
 import 'package:libcli/location/location.dart' as location;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;

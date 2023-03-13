@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/types/types.dart' as types;
+import 'package:libcli/general/general.dart' as types;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/form/form.dart' as form;

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/types/types.dart' as types;
+import 'package:libcli/general/general.dart' as types;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 

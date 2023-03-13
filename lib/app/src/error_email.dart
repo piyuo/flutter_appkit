@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'dart:convert';
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/types/types.dart' as types;
+import 'package:libcli/general/general.dart' as types;
 import 'app.dart';
 
 class ErrorEmail {

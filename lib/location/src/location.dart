@@ -1,6 +1,6 @@
 //import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:libcli/types/types.dart' as types;
+import 'package:libcli/general/general.dart' as types;
 import 'package:libcli/log/log.dart' as log;
 
 /// deviceLatLng return device location info, return empty if can't not get device location (user not allow)
