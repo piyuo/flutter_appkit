@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_platform/universal_platform.dart';
 import 'map_google.dart';
@@ -7,11 +7,11 @@ import 'map_apple.dart';
 
 /// MapProviderImpl is interface for map implementation
 abstract class MapProviderImpl {
-  types.LatLng latlng = types.LatLng.empty;
+  general.LatLng latlng = general.LatLng.empty;
 
   bool showMarker = false;
 
-  Future<void> setValue(types.LatLng latlng, bool showMarker) async {
+  Future<void> setValue(general.LatLng latlng, bool showMarker) async {
     latlng = latlng;
     showMarker = showMarker;
   }
@@ -24,12 +24,12 @@ class MapProvider with ChangeNotifier {
   // impl is map implementation
   MapProviderImpl impl;
 
-  Future<void> setValue(types.LatLng latlng, bool showMarker) async {
+  Future<void> setValue(general.LatLng latlng, bool showMarker) async {
     impl.setValue(latlng, showMarker);
     notifyListeners();
   }
 
-  types.LatLng get latlng {
+  general.LatLng get latlng {
     return impl.latlng;
   }
 
@@ -93,7 +93,7 @@ MapProvider mapProvider() {
 }
 
 /// mapUrl return url by platform, web:google map, ios: apple map, cn: amap
-String mapUrl(String address, types.LatLng latlng) {
+String mapUrl(String address, general.LatLng latlng) {
   String adr = Uri.encodeComponent(address);
   var t = mapType();
   if (t == LocationMapType.apple) {

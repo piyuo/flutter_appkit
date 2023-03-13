@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'extensions.dart';
 
 typedef SuggestionBuilder = Future<List<String>> Function(String text);
@@ -34,10 +34,10 @@ class SearchBar extends StatelessWidget {
   final SuggestionBuilder? suggestionBuilder;
 
   /// onSuggestionChanged trigger when select a suggestion
-  final types.StringCallback? onSuggestionChanged;
+  final general.StringCallback? onSuggestionChanged;
 
   /// onTextChanged trigger when user change search text
-  final types.StringCallback? onTextChanged;
+  final general.StringCallback? onTextChanged;
 
   /// focusNode is search bar focus node
   final FocusNode? focusNode;
@@ -211,10 +211,10 @@ class _SearchBarProvider with ChangeNotifier {
   String _previousText = '';
 
   /// _suggestionDelay delay show suggestion if user continue change input text
-  final _suggestionDelay = types.DelayedRun();
+  final _suggestionDelay = general.DelayedRun();
 
   /// _textChangedDelay delay text changed event if user continue change input text
-  final _textChangedDelay = types.DelayedRun();
+  final _textChangedDelay = general.DelayedRun();
 
   /// controller is not map to text field, controller's value is sync to inner controller
   /// cause text field don't support future, so we let user edit at inner controller first then sync to controller
@@ -227,7 +227,7 @@ class _SearchBarProvider with ChangeNotifier {
   final TextEditingController _innerController = TextEditingController();
 
   /// onTextChanged happen when user change search text
-  final types.StringCallback? onTextChanged;
+  final general.StringCallback? onTextChanged;
 
   /// text return text field text
   String get text => _innerController.text;

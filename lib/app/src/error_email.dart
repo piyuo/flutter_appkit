@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'dart:convert';
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'app.dart';
 
 class ErrorEmail {
@@ -21,7 +21,7 @@ Debug Information
   }
 
   void launchMailTo() async {
-    types.openMailTo(
+    general.openMailTo(
       serviceEmail,
       _subject,
       _body.replaceAll('\n', '%0D%0A') + encodedLogs,

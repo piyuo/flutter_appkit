@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/sys/sys.dart' as sys;
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/location/location.dart' as location;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
@@ -11,18 +11,18 @@ import 'search_view.dart';
 import 'geo_client.dart';
 
 /// ConfirmButtonProvider control confirm button is visibility
-class ConfirmButtonProvider extends types.BoolProvider {
+class ConfirmButtonProvider extends general.BoolProvider {
   bool get visible => boolValue;
 }
 
 /// MyLocationButtonProvider control my location button visibility
-class MyLocationButtonProvider extends types.BoolProvider {
+class MyLocationButtonProvider extends general.BoolProvider {
   bool get visible => boolValue;
 }
 
 /// MyLocationButtonProvider control my location button visibility
 class ShowSearchProvider with ChangeNotifier {
-  ShowSearchProvider(BuildContext context, types.Place place) {
+  ShowSearchProvider(BuildContext context, general.Place place) {
     _confirmButtonProvider = ConfirmButtonProvider();
     _myLocationButtonProvider = MyLocationButtonProvider();
     _barProvider = SearchBarProvider(
@@ -148,7 +148,7 @@ class ShowSearchProvider with ChangeNotifier {
   sys.GeoLocation? _selectedLocation;
 
   // deviceLatLng will be set if user allow get device latlng, otherwise it will be empty
-  var _deviceLatLng = types.LatLng.empty;
+  var _deviceLatLng = general.LatLng.empty;
 
   // _stopDeviceLatlng prevent get deviceLatlng handling after dispose
   var _stopDeviceLatlng = false;
@@ -158,7 +158,7 @@ class ShowSearchProvider with ChangeNotifier {
     _stopDeviceLatlng = true;
     _selectedLocation = loc;
     _mapProvider.setValue(
-        types.LatLng(
+        general.LatLng(
           _selectedLocation!.lat,
           _selectedLocation!.lng,
         ),
@@ -170,9 +170,9 @@ class ShowSearchProvider with ChangeNotifier {
     if (_selectedLocation == null) {
       return;
     }
-    Navigator.of(context).pop(types.Place(
+    Navigator.of(context).pop(general.Place(
       address: _selectedLocation!.address,
-      latlng: types.LatLng(
+      latlng: general.LatLng(
         _selectedLocation!.lat,
         _selectedLocation!.lng,
       ),

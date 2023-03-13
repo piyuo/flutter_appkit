@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'map.dart';
 
 /// PlaceField let user set his place, it contain address, lat/lng and address tags
@@ -13,7 +13,7 @@ class OpenInMap extends StatelessWidget {
   }) : super(key: key);
 
   /// latlng is the lat/lng need to open in map
-  final types.LatLng latlng;
+  final general.LatLng latlng;
 
   /// address is the address need to open in map
   final String address;

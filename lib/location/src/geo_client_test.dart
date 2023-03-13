@@ -2,7 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 //import 'package:libcli/testing/testing.dart' as testing;
-//import 'package:libcli/types/types.dart' as types;
+//import 'package:libcli/general/general.dart' as general;
 //import 'geo_client.dart';
 
 void main() {
@@ -12,13 +12,13 @@ void main() {
 /*
     test('should return empty list when no input in auto complete', () async {
       final geoClient = GeoClient();
-      final list = await geoClient.autoComplete(testing.Context(), '', types.LatLng.empty);
+      final list = await geoClient.autoComplete(testing.Context(), '', general.LatLng.empty);
       expect(list, isEmpty);
     });
     test('should return auto complete suggestions', () async {
       final geoClient = GeoClient();
       final suggestions =
-          await geoClient.autoComplete(testing.Context(), '165', types.LatLng(33.7338518, -117.7403496));
+          await geoClient.autoComplete(testing.Context(), '165', general.LatLng(33.7338518, -117.7403496));
       expect(suggestions, isNotEmpty);
       final suggestion = suggestions[0];
       expect(suggestion.id, isNotEmpty);
@@ -30,7 +30,7 @@ void main() {
 
     test('should return reverse geocoding location list', () async {
       final geoClient = GeoClient();
-      final locations = await geoClient.reverseGeocoding(testing.Context(), types.LatLng(33.7338518, -117.7403496));
+      final locations = await geoClient.reverseGeocoding(testing.Context(), general.LatLng(33.7338518, -117.7403496));
       expect(locations, isNotEmpty);
     });*/
   });

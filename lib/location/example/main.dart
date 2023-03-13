@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/form/form.dart' as form;
-//import 'package:libcli/types/types.dart' as types;
+//import 'package:libcli/general/general.dart' as general;
 import '../location.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -19,10 +19,10 @@ final countryItems = {
 };
 
 final formGroup = fb.group({
-  'address': FormControl<types.Place>(
-      value: types.Place(
+  'address': FormControl<general.Place>(
+      value: general.Place(
     address: '2141 spectrum, irvine, CA 92618',
-    latlng: types.LatLng(33.65352503793474, -117.75017169525502),
+    latlng: general.LatLng(33.65352503793474, -117.75017169525502),
     tags: ['spectrum', 'irvine', 'CA'],
     country: 'US',
   )),
@@ -45,7 +45,7 @@ main() {
     builder: () async {
       return [];
       /*
-        await _mapProvider.setValue(types.LatLng(49.4540877, -173.7548384), true);
+        await _mapProvider.setValue(general.LatLng(49.4540877, -173.7548384), true);
         return [
           ChangeNotifierProvider<MapProvider>.value(
             value: _mapProvider,
@@ -110,7 +110,7 @@ class LocationExample extends StatelessWidget {
           suggestionsBuilder: (TextEditingValue value) {
             return [value.text, 'aa', 'bb', 'cc'];
           },
-          onUseMyLocation: (types.LatLng value) {
+          onUseMyLocation: (general.LatLng value) {
             debugPrint('lat:${value.lat}, lng:${value.lng}');
           },
           onSubmitted: (String text) {
@@ -147,7 +147,7 @@ class LocationExample extends StatelessWidget {
                     OpenInMap(
                       label: 'open in external map',
                       address: '成都市锦江区人民南路二段80号 邮政编码: 610012',
-                      latlng: types.LatLng(104.06534639982326, 30.648558245938407),
+                      latlng: general.LatLng(104.06534639982326, 30.648558245938407),
                     ),
                     form.p(),
                     form.Submit(

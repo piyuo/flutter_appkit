@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/responsive/responsive.dart' as responsive;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:split_view/split_view.dart';
@@ -87,31 +87,31 @@ class MasterDetailView<T> extends StatelessWidget {
   final Widget Function() contentBuilder;
 
   /// headerBuilder is the builder for header
-  final types.WidgetBuilder? headerBuilder;
+  final general.WidgetBuilder? headerBuilder;
 
   /// footerBuilder is the builder for footer
-  final types.WidgetBuilder? footerBuilder;
+  final general.WidgetBuilder? footerBuilder;
 
   /// selectionBarBuilder build selection on bar
-  final types.WidgetBuilder? selectionBarBuilder;
+  final general.WidgetBuilder? selectionBarBuilder;
 
   /// leftBarBuilder build left part on bar
-  final types.WidgetBuilder? leftBarBuilder;
+  final general.WidgetBuilder? leftBarBuilder;
 
   /// rightBarBuilder build right part on bar
-  final types.WidgetBuilder? rightBarBuilder;
+  final general.WidgetBuilder? rightBarBuilder;
 
   /// touchBottomBarBuilder build bottom bar on touch mode
-  final types.WidgetBuilder? touchBottomBarBuilder;
+  final general.WidgetBuilder? touchBottomBarBuilder;
 
   /// mouseBottomBarBuilder build bottom bar on mouse mode
-  final types.WidgetBuilder? mouseBottomBarBuilder;
+  final general.WidgetBuilder? mouseBottomBarBuilder;
 
   /// onRefresh called when user pull down refresh
-  final types.FutureCallback<void>? onRefresh;
+  final general.FutureCallback<void>? onRefresh;
 
   /// onMore called when user pull up to load more data
-  final types.FutureCallback<void>? onMore;
+  final general.FutureCallback<void>? onMore;
 
   /// onItemTapped is callback when item is tapped
   final void Function(T item)? onItemTapped;

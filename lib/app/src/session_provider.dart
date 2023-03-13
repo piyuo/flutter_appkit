@@ -4,7 +4,7 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 
 /// LoginEvent is event when user login through UI
 class LoginEvent {}
@@ -158,7 +158,7 @@ class Session {
 }
 
 /// SessionProvider keep session and provide session to other widget
-class SessionProvider with ChangeNotifier, types.NeedInitializeMixin {
+class SessionProvider with ChangeNotifier, general.NeedInitializeMixin {
   SessionProvider({
     required this.loader,
     this.session,

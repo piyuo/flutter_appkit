@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'location.dart';
 
 class LocateTextProvider with ChangeNotifier {
@@ -50,7 +50,7 @@ class LocateTextField extends StatelessWidget {
   final AutocompleteOptionsBuilder<String>? suggestionsBuilder;
 
   /// onUseMyLocation called when user click use my location and pass latlng
-  final void Function(types.LatLng value) onUseMyLocation;
+  final void Function(general.LatLng value) onUseMyLocation;
 
   /// onSubmitted call when user submit search text
   final void Function(String) onSubmitted;

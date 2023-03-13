@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amap_flutter_map/amap_flutter_map.dart';
 import 'package:amap_flutter_base/amap_flutter_base.dart';
-import 'package:libcli/types/types.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'map.dart';
 
 /// AmapImpl is amap implementation
@@ -14,7 +14,7 @@ class AmapImpl extends MapProviderImpl {
   final Set<Marker> _markers = {};
 
   @override
-  Future<void> setValue(types.LatLng latlng, bool showMarker) async {
+  Future<void> setValue(general.LatLng latlng, bool showMarker) async {
     await super.setValue(latlng, showMarker);
     resetMarker();
 

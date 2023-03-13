@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:reactive_forms/reactive_forms.dart';
@@ -30,7 +30,7 @@ class Submit extends StatelessWidget {
   final Widget? child;
 
   /// onSubmit called when user pressed button to submit form, return true will show done animation
-  final types.FutureContextCallback<bool>? onSubmit;
+  final general.FutureContextCallback<bool>? onSubmit;
 
   /// button elevation, if elevation is 0 use outlined button
   final double elevation;
@@ -116,7 +116,7 @@ bool validate(
 /// submit form, return true if form is submitted
 Future<bool> submit({
   required FormGroup formGroup,
-  required types.FutureContextCallback<bool> callback,
+  required general.FutureContextCallback<bool> callback,
   bool showWait = true,
   bool showDone = true,
 }) async {
@@ -145,7 +145,7 @@ Future<bool> submit({
 /// isAllowToExit is true mean form can exit
 Future<bool> isAllowToExit({
   required FormGroup formGroup,
-  required types.FutureContextCallback<bool> submitCallback,
+  required general.FutureContextCallback<bool> submitCallback,
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.show(

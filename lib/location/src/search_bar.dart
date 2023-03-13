@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/general/general.dart' as types;
+import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/sys/sys.dart' as sys;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'search_confirm.dart';
@@ -73,7 +73,7 @@ class SearchBarProvider with ChangeNotifier {
 
   String _lastInputAddress = '';
 
-  final _delayedRun = types.DelayedRun();
+  final _delayedRun = general.DelayedRun();
 
   /// _textEditingController text edit field controller
   final TextEditingController _addressEditingController = TextEditingController();
