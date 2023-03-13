@@ -3,7 +3,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/layout/layout.dart' as layout;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/generator/generator.dart' as generator;
 import 'package:libcli/testing/testing.dart' as testing;
@@ -22,9 +22,9 @@ final GlobalKey btnShowMoreOffset = GlobalKey();
 final GlobalKey btnShowMoreText = GlobalKey();
 
 final printers = [
-  layout.ListItem<String>('1', title: 'Printer 1', icon: Icons.print, iconColor: Colors.green),
-  layout.ListItem<String>('2', title: 'Printer 2', icon: Icons.print, iconColor: Colors.green),
-  layout.ListItem<String>('3', title: 'Printer 3', icon: Icons.print, subtitle: 'offline'),
+  delta.ListItem<String>('1', title: 'Printer 1', icon: Icons.print, iconColor: Colors.green),
+  delta.ListItem<String>('2', title: 'Printer 2', icon: Icons.print, iconColor: Colors.green),
+  delta.ListItem<String>('3', title: 'Printer 3', icon: Icons.print, subtitle: 'offline'),
 ];
 
 class DialogExample extends StatelessWidget {
@@ -560,7 +560,7 @@ class DialogExample extends StatelessWidget {
             onNewItem: () async {
               final id = generator.randomNumber(5);
               printers.add(
-                layout.ListItem<String>(id, title: 'Printer $id', icon: Icons.print, iconColor: Colors.green),
+                delta.ListItem<String>(id, title: 'Printer $id', icon: Icons.print, iconColor: Colors.green),
               );
             },
           );

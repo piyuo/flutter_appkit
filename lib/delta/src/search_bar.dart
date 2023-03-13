@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/util/util.dart' as util;
+import 'package:libcli/types/types.dart' as types;
 import 'package:libcli/types/types.dart' as types;
 import 'extensions.dart';
 
@@ -212,10 +212,10 @@ class _SearchBarProvider with ChangeNotifier {
   String _previousText = '';
 
   /// _suggestionDelay delay show suggestion if user continue change input text
-  final _suggestionDelay = util.DelayedRun();
+  final _suggestionDelay = types.DelayedRun();
 
   /// _textChangedDelay delay text changed event if user continue change input text
-  final _textChangedDelay = util.DelayedRun();
+  final _textChangedDelay = types.DelayedRun();
 
   /// controller is not map to text field, controller's value is sync to inner controller
   /// cause text field don't support future, so we let user edit at inner controller first then sync to controller

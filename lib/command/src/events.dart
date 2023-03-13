@@ -1,4 +1,4 @@
-import 'package:libcli/util/util.dart' as util;
+import 'package:libcli/types/types.dart' as types;
 
 /// InternalServerErrorEvent happen when [service return 500 internal server error], need let user know their network is slow than usual
 class InternalServerErrorEvent {}
@@ -54,8 +54,8 @@ class InternetRequiredEvent {
   });
 
   /// isInternetConnected is a function that return true if internet is connected
-  Future<bool> Function() isInternetConnected = util.isInternetConnected;
+  Future<bool> Function() isInternetConnected = types.isInternetConnected;
 
   /// isGoogleCloudFunctionAvailable is a function that return true if google cloud function is available
-  Future<bool> Function() isGoogleCloudFunctionAvailable = util.isGoogleCloudFunctionAvailable;
+  Future<bool> Function() isGoogleCloudFunctionAvailable = types.isGoogleCloudFunctionAvailable;
 }
