@@ -1,6 +1,5 @@
-
-/// InitializeMixin is a mixin that mean class need init() before use
-mixin InitializeMixin {
+/// NeedInitializeMixin is a mixin that mean class need init() before use
+mixin NeedInitializeMixin {
   /// isReady is true if ready to use
   bool isReady = false;
 

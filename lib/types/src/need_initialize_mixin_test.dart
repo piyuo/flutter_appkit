@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'initialize_mixin.dart';
+import 'need_initialize_mixin.dart';
 
-class TestClass with InitializeMixin {
+class TestClass with NeedInitializeMixin {
   bool initFutureCalled = false;
   TestClass() {
     initFuture = () async {
@@ -13,7 +13,7 @@ class TestClass with InitializeMixin {
 void main() {
   setUp(() async {});
 
-  group('[initialize_mixin]', () {
+  group('[types.need_initialize_mixin]', () {
     test('should call initFuture', () async {
       final testClass = TestClass();
       expect(testClass.initFutureCalled, false);
