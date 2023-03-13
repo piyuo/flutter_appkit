@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/log/log.dart' as log;
 import 'package:flutter/material.dart';
 
 /*
@@ -61,7 +60,7 @@ String? regexpValidator(
   var result =
       regexp.hasMatch(input) ? null : context.i18n.fieldValueInvalid.replaceAll('%1', label).replaceAll('%2', example);
   if (result != null) {
-    log.debug('[validator] failed $result');
+    debugPrint('[validator] failed $result');
   }
   return result;
 }
