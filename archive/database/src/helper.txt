@@ -1,5 +1,5 @@
-import 'database.dart';
-import 'base.dart';
+import 'database.txt';
+import 'base.txt';
 
 /// open a database to use, create new one if database not exists
 /// ```dart

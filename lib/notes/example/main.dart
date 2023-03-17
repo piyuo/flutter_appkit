@@ -11,7 +11,7 @@ import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/responsive/responsive.dart' as responsive;
-import 'package:libcli/database/database.dart' as database;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/generator/generator.dart' as generator;
 import '../notes.dart';
 
@@ -689,39 +689,46 @@ class NotesExample extends StatelessWidget {
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
                         value: _notesProvider,
                       ),
-                      ChangeNotifierProvider<database.DatabaseProvider>(create: (_) {
-                        return database.DatabaseProvider(
-                          name: 'test',
-                        )..load().then((database) {
-                            _notesProvider.load(
-                                context,
-                                data.DatasetDatabase<sample.Person>(
-                                  database,
-                                  objectBuilder: () => sample.Person(),
-                                ));
-                          });
+                      ChangeNotifierProvider<cache.IndexedDbProvider>(create: (_) {
+                        return cache.IndexedDbProvider(
+                          dbName: 'notes_sample',
+                        );
                       }),
                     ],
-                    child: Consumer2<database.DatabaseProvider, NotesProvider<sample.Person>>(
-                      builder: (context, databaseProvider, notesProvider, _) => NotesView<sample.Person>(
-                        notesProvider: notesProvider,
-                        contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
-                        tagViewHeader: const Text('hello world'),
-                        leftTools: [
-                          responsive.ToolButton(
-                            label: 'hello',
-                            icon: Icons.favorite,
-                            onPressed: () => debugPrint('hello'),
+                    child: Consumer2<cache.IndexedDbProvider, NotesProvider<sample.Person>>(
+                      builder: (context, indexedDbProvider, notesProvider, _) {
+                        return app.LoadingScreen(
+                          future: () async {
+                            final isPreferMouse = context.isPreferMouse;
+                            await indexedDbProvider.init();
+                            _notesProvider.load(
+                                isPreferMouse,
+                                data.DatasetDb<sample.Person>(
+                                  indexedDbProvider: indexedDbProvider,
+                                  objectBuilder: () => sample.Person(),
+                                ));
+                          },
+                          builder: () => NotesView<sample.Person>(
+                            notesProvider: notesProvider,
+                            contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
+                            tagViewHeader: const Text('hello world'),
+                            leftTools: [
+                              responsive.ToolButton(
+                                label: 'hello',
+                                icon: Icons.favorite,
+                                onPressed: () => debugPrint('hello'),
+                              ),
+                            ],
+                            rightTools: [
+                              responsive.ToolButton(
+                                label: 'hello',
+                                icon: Icons.ac_unit,
+                                onPressed: () => debugPrint('hi'),
+                              ),
+                            ],
                           ),
-                        ],
-                        rightTools: [
-                          responsive.ToolButton(
-                            label: 'hello',
-                            icon: Icons.ac_unit,
-                            onPressed: () => debugPrint('hi'),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ))));
   }
 }
@@ -735,34 +742,39 @@ Widget _noteItem(BuildContext context, String id) {
         ChangeNotifierProvider<NoteFormController<sample.Person>>(
           create: (context) => createFormController(),
         ),
-        ChangeNotifierProvider<database.DatabaseProvider>(
+        ChangeNotifierProvider<cache.IndexedDbProvider>(
           create: (context) {
-            return database.DatabaseProvider(
-              name: 'test',
-            )..load().then((database) async {
-                NoteFormController.of<sample.Person>(context).load(context,
-                    dataset: data.DatasetDatabase<sample.Person>(
-                      database,
-                      objectBuilder: () => sample.Person(),
-                    ),
-                    id: id);
-              });
+            return cache.IndexedDbProvider(
+              dbName: 'notes_sample',
+            );
           },
         ),
       ],
-      child: Consumer2<database.DatabaseProvider, NoteFormController<sample.Person>>(
-          builder: (context, databaseProvider, formController, _) => Scaffold(
+      child: Consumer2<cache.IndexedDbProvider, NoteFormController<sample.Person>>(
+          builder: (context, indexedDbProvider, formController, _) => Scaffold(
                 appBar: AppBar(title: const Text('Detail'), actions: [
                   Consumer<NoteFormController<sample.Person>>(
                       builder: (context, formController, _) => NoteFormMenuButton<sample.Person>(
                             formController: formController,
                           )),
                 ]),
-                body: SafeArea(
-                  child: Center(
-                    child: NoteForm<sample.Person>(
-                      formController: formController,
-                      onWillPop: () async => formController.isAllowToExit(),
+                body: app.LoadingScreen(
+                  future: () async {
+                    final noteFormController = NoteFormController.of<sample.Person>(context);
+                    await indexedDbProvider.init();
+                    noteFormController.load(
+                        dataset: data.DatasetDb<sample.Person>(
+                          indexedDbProvider: indexedDbProvider,
+                          objectBuilder: () => sample.Person(),
+                        ),
+                        id: id);
+                  },
+                  builder: () => SafeArea(
+                    child: Center(
+                      child: NoteForm<sample.Person>(
+                        formController: formController,
+                        onWillPop: () async => formController.isAllowToExit(),
+                      ),
                     ),
                   ),
                 ),

@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/database/database.dart' as database;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'dataset.dart';
 
-/// DatasetDatabase keep all data into a database
+/// DatasetDb keep all data into a database
 /// ```dart
-/// final dataset = DatasetDatabase<sample.Person>(await database.open('test'), objectBuilder: () => sample.Person());
+/// final dataset = DatasetDb<sample.Person>(await database.open('test'), objectBuilder: () => sample.Person());
 /// await dataset.load();
 /// ```
-class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
+class DatasetDb<T extends pb.Object> extends Dataset<T> {
   /// DatasetDatabase keep all data into a database
   /// ```dart
-  /// final dataset = DatasetDatabase<sample.Person>(await database.open('test'), objectBuilder: () => sample.Person());
+  /// final dataset = DatasetDb<sample.Person>(await database.open('test'), objectBuilder: () => sample.Person());
   /// await dataset.load();
   /// ```
-  DatasetDatabase(
-    this._database, {
+  DatasetDb({
+    required this.indexedDbProvider,
     required pb.Builder<T> objectBuilder,
   }) : super(objectBuilder: objectBuilder) {
     internalNoMore = true;
   }
 
   /// _database is database that store data
-  final database.Database _database;
+  final cache.IndexedDbProvider indexedDbProvider;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields
@@ -37,30 +37,30 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   /// await dataset.first;
   /// ```
   @override
-  Future<T?> get first async => _index.isNotEmpty ? _database.getObject(_index.first, objectBuilder) : null;
+  Future<T?> get first async => _index.isNotEmpty ? indexedDbProvider.getObject(_index.first, objectBuilder) : null;
 
   /// last return last row
   /// ```dart
   /// await dataset.last;
   /// ```
   @override
-  Future<T?> get last async => _index.isNotEmpty ? _database.getObject(_index.last, objectBuilder) : null;
+  Future<T?> get last async => _index.isNotEmpty ? indexedDbProvider.getObject(_index.last, objectBuilder) : null;
 
   /// load dataset content
   @override
   @mustCallSuper
   Future<void> load() async {
-    _index = await _database.getStringList(keyIndex) ?? [];
-    internalRowsPerPage = await _database.getInt(keyRowsPerPage) ?? 10;
-    internalNoRefresh = await _database.getBool(keyNoRefresh) ?? false;
+    _index = await indexedDbProvider.get(keyIndex) ?? [];
+    internalRowsPerPage = await indexedDbProvider.get(keyRowsPerPage) ?? 10;
+    internalNoRefresh = await indexedDbProvider.get(keyNoRefresh) ?? false;
     await super.load();
   }
 
   /// save dataset cache
   Future<void> save() async {
-    await _database.setStringList(keyIndex, _index);
-    await _database.setInt(keyRowsPerPage, rowsPerPage);
-    await _database.setBool(keyNoRefresh, noRefresh);
+    await indexedDbProvider.put(keyIndex, _index);
+    await indexedDbProvider.put(keyRowsPerPage, rowsPerPage);
+    await indexedDbProvider.put(keyNoRefresh, noRefresh);
   }
 
   /// setRowsPerPage set current rows per page
@@ -89,7 +89,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     _index.insertAll(0, downloadID);
     await save();
     for (T row in list) {
-      await _database.setObject(row.id, row);
+      await indexedDbProvider.put(row.id, row);
     }
   }
 
@@ -105,7 +105,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     _index.addAll(downloadID);
     await save();
     for (T row in list) {
-      await _database.setObject(row.id, row);
+      await indexedDbProvider.put(row.id, row);
     }
     await super.add(list);
   }
@@ -120,7 +120,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     for (String id in list) {
       if (_index.contains(id)) {
         _index.remove(id);
-        await _database.delete(id);
+        await indexedDbProvider.delete(id);
       }
     }
     await save();
@@ -135,7 +135,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   Future<void> reset() async {
     _index = [];
     internalNoRefresh = false;
-    await _database.reset();
+    await indexedDbProvider.reset();
   }
 
   /// range return sublist of rows, return null if something went wrong
@@ -147,7 +147,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
-      final row = await _database.getObject(id, objectBuilder);
+      final row = await indexedDbProvider.getObject(id, objectBuilder);
       if (row == null) {
         // data is missing, reset data
         await reset();
@@ -166,7 +166,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
-        return _database.getObject(row, objectBuilder);
+        return indexedDbProvider.getObject(row, objectBuilder);
       }
     }
     return null;
@@ -179,7 +179,7 @@ class DatasetDatabase<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> forEach(void Function(T) callback) async {
     for (String id in _index) {
-      final obj = await _database.getObject(id, objectBuilder);
+      final obj = await indexedDbProvider.getObject(id, objectBuilder);
       if (obj != null) {
         callback(obj);
       }

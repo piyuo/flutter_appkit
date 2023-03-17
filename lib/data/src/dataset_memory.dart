@@ -11,35 +11,34 @@ int get maxResetItem => kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 se
 /// ```dart
 /// await deleteDatasetCache('test');
 /// ```
-Future<void> deleteDatasetCache(String id) async {
-  final all = await cache.getStringList('$id$keyIndex');
+Future<void> deleteDatasetCache(cache.MemoryProvider memoryProvider, String id) async {
+  final all = await memoryProvider.get('$id$keyIndex');
   if (all != null) {
     for (String id in all) {
-      await cache.delete(id);
+      await memoryProvider.delete(id);
     }
-    await cache.delete('$id$keyIndex');
-    await cache.delete('$id$keyRowsPerPage');
-    await cache.delete('$id$keyNoMore');
-    await cache.delete('$id$keyNoRefresh');
+    await memoryProvider.delete('$id$keyIndex');
+    await memoryProvider.delete('$id$keyRowsPerPage');
+    await memoryProvider.delete('$id$keyNoMore');
+    await memoryProvider.delete('$id$keyNoRefresh');
   }
-  debugPrint('[dataset_cache] $id deleted');
 }
 
-/// DatasetCache keep data in cache
-/// ```dart
-/// final ds = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
-/// await ds.load();
-/// ```
-class DatasetCache<T extends pb.Object> extends Dataset<T> {
+/// DatasetMemory keep data in memory
+class DatasetMemory<T extends pb.Object> extends Dataset<T> {
   /// DatasetCache keep data in cache
   /// ```dart
-  /// final ds = DatasetCache<sample.Person>(name: 'test', objectBuilder: () => sample.Person());
+  /// final ds = DatasetMemory<sample.Person>(memoryProvider:memoryProvider,name: 'test', objectBuilder: () => sample.Person());
   /// await ds.load();
   /// ```
-  DatasetCache({
+  DatasetMemory({
+    required this.memoryProvider,
     required this.name,
     required pb.Builder<T> objectBuilder,
   }) : super(objectBuilder: objectBuilder);
+
+  /// memoryProvider use for database or cache id
+  final cache.MemoryProvider memoryProvider;
 
   /// name use for database or cache id
   final String name;
@@ -57,32 +56,32 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   /// await dataset.first;
   /// ```
   @override
-  Future<T?> get first async => _index.isNotEmpty ? await cache.getObject(_index.first, objectBuilder) : null;
+  Future<T?> get first async => _index.isNotEmpty ? await memoryProvider.getObject(_index.first, objectBuilder) : null;
 
   /// last return last row
   /// ```dart
   /// await dataset.last;
   /// ```
   @override
-  Future<T?> get last async => _index.isNotEmpty ? await cache.getObject(_index.last, objectBuilder) : null;
+  Future<T?> get last async => _index.isNotEmpty ? await memoryProvider.getObject(_index.last, objectBuilder) : null;
 
   /// load dataset content
   @mustCallSuper
   @override
   Future<void> load() async {
-    _index = await cache.getStringList('$name$keyIndex') ?? [];
-    internalRowsPerPage = await cache.getInt('$name$keyRowsPerPage') ?? 10;
-    internalNoRefresh = await cache.getBool('$name$keyNoRefresh') ?? false;
-    internalNoMore = await cache.getBool('$name$keyNoMore') ?? false;
+    _index = await memoryProvider.get('$name$keyIndex') ?? [];
+    internalRowsPerPage = await memoryProvider.get('$name$keyRowsPerPage') ?? 10;
+    internalNoRefresh = await memoryProvider.get('$name$keyNoRefresh') ?? false;
+    internalNoMore = await memoryProvider.get('$name$keyNoMore') ?? false;
     await super.load();
   }
 
   /// save dataset cache
   Future<void> save() async {
-    await cache.setStringList('$name$keyIndex', _index);
-    await cache.setInt('$name$keyRowsPerPage', internalRowsPerPage);
-    await cache.setBool('$name$keyNoMore', internalNoMore);
-    await cache.setBool('$name$keyNoRefresh', internalNoRefresh);
+    await memoryProvider.put('$name$keyIndex', _index);
+    await memoryProvider.put('$name$keyRowsPerPage', internalRowsPerPage);
+    await memoryProvider.put('$name$keyNoMore', internalNoMore);
+    await memoryProvider.put('$name$keyNoRefresh', internalNoRefresh);
   }
 
   /// setRowsPerPage set current rows per page
@@ -118,7 +117,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     _index.insertAll(0, downloadID);
     await save();
     for (T row in list) {
-      await cache.setObject(row.id, row);
+      await memoryProvider.put(row.id, row);
     }
   }
 
@@ -134,7 +133,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     _index.addAll(downloadID);
     await save();
     for (T row in list) {
-      await cache.setObject(row.id, row);
+      await memoryProvider.put(row.id, row);
     }
     await super.add(list);
   }
@@ -149,7 +148,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     for (String id in list) {
       if (_index.contains(id)) {
         _index.remove(id);
-        await cache.delete(id);
+        await memoryProvider.delete(id);
       }
     }
     await save();
@@ -166,10 +165,10 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     internalNoMore = false;
     internalNoRefresh = false;
     _index = [];
-    await cache.delete('$name$keyIndex');
+    await memoryProvider.delete('$name$keyIndex');
     int deleteCount = 0;
     for (String id in deletedRows) {
-      await cache.delete(id);
+      await memoryProvider.delete(id);
       deleteCount++;
       if (deleteCount >= maxResetItem) {
         break;
@@ -186,7 +185,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
-      final row = await cache.getObject(id, objectBuilder);
+      final row = await memoryProvider.getObject(id, objectBuilder);
       if (row == null) {
         // data is missing
         await reset();
@@ -205,7 +204,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
-        return await cache.getObject(row, objectBuilder);
+        return await memoryProvider.getObject(row, objectBuilder);
       }
     }
     return null;
@@ -218,7 +217,7 @@ class DatasetCache<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> forEach(void Function(T) callback) async {
     for (String id in _index) {
-      final obj = await cache.getObject(id, objectBuilder);
+      final obj = await memoryProvider.getObject(id, objectBuilder);
       if (obj != null) {
         callback(obj);
       }

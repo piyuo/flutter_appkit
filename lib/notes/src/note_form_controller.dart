@@ -99,7 +99,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// await client.load(testing.Context(), 'object_id');
   /// ```
-  Future<T> load(BuildContext context, {required data.Dataset<T> dataset, required String id}) async {
+  Future<T> load({required data.Dataset<T> dataset, required String id}) async {
     current = await dataClient.load(dataset: dataset, id: id);
     formState = current != null ? NotesFormState.loaded : NotesFormState.formNotExists;
     if (current != null) {

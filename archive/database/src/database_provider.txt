@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'database.dart';
-import 'helper.dart';
+import 'database.txt';
+import 'helper.txt';
 
 /// _name is current database name
 String _name = '';

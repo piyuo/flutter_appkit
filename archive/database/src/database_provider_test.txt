@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'helper.dart';
 import 'database_provider.dart';
-import 'base.dart';
+import 'base.txt';
 
 void main() {
   setUpAll(() async {

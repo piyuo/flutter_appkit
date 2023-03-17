@@ -172,8 +172,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// load data to display
-  Future<void> load(BuildContext context, data.Dataset<T> dataset) async {
-    dataView = context.isPreferMouse
+  Future<void> load(bool isPreferMouse, data.Dataset<T> dataset) async {
+    dataView = isPreferMouse
         ? data.PagedDataView<T>(
             dataset,
             loader: loader,

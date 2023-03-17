@@ -1,7 +1,7 @@
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:flutter/material.dart';
 import 'package:libcli/app/app.dart' as app;
-import 'package:libcli/database/database.dart' as database;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:hive/hive.dart';
 
@@ -51,9 +51,10 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('helloWorld'),
           onPressed: () async {
-            final testDB = await database.open('testDB');
-            testDB.setString('hello', 'world');
-            var name = testDB.getString('hello');
+            final dbProvider = cache.IndexedDbProvider(dbName: 'data_sample');
+            await dbProvider.init();
+            dbProvider.put('hello', 'world');
+            var name = dbProvider.get('hello');
             debugPrint('hello:$name');
           }),
       /*OutlinedButton(
@@ -72,9 +73,10 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('pb.Object'),
           onPressed: () async {
-            final testDB = await database.open('testDB');
-            await testDB.setObject('e', sample.Person(name: '123'));
-            var person = await testDB.getObject<sample.Person>('e', () => sample.Person());
+            final dbProvider = cache.IndexedDbProvider(dbName: 'data_sample');
+            await dbProvider.init();
+            await dbProvider.put('e', sample.Person(name: '123'));
+            var person = await dbProvider.getObject<sample.Person>('e', () => sample.Person());
             debugPrint('person name: ${person!.name}');
           }),
     ]);

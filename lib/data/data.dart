@@ -9,6 +9,6 @@ export 'src/filter.dart';
 export 'src/paged_full_view.dart';
 export 'src/filtered_dataset.dart';
 export 'src/dataset.dart';
-export 'src/dataset_database.dart';
-export 'src/dataset_cache.dart';
+export 'src/dataset_db.dart';
+export 'src/dataset_memory.dart';
 export 'src/dataset_ram.dart';

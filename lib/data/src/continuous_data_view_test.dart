@@ -3,15 +3,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/database/database.dart' as database;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'continuous_data_view.dart';
 import 'dataset_ram.dart';
 
 void main() {
-  setUpAll(() async {
-    await database.initForTest();
-  });
-
   setUp(() async {});
 
   tearDownAll(() async {});

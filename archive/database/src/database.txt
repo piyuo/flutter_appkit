@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'base.dart';
+import 'base.txt';
 
 /// Database represent indexedDB database
 /// ```dart

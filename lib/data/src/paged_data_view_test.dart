@@ -3,7 +3,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
-import 'package:libcli/database/database.dart' as database;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'data_view.dart';
 import 'paged_data_view.dart';
@@ -30,10 +29,6 @@ class OrderSampleDataView extends PagedDataView<sample.Person> {
 }
 
 void main() {
-  setUpAll(() async {
-    await database.initForTest();
-  });
-
   setUp(() async {});
 
   tearDownAll(() async {});

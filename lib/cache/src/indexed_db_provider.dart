@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'package:hive/hive.dart';
+import 'hive.dart';
+
+/// IndexedDbProvider use hive to store data in local or indexed db in browser
+class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
+  IndexedDbProvider({
+    required String dbName,
+  }) {
+    initFuture = () async {
+      debugPrint('[cache] open $dbName');
+      _box = await openBox(dbName);
+    };
+  }
+
+  /// _box is hive box
+  late LazyBox _box;
+
+  /// dispose database and reset counter
+  @override
+  void dispose() {
+    debugPrint('[cache] close ${_box.name}');
+    closeBox(_box);
+    super.dispose();
+  }
+
+  /// of get instance from context
+  static IndexedDbProvider of(BuildContext context) {
+    return Provider.of<IndexedDbProvider>(context, listen: false);
+  }
+
+  /// keys is all the keys in the box, The keys are sorted alphabetically in ascending order.
+  Iterable<String> get keys => _box.keys as Iterable<String>;
+
+  /// keyAt return the n-th key in the box.
+  Future<String> keyAt(int index) async => _box.keyAt(index);
+
+  /// length is the number of entries in the box.
+  int get length => _box.length;
+
+  /// isEmpty returns `true` if there are no entries in this box.
+  bool get isEmpty => _box.isEmpty;
+
+  /// isNotEmpty returns true if there is at least one entries in this box.
+  bool get isNotEmpty => _box.isNotEmpty;
+
+  /// containsKey checks whether the box contains the [key].
+  /// ```dart
+  /// expect(indexedDbProvider.contains('a'), false);
+  /// ```
+  bool containsKey(String key) => _box.containsKey(key);
+
+  /// put value to database
+  /// ```dart
+  /// await indexedDbProvider.put<Map<String, dynamic>>('key', {'a': 1}));
+  /// ```
+  Future<void> put<T>(String key, T value) async => await _box.put(key, value);
+
+  /// get return the value associated with the given [key]
+  /// ```dart
+  /// final value = indexedDbProvider.get<int>('k');
+  /// ```
+  Future<T?> get<T>(String key) async => await _box.get(key);
+
+  /// putObject save object to database
+  /// ```dart
+  /// await indexedDbProvider.putObject('k', person);
+  /// ```
+  Future<void> putObject(String key, pb.Object value) async => await putBoxObject(_box, key, value);
+
+  /// getObject return the value associated with the given [key]
+  /// ```dart
+  /// final value = indexedDbProvider.getObject<sample.Person>('k', () => sample.Person());
+  /// ```
+  Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) async =>
+      await getBoxObject(_box, key, builder);
+
+  /// delete the given [key] from the box ,if it does not exist, nothing happens.
+  /// ```dart
+  /// await indexedDbProvider.delete('k');
+  /// ```
+  Future<void> delete(String key) async => await _box.delete(key);
+
+  /// reset everything in box
+  /// ```dart
+  /// await reset();
+  /// ```
+  Future<void> reset() async => await resetBox(_box);
+
+  /// removeBox remove db box file
+  /// ```dart
+  /// await removeBox();
+  /// ```
+  @visibleForTesting
+  Future<void> removeBox() async => await deleteBox(_box);
+}
+
+/*
+  /// getStringList return the value associated with the given [key]
+  /// ```dart
+  /// var list2 = indexedDbProvider.getStringList('l');
+  /// ```
+  Future<List<String>?> getStringList(String key) async {
+    final list = await _box.get(key);
+    if (list is List<dynamic>) {
+      return list.map((item) => item.toString()).toList();
+    }
+    return null;
+  }
+ */
