@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/generator/generator.dart' as generator;
-import 'package:libcli/memory/memory.dart' as memory;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/command/src/firewall.dart';
 
@@ -47,7 +47,7 @@ void main() {
         firewallBegin(cmd) is FirewallPass;
         firewallEnd(cmd, pb.Error()); // set complete
       }
-      final countBeforeExpire = memory.length;
+      final countBeforeExpire = cache.length;
       expect(countBeforeExpire >= maxAllowPostCount, true);
       final cmdID2 = "overflow-${generator.randomNumber(5)}";
       final cmd2 = pb.Error()..code = cmdID2;

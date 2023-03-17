@@ -29,11 +29,7 @@ class OrderSampleDataView extends PagedDataView<sample.Person> {
 }
 
 void main() {
-  setUp(() async {});
-
-  tearDownAll(() async {});
-
-  group('[paged_data_view]', () {
+  group('[data.paged_data_view]', () {
     test('should refresh', () async {
       OrderSampleDataView.returnCount = 10;
       OrderSampleDataView.returnID = 'A';

@@ -4,7 +4,7 @@ import 'package:libcli/sample/sample.dart' as sample;
 import 'filter.dart';
 
 void main() {
-  group('[filter]', () {
+  group('[data.filter]', () {
     test('should do full text query', () async {
       final filter = FullTextFilter('world');
       final source = sample.Person()..id = 'helloWorld';

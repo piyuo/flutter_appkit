@@ -93,7 +93,7 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
       deleteCount++;
     }
     if (deleteCount > 0) {
-      debugPrint('[cache] cleanup $deleteCount items');
+      debugPrint('[cache] memory cleanup $deleteCount items');
     }
   }
 
@@ -115,7 +115,6 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// _addTimeTag saves the [key] - [value] pair with time tag
   Future<void> _addTimeTag(String key, Future<void> Function(String) setValueCallback) async {
     await _lock.synchronized(() async {
-      debugPrint('[cache] set $key');
       String? timeTag;
       final savedTag = await getSavedTag(key);
       if (savedTag != null) {
@@ -173,7 +172,6 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// deletes the given [key] from the box , If it does not exist, nothing happens.
   Future<void> delete(String key) async {
     await _lock.synchronized(() async {
-      debugPrint('[cache] delete $key');
       key = key;
       final savedTag = await getSavedTag(key);
       if (savedTag != null) {

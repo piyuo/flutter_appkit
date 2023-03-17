@@ -2,9 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'paginator.dart';
 
 void main() {
-  setUp(() async {});
-
-  group('[paginator]', () {
+  group('[data.paginator]', () {
     test('should get page count', () async {
       final paginator = Paginator(rowCount: 0, rowsPerPage: 10);
       expect(paginator.pageCount, 1);

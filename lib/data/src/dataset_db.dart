@@ -89,7 +89,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     _index.insertAll(0, downloadID);
     await save();
     for (T row in list) {
-      await indexedDbProvider.put(row.id, row);
+      await indexedDbProvider.putObject(row.id, row);
     }
   }
 
@@ -105,7 +105,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     _index.addAll(downloadID);
     await save();
     for (T row in list) {
-      await indexedDbProvider.put(row.id, row);
+      await indexedDbProvider.putObject(row.id, row);
     }
     await super.add(list);
   }

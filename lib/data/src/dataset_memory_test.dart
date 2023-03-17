@@ -5,16 +5,11 @@ import 'package:libcli/cache/cache.dart' as cache;
 import 'dataset_memory.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  tearDown(() async {});
-
-  tearDownAll(() async {});
-
-  group('[data.dataset_memory]', () {
+  group('[data.data.dataset_memory]', () {
     test('should init and clear data', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_init_cache', timeDBName: 'dm_init_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         memoryProvider: memoryProvider,
         name: 'test',
@@ -43,6 +38,7 @@ void main() {
     test('should reload', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_reload_cache', timeDBName: 'dm_reload_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -67,6 +63,7 @@ void main() {
     test('should remove data', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_remove_cache', timeDBName: 'dm_remove_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -88,6 +85,7 @@ void main() {
     test('should remove duplicate when insert', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_duplicate_cache', timeDBName: 'dm_duplicate_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -111,6 +109,7 @@ void main() {
     test('should remove duplicate when add', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_dup_add_cache', timeDBName: 'dm_dup_add_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -134,6 +133,7 @@ void main() {
     test('should get sub rows', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_sub_cache', timeDBName: 'dm_sub_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -158,6 +158,7 @@ void main() {
     test('should save state', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_save_cache', timeDBName: 'dm_save_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -186,6 +187,7 @@ void main() {
     test('should get row by id', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_row_cache', timeDBName: 'dm_row_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -204,6 +206,7 @@ void main() {
     test('should use forEach to iterate all row', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_for_cache', timeDBName: 'dm_for_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),
@@ -227,6 +230,7 @@ void main() {
     test('should check id exists', () async {
       final memoryProvider = cache.MemoryProvider(cacheDBName: 'dm_check_cache', timeDBName: 'dm_check_cache');
       await memoryProvider.init();
+      await memoryProvider.reset();
       final dataset = DatasetMemory<sample.Person>(
         name: 'test',
         objectBuilder: () => sample.Person(),

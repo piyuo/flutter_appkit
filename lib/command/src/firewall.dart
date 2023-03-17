@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/memory/memory.dart' as memory;
+import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/generator/generator.dart' as generator;
 
 /// _blockList keep action need block
-final _blockList = memory.MemoryCache();
+final _blockList = cache.RamProvider();
 
 /// FirewallBlockEvent happen when command send has been block by command service internal firewall
 class FirewallBlockEvent {
@@ -78,11 +78,11 @@ pb.Object firewallBegin(pb.Object action) {
   }
 
   // check IN_FLIGHT/LAST_RESPONSE
-  var lastReq = memory.get<pb.Object>(memoryKeyLastRequest);
+  var lastReq = cache.get<pb.Object>(memoryKeyLastRequest);
   if (lastReq != null) {
     // hit cache
     if (lastReq == action) {
-      final response = memory.get(memoryKeyLastResponse);
+      final response = cache.get(memoryKeyLastResponse);
       if (response != null) {
         // LAST_RESPONSE
         return response;
@@ -94,17 +94,17 @@ pb.Object firewallBegin(pb.Object action) {
   }
 
   // check OVERFLOW
-  final currentCount = memory.beginWith(memoryKeyCall);
+  final currentCount = cache.beginWith(memoryKeyCall);
   if (currentCount >= maxAllowPostCount) {
     return FirewallBlock(overflow);
   }
 
   // track last command
-  memory.set(memoryKeyLastRequest, action, expire: cacheDuration);
-  memory.delete(memoryKeyLastResponse);
+  cache.put(memoryKeyLastRequest, action, expire: cacheDuration);
+  cache.delete(memoryKeyLastResponse);
 
   // add call count for OVERFLOW detection
-  memory.set(memoryKeyCall + generator.randomNumber(6), null, expire: maxAllowPostDuration);
+  cache.put(memoryKeyCall + generator.randomNumber(6), null, expire: maxAllowPostDuration);
   return FirewallPass();
 }
 
@@ -116,27 +116,27 @@ void firewallEnd(pb.Object action, pb.Object? response) {
 
   if (response == null) {
     // something wrong with post, just delete cache
-    memory.delete(memoryKeyLastRequest);
-    memory.delete(memoryKeyLastResponse);
+    cache.delete(memoryKeyLastRequest);
+    cache.delete(memoryKeyLastResponse);
     return;
   }
   // update request cache time, make sure request and response will expire at the same time
-  memory.set(memoryKeyLastRequest, action, expire: cacheDuration);
-  memory.set(memoryKeyLastResponse, response, expire: cacheDuration);
+  cache.put(memoryKeyLastRequest, action, expire: cacheDuration);
+  cache.put(memoryKeyLastResponse, response, expire: cacheDuration);
 
   // check block by server
   if (response is pb.Error) {
     if (response.code == blockShort) {
-      _blockList.set(action, blockShort, expire: blockShortDuration);
+      _blockList.put(action, blockShort, expire: blockShortDuration);
     }
     if (response.code == blockLong) {
-      _blockList.set(action, blockLong, expire: blockLongDuration);
+      _blockList.put(action, blockLong, expire: blockLongDuration);
     }
   }
 }
 
 @visibleForTesting
 void mockFirewallInFlight(pb.Object action) {
-  memory.set(memoryKeyLastRequest, action, expire: cacheDuration);
-  memory.delete(memoryKeyLastResponse);
+  cache.put(memoryKeyLastRequest, action, expire: cacheDuration);
+  cache.delete(memoryKeyLastResponse);
 }

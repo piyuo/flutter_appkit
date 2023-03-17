@@ -6,11 +6,7 @@ import 'data_client.dart';
 import 'dataset_ram.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  setUp(() async {});
-
-  group('[data_client]', () {
+  group('[data.data_client]', () {
     test('should load data with id by getter', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       bool isGet = false;

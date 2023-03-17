@@ -5,10 +5,11 @@ import 'package:libcli/cache/cache.dart' as cache;
 import 'dataset_db.dart';
 
 void main() {
-  group('[data.dataset_db]', () {
+  group('[data.data.dataset_db]', () {
     test('should init and clear data', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_init');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -37,6 +38,7 @@ void main() {
     test('should load', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_load');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -59,6 +61,7 @@ void main() {
     test('should remove duplicate when insert', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_remove_insert');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -81,6 +84,7 @@ void main() {
     test('should remove data', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_remove_data');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -101,6 +105,7 @@ void main() {
     test('should remove duplicate when add', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_remove_add');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -123,6 +128,7 @@ void main() {
     test('should get sub rows', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_sub_rows');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -146,6 +152,7 @@ void main() {
     test('should save state', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_save_state');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -172,6 +179,7 @@ void main() {
     test('should get row by id', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_row_id');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -189,6 +197,7 @@ void main() {
     test('should use forEach to iterate all row', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_for');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),
@@ -211,6 +220,7 @@ void main() {
     test('should check id exists', () async {
       final dbProvider = cache.IndexedDbProvider(dbName: 'dd_check');
       await dbProvider.init();
+      await dbProvider.reset();
       final dataset = DatasetDb<sample.Person>(
         indexedDbProvider: dbProvider,
         objectBuilder: () => sample.Person(),

@@ -2,7 +2,17 @@ import 'dart:core';
 import 'dart:async';
 import 'package:clock/clock.dart';
 
-class MemoryCache {
+class RamProvider {
+  RamProvider({
+    this.maxCacheLimit = 240,
+    this.expiredCheck = const Duration(minutes: 3),
+  }) {
+    Timer.periodic(expiredCheck, (Timer t) {
+      // cache are LinkedHashMap which is by time order. So we just need to stop on the first not expired value
+      _cache.keys.takeWhile((value) => _isExpired(value)).toList().forEach(_cache.remove);
+    });
+  }
+
   /// _clock uses to compute expire
   final Clock _clock = const Clock();
 
@@ -15,19 +25,8 @@ class MemoryCache {
   /// _cache is the internal cache
   final _cache = <dynamic, dynamic>{};
 
-  MemoryCache({
-    this.maxCacheLimit = 240,
-    this.expiredCheck = const Duration(minutes: 3),
-  }) {
-    Timer.periodic(expiredCheck, (Timer t) {
-      // cache are LinkedHashMap which is by time order. So we just need to stop on the first not expired value
-      _cache.keys.takeWhile((value) => _isExpired(value)).toList().forEach(_cache.remove);
-    });
-  }
-
-  /// set the value, this is a FIFO cache, set the same key will make that key the latest key in [_cache]. the default expire duration is 5 minutes
-  //
-  void set<T>(
+  /// put the value, this is a FIFO cache, set the same key will make that key the latest key in [_cache]. the default expire duration is 5 minutes
+  void put<T>(
     dynamic key,
     T? value, {
     Duration? expire,
@@ -44,7 +43,6 @@ class MemoryCache {
   }
 
   /// get the value associated with [key].
-  ///
   T? get<T>(dynamic key) {
     if (_cache.containsKey(key) && _isExpired(key)) {
       _cache.remove(key);
@@ -53,8 +51,8 @@ class MemoryCache {
     return _cache[key]?._obj;
   }
 
-  /// Returns true if any of the key exists in cache
-  bool contains(dynamic key) => _cache.containsKey(key);
+  /// containsKey return true if any of the key exists in cache
+  bool containsKey(dynamic key) => _cache.containsKey(key);
 
   /// length return number of entry in the cache
   int get length => _cache.length;

@@ -117,7 +117,7 @@ class DatasetMemory<T extends pb.Object> extends Dataset<T> {
     _index.insertAll(0, downloadID);
     await save();
     for (T row in list) {
-      await memoryProvider.put(row.id, row);
+      await memoryProvider.putObject(row.id, row);
     }
   }
 
@@ -133,7 +133,7 @@ class DatasetMemory<T extends pb.Object> extends Dataset<T> {
     _index.addAll(downloadID);
     await save();
     for (T row in list) {
-      await memoryProvider.put(row.id, row);
+      await memoryProvider.putObject(row.id, row);
     }
     await super.add(list);
   }

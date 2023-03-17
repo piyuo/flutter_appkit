@@ -4,13 +4,7 @@ import 'package:libcli/sample/sample.dart' as sample;
 import 'dataset_ram.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  setUp(() async {});
-
-  tearDownAll(() async {});
-
-  group('[dataset_ram]', () {
+  group('[data.dataset_ram]', () {
     test('should init and clear data', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       expect(dataset.internalNoMore, false);

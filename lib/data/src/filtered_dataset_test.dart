@@ -6,13 +6,7 @@ import 'filtered_dataset.dart';
 import 'filter.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  setUp(() async {});
-
-  tearDownAll(() async {});
-
-  group('[filtered_dataset]', () {
+  group('[data.filtered_dataset]', () {
     test('should show all dataset row when no query', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       await dataset.add([sample.Person()..id = 'first']);

@@ -4,13 +4,7 @@ import 'package:libcli/sample/sample.dart' as sample;
 import 'dataset_ram.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  setUp(() async {});
-
-  tearDownAll(() async {});
-
-  group('[dataset]', () {
+  group('[data.dataset]', () {
     test('should count page row', () async {
       final dataset = DatasetRam(objectBuilder: () => sample.Person());
       expect(dataset.internalNoMore, false);

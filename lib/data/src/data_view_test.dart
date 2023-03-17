@@ -10,7 +10,7 @@ void main() {
 
   setUp(() async {});
 
-  group('[data_view]', () {
+  group('[data.data_view]', () {
     test('should set/get selected rows', () async {
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
       final dataView = PagedDataView<sample.Person>(

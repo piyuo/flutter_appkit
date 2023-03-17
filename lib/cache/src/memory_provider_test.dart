@@ -5,12 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'memory_provider.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  tearDown(() async {});
-
-  tearDownAll(() async {});
-
   group('[cache.memory_provider]', () {
     test('should set/get', () async {
       final memoryProvider = MemoryProvider(cacheDBName: 'test_set_cache', timeDBName: 'test_set_time');

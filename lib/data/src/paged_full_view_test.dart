@@ -8,13 +8,7 @@ import 'paged_full_view.dart';
 import 'dataset_ram.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  setUp(() async {});
-
-  tearDownAll(() async {});
-
-  group('[paged_full_view]', () {
+  group('[data.paged_full_view]', () {
     test('should refresh on start', () async {
       int refreshCount = 0;
       PagedFullView view = PagedFullView(

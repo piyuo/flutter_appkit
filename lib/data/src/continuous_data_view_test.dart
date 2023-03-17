@@ -3,16 +3,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/cache/cache.dart' as cache;
 import 'continuous_data_view.dart';
 import 'dataset_ram.dart';
 
 void main() {
-  setUp(() async {});
-
-  tearDownAll(() async {});
-
-  group('[continuous_data_view]', () {
+  group('[data.continuous_data_view]', () {
     test('should display all rows', () async {
       int step = 0;
       final view = ContinuousDataView<sample.Person>(

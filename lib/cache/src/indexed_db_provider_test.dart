@@ -4,15 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'indexed_db_provider.dart';
 
 void main() {
-  setUpAll(() async {});
-
-  setUp(() async {});
-
-  tearDown(() async {});
-
   group('[cache.indexed_db_provider]', () {
     test('should delete', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_delete');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_delete');
       await indexedDbProvider.init();
       await indexedDbProvider.put('k', true);
       expect(indexedDbProvider.containsKey('k'), true);
@@ -22,7 +16,7 @@ void main() {
     });
 
     test('should put/get', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_put');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_put');
       await indexedDbProvider.init();
       await indexedDbProvider.put('k', false);
       final value = await indexedDbProvider.get('k');
@@ -31,7 +25,7 @@ void main() {
     });
 
     test('should set/get map', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_map');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_map');
       await indexedDbProvider.init();
       await indexedDbProvider.put('k', {
         'a': 1,
@@ -45,7 +39,7 @@ void main() {
     });
 
     test('should set/get int', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_int');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_int');
       await indexedDbProvider.init();
       await indexedDbProvider.put('k', 1);
       final value = await indexedDbProvider.get('k');
@@ -54,7 +48,7 @@ void main() {
     });
 
     test('should set/get string', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_string');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_string');
       await indexedDbProvider.init();
       await indexedDbProvider.put('k', 'hi');
       final value = await indexedDbProvider.get('k');
@@ -63,7 +57,7 @@ void main() {
     });
 
     test('should set/get datetime', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_datetime');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_datetime');
       await indexedDbProvider.init();
       final now = DateTime.now();
       await indexedDbProvider.put('k', now);
@@ -77,7 +71,7 @@ void main() {
     });
 
     test('should set/get pb.object', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_object');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_object');
       await indexedDbProvider.init();
       final person = sample.Person(name: 'l');
       await indexedDbProvider.putObject('k', person);
@@ -89,7 +83,7 @@ void main() {
     });
 
     test('should save string list', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_string_list');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_string_list');
       await indexedDbProvider.init();
       final list = <String>['1', '2', '3'];
       await indexedDbProvider.put('l', list);
@@ -100,7 +94,7 @@ void main() {
     });
 
     test('should save int list', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_string_list');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_string_list');
       await indexedDbProvider.init();
       final list = <int>[1, 2, 3];
       await indexedDbProvider.put('l', list);
@@ -111,7 +105,7 @@ void main() {
     });
 
     test('should reset', () async {
-      final indexedDbProvider = IndexedDbProvider(databaseName: 'test_string_list');
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_string_list');
       await indexedDbProvider.init();
       await indexedDbProvider.put('a', 'b');
       await indexedDbProvider.put('1', '2');
