@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../archive/responsive/responsive.dart' as responsive;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'note_form_controller.dart';
@@ -13,7 +13,7 @@ class NoteFormMenuButton<T extends pb.Object> extends StatelessWidget {
   }) : super(key: key);
 
   /// tools is extra tools for master detail view
-  final List<responsive.ToolItem>? tools;
+  final List<delta.ToolItem>? tools;
 
   /// formController is form controller, don't direct consume it, this provider maybe inhibit by other provider
   final NoteFormController<T> formController;
@@ -24,11 +24,11 @@ class NoteFormMenuButton<T extends pb.Object> extends StatelessWidget {
       icon: const Icon(Icons.pending_outlined),
       onPressed: formController.current == null
           ? null
-          : () => responsive.showToolSheet(
+          : () => delta.showToolSheet(
                 context,
                 items: [
                   if (formController.showArchiveButton)
-                    responsive.ToolButton(
+                    delta.ToolButton(
                       label: context.i18n.archiveButtonText,
                       icon: Icons.archive,
                       onPressed: formController.isAllowDelete
@@ -36,22 +36,22 @@ class NoteFormMenuButton<T extends pb.Object> extends StatelessWidget {
                           : null,
                     ),
                   if (formController.showDeleteButton)
-                    responsive.ToolButton(
+                    delta.ToolButton(
                       label: context.i18n.deleteButtonText,
                       icon: Icons.delete,
                       onPressed: formController.isAllowDelete ? () => formController.delete(context) : null,
                     ),
                   if (formController.showRestoreButton)
-                    responsive.ToolButton(
+                    delta.ToolButton(
                       label: context.i18n.restoreButtonText,
                       icon: Icons.restore,
                       onPressed: formController.isAllowDelete
                           ? () => formController.restore(context, [formController.current!])
                           : null,
                     ),
-                  responsive.ToolSpacer(),
+                  delta.ToolSpacer(),
                   if (tools != null) ...tools!,
-                  responsive.ToolButton(
+                  delta.ToolButton(
                     label: context.i18n.formSubmitButtonText,
                     icon: Icons.cloud_upload,
                     onPressed: () => formController.submit(context),

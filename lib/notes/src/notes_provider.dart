@@ -6,7 +6,6 @@ import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
-import '../../../archive/responsive/responsive.dart' as responsive;
 import 'tag.dart';
 import 'selectable.dart';
 import 'types.dart';
@@ -341,7 +340,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// isSplitView is true if in split view
-  bool get isSplitView => isListView && !responsive.phoneScreen;
+  bool get isSplitView => isListView && !delta.phoneScreen;
 
   /// hasNextPage return true if has next page
   bool get hasNextPage => dataView is data.PagedDataView ? (dataView as data.PagedDataView).hasNextPage : false;

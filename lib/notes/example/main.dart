@@ -10,7 +10,6 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/data/data.dart' as data;
-import '../../../archive/responsive/responsive.dart' as responsive;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/generator/generator.dart' as generator;
 import '../notes.dart';
@@ -175,7 +174,7 @@ class NotesExample extends StatelessWidget {
             viewProvider: _notesProvider,
             formController: _notesProvider.formController,
             tools: [
-              responsive.ToolButton(
+              delta.ToolButton(
                 label: 'hello',
                 icon: Icons.favorite,
                 onPressed: () => debugPrint('hello'),
@@ -713,14 +712,14 @@ class NotesExample extends StatelessWidget {
                             contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
                             tagViewHeader: const Text('hello world'),
                             leftTools: [
-                              responsive.ToolButton(
+                              delta.ToolButton(
                                 label: 'hello',
                                 icon: Icons.favorite,
                                 onPressed: () => debugPrint('hello'),
                               ),
                             ],
                             rightTools: [
-                              responsive.ToolButton(
+                              delta.ToolButton(
                                 label: 'hello',
                                 icon: Icons.ac_unit,
                                 onPressed: () => debugPrint('hi'),

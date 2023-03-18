@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/general/general.dart' as general;
-import '../../../archive/responsive/responsive.dart' as responsive;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:split_view/split_view.dart';
 import 'selectable.dart';
@@ -132,7 +131,7 @@ class MasterDetailView<T> extends StatelessWidget {
   bool get isGridView => !isListView;
 
   /// isSplitView is true if in split view
-  bool get isSplitView => isListView && !responsive.phoneScreen;
+  bool get isSplitView => isListView && !delta.phoneScreen;
 
   /// isReady is true mean list is ready to show
   final bool isReady;
@@ -161,7 +160,7 @@ class MasterDetailView<T> extends StatelessWidget {
               headerBuilder: isCheckMode
                   ? null
                   : () => Padding(
-                      padding: EdgeInsets.fromLTRB(4, !context.isPreferMouse || responsive.phoneScreen ? 10 : 0, 4, 0),
+                      padding: EdgeInsets.fromLTRB(4, !context.isPreferMouse || delta.phoneScreen ? 10 : 0, 4, 0),
                       child: headerBuilder != null ? headerBuilder!() : null),
               footerBuilder: isCheckMode ? null : footerBuilder,
               onItemTapped: (selectedItem) => onItemTapped?.call(selectedItem),
@@ -170,9 +169,9 @@ class MasterDetailView<T> extends StatelessWidget {
             ),
           ),
         ),
-        if (touchBottomBarBuilder != null && responsive.phoneScreen && !context.isPreferMouse && !isCheckMode)
+        if (touchBottomBarBuilder != null && delta.phoneScreen && !context.isPreferMouse && !isCheckMode)
           touchBottomBarBuilder!(),
-        if (mouseBottomBarBuilder != null && responsive.phoneScreen && context.isPreferMouse && !isCheckMode)
+        if (mouseBottomBarBuilder != null && delta.phoneScreen && context.isPreferMouse && !isCheckMode)
           mouseBottomBarBuilder!(),
       ],
     );
@@ -189,7 +188,7 @@ class MasterDetailView<T> extends StatelessWidget {
                 leftBarBuilder != null &&
                 context.isPreferMouse &&
                 !isCheckMode &&
-                responsive.notPhoneScreen)
+                delta.notPhoneScreen)
               Row(
                 children: [
                   SizedBox(width: 300, child: leftBarBuilder!()),
@@ -216,7 +215,7 @@ class MasterDetailView<T> extends StatelessWidget {
                       onLoadMore: onMore,
                       headerBuilder: () => Padding(
                           padding: EdgeInsets.only(
-                              top: context.isPreferMouse && !isCheckMode && responsive.notPhoneScreen ? 0 : 10),
+                              top: context.isPreferMouse && !isCheckMode && delta.notPhoneScreen ? 0 : 10),
                           child: isCheckMode
                               ? null
                               : headerBuilder != null
@@ -227,9 +226,9 @@ class MasterDetailView<T> extends StatelessWidget {
                       onItemSelected: (selectedItems) => onItemSelected?.call(selectedItems),
                       onItemChecked: (selectedItems) => onItemChecked?.call(selectedItems),
                     ))),
-            if (touchBottomBarBuilder != null && responsive.phoneScreen && !context.isPreferMouse && !isCheckMode)
+            if (touchBottomBarBuilder != null && delta.phoneScreen && !context.isPreferMouse && !isCheckMode)
               touchBottomBarBuilder!(),
-            if (mouseBottomBarBuilder != null && responsive.phoneScreen && context.isPreferMouse && !isCheckMode)
+            if (mouseBottomBarBuilder != null && delta.phoneScreen && context.isPreferMouse && !isCheckMode)
               mouseBottomBarBuilder!(),
           ],
         );

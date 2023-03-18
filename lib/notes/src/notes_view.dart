@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import '../../../archive/responsive/responsive.dart' as responsive;
 import 'notes_provider.dart';
 import 'master_detail_view.dart';
 import 'tag_split_view.dart';
@@ -27,18 +26,18 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   final Widget Function() contentBuilder;
 
   /// leftTools is extra tools on left part on bar
-  final List<responsive.ToolItem>? leftTools;
+  final List<delta.ToolItem>? leftTools;
 
   /// rightTools is extra tools on right part on bar
-  final List<responsive.ToolItem>? rightTools;
+  final List<delta.ToolItem>? rightTools;
 
   /// tagViewHeader is header for tag view
   final Widget? tagViewHeader;
 
-  List<responsive.ToolItem> _buildPaginator(BuildContext context, NotesProvider<T> controller, String pageInfoText) {
+  List<delta.ToolItem> _buildPaginator(BuildContext context, NotesProvider<T> controller, String pageInfoText) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return [
-      responsive.ToolSelection(
+      delta.ToolSelection(
         width: 180,
         label: localizations.rowsPerPageTitle,
         text: pageInfoText.isNotEmpty ? pageInfoText : context.i18n.noDataLabel,
@@ -49,12 +48,12 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
         },
         onPressed: (value) => controller.setRowsPerPage(context, value),
       ),
-      responsive.ToolButton(
+      delta.ToolButton(
         label: localizations.previousPageTooltip,
         icon: Icons.chevron_left,
         onPressed: controller.hasPreviousPage ? () => controller.onPreviousPage(context) : null,
       ),
-      responsive.ToolButton(
+      delta.ToolButton(
         label: localizations.nextPageTooltip,
         icon: Icons.chevron_right,
         onPressed: controller.hasNextPage ? () => controller.onNextPage(context) : null,
@@ -70,7 +69,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
       final pageInfoText = notesProvider.pageInfo(context);
       final searchBox = delta.SearchBox(
         enabled: notesProvider.isReadyToShow,
-        prefixIcon: notesProvider.tags.isEmpty || responsive.isBigScreen(constraints.maxWidth)
+        prefixIcon: notesProvider.tags.isEmpty || delta.isBigScreen(constraints.maxWidth)
             ? null
             : IconButton(
                 icon: Icon(Icons.menu, color: notesProvider.isReadyToShow ? Colors.blue : null),
@@ -124,7 +123,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     : null,
                 headerBuilder: () => Padding(
                   padding: const EdgeInsets.only(bottom: 10),
-                  child: responsive.FoldPanel(
+                  child: delta.FoldPanel(
                     builder: (isColumn) => [
                       if (notesProvider.caption != null)
                         Padding(
@@ -188,45 +187,45 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                             notesProvider.isReadyToShow ? () async => await notesProvider.refresh(context) : null,
                       ),
                       Expanded(
-                        child: responsive.Toolbar(
+                        child: delta.Toolbar(
                           items: [
                             if (notesProvider.hasListView && notesProvider.hasGridView)
-                              responsive.ToolButton(
+                              delta.ToolButton(
                                 label: context.i18n.notesViewAsListLabel,
                                 icon: Icons.view_headline,
                                 onPressed: notesProvider.isReadyToShow ? () => notesProvider.onListView(context) : null,
                                 active: notesProvider.isListView,
                               ),
                             if (notesProvider.hasListView && notesProvider.hasGridView)
-                              responsive.ToolButton(
+                              delta.ToolButton(
                                 label: context.i18n.notesViewAsGridLabel,
                                 icon: Icons.grid_view,
                                 onPressed: notesProvider.isReadyToShow ? () => notesProvider.onGridView(context) : null,
                                 active: !notesProvider.isListView,
                                 space: 10,
                               ),
-                            responsive.ToolButton(
+                            delta.ToolButton(
                               label: context.i18n.notesSelectButtonLabel,
                               icon: Icons.check_circle_outline,
                               onPressed:
                                   notesProvider.isNotEmpty ? () => notesProvider.onToggleCheckMode(context) : null,
                             ),
                             if (leftTools != null) ...leftTools!,
-                            if (notesProvider.isListView) responsive.ToolSpacer(),
+                            if (notesProvider.isListView) delta.ToolSpacer(),
                             if (notesProvider.formController.showArchiveButton)
-                              responsive.ToolButton(
+                              delta.ToolButton(
                                 label: context.i18n.archiveButtonText,
                                 icon: Icons.archive,
                                 onPressed: notesProvider.isAllowDelete ? () => notesProvider.onArchive(context) : null,
                               ),
                             if (notesProvider.formController.showDeleteButton)
-                              responsive.ToolButton(
+                              delta.ToolButton(
                                 label: context.i18n.deleteButtonText,
                                 icon: Icons.delete,
                                 onPressed: notesProvider.isAllowDelete ? () => notesProvider.onDelete(context) : null,
                               ),
                             if (notesProvider.formController.showRestoreButton)
-                              responsive.ToolButton(
+                              delta.ToolButton(
                                 label: context.i18n.restoreButtonText,
                                 icon: Icons.restore,
                                 onPressed: notesProvider.isAllowDelete ? () => notesProvider.onRestore(context) : null,
@@ -238,20 +237,20 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                   );
                 },
                 rightBarBuilder: () {
-                  return responsive.Toolbar(
+                  return delta.Toolbar(
                     items: [
-                      responsive.ToolButton(
+                      delta.ToolButton(
                         label: context.i18n.notesNewButtonLabel,
                         icon: Icons.add,
                         onPressed: () => notesProvider.onCreateNew(context),
                       ),
-                      responsive.ToolButton(
+                      delta.ToolButton(
                         label: context.i18n.formSubmitButtonText,
                         icon: Icons.cloud_upload,
                         onPressed: () => notesProvider.formController.submit(context),
                       ),
                       if (rightTools != null) ...rightTools!,
-                      responsive.ToolSpacer(),
+                      delta.ToolSpacer(),
                       ..._buildPaginator(context, notesProvider, pageInfoText),
                     ],
                   );
@@ -302,7 +301,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                         borderRadius: const BorderRadius.all(Radius.circular(10)),
                         color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
                       ),
-                      child: responsive.Toolbar(
+                      child: delta.Toolbar(
                         mainAxisAlignment: MainAxisAlignment.center,
                         items: [
                           ..._buildPaginator(context, notesProvider, pageInfoText),

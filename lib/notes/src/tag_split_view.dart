@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import '../../../archive/responsive/responsive.dart' as responsive;
 import 'package:split_view/split_view.dart';
 import 'tag_view.dart';
 
@@ -23,7 +22,7 @@ class TagSplitView extends StatelessWidget {
     if (tagView == null) {
       return child;
     }
-    return responsive.Responsive(
+    return delta.Responsive(
         phoneScreen: () => child,
         bigScreen: () => SplitView(
               gripSize: 5,
