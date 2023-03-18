@@ -6,7 +6,7 @@ import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
-import 'package:libcli/responsive/responsive.dart' as responsive;
+import '../../../archive/responsive/responsive.dart' as responsive;
 import 'tag.dart';
 import 'selectable.dart';
 import 'types.dart';

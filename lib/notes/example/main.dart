@@ -10,7 +10,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/data/data.dart' as data;
-import 'package:libcli/responsive/responsive.dart' as responsive;
+import '../../../archive/responsive/responsive.dart' as responsive;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/generator/generator.dart' as generator;
 import '../notes.dart';

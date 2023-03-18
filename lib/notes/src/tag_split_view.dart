@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/responsive/responsive.dart' as responsive;
+import '../../../archive/responsive/responsive.dart' as responsive;
 import 'package:split_view/split_view.dart';
 import 'tag_view.dart';
 

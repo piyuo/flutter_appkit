@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/general/general.dart' as general;
-import 'package:libcli/responsive/responsive.dart' as responsive;
+import '../../../archive/responsive/responsive.dart' as responsive;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:split_view/split_view.dart';
 import 'selectable.dart';

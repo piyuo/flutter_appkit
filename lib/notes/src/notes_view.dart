@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/responsive/responsive.dart' as responsive;
+import '../../../archive/responsive/responsive.dart' as responsive;
 import 'notes_provider.dart';
 import 'master_detail_view.dart';
 import 'tag_split_view.dart';

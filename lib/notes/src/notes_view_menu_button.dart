@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/responsive/responsive.dart' as responsive;
+import '../../../archive/responsive/responsive.dart' as responsive;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'notes_provider.dart';
