@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:libcli/log/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
-import 'extensions.dart';
+import 'delta.dart';
 import 'shimmer.dart';
 
 /// webImageData get binary image data from url

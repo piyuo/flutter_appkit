@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
-import 'extensions.dart';
+import 'delta.dart';
 
 /// ErrorLabel display error message in a label
 class ErrorLabel extends StatelessWidget {

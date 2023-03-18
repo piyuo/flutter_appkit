@@ -1,6 +1,5 @@
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:flutter/material.dart';
-import 'responsive.dart';
+import 'delta.dart';
 
 /// ResponsiveDrawer show responsive drawer
 class ResponsiveDrawer extends StatelessWidget {

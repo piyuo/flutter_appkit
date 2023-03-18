@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/general/general.dart' as general;
-import 'extensions.dart';
+import 'delta.dart';
 
 typedef SuggestionBuilder = Future<List<String>> Function(String text);
 

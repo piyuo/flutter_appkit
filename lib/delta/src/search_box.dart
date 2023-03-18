@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-//import 'extensions.dart';
-import 'package:libcli/responsive/responsive.dart' as responsive;
+import 'delta.dart';
 
 /// SearchBox is a widget that displays a search box with a selection.
 /// ```dart
@@ -121,7 +120,7 @@ class SearchBox extends StatelessWidget {
                   itemBuilder: (context, suggestion) {
                     return ListTile(
                       horizontalTitleGap: 0,
-                      dense: !responsive.phoneScreen,
+                      dense: !phoneScreen,
                       title: Text(suggestion.label),
                       leading: Icon(suggestion.icon),
                     );

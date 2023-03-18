@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:provider/provider.dart';
-import 'extensions.dart';
+import 'delta.dart';
 import 'indicator.dart';
 
 /// RefreshButtonController control refresh button show refreshing animation

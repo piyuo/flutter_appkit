@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart' as shimmer;
-import 'extensions.dart';
+import 'delta.dart';
 
 class ShimmerScope extends StatelessWidget {
   /// ShimmerScope set scope for all shimmer spot

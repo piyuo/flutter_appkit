@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'extensions.dart';
+import 'delta.dart';
 import 'indicator.dart';
 
 /// RefreshMoreView is list view that support refresh and load more

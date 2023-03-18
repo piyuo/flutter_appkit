@@ -1,6 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:universal_platform/universal_platform.dart';
+import 'package:flutter/foundation.dart';
 
 /// DesignBuilder return widget for the design
 typedef DesignBuilder = Widget Function();
@@ -72,4 +73,57 @@ class Responsive extends StatelessWidget {
                   : notPhoneScreen == null
                       ? phoneScreen()
                       : notPhoneScreen!());
+}
+
+/// DeltaBuildContext add color function to BuildContext
+extension DeltaBuildContext on BuildContext {
+  /// isDark return true if is dark theme
+  /// ```dart
+  /// context.isDark;
+  /// ```
+  bool get isDark => MediaQuery.of(this).platformBrightness == Brightness.dark;
+
+  /// themeColor return right color base on light theme or dark theme
+  /// ```dart
+  /// context.themeColor(light:Colors.blue,dark:Colors.red);
+  /// ```
+  Color themeColor({
+    Color dark = Colors.white,
+    Color light = Colors.black,
+  }) =>
+      isDark ? dark : light;
+
+  /// invertColor return white on dark, black on light
+  /// ```dart
+  /// context.invertedColor;
+  /// ```
+  Color get invertedColor => isDark ? Colors.white : Colors.black;
+
+  /// invertColor return white on light, black on dark
+  /// ```dart
+  /// context.sameColor;
+  /// ```
+  Color get sameColor => isDark ? Colors.black : Colors.white;
+
+  /// isTouchSupported is true if is on ios or android
+  /// ```dart
+  /// context.isTouchSupported;
+  /// ```
+  bool get isTouchSupported {
+    return UniversalPlatform.isIOS || UniversalPlatform.isAndroid;
+    //not working if theme is not initialize
+    //var platform = Theme.of(this).platform;
+    //return platform == TargetPlatform.iOS || platform == TargetPlatform.android;
+  }
+
+  /// isPreferMouse is true if os prefer mouse or touch pad
+  /// ```dart
+  /// context.isPreferMouse;
+  /// ```
+  bool get isPreferMouse {
+    if (kIsWeb) {
+      return true;
+    }
+    return !isTouchSupported;
+  }
 }
