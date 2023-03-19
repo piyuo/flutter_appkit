@@ -34,8 +34,17 @@ Future<void> _initHive() async {
 /// await deleteBox('box_name');
 /// ```
 Future<void> deleteBox(LazyBox box) async {
-  if (await Hive.boxExists(box.name, path: _hivePath)) {
-    await Hive.deleteBoxFromDisk(box.name, path: _hivePath);
+  await deleteBoxByName(box.name);
+}
+
+/// deleteBoxByName delete box forever
+/// ```dart
+/// await deleteBoxByName('box_name');
+/// ```
+@visibleForTesting
+Future<void> deleteBoxByName(String name) async {
+  if (await Hive.boxExists(name, path: _hivePath)) {
+    await Hive.deleteBoxFromDisk(name, path: _hivePath);
   }
 }
 
