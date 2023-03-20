@@ -1,4 +1,4 @@
-//import 'package:location/location.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/log/log.dart' as log;
@@ -32,6 +32,7 @@ Future<general.LatLng> deviceLatLng() async {
     Position locationData = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
+    debugPrint('lat: ${locationData.latitude}, lng: ${locationData.longitude}');
     return general.LatLng(locationData.latitude, locationData.longitude);
   } catch (e, s) {
     log.error(e, s);
