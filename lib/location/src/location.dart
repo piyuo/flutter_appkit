@@ -25,3 +25,8 @@ Future<general.LatLng?> getCurrentLocation(String reason) async {
   debugPrint('user not allow location permission');
   return null;
 }
+
+/// getDistanceBetweenInMeters return distance in meters between two latLng
+double getDistanceBetweenInMeters(general.LatLng latLng1, general.LatLng latLng2) {
+  return Geolocator.distanceBetween(latLng1.lat, latLng1.lng, latLng2.lat, latLng2.lng);
+}
