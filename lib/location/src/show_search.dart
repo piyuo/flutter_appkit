@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/sys/sys.dart' as sys;
 import 'package:libcli/general/general.dart' as general;
-import 'package:libcli/location/location.dart' as location;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'search_bar.dart';
 import 'search_view.dart';
 import 'geo_client.dart';
+import 'location.dart';
+import 'map.dart' as map;
 
 /// ConfirmButtonProvider control confirm button is visibility
 class ConfirmButtonProvider extends general.BoolProvider {
@@ -97,12 +98,12 @@ class ShowSearchProvider with ChangeNotifier {
     }
     _barProvider.setValue(place.address, []);
 
-    location.deviceLatLng().then((latlng) {
+    getCurrentLocation('to show you nearby places').then((latlng) {
       if (_stopDeviceLatlng) {
         return;
       }
-      _deviceLatLng = latlng;
       if (!_deviceLatLng.isEmpty) {
+        _deviceLatLng = latlng!;
         _myLocationButtonProvider.setValue(true);
         if (place.isEmpty) {
           _mapProvider.setValue(_deviceLatLng, false);
@@ -121,7 +122,7 @@ class ShowSearchProvider with ChangeNotifier {
   }
 
   /// _mapProvider control map value
-  final location.MapProvider _mapProvider = location.mapProvider();
+  final map.MapProvider _mapProvider = map.mapProvider();
 
   /// _confirmProvider control confirm button
   late final ConfirmButtonProvider _confirmButtonProvider;

@@ -66,11 +66,11 @@ class LocationExample extends StatelessWidget {
           child: Wrap(
             children: [
               Container(
-                child: _deviceLatLng(),
+                child: _getCurrentLocation(),
               ),
               testing.ExampleButton(
                 label: 'get location',
-                builder: () => _deviceLatLng(),
+                builder: () => _getCurrentLocation(),
               ),
               testing.ExampleButton(
                 label: 'place',
@@ -91,12 +91,12 @@ class LocationExample extends StatelessWidget {
     );
   }
 
-  Widget _deviceLatLng() {
+  Widget _getCurrentLocation() {
     return OutlinedButton(
         child: const Text('get current location'),
         onPressed: () async {
-          final latLng = await deviceLatLng();
-          debugPrint('lat:${latLng.lat}, lng:${latLng.lng}');
+          final latLng = await getCurrentLocation('to get current location');
+          latLng != null ? debugPrint('got lat:${latLng.lat}, lng:${latLng.lng}') : debugPrint('permission denied');
         });
   }
 
@@ -105,6 +105,7 @@ class LocationExample extends StatelessWidget {
       Container(
         padding: const EdgeInsets.all(20),
         child: LocateTextField(
+          reason: 'to get current location',
           controller: _textEditingController,
           focusNode: _focusNode,
           suggestionsBuilder: (TextEditingValue value) {

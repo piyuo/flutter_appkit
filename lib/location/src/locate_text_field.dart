@@ -32,6 +32,7 @@ class LocateTextField extends StatelessWidget {
     required this.focusNode,
     required this.onUseMyLocation,
     required this.onSubmitted,
+    required this.reason,
     this.decoration = const InputDecoration(),
     this.suggestionsBuilder,
     Key? key,
@@ -54,6 +55,9 @@ class LocateTextField extends StatelessWidget {
 
   /// onSubmitted call when user submit search text
   final void Function(String) onSubmitted;
+
+  /// reason is used to show permission dialog
+  final String reason;
 
   @override
   Widget build(BuildContext context) {
@@ -129,8 +133,8 @@ class LocateTextField extends StatelessWidget {
                                             leading: const Icon(Icons.near_me),
                                             onTap: () async {
                                               focusNode.unfocus();
-                                              final latLng = await deviceLatLng();
-                                              if (!latLng.isEmpty) {
+                                              final latLng = await getCurrentLocation(reason);
+                                              if (latLng != null) {
                                                 onUseMyLocation(latLng);
                                               }
                                             },
