@@ -29,8 +29,8 @@ Future<bool> ask({
     rethrow;
   }
 
-  final request = await permission.request();
-  final granted = request.isGranted;
+  final permissionStatus = await permission.request();
+  final granted = permissionStatus.isGranted;
   if (granted) {
     return true;
   }

@@ -42,7 +42,12 @@ class DeltaExample extends StatelessWidget {
                           height: 400,
                           child: _askPermission(context),
                         ),
-                        testing.ExampleButton(label: 'ask permission', builder: () => _askPermission(context)),
+                        testing.ExampleButton(
+                          label: 'ask location permission on mobile',
+                          builder: () => _askPermission(context),
+                        ),
+                        testing.ExampleButton(
+                            label: 'ask permission', builder: () => _mayHaveProblemPermission(context)),
                       ],
                     ),
                   ),
@@ -50,6 +55,26 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _askPermission(BuildContext context) {
+    return Column(
+      children: [
+        OutlinedButton(
+            child: const Text('get location permission'),
+            onPressed: () async {
+              final result = await getLocationPermission('to show you nearby places');
+              debugPrint(result ? 'got permission' : 'denied');
+            }),
+        OutlinedButton(
+            child: const Text('ask location permission'),
+            onPressed: () async {
+              askLocationPermission(
+                'to show you nearby places',
+              );
+            }),
+      ],
+    );
+  }
+
+  Widget _mayHaveProblemPermission(BuildContext context) {
     return Column(
       children: [
         OutlinedButton(
