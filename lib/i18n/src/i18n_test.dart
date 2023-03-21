@@ -20,7 +20,7 @@ void main() {
     asset.mockDone();
   });
 
-  group('[i18n.i18n_test]', () {
+  group('[i18n]', () {
     test('should get default locale en', () async {
       expect(localeKey, 'en');
     });

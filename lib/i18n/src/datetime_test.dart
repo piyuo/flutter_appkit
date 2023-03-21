@@ -8,7 +8,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'i18n.dart';
 
 void main() {
-  group('[i18n.datetime_test]', () {
+  group('[i18n.datetime]', () {
     test('should check is same day', () async {
       expect(DateTime(2023, 1, 18).isSameDay(DateTime(2023, 1, 18)), isTrue);
       expect(DateTime(2023, 1, 18).isSameDay(DateTime(2023, 1, 18, 01, 01)), isTrue);
