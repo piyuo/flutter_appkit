@@ -1,8 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:typed_data';
 import 'package:libcli/log/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
-import 'delta.dart';
 import 'shimmer.dart';
 
 /// webImageData get binary image data from url
@@ -21,49 +20,34 @@ ImageProvider webImageProvider(
   );
 }
 
+/// webImageClearCache clear cache image
+void webImageClearCache() async {
+  await clearDiskCachedImages();
+}
+
+/// WebImage display image from url,display loading and failed place holder and cache image for period of time on app mode
 class WebImage extends StatelessWidget {
   /// WebImage display image from url,display loading and failed place holder and cache image for period of time
   /// you can use SizedBox() to set width and height
   /// ```dart
-  /// WebImage('https://image-url'),
+  /// WebImage(url:'https://image-url',width:100,height:100),
   /// ```
-  const WebImage(
-    this.url, {
-    Key? key,
-    this.cacheMaxAge = const Duration(days: 360),
-    this.shape,
+  const WebImage({
+    required this.url,
+    required this.width,
+    required this.height,
     this.borderRadius,
     this.border,
-    this.width,
-    this.height,
     this.fit = BoxFit.cover,
     this.opacity,
+    Key? key,
   }) : super(key: key);
 
-  /// url is image url
+  /// url is image url, set to empty will display empty icon
   final String url;
 
-  /// cacheMaxAge is image cache age, default is 360 days
-  final Duration cacheMaxAge;
-
   /// borderRadius if non-null, the corners of this box are rounded by this [BorderRadius].
-  ///
-  /// Applies only to boxes with rectangular shapes; ignored if [shape] is not
-  /// [BoxShape.rectangle].
   final BorderRadius? borderRadius;
-
-  /// The shape to fill the background [color], [gradient], and [image] into and
-  /// to cast as the [boxShadow].
-  ///
-  /// If this is [BoxShape.circle] then [borderRadius] is ignored.
-  ///
-  /// The [shape] cannot be interpolated; animating between two [BoxDecoration]s
-  /// with different [shape]s will result in a discontinuity in the rendering.
-  /// To interpolate between two shapes, consider using [ShapeDecoration] and
-  /// different [ShapeBorder]s; in particular, [CircleBorder] instead of
-  /// [BoxShape.circle] and [RoundedRectangleBorder] instead of
-  /// [BoxShape.rectangle].
-  final BoxShape? shape;
 
   /// border to draw above the background [color], [gradient], or [image].
   ///
@@ -109,16 +93,59 @@ class WebImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    buildPlaceHolder(bool emptyOrError) {
+      if (!emptyOrError) {
+        log.log('[web_image] missing $url');
+      }
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          border: Border.all(
+            color: Colors.grey,
+            width: 2,
+          ),
+        ),
+        child: Icon(
+          emptyOrError ? Icons.image : Icons.broken_image,
+          size: (width! / 2),
+          color: Colors.grey,
+        ),
+      );
+    }
+
+    if (url.isEmpty) {
+      return buildPlaceHolder(true);
+    }
+
+    if (kIsWeb) {
+      ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.network(
+          url,
+          fit: fit,
+          width: width,
+          height: height,
+          cacheWidth: width?.toInt(),
+          cacheHeight: height?.toInt(),
+          opacity: opacity,
+          errorBuilder: (_, __, ___) => buildPlaceHolder(false),
+        ),
+      );
+    }
+
+    // app mode
     return ExtendedImage.network(
       url,
       fit: fit,
       width: width,
       height: height,
       cache: true,
+      cacheMaxAge: const Duration(days: 365),
+      shape: BoxShape.rectangle,
       opacity: opacity,
-      cacheMaxAge: cacheMaxAge,
       borderRadius: borderRadius,
-      shape: shape,
       border: border,
       isAntiAlias: true,
       retries: 0,
@@ -136,15 +163,7 @@ class WebImage extends StatelessWidget {
             return null;
 
           case LoadState.failed:
-            log.log('[web_image] missing $url');
-            return Container(
-              width: width,
-              height: height,
-              color: context.themeColor(
-                light: Colors.grey.shade300,
-                dark: Colors.grey.shade700,
-              ),
-            );
+            return buildPlaceHolder(false);
         }
       },
     );

@@ -106,7 +106,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _showResponsiveDialog(context),
+                          child: _webImage(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -414,34 +414,41 @@ class DeltaExample extends StatelessWidget {
         ),
         height: double.infinity,
         child: Wrap(
+          spacing: 10.0,
+          runSpacing: 10.0,
           children: [
+            OutlinedButton(
+              child: const Text('clear image cache'),
+              onPressed: () => webImageClearCache(),
+            ),
             Image.network(
               'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
               width: 300,
               height: 300,
             ),
             WebImage(
+              url:
+                  'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+              width: 300,
+              height: 300,
               opacity: const AlwaysStoppedAnimation<double>(0.5),
-              width: 300,
-              height: 300,
               border: Border.all(color: Colors.red, width: 1),
-              shape: BoxShape.rectangle,
               borderRadius: const BorderRadius.all(Radius.circular(30)),
-              'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             ),
             const WebImage(
-              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              width: 300,
-              height: 300,
-            ),
-            const SizedBox(width: 20),
-            const WebImage(
-              'https://not-exists',
+              url:
+                  'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
               width: 300,
               height: 300,
             ),
             const WebImage(
-              '',
+              url: 'https://not-exists',
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              width: 300,
+              height: 300,
+            ),
+            const WebImage(
+              url: '',
               width: 300,
               height: 300,
             ),
