@@ -4,6 +4,9 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
 import 'shimmer.dart';
 
+/// _kDefaultCachePeriod is default cache period
+const _kDefaultCachePeriod = Duration(days: 365);
+
 /// WebImage display image from url,display loading and failed place holder and cache image for period of time on app mode
 class WebImage extends StatelessWidget {
   /// WebImage display image from url,display loading and failed place holder and cache image for period of time
@@ -121,7 +124,7 @@ class WebImage extends StatelessWidget {
       width: width,
       height: height,
       cache: true,
-      cacheMaxAge: const Duration(days: 365),
+      cacheMaxAge: _kDefaultCachePeriod,
       shape: BoxShape.rectangle,
       opacity: opacity,
       borderRadius: borderRadius,
@@ -152,7 +155,7 @@ class WebImage extends StatelessWidget {
 /// webImageClearCache clear cache image
 void webImageClearCache() async {
   if (!kIsWeb) {
-    await clearDiskCachedImages();
+    await clearDiskCachedImages(duration: _kDefaultCachePeriod);
     debugPrint('[web_image] cache cleared');
   }
 }
