@@ -449,6 +449,30 @@ class DeltaExample extends StatelessWidget {
               width: 300,
               height: 300,
             ),
+            const SizedBox(
+                height: 100,
+                width: 200,
+                child: WebImage(
+                  url:
+                      'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                )),
+            const SizedBox(
+                height: 100,
+                width: 200,
+                child: WebImage(
+                  url: '',
+                )),
+            const WebImage(
+              url: 'https://not-exists',
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            const SizedBox(
+                height: 100,
+                width: 200,
+                child: WebImage(
+                  url: '',
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                )),
           ],
         ));
   }

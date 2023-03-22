@@ -16,8 +16,8 @@ class WebImage extends StatelessWidget {
   /// ```
   const WebImage({
     required this.url,
-    required this.width,
-    required this.height,
+    this.width,
+    this.height,
     this.borderRadius,
     this.border,
     this.fit = BoxFit.cover,
@@ -90,8 +90,8 @@ class WebImage extends StatelessWidget {
           ),
         ),
         child: Icon(
-          emptyOrError ? Icons.image : Icons.broken_image,
-          size: (width! / 2),
+          emptyOrError ? Icons.photo_camera : Icons.question_mark,
+          size: width != null ? width! / 2 : 64,
           color: Colors.grey,
         ),
       );
@@ -109,8 +109,6 @@ class WebImage extends StatelessWidget {
           fit: fit,
           width: width,
           height: height,
-          cacheWidth: width?.toInt(),
-          cacheHeight: height?.toInt(),
           opacity: opacity,
           errorBuilder: (_, __, ___) => buildPlaceHolder(false),
         ),
