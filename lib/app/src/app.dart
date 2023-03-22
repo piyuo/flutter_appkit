@@ -11,6 +11,9 @@ import 'package:universal_html/html.dart' as html;
 import 'error.dart';
 import 'language_provider.dart';
 
+/// _kDefaultMaintenancePeriod is period to start maintenance after app start
+const _kDefaultMaintenancePeriod = Duration(seconds: 30);
+
 /// _serviceEmail is service email, alert dialog will guide user to send email
 String _serviceEmail = '';
 
@@ -122,6 +125,7 @@ class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBinding
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    Future.delayed(_kDefaultMaintenancePeriod).then((_) => delta.webImageClearCache());
   }
 
   @override
