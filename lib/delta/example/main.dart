@@ -128,9 +128,6 @@ class DeltaExample extends StatelessWidget {
                                 testing.ExampleButton(label: 'indicator', builder: () => _indicator(context)),
                                 testing.ExampleButton(label: 'tap breaker', builder: () => _tapBreaker(context)),
                                 testing.ExampleButton(label: 'web image', builder: () => _webImage(context)),
-                                testing.ExampleButton(
-                                    label: 'web image provider', builder: () => _webImageProvider(context)),
-                                testing.ExampleButton(label: 'web image data', builder: () => _webImageData(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
                                 testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
@@ -454,36 +451,6 @@ class DeltaExample extends StatelessWidget {
             ),
           ],
         ));
-  }
-
-  Widget _webImageProvider(BuildContext context) {
-    final imageProvider = webImageProvider(
-        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000');
-
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.green,
-          image: DecorationImage(
-            image: imageProvider,
-          )),
-    );
-  }
-
-  Widget _webImageData(BuildContext context) {
-    const url =
-        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
-
-    return OutlinedButton(
-      child: const Text('load image'),
-      onPressed: () async {
-        final bytes = await webImageData(url);
-        if (bytes != null) {
-          debugPrint('${bytes.length} loaded');
-          return;
-        }
-        debugPrint('image not exists');
-      },
-    );
   }
 
   Widget _isTouchSupported(BuildContext context) {

@@ -4,27 +4,6 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:extended_image/extended_image.dart';
 import 'shimmer.dart';
 
-/// webImageData get binary image data from url
-Future<Uint8List?> webImageData(String url) async {
-  return await getNetworkImageData(url);
-}
-
-/// webImageProvider get image provider from url
-ImageProvider webImageProvider(
-  String url, {
-  Duration cacheMaxAge = const Duration(days: 360),
-}) {
-  return ExtendedNetworkImageProvider(
-    url,
-    cacheMaxAge: cacheMaxAge,
-  );
-}
-
-/// webImageClearCache clear cache image
-void webImageClearCache() async {
-  await clearDiskCachedImages();
-}
-
 /// WebImage display image from url,display loading and failed place holder and cache image for period of time on app mode
 class WebImage extends StatelessWidget {
   /// WebImage display image from url,display loading and failed place holder and cache image for period of time
@@ -169,3 +148,70 @@ class WebImage extends StatelessWidget {
     );
   }
 }
+
+/// webImageClearCache clear cache image
+void webImageClearCache() async {
+  if (!kIsWeb) {
+    await clearDiskCachedImages();
+    debugPrint('[web_image] cache cleared');
+  }
+}
+
+
+/*
+
+/// webImageData get binary image data from url
+Future<Uint8List?> webImageData(String url) async {
+  return await getNetworkImageData(url);
+}
+
+                                testing.ExampleButton(label: 'web image data', builder: () => _webImageData(context)),
+
+  Widget _webImageData(BuildContext context) {
+    const url =
+        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
+
+    return OutlinedButton(
+      child: const Text('load image'),
+      onPressed: () async {
+        final bytes = await webImageData(url);
+        if (bytes != null) {
+          debugPrint('${bytes.length} loaded');
+          return;
+        }
+        debugPrint('image not exists');
+      },
+    );
+  }
+
+
+/// webImageProvider get image provider from url
+ImageProvider webImageProvider(
+  String url, {
+  Duration cacheMaxAge = const Duration(days: 360),
+}) {
+  return ExtendedNetworkImageProvider(
+    url,
+    cacheMaxAge: cacheMaxAge,
+  );
+}
+
+
+                                testing.ExampleButton(
+                                    label: 'web image provider', builder: () => _webImageProvider(context)),
+
+  Widget _webImageProvider(BuildContext context) {
+    final imageProvider = webImageProvider(
+        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000');
+
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.green,
+          image: DecorationImage(
+            image: imageProvider,
+          )),
+    );
+  }
+
+
+ */
