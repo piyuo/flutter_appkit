@@ -7,8 +7,7 @@ import 'shimmer.dart';
 /// _kDefaultCachePeriod is default cache period
 const _kDefaultCachePeriod = Duration(days: 365);
 
-/// WebImage display image from url,display loading and failed place holder and cache image for period of time on app mode
-class WebImage extends StatelessWidget {
+class WebImage extends StatefulWidget {
   /// WebImage display image from url,display loading and failed place holder and cache image for period of time
   /// you can use SizedBox() to set width and height
   /// ```dart
@@ -74,76 +73,91 @@ class WebImage extends StatelessWidget {
   final Animation<double>? opacity;
 
   @override
+  WebImageState createState() => WebImageState();
+}
+
+class WebImageState extends State<WebImage> {
+  /// hasError is image load error
+  bool hasError = false;
+
+  @override
   Widget build(BuildContext context) {
-    buildPlaceHolder(bool emptyOrError) {
-      if (!emptyOrError) {
-        log.log('[web_image] missing $url');
-      }
-      return Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          border: Border.all(
-            color: Colors.grey,
-            width: 2,
-          ),
-        ),
+    loadingBuilder() {
+      return ShimmerScope(
+          child: Container(
+        width: widget.width,
+        height: widget.height,
+        color: Colors.grey,
+      ));
+    }
+
+    placeHolderBuilder(bool emptyOrError) {
+      return SizedBox(
+        width: widget.width,
+        height: widget.height,
         child: Icon(
           emptyOrError ? Icons.photo_camera : Icons.question_mark,
-          size: width != null ? width! / 2 : 64,
+          size: widget.width != null ? widget.width! / 2 : 64,
           color: Colors.grey,
         ),
       );
     }
 
-    if (url.isEmpty) {
-      return buildPlaceHolder(true);
+    errorBuilder() {
+      Future.microtask(() {
+        setState(() {
+          log.log('[web_image] missing $widget.url');
+          hasError = true;
+        });
+      });
+      return placeHolderBuilder(false);
+    }
+
+    if (hasError) {
+      return placeHolderBuilder(false);
+    }
+
+    if (widget.url.isEmpty) {
+      return placeHolderBuilder(true);
     }
 
     if (kIsWeb) {
       ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Image.network(
-          url,
-          fit: fit,
-          width: width,
-          height: height,
-          opacity: opacity,
-          errorBuilder: (_, __, ___) => buildPlaceHolder(false),
+          widget.url,
+          fit: widget.fit,
+          width: widget.width,
+          height: widget.height,
+          opacity: widget.opacity,
+          loadingBuilder: (_, __, ___) => loadingBuilder(),
+          errorBuilder: (_, __, ___) => errorBuilder(),
         ),
       );
     }
 
     // app mode
     return ExtendedImage.network(
-      url,
-      fit: fit,
-      width: width,
-      height: height,
+      widget.url,
+      fit: widget.fit,
+      width: widget.width,
+      height: widget.height,
       cache: true,
       cacheMaxAge: _kDefaultCachePeriod,
       shape: BoxShape.rectangle,
-      opacity: opacity,
-      borderRadius: borderRadius,
-      border: border,
+      opacity: widget.opacity,
+      borderRadius: widget.borderRadius,
+      border: widget.border,
       isAntiAlias: true,
       retries: 0,
       loadStateChanged: (ExtendedImageState state) {
         switch (state.extendedImageLoadState) {
           case LoadState.loading:
-            return ShimmerScope(
-                child: Container(
-              width: width,
-              height: height,
-              color: Colors.grey,
-            ));
-
+            return loadingBuilder();
           case LoadState.completed:
             return null;
-
           case LoadState.failed:
-            return buildPlaceHolder(false);
+            return errorBuilder();
         }
       },
     );
