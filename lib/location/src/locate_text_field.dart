@@ -93,7 +93,11 @@ class LocateTextField extends StatelessWidget {
                                   ),
                             label: const Text('Zip or City & State'),
                           ),
-                          onSubmitted: (_) => onFieldSubmitted(),
+                          onSubmitted: (_) {
+                            //=> onFieldSubmitted()
+                            focusNode.unfocus();
+                            onSubmitted(c.text);
+                          },
                           onTapOutside: (_) {
                             if (controller.text.isEmpty) {
                               focusNode.unfocus();

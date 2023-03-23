@@ -66,7 +66,7 @@ class LocationExample extends StatelessWidget {
           child: Wrap(
             children: [
               Container(
-                child: _getCurrentLocation(),
+                child: _locateTextField(),
               ),
               testing.ExampleButton(
                 label: 'get location',
@@ -109,7 +109,7 @@ class LocationExample extends StatelessWidget {
           controller: _textEditingController,
           focusNode: _focusNode,
           suggestionsBuilder: (TextEditingValue value) {
-            return [value.text, 'aa', 'bb', 'cc'];
+            return ['aa', 'bb', 'cc'];
           },
           onUseMyLocation: (general.LatLng value) {
             debugPrint('lat:${value.lat}, lng:${value.lng}');
