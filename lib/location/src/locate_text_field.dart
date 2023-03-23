@@ -92,7 +92,6 @@ class LocateTextField extends StatelessWidget {
                                     },
                                   ),
                             label: const Text('Zip or City & State'),
-                            hintText: "Search by Zip or City & State",
                           ),
                           onSubmitted: (_) => onFieldSubmitted(),
                           onTapOutside: (_) {
