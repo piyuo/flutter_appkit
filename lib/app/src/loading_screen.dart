@@ -5,21 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/general/general.dart' as general;
 import 'error_screen.dart';
 import 'network_error_screen.dart';
-
-/// RetryableException is a error that can be retried
-class RetryableException implements Exception {
-  /// RetryNetworkException is a network error that can be retried
-  /// [message] is error message
-  const RetryableException(this.message);
-
-  /// message is error message
-  final String message;
-
-  @override
-  String toString() => 'RetryableException: $message';
-}
 
 /// _Status is status of wait future
 enum _Status { loading, error, networkError, ready }
@@ -44,7 +32,7 @@ class _LoadingScreenProvider with ChangeNotifier {
 
   /// isNetworkError is true if error is network error or retry error
   bool isNetworkError(e) {
-    return e is SocketException || e is TimeoutException || e is RetryableException;
+    return e is SocketException || e is TimeoutException || e is general.TryAgainLaterException;
   }
 
   /// load run future and update status
