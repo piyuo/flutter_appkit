@@ -6,3 +6,4 @@ export 'src/navigator.dart';
 export 'src/mock_app.dart';
 export 'src/example.dart';
 export 'src/is_test_mode.dart';
+export 'src/theme.dart';
