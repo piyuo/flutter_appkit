@@ -36,6 +36,7 @@ ThemeData? theme() {
       outlineVariant: Color(0xFFBFC8CC),
       scrim: Color(0xFF000000),
     ),
+    shadowColor: const Color.fromARGB(102, 117, 117, 118),
   );
 }
 
@@ -75,5 +76,6 @@ ThemeData? darkTheme() {
       outlineVariant: Color(0xFF40484B),
       scrim: Color(0xFF000000),
     ),
+    shadowColor: const Color.fromARGB(51, 0, 0, 17),
   );
 }
