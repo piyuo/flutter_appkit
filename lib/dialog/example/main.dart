@@ -9,6 +9,8 @@ import 'package:libcli/testing/testing.dart' as testing;
 import '../dialog.dart';
 
 main() => app.start(
+      theme: testing.theme(),
+      darkTheme: testing.darkTheme(),
       appName: 'dialog example',
       routesBuilder: () => {
         '/': (context, _, __) => cupertinoBottomSheet(const DialogExample()),
@@ -37,7 +39,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _tooltip(context),
+            child: _alert(context),
           ),
           Wrap(
             children: [
@@ -91,7 +93,44 @@ class DialogExample extends StatelessWidget {
             tileMode: TileMode.repeated, // repeats the gradient over the canvas
           ),
         ),
-        child: Wrap(children: [
+        child: Wrap(spacing: 10, runSpacing: 10, children: [
+          ElevatedButton(
+            child: const Text('system dialog'),
+            onPressed: () {
+              showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Basic dialog title'),
+                    content: const Text('A dialog is a type of modal window that\n'
+                        'appears in front of app content to\n'
+                        'provide critical information, or prompt\n'
+                        'for a decision to be made.'),
+                    actions: <Widget>[
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        child: const Text('Disable'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        child: const Text('Enable'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
           ElevatedButton(
             child: const Text('alert'),
             onPressed: () => alert('hi', showCancel: true),
@@ -101,8 +140,8 @@ class DialogExample extends StatelessWidget {
             onPressed: () => alert('hi', title: 'title'),
           ),
           ElevatedButton(
-            child: const Text('show no blurry'),
-            onPressed: () => show(textContent: 'hi', blurry: false),
+            child: const Text('no barrier dismiss'),
+            onPressed: () => show(textContent: 'no barrier dismiss', barrierDismissible: false),
           ),
           ElevatedButton(
             child: const Text('show warning'),
@@ -110,7 +149,11 @@ class DialogExample extends StatelessWidget {
           ),
           ElevatedButton(
             child: const Text('show title/footer'),
-            onPressed: () => show(textContent: 'hi', title: 'title', footer: 'footer'),
+            onPressed: () => show(
+              textContent: 'hi',
+              title: 'title',
+              footer: const Text('footer'),
+            ),
           ),
           ElevatedButton(
             child: const Text('show yes/no/cancel'),
@@ -144,21 +187,14 @@ class DialogExample extends StatelessWidget {
             },
           ),
           ElevatedButton(
-            child: const Text('alert warning email us'),
-            onPressed: () => show(textContent: 'error message', footer: 'description', emailUs: true, warning: true),
-          ),
-          ElevatedButton(
             child: const Text('alert long content'),
             onPressed: () => show(
               content: const SizedBox(
-                  height: 30,
+                  height: 100,
                   child: SingleChildScrollView(
                       child: Text(
                           'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily'))),
               title: 'this is a very long title. it should cover 2 line',
-              footer:
-                  'this is a very long footer, it should cover 3 or 4 more line. we need test long message can read easily',
-              emailUs: true,
               icon: Icons.alarm,
             ),
           ),

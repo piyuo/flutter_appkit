@@ -21,11 +21,12 @@ void main() {
             ));
   }
 
-  group('[alert]', () {
+  group('[dialog.alert]', () {
     testWidgets('should alert with close', (WidgetTester tester) async {
+      const keyCancel = Key('keyCancel');
       await testing.mockApp(
         tester,
-        child: createSample(onPressed: (context) => alert('hello', showCancel: true)),
+        child: createSample(onPressed: (context) => alert('hello', showCancel: true, keyCancel: keyCancel)),
       );
 
       expect(find.byType(MaterialButton), findsOneWidget);
@@ -33,12 +34,13 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsOneWidget);
       //tap close
-      await tester.tap(find.byKey(keyAlertButtonCancel));
+      await tester.tap(find.byKey(keyCancel));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsNothing);
     });
 
     testWidgets('should alert with cancel', (WidgetTester tester) async {
+      const keyCancel = Key('keyCancel');
       bool? result;
       await testing.mockApp(
         tester,
@@ -47,6 +49,7 @@ void main() {
                   content: const Text('hello'),
                   yes: 'ok',
                   cancel: 'cancel',
+                  keyCancel: keyCancel,
                 )),
       );
 
@@ -56,13 +59,14 @@ void main() {
       expect(find.byType(Dialog), findsOneWidget);
       expect(result, null);
       //tap close
-      await tester.tap(find.byKey(keyAlertButtonCancel));
+      await tester.tap(find.byKey(keyCancel));
       await tester.pumpAndSettle();
       expect(find.byType(Dialog), findsNothing);
       expect(result, null);
     });
 
     testWidgets('should alert with ok', (WidgetTester tester) async {
+      const keyYes = Key('keyYes');
       bool? result;
       await testing.mockApp(
         tester,
@@ -71,13 +75,14 @@ void main() {
                   content: const Text('hello'),
                   yes: 'ok',
                   cancel: 'cancel',
+                  keyYes: keyYes,
                 )),
       );
       expect(find.byType(MaterialButton), findsOneWidget);
       await tester.tap(find.byType(MaterialButton));
       await tester.pumpAndSettle();
       //tap ok
-      await tester.tap(find.byKey(keyAlertButtonYes));
+      await tester.tap(find.byKey(keyYes));
       await tester.pumpAndSettle();
       expect(
         find.byType(Dialog),
