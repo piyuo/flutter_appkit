@@ -149,11 +149,11 @@ Future<bool> isAllowToExit({
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.show(
-        textContent: delta.globalContext.i18n.formContentChangedText,
-        showYes: true,
-        showNo: true,
-        showCancel: true,
-        blurry: false);
+      textContent: delta.globalContext.i18n.formContentChangedText,
+      showYes: true,
+      showNo: true,
+      showCancel: true,
+    );
     if (result == true) {
       // user want save
       bool ok = await submit(formGroup: formGroup, callback: submitCallback);

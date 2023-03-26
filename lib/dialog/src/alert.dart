@@ -150,13 +150,6 @@ Future<bool?> show({
                   if (cancel != null) const SizedBox(height: 9),
                   if (cancel != null) createButton(keyCancel, cancel, yes == null, null),
                   if (footer != null) footer,
-/*                  if (emailUs)
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: TextButton(
-                          child: Text(context.i18n.errorEmailUsLink),
-                          onPressed: () => eventbus.broadcast(app.EmailSupportEvent()),
-                        )),*/
                 ],
               ),
             ),

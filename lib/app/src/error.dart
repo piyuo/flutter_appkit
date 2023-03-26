@@ -61,8 +61,8 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
       await dialog.show(
         textContent: delta.globalContext.i18n.errorDiskErrorMessage,
         warning: true,
-        footer: e.toString(),
-        emailUs: true,
+        title: e.toString(),
+        footer: emailUs(),
       );
       return;
     }
@@ -70,8 +70,8 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
     await dialog.show(
       textContent: delta.globalContext.i18n.errorNotified,
       warning: true,
-      footer: e.toString(),
-      emailUs: true,
+      title: e.toString(),
+      footer: emailUs(),
     );
   } catch (ex) {
     debugPrint(ex.toString()); //don't show error if something wrong in alert
@@ -92,41 +92,50 @@ String firewallBlockMessage(BuildContext context, String reason) {
   return context.i18n.errorFirewallOverflow;
 }
 
+Widget emailUs() {
+  return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      child: TextButton(
+        child: Text(delta.globalContext.i18n.errorEmailUsLink),
+        onPressed: () => eventbus.broadcast(EmailSupportEvent()),
+      ));
+}
+
 @visibleForTesting
 Future<void> listened(dynamic e) async {
   debugPrint('[app] listened ${e.runtimeType}');
 
   if (e is command.FirewallBlockEvent) {
-    dialog.alert(
-      firewallBlockMessage(delta.globalContext, e.reason),
+    dialog.show(
+      textContent: firewallBlockMessage(delta.globalContext, e.reason),
       warning: true,
-      emailUs: true,
+      footer: emailUs(),
     );
     return;
   }
   if (e is command.InternalServerErrorEvent) {
-    dialog.alert(
-      '500 internal server error',
+    dialog.show(
+      textContent: '500 internal server error',
       warning: true,
-      emailUs: true,
+      footer: emailUs(),
     );
     return;
   }
 
   if (e is command.ServerNotReadyEvent) {
-    dialog.alert(
-      '501 server not ready',
+    dialog.show(
+      textContent: '501 server not ready',
       warning: true,
-      emailUs: true,
+      footer: emailUs(),
     );
     return;
   }
 
   if (e is command.BadRequestEvent) {
-    dialog.alert(
-      '400 bad request',
+    dialog.show(
+      textContent: '400 bad request',
       warning: true,
-      emailUs: true,
+      footer: emailUs(),
     );
     return;
   }
@@ -148,8 +157,8 @@ Future<void> listened(dynamic e) async {
     await dialog.show(
       textContent: delta.globalContext.i18n.errorNetworkTimeoutMessage,
       icon: Icons.alarm,
-      footer: errorCode,
-      emailUs: true,
+      title: errorCode,
+      footer: emailUs(),
     );
     return;
   }
@@ -160,15 +169,15 @@ Future<void> listened(dynamic e) async {
         dialog.show(
           textContent: delta.globalContext.i18n.errorNetworkNoServiceMessage,
           icon: Icons.cloud_off,
-          footer: e.exception?.toString(),
-          emailUs: true,
+          title: e.exception?.toString(),
+          footer: emailUs(),
         ); //service not available
       } else {
         dialog.show(
           textContent: delta.globalContext.i18n.errorNetworkBlockedMessage,
-          footer: e.exception?.toString(),
+          title: e.exception?.toString(),
           icon: Icons.cloud_off,
-          emailUs: true,
+          footer: emailUs(),
         );
       }
       return;
@@ -176,7 +185,7 @@ Future<void> listened(dynamic e) async {
     await dialog.show(
       textContent: delta.globalContext.i18n.errorNetworkNoInternetMessage,
       icon: Icons.wifi_off,
-      footer: e.exception?.toString(),
+      title: e.exception?.toString(),
     );
     return;
   }
