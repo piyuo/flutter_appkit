@@ -10,13 +10,7 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 Future<bool> ask({
   required Permission permission,
   required String name,
-  required IconData icon,
 }) async {
-  final iconColor = delta.globalContext.themeColor(
-    light: Colors.grey.shade900,
-    dark: Colors.grey.shade100,
-  );
-
   try {
     var status = await permission.status;
     if (status.isGranted) {
@@ -37,8 +31,6 @@ Future<bool> ask({
 
   final gotoSetting = await dialog.show(
     textContent: delta.globalContext.i18n.permissionAsk.replaceAll('%1', name),
-    icon: icon,
-    iconColor: iconColor,
     yes: delta.globalContext.i18n.permissionGotoSetting,
     showCancel: true,
   );

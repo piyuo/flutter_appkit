@@ -13,7 +13,6 @@ import 'ask.dart';
 Future<bool> get bluetooth => ask(
       permission: Permission.bluetoothConnect,
       name: delta.globalContext.i18n.permissionBluetooth,
-      icon: Icons.bluetooth,
     );
 
 /// camera return true if user grant camera permission
@@ -24,7 +23,6 @@ Future<bool> get bluetooth => ask(
 Future<bool> get camera => ask(
       permission: Permission.camera,
       name: delta.globalContext.i18n.permissionCamera,
-      icon: Icons.camera,
     );
 
 /// photo return true if user grant photo permission
@@ -35,7 +33,6 @@ Future<bool> get camera => ask(
 Future<bool> get photo => ask(
       permission: Permission.photos,
       name: delta.globalContext.i18n.permissionBluetooth,
-      icon: Icons.photo,
     );
 
 /// location return true if user grant location permission
@@ -46,7 +43,6 @@ Future<bool> get photo => ask(
 Future<bool> get location => ask(
       permission: Permission.location,
       name: delta.globalContext.i18n.permissionLocation,
-      icon: Icons.location_on,
     );
 
 /// notification return true if user grant notification permission
@@ -57,7 +53,6 @@ Future<bool> get location => ask(
 Future<bool> get notification => ask(
       permission: Permission.accessNotificationPolicy,
       name: delta.globalContext.i18n.permissionNotification,
-      icon: Icons.notifications,
     );
 
 /// microphone return true if user grant microphone permission
@@ -68,5 +63,4 @@ Future<bool> get notification => ask(
 Future<bool> get microphone => ask(
       permission: Permission.microphone,
       name: delta.globalContext.i18n.permissionMic,
-      icon: Icons.mic,
     );

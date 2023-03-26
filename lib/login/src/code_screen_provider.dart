@@ -55,7 +55,7 @@ class CodeScreenProvider with ChangeNotifier {
 
     dialog.alert(
       signupCodeResendEmail,
-      icon: Icons.outgoing_mail,
+      icon: const Icon(Icons.outgoing_mail, size: 64),
     );
   }
 

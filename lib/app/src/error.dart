@@ -156,7 +156,7 @@ Future<void> listened(dynamic e) async {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     await dialog.show(
       textContent: delta.globalContext.i18n.errorNetworkTimeoutMessage,
-      icon: Icons.alarm,
+      icon: const Icon(Icons.alarm, size: 64),
       title: errorCode,
       footer: emailUs(),
     );
@@ -168,7 +168,7 @@ Future<void> listened(dynamic e) async {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.show(
           textContent: delta.globalContext.i18n.errorNetworkNoServiceMessage,
-          icon: Icons.cloud_off,
+          icon: const Icon(Icons.cloud_off, size: 64),
           title: e.exception?.toString(),
           footer: emailUs(),
         ); //service not available
@@ -176,7 +176,7 @@ Future<void> listened(dynamic e) async {
         dialog.show(
           textContent: delta.globalContext.i18n.errorNetworkBlockedMessage,
           title: e.exception?.toString(),
-          icon: Icons.cloud_off,
+          icon: const Icon(Icons.cloud_off, size: 64),
           footer: emailUs(),
         );
       }
@@ -184,7 +184,7 @@ Future<void> listened(dynamic e) async {
     }
     await dialog.show(
       textContent: delta.globalContext.i18n.errorNetworkNoInternetMessage,
-      icon: Icons.wifi_off,
+      icon: const Icon(Icons.wifi_off, size: 64),
       title: e.exception?.toString(),
     );
     return;
