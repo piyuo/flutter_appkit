@@ -195,7 +195,13 @@ class DialogExample extends StatelessWidget {
                       child: Text(
                           'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily'))),
               title: 'this is a very long title. it should cover 2 line',
-              icon: Icons.alarm,
+              icon: const Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Icon(
+                  Icons.alarm,
+                  size: 64,
+                ),
+              ),
             ),
           ),
           ElevatedButton(

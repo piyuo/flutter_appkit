@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
 
+/// _disableAlert is used for testing
 bool _disableAlert = false;
 
 /// disable alert when testing
@@ -22,8 +23,7 @@ Future<bool?> show({
   Widget? content,
   Widget? footer,
   String? textContent,
-  IconData? icon,
-  Color? iconColor,
+  Widget? icon,
   String? title,
   bool warning = false,
   String? yes,
@@ -46,16 +46,6 @@ Future<bool?> show({
   if (!kReleaseMode && _disableAlert) {
     return null;
   }
-
-  content = content ??
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Text(
-          textContent!,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 17),
-        ),
-      );
 
   if (showOK) {
     yes = delta.globalContext.i18n.okButtonText;
@@ -100,6 +90,16 @@ Future<bool?> show({
           );
         }
 
+        content = content ??
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                textContent!,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            );
+
         return Dialog(
           elevation: 2,
           backgroundColor: Colors.transparent,
@@ -124,25 +124,9 @@ Future<bool?> show({
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (icon != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Icon(
-                        icon,
-                        color: iconColor,
-                        size: 64,
-                      ),
-                    ),
-                  Column(children: [
-                    if (title != null)
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(title,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),
-                      ),
-                    content!,
-                  ]),
+                  if (icon != null) icon,
+                  if (title != null) Text(title, style: Theme.of(context).textTheme.titleMedium),
+                  content!,
                   if (yes != null) const SizedBox(height: 20),
                   if (yes != null) createButton(keyYes, yes, true, true),
                   if (no != null) const SizedBox(height: 9),
@@ -161,7 +145,7 @@ Future<bool?> show({
 /// alert show text dialog, return true if it's ok
 Future<bool?> alert(
   String message, {
-  IconData? icon,
+  Widget? icon,
   String? title,
   bool showOK = true,
   bool showCancel = false,
@@ -186,7 +170,7 @@ Future<bool?> alert(
 /// confirm show on/cancel dialog, return true if it's ok
 Future<bool?> confirm(
   String message, {
-  IconData? icon,
+  Widget? icon,
   String? title,
   bool showOK = true,
   bool showCancel = true,
