@@ -7,7 +7,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'error_screen.dart';
 import 'network_error_screen.dart';
 
@@ -16,8 +15,8 @@ enum _Status { loading, error, networkError, ready }
 
 /// _LoadingScreenProvider control [LoadingScreen]
 class _LoadingScreenProvider with ChangeNotifier {
-  _LoadingScreenProvider(this.future, this.allowRetry) {
-    Future.microtask(load);
+  _LoadingScreenProvider(VoidCallback? popHandler, this.future, this.allowRetry) {
+    Future.microtask(() => load(popHandler));
   }
 
   /// future to wait, return true if success, return false to retry
@@ -38,14 +37,14 @@ class _LoadingScreenProvider with ChangeNotifier {
   }
 
   /// load run future and update status
-  Future<void> load() async {
+  Future<void> load(VoidCallback? popHandler) async {
     try {
       await future();
       status = _Status.ready;
     } catch (e, s) {
       if (isNetworkError(e) && allowRetry && !futureAutoRetried) {
         futureAutoRetried = true;
-        await retry();
+        await retry(popHandler);
         return;
       }
       log.error(e, s);
@@ -55,7 +54,7 @@ class _LoadingScreenProvider with ChangeNotifier {
   }
 
   /// retry run future again
-  Future<void> retry() async {
+  Future<void> retry(VoidCallback? popHandler) async {
     try {
       status = _Status.loading;
       notifyListeners();
@@ -64,23 +63,27 @@ class _LoadingScreenProvider with ChangeNotifier {
     } catch (e, s) {
       log.error(e, s);
       final result = await dialog.show(
-        icon: const Icon(Icons.wifi),
+        iconBuilder: (context) => const Icon(Icons.wifi),
         title: 'Please check your internet connection',
-        content: AutoSizeText(
+        contentBuilder: (context) => AutoSizeText(
           log.lastExceptionMessage!,
           maxLines: 2,
           textAlign: TextAlign.center,
         ),
-        type: dialog.DialogButtonType.yesNo,
+        type: popHandler != null ? dialog.DialogButtonsType.yesNo : dialog.DialogButtonsType.yes,
         yesText: 'Retry',
-        cancelText: delta.i18n.cancelButtonText,
+        noText: 'Go back',
         barrierDismissible: false,
+        isError: true,
       );
       if (result == true) {
-        await retry();
+        await retry(popHandler);
         return;
       }
-//      status = isNetworkError(e) ? _Status.networkError : _Status.error;
+      if (popHandler != null) {
+        popHandler();
+        return;
+      }
     }
     notifyListeners();
   }
@@ -118,17 +121,19 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+    final popHandler = navigator.canPop() ? () => navigator.pop() : null;
     return ChangeNotifierProvider<_LoadingScreenProvider>(
-        create: (_) => _LoadingScreenProvider(future, allowRetry),
+        create: (_) => _LoadingScreenProvider(popHandler, future, allowRetry),
         child: Consumer<_LoadingScreenProvider>(
           builder: (context, loadingScreenProvider, child) {
             switch (loadingScreenProvider.status) {
               case _Status.ready:
                 return builder();
               case _Status.error:
-                return ErrorScreen(onRetry: allowRetry ? loadingScreenProvider.retry : null);
+                return ErrorScreen(onRetry: allowRetry ? () => loadingScreenProvider.retry(popHandler) : null);
               case _Status.networkError:
-                return NetworkErrorScreen(onRetry: loadingScreenProvider.retry);
+                return NetworkErrorScreen(onRetry: () => loadingScreenProvider.retry(popHandler));
               default:
                 return loadingWidgetBuilder != null
                     ? loadingWidgetBuilder!()

@@ -62,7 +62,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
         textContent: delta.i18n.errorDiskErrorMessage,
         isError: true,
         title: e.toString(),
-        footer: emailUs(),
+        footerBuilder: emailUs,
       );
       return;
     }
@@ -71,7 +71,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
       textContent: delta.i18n.errorNotified,
       isError: true,
       title: e.toString(),
-      footer: emailUs(),
+      footerBuilder: emailUs,
     );
   } catch (ex) {
     debugPrint(ex.toString()); //don't show error if something wrong in alert
@@ -92,7 +92,7 @@ String firewallBlockMessage(BuildContext context, String reason) {
   return context.i18n.errorFirewallOverflow;
 }
 
-Widget emailUs() {
+Widget emailUs(BuildContext context) {
   return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: TextButton(
@@ -109,7 +109,7 @@ Future<void> listened(dynamic e) async {
     dialog.show(
       textContent: firewallBlockMessage(delta.globalContext, e.reason),
       isError: true,
-      footer: emailUs(),
+      footerBuilder: emailUs,
     );
     return;
   }
@@ -117,7 +117,7 @@ Future<void> listened(dynamic e) async {
     dialog.show(
       textContent: '500 internal server error',
       isError: true,
-      footer: emailUs(),
+      footerBuilder: emailUs,
     );
     return;
   }
@@ -126,7 +126,7 @@ Future<void> listened(dynamic e) async {
     dialog.show(
       textContent: '501 server not ready',
       isError: true,
-      footer: emailUs(),
+      footerBuilder: emailUs,
     );
     return;
   }
@@ -135,7 +135,7 @@ Future<void> listened(dynamic e) async {
     dialog.show(
       textContent: '400 bad request',
       isError: true,
-      footer: emailUs(),
+      footerBuilder: emailUs,
     );
     return;
   }
@@ -156,9 +156,9 @@ Future<void> listened(dynamic e) async {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     await dialog.show(
       textContent: delta.i18n.errorNetworkTimeoutMessage,
-      icon: const Icon(Icons.alarm, size: 64),
+      iconBuilder: (context) => const Icon(Icons.alarm, size: 64),
       title: errorCode,
-      footer: emailUs(),
+      footerBuilder: emailUs,
     );
     return;
   }
@@ -168,23 +168,23 @@ Future<void> listened(dynamic e) async {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.show(
           textContent: delta.i18n.errorNetworkNoServiceMessage,
-          icon: const Icon(Icons.cloud_off, size: 64),
+          iconBuilder: (context) => const Icon(Icons.cloud_off, size: 64),
           title: e.exception?.toString(),
-          footer: emailUs(),
+          footerBuilder: emailUs,
         ); //service not available
       } else {
         dialog.show(
           textContent: delta.i18n.errorNetworkBlockedMessage,
           title: e.exception?.toString(),
-          icon: const Icon(Icons.cloud_off, size: 64),
-          footer: emailUs(),
+          iconBuilder: (context) => const Icon(Icons.cloud_off, size: 64),
+          footerBuilder: emailUs,
         );
       }
       return;
     }
     await dialog.show(
       textContent: delta.i18n.errorNetworkNoInternetMessage,
-      icon: const Icon(Icons.wifi_off, size: 64),
+      iconBuilder: (context) => const Icon(Icons.wifi_off, size: 64),
       title: e.exception?.toString(),
     );
     return;

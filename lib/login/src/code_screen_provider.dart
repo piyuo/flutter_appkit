@@ -49,13 +49,13 @@ class CodeScreenProvider with ChangeNotifier {
     final resendCommand = auth.CmdResendCode(email: email);
     final response = await auth.AuthService.of(context).send(resendCommand);
     if (response is pb.Error) {
-      dialog.alert(_getErrorTranslation(response.code), warning: true);
+      dialog.alert(_getErrorTranslation(response.code), isError: true);
       return;
     }
 
     dialog.alert(
       signupCodeResendEmail,
-      icon: const Icon(Icons.outgoing_mail, size: 64),
+      iconBuilder: (context) => const Icon(Icons.outgoing_mail, size: 64),
     );
   }
 
@@ -84,7 +84,7 @@ class CodeScreenProvider with ChangeNotifier {
     final response = await auth.AuthService.of(delta.globalContext).send(verifyCommand);
     if (response is pb.Error) {
       status = VerifyStatus.wait;
-      dialog.alert(_getErrorTranslation(response.code), warning: true);
+      dialog.alert(_getErrorTranslation(response.code), isError: true);
       return;
     }
 

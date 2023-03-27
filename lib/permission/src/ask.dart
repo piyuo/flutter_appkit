@@ -31,7 +31,7 @@ Future<bool> ask({
     textContent: delta.i18n.permissionAsk.replaceAll('%1', name),
     yesText: delta.i18n.permissionGotoSetting,
     noText: delta.i18n.cancelButtonText,
-    type: dialog.DialogButtonType.yesNo,
+    type: dialog.DialogButtonsType.yesNo,
   );
   if (gotoSetting == true) {
     openAppSettings();
