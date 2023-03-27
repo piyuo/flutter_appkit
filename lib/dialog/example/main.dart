@@ -144,8 +144,13 @@ class DialogExample extends StatelessWidget {
             onPressed: () => show(textContent: 'no barrier dismiss', barrierDismissible: false),
           ),
           ElevatedButton(
-            child: const Text('show warning'),
-            onPressed: () => show(textContent: 'hi', warning: true),
+            child: const Text('show error dialog'),
+            onPressed: () => show(
+              textContent: 'This is a error dialog',
+              title: 'Oops! some thing went wrong',
+              isError: true,
+              type: DialogButtonType.yesNo,
+            ),
           ),
           ElevatedButton(
             child: const Text('show title/footer'),
@@ -160,9 +165,7 @@ class DialogExample extends StatelessWidget {
             onPressed: () async {
               var result = await show(
                 textContent: 'do you want delete this document?',
-                showYes: true,
-                showNo: true,
-                showCancel: true,
+                type: DialogButtonType.yesNoCancel,
               );
               if (result == true) {
                 toastDone(text: 'yes');

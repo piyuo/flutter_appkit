@@ -47,8 +47,7 @@ void main() {
         child: createSample(
             onPressed: (context) async => result = await show(
                   content: const Text('hello'),
-                  yes: 'ok',
-                  cancel: 'cancel',
+                  type: DialogButtonType.yesNo,
                   keyCancel: keyCancel,
                 )),
       );
@@ -73,8 +72,7 @@ void main() {
         child: createSample(
             onPressed: (context) async => result = await show(
                   content: const Text('hello'),
-                  yes: 'ok',
-                  cancel: 'cancel',
+                  type: DialogButtonType.yesNo,
                   keyYes: keyYes,
                 )),
       );
@@ -97,8 +95,7 @@ void main() {
         child: createSample(
             onPressed: (context) async => await show(
                   content: const Text('hello'),
-                  yes: 'yes',
-                  cancel: 'no',
+                  type: DialogButtonType.yesNo,
                 )),
       );
 

@@ -15,7 +15,9 @@ void disableAlert() {
   _disableAlert = true;
 }
 
-/// show dialog, return true if it's ok or yes
+enum DialogButtonType { yes, yesNo, yesNoCancel, cancel }
+
+/// show dialog, return true if it's ok or yes. set isError to true to show error dialog
 /// ```dart
 /// show(content:Text('hi'), warning: true)
 /// ```
@@ -25,17 +27,11 @@ Future<bool?> show({
   String? textContent,
   Widget? icon,
   String? title,
-  bool warning = false,
-  String? yes,
-  String? no,
-  String? cancel,
-  bool showOK = false,
-  bool showCancel = false,
-  bool showYes = false,
-  bool showNo = false,
-  bool showRetry = false,
-  bool showSave = false,
-  bool showClose = false,
+  bool isError = false,
+  String? yesText,
+  String? noText,
+  String? cancelText,
+  DialogButtonType type = DialogButtonType.yes,
   bool barrierDismissible = true,
   bool keyboardFocus = true,
   Key? keyYes,
@@ -47,47 +43,56 @@ Future<bool?> show({
     return null;
   }
 
-  if (showOK) {
-    yes = delta.globalContext.i18n.okButtonText;
-  }
-  if (showCancel) {
-    cancel = delta.globalContext.i18n.cancelButtonText;
-  }
-  if (showYes) {
-    yes = delta.globalContext.i18n.yesButtonText;
-  }
-  if (showNo) {
-    no = delta.globalContext.i18n.noButtonText;
-  }
-  if (showRetry) {
-    yes = delta.globalContext.i18n.retryButtonText;
-  }
-  if (showSave) {
-    yes = delta.globalContext.i18n.saveButtonText;
-  }
-  if (showClose) {
-    cancel = delta.globalContext.i18n.closeButtonText;
-  }
-  if (yes == null && no == null && cancel == null) {
-    cancel = delta.globalContext.i18n.closeButtonText;
-  }
-
+  final colorScheme = Theme.of(delta.globalContext).colorScheme;
   return await showDialog<bool?>(
       context: delta.globalContext,
       barrierDismissible: barrierDismissible,
       builder: (BuildContext context) {
         Widget createButton(Key? key, String text, bool autofocus, bool? value) {
-          return SizedBox(
-            width: double.infinity,
-            height: 42,
-            child: ElevatedButton(
-              autofocus: keyboardFocus && autofocus,
-              style: ElevatedButton.styleFrom(backgroundColor: warning ? Theme.of(context).colorScheme.error : null),
-              onPressed: () => Navigator.of(delta.globalContext).pop(value),
-              key: key,
-              child: Text(text, style: warning ? TextStyle(color: Theme.of(context).colorScheme.onError) : null),
-            ),
-          );
+          return Padding(
+              padding: const EdgeInsets.only(top: 9),
+              child: SizedBox(
+                width: double.infinity,
+                height: 42,
+                child: ElevatedButton(
+                  autofocus: keyboardFocus && autofocus,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isError
+                        ? value == true
+                            ? colorScheme.errorContainer
+                            : colorScheme.error
+                        : null,
+                  ),
+                  onPressed: () => Navigator.of(delta.globalContext).pop(value),
+                  key: key,
+                  child: Text(text,
+                      style: isError
+                          ? TextStyle(
+                              color: value == true ? colorScheme.onErrorContainer : colorScheme.onError,
+                            )
+                          : null),
+                ),
+              ));
+        }
+
+        buttonsBuilder() {
+          switch (type) {
+            case DialogButtonType.yes:
+              return [createButton(keyYes, yesText ?? context.i18n.okButtonText, true, true)];
+            case DialogButtonType.yesNo:
+              return [
+                createButton(keyYes, yesText ?? context.i18n.yesButtonText, true, true),
+                createButton(keyNo, noText ?? context.i18n.noButtonText, false, false),
+              ];
+            case DialogButtonType.yesNoCancel:
+              return [
+                createButton(keyYes, yesText ?? context.i18n.yesButtonText, true, true),
+                createButton(keyNo, noText ?? context.i18n.noButtonText, false, false),
+                createButton(keyCancel, cancelText ?? context.i18n.cancelButtonText, false, null),
+              ];
+            case DialogButtonType.cancel:
+              return [createButton(keyCancel, cancelText ?? context.i18n.cancelButtonText, true, null)];
+          }
         }
 
         content = content ??
@@ -96,49 +101,62 @@ Future<bool?> show({
               child: Text(
                 textContent!,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: isError ? colorScheme.onError : null),
               ),
             );
 
-        return Dialog(
+        final backgroundColor = isError ? colorScheme.error : Theme.of(context).dialogBackgroundColor;
+
+        final dialog = Dialog(
           elevation: 2,
           backgroundColor: Colors.transparent,
           child: BlurryContainer(
             blur: barrierDismissible ? 0 : 8,
-            shadow: BoxShadow(
-              color: Theme.of(context).shadowColor,
-              blurRadius: 2,
-              spreadRadius: 1,
-              offset: const Offset(1, 1),
-            ),
+            shadow: isError
+                ? null
+                : BoxShadow(
+                    color: Theme.of(context).shadowColor,
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                    offset: const Offset(1, 1),
+                  ),
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Theme.of(context).dialogBackgroundColor),
-            backgroundColor: Theme.of(context).dialogBackgroundColor.withOpacity(.9),
+            //border: Border.all(color: backgroundColor),
+            backgroundColor: backgroundColor.withOpacity(.9),
             child: ConstrainedBox(
               constraints: const BoxConstraints(
                 minWidth: 240,
-                maxWidth: 320,
+                maxWidth: 360,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (icon != null) icon,
-                  if (title != null) Text(title, style: Theme.of(context).textTheme.titleMedium),
+                  if (title != null)
+                    Text(title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(color: isError ? colorScheme.onError : null)),
+                  const SizedBox(height: 10),
                   content!,
-                  if (yes != null) const SizedBox(height: 20),
-                  if (yes != null) createButton(keyYes, yes, true, true),
-                  if (no != null) const SizedBox(height: 9),
-                  if (no != null) createButton(keyNo, no, false, false),
-                  if (cancel != null) const SizedBox(height: 9),
-                  if (cancel != null) createButton(keyCancel, cancel, yes == null, null),
+                  const SizedBox(height: 10),
+                  ...buttonsBuilder(),
                   if (footer != null) footer,
                 ],
               ),
             ),
           ),
         );
+
+        return isError
+            ? Theme(
+                data: Theme.of(context).copyWith(colorScheme: colorScheme.copyWith(primary: colorScheme.error)),
+                child: dialog, // Takes the theme of its direct parent
+              )
+            : dialog;
       });
 }
 
@@ -158,9 +176,7 @@ Future<bool?> alert(
     textContent: message,
     icon: icon,
     title: title,
-    showOK: showOK,
-    showCancel: showCancel,
-    warning: warning,
+    isError: warning,
     keyYes: keyYes,
     keyNo: keyNo,
     keyCancel: keyCancel,
@@ -175,12 +191,11 @@ Future<bool?> confirm(
   bool showOK = true,
   bool showCancel = true,
 }) async {
-  return alert(
-    message,
+  return show(
+    textContent: message,
     icon: icon,
     title: title,
-    showOK: showOK,
-    showCancel: showCancel,
+    type: DialogButtonType.yesNo,
   );
 }
 
@@ -213,7 +228,7 @@ Future<String?> prompt({
       ),
     ),
     keyboardFocus: false,
-    showOK: true,
+    type: DialogButtonType.yes,
   );
   if (result == true) {
     return controller.text;
