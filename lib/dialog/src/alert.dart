@@ -15,30 +15,30 @@ void disableAlert() {
   _disableAlert = true;
 }
 
-enum DialogButtonType { yes, yesNo, yesNoCancel, cancel }
+enum DialogButtonsType { yes, yesNo, yesNoCancel, cancel }
 
 /// show dialog, return true if it's ok or yes. set isError to true to show error dialog
 /// ```dart
 /// show(content:Text('hi'), warning: true)
 /// ```
 Future<bool?> show({
-  Widget? content,
-  Widget? footer,
+  Widget Function(BuildContext context)? contentBuilder,
+  Widget Function(BuildContext context)? iconBuilder,
+  Widget Function(BuildContext context)? footerBuilder,
   String? textContent,
-  Widget? icon,
   String? title,
   bool isError = false,
   String? yesText,
   String? noText,
   String? cancelText,
-  DialogButtonType type = DialogButtonType.yes,
+  DialogButtonsType type = DialogButtonsType.yes,
   bool barrierDismissible = true,
   bool keyboardFocus = true,
   Key? keyYes,
   Key? keyNo,
   Key? keyCancel,
 }) async {
-  assert(content != null || textContent != null, 'must have content or textContent');
+  assert(contentBuilder != null || textContent != null, 'must have content or textContent');
   if (!kReleaseMode && _disableAlert) {
     return null;
   }
@@ -77,33 +77,34 @@ Future<bool?> show({
 
         buttonsBuilder() {
           switch (type) {
-            case DialogButtonType.yes:
+            case DialogButtonsType.yes:
               return [createButton(keyYes, yesText ?? context.i18n.okButtonText, true, true)];
-            case DialogButtonType.yesNo:
+            case DialogButtonsType.yesNo:
               return [
                 createButton(keyYes, yesText ?? context.i18n.yesButtonText, true, true),
                 createButton(keyNo, noText ?? context.i18n.noButtonText, false, false),
               ];
-            case DialogButtonType.yesNoCancel:
+            case DialogButtonsType.yesNoCancel:
               return [
                 createButton(keyYes, yesText ?? context.i18n.yesButtonText, true, true),
                 createButton(keyNo, noText ?? context.i18n.noButtonText, false, false),
                 createButton(keyCancel, cancelText ?? context.i18n.cancelButtonText, false, null),
               ];
-            case DialogButtonType.cancel:
+            case DialogButtonsType.cancel:
               return [createButton(keyCancel, cancelText ?? context.i18n.cancelButtonText, true, null)];
           }
         }
 
-        content = content ??
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                textContent!,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: isError ? colorScheme.onError : null),
-              ),
-            );
+        final content = contentBuilder != null
+            ? contentBuilder(context)
+            : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  textContent!,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: isError ? colorScheme.onError : null),
+                ),
+              );
 
         final backgroundColor = isError ? colorScheme.error : Theme.of(context).dialogBackgroundColor;
 
@@ -133,7 +134,7 @@ Future<bool?> show({
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (icon != null) icon,
+                  if (iconBuilder != null) iconBuilder(context),
                   if (title != null)
                     Text(title,
                         style: Theme.of(context)
@@ -141,10 +142,10 @@ Future<bool?> show({
                             .titleMedium!
                             .copyWith(color: isError ? colorScheme.onError : null)),
                   const SizedBox(height: 10),
-                  content!,
+                  content,
                   const SizedBox(height: 10),
                   ...buttonsBuilder(),
-                  if (footer != null) footer,
+                  if (footerBuilder != null) footerBuilder(context),
                 ],
               ),
             ),
@@ -163,20 +164,20 @@ Future<bool?> show({
 /// alert show text dialog, return true if it's ok
 Future<bool?> alert(
   String message, {
-  Widget? icon,
+  Widget Function(BuildContext context)? iconBuilder,
   String? title,
-  bool showOK = true,
-  bool showCancel = false,
-  bool warning = false,
+  DialogButtonsType type = DialogButtonsType.yes,
+  bool isError = false,
   Key? keyYes,
   Key? keyNo,
   Key? keyCancel,
 }) async {
   return show(
     textContent: message,
-    icon: icon,
+    iconBuilder: iconBuilder,
     title: title,
-    isError: warning,
+    type: type,
+    isError: isError,
     keyYes: keyYes,
     keyNo: keyNo,
     keyCancel: keyCancel,
@@ -186,16 +187,14 @@ Future<bool?> alert(
 /// confirm show on/cancel dialog, return true if it's ok
 Future<bool?> confirm(
   String message, {
-  Widget? icon,
+  Widget Function(BuildContext context)? iconBuilder,
   String? title,
-  bool showOK = true,
-  bool showCancel = true,
 }) async {
   return show(
     textContent: message,
-    icon: icon,
+    iconBuilder: iconBuilder,
     title: title,
-    type: DialogButtonType.yesNo,
+    type: DialogButtonsType.yesNo,
   );
 }
 
@@ -210,7 +209,7 @@ Future<String?> prompt({
 }) async {
   final controller = TextEditingController(text: initialValue);
   final result = await show(
-    content: TextField(
+    contentBuilder: (context) => TextField(
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
@@ -228,7 +227,7 @@ Future<String?> prompt({
       ),
     ),
     keyboardFocus: false,
-    type: DialogButtonType.yes,
+    type: DialogButtonsType.yes,
   );
   if (result == true) {
     return controller.text;

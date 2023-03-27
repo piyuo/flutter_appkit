@@ -26,7 +26,12 @@ void main() {
       const keyCancel = Key('keyCancel');
       await testing.mockApp(
         tester,
-        child: createSample(onPressed: (context) => alert('hello', showCancel: true, keyCancel: keyCancel)),
+        child: createSample(
+            onPressed: (context) => alert(
+                  'hello',
+                  type: DialogButtonsType.yesNoCancel,
+                  keyCancel: keyCancel,
+                )),
       );
 
       expect(find.byType(MaterialButton), findsOneWidget);
@@ -46,8 +51,8 @@ void main() {
         tester,
         child: createSample(
             onPressed: (context) async => result = await show(
-                  content: const Text('hello'),
-                  type: DialogButtonType.yesNo,
+                  contentBuilder: (context) => const Text('hello'),
+                  type: DialogButtonsType.yesNoCancel,
                   keyCancel: keyCancel,
                 )),
       );
@@ -71,8 +76,8 @@ void main() {
         tester,
         child: createSample(
             onPressed: (context) async => result = await show(
-                  content: const Text('hello'),
-                  type: DialogButtonType.yesNo,
+                  contentBuilder: (context) => const Text('hello'),
+                  type: DialogButtonsType.yesNo,
                   keyYes: keyYes,
                 )),
       );
@@ -94,8 +99,8 @@ void main() {
         tester,
         child: createSample(
             onPressed: (context) async => await show(
-                  content: const Text('hello'),
-                  type: DialogButtonType.yesNo,
+                  contentBuilder: (context) => const Text('hello'),
+                  type: DialogButtonsType.yesNo,
                 )),
       );
 
@@ -109,7 +114,10 @@ void main() {
       await testing.mockApp(
         tester,
         child: createSample(
-            onPressed: (context) async => await show(content: const Text('error message'), title: 'error')),
+            onPressed: (context) async => await show(
+                  contentBuilder: (context) => const Text('error message'),
+                  title: 'error',
+                )),
       );
 
       expect(find.byType(MaterialButton), findsOneWidget);

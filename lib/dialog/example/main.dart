@@ -132,8 +132,8 @@ class DialogExample extends StatelessWidget {
             },
           ),
           ElevatedButton(
-            child: const Text('alert'),
-            onPressed: () => alert('hi', showCancel: true),
+            child: const Text('alert with yes/no'),
+            onPressed: () => alert('hi', type: DialogButtonsType.yesNo),
           ),
           ElevatedButton(
             child: const Text('alert title'),
@@ -149,7 +149,7 @@ class DialogExample extends StatelessWidget {
               textContent: 'This is a error dialog',
               title: 'Oops! some thing went wrong',
               isError: true,
-              type: DialogButtonType.yesNo,
+              type: DialogButtonsType.yesNo,
             ),
           ),
           ElevatedButton(
@@ -157,7 +157,7 @@ class DialogExample extends StatelessWidget {
             onPressed: () => show(
               textContent: 'hi',
               title: 'title',
-              footer: const Text('footer'),
+              footerBuilder: (context) => const Text('footer'),
             ),
           ),
           ElevatedButton(
@@ -165,7 +165,7 @@ class DialogExample extends StatelessWidget {
             onPressed: () async {
               var result = await show(
                 textContent: 'do you want delete this document?',
-                type: DialogButtonType.yesNoCancel,
+                type: DialogButtonsType.yesNoCancel,
               );
               if (result == true) {
                 toastDone(text: 'yes');
@@ -192,13 +192,13 @@ class DialogExample extends StatelessWidget {
           ElevatedButton(
             child: const Text('alert long content'),
             onPressed: () => show(
-              content: const SizedBox(
+              contentBuilder: (context) => const SizedBox(
                   height: 100,
                   child: SingleChildScrollView(
                       child: Text(
                           'this is a very long content, it should cover 3 or 4 more line. we need test long message can read easily'))),
               title: 'this is a very long title. it should cover 2 line',
-              icon: const Padding(
+              iconBuilder: (context) => const Padding(
                 padding: EdgeInsets.only(bottom: 10),
                 child: Icon(
                   Icons.alarm,
