@@ -41,18 +41,11 @@ class ErrorScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Icon(
-                        Icons.error_outline,
-                        color: colorScheme.onError,
-                        size: 64,
-                      ),
-                      const SizedBox(height: 10),
                       AutoSizeText(
                         log.lastExceptionToString,
                         maxLines: 2,
                         style: TextStyle(
                           color: colorScheme.onError,
-                          fontSize: 20.0,
                         ),
                       ),
                       const SizedBox(height: 10),

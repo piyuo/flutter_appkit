@@ -8,10 +8,9 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'error_screen.dart';
-import 'network_error_screen.dart';
 
 /// _Status is status of wait future
-enum _Status { loading, error, networkError, ready }
+enum _Status { loading, error, ready }
 
 /// _LoadingScreenProvider control [LoadingScreen]
 class _LoadingScreenProvider with ChangeNotifier {
@@ -48,7 +47,7 @@ class _LoadingScreenProvider with ChangeNotifier {
         return;
       }
       log.error(e, s);
-      status = isNetworkError(e) ? _Status.networkError : _Status.error;
+      status = _Status.error;
     }
     notifyListeners();
   }
@@ -63,12 +62,15 @@ class _LoadingScreenProvider with ChangeNotifier {
     } catch (e, s) {
       log.error(e, s);
       final result = await dialog.show(
-        iconBuilder: (context) => const Icon(Icons.wifi),
+        iconBuilder: (context) => Icon(Icons.wifi_off, size: 64, color: Theme.of(context).colorScheme.onError),
         title: 'Please check your internet connection',
         contentBuilder: (context) => AutoSizeText(
           log.lastExceptionMessage!,
           maxLines: 2,
           textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onError,
+          ),
         ),
         type: popHandler != null ? dialog.DialogButtonsType.yesNo : dialog.DialogButtonsType.yes,
         yesText: 'Retry',
@@ -132,8 +134,6 @@ class LoadingScreen extends StatelessWidget {
                 return builder();
               case _Status.error:
                 return ErrorScreen(onRetry: allowRetry ? () => loadingScreenProvider.retry(popHandler) : null);
-              case _Status.networkError:
-                return NetworkErrorScreen(onRetry: () => loadingScreenProvider.retry(popHandler));
               default:
                 return loadingWidgetBuilder != null
                     ? loadingWidgetBuilder!()

@@ -106,10 +106,6 @@ class AppExampleState extends State<AppExample> {
                         builder: () => _errorScreen(context),
                       ),
                       testing.ExampleButton(
-                        label: 'network error screen',
-                        builder: () => _networkErrorScreen(context),
-                      ),
-                      testing.ExampleButton(
                         label: 'web_app',
                         useScaffold: false,
                         builder: () => _webApp(context),
@@ -182,15 +178,6 @@ class AppExampleState extends State<AppExample> {
       log.error(e, s);
     }
     return ErrorScreen(onRetry: () {});
-  }
-
-  Widget _networkErrorScreen(BuildContext context) {
-    try {
-      throw Exception('http://piyuo.com/my_burger/.pb not found');
-    } catch (e, s) {
-      log.error(e, s);
-    }
-    return NetworkErrorScreen(onRetry: () {});
   }
 
   Widget _webApp(BuildContext context) {
