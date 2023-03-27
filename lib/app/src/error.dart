@@ -60,7 +60,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
     if (e is preferences.DiskErrorException) {
       await dialog.show(
         textContent: delta.globalContext.i18n.errorDiskErrorMessage,
-        warning: true,
+        isError: true,
         title: e.toString(),
         footer: emailUs(),
       );
@@ -69,7 +69,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
 
     await dialog.show(
       textContent: delta.globalContext.i18n.errorNotified,
-      warning: true,
+      isError: true,
       title: e.toString(),
       footer: emailUs(),
     );
@@ -108,7 +108,7 @@ Future<void> listened(dynamic e) async {
   if (e is command.FirewallBlockEvent) {
     dialog.show(
       textContent: firewallBlockMessage(delta.globalContext, e.reason),
-      warning: true,
+      isError: true,
       footer: emailUs(),
     );
     return;
@@ -116,7 +116,7 @@ Future<void> listened(dynamic e) async {
   if (e is command.InternalServerErrorEvent) {
     dialog.show(
       textContent: '500 internal server error',
-      warning: true,
+      isError: true,
       footer: emailUs(),
     );
     return;
@@ -125,7 +125,7 @@ Future<void> listened(dynamic e) async {
   if (e is command.ServerNotReadyEvent) {
     dialog.show(
       textContent: '501 server not ready',
-      warning: true,
+      isError: true,
       footer: emailUs(),
     );
     return;
@@ -134,7 +134,7 @@ Future<void> listened(dynamic e) async {
   if (e is command.BadRequestEvent) {
     dialog.show(
       textContent: '400 bad request',
-      warning: true,
+      isError: true,
       footer: emailUs(),
     );
     return;

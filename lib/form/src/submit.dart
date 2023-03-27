@@ -150,9 +150,7 @@ Future<bool> isAllowToExit({
   if (formGroup.dirty) {
     var result = await dialog.show(
       textContent: delta.globalContext.i18n.formContentChangedText,
-      showYes: true,
-      showNo: true,
-      showCancel: true,
+      type: dialog.DialogButtonType.yesNoCancel,
     );
     if (result == true) {
       // user want save

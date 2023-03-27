@@ -3,9 +3,12 @@ import 'package:universal_io/io.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'error_screen.dart';
 import 'network_error_screen.dart';
 
@@ -61,7 +64,24 @@ class _LoadingScreenProvider with ChangeNotifier {
       await future();
     } catch (e, s) {
       log.error(e, s);
-      status = isNetworkError(e) ? _Status.networkError : _Status.error;
+      final result = await dialog.show(
+        icon: const Icon(Icons.wifi),
+        title: 'Please check your internet connection',
+        content: AutoSizeText(
+          log.lastExceptionMessage!,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+        ),
+        type: dialog.DialogButtonType.yesNo,
+        yesText: 'Retry',
+        cancelText: delta.globalContext.i18n.cancelButtonText,
+        barrierDismissible: false,
+      );
+      if (result == true) {
+        await retry();
+        return;
+      }
+//      status = isNetworkError(e) ? _Status.networkError : _Status.error;
     }
     notifyListeners();
   }
@@ -113,15 +133,11 @@ class LoadingScreen extends StatelessWidget {
               default:
                 return loadingWidgetBuilder != null
                     ? loadingWidgetBuilder!()
-                    : Scaffold(
+                    : const Scaffold(
                         body: Center(
                           child: Icon(
                             Icons.access_time,
                             size: 128,
-                            color: context.themeColor(
-                              light: Colors.grey.shade300,
-                              dark: Colors.grey.shade800,
-                            ),
                           ),
                         ),
                       );

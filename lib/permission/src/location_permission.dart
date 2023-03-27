@@ -4,6 +4,8 @@ import 'package:universal_platform/universal_platform.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:app_settings/app_settings.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// getLocationPermission return true if user grant location permission
 /// ```dart
@@ -34,7 +36,7 @@ Future<void> askLocationPermission(String reason) async {
     dialog.show(
       title: title,
       textContent: 'Please go to Site Settings / Location Services and enable location permission, ',
-      showClose: true,
+      yesText: delta.globalContext.i18n.closeButtonText,
     );
     return;
   }
@@ -43,8 +45,7 @@ Future<void> askLocationPermission(String reason) async {
     final gotoSetting = await dialog.show(
       title: title,
       textContent: 'Please go to location settings and enable location permission',
-      yes: 'Go to location settings',
-      showClose: true,
+      yesText: 'Go to location settings',
     );
     if (gotoSetting == true) {
       AppSettings.openLocationSettings();
@@ -55,6 +56,6 @@ Future<void> askLocationPermission(String reason) async {
   dialog.show(
     title: title,
     textContent: 'Please go to System Settings/ Privacy / Location Services and enable location permission, ',
-    showClose: true,
+    yesText: delta.globalContext.i18n.closeButtonText,
   );
 }

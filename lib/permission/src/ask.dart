@@ -31,8 +31,9 @@ Future<bool> ask({
 
   final gotoSetting = await dialog.show(
     textContent: delta.globalContext.i18n.permissionAsk.replaceAll('%1', name),
-    yes: delta.globalContext.i18n.permissionGotoSetting,
-    showCancel: true,
+    yesText: delta.globalContext.i18n.permissionGotoSetting,
+    noText: delta.globalContext.i18n.cancelButtonText,
+    type: dialog.DialogButtonType.yesNo,
   );
   if (gotoSetting == true) {
     openAppSettings();

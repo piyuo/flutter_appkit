@@ -19,6 +19,8 @@ main() async {
   await start(
     appName: 'app example',
     builder: () async => const [],
+    theme: testing.theme(),
+    darkTheme: testing.darkTheme(),
     supportedLocales: const [
       Locale('en'),
       Locale('en', 'US'),
@@ -84,7 +86,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
             children: [
               Expanded(
-                child: _sessionProvider(context),
+                child: _loadingScreenNetworkError(context),
                 // child: _routing(context, widget.data),
                 //child: _setPageTitle(context),
               ),
@@ -133,7 +135,9 @@ class AppExampleState extends State<AppExample> {
                         label: 'error',
                         builder: () => _error(context),
                       ),
-                      testing.ExampleButton(label: 'loadingScreen ready', builder: () => _loadingScreenReady(context)),
+                      testing.ExampleButton(
+                          label: 'loadingScreen default', builder: () => _loadingScreenDefault(context)),
+                      testing.ExampleButton(label: 'loadingScreen custom', builder: () => _loadingScreenReady(context)),
                       testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
                       testing.ExampleButton(
                           label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
@@ -347,10 +351,24 @@ class AppExampleState extends State<AppExample> {
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
           return LoadingScreen(
             future: () async {
-              await Future.delayed(const Duration(seconds: 3));
+              await Future.delayed(const Duration(seconds: 1));
               throw const general.TryAgainLaterException('error'); //TimeoutException('error');
             },
             builder: () => Container(width: 100, height: 100, color: Colors.red),
+          );
+        }));
+      },
+    );
+  }
+
+  Widget _loadingScreenDefault(BuildContext context) {
+    return TextButton(
+      child: const Text('provider need wait 3 seconds'),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return LoadingScreen(
+            future: () async => await Future.delayed(const Duration(seconds: 30)),
+            builder: () => const Text('done'),
           );
         }));
       },
