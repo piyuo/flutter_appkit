@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
 
 /// showBanner show a simple text banner
@@ -35,7 +34,7 @@ Future<void> showBanner(
       actions: <Widget>[
         TextButton(
           child: Text(
-            delta.globalContext.i18n.closeButtonText,
+            delta.i18n.closeButtonText,
             style: TextStyle(color: color ?? Colors.brown, fontWeight: FontWeight.bold),
           ),
           onPressed: () {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// _applyTheme apply theme before show toast
 void _applyTheme({
@@ -79,7 +78,7 @@ void toastWait({
     indicatorType: EasyLoadingIndicatorType.fadingCircle,
   );
   EasyLoading.show(
-    status: text ?? delta.globalContext.i18n.hintPleaseWait,
+    status: text ?? delta.i18n.hintPleaseWait,
     maskType: EasyLoadingMaskType.black,
     dismissOnTap: false,
   );
@@ -89,7 +88,7 @@ void toastWait({
 void toastDone({String? text}) {
   _applyTheme();
   EasyLoading.showSuccess(
-    text ?? delta.globalContext.i18n.hintDone,
+    text ?? delta.i18n.hintDone,
     maskType: EasyLoadingMaskType.none,
     dismissOnTap: true,
   );

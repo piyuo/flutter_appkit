@@ -59,7 +59,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   try {
     if (e is preferences.DiskErrorException) {
       await dialog.show(
-        textContent: delta.globalContext.i18n.errorDiskErrorMessage,
+        textContent: delta.i18n.errorDiskErrorMessage,
         isError: true,
         title: e.toString(),
         footer: emailUs(),
@@ -68,7 +68,7 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
     }
 
     await dialog.show(
-      textContent: delta.globalContext.i18n.errorNotified,
+      textContent: delta.i18n.errorNotified,
       isError: true,
       title: e.toString(),
       footer: emailUs(),
@@ -96,7 +96,7 @@ Widget emailUs() {
   return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: TextButton(
-        child: Text(delta.globalContext.i18n.errorEmailUsLink),
+        child: Text(delta.i18n.errorEmailUsLink),
         onPressed: () => eventbus.broadcast(EmailSupportEvent()),
       ));
 }
@@ -142,7 +142,7 @@ Future<void> listened(dynamic e) async {
 
   if (e is command.SlowNetworkEvent) {
     dialog.toastInfo(
-      delta.globalContext.i18n.errorNetworkSlowMessage,
+      delta.i18n.errorNetworkSlowMessage,
       widget: const Icon(
         Icons.wifi,
         size: 68,
@@ -155,7 +155,7 @@ Future<void> listened(dynamic e) async {
   if (e is command.RequestTimeoutEvent) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     await dialog.show(
-      textContent: delta.globalContext.i18n.errorNetworkTimeoutMessage,
+      textContent: delta.i18n.errorNetworkTimeoutMessage,
       icon: const Icon(Icons.alarm, size: 64),
       title: errorCode,
       footer: emailUs(),
@@ -167,14 +167,14 @@ Future<void> listened(dynamic e) async {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.show(
-          textContent: delta.globalContext.i18n.errorNetworkNoServiceMessage,
+          textContent: delta.i18n.errorNetworkNoServiceMessage,
           icon: const Icon(Icons.cloud_off, size: 64),
           title: e.exception?.toString(),
           footer: emailUs(),
         ); //service not available
       } else {
         dialog.show(
-          textContent: delta.globalContext.i18n.errorNetworkBlockedMessage,
+          textContent: delta.i18n.errorNetworkBlockedMessage,
           title: e.exception?.toString(),
           icon: const Icon(Icons.cloud_off, size: 64),
           footer: emailUs(),
@@ -183,7 +183,7 @@ Future<void> listened(dynamic e) async {
       return;
     }
     await dialog.show(
-      textContent: delta.globalContext.i18n.errorNetworkNoInternetMessage,
+      textContent: delta.i18n.errorNetworkNoInternetMessage,
       icon: const Icon(Icons.wifi_off, size: 64),
       title: e.exception?.toString(),
     );

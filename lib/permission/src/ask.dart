@@ -1,10 +1,8 @@
 import 'dart:core';
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// askPermission return true if user grant permission
 Future<bool> ask({
@@ -30,9 +28,9 @@ Future<bool> ask({
   }
 
   final gotoSetting = await dialog.show(
-    textContent: delta.globalContext.i18n.permissionAsk.replaceAll('%1', name),
-    yesText: delta.globalContext.i18n.permissionGotoSetting,
-    noText: delta.globalContext.i18n.cancelButtonText,
+    textContent: delta.i18n.permissionAsk.replaceAll('%1', name),
+    yesText: delta.i18n.permissionGotoSetting,
+    noText: delta.i18n.cancelButtonText,
     type: dialog.DialogButtonType.yesNo,
   );
   if (gotoSetting == true) {

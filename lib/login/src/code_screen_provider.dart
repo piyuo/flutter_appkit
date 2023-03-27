@@ -64,15 +64,15 @@ class CodeScreenProvider with ChangeNotifier {
     switch (error) {
       case 'CODE_EXPIRED':
       case 'CODE_INVALID':
-        return delta.globalContext.i18n.loginCodeScreenErrorCodeInvalid;
+        return delta.i18n.loginCodeScreenErrorCodeInvalid;
       case 'CODE_MISMATCH':
-        return delta.globalContext.i18n.loginCodeScreenErrorCodeMismatch;
+        return delta.i18n.loginCodeScreenErrorCodeMismatch;
       case 'NO_CODE':
-        return delta.globalContext.i18n.loginCodeScreenErrorNoCode;
+        return delta.i18n.loginCodeScreenErrorNoCode;
       case 'ENTER_BLOCK_SHORT':
-        return delta.globalContext.i18n.loginCodeScreenErrorEnterBlockShort;
+        return delta.i18n.loginCodeScreenErrorEnterBlockShort;
       case 'ENTER_BLOCK_LONG':
-        return delta.globalContext.i18n.loginCodeScreenErrorEnterBlockLong;
+        return delta.i18n.loginCodeScreenErrorEnterBlockLong;
       default:
         return error;
     }

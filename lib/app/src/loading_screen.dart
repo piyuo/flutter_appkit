@@ -8,7 +8,6 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'error_screen.dart';
 import 'network_error_screen.dart';
 
@@ -74,7 +73,7 @@ class _LoadingScreenProvider with ChangeNotifier {
         ),
         type: dialog.DialogButtonType.yesNo,
         yesText: 'Retry',
-        cancelText: delta.globalContext.i18n.cancelButtonText,
+        cancelText: delta.i18n.cancelButtonText,
         barrierDismissible: false,
       );
       if (result == true) {

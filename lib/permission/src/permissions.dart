@@ -1,7 +1,5 @@
 import 'dart:core';
-import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'ask.dart';
 
@@ -12,7 +10,7 @@ import 'ask.dart';
 /// ```
 Future<bool> get bluetooth => ask(
       permission: Permission.bluetoothConnect,
-      name: delta.globalContext.i18n.permissionBluetooth,
+      name: delta.i18n.permissionBluetooth,
     );
 
 /// camera return true if user grant camera permission
@@ -22,7 +20,7 @@ Future<bool> get bluetooth => ask(
 /// ```
 Future<bool> get camera => ask(
       permission: Permission.camera,
-      name: delta.globalContext.i18n.permissionCamera,
+      name: delta.i18n.permissionCamera,
     );
 
 /// photo return true if user grant photo permission
@@ -32,7 +30,7 @@ Future<bool> get camera => ask(
 /// ```
 Future<bool> get photo => ask(
       permission: Permission.photos,
-      name: delta.globalContext.i18n.permissionBluetooth,
+      name: delta.i18n.permissionBluetooth,
     );
 
 /// location return true if user grant location permission
@@ -42,7 +40,7 @@ Future<bool> get photo => ask(
 /// ```
 Future<bool> get location => ask(
       permission: Permission.location,
-      name: delta.globalContext.i18n.permissionLocation,
+      name: delta.i18n.permissionLocation,
     );
 
 /// notification return true if user grant notification permission
@@ -52,7 +50,7 @@ Future<bool> get location => ask(
 /// ```
 Future<bool> get notification => ask(
       permission: Permission.accessNotificationPolicy,
-      name: delta.globalContext.i18n.permissionNotification,
+      name: delta.i18n.permissionNotification,
     );
 
 /// microphone return true if user grant microphone permission
@@ -62,5 +60,5 @@ Future<bool> get notification => ask(
 /// ```
 Future<bool> get microphone => ask(
       permission: Permission.microphone,
-      name: delta.globalContext.i18n.permissionMic,
+      name: delta.i18n.permissionMic,
     );

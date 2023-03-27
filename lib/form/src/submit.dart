@@ -98,12 +98,12 @@ bool validate(
   FormGroup formGroup,
 ) {
   if (!formGroup.dirty && formGroup.valid) {
-    dialog.showInfoBanner(delta.globalContext.i18n.formSavedBanner);
+    dialog.showInfoBanner(delta.i18n.formSavedBanner);
     return false;
   }
   if (!formGroup.valid) {
     dialog.showWarningBanner(
-      delta.globalContext.i18n.formAttentionBanner,
+      delta.i18n.formAttentionBanner,
       backgroundColor: Colors.red.shade400,
       color: Colors.white,
     );
@@ -149,7 +149,7 @@ Future<bool> isAllowToExit({
 }) async {
   if (formGroup.dirty) {
     var result = await dialog.show(
-      textContent: delta.globalContext.i18n.formContentChangedText,
+      textContent: delta.i18n.formContentChangedText,
       type: dialog.DialogButtonType.yesNoCancel,
     );
     if (result == true) {
