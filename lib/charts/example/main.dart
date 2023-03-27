@@ -7,6 +7,8 @@ import '../charts.dart';
 
 main() => app.start(
       appName: 'charts example',
+      theme: testing.theme(),
+      darkTheme: testing.darkTheme(),
       routesBuilder: () => {
         '/': (context, state, data) => const ChartsExample(),
       },
@@ -23,10 +25,10 @@ class ChartsExample extends StatelessWidget {
           child: Wrap(
             children: [
               Expanded(
-                child: _indicator(),
+                child: _timeChart(),
               ),
               testing.ExampleButton(
-                label: 'line chart',
+                label: 'time chart',
                 builder: () => _timeChart(),
               ),
               testing.ExampleButton(

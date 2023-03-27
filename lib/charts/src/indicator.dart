@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 
 class Indicator extends StatelessWidget {
   const Indicator({
@@ -14,28 +13,16 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Card(
+        child: Padding(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: context.themeColor(light: Colors.grey.shade400, dark: Colors.grey.shade700),
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(25))),
       child: Column(
         children: [
-          Text(title,
-              style: TextStyle(
-                fontSize: 16,
-                color: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
-              )),
+          Text(title, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 10),
-          Text(text,
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              )),
+          Text(text, style: Theme.of(context).textTheme.displayLarge),
         ],
       ),
-    );
+    ));
   }
 }

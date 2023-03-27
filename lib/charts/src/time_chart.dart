@@ -1,6 +1,5 @@
-//import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-//import 'package:libcli/delta/delta.dart' as delta;
 
 class TimeChart extends StatelessWidget {
   const TimeChart({
@@ -42,14 +41,10 @@ class TimeChart extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.only(right: 16.0, left: 6.0),
-              child: /*LineChart(
-                sampleData1(context),
-                swapAnimationDuration: const Duration(milliseconds: 250),
-              )*/
-                  SizedBox(),
+              padding: const EdgeInsets.only(right: 16.0, left: 6.0),
+              child: LineChart(mainData()),
             ),
           ),
           const SizedBox(
@@ -59,133 +54,143 @@ class TimeChart extends StatelessWidget {
       ),
     );
   }
-/*
-  LineChartData sampleData1(BuildContext context) => LineChartData(
-        lineTouchData: lineTouchData1,
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff37434d)),
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff37434d)),
-              strokeWidth: 1,
-            );
-          },
+}
+
+LineChartData mainData() {
+  return LineChartData(
+    gridData: FlGridData(
+      show: true,
+      drawVerticalLine: true,
+      horizontalInterval: 1,
+      verticalInterval: 1,
+      getDrawingHorizontalLine: (value) {
+        return FlLine(
+          //color: AppColors.mainGridLineColor,
+          strokeWidth: 1,
+        );
+      },
+      getDrawingVerticalLine: (value) {
+        return FlLine(
+          //color: AppColors.mainGridLineColor,
+          strokeWidth: 1,
+        );
+      },
+    ),
+    titlesData: FlTitlesData(
+      show: true,
+      rightTitles: AxisTitles(
+        sideTitles: SideTitles(showTitles: false),
+      ),
+      topTitles: AxisTitles(
+        sideTitles: SideTitles(showTitles: false),
+      ),
+      bottomTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 30,
+          interval: 1,
+          getTitlesWidget: bottomTitleWidgets,
         ),
-        titlesData: titlesData1,
-        borderData: FlBorderData(
+      ),
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          interval: 1,
+          getTitlesWidget: leftTitleWidgets,
+          reservedSize: 42,
+        ),
+      ),
+    ),
+    borderData: FlBorderData(
+      show: true,
+      border: Border.all(color: const Color(0xff37434d)),
+    ),
+    minX: 0,
+    maxX: 11,
+    minY: 0,
+    maxY: 6,
+    lineBarsData: [
+      LineChartBarData(
+        spots: const [
+          FlSpot(0, 3),
+          FlSpot(2.6, 2),
+          FlSpot(4.9, 5),
+          FlSpot(6.8, 3.1),
+          FlSpot(8, 4),
+          FlSpot(9.5, 3),
+          FlSpot(11, 4),
+        ],
+        isCurved: true,
+        gradient: LinearGradient(
+          colors: gradientColors,
+        ),
+        barWidth: 5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: false,
+        ),
+        belowBarData: BarAreaData(
           show: true,
-          border: Border(
-            bottom: BorderSide(
-              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff4e4965)),
-              width: 1,
-            ),
-            left: BorderSide(
-              color: context.themeColor(light: Colors.grey.shade300, dark: const Color(0xff4e4965)),
-              width: 1,
-            ),
-            right: const BorderSide(color: Colors.transparent),
-            top: const BorderSide(color: Colors.transparent),
+          gradient: LinearGradient(
+            colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
-        lineBarsData: lineBarsData1,
-        minX: 0,
-        maxX: 20,
-        maxY: 350,
-        minY: 0,
-      );
+      ),
+    ],
+  );
+}
 
-  LineTouchData get lineTouchData1 => LineTouchData(
-        handleBuiltInTouches: true,
-        touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
-        ),
-      );
+Widget bottomTitleWidgets(double value, TitleMeta meta) {
+  const style = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
+  );
+  Widget text;
+  switch (value.toInt()) {
+    case 2:
+      text = const Text('MAR', style: style);
+      break;
+    case 5:
+      text = const Text('JUN', style: style);
+      break;
+    case 8:
+      text = const Text('SEP', style: style);
+      break;
+    default:
+      text = const Text('', style: style);
+      break;
+  }
 
-  FlTitlesData get titlesData1 => FlTitlesData(
-        bottomTitles: bottomTitles,
-        rightTitles: SideTitles(showTitles: false),
-        topTitles: SideTitles(showTitles: false),
-        leftTitles: leftTitles(
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 10:
-                return '\$10';
-              case 50:
-                return '\$20';
-              case 100:
-                return '\$100';
-              case 300:
-                return '\$300';
-            }
-            return '';
-          },
-        ),
-      );
+  return SideTitleWidget(
+    axisSide: meta.axisSide,
+    child: text,
+  );
+}
 
-  List<LineChartBarData> get lineBarsData1 => [
-        lineChartBarData1_1,
-      ];
+Widget leftTitleWidgets(double value, TitleMeta meta) {
+  const style = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 15,
+  );
+  String text;
+  switch (value.toInt()) {
+    case 1:
+      text = '10K';
+      break;
+    case 3:
+      text = '30k';
+      break;
+    case 5:
+      text = '50k';
+      break;
+    default:
+      return Container();
+  }
 
-  SideTitles leftTitles({required GetTitleFunction getTitles}) => SideTitles(
-        getTitles: getTitles,
-        showTitles: true,
-        margin: 8,
-        interval: 1,
-        reservedSize: 40,
-        getTextStyles: (context, value) => const TextStyle(
-//          color: Color(0xff75729e),
-          fontSize: 14,
-        ),
-      );
-
-  SideTitles get bottomTitles => SideTitles(
-        showTitles: true,
-        reservedSize: 22,
-        margin: 10,
-        interval: 1,
-        getTextStyles: (context, value) => const TextStyle(
-          //        color: Color(0xff72719b),
-          fontSize: 14,
-        ),
-        getTitles: (value) {
-          return value.toInt().toString();
-        },
-      );
-
-  LineChartBarData get lineChartBarData1_1 => LineChartBarData(
-        isCurved: true,
-//        colors: [const Color(0xff4af699)],
-        colors: [
-          ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
-          ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
-        ],
-        barWidth: 4,
-        isStrokeCapRound: true,
-        dotData: FlDotData(show: false),
-        belowBarData: BarAreaData(show: true, colors: [
-          ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-          ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-        ]),
-        spots: const [
-          FlSpot(1, 100),
-          FlSpot(3, 100.5),
-          FlSpot(5, 100.4),
-          FlSpot(7, 300.4),
-          FlSpot(10, 200),
-          FlSpot(12, 200.2),
-          FlSpot(13, 100.8),
-        ],
-      );*/
+  return Text(text, style: style, textAlign: TextAlign.left);
 }
 
 List<Color> gradientColors = [
-  const Color(0xff23b6e6),
-  const Color(0xff02d39a),
+  Colors.blue,
+  Colors.red,
 ];
