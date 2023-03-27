@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libcli/i18n/i18n.dart';
 
 final GlobalKey<_GlobalContextSupportState> _keyGlobalContextFinder = GlobalKey(debugLabel: 'global_context_support');
 
@@ -27,6 +28,9 @@ BuildContext get globalContext {
   }());
   return state!.overlayState!.context;
 }
+
+/// i18n return i18n localizations, it's a shortcut for globalContext.i18n
+LibLocalizations get i18n => globalContext.i18n;
 
 bool _debugInitialized = false;
 
