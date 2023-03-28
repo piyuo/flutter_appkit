@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/delta/delta.dart' as delta;
 import '../src/rich_editor.dart';
 import '../src/rich_editor_provider.dart';
 import '../src/image_editor.dart';
@@ -10,6 +9,8 @@ import '../src/image_editor_dialog.dart';
 
 main() => app.start(
       appName: 'editor example',
+      theme: testing.theme(),
+      darkTheme: testing.darkTheme(),
       routesBuilder: () => {
         '/': (context, state, data) => const EditorExample(),
       },
@@ -26,7 +27,7 @@ class EditorExample extends StatelessWidget {
           child: Wrap(
             children: [
               Container(
-                child: _imageEditor(),
+                child: _richEditor(),
               ),
               testing.ExampleButton(label: 'rich editor', builder: () => _richEditor()),
               testing.ExampleButton(label: 'image editor', builder: () => _imageEditor()),
@@ -45,8 +46,7 @@ class EditorExample extends StatelessWidget {
             padding: const EdgeInsets.all(3.0),
             margin: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.blueAccent),
-              color: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
+              color: Theme.of(context).colorScheme.primaryContainer,
             ),
             child: Column(children: [
               RichEditor(
