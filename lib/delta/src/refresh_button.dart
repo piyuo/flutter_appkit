@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:provider/provider.dart';
-import 'delta.dart';
 import 'indicator.dart';
 
 /// RefreshButtonController control refresh button show refreshing animation
@@ -49,11 +48,10 @@ class RefreshButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultColor = color ?? context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400);
     return Consumer<RefreshButtonController>(
         builder: (context, controller, _) => IconButton(
               iconSize: size,
-              color: defaultColor,
+              color: color,
               icon: controller.value
                   ? SizedBox(width: size + 16, height: size + 16, child: ballRotateChase())
                   : const Icon(

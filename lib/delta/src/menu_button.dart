@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 
 /// MenuButton displays a button with a menu to show
-/// ```dart
-/// MenuButton<String>(
-/// icon: const Icon(Icons.settings),
-/// label: const Text('Settings'),
-/// onPressed: (value) {
-///   debugPrint('$value pressed');
-/// },
-/// selectedValue: '2',
-/// selection: const {
-///   '1': 'hello',
-///   '2': 'world',
-/// }),
-/// ```
 class MenuButton<T> extends StatelessWidget {
   /// MenuButton displays a button with a menu to show
   /// ```dart
@@ -36,7 +22,6 @@ class MenuButton<T> extends StatelessWidget {
     this.icon,
     this.label,
     this.selectedValue,
-    this.color,
     this.padding,
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.initialValue,
@@ -58,9 +43,6 @@ class MenuButton<T> extends StatelessWidget {
   /// selectedValue will be checked when show selection
   final T? selectedValue;
 
-  /// color is button color
-  final Color? color;
-
   /// padding is button padding
   final EdgeInsetsGeometry? padding;
 
@@ -72,21 +54,16 @@ class MenuButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foregroundColor = color ?? context.themeColor(light: Colors.grey.shade800, dark: Colors.grey.shade200);
     return TextButton.icon(
       style: TextButton.styleFrom(
-        foregroundColor: foregroundColor,
         padding: padding,
       ),
       label: Row(
         mainAxisAlignment: mainAxisAlignment,
         children: [
           label ?? const SizedBox(),
-          Icon(
-            Icons.arrow_drop_down,
-            color: onPressed != null ? foregroundColor : Colors.grey,
-            size: 20,
-          ),
+          Icon(Icons.arrow_drop_down,
+              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(onPressed != null ? 1 : .5)),
         ],
       ),
       icon: icon ?? const SizedBox(),

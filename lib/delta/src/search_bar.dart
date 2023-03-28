@@ -74,10 +74,7 @@ class SearchBar extends StatelessWidget {
                         style: const TextStyle(fontSize: 18),
                         decoration: InputDecoration(
                           isDense: isDense,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: context.themeColor(light: Colors.grey.shade900, dark: Colors.grey.shade200),
-                          ),
+                          prefixIcon: const Icon(Icons.search),
                           prefixIconConstraints: BoxConstraints(
                             minWidth: isDense ? 46 : 56,
                           ),
@@ -86,11 +83,7 @@ class SearchBar extends StatelessWidget {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(25.0),
                               onTap: () => provide._innerController.text = '',
-                              child: Icon(
-                                Icons.close,
-                                size: 24,
-                                color: context.themeColor(light: Colors.grey.shade900, dark: Colors.grey.shade200),
-                              ),
+                              child: const Icon(Icons.close, size: 24),
                             ),
                           ),
                           suffixIconConstraints: BoxConstraints(
@@ -99,27 +92,13 @@ class SearchBar extends StatelessWidget {
                           border: OutlineInputBorder(
                             gapPadding: 0,
                             borderRadius: BorderRadius.circular(25.0),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          focusColor: Colors.grey,
-                          focusedBorder: OutlineInputBorder(
-                            gapPadding: 0,
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
+                            borderSide: const BorderSide(),
                           ),
                           contentPadding: const EdgeInsets.only(left: 0, bottom: 10, top: 12, right: 0),
                           hintText: hint,
                         ),
                         controller: provide._innerController,
                         focusNode: focusNode2,
-                        //                    onSubmitted: (String text) {
-                        //                        print('submit search');
-//                        },
-                        //onSubmitted: (_) => onFieldSubmitted(),
                       );
                     },
                     optionsViewBuilder:
@@ -144,22 +123,7 @@ class SearchBar extends StatelessWidget {
                                     final String option = options.elementAt(index);
                                     return InkWell(
                                       onTap: () => onSelected(option),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: context.themeColor(
-                                            dark: Colors.grey.shade900,
-                                            light: Colors.grey.shade100,
-                                          ),
-                                          border: Border(
-                                            top: BorderSide(
-                                              width: 1,
-                                              color: context.themeColor(
-                                                dark: Colors.grey.shade800,
-                                                light: Colors.grey.shade200,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                      child: Padding(
                                         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                                         child: Text(
                                           option,

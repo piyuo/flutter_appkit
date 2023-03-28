@@ -42,14 +42,8 @@ main() {
 
   app.start(
     appName: 'delta example',
-    theme: ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.light,
-    ),
-    darkTheme: ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-    ),
+    theme: testing.theme(),
+    darkTheme: testing.darkTheme(),
     routesBuilder: () => {
       '/': (context, _, __) => dialog.cupertinoBottomSheet(const DeltaExample()),
     },
@@ -89,24 +83,12 @@ class DeltaExample extends StatelessWidget {
         value: _checkController,
         child: Consumer<ValueNotifier<bool>>(
             builder: (context, model, child) => Scaffold(
-                  drawer: ResponsiveDrawer(
-                    itemCount: 1,
-                    itemBuilder: (context, index) => ListTile(
-                      title: Text('$index'),
-                    ),
-                  ),
-                  endDrawer: ResponsiveDrawer(
-                    isEndDrawer: true,
-                    itemCount: 1,
-                    itemBuilder: (context, index) => ListTile(
-                      title: Text('$index'),
-                    ),
-                  ),
+                  appBar: AppBar(),
                   body: SafeArea(
                     child: Column(
                       children: [
                         Expanded(
-                          child: _webImage(context),
+                          child: _toolbar(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -133,7 +115,7 @@ class DeltaExample extends StatelessWidget {
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
                                 testing.ExampleButton(label: 'switch', builder: () => _switching(context)),
                                 testing.ExampleButton(label: 'segment', builder: () => _segment(context)),
-                                testing.ExampleButton(label: 'error', builder: () => _error(context)),
+                                testing.ExampleButton(label: 'error label', builder: () => _errorLabel(context)),
                                 testing.ExampleButton(label: 'side panel', builder: () => _sidePanel(context)),
                                 testing.ExampleButton(label: 'listing', builder: () => _listing(context)),
                                 testing.ExampleButton(label: 'check list', builder: () => _checkList(context)),
@@ -141,7 +123,6 @@ class DeltaExample extends StatelessWidget {
                                     label: 'show responsive dialog', builder: () => _showResponsiveDialog(context)),
                                 testing.ExampleButton(label: 'fold panel', builder: () => _foldPanel(context)),
                                 testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
-                                testing.ExampleButton(label: 'tool sheet', builder: () => _showToolSheet(context)),
                                 testing.ExampleButton(
                                     label: 'padding to center', builder: () => _paddingToCenter(context)),
                                 testing.ExampleButton(
@@ -162,8 +143,6 @@ class DeltaExample extends StatelessWidget {
 
   Widget _checkList(BuildContext context) {
     return CheckList(
-//      selectedTileColor: Colors.grey[300],
-      //     checkboxColor: Colors.grey,
       controller: _checkListController,
       onItemTap: (int key) {
         debugPrint('item $key tapped');
@@ -198,7 +177,6 @@ class DeltaExample extends StatelessWidget {
             width: 300,
             height: 300,
             child: Listing<int>(
-              dividerColor: Colors.grey,
               controller: ValueNotifier<int>(0),
               items: [
                 ListItem(1, title: 'item 1'),
@@ -217,16 +195,10 @@ class DeltaExample extends StatelessWidget {
             child: Listing<int>(
               controller: _listingController,
               shape: Shape.roundRight,
-              selectedTileColor: Colors.green[400],
-              selectedFontColor: Colors.grey[100],
-              fontColor: Colors.green[600],
               physics: const NeverScrollableScrollPhysics(),
               items: [
                 ListItem(1, title: 'item 1'),
                 ListItem(2, title: 'item 2', icon: Icons.card_giftcard),
-                const Divider(
-                  height: 1,
-                ),
                 ListItem(3, title: 'item 3', icon: Icons.card_giftcard, iconColor: Colors.red),
                 ListItem(4, title: 'item 4', icon: Icons.card_giftcard),
                 ListItem(5, title: 'item 5', icon: Icons.card_giftcard),
@@ -239,7 +211,7 @@ class DeltaExample extends StatelessWidget {
               tileBuilder: (BuildContext context, int key, dynamic item, bool selected) {
                 return key == 1
                     ? Container(
-                        height: 100,
+                        height: 80,
                         color: Colors.blue,
                         child: Center(
                           child: Text(
@@ -404,77 +376,71 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _webImage(BuildContext context) {
-    return Container(
-        color: context.themeColor(
-          light: Colors.grey.shade100,
-          dark: Colors.grey.shade900,
+    return Wrap(
+      spacing: 10.0,
+      runSpacing: 10.0,
+      children: [
+        OutlinedButton(
+          child: const Text('clear image cache'),
+          onPressed: () => webImageClearCache(),
         ),
-        height: double.infinity,
-        child: Wrap(
-          spacing: 10.0,
-          runSpacing: 10.0,
-          children: [
-            OutlinedButton(
-              child: const Text('clear image cache'),
-              onPressed: () => webImageClearCache(),
-            ),
-            Image.network(
+        Image.network(
+          'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          width: 300,
+          height: 300,
+        ),
+        WebImage(
+          url:
               'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              width: 300,
-              height: 300,
-            ),
-            WebImage(
-              url:
-                  'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              width: 300,
-              height: 300,
-              opacity: const AlwaysStoppedAnimation<double>(0.5),
-              border: Border.all(color: Colors.red, width: 1),
-              borderRadius: const BorderRadius.all(Radius.circular(30)),
-            ),
-            const WebImage(
+          width: 300,
+          height: 300,
+          opacity: const AlwaysStoppedAnimation<double>(0.5),
+          border: Border.all(color: Colors.red, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
+        ),
+        const WebImage(
+          url:
+              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          width: 300,
+          height: 300,
+        ),
+        const WebImage(
+          url: 'https://not-exists',
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          width: 300,
+          height: 300,
+        ),
+        const WebImage(
+          url: '',
+          width: 300,
+          height: 300,
+        ),
+        const SizedBox(
+            height: 100,
+            width: 200,
+            child: WebImage(
               url:
                   'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-              width: 300,
-              height: 300,
-            ),
-            const WebImage(
-              url: 'https://not-exists',
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              width: 300,
-              height: 300,
-            ),
-            const WebImage(
+            )),
+        const SizedBox(
+            height: 100,
+            width: 200,
+            child: WebImage(
               url: '',
-              width: 300,
-              height: 300,
-            ),
-            const SizedBox(
-                height: 100,
-                width: 200,
-                child: WebImage(
-                  url:
-                      'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                )),
-            const SizedBox(
-                height: 100,
-                width: 200,
-                child: WebImage(
-                  url: '',
-                )),
-            const WebImage(
-              url: 'https://not-exists',
+            )),
+        const WebImage(
+          url: 'https://not-exists',
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        const SizedBox(
+            height: 100,
+            width: 200,
+            child: WebImage(
+              url: '',
               borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            const SizedBox(
-                height: 100,
-                width: 200,
-                child: WebImage(
-                  url: '',
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                )),
-          ],
-        ));
+            )),
+      ],
+    );
   }
 
   Widget _isTouchSupported(BuildContext context) {
@@ -482,33 +448,30 @@ class DeltaExample extends StatelessWidget {
   }
 
   Widget _buttonPanel(BuildContext context) {
-    return Container(
-        color: Colors.grey.shade100,
-        padding: const EdgeInsets.all(50),
-        child: ButtonPanel<String>(
-          onPressed: (item) => debugPrint('$item pressed'),
-          checkedValues: const ['1'],
-          children: {
-            '0': Row(children: const [
-              Expanded(
-                child: Text('button', style: TextStyle(fontSize: 18)),
-              ),
-              Icon(Icons.add),
-            ]),
-            '1': Row(children: const [
-              Expanded(
-                child: Text('button 1', style: TextStyle(fontSize: 18)),
-              ),
-              Icon(Icons.dark_mode),
-            ]),
-            '2': Row(children: const [
-              Expanded(
-                child: Text('button 2', style: TextStyle(fontSize: 18)),
-              ),
-              Icon(Icons.accessibility),
-            ]),
-          },
-        ));
+    return ButtonPanel<String>(
+      onPressed: (item) => debugPrint('$item pressed'),
+      checkedValues: const ['1'],
+      children: {
+        '0': Row(children: const [
+          Expanded(
+            child: Text('button', style: TextStyle(fontSize: 18)),
+          ),
+          Icon(Icons.add),
+        ]),
+        '1': Row(children: const [
+          Expanded(
+            child: Text('button 1', style: TextStyle(fontSize: 18)),
+          ),
+          Icon(Icons.dark_mode),
+        ]),
+        '2': Row(children: const [
+          Expanded(
+            child: Text('button 2', style: TextStyle(fontSize: 18)),
+          ),
+          Icon(Icons.accessibility),
+        ]),
+      },
+    );
   }
 
   Widget _noData(BuildContext context) {
@@ -523,18 +486,15 @@ class DeltaExample extends StatelessWidget {
 
   Widget _shimmer(BuildContext context) {
     return ShimmerScope(
-        child: Column(children: [
-      const SizedBox(width: 200, height: 100, child: Shimmer()),
-      const Shimmer(width: 120, height: 30, radius: 15),
+        child: Wrap(spacing: 10, runSpacing: 10, children: const [
+      SizedBox(width: 200, height: 100, child: Shimmer()),
+      Shimmer(width: 120, height: 30, radius: 15),
       FittedBox(
-          child: Icon(
-        Icons.image,
-        size: 120,
-        color: context.themeColor(
-          dark: Colors.grey.shade800,
-          light: Colors.grey.shade400,
+        child: Icon(
+          Icons.image,
+          size: 120,
         ),
-      )),
+      ),
     ]));
   }
 
@@ -608,59 +568,47 @@ class DeltaExample extends StatelessWidget {
   Widget _searchBox(BuildContext context) {
     var controller1 = TextEditingController();
     var focusNode1 = FocusNode();
-    return Column(children: [
-      Padding(
-          padding: const EdgeInsets.all(20),
-          child: SearchBox(
-            controller: _searchBoxController,
-            //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
-          )),
-      const Divider(),
-      Padding(
-          padding: const EdgeInsets.all(20),
-          child: SearchBox(
-            controller: _searchBoxController,
-            prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
-            hintText: 'Search orders/products here',
-            onSuggestion: (pattern) async {
-              //             await Future.delayed(const Duration(seconds: 5));
-              if (pattern == 'a') {
-                return [SearchSuggestion('a', icon: Icons.add), SearchSuggestion('b'), SearchSuggestion('c')];
-              }
-              if (pattern == 'b') {
-                return [];
-              }
-              return [SearchSuggestion('hello', icon: Icons.add), SearchSuggestion('world')];
-            },
-          )),
-      const Divider(),
-      Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                  child: const Text('set text'),
-                  onPressed: () {
-                    controller1.text = 'hello world';
-                  }),
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            const TextField(),
+            SearchBox(
+              controller: _searchBoxController,
+              //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                  child: const Text('show suggestion'),
-                  onPressed: () {
-                    focusNode1.requestFocus();
-                  }),
+            SearchBox(
+              controller: _searchBoxController,
+              prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
+              hintText: 'Search orders/products here',
+              onSuggestion: (pattern) async {
+                //             await Future.delayed(const Duration(seconds: 5));
+                if (pattern == 'a') {
+                  return [SearchSuggestion('a', icon: Icons.add), SearchSuggestion('b'), SearchSuggestion('c')];
+                }
+                if (pattern == 'b') {
+                  return [];
+                }
+                return [SearchSuggestion('hello', icon: Icons.add), SearchSuggestion('world')];
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                  child: const Text('hide suggestion'),
-                  onPressed: () {
-                    focusNode1.unfocus();
-                  }),
-            ),
+            ElevatedButton(
+                child: const Text('set text'),
+                onPressed: () {
+                  controller1.text = 'hello world';
+                }),
+            ElevatedButton(
+                child: const Text('show suggestion'),
+                onPressed: () {
+                  focusNode1.requestFocus();
+                }),
+            ElevatedButton(
+                child: const Text('hide suggestion'),
+                onPressed: () {
+                  focusNode1.unfocus();
+                }),
             SearchBar(
               controller: controller1,
               focusNode: focusNode1,
@@ -683,8 +631,6 @@ class DeltaExample extends StatelessWidget {
               onSuggestionChanged: (text) => debugPrint('1. $text selected'),
               onTextChanged: (text) => debugPrint('1. text changed: $text'),
             ),
-            const SizedBox(height: 20),
-            const Text('no suggestion'),
             SearchBar(
               controller: TextEditingController(),
               onTextChanged: (text) => debugPrint('2.text changed: $text'),
@@ -710,8 +656,8 @@ class DeltaExample extends StatelessWidget {
               controller: TextEditingController(text: 'search now'),
               isDense: false,
             ),
-          ])),
-    ]);
+          ],
+        ));
   }
 
   Widget _checkbox(BuildContext context, ValueNotifier model) {
@@ -834,7 +780,7 @@ class DeltaExample extends StatelessWidget {
     ]);
   }
 
-  Widget _error(BuildContext context) {
+  Widget _errorLabel(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(20),
         child: Column(children: const [
@@ -1091,9 +1037,51 @@ class DeltaExample extends StatelessWidget {
         //      activeColor: Colors.blue,
         items: [
           ToolButton(
-            label: 'New File',
+            label: 'Show tool sheet',
             icon: Icons.new_label,
-            onPressed: () => debugPrint('new_file pressed'),
+            onPressed: () async {
+              await showToolSheet(
+                context,
+                items: [
+                  ToolButton(
+                    label: 'New File',
+                    icon: Icons.new_label,
+                    onPressed: () => debugPrint('new_file pressed'),
+                  ),
+                  ToolButton(
+                    label: 'Disabled',
+                    icon: Icons.cabin,
+                  ),
+                  ToolButton(
+                    label: 'abc',
+                    icon: Icons.abc_outlined,
+                    onPressed: () => debugPrint('abc pressed'),
+                  ),
+                  ToolSelection(
+                    label: 'Rows per page',
+                    icon: Icons.table_rows,
+                    selection: {
+                      '10': '10 rows2',
+                      '20': '20 rows2',
+                      '50': '50 rows2',
+                      '100': '100 rows2',
+                      '200': '200 rows2',
+                    },
+                    onPressed: (value) => debugPrint('$value pressed'),
+                  ),
+                  ToolButton(
+                    label: 'hi',
+                    icon: Icons.hail,
+                    onPressed: () => debugPrint('hi pressed'),
+                  ),
+                  ToolButton(
+                    label: 'hello',
+                    icon: Icons.handshake,
+                    onPressed: () => debugPrint('hello pressed'),
+                  ),
+                ],
+              );
+            },
             space: 10,
           ),
           ToolButton(
@@ -1152,55 +1140,6 @@ class DeltaExample extends StatelessWidget {
         ],
       ),
     ]);
-  }
-
-  Widget _showToolSheet(BuildContext context) {
-    return OutlinedButton(
-      child: const Text('show tool sheet'),
-      onPressed: () async {
-        await showToolSheet(
-          context,
-          items: [
-            ToolButton(
-              label: 'New File',
-              icon: Icons.new_label,
-              onPressed: () => debugPrint('new_file pressed'),
-            ),
-            ToolButton(
-              label: 'Disabled',
-              icon: Icons.cabin,
-            ),
-            ToolButton(
-              label: 'abc',
-              icon: Icons.abc_outlined,
-              onPressed: () => debugPrint('abc pressed'),
-            ),
-            ToolSelection(
-              label: 'Rows per page',
-              icon: Icons.table_rows,
-              selection: {
-                '10': '10 rows2',
-                '20': '20 rows2',
-                '50': '50 rows2',
-                '100': '100 rows2',
-                '200': '200 rows2',
-              },
-              onPressed: (value) => debugPrint('$value pressed'),
-            ),
-            ToolButton(
-              label: 'hi',
-              icon: Icons.hail,
-              onPressed: () => debugPrint('hi pressed'),
-            ),
-            ToolButton(
-              label: 'hello',
-              icon: Icons.handshake,
-              onPressed: () => debugPrint('hello pressed'),
-            ),
-          ],
-        );
-      },
-    );
   }
 }
 

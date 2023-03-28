@@ -73,7 +73,6 @@ class SearchBox extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                     decoration: InputDecoration(
-                      //focusColor: context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade300),
                       contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
                       isDense: true,
                       counterText: '',
@@ -89,7 +88,6 @@ class SearchBox extends StatelessWidget {
                       border: OutlineInputBorder(
                         gapPadding: 0,
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.grey),
                       ),
                       hintText: hintText,
                     ),
@@ -103,26 +101,20 @@ class SearchBox extends StatelessWidget {
                     }
                     return await onSuggestion!(value);
                   },
-                  /*suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
                     elevation: 1,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade600),
-                      ),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    color: context.themeColor(
-                      light: Colors.grey.shade50.withOpacity(0.9),
-                      dark: Colors.grey.shade900.withOpacity(0.95),
-                    ),
+                    color: Theme.of(context).colorScheme.tertiary,
                     clipBehavior: Clip.antiAlias,
-                  ),*/
+                  ),
                   itemBuilder: (context, suggestion) {
                     return ListTile(
                       horizontalTitleGap: 0,
                       dense: !phoneScreen,
-                      title: Text(suggestion.label),
-                      leading: Icon(suggestion.icon),
+                      title: Text(suggestion.label, style: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
+                      leading: Icon(suggestion.icon, color: Theme.of(context).colorScheme.onTertiary),
                     );
                   },
                   onSuggestionSelected: (suggestion) => controller.text = suggestion.value ?? suggestion.label,

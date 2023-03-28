@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 import 'list_item.dart';
 
 enum Shape { round, roundRight }
@@ -13,13 +12,9 @@ class Listing<T> extends StatelessWidget {
     this.textBuilder,
     this.tileBuilder,
     this.shape,
-    this.selectedTileColor,
-    this.selectedFontColor,
-    this.fontColor,
     this.dense = false,
     this.padding,
     this.physics,
-    this.dividerColor,
     Key? key,
   }) : super(key: key);
 
@@ -31,15 +26,6 @@ class Listing<T> extends StatelessWidget {
 
   /// shape is item shape
   final Shape? shape;
-
-  /// selectedTileColor is item tile selected color
-  final Color? selectedTileColor;
-
-  /// selectedFontColor is item font selected color
-  final Color? selectedFontColor;
-
-  /// fontColor is font default color
-  final Color? fontColor;
 
   /// items keep all list item
   final List<dynamic> items;
@@ -59,17 +45,6 @@ class Listing<T> extends StatelessWidget {
   /// physics is list view physics
   final ScrollPhysics? physics;
 
-  /// dividerColor set divider with color in each ListTile
-  final Color? dividerColor;
-
-  Color _fontColor(BuildContext context) {
-    return fontColor ??
-        context.themeColor(
-          light: Colors.grey.shade800,
-          dark: Colors.grey.shade200,
-        );
-  }
-
   Widget _buildText(BuildContext context, T key, String? text, bool selected) {
     if (textBuilder != null) {
       Widget? widget = textBuilder!(context, key, text ?? key.toString(), selected);
@@ -78,11 +53,7 @@ class Listing<T> extends StatelessWidget {
       }
     }
 
-    return Text(text ?? key.toString(),
-        style: TextStyle(
-          fontSize: 18,
-          color: selected ? selectedFontColor ?? context.invertedColor : _fontColor(context),
-        ));
+    return Text(text ?? key.toString(), style: Theme.of(context).textTheme.bodyLarge);
   }
 
   Widget _buildTile(
@@ -114,11 +85,6 @@ class Listing<T> extends StatelessWidget {
                     ))
           : null,
       selected: selected,
-      selectedTileColor: selectedTileColor ??
-          context.themeColor(
-            light: Colors.grey.shade300,
-            dark: Colors.grey.shade700,
-          ),
       onTap: onTap,
       minLeadingWidth: 0,
       contentPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
@@ -126,7 +92,7 @@ class Listing<T> extends StatelessWidget {
           ? Icon(
               item.icon,
               size: 24,
-              color: item.iconColor ?? (selected ? selectedFontColor ?? context.invertedColor : _fontColor(context)),
+              //            color: item.iconColor ?? (selected ? selectedFontColor ?? context.invertedColor : _fontColor(context)),
             )
           : null,
       title: _buildText(
@@ -149,8 +115,7 @@ class Listing<T> extends StatelessWidget {
             itemCount: items.length,
             shrinkWrap: true,
             padding: padding ?? const EdgeInsets.symmetric(horizontal: 5),
-            separatorBuilder: (BuildContext context, int i) =>
-                dividerColor != null ? Divider(color: dividerColor!, height: 1) : const SizedBox(),
+            separatorBuilder: (BuildContext context, int i) => const Divider(height: 1),
             itemBuilder: (BuildContext context, int i) {
               final item = items[i];
               if (item is ListItem<T>) {

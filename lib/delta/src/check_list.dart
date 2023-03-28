@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'list_item.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 
 class CheckList<T> extends StatelessWidget {
   const CheckList({
@@ -9,11 +8,6 @@ class CheckList<T> extends StatelessWidget {
     required this.controller,
     this.onItemTap,
     this.itemBuilder,
-    this.selectedTileColor,
-    this.selectedFontColor,
-    this.dividerColor,
-    this.checkboxColor,
-    this.fontColor,
     this.dense = false,
     this.padding,
     this.physics,
@@ -25,21 +19,6 @@ class CheckList<T> extends StatelessWidget {
 
   /// dense
   final bool dense;
-
-  /// checkColor is checkbox color
-  final Color? checkboxColor;
-
-  /// selectedTileColor is item tile selected color
-  final Color? selectedTileColor;
-
-  /// selectedFontColor is item font selected color
-  final Color? selectedFontColor;
-
-  /// fontColor is font default color
-  final Color? fontColor;
-
-  /// dividerColor set divider with color in each ListTile
-  final Color? dividerColor;
 
   /// items keep all list item
   final List<ListItem<T>> items;
@@ -56,14 +35,6 @@ class CheckList<T> extends StatelessWidget {
   /// physics is list view physics
   final ScrollPhysics? physics;
 
-  Color _fontColor(BuildContext context) {
-    return fontColor ??
-        context.themeColor(
-          light: Colors.grey.shade800,
-          dark: Colors.grey.shade200,
-        );
-  }
-
   Widget _buildItem(BuildContext context, ListItem<T> item, bool selected) {
     if (itemBuilder != null) {
       Widget? widget = itemBuilder!(context, item.key, item, selected);
@@ -74,18 +45,8 @@ class CheckList<T> extends StatelessWidget {
 
     return Row(
       children: [
-        if (item.icon != null)
-          Padding(
-              padding: const EdgeInsets.only(right: 14),
-              child: Icon(
-                item.icon,
-                color: item.iconColor ?? (selected ? selectedFontColor : _fontColor(context)),
-              )),
-        Text(item.title ?? key.toString(),
-            style: TextStyle(
-              fontSize: 18,
-              color: selected ? selectedFontColor ?? context.invertedColor : _fontColor(context),
-            ))
+        if (item.icon != null) Padding(padding: const EdgeInsets.only(right: 14), child: Icon(item.icon)),
+        Text(item.title ?? key.toString())
       ],
     );
   }
@@ -94,9 +55,9 @@ class CheckList<T> extends StatelessWidget {
   bool isSelected(T key) => controller.value.contains(key);
 
   /// setSelected set item selected
-  void setSelected(T key, bool value) {
+  void setSelected(T key, bool? value) {
     var list = <T>[...controller.value];
-    if (value) {
+    if (value == true) {
       if (!list.contains(key)) {
         list.add(key);
       }
@@ -118,16 +79,10 @@ class CheckList<T> extends StatelessWidget {
     return ListTile(
       dense: dense,
       selected: isItemSelected,
-      selectedTileColor: selectedTileColor ??
-          context.themeColor(
-            light: Colors.grey.shade300,
-            dark: Colors.grey.shade700,
-          ),
       contentPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-      leading: delta.RoundCheckbox(
-        fillColor: checkboxColor,
-        checked: isItemSelected,
-        onChanged: (bool value) => setSelected(key, value),
+      leading: Checkbox(
+        value: isItemSelected,
+        onChanged: (bool? value) => setSelected(key, value),
       ),
       onTap: () {
         if (onItemTap != null) {
@@ -135,12 +90,11 @@ class CheckList<T> extends StatelessWidget {
         }
       },
       trailing: onItemTap != null
-          ? Padding(
-              padding: const EdgeInsets.only(right: 20),
+          ? const Padding(
+              padding: EdgeInsets.only(right: 20),
               child: Icon(
                 Icons.arrow_forward_ios,
                 size: 24,
-                color: checkboxColor ?? Colors.grey,
               ))
           : null,
       title: _buildItem(
@@ -162,8 +116,7 @@ class CheckList<T> extends StatelessWidget {
             itemCount: items.length,
             shrinkWrap: true,
             padding: padding ?? const EdgeInsets.symmetric(horizontal: 5),
-            separatorBuilder: (BuildContext context, int i) =>
-                dividerColor != null ? Divider(color: dividerColor!, height: 1) : const SizedBox(),
+            separatorBuilder: (BuildContext context, int i) => const Divider(height: 1),
             itemBuilder: (BuildContext context, int i) {
               final item = items[i];
               return _buildTile(context, item);

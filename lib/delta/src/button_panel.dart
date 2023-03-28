@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 
+/// ButtonPanel show list of button to click
 class ButtonPanel<T> extends StatelessWidget {
-  /// ButtonPanel show list of button to click
-  ///
   /// ```dart
   /// ButtonPanel<String>(
   ///        onPressed: (item) => debugPrint('$item pressed'),
@@ -24,17 +22,7 @@ class ButtonPanel<T> extends StatelessWidget {
     this.checkedValues,
     this.foregroundColor,
     this.backgroundColor,
-    this.checkColor,
   }) : super(key: key);
-
-  /// foregroundColor is the color of the text
-  final Color? foregroundColor;
-
-  /// backgroundColor is the color of the background
-  final Color? backgroundColor;
-
-  /// checkColor is the check color
-  final Color? checkColor;
 
   /// children is the list of buttons
   final Map<T, Widget> children;
@@ -46,6 +34,10 @@ class ButtonPanel<T> extends StatelessWidget {
   final void Function(T value) onPressed;
 
   bool isItemChecked(T value) => checkedValues != null && checkedValues!.contains(value);
+
+  final Color? foregroundColor;
+
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -60,17 +52,16 @@ class ButtonPanel<T> extends StatelessWidget {
             bottomLeft: i == children.entries.length - 1 ? const Radius.circular(15) : Radius.zero,
             bottomRight: i == children.entries.length - 1 ? const Radius.circular(15) : Radius.zero,
           )),
-          backgroundColor: backgroundColor ?? context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
-          foregroundColor:
-              foregroundColor ?? context.themeColor(light: Colors.grey.shade700, dark: Colors.grey.shade200),
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
           elevation: 0,
+          foregroundColor: foregroundColor,
+          backgroundColor: backgroundColor,
         ),
         label: children.values.elementAt(i),
         icon: checkedValues != null
             ? isItemChecked(children.entries.elementAt(i).key)
-                ? Icon(Icons.check, color: checkColor ?? Colors.amber.shade700)
+                ? Icon(Icons.check, color: Theme.of(context).colorScheme.secondary)
                 : const SizedBox(width: 24)
             : const SizedBox(),
         onPressed: () => onPressed(children.entries.elementAt(i).key),

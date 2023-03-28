@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart' as shimmer;
-import 'delta.dart';
 
 class ShimmerScope extends StatelessWidget {
   /// ShimmerScope set scope for all shimmer spot
@@ -19,8 +18,8 @@ class ShimmerScope extends StatelessWidget {
   Widget build(BuildContext context) {
     return enabled
         ? shimmer.Shimmer.fromColors(
-            baseColor: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
-            highlightColor: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade600),
+            baseColor: Theme.of(context).colorScheme.secondary.withOpacity(.2),
+            highlightColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(.2),
             enabled: true,
             child: child,
           )
@@ -54,7 +53,7 @@ class Shimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade800),
+        color: Colors.grey,
         borderRadius: BorderRadius.all(Radius.circular(radius)),
       ),
       margin: margin,

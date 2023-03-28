@@ -135,7 +135,6 @@ Future<T?> showTagView<T>(
 }) async {
   return await dialog.showSide<T>(
     context,
-    color: tagViewBackgroundColor(context),
     child: TagView<T>(
       header: header,
       onTagSelected: onTagSelected != null

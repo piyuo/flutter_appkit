@@ -102,7 +102,7 @@ class PopText extends Link {
   }) : super(
           text: text,
           textStyle: textStyle,
-          onPressed: (context, details) => dialog.showMoreText(
+          onPressed: (context, details) => dialog.showHint(
             context,
             text: content,
             targetRect: Rect.fromLTWH(details.globalPosition.dx, details.globalPosition.dy, 0, 15),

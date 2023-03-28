@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dotted_decoration/dotted_decoration.dart';
-import 'delta.dart';
 
 /// ErrorLabel display error message in a label
 class ErrorLabel extends StatelessWidget {
@@ -10,6 +8,7 @@ class ErrorLabel extends StatelessWidget {
     this.iconSize = 24,
     this.space = 4,
     this.icon = Icons.priority_high_outlined,
+    this.color,
     Key? key,
   }) : super(key: key);
 
@@ -24,28 +23,20 @@ class ErrorLabel extends StatelessWidget {
 
   final double space;
 
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon,
-            color: context.themeColor(
-              light: Colors.red.shade700,
-              dark: Colors.red.shade300,
-            ),
-            size: iconSize),
+        Icon(icon, color: color ?? Theme.of(context).colorScheme.error, size: iconSize),
         SizedBox(width: space),
         Expanded(
           child: Text(
             message,
             maxLines: maxLines,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: context.themeColor(
-                  light: Colors.red.shade700,
-                  dark: Colors.red.shade400,
-                ),
-                fontSize: 16),
+            style: TextStyle(color: color ?? Theme.of(context).colorScheme.error),
           ),
         ),
       ],
@@ -70,9 +61,8 @@ class ErrorBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: DottedDecoration(
-        shape: Shape.box,
-        color: Colors.red.shade400,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.errorContainer,
         borderRadius: BorderRadius.circular(10),
       ),
       child: ErrorLabel(
@@ -81,6 +71,7 @@ class ErrorBox extends StatelessWidget {
         maxLines: maxLines,
         iconSize: 40,
         space: 20,
+        color: Theme.of(context).colorScheme.onErrorContainer,
       ),
     );
   }
