@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:libcli/general/general.dart' as general;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 /// cupertinoBottomSheet wrap child so showSheet can work normally
@@ -33,7 +32,6 @@ Future<T?> showPopup<T>(
   double? maxWidth,
   double? maxHeight,
   double? heightFactor,
-  Color? backgroundColor,
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
 }) async {
@@ -51,7 +49,6 @@ Future<T?> showPopup<T>(
               topBuilder: topBuilder,
               bottomBuilder: bottomBuilder,
               wrapper: wrapper,
-              backgroundColor: backgroundColor,
               borderRadius: borderRadius,
               padding: padding,
             ),
@@ -116,7 +113,6 @@ Future<T?> showSheet<T>(
               topBuilder: topBuilder,
               bottomBuilder: bottomBuilder,
               wrapper: wrapper,
-              backgroundColor: backgroundColor,
               borderRadius: borderRadius,
               padding: padding,
               //controller: ModalScrollController.of(context), no use for now, it will cause problem with change layout
@@ -128,11 +124,7 @@ Future<T?> showSheet<T>(
           // bottom sheet from root
           ? await CupertinoScaffold.showCupertinoModalBottomSheet<T>(
               context: context,
-              backgroundColor: backgroundColor ??
-                  context.themeColor(
-                    light: Colors.grey.shade100,
-                    dark: Colors.grey.shade900,
-                  ),
+              backgroundColor: backgroundColor,
               expand: expand,
               builder: builder,
             )
@@ -168,11 +160,11 @@ Widget _buildDialogWithContent(
   general.WidgetContextBuilder? topBuilder,
   general.WidgetContextBuilder? bottomBuilder,
   general.WidgetContextWrapper? wrapper,
-  Color? backgroundColor,
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
   ScrollController? controller,
 }) {
+  final colorScheme = Theme.of(context).colorScheme;
   Widget content = Stack(
     children: [
       Padding(
@@ -193,7 +185,7 @@ Widget _buildDialogWithContent(
           child: Container(
             width: 19,
             height: 19,
-            color: Colors.white,
+            color: colorScheme.onSecondary,
           ),
         ),
       if (closeButtonBuilder == null)
@@ -202,14 +194,8 @@ Widget _buildDialogWithContent(
           right: 0,
           child: IconButton(
             iconSize: 38,
-            color: Colors.black,
-            icon: const Icon(Icons.cancel, shadows: [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(2, 2),
-                blurRadius: 5,
-              ),
-            ]),
+            color: colorScheme.secondary,
+            icon: const Icon(Icons.cancel),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -218,30 +204,10 @@ Widget _buildDialogWithContent(
     ],
   );
 
-  if (wrapper != null) {
-    content = wrapper(context, content);
-  }
-  content = Material(
-    color: backgroundColor ??
-        context.themeColor(
-          light: Colors.grey.shade100,
-          dark: Colors.grey.shade900,
-        ),
-    child: content,
-  ); // add Material to make BouncingScrollPhysics happy
-  return Container(
+  return Material(
+    borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
     clipBehavior: Clip.antiAlias,
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.2),
-          spreadRadius: 3,
-          blurRadius: 5,
-          offset: const Offset(2, 2), // changes position of shadow
-        )
-      ],
-      borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 16)),
-    ),
-    child: content,
+    elevation: 5,
+    child: wrapper != null ? wrapper(context, content) : content,
   );
 }

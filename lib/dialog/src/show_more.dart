@@ -1,13 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 import 'popup.dart';
 
 const arrowHeight = 12.0;
 const arrowWidth = 24.0;
 
-/// targetShowMore show small popup below or above target
-Popup targetShowMore(
+/// showTooltipOnTarget show small popup below or above target
+/// it use colorScheme.secondary as background color
+Popup showTooltipOnTarget(
   BuildContext context, {
   required Widget child,
   required Size size, // size is child size
@@ -15,28 +15,22 @@ Popup targetShowMore(
   Color? backgroundColor,
 }) {
   Rect targetRect = getWidgetGlobalRect(targetKey);
-  return showMore(
+  return showTooltip(
     context,
     child: child,
     size: size,
     targetRect: targetRect,
-    backgroundColor: backgroundColor,
   );
 }
 
-/// showMore show small popup below or above rect
-Popup showMore(
+/// showTooltip show small popup below or above rect
+/// it use colorScheme.secondary as background color
+Popup showTooltip(
   BuildContext context, {
   required Widget child,
   required Size size, // size is child size
   required Rect targetRect,
-  Color? backgroundColor,
 }) {
-  backgroundColor = backgroundColor ??
-      context.themeColor(
-        light: Colors.grey.shade100,
-        dark: Colors.grey.shade800,
-      );
   final screenSize = window.physicalSize / window.devicePixelRatio;
   bool triangleInBottom = false;
 
@@ -60,6 +54,7 @@ Popup showMore(
     triangleInBottom = true;
   }
 
+  final colorScheme = Theme.of(context).colorScheme;
   return Popup()
     ..showWidget(
       context,
@@ -73,7 +68,7 @@ Popup showMore(
                 width: size.width,
                 height: size.height,
                 child: Material(
-                  color: backgroundColor,
+                  color: colorScheme.secondary,
                   elevation: 10,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
@@ -89,7 +84,7 @@ Popup showMore(
             top: triangleInBottom ? dy + size.height : dy - arrowHeight,
             child: CustomPaint(
               size: const Size(arrowWidth, arrowHeight),
-              painter: _TrianglePainter(isDown: triangleInBottom, color: backgroundColor),
+              painter: _TrianglePainter(isDown: triangleInBottom, color: colorScheme.secondary),
             ),
           ),
         ],
@@ -97,15 +92,17 @@ Popup showMore(
     );
 }
 
-/// showMoreText show more text popup
-void showMoreText(
+/// showHint show hint text tooltip
+/// it use colorScheme.secondary as background color
+void showHint(
   BuildContext context, {
   required String text,
   required Size size,
   required Rect targetRect,
   TextStyle? textStyle,
 }) {
-  showMore(
+  final colorScheme = Theme.of(context).colorScheme;
+  showTooltip(
     context,
     targetRect: targetRect,
     size: size,
@@ -113,7 +110,7 @@ void showMoreText(
         padding: const EdgeInsets.all(20),
         child: Text(
           text,
-          style: textStyle ?? TextStyle(color: context.invertedColor),
+          style: textStyle ?? TextStyle(color: colorScheme.onSecondary),
         )),
   );
 }

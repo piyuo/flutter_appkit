@@ -39,16 +39,18 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _alert(context),
+            child: _shoreMore(context),
           ),
           Wrap(
+            spacing: 10,
+            runSpacing: 10,
             children: [
               testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
-              testing.ExampleButton(label: 'tooltip', builder: () => _tooltip(context)),
+              testing.ExampleButton(label: 'tooltip', builder: () => _shoreMore(context)),
               testing.ExampleButton(label: 'toast', builder: () => _toast(context)),
               testing.ExampleButton(label: 'show popup/sheet', builder: () => _showPopupSheet(context)),
               testing.ExampleButton(label: 'banner', builder: () => _banner(context)),
-              testing.ExampleButton(label: 'route', builder: () => _route(context)),
+              testing.ExampleButton(label: 'route', builder: () => _routeOrDialog(context)),
               testing.ExampleButton(label: 'selection', builder: () => _selection(context)),
               testing.ExampleButton(label: 'popup', builder: () => _popup(context)),
             ],
@@ -232,42 +234,44 @@ class DialogExample extends StatelessWidget {
         ]));
   }
 
-  Widget _tooltip(BuildContext context) {
+  Widget _shoreMore(BuildContext context) {
     return Wrap(
+      spacing: 10,
+      runSpacing: 10,
       children: [
         ElevatedButton(
           key: btnShowMore,
-          child: const Text('show more'),
-          onPressed: () => targetShowMore(
+          child: const Text('show tooltip on target'),
+          onPressed: () => showTooltipOnTarget(
             context,
             targetKey: btnShowMore,
             size: const Size(180, 180),
             child: Container(
                 alignment: Alignment.center,
-                child: Text('hello world', style: TextStyle(color: context.invertedColor))),
+                child: Text('hello world', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary))),
           ),
         ),
         ElevatedButton(
           key: btnShowMoreOffset,
-          child: const Text('show more offset'),
+          child: const Text('show tooltip'),
           onPressed: () {
             var rect = getWidgetGlobalRect(btnShowMoreOffset);
-            showMore(
+            showTooltip(
               context,
               size: const Size(180, 120),
               targetRect: rect,
               child: Container(
                   alignment: Alignment.center,
-                  child: Text('hello world', style: TextStyle(color: context.invertedColor))),
+                  child: Text('hello world', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary))),
             );
           },
         ),
         ElevatedButton(
           key: btnShowMoreText,
-          child: const Text('show more text'),
+          child: const Text('show hint'),
           onPressed: () {
             var rect = getWidgetGlobalRect(btnShowMoreText);
-            showMoreText(
+            showHint(
               context,
               targetRect: rect,
               size: const Size(180, 120),
@@ -361,16 +365,16 @@ class DialogExample extends StatelessWidget {
         onPressed: () => toastDone(text: 'add item to cart'),
       ),
       ElevatedButton(
-        child: const Text('fail'),
+        child: const Text('error'),
         onPressed: () => toastError('item already exist'),
       ),
       ElevatedButton(
         child: const Text('info'),
         onPressed: () => toastInfo('network is slow than usual',
-            widget: const Icon(
+            widget: Icon(
               Icons.wifi,
               size: 68,
-              color: Colors.blue,
+              color: Theme.of(context).colorScheme.onPrimary,
             )),
       ),
       ElevatedButton(
@@ -387,128 +391,131 @@ class DialogExample extends StatelessWidget {
   }
 
   Widget _showPopupSheet(BuildContext context) {
-    return Wrap(children: [
-      ElevatedButton(
-        child: const Text('show popup'),
-        onPressed: () => showPopup(
-          context,
-          padding: const EdgeInsets.only(top: 20),
-          //maxHeight: 100,
-          bottomBuilder: (context) => Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: Center(
-                  child: ElevatedButton(
-                child: const Text('Close'),
-                onPressed: () => Navigator.pop(context),
-              ))),
-          itemBuilder: (context, index) => Column(
-            children: const [
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        ElevatedButton(
+          child: const Text('show popup'),
+          onPressed: () => showPopup(
+            context,
+            padding: const EdgeInsets.only(top: 20),
+            //maxHeight: 100,
+            bottomBuilder: (context) => Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                    child: ElevatedButton(
+                  child: const Text('Close'),
+                  onPressed: () => Navigator.pop(context),
+                ))),
+            itemBuilder: (context, index) => Column(
+              children: const [
+                SizedBox(height: 180, child: Placeholder()),
+                SizedBox(height: 20),
+                Text('hello world'),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ),
+        ElevatedButton(
+          child: const Text('show scroll popup'),
+          onPressed: () => showPopup(
+            context,
+            itemCount: 11,
+            itemBuilder: (context, index) => const [
               SizedBox(height: 180, child: Placeholder()),
               SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
               Text('hello world'),
               SizedBox(height: 20),
-            ],
+            ][index],
           ),
         ),
-      ),
-      ElevatedButton(
-        child: const Text('show scroll popup'),
-        onPressed: () => showPopup(
-          context,
-          itemCount: 11,
-          itemBuilder: (context, index) => const [
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            Text('hello world'),
-            SizedBox(height: 20),
-          ][index],
-        ),
-      ),
-      ElevatedButton(
-        child: const Text('show sheet'),
-        onPressed: () => showSheet(
-          context,
-          padding: const EdgeInsets.only(top: 20),
+        ElevatedButton(
+          child: const Text('show sheet'),
+          onPressed: () => showSheet(
+            context,
+            padding: const EdgeInsets.only(top: 20),
 //          maxHeight: 100,
-          bottomBuilder: (context) => Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: Center(
-                  child: ElevatedButton(
-                child: const Text('Close'),
-                onPressed: () => Navigator.pop(context),
-              ))),
+            bottomBuilder: (context) => Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                    child: ElevatedButton(
+                  child: const Text('Close'),
+                  onPressed: () => Navigator.pop(context),
+                ))),
 //          backgroundColor: Colors.red,
-          itemBuilder: (context, _) => Column(
-            children: [
-              const SizedBox(height: 180, child: Placeholder()),
-              const Text('hello world'),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                  child: const Text('show sheet'),
-                  onPressed: () => showSheet(
-                        context,
-                        fromRoot: false,
-                        heightFactor: 0.95,
-                        itemBuilder: (context, _) => const Text('hello'),
-                      ))
-            ],
+            itemBuilder: (context, _) => Column(
+              children: [
+                const SizedBox(height: 180, child: Placeholder()),
+                const Text('hello world'),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                    child: const Text('show sheet'),
+                    onPressed: () => showSheet(
+                          context,
+                          fromRoot: false,
+                          heightFactor: 0.95,
+                          itemBuilder: (context, _) => const Text('hello'),
+                        ))
+              ],
+            ),
           ),
         ),
-      ),
-      ElevatedButton(
-        child: const Text('show scroll sheet'),
-        onPressed: () => showSheet(
-          context,
-          heightFactor: 0.8,
-          itemCount: 11,
-          itemBuilder: (context, index) => const [
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            SizedBox(height: 20),
-            SizedBox(height: 180, child: Placeholder()),
-            Text('hello world'),
-            SizedBox(height: 20),
-          ][index],
+        ElevatedButton(
+          child: const Text('show scroll sheet'),
+          onPressed: () => showSheet(
+            context,
+            heightFactor: 0.8,
+            itemCount: 11,
+            itemBuilder: (context, index) => const [
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              SizedBox(height: 20),
+              SizedBox(height: 180, child: Placeholder()),
+              Text('hello world'),
+              SizedBox(height: 20),
+            ][index],
+          ),
         ),
-      ),
-      ElevatedButton(
-        child: const Text('show side'),
-        onPressed: () => showSide(
-          context,
-          color: Colors.green.shade300,
-          child: Column(children: [
-            const SizedBox(height: 30),
-            SizedBox(
-                height: 80,
-                child: ElevatedButton(
-                  child: const Text('close'),
-                  onPressed: () => Navigator.pop(context),
-                )),
-            const SizedBox(height: 20),
-            const SizedBox(height: 80, child: Placeholder()),
-            const SizedBox(height: 20),
-            const SizedBox(height: 80, child: Placeholder()),
-            const SizedBox(height: 120),
-          ]),
+        ElevatedButton(
+          child: const Text('show side'),
+          onPressed: () => showSide(
+            context,
+            child: Column(children: [
+              const SizedBox(height: 30),
+              SizedBox(
+                  height: 80,
+                  child: ElevatedButton(
+                    child: const Text('close'),
+                    onPressed: () => Navigator.pop(context),
+                  )),
+              const SizedBox(height: 20),
+              const SizedBox(height: 80, child: Placeholder()),
+              const SizedBox(height: 20),
+              const SizedBox(height: 80, child: Placeholder()),
+              const SizedBox(height: 120),
+            ]),
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 
   Widget _banner(BuildContext context) {
@@ -536,36 +543,23 @@ class DialogExample extends StatelessWidget {
     ]);
   }
 
-  Widget _route(BuildContext context) {
-    return Wrap(children: [
+  Widget _routeOrDialog(BuildContext context) {
+    return Wrap(spacing: 10, runSpacing: 10, children: [
       ElevatedButton(
         child: const Text('normal'),
         onPressed: () => routeOrDialog(
           context,
-          Container(color: Colors.blue),
-        ),
-      ),
-      ElevatedButton(
-        child: const Text('route'),
-        onPressed: () => routeOrDialog(
-          context,
-          Container(color: Colors.blue),
-          min: const Size(300, 400),
-        ),
-      ),
-      ElevatedButton(
-        child: const Text('dialog'),
-        onPressed: () => routeOrDialog(
-          context,
-          Container(color: Colors.blue),
-          min: const Size(3000, 4000),
+          Scaffold(
+            appBar: AppBar(title: const Text('normal')),
+            body: Container(color: Colors.blue),
+          ),
         ),
       ),
     ]);
   }
 
   Widget _selection(BuildContext context) {
-    return Wrap(children: [
+    return Wrap(spacing: 10, runSpacing: 10, children: [
       ElevatedButton(
         child: const Text('single selection'),
         onPressed: () async {

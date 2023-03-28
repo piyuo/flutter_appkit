@@ -8,30 +8,27 @@ import 'package:libcli/delta/delta.dart' as delta;
 void _applyTheme({
   EasyLoadingIndicatorType indicatorType = EasyLoadingIndicatorType.fadingCircle,
 }) {
-  var mediaQuery = MediaQuery.of(delta.globalContext);
-  var color = delta.globalContext.themeColor(light: Colors.white, dark: Colors.black);
+  final colorScheme = Theme.of(delta.globalContext).colorScheme;
+  final mediaQuery = MediaQuery.of(delta.globalContext);
 
   EasyLoading.instance
     ..indicatorSize = 140.0
     ..radius = 26.0
-    ..backgroundColor = delta.globalContext.themeColor(
-      light: Colors.black.withOpacity(0.7),
-      dark: Colors.white.withOpacity(0.7),
-    )
-    ..boxShadow = const [
+    ..backgroundColor = colorScheme.primary.withOpacity(0.7)
+    ..boxShadow = [
       BoxShadow(
-        color: Colors.black26,
-        blurRadius: 15.0,
-        offset: Offset(3, 4),
+        color: colorScheme.surfaceTint.withOpacity(0.5),
+        blurRadius: 3,
+        offset: const Offset(1, 1),
       ),
     ]
     ..indicatorType = indicatorType
     ..loadingStyle = EasyLoadingStyle.custom
-    ..indicatorColor = color
-    ..textColor = color
+    ..indicatorColor = colorScheme.onPrimary
+    ..textColor = colorScheme.onPrimary
     ..progressWidth = 8
-    ..progressColor = color
-    ..textStyle = TextStyle(fontSize: 18, color: color);
+    ..progressColor = colorScheme.onPrimary
+    ..textStyle = TextStyle(fontSize: 18, color: colorScheme.onPrimary);
 
   double width = mediaQuery.size.width;
   if (width > 600) {
@@ -42,7 +39,7 @@ void _applyTheme({
       ..textPadding = const EdgeInsets.symmetric(vertical: 10, horizontal: 20)
       ..textStyle = TextStyle(
         fontSize: 24,
-        color: color,
+        color: colorScheme.onPrimary,
         fontWeight: FontWeight.bold,
       );
   }
@@ -133,11 +130,14 @@ void toastInfo(
 /// toastError show error toast
 void toastError(String text) {
   _applyTheme();
+  final colorScheme = Theme.of(delta.globalContext).colorScheme;
   EasyLoading.instance
-    ..backgroundColor = Colors.red[700]
+    ..backgroundColor = colorScheme.error.withOpacity(0.7)
     ..loadingStyle = EasyLoadingStyle.custom
-    ..indicatorColor = Colors.white
-    ..textColor = Colors.white;
+    ..indicatorColor = colorScheme.onError
+    ..textColor = colorScheme.onError
+    ..textStyle = TextStyle(fontSize: 18, color: colorScheme.onError);
+
   EasyLoading.showError(
     text,
     maskType: EasyLoadingMaskType.none,

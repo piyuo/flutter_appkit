@@ -19,7 +19,7 @@ void main() {
               child: const Text('button'),
               onPressed: () {
                 var rect = getWidgetGlobalRect(btnShowMore);
-                showMore(
+                showTooltip(
                   context,
                   size: const Size(180, 120),
                   targetRect: rect,

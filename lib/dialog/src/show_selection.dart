@@ -1,12 +1,68 @@
 import 'dart:async';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import '../src/route.dart';
+
+/// showSingleSelection show a string select dialog
+Future<T?> showSingleSelection<T>(
+  BuildContext context, {
+  required Map<T, String> items,
+  String? title,
+  Future<Map<T, String>> Function(BuildContext context)? onRefresh,
+}) async {
+  return await routeOrDialog<T>(
+    context,
+    SingleSelection(
+      items: items,
+      title: title,
+      controller: ValueNotifier<T?>(null),
+    ),
+  );
+}
+
+class SingleSelection<T> extends StatefulWidget {
+  const SingleSelection({
+    Key? key,
+    required this.items,
+    required this.controller,
+    this.title,
+  }) : super(key: key);
+
+  final Map<T, String> items;
+
+  final ValueNotifier<T> controller;
+
+  final String? title;
+
+  @override
+  State<StatefulWidget> createState() => _SingleSelectionState<T>();
+}
+
+class _SingleSelectionState<T> extends State<SingleSelection<T>> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: widget.title != null ? Text(widget.title!) : null,
+      ),
+      body: SafeArea(
+          right: false,
+          bottom: false,
+          child: delta.Listing<T>(
+            controller: widget.controller,
+            items: widget.items.entries.map((entry) => delta.ListItem(entry.key, title: entry.value)).toList(),
+            onItemTap: (BuildContext context, T value) {
+              Navigator.pop(context, value);
+            },
+          )),
+    );
+  }
+}
 
 /// showCheckList show a check list dialog
-///
 Future<void> showCheckList<T>(
   BuildContext context, {
   required List<delta.ListItem<T>> items,
@@ -41,11 +97,6 @@ class CheckListDialog<T> extends StatelessWidget {
     this.onRefresh,
     this.title,
     this.hint,
-    this.selectedTileColor,
-    this.selectedFontColor,
-    this.dividerColor,
-    this.checkboxColor,
-    this.fontColor,
     this.onItemTap,
     this.itemBuilder,
     Key? key,
@@ -70,21 +121,6 @@ class CheckListDialog<T> extends StatelessWidget {
 
   /// onItemTap happen when user tap a item
   final Future<void> Function(T)? onItemTap;
-
-  /// checkColor is checkbox color
-  final Color? checkboxColor;
-
-  /// selectedTileColor is item tile selected color
-  final Color? selectedTileColor;
-
-  /// selectedFontColor is item font selected color
-  final Color? selectedFontColor;
-
-  /// fontColor is font default color
-  final Color? fontColor;
-
-  /// dividerColor set divider with color in each ListTile
-  final Color? dividerColor;
 
   /// hint will show when items is empty
   final Widget? hint;
@@ -112,12 +148,8 @@ class CheckListDialog<T> extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.red),
-                      ),
                       child: Text(
                         context.i18n.deleteButtonText,
-                        style: const TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
                         await onDelete!(selection.value);
@@ -157,11 +189,6 @@ class CheckListDialog<T> extends StatelessWidget {
                       )
                     : delta.CheckList<T>(
                         itemBuilder: itemBuilder,
-                        selectedTileColor: selectedTileColor,
-                        selectedFontColor: selectedFontColor,
-                        dividerColor: dividerColor,
-                        checkboxColor: checkboxColor,
-                        fontColor: fontColor,
                         controller: selection,
                         items: items.value,
                         onItemTap: onItemTap == null
