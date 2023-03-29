@@ -32,188 +32,144 @@ class ImageUpload extends StatelessWidget {
   /// description can show description on bottom of image  uploader
   final String? description;
 
-  /// _buildDropzone create a dropzone to support browser drop file
-  Widget _buildDropzone(
-    BuildContext context, {
-    required Widget child,
-  }) {
-    final mediaQuerySize = MediaQuery.of(context).size;
-    return Stack(
-      clipBehavior: Clip.none,
-      fit: StackFit.passthrough,
-      children: <Widget>[
-        Positioned(
-          left: 0,
-          top: 0,
-          height: mediaQuerySize.height,
-          width: mediaQuerySize.width,
-          child: DropzoneView(
-            mime: controller.uploader.acceptMIME,
-            operation: DragOperation.copy,
-            onCreated: (DropzoneViewController ctrl) => controller.setDropController(ctrl),
-            onError: (String? ev) {
-              if (ev != null) dialog.alert(ev);
-            },
-            onDrop: (dynamic ev) async => await controller.dropImage(context, ev),
-            onHover: () => controller.setDragging(context, true),
-            onLeave: () => controller.setDragging(context, false),
-          ),
-        ),
-        child,
-        if (controller.dragging) _buildDragging(context),
-        if (controller.dragging)
-          Positioned(
-              left: 0,
-              top: 0,
-              height: mediaQuerySize.height,
-              width: mediaQuerySize.width,
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                decoration: DottedDecoration(
-                  shape: Shape.box,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Text(context.i18n.uploadDrop,
-                          style: const TextStyle(
-                            fontSize: 64,
-                            color: Colors.black38,
-                          )),
-                    )),
-              )),
-      ],
-    );
-  }
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
 
-  /// _buildCard build a uploader card
-  Widget _buildCard(
-    BuildContext context, {
-    required Widget child,
-    required Color color,
-  }) {
-    return Container(
-      width: width,
-      height: height,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: color,
-        border: Border.all(
-          color: color,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: controller.dragging
-            ? [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 4,
-                  offset: const Offset(3, 3), // changes position of shadow
-                ),
-              ]
-            : null,
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: DottedDecoration(
-          color: Colors.black12,
-          shape: Shape.box,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: SizedBox.expand(child: child),
-      ),
-    );
-  }
-
-  /// _buildBusy create a busy loading icon
-  Widget _buildBusy(BuildContext context) {
-    return _buildCard(context,
-        color: context.themeColor(
-          light: Colors.grey.shade200,
-          dark: Colors.grey.shade800,
-        ),
-        child: const Padding(
-            padding: EdgeInsets.all(0),
-            child: CircularProgressIndicator(
-              value: null,
-              strokeWidth: 10.0,
-              color: Colors.grey,
-            )));
-  }
-
-  /// _buildDragging create dragging icon
-  Widget _buildDragging(BuildContext context) {
-    return _buildCard(
-      context,
-      color: Colors.blue.shade400,
-      child: const Icon(
-        Icons.add,
-        size: 128,
-        color: Colors.white,
-      ),
-    );
-  }
-
-  /// _buildChangeUpload create a uploader ui to change image
-  Widget _buildChangeUpload(BuildContext context) {
-    return SizedBox(
+    /// buildCard build a uploader card
+    Widget buildCard({
+      required Widget child,
+      required Color color,
+    }) {
+      return SizedBox(
         width: width,
         height: height,
-        child: Stack(
-          children: [
-            SizedBox(
-              width: width,
-              height: height,
-              child: delta.WebImage(
-                url: imageRoot + controller.firstFile!,
+        child: Card(
+          color: color,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: SizedBox.expand(child: child),
+          ),
+        ),
+      );
+    }
+
+    /// buildDragging create dragging icon
+    Widget buildDragging() {
+      return buildCard(
+        color: colorScheme.primary,
+        child: Icon(
+          Icons.add,
+          size: 128,
+          color: colorScheme.onPrimary,
+        ),
+      );
+    }
+
+    /// buildDropzone create a dropzone to support browser drop file
+    Widget buildDropzone(Widget child) {
+      final mediaQuerySize = MediaQuery.of(context).size;
+      return Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.passthrough,
+        children: <Widget>[
+          Positioned(
+            left: 0,
+            top: 0,
+            height: mediaQuerySize.height,
+            width: mediaQuerySize.width,
+            child: DropzoneView(
+              mime: controller.uploader.acceptMIME,
+              operation: DragOperation.copy,
+              onCreated: (DropzoneViewController ctrl) => controller.setDropController(ctrl),
+              onError: (String? ev) {
+                if (ev != null) dialog.alert(ev);
+              },
+              onDrop: (dynamic ev) async => await controller.dropImage(context, ev),
+              onHover: () => controller.setDragging(context, true),
+              onLeave: () => controller.setDragging(context, false),
+            ),
+          ),
+          child,
+          if (controller.dragging) buildDragging(),
+          if (controller.dragging)
+            Positioned(
+                left: 0,
+                top: 0,
+                height: mediaQuerySize.height,
+                width: mediaQuerySize.width,
+                child: Container(
+                  margin: const EdgeInsets.all(10),
+                  decoration: DottedDecoration(
+                    shape: Shape.box,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Text(context.i18n.uploadDrop,
+                            style: TextStyle(
+                              fontSize: 32,
+                              color: colorScheme.onBackground,
+                            )),
+                      )),
+                )),
+        ],
+      );
+    }
+
+    /// buildBusy create a busy loading icon
+    Widget buildBusy() {
+      return buildCard(
+          color: colorScheme.secondaryContainer,
+          child: Padding(
+              padding: const EdgeInsets.all(0),
+              child: CircularProgressIndicator(
+                value: null,
+                strokeWidth: 10.0,
+                color: colorScheme.onSecondaryContainer,
+              )));
+    }
+
+    /// buildChangeUpload create a uploader ui to change image
+    Widget buildChangeUpload() {
+      return SizedBox(
+          width: width,
+          height: height,
+          child: Stack(
+            children: [
+              SizedBox(
                 width: width,
                 height: height,
+                child: delta.WebImage(
+                  url: imageRoot + controller.firstFile!,
+                  width: width,
+                  height: height,
+                ),
               ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: FloatingActionButton(
-                tooltip: context.i18n.uploadButtonText,
-                onPressed: () => controller.pickImage(context),
-                child: const Icon(Icons.file_upload_rounded, size: 42),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: FloatingActionButton(
+                  tooltip: context.i18n.uploadButtonText,
+                  onPressed: () => controller.pickImage(context),
+                  child: const Icon(Icons.file_upload_rounded, size: 42),
+                ),
               ),
-            ),
-          ],
-        ));
-  }
+            ],
+          ));
+    }
 
-  /// _buildNewUpload create a uploader ui to upload new image
-  Widget _buildNewUpload(BuildContext context) {
-    final iconColor = controller.dragging ? Colors.white : Colors.grey[400];
-    return _buildCard(context,
-        color: context.themeColor(
-          light: Colors.grey.shade200,
-          dark: Colors.grey.shade800,
-        ),
-        child: delta.Mounted(
-            builder: (context, isMounted) => Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                        onTap: () async {
-                          final file = await controller.pickImage(context);
-                          final mounted = isMounted();
-                          if (file != null && mounted) {
-                            await controller.upload(context, file);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Icon(
-                            controller.dragging ? Icons.add : Icons.file_upload_rounded,
-                            size: 52,
-                            color: iconColor,
-                          ),
-                        )),
-                    if (!controller.dragging)
+    /// buildNewUpload create a uploader ui to upload new image
+    Widget buildNewUpload() {
+      final foregroundColor = controller.dragging ? colorScheme.onTertiaryContainer : colorScheme.onPrimaryContainer;
+      return buildCard(
+          color: colorScheme.primaryContainer,
+          child: delta.Mounted(
+              builder: (context, isMounted) => Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       InkWell(
                           onTap: () async {
                             final file = await controller.pickImage(context);
@@ -222,57 +178,66 @@ class ImageUpload extends StatelessWidget {
                               await controller.upload(context, file);
                             }
                           },
-                          child: RichText(
-                              text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: context.i18n.uploadDrop,
-                                style: TextStyle(
-                                  color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
-                                  fontSize: 14,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Icon(
+                              controller.dragging ? Icons.add : Icons.file_upload_rounded,
+                              size: 52,
+                              color: foregroundColor,
+                            ),
+                          )),
+                      if (!controller.dragging)
+                        InkWell(
+                            onTap: () async {
+                              final file = await controller.pickImage(context);
+                              final mounted = isMounted();
+                              if (file != null && mounted) {
+                                await controller.upload(context, file);
+                              }
+                            },
+                            splashColor: colorScheme.primaryContainer,
+                            focusColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            child: RichText(
+                                text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: context.i18n.uploadDrop,
+                                  style: TextStyle(
+                                    color: foregroundColor,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: context.i18n.uploadBrowse,
-                                style: TextStyle(
-                                  color: Colors.blue.shade600,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ))),
-                    if (!controller.dragging) const SizedBox(height: 10),
-                    if (!controller.dragging && description != null)
-                      Text(
-                        description!,
-                        style: const TextStyle(
-                          color: Colors.grey,
+                                TextSpan(
+                                  text: context.i18n.uploadBrowse,
+                                  style: TextStyle(
+                                    color: foregroundColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              ],
+                            ))),
+                      if (!controller.dragging) const SizedBox(height: 10),
+                      if (!controller.dragging && description != null)
+                        Text(
+                          description!,
+                          style: TextStyle(color: foregroundColor.withOpacity(.8)),
                         ),
-                      ),
-                  ],
-                )));
-  }
+                    ],
+                  )));
+    }
 
-  @override
-  Widget build(BuildContext context) {
     if (controller.busy) {
-      return _buildBusy(context);
+      return buildBusy();
     }
     final child = controller.dragging
         ? const SizedBox()
         : controller.isEmpty
-            ? _buildNewUpload(context)
-            : _buildChangeUpload(context);
+            ? buildNewUpload()
+            : buildChangeUpload();
     return SizedBox(
       width: width,
       height: height,
-      child: kIsWeb
-          ? _buildDropzone(
-              context,
-              child: child,
-            )
-          : child,
+      child: kIsWeb ? buildDropzone(child) : child,
     );
   }
 }

@@ -7,6 +7,8 @@ import 'package:libcli/app/app.dart' as app;
 import '../uploader.dart';
 
 main() => app.start(
+      theme: testing.theme(),
+      darkTheme: testing.darkTheme(),
       appName: 'uploader example',
       routesBuilder: () => {
         '/': (context, state, data) => const UploaderExample(),
@@ -24,7 +26,7 @@ class UploaderExample extends StatelessWidget {
           child: Wrap(
             children: [
               Container(
-                child: _editImage(),
+                child: _newImageUpload(),
               ),
               testing.ExampleButton(label: 'new image upload', builder: () => _newImageUpload()),
               testing.ExampleButton(label: 'change image upload', builder: () => _changeImageUpload()),
@@ -37,25 +39,27 @@ class UploaderExample extends StatelessWidget {
   }
 
   Widget _newImageUpload() {
-    return ChangeNotifierProvider<ImageUploadController>(
-        create: (context) => ImageUploadController(
-              uploader: Uploader(
-                filenames: [
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: ChangeNotifierProvider<ImageUploadController>(
+            create: (context) => ImageUploadController(
+                  uploader: Uploader(
+                    filenames: [
 //                'iphone-card-40-iphone13problue-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948813000',
-                ],
-                imageUploader: (bytes, deleteFilename) async {
-                  await Future.delayed(const Duration(seconds: 2));
-                  return 'iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
-                },
-              ),
-            ),
-        child: Consumer<ImageUploadController>(builder: (context, controller, child) {
-          return ImageUpload(
-            imageRoot: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/',
-            controller: controller,
-            description: 'recommend size:1280x1280, support gif, jpeg, png',
-          );
-        }));
+                    ],
+                    imageUploader: (bytes, deleteFilename) async {
+                      await Future.delayed(const Duration(seconds: 2));
+                      return 'iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
+                    },
+                  ),
+                ),
+            child: Consumer<ImageUploadController>(builder: (context, controller, child) {
+              return ImageUpload(
+                imageRoot: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/',
+                controller: controller,
+                description: 'recommend size:1280x1280, support gif, jpeg, png',
+              );
+            })));
   }
 
   Widget _changeImageUpload() {
