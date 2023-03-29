@@ -3,7 +3,6 @@ library form;
 export 'src/shimmer_form.dart';
 export 'src/form_pinput.dart';
 export 'src/submit.dart';
-export 'src/form_button.dart';
 export 'src/email_field.dart';
 export 'src/tags.dart';
 export 'src/binding.dart';

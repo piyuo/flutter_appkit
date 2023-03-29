@@ -7,10 +7,13 @@ import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
 import 'package:libcli/app/app.dart' as app;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/testing/testing.dart' as testing;
 import 'package:intl/intl.dart';
 import '../form.dart';
 
 main() => app.start(
+      theme: testing.theme(),
+      darkTheme: testing.darkTheme(),
       appName: 'form example',
       routesBuilder: () => {
         '/': (context, state, data) => const FormExample(),
@@ -90,21 +93,22 @@ class FormExample extends StatelessWidget {
   }
 
   Widget _form(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final defaultPinTheme = PinTheme(
       width: 45,
       height: 45,
-      textStyle: const TextStyle(fontSize: 28, color: Colors.black, fontWeight: FontWeight.w600),
+      textStyle: TextStyle(fontSize: 24, color: colorScheme.onBackground),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400),
+        border: Border.all(color: colorScheme.secondary),
         borderRadius: BorderRadius.circular(8),
       ),
     );
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Colors.blue, width: 2),
+      border: Border.all(color: colorScheme.primary, width: 2),
     );
     final submittedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Colors.grey.shade300, width: 1),
-    );
+        //border: Border.all(color: Colors.grey.shade300, width: 1),
+        );
     return ShimmerForm(
       showShimmer: false,
       formGroup: formGroup,
@@ -185,7 +189,6 @@ class FormExample extends StatelessWidget {
               ]),
           br(),
           Submit(
-            color: Colors.green,
             onSubmit: (context) async {
               debugPrint(formGroup.value.toString());
               return true;
@@ -386,17 +389,16 @@ class FormExample extends StatelessWidget {
           br(),
           const Submit(child: Text('my Submit')),
           br(),
-          FormButton(
-            color: Colors.red.shade400,
-            label: 'Submit very long waiting form',
+          OutlinedButton(
+            child: const Text('Submit very long waiting form'),
             onPressed: () async {
               await Future.delayed(const Duration(seconds: 5));
             },
           ),
           br(),
-          FormButton(
-            color: Colors.red.shade400,
-            label: 'Submit very long waiting form',
+          const OutlinedButton(
+            onPressed: null,
+            child: Text('Submit very long waiting form'),
           ),
           br(),
         ],

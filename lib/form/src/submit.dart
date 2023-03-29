@@ -12,11 +12,9 @@ class Submit extends StatelessWidget {
     this.onSubmit,
     this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
-    this.elevation = 2,
     this.showToastWait = true,
     this.showToastDone = true,
     this.onlySubmitOnDirty = true,
-    this.color,
     Key? key, // all submit must have key, it's important for test and identify field
   }) : super(key: key);
 
@@ -32,12 +30,6 @@ class Submit extends StatelessWidget {
   /// onSubmit called when user pressed button to submit form, return true will show done animation
   final general.FutureContextCallback<bool>? onSubmit;
 
-  /// button elevation, if elevation is 0 use outlined button
-  final double elevation;
-
-  /// color is text and outline color
-  final Color? color;
-
   /// showToastWait show wait toast when submit
   final bool showToastWait;
 
@@ -49,6 +41,7 @@ class Submit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ReactiveFormConsumer(
       builder: (context, formGroup, _) {
         bool valid = formGroup.valid;
@@ -57,18 +50,10 @@ class Submit extends StatelessWidget {
         }
         return ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: valid
-                ? color
-                : context.themeColor(
-                    light: Colors.grey.shade300,
-                    dark: Colors.grey.shade800,
-                  ),
-            foregroundColor: valid ? null : Colors.grey.shade500,
-            elevation: valid ? elevation : 0,
+            backgroundColor: colorScheme.secondary.withOpacity(valid ? 1 : .3),
+            foregroundColor: colorScheme.onSecondary.withOpacity(valid ? 1 : .8),
+            elevation: valid ? null : 0,
             padding: padding,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
           ),
           onPressed: onSubmit != null && formGroup.enabled
               ? () => submit(
