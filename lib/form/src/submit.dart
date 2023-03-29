@@ -98,14 +98,12 @@ bool validate(
   FormGroup formGroup,
 ) {
   if (!formGroup.dirty && formGroup.valid) {
-    dialog.showInfoBanner(delta.i18n.formSavedBanner);
+    dialog.showTextBanner(delta.i18n.formSavedBanner);
     return false;
   }
   if (!formGroup.valid) {
-    dialog.showWarningBanner(
+    dialog.showErrorBanner(
       delta.i18n.formAttentionBanner,
-      backgroundColor: Colors.red.shade400,
-      color: Colors.white,
     );
     formGroup.markAllAsTouched();
     return false;

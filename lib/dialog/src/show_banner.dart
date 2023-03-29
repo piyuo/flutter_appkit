@@ -24,18 +24,18 @@ Future<void> showBanner(
     dismissBanner(delta.globalContext);
     completer.complete();
   });
-
+  final colorScheme = Theme.of(delta.globalContext).colorScheme;
   ScaffoldMessenger.of(delta.globalContext).showMaterialBanner(
     MaterialBanner(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       content: child,
       leading: leading,
-      backgroundColor: backgroundColor ?? Colors.yellow[700]!.withOpacity(0.9),
+      backgroundColor: backgroundColor ?? colorScheme.surfaceVariant,
       actions: <Widget>[
         TextButton(
           child: Text(
             delta.i18n.closeButtonText,
-            style: TextStyle(color: color ?? Colors.brown, fontWeight: FontWeight.bold),
+            style: TextStyle(color: color ?? colorScheme.onSurface),
           ),
           onPressed: () {
             timer.cancel();
@@ -54,35 +54,23 @@ void dismissBanner(BuildContext context) {
   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
 }
 
-/// showWarningBanner show a simple text banner when error
-Future<void> showWarningBanner(
-  String message, {
-  Color? color,
-  Color? backgroundColor,
-}) =>
-    showBanner(
-      Text(message,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-          )),
-      leading: const Icon(Icons.info_outline, color: Colors.white),
-      color: color,
-      backgroundColor: backgroundColor,
-    );
+/// showErrorBanner show a simple text banner when error
+Future<void> showErrorBanner(
+  String message,
+) {
+  final colorScheme = Theme.of(delta.globalContext).colorScheme;
+  return showBanner(
+    Text(message, style: TextStyle(color: colorScheme.onError)),
+    leading: Icon(Icons.info_outline, color: colorScheme.onError),
+    color: colorScheme.onError,
+    backgroundColor: colorScheme.error,
+  );
+}
 
-/// showWarningBanner show a simple text banner when error
-Future<void> showInfoBanner(
-  String message, {
-  Color? color,
-  Color? backgroundColor,
-}) =>
-    showBanner(
-      Text(message,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-          )),
-      backgroundColor: backgroundColor ?? Colors.green.shade400,
-      color: color ?? Colors.white,
-    );
+/// showTextBanner show a simple text banner
+Future<void> showTextBanner(String message) {
+  final colorScheme = Theme.of(delta.globalContext).colorScheme;
+  return showBanner(
+    Text(message, style: TextStyle(color: colorScheme.onSurface)),
+  );
+}

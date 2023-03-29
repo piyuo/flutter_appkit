@@ -39,7 +39,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _shoreMore(context),
+            child: _banner(context),
           ),
           Wrap(
             spacing: 10,
@@ -519,7 +519,7 @@ class DialogExample extends StatelessWidget {
   }
 
   Widget _banner(BuildContext context) {
-    return Wrap(children: [
+    return Wrap(spacing: 10, runSpacing: 10, children: [
       ElevatedButton(
         child: const Text('show banner'),
         onPressed: () => showBanner(
@@ -530,11 +530,11 @@ class DialogExample extends StatelessWidget {
       ),
       ElevatedButton(
         child: const Text('show warning banner'),
-        onPressed: () => showWarningBanner('This is warning banner'),
+        onPressed: () => showErrorBanner('This is warning banner'),
       ),
       ElevatedButton(
         child: const Text('show info banner'),
-        onPressed: () => showInfoBanner('This is info banner'),
+        onPressed: () => showTextBanner('This is info banner'),
       ),
       ElevatedButton(
         child: const Text('dismiss banner'),
