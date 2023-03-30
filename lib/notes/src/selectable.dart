@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 
 /// ItemBuilder build item to display
-typedef ItemBuilder<T> = Widget Function(T item, bool isSelected);
+typedef ItemBuilder<T> = Widget Function(BuildContext context, T item, bool isSelected);
 
 /// ItemDecorationBuilder build item decoration when selected or checked
 typedef ItemDecorationBuilder<T> = Widget Function(
@@ -68,7 +67,7 @@ abstract class Selectable<T> extends StatelessWidget {
   /// _buildItemWithDecoration build item with decoration
   Widget _buildItemWithDecoration(BuildContext context, T item, bool isSelected) => itemDecorationBuilder(
         context,
-        child: itemBuilder(item, isSelected),
+        child: itemBuilder(context, item, isSelected),
         checkMode: checkMode,
         isSelected: isSelected,
       );
@@ -114,6 +113,7 @@ Widget defaultListDecorationBuilder(
   required bool checkMode,
   required bool isSelected,
 }) {
+  final colorScheme = Theme.of(context).colorScheme;
   final selectableItem = Padding(
       padding: const EdgeInsets.fromLTRB(3, 1, 3, 1),
       child: isSelected
@@ -122,10 +122,7 @@ Widget defaultListDecorationBuilder(
               padding: const EdgeInsets.fromLTRB(1, 0, 1, 1),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(9)),
-                color: context.themeColor(
-                  light: Colors.blue.shade200,
-                  dark: Colors.blueAccent.shade400.withOpacity(0.8),
-                ),
+                color: colorScheme.primary,
               ),
               child: child,
             )
@@ -135,14 +132,7 @@ Widget defaultListDecorationBuilder(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   child,
-                  Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: context.themeColor(
-                      light: Colors.grey.shade200,
-                      dark: Colors.grey.shade800,
-                    ),
-                  ),
+                  const Divider(height: 1, thickness: 1),
                 ],
               )));
 
@@ -151,15 +141,7 @@ Widget defaultListDecorationBuilder(
       children: [
         Icon(
           isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
-          color: isSelected
-              ? context.themeColor(
-                  light: Colors.blue.shade600,
-                  dark: Colors.blueAccent.withOpacity(0.8),
-                )
-              : context.themeColor(
-                  light: Colors.grey.shade300,
-                  dark: Colors.grey.shade800,
-                ),
+          color: isSelected ? colorScheme.primary : colorScheme.primary.withOpacity(.5),
         ),
         const SizedBox(width: 10),
         Expanded(child: selectableItem),
@@ -176,25 +158,17 @@ Widget defaultGridDecorationBuilder(
   required bool checkMode,
   required bool isSelected,
 }) {
+  final colorScheme = Theme.of(context).colorScheme;
   final selectableItem = Container(
     width: double.infinity,
     height: double.infinity,
     margin: isSelected ? const EdgeInsets.fromLTRB(4, 5, 4, 9) : const EdgeInsets.fromLTRB(5, 6, 5, 10),
     clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
-      color: context.themeColor(light: Colors.white, dark: Colors.grey.shade800),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       border: Border.all(
         width: isSelected ? 2 : 1,
-        color: isSelected
-            ? context.themeColor(
-                light: Colors.blue.shade700,
-                dark: Colors.blueAccent.shade200,
-              )
-            : context.themeColor(
-                light: Colors.grey.shade400,
-                dark: Colors.grey.shade700,
-              ),
+        color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
       ),
     ),
     child: child,
@@ -209,15 +183,7 @@ Widget defaultGridDecorationBuilder(
           left: 10,
           child: Icon(
             isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: isSelected
-                ? context.themeColor(
-                    light: Colors.blue.shade600,
-                    dark: Colors.blue.shade400,
-                  )
-                : context.themeColor(
-                    light: Colors.grey.shade400,
-                    dark: Colors.grey.shade600,
-                  ),
+            color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
           ),
         ),
       ],

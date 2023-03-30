@@ -369,13 +369,13 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     return isListView
         ? listDecorationBuilder(
             delta.globalContext,
-            child: listBuilder!(item, isSelected),
+            child: listBuilder!(delta.globalContext, item, isSelected),
             checkMode: isCheckMode,
             isSelected: isSelected,
           )
         : gridDecorationBuilder(
             delta.globalContext,
-            child: gridBuilder!(item, isSelected),
+            child: gridBuilder!(delta.globalContext, item, isSelected),
             checkMode: isCheckMode,
             isSelected: isSelected,
           );

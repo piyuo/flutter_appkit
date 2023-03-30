@@ -22,33 +22,26 @@ class TagSplitView extends StatelessWidget {
     if (tagView == null) {
       return child;
     }
+    final colorScheme = Theme.of(context).colorScheme;
     return delta.Responsive(
         phoneScreen: () => child,
         bigScreen: () => SplitView(
               gripSize: 5,
-              gripColor: context.themeColor(
-                light: Colors.grey.shade300,
-                dark: Colors.grey.shade900,
-              ),
-              gripColorActive: context.themeColor(
-                light: Colors.grey.shade400,
-                dark: Colors.grey.shade800,
-              ),
+              gripColor: colorScheme.outlineVariant.withOpacity(.2),
+              gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
               controller: SplitViewController(
                 weights: [0.15],
                 limits: [WeightLimit(min: 0.15, max: 0.25)],
               ),
               viewMode: SplitViewMode.Horizontal,
               indicator: SplitIndicator(
-                  viewMode: SplitViewMode.Horizontal,
-                  color: context.themeColor(
-                    light: Colors.grey.shade400,
-                    dark: Colors.grey.shade600,
-                  )),
-              activeIndicator: const SplitIndicator(
+                viewMode: SplitViewMode.Horizontal,
+                color: colorScheme.outlineVariant.withOpacity(.9),
+              ),
+              activeIndicator: SplitIndicator(
                 viewMode: SplitViewMode.Horizontal,
                 isActive: true,
-                color: Colors.grey,
+                color: colorScheme.outlineVariant,
               ),
               children: [
                 tagView!,

@@ -46,28 +46,28 @@ class CheckableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) => Container(
-            color: Colors.blue.shade600,
+            color: colorScheme.inverseSurface,
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
             child: Row(
               children: [
                 IconButton(
                   icon: Icon(
                     isAllSelected ? Icons.check_circle : Icons.radio_button_unchecked,
-                    color: Colors.white,
+                    color: colorScheme.onInverseSurface,
                   ),
                   onPressed: isAllSelected ? onUnselectAll : onSelectAll,
                 ),
                 Text(context.i18n.notesItemSelectedLabel.replace1(selectedItemCount.toString()),
-                    style: const TextStyle(fontSize: 16, color: Colors.white), maxLines: 1),
-                TextButton(
-                  onPressed: onCancel,
-                  child: Text(context.i18n.closeButtonText,
-                      style: TextStyle(fontSize: 16, color: Colors.blueGrey.shade300)),
-                ),
+                    style: TextStyle(fontSize: 16, color: colorScheme.onInverseSurface), maxLines: 1),
                 const Spacer(),
                 if (actions != null) ...actions!,
+                TextButton(
+                  onPressed: onCancel,
+                  child: Text(context.i18n.closeButtonText, style: TextStyle(color: colorScheme.inversePrimary)),
+                ),
               ],
             )));
   }

@@ -64,15 +64,15 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    final linkColor = context.themeColor(light: Colors.blue.shade400, dark: Colors.blue.shade500);
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      final colorScheme = Theme.of(context).colorScheme;
       final pageInfoText = notesProvider.pageInfo(context);
       final searchBox = delta.SearchBox(
         enabled: notesProvider.isReadyToShow,
         prefixIcon: notesProvider.tags.isEmpty || delta.isBigScreen(constraints.maxWidth)
             ? null
             : IconButton(
-                icon: Icon(Icons.menu, color: notesProvider.isReadyToShow ? Colors.blue : null),
+                icon: Icon(Icons.menu, color: notesProvider.isReadyToShow ? colorScheme.primary : null),
                 onPressed: notesProvider.isReadyToShow
                     ? () => showTagView<String>(
                           context,
@@ -157,20 +157,18 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                                       children: [
                                         if (notesProvider.hasPreviousPage)
                                           TextButton.icon(
-                                            icon: Icon(Icons.chevron_left, color: linkColor),
+                                            icon: const Icon(Icons.chevron_left),
                                             label: constraints.maxWidth < 300
                                                 ? const SizedBox()
-                                                : Text(localizations.previousPageTooltip,
-                                                    style: TextStyle(color: linkColor)),
+                                                : Text(localizations.previousPageTooltip),
                                             onPressed: () => notesProvider.onPreviousPage(context),
                                           ),
                                         if (notesProvider.hasNextPage)
                                           TextButton.icon(
                                             icon: constraints.maxWidth < 300
                                                 ? const SizedBox()
-                                                : Text(localizations.nextPageTooltip,
-                                                    style: TextStyle(color: linkColor)),
-                                            label: Icon(Icons.chevron_right, color: linkColor),
+                                                : Text(localizations.nextPageTooltip),
+                                            label: const Icon(Icons.chevron_right),
                                             onPressed: () => notesProvider.onNextPage(context),
                                           ),
                                       ],
@@ -256,40 +254,29 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                   );
                 },
                 touchBottomBarBuilder: () {
-                  final buttonStyle = TextStyle(
-                    fontSize: 15,
-                    color: notesProvider.isReadyToShow ? Colors.blue.shade700 : Colors.grey,
-                  );
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 18),
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
+                      color: colorScheme.surfaceVariant,
                     ),
                     child: Row(children: [
                       TextButton(
-                        style: notesProvider.isCheckMode
-                            ? ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  context.themeColor(light: Colors.grey.shade300, dark: Colors.grey.shade900),
-                                ),
-                              )
-                            : null,
                         onPressed: notesProvider.isReadyToShow ? () => notesProvider.onToggleCheckMode(context) : null,
-                        child: Text(context.i18n.notesSelectButtonLabel, style: buttonStyle),
+                        child: Text(context.i18n.notesSelectButtonLabel),
                       ),
                       pageInfoText.isNotEmpty
                           ? Expanded(
                               child: Text(pageInfoText,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: context.themeColor(light: Colors.grey.shade600, dark: Colors.grey.shade400),
+                                    color: colorScheme.onSurfaceVariant,
                                   )),
                             )
                           : const Spacer(),
                       TextButton(
                         onPressed: notesProvider.isReadyToShow ? () => notesProvider.onCreateNew(context) : null,
-                        child: Text(context.i18n.notesNewButtonLabel, style: buttonStyle),
+                        child: Text(context.i18n.notesNewButtonLabel),
                       ),
                     ]),
                   );
@@ -299,7 +286,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 18),
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(Radius.circular(10)),
-                        color: context.themeColor(light: Colors.grey.shade100, dark: Colors.grey.shade800),
+                        color: colorScheme.surfaceVariant,
                       ),
                       child: delta.Toolbar(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -319,7 +306,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       if (notesProvider.formController.showArchiveButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.grey.shade900,
+                            foregroundColor: colorScheme.inversePrimary,
                           ),
                           label: Text(context.i18n.archiveButtonText),
                           icon: const Icon(Icons.archive),
@@ -329,7 +316,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       if (notesProvider.formController.showDeleteButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.grey.shade900,
+                            foregroundColor: colorScheme.inversePrimary,
                           ),
                           label: Text(context.i18n.deleteButtonText),
                           icon: const Icon(Icons.delete),
@@ -339,7 +326,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       if (notesProvider.formController.showRestoreButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.grey.shade900,
+                            foregroundColor: colorScheme.inversePrimary,
                           ),
                           label: Text(context.i18n.restoreButtonText),
                           icon: const Icon(Icons.restore),

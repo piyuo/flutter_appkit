@@ -246,34 +246,27 @@ class MasterDetailView<T> extends StatelessWidget {
                   : items[0]
               : selectedItems[0];*/
 
+      final colorScheme = Theme.of(context).colorScheme;
       return Column(children: [
         if (selectionBarBuilder != null && isCheckMode) selectionBarBuilder!(),
         Expanded(
             child: SplitView(
           gripSize: 5,
-          gripColor: context.themeColor(
-            light: Colors.grey.shade100,
-            dark: Colors.grey[850]!,
-          ),
-          gripColorActive: context.themeColor(
-            light: Colors.grey.shade300,
-            dark: Colors.grey.shade800,
-          ),
+          gripColor: colorScheme.outlineVariant.withOpacity(.2),
+          gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
           controller: SplitViewController(
             weights: [0.35],
             limits: [WeightLimit(min: 0.25, max: 0.45)],
           ),
           viewMode: SplitViewMode.Horizontal,
           indicator: SplitIndicator(
-              viewMode: SplitViewMode.Horizontal,
-              color: context.themeColor(
-                light: Colors.grey.shade400,
-                dark: Colors.grey.shade600,
-              )),
-          activeIndicator: const SplitIndicator(
+            viewMode: SplitViewMode.Horizontal,
+            color: colorScheme.outlineVariant.withOpacity(.9),
+          ),
+          activeIndicator: SplitIndicator(
             viewMode: SplitViewMode.Horizontal,
             isActive: true,
-            color: Colors.grey,
+            color: colorScheme.outlineVariant,
           ),
           children: [
             Column(
