@@ -128,7 +128,7 @@ class SearchBar extends StatelessWidget {
                                         child: Text(
                                           option,
                                           maxLines: 1,
-                                          style: TextStyle(fontSize: 18, color: context.invertedColor),
+                                          style: TextStyle(fontSize: 18),
                                         ),
                                       ),
                                     );

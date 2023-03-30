@@ -88,13 +88,7 @@ class Listing<T> extends StatelessWidget {
       onTap: onTap,
       minLeadingWidth: 0,
       contentPadding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-      leading: item.icon != null
-          ? Icon(
-              item.icon,
-              size: 24,
-              //            color: item.iconColor ?? (selected ? selectedFontColor ?? context.invertedColor : _fontColor(context)),
-            )
-          : null,
+      leading: item.icon != null ? Icon(item.icon, size: 24) : null,
       title: _buildText(
         context,
         key,
