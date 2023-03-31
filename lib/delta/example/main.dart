@@ -88,7 +88,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _searchBox(context),
+                          child: _menuButton(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -823,6 +823,12 @@ class DeltaExample extends StatelessWidget {
           '1': 'hello',
           '2': 'world',
         },
+      ),
+      const Text('Empty'),
+      const MenuButton<String>(
+        onPressed: null,
+        selectedValue: '2',
+        selection: {},
       ),
     ]);
   }

@@ -77,13 +77,14 @@ class Responsive extends StatelessWidget {
 
 /// DeltaBuildContext add color function to BuildContext
 extension DeltaBuildContext on BuildContext {
-// todo:need remove
-/*
-  /// isDark return true if is dark theme
+  /// isDark return true if is dark theme, we
   /// ```dart
   /// context.isDark;
   /// ```
   bool get isDark => MediaQuery.of(this).platformBrightness == Brightness.dark;
+
+// todo:need remove
+/*
 
   /// themeColor return right color base on light theme or dark theme
   /// ```dart

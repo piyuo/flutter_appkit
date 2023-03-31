@@ -61,9 +61,8 @@ class MenuButton<T> extends StatelessWidget {
       label: Row(
         mainAxisAlignment: mainAxisAlignment,
         children: [
-          label ?? const SizedBox(),
-          Icon(Icons.arrow_drop_down,
-              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(onPressed != null ? 1 : .5)),
+          if (label != null) label!,
+          const Icon(Icons.arrow_drop_down),
         ],
       ),
       icon: icon ?? const SizedBox(),
