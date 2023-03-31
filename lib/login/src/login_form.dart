@@ -5,13 +5,14 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:text_divider/text_divider.dart';
 import 'package:libcli/form/form.dart' as form;
-import 'package:libcli/delta/delta.dart' as delta;
 import 'login_form_provider.dart';
 import 'code_screen.dart';
 
 Map<LoginType, ButtonType> _allSocialButton(BuildContext context) => {
-      LoginType.apple: context.isDark ? ButtonType.appleDark : ButtonType.apple,
-      LoginType.google: context.isDark ? ButtonType.googleDark : ButtonType.google,
+      LoginType.apple:
+          MediaQuery.of(context).platformBrightness == Brightness.dark ? ButtonType.appleDark : ButtonType.apple,
+      LoginType.google:
+          MediaQuery.of(context).platformBrightness == Brightness.dark ? ButtonType.googleDark : ButtonType.google,
       LoginType.facebook: ButtonType.facebook,
       LoginType.email: ButtonType.mail,
     };
