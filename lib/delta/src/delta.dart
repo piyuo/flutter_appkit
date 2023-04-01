@@ -130,3 +130,20 @@ extension DeltaBuildContext on BuildContext {
     return !isTouchSupported;
   }
 }
+
+// mergeTextStyle takes in a TextStyle object, along with optional parameters for font size and color.
+TextStyle mergeTextStyle(
+  TextStyle? style, {
+  double? fontSize,
+  Color? color,
+}) {
+  return style != null
+      ? style.copyWith(
+          fontSize: fontSize ?? style.fontSize,
+          color: color ?? style.color,
+        )
+      : TextStyle(
+          color: color,
+          fontSize: fontSize,
+        );
+}
