@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
@@ -13,6 +15,11 @@ class Downloader {
 
   /// fileGetter is a function that get file from remote service, return null if cannot get file
   final cache.FileProvider? fileProvider;
+
+  /// of get SessionProvider from context
+  static Downloader of(BuildContext context) {
+    return Provider.of<Downloader>(context, listen: false);
+  }
 
   /// getObject download protobuf file from remote service and return object
   /// it will cache the file in local storage or throw exception if cannot get file
