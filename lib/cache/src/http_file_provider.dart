@@ -4,20 +4,19 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/general/general.dart' as general;
 
-/// FileProvider is a class to get file, it can be overwrite to mock get file
-/// it wall manage the cache for web and app
+/// HttpFileProvider is a class to get http file, it wall manage the cache for web and app
 /// the default timeout to get file is 30s
-class FileProvider {
-  FileProvider({this.fileGetter});
+class HttpFileProvider {
+  HttpFileProvider({this.mockFileBuilder});
 
-  /// fileGetter is a function to get file, it can be overwrite to mock get file
-  final Future<Uint8List> Function(String url)? fileGetter;
+  /// mockFileBuilder is a test function to mock return file
+  final Future<Uint8List> Function(String url)? mockFileBuilder;
 
   /// put the value, this is a FIFO cache, set the same key will make that key the latest key in [_cache]. the default expire duration is 5 minutes
   Future<Uint8List> getSingleFile(String url) async {
     // for test
-    if (fileGetter != null) {
-      return await fileGetter!(url);
+    if (!kReleaseMode && mockFileBuilder != null) {
+      return await mockFileBuilder!(url);
     }
 
     // for web, no need to cache, browser will cache it

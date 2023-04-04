@@ -2,19 +2,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/cache/cache.dart' as cache;
-import 'downloader.dart';
-import 'protobuf.dart';
+import 'http_object_provider.dart';
 
 void main() {
-  group('[command.downloader]', () {
+  group('[command.http_object_provider]', () {
     test('should return OK', () async {
-      final downloader = Downloader(
-        fileProvider: cache.FileProvider(
-          fileGetter: (String url) async => encode(pb.OK()),
-        ),
-      );
-      final obj = await downloader.getObject<pb.OK>(
+      final httpObjectProvider = HttpObjectProvider(mockObjectBuilder: (String url) async => pb.OK());
+      final obj = await httpObjectProvider.download<pb.OK>(
         'https://piyuo.com/brand/index.pb',
         () => pb.OK(),
       );
@@ -22,14 +16,12 @@ void main() {
     });
 
     test('should throw exception when builder is wrong', () async {
-      final downloader = Downloader(
-        fileProvider: cache.FileProvider(
-          fileGetter: (String url) async => encode(sample.StringResponse()),
-        ),
+      final httpObjectProvider = HttpObjectProvider(
+        mockObjectBuilder: (String url) async => sample.StringResponse(),
       );
 
       try {
-        await downloader.getObject(
+        await httpObjectProvider.download(
           'https://piyuo.com/brand/index.pb',
           () => pb.Error(),
         );
