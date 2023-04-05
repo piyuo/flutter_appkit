@@ -8,13 +8,13 @@ import 'protobuf.dart';
 
 /// HttpObjectProvider can download a protobuf file from remote service and convert it to object
 /// ```dart
-/// final httpObjectProvider = HttpObjectProvider(mockObject: (String url) async => pb.OK());
+/// final httpObjectProvider = HttpObjectProvider(mockObjectBuilder: (String url) async => pb.OK());
 /// final obj = await httpObjectProvider.download('https://piyuo.com/brand/index.pb');
 /// ```
 class HttpObjectProvider {
   HttpObjectProvider({this.mockObjectBuilder});
 
-  /// objectGetter is a test function, it can be overwrite to mock get object
+  /// mockObjectBuilder is a test function, it can be overwrite to mock get object
   final Future<pb.Object> Function(String url)? mockObjectBuilder;
 
   /// fileProvider to get object file

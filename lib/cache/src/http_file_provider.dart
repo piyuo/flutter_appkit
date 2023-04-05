@@ -6,6 +6,12 @@ import 'package:libcli/general/general.dart' as general;
 
 /// HttpFileProvider is a class to get http file, it wall manage the cache for web and app
 /// the default timeout to get file is 30s
+/// ```dart
+/// final httpFileProvider = HttpFileProvider(
+///   mockFileBuilder: (String url) async => command.encode(pb.OK()),
+/// );
+/// final bytes = await httpFileProvider.getSingleFile('https://mock/mock.pb');
+/// ```
 class HttpFileProvider {
   HttpFileProvider({this.mockFileBuilder});
 
