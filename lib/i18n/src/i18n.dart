@@ -1,6 +1,7 @@
 // ignore: implementation_imports
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
 import 'package:libcli/google/google.dart' as google;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'datetime.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
 import '../gen/lib_localizations_en.dart';
+
+/// LocaleChangedEvent happen when locale changed
+class LocaleChangedEvent {}
 
 /// supportedLocales return i18n package supported locales
 Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
@@ -29,6 +33,7 @@ class _I18nDelegate extends LocalizationsDelegate<Locale> {
   @override
   Future<Locale> load(Locale locale) async {
     Intl.defaultLocale = locale.toString();
+    eventbus.broadcast(LocaleChangedEvent());
     debugPrint('[i18n] locale=${Intl.defaultLocale}');
     return locale;
   }
