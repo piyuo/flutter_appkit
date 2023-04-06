@@ -86,7 +86,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
             children: [
               Expanded(
-                child: _loadingScreenNetworkError(context),
+                child: _languageProvider(context),
                 // child: _routing(context, widget.data),
                 //child: _setPageTitle(context),
               ),
@@ -259,7 +259,7 @@ class AppExampleState extends State<AppExample> {
           Text('intl.defaultLocale=$defaultLocale'),
           Text('current locale=${i18n.localeKey}, date=${i18n.formatDate(DateTime.now())}'),
           OutlinedButton(
-              child: const Text('get locale to system default'),
+              child: const Text('set locale to system default'),
               onPressed: () => languageProvider.setPreferredLocale(null)),
           OutlinedButton(
               child: const Text('change locale to en'),

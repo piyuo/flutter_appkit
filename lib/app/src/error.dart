@@ -103,8 +103,6 @@ Widget emailUs(BuildContext context) {
 
 @visibleForTesting
 Future<void> listened(dynamic e) async {
-  debugPrint('[app] listened ${e.runtimeType}');
-
   if (e is command.FirewallBlockEvent) {
     dialog.show(
       textContent: firewallBlockMessage(delta.globalContext, e.reason),
