@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/general/general.dart' as general;
-import 'delta.dart';
 
 typedef SuggestionBuilder = Future<List<String>> Function(String text);
 
@@ -128,7 +127,7 @@ class SearchBar extends StatelessWidget {
                                         child: Text(
                                           option,
                                           maxLines: 1,
-                                          style: TextStyle(fontSize: 18),
+                                          style: const TextStyle(fontSize: 18),
                                         ),
                                       ),
                                     );
