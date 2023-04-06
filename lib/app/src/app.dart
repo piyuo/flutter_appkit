@@ -37,9 +37,9 @@ typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, O
 /// ```
 Future<void> start({
   required String appName,
-  required RoutesBuilder routesBuilder,
   String initialRoute = '/',
-  Future<List<SingleChildWidget>> Function()? builder,
+  required RoutesBuilder routesBuilder,
+  Future<List<SingleChildWidget>> Function()? dependencyBuilder,
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String serviceEmail = 'support@piyuo.com',
@@ -64,7 +64,7 @@ Future<void> start({
   );
 
   // build app provider
-  final providers = builder == null ? <SingleChildWidget>[] : await builder();
+  final providers = dependencyBuilder == null ? <SingleChildWidget>[] : await dependencyBuilder();
   // run app
   return watch(() => runApp(LifecycleWatcher(
         child: MultiProvider(

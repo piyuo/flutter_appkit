@@ -44,7 +44,7 @@ main() {
     },
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
-    builder: () async {
+    dependencyBuilder: () async {
       return [];
       /*
         await _mapProvider.setValue(general.LatLng(49.4540877, -173.7548384), true);

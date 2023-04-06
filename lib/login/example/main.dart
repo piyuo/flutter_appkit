@@ -19,7 +19,7 @@ main() {
     routesBuilder: () => {
       '/': (context, _, __) => const LayoutExample(),
     },
-    builder: () async => [
+    dependencyBuilder: () async => [
       ChangeNotifierProvider<app.SessionProvider>.value(
         value: sessionProvider,
       ),
