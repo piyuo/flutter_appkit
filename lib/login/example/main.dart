@@ -1,7 +1,7 @@
-import 'package:libcli/app/src/session_provider.dart';
+import 'package:libcli/base/src/session_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/base/base.dart' as app;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../login.dart';

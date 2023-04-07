@@ -1,6 +1,6 @@
-library app;
+library base;
 
-export 'src/app.dart';
+export 'src/base.dart';
 export 'src/beam_link.dart';
 export 'src/error.dart';
 export 'src/language_provider.dart';

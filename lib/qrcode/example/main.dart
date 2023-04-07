@@ -2,7 +2,7 @@
 
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/base/base.dart' as app;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../qrcode.dart';
 

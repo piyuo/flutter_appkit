@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/base/base.dart' as app;
 
 import '../permission.dart';
 

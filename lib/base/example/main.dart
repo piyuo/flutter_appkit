@@ -13,7 +13,7 @@ import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/log/log.dart' as log;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
-import '../app.dart';
+import '../base.dart';
 
 main() async {
   await start(

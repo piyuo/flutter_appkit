@@ -5,7 +5,7 @@ import 'package:reactive_date_range_picker/reactive_date_range_picker.dart';
 import 'package:reactive_touch_spin/reactive_touch_spin.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/base/base.dart' as app;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:intl/intl.dart';

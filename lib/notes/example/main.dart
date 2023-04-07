@@ -5,7 +5,7 @@ import 'package:beamer/beamer.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/base/base.dart' as app;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;

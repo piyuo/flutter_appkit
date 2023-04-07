@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/base/base.dart' as app;
 
 /// LoginType define the type of login
 enum LoginType { apple, google, facebook, email }

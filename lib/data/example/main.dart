@@ -1,6 +1,6 @@
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:flutter/material.dart';
-import 'package:libcli/app/app.dart' as app;
+import 'package:libcli/base/base.dart' as app;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:hive/hive.dart';
