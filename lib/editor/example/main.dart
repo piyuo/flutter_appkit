@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../src/rich_editor.dart';
 import '../src/rich_editor_provider.dart';
 import '../src/image_editor.dart';
 import '../src/image_editor_dialog.dart';
 
-main() => app.start(
+main() => base.start(
       appName: 'editor example',
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),

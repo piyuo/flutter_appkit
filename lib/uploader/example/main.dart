@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import '../uploader.dart';
 
-main() => app.start(
+main() => base.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
       appName: 'uploader example',

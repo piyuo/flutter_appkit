@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 
 import '../delta.dart';
@@ -40,7 +40,7 @@ main() {
     onSearchEnd: () => debugPrint('search end'),
   );
 
-  app.start(
+  base.start(
     appName: 'delta example',
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),

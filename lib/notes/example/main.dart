@@ -5,7 +5,7 @@ import 'package:beamer/beamer.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/animate_view/animate_view.dart' as animate_view;
@@ -143,7 +143,7 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
       },
     );
 main() {
-  app.start(
+  base.start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     appName: 'notes example',
@@ -708,7 +708,7 @@ class NotesExample extends StatelessWidget {
                     ],
                     child: Consumer2<cache.IndexedDbProvider, NotesProvider<sample.Person>>(
                       builder: (context, indexedDbProvider, notesProvider, _) {
-                        return app.LoadingScreen(
+                        return base.LoadingScreen(
                           future: () async {
                             final isPreferMouse = context.isPreferMouse;
                             await indexedDbProvider.init();
@@ -769,7 +769,7 @@ Widget _noteItem(BuildContext context, String id) {
                             formController: formController,
                           )),
                 ]),
-                body: app.LoadingScreen(
+                body: base.LoadingScreen(
                   future: () async {
                     final noteFormController = NoteFormController.of<sample.Person>(context);
                     await indexedDbProvider.init();

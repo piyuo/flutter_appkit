@@ -3,12 +3,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/generator/generator.dart' as generator;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../dialog.dart';
 
-main() => app.start(
+main() => base.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
       appName: 'dialog example',

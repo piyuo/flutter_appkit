@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 
 import '../permission.dart';
 
@@ -10,7 +10,7 @@ main() {
     debugPrint('check controller:${_checkController.value}');
   });
 
-  app.start(
+  base.start(
     appName: 'permission example',
     routesBuilder: () => {
       '/': (context, state, data) => const DeltaExample(),

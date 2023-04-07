@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import '../charts.dart';
 
-main() => app.start(
+main() => base.start(
       appName: 'charts example',
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),

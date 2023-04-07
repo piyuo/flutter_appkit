@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import '../animate_view.dart';
 
 var scrollController = ScrollController();
@@ -34,7 +34,7 @@ Widget itemBuilder(bool isListView, int index) {
   );
 }
 
-main() => app.start(
+main() => base.start(
       appName: 'animate_view example',
       routesBuilder: () => {
         '/': (context, state, data) => const AnimationExample(),
