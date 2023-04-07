@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/form/form.dart' as form;
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 //import 'package:pinput/pin_put/pin_put.dart';
 import 'code_screen_provider.dart';
@@ -55,20 +55,20 @@ class CodeScreen extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           const SizedBox(height: 20),
-                          app.Hypertext(children: [
-                            app.Span(text: context.i18n.loginCodeScreenSent),
-                            app.Bold(text: model.email),
-                            const app.Span(text: '  '),
-                            app.Link(
+                          base.Hypertext(children: [
+                            base.Span(text: context.i18n.loginCodeScreenSent),
+                            base.Bold(text: model.email),
+                            const base.Span(text: '  '),
+                            base.Link(
                                 text: context.i18n.loginCodeScreenChange,
                                 onPressed: (_, __) {
                                   return Navigator.of(context).pop();
                                 }),
                           ]),
                           const SizedBox(height: 10),
-                          app.Hypertext(children: [
-                            app.Span(text: context.i18n.loginCodeScreenReceive),
-                            app.Link(
+                          base.Hypertext(children: [
+                            base.Span(text: context.i18n.loginCodeScreenReceive),
+                            base.Link(
                               text: context.i18n.loginCodeScreenChange,
                               onPressed: (context, __) => model.onResendCode(context),
                             ),

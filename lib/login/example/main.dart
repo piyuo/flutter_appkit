@@ -1,26 +1,25 @@
-import 'package:libcli/base/src/session_provider.dart';
+import 'package:libcli/base/base.dart' as base;
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/base/base.dart' as app;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../login.dart';
 
 main() {
-  final SessionProvider sessionProvider = SessionProvider(loader: (_) async => null);
-  eventbus.listen<app.LoginEvent>(
+  final base.SessionProvider sessionProvider = base.SessionProvider(loader: (_) async => null);
+  eventbus.listen<base.LoginEvent>(
     (event) async {
       debugPrint('login event');
     },
   );
 
-  app.start(
+  base.start(
     appName: 'login example',
     routesBuilder: () => {
       '/': (context, _, __) => const LayoutExample(),
     },
     dependencyBuilder: () async => [
-      ChangeNotifierProvider<app.SessionProvider>.value(
+      ChangeNotifierProvider<base.SessionProvider>.value(
         value: sessionProvider,
       ),
     ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:libcli/base/base.dart' as app;
+import 'package:libcli/base/base.dart' as base;
 
 /// LoginType define the type of login
 enum LoginType { apple, google, facebook, email }
@@ -38,21 +38,21 @@ class LoginFormProvider with ChangeNotifier {
 
   /// onSocialLogin is called when the social button is pressed
   Future<void> onSocialLogin(BuildContext context, LoginType type) async {
-    final sessionProvider = app.SessionProvider.of(context);
+    final sessionProvider = base.SessionProvider.of(context);
     final aExpired = DateTime.now().add(const Duration(minutes: 300));
     final rExpired = DateTime.now().add(const Duration(minutes: 800));
-    await sessionProvider.login((app.Session(
+    await sessionProvider.login((base.Session(
       userId: 'user1',
-      accessToken: app.Token(
+      accessToken: base.Token(
         value: 'access',
         expired: aExpired,
       ),
-      refreshToken: app.Token(
+      refreshToken: base.Token(
         value: 'refresh',
         expired: rExpired,
       ),
       args: {
-        app.kSessionUserNameKey: 'userName1',
+        base.kSessionUserNameKey: 'userName1',
       },
     )));
     onLoginSucceeded();
