@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'delta.dart';
 import 'indicator.dart';
 
@@ -94,8 +94,15 @@ class RefreshMoreViewState extends State<RefreshMoreView> {
     return context.isTouchSupported
         ? EasyRefresh(
             //set header or footer to null if no onRefresh or onLoad, will force list bounce
-            header: widget.onRefresh != null ? BallPulseHeader(color: Theme.of(context).colorScheme.primary) : null,
-            footer: widget.onLoadMore != null ? BallPulseFooter(color: Theme.of(context).colorScheme.primary) : null,
+            header: widget.onRefresh != null
+                ? CupertinoHeader(
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                    backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                  )
+                : null,
+            footer: widget.onLoadMore != null
+                ? CupertinoFooter(foregroundColor: Theme.of(context).colorScheme.primary)
+                : null,
             onRefresh: widget.onRefresh,
             onLoad: widget.onLoadMore,
             scrollController: widget.scrollController,

@@ -88,7 +88,7 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _menuButton(context),
+                          child: _refreshMoreView(context),
                         ),
                         SizedBox(
                           height: 100,
