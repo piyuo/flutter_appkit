@@ -151,6 +151,18 @@ void main() {
       expect(str, '23:30');
     });
 
+    test('should parse string to time', () async {
+      await changeDateFormatting('en_US');
+      final date = parseTime('10:23 PM');
+      expect(date.hour, 22);
+      expect(date.minute, 23);
+
+      await changeDateFormatting('zh_CN');
+      final date2 = parseTime('22:23');
+      expect(date2.hour, 22);
+      expect(date2.minute, 23);
+    });
+
     test('should convert date time to string', () async {
       await changeDateFormatting('en_US');
       var date = DateTime(2021, 1, 2, 23, 30);
@@ -164,6 +176,24 @@ void main() {
       await changeDateFormatting('zh_CN');
       str = formatDateTime(date);
       expect(str, '2021年1月2日 23:30');
+    });
+
+    test('should parse string to date time', () async {
+      await changeDateFormatting('en_US');
+      final date = parseDateTime('January 2, 2021 11:30 PM');
+      expect(date.year, 2021);
+      expect(date.month, 1);
+      expect(date.day, 2);
+      expect(date.hour, 23);
+      expect(date.minute, 30);
+
+      await changeDateFormatting('zh_CN');
+      final date2 = parseDateTime('2021年1月2日 23:30');
+      expect(date2.year, 2021);
+      expect(date2.month, 1);
+      expect(date2.day, 2);
+      expect(date.hour, 23);
+      expect(date.minute, 30);
     });
 
     test('should format timestamp', () async {

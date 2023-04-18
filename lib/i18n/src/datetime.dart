@@ -126,12 +126,25 @@ DateTime parseDate(String date) => dateFormat.parse(date);
 /// ```
 String formatDateTime(DateTime datetime) => dateTimeFormat.format(datetime);
 
+/// parseDateTime parse string to date and time
+/// ```dart
+/// final date = parseDateTime('January 2, 2021 11:30 PM');
+/// expect(date.year, 2021);
+/// ```
+DateTime parseDateTime(String datetime) => dateTimeFormat.parse(datetime);
+
 /// formatTime convert time to local string
 /// ```dart
 /// var str = formatTime(date);
 /// expect(str, '11:30 PM');
 /// ```
 String formatTime(DateTime time) => timeFormat.format(time);
+
+/// parseTime parse string to time
+/// ```dart
+/// final time = parseTime('11:30 PM');
+/// ```
+DateTime parseTime(String datetime) => timeFormat.parse(datetime);
 
 /// formatDateStamp convert stamp to local date string
 /// ```dart
