@@ -93,10 +93,14 @@ String firewallBlockMessage(BuildContext context, String reason) {
 }
 
 Widget emailUs(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
   return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: TextButton(
-        child: Text(context.i18n.errorEmailUsLink),
+        child: Text(context.i18n.errorEmailUsLink,
+            style: TextStyle(
+              color: colorScheme.onErrorContainer,
+            )),
         onPressed: () => eventbus.broadcast(EmailSupportEvent()),
       ));
 }
@@ -144,7 +148,6 @@ Future<void> listened(dynamic e) async {
       widget: const Icon(
         Icons.wifi,
         size: 68,
-        color: Colors.white,
       ),
     );
     return;
