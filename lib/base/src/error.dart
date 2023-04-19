@@ -96,7 +96,7 @@ Widget emailUs(BuildContext context) {
   return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: TextButton(
-        child: Text(delta.i18n.errorEmailUsLink),
+        child: Text(context.i18n.errorEmailUsLink),
         onPressed: () => eventbus.broadcast(EmailSupportEvent()),
       ));
 }
