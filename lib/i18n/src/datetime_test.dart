@@ -120,10 +120,18 @@ void main() {
       var date = DateTime(2021, 1, 2, 23, 30);
       var str = formatDate(date);
       expect(str, 'January 2, 2021');
+      expect(getMonthName(date), 'January');
+      expect(getMonthNameShort(date), 'Jan');
+      expect(date.monthName, 'January');
+      expect(date.monthNameShort, 'Jan');
 
       await changeDateFormatting('zh_CN');
       str = formatDate(date);
       expect(str, '2021年1月2日');
+      expect(getMonthName(date), '一月');
+      expect(getMonthNameShort(date), '1月');
+      expect(date.monthName, '一月');
+      expect(date.monthNameShort, '1月');
     });
 
     test('should parse string to date', () async {
@@ -246,10 +254,12 @@ void main() {
       var date = DateTime(2023, 1, 16);
       var str = formatWeekday(date);
       expect(str, 'Monday');
+      expect(date.weekdayName, 'Monday');
 
       await changeDateFormatting('zh_CN');
       str = formatWeekday(date);
       expect(str, '星期一');
+      expect(date.weekdayName, '星期一');
     });
 
     test('should format weekday in short', () async {
@@ -257,28 +267,32 @@ void main() {
       var date = DateTime(2023, 1, 16);
       var str = formatWeekdayShort(date);
       expect(str, 'Mon');
+      expect(date.weekdayNameShort, 'Mon');
 
       await changeDateFormatting('zh_CN');
       str = formatWeekdayShort(date);
       expect(str, '周一');
+      expect(date.weekdayNameShort, '周一');
     });
 
     test('should return pretty weekday', () async {
       await changeDateFormatting('en_US');
       var now = DateTime.now();
-      expect(prettyWeekday(testing.Context(), now), 'Today');
-      expect(prettyWeekday(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
-      expect(prettyWeekday(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
-      expect(prettyWeekday(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
+      expect(now.prettyWeekdayName(testing.Context()), 'Today');
+      expect(formatPrettyWeekday(testing.Context(), now), 'Today');
+      expect(formatPrettyWeekday(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
+      expect(formatPrettyWeekday(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
+      expect(formatPrettyWeekday(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
     });
 
     test('should return pretty weekday short', () async {
       await changeDateFormatting('en_US');
       var now = DateTime.now();
-      expect(prettyWeekdayShort(testing.Context(), now), 'Today');
-      expect(prettyWeekdayShort(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
-      expect(prettyWeekdayShort(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
-      expect(prettyWeekdayShort(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
+      expect(now.prettyWeekdayNameShort(testing.Context()), 'Today');
+      expect(formatPrettyWeekdayShort(testing.Context(), now), 'Today');
+      expect(formatPrettyWeekdayShort(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
+      expect(formatPrettyWeekdayShort(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
+      expect(formatPrettyWeekdayShort(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
     });
   });
 }
