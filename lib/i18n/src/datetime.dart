@@ -46,6 +46,24 @@ extension DateHelpers on DateTime {
   /// ```
   bool get isMax => compareTo(maxDateTime) == 0;
 
+  /// dateName return localized date string
+  /// ```dart
+  /// expect(date.dateName, 'January');
+  /// ```
+  String get dateName => formatDate(this);
+
+  /// dateTimeName return localized date string
+  /// ```dart
+  /// expect(date.dateTimeName, 'January');
+  /// ```
+  String get dateTimeName => formatDateTime(this);
+
+  /// timeName return localized date string
+  /// ```dart
+  /// expect(date.timeName, 'January');
+  /// ```
+  String get timeName => formatTime(this);
+
   /// monthName get month name from date
   /// ```dart
   /// expect(date.monthName, 'January');
