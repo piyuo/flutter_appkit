@@ -519,10 +519,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_quill
-      sha256: "4c34108074037d078822114b1b99f4c92d0864c4d43021ee56c56b3eec463b29"
+      sha256: "95efcc7e51d8630ed327042c54727a4865ce733b74a893234998c71b51bfc03c"
       url: "https://pub.dev"
     source: hosted
-    version: "7.1.6"
+    version: "7.1.9"
   flutter_rating_bar:
     dependency: "direct main"
     description:
@@ -681,10 +681,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_maps_flutter_web
-      sha256: "1bb2ebf3b94488e48c79360870c705c09b7a4f6d9037c7fc3d44587e75adf062"
+      sha256: "33cdd42a83620859f5bd573f9eede550a7401457375b89629d12921751c7bda5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.0+7"
+    version: "0.4.0+8"
   hive:
     dependency: "direct main"
     description:
@@ -809,10 +809,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.0"
+    version: "0.18.1"
   js:
     dependency: transitive
     description:
@@ -1383,18 +1383,18 @@ packages:
     dependency: transitive
     description:
       name: sqflite
-      sha256: "500d6fec583d2c021f2d25a056d96654f910662c64f836cd2063167b8f1fa758"
+      sha256: e7dfb6482d5d02b661d0b2399efa72b98909e5aa7b8336e1fb37e226264ade00
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.6"
+    version: "2.2.7"
   sqflite_common:
     dependency: transitive
     description:
       name: sqflite_common
-      sha256: "963dad8c4aa2f814ce7d2d5b1da2f36f31bd1a439d8f27e3dc189bb9d26bc684"
+      sha256: "220831bf0bd5333ff2445eee35ec131553b804e6b5d47a4a37ca6f5eb66e282c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.3"
+    version: "2.4.4"
   stack_trace:
     dependency: transitive
     description:
@@ -1439,10 +1439,10 @@ packages:
     dependency: "direct main"
     description:
       name: synchronized
-      sha256: "33b31b6beb98100bf9add464a36a8dd03eb10c7a8cf15aeec535e9b054aaf04b"
+      sha256: "5fcbd27688af6082f5abd611af56ee575342c30e87541d0245f7ff99faa02c60"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.1.0"
   term_glyph:
     dependency: transitive
     description:
@@ -1615,18 +1615,18 @@ packages:
     dependency: "direct main"
     description:
       name: webview_flutter
-      sha256: "47663d51a9061451aa3880a214ee9a65dcbb933b77bc44388e194279ab3ccaf6"
+      sha256: cbfdd39a8e7124c28a5472ee2d82c55fd823277b1f0690c5f7f83aaf6d61704a
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.7"
+    version: "4.1.0"
   webview_flutter_android:
     dependency: transitive
     description:
       name: webview_flutter_android
-      sha256: "489c4162cbddea9116a9622f0f881c3cc26317d119322150d7608f2223ffa72d"
+      sha256: de4f772fc738f74cc7fe920636aabf3e78ba78032ba8b8698be666064b1c18d9
       url: "https://pub.dev"
     source: hosted
-    version: "3.5.2"
+    version: "3.5.3"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
