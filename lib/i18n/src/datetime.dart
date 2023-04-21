@@ -52,6 +52,8 @@ extension DateHelpers on DateTime {
   /// ```
   String get dateName => formatDate(this);
 
+  String get dayNameShort => DateFormat.MMMMd(localeKey).format(this);
+
   /// dateTimeName return localized date string
   /// ```dart
   /// expect(date.dateTimeName, 'January');
