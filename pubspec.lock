@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.4.4"
+  calendar_date_picker2:
+    dependency: "direct main"
+    description:
+      name: calendar_date_picker2
+      sha256: f7ecd632260f2af6cfb72f6b7878f847b0a61821d50f26df9bd00b0a336d0cac
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.2"
   characters:
     dependency: transitive
     description:
@@ -1198,14 +1206,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
-  reactive_date_range_picker:
-    dependency: "direct main"
-    description:
-      name: reactive_date_range_picker
-      sha256: "9241f8c28f7c3e5161f466d0b37d3eca42766220261af0887f4458c7316ba4ac"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.0"
   reactive_forms:
     dependency: "direct main"
     description:

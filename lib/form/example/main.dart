@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_date_range_picker/reactive_date_range_picker.dart';
 import 'package:reactive_touch_spin/reactive_touch_spin.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
@@ -52,10 +51,18 @@ final formGroup = fb.group({
   'checkbox': [true],
   'checkbox2': [true],
   'sendNotifications': [false, Validators.required],
-  'dateTime': DateTime.now(),
   'time': TimeOfDay.now(),
-  'dateRange': FormControl<DateTimeRange>(),
+  'datePicker': FormControl<DateTime>(validators: [Validators.required]),
+  'dateRange': FormControl<DateTimeRange>(
+    value: DateTimeRange(
+      start: DateTime.now(),
+      end: DateTime.now().add(const Duration(days: 1)),
+    ),
+  ),
   'touchSpin': FormControl<int>(value: 10),
+  'singleDate': FormControl<List<DateTime?>>(),
+  'multiDate': FormControl<List<DateTime?>>(),
+  'rangeDate': FormControl<List<DateTime?>>(),
 });
 
 class NumValueAccessor extends ControlValueAccessor<int, num> {
@@ -337,30 +344,35 @@ class FormExample extends StatelessWidget {
               ),
             ),
           ),
-          ReactiveTextField<DateTime>(
-            formControlName: 'dateTime',
-            readOnly: true,
-            decoration: InputDecoration(
-              labelText: 'Birthday',
-              suffixIcon: ReactiveDatePicker<DateTime>(
-                formControlName: 'dateTime',
-                firstDate: DateTime(1985),
-                lastDate: DateTime(2030),
-                builder: (context, picker, child) {
-                  return IconButton(
-                    onPressed: picker.showPicker,
-                    icon: const Icon(Icons.date_range),
-                  );
-                },
-              ),
+          DatePicker(
+            formControlName: 'datePicker',
+            decoration: const InputDecoration(
+              labelText: 'Date Picker',
+              suffixIcon: Icon(Icons.calendar_month),
             ),
+            firstDate: DateTime(1985),
+            lastDate: DateTime(2030),
+            validationMessages: {
+              ValidationMessage.required: (error) => 'The date picker must not be empty',
+            },
           ),
-          ReactiveDateRangePicker(
+          DateRangePicker(
             formControlName: 'dateRange',
             decoration: const InputDecoration(
               labelText: 'Date range',
               helperText: '',
-              suffixIcon: Icon(Icons.calendar_today),
+              suffixIcon: Icon(Icons.date_range),
+            ),
+          ),
+          DateRangePicker(
+            formControlName: 'dateRange',
+            widgetBuilder: buildBigDateRange,
+          ),
+          DateMultiPicker(
+            formControlName: 'multiDate',
+            decoration: const InputDecoration(
+              labelText: 'Multi date',
+              suffixIcon: Icon(Icons.calendar_month),
             ),
           ),
           ReactiveTouchSpin<int>(
@@ -376,6 +388,21 @@ class FormExample extends StatelessWidget {
               labelText: "Order quantity",
               helperText: '',
             ),
+          ),
+          const Divider(),
+          br(),
+          Calendar(
+            formControlName: 'singleDate',
+          ),
+          const Divider(),
+          Calendar(
+            calendarType: CalendarType.multi,
+            formControlName: 'multiDate',
+          ),
+          const Divider(),
+          Calendar(
+            calendarType: CalendarType.range,
+            formControlName: 'rangeDate',
           ),
           const Divider(),
           br(),
