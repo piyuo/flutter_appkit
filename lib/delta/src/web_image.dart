@@ -106,7 +106,7 @@ class WebImageState extends State<WebImage> {
     errorBuilder() {
       Future.microtask(() {
         setState(() {
-          log.log('[web_image] missing $widget.url');
+          log.log('[web_image] missing ${widget.url}');
           hasError = true;
         });
       });
