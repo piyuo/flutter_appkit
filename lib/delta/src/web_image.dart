@@ -103,10 +103,11 @@ class WebImageState extends State<WebImage> {
       );
     }
 
-    errorBuilder() {
+    errorBuilder(e, s) {
       Future.microtask(() {
         setState(() {
           log.log('[web_image] missing ${widget.url}');
+          if (e != null && s != null) log.error(e, s);
           hasError = true;
         });
       });
@@ -131,7 +132,7 @@ class WebImageState extends State<WebImage> {
           height: widget.height,
           opacity: widget.opacity,
           loadingBuilder: (_, __, ___) => loadingBuilder(),
-          errorBuilder: (_, __, ___) => errorBuilder(),
+          errorBuilder: (_, e, s) => errorBuilder(e, s),
         ),
       );
     }
@@ -157,7 +158,7 @@ class WebImageState extends State<WebImage> {
           case LoadState.completed:
             return null;
           case LoadState.failed:
-            return errorBuilder();
+            return errorBuilder(null, null);
         }
       },
     );

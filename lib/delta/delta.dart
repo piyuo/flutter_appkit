@@ -34,3 +34,4 @@ export 'src/dynamic_bottom_side.dart';
 export 'src/wrapped_list_view.dart';
 export 'src/padding_to_center.dart';
 export 'src/show_responsive_dialog.dart';
+export 'src/navigation_scaffold.dart';

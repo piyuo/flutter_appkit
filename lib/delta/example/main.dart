@@ -88,13 +88,17 @@ class DeltaExample extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _webImage(context),
+                          child: _navigationScaffold(context),
                         ),
                         SizedBox(
                           height: 100,
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
+                                testing.ExampleButton(
+                                    label: 'navigation scaffold',
+                                    useScaffold: false,
+                                    builder: () => _navigationScaffold(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(label: 'refresh more', builder: () => _refreshMoreView(context)),
@@ -445,6 +449,25 @@ class DeltaExample extends StatelessWidget {
 
   Widget _isTouchSupported(BuildContext context) {
     return context.isTouchSupported ? const Text('touch supported') : const Text('touch not support');
+  }
+
+  Widget _navigationScaffold(BuildContext context) {
+    return NavigationScaffold(
+      leadingInRail: Container(width: 256, height: 100, color: Colors.blue),
+      trailingInRail: Container(width: 256, height: 100, color: Colors.green),
+      destinations: const [
+        Navigation(title: 'Dashboard', icon: Icons.dashboard),
+        Navigation(title: 'Message', icon: Icons.chat),
+        Navigation(title: 'Reservation', icon: Icons.event),
+        Navigation(title: 'Stays', icon: Icons.home),
+        Navigation(title: 'Settings', icon: Icons.settings),
+      ],
+      selectedIndex: 0,
+      onSelected: (index) {
+        debugPrint(index.toString());
+      },
+      body: Container(color: Colors.red, height: 100),
+    );
   }
 
   Widget _buttonPanel(BuildContext context) {
