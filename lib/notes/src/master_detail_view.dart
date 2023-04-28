@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/general/general.dart' as general;
-import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:split_view/split_view.dart';
 import 'selectable.dart';
 import 'dynamic_list.dart';
@@ -44,7 +43,7 @@ class MasterDetailView<T> extends StatelessWidget {
   }) : super(key: key);
 
   /// animateViewProvider is the provider of the animate view
-  final animate_view.AnimateViewProvider animateViewProvider;
+  final delta.AnimateViewProvider animateViewProvider;
 
   /// items is the list of data to be displayed
   final List<T> items;

@@ -5,7 +5,6 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'tag.dart';
 import 'selectable.dart';
 import 'types.dart';
@@ -86,7 +85,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   final refreshButtonController = delta.RefreshButtonController();
 
   /// animateViewController control view animation
-  final animate_view.AnimateViewProvider animateViewProvider;
+  final delta.AnimateViewProvider animateViewProvider;
 
   /// _searchController is search box controller
   final searchController = TextEditingController();

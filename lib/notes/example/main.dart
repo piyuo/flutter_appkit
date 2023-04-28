@@ -8,7 +8,6 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/cache/cache.dart' as cache;
@@ -29,7 +28,7 @@ final formGroup = fb.group({
   'age': FormControl<int>(),
 });
 
-animate_view.AnimateViewProvider _animateViewProvider = animate_view.AnimateViewProvider()..setLength(5);
+delta.AnimateViewProvider _animateViewProvider = delta.AnimateViewProvider()..setLength(5);
 
 NotesProvider<sample.Person> _notesProvider = NotesProvider<sample.Person>(
   animateViewProvider: _animateViewProvider,
@@ -199,7 +198,7 @@ class NotesExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _notesView(context),
+              child: _masterDetailView(context),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -316,9 +315,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _dynamicList(BuildContext context) {
-    return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length),
-        child: Consumer<animate_view.AnimateViewProvider>(
+    return ChangeNotifierProvider<delta.AnimateViewProvider>(
+        create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
+        child: Consumer<delta.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -351,9 +350,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _pullRefresh(BuildContext context) {
-    return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-        create: (context) => animate_view.AnimateViewProvider()..setLength(15),
-        child: Consumer<animate_view.AnimateViewProvider>(
+    return ChangeNotifierProvider<delta.AnimateViewProvider>(
+        create: (context) => delta.AnimateViewProvider()..setLength(15),
+        child: Consumer<delta.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -379,9 +378,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _dynamicGrid(BuildContext context) {
-    return ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-        create: (context) => animate_view.AnimateViewProvider()..setLength(animationListItems.length),
-        child: Consumer<animate_view.AnimateViewProvider>(
+    return ChangeNotifierProvider<delta.AnimateViewProvider>(
+        create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
+        child: Consumer<delta.AnimateViewProvider>(
             builder: (context, provide, child) => Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(children: [
@@ -416,8 +415,8 @@ class NotesExample extends StatelessWidget {
   Widget _masterDetailView(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
+          ChangeNotifierProvider<delta.AnimateViewProvider>(
+            create: (context) => delta.AnimateViewProvider()..setLength(5),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
@@ -426,7 +425,7 @@ class NotesExample extends StatelessWidget {
             create: (context) => _SelectedController(),
           )
         ],
-        child: Consumer2<_SelectedController, animate_view.AnimateViewProvider>(
+        child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
             builder: (context, selectedController, animateViewProvider, child) => MasterDetailView<String>(
                   animateViewProvider: animateViewProvider,
                   headerBuilder: () => delta.SearchBox(
@@ -566,8 +565,8 @@ class NotesExample extends StatelessWidget {
   Widget _filterSplitView(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
+          ChangeNotifierProvider<delta.AnimateViewProvider>(
+            create: (context) => delta.AnimateViewProvider()..setLength(5),
           ),
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
@@ -576,7 +575,7 @@ class NotesExample extends StatelessWidget {
             create: (context) => _SelectedController(),
           )
         ],
-        child: Consumer2<_SelectedController, animate_view.AnimateViewProvider>(
+        child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
           builder: (context, selectedController, animateViewProvider, child) => TagSplitView(
               tagView: TagView<SampleFilter>(
                 onTagSelected: (value) => debugPrint('$value selected'),
@@ -676,11 +675,11 @@ class NotesExample extends StatelessWidget {
           ChangeNotifierProvider<delta.RefreshButtonController>(
             create: (context) => delta.RefreshButtonController(),
           ),
-          ChangeNotifierProvider<animate_view.AnimateViewProvider>(
-            create: (context) => animate_view.AnimateViewProvider()..setLength(5),
+          ChangeNotifierProvider<delta.AnimateViewProvider>(
+            create: (context) => delta.AnimateViewProvider()..setLength(5),
           ),
         ],
-        child: Consumer<animate_view.AnimateViewProvider>(
+        child: Consumer<delta.AnimateViewProvider>(
             builder: (context, animateViewProvider, _) => MasterDetailView<String>(
                   animateViewProvider: animateViewProvider,
                   items: const [],
@@ -692,9 +691,9 @@ class NotesExample extends StatelessWidget {
   }
 
   Widget _notesView(BuildContext context) {
-    return ChangeNotifierProvider<animate_view.AnimateViewProvider>.value(
+    return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
         value: _animateViewProvider,
-        child: Consumer<animate_view.AnimateViewProvider>(
+        child: Consumer<delta.AnimateViewProvider>(
             builder: (context, animateViewProvider, _) => MultiProvider(
                     providers: [
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(

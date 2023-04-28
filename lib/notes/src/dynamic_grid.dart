@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'selectable.dart';
 
@@ -74,7 +73,7 @@ class DynamicGrid<T> extends Selectable<T> {
   final ScrollController? scrollController;
 
   /// animateViewProvider is the provider of the animate view
-  final animate_view.AnimateViewProvider animateViewProvider;
+  final delta.AnimateViewProvider animateViewProvider;
 
   /// animatedViewScrollController is animated view scroll controller inside list
   final ScrollController? animatedViewScrollController;
@@ -129,7 +128,7 @@ class DynamicGrid<T> extends Selectable<T> {
                 return buildFooter(context);
               }
 
-              return animate_view.AnimateView(
+              return delta.AnimateView(
                 animateViewProvider: animateViewProvider,
                 crossAxisCount: crossAxisCount,
                 crossAxisSpacing: 40,

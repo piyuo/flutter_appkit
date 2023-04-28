@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/animate_view/animate_view.dart' as animate_view;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'selectable.dart';
 
@@ -83,7 +82,7 @@ class DynamicList<T> extends Selectable<T> {
         );
 
   /// animateViewProvider is the provider of the animate view
-  final animate_view.AnimateViewProvider animateViewProvider;
+  final delta.AnimateViewProvider animateViewProvider;
 
   /// onRefresh is the callback function when user refresh the list
   final Future<void> Function()? onRefresh;
@@ -134,7 +133,7 @@ class DynamicList<T> extends Selectable<T> {
                 return const delta.LoadingDisplay();
               }
 
-              return animate_view.AnimateView(
+              return delta.AnimateView(
                 animateViewProvider: animateViewProvider,
                 controller: animatedViewScrollController,
                 shrinkWrap: true,
