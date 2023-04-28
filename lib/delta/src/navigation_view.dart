@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:split_view/split_view.dart';
 import 'delta.dart';
+import 'shifter.dart';
 
 class NavigationViewProvider<T> with ChangeNotifier {
   NavigationViewProvider({
@@ -71,13 +72,17 @@ class NavigationView<T> extends StatelessWidget {
                 builder(navigationViewProvider.value),
               ],
             )
-          : Row(children: [
-              Expanded(
+          : Shifter(
+              reverse: navigationViewProvider.isSideView,
+              newChildKey: ValueKey(navigationViewProvider.isSideView),
+              child: Container(
+                key: ValueKey(navigationViewProvider.isSideView),
+                constraints: const BoxConstraints.expand(),
                 child: navigationViewProvider.isSideView
                     ? sideBuilder(navigationViewProvider)
                     : builder(navigationViewProvider.value),
               ),
-            ]);
+            );
     });
   }
 }

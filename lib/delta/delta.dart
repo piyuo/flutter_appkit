@@ -36,3 +36,8 @@ export 'src/padding_to_center.dart';
 export 'src/show_responsive_dialog.dart';
 export 'src/navigation_scaffold.dart';
 export 'src/navigation_view.dart';
+export 'src/shifter.dart';
+export 'src/axis_animation.dart';
+export 'src/transform_container.dart';
+export 'src/animate_view.dart';
+export 'src/animate_grid.dart';
