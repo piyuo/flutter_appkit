@@ -1,47 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'delta.dart';
-import 'indicator.dart';
 
 /// RefreshMoreView is list view that support refresh and load more
-/// ```dart
-///  RefreshMoreView(
-///   scrollController: _scrollController,
-///   itemCount: items.length,
-///   itemBuilder: (BuildContext context, int index) {
-///     return ListTile(leading: CircleAvatar(child: Text(item)));
-///   },
-///   onRefresh: () async {},
-///   onLoadMore: () async {},
-/// )
-/// ```
 class RefreshMoreView extends StatefulWidget {
-  /// RefreshMoreView is list view that support refresh and load more
   /// ```dart
   ///  RefreshMoreView(
   ///   scrollController: _scrollController,
-  ///   itemCount: items.length,
-  ///   itemBuilder: (BuildContext context, int index) {
-  ///     return ListTile(leading: CircleAvatar(child: Text(item)));
-  ///   },
   ///   onRefresh: () async {},
   ///   onLoadMore: () async {},
+  ///   child: ListView.builder(...),
   /// )
   /// ```
   const RefreshMoreView({
-    required this.itemCount,
-    required this.itemBuilder,
+    required this.child,
     Key? key,
     this.onRefresh,
     this.onLoadMore,
     this.scrollController,
   }) : super(key: key);
-
-  /// itemCount is list view item count
-  final int itemCount;
-
-  /// itemBuilder is list view item builder
-  final Widget Function(BuildContext, int) itemBuilder;
 
   /// onRefresh is the callback function when user refresh the list
   final Future<void> Function()? onRefresh;
@@ -52,23 +29,41 @@ class RefreshMoreView extends StatefulWidget {
   /// scrollController is the scroll controller of the refresh panel
   final ScrollController? scrollController;
 
+  final Widget child;
+
   @override
   RefreshMoreViewState createState() => RefreshMoreViewState();
 }
 
 class RefreshMoreViewState extends State<RefreshMoreView> {
-  /// _busy is true will not execute onRefresh or onLoad
-  bool _busy = false;
-
   @override
   Widget build(BuildContext context) {
-    if (widget.onRefresh == null && widget.onLoadMore == null) {
-      return ListView.builder(
-        controller: widget.scrollController,
-        itemCount: widget.itemCount,
-        itemBuilder: widget.itemBuilder,
-      );
+    if (!context.isTouchSupported || (widget.onRefresh == null && widget.onLoadMore == null)) {
+      return widget.child;
     }
+
+    return EasyRefresh(
+      //set header or footer to null if no onRefresh or onLoad, will force list bounce
+      header: widget.onRefresh != null
+          ? CupertinoHeader(
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+            )
+          : null,
+      footer:
+          widget.onLoadMore != null ? CupertinoFooter(foregroundColor: Theme.of(context).colorScheme.primary) : null,
+      onRefresh: widget.onRefresh,
+      onLoad: widget.onLoadMore,
+      scrollController: widget.scrollController,
+      child: widget.child,
+    );
+  }
+}
+
+
+/*
+  /// _busy is true will not execute onRefresh or onLoad
+  bool _busy = false;
 
     int itemCount = widget.itemCount + (widget.onRefresh != null ? 1 : 0) + (widget.onLoadMore != null ? 1 : 0);
     Widget button(String text, Future<void> Function() callback) => TextButton.icon(
@@ -91,27 +86,7 @@ class RefreshMoreViewState extends State<RefreshMoreView> {
           child: ballPulseIndicator(),
         ));
 
-    return context.isTouchSupported
-        ? EasyRefresh(
-            //set header or footer to null if no onRefresh or onLoad, will force list bounce
-            header: widget.onRefresh != null
-                ? CupertinoHeader(
-                    foregroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-                  )
-                : null,
-            footer: widget.onLoadMore != null
-                ? CupertinoFooter(foregroundColor: Theme.of(context).colorScheme.primary)
-                : null,
-            onRefresh: widget.onRefresh,
-            onLoad: widget.onLoadMore,
-            scrollController: widget.scrollController,
-            child: ListView.builder(
-              itemCount: widget.itemCount,
-              itemBuilder: widget.itemBuilder,
-            ),
-          )
-        : ListView.builder(
+ListView.builder(
             controller: widget.scrollController,
             itemCount: itemCount,
             itemBuilder: (BuildContext context, int index) {
@@ -131,6 +106,6 @@ class RefreshMoreViewState extends State<RefreshMoreView> {
               }
               return widget.itemBuilder(context, index);
             },
-          );
-  }
-}
+          )
+
+ */

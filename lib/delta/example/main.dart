@@ -141,7 +141,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _navigationView(context),
+                          child: _refreshMoreView(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -1383,26 +1383,29 @@ class _DeltaExampleState extends State<DeltaExample> {
 
     return RefreshMoreView(
       scrollController: _scrollController,
-      itemCount: items.length,
-      itemBuilder: (BuildContext context, int index) {
-        final String item = items[index];
-        return ListTile(
-          isThreeLine: true,
-          leading: CircleAvatar(child: Text(item)),
-          title: Text('This item represents $item.'),
-          subtitle: const Text('Even more additional list item information appears on line three'),
-        );
-      },
       onRefresh: () async {
         debugPrint('refresh');
-        await Future.delayed(const Duration(seconds: 5));
+        await Future.delayed(const Duration(seconds: 2));
         debugPrint('refresh done');
       },
       onLoadMore: () async {
         debugPrint('more');
-        await Future.delayed(const Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 2));
         debugPrint('more done');
       },
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: items.length,
+        itemBuilder: (BuildContext context, int index) {
+          final String item = items[index];
+          return ListTile(
+            isThreeLine: true,
+            leading: CircleAvatar(child: Text(item)),
+            title: Text('This item represents $item.'),
+            subtitle: const Text('Even more additional list item information appears on line three'),
+          );
+        },
+      ),
     );
   }
 
