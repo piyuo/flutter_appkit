@@ -141,7 +141,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _refreshMoreView(context),
+                          child: _groupListView(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -159,6 +159,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(label: 'refresh more', builder: () => _refreshMoreView(context)),
+                                testing.ExampleButton(label: 'group list view', builder: () => _groupListView(context)),
                                 testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
                                 testing.ExampleButton(
                                     label: 'is touch enabled?', builder: () => _isTouchSupported(context)),
@@ -1375,6 +1376,41 @@ class _DeltaExampleState extends State<DeltaExample> {
         selection: {},
       ),
     ]);
+  }
+
+  Widget _groupListView(BuildContext context) {
+    List items = [
+      {'name': 'John', 'group': 'Team A'},
+      {'name': 'Will', 'group': 'Team B'},
+      {'name': 'Beth', 'group': 'Team A'},
+      {'name': 'Miranda', 'group': 'Team B'},
+      {'name': 'Mike', 'group': 'Team C'},
+      {'name': 'Danny', 'group': 'Team C'},
+    ];
+
+    return GroupListView<dynamic, String>(
+      items: items,
+      groupBy: (item) => item['group'],
+      separator: const SizedBox(),
+      itemBuilder: (dynamic item) => ListTile(
+        title: Text(
+          item['name'],
+        ),
+      ),
+      groupBuilder: (String groupByValue) => Container(
+        margin: const EdgeInsets.fromLTRB(10, 1, 10, 10),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+          color: Colors.orange,
+        ),
+        child: ListTile(
+          title: Text(groupByValue),
+        ),
+      ),
+    );
   }
 
   Widget _refreshMoreView(BuildContext context) {

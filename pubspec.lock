@@ -317,10 +317,10 @@ packages:
     dependency: "direct main"
     description:
       name: easy_refresh
-      sha256: f0da0a5be882aa85b7b0ea63193fadcd4466ff26d32c1edb936c5c33bcd45706
+      sha256: "6f4d222355a8294a72d600bcd7551e0559b6d96a98e8977c69796e0fb2f9e5ef"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.1+1"
+    version: "3.3.1+2"
   equatable:
     dependency: transitive
     description:
@@ -685,6 +685,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.0+8"
+  grouped_list:
+    dependency: "direct main"
+    description:
+      name: grouped_list
+      sha256: fef106470186081c32636aa055492eee7fc7fe8bf0921a48d31ded24821af19f
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.2"
   hive:
     dependency: "direct main"
     description:
