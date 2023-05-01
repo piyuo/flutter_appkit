@@ -119,38 +119,39 @@ class DynamicGrid<T> extends Selectable<T> {
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,
-            itemCount: rowCount,
-            itemBuilder: (BuildContext context, int index) {
-              if (headerBuilder != null && index == 0) {
-                return buildHeader(context);
-              }
-              if (footerBuilder != null && index == rowCount - 1) {
-                return buildFooter(context);
-              }
+            child: ListView.builder(
+                itemCount: rowCount,
+                itemBuilder: (BuildContext context, int index) {
+                  if (headerBuilder != null && index == 0) {
+                    return buildHeader(context);
+                  }
+                  if (footerBuilder != null && index == rowCount - 1) {
+                    return buildFooter(context);
+                  }
 
-              return delta.AnimateView(
-                animateViewProvider: animateViewProvider,
-                crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 40,
-                mainAxisSpacing: 5,
-                controller: animatedViewScrollController,
-                shrinkWrap: true,
-                itemBuilder: (int index) {
-                  if (creating != null) {
-                    if (index == 0) {
-                      return buildItem(context, creating as T);
-                    } else {
-                      index--;
-                    }
-                  }
-                  if (index >= items.length) {
-                    //new item may cause index out of range
-                    return const SizedBox();
-                  }
-                  return buildItem(context, items[index]);
-                },
-              );
-            })
+                  return delta.AnimateView(
+                    animateViewProvider: animateViewProvider,
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 40,
+                    mainAxisSpacing: 5,
+                    controller: animatedViewScrollController,
+                    shrinkWrap: true,
+                    itemBuilder: (int index) {
+                      if (creating != null) {
+                        if (index == 0) {
+                          return buildItem(context, creating as T);
+                        } else {
+                          index--;
+                        }
+                      }
+                      if (index >= items.length) {
+                        //new item may cause index out of range
+                        return const SizedBox();
+                      }
+                      return buildItem(context, items[index]);
+                    },
+                  );
+                }))
       ],
     );
   }

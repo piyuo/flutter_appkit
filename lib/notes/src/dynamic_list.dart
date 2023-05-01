@@ -119,40 +119,42 @@ class DynamicList<T> extends Selectable<T> {
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,
-            itemCount: _rowCount,
-            itemBuilder: (BuildContext context, int index) {
-              if (headerBuilder != null && index == 0) {
-                return headerBuilder!();
-              }
-
-              if (footerBuilder != null && index == _rowCount - 1) {
-                return footerBuilder!();
-              }
-
-              if (!isReady) {
-                return const delta.LoadingDisplay();
-              }
-
-              return delta.AnimateView(
-                animateViewProvider: animateViewProvider,
-                controller: animatedViewScrollController,
-                shrinkWrap: true,
-                itemBuilder: (int index) {
-                  if (creating != null) {
-                    if (index == 0) {
-                      return buildItem(context, creating as T);
-                    } else {
-                      index--;
-                    }
+            child: ListView.builder(
+                controller: scrollController,
+                itemCount: _rowCount,
+                itemBuilder: (BuildContext context, int index) {
+                  if (headerBuilder != null && index == 0) {
+                    return headerBuilder!();
                   }
-                  if (index >= items.length) {
-                    //new item may cause index out of range
-                    return const SizedBox();
+
+                  if (footerBuilder != null && index == _rowCount - 1) {
+                    return footerBuilder!();
                   }
-                  return buildItem(context, items[index]);
-                },
-              );
-            })
+
+                  if (!isReady) {
+                    return const delta.LoadingDisplay();
+                  }
+
+                  return delta.AnimateView(
+                    animateViewProvider: animateViewProvider,
+                    controller: animatedViewScrollController,
+                    shrinkWrap: true,
+                    itemBuilder: (int index) {
+                      if (creating != null) {
+                        if (index == 0) {
+                          return buildItem(context, creating as T);
+                        } else {
+                          index--;
+                        }
+                      }
+                      if (index >= items.length) {
+                        //new item may cause index out of range
+                        return const SizedBox();
+                      }
+                      return buildItem(context, items[index]);
+                    },
+                  );
+                }))
       ],
     );
   }
