@@ -115,7 +115,7 @@ class DynamicGrid<T> extends Selectable<T> {
       fit: StackFit.expand,
       children: [
         if (isReady && items.isEmpty) const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        delta.RefreshMoreView(
+        delta.RefreshView(
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,

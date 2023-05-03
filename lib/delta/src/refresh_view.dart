@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'delta.dart';
 
-/// RefreshMoreView is list view that support refresh and load more
-class RefreshMoreView extends StatefulWidget {
+/// RefreshView support pull down refresh and pull up load more
+class RefreshView extends StatefulWidget {
   /// ```dart
   ///  RefreshMoreView(
   ///   scrollController: _scrollController,
@@ -12,7 +12,7 @@ class RefreshMoreView extends StatefulWidget {
   ///   child: ListView.builder(...),
   /// )
   /// ```
-  const RefreshMoreView({
+  const RefreshView({
     required this.child,
     Key? key,
     this.onRefresh,
@@ -32,10 +32,10 @@ class RefreshMoreView extends StatefulWidget {
   final Widget child;
 
   @override
-  RefreshMoreViewState createState() => RefreshMoreViewState();
+  RefreshViewState createState() => RefreshViewState();
 }
 
-class RefreshMoreViewState extends State<RefreshMoreView> {
+class RefreshViewState extends State<RefreshView> {
   @override
   Widget build(BuildContext context) {
     if (!context.isTouchSupported || (widget.onRefresh == null && widget.onLoadMore == null)) {

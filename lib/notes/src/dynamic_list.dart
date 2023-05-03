@@ -115,7 +115,7 @@ class DynamicList<T> extends Selectable<T> {
       children: [
         if (isReady && items.isEmpty && creating == null)
           const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        delta.RefreshMoreView(
+        delta.RefreshView(
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,

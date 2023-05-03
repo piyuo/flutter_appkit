@@ -1417,7 +1417,7 @@ class _DeltaExampleState extends State<DeltaExample> {
     final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
     //final List<String> items = <String>['A', 'B', 'C'];
 
-    return RefreshMoreView(
+    return RefreshView(
       scrollController: _scrollController,
       onRefresh: () async {
         debugPrint('refresh');
