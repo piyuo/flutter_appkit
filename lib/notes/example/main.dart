@@ -199,7 +199,7 @@ class NotesExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _dataView(context),
+              child: _simpleList(context),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -222,7 +222,6 @@ class NotesExample extends StatelessWidget {
                   testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
                   testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
                   testing.ExampleButton(label: 'loading data', builder: () => _loadingMasterDetailView(context)),
-                  testing.ExampleButton(label: 'pull refresh', builder: () => _pullRefresh(context)),
                 ],
               ),
             ),
@@ -348,34 +347,6 @@ class NotesExample extends StatelessWidget {
                       ),
                     ),
                   ),
-                ]))));
-  }
-
-  Widget _pullRefresh(BuildContext context) {
-    return ChangeNotifierProvider<delta.AnimateViewProvider>(
-        create: (context) => delta.AnimateViewProvider()..setLength(15),
-        child: Consumer<delta.AnimateViewProvider>(
-            builder: (context, provide, child) => Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(children: [
-                  Expanded(
-                      child: DynamicList<String>(
-                    animateViewProvider: provide,
-                    items: const ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'],
-                    selectedItems: const ['b'],
-                    onRefresh: () async {
-                      await Future.delayed(const Duration(seconds: 3));
-                      debugPrint('refresh');
-                    },
-                    onLoadMore: () async {
-                      await Future.delayed(const Duration(seconds: 3));
-                      debugPrint('load more');
-                    },
-                    itemBuilder: (context, String item, bool isSelected) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                      child: Text(item),
-                    ),
-                  )),
                 ]))));
   }
 
