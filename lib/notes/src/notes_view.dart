@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'notes_provider.dart';
-import 'master_detail_view.dart';
+import 'grid_list_view.dart';
 import 'tag_split_view.dart';
 import 'tag_view.dart';
 import 'checkable_header.dart';
@@ -26,21 +27,21 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
   final Widget Function() contentBuilder;
 
   /// leftTools is extra tools on left part on bar
-  final List<delta.ToolItem>? leftTools;
+  final List<tools.ToolItem>? leftTools;
 
   /// rightTools is extra tools on right part on bar
-  final List<delta.ToolItem>? rightTools;
+  final List<tools.ToolItem>? rightTools;
 
   /// tagViewHeader is header for tag view
   final Widget? tagViewHeader;
 
-  List<delta.ToolItem> _buildPaginator(BuildContext context, NotesProvider<T> controller, String pageInfoText) {
+  List<tools.ToolItem> _buildPaginator(BuildContext context, NotesProvider<T> controller, String pageInfoText) {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     return [
-      delta.ToolSelection(
+      tools.ToolSelection(
         width: 180,
         label: localizations.rowsPerPageTitle,
-        text: pageInfoText.isNotEmpty ? pageInfoText : context.i18n.noDataLabel,
+        //text: pageInfoText.isNotEmpty ? pageInfoText : context.i18n.noDataLabel,
         selection: {
           10: context.i18n.notesRowsPerPage.replace1('10'),
           20: context.i18n.notesRowsPerPage.replace1('20'),
@@ -48,12 +49,12 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
         },
         onPressed: (value) => controller.setRowsPerPage(context, value),
       ),
-      delta.ToolButton(
+      tools.ToolButton(
         label: localizations.previousPageTooltip,
         icon: Icons.chevron_left,
         onPressed: controller.hasPreviousPage ? () => controller.onPreviousPage(context) : null,
       ),
-      delta.ToolButton(
+      tools.ToolButton(
         label: localizations.nextPageTooltip,
         icon: Icons.chevron_right,
         onPressed: controller.hasNextPage ? () => controller.onNextPage(context) : null,
@@ -101,7 +102,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                       header: tagViewHeader,
                     )
                   : null,
-              child: MasterDetailView<T>(
+              child: GridListView<T>(
                 animateViewProvider: notesProvider.animateViewProvider,
                 isReady: notesProvider.isReadyToShow,
                 items: notesProvider.dataView != null ? notesProvider.dataView!.displayRows : [],
@@ -185,45 +186,45 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                             notesProvider.isReadyToShow ? () async => await notesProvider.refresh(context) : null,
                       ),
                       Expanded(
-                        child: delta.Toolbar(
+                        child: tools.Toolbar(
                           items: [
                             if (notesProvider.hasListView && notesProvider.hasGridView)
-                              delta.ToolButton(
+                              tools.ToolButton(
                                 label: context.i18n.notesViewAsListLabel,
                                 icon: Icons.view_headline,
                                 onPressed: notesProvider.isReadyToShow ? () => notesProvider.onListView(context) : null,
                                 active: notesProvider.isListView,
                               ),
                             if (notesProvider.hasListView && notesProvider.hasGridView)
-                              delta.ToolButton(
+                              tools.ToolButton(
                                 label: context.i18n.notesViewAsGridLabel,
                                 icon: Icons.grid_view,
                                 onPressed: notesProvider.isReadyToShow ? () => notesProvider.onGridView(context) : null,
                                 active: !notesProvider.isListView,
                                 space: 10,
                               ),
-                            delta.ToolButton(
+                            tools.ToolButton(
                               label: context.i18n.notesSelectButtonLabel,
                               icon: Icons.check_circle_outline,
                               onPressed:
                                   notesProvider.isNotEmpty ? () => notesProvider.onToggleCheckMode(context) : null,
                             ),
                             if (leftTools != null) ...leftTools!,
-                            if (notesProvider.isListView) delta.ToolSpacer(),
+                            if (notesProvider.isListView) tools.ToolSpacer(),
                             if (notesProvider.formController.showArchiveButton)
-                              delta.ToolButton(
+                              tools.ToolButton(
                                 label: context.i18n.archiveButtonText,
                                 icon: Icons.archive,
                                 onPressed: notesProvider.isAllowDelete ? () => notesProvider.onArchive(context) : null,
                               ),
                             if (notesProvider.formController.showDeleteButton)
-                              delta.ToolButton(
+                              tools.ToolButton(
                                 label: context.i18n.deleteButtonText,
                                 icon: Icons.delete,
                                 onPressed: notesProvider.isAllowDelete ? () => notesProvider.onDelete(context) : null,
                               ),
                             if (notesProvider.formController.showRestoreButton)
-                              delta.ToolButton(
+                              tools.ToolButton(
                                 label: context.i18n.restoreButtonText,
                                 icon: Icons.restore,
                                 onPressed: notesProvider.isAllowDelete ? () => notesProvider.onRestore(context) : null,
@@ -235,20 +236,20 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                   );
                 },
                 rightBarBuilder: () {
-                  return delta.Toolbar(
+                  return tools.Toolbar(
                     items: [
-                      delta.ToolButton(
+                      tools.ToolButton(
                         label: context.i18n.notesNewButtonLabel,
                         icon: Icons.add,
                         onPressed: () => notesProvider.onCreateNew(context),
                       ),
-                      delta.ToolButton(
+                      tools.ToolButton(
                         label: context.i18n.formSubmitButtonText,
                         icon: Icons.cloud_upload,
                         onPressed: () => notesProvider.formController.submit(context),
                       ),
                       if (rightTools != null) ...rightTools!,
-                      delta.ToolSpacer(),
+                      tools.ToolSpacer(),
                       ..._buildPaginator(context, notesProvider, pageInfoText),
                     ],
                   );
@@ -288,7 +289,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                         borderRadius: const BorderRadius.all(Radius.circular(10)),
                         color: colorScheme.surfaceVariant,
                       ),
-                      child: delta.Toolbar(
+                      child: tools.Toolbar(
                         mainAxisAlignment: MainAxisAlignment.center,
                         items: [
                           ..._buildPaginator(context, notesProvider, pageInfoText),

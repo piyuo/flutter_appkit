@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/tools/tools.dart' as tools;
 import 'selectable.dart';
 
 /// DynamicGrid is animation + refresh more, need AnimatedViewProvider
@@ -115,7 +116,7 @@ class DynamicGrid<T> extends Selectable<T> {
       fit: StackFit.expand,
       children: [
         if (isReady && items.isEmpty) const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        delta.RefreshView(
+        delta.PullRefresh(
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,

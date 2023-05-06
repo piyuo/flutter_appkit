@@ -7,9 +7,9 @@ import 'selectable.dart';
 import 'dynamic_list.dart';
 import 'dynamic_grid.dart';
 
-class MasterDetailView<T> extends StatelessWidget {
-  /// MasterDetailView show basic master detail view with select/check function, it need [delta.RefreshButtonController]
-  const MasterDetailView({
+/// GridListView show basic grid/list view with select/check function, it need [delta.RefreshButtonController]
+class GridListView<T> extends StatelessWidget {
+  const GridListView({
     required this.animateViewProvider,
     required this.contentBuilder,
     required this.items,
@@ -237,14 +237,6 @@ class MasterDetailView<T> extends StatelessWidget {
         return buildList(context);
       }
 
-/*      final activeItem = (newItem != null)
-          ? newItem
-          : selectedItems.isEmpty
-              ? items.isEmpty
-                  ? null
-                  : items[0]
-              : selectedItems[0];*/
-
       final colorScheme = Theme.of(context).colorScheme;
       return Column(children: [
         if (selectionBarBuilder != null && isCheckMode) selectionBarBuilder!(),
@@ -285,7 +277,6 @@ class MasterDetailView<T> extends StatelessWidget {
               ],
             ),
           ],
-          //onWeightChanged: (w) => onSplitViewResized?.call(constraints.maxWidth * w[0]!),
         ))
       ]);
     });

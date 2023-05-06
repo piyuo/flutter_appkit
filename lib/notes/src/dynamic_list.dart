@@ -3,28 +3,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'selectable.dart';
 
 /// DynamicList is animation + refresh more, need AnimatedViewProvider
-/// ```dart
-/// return ChangeNotifierProvider<animations.AnimatedViewProvider>(
-///    create: (context) => animations.AnimatedViewProvider(),
-///    child: Consumer<animations.AnimatedViewProvider>(
-///        builder: (context, provide, child) => DynamicList<String>(
-///                  headerBuilder: () => delta.SearchBox(
-///                    controller: _searchBoxController,
-///                  ),
-///                  footerBuilder: () => Container(
-///                    child: const Text('footer'),
-///                    color: Colors.red,
-///                  ),
-///                  items: animationListItems,
-///                  selectedItems: const ['b'],
-///                  itemBuilder: (String item, bool isSelected) => Padding(
-///                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-///                    child: Text(item),
-///                  ),
-///                )));
-/// ```
 class DynamicList<T> extends Selectable<T> {
-  /// DynamicList is animation + refresh more, need AnimatedViewProvider
   /// ```dart
   /// return ChangeNotifierProvider<animations.AnimatedViewProvider>(
   ///    create: (context) => animations.AnimatedViewProvider(),
@@ -115,7 +94,7 @@ class DynamicList<T> extends Selectable<T> {
       children: [
         if (isReady && items.isEmpty && creating == null)
           const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        delta.RefreshView(
+        delta.PullRefresh(
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,

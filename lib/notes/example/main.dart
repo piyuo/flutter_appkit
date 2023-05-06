@@ -7,6 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/dialog/dialog.dart' as dialog;
@@ -184,8 +185,8 @@ class NotesExample extends StatelessWidget {
           NotesViewMenuButton<sample.Person>(
             viewProvider: _notesProvider,
             formController: _notesProvider.formController,
-            tools: [
-              delta.ToolButton(
+            items: [
+              tools.ToolButton(
                 label: 'hello',
                 icon: Icons.favorite,
                 onPressed: () => debugPrint('hello'),
@@ -198,7 +199,7 @@ class NotesExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _masterDetailView(context),
+              child: _dataView(context),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -208,10 +209,11 @@ class NotesExample extends StatelessWidget {
                   testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
                   testing.ExampleButton(label: 'checkable grid', builder: () => _checkableGrid(context)),
                   testing.ExampleButton(label: 'checkable list', builder: () => _checkableList(context)),
-                  testing.ExampleButton(label: 'dynamic list', builder: () => _dynamicList(context)),
-                  testing.ExampleButton(label: 'dynamic grid', builder: () => _dynamicGrid(context)),
-                  testing.ExampleButton(label: 'master detail view', builder: () => _masterDetailView(context)),
-                  testing.ExampleButton(label: 'notes view', builder: () => _notesView(context)),
+                  testing.ExampleButton(label: 'DynamicList', builder: () => _dynamicList(context)),
+                  testing.ExampleButton(label: 'DynamicGrid', builder: () => _dynamicGrid(context)),
+                  testing.ExampleButton(label: 'GridListView', builder: () => _gridListView(context)),
+                  testing.ExampleButton(label: 'DataView', builder: () => _dataView(context)),
+                  testing.ExampleButton(label: 'NotesView', builder: () => _notesView(context)),
                   OutlinedButton(
                       child: const Text('scroll to top'),
                       onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
@@ -412,7 +414,7 @@ class NotesExample extends StatelessWidget {
                 ]))));
   }
 
-  Widget _masterDetailView(BuildContext context) {
+  Widget _gridListView(BuildContext context) {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<delta.AnimateViewProvider>(
@@ -426,7 +428,7 @@ class NotesExample extends StatelessWidget {
           )
         ],
         child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
-            builder: (context, selectedController, animateViewProvider, child) => MasterDetailView<String>(
+            builder: (context, selectedController, animateViewProvider, child) => GridListView<String>(
                   animateViewProvider: animateViewProvider,
                   headerBuilder: () => delta.SearchBox(
                     prefixIcon: IconButton(
@@ -608,7 +610,7 @@ class NotesExample extends StatelessWidget {
                   ),
                 ],
               ),
-              child: MasterDetailView<String>(
+              child: GridListView<String>(
                 animateViewProvider: animateViewProvider,
                 items: const ['a', 'b', 'c', 'd', 'e'],
                 selectedItems: const ['a'],
@@ -680,7 +682,7 @@ class NotesExample extends StatelessWidget {
           ),
         ],
         child: Consumer<delta.AnimateViewProvider>(
-            builder: (context, animateViewProvider, _) => MasterDetailView<String>(
+            builder: (context, animateViewProvider, _) => GridListView<String>(
                   animateViewProvider: animateViewProvider,
                   items: const [],
                   selectedItems: const [],
@@ -688,6 +690,57 @@ class NotesExample extends StatelessWidget {
                   gridBuilder: (context, String item, bool isSelected) => const SizedBox(),
                   contentBuilder: () => const Text('detail view'),
                 )));
+  }
+
+  Widget _dataView(BuildContext context) {
+    return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
+        value: _animateViewProvider,
+        child: Consumer<delta.AnimateViewProvider>(
+            builder: (context, animateViewProvider, _) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
+                        value: _notesProvider,
+                      ),
+                      ChangeNotifierProvider<cache.IndexedDbProvider>(create: (_) {
+                        return cache.IndexedDbProvider(
+                          dbName: 'notes_sample',
+                        );
+                      }),
+                    ],
+                    child: Consumer2<cache.IndexedDbProvider, NotesProvider<sample.Person>>(
+                      builder: (context, indexedDbProvider, notesProvider, _) {
+                        return base.LoadingScreen(
+                          future: () async {
+                            final isPreferMouse = context.isPreferMouse;
+                            await indexedDbProvider.init();
+                            _notesProvider.load(
+                                isPreferMouse,
+                                data.DatasetDb<sample.Person>(
+                                  indexedDbProvider: indexedDbProvider,
+                                  objectBuilder: () => sample.Person(),
+                                ));
+                          },
+                          builder: () => DataView<sample.Person>(
+                            notesProvider: notesProvider,
+                            contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
+                            leftTools: [
+                              tools.ToolButton(
+                                label: 'leftTool',
+                                icon: Icons.favorite,
+                                onPressed: () => debugPrint('hello'),
+                              ),
+                            ],
+                            rightTools: [
+                              tools.ToolButton(
+                                label: 'rightTool',
+                                icon: Icons.ac_unit,
+                                onPressed: () => debugPrint('hi'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ))));
   }
 
   Widget _notesView(BuildContext context) {
@@ -723,14 +776,14 @@ class NotesExample extends StatelessWidget {
                             contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
                             tagViewHeader: const Text('hello world'),
                             leftTools: [
-                              delta.ToolButton(
+                              tools.ToolButton(
                                 label: 'leftTool',
                                 icon: Icons.favorite,
                                 onPressed: () => debugPrint('hello'),
                               ),
                             ],
                             rightTools: [
-                              delta.ToolButton(
+                              tools.ToolButton(
                                 label: 'rightTool',
                                 icon: Icons.ac_unit,
                                 onPressed: () => debugPrint('hi'),

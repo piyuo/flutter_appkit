@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/tools/tools.dart' as tools;
 import 'notes_provider.dart';
 import 'note_form_controller.dart';
 
@@ -10,12 +10,12 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
   const NotesViewMenuButton({
     required this.viewProvider,
     required this.formController,
-    this.tools,
+    this.items,
     Key? key,
   }) : super(key: key);
 
   /// tools is extra tools for master detail view
-  final List<delta.ToolItem>? tools;
+  final List<tools.ToolItem>? items;
 
   /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
   final NotesProvider<T> viewProvider;
@@ -28,16 +28,16 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.pending_outlined),
       onPressed: viewProvider.isReadyToShow
-          ? () => delta.showToolSheet(
+          ? () => tools.showToolSheet(
                 context,
                 items: [
-                  delta.ToolButton(
+                  tools.ToolButton(
                     label: context.i18n.refreshButtonText,
                     icon: Icons.refresh,
                     onPressed: () => viewProvider.refresh(context),
                   ),
                   if (viewProvider.hasListView && viewProvider.hasGridView)
-                    delta.ToolButton(
+                    tools.ToolButton(
                       label: viewProvider.isListView
                           ? context.i18n.notesViewAsGridLabel
                           : context.i18n.notesViewAsListLabel,
@@ -46,7 +46,7 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                           ? () => viewProvider.onGridView(context)
                           : () => viewProvider.onListView(context),
                     ),
-                  delta.ToolButton(
+                  tools.ToolButton(
                     label: viewProvider.isCheckMode
                         ? context.i18n.notesDeselectButtonLabel
                         : context.i18n.notesSelectButtonLabel,
@@ -54,13 +54,13 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                     onPressed: () => viewProvider.onToggleCheckMode(context),
                   ),
                   if (formController.showArchiveButton)
-                    delta.ToolButton(
+                    tools.ToolButton(
                       label: context.i18n.archiveButtonText,
                       icon: Icons.archive,
                       onPressed: viewProvider.isAllowDelete ? () => viewProvider.onArchive(context) : null,
                     ),
                   if (formController.showDeleteButton)
-                    delta.ToolButton(
+                    tools.ToolButton(
                       label: context.i18n.deleteButtonText,
                       icon: Icons.delete,
                       onPressed: viewProvider.isAllowDelete ? () => viewProvider.onDelete(context) : null,
@@ -68,19 +68,19 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                       //    buttonYes: true, buttonNo: true, buttonCancel: true, blurry: false),
                     ),
                   if (formController.showRestoreButton)
-                    delta.ToolButton(
+                    tools.ToolButton(
                       label: context.i18n.restoreButtonText,
                       icon: Icons.restore,
                       onPressed: viewProvider.isAllowDelete ? () => viewProvider.onRestore(context) : null,
                     ),
-                  delta.ToolSpacer(),
-                  if (tools != null) ...tools!,
-                  delta.ToolButton(
+                  tools.ToolSpacer(),
+                  if (items != null) ...items!,
+                  tools.ToolButton(
                     label: context.i18n.notesNewButtonLabel,
                     icon: Icons.add,
                     onPressed: () => viewProvider.onCreateNew(context),
                   ),
-                  delta.ToolButton(
+                  tools.ToolButton(
                     label: context.i18n.formSubmitButtonText,
                     icon: Icons.cloud_upload,
                     onPressed: () => viewProvider.formController.submit(context),

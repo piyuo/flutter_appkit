@@ -3,8 +3,8 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:split_view/split_view.dart';
 import 'tag_view.dart';
 
+/// TagSplitView show a tag and content widget in split view on big screen
 class TagSplitView extends StatelessWidget {
-  /// TagSplitView show a tag and content widget in split view on big screen
   const TagSplitView({
     required this.child,
     this.tagView,
