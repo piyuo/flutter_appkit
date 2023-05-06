@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/tools/tools.dart' as tools;
 import 'selectable.dart';
 
 /// DynamicList is animation + refresh more, need AnimatedViewProvider
@@ -94,7 +95,7 @@ class DynamicList<T> extends Selectable<T> {
       children: [
         if (isReady && items.isEmpty && creating == null)
           const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        delta.PullRefresh(
+        tools.PullRefresh(
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,
