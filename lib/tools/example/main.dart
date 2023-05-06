@@ -17,6 +17,8 @@ main() {
   );
 }
 
+final _scrollController = ScrollController();
+
 class Example extends StatefulWidget {
   const Example({Key? key}) : super(key: key);
 
@@ -33,13 +35,14 @@ class _ExampleState extends State<Example> {
         child: Column(
           children: [
             Expanded(
-              child: _toolbar(context),
+              child: _pullFresh(context),
             ),
             SizedBox(
               height: 300,
               child: SingleChildScrollView(
                 child: Wrap(
                   children: [
+                    testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
                     testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
                     testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
                     testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
@@ -50,6 +53,38 @@ class _ExampleState extends State<Example> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _pullFresh(BuildContext context) {
+    final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
+    //final List<String> items = <String>['A', 'B', 'C'];
+
+    return PullRefresh(
+      scrollController: _scrollController,
+      onRefresh: () async {
+        debugPrint('refresh');
+        await Future.delayed(const Duration(seconds: 2));
+        debugPrint('refresh done');
+      },
+      onLoadMore: () async {
+        debugPrint('more');
+        await Future.delayed(const Duration(seconds: 2));
+        debugPrint('more done');
+      },
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: items.length,
+        itemBuilder: (BuildContext context, int index) {
+          final String item = items[index];
+          return ListTile(
+            isThreeLine: true,
+            leading: CircleAvatar(child: Text(item)),
+            title: Text('This item represents $item.'),
+            subtitle: const Text('Even more additional list item information appears on line three'),
+          );
+        },
       ),
     );
   }

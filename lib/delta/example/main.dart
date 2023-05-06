@@ -98,8 +98,6 @@ final _busyController = ValueNotifier<bool>(false);
 
 final _searchBoxController = TextEditingController();
 
-final _scrollController = ScrollController();
-
 SearchTrigger? _trigger;
 
 class DeltaExample extends StatefulWidget {
@@ -149,12 +147,15 @@ class _DeltaExampleState extends State<DeltaExample> {
                             child: Wrap(
                               children: [
                                 testing.ExampleButton(
-                                    label: 'navigation view',
+                                    label: 'NavigationScaffold',
+                                    useScaffold: false,
+                                    builder: () => _navigationScaffold(context)),
+                                testing.ExampleButton(
+                                    label: 'NavigationView',
                                     useScaffold: false,
                                     builder: () => _navigationView(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
-                                testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
                                 testing.ExampleButton(label: 'group list view', builder: () => _groupListView(context)),
                                 testing.ExampleButton(
                                     label: 'is touch enabled?', builder: () => _isTouchSupported(context)),
@@ -1338,38 +1339,6 @@ class _DeltaExampleState extends State<DeltaExample> {
         child: ListTile(
           title: Text(groupByValue),
         ),
-      ),
-    );
-  }
-
-  Widget _pullFresh(BuildContext context) {
-    final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-    //final List<String> items = <String>['A', 'B', 'C'];
-
-    return PullRefresh(
-      scrollController: _scrollController,
-      onRefresh: () async {
-        debugPrint('refresh');
-        await Future.delayed(const Duration(seconds: 2));
-        debugPrint('refresh done');
-      },
-      onLoadMore: () async {
-        debugPrint('more');
-        await Future.delayed(const Duration(seconds: 2));
-        debugPrint('more done');
-      },
-      child: ListView.builder(
-        controller: _scrollController,
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final String item = items[index];
-          return ListTile(
-            isThreeLine: true,
-            leading: CircleAvatar(child: Text(item)),
-            title: Text('This item represents $item.'),
-            subtitle: const Text('Even more additional list item information appears on line three'),
-          );
-        },
       ),
     );
   }

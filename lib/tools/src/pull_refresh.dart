@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
-import 'delta.dart';
+import '../../delta/src/delta.dart';
 
 /// PullRefresh support pull down refresh and pull up load more
 class PullRefresh extends StatefulWidget {
