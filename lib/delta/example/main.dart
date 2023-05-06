@@ -141,7 +141,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _groupListView(context),
+                          child: _searchTrigger(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -149,18 +149,13 @@ class _DeltaExampleState extends State<DeltaExample> {
                             child: Wrap(
                               children: [
                                 testing.ExampleButton(
-                                    label: 'navigation scaffold',
-                                    useScaffold: false,
-                                    builder: () => _navigationScaffold(context)),
-                                testing.ExampleButton(
                                     label: 'navigation view',
                                     useScaffold: false,
                                     builder: () => _navigationView(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
-                                testing.ExampleButton(label: 'refresh more', builder: () => _refreshMoreView(context)),
+                                testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
                                 testing.ExampleButton(label: 'group list view', builder: () => _groupListView(context)),
-                                testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
                                 testing.ExampleButton(
                                     label: 'is touch enabled?', builder: () => _isTouchSupported(context)),
                                 testing.ExampleButton(label: 'no data', builder: () => _noData(context)),
@@ -173,7 +168,6 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'tap breaker', builder: () => _tapBreaker(context)),
                                 testing.ExampleButton(label: 'web image', builder: () => _webImage(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
-                                testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
                                 testing.ExampleButton(label: 'switch', builder: () => _switching(context)),
                                 testing.ExampleButton(label: 'segment', builder: () => _segment(context)),
@@ -184,7 +178,6 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(
                                     label: 'show responsive dialog', builder: () => _showResponsiveDialog(context)),
                                 testing.ExampleButton(label: 'fold panel', builder: () => _foldPanel(context)),
-                                testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
                                 testing.ExampleButton(
                                     label: 'padding to center', builder: () => _paddingToCenter(context)),
                                 testing.ExampleButton(
@@ -203,7 +196,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 ),
                                 testing.ExampleButton(
                                   label: 'animated view in list',
-                                  builder: () => _animatedViewInList(),
+                                  builder: () => _animatedViewInList(context),
                                 ),
                                 testing.ExampleButton(
                                   label: 'animated view in grid',
@@ -211,7 +204,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 ),
                                 testing.ExampleButton(
                                   label: 'animated view in list view',
-                                  builder: () => _animatedViewInListView(),
+                                  builder: () => _animatedViewInListView(context),
                                 ),
                                 testing.ExampleButton(
                                   label: 'axis animate',
@@ -442,7 +435,7 @@ class _DeltaExampleState extends State<DeltaExample> {
         });
   }
 
-  Widget _animatedViewInList() {
+  Widget _animatedViewInList(BuildContext context) {
     return ChangeNotifierProvider<AnimateViewProvider>(
       create: (context) => AnimateViewProvider()..setLength(gridItems.length),
       child: Consumer<AnimateViewProvider>(
@@ -598,7 +591,7 @@ class _DeltaExampleState extends State<DeltaExample> {
     );
   }
 
-  Widget _animatedViewInListView() {
+  Widget _animatedViewInListView(BuildContext context) {
     return ChangeNotifierProvider<AnimateViewProvider>(
       create: (context) => AnimateViewProvider()..setLength(gridItems.length),
       child: Consumer<AnimateViewProvider>(
@@ -992,33 +985,6 @@ class _DeltaExampleState extends State<DeltaExample> {
     );
   }
 
-  Widget _buttonPanel(BuildContext context) {
-    return ButtonPanel<String>(
-      onPressed: (item) => debugPrint('$item pressed'),
-      checkedValues: const ['1'],
-      children: {
-        '0': Row(children: const [
-          Expanded(
-            child: Text('button', style: TextStyle(fontSize: 18)),
-          ),
-          Icon(Icons.add),
-        ]),
-        '1': Row(children: const [
-          Expanded(
-            child: Text('button 1', style: TextStyle(fontSize: 18)),
-          ),
-          Icon(Icons.dark_mode),
-        ]),
-        '2': Row(children: const [
-          Expanded(
-            child: Text('button 2', style: TextStyle(fontSize: 18)),
-          ),
-          Icon(Icons.accessibility),
-        ]),
-      },
-    );
-  }
-
   Widget _noData(BuildContext context) {
     return Column(
       children: const [
@@ -1341,43 +1307,6 @@ class _DeltaExampleState extends State<DeltaExample> {
         ]));
   }
 
-  Widget _menuButton(BuildContext context) {
-    return Column(children: [
-      const SizedBox(height: 40),
-      const Text('General'),
-      SizedBox(
-        width: 140,
-        child: MenuButton<String>(
-            icon: const Icon(Icons.settings, size: 18),
-            label: const Text('Settings'),
-            onPressed: (value) {
-              debugPrint('$value pressed');
-            },
-            selectedValue: '2',
-            selection: const {
-              '1': 'hello',
-              '2': 'world',
-            }),
-      ),
-      const Text('Disabled'),
-      const MenuButton<String>(
-        icon: Icon(Icons.settings),
-        onPressed: null,
-        selectedValue: '2',
-        selection: {
-          '1': 'hello',
-          '2': 'world',
-        },
-      ),
-      const Text('Empty'),
-      const MenuButton<String>(
-        onPressed: null,
-        selectedValue: '2',
-        selection: {},
-      ),
-    ]);
-  }
-
   Widget _groupListView(BuildContext context) {
     List items = [
       {'name': 'John', 'group': 'Team A'},
@@ -1413,11 +1342,11 @@ class _DeltaExampleState extends State<DeltaExample> {
     );
   }
 
-  Widget _refreshMoreView(BuildContext context) {
+  Widget _pullFresh(BuildContext context) {
     final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
     //final List<String> items = <String>['A', 'B', 'C'];
 
-    return RefreshView(
+    return PullRefresh(
       scrollController: _scrollController,
       onRefresh: () async {
         debugPrint('refresh');
@@ -1617,118 +1546,6 @@ class _DeltaExampleState extends State<DeltaExample> {
       notPhoneScreen: () => Container(color: Colors.blue, child: const Text('not phone')),
       bigScreen: () => Container(color: Colors.green, child: const Text('big screen')),
     );
-  }
-
-  Widget _toolbar(BuildContext context) {
-    return Column(children: [
-      Toolbar(
-//        color: Colors.blue.shade300,
-        //      activeColor: Colors.blue,
-        items: [
-          ToolButton(
-            label: 'Show tool sheet',
-            icon: Icons.new_label,
-            onPressed: () async {
-              await showToolSheet(
-                context,
-                items: [
-                  ToolButton(
-                    label: 'New File',
-                    icon: Icons.new_label,
-                    onPressed: () => debugPrint('new_file pressed'),
-                  ),
-                  ToolButton(
-                    label: 'Disabled',
-                    icon: Icons.cabin,
-                  ),
-                  ToolButton(
-                    label: 'abc',
-                    icon: Icons.abc_outlined,
-                    onPressed: () => debugPrint('abc pressed'),
-                  ),
-                  ToolSelection(
-                    label: 'Rows per page',
-                    icon: Icons.table_rows,
-                    selection: {
-                      '10': '10 rows2',
-                      '20': '20 rows2',
-                      '50': '50 rows2',
-                      '100': '100 rows2',
-                      '200': '200 rows2',
-                    },
-                    onPressed: (value) => debugPrint('$value pressed'),
-                  ),
-                  ToolButton(
-                    label: 'hi',
-                    icon: Icons.hail,
-                    onPressed: () => debugPrint('hi pressed'),
-                  ),
-                  ToolButton(
-                    label: 'hello',
-                    icon: Icons.handshake,
-                    onPressed: () => debugPrint('hello pressed'),
-                  ),
-                ],
-              );
-            },
-            space: 10,
-          ),
-          ToolButton(
-            label: 'List View',
-            icon: Icons.list,
-            onPressed: () => debugPrint('list_view pressed'),
-            active: true,
-          ),
-          ToolButton(
-            label: 'Grid View',
-            icon: Icons.grid_view,
-            onPressed: () => debugPrint('grid_view pressed'),
-            active: false,
-            space: 10,
-          ),
-          ToolSelection(
-            width: 150,
-            text: 'page 2 of more',
-            label: 'rows per page',
-            selection: {
-              '10': '10 rows',
-              '20': '20 rows',
-              '50': '50 rows',
-            },
-            onPressed: (value) => debugPrint('$value pressed'),
-          ),
-          ToolSelection(
-            width: 120,
-            text: 'Disabled',
-            label: 'disabled',
-            selection: {
-              '10': '10 rows',
-            },
-          ),
-          ToolButton(
-            label: 'disabled',
-            icon: Icons.delete,
-          ),
-          ToolSpacer(),
-          ToolButton(
-            label: 'Back',
-            icon: Icons.chevron_left,
-            onPressed: () => debugPrint('back pressed'),
-          ),
-          ToolButton(
-            label: 'Next',
-            icon: Icons.chevron_right,
-            onPressed: () => debugPrint('next pressed'),
-          ),
-          ToolButton(
-            label: 'Disabled',
-            icon: Icons.cabin,
-            onPressed: () => debugPrint('disabled pressed'),
-            space: 10,
-          ),
-        ],
-      ),
-    ]);
   }
 }
 
