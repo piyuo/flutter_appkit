@@ -37,4 +37,3 @@ export 'src/axis_animation.dart';
 export 'src/transform_container.dart';
 export 'src/animate_view.dart';
 export 'src/animate_grid.dart';
-export 'src/group_list_view.dart';

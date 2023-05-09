@@ -139,7 +139,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _searchTrigger(context),
+                          child: _indicator(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -156,7 +156,6 @@ class _DeltaExampleState extends State<DeltaExample> {
                                     builder: () => _navigationView(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
-                                testing.ExampleButton(label: 'group list view', builder: () => _groupListView(context)),
                                 testing.ExampleButton(
                                     label: 'is touch enabled?', builder: () => _isTouchSupported(context)),
                                 testing.ExampleButton(label: 'no data', builder: () => _noData(context)),
@@ -1306,41 +1305,6 @@ class _DeltaExampleState extends State<DeltaExample> {
               message:
                   'An error message is information displayed when an unforeseen problem occurs, usually on a computer or other device. On modern operating systems with graphical, error messages are often displayed using dialog boxes. Error messages are used when user intervention is required, to indicate that a desired operation has failed, or to relay important warnings (such as warning a computer user that they are almost out of hard disk space). Error messages are seen widely throughout computing, and are part of every operating system or computer hardware device. Proper design of error messages is an important topic in usability and other fields of human–computer interaction'),
         ]));
-  }
-
-  Widget _groupListView(BuildContext context) {
-    List items = [
-      {'name': 'John', 'group': 'Team A'},
-      {'name': 'Will', 'group': 'Team B'},
-      {'name': 'Beth', 'group': 'Team A'},
-      {'name': 'Miranda', 'group': 'Team B'},
-      {'name': 'Mike', 'group': 'Team C'},
-      {'name': 'Danny', 'group': 'Team C'},
-    ];
-
-    return GroupListView<dynamic, String>(
-      items: items,
-      groupBy: (item) => item['group'],
-      separator: const SizedBox(),
-      itemBuilder: (dynamic item) => ListTile(
-        title: Text(
-          item['name'],
-        ),
-      ),
-      groupBuilder: (String groupByValue) => Container(
-        margin: const EdgeInsets.fromLTRB(10, 1, 10, 10),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-          color: Colors.orange,
-        ),
-        child: ListTile(
-          title: Text(groupByValue),
-        ),
-      ),
-    );
   }
 
   Widget _statusLight(BuildContext context) {
