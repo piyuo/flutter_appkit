@@ -41,7 +41,7 @@ class DynamicGrid<T> extends Selectable<T> {
     Color? selectedBorderColor,
     Color? borderColor,
     this.onRefresh,
-    this.onLoadMore,
+    this.onMore,
     this.scrollController,
     this.animatedViewScrollController,
     this.crossAxisCount = 2,
@@ -68,7 +68,7 @@ class DynamicGrid<T> extends Selectable<T> {
   final Future<void> Function()? onRefresh;
 
   /// ondLoadMore is the callback function when user load more the list
-  final Future<void> Function()? onLoadMore;
+  final Future<void> Function()? onMore;
 
   /// scrollController is list scroll controller
   final ScrollController? scrollController;
@@ -116,10 +116,9 @@ class DynamicGrid<T> extends Selectable<T> {
       fit: StackFit.expand,
       children: [
         if (isReady && items.isEmpty) const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        tools.PullRefresh(
-            scrollController: scrollController,
+        /*tools.RefreshMore(
             onRefresh: onRefresh,
-            onLoadMore: onLoadMore,
+            onMore: onMore,
             child: ListView.builder(
                 itemCount: rowCount,
                 itemBuilder: (BuildContext context, int index) {
@@ -152,7 +151,7 @@ class DynamicGrid<T> extends Selectable<T> {
                       return buildItem(context, items[index]);
                     },
                   );
-                }))
+                }))*/
       ],
     );
   }

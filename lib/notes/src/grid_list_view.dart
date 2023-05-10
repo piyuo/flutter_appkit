@@ -211,7 +211,7 @@ class GridListView<T> extends StatelessWidget {
                       itemBuilder: gridBuilder!,
                       itemDecorationBuilder: gridDecorationBuilder,
                       onRefresh: onRefresh,
-                      onLoadMore: onMore,
+                      onMore: onMore,
                       headerBuilder: () => Padding(
                           padding: EdgeInsets.only(
                               top: context.isPreferMouse && !isCheckMode && delta.notPhoneScreen ? 0 : 10),

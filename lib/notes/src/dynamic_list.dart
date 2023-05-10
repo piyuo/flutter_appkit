@@ -95,7 +95,7 @@ class DynamicList<T> extends Selectable<T> {
       children: [
         if (isReady && items.isEmpty && creating == null)
           const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        tools.PullRefresh(
+        /*tools.PullRefresh(
             scrollController: scrollController,
             onRefresh: onRefresh,
             onLoadMore: onLoadMore,
@@ -134,7 +134,7 @@ class DynamicList<T> extends Selectable<T> {
                       return buildItem(context, items[index]);
                     },
                   );
-                }))
+                }))*/
       ],
     );
   }
