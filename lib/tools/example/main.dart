@@ -17,8 +17,6 @@ main() {
   );
 }
 
-final _scrollController = ScrollController();
-
 class Example extends StatefulWidget {
   const Example({Key? key}) : super(key: key);
 
@@ -35,14 +33,17 @@ class _ExampleState extends State<Example> {
         child: Column(
           children: [
             Expanded(
-              child: _pullFresh(context),
+              child: _refreshMore(context),
             ),
             SizedBox(
               height: 300,
               child: SingleChildScrollView(
                 child: Wrap(
                   children: [
+                    testing.ExampleButton(label: 'SliverGroupListView', builder: () => _stickyHeader(context)),
                     testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
+                    testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
+                    testing.ExampleButton(label: 'Refresh More', builder: () => _refreshMore(context)),
                     testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
                     testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
                     testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
@@ -57,35 +58,171 @@ class _ExampleState extends State<Example> {
     );
   }
 
-  Widget _pullFresh(BuildContext context) {
-    final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-    //final List<String> items = <String>['A', 'B', 'C'];
+  int itemIndex = 6;
+  final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
 
-    return PullRefresh(
-      scrollController: _scrollController,
-      onRefresh: () async {
-        debugPrint('refresh');
-        await Future.delayed(const Duration(seconds: 2));
-        debugPrint('refresh done');
-      },
-      onLoadMore: () async {
-        debugPrint('more');
-        await Future.delayed(const Duration(seconds: 2));
-        debugPrint('more done');
-      },
-      child: ListView.builder(
-        controller: _scrollController,
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final String item = items[index];
-          return ListTile(
-            isThreeLine: true,
-            leading: CircleAvatar(child: Text(item)),
-            title: Text('This item represents $item.'),
-            subtitle: const Text('Even more additional list item information appears on line three'),
-          );
-        },
-      ),
+  Widget _refreshMore(BuildContext context) {
+    return ChangeNotifierProvider<RefreshMoreProvider>(
+        create: (context) => RefreshMoreProvider(),
+        child: Consumer<RefreshMoreProvider>(
+            builder: (context, refreshMoreProvider, _) => RefreshMore(
+                refreshMoreProvider: refreshMoreProvider,
+                onRefresh: () async {
+                  await Future.delayed(const Duration(seconds: 3));
+                  //throw Exception('error');
+                  itemIndex = 6;
+                  debugPrint('refresh done');
+                },
+                onMore: () async {
+                  await Future.delayed(const Duration(seconds: 3));
+                  //return true;
+                  //throw Exception('error');
+                  itemIndex += 2;
+                  if (itemIndex >= items.length) {
+                    itemIndex = items.length;
+                    return true; // no more data
+                  }
+                  return false;
+                },
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          final String item = items[index];
+                          return ListTile(
+                            leading: CircleAvatar(child: Text(item)),
+                            title: Text('This item represents $item.'),
+                            isThreeLine: true,
+                            subtitle: const Text('Even more additional list item information appears on line three'),
+                          );
+                        },
+                        childCount: itemIndex,
+                      ),
+                    ),
+                  ],
+                ))));
+  }
+
+  Widget _loadMore(BuildContext context) {
+    return ChangeNotifierProvider<RefreshMoreProvider>(
+        create: (context) => RefreshMoreProvider(),
+        child: Consumer<RefreshMoreProvider>(
+            builder: (context, refreshMoreProvider, _) => LoadMore(
+                  refreshMoreProvider: refreshMoreProvider,
+                  onMore: () async {
+                    await Future.delayed(const Duration(seconds: 2));
+                    //return true;
+                    //throw Exception('error');
+                    itemIndex += 2;
+                    if (itemIndex >= items.length) {
+                      itemIndex = items.length;
+                      return true; // no more data
+                    }
+                    return false;
+                  },
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            final String item = items[index];
+                            return ListTile(
+                              leading: CircleAvatar(child: Text(item)),
+                              title: Text('This item represents $item.'),
+                              isThreeLine: true,
+                              subtitle: const Text('Even more additional list item information appears on line three'),
+                            );
+                          },
+                          childCount: itemIndex,
+                        ),
+                      ),
+                    ],
+                  ),
+                )));
+  }
+
+  Widget _pullFresh(BuildContext context) {
+    return ChangeNotifierProvider<RefreshMoreProvider>(
+        create: (context) => RefreshMoreProvider(),
+        child: Consumer<RefreshMoreProvider>(
+            builder: (context, refreshMoreProvider, _) => PullRefresh(
+                  refreshMoreProvider: refreshMoreProvider,
+                  onRefresh: () async {
+                    debugPrint('refresh');
+                    await Future.delayed(const Duration(seconds: 2));
+                    debugPrint('refresh done');
+                  },
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            final String item = items[index];
+                            return ListTile(
+                              leading: CircleAvatar(child: Text(item)),
+                              title: Text('This item represents $item.'),
+                              isThreeLine: true,
+                              subtitle: const Text('Even more additional list item information appears on line three'),
+                            );
+                          },
+                          childCount: itemIndex,
+                        ),
+                      ),
+                    ],
+                  ),
+                )));
+  }
+
+  List groupItems = [
+    {'name': 'John', 'group': 'Team A'},
+    {'name': 'Will', 'group': 'Team B'},
+    {'name': 'Beth', 'group': 'Team A'},
+    {'name': 'Miranda', 'group': 'Team B'},
+    {'name': 'Mike', 'group': 'Team C'},
+    {'name': 'Danny', 'group': 'Team C'},
+  ];
+
+  Widget _stickyHeader(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        StickyHeader(
+          headerBuilder: () => Container(
+            height: 60.0,
+            color: Colors.lightBlue,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            alignment: Alignment.centerLeft,
+            child: const Text('Header #0', style: TextStyle(color: Colors.white)),
+          ),
+          sliverBuilder: () => SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, i) => ListTile(
+                leading: const CircleAvatar(child: Text('0')),
+                title: Text('List tile #$i'),
+              ),
+              childCount: 4,
+            ),
+          ),
+        ),
+        StickyHeader(
+          headerBuilder: () => Container(
+            height: 60.0,
+            color: Colors.lightBlue,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            alignment: Alignment.centerLeft,
+            child: const Text('Header #1', style: TextStyle(color: Colors.white)),
+          ),
+          sliverBuilder: () => SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, i) => ListTile(
+                leading: const CircleAvatar(child: Text('0')),
+                title: Text('List tile #$i'),
+              ),
+              childCount: 4,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
