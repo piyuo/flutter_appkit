@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'selectable.dart';
@@ -112,47 +113,60 @@ class DynamicGrid<T> extends Selectable<T> {
     if (!isReady) {
       return const delta.LoadingDisplay();
     }
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        if (isReady && items.isEmpty) const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        /*tools.RefreshMore(
-            onRefresh: onRefresh,
-            onMore: onMore,
-            child: ListView.builder(
-                itemCount: rowCount,
-                itemBuilder: (BuildContext context, int index) {
-                  if (headerBuilder != null && index == 0) {
-                    return buildHeader(context);
-                  }
-                  if (footerBuilder != null && index == rowCount - 1) {
-                    return buildFooter(context);
-                  }
+    return ChangeNotifierProvider<tools.RefreshMoreProvider>(
+        create: (context) => tools.RefreshMoreProvider(),
+        child: Consumer<tools.RefreshMoreProvider>(
+            builder: (context, refreshMoreProvider, _) => Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    if (isReady && items.isEmpty)
+                      const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
+                    tools.RefreshMore(
+                        refreshMoreProvider: refreshMoreProvider,
+                        onRefresh: onRefresh,
+                        onMore: onMore,
+                        child: CustomScrollView(
+                          controller: scrollController,
+                          slivers: <Widget>[
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  if (headerBuilder != null && index == 0) {
+                                    return buildHeader(context);
+                                  }
+                                  if (footerBuilder != null && index == rowCount - 1) {
+                                    return buildFooter(context);
+                                  }
 
-                  return delta.AnimateView(
-                    animateViewProvider: animateViewProvider,
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: 40,
-                    mainAxisSpacing: 5,
-                    controller: animatedViewScrollController,
-                    shrinkWrap: true,
-                    itemBuilder: (int index) {
-                      if (creating != null) {
-                        if (index == 0) {
-                          return buildItem(context, creating as T);
-                        } else {
-                          index--;
-                        }
-                      }
-                      if (index >= items.length) {
-                        //new item may cause index out of range
-                        return const SizedBox();
-                      }
-                      return buildItem(context, items[index]);
-                    },
-                  );
-                }))*/
-      ],
-    );
+                                  return delta.AnimateView(
+                                    animateViewProvider: animateViewProvider,
+                                    crossAxisCount: crossAxisCount,
+                                    crossAxisSpacing: 40,
+                                    mainAxisSpacing: 5,
+                                    controller: animatedViewScrollController,
+                                    shrinkWrap: true,
+                                    itemBuilder: (int index) {
+                                      if (creating != null) {
+                                        if (index == 0) {
+                                          return buildItem(context, creating as T);
+                                        } else {
+                                          index--;
+                                        }
+                                      }
+                                      if (index >= items.length) {
+                                        //new item may cause index out of range
+                                        return const SizedBox();
+                                      }
+                                      return buildItem(context, items[index]);
+                                    },
+                                  );
+                                },
+                                childCount: rowCount,
+                              ),
+                            ),
+                          ],
+                        ))
+                  ],
+                )));
   }
 }

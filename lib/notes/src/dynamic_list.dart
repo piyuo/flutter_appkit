@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'selectable.dart';
@@ -39,7 +40,7 @@ class DynamicList<T> extends Selectable<T> {
     Widget Function()? headerBuilder,
     Widget Function()? footerBuilder,
     this.onRefresh,
-    this.onLoadMore,
+    this.onMore,
     this.scrollController,
     this.animatedViewScrollController,
     T? creating,
@@ -68,7 +69,7 @@ class DynamicList<T> extends Selectable<T> {
   final Future<void> Function()? onRefresh;
 
   /// ondLoadMore is the callback function when user load more the list
-  final Future<void> Function()? onLoadMore;
+  final Future<void> Function()? onMore;
 
   /// scrollController is list scroll controller
   final ScrollController? scrollController;
@@ -90,52 +91,62 @@ class DynamicList<T> extends Selectable<T> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        if (isReady && items.isEmpty && creating == null)
-          const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
-        /*tools.PullRefresh(
-            scrollController: scrollController,
-            onRefresh: onRefresh,
-            onLoadMore: onLoadMore,
-            child: ListView.builder(
-                controller: scrollController,
-                itemCount: _rowCount,
-                itemBuilder: (BuildContext context, int index) {
-                  if (headerBuilder != null && index == 0) {
-                    return headerBuilder!();
-                  }
+    return ChangeNotifierProvider<tools.RefreshMoreProvider>(
+        create: (context) => tools.RefreshMoreProvider(),
+        child: Consumer<tools.RefreshMoreProvider>(
+            builder: (context, refreshMoreProvider, _) => Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    if (isReady && items.isEmpty && creating == null)
+                      const Padding(padding: EdgeInsets.only(top: 80), child: delta.NoDataDisplay()),
+                    tools.RefreshMore(
+                        refreshMoreProvider: refreshMoreProvider,
+                        onRefresh: onRefresh,
+                        onMore: onMore,
+                        child: CustomScrollView(
+                          controller: scrollController,
+                          slivers: <Widget>[
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  if (headerBuilder != null && index == 0) {
+                                    return headerBuilder!();
+                                  }
 
-                  if (footerBuilder != null && index == _rowCount - 1) {
-                    return footerBuilder!();
-                  }
+                                  if (footerBuilder != null && index == _rowCount - 1) {
+                                    return footerBuilder!();
+                                  }
 
-                  if (!isReady) {
-                    return const delta.LoadingDisplay();
-                  }
+                                  if (!isReady) {
+                                    return const delta.LoadingDisplay();
+                                  }
 
-                  return delta.AnimateView(
-                    animateViewProvider: animateViewProvider,
-                    controller: animatedViewScrollController,
-                    shrinkWrap: true,
-                    itemBuilder: (int index) {
-                      if (creating != null) {
-                        if (index == 0) {
-                          return buildItem(context, creating as T);
-                        } else {
-                          index--;
-                        }
-                      }
-                      if (index >= items.length) {
-                        //new item may cause index out of range
-                        return const SizedBox();
-                      }
-                      return buildItem(context, items[index]);
-                    },
-                  );
-                }))*/
-      ],
-    );
+                                  return delta.AnimateView(
+                                    animateViewProvider: animateViewProvider,
+                                    controller: animatedViewScrollController,
+                                    shrinkWrap: true,
+                                    itemBuilder: (int index) {
+                                      if (creating != null) {
+                                        if (index == 0) {
+                                          return buildItem(context, creating as T);
+                                        } else {
+                                          index--;
+                                        }
+                                      }
+                                      if (index >= items.length) {
+                                        //new item may cause index out of range
+                                        return const SizedBox();
+                                      }
+                                      return buildItem(context, items[index]);
+                                    },
+                                  );
+                                },
+                                childCount: _rowCount,
+                              ),
+                            ),
+                          ],
+                        ))
+                  ],
+                )));
   }
 }

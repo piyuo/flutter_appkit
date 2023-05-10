@@ -155,7 +155,7 @@ class GridListView<T> extends StatelessWidget {
               itemBuilder: listBuilder!,
               itemDecorationBuilder: listDecorationBuilder,
               onRefresh: onRefresh,
-              onLoadMore: onMore,
+              onMore: onMore,
               headerBuilder: isCheckMode
                   ? null
                   : () => Padding(
