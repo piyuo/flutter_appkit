@@ -28,32 +28,33 @@ class _ExampleState extends State<Example> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: _refreshMore(context),
-            ),
-            SizedBox(
-              height: 300,
-              child: SingleChildScrollView(
-                child: Wrap(
-                  children: [
-                    testing.ExampleButton(label: 'SliverGroupListView', builder: () => _stickyHeader(context)),
-                    testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
-                    testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
-                    testing.ExampleButton(label: 'Refresh More', builder: () => _refreshMore(context)),
-                    testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
-                    testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
-                    testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
-                    testing.ExampleButton(label: 'PagingToolbar', builder: () => _pagingToolbar(context)),
-                  ],
-                ),
+      appBar: AppBar(
+        title: const Text('tools example'),
+        backgroundColor: Colors.blue,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: _selectBar(context),
+          ),
+          SizedBox(
+            height: 300,
+            child: SingleChildScrollView(
+              child: Wrap(
+                children: [
+                  testing.ExampleButton(label: 'SliverGroupListView', builder: () => _stickyHeader(context)),
+                  testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
+                  testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
+                  testing.ExampleButton(label: 'Refresh More', builder: () => _refreshMore(context)),
+                  testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
+                  testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
+                  testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
+                  testing.ExampleButton(label: 'PagingToolbar', builder: () => _selectBar(context)),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -226,42 +227,33 @@ class _ExampleState extends State<Example> {
     );
   }
 
-  Widget _pagingToolbar(BuildContext context) {
+  Widget _selectBar(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => PagingToolbarProvider(),
-        child: Consumer<PagingToolbarProvider>(
-            builder: (context, pagingToolbarProvider, _) => PagingToolbar(
-                  pagingToolbarProvider: pagingToolbarProvider,
+        create: (_) => SelectBarProvider(),
+        child: Consumer<SelectBarProvider>(
+            builder: (context, pagingToolbarProvider, _) => SelectBar(
+                  selectBarProvider: pagingToolbarProvider,
                   onSelectAllChanged: (selectAll) {
                     selectAll
                         ? pagingToolbarProvider.setSelectedInfo(12, 12)
                         : pagingToolbarProvider.setSelectedInfo(0, 12);
                     debugPrint('select all: $selectAll');
                   },
-                  onSetRowsPerPage: (rowsPerPage) {
-                    debugPrint('rows per page: $rowsPerPage');
-                  },
-                  onPreviousPage: () {
-                    debugPrint('previous page');
-                  },
-                  onNextPage: () {
-                    debugPrint('next page');
-                  },
                   onRefresh: () async {},
+                  onNew: () {},
                   actionsAfterSelect: [
-                    TextButton.icon(
-                      label: const Text('Archive'),
-                      icon: const Icon(Icons.archive),
+                    ToolButton(
+                      label: 'Archive',
+                      icon: Icons.archive,
                       onPressed: () {},
                     ),
-                    SizedBox(height: 20, child: VerticalDivider(width: 5, color: Colors.grey.shade900)),
-                    TextButton.icon(
-                      label: const Text('Delete'),
-                      icon: const Icon(Icons.delete),
+                    ToolButton(
+                      label: 'Delete',
+                      icon: Icons.delete,
                       onPressed: () {},
                     ),
                   ],
-                  child: Container(color: Colors.green),
+                  child: Container(color: Colors.red),
                 )));
   }
 

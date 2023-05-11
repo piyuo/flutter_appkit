@@ -7,7 +7,7 @@ export 'src/tool_selection.dart';
 export 'src/tool_spacer.dart';
 export 'src/button_panel.dart';
 export 'src/menu_button.dart';
-export 'src/paging_toolbar.dart';
+export 'src/select_bar.dart';
 export 'src/refresh_more.dart';
 export 'src/pull_refresh.dart';
 export 'src/load_more.dart';
