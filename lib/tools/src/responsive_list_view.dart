@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:split_view/split_view.dart';
-import 'delta.dart';
-import 'shifter.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 
-class NavigationViewProvider<T> with ChangeNotifier {
-  NavigationViewProvider({
+class ResponsiveListViewProvider<T> with ChangeNotifier {
+  ResponsiveListViewProvider({
     required this.value,
   });
 
-  /// value is current value that use in [NavigationView] builder
+  /// value is current value that use in [ResponsiveListView] builder
   T value;
 
   bool isSideView = true;
 
   void show(BuildContext context, T value) {
     final width = MediaQuery.of(context).size.width;
-    if (isPhoneScreen(width)) {
+    if (delta.isPhoneScreen(width)) {
       isSideView = false;
     } else {
       this.value = value;
@@ -32,8 +31,8 @@ class NavigationViewProvider<T> with ChangeNotifier {
   }
 }
 
-class NavigationView<T> extends StatelessWidget {
-  const NavigationView({
+class ResponsiveListView<T> extends StatelessWidget {
+  const ResponsiveListView({
     required this.sideBuilder,
     required this.builder,
     Key? key,
@@ -41,14 +40,14 @@ class NavigationView<T> extends StatelessWidget {
 
   final Widget Function(T) builder;
 
-  final Widget Function(NavigationViewProvider navigationViewProvider) sideBuilder;
+  final Widget Function(ResponsiveListViewProvider navigationViewProvider) sideBuilder;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<NavigationViewProvider<T>>(builder: (_, navigationViewProvider, __) {
+    return Consumer<ResponsiveListViewProvider<T>>(builder: (_, navigationViewProvider, __) {
       final colorScheme = Theme.of(context).colorScheme;
       final width = MediaQuery.of(context).size.width;
-      return !isPhoneScreen(width)
+      return !delta.isPhoneScreen(width)
           ? SplitView(
               gripSize: 5,
               gripColor: colorScheme.outlineVariant.withOpacity(.2),
@@ -72,7 +71,7 @@ class NavigationView<T> extends StatelessWidget {
                 builder(navigationViewProvider.value),
               ],
             )
-          : Shifter(
+          : delta.Shifter(
               reverse: navigationViewProvider.isSideView,
               newChildKey: ValueKey(navigationViewProvider.isSideView),
               child: Container(

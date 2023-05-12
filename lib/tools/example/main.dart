@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 
 import '../tools.dart';
@@ -14,50 +15,92 @@ main() {
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     routesBuilder: () => {
-      '/': (context, _, __) => dialog.cupertinoBottomSheet(const Example()),
+      '/': (context, _, __) => dialog.cupertinoBottomSheet(const ToolsExample()),
     },
   );
 }
 
-class Example extends StatefulWidget {
-  const Example({Key? key}) : super(key: key);
+class ToolsExample extends StatefulWidget {
+  const ToolsExample({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ExampleState();
+  State<StatefulWidget> createState() => _ToolsExampleState();
 }
 
-class _ExampleState extends State<Example> {
+class _ToolsExampleState extends State<ToolsExample> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('tools example'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _showTagView(context),
-          ),
-          SizedBox(
-            height: 300,
-            child: SingleChildScrollView(
-              child: Wrap(
-                children: [
-                  testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
-                  testing.ExampleButton(label: 'show tag view', builder: () => _showTagView(context)),
-                  testing.ExampleButton(label: 'SliverGroupListView', builder: () => _stickyHeader(context)),
-                  testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
-                  testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
-                  testing.ExampleButton(label: 'Refresh More', builder: () => _refreshMore(context)),
-                  testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
-                  testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
-                  testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
-                  testing.ExampleButton(label: 'PagingToolbar', builder: () => _selectBar(context)),
-                ],
-              ),
-            ),
-          ),
+    final width = MediaQuery.of(context).size.width;
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ResponsiveListViewProvider<int>>(
+              create: (context) => ResponsiveListViewProvider<int>(value: 0)),
         ],
+        child: Consumer<ResponsiveListViewProvider<int>>(
+            builder: (context, responsiveListViewProvider, child) => Scaffold(
+                  appBar: AppBar(
+                    title: const Text('tools example'),
+                    leading: delta.isPhoneScreen(width) && !responsiveListViewProvider.isSideView
+                        ? IconButton(
+                            icon: const Icon(Icons.arrow_back_ios_new),
+                            onPressed: () => responsiveListViewProvider.useSideView(),
+                          )
+                        : null,
+                  ),
+                  body: Column(
+                    children: [
+                      Expanded(
+                        child: _responsiveListView(context),
+                      ),
+                      SizedBox(
+                        height: 300,
+                        child: SingleChildScrollView(
+                          child: Wrap(
+                            children: [
+                              testing.ExampleButton(
+                                  label: 'NavigationView',
+                                  useScaffold: false,
+                                  builder: () => _responsiveListView(context)),
+                              testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
+                              testing.ExampleButton(label: 'show tag view', builder: () => _showTagView(context)),
+                              testing.ExampleButton(
+                                  label: 'SliverGroupListView', builder: () => _stickyHeader(context)),
+                              testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
+                              testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
+                              testing.ExampleButton(label: 'Refresh More', builder: () => _refreshMore(context)),
+                              testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
+                              testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
+                              testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
+                              testing.ExampleButton(label: 'PagingToolbar', builder: () => _selectBar(context)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )));
+  }
+
+  Widget _responsiveListView(BuildContext context) {
+    return ResponsiveListView<int>(
+      sideBuilder: (navigationViewProvider) => Container(
+          color: Colors.blue,
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () => navigationViewProvider.show(context, 1),
+                child: const Text('show 1'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () => navigationViewProvider.show(context, 2),
+                child: const Text('show 2'),
+              ),
+            ],
+          )),
+      builder: (int value) => Container(
+        color: Colors.green,
+        child: Column(children: [Text('$value')]),
       ),
     );
   }

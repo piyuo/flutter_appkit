@@ -118,28 +118,18 @@ class _DeltaExampleState extends State<DeltaExample> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<NavigationViewProvider<int>>(
-              create: (context) => NavigationViewProvider<int>(value: 0)),
           ChangeNotifierProvider.value(value: _checkController),
         ],
-        child: Consumer2<ValueNotifier<bool>, NavigationViewProvider<int>>(
-            builder: (context, model, navigationViewProvider, child) => Scaffold(
-                  appBar: AppBar(
-                    leading: isPhoneScreen(width) && !navigationViewProvider.isSideView
-                        ? IconButton(
-                            icon: const Icon(Icons.arrow_back_ios_new),
-                            onPressed: () => navigationViewProvider.useSideView(),
-                          )
-                        : null,
-                  ),
+        child: Consumer<ValueNotifier<bool>>(
+            builder: (context, model, child) => Scaffold(
+                  appBar: AppBar(),
                   body: SafeArea(
                     child: Column(
                       children: [
                         Expanded(
-                          child: _indicator(context),
+                          child: _navigationScaffold(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -150,10 +140,6 @@ class _DeltaExampleState extends State<DeltaExample> {
                                     label: 'NavigationScaffold',
                                     useScaffold: false,
                                     builder: () => _navigationScaffold(context)),
-                                testing.ExampleButton(
-                                    label: 'NavigationView',
-                                    useScaffold: false,
-                                    builder: () => _navigationView(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(
@@ -957,31 +943,6 @@ class _DeltaExampleState extends State<DeltaExample> {
         debugPrint(index.toString());
       },
       body: Container(color: Colors.red, height: 100),
-    );
-  }
-
-  Widget _navigationView(BuildContext context) {
-    return NavigationView<int>(
-      sideBuilder: (navigationViewProvider) => Container(
-          color: Colors.blue,
-          //constraints: const BoxConstraints.expand(),
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () => navigationViewProvider.show(context, 1),
-                child: const Text('show 1'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () => navigationViewProvider.show(context, 2),
-                child: const Text('show 2'),
-              ),
-            ],
-          )),
-      builder: (int value) => Container(
-        color: Colors.green,
-        child: Column(children: [Text('$value')]),
-      ),
     );
   }
 
