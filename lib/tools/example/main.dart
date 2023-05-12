@@ -6,6 +6,8 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 
 import '../tools.dart';
 
+enum SampleFilter { inbox, vip, sent, all }
+
 main() {
   base.start(
     appName: 'tools example',
@@ -30,18 +32,19 @@ class _ExampleState extends State<Example> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('tools example'),
-        backgroundColor: Colors.blue,
       ),
       body: Column(
         children: [
           Expanded(
-            child: _selectBar(context),
+            child: _showTagView(context),
           ),
           SizedBox(
             height: 300,
             child: SingleChildScrollView(
               child: Wrap(
                 children: [
+                  testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
+                  testing.ExampleButton(label: 'show tag view', builder: () => _showTagView(context)),
                   testing.ExampleButton(label: 'SliverGroupListView', builder: () => _stickyHeader(context)),
                   testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
                   testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
@@ -53,6 +56,79 @@ class _ExampleState extends State<Example> {
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _tagView(BuildContext context) {
+    return TagView<SampleFilter>(
+      onTagSelected: (value) => debugPrint('$value selected'),
+      header: const Text('I am header'),
+      tags: [
+        Tag<SampleFilter>(
+          label: 'Inbox',
+          value: SampleFilter.inbox,
+          icon: Icons.inbox,
+          count: 0,
+        ),
+        Tag<SampleFilter>(
+          label: 'VIPs',
+          value: SampleFilter.vip,
+          icon: Icons.verified_user,
+          count: 1,
+          selected: true,
+        ),
+        Tag<SampleFilter>(
+          label: 'Sent',
+          value: SampleFilter.sent,
+          icon: Icons.send,
+          count: 20,
+        ),
+        Tag<SampleFilter>(
+          label: 'All',
+          value: SampleFilter.all,
+          icon: Icons.all_inbox,
+          count: 120,
+          category: 'iCloud',
+        ),
+      ],
+    );
+  }
+
+  Widget _showTagView(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('show folder view'),
+      onPressed: () => showTagView<SampleFilter>(
+        context,
+        onTagSelected: (value) => debugPrint('$value selected'),
+        tags: [
+          Tag<SampleFilter>(
+            label: 'Inbox',
+            value: SampleFilter.inbox,
+            icon: Icons.inbox,
+            count: 0,
+          ),
+          Tag<SampleFilter>(
+            label: 'VIPs',
+            value: SampleFilter.vip,
+            icon: Icons.verified_user,
+            count: 1,
+            selected: true,
+          ),
+          Tag<SampleFilter>(
+            label: 'Sent',
+            value: SampleFilter.sent,
+            icon: Icons.send,
+            count: 20,
+          ),
+          Tag<SampleFilter>(
+            label: 'All',
+            value: SampleFilter.all,
+            icon: Icons.all_inbox,
+            count: 120,
+            category: 'iCloud',
           ),
         ],
       ),

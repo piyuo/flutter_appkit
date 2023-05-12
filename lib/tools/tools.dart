@@ -12,3 +12,5 @@ export 'src/refresh_more.dart';
 export 'src/pull_refresh.dart';
 export 'src/load_more.dart';
 export 'src/sticky_header.dart';
+export 'src/tag.dart';
+export 'src/tag_view.dart';
