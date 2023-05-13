@@ -1,23 +1,8 @@
 import 'package:flutter/material.dart';
 import 'delta.dart';
 
-/// FoldPanel show two widget on top/bottom in small screen, left/right on big screen
-/// ```dart
-/// FoldPanel(
-///  builder: (isColumn) => [
-///      Expanded(
-///          child: Container(
-///        color: Colors.red,
-///        child: Text('$isColumn'),
-///      )),
-///      Expanded(
-///          child: Container(
-///        color: Colors.blue,
-///        child: Text('$isColumn'),
-///      )),
-///    ])
-/// ```
-class FoldPanel extends StatelessWidget {
+/// TurnToPhoneLayout show column on phone screen, row on not phone screen
+class TurnToPhoneLayout extends StatelessWidget {
   /// FoldPanel show two widget on top/bottom in small screen, left/right on big screen
   /// ```dart
   /// FoldPanel(
@@ -34,7 +19,7 @@ class FoldPanel extends StatelessWidget {
   ///      )),
   ///    ])
   /// ```
-  const FoldPanel({
+  const TurnToPhoneLayout({
     required this.builder,
     this.columnCrossAxisAlignment = CrossAxisAlignment.center,
     this.rowMainAxisAlignment = MainAxisAlignment.center,
@@ -44,8 +29,10 @@ class FoldPanel extends StatelessWidget {
   /// children show column in small screen, row on big screen
   final List<Widget> Function(bool isColumn) builder;
 
+  /// columnCrossAxisAlignment set crossAxisAlignment in column
   final CrossAxisAlignment columnCrossAxisAlignment;
 
+  /// rowMainAxisAlignment set mainAxisAlignment in row
   final MainAxisAlignment rowMainAxisAlignment;
 
   @override

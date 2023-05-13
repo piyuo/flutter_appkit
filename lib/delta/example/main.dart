@@ -129,7 +129,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _navigationScaffold(context),
+                          child: _turnToPhoneLayout(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -163,12 +163,9 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'check list', builder: () => _checkList(context)),
                                 testing.ExampleButton(
                                     label: 'show responsive dialog', builder: () => _showResponsiveDialog(context)),
-                                testing.ExampleButton(label: 'fold panel', builder: () => _foldPanel(context)),
+                                testing.ExampleButton(label: 'fold panel', builder: () => _turnToPhoneLayout(context)),
                                 testing.ExampleButton(
                                     label: 'padding to center', builder: () => _paddingToCenter(context)),
-                                testing.ExampleButton(
-                                    label: 'layout dynamic bottom side',
-                                    builder: () => _layoutDynamicBottomSide(context)),
                                 testing.ExampleButton(
                                     label: 'wrapped-list-view', builder: () => _wrappedListView(context)),
                                 testing.ExampleButton(label: 'responsive', builder: () => _responsive(context)),
@@ -1320,8 +1317,8 @@ class _DeltaExampleState extends State<DeltaExample> {
     );
   }
 
-  Widget _foldPanel(BuildContext context) {
-    return FoldPanel(
+  Widget _turnToPhoneLayout(BuildContext context) {
+    return TurnToPhoneLayout(
         builder: (isColumn) => [
               Expanded(
                   child: Container(
@@ -1413,24 +1410,6 @@ class _DeltaExampleState extends State<DeltaExample> {
           ],
         ),
       ],
-    );
-  }
-
-  Widget _layoutDynamicBottomSide(BuildContext context) {
-    return DynamicBottomSide(
-      leftBuilder: () => Container(
-        color: Colors.red,
-        width: 200,
-      ),
-      centerBuilder: () => Container(color: Colors.yellow),
-      sideBuilder: () => Container(
-        color: Colors.blue,
-        width: 300,
-      ),
-      bottomBuilder: () => Container(
-        color: Colors.green,
-        height: 100,
-      ),
     );
   }
 
