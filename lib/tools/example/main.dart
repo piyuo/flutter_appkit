@@ -50,7 +50,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                   body: Column(
                     children: [
                       Expanded(
-                        child: _responsiveListView(context),
+                        child: _pullFresh(context),
                       ),
                       SizedBox(
                         height: 300,
@@ -275,6 +275,14 @@ class _ToolsExampleState extends State<ToolsExample> {
                   },
                   child: CustomScrollView(
                     slivers: <Widget>[
+                      SliverToBoxAdapter(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            refreshMoreProvider.showRefreshAnimation(!refreshMoreProvider.isRefreshAnimation);
+                          },
+                          child: const Text('Refresh'),
+                        ),
+                      ),
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {

@@ -63,10 +63,10 @@ class PullRefresh extends StatelessWidget {
                     controller.isArmed) {
                   controller.stopDrag();
                 }
-
                 refreshMoreProvider.prevScrollDirection = controller.scrollingDirection;
-                final containerHeight = controller.value * kHeaderHeight;
-                return controller.isIdle
+                var containerHeight = controller.value * kHeaderHeight;
+                //if (refreshMoreProvider.refreshAnimation) containerHeight = kHeaderHeight;
+                return controller.isIdle && !refreshMoreProvider.isRefreshAnimation
                     ? const SizedBox()
                     : Container(
                         alignment: Alignment.center,
