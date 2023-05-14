@@ -235,7 +235,7 @@ setStringList(String key, List<String> value) async {
 /// ```dart
 /// var result = await preferences.getMap('k');
 /// ```
-Future<Map<String, dynamic>?> getMap(String key) async {
+Future<dynamic> getMap(String key) async {
   final j = await getString(key);
   if (j != null) {
     return jsonDecode(j);
