@@ -124,7 +124,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     : null,
                 headerBuilder: () => Padding(
                   padding: const EdgeInsets.only(bottom: 10),
-                  child: delta.TurnToPhoneLayout(
+                  child: delta.VerticalOnPhoneLayout(
                     builder: (isColumn) => [
                       if (notesProvider.caption != null)
                         Padding(

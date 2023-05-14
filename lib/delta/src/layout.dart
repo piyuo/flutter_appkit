@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'delta.dart';
 
-/// TurnToPhoneLayout show column on phone screen, row on not phone screen
-class TurnToPhoneLayout extends StatelessWidget {
-  /// FoldPanel show two widget on top/bottom in small screen, left/right on big screen
+/// VerticalOnPhoneLayout show column on phone screen, row on not phone screen
+class VerticalOnPhoneLayout extends StatelessWidget {
   /// ```dart
-  /// FoldPanel(
+  /// VerticalOnPhoneLayout(
   ///  builder: (isColumn) => [
   ///      Expanded(
   ///          child: Container(
@@ -19,7 +18,7 @@ class TurnToPhoneLayout extends StatelessWidget {
   ///      )),
   ///    ])
   /// ```
-  const TurnToPhoneLayout({
+  const VerticalOnPhoneLayout({
     required this.builder,
     this.columnCrossAxisAlignment = CrossAxisAlignment.center,
     this.rowMainAxisAlignment = MainAxisAlignment.center,

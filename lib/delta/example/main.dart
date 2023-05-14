@@ -129,7 +129,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _turnToPhoneLayout(context),
+                          child: _verticalOnPhoneLayout(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -163,7 +163,8 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'check list', builder: () => _checkList(context)),
                                 testing.ExampleButton(
                                     label: 'show responsive dialog', builder: () => _showResponsiveDialog(context)),
-                                testing.ExampleButton(label: 'fold panel', builder: () => _turnToPhoneLayout(context)),
+                                testing.ExampleButton(
+                                    label: 'VerticalOnPhoneLayout', builder: () => _verticalOnPhoneLayout(context)),
                                 testing.ExampleButton(
                                     label: 'padding to center', builder: () => _paddingToCenter(context)),
                                 testing.ExampleButton(
@@ -1317,8 +1318,8 @@ class _DeltaExampleState extends State<DeltaExample> {
     );
   }
 
-  Widget _turnToPhoneLayout(BuildContext context) {
-    return TurnToPhoneLayout(
+  Widget _verticalOnPhoneLayout(BuildContext context) {
+    return VerticalOnPhoneLayout(
         builder: (isColumn) => [
               Expanded(
                   child: Container(
