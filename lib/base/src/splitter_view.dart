@@ -38,6 +38,7 @@ class SplitterViewProvider with ChangeNotifier, general.NeedInitializeMixin {
   double? get(String key) => weights[key];
 }
 
+/// SplitterView is a widget that contains a side widget and a main widget
 class SplitterView extends StatelessWidget {
   const SplitterView({
     required this.splitterViewProvider,
@@ -73,6 +74,10 @@ class SplitterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (sideBuilder == null && builder == null) return const SizedBox();
+    if (sideBuilder == null) return builder!();
+    if (builder == null) return sideBuilder!();
+
     final valueKey = (key! as ValueKey<String>).value;
     final savedWeight = splitterViewProvider.get(valueKey);
     final colorScheme = Theme.of(context).colorScheme;
