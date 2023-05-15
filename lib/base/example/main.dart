@@ -418,9 +418,9 @@ class AppExampleState extends State<AppExample> {
                     await splitterViewProvider.init();
                   },
                   builder: () => SplitView(
-                    isVertical: true,
+                    isVertical: false,
                     key: const ValueKey<String>('_first'),
-                    splitterViewProvider: splitterViewProvider,
+                    splitViewProvider: splitterViewProvider,
                     sideBuilder: () => Container(
                       color: Colors.blue,
                       child: const Center(child: Text('side')),

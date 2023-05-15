@@ -41,7 +41,7 @@ class SplitViewProvider with ChangeNotifier, general.NeedInitializeMixin {
 /// SplitView is a widget that contains a side widget and a main widget
 class SplitView extends StatelessWidget {
   const SplitView({
-    required this.splitterViewProvider,
+    required this.splitViewProvider,
     this.builder,
     this.sideBuilder,
     this.isVertical = false,
@@ -57,11 +57,11 @@ class SplitView extends StatelessWidget {
   /// builder is main content widget builder, if null main content will be hidden
   final Widget Function()? builder;
 
-  /// isVertical is splitter orientation, default is horizontal
+  /// isVertical is split view orientation, default is horizontal
   final bool isVertical;
 
-  /// splitterViewProvider is provider for [SplitView]
-  final SplitViewProvider splitterViewProvider;
+  /// SplitViewProvider is provider for [SplitView]
+  final SplitViewProvider splitViewProvider;
 
   /// sideWeight is side widget weight, default is 0.4
   final double sideWeight;
@@ -79,14 +79,14 @@ class SplitView extends StatelessWidget {
     if (builder == null) return sideBuilder!();
 
     final valueKey = (key! as ValueKey<String>).value;
-    final savedWeight = splitterViewProvider.get(valueKey);
+    final savedWeight = splitViewProvider.get(valueKey);
     final colorScheme = Theme.of(context).colorScheme;
     return sv.SplitView(
       gripSize: 5,
       gripColor: colorScheme.outlineVariant.withOpacity(.2),
       gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
       onWeightChanged: (weights) {
-        if (weights[0] != null) splitterViewProvider.set(valueKey, weights[0]!);
+        if (weights[0] != null) splitViewProvider.set(valueKey, weights[0]!);
       },
       controller: sv.SplitViewController(
         weights: [savedWeight ?? sideWeight],
