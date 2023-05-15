@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/preferences/preferences.dart' as preferences;
-import 'package:split_view/split_view.dart';
+import 'package:split_view/split_view.dart' as sv;
 
-/// SplitterViewProvider is A provider that provides the [SplitterView] with the ability to save and load side weight
-class SplitterViewProvider with ChangeNotifier, general.NeedInitializeMixin {
-  SplitterViewProvider({
+/// SplitViewProvider is A provider that provides the [SplitView] with the ability to save and load side weight
+class SplitViewProvider with ChangeNotifier, general.NeedInitializeMixin {
+  SplitViewProvider({
     required this.key,
   }) {
     initFuture = () async {
@@ -25,7 +25,7 @@ class SplitterViewProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// delayRun used to delay set weights
   general.DelayedRun delayRun = general.DelayedRun();
 
-  /// set weights to [SplitterViewProvider]
+  /// set weights to [SplitViewProvider]
   void set(String viewKey, double value) {
     delayRun.run(() {
       final roundValue = double.parse((value).toStringAsFixed(2));
@@ -34,13 +34,13 @@ class SplitterViewProvider with ChangeNotifier, general.NeedInitializeMixin {
     });
   }
 
-  /// get weights from [SplitterViewProvider]
+  /// get weights from [SplitViewProvider]
   double? get(String key) => weights[key];
 }
 
-/// SplitterView is a widget that contains a side widget and a main widget
-class SplitterView extends StatelessWidget {
-  const SplitterView({
+/// SplitView is a widget that contains a side widget and a main widget
+class SplitView extends StatelessWidget {
+  const SplitView({
     required this.splitterViewProvider,
     this.builder,
     this.sideBuilder,
@@ -60,8 +60,8 @@ class SplitterView extends StatelessWidget {
   /// isVertical is splitter orientation, default is horizontal
   final bool isVertical;
 
-  /// splitterViewProvider is provider for [SplitterView]
-  final SplitterViewProvider splitterViewProvider;
+  /// splitterViewProvider is provider for [SplitView]
+  final SplitViewProvider splitterViewProvider;
 
   /// sideWeight is side widget weight, default is 0.4
   final double sideWeight;
@@ -81,24 +81,24 @@ class SplitterView extends StatelessWidget {
     final valueKey = (key! as ValueKey<String>).value;
     final savedWeight = splitterViewProvider.get(valueKey);
     final colorScheme = Theme.of(context).colorScheme;
-    return SplitView(
+    return sv.SplitView(
       gripSize: 5,
       gripColor: colorScheme.outlineVariant.withOpacity(.2),
       gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
       onWeightChanged: (weights) {
         if (weights[0] != null) splitterViewProvider.set(valueKey, weights[0]!);
       },
-      controller: SplitViewController(
+      controller: sv.SplitViewController(
         weights: [savedWeight ?? sideWeight],
-        limits: [WeightLimit(min: sideWeightMin, max: sideWeightMax)],
+        limits: [sv.WeightLimit(min: sideWeightMin, max: sideWeightMax)],
       ),
-      viewMode: isVertical ? SplitViewMode.Vertical : SplitViewMode.Horizontal,
-      indicator: SplitIndicator(
-        viewMode: isVertical ? SplitViewMode.Vertical : SplitViewMode.Horizontal,
+      viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
+      indicator: sv.SplitIndicator(
+        viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
         color: colorScheme.outlineVariant.withOpacity(.9),
       ),
-      activeIndicator: SplitIndicator(
-        viewMode: isVertical ? SplitViewMode.Vertical : SplitViewMode.Horizontal,
+      activeIndicator: sv.SplitIndicator(
+        viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
         isActive: true,
         color: colorScheme.outlineVariant,
       ),

@@ -86,7 +86,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
             children: [
               Expanded(
-                child: _splitterView(context),
+                child: _splitView(context),
                 // child: _routing(context, widget.data),
                 //child: _setPageTitle(context),
               ),
@@ -138,7 +138,7 @@ class AppExampleState extends State<AppExample> {
                       testing.ExampleButton(
                           label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
                       testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
-                      testing.ExampleButton(label: 'SplitterView', builder: () => _splitterView(context)),
+                      testing.ExampleButton(label: 'SplitView', builder: () => _splitView(context)),
                     ],
                   ))
             ],
@@ -409,15 +409,16 @@ class AppExampleState extends State<AppExample> {
         )));
   }
 
-  Widget _splitterView(BuildContext context) {
-    return ChangeNotifierProvider<SplitterViewProvider>(
-        create: (_) => SplitterViewProvider(key: '_splitterView'),
-        child: Consumer<SplitterViewProvider>(
+  Widget _splitView(BuildContext context) {
+    return ChangeNotifierProvider<SplitViewProvider>(
+        create: (_) => SplitViewProvider(key: '_splitView'),
+        child: Consumer<SplitViewProvider>(
             builder: (context, splitterViewProvider, _) => LoadingScreen(
                   future: () async {
                     await splitterViewProvider.init();
                   },
-                  builder: () => SplitterView(
+                  builder: () => SplitView(
+                    isVertical: true,
                     key: const ValueKey<String>('_first'),
                     splitterViewProvider: splitterViewProvider,
                     sideBuilder: () => Container(
