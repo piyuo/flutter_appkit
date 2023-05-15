@@ -129,7 +129,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _verticalOnPhoneLayout(context),
+                          child: _mounted(context),
                         ),
                         SizedBox(
                           height: 300,
@@ -192,11 +192,11 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 ),
                                 testing.ExampleButton(
                                   label: 'axis animate',
-                                  builder: () => _axisAnimate(),
+                                  builder: () => _axisAnimate(context),
                                 ),
                                 testing.ExampleButton(
                                   label: 'transform container',
-                                  builder: () => _transformContainer(),
+                                  builder: () => _transformContainer(context),
                                 ),
                               ],
                             ),
@@ -329,7 +329,7 @@ class _DeltaExampleState extends State<DeltaExample> {
     ]);
   }
 
-  Widget _axisAnimate() {
+  Widget _axisAnimate(BuildContext context) {
     return Column(
       children: [
         OutlinedButton(
@@ -389,7 +389,7 @@ class _DeltaExampleState extends State<DeltaExample> {
     );
   }
 
-  Widget _transformContainer() {
+  Widget _transformContainer(BuildContext context) {
     return TransformContainer(
         closedBuilder: (_, openContainer) {
           return OutlinedButton(

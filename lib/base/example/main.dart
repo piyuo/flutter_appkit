@@ -86,7 +86,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
             children: [
               Expanded(
-                child: _languageProvider(context),
+                child: _splitterView(context),
                 // child: _routing(context, widget.data),
                 //child: _setPageTitle(context),
               ),
@@ -138,6 +138,7 @@ class AppExampleState extends State<AppExample> {
                       testing.ExampleButton(
                           label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
                       testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
+                      testing.ExampleButton(label: 'SplitterView', builder: () => _splitterView(context)),
                     ],
                   ))
             ],
@@ -406,6 +407,29 @@ class AppExampleState extends State<AppExample> {
             Container(height: 500, color: Colors.green),
           ]),
         )));
+  }
+
+  Widget _splitterView(BuildContext context) {
+    return ChangeNotifierProvider<SplitterViewProvider>(
+        create: (_) => SplitterViewProvider(key: '_splitterView'),
+        child: Consumer<SplitterViewProvider>(
+            builder: (context, splitterViewProvider, _) => LoadingScreen(
+                  future: () async {
+                    await splitterViewProvider.init();
+                  },
+                  builder: () => SplitterView(
+                    key: const ValueKey<String>('_first'),
+                    splitterViewProvider: splitterViewProvider,
+                    sideBuilder: () => Container(
+                      color: Colors.blue,
+                      child: const Center(child: Text('side')),
+                    ),
+                    builder: () => Container(
+                      color: Colors.red,
+                      child: const Center(child: Text('main')),
+                    ),
+                  ),
+                )));
   }
 }
 

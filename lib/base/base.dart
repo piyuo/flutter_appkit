@@ -11,3 +11,4 @@ export 'src/datacenter_region.dart';
 export 'src/error_screen.dart';
 export 'src/hypertext.dart';
 export 'src/open_web_url.dart';
+export 'src/splitter_view.dart';
