@@ -35,7 +35,7 @@ class Generator extends StatelessWidget {
   Widget build(BuildContext context) {
     // always use black and white QR Code, it's traditional and effective.
     // don't use center icon image, it hard to see and may slow down scan QR code
-    return QrImage(
+    return QrImageView(
       data: data,
       version: QrVersions.auto,
       errorCorrectionLevel: advertiseOrReceipt ? QrErrorCorrectLevel.L : QrErrorCorrectLevel.H,
