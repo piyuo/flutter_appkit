@@ -129,24 +129,20 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _mounted(context),
+                          child: _animatedBadge(context),
                         ),
                         SizedBox(
                           height: 300,
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
-                                testing.ExampleButton(
-                                    label: 'NavigationScaffold',
-                                    useScaffold: false,
-                                    builder: () => _navigationScaffold(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(
                                     label: 'is touch enabled?', builder: () => _isTouchSupported(context)),
                                 testing.ExampleButton(label: 'no data', builder: () => _noData(context)),
                                 testing.ExampleButton(label: 'shimmer', builder: () => _shimmer(context)),
-                                testing.ExampleButton(label: 'countdown', builder: () => _notificationBadge(context)),
+                                testing.ExampleButton(label: 'AnimatedBadge', builder: () => _animatedBadge(context)),
                                 testing.ExampleButton(label: 'countdown', builder: () => _countdown(context)),
                                 testing.ExampleButton(label: 'search box', builder: () => _searchBox(context)),
                                 testing.ExampleButton(label: 'refresh button', builder: () => _refreshButton(context)),
@@ -925,25 +921,6 @@ class _DeltaExampleState extends State<DeltaExample> {
     return context.isTouchSupported ? const Text('touch supported') : const Text('touch not support');
   }
 
-  Widget _navigationScaffold(BuildContext context) {
-    return NavigationScaffold(
-      leadingInRail: Container(width: 256, height: 100, color: Colors.blue),
-      trailingInRail: Container(width: 256, height: 100, color: Colors.green),
-      destinations: const [
-        Navigation(title: 'Dashboard', icon: Icons.dashboard),
-        Navigation(title: 'Message', icon: Icons.chat),
-        Navigation(title: 'Reservation', icon: Icons.event),
-        Navigation(title: 'Stays', icon: Icons.home),
-        Navigation(title: 'Settings', icon: Icons.settings),
-      ],
-      selectedIndex: 0,
-      onSelected: (index) {
-        debugPrint(index.toString());
-      },
-      body: Container(color: Colors.red, height: 100),
-    );
-  }
-
   Widget _noData(BuildContext context) {
     return Column(
       children: const [
@@ -968,43 +945,49 @@ class _DeltaExampleState extends State<DeltaExample> {
     ]));
   }
 
-  Widget _notificationBadge(BuildContext context) {
+  Widget _animatedBadge(BuildContext context) {
     return Column(
       children: const [
         Padding(
           padding: EdgeInsets.all(20),
-          child: NotificationBadge(
-            badgeText: '2',
+          child: Badge(
+            label: Text('2'),
+            child: Icon(Icons.shopping_bag, size: 24),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: AnimatedBadge(
+            label: '1',
+            child: Icon(Icons.shopping_bag, size: 24),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: AnimatedBadge(
+            label: '8',
             onBottom: true,
             child: Icon(Icons.shopping_bag, size: 24),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
-          child: NotificationBadge(
-            badgeText: '22',
-            onBottom: true,
-            child: Icon(Icons.shopping_bag, size: 24),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: NotificationBadge(
-            badgeText: '2',
+          child: AnimatedBadge(
+            label: '2',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
-          child: NotificationBadge(
-            badgeText: '12',
+          child: AnimatedBadge(
+            label: '12',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(20),
-          child: NotificationBadge(
-            badgeText: '112',
+          child: AnimatedBadge(
+            label: '112',
             child: Text('Badge', style: TextStyle(fontSize: 20)),
           ),
         ),

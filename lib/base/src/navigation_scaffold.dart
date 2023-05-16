@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'delta.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 
 /// Navigation used to configure items or destinations in the various navigation
 /// mechanism. For [BottomNavigationBar], see [BottomNavigationBarItem]. For
@@ -48,6 +48,7 @@ class NavigationScaffold extends StatelessWidget {
     this.drawerEdgeDragWidth,
     this.drawerEnableOpenDragGesture = true,
     this.endDrawerEnableOpenDragGesture = true,
+    this.railWidth,
     Key? key,
   }) : super(key: key);
 
@@ -131,12 +132,13 @@ class NavigationScaffold extends StatelessWidget {
 
   final Widget? trailingInRail;
 
+  final double? railWidth;
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final bigDisplay = isBigScreen(screenWidth);
-    final phoneDisplay = isPhoneScreen(screenWidth);
-
+    final bigDisplay = delta.isBigScreen(screenWidth);
+    final phoneDisplay = delta.isPhoneScreen(screenWidth);
     return Scaffold(
       key: key,
       appBar: appBar,
@@ -145,19 +147,27 @@ class NavigationScaffold extends StatelessWidget {
           : Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                NavigationRail(
-                  leading: bigDisplay ? leadingInRail : null,
-                  trailing: bigDisplay ? trailingInRail : null,
-                  extended: bigDisplay,
-                  labelType: bigDisplay ? NavigationRailLabelType.none : NavigationRailLabelType.all,
-                  destinations: destinations
-                      .map((d) => NavigationRailDestination(
-                            icon: Tooltip(message: d.tooltip ?? d.title, child: Icon(d.icon)),
-                            label: Tooltip(message: d.tooltip ?? d.title, child: Text(d.title)),
-                          ))
-                      .toList(),
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: onSelected,
+                SizedBox(
+                  width: bigDisplay ? railWidth : null,
+                  child: NavigationRail(
+                    leading: bigDisplay ? leadingInRail : null,
+                    trailing: bigDisplay ? trailingInRail : null,
+                    extended: bigDisplay,
+                    labelType: bigDisplay ? NavigationRailLabelType.none : NavigationRailLabelType.all,
+                    destinations: destinations
+                        .map((d) => NavigationRailDestination(
+                              icon: Tooltip(
+                                  message: d.tooltip ?? d.title,
+                                  child: Badge(
+                                    label: Text('2'),
+                                    child: Icon(d.icon),
+                                  )),
+                              label: Tooltip(message: d.tooltip ?? d.title, child: Text(d.title)),
+                            ))
+                        .toList(),
+                    selectedIndex: selectedIndex,
+                    onDestinationSelected: onSelected,
+                  ),
                 ),
                 const VerticalDivider(
                   width: 1,

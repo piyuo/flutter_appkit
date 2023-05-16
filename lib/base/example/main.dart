@@ -86,7 +86,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
             children: [
               Expanded(
-                child: _splitView(context),
+                child: _navigationScaffold(context),
                 // child: _routing(context, widget.data),
                 //child: _setPageTitle(context),
               ),
@@ -100,6 +100,8 @@ class AppExampleState extends State<AppExample> {
                           dialog.alert('hello');
                         },
                       ),
+                      testing.ExampleButton(
+                          label: 'NavigationScaffold', useScaffold: false, builder: () => _navigationScaffold(context)),
                       testing.ExampleButton(label: 'open web url', builder: () => _openWebUrl(context)),
                       testing.ExampleButton(
                         label: 'error screen',
@@ -143,6 +145,25 @@ class AppExampleState extends State<AppExample> {
                   ))
             ],
           )),
+    );
+  }
+
+  Widget _navigationScaffold(BuildContext context) {
+    return NavigationScaffold(
+      leadingInRail: Container(width: 256, height: 100, color: Colors.blue),
+      trailingInRail: Container(width: 256, height: 100, color: Colors.green),
+      destinations: const [
+        Navigation(title: 'Dashboard', icon: Icons.dashboard),
+        Navigation(title: 'Message', icon: Icons.chat, badge: '99+'),
+        Navigation(title: 'Reservation', icon: Icons.event),
+        Navigation(title: 'Stays', icon: Icons.home),
+        Navigation(title: 'Settings', icon: Icons.settings),
+      ],
+      selectedIndex: 0,
+      onSelected: (index) {
+        debugPrint(index.toString());
+      },
+      body: Container(color: Colors.red, height: 100),
     );
   }
 
