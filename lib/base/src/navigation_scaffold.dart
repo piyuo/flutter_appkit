@@ -139,6 +139,20 @@ class NavigationScaffold extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final bigDisplay = delta.isBigScreen(screenWidth);
     final phoneDisplay = delta.isPhoneScreen(screenWidth);
+
+    buildIcon(Navigation n) {
+      return Tooltip(
+          message: n.tooltip ?? n.title,
+          child: delta.AnimatedBadge(
+            label: n.badge,
+            child: Icon(n.icon),
+          ));
+    }
+
+    buildLabel(Navigation n) {
+      return Tooltip(message: n.tooltip ?? n.title, child: Text(n.title));
+    }
+
     return Scaffold(
       key: key,
       appBar: appBar,
@@ -155,14 +169,9 @@ class NavigationScaffold extends StatelessWidget {
                     extended: bigDisplay,
                     labelType: bigDisplay ? NavigationRailLabelType.none : NavigationRailLabelType.all,
                     destinations: destinations
-                        .map((d) => NavigationRailDestination(
-                              icon: Tooltip(
-                                  message: d.tooltip ?? d.title,
-                                  child: Badge(
-                                    label: Text('2'),
-                                    child: Icon(d.icon),
-                                  )),
-                              label: Tooltip(message: d.tooltip ?? d.title, child: Text(d.title)),
+                        .map((n) => NavigationRailDestination(
+                              icon: buildIcon(n),
+                              label: buildLabel(n),
                             ))
                         .toList(),
                     selectedIndex: selectedIndex,
@@ -181,10 +190,10 @@ class NavigationScaffold extends StatelessWidget {
       bottomNavigationBar: phoneDisplay
           ? BottomNavigationBar(
               items: destinations
-                  .map((d) => BottomNavigationBarItem(
-                        icon: Icon(d.icon),
-                        label: d.title,
-                        tooltip: d.tooltip,
+                  .map((n) => BottomNavigationBarItem(
+                        icon: buildIcon(n),
+                        label: n.title,
+                        tooltip: n.tooltip,
                       ))
                   .toList(),
               currentIndex: selectedIndex,

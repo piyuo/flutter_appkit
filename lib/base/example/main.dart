@@ -154,7 +154,7 @@ class AppExampleState extends State<AppExample> {
       trailingInRail: Container(width: 256, height: 100, color: Colors.green),
       destinations: const [
         Navigation(title: 'Dashboard', icon: Icons.dashboard),
-        Navigation(title: 'Message', icon: Icons.chat, badge: '99+'),
+        Navigation(title: 'Message', icon: Icons.chat, badge: '5'),
         Navigation(title: 'Reservation', icon: Icons.event),
         Navigation(title: 'Stays', icon: Icons.home),
         Navigation(title: 'Settings', icon: Icons.settings),
