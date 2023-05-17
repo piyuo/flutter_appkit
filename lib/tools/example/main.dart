@@ -50,7 +50,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                   body: Column(
                     children: [
                       Expanded(
-                        child: _pullFresh(context),
+                        child: _stickyHeader(context),
                       ),
                       SizedBox(
                         height: 300,
@@ -63,8 +63,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                   builder: () => _responsiveListView(context)),
                               testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
                               testing.ExampleButton(label: 'show tag view', builder: () => _showTagView(context)),
-                              testing.ExampleButton(
-                                  label: 'SliverGroupListView', builder: () => _stickyHeader(context)),
+                              testing.ExampleButton(label: 'StickyHeader', builder: () => _stickyHeader(context)),
                               testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
                               testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
                               testing.ExampleButton(label: 'Refresh More', builder: () => _refreshMore(context)),
@@ -322,7 +321,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             alignment: Alignment.centerLeft,
             child: const Text('Header #0', style: TextStyle(color: Colors.white)),
           ),
-          sliverBuilder: () => SliverList(
+          builder: () => SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, i) => ListTile(
                 leading: const CircleAvatar(child: Text('0')),
@@ -340,7 +339,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             alignment: Alignment.centerLeft,
             child: const Text('Header #1', style: TextStyle(color: Colors.white)),
           ),
-          sliverBuilder: () => SliverList(
+          builder: () => SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, i) => ListTile(
                 leading: const CircleAvatar(child: Text('0')),
