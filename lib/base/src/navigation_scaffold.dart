@@ -132,12 +132,13 @@ class NavigationScaffold extends StatelessWidget {
 
   final Widget? trailingInRail;
 
+  /// railWidth is rail width in big screen, 0 means no rail.
   final double? railWidth;
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final bigDisplay = delta.isBigScreen(screenWidth);
+    final bigDisplay = railWidth != 0 && delta.isBigScreen(screenWidth);
     final phoneDisplay = delta.isPhoneScreen(screenWidth);
 
     buildIcon(Navigation n) {

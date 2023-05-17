@@ -150,6 +150,7 @@ class AppExampleState extends State<AppExample> {
 
   Widget _navigationScaffold(BuildContext context) {
     return NavigationScaffold(
+      railWidth: 0,
       leadingInRail: Container(width: 256, height: 100, color: Colors.blue),
       trailingInRail: Container(width: 256, height: 100, color: Colors.green),
       destinations: const [
