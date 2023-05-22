@@ -202,11 +202,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     );
   }
 
-  /// archiveByView called by view
-  Future<void> archiveByView(List<T> list) async {
-    await dataClient.archive(list);
-  }
-
   /// restoreByView called by view
   Future<void> restoreByView(List<T> list) async {
     await dataClient.restore(list);

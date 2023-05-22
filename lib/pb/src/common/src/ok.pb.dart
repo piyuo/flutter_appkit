@@ -3,7 +3,7 @@
 //  source: ok.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers, unnecessary_import, annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
 
 import 'dart:core' as $core;
 import 'package:libcli/pb/pb.dart' as pb;
@@ -11,26 +11,21 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class OK extends pb.Object {
-  $core.int mapIdXXX() => 2;
+  $core.int mapIdXXX() => 4;
   get namespace => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OK', createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'text')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
   OK._() : super();
   factory OK({
     $core.String? text,
-    $core.int? value,
   }) {
     final _result = create();
     if (text != null) {
       _result.text = text;
-    }
-    if (value != null) {
-      _result.value = value;
     }
     return _result;
   }
@@ -63,14 +58,5 @@ class OK extends pb.Object {
   $core.bool hasText() => $_has(0);
   @$pb.TagNumber(1)
   void clearText() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get value => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set value($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasValue() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearValue() => clearField(2);
 }
 

@@ -79,10 +79,10 @@ class DataClient<T extends pb.Object> {
     await dataset.insert(list);
   }
 
-  /// restore data from deleted/archived to active
+  /// restore data from deleted
   Future<void> restore(List<T> list) async {
     for (final item in list) {
-      item.markAsActive();
+      item.deleted = false;
     }
     await saver(list);
     await dataset.insert(list);
@@ -91,16 +91,7 @@ class DataClient<T extends pb.Object> {
   /// delete data from dataset and remote service
   Future<void> delete(List<T> list) async {
     for (final item in list) {
-      item.markAsDeleted();
-    }
-    await saver(list);
-    await dataset.delete(list.map((row) => row.id).toList());
-  }
-
-  /// archive data from dataset and remote service
-  Future<void> archive(List<T> list) async {
-    for (final item in list) {
-      item.markAsArchived();
+      item.deleted = true;
     }
     await saver(list);
     await dataset.delete(list.map((row) => row.id).toList());

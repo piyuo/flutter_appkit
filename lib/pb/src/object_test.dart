@@ -49,7 +49,6 @@ void main() {
       expect(person.hasModel, isTrue);
       expect(person.id, isNotEmpty);
       expect(person.lastUpdateTime, isNotNull);
-      expect(person.isActive, isTrue);
     });
 
     test('should get/set field by name', () {

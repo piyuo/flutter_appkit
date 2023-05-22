@@ -150,31 +150,7 @@ void main() {
       await dataClient.delete([result]);
       expect(saved, isNotNull);
       expect(saved!.id, 'person1');
-      expect(saved!.isDeleted, isTrue);
-      final firstPerson = await dataset.first;
-      expect(firstPerson, isNull);
-    });
-
-    test('should archive data', () async {
-      sample.Person? saved;
-      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      final person = sample.Person()
-        ..name = 'john'
-        ..id = 'person1';
-      dataset.add([person]);
-
-      final dataClient = DataClient<sample.Person>(
-        creator: () async => sample.Person(),
-        loader: (id) async => null,
-        saver: (items) async {
-          saved = items[0];
-        },
-      );
-      final result = await dataClient.load(dataset: dataset, id: 'person1');
-      await dataClient.archive([result]);
-      expect(saved, isNotNull);
-      expect(saved!.id, 'person1');
-      expect(saved!.isArchived, isTrue);
+      expect(saved!.deleted, isTrue);
       final firstPerson = await dataset.first;
       expect(firstPerson, isNull);
     });

@@ -17,7 +17,7 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   Object() {
     if (hasModel) {
       model = common.Model(
-        s: common.Model_ModelState.ModelActive,
+        d: false,
         i: generator.uuid(),
         t: google.Timestamp(),
       );
@@ -84,23 +84,11 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   @visibleForTesting
   set lastUpdateTime(value) => model != null ? model!.t = value : null;
 
-  /// isActive return true if model mask as active
-  bool get isActive => model != null ? model!.s == common.Model_ModelState.ModelActive : false;
-
-  /// isDeleted return true if model mask as deleted
-  bool get isDeleted => model != null ? model!.s == common.Model_ModelState.ModelDeleted : false;
-
-  /// isArchived return true if model mask as archived
-  bool get isArchived => model != null ? model!.s == common.Model_ModelState.ModelArchived : false;
+  /// deleted return true if model mark as deleted
+  bool get deleted => model != null && model!.d;
 
   /// markAsDeleted mark object as deleted
-  void markAsDeleted() => model != null ? model!.s = common.Model_ModelState.ModelDeleted : null;
-
-  /// markAsArchived mark object as archived
-  void markAsArchived() => model != null ? model!.s = common.Model_ModelState.ModelArchived : null;
-
-  /// markAsActive mark object as active
-  void markAsActive() => model != null ? model!.s = common.Model_ModelState.ModelActive : null;
+  set deleted(bool value) => model != null ? model!.d = value : null;
 
   /// setAccessToken set access token
   void setAccessToken(String token) {}
