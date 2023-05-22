@@ -11,10 +11,7 @@ import 'dart:typed_data' as $typed_data;
 @$core.Deprecated('Use oKDescriptor instead')
 const OK$json = const {
   '1': 'OK',
-  '2': const [
-    const {'1': 'text', '3': 1, '4': 1, '5': 9, '10': 'text'},
-  ],
 };
 
 /// Descriptor for `OK`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List oKDescriptor = $convert.base64Decode('CgJPSxISCgR0ZXh0GAEgASgJUgR0ZXh0');
+final $typed_data.Uint8List oKDescriptor = $convert.base64Decode('CgJPSw==');

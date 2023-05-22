@@ -15,20 +15,11 @@ class OK extends pb.Object {
   get namespace => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'OK', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'text')
     ..hasRequiredFields = false
   ;
 
   OK._() : super();
-  factory OK({
-    $core.String? text,
-  }) {
-    final _result = create();
-    if (text != null) {
-      _result.text = text;
-    }
-    return _result;
-  }
+  factory OK() => create();
   factory OK.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory OK.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
   @$core.Deprecated(
@@ -49,14 +40,5 @@ class OK extends pb.Object {
   @$core.pragma('dart2js:noInline')
   static OK getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<OK>(create);
   static OK? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get text => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set text($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasText() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearText() => clearField(1);
 }
 
