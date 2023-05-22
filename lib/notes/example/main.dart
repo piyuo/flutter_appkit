@@ -71,26 +71,26 @@ NotesProvider<sample.Person> _notesProvider = NotesProvider<sample.Person>(
   onSearchBegin: () => debugPrint('search begin'),
   onSearchEnd: () => debugPrint('search end'),
   tags: [
-    Tag(
+    tools.Tag(
       label: 'Inbox',
       value: 'inbox',
       icon: Icons.inbox,
       count: 0,
     ),
-    Tag(
+    tools.Tag(
       label: 'VIPs',
       value: 'vips',
       icon: Icons.verified_user,
       count: 1,
       selected: true,
     ),
-    Tag(
+    tools.Tag(
       label: 'Sent',
       value: 'sent',
       icon: Icons.send,
       count: 20,
     ),
-    Tag(
+    tools.Tag(
       label: 'All',
       value: 'all',
       icon: Icons.all_inbox,
@@ -199,7 +199,7 @@ class NotesExample extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: _simpleList(context),
+              child: _checkableList(context),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -217,9 +217,7 @@ class NotesExample extends StatelessWidget {
                   OutlinedButton(
                       child: const Text('scroll to top'),
                       onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
-                  testing.ExampleButton(label: 'show filter view', builder: () => _showFilterView(context)),
                   testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
-                  testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
                   testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
                   testing.ExampleButton(label: 'loading data', builder: () => _loadingMasterDetailView(context)),
                 ],
@@ -404,30 +402,30 @@ class NotesExample extends StatelessWidget {
                   headerBuilder: () => delta.SearchBox(
                     prefixIcon: IconButton(
                       icon: const Icon(Icons.menu),
-                      onPressed: () => showTagView<SampleFilter>(
+                      onPressed: () => tools.showTagView<SampleFilter>(
                         context,
                         onTagSelected: (value) => debugPrint('$value selected'),
                         tags: [
-                          Tag<SampleFilter>(
+                          tools.Tag<SampleFilter>(
                             label: 'Inbox',
                             value: SampleFilter.inbox,
                             icon: Icons.inbox,
                             count: 0,
                           ),
-                          Tag<SampleFilter>(
+                          tools.Tag<SampleFilter>(
                             label: 'VIPs',
                             value: SampleFilter.vip,
                             icon: Icons.verified_user,
                             count: 1,
                             selected: true,
                           ),
-                          Tag<SampleFilter>(
+                          tools.Tag<SampleFilter>(
                             label: 'Sent',
                             value: SampleFilter.sent,
                             icon: Icons.send,
                             count: 20,
                           ),
-                          Tag<SampleFilter>(
+                          tools.Tag<SampleFilter>(
                             label: 'All',
                             value: SampleFilter.all,
                             icon: Icons.all_inbox,
@@ -462,79 +460,6 @@ class NotesExample extends StatelessWidget {
                 )));
   }
 
-  Widget _showFilterView(BuildContext context) {
-    return OutlinedButton(
-      child: const Text('show folder view'),
-      onPressed: () => showTagView<SampleFilter>(
-        context,
-        onTagSelected: (value) => debugPrint('$value selected'),
-        tags: [
-          Tag<SampleFilter>(
-            label: 'Inbox',
-            value: SampleFilter.inbox,
-            icon: Icons.inbox,
-            count: 0,
-          ),
-          Tag<SampleFilter>(
-            label: 'VIPs',
-            value: SampleFilter.vip,
-            icon: Icons.verified_user,
-            count: 1,
-            selected: true,
-          ),
-          Tag<SampleFilter>(
-            label: 'Sent',
-            value: SampleFilter.sent,
-            icon: Icons.send,
-            count: 20,
-          ),
-          Tag<SampleFilter>(
-            label: 'All',
-            value: SampleFilter.all,
-            icon: Icons.all_inbox,
-            count: 120,
-            category: 'iCloud',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _tagView(BuildContext context) {
-    return TagView<SampleFilter>(
-      onTagSelected: (value) => debugPrint('$value selected'),
-      header: const Text('I am header'),
-      tags: [
-        Tag<SampleFilter>(
-          label: 'Inbox',
-          value: SampleFilter.inbox,
-          icon: Icons.inbox,
-          count: 0,
-        ),
-        Tag<SampleFilter>(
-          label: 'VIPs',
-          value: SampleFilter.vip,
-          icon: Icons.verified_user,
-          count: 1,
-          selected: true,
-        ),
-        Tag<SampleFilter>(
-          label: 'Sent',
-          value: SampleFilter.sent,
-          icon: Icons.send,
-          count: 20,
-        ),
-        Tag<SampleFilter>(
-          label: 'All',
-          value: SampleFilter.all,
-          icon: Icons.all_inbox,
-          count: 120,
-          category: 'iCloud',
-        ),
-      ],
-    );
-  }
-
   Widget _filterSplitView(BuildContext context) {
     return MultiProvider(
         providers: [
@@ -550,29 +475,29 @@ class NotesExample extends StatelessWidget {
         ],
         child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
           builder: (context, selectedController, animateViewProvider, child) => TagSplitView(
-              tagView: TagView<SampleFilter>(
+              tagView: tools.TagView<SampleFilter>(
                 onTagSelected: (value) => debugPrint('$value selected'),
                 tags: [
-                  Tag<SampleFilter>(
+                  tools.Tag<SampleFilter>(
                     label: 'Inbox',
                     value: SampleFilter.inbox,
                     icon: Icons.inbox,
                     count: 0,
                   ),
-                  Tag<SampleFilter>(
+                  tools.Tag<SampleFilter>(
                     label: 'VIPs',
                     value: SampleFilter.vip,
                     icon: Icons.verified_user,
                     count: 1,
                     selected: true,
                   ),
-                  Tag<SampleFilter>(
+                  tools.Tag<SampleFilter>(
                     label: 'Sent',
                     value: SampleFilter.sent,
                     icon: Icons.send,
                     count: 20,
                   ),
-                  Tag<SampleFilter>(
+                  tools.Tag<SampleFilter>(
                     label: 'All',
                     value: SampleFilter.all,
                     icon: Icons.all_inbox,

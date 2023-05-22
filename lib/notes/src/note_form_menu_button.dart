@@ -27,14 +27,6 @@ class NoteFormMenuButton<T extends pb.Object> extends StatelessWidget {
           : () => tools.showToolSheet(
                 context,
                 items: [
-                  if (formController.showArchiveButton)
-                    tools.ToolButton(
-                      label: context.i18n.archiveButtonText,
-                      icon: Icons.archive,
-                      onPressed: formController.isAllowDelete
-                          ? () => formController.archive(context, [formController.current!])
-                          : null,
-                    ),
                   if (formController.showDeleteButton)
                     tools.ToolButton(
                       label: context.i18n.deleteButtonText,

@@ -183,12 +183,6 @@ class DataView<T extends pb.Object> extends StatelessWidget {
                         ),
                         if (leftTools != null) ...leftTools!,
                         if (notesProvider.isListView) tools.ToolSpacer(),
-                        if (notesProvider.formController.showArchiveButton)
-                          tools.ToolButton(
-                            label: context.i18n.archiveButtonText,
-                            icon: Icons.archive,
-                            onPressed: notesProvider.isAllowDelete ? () => notesProvider.onArchive(context) : null,
-                          ),
                         if (notesProvider.formController.showDeleteButton)
                           tools.ToolButton(
                             label: context.i18n.deleteButtonText,
@@ -276,16 +270,6 @@ class DataView<T extends pb.Object> extends StatelessWidget {
                 onUnselectAll: () => notesProvider.onItemChecked([]),
                 onCancel: () => notesProvider.onToggleCheckMode(context),
                 actions: [
-                  if (notesProvider.formController.showArchiveButton)
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: colorScheme.inversePrimary,
-                      ),
-                      label: Text(context.i18n.archiveButtonText),
-                      icon: const Icon(Icons.archive),
-                      onPressed:
-                          notesProvider.dataView!.hasSelectedRows ? () => notesProvider.onArchive(context) : null,
-                    ),
                   if (notesProvider.formController.showDeleteButton)
                     TextButton.icon(
                       style: TextButton.styleFrom(

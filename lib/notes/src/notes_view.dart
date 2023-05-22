@@ -7,7 +7,6 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'notes_provider.dart';
 import 'grid_list_view.dart';
 import 'tag_split_view.dart';
-import 'tag_view.dart';
 import 'checkable_header.dart';
 
 class NotesView<T extends pb.Object> extends StatelessWidget {
@@ -75,7 +74,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
             : IconButton(
                 icon: Icon(Icons.menu, color: notesProvider.isReadyToShow ? colorScheme.primary : null),
                 onPressed: notesProvider.isReadyToShow
-                    ? () => showTagView<String>(
+                    ? () => tools.showTagView<String>(
                           context,
                           onTagSelected: (value) => notesProvider.setSelectedTag(value),
                           tags: notesProvider.tags,
@@ -96,7 +95,7 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
           ],
           child: TagSplitView(
               tagView: notesProvider.tags.isNotEmpty
-                  ? TagView<String>(
+                  ? tools.TagView<String>(
                       onTagSelected: notesProvider.setSelectedTag,
                       tags: notesProvider.tags,
                       header: tagViewHeader,
@@ -211,12 +210,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                             ),
                             if (leftTools != null) ...leftTools!,
                             if (notesProvider.isListView) tools.ToolSpacer(),
-                            if (notesProvider.formController.showArchiveButton)
-                              tools.ToolButton(
-                                label: context.i18n.archiveButtonText,
-                                icon: Icons.archive,
-                                onPressed: notesProvider.isAllowDelete ? () => notesProvider.onArchive(context) : null,
-                              ),
                             if (notesProvider.formController.showDeleteButton)
                               tools.ToolButton(
                                 label: context.i18n.deleteButtonText,
@@ -304,16 +297,6 @@ class NotesView<T extends pb.Object> extends StatelessWidget {
                     onUnselectAll: () => notesProvider.onItemChecked([]),
                     onCancel: () => notesProvider.onToggleCheckMode(context),
                     actions: [
-                      if (notesProvider.formController.showArchiveButton)
-                        TextButton.icon(
-                          style: TextButton.styleFrom(
-                            foregroundColor: colorScheme.inversePrimary,
-                          ),
-                          label: Text(context.i18n.archiveButtonText),
-                          icon: const Icon(Icons.archive),
-                          onPressed:
-                              notesProvider.dataView!.hasSelectedRows ? () => notesProvider.onArchive(context) : null,
-                        ),
                       if (notesProvider.formController.showDeleteButton)
                         TextButton.icon(
                           style: TextButton.styleFrom(

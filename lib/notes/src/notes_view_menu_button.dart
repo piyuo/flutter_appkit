@@ -53,12 +53,6 @@ class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
                     icon: viewProvider.isCheckMode ? Icons.circle_outlined : Icons.check_circle_outline,
                     onPressed: () => viewProvider.onToggleCheckMode(context),
                   ),
-                  if (formController.showArchiveButton)
-                    tools.ToolButton(
-                      label: context.i18n.archiveButtonText,
-                      icon: Icons.archive,
-                      onPressed: viewProvider.isAllowDelete ? () => viewProvider.onArchive(context) : null,
-                    ),
                   if (formController.showDeleteButton)
                     tools.ToolButton(
                       label: context.i18n.deleteButtonText,

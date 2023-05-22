@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:beamer/beamer.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'tag.dart';
 import 'selectable.dart';
 import 'types.dart';
 import 'note_form_controller.dart';
@@ -91,7 +91,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   final searchController = TextEditingController();
 
   /// tags is a list of tags to display.
-  List<Tag<String>> tags;
+  List<tools.Tag<String>> tags;
 
   /// hasListView return true if has list view mode
   bool get hasListView => listBuilder != null;
@@ -479,9 +479,6 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
 
   /// onDelete called when user press delete button
   Future<void> onDelete(BuildContext context) async => await _tryRemove(formController.deleteByView);
-
-  /// onArchive called when user press archive button
-  Future<void> onArchive(BuildContext context) async => await _tryRemove(formController.archiveByView);
 
   /// onRestore called when user press restore button
   Future<void> onRestore(BuildContext context) async => await _tryRemove(formController.restoreByView);

@@ -25,7 +25,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     required data.DataClientSaver<T> saver,
     this.formLoader,
     this.formSaver,
-    this.showArchiveButton = false,
     this.showDeleteButton = false,
     this.showRestoreButton = false,
   }) {
@@ -35,9 +34,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       saver: saver,
     );
   }
-
-  /// showArchiveButton is true mean show archive button
-  final bool showArchiveButton;
 
   /// showDeleteButton is true mean show delete button
   final bool showDeleteButton;
@@ -165,19 +161,6 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
       return;
     }
     await deleteByView([current!]);
-    await eventbus.broadcast(NotesRefillEvent(isRemove: true));
-  }
-
-  /// archive called when user press archive button
-  Future<void> archive(BuildContext context, List<T> list) async {
-    if (current == null) {
-      return;
-    }
-    if (isInView) {
-      await NotesProvider.of<T>(context).onArchive(context);
-      return;
-    }
-    await archiveByView(list);
     await eventbus.broadcast(NotesRefillEvent(isRemove: true));
   }
 

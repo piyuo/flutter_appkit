@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/tools/tools.dart' as tools;
 import 'package:split_view/split_view.dart';
-import 'tag_view.dart';
 
 /// TagSplitView show a tag and content widget in split view on big screen
 class TagSplitView extends StatelessWidget {
@@ -12,7 +12,7 @@ class TagSplitView extends StatelessWidget {
   }) : super(key: key);
 
   /// tagView is tag view, if tag view is null it will show child directly
-  final TagView? tagView;
+  final tools.TagView? tagView;
 
   /// child is content widget in split view
   final Widget child;
