@@ -4,7 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/dataview/data.dart' as data;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'selectable.dart';
 import 'types.dart';

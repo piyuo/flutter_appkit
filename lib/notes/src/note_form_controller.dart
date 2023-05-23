@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/general/general.dart' as general;
-import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/dataview/data.dart' as data;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/form/form.dart' as form;

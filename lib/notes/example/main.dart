@@ -9,7 +9,7 @@ import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/dataview/data.dart' as data;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/generator/generator.dart' as generator;
