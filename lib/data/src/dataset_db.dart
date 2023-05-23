@@ -21,7 +21,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     internalNoMore = true;
   }
 
-  /// _database is database that store data
+  /// indexedDbProvider is IndexedDB database that store data
   final cache.IndexedDbProvider indexedDbProvider;
 
   /// _index keep all id of rows
