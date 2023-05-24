@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/general/general.dart' as general;
-import 'package:libcli/dataview/data.dart' as data;
+import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/form/form.dart' as form;
@@ -21,14 +21,14 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
     required this.formGroup,
     required this.formBuilder,
     required general.FutureCallback<T> creator,
-    required data.DataClientLoader<T> loader,
-    required data.DataClientSaver<T> saver,
+    required dataview.DataClientLoader<T> loader,
+    required dataview.DataClientSaver<T> saver,
     this.formLoader,
     this.formSaver,
     this.showDeleteButton = false,
     this.showRestoreButton = false,
   }) {
-    dataClient = data.DataClient(
+    dataClient = dataview.DataClient(
       creator: creator,
       loader: loader,
       saver: saver,
@@ -54,7 +54,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   final Widget Function(BuildContext context, NoteFormController<T> controller) formBuilder;
 
   /// dataView data view to display data
-  late data.DataClient<T> dataClient;
+  late dataview.DataClient<T> dataClient;
 
   /// formState is current form state
   NotesFormState formState = NotesFormState.loading;
@@ -95,7 +95,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// await client.load(testing.Context(), 'object_id');
   /// ```
-  Future<T> load({required data.Dataset<T> dataset, required String id}) async {
+  Future<T> load({required dataview.Dataset<T> dataset, required String id}) async {
     current = await dataClient.load(dataset: dataset, id: id);
     formState = current != null ? NotesFormState.loaded : NotesFormState.formNotExists;
     if (current != null) {
@@ -113,7 +113,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   /// ```dart
   /// client.loadByView();
   /// ```
-  Future<void> loadByView({required data.Dataset<T> dataset, required T row}) async {
+  Future<void> loadByView({required dataview.Dataset<T> dataset, required T row}) async {
     if (current != null && current!.id == row.id) {
       return;
     }
@@ -128,7 +128,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   }
 
   /// loadNewByView load form empty. not data to display
-  Future<T> loadNewByView(data.Dataset<T> dataset) async {
+  Future<T> loadNewByView(dataview.Dataset<T> dataset) async {
     final creating = await dataClient.creator();
     await loadByView(dataset: dataset, row: creating);
     formGroup.markAsDirty();

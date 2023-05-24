@@ -9,9 +9,9 @@ import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/dataview/data.dart' as data;
+import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/cache/cache.dart' as cache;
+import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/generator/generator.dart' as generator;
 import '../notes.dart';
 
@@ -597,13 +597,13 @@ class NotesExample extends StatelessWidget {
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
                         value: _notesProvider,
                       ),
-                      ChangeNotifierProvider<cache.IndexedDbProvider>(create: (_) {
-                        return cache.IndexedDbProvider(
+                      ChangeNotifierProvider<data.IndexedDbProvider>(create: (_) {
+                        return data.IndexedDbProvider(
                           dbName: 'notes_sample',
                         );
                       }),
                     ],
-                    child: Consumer2<cache.IndexedDbProvider, NotesProvider<sample.Person>>(
+                    child: Consumer2<data.IndexedDbProvider, NotesProvider<sample.Person>>(
                       builder: (context, indexedDbProvider, notesProvider, _) {
                         return base.LoadingScreen(
                           future: () async {
@@ -611,7 +611,7 @@ class NotesExample extends StatelessWidget {
                             await indexedDbProvider.init();
                             _notesProvider.load(
                                 isPreferMouse,
-                                data.DatasetDb<sample.Person>(
+                                dataview.DatasetDb<sample.Person>(
                                   indexedDbProvider: indexedDbProvider,
                                   objectBuilder: () => sample.Person(),
                                 ));
@@ -648,13 +648,13 @@ class NotesExample extends StatelessWidget {
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
                         value: _notesProvider,
                       ),
-                      ChangeNotifierProvider<cache.IndexedDbProvider>(create: (_) {
-                        return cache.IndexedDbProvider(
+                      ChangeNotifierProvider<data.IndexedDbProvider>(create: (_) {
+                        return data.IndexedDbProvider(
                           dbName: 'notes_sample',
                         );
                       }),
                     ],
-                    child: Consumer2<cache.IndexedDbProvider, NotesProvider<sample.Person>>(
+                    child: Consumer2<data.IndexedDbProvider, NotesProvider<sample.Person>>(
                       builder: (context, indexedDbProvider, notesProvider, _) {
                         return base.LoadingScreen(
                           future: () async {
@@ -662,7 +662,7 @@ class NotesExample extends StatelessWidget {
                             await indexedDbProvider.init();
                             _notesProvider.load(
                                 isPreferMouse,
-                                data.DatasetDb<sample.Person>(
+                                dataview.DatasetDb<sample.Person>(
                                   indexedDbProvider: indexedDbProvider,
                                   objectBuilder: () => sample.Person(),
                                 ));
@@ -701,15 +701,15 @@ Widget _noteItem(BuildContext context, String id) {
         ChangeNotifierProvider<NoteFormController<sample.Person>>(
           create: (context) => createFormController(),
         ),
-        ChangeNotifierProvider<cache.IndexedDbProvider>(
+        ChangeNotifierProvider<data.IndexedDbProvider>(
           create: (context) {
-            return cache.IndexedDbProvider(
+            return data.IndexedDbProvider(
               dbName: 'notes_sample',
             );
           },
         ),
       ],
-      child: Consumer2<cache.IndexedDbProvider, NoteFormController<sample.Person>>(
+      child: Consumer2<data.IndexedDbProvider, NoteFormController<sample.Person>>(
           builder: (context, indexedDbProvider, formController, _) => Scaffold(
                 appBar: AppBar(title: const Text('Detail'), actions: [
                   Consumer<NoteFormController<sample.Person>>(
@@ -722,7 +722,7 @@ Widget _noteItem(BuildContext context, String id) {
                     final noteFormController = NoteFormController.of<sample.Person>(context);
                     await indexedDbProvider.init();
                     noteFormController.load(
-                        dataset: data.DatasetDb<sample.Person>(
+                        dataset: dataview.DatasetDb<sample.Person>(
                           indexedDbProvider: indexedDbProvider,
                           objectBuilder: () => sample.Person(),
                         ),

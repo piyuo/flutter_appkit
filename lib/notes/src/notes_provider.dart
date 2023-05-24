@@ -4,7 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/dataview/data.dart' as data;
+import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'selectable.dart';
 import 'types.dart';
@@ -76,10 +76,10 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   final String? caption;
 
   /// loader
-  final data.DataViewLoader<T> loader;
+  final dataview.DataViewLoader<T> loader;
 
   /// dataView data view to display data
-  data.DataView<T>? dataView;
+  dataview.DataView<T>? dataView;
 
   /// refreshButtonController is refresh button controller
   final refreshButtonController = delta.RefreshButtonController();
@@ -170,13 +170,13 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// load data to display
-  Future<void> load(bool isPreferMouse, data.Dataset<T> dataset) async {
+  Future<void> load(bool isPreferMouse, dataview.Dataset<T> dataset) async {
     dataView = isPreferMouse
-        ? data.PagedDataView<T>(
+        ? dataview.PagedDataView<T>(
             dataset,
             loader: loader,
           )
-        : data.ContinuousDataView<T>(
+        : dataview.ContinuousDataView<T>(
             dataset,
             loader: loader,
           );
@@ -342,10 +342,11 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   bool get isSplitView => isListView && !delta.phoneScreen;
 
   /// hasNextPage return true if has next page
-  bool get hasNextPage => dataView is data.PagedDataView ? (dataView as data.PagedDataView).hasNextPage : false;
+  bool get hasNextPage => dataView is dataview.PagedDataView ? (dataView as dataview.PagedDataView).hasNextPage : false;
 
   /// hasPrevPage return true if has prev page
-  bool get hasPreviousPage => dataView is data.PagedDataView ? (dataView as data.PagedDataView).hasPrevPage : false;
+  bool get hasPreviousPage =>
+      dataView is dataview.PagedDataView ? (dataView as dataview.PagedDataView).hasPrevPage : false;
 
   /// refill let dataset refill data, the data may changed or deleted
   Future<void> refill({bool isRemove = false}) async {
@@ -387,8 +388,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     }
     final originLength = dataView!.length;
     var firstPage = true;
-    if (dataView is data.PagedDataView) {
-      firstPage = (dataView as data.PagedDataView).isFirstPage;
+    if (dataView is dataview.PagedDataView) {
+      firstPage = (dataView as dataview.PagedDataView).isFirstPage;
     }
     final isReset = await dataView!.refresh();
     final diff = dataView!.length - originLength;
@@ -521,8 +522,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (!await isReadyForAction()) {
       return;
     }
-    if (dataView is data.PagedDataView) {
-      await (dataView as data.PagedDataView).nextPage();
+    if (dataView is dataview.PagedDataView) {
+      await (dataView as dataview.PagedDataView).nextPage();
       animateViewProvider.nextPageAnimation(dataView!.displayRows.length);
     }
     notifyListeners();
@@ -534,8 +535,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
     if (!await isReadyForAction()) {
       return;
     }
-    if (dataView is data.PagedDataView) {
-      await (dataView as data.PagedDataView).prevPage();
+    if (dataView is dataview.PagedDataView) {
+      await (dataView as dataview.PagedDataView).prevPage();
       animateViewProvider.prevPageAnimation(dataView!.displayRows.length);
     }
     notifyListeners();
