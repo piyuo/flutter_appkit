@@ -181,6 +181,7 @@ void main() {
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
       modelList.cutOffDate = DateTime(2023, 1, 2);
+      modelList.lastRefreshDate = DateTime(2023, 1, 3);
 
       final jsonMap = modelList.writeToJsonMap();
 
@@ -190,15 +191,17 @@ void main() {
       expect(modelList2[0].t.toDateTime().day, 3);
       expect(modelList2[0].i, "3");
       expect(modelList2.cutOffDate!.day, 2);
+      expect(modelList2.lastRefreshDate!.day, 3);
     });
 
     test('should allow cutOffDate null in json map ', () {
       final modelList = ModelIndex();
       modelList.cutOffDate = null;
+      modelList.lastRefreshDate = null;
       final jsonMap = modelList.writeToJsonMap();
-
       final modelList2 = ModelIndex()..fromJsonMap(jsonMap);
       expect(modelList2.cutOffDate, isNull);
+      expect(modelList2.lastRefreshDate, isNull);
     });
   });
 }

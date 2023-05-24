@@ -13,6 +13,9 @@ class ModelIndex {
   /// cutOffDate is the date that all model before this date will be removed
   DateTime? _cutOffDate;
 
+  /// lastRefreshDate is the last refresh date
+  DateTime? lastRefreshDate;
+
   /// onRemove is the callback when model is removed
   final void Function(String id)? onRemove;
 
@@ -125,17 +128,21 @@ class ModelIndex {
   Map<String, dynamic> writeToJsonMap() {
     final map = <String, dynamic>{
       "0": _cutOffDate == null ? 0 : _cutOffDate!.microsecondsSinceEpoch,
-      "1": _list.map((m) => m.writeToJsonMap()).toList(),
+      "1": lastRefreshDate == null ? 0 : lastRefreshDate!.microsecondsSinceEpoch,
+      "2": _list.map((m) => m.writeToJsonMap()).toList(),
     };
     return map;
   }
 
   /// fromString create ModelIndex from string
   void fromJsonMap(Map<String, dynamic> map) {
-    _cutOffDate = map["0"] == 0 ? null : DateTime.fromMicrosecondsSinceEpoch(map["0"]);
-    final list = map["1"];
+    final v0 = map["0"];
+    _cutOffDate = v0 == 0 ? null : DateTime.fromMicrosecondsSinceEpoch(v0);
+    final v1 = map["1"];
+    lastRefreshDate = v1 == 0 ? null : DateTime.fromMicrosecondsSinceEpoch(v1);
+    final v2 = map["2"];
     _list.clear();
-    for (final item in list) {
+    for (final item in v2) {
       _list.add(pb.Model()..mergeFromJsonMap(item));
     }
   }
