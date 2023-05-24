@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// ModelIndex is a tracker for model cache, it provide cutOffDate and view to help use local cache model
 class ModelIndex {
@@ -12,24 +11,26 @@ class ModelIndex {
   final _list = <pb.Model>[];
 
   /// cutOffDate is the date that all model before this date will be removed
-  DateTime _cutOffDate = i18n.minDateTime;
+  DateTime? _cutOffDate;
 
   /// onRemove is the callback when model is removed
   final void Function(String id)? onRemove;
 
   /// cutOffDate is the date that all model before this date will be removed
-  DateTime get cutOffDate => _cutOffDate;
+  DateTime? get cutOffDate => _cutOffDate;
 
   /// cutOffDate is the date that all model before this date will be removed
-  set cutOffDate(DateTime date) {
+  set cutOffDate(DateTime? date) {
     _cutOffDate = date;
-    _list.removeWhere((obj) {
-      final deleted = obj.t.toDateTime().isBefore(_cutOffDate);
-      if (deleted) {
-        onRemove?.call(obj.i);
-      }
-      return deleted;
-    });
+    if (_cutOffDate != null) {
+      _list.removeWhere((obj) {
+        final deleted = obj.t.toDateTime().isBefore(_cutOffDate!);
+        if (deleted) {
+          onRemove?.call(obj.i);
+        }
+        return deleted;
+      });
+    }
   }
 
   /// remove exists model
@@ -123,7 +124,7 @@ class ModelIndex {
   /// writeToJsonMap write ModelIndex to json map
   Map<String, dynamic> writeToJsonMap() {
     final map = <String, dynamic>{
-      "0": _cutOffDate.microsecondsSinceEpoch,
+      "0": _cutOffDate == null ? 0 : _cutOffDate!.microsecondsSinceEpoch,
       "1": _list.map((m) => m.writeToJsonMap()).toList(),
     };
     return map;
@@ -131,7 +132,7 @@ class ModelIndex {
 
   /// fromString create ModelIndex from string
   void fromJsonMap(Map<String, dynamic> map) {
-    _cutOffDate = DateTime.fromMicrosecondsSinceEpoch(map["0"]);
+    _cutOffDate = map["0"] == 0 ? null : DateTime.fromMicrosecondsSinceEpoch(map["0"]);
     final list = map["1"];
     _list.clear();
     for (final item in list) {

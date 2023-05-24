@@ -189,7 +189,16 @@ void main() {
       expect(modelList2[0].t.toDateTime().year, 2023);
       expect(modelList2[0].t.toDateTime().day, 3);
       expect(modelList2[0].i, "3");
-      expect(modelList2.cutOffDate.day, 2);
+      expect(modelList2.cutOffDate!.day, 2);
+    });
+
+    test('should allow cutOffDate null in json map ', () {
+      final modelList = ModelIndex();
+      modelList.cutOffDate = null;
+      final jsonMap = modelList.writeToJsonMap();
+
+      final modelList2 = ModelIndex()..fromJsonMap(jsonMap);
+      expect(modelList2.cutOffDate, isNull);
     });
   });
 }
