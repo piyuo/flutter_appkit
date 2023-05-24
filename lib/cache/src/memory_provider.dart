@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:libcli/general/general.dart' as general;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/data/data.dart' as data;
 import 'package:hive/hive.dart';
-import 'hive.dart';
 
 /// _cleanupMaxItem is the maximum number of items to delete in every cleanup
 int _cleanupMaxItem = kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
@@ -17,8 +17,8 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
     String timeDBName = 'time',
   }) {
     initFuture = () async {
-      _cacheBox = await openBox(cacheDBName);
-      _timeBox = await openBox(timeDBName);
+      _cacheBox = await data.openBox(cacheDBName);
+      _timeBox = await data.openBox(timeDBName);
     };
   }
 
@@ -34,8 +34,8 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// dispose database and reset counter
   @override
   void dispose() {
-    closeBox(_cacheBox);
-    closeBox(_timeBox);
+    data.closeBox(_cacheBox);
+    data.closeBox(_timeBox);
     super.dispose();
   }
 
@@ -58,8 +58,8 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
   @visibleForTesting
   Future<void> reset() async {
     await _lock.synchronized(() async {
-      await resetBox(_cacheBox);
-      await resetBox(_timeBox);
+      await data.resetBox(_cacheBox);
+      await data.resetBox(_timeBox);
     });
   }
 
@@ -160,14 +160,14 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// await setObject('k', sample.Person(name: 'john'));
   /// ```
   Future<void> putObject(String key, pb.Object value) async =>
-      await _addTimeTag(key, (newKey) async => putBoxObject(_cacheBox, newKey, value));
+      await _addTimeTag(key, (newKey) async => data.putBoxObject(_cacheBox, newKey, value));
 
   /// getObject returns the value associated with the given [key]. If the key does not exist, `null` is returned.
   /// ```dart
   /// expect(await getObject<sample.Person>('k', () => sample.Person())!.name, 'john');
   /// ```
   Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) async =>
-      await getBoxObject(_cacheBox, key, builder);
+      await data.getBoxObject(_cacheBox, key, builder);
 
   /// deletes the given [key] from the box , If it does not exist, nothing happens.
   Future<void> delete(String key) async {
@@ -188,7 +188,7 @@ class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// ```
   @visibleForTesting
   Future<void> removeBox() async {
-    await deleteBox(_cacheBox);
-    await deleteBox(_timeBox);
+    await data.deleteBox(_cacheBox);
+    await data.deleteBox(_timeBox);
   }
 }
