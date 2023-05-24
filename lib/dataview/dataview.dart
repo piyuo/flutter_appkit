@@ -1,4 +1,4 @@
-library db;
+library dataview;
 
 export 'src/data_client.dart';
 export 'src/data_view.dart';

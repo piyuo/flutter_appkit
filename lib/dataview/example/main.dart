@@ -1,7 +1,7 @@
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:flutter/material.dart';
 import 'package:libcli/base/base.dart' as base;
-import 'package:libcli/cache/cache.dart' as cache;
+import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:hive/hive.dart';
 
@@ -51,7 +51,7 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('helloWorld'),
           onPressed: () async {
-            final dbProvider = cache.IndexedDbProvider(dbName: 'data_sample');
+            final dbProvider = data.IndexedDbProvider(dbName: 'data_sample');
             await dbProvider.init();
             await dbProvider.put('hello', 'world');
             var name = await dbProvider.get('hello');
@@ -73,7 +73,7 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('pb.Object'),
           onPressed: () async {
-            final dbProvider = cache.IndexedDbProvider(dbName: 'data_sample');
+            final dbProvider = data.IndexedDbProvider(dbName: 'data_sample');
             await dbProvider.init();
             await dbProvider.putObject('e', sample.Person(name: '123'));
             var person = await dbProvider.getObject<sample.Person>('e', () => sample.Person());

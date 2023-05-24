@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/cache/cache.dart' as cache;
+import 'package:libcli/data/data.dart' as data;
 import 'dataset.dart';
 
 /// DatasetDb keep all data into a database
@@ -21,8 +21,8 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     internalNoMore = true;
   }
 
-  /// indexedDbProvider is IndexedDB database that store data
-  final cache.IndexedDbProvider indexedDbProvider;
+  /// _database is database that store data
+  final data.IndexedDbProvider indexedDbProvider;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields
