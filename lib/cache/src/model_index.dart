@@ -2,9 +2,9 @@ import 'dart:core';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
-/// ModelCacheTracker is a tracker for model cache, it provide cutOffDate and view to help use local cache model
-class ModelCacheTracker {
-  ModelCacheTracker({
+/// ModelIndex is a tracker for model cache, it provide cutOffDate and view to help use local cache model
+class ModelIndex {
+  ModelIndex({
     this.onRemove,
   });
 
@@ -16,6 +16,9 @@ class ModelCacheTracker {
 
   /// onRemove is the callback when model is removed
   final void Function(String id)? onRemove;
+
+  /// cutOffDate is the date that all model before this date will be removed
+  DateTime get cutOffDate => _cutOffDate;
 
   /// cutOffDate is the date that all model before this date will be removed
   set cutOffDate(DateTime date) {
@@ -115,5 +118,24 @@ class ModelCacheTracker {
       }
       return true;
     });
+  }
+
+  /// writeToJsonMap write ModelIndex to json map
+  Map<String, dynamic> writeToJsonMap() {
+    final map = <String, dynamic>{
+      "0": _cutOffDate.microsecondsSinceEpoch,
+      "1": _list.map((m) => m.writeToJsonMap()).toList(),
+    };
+    return map;
+  }
+
+  /// fromString create ModelIndex from string
+  void fromJsonMap(Map<String, dynamic> map) {
+    _cutOffDate = DateTime.fromMicrosecondsSinceEpoch(map["0"]);
+    final list = map["1"];
+    _list.clear();
+    for (final item in list) {
+      _list.add(pb.Model()..mergeFromJsonMap(item));
+    }
   }
 }

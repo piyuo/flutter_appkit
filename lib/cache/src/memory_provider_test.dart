@@ -3,6 +3,7 @@
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:flutter_test/flutter_test.dart';
 import 'memory_provider.dart';
+import 'model_index.dart';
 
 void main() {
   group('[cache.memory_provider]', () {

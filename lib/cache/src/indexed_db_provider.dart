@@ -11,7 +11,7 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
     required String dbName,
   }) {
     initFuture = () async {
-      debugPrint('[cache] open $dbName');
+      debugPrint('[indexed_db] open $dbName');
       _box = await openBox(dbName);
     };
   }
@@ -22,7 +22,7 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// dispose database and reset counter
   @override
   void dispose() {
-    debugPrint('[cache] close ${_box.name}');
+    debugPrint('[indexed_db] close ${_box.name}');
     closeBox(_box);
     super.dispose();
   }
@@ -55,9 +55,9 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
 
   /// put value to database
   /// ```dart
-  /// await indexedDbProvider.put<Map<String, dynamic>>('key', {'a': 1}));
+  /// await indexedDbProvider.put('key', {'a': 1}));
   /// ```
-  Future<void> put<T>(String key, T value) async => await _box.put(key, value);
+  Future<void> put(String key, dynamic value) async => await _box.put(key, value);
 
   /// get return the value associated with the given [key]
   /// ```dart

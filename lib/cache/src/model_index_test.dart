@@ -2,12 +2,12 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'model_cache_tracker.dart';
+import 'model_index.dart';
 
 void main() {
-  group('[cache.model_list]', () {
+  group('[cache.model_index]', () {
     test('should remove old before add', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       final modelOld = pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp);
       modelList.add(modelOld);
 
@@ -23,7 +23,7 @@ void main() {
     });
 
     test('should not add if not newest', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       final model = pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp);
       modelList.add(model);
       expect(modelList[0].t.toDateTime().day, 1);
@@ -37,7 +37,7 @@ void main() {
     });
 
     test('should remove old before addAll', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
       expect(modelList[0].t.toDateTime().day, 1);
@@ -51,7 +51,7 @@ void main() {
     });
 
     test('should sort by time', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 2, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
@@ -63,7 +63,7 @@ void main() {
     });
 
     test('should sort by time desc', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 2, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
@@ -75,14 +75,14 @@ void main() {
     });
 
     test('should return true if already contains a model', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 2, 1).timestamp));
       expect(modelList.contains(pb.Model(i: '1', t: DateTime(2023, 2, 1).timestamp)), true);
       expect(modelList.contains(pb.Model(i: '2', t: DateTime(2023, 2, 1).timestamp)), false);
     });
 
     test('should return newest/oldest model', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
 
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 2).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 1).timestamp));
@@ -93,7 +93,7 @@ void main() {
     });
 
     test('should create view and sort', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
@@ -118,7 +118,7 @@ void main() {
     });
 
     test('should create view and filter by date', () {
-      final modelList = ModelCacheTracker();
+      final modelList = ModelIndex();
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
@@ -148,7 +148,7 @@ void main() {
 
     test('should remove object before cutOffDate', () {
       String? removedId;
-      final modelList = ModelCacheTracker(onRemove: (id) => removedId = id);
+      final modelList = ModelIndex(onRemove: (id) => removedId = id);
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
@@ -165,7 +165,7 @@ void main() {
 
     test('should remove object ', () {
       String? removedId;
-      final modelList = ModelCacheTracker(onRemove: (id) => removedId = id);
+      final modelList = ModelIndex(onRemove: (id) => removedId = id);
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
@@ -173,6 +173,23 @@ void main() {
       modelList.remove('1');
       expect(modelList.length, 2);
       expect(removedId, '1');
+    });
+
+    test('should convert to json map ', () {
+      final modelList = ModelIndex();
+      modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
+      modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
+      modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
+      modelList.cutOffDate = DateTime(2023, 1, 2);
+
+      final jsonMap = modelList.writeToJsonMap();
+
+      final modelList2 = ModelIndex()..fromJsonMap(jsonMap);
+      expect(modelList2.length, 2);
+      expect(modelList2[0].t.toDateTime().year, 2023);
+      expect(modelList2[0].t.toDateTime().day, 3);
+      expect(modelList2[0].i, "3");
+      expect(modelList2.cutOffDate.day, 2);
     });
   });
 }
