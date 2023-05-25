@@ -84,11 +84,11 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// ```
   Future<void> delete(String key) async => await _box.delete(key);
 
-  /// reset everything in box
+  /// clear everything in box
   /// ```dart
-  /// await reset();
+  /// await clear();
   /// ```
-  Future<void> reset() async => await resetBox(_box);
+  Future<void> clear() async => await resetBox(_box);
 
   /// removeBox remove db box file
   /// ```dart

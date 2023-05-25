@@ -104,12 +104,12 @@ void main() {
       await indexedDbProvider.removeBox();
     });
 
-    test('should reset', () async {
+    test('should clear', () async {
       final indexedDbProvider = IndexedDbProvider(dbName: 'test_string_list');
       await indexedDbProvider.init();
       await indexedDbProvider.put('a', 'b');
       await indexedDbProvider.put('1', '2');
-      await indexedDbProvider.reset();
+      await indexedDbProvider.clear();
       expect(indexedDbProvider.containsKey('a'), false);
       expect(indexedDbProvider.containsKey('1'), false);
       await indexedDbProvider.removeBox();

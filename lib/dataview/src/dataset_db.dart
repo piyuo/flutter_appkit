@@ -135,7 +135,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   Future<void> reset() async {
     _index = [];
     internalNoRefresh = false;
-    await indexedDbProvider.reset();
+    await indexedDbProvider.clear();
   }
 
   /// range return sublist of rows, return null if something went wrong
