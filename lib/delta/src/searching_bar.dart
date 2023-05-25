@@ -4,8 +4,8 @@ import 'package:libcli/general/general.dart' as general;
 
 typedef SuggestionBuilder = Future<List<String>> Function(String text);
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({
+class SearchingBar extends StatelessWidget {
+  const SearchingBar({
     Key? key,
     required this.controller,
     this.suggestionBuilder,

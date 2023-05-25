@@ -1062,7 +1062,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                 onPressed: () {
                   focusNode1.unfocus();
                 }),
-            SearchBar(
+            SearchingBar(
               controller: controller1,
               focusNode: focusNode1,
               hint: 'please enter search text',
@@ -1084,12 +1084,12 @@ class _DeltaExampleState extends State<DeltaExample> {
               onSuggestionChanged: (text) => debugPrint('1. $text selected'),
               onTextChanged: (text) => debugPrint('1. text changed: $text'),
             ),
-            SearchBar(
+            SearchingBar(
               controller: TextEditingController(),
               onTextChanged: (text) => debugPrint('2.text changed: $text'),
             ),
             const Text('text not empty suggestion'),
-            SearchBar(
+            SearchingBar(
               controller: TextEditingController(),
               suggestionBuilder: (text) async {
                 if (text == '') {
@@ -1105,7 +1105,7 @@ class _DeltaExampleState extends State<DeltaExample> {
               onTextChanged: (text) => debugPrint('3.text changed: $text'),
             ),
             const Text('not dense'),
-            SearchBar(
+            SearchingBar(
               controller: TextEditingController(text: 'search now'),
               isDense: false,
             ),

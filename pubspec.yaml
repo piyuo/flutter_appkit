@@ -31,7 +31,7 @@ dependencies:
   dotted_decoration: ^2.0.0
   dotted_line: ^3.1.0
   mime: ^1.0.2
-  universal_html: 2.0.9
+  universal_html: ^2.2.2
   universal_platform: ^1.0.0+1
   universal_io: ^2.2.0
   shared_preferences: ^2.0.18
