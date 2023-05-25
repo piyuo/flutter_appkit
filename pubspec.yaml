@@ -90,6 +90,7 @@ dependencies:
   path_provider: ^2.0.11
   clock: ^1.1.1
   duration: ^3.0.12
+  csslib: ^0.17.0
 dev_dependencies:
   mockito: ^5.4.1
   flutter_lints: ^2.0.1
