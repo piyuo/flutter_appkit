@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,9 @@ import 'package:flutter/foundation.dart';
 typedef DesignBuilder = Widget Function();
 
 /// return screen size on phone/tablet or windows size on desktop
-Size get screenSize => window.physicalSize / window.devicePixelRatio;
+Size get screenSize =>
+    WidgetsBinding.instance.platformDispatcher.views.first.physicalSize /
+    WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
 /// phoneScreenMax is max width for phone screen
 const phoneScreenMax = 600.0;

@@ -39,7 +39,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _banner(context),
+            child: _showPopupSheet(context),
           ),
           Wrap(
             spacing: 10,
@@ -410,8 +410,8 @@ class DialogExample extends StatelessWidget {
                   child: const Text('Close'),
                   onPressed: () => Navigator.pop(context),
                 ))),
-            itemBuilder: (context, index) => Column(
-              children: const [
+            itemBuilder: (context, index) => const Column(
+              children: [
                 SizedBox(height: 180, child: Placeholder()),
                 SizedBox(height: 20),
                 Text('hello world'),

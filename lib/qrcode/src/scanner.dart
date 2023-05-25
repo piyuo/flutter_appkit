@@ -42,7 +42,7 @@ class Scanner extends StatelessWidget {
   Widget _noAccessToCamera(BuildContext context) {
     return Container(
       color: Colors.black,
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: const [
+      child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Icon(
           Icons.block,
           size: 72,

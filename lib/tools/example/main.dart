@@ -387,20 +387,20 @@ class _ToolsExampleState extends State<ToolsExample> {
     return ButtonPanel<String>(
       onPressed: (item) => debugPrint('$item pressed'),
       checkedValues: const ['1'],
-      children: {
-        '0': Row(children: const [
+      children: const {
+        '0': Row(children: [
           Expanded(
             child: Text('button', style: TextStyle(fontSize: 18)),
           ),
           Icon(Icons.add),
         ]),
-        '1': Row(children: const [
+        '1': Row(children: [
           Expanded(
             child: Text('button 1', style: TextStyle(fontSize: 18)),
           ),
           Icon(Icons.dark_mode),
         ]),
-        '2': Row(children: const [
+        '2': Row(children: [
           Expanded(
             child: Text('button 2', style: TextStyle(fontSize: 18)),
           ),

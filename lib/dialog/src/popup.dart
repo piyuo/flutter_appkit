@@ -1,6 +1,6 @@
 import 'dart:core';
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 
 /// getWidgetGlobalRect return widget global rect
 /// ```dart
@@ -57,7 +57,6 @@ class Popup {
     required Widget child,
     Rect? rect,
   }) {
-    final screenSize = window.physicalSize / window.devicePixelRatio;
     rect = rect ?? const Rect.fromLTWH(0, 0, 100, 100);
     double left = rect.left;
     double top = rect.top;
@@ -65,11 +64,11 @@ class Popup {
     double height = rect.height;
 
     int padding = 10;
-    if (left + width > screenSize.width - padding) {
-      width = screenSize.width - left - padding;
+    if (left + width > delta.screenSize.width - padding) {
+      width = delta.screenSize.width - left - padding;
     }
-    if (top + height > screenSize.height - padding) {
-      height = screenSize.height - top - padding;
+    if (top + height > delta.screenSize.height - padding) {
+      height = delta.screenSize.height - top - padding;
     }
     if (left < 0) {
       left = 0;

@@ -1,5 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'popup.dart';
 
 const arrowHeight = 12.0;
@@ -31,7 +31,6 @@ Popup showTooltip(
   required Size size, // size is child size
   required Rect targetRect,
 }) {
-  final screenSize = window.physicalSize / window.devicePixelRatio;
   bool triangleInBottom = false;
 
   double dx = targetRect.left + targetRect.width / 2.0 - size.width / 2.0;
@@ -39,8 +38,8 @@ Popup showTooltip(
     dx = 10.0;
   }
 
-  if (dx + size.width > screenSize.width && dx > 10.0) {
-    double tempDx = screenSize.width - size.width - 10;
+  if (dx + size.width > delta.screenSize.width && dx > 10.0) {
+    double tempDx = delta.screenSize.width - size.width - 10;
     if (tempDx > 10) dx = tempDx;
   }
 

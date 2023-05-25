@@ -922,8 +922,8 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _noData(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         NoDataDisplay(),
         Divider(),
         LoadingDisplay(),
@@ -932,8 +932,8 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _shimmer(BuildContext context) {
-    return ShimmerScope(
-        child: Wrap(spacing: 10, runSpacing: 10, children: const [
+    return const ShimmerScope(
+        child: Wrap(spacing: 10, runSpacing: 10, children: [
       SizedBox(width: 200, height: 100, child: Shimmer()),
       Shimmer(width: 120, height: 30, radius: 15),
       FittedBox(
@@ -946,8 +946,8 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _animatedBadge(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Padding(
           padding: EdgeInsets.all(20),
           child: Badge(
@@ -1005,8 +1005,8 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _countdown(BuildContext context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         CountUp(
           greenLight: 10,
           yellowLight: 20,
@@ -1236,7 +1236,7 @@ class _DeltaExampleState extends State<DeltaExample> {
   Widget _errorLabel(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(20),
-        child: Column(children: const [
+        child: const Column(children: [
           // Separator(height: 2, color: Colors.red.shade200),
           SizedBox(height: 30),
           ErrorLabel(
@@ -1250,7 +1250,7 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _statusLight(BuildContext context) {
-    return Row(children: const [
+    return const Row(children: [
       Expanded(
         child: StatusLight(status: LightStatus.green, tooltip: 'connected', label: 'connected'),
       ),

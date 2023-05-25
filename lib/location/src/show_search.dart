@@ -219,8 +219,8 @@ class ShowSearch extends StatelessWidget {
             //title: const delta.SearchingBar(),
             elevation: 0,
           ),
-          body: Column(
-            children: const <Widget>[
+          body: const Column(
+            children: <Widget>[
               Expanded(
                 child: SearchView(),
               ),
