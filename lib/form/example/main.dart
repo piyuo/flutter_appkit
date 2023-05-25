@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_touch_spin/reactive_touch_spin.dart';
+//import 'package:reactive_touch_spin/reactive_touch_spin.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
 import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:intl/intl.dart';
 import '../form.dart';
 
 main() => base.start(
@@ -375,7 +374,7 @@ class FormExample extends StatelessWidget {
               suffixIcon: Icon(Icons.calendar_month),
             ),
           ),
-          ReactiveTouchSpin<int>(
+/*          ReactiveTouchSpin<int>(
             formControlName: 'touchSpin',
             valueAccessor: NumValueAccessor(),
             displayFormat: NumberFormat()..minimumFractionDigits = 0,
@@ -388,7 +387,7 @@ class FormExample extends StatelessWidget {
               labelText: "Order quantity",
               helperText: '',
             ),
-          ),
+          ),*/
           const Divider(),
           br(),
           Calendar(
