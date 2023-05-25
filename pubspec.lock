@@ -705,10 +705,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "4c3f04bfb64d3efd508d06b41b825542f08122d30bda4933fb95c069d22a4fa3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.0.0"
   http_client_helper:
     dependency: "direct main"
     description:
@@ -1298,10 +1298,10 @@ packages:
     dependency: "direct main"
     description:
       name: shimmer
-      sha256: "1f1009b5845a1f88f1c5630212279540486f97409e9fc3f63883e71070d107bf"
+      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0"
   sign_button:
     dependency: "direct main"
     description:
@@ -1319,10 +1319,10 @@ packages:
     dependency: "direct main"
     description:
       name: slide_countdown
-      sha256: "875af3ece988a1131a43636e78912f856d516cf7fdda3db403e0d3749e4bed71"
+      sha256: "8f45cff7c07b3f11825f52edae71e984888ccba918cef74eb479abeaa4665106"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.0"
+    version: "0.6.0"
   smart_auth:
     dependency: transitive
     description:
