@@ -216,7 +216,7 @@ class ShowSearch extends StatelessWidget {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             titleSpacing: 0,
-            title: const SearchBar(),
+            //title: const delta.SearchingBar(),
             elevation: 0,
           ),
           body: Column(
