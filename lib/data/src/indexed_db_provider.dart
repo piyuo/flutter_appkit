@@ -65,6 +65,28 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// ```
   Future<T?> get<T>(String key) async => await _box.get(key);
 
+  // deepConvertMap convert the map to string key
+  Map<String, dynamic> deepConvertMap(Map<dynamic, dynamic> inputMap) {
+    Map<String, dynamic> newMap = {};
+    inputMap.forEach((key, value) {
+      if (key is String) {
+        if (value is Map<dynamic, dynamic>) {
+          newMap[key] = deepConvertMap(value);
+        } else {
+          newMap[key] = value;
+        }
+      } else {
+        String stringKey = key.toString();
+        if (value is Map<dynamic, dynamic>) {
+          newMap[stringKey] = deepConvertMap(value);
+        } else {
+          newMap[stringKey] = value;
+        }
+      }
+    });
+    return newMap;
+  }
+
   /// getJsonMap return the json map object associated with the given [key]
   /// ```dart
   /// final value = indexedDbProvider.getJsonMap('k');
@@ -74,7 +96,7 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
     if (value == null) {
       return null;
     }
-    return Map<String, dynamic>.from(value);
+    return deepConvertMap(value);
   }
 
   /// putObject save object to database
