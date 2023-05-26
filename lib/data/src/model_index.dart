@@ -125,8 +125,8 @@ class ModelIndex {
   }
 
   /// writeToJsonMap write ModelIndex to json map
-  Map<dynamic, dynamic> writeToJsonMap() {
-    final map = <dynamic, dynamic>{
+  Map<String, dynamic> writeToJsonMap() {
+    final map = <String, dynamic>{
       "0": _cutOffDate == null ? 0 : _cutOffDate!.microsecondsSinceEpoch,
       "1": lastRefreshDate == null ? 0 : lastRefreshDate!.microsecondsSinceEpoch,
       "2": _list.map((m) => m.writeToJsonMap()).toList(),
@@ -135,7 +135,7 @@ class ModelIndex {
   }
 
   /// fromString create ModelIndex from string
-  void fromJsonMap(Map<dynamic, dynamic> map) {
+  void fromJsonMap(Map<String, dynamic> map) {
     final v0 = map["0"];
     _cutOffDate = v0 == 0 ? null : DateTime.fromMicrosecondsSinceEpoch(v0);
     final v1 = map["1"];

@@ -65,6 +65,18 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// ```
   Future<T?> get<T>(String key) async => await _box.get(key);
 
+  /// getJsonMap return the json map object associated with the given [key]
+  /// ```dart
+  /// final value = indexedDbProvider.getJsonMap('k');
+  /// ```
+  Future<Map<String, dynamic>?> getJsonMap<T>(String key) async {
+    final value = await _box.get(key);
+    if (value == null) {
+      return null;
+    }
+    return Map<String, dynamic>.from(value);
+  }
+
   /// putObject save object to database
   /// ```dart
   /// await indexedDbProvider.putObject('k', person);

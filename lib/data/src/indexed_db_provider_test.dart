@@ -38,6 +38,18 @@ void main() {
       await indexedDbProvider.removeBox();
     });
 
+    test('should get json map', () async {
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_json_map');
+      await indexedDbProvider.init();
+      await indexedDbProvider.put('k', {
+        'a': 1,
+        'b': ['x', 'y']
+      });
+      final value = await indexedDbProvider.getJsonMap('k');
+      expect(value is Map<String, dynamic>, true);
+      await indexedDbProvider.removeBox();
+    });
+
     test('should set/get int', () async {
       final indexedDbProvider = IndexedDbProvider(dbName: 'test_int');
       await indexedDbProvider.init();

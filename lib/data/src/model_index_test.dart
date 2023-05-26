@@ -203,5 +203,15 @@ void main() {
       expect(modelList2.cutOffDate, isNull);
       expect(modelList2.lastRefreshDate, isNull);
     });
+
+    test('should allow cutOffDate null in json map ', () {
+      final modelList = ModelIndex();
+      modelList.cutOffDate = null;
+      modelList.lastRefreshDate = null;
+      final jsonMap = modelList.writeToJsonMap();
+      final modelList2 = ModelIndex()..fromJsonMap(jsonMap);
+      expect(modelList2.cutOffDate, isNull);
+      expect(modelList2.lastRefreshDate, isNull);
+    });
   });
 }
