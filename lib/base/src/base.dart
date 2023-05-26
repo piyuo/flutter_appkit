@@ -46,13 +46,15 @@ Future<void> start({
   ThemeData? theme,
   ThemeData? darkTheme,
 }) async {
-  WidgetsFlutterBinding.ensureInitialized();
+  //  WidgetsFlutterBinding.ensureInitialized(); no need to call this
   // init cache && db
   log.log('[app] $appName');
   _serviceEmail = serviceEmail;
-  //Provider.debugCheckInvalidValueType = null;
 
-  //routes
+  // make sure web use path url is not include #
+  if (kIsWeb) {
+    Beamer.setPathUrlStrategy();
+  }
   if (kIsWeb) {
     Beamer.setPathUrlStrategy();
   }
