@@ -1,3 +1,4 @@
+//import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/general/general.dart' as general;
@@ -65,25 +66,45 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
   /// ```
   Future<T?> get<T>(String key) async => await _box.get(key);
 
-  // deepConvertMap convert the map to string key
-  Map<String, dynamic> deepConvertMap(Map<dynamic, dynamic> inputMap) {
-    Map<String, dynamic> newMap = {};
-    inputMap.forEach((key, value) {
-      if (key is String) {
-        if (value is Map<dynamic, dynamic>) {
-          newMap[key] = deepConvertMap(value);
+  /// deppConvertMap convert map to json map
+  Map<String, dynamic> deppConvertMap(Map<dynamic, dynamic> inputMap) {
+    List<dynamic> convertList(List<dynamic> inputList) {
+      List<dynamic> newList = [];
+
+      for (dynamic item in inputList) {
+        if (item is Map<dynamic, dynamic>) {
+          newList.add(deppConvertMap(item));
+        } else if (item is List<dynamic>) {
+          newList.add(convertList(item));
         } else {
-          newMap[key] = value;
-        }
-      } else {
-        String stringKey = key.toString();
-        if (value is Map<dynamic, dynamic>) {
-          newMap[stringKey] = deepConvertMap(value);
-        } else {
-          newMap[stringKey] = value;
+          newList.add(item);
         }
       }
+
+      return newList;
+    }
+
+    dynamic convertValue(dynamic value) {
+      if (value is Map<dynamic, dynamic>) {
+        return deppConvertMap(value);
+      } else if (value is List<dynamic>) {
+        return convertList(value);
+      } else {
+        return value;
+      }
+    }
+
+    Map<String, dynamic> newMap = {};
+
+    inputMap.forEach((key, value) {
+      if (key is String) {
+        newMap[key] = convertValue(value);
+      } else {
+        String stringKey = key.toString();
+        newMap[stringKey] = convertValue(value);
+      }
     });
+
     return newMap;
   }
 
@@ -96,7 +117,9 @@ class IndexedDbProvider with ChangeNotifier, general.NeedInitializeMixin {
     if (value == null) {
       return null;
     }
-    return deepConvertMap(value);
+
+    //return jsonDecode(jsonEncode(value));
+    return deppConvertMap(value);
   }
 
   /// putObject save object to database

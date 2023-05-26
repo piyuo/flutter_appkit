@@ -29,7 +29,7 @@ void main() {
       await indexedDbProvider.init();
       await indexedDbProvider.put('k', {
         'a': 1,
-        'b': ['x', 'y']
+        'b': ['x', 'y'],
       });
       final value = await indexedDbProvider.get('k');
       expect(value!['a'], 1);
@@ -43,10 +43,16 @@ void main() {
       await indexedDbProvider.init();
       await indexedDbProvider.put('k', {
         'a': 1,
-        'b': ['x', 'y']
+        'b': ['x', 'y'],
+        'c': [
+          {'g': 'h'},
+          {'i': 'j'}
+        ]
       });
       final value = await indexedDbProvider.getJsonMap('k');
       expect(value is Map<String, dynamic>, true);
+      expect(value!['c'][0] is Map<String, dynamic>, true);
+      expect(value['c'][1] is Map<String, dynamic>, true);
       await indexedDbProvider.removeBox();
     });
 
