@@ -1,4 +1,4 @@
-import 'package:libcli/preferences/preferences.dart' as preferences;
+import 'package:libcli/log/log.dart' as log;
 
 /// kBranchMaster is The current tip-of-tree, absolute latest cutting edge build. Usually functional, though sometimes we accidentally break things
 const kBranchMaster = 'master';
@@ -16,29 +16,13 @@ const kBranchDebug = 'debug';
 const kBranchKey = '_branch';
 
 /// _branch keep current branch
-String? _branch;
+String _branch = kBranchStable;
 
-/// getBackendBranch used in command pattern, determine which branch to use, default is stable branch
-Future<String> getBackendBranch() async {
-  _branch ??= await preferences.getString(kBranchKey) ?? kBranchStable;
-  return _branch!;
-}
+/// backendBranch return backend branch
+String get backendBranch => _branch;
 
-/// getBackendBranchUrl return branch url
-Future<String> getBackendBranchUrl() async {
-  final branch = await getBackendBranch();
-  if (branch.isEmpty) {
-    return branch;
-  }
-  return '-$branch';
-}
-
-/// setBackendBranch set branch
-Future<void> setBackendBranch(String value) async {
+/// backendBranch set backend branch
+set backendBranch(String value) {
   _branch = value;
-  if (_branch == kBranchStable) {
-    preferences.remove(kBranchKey);
-    return;
-  }
-  preferences.setString(kBranchKey, _branch!);
+  log.log('[base] set branch: $_branch');
 }

@@ -7,33 +7,19 @@ import 'backend_branch.dart';
 void main() {
   preferences.initForTest({});
 
-  group('[app.backend_branch]', () {
+  group('[base.backend_branch]', () {
     test('should set/get backend branch', () async {
-      await setBackendBranch(kBranchStable);
-      final branch = await getBackendBranch();
+      backendBranch = kBranchStable;
+      final branch = backendBranch;
       expect(branch, kBranchStable);
 
-      await setBackendBranch(kBranchBeta);
-      final branch2 = await getBackendBranch();
+      backendBranch = kBranchBeta;
+      final branch2 = backendBranch;
       expect(branch2, kBranchBeta);
 
-      await setBackendBranch(kBranchStable);
-      final branch3 = await getBackendBranch();
+      backendBranch = kBranchStable;
+      final branch3 = backendBranch;
       expect(branch3, kBranchStable);
-    });
-
-    test('should set/get backend url', () async {
-      await setBackendBranch(kBranchStable);
-      final url = await getBackendBranchUrl();
-      expect(url, '');
-
-      await setBackendBranch(kBranchBeta);
-      final url2 = await getBackendBranchUrl();
-      expect(url2, '-beta');
-
-      await setBackendBranch(kBranchStable);
-      final url3 = await getBackendBranchUrl();
-      expect(url3, '');
     });
   });
 }
