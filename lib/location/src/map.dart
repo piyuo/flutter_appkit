@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_platform/universal_platform.dart';
 import 'map_google.dart';

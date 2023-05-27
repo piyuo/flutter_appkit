@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/sys/sys.dart' as sys;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'search_bar.dart';

@@ -1,5 +1,5 @@
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'dataset.dart';
 
 /// DataClientLoader load data from remote service

@@ -4,7 +4,7 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 
 /// LoginEvent is event when user login through UI
 class LoginEvent {}

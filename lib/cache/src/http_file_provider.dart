@@ -2,7 +2,7 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 
 /// HttpFileProvider is a class to get http file, it wall manage the cache for web and app
 /// the default timeout to get file is 30s

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:split_view/split_view.dart' as sv;
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 /// cupertinoBottomSheet wrap child so showSheet can work normally

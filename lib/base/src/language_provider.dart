@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as storage;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 
 /// _kPreferredLocaleKey is preferred locale key in storage
 const _kPreferredLocaleKey = 'locale';

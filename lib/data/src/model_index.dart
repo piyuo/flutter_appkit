@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/utils/utils.dart' as general;
 
 /// ModelIndex is a tracker for model cache, it provide cutOffDate and view to help use local cache model
 class ModelIndex {
@@ -146,4 +147,28 @@ class ModelIndex {
       _list.add(pb.Model()..mergeFromJsonMap(item));
     }
   }
+
+  /// getNeedUpdateRange return date range that need to update
+  /*general.DateRange? getNeedUpdateRange(general.DateRange want) {
+    final from = want.from;
+    final to = want.to;
+    final view = createView(from: from, to: to, sortDesc: true, skipDeleted: true);
+    if (view.isEmpty) {
+      return want;
+    }
+    final oldest = view.first;
+    final newest = view.last;
+    final fromNeedUpdate = from == null || oldest.t.toDateTime().isBefore(from);
+    final toNeedUpdate = to == null || newest.t.toDateTime().isAfter(to);
+    if (fromNeedUpdate && toNeedUpdate) {
+      return want;
+    }
+    if (fromNeedUpdate) {
+      return general.DateRange(from: oldest.t.toDateTime(), to: to);
+    }
+    if (toNeedUpdate) {
+      return general.DateRange(from: from, to: newest.t.toDateTime());
+    }
+    return want;
+  }*/
 }

@@ -1,6 +1,6 @@
-library general;
+library utils;
 
-export 'src/general.dart';
+export 'src/types.dart';
 export 'src/place.dart';
 export 'src/latlng.dart';
 export 'src/bool_provider.dart';

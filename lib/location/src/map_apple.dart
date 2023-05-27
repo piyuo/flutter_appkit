@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/generator/generator.dart' as generator;
 import 'map.dart';
 

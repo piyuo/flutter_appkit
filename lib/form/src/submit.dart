@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:reactive_forms/reactive_forms.dart';

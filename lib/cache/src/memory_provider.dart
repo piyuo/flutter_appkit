@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/data/data.dart' as data;
 import 'package:hive/hive.dart';

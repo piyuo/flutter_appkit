@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialog/dialog.dart' as dialog;

@@ -9,7 +9,7 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/command/command.dart' as command;
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/log/log.dart' as log;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';

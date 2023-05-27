@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:libcli/general/general.dart' as general;
+import 'package:libcli/utils/utils.dart' as general;
 import 'package:libcli/permission/permission.dart' as permission;
 import 'package:libcli/log/log.dart' as log;
 
