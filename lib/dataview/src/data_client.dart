@@ -1,5 +1,5 @@
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'dataset.dart';
 
 /// DataClientLoader load data from remote service
@@ -36,7 +36,7 @@ class DataClient<T extends pb.Object> {
   late Dataset<T> dataset;
 
   /// creator create new row
-  final general.FutureCallback<T> creator;
+  final utils.FutureCallback<T> creator;
 
   /// loader get data from remote service
   final DataClientLoader<T> loader;

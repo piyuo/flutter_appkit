@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/generator/generator.dart' as generator;
 import 'map.dart';
 
@@ -13,7 +13,7 @@ class GoogleImpl extends MapProviderImpl {
   final Set<Marker> _markers = {};
 
   @override
-  Future<void> setValue(general.LatLng latlng, bool showMarker) async {
+  Future<void> setValue(utils.LatLng latlng, bool showMarker) async {
     await super.setValue(latlng, showMarker);
     resetMarker();
 

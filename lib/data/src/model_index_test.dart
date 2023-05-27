@@ -148,7 +148,7 @@ void main() {
 
     test('should remove object before cutOffDate', () {
       String? removedId;
-      final modelList = ModelIndex(onRemove: (id) => removedId = id);
+      final modelList = ModelIndex(onRemove: (id) async => removedId = id);
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
@@ -165,7 +165,7 @@ void main() {
 
     test('should remove object ', () {
       String? removedId;
-      final modelList = ModelIndex(onRemove: (id) => removedId = id);
+      final modelList = ModelIndex(onRemove: (id) async => removedId = id);
       modelList.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       modelList.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       modelList.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));

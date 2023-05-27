@@ -9,7 +9,7 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/command/command.dart' as command;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/log/log.dart' as log;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
@@ -360,7 +360,7 @@ class AppExampleState extends State<AppExample> {
           return LoadingScreen(
             future: () async {
               await Future.delayed(const Duration(seconds: 1));
-              throw const general.TryAgainLaterException('error'); //TimeoutException('error');
+              throw const utils.TryAgainLaterException('error'); //TimeoutException('error');
             },
             builder: () => Container(width: 100, height: 100, color: Colors.red),
           );

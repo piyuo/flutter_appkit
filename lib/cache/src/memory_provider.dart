@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/data/data.dart' as data;
 import 'package:hive/hive.dart';
@@ -11,7 +11,7 @@ import 'package:hive/hive.dart';
 int _cleanupMaxItem = kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
 /// MemoryProvider provide cache memory
-class MemoryProvider with ChangeNotifier, general.NeedInitializeMixin {
+class MemoryProvider with ChangeNotifier, utils.NeedInitializeMixin {
   MemoryProvider({
     String cacheDBName = 'cache',
     String timeDBName = 'time',

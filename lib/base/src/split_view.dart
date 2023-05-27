@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:split_view/split_view.dart' as sv;
 
 /// SplitViewProvider is A provider that provides the [SplitView] with the ability to save and load side weight
-class SplitViewProvider with ChangeNotifier, general.NeedInitializeMixin {
+class SplitViewProvider with ChangeNotifier, utils.NeedInitializeMixin {
   SplitViewProvider({
     required this.key,
   }) {
@@ -23,7 +23,7 @@ class SplitViewProvider with ChangeNotifier, general.NeedInitializeMixin {
   Map<String, dynamic> weights = {};
 
   /// delayRun used to delay set weights
-  general.DelayedRun delayRun = general.DelayedRun();
+  utils.DelayedRun delayRun = utils.DelayedRun();
 
   /// set weights to [SplitViewProvider]
   void set(String viewKey, double value) {

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:split_view/split_view.dart';
 import 'selectable.dart';
 import 'dynamic_list.dart';
@@ -85,31 +85,31 @@ class GridListView<T> extends StatelessWidget {
   final Widget Function() contentBuilder;
 
   /// headerBuilder is the builder for header
-  final general.WidgetBuilder? headerBuilder;
+  final utils.WidgetBuilder? headerBuilder;
 
   /// footerBuilder is the builder for footer
-  final general.WidgetBuilder? footerBuilder;
+  final utils.WidgetBuilder? footerBuilder;
 
   /// selectionBarBuilder build selection on bar
-  final general.WidgetBuilder? selectionBarBuilder;
+  final utils.WidgetBuilder? selectionBarBuilder;
 
   /// leftBarBuilder build left part on bar
-  final general.WidgetBuilder? leftBarBuilder;
+  final utils.WidgetBuilder? leftBarBuilder;
 
   /// rightBarBuilder build right part on bar
-  final general.WidgetBuilder? rightBarBuilder;
+  final utils.WidgetBuilder? rightBarBuilder;
 
   /// touchBottomBarBuilder build bottom bar on touch mode
-  final general.WidgetBuilder? touchBottomBarBuilder;
+  final utils.WidgetBuilder? touchBottomBarBuilder;
 
   /// mouseBottomBarBuilder build bottom bar on mouse mode
-  final general.WidgetBuilder? mouseBottomBarBuilder;
+  final utils.WidgetBuilder? mouseBottomBarBuilder;
 
   /// onRefresh called when user pull down refresh
-  final general.FutureCallback<void>? onRefresh;
+  final utils.FutureCallback<void>? onRefresh;
 
   /// onMore called when user pull up to load more data
-  final general.FutureCallback<void>? onMore;
+  final utils.FutureCallback<void>? onMore;
 
   /// onItemTapped is callback when item is tapped
   final void Function(T item)? onItemTapped;

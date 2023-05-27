@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialog/dialog.dart' as dialog;
@@ -20,7 +20,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   NoteFormController({
     required this.formGroup,
     required this.formBuilder,
-    required general.FutureCallback<T> creator,
+    required utils.FutureCallback<T> creator,
     required dataview.DataClientLoader<T> loader,
     required dataview.DataClientSaver<T> saver,
     this.formLoader,

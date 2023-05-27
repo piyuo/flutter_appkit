@@ -46,11 +46,4 @@ class DateRange {
     }
     return ranges;
   }
-
-  /// pushLimit push fromDate to min time and toDate to max time
-  void pushLimit() {
-    fromDate = fromDate.copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
-    toDate =
-        toDate.copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0).add(const Duration(days: 1));
-  }
 }

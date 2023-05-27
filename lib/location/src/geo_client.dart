@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:libcli/sys/sys.dart' as sys;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 
 /// GeoClient use sys service to get geographic information
 class GeoClient {
@@ -14,7 +14,7 @@ class GeoClient {
   ///
   ///     final suggestions = await geoClient.autoComplete(ctx, '165', general.LatLng(33.7338518, -117.7403496));
   ///
-  Future<List<sys.GeoSuggestion>> autoComplete(BuildContext ctx, String input, general.LatLng l) async {
+  Future<List<sys.GeoSuggestion>> autoComplete(BuildContext ctx, String input, utils.LatLng l) async {
     var response = await sysService.send(
       sys.CmdAutoComplete(
         sessionToken: sessionToken,
@@ -55,7 +55,7 @@ class GeoClient {
   ///
   ///     final locations = await geoClient.reverseGeocoding(testing.Context(), general.LatLng(33.7338518, -117.7403496));
   ///
-  Future<List<sys.GeoLocation>> reverseGeocoding(BuildContext ctx, general.LatLng l) async {
+  Future<List<sys.GeoLocation>> reverseGeocoding(BuildContext ctx, utils.LatLng l) async {
     var response = await sysService.send(
       sys.CmdReverseGeocoding(
         lat: l.lat,

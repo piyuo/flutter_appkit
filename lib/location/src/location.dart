@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/permission/permission.dart' as permission;
 import 'package:libcli/log/log.dart' as log;
 
@@ -9,24 +9,24 @@ import 'package:libcli/log/log.dart' as log;
 /// ```dart
 /// final latLng = await getCurrentLocation('to show you nearby places');
 /// ```
-Future<general.LatLng?> getCurrentLocation(String reason) async {
+Future<utils.LatLng?> getCurrentLocation(String reason) async {
   if (await permission.getLocationPermission(reason)) {
     try {
       Position locationData = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
       debugPrint('lat: ${locationData.latitude}, lng: ${locationData.longitude}');
-      return general.LatLng(locationData.latitude, locationData.longitude);
+      return utils.LatLng(locationData.latitude, locationData.longitude);
     } catch (e, s) {
       log.error(e, s);
     }
-    return general.LatLng.empty;
+    return utils.LatLng.empty;
   }
   debugPrint('user not allow location permission');
   return null;
 }
 
 /// getDistanceBetweenInMeters return distance in meters between two latLng
-double getDistanceBetweenInMeters(general.LatLng latLng1, general.LatLng latLng2) {
+double getDistanceBetweenInMeters(utils.LatLng latLng1, utils.LatLng latLng2) {
   return Geolocator.distanceBetween(latLng1.lat, latLng1.lng, latLng2.lat, latLng2.lng);
 }

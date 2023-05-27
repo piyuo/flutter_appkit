@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as storage;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 
 /// _kPreferredLocaleKey is preferred locale key in storage
 const _kPreferredLocaleKey = 'locale';
 
 /// LanguageProvider provide a way to change locale
-class LanguageProvider with ChangeNotifier, general.NeedInitializeMixin {
+class LanguageProvider with ChangeNotifier, utils.NeedInitializeMixin {
   LanguageProvider(this._locales);
 
   /// initWithPreferredLocale init with preferred locale

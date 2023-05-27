@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/assets/assets.dart' as asset;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'loading_screen.dart';
@@ -84,7 +84,7 @@ class Url extends Link {
             if (!openUrl.startsWith('http')) {
               openUrl = 'http://$openUrl';
             }
-            general.openUrl(openUrl);
+            utils.openUrl(openUrl);
           },
         );
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/sys/sys.dart' as sys;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'search_bar.dart';
@@ -11,18 +11,18 @@ import 'location.dart';
 import 'map.dart' as map;
 
 /// ConfirmButtonProvider control confirm button is visibility
-class ConfirmButtonProvider extends general.BoolProvider {
+class ConfirmButtonProvider extends utils.BoolProvider {
   bool get visible => boolValue;
 }
 
 /// MyLocationButtonProvider control my location button visibility
-class MyLocationButtonProvider extends general.BoolProvider {
+class MyLocationButtonProvider extends utils.BoolProvider {
   bool get visible => boolValue;
 }
 
 /// MyLocationButtonProvider control my location button visibility
 class ShowSearchProvider with ChangeNotifier {
-  ShowSearchProvider(BuildContext context, general.Place place) {
+  ShowSearchProvider(BuildContext context, utils.Place place) {
     _confirmButtonProvider = ConfirmButtonProvider();
     _myLocationButtonProvider = MyLocationButtonProvider();
     _barProvider = SearchBarProvider(
@@ -148,7 +148,7 @@ class ShowSearchProvider with ChangeNotifier {
   sys.GeoLocation? _selectedLocation;
 
   // deviceLatLng will be set if user allow get device latlng, otherwise it will be empty
-  var _deviceLatLng = general.LatLng.empty;
+  var _deviceLatLng = utils.LatLng.empty;
 
   // _stopDeviceLatlng prevent get deviceLatlng handling after dispose
   var _stopDeviceLatlng = false;
@@ -158,7 +158,7 @@ class ShowSearchProvider with ChangeNotifier {
     _stopDeviceLatlng = true;
     _selectedLocation = loc;
     _mapProvider.setValue(
-        general.LatLng(
+        utils.LatLng(
           _selectedLocation!.lat,
           _selectedLocation!.lng,
         ),
@@ -170,9 +170,9 @@ class ShowSearchProvider with ChangeNotifier {
     if (_selectedLocation == null) {
       return;
     }
-    Navigator.of(context).pop(general.Place(
+    Navigator.of(context).pop(utils.Place(
       address: _selectedLocation!.address,
-      latlng: general.LatLng(
+      latlng: utils.LatLng(
         _selectedLocation!.lat,
         _selectedLocation!.lng,
       ),

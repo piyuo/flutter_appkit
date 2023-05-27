@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 /// cupertinoBottomSheet wrap child so showSheet can work normally
@@ -24,11 +24,11 @@ Widget cupertinoBottomSheet(Widget child) {
 Future<T?> showPopup<T>(
   BuildContext context, {
   int itemCount = 1,
-  required general.WidgetContextIndexBuilder itemBuilder,
-  general.WidgetContextBuilder? closeButtonBuilder,
-  general.WidgetContextBuilder? topBuilder,
-  general.WidgetContextBuilder? bottomBuilder,
-  general.WidgetContextWrapper? wrapper,
+  required utils.WidgetContextIndexBuilder itemBuilder,
+  utils.WidgetContextBuilder? closeButtonBuilder,
+  utils.WidgetContextBuilder? topBuilder,
+  utils.WidgetContextBuilder? bottomBuilder,
+  utils.WidgetContextWrapper? wrapper,
   double? maxWidth,
   double? maxHeight,
   double? heightFactor,
@@ -83,11 +83,11 @@ Future<T?> showPopup<T>(
 Future<T?> showSheet<T>(
   BuildContext context, {
   int itemCount = 1,
-  required general.WidgetContextIndexBuilder itemBuilder,
-  general.WidgetContextBuilder? closeButtonBuilder,
-  general.WidgetContextBuilder? topBuilder,
-  general.WidgetContextBuilder? bottomBuilder,
-  general.WidgetContextWrapper? wrapper,
+  required utils.WidgetContextIndexBuilder itemBuilder,
+  utils.WidgetContextBuilder? closeButtonBuilder,
+  utils.WidgetContextBuilder? topBuilder,
+  utils.WidgetContextBuilder? bottomBuilder,
+  utils.WidgetContextWrapper? wrapper,
   double? maxWidth,
   double? maxHeight,
   double? heightFactor,
@@ -155,11 +155,11 @@ Future<T?> showSheet<T>(
 Widget _buildDialogWithContent(
   BuildContext context, {
   int itemCount = 1,
-  required general.WidgetContextIndexBuilder itemBuilder,
-  general.WidgetContextBuilder? closeButtonBuilder,
-  general.WidgetContextBuilder? topBuilder,
-  general.WidgetContextBuilder? bottomBuilder,
-  general.WidgetContextWrapper? wrapper,
+  required utils.WidgetContextIndexBuilder itemBuilder,
+  utils.WidgetContextBuilder? closeButtonBuilder,
+  utils.WidgetContextBuilder? topBuilder,
+  utils.WidgetContextBuilder? bottomBuilder,
+  utils.WidgetContextWrapper? wrapper,
   double? borderRadius,
   EdgeInsetsGeometry padding = EdgeInsets.zero,
   ScrollController? controller,

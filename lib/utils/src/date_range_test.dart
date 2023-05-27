@@ -118,13 +118,16 @@ void main() {
       expect(difference1.toDate, DateTime(2023, 1, 31, 23, 59, 59));
     });
 
-    test('pushLimit should update fromDate and toDate correctly', () {
-      final range = DateRange(fromDate: DateTime(2023, 1, 1, 10, 30), toDate: DateTime(2023, 1, 2, 15, 45));
+    test('difference should return the correct difference when has older to date', () {
+      final range1 = DateRange(fromDate: DateTime(2023, 1, 15), toDate: DateTime(2023, 1, 31, 23, 59, 59));
+      final range2 = DateRange(fromDate: DateTime(2023, 1, 15), toDate: DateTime(2023, 1, 31));
 
-      range.pushLimit();
+      final difference = range1.difference(range2);
+      expect(difference.length, 1);
 
-      expect(range.fromDate, DateTime(2023, 1, 1, 0, 0, 0, 0));
-      expect(range.toDate, DateTime(2023, 1, 3, 0, 0, 0, 0));
+      final difference1 = difference[0];
+      expect(difference1.fromDate, DateTime(2023, 1, 31));
+      expect(difference1.toDate, DateTime(2023, 1, 31, 23, 59, 59));
     });
   });
 }

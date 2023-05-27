@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/utils/utils.dart' as general;
 
 /// ModelIndex is a tracker for model cache, it provide cutOffDate and view to help use local cache model
 class ModelIndex {
@@ -18,7 +17,7 @@ class ModelIndex {
   DateTime? lastRefreshDate;
 
   /// onRemove is the callback when model is removed
-  final void Function(String id)? onRemove;
+  final Future<void> Function(String id)? onRemove;
 
   /// cutOffDate is the date that all model before this date will be removed
   DateTime? get cutOffDate => _cutOffDate;
@@ -146,6 +145,20 @@ class ModelIndex {
     for (final item in v2) {
       _list.add(pb.Model()..mergeFromJsonMap(item));
     }
+  }
+
+  /// clearExpiredModel remove all model before cutOffDate
+  void clearExpiredModel(DateTime expiredDate) {
+    if (_cutOffDate != null && _cutOffDate!.isBefore(expiredDate)) {
+      _cutOffDate = expiredDate;
+    }
+    _list.removeWhere((obj) {
+      final deleted = obj.t.toDateTime().isBefore(expiredDate);
+      if (deleted) {
+        onRemove?.call(obj.i);
+      }
+      return deleted;
+    });
   }
 
   /// getNeedUpdateRange return date range that need to update

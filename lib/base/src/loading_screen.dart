@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'error_screen.dart';
 
@@ -32,7 +32,7 @@ class _LoadingScreenProvider with ChangeNotifier {
 
   /// isNetworkError is true if error is network error or retry error
   bool isNetworkError(e) {
-    return e is SocketException || e is TimeoutException || e is general.TryAgainLaterException;
+    return e is SocketException || e is TimeoutException || e is utils.TryAgainLaterException;
   }
 
   /// load run future and update status

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/utils/utils.dart' as general;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/form/form.dart' as form;
@@ -19,10 +19,10 @@ final countryItems = {
 };
 
 final formGroup = fb.group({
-  'address': FormControl<general.Place>(
-      value: general.Place(
+  'address': FormControl<utils.Place>(
+      value: utils.Place(
     address: '2141 spectrum, irvine, CA 92618',
-    latlng: general.LatLng(33.65352503793474, -117.75017169525502),
+    latlng: utils.LatLng(33.65352503793474, -117.75017169525502),
     tags: ['spectrum', 'irvine', 'CA'],
     country: 'US',
   )),
@@ -112,7 +112,7 @@ class LocationExample extends StatelessWidget {
           suggestionsBuilder: (TextEditingValue value) {
             return ['aa', 'bb', 'cc'];
           },
-          onUseMyLocation: (general.LatLng value) {
+          onUseMyLocation: (utils.LatLng value) {
             debugPrint('lat:${value.lat}, lng:${value.lng}');
           },
           onSubmitted: (String text) {
@@ -149,7 +149,7 @@ class LocationExample extends StatelessWidget {
                     OpenInMap(
                       label: 'open in external map',
                       address: '成都市锦江区人民南路二段80号 邮政编码: 610012',
-                      latlng: general.LatLng(104.06534639982326, 30.648558245938407),
+                      latlng: utils.LatLng(104.06534639982326, 30.648558245938407),
                     ),
                     form.p(),
                     form.Submit(
