@@ -26,3 +26,11 @@ set backendBranch(String value) {
   _branch = value;
   log.log('[base] set branch: $_branch');
 }
+
+/// backendBranchUrl return backend branch url
+String get backendBranchUrl {
+  if (_branch.isEmpty) {
+    return _branch;
+  }
+  return '-$_branch';
+}
