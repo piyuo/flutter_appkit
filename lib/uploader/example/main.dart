@@ -9,7 +9,6 @@ import '../uploader.dart';
 main() => base.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
-      appName: 'uploader example',
       routesBuilder: () => {
         '/': (context, state, data) => const UploaderExample(),
       },

@@ -12,7 +12,6 @@ import '../form.dart';
 main() => base.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
-      appName: 'form example',
       routesBuilder: () => {
         '/': (context, state, data) => const FormExample(),
       },
@@ -374,7 +373,7 @@ class FormExample extends StatelessWidget {
               suffixIcon: Icon(Icons.calendar_month),
             ),
           ),
-/*          ReactiveTouchSpin<int>(
+          /*ReactiveTouchSpin<int>(
             formControlName: 'touchSpin',
             valueAccessor: NumValueAccessor(),
             displayFormat: NumberFormat()..minimumFractionDigits = 0,

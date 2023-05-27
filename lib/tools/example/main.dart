@@ -11,7 +11,6 @@ enum SampleFilter { inbox, vip, sent, all }
 
 main() {
   base.start(
-    appName: 'tools example',
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     routesBuilder: () => {

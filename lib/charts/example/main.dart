@@ -6,7 +6,6 @@ import 'package:libcli/base/base.dart' as base;
 import '../charts.dart';
 
 main() => base.start(
-      appName: 'charts example',
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
       routesBuilder: () => {

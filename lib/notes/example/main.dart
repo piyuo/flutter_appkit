@@ -146,7 +146,6 @@ main() {
   base.start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
-    appName: 'notes example',
     routesBuilder: () => {
       '/': (context, state, _) => dialog.cupertinoBottomSheet(const NotesExample()),
       '/:id': (context, state, _) {

@@ -8,7 +8,6 @@ import '../src/image_editor.dart';
 import '../src/image_editor_dialog.dart';
 
 main() => base.start(
-      appName: 'editor example',
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
       routesBuilder: () => {

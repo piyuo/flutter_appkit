@@ -14,11 +14,10 @@ main() {
   );
 
   base.start(
-    appName: 'login example',
     routesBuilder: () => {
       '/': (context, _, __) => const LayoutExample(),
     },
-    dependencyBuilder: () async => [
+    dependencyBuilder: () => [
       ChangeNotifierProvider<base.SessionProvider>.value(
         value: sessionProvider,
       ),

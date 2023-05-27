@@ -11,7 +11,6 @@ import '../dialog.dart';
 main() => base.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
-      appName: 'dialog example',
       routesBuilder: () => {
         '/': (context, _, __) => cupertinoBottomSheet(const DialogExample()),
       },

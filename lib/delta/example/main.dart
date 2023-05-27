@@ -69,7 +69,6 @@ main() {
   );
 
   base.start(
-    appName: 'delta example',
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     routesBuilder: () => {

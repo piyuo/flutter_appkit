@@ -7,7 +7,6 @@ import 'package:libcli/testing/testing.dart' as testing;
 import '../qrcode.dart';
 
 main() => base.start(
-      appName: 'qrcode example',
       routesBuilder: () => {
         '/': (context, state, data) => const QRCodeExample(),
       },
