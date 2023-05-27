@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/log/log.dart' as log;
 import 'package:beamer/beamer.dart';
 import 'package:universal_html/html.dart' as html;
 import 'error.dart';
@@ -36,10 +35,9 @@ typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, O
 ///   );
 /// ```
 Future<void> start({
-  required String appName,
-  String initialRoute = '/',
   required RoutesBuilder routesBuilder,
-  Future<List<SingleChildWidget>> Function()? dependencyBuilder,
+  String initialRoute = '/',
+  List<SingleChildWidget> Function()? dependencyBuilder,
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String serviceEmail = 'support@piyuo.com',
@@ -48,13 +46,9 @@ Future<void> start({
 }) async {
   //  WidgetsFlutterBinding.ensureInitialized(); no need to call this
   // init cache && db
-  log.log('[app] $appName');
   _serviceEmail = serviceEmail;
 
   // make sure web use path url is not include #
-  if (kIsWeb) {
-    Beamer.setPathUrlStrategy();
-  }
   if (kIsWeb) {
     Beamer.setPathUrlStrategy();
   }
@@ -65,8 +59,6 @@ Future<void> start({
     locationBuilder: RoutesLocationBuilder(routes: routesBuilder()),
   );
 
-  // build app provider
-  final providers = dependencyBuilder == null ? <SingleChildWidget>[] : await dependencyBuilder();
   // run app
   return watch(() => runApp(LifecycleWatcher(
         child: MultiProvider(
@@ -74,7 +66,7 @@ Future<void> start({
             ChangeNotifierProvider<LanguageProvider>(
               create: (context) => LanguageProvider(supportedLocales.toList()),
             ),
-            ...providers,
+            if (dependencyBuilder != null) ...dependencyBuilder()
           ],
           child: Consumer<LanguageProvider>(
             builder: (context, languageProvider, child) {

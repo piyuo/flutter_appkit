@@ -17,8 +17,6 @@ import '../base.dart';
 
 main() async {
   await start(
-    appName: 'app example',
-    dependencyBuilder: () async => const [],
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     supportedLocales: const [
