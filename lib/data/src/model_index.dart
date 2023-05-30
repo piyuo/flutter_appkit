@@ -5,58 +5,69 @@ import 'package:libcli/pb/pb.dart' as pb;
 class ModelIndex {
   ModelIndex({
     this.onRemove,
+    this.rowsPerPage = 20,
   });
 
   /// _list keep all model
   final _list = <pb.Model>[];
 
-  /// cutOffDate is the date that all model before this date will be removed
-  DateTime? _cutOffDate;
+  /// _noOldData is true mean no old data in remote
+  bool noOldData = false;
 
-  /// lastRefreshDate is the last refresh date
-  DateTime? lastRefreshDate;
+  /// rowsPerPage use to decide list can break into how many pages
+  final int rowsPerPage;
+
+  bool get isEmpty => _list.isEmpty;
+
+  bool get isNotEmpty => _list.isNotEmpty;
+
+  bool hasNextPage(int pageIndex) => (pageIndex < totalPages - 1) || noOldData == false;
+
+  bool isMoreDataToLoad(int pageIndex) => pageIndex >= totalPages - 1 && noOldData == false;
+
+  void reset() {
+    _list.clear();
+    noOldData = false;
+  }
 
   /// onRemove is the callback when model is removed
   final Future<void> Function(String id)? onRemove;
 
-  /// cutOffDate is the date that all model before this date will be removed
-  DateTime? get cutOffDate => _cutOffDate;
+  /// totalPages return total pages
+  int get totalPages => (_list.length / rowsPerPage).ceil();
 
-  /// cutOffDate is the date that all model before this date will be removed
-  set cutOffDate(DateTime? date) {
-    _cutOffDate = date;
-    if (_cutOffDate != null) {
-      _list.removeWhere((obj) {
-        final deleted = obj.t.toDateTime().isBefore(_cutOffDate!);
-        if (deleted) {
-          onRemove?.call(obj.i);
-        }
-        return deleted;
-      });
+  /// cutOff remove all model before expired date
+  Future<void> cutOff(DateTime expiredDate) async {
+    List<String> needRemove = [];
+    _list.removeWhere((obj) {
+      final deleted = obj.t.toDateTime().isBefore(expiredDate);
+      if (deleted) {
+        needRemove.add(obj.i);
+      }
+      return deleted;
+    });
+    if (needRemove.isNotEmpty) {
+      noOldData = false;
+    }
+    for (final id in needRemove) {
+      await onRemove?.call(id);
     }
   }
 
-  /// remove exists model
-  void remove(String id) {
+  /// _remove remove old exists model
+  Future<void> _remove(String id) async {
     _list.removeWhere((obj) => obj.i == id);
-    onRemove?.call(id);
-  }
-
-  /// removeAll remove all model to list
-  void removeAll(List<pb.Model> models) {
-    for (final model in models) {
-      remove(model.i);
-    }
+    await onRemove?.call(id);
   }
 
   /// add model to list, return true if it can be add
-  bool add(pb.Model model) {
+  Future<bool> add(pb.Model model) async {
     final exists = where(model.i);
     if (exists != null) {
       if (exists.t.toDateTime().isAfter(model.t.toDateTime())) {
         return false;
       }
-      remove(model.i); // remove old model if exists. new model may have new t
+      await _remove(model.i); // remove old model if exists. new model may have new t
     }
     _list.add(model);
     return true;
@@ -89,47 +100,65 @@ class ModelIndex {
   /// [] override
   pb.Model operator [](int index) => _list[index];
 
-  /// newest model
-  pb.Model get newest {
+  /// newest model id
+  pb.Model? get newest {
     sort();
-    return _list.last;
+    return _list.isEmpty ? null : _list.last;
   }
 
-  /// oldest model
-  pb.Model get oldest {
+  /// oldest model id
+  pb.Model? get oldest {
     sort();
-    return _list.first;
+    return _list.isEmpty ? null : _list.first;
   }
 
-  /// createView create a view of model list
-  Iterable<pb.Model> createView({
+  /// oldest model date
+  DateTime? get oldestDate {
+    sort();
+    return _list.isEmpty ? null : _list.first.t.toDateTime();
+  }
+
+  /// isOldDataAvailable return true if it may have old data in remote
+  bool isOldDataAvailable(DateTime want) {
+    if (noOldData) {
+      return false;
+    }
+    final date = oldestDate;
+    return date != null && (date.isAtSameMomentAs(want) || date.isAfter(want));
+  }
+
+  /// filter a subset of model base on filter condition
+  Iterable<pb.Model> filter({
+    bool sortDesc = true,
     DateTime? from,
     DateTime? to,
-    bool sortDesc = true,
     bool skipDeleted = true,
+    int pageIndex = 0,
   }) {
     sort(desc: sortDesc);
-    return _list.where((obj) {
-      if (skipDeleted && obj.d) {
-        return false;
-      }
+    return _list
+        .where((obj) {
+          if (skipDeleted && obj.d) {
+            return false;
+          }
 
-      if (from != null && obj.t.toDateTime().isBefore(from)) {
-        return false;
-      }
-      if (to != null && obj.t.toDateTime().isAfter(to)) {
-        return false;
-      }
-      return true;
-    });
+          if (from != null && obj.t.toDateTime().isBefore(from)) {
+            return false;
+          }
+          if (to != null && obj.t.toDateTime().isAfter(to)) {
+            return false;
+          }
+          return true;
+        })
+        .skip(pageIndex * rowsPerPage)
+        .take(rowsPerPage);
   }
 
   /// writeToJsonMap write ModelIndex to json map
   Map<String, dynamic> writeToJsonMap() {
     final map = <String, dynamic>{
-      "0": _cutOffDate == null ? 0 : _cutOffDate!.microsecondsSinceEpoch,
-      "1": lastRefreshDate == null ? 0 : lastRefreshDate!.microsecondsSinceEpoch,
-      "2": _list.map((m) => m.writeToJsonMap()).toList(),
+      "0": _list.map((m) => m.writeToJsonMap()).toList(),
+      "1": noOldData,
     };
     return map;
   }
@@ -137,51 +166,11 @@ class ModelIndex {
   /// fromString create ModelIndex from string
   void fromJsonMap(Map<String, dynamic> map) {
     final v0 = map["0"];
-    _cutOffDate = v0 == 0 ? null : DateTime.fromMicrosecondsSinceEpoch(v0);
-    final v1 = map["1"];
-    lastRefreshDate = v1 == 0 ? null : DateTime.fromMicrosecondsSinceEpoch(v1);
-    final v2 = map["2"];
     _list.clear();
-    for (final item in v2) {
+    for (final item in v0) {
       _list.add(pb.Model()..mergeFromJsonMap(item));
     }
+    final v1 = map["1"];
+    noOldData = v1;
   }
-
-  /// clearExpiredModel remove all model before cutOffDate
-  void clearExpiredModel(DateTime expiredDate) {
-    if (_cutOffDate != null && _cutOffDate!.isBefore(expiredDate)) {
-      _cutOffDate = expiredDate;
-    }
-    _list.removeWhere((obj) {
-      final deleted = obj.t.toDateTime().isBefore(expiredDate);
-      if (deleted) {
-        onRemove?.call(obj.i);
-      }
-      return deleted;
-    });
-  }
-
-  /// getNeedUpdateRange return date range that need to update
-  /*general.DateRange? getNeedUpdateRange(general.DateRange want) {
-    final from = want.from;
-    final to = want.to;
-    final view = createView(from: from, to: to, sortDesc: true, skipDeleted: true);
-    if (view.isEmpty) {
-      return want;
-    }
-    final oldest = view.first;
-    final newest = view.last;
-    final fromNeedUpdate = from == null || oldest.t.toDateTime().isBefore(from);
-    final toNeedUpdate = to == null || newest.t.toDateTime().isAfter(to);
-    if (fromNeedUpdate && toNeedUpdate) {
-      return want;
-    }
-    if (fromNeedUpdate) {
-      return general.DateRange(from: oldest.t.toDateTime(), to: to);
-    }
-    if (toNeedUpdate) {
-      return general.DateRange(from: from, to: newest.t.toDateTime());
-    }
-    return want;
-  }*/
 }
