@@ -9,21 +9,21 @@ const _keyIndex = '_idx';
 
 /// DataLoader can refresh or load more data by anchor and limit
 /// ```dart
-/// loader: (context, isRefresh, limit, anchorTimestamp, anchorId) async {
-///   return List.generate(returnCount, (i) => sample.Person(entity: pb.Entity(id: '$returnID-$i')));
-/// },
 /// ```
 typedef DataLoader<T> = Future<List<T>> Function(
-    bool isRefresh, int limit, google.Timestamp? anchorTime, String? anchorId);
+  bool isRefresh,
+  int rowsPerPage,
+  google.Timestamp? anchorTime,
+  String? anchorId,
+);
 
-/// ContinuousDataset keep rows for later use
-class ContinuousDataset<T extends pb.Object> {
-  /// Dataset keep rows for later use
+/// ChainDataset keep rows for later use
+class ChainDataset<T extends pb.Object> {
   /// ```dart
-  /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-  /// await dataset.load();
+  /// final dataset = ChainDataset<sample.Person>(objectBuilder: () => sample.Person());
+  /// await dataset.init();
   /// ```
-  ContinuousDataset({
+  ChainDataset({
     required this.objectBuilder,
     required this.indexedDbProvider,
     required this.loader,
@@ -44,9 +44,6 @@ class ContinuousDataset<T extends pb.Object> {
 
   /// operator [] return object at index
   T operator [](int index) => _objects[index];
-
-  /// selectedRows keep all selected item id
-  List<String> selectedIDs = [];
 
   final bool sortDesc;
 
@@ -70,19 +67,33 @@ class ContinuousDataset<T extends pb.Object> {
 
   bool get hasNextPage => _modelIndex.hasNextPage(pageIndex);
 
+  /// isIdExists return true if id is exists in dataset
+  bool isIdExists(String id) => _modelIndex.where(id) != null;
+
   Future<void> init() async {
     final modelIndexMap = await indexedDbProvider.getJsonMap(_keyIndex);
     if (modelIndexMap != null) {
       _modelIndex.fromJsonMap(modelIndexMap);
     }
     if (_modelIndex.isNotEmpty) {
-      _loadPage(0);
+      await _loadPage(0);
     }
   }
 
-  Future<void> save() async {
-    final modelIndexMap = _modelIndex.writeToJsonMap();
-    await indexedDbProvider.put(_keyIndex, modelIndexMap);
+  /// save modelIndex to database
+  Future<bool> _save(List<T> downloadRows) async {
+    bool changed = false;
+    for (final row in downloadRows) {
+      if (await _modelIndex.add(row.model!)) {
+        changed = true;
+        await indexedDbProvider.putObject(row.id, row);
+      }
+    }
+    if (changed) {
+      final modelIndexMap = _modelIndex.writeToJsonMap();
+      await indexedDbProvider.put(_keyIndex, modelIndexMap);
+    }
+    return changed;
   }
 
   /// _loadPage and set pageIndex
@@ -97,66 +108,61 @@ class ContinuousDataset<T extends pb.Object> {
     }
   }
 
-  Future<bool> saveDownloadRows(List<T> downloadRows) async {
-    bool changed = false;
-    for (final row in downloadRows) {
-      if (await _modelIndex.add(row.model!)) {
-        changed = true;
-        await indexedDbProvider.putObject(row.id, row);
-      }
-    }
-    return changed;
-  }
-
   /// refresh data, return true if reset happen
   Future<void> refresh() async {
     final anchor = _modelIndex.newest;
-    final downloadRows = await loader(true, _modelIndex.rowsPerPage, anchor?.t, anchor?.i);
+    final downloadRows = await loader(
+      true,
+      _modelIndex.rowsPerPage,
+      anchor?.t,
+      anchor?.i,
+    );
     if (downloadRows.length == _modelIndex.rowsPerPage) {
       // if download length == limit, it means there is more data and we need expired all our cache to start over
-      _modelIndex.reset();
-      selectedIDs.clear();
+      _modelIndex.noOldData = false;
+      _modelIndex.clear();
+    } else {
+      if (_modelIndex.isEmpty) {
+        _modelIndex.noOldData = true;
+      }
     }
 
     if (downloadRows.isNotEmpty) {
-      debugPrint('[data_controller] refresh ${downloadRows.length} rows');
-      final changed = await saveDownloadRows(downloadRows);
+      debugPrint('[chain_dataset] refresh ${downloadRows.length} rows');
+      bool changed = await _save(downloadRows);
       if (changed) {
         _objects.clear();
-        _loadPage(0);
+        await _loadPage(0);
       }
     }
   }
 
-  /// nextPage load next page
-  Future<void> nextPage1() async {
-    if (hasNextPage) {
-      await _loadPage(pageIndex + 1);
-    }
-  }
-
-  /// more seeking more data from data loader, return true if has more data
+  /// nextPage load next page from data loader
   /// ```dart
-  /// await ds.more(testing.Context(), 2);
+  /// await ds.nextPage();
   /// ```
   Future<void> nextPage() async {
     if (!hasNextPage) {
-      debugPrint('[data_controller] no next page');
+      debugPrint('[chain_dataset] no next page');
       return;
     }
 
     if (_modelIndex.isMoreDataToLoad(pageIndex)) {
       final anchor = _modelIndex.oldest;
-      final downloadRows = await loader(false, _modelIndex.rowsPerPage, anchor?.t, anchor?.i);
+      final downloadRows = await loader(
+        false,
+        _modelIndex.rowsPerPage,
+        anchor?.t,
+        anchor?.i,
+      );
       if (downloadRows.length < _modelIndex.rowsPerPage) {
-        debugPrint('[data_controller] no old data');
+        debugPrint('[chain_dataset] no old data');
         _modelIndex.noOldData = true;
       }
       if (downloadRows.isNotEmpty) {
-        await saveDownloadRows(downloadRows);
+        await _save(downloadRows);
       }
     }
-
-    _loadPage(pageIndex++);
+    await _loadPage(++pageIndex);
   }
 }

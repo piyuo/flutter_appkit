@@ -12,7 +12,7 @@ class ModelIndex {
   final _list = <pb.Model>[];
 
   /// _noOldData is true mean no old data in remote
-  bool noOldData = false;
+  bool noOldData = true;
 
   /// rowsPerPage use to decide list can break into how many pages
   final int rowsPerPage;
@@ -24,11 +24,6 @@ class ModelIndex {
   bool hasNextPage(int pageIndex) => (pageIndex < totalPages - 1) || noOldData == false;
 
   bool isMoreDataToLoad(int pageIndex) => pageIndex >= totalPages - 1 && noOldData == false;
-
-  void reset() {
-    _list.clear();
-    noOldData = false;
-  }
 
   /// onRemove is the callback when model is removed
   final Future<void> Function(String id)? onRemove;
@@ -173,4 +168,7 @@ class ModelIndex {
     final v1 = map["1"];
     noOldData = v1;
   }
+
+  /// clear all model
+  void clear() => _list.clear();
 }
