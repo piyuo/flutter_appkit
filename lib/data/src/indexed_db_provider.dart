@@ -139,7 +139,10 @@ class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
   /// ```dart
   /// await indexedDbProvider.delete('k');
   /// ```
-  Future<void> delete(String key) async => await _box.delete(key);
+  Future<void> delete(String key) async {
+    debugPrint('[indexed_db] delete $key');
+    await _box.delete(key);
+  }
 
   /// clear everything in box
   /// ```dart

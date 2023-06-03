@@ -5,34 +5,23 @@ import 'package:libcli/pb/pb.dart' as pb;
 class ModelIndex {
   ModelIndex({
     this.onRemove,
-    this.rowsPerPage = 20,
   });
 
   /// _list keep all model
   final _list = <pb.Model>[];
 
-  /// _noOldData is true mean no old data in remote
-  bool noOldData = true;
-
-  /// rowsPerPage use to decide list can break into how many pages
-  final int rowsPerPage;
+  /// noMoreOnRemote is true mean no more data on remote
+  bool noMoreOnRemote = true;
 
   bool get isEmpty => _list.isEmpty;
 
   bool get isNotEmpty => _list.isNotEmpty;
 
-  bool hasNextPage(int pageIndex) => (pageIndex < totalPages - 1) || noOldData == false;
-
-  bool isMoreDataToLoad(int pageIndex) => pageIndex >= totalPages - 1 && noOldData == false;
-
   /// onRemove is the callback when model is removed
   final Future<void> Function(String id)? onRemove;
 
-  /// totalPages return total pages
-  int get totalPages => (_list.length / rowsPerPage).ceil();
-
-  /// cutOff remove all model before expired date
-  Future<void> cutOff(DateTime expiredDate) async {
+  /// cutOff remove all model before expired date, return true if any model is removed
+  Future<bool> cutOff(DateTime expiredDate) async {
     List<String> needRemove = [];
     _list.removeWhere((obj) {
       final deleted = obj.t.toDateTime().isBefore(expiredDate);
@@ -42,49 +31,45 @@ class ModelIndex {
       return deleted;
     });
     if (needRemove.isNotEmpty) {
-      noOldData = false;
+      noMoreOnRemote = false;
     }
     for (final id in needRemove) {
       await onRemove?.call(id);
     }
-  }
-
-  /// _remove remove old exists model
-  Future<void> _remove(String id) async {
-    _list.removeWhere((obj) => obj.i == id);
-    await onRemove?.call(id);
+    return needRemove.isNotEmpty;
   }
 
   /// add model to list, return true if it can be add
   Future<bool> add(pb.Model model) async {
-    final exists = where(model.i);
+    final exists = getModelById(model.i);
     if (exists != null) {
       if (exists.t.toDateTime().isAfter(model.t.toDateTime())) {
         return false;
       }
-      await _remove(model.i); // remove old model if exists. new model may have new t
+      _list.remove(exists);
     }
     _list.add(model);
     return true;
   }
 
-  // idComparator compare two model id
-  int dateComparator(pb.Model a, pb.Model b) {
+  int oldToNewComparator(pb.Model a, pb.Model b) {
+    return b.t.toDateTime().compareTo(a.t.toDateTime());
+  }
+
+  int newToOldComparator(pb.Model a, pb.Model b) {
     return a.t.toDateTime().compareTo(b.t.toDateTime());
   }
 
-  /// sort by model's t
-  void sort({bool desc = false}) => _list.sort((pb.Model a, pb.Model b) {
-        return desc ? b.t.toDateTime().compareTo(a.t.toDateTime()) : a.t.toDateTime().compareTo(b.t.toDateTime());
-      });
+  /// sort by model's t date, from old to new
+  void sort({sortFromOldToNew = true}) => _list.sort(sortFromOldToNew ? oldToNewComparator : newToOldComparator);
 
   /// containsKey return true if any of the key exists in cache
   bool contains(pb.Model model) {
     return _list.any((obj) => obj.i == model.i);
   }
 
-  /// where return model by id,  null if not exists
-  pb.Model? where(String id) {
+  /// getModelById return model by id, null if not exists
+  pb.Model? getModelById(String id) {
     final models = _list.where((obj) => obj.i == id);
     return models.isEmpty ? null : models.first;
   }
@@ -97,25 +82,22 @@ class ModelIndex {
 
   /// newest model id
   pb.Model? get newest {
-    sort();
-    return _list.isEmpty ? null : _list.last;
+    return _list.isEmpty ? null : _list.first;
   }
 
   /// oldest model id
   pb.Model? get oldest {
-    sort();
-    return _list.isEmpty ? null : _list.first;
+    return _list.isEmpty ? null : _list.last;
   }
 
   /// oldest model date
   DateTime? get oldestDate {
-    sort();
-    return _list.isEmpty ? null : _list.first.t.toDateTime();
+    return _list.isEmpty ? null : _list.last.t.toDateTime();
   }
 
   /// isOldDataAvailable return true if it may have old data in remote
   bool isOldDataAvailable(DateTime want) {
-    if (noOldData) {
+    if (noMoreOnRemote) {
       return false;
     }
     final date = oldestDate;
@@ -124,36 +106,40 @@ class ModelIndex {
 
   /// filter a subset of model base on filter condition
   Iterable<pb.Model> filter({
-    bool sortDesc = true,
+    bool sortFromOldToNew = true,
     DateTime? from,
     DateTime? to,
     bool skipDeleted = true,
-    int pageIndex = 0,
+    int start = 0,
+    int length = 0,
   }) {
-    sort(desc: sortDesc);
-    return _list
-        .where((obj) {
-          if (skipDeleted && obj.d) {
-            return false;
-          }
+    var list = _list.where((obj) {
+      if (skipDeleted && obj.d) {
+        return false;
+      }
 
-          if (from != null && obj.t.toDateTime().isBefore(from)) {
-            return false;
-          }
-          if (to != null && obj.t.toDateTime().isAfter(to)) {
-            return false;
-          }
-          return true;
-        })
-        .skip(pageIndex * rowsPerPage)
-        .take(rowsPerPage);
+      if (from != null && obj.t.toDateTime().isBefore(from)) {
+        return false;
+      }
+      if (to != null && obj.t.toDateTime().isAfter(to)) {
+        return false;
+      }
+      return true;
+    });
+    if (!sortFromOldToNew) {
+      var temp = list.toList();
+      temp.sort(sortFromOldToNew ? oldToNewComparator : newToOldComparator);
+      list = temp.skip(0);
+    }
+    return list.skip(start).take(length);
   }
 
   /// writeToJsonMap write ModelIndex to json map
   Map<String, dynamic> writeToJsonMap() {
+    sort();
     final map = <String, dynamic>{
       "0": _list.map((m) => m.writeToJsonMap()).toList(),
-      "1": noOldData,
+      "1": noMoreOnRemote,
     };
     return map;
   }
@@ -166,9 +152,15 @@ class ModelIndex {
       _list.add(pb.Model()..mergeFromJsonMap(item));
     }
     final v1 = map["1"];
-    noOldData = v1;
+    noMoreOnRemote = v1;
+    sort();
   }
 
   /// clear all model
-  void clear() => _list.clear();
+  Future<void> clear() async {
+    for (final model in _list) {
+      await onRemove?.call(model.i);
+    }
+    _list.clear();
+  }
 }

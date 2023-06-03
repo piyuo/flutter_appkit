@@ -1,0 +1,345 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/sample/sample.dart' as sample;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'indexed_db_provider.dart';
+import 'dataset_by_row.dart';
+
+void main() {
+  group('[data.dataset_by_row]', () {
+    test('init should remove old data', () async {
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_init');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+        rowsPerPage: 3,
+        db: indexedDbProvider,
+        objectBuilder: () => sample.Person(),
+        loader: (isRefresh, limit, timestamp) async {
+          return [
+            sample.Person()
+              ..id = '1'
+              ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+            sample.Person()
+              ..id = '2'
+              ..lastUpdateTime = DateTime.now().timestamp,
+          ];
+        },
+      );
+      await dataset.init();
+      await dataset.refresh();
+      expect(dataset.length, 2);
+      expect(indexedDbProvider.containsKey('1'), true);
+      expect(indexedDbProvider.containsKey('2'), true);
+
+      // dataset2 init should remove old data
+      final dataset2 = DatasetByRow(
+        rowsPerPage: 3,
+        db: indexedDbProvider,
+        objectBuilder: () => sample.Person(),
+        loader: (isRefresh, limit, timestamp) async {
+          return <sample.Person>[];
+        },
+      );
+      await dataset2.init();
+      expect(dataset2.length, 1);
+      expect(dataset2.isIdExists('2'), true);
+      expect(indexedDbProvider.containsKey('1'), false);
+      expect(indexedDbProvider.containsKey('2'), true);
+
+      await indexedDbProvider.removeBox();
+    });
+
+    test('refresh should load new data and save to database', () async {
+      int generateCount = 2;
+      int objIndex = 0;
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_refresh');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+        cutOffDays: 0,
+        rowsPerPage: 3,
+        db: indexedDbProvider,
+        objectBuilder: () => sample.Person(),
+        loader: (isRefresh, limit, timestamp) async {
+          return List.generate(generateCount, (index) => sample.Person()..id = (objIndex++).toString());
+        },
+      );
+      await dataset.init();
+      expect(dataset.isEmpty, true);
+
+      await dataset.refresh();
+      expect(dataset.isEmpty, false);
+      expect(dataset.length, 2);
+      expect(dataset.isIdExists('0'), true);
+      expect(dataset.isIdExists('1'), true);
+
+      final dataset2 = DatasetByRow(
+          cutOffDays: 0,
+          rowsPerPage: 3,
+          db: indexedDbProvider,
+          objectBuilder: () => sample.Person(),
+          loader: (isRefresh, limit, timestamp) async {
+            return List.generate(limit, (index) => sample.Person()..id = index.toString());
+          });
+      await dataset2.init();
+      expect(dataset2.isEmpty, false);
+      expect(dataset.length, 2);
+      expect(dataset.isIdExists('0'), true);
+      expect(dataset.isIdExists('1'), true);
+      expect(dataset.hasNextPage, false);
+
+      /// refresh 1 row
+      generateCount = 1;
+      await dataset.refresh();
+      expect(dataset.length, 3);
+      expect(dataset.isIdExists('2'), true);
+      expect(dataset.hasNextPage, false);
+
+      /// refresh 3 row, because 3 == rowsPerPage, it will reset the dataset
+      generateCount = 3;
+      await dataset.refresh();
+      expect(dataset.pageIndex, 0);
+      expect(dataset.length, 3);
+      expect(dataset.isIdExists('3'), true);
+      expect(dataset.isIdExists('4'), true);
+      expect(dataset.isIdExists('5'), true);
+      expect(indexedDbProvider.containsKey('0'), false);
+      expect(indexedDbProvider.containsKey('1'), false);
+      expect(indexedDbProvider.containsKey('2'), false);
+      expect(dataset.hasNextPage, true);
+
+      await indexedDbProvider.removeBox();
+    });
+
+    test('refresh should have no next page when dataset is empty and download row count < rows per page', () async {
+      int generateCount = 2;
+      int objIndex = 0;
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_refresh2');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+        cutOffDays: 0,
+        rowsPerPage: 3,
+        db: indexedDbProvider,
+        objectBuilder: () => sample.Person(),
+        loader: (isRefresh, limit, timestamp) async {
+          return List.generate(generateCount, (index) => sample.Person()..id = (objIndex++).toString());
+        },
+      );
+      await dataset.init();
+      expect(dataset.isEmpty, true);
+
+      await dataset.refresh();
+      expect(dataset.isEmpty, false);
+      expect(dataset.length, 2);
+      expect(dataset.hasNextPage, false);
+      await indexedDbProvider.removeBox();
+    });
+
+    test('refresh should update exists object', () async {
+      DateTime lastUpdate = DateTime(2021, 1, 1);
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_refresh3');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+        cutOffDays: 0,
+        rowsPerPage: 3,
+        db: indexedDbProvider,
+        objectBuilder: () => sample.Person(),
+        loader: (isRefresh, limit, timestamp) async {
+          return [
+            sample.Person()
+              ..id = '1'
+              ..lastUpdateTime = lastUpdate.timestamp
+          ];
+        },
+      );
+      await dataset.init();
+      expect(dataset.isEmpty, true);
+
+      await dataset.refresh();
+      expect(dataset.length, 1);
+      expect(dataset[0].lastUpdateTime.toDateTime().day, 1);
+
+      lastUpdate = DateTime(2021, 1, 2);
+      await dataset.refresh();
+      expect(dataset.length, 1);
+      expect(dataset[0].lastUpdateTime.toDateTime().day, 2);
+
+      expect(dataset.hasNextPage, false);
+      await indexedDbProvider.removeBox();
+    });
+
+    test('refresh should have no next page if download empty', () async {
+      int generateCount = 0;
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_refresh4');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+        cutOffDays: 0,
+        rowsPerPage: 3,
+        db: indexedDbProvider,
+        objectBuilder: () => sample.Person(),
+        loader: (isRefresh, limit, timestamp) async {
+          return List.generate(generateCount, (index) => sample.Person()..id = (generateCount++).toString());
+        },
+      );
+      await dataset.init();
+      await dataset.refresh();
+      expect(dataset.hasNextPage, false);
+      expect(dataset.pageIndex, 0);
+
+      generateCount = 2;
+      final dataset2 = DatasetByRow(
+        cutOffDays: 0,
+        rowsPerPage: 3,
+        db: indexedDbProvider,
+        objectBuilder: () => sample.Person(),
+        loader: (isRefresh, limit, timestamp) async {
+          return List.generate(generateCount, (index) => sample.Person()..id = (generateCount++).toString());
+        },
+      );
+      await dataset2.init();
+      await dataset2.refresh();
+      expect(dataset2.length, 2);
+      expect(dataset2.hasNextPage, false);
+
+      await indexedDbProvider.removeBox();
+    });
+
+    test('more should not execute, until refresh() has been called', () async {
+      int generateCount = 2;
+      int objIndex = 0;
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_next_page');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+          cutOffDays: 0,
+          rowsPerPage: 3,
+          db: indexedDbProvider,
+          objectBuilder: () => sample.Person(),
+          loader: (isRefresh, limit, timestamp) async {
+            return List.generate(generateCount, (index) => sample.Person()..id = (objIndex++).toString());
+          });
+      await dataset.init();
+      expect(dataset.isEmpty, true);
+      expect(dataset.hasNextPage, false);
+
+      await dataset.more();
+      expect(dataset.isEmpty, true);
+      expect(dataset.hasNextPage, false);
+
+      await indexedDbProvider.removeBox();
+    });
+
+    test('more should load more data and save to database', () async {
+      int generateCount = 3;
+      int objIndex = 0;
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_next_page2');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+          cutOffDays: 0,
+          rowsPerPage: 3,
+          db: indexedDbProvider,
+          objectBuilder: () => sample.Person(),
+          loader: (isRefresh, limit, timestamp) async {
+            return List.generate(generateCount, (index) => sample.Person()..id = (objIndex++).toString());
+          });
+      await dataset.init();
+      expect(dataset.isEmpty, true);
+      expect(dataset.hasNextPage, false);
+
+      await dataset.refresh();
+      expect(dataset.length, 3);
+      expect(dataset.hasNextPage, true);
+      expect(indexedDbProvider.containsKey('0'), true);
+      expect(indexedDbProvider.containsKey('1'), true);
+      expect(indexedDbProvider.containsKey('2'), true);
+
+      await dataset.more();
+      expect(dataset.length, 6);
+      expect(dataset.hasNextPage, true);
+      expect(indexedDbProvider.containsKey('3'), true);
+      expect(indexedDbProvider.containsKey('4'), true);
+      expect(indexedDbProvider.containsKey('5'), true);
+
+      generateCount = 2;
+      await dataset.more();
+      expect(dataset.length, 8);
+      expect(dataset.hasNextPage, false);
+      expect(indexedDbProvider.containsKey('6'), true);
+      expect(indexedDbProvider.containsKey('7'), true);
+
+      final dataset2 = DatasetByRow(
+          cutOffDays: 0,
+          rowsPerPage: 3,
+          db: indexedDbProvider,
+          objectBuilder: () => sample.Person(),
+          loader: (isRefresh, limit, timestamp) async {
+            return <sample.Person>[];
+          });
+      await dataset2.init();
+      expect(dataset2.isEmpty, false);
+      expect(dataset.length, 8);
+      expect(dataset.isIdExists('0'), true);
+      expect(dataset.isIdExists('7'), true);
+
+      await indexedDbProvider.removeBox();
+    });
+
+    test('more should update dataset if next page contain duplicate new data', () async {
+      List<sample.Person> generator = [
+        sample.Person()
+          ..id = '1'
+          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+        sample.Person()
+          ..id = '2'
+          ..lastUpdateTime = DateTime(2021, 1, 2).timestamp,
+      ];
+      final indexedDbProvider = IndexedDbProvider(dbName: 'test_next_page2');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final dataset = DatasetByRow(
+          cutOffDays: 0,
+          rowsPerPage: 2,
+          db: indexedDbProvider,
+          objectBuilder: () => sample.Person(),
+          loader: (isRefresh, limit, timestamp) async {
+            return generator;
+          });
+      await dataset.init();
+      await dataset.refresh();
+      expect(dataset.length, 2);
+      expect(dataset.hasNextPage, true);
+      expect(indexedDbProvider.containsKey('1'), true);
+      expect(indexedDbProvider.containsKey('2'), true);
+      expect(dataset.getDisplayRowById('2')!.lastUpdateTime.toDateTime().day, 2);
+
+      generator = [
+        sample.Person()
+          ..id = '2'
+          ..lastUpdateTime = DateTime(2021, 1, 3).timestamp,
+      ];
+
+      await dataset.more();
+      expect(dataset.length, 2);
+      expect(dataset.hasNextPage, false);
+      expect(indexedDbProvider.containsKey('1'), true);
+      expect(indexedDbProvider.containsKey('2'), true);
+      expect(dataset.getDisplayRowById('2')!.lastUpdateTime.toDateTime().day, 3);
+
+      await indexedDbProvider.removeBox();
+    });
+  });
+}

@@ -52,26 +52,26 @@ void main() {
 
     test('should sort by time', () async {
       final modelIndex = ModelIndex();
-      await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 2, 1).timestamp));
-      await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 1).timestamp));
       await modelIndex.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
+      await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
+      await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
       expect(modelIndex.length, 3);
-      modelIndex.sort();
-      expect(modelIndex[0].i, '2');
-      expect(modelIndex[1].i, '3');
-      expect(modelIndex[2].i, '1');
+      modelIndex.sort(sortFromOldToNew: false);
+      expect(modelIndex[0].i, '1');
+      expect(modelIndex[1].i, '2');
+      expect(modelIndex[2].i, '3');
     });
 
     test('should sort by time desc', () async {
       final modelIndex = ModelIndex();
-      await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 2, 1).timestamp));
-      await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 1).timestamp));
       await modelIndex.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
+      await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
+      await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
       expect(modelIndex.length, 3);
-      modelIndex.sort(desc: true);
-      expect(modelIndex[0].i, '1');
-      expect(modelIndex[1].i, '3');
-      expect(modelIndex[2].i, '2');
+      modelIndex.sort();
+      expect(modelIndex[0].i, '3');
+      expect(modelIndex[1].i, '2');
+      expect(modelIndex[2].i, '1');
     });
 
     test('should return true if already contains a model', () async {
@@ -86,30 +86,30 @@ void main() {
       await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 2).timestamp));
       await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 1).timestamp));
       await modelIndex.add(pb.Model(i: '3', t: DateTime(2023, 1, 4).timestamp));
+      modelIndex.sort();
       expect(modelIndex.newest!.i, '3');
       expect(modelIndex.oldest!.i, '2');
     });
 
     test('filter should return by page index', () async {
-      final modelIndex = ModelIndex(rowsPerPage: 2);
+      final modelIndex = ModelIndex();
       await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
       await modelIndex.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       await modelIndex.add(pb.Model(i: '4', t: DateTime(2023, 1, 4).timestamp));
       await modelIndex.add(pb.Model(i: '5', t: DateTime(2023, 1, 5).timestamp));
-      expect(modelIndex.totalPages, 3);
 
-      final view = modelIndex.filter(sortDesc: false).toList();
+      final view = modelIndex.filter(start: 0, length: 2).toList();
       expect(view.length, 2);
       expect(view[0].i, '1');
       expect(view[1].i, '2');
 
-      final view2 = modelIndex.filter(sortDesc: false, pageIndex: 1).toList();
+      final view2 = modelIndex.filter(start: 2, length: 2).toList();
       expect(view2.length, 2);
       expect(view2[0].i, '3');
       expect(view2[1].i, '4');
 
-      final view3 = modelIndex.filter(sortDesc: false, pageIndex: 2).toList();
+      final view3 = modelIndex.filter(start: 4, length: 2).toList();
       expect(view3.length, 1);
       expect(view3[0].i, '5');
     });
@@ -121,8 +121,9 @@ void main() {
       await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
       await modelIndex.add(pb.Model(i: '4', t: DateTime(2023, 1, 4).timestamp));
       await modelIndex.add(pb.Model(i: '5', t: DateTime(2023, 1, 5).timestamp));
+      modelIndex.sort();
 
-      final view = modelIndex.filter().toList();
+      final view = modelIndex.filter(length: 5).toList();
       expect(view.length, 5);
       expect(view[0].i, '5');
       expect(view[1].i, '4');
@@ -130,7 +131,7 @@ void main() {
       expect(view[3].i, '2');
       expect(view[4].i, '1');
 
-      final viewAsc = modelIndex.filter(sortDesc: false).toList();
+      final viewAsc = modelIndex.filter(sortFromOldToNew: false, length: 5).toList();
       expect(viewAsc.length, 5);
       expect(viewAsc[0].i, '1');
       expect(viewAsc[1].i, '2');
@@ -146,22 +147,23 @@ void main() {
       await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
       await modelIndex.add(pb.Model(i: '4', t: DateTime(2023, 1, 4).timestamp));
       await modelIndex.add(pb.Model(i: '5', t: DateTime(2023, 1, 5).timestamp));
+      modelIndex.sort();
 
-      final viewFrom = modelIndex.filter(from: DateTime(2023, 1, 2)).toList();
+      final viewFrom = modelIndex.filter(from: DateTime(2023, 1, 2), length: 5).toList();
       expect(viewFrom.length, 4);
       expect(viewFrom[0].i, '5');
       expect(viewFrom[1].i, '4');
       expect(viewFrom[2].i, '3');
       expect(viewFrom[3].i, '2');
 
-      final viewTo = modelIndex.filter(to: DateTime(2023, 1, 4)).toList();
+      final viewTo = modelIndex.filter(to: DateTime(2023, 1, 4), length: 5).toList();
       expect(viewTo.length, 4);
       expect(viewTo[0].i, '4');
       expect(viewTo[1].i, '3');
       expect(viewTo[2].i, '2');
       expect(viewTo[3].i, '1');
 
-      final viewFromTo = modelIndex.filter(from: DateTime(2023, 1, 2), to: DateTime(2023, 1, 4)).toList();
+      final viewFromTo = modelIndex.filter(from: DateTime(2023, 1, 2), to: DateTime(2023, 1, 4), length: 5).toList();
       expect(viewFromTo.length, 3);
       expect(viewFromTo[0].i, '4');
       expect(viewFromTo[1].i, '3');
@@ -185,22 +187,31 @@ void main() {
       expect(removedId, '2');
     });
 
-    test('add should remove object ', () async {
+    test('clear should remove all object', () async {
       String? removedId;
       final modelIndex = ModelIndex(onRemove: (id) async => removedId = id);
+      await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
+      await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
+
+      await modelIndex.clear();
+      expect(modelIndex.length, 0);
+      expect(removedId, '2');
+    });
+
+    test('add should remove object ', () async {
+      final modelIndex = ModelIndex();
       await modelIndex.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
 
       await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 4).timestamp));
       expect(modelIndex.length, 3);
-      expect(removedId, '1');
-      expect(modelIndex.where('1')!.t.toDateTime().day, 4);
+      expect(modelIndex.getModelById('1')!.t.toDateTime().day, 4);
     });
 
     test('writeToJsonMap should convert to json map ', () async {
       final modelIndex = ModelIndex();
-      modelIndex.noOldData = true;
+      modelIndex.noMoreOnRemote = true;
       await modelIndex.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
       await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
@@ -211,12 +222,12 @@ void main() {
       expect(modelIndex2[0].t.toDateTime().year, 2023);
       expect(modelIndex2[0].t.toDateTime().day, 3);
       expect(modelIndex2[0].i, "3");
-      expect(modelIndex2.noOldData, true);
+      expect(modelIndex2.noMoreOnRemote, true);
     });
 
     test('isOldDataAvailable should return false when no old data', () async {
       final modelIndex = ModelIndex();
-      modelIndex.noOldData = true;
+      modelIndex.noMoreOnRemote = true;
       expect(modelIndex.isOldDataAvailable(DateTime.now()), false);
     });
 
@@ -230,22 +241,20 @@ void main() {
 
     test('isOldDataAvailable should return true when data has same day in local', () async {
       final modelIndex = ModelIndex();
+      modelIndex.noMoreOnRemote = false;
       await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       expect(modelIndex.isOldDataAvailable(DateTime(2023, 1, 1)), true);
+      modelIndex.noMoreOnRemote = true;
+      expect(modelIndex.isOldDataAvailable(DateTime(2023, 1, 1)), false);
     });
 
     test('isOldDataAvailable should return true when data not as old as user want', () async {
       final modelIndex = ModelIndex();
+      modelIndex.noMoreOnRemote = false;
       await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
       expect(modelIndex.isOldDataAvailable(DateTime(2022, 1, 1)), true);
-    });
-
-    test('totalPages should calculate total pages', () async {
-      final modelIndex = ModelIndex(rowsPerPage: 2);
-      await modelIndex.add(pb.Model(i: '3', t: DateTime(2023, 1, 3).timestamp));
-      await modelIndex.add(pb.Model(i: '1', t: DateTime(2023, 1, 1).timestamp));
-      await modelIndex.add(pb.Model(i: '2', t: DateTime(2023, 1, 2).timestamp));
-      expect(modelIndex.totalPages, 2);
+      modelIndex.noMoreOnRemote = true;
+      expect(modelIndex.isOldDataAvailable(DateTime(2022, 1, 1)), false);
     });
   });
 }
