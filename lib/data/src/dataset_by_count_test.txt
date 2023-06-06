@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'indexed_db_provider.dart';
-import 'dataset_by_row.dart';
+import 'dataset_by_count.txt';
 
 void main() {
   group('[data.dataset_by_row]', () {

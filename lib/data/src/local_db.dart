@@ -1,0 +1,111 @@
+import 'package:libcli/google/google.dart' as google;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'local.dart';
+import 'indexed_db_provider.dart';
+import 'model_index.dart';
+
+/// _keyIndex is key for model index store in database
+const _keyIndex = '_idx';
+
+/// LocalDb keep data in local db
+class LocalDb<T extends pb.Object> extends Local<T> {
+  LocalDb({
+    required this.db,
+    required this.builder,
+    this.cutOffDays = 180,
+  }) {
+    modelIndex = ModelIndex(onRemove: (String id) async {
+      await db.delete(id);
+    });
+  }
+
+  /// db is indexed db that store data
+  final IndexedDbProvider db;
+
+  /// modelIndex is index to keep track model
+  late final ModelIndex modelIndex;
+
+  /// cutOffDays is how many days to keep data in dataset
+  final int cutOffDays;
+
+  /// builder is builder to build object
+  pb.Builder<T> builder;
+
+  /// saveIndex save index to database
+  Future<void> _saveIndexToDb() async {
+    final indexMap = modelIndex.writeToJsonMap();
+    await db.put(_keyIndex, indexMap);
+  }
+
+  /// _cutOff remove all data before expiredDate, it will called by refresh
+  Future<void> _cutOff() async {
+    if (cutOffDays > 0) {
+      final expiredDate = DateTime.now().add(Duration(days: -cutOffDays));
+      final removeAny = await modelIndex.cutOff(expiredDate.toUtc());
+      if (removeAny) {
+        await _saveIndexToDb();
+      }
+    }
+  }
+
+  /// init load data from database and remove old data use cutOffDays
+  @override
+  Future<void> init() async {
+    final indexMap = await db.getJsonMap(_keyIndex);
+    if (indexMap != null) {
+      modelIndex.fromJsonMap(indexMap);
+    }
+    if (modelIndex.isNotEmpty) {
+      await _cutOff();
+    }
+  }
+
+  @override
+  void dispose() {
+    db.dispose();
+  }
+
+  /// add download rows to database
+  @override
+  Future<void> add(List<T> rows, bool noMoreOnRemote) async {
+    modelIndex.noMoreOnRemote = noMoreOnRemote;
+    await modelIndex.add(rows, callback: (row) async => await db.putObject(row.id, row));
+    await _saveIndexToDb();
+  }
+
+  /// getObjectById return object by id, null if not exists
+  @override
+  Future<T?> getObjectById(String id) => db.getObject(id, builder);
+
+  /// clear data in database
+  @override
+  Future<void> clear() async => await modelIndex.clear();
+
+  /// query return list of model that match query
+  @override
+  Future<Iterable<pb.Model>> query({
+    bool sortNewestFirst = true,
+    bool skipDeleted = true,
+    DateTime? from,
+    DateTime? to,
+    int start = 0,
+    int length = 0,
+  }) async =>
+      modelIndex.query(
+        sortNewestFirst: sortNewestFirst,
+        skipDeleted: skipDeleted,
+        from: from,
+        to: to,
+        start: start,
+        length: length,
+      );
+
+  @override
+  bool isNoMoreOnRemote() => modelIndex.noMoreOnRemote;
+
+  @override
+  google.Timestamp? getNewestTime() => modelIndex.newest?.t;
+
+  @override
+  google.Timestamp? getOldestTime() => modelIndex.oldest?.t;
+}

@@ -20,7 +20,7 @@ class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
   /// _box is hive box
   late LazyBox _box;
 
-  /// dispose database and reset counter
+  /// dispose database
   @override
   void dispose() {
     debugPrint('[indexed_db] close ${_box.name}');

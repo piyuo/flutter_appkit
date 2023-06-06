@@ -39,8 +39,18 @@ class ModelIndex {
     return needRemove.isNotEmpty;
   }
 
-  /// add model to list, return true if it can be add
-  Future<bool> add(pb.Model model) async {
+  /// add objects to index, call callback if it is new object
+  Future<void> add(List<pb.Object> rows, {Future<void> Function(pb.Object)? callback}) async {
+    for (final row in rows) {
+      if (await addModel(row.model!)) {
+        await callback?.call(row);
+      }
+    }
+    sort();
+  }
+
+  /// addModel add model to list, return true if it can be add
+  Future<bool> addModel(pb.Model model) async {
     final exists = getModelById(model.i);
     if (exists != null) {
       if (exists.t.toDateTime().isAfter(model.t.toDateTime())) {
@@ -52,26 +62,22 @@ class ModelIndex {
     return true;
   }
 
-  int oldToNewComparator(pb.Model a, pb.Model b) {
+  /// newestFirstComparator compare two model by t date, newest first
+  int newestFirstComparator(pb.Model a, pb.Model b) {
     return b.t.toDateTime().compareTo(a.t.toDateTime());
   }
 
-  int newToOldComparator(pb.Model a, pb.Model b) {
+  /// oldestFirstComparator compare two model by t date, oldest first
+  int oldestFirstComparator(pb.Model a, pb.Model b) {
     return a.t.toDateTime().compareTo(b.t.toDateTime());
   }
 
   /// sort by model's t date, from old to new
-  void sort({sortFromOldToNew = true}) => _list.sort(sortFromOldToNew ? oldToNewComparator : newToOldComparator);
-
-  /// containsKey return true if any of the key exists in cache
-  bool contains(pb.Model model) {
-    return _list.any((obj) => obj.i == model.i);
-  }
+  void sort({sortNewestFirst = true}) => _list.sort(sortNewestFirst ? newestFirstComparator : oldestFirstComparator);
 
   /// getModelById return model by id, null if not exists
   pb.Model? getModelById(String id) {
-    final models = _list.where((obj) => obj.i == id);
-    return models.isEmpty ? null : models.first;
+    return _list.where((obj) => obj.i == id).firstOrNull;
   }
 
   /// length of modeIndex
@@ -104,9 +110,9 @@ class ModelIndex {
     return date != null && (date.isAtSameMomentAs(want) || date.isAfter(want));
   }
 
-  /// filter a subset of model base on filter condition
-  Iterable<pb.Model> filter({
-    bool sortFromOldToNew = true,
+  /// query return list of model that match query
+  Iterable<pb.Model> query({
+    bool sortNewestFirst = true,
     DateTime? from,
     DateTime? to,
     bool skipDeleted = true,
@@ -126,12 +132,16 @@ class ModelIndex {
       }
       return true;
     });
-    if (!sortFromOldToNew) {
+    if (!sortNewestFirst) {
       var temp = list.toList();
-      temp.sort(sortFromOldToNew ? oldToNewComparator : newToOldComparator);
-      list = temp.skip(0);
+      temp.sort(sortNewestFirst ? newestFirstComparator : oldestFirstComparator);
+      list = temp;
     }
-    return list.skip(start).take(length);
+    list = list.skip(start);
+    if (length > 0) {
+      list = list.take(length);
+    }
+    return list;
   }
 
   /// writeToJsonMap write ModelIndex to json map

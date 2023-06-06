@@ -1,0 +1,105 @@
+import 'package:libcli/google/google.dart' as google;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'local.dart';
+
+/// LocalMemory keep data in local memory
+class LocalMemory<T extends pb.Object> extends Local<T> {
+  /// _list keep data in memory
+  final List<T> _list = [];
+
+  /// noMoreOnRemote is true mean no more data on remote
+  bool _noMoreOnRemote = true;
+
+  /// getObjectById return object by id, null if not exists
+  @override
+  Future<T?> getObjectById(String id) async => _list.where((obj) => obj.id == id).firstOrNull;
+
+  /// init load data from database and remove old data use cutOffDays
+  @override
+  Future<void> init() async {}
+
+  @override
+  void dispose() {}
+
+  void addObject(T obj) async {
+    final exists = await getObjectById(obj.id);
+    if (exists != null) {
+      if (exists.lastUpdateTime.toDateTime().isAfter(obj.lastUpdateTime.toDateTime())) {
+        return;
+      }
+      _list.remove(exists);
+    }
+    _list.add(obj);
+  }
+
+  /// newestFirstComparator compare two model by t date, newest first
+  int newestFirstComparator(T a, T b) {
+    return b.lastUpdateTime.toDateTime().compareTo(a.lastUpdateTime.toDateTime());
+  }
+
+  /// oldestFirstComparator compare two model by t date, oldest first
+  int oldestFirstComparator(T a, T b) {
+    return a.lastUpdateTime.toDateTime().compareTo(b.lastUpdateTime.toDateTime());
+  }
+
+  /// sort by model's t date, from old to new
+  void sort({sortNewestFirst = true}) => _list.sort(sortNewestFirst ? newestFirstComparator : oldestFirstComparator);
+
+  /// save data to database
+  @override
+  Future<void> add(List<T> rows, bool noMoreOnRemote) async {
+    _noMoreOnRemote = noMoreOnRemote;
+    for (final row in rows) {
+      addObject(row);
+    }
+    sort();
+  }
+
+  /// clear data in database
+  @override
+  Future<void> clear() async => _list.clear();
+
+  /// query return list of model that match query
+  @override
+  Future<Iterable<pb.Model>> query({
+    bool sortNewestFirst = true,
+    bool skipDeleted = true,
+    DateTime? from,
+    DateTime? to,
+    int start = 0,
+    int length = 0,
+  }) async {
+    var list = _list.where((obj) {
+      if (skipDeleted && obj.deleted) {
+        return false;
+      }
+
+      if (from != null && obj.lastUpdateTime.toDateTime().isBefore(from)) {
+        return false;
+      }
+      if (to != null && obj.lastUpdateTime.toDateTime().isAfter(to)) {
+        return false;
+      }
+      return true;
+    });
+    if (!sortNewestFirst) {
+      var temp = list.toList();
+      temp.sort(sortNewestFirst ? newestFirstComparator : oldestFirstComparator);
+      list = temp;
+    }
+    list = list.skip(start);
+    if (length > 0) {
+      list = list.take(length);
+    }
+    return list.map((obj) => obj.model!);
+  }
+
+  @override
+  bool isNoMoreOnRemote() => _noMoreOnRemote;
+
+  @override
+  google.Timestamp? getNewestTime() => _list.lastOrNull?.lastUpdateTime;
+
+  @override
+  google.Timestamp? getOldestTime() => _list.firstOrNull?.lastUpdateTime;
+}

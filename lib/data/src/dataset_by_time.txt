@@ -1,0 +1,127 @@
+import 'package:flutter/material.dart';
+import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/google/google.dart' as google;
+import 'dataset.dart';
+
+/// DatasetByTime load data by row time
+class DatasetByTime<T extends pb.Object> extends Dataset<T> {
+  /// ```dart
+  /// final dataset = DatasetByTime<sample.Person>(objectBuilder: () => sample.Person());
+  /// await dataset.init();
+  /// ```
+  DatasetByTime({
+    this.pageDuration = const Duration(),
+    required this.loader,
+    required super.db,
+    required super.objectBuilder,
+    super.cutOffDays,
+    super.displaySortFromOldToNew,
+  });
+
+  /// pageDuration is the duration of each page
+  final Duration pageDuration;
+
+  bool get hasNextPage => (_pageIndex < totalPages - 1) || modelIndex.noMoreOnRemote == false;
+
+  bool isMoreDataToLoad(int pageIndex) => pageIndex >= totalPages - 1 && modelIndex.noMoreOnRemote == false;
+
+  /// totalPages return total pages
+  int get totalPages => (display.length / rowsPerPage).ceil();
+
+  /// loader can refresh or load more data by anchor and limit
+  final DatasetByRowLoader<T> loader;
+
+  /// init load data from database and remove old data use cutOffDays
+  @override
+  Future<void> init() async {
+    DateTime.now().add(const Duration(days: 1));
+    await super.init();
+    if (modelIndex.isNotEmpty) {
+      await _loadPage(0);
+    }
+  }
+
+  /// onCacheModeChanged will be called when cache mode change
+  @override
+  Future<void> onCacheModeChanged(bool cacheMode) async {
+    if (cacheMode) {
+      display.clear();
+      _pageIndex = 0;
+      await _loadPage(0);
+      return;
+    }
+    display.clear();
+  }
+
+  /// _loadPage and set pageIndex
+  Future<void> _loadPage(int newPageIndex) async {
+    _pageIndex = newPageIndex;
+    final result = modelIndex.filter(
+        sortNewestFirst: displaySortFromOldToNew, start: _pageIndex * rowsPerPage, length: rowsPerPage);
+    for (final model in result) {
+      final obj = await db.getObject<T>(model.i, objectBuilder);
+      if (obj != null) {
+        display.add(obj);
+      }
+    }
+  }
+
+  /// refreshNoCache refresh data by not using cache
+  Future<void> refreshNoCache() async {
+    final anchor = modelIndex.newest;
+    final downloadRows = await loader(true, rowsPerPage, anchor?.t);
+
+    if (downloadRows.isNotEmpty) {
+      if (downloadRows.length == rowsPerPage) {
+        // if download length == limit, it means there is more data and we need expired all our cache to start over
+        modelIndex.noMoreOnRemote = false;
+        await modelIndex.clear();
+        await saveIndexToDb();
+        debugPrint('[dataset] reset');
+      }
+
+      debugPrint('[chain_dataset] refresh ${downloadRows.length} rows');
+      bool changed = await saveDownloadToDb(downloadRows);
+      if (changed) {
+        display.clear();
+        _pageIndex = 0;
+        await _loadPage(0);
+      }
+    }
+  }
+
+  /// refresh data, return true if reset happen
+  @override
+  Future<void> refresh() async {
+    if (cacheMode) {
+      await refreshByCache();
+      return;
+    }
+    await refreshNoCache();
+  }
+
+  /// more load more from data loader
+  /// ```dart
+  /// await ds.more();
+  /// ```
+  @override
+  Future<void> more() async {
+    if (!hasNextPage) {
+      debugPrint('[dataset] no next page');
+      return;
+    }
+
+    if (isMoreDataToLoad(_pageIndex)) {
+      final anchor = modelIndex.oldest;
+      final downloadRows = await loader(false, rowsPerPage, anchor?.t);
+      if (downloadRows.isNotEmpty) {
+        if (downloadRows.length < rowsPerPage) {
+          debugPrint('[dataset] no old data');
+          modelIndex.noMoreOnRemote = true;
+        }
+        await saveDownloadToDb(downloadRows);
+      }
+    }
+    await _loadPage(++_pageIndex);
+  }
+}

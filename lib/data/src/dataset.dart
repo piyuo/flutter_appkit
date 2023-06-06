@@ -1,103 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:meta/meta.dart';
-import 'indexed_db_provider.dart';
-import 'model_index.dart';
+import 'local.dart';
+import 'local_memory.dart';
 
-/// _keyIndex is key for model index store in database
-const _keyIndex = '_idx';
+/// DataLoader load data from remote base on timestamp on local
+/// return list of data and noMoreOnRemote
+typedef DataLoader<T extends pb.Object> = Future<(List<T>, bool)> Function(google.Timestamp? timestamp);
 
 /// Dataset keep list of row for later use
 /// must implement init,refresh, more
-abstract class Dataset<T extends pb.Object> {
+class Dataset<T extends pb.Object> with ChangeNotifier {
   Dataset({
-    required this.objectBuilder,
-    required this.db,
-    this.cutOffDays = 180,
-  }) {
-    index = ModelIndex(onRemove: onModelRemoved);
-  }
+    required this.local,
+    required this.refreshData,
+    this.moreData,
+  });
 
-  /// _cacheMode is true will use indexed db to cache data
-  bool _cacheMode = true;
+  /// refreshData refresh data from remote base on newest timestamp on local
+  final DataLoader<T> refreshData;
 
-  /// cacheMode is true will use indexed db to cache data
-  bool get cacheMode => _cacheMode;
+  /// moreData load more data from remote base on oldest timestamp on local
+  final DataLoader<T>? moreData;
 
-  /// setCacheMode will change cache mode
-  Future<void> setCacheMode(bool value) async {
-    _noMoreOnRemote = true;
-    _cacheMode = value;
-    onCacheModeChanged(_cacheMode);
-  }
+  /// local keep data in local
+  Local<T> local;
 
-  /// _noMoreOnRemote use only in no cache mode
-  bool _noMoreOnRemote = true;
+  /// _liveMode is true will use memory to show data on live, it will not cached data in local db
+  bool _liveMode = true;
 
-  /// noMoreOnRemote return true mean no more data on remote
-  bool get noMoreOnRemote => _cacheMode ? index.noMoreOnRemote : _noMoreOnRemote;
+  /// backupLocal backup local data when live mode is on
+  Local<T>? backupLocal;
 
-  /// cutOffDays is how many days to keep data in dataset
-  final int cutOffDays;
-
-  /// objectBuilder build data
-  /// ```dart
-  /// objectBuilder: () => sample.Person()
-  /// ```
-  final pb.Builder<T> objectBuilder;
-
-  /// displayRows is row already in memory and ready to use
-  final displayRows = <T>[];
-
-  /// db is indexed db that store data
-  final IndexedDbProvider db;
-
-  /// modelIndex is index to keep track model
-  late final ModelIndex index;
-
-  /// isEmpty return true if displayRows is empty
-  bool get isEmpty => displayRows.isEmpty;
-
-  /// length return length of displayRows
-  int get length => displayRows.length;
-
-  /// operator [] return object at index
-  T operator [](int index) => displayRows[index];
+  /// noMoreOnRemote is true if no more data on remote
+  bool get noMoreOnRemote => local.isNoMoreOnRemote();
 
   /// getDisplayRowById return display row by id
-  T? getDisplayRowById(String id) => displayRows.where((obj) => obj.id == id).firstOrNull;
+  //T? getDisplayRowById(String id) => display.where((obj) => obj.id == id).firstOrNull;
 
-  /// isIdExists return true if id is exists in dataset
-  bool isIdExists(String id) => index.getModelById(id) != null;
-
-  /// saveIndexToDb save modelIndex to database
-  Future<void> saveIndexToDb() async {
-    final indexMap = index.writeToJsonMap();
-    await db.put(_keyIndex, indexMap);
-  }
-
-  /// saveDownloadRows save download rows and changed index to database
-  Future<bool> saveDownloadRows(List<T> downloadRows) async {
-    updateDisplayRows(downloadRows);
-    removeDeletedRows();
-    bool changed = false;
-    for (final row in downloadRows) {
-      if (await index.add(row.model!)) {
-        changed = true;
-        await db.putObject(row.id, row);
-      }
-    }
-    if (changed) {
-      await saveIndexToDb();
-    }
-    return changed;
-  }
+  /// getObjectById return object by id, null if not exists
+  Future<T?> getObjectById(String id) async => await local.getObjectById(id);
 
   /// removeDeletedRows remove deleted rows from _rows list
+  /*
   void removeDeletedRows() {
-    for (int i = displayRows.length - 1; i >= 0; i--) {
-      final row = displayRows[i];
+    for (int i = display.length - 1; i >= 0; i--) {
+      final row = display[i];
       if (row.deleted) {
-        displayRows.removeAt(i);
+        display.removeAt(i);
       }
     }
   }
@@ -105,51 +55,88 @@ abstract class Dataset<T extends pb.Object> {
   /// updateDisplayRows update download rows in _rows list, replace old row with new row
   void updateDisplayRows(List<T> downloadRows) {
     for (T row in downloadRows) {
-      final index = displayRows.indexWhere((obj) => obj.id == row.id);
+      final index = display.indexWhere((obj) => obj.id == row.id);
       if (index != -1) {
-        final other = displayRows[index];
+        final other = display[index];
         if (row.lastUpdateTime.toDateTime().isAfter(other.lastUpdateTime.toDateTime())) {
-          displayRows[index] = row;
+          display[index] = row;
         }
       }
     }
   }
-
-  /// _cutOff remove all data before expiredDate, it will called by refresh
-  Future<void> _cutOff() async {
-    if (cutOffDays > 0) {
-      final expiredDate = DateTime.now().add(Duration(days: -cutOffDays));
-      final removeAny = await index.cutOff(expiredDate.toUtc());
-      if (removeAny) {
-        await saveIndexToDb();
-      }
-    }
-  }
-
+*/
   /// init load data from database and remove old data use cutOffDays
-  @mustBeOverridden
   Future<void> init() async {
-    final indexMap = await db.getJsonMap(_keyIndex);
-
-    if (indexMap != null) {
-      index.fromJsonMap(indexMap);
-    }
-    if (index.isNotEmpty) {
-      await _cutOff();
-    }
+    await local.init();
   }
 
-  /// onModelAdded is call when new model is removed
-  Future<void> onModelRemoved(String id) async {
-    await db.delete(id);
+  /// dispose close local data
+  @override
+  void dispose() {
+    local.dispose();
+    super.dispose();
+  }
+
+  /// live will change live mode
+  Future<void> live(bool value) async {
+    _liveMode = value;
+    if (_liveMode) {
+      backupLocal = local;
+      local = LocalMemory();
+    } else {
+      local = backupLocal!;
+      backupLocal = null;
+    }
   }
 
   /// refresh to get new rows
-  Future<void> refresh();
+  Future<void> refresh() async {
+    final (downloadRows, noMoreOnRemote) = await refreshData(local.getNewestTime());
+    if (downloadRows.isNotEmpty) {
+      debugPrint('[dataset] refresh ${downloadRows.length} rows, noMore: $noMoreOnRemote');
+      await local.add(downloadRows, noMoreOnRemote);
+    }
+  }
 
-  /// more to load more old rows
-  Future<void> more();
+  /// more load more old rows
+  Future<void> more() async {
+    if (local.isNoMoreOnRemote()) {
+      return;
+    }
+    final (downloadRows, noMoreOnRemote) = await moreData!(local.getOldestTime());
+    if (downloadRows.isNotEmpty) {
+      debugPrint('[dataset] more ${downloadRows.length} rows, noMore: $noMoreOnRemote');
+      await local.add(downloadRows, noMoreOnRemote);
+    }
+  }
 
-  /// more to load more old rows
-  Future<void> onCacheModeChanged(bool cacheMode);
+  /// query return list of model that match query
+  Future<Iterable<pb.Model>> query({
+    bool sortNewestFirst = true,
+    bool skipDeleted = true,
+    DateTime? from,
+    DateTime? to,
+    int start = 0,
+    int length = 0,
+  }) =>
+      local.query(
+        sortNewestFirst: sortNewestFirst,
+        skipDeleted: skipDeleted,
+        from: from,
+        to: to,
+        start: start,
+        length: length,
+      );
+
+  /// mapObjects return list of object that match given id
+  Future<List<T>> mapObjects(Iterable<String> list) async {
+    final objects = <T>[];
+    for (final id in list) {
+      final object = await local.getObjectById(id);
+      if (object != null) {
+        objects.add(object);
+      }
+    }
+    return objects;
+  }
 }
