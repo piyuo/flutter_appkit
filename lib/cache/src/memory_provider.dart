@@ -11,7 +11,7 @@ import 'package:hive/hive.dart';
 int _cleanupMaxItem = kIsWeb ? 50 : 500; // web is slow, clean 50 may tak 3 sec. native is much faster
 
 /// MemoryProvider provide cache memory
-class MemoryProvider with ChangeNotifier, utils.NeedInitializeMixin {
+class MemoryProvider with ChangeNotifier, utils.InitOnceMixin {
   MemoryProvider({
     String cacheDBName = 'cache',
     String timeDBName = 'time',

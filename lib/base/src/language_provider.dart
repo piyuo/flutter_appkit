@@ -9,7 +9,7 @@ import 'package:libcli/utils/utils.dart' as utils;
 const _kPreferredLocaleKey = 'locale';
 
 /// LanguageProvider provide a way to change locale
-class LanguageProvider with ChangeNotifier, utils.NeedInitializeMixin {
+class LanguageProvider with ChangeNotifier, utils.InitOnceMixin {
   LanguageProvider(this._locales);
 
   /// initWithPreferredLocale init with preferred locale

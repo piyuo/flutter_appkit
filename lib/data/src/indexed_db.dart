@@ -6,9 +6,10 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:hive/hive.dart';
 import 'hive.dart';
 
-/// IndexedDbProvider use hive to store data in local or indexed db in browser
-class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
-  IndexedDbProvider({
+/// IndexedDb use hive to store data in local or indexed db in browser
+/// it inherit from ChangeNotifier so we can use dispose to close database
+class IndexedDb with ChangeNotifier, utils.InitOnceMixin {
+  IndexedDb({
     required String dbName,
   }) {
     initFuture = () async {
@@ -29,12 +30,12 @@ class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
   }
 
   /// of get instance from context
-  static IndexedDbProvider of(BuildContext context) {
-    return Provider.of<IndexedDbProvider>(context, listen: false);
+  static IndexedDb of(BuildContext context) {
+    return Provider.of<IndexedDb>(context, listen: false);
   }
 
   /// keys is all the keys in the box, The keys are sorted alphabetically in ascending order.
-  Iterable<String> get keys => _box.keys as Iterable<String>;
+  Iterable<String> get keys => _box.keys.map((e) => e.toString());
 
   /// keyAt return the n-th key in the box.
   Future<String> keyAt(int index) async => _box.keyAt(index);
@@ -50,19 +51,19 @@ class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
 
   /// containsKey checks whether the box contains the [key].
   /// ```dart
-  /// expect(indexedDbProvider.contains('a'), false);
+  /// expect(indexedDb.contains('a'), false);
   /// ```
   bool containsKey(String key) => _box.containsKey(key);
 
   /// put value to database
   /// ```dart
-  /// await indexedDbProvider.put('key', {'a': 1}));
+  /// await indexedDb.put('key', {'a': 1}));
   /// ```
   Future<void> put(String key, dynamic value) async => await _box.put(key, value);
 
   /// get return the value associated with the given [key]
   /// ```dart
-  /// final value = indexedDbProvider.get<int>('k');
+  /// final value = indexedDb.get<int>('k');
   /// ```
   Future<T?> get<T>(String key) async => await _box.get(key);
 
@@ -110,7 +111,7 @@ class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
 
   /// getJsonMap return the json map object associated with the given [key]
   /// ```dart
-  /// final value = indexedDbProvider.getJsonMap('k');
+  /// final value = indexedDb.getJsonMap('k');
   /// ```
   Future<Map<String, dynamic>?> getJsonMap<T>(String key) async {
     final value = await _box.get(key);
@@ -124,20 +125,20 @@ class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
 
   /// putObject save object to database
   /// ```dart
-  /// await indexedDbProvider.putObject('k', person);
+  /// await indexedDb.putObject('k', person);
   /// ```
   Future<void> putObject(String key, pb.Object value) async => await putBoxObject(_box, key, value);
 
   /// getObject return the value associated with the given [key]
   /// ```dart
-  /// final value = indexedDbProvider.getObject<sample.Person>('k', () => sample.Person());
+  /// final value = indexedDb.getObject<sample.Person>('k', () => sample.Person());
   /// ```
   Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) async =>
       await getBoxObject(_box, key, builder);
 
   /// delete the given [key] from the box ,if it does not exist, nothing happens.
   /// ```dart
-  /// await indexedDbProvider.delete('k');
+  /// await indexedDb.delete('k');
   /// ```
   Future<void> delete(String key) async {
     debugPrint('[indexed_db] delete $key');
@@ -161,7 +162,7 @@ class IndexedDbProvider with ChangeNotifier, utils.NeedInitializeMixin {
 /*
   /// getStringList return the value associated with the given [key]
   /// ```dart
-  /// var list2 = indexedDbProvider.getStringList('l');
+  /// var list2 = indexedDb.getStringList('l');
   /// ```
   Future<List<String>?> getStringList(String key) async {
     final list = await _box.get(key);

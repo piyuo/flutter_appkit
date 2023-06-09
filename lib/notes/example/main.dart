@@ -596,13 +596,13 @@ class NotesExample extends StatelessWidget {
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
                         value: _notesProvider,
                       ),
-                      ChangeNotifierProvider<data.IndexedDbProvider>(create: (_) {
-                        return data.IndexedDbProvider(
+                      ChangeNotifierProvider<data.IndexedDb>(create: (_) {
+                        return data.IndexedDb(
                           dbName: 'notes_sample',
                         );
                       }),
                     ],
-                    child: Consumer2<data.IndexedDbProvider, NotesProvider<sample.Person>>(
+                    child: Consumer2<data.IndexedDb, NotesProvider<sample.Person>>(
                       builder: (context, indexedDbProvider, notesProvider, _) {
                         return base.LoadingScreen(
                           future: () async {
@@ -647,13 +647,13 @@ class NotesExample extends StatelessWidget {
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
                         value: _notesProvider,
                       ),
-                      ChangeNotifierProvider<data.IndexedDbProvider>(create: (_) {
-                        return data.IndexedDbProvider(
+                      ChangeNotifierProvider<data.IndexedDb>(create: (_) {
+                        return data.IndexedDb(
                           dbName: 'notes_sample',
                         );
                       }),
                     ],
-                    child: Consumer2<data.IndexedDbProvider, NotesProvider<sample.Person>>(
+                    child: Consumer2<data.IndexedDb, NotesProvider<sample.Person>>(
                       builder: (context, indexedDbProvider, notesProvider, _) {
                         return base.LoadingScreen(
                           future: () async {
@@ -700,15 +700,15 @@ Widget _noteItem(BuildContext context, String id) {
         ChangeNotifierProvider<NoteFormController<sample.Person>>(
           create: (context) => createFormController(),
         ),
-        ChangeNotifierProvider<data.IndexedDbProvider>(
+        ChangeNotifierProvider<data.IndexedDb>(
           create: (context) {
-            return data.IndexedDbProvider(
+            return data.IndexedDb(
               dbName: 'notes_sample',
             );
           },
         ),
       ],
-      child: Consumer2<data.IndexedDbProvider, NoteFormController<sample.Person>>(
+      child: Consumer2<data.IndexedDb, NoteFormController<sample.Person>>(
           builder: (context, indexedDbProvider, formController, _) => Scaffold(
                 appBar: AppBar(title: const Text('Detail'), actions: [
                   Consumer<NoteFormController<sample.Person>>(

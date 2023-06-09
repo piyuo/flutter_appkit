@@ -158,7 +158,7 @@ class Session {
 }
 
 /// SessionProvider keep session and provide session to other widget
-class SessionProvider with ChangeNotifier, utils.NeedInitializeMixin {
+class SessionProvider with ChangeNotifier, utils.InitOnceMixin {
   SessionProvider({
     required this.loader,
     this.session,

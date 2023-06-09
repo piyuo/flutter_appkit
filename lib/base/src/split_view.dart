@@ -4,7 +4,7 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:split_view/split_view.dart' as sv;
 
 /// SplitViewProvider is A provider that provides the [SplitView] with the ability to save and load side weight
-class SplitViewProvider with ChangeNotifier, utils.NeedInitializeMixin {
+class SplitViewProvider with ChangeNotifier, utils.InitOnceMixin {
   SplitViewProvider({
     required this.key,
   }) {

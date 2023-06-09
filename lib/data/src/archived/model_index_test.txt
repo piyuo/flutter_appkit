@@ -12,10 +12,10 @@ void main() {
       await modelIndex.add([
         sample.Person()
           ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
         sample.Person()
           ..id = '2'
-          ..lastUpdateTime = DateTime(2021, 1, 2).timestamp,
+          ..timestamp = DateTime(2021, 1, 2).timestamp,
       ]);
 
       expect(modelIndex.length, 2);

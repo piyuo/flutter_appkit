@@ -1,6 +1,6 @@
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'local.dart';
+import 'local.txt';
 
 /// LocalMemory keep data in local memory
 class LocalMemory<T extends pb.Object> extends Local<T> {
@@ -24,7 +24,7 @@ class LocalMemory<T extends pb.Object> extends Local<T> {
   void addObject(T obj) async {
     final exists = await getObjectById(obj.id);
     if (exists != null) {
-      if (exists.lastUpdateTime.toDateTime().isAfter(obj.lastUpdateTime.toDateTime())) {
+      if (exists.timestamp.toDateTime().isAfter(obj.timestamp.toDateTime())) {
         return;
       }
       _list.remove(exists);
@@ -34,12 +34,12 @@ class LocalMemory<T extends pb.Object> extends Local<T> {
 
   /// newestFirstComparator compare two model by t date, newest first
   int newestFirstComparator(T a, T b) {
-    return b.lastUpdateTime.toDateTime().compareTo(a.lastUpdateTime.toDateTime());
+    return b.timestamp.toDateTime().compareTo(a.timestamp.toDateTime());
   }
 
   /// oldestFirstComparator compare two model by t date, oldest first
   int oldestFirstComparator(T a, T b) {
-    return a.lastUpdateTime.toDateTime().compareTo(b.lastUpdateTime.toDateTime());
+    return a.timestamp.toDateTime().compareTo(b.timestamp.toDateTime());
   }
 
   /// sort by model's t date, from old to new
@@ -74,10 +74,10 @@ class LocalMemory<T extends pb.Object> extends Local<T> {
         return false;
       }
 
-      if (from != null && obj.lastUpdateTime.toDateTime().isBefore(from)) {
+      if (from != null && obj.timestamp.toDateTime().isBefore(from)) {
         return false;
       }
-      if (to != null && obj.lastUpdateTime.toDateTime().isAfter(to)) {
+      if (to != null && obj.timestamp.toDateTime().isAfter(to)) {
         return false;
       }
       return true;
@@ -98,8 +98,8 @@ class LocalMemory<T extends pb.Object> extends Local<T> {
   bool isNoMoreOnRemote() => _noMoreOnRemote;
 
   @override
-  google.Timestamp? getNewestTime() => _list.lastOrNull?.lastUpdateTime;
+  google.Timestamp? getNewestTime() => _list.lastOrNull?.timestamp;
 
   @override
-  google.Timestamp? getOldestTime() => _list.firstOrNull?.lastUpdateTime;
+  google.Timestamp? getOldestTime() => _list.firstOrNull?.timestamp;
 }

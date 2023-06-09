@@ -1,8 +1,8 @@
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'local.dart';
-import 'indexed_db_provider.dart';
-import 'model_index.dart';
+import 'local.txt';
+import 'indexed_db.dart';
+import 'model_index.txt';
 
 /// _keyIndex is key for model index store in database
 const _keyIndex = '_idx';

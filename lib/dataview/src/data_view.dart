@@ -198,7 +198,7 @@ abstract class DataView<T extends pb.Object> {
     }
     await dataset.load(); // someone may change dataset so reload it
     T? anchor = await dataset.first;
-    final downloadRows = await loader(true, dataset.rowsPerPage, anchor?.lastUpdateTime, anchor?.id);
+    final downloadRows = await loader(true, dataset.rowsPerPage, anchor?.timestamp, anchor?.id);
     if (downloadRows.isNotEmpty) {
       debugPrint('[data_view] refresh ${downloadRows.length} rows');
     }
@@ -216,7 +216,7 @@ abstract class DataView<T extends pb.Object> {
       return false;
     }
     T? anchor = await dataset.last;
-    final downloadRows = await loader(false, limit, anchor?.lastUpdateTime, anchor?.id);
+    final downloadRows = await loader(false, limit, anchor?.timestamp, anchor?.id);
     if (downloadRows.length < limit) {
       debugPrint('[data_view] has no more data');
       await dataset.setNoMore(true);

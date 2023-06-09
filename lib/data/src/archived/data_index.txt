@@ -1,0 +1,44 @@
+/// Dataset keep list of row for later use
+class DataIndex {
+  DataIndex({
+    required this.id,
+    required this.time,
+    required this.deleted,
+    required this.tags,
+  });
+
+  /// id is object's id
+  final String id;
+
+  /// time is object's last update time
+  final DateTime time;
+
+  /// deleted is true if object is deleted
+  final bool deleted;
+
+  /// tags is tag used for filter
+  final Map<String, dynamic> tags;
+
+  Map<String, dynamic> writeToJsonMap() {
+    return {
+      'i': id,
+      't': time.toIso8601String(),
+      'd': deleted,
+      'a': tags,
+    };
+  }
+
+  static DataIndex mergeFromJsonMap(Map<String, dynamic> map) {
+    return DataIndex(
+      id: map['i'] as String,
+      time: DateTime.parse(map['t'] as String),
+      deleted: map['d'] as bool,
+      tags: map['a'] as Map<String, dynamic>,
+    );
+  }
+
+  /// sort list of DataIndex by time, from new to old
+  static void sort(List<DataIndex> list) => list.sort((DataIndex a, DataIndex b) {
+        return b.time.compareTo(a.time);
+      });
+}

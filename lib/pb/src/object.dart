@@ -77,17 +77,17 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   @visibleForTesting
   set id(value) => model != null ? model!.i = value : null;
 
-  /// lastUpdateTime is model last update time
-  google.Timestamp get lastUpdateTime => model != null ? model!.t : google.Timestamp();
+  /// timestamp contain last update time
+  google.Timestamp get timestamp => model != null ? model!.t : google.Timestamp();
 
-  /// lastUpdateTime is model last update time
+  /// timestamp contain last update time
   @visibleForTesting
-  set lastUpdateTime(value) => model != null ? model!.t = value : null;
+  set timestamp(value) => model != null ? model!.t = value : null;
 
   /// deleted return true if model mark as deleted
   bool get deleted => model != null && model!.d;
 
-  /// markAsDeleted mark object as deleted
+  /// deleted mark object as deleted
   set deleted(bool value) => model != null ? model!.d = value : null;
 
   /// setAccessToken set access token
@@ -118,4 +118,9 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
     }
     return setField(tagNumber, value);
   }
+
+  /// sort list of DataIndex by time, from new to old
+  static void sort(List<Object> list) => list.sort((Object a, Object b) {
+        return b.timestamp.toDateTime().compareTo(a.timestamp.toDateTime());
+      });
 }

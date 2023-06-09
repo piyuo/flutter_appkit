@@ -1,138 +1,176 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'local.dart';
-import 'local_memory.dart';
+import 'dart:math';
+import 'indexed_db.dart';
 
-/// DataLoader load data from remote base on timestamp on local
-/// return list of data and noMoreOnRemote
-typedef DataLoader<T extends pb.Object> = Future<(List<T>, bool)> Function(google.Timestamp? timestamp);
+/// DataRefresher is a function to load data from remote, return list of data
+typedef DataRefresher<T extends pb.Object> = Future<List<T>> Function(google.Timestamp? timestamp);
 
 /// Dataset keep list of row for later use
-/// must implement init,refresh, more
 class Dataset<T extends pb.Object> with ChangeNotifier {
   Dataset({
-    required this.local,
-    required this.refreshData,
-    this.moreData,
+    required this.refresher,
+    required this.db,
+    required this.builder,
+    this.utcExpiredDate,
   });
 
-  /// refreshData refresh data from remote base on newest timestamp on local
-  final DataLoader<T> refreshData;
+  /// _rows keep all rows in db, it will load by init
+  final _rows = <T>[];
 
-  /// moreData load more data from remote base on oldest timestamp on local
-  final DataLoader<T>? moreData;
+  /// utcExpiredDate is the utc date line to remove data
+  DateTime? utcExpiredDate;
 
-  /// local keep data in local
-  Local<T> local;
+  /// hasMore return true if there are more data on remote
+  bool get hasMore => utcExpiredDate != null;
 
-  /// _liveMode is true will use memory to show data on live, it will not cached data in local db
-  bool _liveMode = true;
+  /// refresher get data from remote, return data must newer than timestamp
+  final DataRefresher<T> refresher;
 
-  /// backupLocal backup local data when live mode is on
-  Local<T>? backupLocal;
+  /// db is indexed db that store all object
+  final IndexedDb db;
 
-  /// noMoreOnRemote is true if no more data on remote
-  bool get noMoreOnRemote => local.isNoMoreOnRemote();
+  /// builder is builder to build object
+  final pb.Builder<T> builder;
 
-  /// getDisplayRowById return display row by id
-  //T? getDisplayRowById(String id) => display.where((obj) => obj.id == id).firstOrNull;
-
-  /// getObjectById return object by id, null if not exists
-  Future<T?> getObjectById(String id) async => await local.getObjectById(id);
-
-  /// removeDeletedRows remove deleted rows from _rows list
-  /*
-  void removeDeletedRows() {
-    for (int i = display.length - 1; i >= 0; i--) {
-      final row = display[i];
-      if (row.deleted) {
-        display.removeAt(i);
-      }
-    }
-  }
-
-  /// updateDisplayRows update download rows in _rows list, replace old row with new row
-  void updateDisplayRows(List<T> downloadRows) {
-    for (T row in downloadRows) {
-      final index = display.indexWhere((obj) => obj.id == row.id);
-      if (index != -1) {
-        final other = display[index];
-        if (row.lastUpdateTime.toDateTime().isAfter(other.lastUpdateTime.toDateTime())) {
-          display[index] = row;
-        }
-      }
-    }
-  }
-*/
   /// init load data from database and remove old data use cutOffDays
   Future<void> init() async {
-    await local.init();
+    await db.init();
+    for (final key in db.keys) {
+      final row = await db.getObject<T>(key, builder);
+      if (row != null) {
+        _rows.add(row);
+      }
+    }
+    pb.Object.sort(_rows);
+
+    // no need to remove expired every time, 1/10 chance to remove is enough
+    if (Random().nextInt(10) == 1) {
+      await removeExpired();
+    }
   }
 
   /// dispose close local data
   @override
   void dispose() {
-    local.dispose();
+    db.dispose();
     super.dispose();
   }
 
-  /// live will change live mode
-  Future<void> live(bool value) async {
-    _liveMode = value;
-    if (_liveMode) {
-      backupLocal = local;
-      local = LocalMemory();
-    } else {
-      local = backupLocal!;
-      backupLocal = null;
+  /// removeExpired remove all data that is not in keep duration
+  Future<void> removeExpired() async {
+    if (utcExpiredDate != null) {
+      List<String> needRemove = [];
+      _rows.removeWhere((row) {
+        final deleted = row.timestamp.toDateTime().isBefore(utcExpiredDate!);
+        if (deleted) {
+          needRemove.add(row.id);
+        }
+        return deleted;
+      });
+      if (needRemove.isNotEmpty) {
+        for (final id in needRemove) {
+          await db.delete(id);
+        }
+      }
     }
+  }
+
+  /// _getRefreshTimestamp return timestamp to refresh data
+  google.Timestamp? _getRefreshTimestamp() {
+    if (_rows.isNotEmpty) {
+      return _rows.first.timestamp;
+    }
+
+    if (utcExpiredDate != null) {
+      return utcExpiredDate!.timestamp;
+    }
+
+    return null;
   }
 
   /// refresh to get new rows
   Future<void> refresh() async {
-    final (downloadRows, noMoreOnRemote) = await refreshData(local.getNewestTime());
+    final downloadRows = await refresher(_getRefreshTimestamp());
     if (downloadRows.isNotEmpty) {
-      debugPrint('[dataset] refresh ${downloadRows.length} rows, noMore: $noMoreOnRemote');
-      await local.add(downloadRows, noMoreOnRemote);
+      debugPrint('[dataset] refresh ${downloadRows.length} rows');
+      for (final row in downloadRows) {
+        await _addRow(row);
+      }
+      pb.Object.sort(_rows);
     }
   }
 
-  /// more load more old rows
-  Future<void> more() async {
-    if (local.isNoMoreOnRemote()) {
-      return;
+  /// _addRow put row into db and check if it is newer than existing row
+  Future<void> _addRow(T row) async {
+    final exists = getRowById(row.id);
+    if (exists != null) {
+      if (exists.timestamp.toDateTime().isAfter(row.timestamp.toDateTime()) ||
+          exists.timestamp.toDateTime().isAtSameMomentAs(row.timestamp.toDateTime())) {
+        return;
+      }
+      _rows.remove(exists);
     }
-    final (downloadRows, noMoreOnRemote) = await moreData!(local.getOldestTime());
-    if (downloadRows.isNotEmpty) {
-      debugPrint('[dataset] more ${downloadRows.length} rows, noMore: $noMoreOnRemote');
-      await local.add(downloadRows, noMoreOnRemote);
-    }
+    _rows.insert(0, row);
+    await db.putObject(row.id, row);
   }
 
-  /// query return list of model that match query
-  Future<Iterable<pb.Model>> query({
-    bool sortNewestFirst = true,
+  /// getRowById return row by id, null if not exists
+  T? getRowById(String id) => _rows.where((row) => row.id == id).firstOrNull;
+
+  /// getDisplayRowById return display row by id
+  //T? getDisplayRowById(String id) => display.where((obj) => obj.id == id).firstOrNull;
+
+  /// getObjectById return object by id, null if not exists
+  Future<T?> getObjectById(String id) async => await db.getObject(id, builder);
+
+  /// query return list of object that match query
+  Iterable<T> query({
     bool skipDeleted = true,
+    String? keyword,
     DateTime? from,
     DateTime? to,
-    int start = 0,
-    int length = 0,
-  }) =>
-      local.query(
-        sortNewestFirst: sortNewestFirst,
-        skipDeleted: skipDeleted,
-        from: from,
-        to: to,
-        start: start,
-        length: length,
-      );
+    int? start,
+    int? length,
+    bool Function(T row)? filter,
+  }) {
+    var result = _rows.where((row) {
+      if (skipDeleted && row.deleted) {
+        return false;
+      }
+
+      if (from != null && (row.timestamp.toDateTime().isBefore(from.toUtc()))) {
+        return false;
+      }
+      if (to != null && (row.timestamp.toDateTime().isAfter(to.toUtc()))) {
+        return false;
+      }
+      if (keyword != null && !row.toString().contains(keyword)) {
+        return false;
+      }
+
+      if (filter != null) {
+        return filter(row);
+      }
+
+      return true;
+    });
+    if (start != null) {
+      result = result.skip(start);
+    }
+    if (length != null) {
+      result = result.take(length);
+    }
+
+    return result;
+  }
 
   /// mapObjects return list of object that match given id
   Future<List<T>> mapObjects(Iterable<String> list) async {
     final objects = <T>[];
     for (final id in list) {
-      final object = await local.getObjectById(id);
+      final object = await getObjectById(id);
       if (object != null) {
         objects.add(object);
       }

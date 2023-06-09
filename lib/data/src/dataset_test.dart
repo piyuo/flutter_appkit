@@ -3,52 +3,51 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'indexed_db_provider.dart';
-import 'local_db.dart';
+import 'dataset.dart';
+import 'indexed_db.dart';
 
 void main() {
-  group('[data.local_db]', () {
-    test('should keep rows and noMoreOnRemote', () async {
-      final indexedDbProvider = IndexedDbProvider(dbName: 'test_local_db_keep');
+  group('[data.dataset]', () {
+    test('should keep rows for period of time', () async {
+      final indexedDbProvider = IndexedDb(dbName: 'test_dataset_keep');
       await indexedDbProvider.init();
       await indexedDbProvider.clear();
 
-      final local = LocalDb(
+      final ds = Dataset<sample.Person>(
         db: indexedDbProvider,
         builder: () => sample.Person(),
+        refresher: (timestamp) async => [
+          sample.Person()
+            ..id = '1'
+            ..timestamp = DateTime(2021, 1, 1).timestamp,
+          sample.Person()
+            ..id = '2'
+            ..timestamp = DateTime(2021, 2, 1).timestamp,
+        ],
       );
-      await local.init();
+      await ds.init();
+      await ds.refresh();
 
-      await local.add([
-        sample.Person()
-          ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
-        sample.Person()
-          ..id = '2'
-          ..lastUpdateTime = DateTime.now().timestamp,
-      ], false);
-
-      final list = (await local.query(length: 2)).toList();
+      final list = ds.query().toList();
       expect(list.length, 2);
-      expect(list[0].i, '2');
-      expect(list[1].i, '1');
+      expect(list[0].id, '2');
+      expect(list[1].id, '1');
 
-      final local2 = LocalDb(
-        cutOffDays: 0,
+      final ds2 = Dataset<sample.Person>(
         db: indexedDbProvider,
         builder: () => sample.Person(),
+        refresher: (timestamp) async => [],
       );
-      await local2.init();
-      final list2 = (await local2.query(length: 2)).toList();
+      await ds2.init();
+      final list2 = ds2.query(length: 2).toList();
       expect(list2.length, 2);
-      expect(list2[0].i, '2');
-      expect(list2[1].i, '1');
-      expect(local.isNoMoreOnRemote(), false);
+      expect(list2[0].id, '2');
+      expect(list2[1].id, '1');
 
-      local.dispose();
+      ds.dispose();
       await indexedDbProvider.removeBox();
     });
-
+/*
     test('init should remove expired data', () async {
       final indexedDbProvider = IndexedDbProvider(dbName: 'test_local_db_expired');
       await indexedDbProvider.init();
@@ -63,10 +62,10 @@ void main() {
       await local.add([
         sample.Person()
           ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
         sample.Person()
           ..id = '2'
-          ..lastUpdateTime = DateTime.now().timestamp,
+          ..timestamp = DateTime.now().timestamp,
       ], false);
 
       final local2 = LocalDb(
@@ -96,10 +95,10 @@ void main() {
       await local.add([
         sample.Person()
           ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
         sample.Person()
           ..id = '2'
-          ..lastUpdateTime = DateTime.now().timestamp,
+          ..timestamp = DateTime.now().timestamp,
       ], false);
 
       final person = await local.getObjectById('1');
@@ -129,10 +128,10 @@ void main() {
       await local.add([
         sample.Person()
           ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
         sample.Person()
           ..id = '2'
-          ..lastUpdateTime = DateTime.now().timestamp,
+          ..timestamp = DateTime.now().timestamp,
       ], false);
 
       await local.clear();
@@ -182,10 +181,10 @@ void main() {
       await local.add([
         sample.Person()
           ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
         sample.Person()
           ..id = '2'
-          ..lastUpdateTime = DateTime(2021, 1, 2).timestamp,
+          ..timestamp = DateTime(2021, 1, 2).timestamp,
       ], false);
 
       expect(local.getNewestTime()!.toDateTime().day, 2);
@@ -209,10 +208,10 @@ void main() {
       await local.add([
         sample.Person()
           ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
         sample.Person()
           ..id = '2'
-          ..lastUpdateTime = DateTime(2021, 1, 2).timestamp,
+          ..timestamp = DateTime(2021, 1, 2).timestamp,
       ], false);
 
       expect(local.getOldestTime()!.toDateTime().day, 1);
@@ -236,20 +235,20 @@ void main() {
       await local.add([
         sample.Person()
           ..id = '1'
-          ..lastUpdateTime = DateTime(2021, 1, 1).timestamp,
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
         sample.Person()
           ..id = '2'
-          ..lastUpdateTime = DateTime(2021, 1, 2).timestamp,
+          ..timestamp = DateTime(2021, 1, 2).timestamp,
         sample.Person()
           ..id = '3'
-          ..lastUpdateTime = DateTime(2021, 1, 3).timestamp,
+          ..timestamp = DateTime(2021, 1, 3).timestamp,
         sample.Person()
           ..id = '4'
           ..deleted = true
-          ..lastUpdateTime = DateTime(2021, 1, 4).timestamp,
+          ..timestamp = DateTime(2021, 1, 4).timestamp,
         sample.Person()
           ..id = '5'
-          ..lastUpdateTime = DateTime(2021, 1, 5).timestamp,
+          ..timestamp = DateTime(2021, 1, 5).timestamp,
       ], false);
 
       final result = (await local.query(
@@ -265,6 +264,6 @@ void main() {
 
       local.dispose();
       await indexedDbProvider.removeBox();
-    });
+    });*/
   });
 }

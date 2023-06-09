@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'dataset.dart';
+import 'data_fetcher.dart';
 
 /// DataViewer create id list of page represent data in display
 typedef DataViewer<T extends pb.Object> = Future<List<List<String>>> Function(Dataset<T> dataset);
@@ -11,6 +13,7 @@ class Dataview<T extends pb.Object> with ChangeNotifier {
   Dataview({
     required this.viewer,
     required this.dataset,
+    required this.fetcher,
   });
 
   /// viewer load data from local data and return list of page
@@ -19,64 +22,86 @@ class Dataview<T extends pb.Object> with ChangeNotifier {
   /// dataset keep data
   final Dataset<T> dataset;
 
+  /// fetcher fetch data from remote
+  final DataFetcher<T> fetcher;
+
   /// onMore decide how to put download rows into displayRows
   List<List<String>>? _pages;
 
-  /// displayRows is row already in memory and ready to use
-  final display = <T>[];
+  /// _display is row already in memory and ready to use
+  final _display = <T>[];
 
-  /// pageIndex is current page index loaded into display
-  int pageIndex = 0;
+  /// _pageIndex is current page index loaded into display
+  int _pageIndex = 0;
 
   /// totalPages return total pages
   int get totalPages => _pages?.length ?? 0;
 
-  /// reset page index and display
-  void reset() {
-    pageIndex = 0;
-    display.clear();
-  }
+  /// hasMore return true when current page is last page and dataset did not have full data
+  bool get hasMore => (_pageIndex == totalPages - 1) == false && dataset.hasMore && fetcher.hasMore;
 
-  bool get hasNextPage => (pageIndex < totalPages - 1) || dataset.noMoreOnRemote == false;
+  /// noMore return true when no more data on remote
+  bool get noMore => !hasMore;
 
-  bool get _isMoreDataToLoad => pageIndex >= totalPages - 1 && dataset.noMoreOnRemote == false;
-
-  Future<bool> _tryGetData(Dataset<T> dataset) async {
-    if (pageIndex == 0) {
-      await dataset.refresh();
-      return true;
-    } else if (_isMoreDataToLoad) {
-      await dataset.more();
-      return true;
-    }
-    return false;
-  }
+  /// hasNextPage return true if there is more page to load
+  bool get hasNextPage => (_pageIndex < totalPages - 1) == false;
 
   /// init data view
   Future<void> init() async {
-    await next();
+    await dataset.init();
+    await refresh();
   }
 
-  /// live will change live mode
-  Future<void> live(bool value) async {
-    reset();
-    dataset.live(value);
-    next();
+  /// refresh dataset
+  Future<void> refresh() async {
+    await dataset.refresh();
+    await create();
+  }
+
+  /// create a new view from dataset
+  Future<void> create() async {
+    _pageIndex = 0;
+    _display.clear();
+    _pages = await viewer(dataset);
+    await next();
   }
 
   /// next load a page into display from local data
   Future<void> next() async {
-    if (await _tryGetData(dataset)) {
-      _pages = await viewer(dataset);
-    }
-
-    if (pageIndex < _pages!.length) {
-      final page = _pages![pageIndex];
+    if (_pageIndex < _pages!.length) {
+      final page = _pages![_pageIndex];
       final objects = await dataset.mapObjects(page);
-      display.addAll(objects);
+      _display.addAll(objects);
     }
 
-    pageIndex++;
+    _pageIndex++;
     notifyListeners();
+  }
+
+  /// _getFetchTimestamp return timestamp to fetch data
+  google.Timestamp? _getFetchTimestamp() {
+    if (!hasMore) {
+      return null;
+    }
+    if (_display.isNotEmpty) {
+      return _display.last.timestamp;
+    }
+    return dataset.utcExpiredDate!.timestamp;
+  }
+
+  /// fetch more data from remote
+  Future<void> more() async {
+    if (hasMore) {
+      final lastTimestamp = _getFetchTimestamp();
+      if (lastTimestamp == null) {
+        return;
+      }
+
+      final rows = await fetcher.fetch(lastTimestamp);
+      if (rows.isNotEmpty) {
+        _display.addAll(rows);
+        notifyListeners();
+      }
+    }
   }
 }
