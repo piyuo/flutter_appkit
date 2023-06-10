@@ -81,7 +81,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   }
 
   /// _getRefreshTimestamp return timestamp to refresh data
-  google.Timestamp? _getRefreshTimestamp() {
+  google.Timestamp? getRefreshTimestamp() {
     if (_rows.isNotEmpty) {
       return _rows.first.timestamp;
     }
@@ -95,7 +95,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
 
   /// refresh to get new rows
   Future<void> refresh() async {
-    final downloadRows = await refresher(_getRefreshTimestamp());
+    final downloadRows = await refresher(getRefreshTimestamp());
     if (downloadRows.isNotEmpty) {
       debugPrint('[dataset] refresh ${downloadRows.length} rows');
       for (final row in downloadRows) {

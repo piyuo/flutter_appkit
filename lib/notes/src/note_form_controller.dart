@@ -179,15 +179,17 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
 
   /// deleteByView called by view
   Future<void> deleteByView(List<T> list) async {
-    await dialog.toastWaitFor(
+    //should delete by remote
+    /*await dialog.toastWaitFor(
       showDone: false,
       callback: () => dataClient.delete(list),
-    );
+    );*/
   }
 
   /// restoreByView called by view
   Future<void> restoreByView(List<T> list) async {
-    await dataClient.restore(list);
+    //should delete by remote
+    //await dataClient.restore(list);
   }
 
   /// buildForm use formBuilder to build form

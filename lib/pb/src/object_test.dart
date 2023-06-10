@@ -1,39 +1,51 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/sample/sample.dart' as sample;
+import 'package:libcli/pb/src/common/common.dart' as common;
+import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/google/google.dart' as google;
 import 'dart:convert';
 
 void main() {
-  group('[object]', () {
+  group('[pb.object]', () {
     test('should return JSON', () {
-      final obj = common.Error()..code = 'hi';
+      final obj = sample.Person(name: 'p1');
       expect(obj.jsonString, isNotEmpty);
     });
 
     test('should write/read json', () {
-      final obj = common.Error()..code = 'hi';
+      final obj = sample.Person(name: 'p1');
       final jText = obj.writeToJson();
       expect(jText, isNotEmpty);
 
       final jsonMap = json.decode(jText) as Map<String, dynamic>;
-      final obj2 = common.Error()..mergeFromJsonMap(jsonMap);
-      expect(obj2.code, 'hi');
+      final obj2 = sample.Person()..mergeFromJsonMap(jsonMap);
+      expect(obj2.name, 'p1');
+    });
+
+    test('should return id, timestamp, time, deleted', () {
+      final person = sample.Person(
+          m: common.Model(
+        i: '1',
+        t: DateTime(2023, 6, 15).utcTimestamp,
+        d: true,
+      ));
+      expect(person.utcTime.isAtSameMomentAs(DateTime(2023, 06, 15).toUtc()), true);
     });
 
     test('should write/read base64 string', () {
-      final obj = common.Error()..code = 'hi';
+      final obj = sample.Person(name: 'p1');
       final str = obj.toBase64();
       expect(str, isNotEmpty);
 
-      final obj2 = common.Error()..fromBase64(str);
-      expect(obj2.code, 'hi');
+      final obj2 = sample.Person()..fromBase64(str);
+      expect(obj2.name, 'p1');
     });
 
     test('should comparable', () {
-      final obj = common.Error()..code = 'hi';
-      final obj2 = common.Error()..code = 'hi2';
-      final obj3 = common.Error()..code = 'hi';
+      final obj = sample.Person(name: 'p1');
+      final obj2 = sample.Person(name: 'p2');
+      final obj3 = sample.Person(name: 'p3');
       expect(obj != obj2, true);
       expect(obj == obj3, true);
 

@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/google/google.dart' as google;
-import 'package:libcli/generator/generator.dart' as generator;
 
 /// Builder function will create empty object instance
 typedef Builder<T> = T Function();
@@ -14,16 +12,6 @@ typedef ObjectBuilder<Object> = Object Function(int id, List<int> bytes);
 /// Object is data transfer object that use protobuf format
 ///
 abstract class Object extends $pb.GeneratedMessage implements Comparable<Object> {
-  Object() {
-    if (hasModel) {
-      model = common.Model(
-        d: false,
-        i: generator.uuid(),
-        t: google.Timestamp(),
-      );
-    }
-  }
-
   /// mapIdXXX return map id let service create object by id
   int mapIdXXX();
 
@@ -61,34 +49,20 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   /// namespace return object namespace, usually is package name
   String get namespace => '';
 
-  /// hasModel return true if model is defined
-  bool get hasModel => false;
-
   /// model is defined model
   common.Model? get model => null;
 
-  /// model is defined model
-  set model(common.Model? value) {}
-
-  /// id is model id
+  /// id is model id, it is a read only field, if you want to change it use backend service to modify database
   String get id => model != null ? model!.i : '';
 
-  /// id is model id
-  @visibleForTesting
-  set id(value) => model != null ? model!.i = value : null;
-
-  /// timestamp contain last update time
+  /// timestamp contain last update time, it is a read only field, if you want to change it use backend service to modify database
   google.Timestamp get timestamp => model != null ? model!.t : google.Timestamp();
 
-  /// timestamp contain last update time
-  @visibleForTesting
-  set timestamp(value) => model != null ? model!.t = value : null;
+  /// utcTimestamp contain last update time in utc, it is a read only field, if you want to change it use backend service to modify database
+  DateTime get utcTime => timestamp.toDateTime();
 
-  /// deleted return true if model mark as deleted
+  /// deleted return true if model mark as deleted, it is a read only field, if you want to change it use backend service to modify database
   bool get deleted => model != null && model!.d;
-
-  /// deleted mark object as deleted
-  set deleted(bool value) => model != null ? model!.d = value : null;
 
   /// setAccessToken set access token
   void setAccessToken(String token) {}

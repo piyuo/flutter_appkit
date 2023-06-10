@@ -2,6 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'data_client.dart';
 import 'dataset_ram.dart';
 
@@ -14,7 +15,7 @@ void main() {
         creator: () async => sample.Person(),
         loader: (id) async {
           isGet = true;
-          return sample.Person()..id = 'myId';
+          return sample.Person(m: pb.Model(i: 'myId'));
         },
         saver: (_) async {},
       );
@@ -85,34 +86,10 @@ void main() {
       expect(firstPerson!.name, 'john');
     });
 
-    test('should delete data', () async {
-      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      await dataset.load();
-      final person = sample.Person()
-        ..name = 'john'
-        ..id = 'existsPerson';
-      dataset.add([person]);
-
-      final dataClient = DataClient<sample.Person>(
-        creator: () async => sample.Person(),
-        loader: (context) async => null,
-        saver: (_) async {},
-      );
-      final result = await dataClient.load(dataset: dataset, id: 'existsPerson');
-      expect(result, isNotNull);
-      expect(dataset.isNotEmpty, true);
-
-      await dataClient.delete([person]);
-      final firstPerson = await dataset.first;
-      expect(firstPerson, isNull);
-    });
-
     test('should save data', () async {
       sample.Person? saved;
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      final person = sample.Person()
-        ..name = 'john'
-        ..id = 'person1';
+      final person = sample.Person(name: 'john', m: pb.Model(i: 'person1'));
       dataset.add([person]);
 
       final dataClient = DataClient<sample.Person>(
@@ -129,30 +106,6 @@ void main() {
       expect(saved!.name, 'jo');
       final firstPerson = await dataset.first;
       expect(firstPerson!.name, 'jo');
-    });
-
-    test('should delete data', () async {
-      sample.Person? saved;
-      final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      final person = sample.Person()
-        ..name = 'john'
-        ..id = 'person1';
-      dataset.add([person]);
-
-      final dataClient = DataClient<sample.Person>(
-        creator: () async => sample.Person(),
-        loader: (id) async => null,
-        saver: (items) async {
-          saved = items[0];
-        },
-      );
-      final result = await dataClient.load(dataset: dataset, id: 'person1');
-      await dataClient.delete([result]);
-      expect(saved, isNotNull);
-      expect(saved!.id, 'person1');
-      expect(saved!.deleted, isTrue);
-      final firstPerson = await dataset.first;
-      expect(firstPerson, isNull);
     });
   });
 }

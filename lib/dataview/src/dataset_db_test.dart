@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'dataset_db.dart';
 
 void main() {
@@ -67,14 +68,14 @@ void main() {
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
-      await dataset.insert([sample.Person()..id = 'first']);
+      await dataset.insert([sample.Person(m: pb.Model(i: 'first'))]);
       expect(dataset.length, 1);
 
       // remove duplicate
-      await dataset.insert([sample.Person()..id = 'first']);
+      await dataset.insert([sample.Person(m: pb.Model(i: 'first'))]);
       expect(dataset.length, 1);
 
-      await dataset.insert([sample.Person()..id = 'second']);
+      await dataset.insert([sample.Person(m: pb.Model(i: 'second'))]);
       expect(dataset.length, 2);
       expect((await dataset.first)!.id, 'second');
       expect((await dataset.last)!.id, 'first');
@@ -90,9 +91,9 @@ void main() {
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
-      await dataset.insert([sample.Person()..id = 'first']);
-      await dataset.insert([sample.Person()..id = 'second']);
-      await dataset.insert([sample.Person()..id = 'third']);
+      await dataset.insert([sample.Person(m: pb.Model(i: 'first'))]);
+      await dataset.insert([sample.Person(m: pb.Model(i: 'second'))]);
+      await dataset.insert([sample.Person(m: pb.Model(i: 'third'))]);
       expect(dataset.length, 3);
 
       await dataset.delete(['first', 'third']);
@@ -111,14 +112,14 @@ void main() {
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
-      await dataset.add([sample.Person()..id = 'first']);
+      await dataset.add([sample.Person(m: pb.Model(i: 'first'))]);
       expect(dataset.length, 1);
 
       // remove duplicate
-      await dataset.add([sample.Person()..id = 'first']);
+      await dataset.add([sample.Person(m: pb.Model(i: 'first'))]);
       expect(dataset.length, 1);
 
-      await dataset.add([sample.Person()..id = 'second']);
+      await dataset.add([sample.Person(m: pb.Model(i: 'second'))]);
       expect(dataset.length, 2);
       expect((await dataset.first)!.id, 'first');
       expect((await dataset.last)!.id, 'second');
@@ -137,8 +138,8 @@ void main() {
       var rows = await dataset.range(0);
       expect(rows.length, 0);
 
-      await dataset.add([sample.Person()..id = 'first']);
-      await dataset.add([sample.Person()..id = 'second']);
+      await dataset.add([sample.Person(m: pb.Model(i: 'first'))]);
+      await dataset.add([sample.Person(m: pb.Model(i: 'second'))]);
       rows = await dataset.range(0);
       expect(rows.length, 2);
       rows = await dataset.range(0, 2);
@@ -158,8 +159,8 @@ void main() {
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
-      await dataset.add([sample.Person()..id = 'first']);
-      await dataset.add([sample.Person()..id = 'second']);
+      await dataset.add([sample.Person(m: pb.Model(i: 'first'))]);
+      await dataset.add([sample.Person(m: pb.Model(i: 'second'))]);
       await dataset.setNoMore(true);
       await dataset.setRowsPerPage(21);
 
@@ -185,7 +186,7 @@ void main() {
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
-      await dataset.add(List.generate(2, (i) => sample.Person()..id = '$i'));
+      await dataset.add(List.generate(2, (i) => sample.Person(m: pb.Model(i: '$i'))));
       final obj = await dataset.read('1');
       expect(obj, isNotNull);
       expect(obj!.id, '1');
@@ -203,8 +204,8 @@ void main() {
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
-      await dataset.add([sample.Person()..id = 'first']);
-      await dataset.add([sample.Person()..id = 'second']);
+      await dataset.add([sample.Person(m: pb.Model(i: 'first'))]);
+      await dataset.add([sample.Person(m: pb.Model(i: 'second'))]);
 
       var count = 0;
       var id = '';
@@ -226,7 +227,7 @@ void main() {
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
-      await dataset.add([sample.Person()..id = 'first']);
+      await dataset.add([sample.Person(m: pb.Model(i: 'first'))]);
       expect(dataset.isIDExists('first'), isTrue);
       expect(dataset.isIDExists('notExists'), isFalse);
       await dbProvider.removeBox();

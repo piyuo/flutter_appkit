@@ -13,6 +13,7 @@ import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/generator/generator.dart' as generator;
+import 'package:libcli/pb/pb.dart' as pb;
 import '../notes.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
@@ -104,7 +105,7 @@ NotesProvider<sample.Person> _notesProvider = NotesProvider<sample.Person>(
 NoteFormController<sample.Person> createFormController() => NoteFormController<sample.Person>(
       formGroup: formGroup,
       showDeleteButton: true,
-      loader: (id) async => sample.Person(name: id)..id = id,
+      loader: (id) async => sample.Person(name: id, m: pb.Model(i: id)),
       saver: (persons) async {
         await Future.delayed(const Duration(seconds: 3));
       },

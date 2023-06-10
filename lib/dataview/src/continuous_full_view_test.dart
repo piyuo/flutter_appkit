@@ -3,6 +3,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'continuous_full_view.dart';
 import 'dataset_ram.dart';
 
@@ -82,7 +83,7 @@ void main() {
           anchorTimestampResult = anchorTimestamp;
           anchorIdResult = anchorId;
           idCount++;
-          return List.generate(10, (index) => sample.Person()..id = idCount.toString());
+          return List.generate(10, (index) => sample.Person(m: pb.Model(i: idCount.toString())));
         },
       );
       await view.load();

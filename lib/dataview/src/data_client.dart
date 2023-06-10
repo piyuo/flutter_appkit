@@ -78,7 +78,7 @@ class DataClient<T extends pb.Object> {
     await saver(list);
     await dataset.insert(list);
   }
-
+/* should do delete/restore on remote
   /// restore data from deleted
   Future<void> restore(List<T> list) async {
     for (final item in list) {
@@ -95,5 +95,5 @@ class DataClient<T extends pb.Object> {
     }
     await saver(list);
     await dataset.delete(list.map((row) => row.id).toList());
-  }
+  }*/
 }

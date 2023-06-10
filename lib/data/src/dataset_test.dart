@@ -17,12 +17,8 @@ void main() {
         db: indexedDbProvider,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [
-          sample.Person()
-            ..id = '1'
-            ..timestamp = DateTime(2021, 1, 1).timestamp,
-          sample.Person()
-            ..id = '2'
-            ..timestamp = DateTime(2021, 2, 1).timestamp,
+          sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+          sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).utcTimestamp)),
         ],
       );
       await ds.init();
@@ -58,12 +54,8 @@ void main() {
           db: indexedDbProvider,
           builder: () => sample.Person(),
           refresher: (timestamp) async => [
-                sample.Person()
-                  ..id = '1'
-                  ..timestamp = DateTime(2021, 1, 1).utcTimestamp,
-                sample.Person()
-                  ..id = '2'
-                  ..timestamp = DateTime(2021, 2, 1).utcTimestamp,
+                sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+                sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).utcTimestamp)),
               ]);
 
       await ds.init();
@@ -90,9 +82,7 @@ void main() {
 
     test('refresh should only add new data and sort', () async {
       var result = [
-        sample.Person()
-          ..id = '1'
-          ..timestamp = DateTime(2021, 1, 1).timestamp,
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
       ];
 
       final indexedDbProvider = IndexedDb(dbName: 'test_dataset_refresh');
@@ -110,18 +100,14 @@ void main() {
       expect(ds.rows[0].id, '1');
 
       result = [
-        sample.Person()
-          ..id = '2'
-          ..timestamp = DateTime(2021, 2, 1).timestamp,
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).utcTimestamp)),
       ];
       await ds.refresh();
       expect(ds.rows.length, 2);
       expect(ds.rows[0].id, '2');
 
       result = [
-        sample.Person()
-          ..id = '1'
-          ..timestamp = DateTime(2021, 3, 1).timestamp,
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 3, 1).utcTimestamp)),
       ];
       await ds.refresh();
       expect(ds.rows.length, 2);
@@ -129,9 +115,7 @@ void main() {
       expect(ds.rows[0].timestamp.toDateTime().month, 3);
 
       result = [
-        sample.Person()
-          ..id = '2'
-          ..timestamp = DateTime(2021, 1, 1).timestamp,
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 1).utcTimestamp)),
       ];
       await ds.refresh();
       expect(ds.rows.length, 2);
@@ -145,36 +129,6 @@ void main() {
 /*
 
 
-    test('clear should clear all rows', () async {
-      final indexedDbProvider = IndexedDbProvider(dbName: 'test_local_db_clear');
-      await indexedDbProvider.init();
-      await indexedDbProvider.clear();
-
-      final local = LocalDb(
-        db: indexedDbProvider,
-        builder: () => sample.Person(),
-      );
-
-      await local.init();
-      await local.add([
-        sample.Person()
-          ..id = '1'
-          ..timestamp = DateTime(2021, 1, 1).timestamp,
-        sample.Person()
-          ..id = '2'
-          ..timestamp = DateTime.now().timestamp,
-      ], false);
-
-      await local.clear();
-      final list = (await local.query(length: 2)).toList();
-      expect(list.length, 0);
-
-      final notExists = await local.getObjectById('1');
-      expect(notExists, isNull);
-
-      local.dispose();
-      await indexedDbProvider.removeBox();
-    });
 
     test('isNoMoreOnRemote should return [add] set value', () async {
       final indexedDbProvider = IndexedDbProvider(dbName: 'test_local_db_no_more');

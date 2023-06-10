@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/testing/testing.dart' as testing;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'data_view.dart';
 import 'paged_data_view.dart';
 import 'dataset_ram.dart';
@@ -165,7 +166,7 @@ void main() {
           idCount++;
           return List.generate(
             limit,
-            (index) => sample.Person()..id = idCount.toString(),
+            (index) => sample.Person(m: pb.Model(i: idCount.toString())),
           );
         },
       );
@@ -253,14 +254,14 @@ void main() {
       DataView dataView = PagedDataView(
         DatasetRam(objectBuilder: () => sample.Person()),
         loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
-          return List.generate(10, (i) => sample.Person()..id = '$i');
+          return List.generate(10, (i) => sample.Person(m: pb.Model(i: '$i')));
         },
       );
       await dataView.load();
       await dataView.refresh();
       expect(dataView.displayRows.length, 10);
       expect(dataView.selectedIDs.length, 0);
-      dataView.setSelectedRows([sample.Person()..id = '5']);
+      dataView.setSelectedRows([sample.Person(m: pb.Model(i: '5'))]);
       expect(dataView.selectedIDs.length, 1);
       dataView.setSelectedRows([]);
       expect(dataView.selectedIDs.length, 0);
@@ -426,17 +427,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person()..id = 'init$index');
+            return List.generate(limit, (index) => sample.Person(m: pb.Model(i: 'init$index')));
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(limit, (index) => sample.Person()..id = 'firstMore$index');
+            return List.generate(limit, (index) => sample.Person(m: pb.Model(i: 'firstMore$index')));
           }
           if (step == 2) {
             // second refresh
             step++;
-            return List.generate(2, (index) => sample.Person()..id = 'secondMore$index');
+            return List.generate(2, (index) => sample.Person(m: pb.Model(i: 'secondMore$index')));
           }
           return [];
         },
