@@ -1,10 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/google/google.dart' as google;
-import 'dart:convert';
 
 void main() {
   group('[pb.object]', () {
@@ -30,7 +29,21 @@ void main() {
         t: DateTime(2023, 6, 15).utcTimestamp,
         d: true,
       ));
+      expect(person.id, '1');
+      expect(person.timestamp.toDateTime(), DateTime(2023, 06, 15).toUtc());
       expect(person.utcTime.isAtSameMomentAs(DateTime(2023, 06, 15).toUtc()), true);
+      expect(person.deleted, true);
+
+      final person2 = sample.Person(
+          m: common.Model(
+        i: '2',
+        t: DateTime(2023, 6, 16).utcTimestamp,
+        d: false,
+      ));
+      expect(person2.id, '2');
+      expect(person2.timestamp.toDateTime(), DateTime(2023, 06, 16).toUtc());
+      expect(person2.utcTime.isAtSameMomentAs(DateTime(2023, 06, 16).toUtc()), true);
+      expect(person2.deleted, false);
     });
 
     test('should write/read base64 string', () {
@@ -42,10 +55,18 @@ void main() {
       expect(obj2.name, 'p1');
     });
 
+    test('should write to searchable string', () {
+      final obj = sample.Person(name: 'p1', age: 49, stringValue: 'Eye Color: Blue');
+      final str = obj.toString().toLowerCase();
+      expect(str.contains('p1'), isTrue);
+      expect(str.contains('blue'), isTrue);
+      expect(str.contains('notExists'), isFalse);
+    });
+
     test('should comparable', () {
       final obj = sample.Person(name: 'p1');
       final obj2 = sample.Person(name: 'p2');
-      final obj3 = sample.Person(name: 'p3');
+      final obj3 = sample.Person(name: 'p1');
       expect(obj != obj2, true);
       expect(obj == obj3, true);
 
@@ -54,13 +75,6 @@ void main() {
       final buf3 = obj3.writeToBuffer();
       expect(listEquals(buf, buf2), false);
       expect(listEquals(buf, buf3), true);
-    });
-
-    test('should have model', () {
-      final person = sample.Person();
-      expect(person.hasModel, isTrue);
-      expect(person.id, isNotEmpty);
-      expect(person.timestamp, isNotNull);
     });
 
     test('should get/set field by name', () {
