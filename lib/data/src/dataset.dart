@@ -34,6 +34,9 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// builder is builder to build object
   final pb.Builder<T> builder;
 
+  /// rows return all rows
+  List<T> get rows => _rows;
+
   /// init load data from database and remove old data use cutOffDays
   Future<void> init() async {
     await db.init();

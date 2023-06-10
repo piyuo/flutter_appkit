@@ -8,7 +8,7 @@ import 'indexed_db.dart';
 
 void main() {
   group('[data.dataset]', () {
-    test('should keep rows for period of time', () async {
+    test('should cache data in indexed db', () async {
       final indexedDbProvider = IndexedDb(dbName: 'test_dataset_keep');
       await indexedDbProvider.init();
       await indexedDbProvider.clear();
@@ -39,7 +39,7 @@ void main() {
         refresher: (timestamp) async => [],
       );
       await ds2.init();
-      final list2 = ds2.query(length: 2).toList();
+      final list2 = ds2.query().toList();
       expect(list2.length, 2);
       expect(list2[0].id, '2');
       expect(list2[1].id, '1');
@@ -47,72 +47,103 @@ void main() {
       ds.dispose();
       await indexedDbProvider.removeBox();
     });
-/*
-    test('init should remove expired data', () async {
-      final indexedDbProvider = IndexedDbProvider(dbName: 'test_local_db_expired');
+
+    test('should remove expired data', () async {
+      final indexedDbProvider = IndexedDb(dbName: 'test_dataset_expired');
       await indexedDbProvider.init();
       await indexedDbProvider.clear();
 
-      final local = LocalDb(
+      final ds = Dataset(
+          utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
+          db: indexedDbProvider,
+          builder: () => sample.Person(),
+          refresher: (timestamp) async => [
+                sample.Person()
+                  ..id = '1'
+                  ..timestamp = DateTime(2021, 1, 1).utcTimestamp,
+                sample.Person()
+                  ..id = '2'
+                  ..timestamp = DateTime(2021, 2, 1).utcTimestamp,
+              ]);
+
+      await ds.init();
+      await ds.refresh();
+      final list = ds.query().toList();
+      expect(list.length, 2);
+      expect(list[0].id, '2');
+      expect(list[1].id, '1');
+
+      final ds2 = Dataset<sample.Person>(
+        utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
         db: indexedDbProvider,
         builder: () => sample.Person(),
+        refresher: (timestamp) async => [],
       );
-
-      await local.init();
-      await local.add([
-        sample.Person()
-          ..id = '1'
-          ..timestamp = DateTime(2021, 1, 1).timestamp,
-        sample.Person()
-          ..id = '2'
-          ..timestamp = DateTime.now().timestamp,
-      ], false);
-
-      final local2 = LocalDb(
-        db: indexedDbProvider,
-        builder: () => sample.Person(),
-      );
-      await local2.init();
-      final list2 = (await local2.query(length: 2)).toList();
+      await ds2.init();
+      await ds2.removeExpired();
+      final list2 = ds2.query().toList();
       expect(list2.length, 1);
-      expect(list2[0].i, '2');
-
-      local.dispose();
+      expect(list2[0].id, '2');
+      ds.dispose();
       await indexedDbProvider.removeBox();
     });
 
-    test('getObjectById should return object', () async {
-      final indexedDbProvider = IndexedDbProvider(dbName: 'test_local_db_get_object');
-      await indexedDbProvider.init();
-      await indexedDbProvider.clear();
-
-      final local = LocalDb(
-        db: indexedDbProvider,
-        builder: () => sample.Person(),
-      );
-
-      await local.init();
-      await local.add([
+    test('refresh should only add new data and sort', () async {
+      var result = [
         sample.Person()
           ..id = '1'
           ..timestamp = DateTime(2021, 1, 1).timestamp,
+      ];
+
+      final indexedDbProvider = IndexedDb(dbName: 'test_dataset_refresh');
+      await indexedDbProvider.init();
+      await indexedDbProvider.clear();
+
+      final ds = Dataset<sample.Person>(
+        db: indexedDbProvider,
+        builder: () => sample.Person(),
+        refresher: (timestamp) async => result,
+      );
+      await ds.init();
+      await ds.refresh();
+      expect(ds.rows.length, 1);
+      expect(ds.rows[0].id, '1');
+
+      result = [
         sample.Person()
           ..id = '2'
-          ..timestamp = DateTime.now().timestamp,
-      ], false);
+          ..timestamp = DateTime(2021, 2, 1).timestamp,
+      ];
+      await ds.refresh();
+      expect(ds.rows.length, 2);
+      expect(ds.rows[0].id, '2');
 
-      final person = await local.getObjectById('1');
-      expect(person!.id, '1');
+      result = [
+        sample.Person()
+          ..id = '1'
+          ..timestamp = DateTime(2021, 3, 1).timestamp,
+      ];
+      await ds.refresh();
+      expect(ds.rows.length, 2);
+      expect(ds.rows[0].id, '1');
+      expect(ds.rows[0].timestamp.toDateTime().month, 3);
 
-      final person2 = await local.getObjectById('2');
-      expect(person2!.id, '2');
+      result = [
+        sample.Person()
+          ..id = '2'
+          ..timestamp = DateTime(2021, 1, 1).timestamp,
+      ];
+      await ds.refresh();
+      expect(ds.rows.length, 2);
+      expect(ds.rows[1].id, '2');
+      expect(ds.rows[1].timestamp.toDateTime().month, 2);
 
-      final notExists = await local.getObjectById('3');
-      expect(notExists, isNull);
-
-      local.dispose();
+      ds.dispose();
       await indexedDbProvider.removeBox();
     });
+
+/*
+
 
     test('clear should clear all rows', () async {
       final indexedDbProvider = IndexedDbProvider(dbName: 'test_local_db_clear');
