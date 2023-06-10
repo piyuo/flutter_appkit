@@ -12,3 +12,5 @@ export 'src/net.dart';
 export 'src/delay_run.dart';
 export 'src/try_again_later_exception.dart';
 export 'src/date_range.dart';
+export 'src/uuid.dart';
+export 'src/random.dart';

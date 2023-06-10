@@ -12,7 +12,7 @@ import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/dataview/dataview.dart' as dataview;
-import 'package:libcli/generator/generator.dart' as generator;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/pb/pb.dart' as pb;
 import '../notes.dart';
 
@@ -63,7 +63,7 @@ NotesProvider<sample.Person> _notesProvider = NotesProvider<sample.Person>(
     return List.generate(
       stepCount == 1 ? 1 : 1,
       (i) {
-        final uuid = generator.randomNumber(6);
+        final uuid = utils.randomNumber(6);
         return sample.Person(name: uuid);
       },
     );
@@ -139,7 +139,7 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
             ])),
       ),
       creator: () async {
-        final no = generator.randomNumber(6);
+        final no = utils.randomNumber(6);
         return sample.Person(name: 'new person $no');
       },
     );

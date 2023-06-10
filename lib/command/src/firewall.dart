@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'package:libcli/generator/generator.dart' as generator;
+import 'package:libcli/utils/utils.dart' as utils;
 
 /// _blockList keep action need block
 final _blockList = cache.RamProvider();
@@ -104,7 +104,7 @@ pb.Object firewallBegin(pb.Object action) {
   cache.delete(memoryKeyLastResponse);
 
   // add call count for OVERFLOW detection
-  cache.put(memoryKeyCall + generator.randomNumber(6), null, expire: maxAllowPostDuration);
+  cache.put(memoryKeyCall + utils.randomNumber(6), null, expire: maxAllowPostDuration);
   return FirewallPass();
 }
 

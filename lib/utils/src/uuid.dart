@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
-/// uuid create UUID in string format
+/// uuid create UUID in string format, it use time base v1 UUID to avoid collision on old data
 /// ```dart
 /// final id = uuid();
 /// ```

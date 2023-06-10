@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/base/base.dart' as base;
-import 'package:libcli/generator/generator.dart' as generator;
+import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../dialog.dart';
 
@@ -595,7 +595,7 @@ class DialogExample extends StatelessWidget {
               }
             },
             onNewItem: () async {
-              final id = generator.randomNumber(5);
+              final id = utils.randomNumber(5);
               printers.add(
                 delta.ListItem<String>(id, title: 'Printer $id', icon: Icons.print, iconColor: Colors.green),
               );
