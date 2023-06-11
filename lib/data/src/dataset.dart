@@ -80,8 +80,8 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// _getRefreshTimestamp return timestamp to refresh data
-  google.Timestamp? getRefreshTimestamp() {
+  /// refreshTimestamp return timestamp to refresh data
+  google.Timestamp? get refreshTimestamp {
     if (_rows.isNotEmpty) {
       return _rows.first.timestamp;
     }
@@ -95,7 +95,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
 
   /// refresh to get new rows
   Future<void> refresh() async {
-    final downloadRows = await refresher(getRefreshTimestamp());
+    final downloadRows = await refresher(refreshTimestamp);
     if (downloadRows.isNotEmpty) {
       debugPrint('[dataset] refresh ${downloadRows.length} rows');
       for (final row in downloadRows) {
@@ -122,12 +122,6 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// getRowById return row by id, null if not exists
   T? getRowById(String id) => _rows.where((row) => row.id == id).firstOrNull;
 
-  /// getDisplayRowById return display row by id
-  //T? getDisplayRowById(String id) => display.where((obj) => obj.id == id).firstOrNull;
-
-  /// getObjectById return object by id, null if not exists
-  Future<T?> getObjectById(String id) async => await db.getObject(id, builder);
-
   /// query return list of object that match query
   Iterable<T> query({
     bool skipDeleted = true,
@@ -149,7 +143,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
       if (to != null && (row.timestamp.toDateTime().isAfter(to.toUtc()))) {
         return false;
       }
-      if (keyword != null && !row.toString().contains(keyword)) {
+      if (keyword != null && !row.toString().toLowerCase().contains(keyword.toLowerCase())) {
         return false;
       }
 
@@ -170,10 +164,10 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   }
 
   /// mapObjects return list of object that match given id
-  Future<List<T>> mapObjects(Iterable<String> list) async {
+  List<T> mapObjects(Iterable<String> list) {
     final objects = <T>[];
     for (final id in list) {
-      final object = await getObjectById(id);
+      final object = getRowById(id);
       if (object != null) {
         objects.add(object);
       }
