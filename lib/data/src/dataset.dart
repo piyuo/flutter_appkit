@@ -8,10 +8,10 @@ import 'indexed_db.dart';
 typedef DataRefresher<T extends pb.Object> = Future<List<T>> Function(google.Timestamp? timestamp);
 
 /// Dataset keep list of row for later use
-class Dataset<T extends pb.Object> with ChangeNotifier {
+class Dataset<T extends pb.Object> {
   Dataset({
     required this.refresher,
-    required this.db,
+    required this.indexedDb,
     required this.builder,
     this.utcExpiredDate,
   });
@@ -28,8 +28,8 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
   /// refresher get data from remote, return data must newer than timestamp
   final DataRefresher<T> refresher;
 
-  /// db is indexed db that store all object
-  final IndexedDb db;
+  /// indexedDb is indexed db that store all object
+  final IndexedDb indexedDb;
 
   /// builder is builder to build object
   final pb.Builder<T> builder;
@@ -39,9 +39,9 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
 
   /// init load data from database and remove old data use cutOffDays
   Future<void> init() async {
-    await db.init();
-    for (final key in db.keys) {
-      final row = await db.getObject<T>(key, builder);
+    await indexedDb.init();
+    for (final key in indexedDb.keys) {
+      final row = await indexedDb.getObject<T>(key, builder);
       if (row != null) {
         _rows.add(row);
       }
@@ -54,11 +54,10 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
     }
   }
 
-  /// dispose close local data
-  @override
+  /// dispose database
+  @mustCallSuper
   void dispose() {
-    db.dispose();
-    super.dispose();
+    indexedDb.dispose();
   }
 
   /// removeExpired remove all data that is not in keep duration
@@ -74,7 +73,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
       });
       if (needRemove.isNotEmpty) {
         for (final id in needRemove) {
-          await db.delete(id);
+          await indexedDb.delete(id);
         }
       }
     }
@@ -116,7 +115,7 @@ class Dataset<T extends pb.Object> with ChangeNotifier {
       _rows.remove(exists);
     }
     _rows.insert(0, row);
-    await db.putObject(row.id, row);
+    await indexedDb.putObject(row.id, row);
   }
 
   /// getRowById return row by id, null if not exists

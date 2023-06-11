@@ -5,15 +5,14 @@ import 'dataset.dart';
 import 'data_fetcher.dart';
 
 /// DataViewer create id list of page represent data in display
-typedef DataViewer<T extends pb.Object> = Future<List<List<String>>> Function(Dataset<T> dataset);
+typedef DataViewer<T extends pb.Object> = List<List<String>> Function(Dataset<T> dataset);
 
-/// Dataset keep list of row for later use
-/// must implement init,refresh, more
-class Dataview<T extends pb.Object> with ChangeNotifier {
-  Dataview({
+/// DataProvider read data from dataset user viewer to create list of page
+class DataProvider<T extends pb.Object> with ChangeNotifier {
+  DataProvider({
     required this.viewer,
     required this.dataset,
-    required this.fetcher,
+    this.fetcher,
   });
 
   /// viewer load data from local data and return list of page
@@ -23,7 +22,7 @@ class Dataview<T extends pb.Object> with ChangeNotifier {
   final Dataset<T> dataset;
 
   /// fetcher fetch data from remote
-  final DataFetcher<T> fetcher;
+  final DataFetcher<T>? fetcher;
 
   /// onMore decide how to put download rows into displayRows
   List<List<String>>? _pages;
@@ -37,44 +36,73 @@ class Dataview<T extends pb.Object> with ChangeNotifier {
   /// totalPages return total pages
   int get totalPages => _pages?.length ?? 0;
 
+  /// pageIndex return current page index
+  int get pageIndex => _pageIndex;
+
   /// hasMore return true when current page is last page and dataset did not have full data
-  bool get hasMore => (_pageIndex == totalPages - 1) == false && dataset.hasMore && fetcher.hasMore;
+  bool get hasMore => noNextPage && dataset.hasMore && fetcher != null && fetcher!.hasMore;
 
   /// noMore return true when no more data on remote
   bool get noMore => !hasMore;
 
   /// hasNextPage return true if there is more page to load
-  bool get hasNextPage => (_pageIndex < totalPages - 1) == false;
+  bool get hasNextPage => _pageIndex < totalPages - 1;
+
+  /// noNextPage return true if no next page
+  bool get noNextPage => !hasNextPage;
+
+  /// [] override return row at index
+  T operator [](int index) => _display[index];
+
+  /// length return length of display
+  int get length => _display.length;
+
+  /// isEmpty return true if display is empty
+  bool get isEmpty => _display.isEmpty;
+
+  /// isNotEmpty return true if display is not empty
+  bool get isNotEmpty => _display.isNotEmpty;
 
   /// init data view
   Future<void> init() async {
     await dataset.init();
-    await refresh();
+  }
+
+  /// dispose database
+  @override
+  void dispose() {
+    _display.clear();
+    dataset.dispose();
+    super.dispose();
   }
 
   /// refresh dataset
   Future<void> refresh() async {
     await dataset.refresh();
-    await create();
+    begin();
   }
 
-  /// create a new view from dataset
-  Future<void> create() async {
+  /// begin a new view from dataset
+  void begin() async {
     _pageIndex = 0;
     _display.clear();
-    _pages = await viewer(dataset);
-    await next();
+    _pages = viewer(dataset);
+    _fill();
   }
 
-  /// next load a page into display from local data
-  Future<void> next() async {
+  /// _fill load a page into display from local data
+  void _fill() {
     if (_pageIndex < _pages!.length) {
       final page = _pages![_pageIndex];
-      final objects = await dataset.mapObjects(page);
+      final objects = dataset.mapObjects(page);
       _display.addAll(objects);
     }
+  }
 
+  /// nextPage load a page into display from local data
+  void nextPage() {
     _pageIndex++;
+    _fill();
     notifyListeners();
   }
 
@@ -97,7 +125,7 @@ class Dataview<T extends pb.Object> with ChangeNotifier {
         return;
       }
 
-      final rows = await fetcher.fetch(lastTimestamp);
+      final rows = await fetcher!.fetch(lastTimestamp);
       if (rows.isNotEmpty) {
         _display.addAll(rows);
         notifyListeners();

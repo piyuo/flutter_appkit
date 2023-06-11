@@ -8,7 +8,7 @@ typedef DataLoader<T extends pb.Object> = Future<List<T>> Function(
     google.Timestamp? timestamp, int rowsPerPage, int pageIndex);
 
 /// DataFetcher fetch remote data by page, it keep track of current page index
-class DataFetcher<T extends pb.Object> with ChangeNotifier {
+class DataFetcher<T extends pb.Object> {
   DataFetcher({
     required this.loader,
     this.rowsPerPage = 20,
@@ -29,6 +29,7 @@ class DataFetcher<T extends pb.Object> with ChangeNotifier {
   /// loader get data from remote, return data must older than timestamp
   final DataLoader<T> loader;
 
+  /// reset fetcher to initial state
   void reset() {
     noMore = false;
     pageIndex = 0;
@@ -42,7 +43,7 @@ class DataFetcher<T extends pb.Object> with ChangeNotifier {
         if (downloadRows.length < rowsPerPage) {
           noMore = true;
         }
-        debugPrint('[live_data] refresh ${downloadRows.length} rows, no more=$noMore');
+        debugPrint('[data_fetcher] refresh ${downloadRows.length} rows, no more=$noMore');
         pageIndex++;
         return downloadRows;
       }

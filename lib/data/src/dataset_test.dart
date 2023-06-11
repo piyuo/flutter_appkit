@@ -14,7 +14,7 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [
           sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -33,7 +33,7 @@ void main() {
       expect(obj1!.id, '1');
 
       final ds2 = Dataset<sample.Person>(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [],
       );
@@ -43,7 +43,7 @@ void main() {
       expect(list2[0].id, '2');
       expect(list2[1].id, '1');
 
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -54,7 +54,7 @@ void main() {
 
       final ds = Dataset(
           utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
-          db: indexedDb,
+          indexedDb: indexedDb,
           builder: () => sample.Person(),
           refresher: (timestamp) async => [
                 sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -70,7 +70,7 @@ void main() {
 
       final ds2 = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [],
       );
@@ -79,7 +79,7 @@ void main() {
       final list2 = ds2.query().toList();
       expect(list2.length, 1);
       expect(list2[0].id, '2');
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -93,7 +93,7 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => result,
       );
@@ -125,7 +125,7 @@ void main() {
       expect(ds.rows[1].id, '2');
       expect(ds.rows[1].timestamp.toDateTime().month, 2);
 
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -136,7 +136,7 @@ void main() {
 
       final ds = Dataset(
           utcExpiredDate: DateTime(2020, 1, 20).toUtc(),
-          db: indexedDb,
+          indexedDb: indexedDb,
           builder: () => sample.Person(),
           refresher: (timestamp) async => [
                 sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -150,7 +150,7 @@ void main() {
       await ds.refresh();
       // use latest row as refresh timestamp
       expect(ds.refreshTimestamp!.toDateTime(), DateTime(2021, 1, 2).toUtc());
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -158,15 +158,15 @@ void main() {
       final indexedDb = IndexedDb(dbName: 'test_dataset_timestamp_null');
       await indexedDb.init();
       await indexedDb.clear();
-      final ds =
-          Dataset<sample.Person>(db: indexedDb, builder: () => sample.Person(), refresher: (timestamp) async => []);
+      final ds = Dataset<sample.Person>(
+          indexedDb: indexedDb, builder: () => sample.Person(), refresher: (timestamp) async => []);
 
       await ds.init();
       await ds.refresh();
       expect(ds.refreshTimestamp, isNull);
 
       expect(ds.refreshTimestamp, isNull);
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -176,7 +176,7 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [
           sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -195,7 +195,7 @@ void main() {
       expect(result[0].id, '4');
       expect(result[1].id, '2');
 
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -205,7 +205,7 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [
           sample.Person(name: 'john1', m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -223,7 +223,7 @@ void main() {
       expect(result.length, 1);
       expect(result[0].id, '2');
 
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -233,7 +233,7 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [
           sample.Person(name: 'john1', m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -251,7 +251,7 @@ void main() {
       expect(result.length, 2);
       expect(result[0].id, '4');
 
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -261,7 +261,7 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [
           sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -280,7 +280,7 @@ void main() {
       expect(result[0].id, '5');
       expect(result[1].id, '4');
 
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
 
@@ -290,7 +290,7 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        db: indexedDb,
+        indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [
           sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
@@ -308,7 +308,7 @@ void main() {
       expect(result[0].id, '2');
       expect(result[1].id, '3');
 
-      ds.dispose();
+      indexedDb.dispose();
       await indexedDb.removeBox();
     });
   });

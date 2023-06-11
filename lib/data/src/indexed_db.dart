@@ -8,7 +8,7 @@ import 'hive.dart';
 
 /// IndexedDb use hive to store data in local or indexed db in browser
 /// it inherit from ChangeNotifier so we can use dispose to close database
-class IndexedDb with ChangeNotifier, utils.InitOnceMixin {
+class IndexedDb with utils.InitOnceMixin {
   IndexedDb({
     required String dbName,
   }) {
@@ -22,11 +22,10 @@ class IndexedDb with ChangeNotifier, utils.InitOnceMixin {
   late LazyBox _box;
 
   /// dispose database
-  @override
+  @mustCallSuper
   void dispose() {
     debugPrint('[indexed_db] close ${_box.name}');
     closeBox(_box);
-    super.dispose();
   }
 
   /// of get instance from context

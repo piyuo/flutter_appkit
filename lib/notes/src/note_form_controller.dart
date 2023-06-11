@@ -5,7 +5,6 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/form/form.dart' as form;
 import 'types.dart';
 import 'notes_provider.dart';
