@@ -51,6 +51,9 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// noNextPage return true if no next page
   bool get noNextPage => !hasNextPage;
 
+  /// isEnd return true if no more data on remote and no more page to load
+  bool get isEnd => noMore && noNextPage;
+
   /// init data view
   Future<void> init() async {
     await dataset.init();

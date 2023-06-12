@@ -42,6 +42,7 @@ void main() {
       expect(dp.noMore, true);
       expect(dp.hasNextPage, false);
       expect(dp.noNextPage, true);
+      expect(dp.isEnd, true);
       dp.dispose();
       await indexedDb.removeBox();
     });
