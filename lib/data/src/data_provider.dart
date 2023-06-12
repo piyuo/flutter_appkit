@@ -27,8 +27,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// onMore decide how to put download rows into displayRows
   List<List<String>>? _pages;
 
-  /// _display is row already in memory and ready to use
-  final _display = <T>[];
+  /// displayRows is rows already in memory and ready to use
+  final displayRows = <T>[];
 
   /// _pageIndex is current page index loaded into display
   int _pageIndex = 0;
@@ -51,18 +51,6 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// noNextPage return true if no next page
   bool get noNextPage => !hasNextPage;
 
-  /// [] override return row at index
-  T operator [](int index) => _display[index];
-
-  /// length return length of display
-  int get length => _display.length;
-
-  /// isEmpty return true if display is empty
-  bool get isEmpty => _display.isEmpty;
-
-  /// isNotEmpty return true if display is not empty
-  bool get isNotEmpty => _display.isNotEmpty;
-
   /// init data view
   Future<void> init() async {
     await dataset.init();
@@ -71,7 +59,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// dispose database
   @override
   void dispose() {
-    _display.clear();
+    displayRows.clear();
     dataset.dispose();
     super.dispose();
   }
@@ -83,9 +71,9 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// begin a new view from dataset
-  void begin() async {
+  void begin() {
     _pageIndex = 0;
-    _display.clear();
+    displayRows.clear();
     _pages = viewer(dataset);
     _fill();
   }
@@ -95,7 +83,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     if (_pageIndex < _pages!.length) {
       final page = _pages![_pageIndex];
       final objects = dataset.mapObjects(page);
-      _display.addAll(objects);
+      displayRows.addAll(objects);
     }
   }
 
@@ -111,8 +99,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     if (!hasMore) {
       return null;
     }
-    if (_display.isNotEmpty) {
-      return _display.last.timestamp;
+    if (displayRows.isNotEmpty) {
+      return displayRows.last.timestamp;
     }
     return dataset.utcExpiredDate!.timestamp;
   }
@@ -127,7 +115,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
       final rows = await fetcher!.fetch(lastTimestamp);
       if (rows.isNotEmpty) {
-        _display.addAll(rows);
+        displayRows.addAll(rows);
         notifyListeners();
       }
     }

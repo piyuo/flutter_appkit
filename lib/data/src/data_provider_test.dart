@@ -32,17 +32,16 @@ void main() {
       );
       await dp.init();
       await dp.refresh();
-      expect(dp.length, 2);
-      expect(dp[0].id, '1');
-      expect(dp[1].id, '2');
+      expect(dp.displayRows.length, 2);
+      expect(dp.displayRows.length, 2);
+      expect(dp.displayRows[0].id, '1');
+      expect(dp.displayRows[1].id, '2');
       expect(dp.totalPages, 1);
       expect(dp.pageIndex, 0);
       expect(dp.hasMore, false);
       expect(dp.noMore, true);
       expect(dp.hasNextPage, false);
       expect(dp.noNextPage, true);
-      expect(dp.isEmpty, false);
-      expect(dp.isNotEmpty, true);
       dp.dispose();
       await indexedDb.removeBox();
     });
@@ -70,12 +69,12 @@ void main() {
       );
       await dp.init();
       await dp.refresh();
-      expect(dp.length, 1);
+      expect(dp.displayRows.length, 1);
 
       dp.nextPage();
-      expect(dp.length, 2);
-      expect(dp[0].id, '1');
-      expect(dp[1].id, '2');
+      expect(dp.displayRows.length, 2);
+      expect(dp.displayRows[0].id, '1');
+      expect(dp.displayRows[1].id, '2');
       expect(dp.totalPages, 2);
       expect(dp.pageIndex, 1);
 
@@ -114,7 +113,7 @@ void main() {
       );
       await dp.init();
       await dp.refresh();
-      expect(dp.length, 2);
+      expect(dp.displayRows.length, 2);
       expect(dp.hasMore, true);
       expect(dp.hasNextPage, false);
 
@@ -123,14 +122,14 @@ void main() {
         sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).utcTimestamp)),
       ];
       await dp.more();
-      expect(dp.length, 4);
+      expect(dp.displayRows.length, 4);
       expect(dp.hasMore, true);
 
       refreshResult = [
         sample.Person(m: pb.Model(i: '5', t: DateTime(2021, 1, 5).utcTimestamp)),
       ];
       await dp.more();
-      expect(dp.length, 5);
+      expect(dp.displayRows.length, 5);
       expect(dp.hasMore, false);
 
       dp.dispose();
@@ -162,13 +161,13 @@ void main() {
       );
       await dp.init();
       await dp.refresh();
-      expect(dp.length, 1);
+      expect(dp.displayRows.length, 1);
       expect(dp.totalPages, 2);
       expect(dp.hasNextPage, true);
       dp.nextPage();
-      expect(dp.length, 2);
-      expect(dp[0].id, '1');
-      expect(dp[1].id, '2');
+      expect(dp.displayRows.length, 2);
+      expect(dp.displayRows[0].id, '1');
+      expect(dp.displayRows[1].id, '2');
       expect(dp.hasNextPage, false);
 
       // sort changed, need begin new new
@@ -177,13 +176,13 @@ void main() {
         ['1']
       ];
       dp.begin();
-      expect(dp.length, 1);
+      expect(dp.displayRows.length, 1);
       expect(dp.totalPages, 2);
       expect(dp.hasNextPage, true);
       dp.nextPage();
-      expect(dp.length, 2);
-      expect(dp[0].id, '2');
-      expect(dp[1].id, '1');
+      expect(dp.displayRows.length, 2);
+      expect(dp.displayRows[0].id, '2');
+      expect(dp.displayRows[1].id, '1');
       expect(dp.hasNextPage, false);
 
       dp.dispose();
@@ -216,13 +215,13 @@ void main() {
       );
       await dp.init();
       await dp.refresh();
-      expect(dp.length, 1);
+      expect(dp.displayRows.length, 1);
       expect(dp.totalPages, 2);
       expect(dp.hasNextPage, true);
       dp.nextPage();
-      expect(dp.length, 2);
-      expect(dp[0].id, '1');
-      expect(dp[1].id, '2');
+      expect(dp.displayRows.length, 2);
+      expect(dp.displayRows[0].id, '1');
+      expect(dp.displayRows[1].id, '2');
       expect(dp.hasNextPage, false);
 
       // refresh data
@@ -234,17 +233,17 @@ void main() {
         ['2'],
         ['3']
       ];
-      dp.refresh();
-      expect(dp.length, 1);
+      await dp.refresh();
+      expect(dp.displayRows.length, 1);
       expect(dp.totalPages, 3);
       expect(dp.hasNextPage, true);
       dp.nextPage();
-      expect(dp.length, 2);
+      expect(dp.displayRows.length, 2);
       dp.nextPage();
-      expect(dp.length, 3);
-      expect(dp[0].id, '1');
-      expect(dp[1].id, '2');
-      expect(dp[2].id, '3');
+      expect(dp.displayRows.length, 3);
+      expect(dp.displayRows[0].id, '1');
+      expect(dp.displayRows[1].id, '2');
+      expect(dp.displayRows[2].id, '3');
       expect(dp.hasNextPage, false);
 
       dp.dispose();
