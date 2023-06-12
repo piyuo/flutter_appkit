@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
+import 'package:provider/provider.dart';
 import 'dataset.dart';
 import 'data_fetcher.dart';
 
@@ -53,6 +54,11 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
   /// isEnd return true if no more data on remote and no more page to load
   bool get isEnd => noMore && noNextPage;
+
+  /// of get DatabaseProvider from context
+  static DataProvider of(BuildContext context) {
+    return Provider.of<DataProvider>(context, listen: false);
+  }
 
   /// init data view
   Future<void> init() async {
