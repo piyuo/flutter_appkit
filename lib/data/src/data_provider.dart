@@ -6,7 +6,7 @@ import 'dataset.dart';
 import 'data_fetcher.dart';
 
 /// DataSelector select data from dataset
-typedef DataSelector<T extends pb.Object> = List<List<T>> Function(Dataset<T> dataset);
+typedef DataSelector<T extends pb.Object> = List<T> Function(Dataset<T> dataset);
 
 /// DataProvider read data from dataset user viewer to create list of page
 class DataProvider<T extends pb.Object> with ChangeNotifier {
@@ -16,44 +16,23 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     this.fetcher,
   });
 
-  /// selector select data from dataset
-  final DataSelector<T> selector;
-
   /// dataset keep data
   final Dataset<T> dataset;
 
-  /// fetcher fetch data from remote
-  final DataFetcher<T>? fetcher;
+  /// selector only select data you want display to user (e.g. after filter/sort)
+  final DataSelector<T> selector;
 
-  /// onMore decide how to put download rows into displayRows
-  List<List<T>>? _pages;
+  /// fetcher only fetch data you want display to user (e.g. after filter/sort), these fetch data will not save to dataset
+  final DataFetcher<T>? fetcher;
 
   /// displayRows is rows already in memory and ready to use
   final displayRows = <T>[];
 
-  /// _pageIndex is current page index loaded into display
-  int _pageIndex = 0;
-
-  /// totalPages return total pages
-  int get totalPages => _pages?.length ?? 0;
-
-  /// pageIndex return current page index
-  int get pageIndex => _pageIndex;
-
   /// hasMore return true when current page is last page and dataset did not have full data
-  bool get hasMore => noNextPage && dataset.hasMore && fetcher != null && fetcher!.hasMore;
+  bool get hasMore => dataset.hasMore && fetcher != null && fetcher!.hasMore;
 
   /// noMore return true when no more data on remote
   bool get noMore => !hasMore;
-
-  /// hasNextPage return true if there is more page to load
-  bool get hasNextPage => _pageIndex < totalPages - 1;
-
-  /// noNextPage return true if no next page
-  bool get noNextPage => !hasNextPage;
-
-  /// isEnd return true if no more data on remote and no more page to load
-  bool get isEnd => noMore && noNextPage;
 
   /// of get DatabaseProvider from context
   static DataProvider of(BuildContext context) {
@@ -81,24 +60,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
   /// begin a new view from dataset
   void begin() {
-    _pageIndex = 0;
     displayRows.clear();
-    _pages = selector(dataset);
-    _fill();
-  }
-
-  /// _fill load a page into display from local data
-  void _fill() {
-    if (_pageIndex < _pages!.length) {
-      final page = _pages![_pageIndex];
-      displayRows.addAll(page);
-    }
-  }
-
-  /// nextPage load a page into display from local data
-  void nextPage() {
-    _pageIndex++;
-    _fill();
+    displayRows.addAll(selector(dataset));
     notifyListeners();
   }
 
@@ -127,18 +90,5 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
         notifyListeners();
       }
     }
-  }
-}
-
-/// SplitList provide split method for List
-extension SplitList<T> on List<T> {
-  /// splitList split long list into sublist
-  List<List<T>> split(int sublistSize) {
-    int numberOfSubLists = (length / sublistSize).ceil();
-    return List.generate(numberOfSubLists, (index) {
-      int startIndex = index * sublistSize;
-      int endIndex = (index + 1) * sublistSize;
-      return sublist(startIndex, endIndex < length ? endIndex : length);
-    });
   }
 }
