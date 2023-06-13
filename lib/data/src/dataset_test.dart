@@ -284,7 +284,7 @@ void main() {
       await indexedDb.removeBox();
     });
 
-    test('should map string list to object list', () async {
+/*    test('should map string list to object list', () async {
       final indexedDb = IndexedDb(dbName: 'test_dataset_map');
       await indexedDb.init();
       await indexedDb.clear();
@@ -310,6 +310,6 @@ void main() {
 
       indexedDb.dispose();
       await indexedDb.removeBox();
-    });
+    });*/
   });
 }

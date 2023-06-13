@@ -121,6 +121,9 @@ class Dataset<T extends pb.Object> {
   /// getRowById return row by id, null if not exists
   T? getRowById(String id) => _rows.where((row) => row.id == id).firstOrNull;
 
+  /// [] override to get field value
+  operator [](String key) => getRowById(key);
+
   /// query return list of object that match query
   Iterable<T> query({
     bool skipDeleted = true,
@@ -163,7 +166,7 @@ class Dataset<T extends pb.Object> {
   }
 
   /// mapObjects return list of object that match given id
-  List<T> mapObjects(Iterable<String> list) {
+  /*List<T> mapObjects(Iterable<String> list) {
     final objects = <T>[];
     for (final id in list) {
       final object = getRowById(id);
@@ -172,5 +175,5 @@ class Dataset<T extends pb.Object> {
       }
     }
     return objects;
-  }
+  }*/
 }

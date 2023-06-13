@@ -5,19 +5,19 @@ import 'package:provider/provider.dart';
 import 'dataset.dart';
 import 'data_fetcher.dart';
 
-/// DataViewer create id list of page represent data in display
-typedef DataViewer<T extends pb.Object> = List<List<String>> Function(Dataset<T> dataset);
+/// DataSelector select data from dataset
+typedef DataSelector<T extends pb.Object> = List<List<T>> Function(Dataset<T> dataset);
 
 /// DataProvider read data from dataset user viewer to create list of page
 class DataProvider<T extends pb.Object> with ChangeNotifier {
   DataProvider({
-    required this.viewer,
+    required this.selector,
     required this.dataset,
     this.fetcher,
   });
 
-  /// viewer load data from local data and return list of page
-  final DataViewer<T> viewer;
+  /// selector select data from dataset
+  final DataSelector<T> selector;
 
   /// dataset keep data
   final Dataset<T> dataset;
@@ -26,7 +26,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   final DataFetcher<T>? fetcher;
 
   /// onMore decide how to put download rows into displayRows
-  List<List<String>>? _pages;
+  List<List<T>>? _pages;
 
   /// displayRows is rows already in memory and ready to use
   final displayRows = <T>[];
@@ -83,7 +83,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   void begin() {
     _pageIndex = 0;
     displayRows.clear();
-    _pages = viewer(dataset);
+    _pages = selector(dataset);
     _fill();
   }
 
@@ -91,8 +91,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   void _fill() {
     if (_pageIndex < _pages!.length) {
       final page = _pages![_pageIndex];
-      final objects = dataset.mapObjects(page);
-      displayRows.addAll(objects);
+      displayRows.addAll(page);
     }
   }
 
@@ -129,4 +128,15 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       }
     }
   }
+}
+
+/// splitList split long list into sublist
+List<List<T>> splitList<T>(List<T> longList, int sublistSize) {
+  int numberOfSubLists = (longList.length / sublistSize).ceil();
+
+  return List.generate(numberOfSubLists, (index) {
+    int startIndex = index * sublistSize;
+    int endIndex = (index + 1) * sublistSize;
+    return longList.sublist(startIndex, endIndex < longList.length ? endIndex : longList.length);
+  });
 }

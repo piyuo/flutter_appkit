@@ -26,8 +26,8 @@ void main() {
 
       final dp = DataProvider(
         dataset: ds,
-        viewer: (ds) => [
-          ['1', '2']
+        selector: (ds) => [
+          [ds['1'], ds['2']]
         ],
       );
       await dp.init();
@@ -63,9 +63,9 @@ void main() {
 
       final dp = DataProvider(
         dataset: ds,
-        viewer: (ds) => [
-          ['1'],
-          ['2']
+        selector: (ds) => [
+          [ds['1']],
+          [ds['2']]
         ],
       );
       await dp.init();
@@ -102,8 +102,8 @@ void main() {
 
       final dp = DataProvider(
         dataset: ds,
-        viewer: (ds) => [
-          ['1', '2']
+        selector: (ds) => [
+          [ds['1'], ds['2']]
         ],
         fetcher: DataFetcher<sample.Person>(
           rowsPerPage: 2,
@@ -138,9 +138,12 @@ void main() {
     });
 
     test('should begin a new view ', () async {
+      final p1 = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp));
+      final p2 = sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp));
+
       var viewerResult = [
-        ['1'],
-        ['2']
+        [p1],
+        [p2]
       ];
       final indexedDb = IndexedDb(dbName: 'test_data_begin');
       await indexedDb.init();
@@ -150,15 +153,12 @@ void main() {
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         indexedDb: indexedDb,
         builder: () => sample.Person(),
-        refresher: (timestamp) async => [
-          sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-          sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
-        ],
+        refresher: (timestamp) async => [p1, p2],
       );
 
       final dp = DataProvider(
         dataset: ds,
-        viewer: (ds) => viewerResult,
+        selector: (ds) => viewerResult,
       );
       await dp.init();
       await dp.refresh();
@@ -173,8 +173,8 @@ void main() {
 
       // sort changed, need begin new new
       viewerResult = [
-        ['2'],
-        ['1']
+        [p2],
+        [p1]
       ];
       dp.begin();
       expect(dp.displayRows.length, 1);
@@ -191,13 +191,14 @@ void main() {
     });
 
     test('refresh should begin a new view ', () async {
-      var refreshResult = [
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
-      ];
+      final p1 = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp));
+      final p2 = sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp));
+      final p3 = sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp));
+
+      var refreshResult = [p1, p2];
       var viewerResult = [
-        ['1'],
-        ['2']
+        [p1],
+        [p2]
       ];
       final indexedDb = IndexedDb(dbName: 'test_data_refresh_begin');
       await indexedDb.init();
@@ -212,7 +213,7 @@ void main() {
 
       final dp = DataProvider(
         dataset: ds,
-        viewer: (ds) => viewerResult,
+        selector: (ds) => viewerResult,
       );
       await dp.init();
       await dp.refresh();
@@ -226,13 +227,11 @@ void main() {
       expect(dp.hasNextPage, false);
 
       // refresh data
-      refreshResult = [
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
-      ];
+      refreshResult = [p3];
       viewerResult = [
-        ['1'],
-        ['2'],
-        ['3']
+        [p1],
+        [p2],
+        [p3]
       ];
       await dp.refresh();
       expect(dp.displayRows.length, 1);
@@ -249,6 +248,16 @@ void main() {
 
       dp.dispose();
       await indexedDb.removeBox();
+    });
+
+    test('splitList should split long list to sublist', () {
+      List<int> longList = List.generate(19, (index) => index + 1);
+      List<List<int>> subLists = splitList(longList, 5);
+      expect(subLists.length, equals(4)); // Expect 4 sub lists
+      expect(subLists[0], equals([1, 2, 3, 4, 5])); // First sublist should contain [1, 2, 3, 4, 5]
+      expect(subLists[1], equals([6, 7, 8, 9, 10])); // Second sublist should contain [6, 7, 8, 9, 10]
+      expect(subLists[2], equals([11, 12, 13, 14, 15])); // Third sublist should contain [11, 12, 13, 14, 15]
+      expect(subLists[3], equals([16, 17, 18, 19])); // Fourth sublist should contain [16, 17, 18, 19, 20]
     });
   });
 }
