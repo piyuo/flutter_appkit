@@ -6,7 +6,7 @@ import 'dataset.dart';
 import 'data_fetcher.dart';
 
 /// DataSelector select data from dataset
-typedef DataSelector<T extends pb.Object> = List<T> Function(Dataset<T> dataset);
+typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
 
 /// DataProvider read data from dataset user viewer to create list of page
 class DataProvider<T extends pb.Object> with ChangeNotifier {
