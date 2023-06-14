@@ -36,6 +36,8 @@ void main() {
       expect(dp.displayRows[1].id, '2');
       expect(dp.hasMore, false);
       expect(dp.noMore, true);
+      expect(dp.isNotFilledPage, false);
+
       dp.dispose();
       await indexedDb.removeBox();
     });

@@ -229,10 +229,10 @@ packages:
     dependency: "direct main"
     description:
       name: custom_refresh_indicator
-      sha256: c67a9145190eae17d7b7034b6085e7446f9340d9ed0b352caf63cc84e9486ef0
+      sha256: "20fd32daa00c550e840deaa5d11ea9aecb33e6491e29f4134f9e3a65df32f7dd"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "2.2.0"
   dart_countries:
     dependency: transitive
     description:
