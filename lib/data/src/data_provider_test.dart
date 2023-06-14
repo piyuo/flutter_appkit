@@ -121,7 +121,7 @@ void main() {
 
       // sort changed, need begin new new
       viewerResult = [p2, p1];
-      dp.begin();
+      await dp.begin();
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '2');
       expect(dp.displayRows[1].id, '1');
@@ -166,6 +166,44 @@ void main() {
       expect(dp.displayRows[0].id, '1');
       expect(dp.displayRows[1].id, '2');
       expect(dp.displayRows[2].id, '3');
+
+      dp.dispose();
+      await indexedDb.removeBox();
+    });
+
+    test('should fill page with more if display rows is less then one page', () async {
+      final indexedDb = IndexedDb(dbName: 'test_data_fill');
+      await indexedDb.init();
+      await indexedDb.clear();
+
+      final ds = Dataset<sample.Person>(
+        utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+        indexedDb: indexedDb,
+        builder: () => sample.Person(),
+        refresher: (timestamp) async => [
+          sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+          sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+        ],
+      );
+
+      final dp = DataProvider(
+        dataset: ds,
+        selector: (ds) => [ds['1'], ds['2']],
+        fetcher: DataFetcher<sample.Person>(
+          rowsPerPage: 5,
+          loader: (timestamp, rowsPerPage, pageIndex) async {
+            return [
+              sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 1).utcTimestamp)),
+              sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 2).utcTimestamp)),
+            ];
+          },
+        ),
+      );
+      await dp.init();
+      await dp.refresh();
+      expect(dp.displayRows.length, 4);
+      expect(dp.hasMore, false);
+      expect(dp.isNotFilledPage, true);
 
       dp.dispose();
       await indexedDb.removeBox();

@@ -35,7 +35,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   bool get noMore => !hasMore;
 
   /// isNotFilledPage return true when available rows can not fill a page and can fetch more
-  bool get isNotFilledPage => dataset.hasMore && fetcher != null && displayRows.length < fetcher!.rowsPerPage;
+  bool get isNotFilledPage => fetcher != null && displayRows.length < fetcher!.rowsPerPage;
 
   /// of get DatabaseProvider from context
   static DataProvider of(BuildContext context) {
@@ -58,13 +58,16 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// refresh dataset
   Future<void> refresh() async {
     await dataset.refresh();
-    begin();
+    await begin();
   }
 
-  /// begin a new view from dataset
-  void begin() {
+  /// begin a new view from dataset, if user change filter/sort and don't need refresh new data can use this function
+  Future<void> begin() async {
     displayRows.clear();
     displayRows.addAll(selector(dataset));
+    if (isNotFilledPage && hasMore) {
+      await more();
+    }
     notifyListeners();
   }
 
@@ -79,7 +82,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     return dataset.utcExpiredDate!.timestamp;
   }
 
-  /// fetch more data from remote
+  /// more fetch more data from remote
   Future<void> more() async {
     if (hasMore) {
       final lastTimestamp = _getFetchTimestamp();
