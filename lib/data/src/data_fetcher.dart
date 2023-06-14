@@ -43,7 +43,7 @@ class DataFetcher<T extends pb.Object> {
         if (downloadRows.length < rowsPerPage) {
           noMore = true;
         }
-        debugPrint('[data_fetcher] refresh ${downloadRows.length} rows, no more=$noMore');
+        debugPrint('[data_fetcher] fetch ${downloadRows.length} rows, no more=$noMore');
         pageIndex++;
         return downloadRows;
       }
