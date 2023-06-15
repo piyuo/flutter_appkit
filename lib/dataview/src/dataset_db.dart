@@ -15,14 +15,14 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   /// await dataset.load();
   /// ```
   DatasetDb({
-    required this.indexedDbProvider,
+    required this.indexedDb,
     required pb.Builder<T> objectBuilder,
   }) : super(objectBuilder: objectBuilder) {
     internalNoMore = true;
   }
 
   /// _database is database that store data
-  final data.IndexedDb indexedDbProvider;
+  final data.IndexedDb indexedDb;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields
@@ -37,30 +37,30 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   /// await dataset.first;
   /// ```
   @override
-  Future<T?> get first async => _index.isNotEmpty ? indexedDbProvider.getObject(_index.first, objectBuilder) : null;
+  Future<T?> get first async => _index.isNotEmpty ? indexedDb.getObject(_index.first, objectBuilder) : null;
 
   /// last return last row
   /// ```dart
   /// await dataset.last;
   /// ```
   @override
-  Future<T?> get last async => _index.isNotEmpty ? indexedDbProvider.getObject(_index.last, objectBuilder) : null;
+  Future<T?> get last async => _index.isNotEmpty ? indexedDb.getObject(_index.last, objectBuilder) : null;
 
   /// load dataset content
   @override
   @mustCallSuper
   Future<void> load() async {
-    _index = await indexedDbProvider.get(keyIndex) ?? [];
-    internalRowsPerPage = await indexedDbProvider.get(keyRowsPerPage) ?? 10;
-    internalNoRefresh = await indexedDbProvider.get(keyNoRefresh) ?? false;
+    _index = await indexedDb.get(keyIndex) ?? [];
+    internalRowsPerPage = await indexedDb.get(keyRowsPerPage) ?? 10;
+    internalNoRefresh = await indexedDb.get(keyNoRefresh) ?? false;
     await super.load();
   }
 
   /// save dataset cache
   Future<void> save() async {
-    await indexedDbProvider.put(keyIndex, _index);
-    await indexedDbProvider.put(keyRowsPerPage, rowsPerPage);
-    await indexedDbProvider.put(keyNoRefresh, noRefresh);
+    await indexedDb.put(keyIndex, _index);
+    await indexedDb.put(keyRowsPerPage, rowsPerPage);
+    await indexedDb.put(keyNoRefresh, noRefresh);
   }
 
   /// setRowsPerPage set current rows per page
@@ -89,7 +89,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     _index.insertAll(0, downloadID);
     await save();
     for (T row in list) {
-      await indexedDbProvider.putObject(row.id, row);
+      await indexedDb.putObject(row.id, row);
     }
   }
 
@@ -105,7 +105,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     _index.addAll(downloadID);
     await save();
     for (T row in list) {
-      await indexedDbProvider.putObject(row.id, row);
+      await indexedDb.putObject(row.id, row);
     }
     await super.add(list);
   }
@@ -120,7 +120,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     for (String id in list) {
       if (_index.contains(id)) {
         _index.remove(id);
-        await indexedDbProvider.delete(id);
+        await indexedDb.delete(id);
       }
     }
     await save();
@@ -135,7 +135,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   Future<void> reset() async {
     _index = [];
     internalNoRefresh = false;
-    await indexedDbProvider.clear();
+    await indexedDb.clear();
   }
 
   /// range return sublist of rows, return null if something went wrong
@@ -147,7 +147,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
-      final row = await indexedDbProvider.getObject(id, objectBuilder);
+      final row = await indexedDb.getObject(id, objectBuilder);
       if (row == null) {
         // data is missing, reset data
         await reset();
@@ -166,7 +166,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
-        return indexedDbProvider.getObject(row, objectBuilder);
+        return indexedDb.getObject(row, objectBuilder);
       }
     }
     return null;
@@ -179,7 +179,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> forEach(void Function(T) callback) async {
     for (String id in _index) {
-      final obj = await indexedDbProvider.getObject(id, objectBuilder);
+      final obj = await indexedDb.getObject(id, objectBuilder);
       if (obj != null) {
         callback(obj);
       }

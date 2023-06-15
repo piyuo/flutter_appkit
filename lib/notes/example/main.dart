@@ -611,7 +611,7 @@ class NotesExample extends StatelessWidget {
                             _notesProvider.load(
                                 isPreferMouse,
                                 dataview.DatasetDb<sample.Person>(
-                                  indexedDbProvider: sampleDb,
+                                  indexedDb: sampleDb,
                                   objectBuilder: () => sample.Person(),
                                 ));
                           },
@@ -657,7 +657,7 @@ class NotesExample extends StatelessWidget {
                             _notesProvider.load(
                                 isPreferMouse,
                                 dataview.DatasetDb<sample.Person>(
-                                  indexedDbProvider: sampleDb,
+                                  indexedDb: sampleDb,
                                   objectBuilder: () => sample.Person(),
                                 ));
                           },
@@ -710,7 +710,7 @@ Widget _noteItem(BuildContext context, String id) {
                     await sampleDb.init();
                     noteFormController.load(
                         dataset: dataview.DatasetDb<sample.Person>(
-                          indexedDbProvider: sampleDb,
+                          indexedDb: sampleDb,
                           objectBuilder: () => sample.Person(),
                         ),
                         id: id);

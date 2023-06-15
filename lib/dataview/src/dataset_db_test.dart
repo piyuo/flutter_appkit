@@ -12,7 +12,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -41,14 +41,14 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
       expect(dataset.length, 0);
 
       final dataset2 = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset2.load();
@@ -64,7 +64,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -87,7 +87,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -108,7 +108,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -131,7 +131,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -155,7 +155,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -165,7 +165,7 @@ void main() {
       await dataset.setRowsPerPage(21);
 
       final dataset2 = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset2.load();
@@ -182,7 +182,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -200,7 +200,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
@@ -223,7 +223,7 @@ void main() {
       await dbProvider.init();
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
-        indexedDbProvider: dbProvider,
+        indexedDb: dbProvider,
         objectBuilder: () => sample.Person(),
       );
       await dataset.load();
