@@ -28,8 +28,7 @@ void main() {
         dataset: ds,
         selector: (ds) => [ds['1'], ds['2']],
       );
-      await dp.init();
-      await dp.refresh();
+      await dp.init(); // init will call refresh
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '1');
@@ -70,7 +69,6 @@ void main() {
         ),
       );
       await dp.init();
-      await dp.refresh();
       expect(dp.displayRows.length, 2);
       expect(dp.hasMore, true);
 
@@ -93,12 +91,12 @@ void main() {
       await indexedDb.removeBox();
     });
 
-    test('should begin a new view ', () async {
+    test('should reload from dataset', () async {
       final p1 = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp));
       final p2 = sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp));
 
       var viewerResult = [p1, p2];
-      final indexedDb = IndexedDb(dbName: 'test_data_begin');
+      final indexedDb = IndexedDb(dbName: 'test_data_reload');
       await indexedDb.init();
       await indexedDb.clear();
 
@@ -114,14 +112,13 @@ void main() {
         selector: (ds) => viewerResult,
       );
       await dp.init();
-      await dp.refresh();
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '1');
       expect(dp.displayRows[1].id, '2');
 
       // sort changed, need begin new new
       viewerResult = [p2, p1];
-      await dp.begin();
+      await dp.restart();
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '2');
       expect(dp.displayRows[1].id, '1');
@@ -130,7 +127,7 @@ void main() {
       await indexedDb.removeBox();
     });
 
-    test('refresh should call begin ', () async {
+    test('refresh should not reset data', () async {
       final p1 = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp));
       final p2 = sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp));
       final p3 = sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp));
@@ -153,7 +150,6 @@ void main() {
         selector: (ds) => viewerResult,
       );
       await dp.init();
-      await dp.refresh();
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '1');
       expect(dp.displayRows[1].id, '2');
@@ -200,8 +196,49 @@ void main() {
         ),
       );
       await dp.init();
-      await dp.refresh();
       expect(dp.displayRows.length, 4);
+      expect(dp.hasMore, false);
+      expect(dp.isNotFilledPage, true);
+
+      dp.dispose();
+      await indexedDb.removeBox();
+    });
+
+    test('restart should reset fetch result and start from beginning', () async {
+      var result = [
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+      ];
+
+      final indexedDb = IndexedDb(dbName: 'test_data_restart');
+      await indexedDb.init();
+      await indexedDb.clear();
+
+      final ds = Dataset<sample.Person>(
+        utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+        indexedDb: indexedDb,
+        builder: () => sample.Person(),
+        refresher: (timestamp) async => result,
+      );
+
+      final dp = DataProvider(
+        dataset: ds,
+        selector: (ds) => [ds['1'], ds['2']],
+        fetcher: DataFetcher<sample.Person>(
+          rowsPerPage: 5,
+          loader: (timestamp, rowsPerPage, pageIndex) async {
+            return result;
+          },
+        ),
+      );
+      await dp.init();
+      expect(dp.displayRows.length, 4);
+      expect(dp.hasMore, false);
+      expect(dp.isNotFilledPage, true);
+
+      result = [];
+      await dp.restart();
+      expect(dp.displayRows.length, 2);
       expect(dp.hasMore, false);
       expect(dp.isNotFilledPage, true);
 

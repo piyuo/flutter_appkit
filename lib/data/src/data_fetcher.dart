@@ -39,10 +39,10 @@ class DataFetcher<T extends pb.Object> {
   Future<List<T>> fetch(google.Timestamp lastTimestamp) async {
     if (!noMore) {
       final downloadRows = await loader(lastTimestamp, rowsPerPage, pageIndex);
+      if (downloadRows.length < rowsPerPage) {
+        noMore = true;
+      }
       if (downloadRows.isNotEmpty) {
-        if (downloadRows.length < rowsPerPage) {
-          noMore = true;
-        }
         debugPrint('[data_fetcher] fetch ${downloadRows.length} rows, no more=$noMore');
         pageIndex++;
         return downloadRows;

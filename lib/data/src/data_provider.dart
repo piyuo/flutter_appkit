@@ -25,6 +25,9 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// fetcher only fetch data you want display to user (e.g. after filter/sort), these fetch data will not save to dataset
   final DataFetcher<T>? fetcher;
 
+  /// _fetchRows keep rows that fetcher load from remote
+  List<T>? _fetchRows;
+
   /// displayRows is rows already in memory and ready to use
   final displayRows = <T>[];
 
@@ -45,41 +48,42 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// init data view
   Future<void> init() async {
     await dataset.init();
+    await refresh();
   }
 
   /// dispose database
   @override
   void dispose() {
+    _fetchRows = null;
     displayRows.clear();
     dataset.dispose();
     super.dispose();
   }
 
-  /// refresh dataset
-  Future<void> refresh() async {
-    await dataset.refresh();
-    await begin();
+  /// restart clean displayRows start from beginning, you should reload if user change filter/sort
+  Future<void> restart() async {
+    _fetchRows = null;
+    fetcher?.reset();
+    await _reload();
   }
 
-  /// begin a new view from dataset, if user change filter/sort and don't need refresh new data can use this function
-  Future<void> begin() async {
+  /// refresh load new data data from remote
+  Future<void> refresh() async {
+    await dataset.refresh();
+    await _reload();
+  }
+
+  /// _reload will build display rows,
+  Future<void> _reload() async {
     displayRows.clear();
     displayRows.addAll(selector(dataset));
-    if (isNotFilledPage && hasMore) {
+    if (_fetchRows != null) {
+      displayRows.addAll(_fetchRows!); // add fetchRows make sure more() work correctly
+    } else if (isNotFilledPage && hasMore) {
+      // when _fetchRows is null, we may need to fetch more data
       await more();
     }
     notifyListeners();
-  }
-
-  /// _getFetchTimestamp return timestamp to fetch data
-  google.Timestamp? _getFetchTimestamp() {
-    if (!hasMore) {
-      return null;
-    }
-    if (displayRows.isNotEmpty) {
-      return displayRows.last.timestamp;
-    }
-    return dataset.utcExpiredDate!.timestamp;
   }
 
   /// more fetch more data from remote
@@ -92,9 +96,26 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
       final rows = await fetcher!.fetch(lastTimestamp);
       if (rows.isNotEmpty) {
+        if (_fetchRows == null) {
+          _fetchRows = rows;
+        } else {
+          _fetchRows!.addAll(rows);
+        }
         displayRows.addAll(rows);
         notifyListeners();
       }
     }
+  }
+
+  /// _getFetchTimestamp return timestamp to fetch data
+  google.Timestamp? _getFetchTimestamp() {
+    if (!hasMore) {
+      return null;
+    }
+    final rows = displayRows;
+    if (rows.isNotEmpty) {
+      return rows.last.timestamp;
+    }
+    return dataset.utcExpiredDate!.timestamp;
   }
 }
