@@ -1,5 +1,6 @@
 library tools;
 
+export 'src/dataview.dart';
 export 'src/toolbar.dart';
 export 'src/tool_button.dart';
 export 'src/tool_text.dart';

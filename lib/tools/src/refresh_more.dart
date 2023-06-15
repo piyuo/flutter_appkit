@@ -6,7 +6,7 @@ import 'pull_refresh.dart';
 import 'load_more.dart';
 
 /// kHeaderHeight is height of header that show refresh indicator
-const kHeaderHeight = 60.0;
+const kHeaderHeight = 50.0;
 
 /// kFooterHeight is height of footer that show load more indicator
 const kFooterHeight = 40.0;
@@ -24,6 +24,7 @@ enum LoadingStatus {
 
 /// RefreshMoreProvider control status of load more and pull to refresh
 class RefreshMoreProvider with ChangeNotifier {
+  /// moreStatus is status of load more
   LoadingStatus moreStatus = LoadingStatus.idle;
 
   /// prevScrollDirection is previous scroll direction for pull to refresh

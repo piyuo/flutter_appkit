@@ -8,12 +8,11 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 
 /// PullRefresh support pull down refresh and pull up load more
 class PullRefresh extends StatelessWidget {
+  /// PullRefresh support pull down refresh and pull up load more
   /// ```dart
-  ///  PullToRefresh(
-  ///   scrollController: _scrollController,
+  ///  PullRefresh(
   ///   onRefresh: () async {},
-  ///   onLoadMore: () async {},
-  ///   child: ListView.builder(...),
+  ///   child: ...,
   /// )
   /// ```
   const PullRefresh({
@@ -64,23 +63,29 @@ class PullRefresh extends StatelessWidget {
                   controller.stopDrag();
                 }
                 refreshMoreProvider.prevScrollDirection = controller.scrollingDirection;
-                var containerHeight = controller.value * kHeaderHeight;
-                //if (refreshMoreProvider.refreshAnimation) containerHeight = kHeaderHeight;
-                return controller.isIdle && !refreshMoreProvider.isRefreshAnimation
-                    ? const SizedBox()
-                    : Container(
-                        alignment: Alignment.center,
-                        height: containerHeight,
-                        child: OverflowBox(
-                          maxHeight: 40,
-                          minHeight: 40,
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 150),
-                            alignment: Alignment.center,
-                            child: delta.ballSpinIndicator(),
-                          ),
+
+                if (controller.isDragging || controller.isArmed) {
+                  return Transform.translate(
+                      offset: Offset(0.0, controller.value * kHeaderHeight - 30),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Icon(
+                          controller.isArmed ? Icons.swap_vert : Icons.arrow_downward,
+                          size: 30,
+                          color: Theme.of(context).colorScheme.surfaceVariant,
                         ),
-                      );
+                      ));
+                }
+
+                if (refreshMoreProvider.isRefreshAnimation || controller.isSettling || controller.isLoading) {
+                  return Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        height: kHeaderHeight,
+                        child: delta.ballSpinIndicator(),
+                      ));
+                }
+                return const SizedBox();
               },
             ),
             Container(

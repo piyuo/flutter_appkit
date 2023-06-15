@@ -4,10 +4,17 @@ import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/data/data.dart' as data;
+import 'package:libcli/sample/sample.dart' as sample;
+import 'package:libcli/pb/pb.dart' as pb;
 
 import '../tools.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
+
+final indexedDb = data.IndexedDb(dbName: 'tools_sample');
+int sampleIndex = 0;
+DateTime sampleDate = DateTime.now();
 
 main() {
   base.start(
@@ -49,10 +56,10 @@ class _ToolsExampleState extends State<ToolsExample> {
                   body: Column(
                     children: [
                       Expanded(
-                        child: _stickyHeader(context),
+                        child: _dataview(context),
                       ),
                       SizedBox(
-                        height: 300,
+                        height: 100,
                         child: SingleChildScrollView(
                           child: Wrap(
                             children: [
@@ -60,6 +67,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                   label: 'NavigationView',
                                   useScaffold: false,
                                   builder: () => _responsiveListView(context)),
+                              testing.ExampleButton(label: 'Dataview', builder: () => _dataview(context)),
                               testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
                               testing.ExampleButton(label: 'show tag view', builder: () => _showTagView(context)),
                               testing.ExampleButton(label: 'StickyHeader', builder: () => _stickyHeader(context)),
@@ -229,15 +237,15 @@ class _ToolsExampleState extends State<ToolsExample> {
             builder: (context, refreshMoreProvider, _) => LoadMore(
                   refreshMoreProvider: refreshMoreProvider,
                   onMore: () async {
+                    debugPrint('more...');
                     await Future.delayed(const Duration(seconds: 2));
+
                     //return true;
                     //throw Exception('error');
                     itemIndex += 2;
                     if (itemIndex >= items.length) {
                       itemIndex = items.length;
-                      return true; // no more data
                     }
-                    return false;
                   },
                   child: CustomScrollView(
                     slivers: <Widget>[
@@ -258,6 +266,79 @@ class _ToolsExampleState extends State<ToolsExample> {
                     ],
                   ),
                 )));
+  }
+
+  Widget _dataview(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<RefreshMoreProvider>(
+            create: (context) => RefreshMoreProvider(),
+          ),
+          ChangeNotifierProvider<data.DataProvider<sample.Person>>(
+            create: (context) => data.DataProvider<sample.Person>(
+              dataset: data.Dataset<sample.Person>(
+                utcExpiredDate: DateTime.now().toUtc(),
+                indexedDb: indexedDb,
+                builder: () => sample.Person(),
+                refresher: (timestamp) async {
+                  return [
+                    sample.Person(
+                        m: pb.Model(
+                            i: 'r${sampleIndex++}',
+                            t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                  ];
+                },
+              ),
+              fetcher: data.DataFetcher<sample.Person>(
+                rowsPerPage: 10,
+                loader: (timestamp, rowsPerPage, pageIndex) async {
+                  final list = List.generate(
+                    10,
+                    (index) => sample.Person(
+                        m: pb.Model(
+                            i: 'm${sampleIndex++}',
+                            t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                  );
+                  list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
+                  return list;
+                },
+              ),
+              selector: (dataset) => dataset.query(),
+            ),
+          ),
+        ],
+        child: Consumer2<data.DataProvider<sample.Person>, RefreshMoreProvider>(
+            builder: (context, dataProvider, refreshMoreProvider, _) => base.LoadingScreen(
+                future: () async {
+                  await indexedDb.init();
+                  await indexedDb.clear();
+
+                  await dataProvider.init();
+                  await dataProvider.refresh();
+                },
+                builder: () => Dataview<sample.Person>(
+                      dataProvider: dataProvider,
+                      refreshMoreProvider: refreshMoreProvider,
+                      sliversBuilder: (persons) {
+                        return <Widget>[
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                final sample.Person person = persons[index];
+                                return ListTile(
+                                  leading: CircleAvatar(child: Text(person.id)),
+                                  title: Text('This item represents ${person.id}.'),
+                                  isThreeLine: true,
+                                  subtitle: Text(
+                                      'Even more additional list item information appears on line three ${person.name}'),
+                                );
+                              },
+                              childCount: persons.length,
+                            ),
+                          ),
+                        ];
+                      },
+                    ))));
   }
 
   Widget _pullFresh(BuildContext context) {

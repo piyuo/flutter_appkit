@@ -19,8 +19,8 @@ class LoadMore extends StatelessWidget {
   /// refreshMoreProvider control status of load more
   final RefreshMoreProvider refreshMoreProvider;
 
-  /// onMore is the callback function when user load more
-  final LoadingCallback? onMore;
+  /// onMore load more data, return true if no more data,
+  final Future<void> Function()? onMore;
 
   ///Text displayed in case of error
   final String errorMsg;
@@ -28,6 +28,7 @@ class LoadMore extends StatelessWidget {
   ///Text displayed when loading is finished
   final String completedMsg;
 
+  /// child is the custom scroll view
   final CustomScrollView child;
 
   @override
@@ -40,8 +41,8 @@ class LoadMore extends StatelessWidget {
     execLoadMore() async {
       refreshMoreProvider.setMoreStatus(LoadingStatus.loading);
       try {
-        dynamic noMore = await onMore!();
-        refreshMoreProvider.setMoreStatus(noMore == true ? LoadingStatus.completed : LoadingStatus.idle);
+        await onMore!();
+        refreshMoreProvider.setMoreStatus(LoadingStatus.idle);
       } catch (e, s) {
         log.error(e, s);
         refreshMoreProvider.setMoreStatus(LoadingStatus.error);
