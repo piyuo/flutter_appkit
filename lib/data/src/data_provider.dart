@@ -42,8 +42,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   bool get isNotFilledPage => fetcher != null && displayRows.length < fetcher!.rowsPerPage;
 
   /// of get DatabaseProvider from context
-  static DataProvider of(BuildContext context) {
-    return Provider.of<DataProvider>(context, listen: false);
+  static DataProvider<T> of<T extends pb.Object>(BuildContext context) {
+    return Provider.of<DataProvider<T>>(context, listen: false);
   }
 
   /// init data view
