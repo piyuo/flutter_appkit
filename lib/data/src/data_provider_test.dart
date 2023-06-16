@@ -7,6 +7,7 @@ import 'data_provider.dart';
 import 'data_fetcher.dart';
 import 'dataset.dart';
 import 'indexed_db.dart';
+import 'change_finder.dart';
 
 void main() {
   group('[data.data_provider]', () {
@@ -277,10 +278,15 @@ void main() {
         sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 4).utcTimestamp, d: true)),
         sample.Person(m: pb.Model(i: '5', t: DateTime(2021, 1, 5).utcTimestamp)),
       ];
+      ChangeFinder? changedEvent;
+      dp.onRefreshChanged = (event) {
+        changedEvent = event;
+      };
       final changed = await dp.refresh(findDifference: true);
       expect(dp.displayRows.length, 4);
       expect(changed!.insertCount, 2);
       expect(changed.removed.length, 2);
+      expect(changedEvent, changed);
 
       dp.dispose();
       await indexedDb.removeBox();
