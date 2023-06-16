@@ -4,6 +4,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:provider/provider.dart';
 import 'dataset.dart';
 import 'data_fetcher.dart';
+import 'change_finder.dart';
 
 /// DataSelector select data from dataset
 typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
@@ -68,9 +69,19 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// refresh load new data data from remote
-  Future<void> refresh() async {
+  Future<ChangeFinder?> refresh({bool findDifference = false}) async {
+    if (findDifference) {
+      final backup = List<T>.from(displayRows);
+      await dataset.refresh();
+      await _reload();
+      final changeFinder = ChangeFinder<T>();
+      changeFinder.refreshDifference(source: backup, target: displayRows);
+      return changeFinder;
+    }
+
     await dataset.refresh();
     await _reload();
+    return null;
   }
 
   /// _reload will build display rows,

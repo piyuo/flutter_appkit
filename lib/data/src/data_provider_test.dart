@@ -245,5 +245,45 @@ void main() {
       dp.dispose();
       await indexedDb.removeBox();
     });
+
+    test('refresh should find difference', () async {
+      var result = [
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).utcTimestamp)),
+      ];
+
+      final indexedDb = IndexedDb(dbName: 'test_data_diff');
+      await indexedDb.init();
+      await indexedDb.clear();
+
+      final ds = Dataset<sample.Person>(
+        utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+        indexedDb: indexedDb,
+        builder: () => sample.Person(),
+        refresher: (timestamp) async => result,
+      );
+
+      final dp = DataProvider(
+        dataset: ds,
+        selector: (ds) => ds.query(),
+      );
+      await dp.init();
+      expect(dp.displayRows.length, 4);
+
+      result = [
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 3).utcTimestamp)), // change date
+        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 4).utcTimestamp, d: true)),
+        sample.Person(m: pb.Model(i: '5', t: DateTime(2021, 1, 5).utcTimestamp)),
+      ];
+      final changed = await dp.refresh(findDifference: true);
+      expect(dp.displayRows.length, 4);
+      expect(changed!.insertCount, 2);
+      expect(changed.removed.length, 2);
+
+      dp.dispose();
+      await indexedDb.removeBox();
+    });
   });
 }
