@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'animate_grid.dart';
 import 'shifter.dart';
 
@@ -7,17 +8,10 @@ const shakeShift = 10.0;
 
 /// AnimatedViewProvider control view's animation
 class AnimateViewProvider with ChangeNotifier {
-  /// AnimateViewProvider control view's animation
-  /// ```dart
-  /// return ChangeNotifierProvider<AnimatedViewProvider>(
-  ///       create: (context) => AnimateViewProvider()..setItemCount(gridItems.length),
-  ///       child: Consumer<AnimatedViewProvider>(
-  ///           builder: (context, provide, child) => AnimatedView(
-  ///                   itemBuilder: itemBuilder,
-  ///                 )),
-  ///     );
-  /// ```
-  AnimateViewProvider();
+  /// of get DatabaseProvider from context
+  static AnimateViewProvider of(BuildContext context) {
+    return Provider.of(context, listen: false);
+  }
 
   /// _length is items length in view
   int _length = 0;
