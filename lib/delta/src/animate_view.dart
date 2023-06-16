@@ -67,10 +67,12 @@ class AnimateViewProvider with ChangeNotifier {
   }
 
   /// insertAnimation show insert animation
-  void insertAnimation({int? index}) {
-    _length++;
+  void insertAnimation({int? index, int count = 1}) {
+    _length += count;
     if (_gridKey.currentState != null) {
-      _gridKey.currentState!.insertItem(index ?? 0, duration: animatedDuration);
+      for (int i = 0; i < count; i++) {
+        _gridKey.currentState!.insertItem(index ?? 0, duration: animatedDuration);
+      }
     }
   }
 
