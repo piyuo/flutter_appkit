@@ -62,30 +62,30 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// restart clean displayRows start from beginning, you should reload if user change filter/sort
-  Future<void> restart() async {
+  Future<void> restart({bool notify = true}) async {
     _fetchRows = null;
     fetcher?.reset();
-    await _reload();
+    await _reload(notify);
   }
 
   /// refresh load new data data from remote
-  Future<ChangeFinder?> refresh({bool findDifference = false}) async {
+  Future<ChangeFinder?> refresh({bool findDifference = false, bool notify = true}) async {
     if (findDifference) {
       final backup = List<T>.from(displayRows);
       await dataset.refresh();
-      await _reload();
+      await _reload(notify);
       final changeFinder = ChangeFinder<T>();
       changeFinder.refreshDifference(source: backup, target: displayRows);
       return changeFinder;
     }
 
     await dataset.refresh();
-    await _reload();
+    await _reload(notify);
     return null;
   }
 
   /// _reload will build display rows,
-  Future<void> _reload() async {
+  Future<void> _reload(bool notify) async {
     displayRows.clear();
     displayRows.addAll(selector(dataset));
     if (_fetchRows != null) {
@@ -98,7 +98,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// more fetch more data from remote
-  Future<void> more() async {
+  Future<void> more({bool notify = true}) async {
     if (hasMore) {
       final lastTimestamp = _getFetchTimestamp();
       if (lastTimestamp == null) {
@@ -113,7 +113,9 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
           _fetchRows!.addAll(rows);
         }
         displayRows.addAll(rows);
-        notifyListeners();
+        if (notify) {
+          notifyListeners();
+        }
       }
     }
   }
