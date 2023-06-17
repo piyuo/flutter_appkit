@@ -6,22 +6,15 @@ import 'dataset.dart';
 import 'data_fetcher.dart';
 import 'change_finder.dart';
 
-/// DataSelector select data from dataset
-typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
-
 /// DataProvider read data from dataset user viewer to create list of page
 class DataProvider<T extends pb.Object> with ChangeNotifier {
   DataProvider({
-    required this.selector,
     required this.dataset,
     this.fetcher,
-  });
+  }) : assert(fetcher != null);
 
   /// dataset keep data
   final Dataset<T> dataset;
-
-  /// selector only select data you want display to user (e.g. after filter/sort)
-  final DataSelector<T> selector;
 
   /// fetcher only fetch data you want display to user (e.g. after filter/sort), these fetch data will not save to dataset
   final DataFetcher<T>? fetcher;
@@ -94,7 +87,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// _reload will build display rows,
   Future<void> _reload(bool notify) async {
     displayRows.clear();
-    displayRows.addAll(selector(dataset));
+    displayRows.addAll(dataset.select());
     if (_fetchRows != null) {
       displayRows.addAll(_fetchRows!); // add fetchRows make sure more() work correctly
     } else if (isNotFilledPage && hasMore) {

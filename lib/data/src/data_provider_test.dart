@@ -22,11 +22,11 @@ void main() {
           sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
           sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).utcTimestamp)),
         ],
+        selector: (ds) => [ds['1'], ds['2']],
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => [ds['1'], ds['2']],
       );
       await dp.init(); // init will call refresh
       expect(dp.displayRows.length, 2);
@@ -56,11 +56,11 @@ void main() {
         indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => refreshResult,
+        selector: (ds) => [ds['1'], ds['2']],
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => [ds['1'], ds['2']],
         fetcher: DataFetcher<sample.Person>(
           rowsPerPage: 2,
           loader: (timestamp, rowsPerPage, pageIndex) async {
@@ -105,11 +105,11 @@ void main() {
         indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => [p1, p2],
+        selector: (ds) => viewerResult,
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => viewerResult,
       );
       await dp.init();
       expect(dp.displayRows.length, 2);
@@ -143,11 +143,11 @@ void main() {
         indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => refreshResult,
+        selector: (ds) => viewerResult,
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => viewerResult,
       );
       await dp.init();
       expect(dp.displayRows.length, 2);
@@ -180,11 +180,11 @@ void main() {
           sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
           sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
         ],
+        selector: (ds) => [ds['1'], ds['2']],
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => [ds['1'], ds['2']],
         fetcher: DataFetcher<sample.Person>(
           rowsPerPage: 5,
           loader: (timestamp, rowsPerPage, pageIndex) async {
@@ -219,11 +219,11 @@ void main() {
         indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => result,
+        selector: (ds) => [ds['1'], ds['2']],
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => [ds['1'], ds['2']],
         fetcher: DataFetcher<sample.Person>(
           rowsPerPage: 5,
           loader: (timestamp, rowsPerPage, pageIndex) async {
@@ -263,11 +263,11 @@ void main() {
         indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => result,
+        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => ds.query(),
       );
       await dp.init();
       expect(dp.displayRows.length, 4);
@@ -301,11 +301,11 @@ void main() {
         indexedDb: indexedDb,
         builder: () => sample.Person(),
         refresher: (timestamp) async => result,
+        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider(
         dataset: ds,
-        selector: (ds) => ds.query(),
         fetcher: DataFetcher<sample.Person>(
           rowsPerPage: 5,
           loader: (timestamp, rowsPerPage, pageIndex) async {

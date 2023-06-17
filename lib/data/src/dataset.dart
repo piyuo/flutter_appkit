@@ -4,6 +4,9 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'dart:math';
 import 'indexed_db.dart';
 
+/// DataSelector select data from dataset
+typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
+
 /// DataRefresher is a function to load data from remote, return list of data
 typedef DataRefresher<T extends pb.Object> = Future<List<T>> Function(google.Timestamp? timestamp);
 
@@ -11,8 +14,9 @@ typedef DataRefresher<T extends pb.Object> = Future<List<T>> Function(google.Tim
 class Dataset<T extends pb.Object> {
   Dataset({
     required this.refresher,
-    required this.indexedDb,
     required this.builder,
+    this.selector,
+    this.indexedDb,
     this.utcExpiredDate,
   });
 
@@ -28,8 +32,8 @@ class Dataset<T extends pb.Object> {
   /// refresher get data from remote, return data must newer than timestamp
   final DataRefresher<T> refresher;
 
-  /// indexedDb is indexed db that store all object
-  final IndexedDb indexedDb;
+  /// indexedDb is indexed db that store all object, if null mean do not store data
+  final IndexedDb? indexedDb;
 
   /// builder is builder to build object
   final pb.Builder<T> builder;
@@ -37,11 +41,17 @@ class Dataset<T extends pb.Object> {
   /// rows return all rows
   List<T> get rows => _rows;
 
+  /// selector use in select(), only select data you want display to user (e.g. after filter/sort)
+  final DataSelector<T>? selector;
+
   /// init load data from database and remove old data use cutOffDays
   Future<void> init() async {
-    await indexedDb.init();
-    for (final key in indexedDb.keys) {
-      final row = await indexedDb.getObject<T>(key, builder);
+    if (indexedDb == null) {
+      return;
+    }
+    await indexedDb!.init();
+    for (final key in indexedDb!.keys) {
+      final row = await indexedDb!.getObject<T>(key, builder);
       if (row != null) {
         _rows.add(row);
       }
@@ -57,13 +67,16 @@ class Dataset<T extends pb.Object> {
   /// dispose database
   @mustCallSuper
   void dispose() {
-    indexedDb.dispose();
+    if (indexedDb != null) {
+      indexedDb!.dispose();
+    }
   }
 
   /// removeExpired remove all data that is not in keep duration
   Future<void> removeExpired() async {
     if (utcExpiredDate != null) {
       List<String> needRemove = [];
+
       _rows.removeWhere((row) {
         final deleted = row.timestamp.toDateTime().isBefore(utcExpiredDate!);
         if (deleted) {
@@ -71,9 +84,10 @@ class Dataset<T extends pb.Object> {
         }
         return deleted;
       });
-      if (needRemove.isNotEmpty) {
+
+      if (indexedDb != null && needRemove.isNotEmpty) {
         for (final id in needRemove) {
-          await indexedDb.delete(id);
+          await indexedDb!.delete(id);
         }
       }
     }
@@ -116,7 +130,9 @@ class Dataset<T extends pb.Object> {
       _rows.remove(exists);
     }
     _rows.insert(0, row);
-    await indexedDb.putObject(row.id, row);
+    if (indexedDb != null) {
+      await indexedDb!.putObject(row.id, row);
+    }
   }
 
   /// getRowById return row by id, null if not exists
@@ -124,6 +140,9 @@ class Dataset<T extends pb.Object> {
 
   /// [] override to get field value
   operator [](String key) => getRowById(key);
+
+  /// select return list of object that match selector or empty if selector is null
+  Iterable<T> select() => selector != null ? selector!(this) : [];
 
   /// query return list of object that match query
   Iterable<T> query({

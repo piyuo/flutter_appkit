@@ -288,6 +288,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                             t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
                   ];
                 },
+                selector: (dataset) => dataset.query(),
               ),
               fetcher: data.DataFetcher<sample.Person>(
                 rowsPerPage: 10,
@@ -303,7 +304,6 @@ class _ToolsExampleState extends State<ToolsExample> {
                   return list;
                 },
               ),
-              selector: (dataset) => dataset.query(),
             ),
           ),
         ],
