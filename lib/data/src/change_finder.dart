@@ -2,8 +2,14 @@ import 'package:libcli/pb/pb.dart' as pb;
 
 /// ChangeFinder find how many data has been changed
 class ChangeFinder<T extends pb.Object> {
+  /// insertCount is number of data has been inserted, use for refresh
   int insertCount = 0;
+
+  /// removed keep removed data, use for refresh
   Map<int, T> removed = {};
+
+  /// isChanged return true if data has been changed
+  bool get isChanged => insertCount > 0 || removed.isNotEmpty;
 
   /// Convert the source list into a set for efficient lookup
   Set<T> convertToSet(List<T> list) {
@@ -28,6 +34,7 @@ class ChangeFinder<T extends pb.Object> {
     }
   }
 }
+
 /*class ChangeFinder<T extends pb.Object> {
   /// insertCount is number of data has been inserted, use for refresh
   int insertCount = 0;

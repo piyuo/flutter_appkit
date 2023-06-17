@@ -20,6 +20,8 @@ void main() {
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
       ]);
 
+      expect(finder.isChanged, true);
+
       expect(finder.insertCount, 2);
       expect(finder.removed.length, 2);
 
