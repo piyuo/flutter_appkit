@@ -102,12 +102,12 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  /// more fetch more data from remote
-  Future<void> more({bool notify = true}) async {
+  /// more fetch more data from remote, return true if load more data
+  Future<bool> more({bool notify = true}) async {
     if (hasMore) {
       final lastTimestamp = _getFetchTimestamp();
       if (lastTimestamp == null) {
-        return;
+        return false;
       }
 
       final rows = await fetcher!.fetch(lastTimestamp);
@@ -121,8 +121,10 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
         if (notify) {
           notifyListeners();
         }
+        return true;
       }
     }
+    return false;
   }
 
   /// _getFetchTimestamp return timestamp to fetch data
