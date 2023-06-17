@@ -285,5 +285,52 @@ void main() {
       dp.dispose();
       await indexedDb.removeBox();
     });
+
+    test('refresh should remove duplicate rows in fetchRows', () async {
+      var result = [
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 2, 1).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 2).utcTimestamp)),
+      ];
+
+      final indexedDb = IndexedDb(dbName: 'test_data_duplicate');
+      await indexedDb.init();
+      await indexedDb.clear();
+
+      final ds = Dataset<sample.Person>(
+        utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+        indexedDb: indexedDb,
+        builder: () => sample.Person(),
+        refresher: (timestamp) async => result,
+      );
+
+      final dp = DataProvider(
+        dataset: ds,
+        selector: (ds) => ds.query(),
+        fetcher: DataFetcher<sample.Person>(
+          rowsPerPage: 5,
+          loader: (timestamp, rowsPerPage, pageIndex) async {
+            return [
+              sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
+              sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).utcTimestamp)),
+            ];
+          },
+        ),
+      );
+      await dp.init();
+      expect(dp.displayRows.length, 4);
+
+      result = [
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 3, 5).utcTimestamp, d: true)), // change date
+        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 3, 6).utcTimestamp, d: true)),
+      ];
+      final changed = await dp.refresh(findDifference: true);
+      expect(dp.displayRows.length, 2);
+      expect(changed!.removed.length, 2);
+      expect(dp.displayRows[0].id, '1');
+      expect(dp.displayRows[1].id, '3');
+
+      dp.dispose();
+      await indexedDb.removeBox();
+    });
   });
 }

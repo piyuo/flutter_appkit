@@ -105,7 +105,8 @@ void main() {
       result = [
         sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).utcTimestamp)),
       ];
-      await ds.refresh();
+      final downloadRows = await ds.refresh();
+      expect(downloadRows.length, 1);
       expect(ds.rows.length, 2);
       expect(ds.rows[0].id, '2');
 
@@ -283,33 +284,5 @@ void main() {
       indexedDb.dispose();
       await indexedDb.removeBox();
     });
-
-/*    test('should map string list to object list', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_map');
-      await indexedDb.init();
-      await indexedDb.clear();
-
-      final ds = Dataset(
-        indexedDb: indexedDb,
-        builder: () => sample.Person(),
-        refresher: (timestamp) async => [
-          sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-          sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
-          sample.Person(age: 19, m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp, d: true)),
-        ],
-      );
-
-      await ds.init();
-      await ds.refresh();
-
-      final result = ds.mapObjects(['2', '3']);
-      expect(result.length, 2);
-      // order by string list's order
-      expect(result[0].id, '2');
-      expect(result[1].id, '3');
-
-      indexedDb.dispose();
-      await indexedDb.removeBox();
-    });*/
   });
 }

@@ -92,8 +92,8 @@ class Dataset<T extends pb.Object> {
     return null;
   }
 
-  /// refresh to get new rows
-  Future<void> refresh() async {
+  /// refresh to get new rows,return list of new rows
+  Future<List<T>> refresh() async {
     final downloadRows = await refresher(refreshTimestamp);
     if (downloadRows.isNotEmpty) {
       debugPrint('[dataset] refresh ${downloadRows.length} rows');
@@ -102,6 +102,7 @@ class Dataset<T extends pb.Object> {
       }
       pb.Object.sort(_rows);
     }
+    return downloadRows;
   }
 
   /// _addRow put row into db and check if it is newer than existing row
@@ -164,16 +165,4 @@ class Dataset<T extends pb.Object> {
 
     return result;
   }
-
-  /// mapObjects return list of object that match given id
-  /*List<T> mapObjects(Iterable<String> list) {
-    final objects = <T>[];
-    for (final id in list) {
-      final object = getRowById(id);
-      if (object != null) {
-        objects.add(object);
-      }
-    }
-    return objects;
-  }*/
 }

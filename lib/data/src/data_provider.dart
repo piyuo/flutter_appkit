@@ -70,17 +70,24 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
   /// refresh load new data data from remote
   Future<ChangeFinder<T>?> refresh({bool findDifference = false, bool notify = true}) async {
+    Future<void> refreshData() async {
+      final downloadRows = await dataset.refresh();
+      if (_fetchRows != null) {
+        for (T row in downloadRows) {
+          _fetchRows!.removeWhere((t) => t.id == row.id);
+        }
+      }
+      await _reload(notify);
+    }
+
     if (findDifference) {
       final backup = List<T>.from(displayRows);
-      await dataset.refresh();
-      await _reload(notify);
+      await refreshData();
       final changeFinder = ChangeFinder<T>();
       changeFinder.refreshDifference(source: backup, target: displayRows);
       return changeFinder;
     }
-
-    await dataset.refresh();
-    await _reload(notify);
+    await refreshData();
     return null;
   }
 
