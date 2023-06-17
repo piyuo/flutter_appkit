@@ -15,7 +15,6 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     required this.selector,
     required this.dataset,
     this.fetcher,
-    this.onRefreshChanged,
   });
 
   /// dataset keep data
@@ -41,9 +40,6 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
   /// isNotFilledPage return true when available rows can not fill a page and can fetch more
   bool get isNotFilledPage => fetcher != null && displayRows.length < fetcher!.rowsPerPage;
-
-  /// onRefreshChanged is callback when refresh changed
-  void Function(ChangeFinder)? onRefreshChanged;
 
   /// of get DatabaseProvider from context
   static DataProvider<T> of<T extends pb.Object>(BuildContext context) {
@@ -80,7 +76,6 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       await _reload(notify);
       final changeFinder = ChangeFinder<T>();
       changeFinder.refreshDifference(source: backup, target: displayRows);
-      onRefreshChanged?.call(changeFinder);
       return changeFinder;
     }
 
