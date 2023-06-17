@@ -444,7 +444,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       onPressed: () async {
                         Widget removedItem = itemBuilder(true, 2);
                         gridItems.removeAt(2);
-                        provide.removeAnimation(2, removedItem, true);
+                        provide.removeAnimation(2, removedItem);
                         await provide.waitForAnimationDone();
                         debugPrint('animation done');
                       }),
@@ -453,7 +453,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     onPressed: () {
                       Widget removedItem = itemBuilder(true, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, removedItem, true);
+                      provide.removeAnimation(2, removedItem);
                       gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
@@ -519,7 +519,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       onPressed: () async {
                         Widget removedItem = itemBuilder(false, 2);
                         gridItems.removeAt(0);
-                        provide.removeAnimation(0, removedItem, false);
+                        provide.removeAnimation(0, removedItem, isSizeAnimation: false);
                         await provide.waitForAnimationDone();
                         debugPrint('animation done');
                       }),
@@ -528,7 +528,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     onPressed: () async {
                       Widget removedItem = itemBuilder(false, 2);
                       gridItems.removeAt(2);
-                      provide.removeAnimation(2, removedItem, false);
+                      provide.removeAnimation(2, removedItem, isSizeAnimation: false);
                       await provide.waitForAnimationDone();
                       gridItems.insert(0, 2);
                       provide.insertAnimation();

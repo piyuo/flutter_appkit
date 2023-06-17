@@ -488,7 +488,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   Future<void> _showNewItemDeleteAnimation() async {
     final removedItem = _buildDeletedItemWithDecoration(creating!, true);
     creating = null;
-    animateViewProvider.removeAnimation(0, removedItem, isListView);
+    animateViewProvider.removeAnimation(0, removedItem, isSizeAnimation: isListView);
     notifyListeners();
     await animateViewProvider.waitForAnimationDone();
     animateViewProvider.setLength(dataView!.displayRows.length);
@@ -504,7 +504,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
       final row = dataView!.displayRows[i];
       if (dataView!.isRowSelected(row)) {
         final removedItem = _buildDeletedItemWithDecoration(row, true);
-        animateViewProvider.removeAnimation(i - removeCount, removedItem, isListView);
+        animateViewProvider.removeAnimation(i - removeCount, removedItem, isSizeAnimation: isListView);
         removeCount++;
       }
     }

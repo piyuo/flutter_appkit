@@ -67,22 +67,27 @@ class AnimateViewProvider with ChangeNotifier {
   }
 
   /// insertAnimation show insert animation
-  void insertAnimation({int? index, int count = 1}) {
+  void insertAnimation({int? index, int count = 1, Duration? duration}) {
     _length += count;
     if (_gridKey.currentState != null) {
       for (int i = 0; i < count; i++) {
-        _gridKey.currentState!.insertItem(index ?? 0, duration: animatedDuration);
+        _gridKey.currentState!.insertItem(index ?? 0, duration: duration ?? animatedDuration);
       }
     }
   }
 
   /// removeAnimation show remove animation
-  void removeAnimation(int index, Widget child, bool sizeOrSlideAnimation) {
+  void removeAnimation(
+    int index,
+    Widget child, {
+    bool isSizeAnimation = true,
+    Duration? duration,
+  }) {
     if (index != -1 && _gridKey.currentState != null) {
       _gridKey.currentState!.removeItem(
         index,
-        (context, animation) => sizeOrSlideAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
-        duration: animatedDuration,
+        (context, animation) => isSizeAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
+        duration: duration ?? animatedDuration,
       );
       _length--;
     }
