@@ -73,7 +73,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// refresh load new data data from remote
-  Future<ChangeFinder?> refresh({bool findDifference = false, bool notify = true}) async {
+  Future<ChangeFinder<T>?> refresh({bool findDifference = false, bool notify = true}) async {
     if (findDifference) {
       final backup = List<T>.from(displayRows);
       await dataset.refresh();
