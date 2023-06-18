@@ -436,7 +436,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: const Text('insert'),
                     onPressed: () {
                       gridItems.insert(0, 9);
-                      provide.insertAnimation();
+                      provide.insertAnimation(index: 0, duration: const Duration(milliseconds: 3500));
                     },
                   ),
                   OutlinedButton(
@@ -483,7 +483,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                 ]),
                 Consumer<AnimateViewProvider>(
                   builder: (context, provide, _) => Expanded(
-                      child: AnimateView(
+                      child: AnimateShiftView(
                     animateViewProvider: provide,
                     itemBuilder: (index) => itemBuilder(true, index),
                     mainAxisSpacing: 15,
