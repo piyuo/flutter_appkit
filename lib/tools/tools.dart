@@ -12,6 +12,7 @@ export 'src/select_bar.dart';
 export 'src/refresh_more.dart';
 export 'src/pull_refresh.dart';
 export 'src/load_more.dart';
+export 'src/load_more_animate_view.dart';
 export 'src/sticky_header.dart';
 export 'src/tag.dart';
 export 'src/tag_view.dart';

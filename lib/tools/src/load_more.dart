@@ -138,3 +138,91 @@ class LoadMore extends StatelessWidget {
     );
   }
 }
+
+void addLoadMoreMark(
+  BuildContext context, {
+  required RefreshMoreProvider refreshMoreProvider,
+  Future<void> Function()? onMore,
+  String errorMsg = 'Load fail, tap to retry',
+  String completedMsg = 'no more data',
+  required List<Widget> list,
+}) {
+  final colorScheme = Theme.of(context).colorScheme;
+  execLoadMore() async {
+    refreshMoreProvider.setMoreStatus(LoadingStatus.loading);
+    try {
+      await onMore!();
+      refreshMoreProvider.setMoreStatus(LoadingStatus.idle);
+    } catch (e, s) {
+      log.error(e, s);
+      refreshMoreProvider.setMoreStatus(LoadingStatus.error);
+    }
+  }
+
+  Widget buildLoading() {
+    return SizedBox(
+      width: double.infinity,
+      height: kFooterHeight,
+      child: Center(
+        child: SizedBox(
+          width: 110,
+          height: 24,
+          child: delta.ballPulseIndicator(),
+        ),
+      ),
+    );
+  }
+
+  Widget buildError() {
+    return Container(
+      alignment: Alignment.center,
+      height: kFooterHeight,
+      child: TextButton.icon(
+        style: TextButton.styleFrom(
+          backgroundColor: colorScheme.errorContainer,
+        ),
+        onPressed: () => execLoadMore(),
+        icon: Icon(Icons.error, color: colorScheme.onErrorContainer),
+        label: Text(errorMsg, style: TextStyle(color: colorScheme.onErrorContainer)),
+      ),
+    );
+  }
+
+  Widget buildCompleted() {
+    return SizedBox(
+        height: kFooterHeight,
+        child: Center(
+          child: Text(completedMsg),
+        ));
+  }
+
+  Widget buildLoadMore() {
+    final status = refreshMoreProvider.moreStatus;
+    if (status == LoadingStatus.loading) {
+      return buildLoading();
+    } else if (status == LoadingStatus.error) {
+      return buildError();
+    } else if (status == LoadingStatus.completed) {
+      return buildCompleted();
+    } else {
+      return Container(height: kFooterHeight);
+    }
+  }
+
+  dynamic check = list.elementAt(list.length - 1);
+  if (check is SliverSafeArea && check.key == _keyLastItem) {
+    list.removeLast();
+  }
+
+  list.add(
+    SliverSafeArea(
+      key: _keyLastItem,
+      top: false,
+      left: false,
+      right: false,
+      sliver: SliverToBoxAdapter(
+        child: buildLoadMore(),
+      ),
+    ),
+  );
+}

@@ -15,6 +15,7 @@ enum SampleFilter { inbox, vip, sent, all }
 final indexedDb = data.IndexedDb(dbName: 'tools_sample');
 int sampleIndex = 0;
 DateTime sampleDate = DateTime.now();
+final _searchBoxController = TextEditingController();
 
 main() {
   base.start(
@@ -268,11 +269,20 @@ class _ToolsExampleState extends State<ToolsExample> {
                 )));
   }
 
+  var refreshIndex = 0;
+  var refreshResult = [
+    sample.Person(
+        m: pb.Model(i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+  ];
+
   Widget _dataview(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<RefreshMoreProvider>(
-            create: (context) => RefreshMoreProvider(),
+          ChangeNotifierProvider<delta.AnimateViewProvider>(
+            create: (context) => delta.AnimateViewProvider(),
+          ),
+          ChangeNotifierProvider<DataviewProvider<sample.Person>>(
+            create: (context) => DataviewProvider<sample.Person>(),
           ),
           ChangeNotifierProvider<data.DataProvider<sample.Person>>(
             create: (context) => data.DataProvider<sample.Person>(
@@ -281,18 +291,37 @@ class _ToolsExampleState extends State<ToolsExample> {
                 indexedDb: indexedDb,
                 builder: () => sample.Person(),
                 refresher: (timestamp) async {
-                  return [
-                    sample.Person(
-                        m: pb.Model(
-                            i: 'r${sampleIndex++}',
-                            t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                  ];
+                  await Future.delayed(const Duration(seconds: 2));
+                  var result = List<sample.Person>.from(refreshResult);
+                  if (refreshIndex == 0) {
+                    refreshResult = [
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'r0', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'm9', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'm5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                    ];
+                  } else {
+                    refreshResult = [
+                      sample.Person(
+                          m: pb.Model(
+                              i: 'r${sampleIndex++}',
+                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                    ];
+                  }
+                  refreshIndex++;
+                  return result;
                 },
                 selector: (dataset) => dataset.query(),
               ),
               fetcher: data.DataFetcher<sample.Person>(
                 rowsPerPage: 10,
                 loader: (timestamp, rowsPerPage, pageIndex) async {
+                  await Future.delayed(const Duration(seconds: 2));
                   final list = List.generate(
                     10,
                     (index) => sample.Person(
@@ -307,36 +336,33 @@ class _ToolsExampleState extends State<ToolsExample> {
             ),
           ),
         ],
-        child: Consumer2<data.DataProvider<sample.Person>, RefreshMoreProvider>(
-            builder: (context, dataProvider, refreshMoreProvider, _) => base.LoadingScreen(
+        child: Consumer3<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>, delta.AnimateViewProvider>(
+            builder: (context, dataProvider, dataviewProvider, animateViewProvider, _) => base.LoadingScreen(
                 future: () async {
                   await indexedDb.init();
                   await indexedDb.clear();
-
                   await dataProvider.init();
-                  await dataProvider.refresh();
+                  await dataviewProvider.init(dataProvider, animateViewProvider);
                 },
                 builder: () => Dataview<sample.Person>(
                       dataProvider: dataProvider,
-                      refreshMoreProvider: refreshMoreProvider,
-                      sliversBuilder: (persons) {
-                        return <Widget>[
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                final sample.Person person = persons[index];
-                                return ListTile(
-                                  leading: CircleAvatar(child: Text(person.id)),
-                                  title: Text('This item represents ${person.id}.'),
-                                  isThreeLine: true,
-                                  subtitle: Text(
-                                      'Even more additional list item information appears on line three ${person.name}'),
-                                );
-                              },
-                              childCount: persons.length,
-                            ),
-                          ),
-                        ];
+                      dataviewProvider: dataviewProvider,
+                      animateViewProvider: animateViewProvider,
+                      headerBuilder: () => Container(
+                          height: 65,
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          child: delta.SearchBox(
+                            controller: _searchBoxController,
+                            //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
+                          )),
+                      widgetBuilder: (person) {
+                        return ListTile(
+                          leading: CircleAvatar(child: Text(person.id)),
+                          title: Text('This item represents ${person.id}.'),
+                          isThreeLine: true,
+                          subtitle:
+                              Text('Even more additional list item information appears on line three ${person.name}'),
+                        );
                       },
                     ))));
   }
