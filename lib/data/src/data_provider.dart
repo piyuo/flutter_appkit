@@ -133,4 +133,25 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     }
     return dataset.utcExpiredDate!.timestamp;
   }
+
+  /// _removeFromFetchRows remove row from fetchRows
+  void _removeFromFetchRows(T row) {
+    if (_fetchRows != null) {
+      _fetchRows!.removeWhere((t) => t.id == row.id);
+    }
+  }
+
+  /// addRow add row to dataset, replace old row if it's already exist
+  Future<void> addRow(T row) async {
+    await dataset.addRow(row);
+    _removeFromFetchRows(row);
+    await _reload(true);
+  }
+
+  /// removeRow remove row from dataset or fetchRows
+  Future<void> removeRow(T row) async {
+    await dataset.removeRow(row);
+    _removeFromFetchRows(row);
+    await _reload(true);
+  }
 }

@@ -37,14 +37,14 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   /// await dataset.first;
   /// ```
   @override
-  Future<T?> get first async => _index.isNotEmpty ? indexedDb.getObject(_index.first, objectBuilder) : null;
+  Future<T?> get first async => _index.isNotEmpty ? indexedDb.getRow(_index.first, objectBuilder) : null;
 
   /// last return last row
   /// ```dart
   /// await dataset.last;
   /// ```
   @override
-  Future<T?> get last async => _index.isNotEmpty ? indexedDb.getObject(_index.last, objectBuilder) : null;
+  Future<T?> get last async => _index.isNotEmpty ? indexedDb.getRow(_index.last, objectBuilder) : null;
 
   /// load dataset content
   @override
@@ -89,7 +89,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     _index.insertAll(0, downloadID);
     await save();
     for (T row in list) {
-      await indexedDb.putObject(row.id, row);
+      await indexedDb.addRow(row.id, row);
     }
   }
 
@@ -105,7 +105,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     _index.addAll(downloadID);
     await save();
     for (T row in list) {
-      await indexedDb.putObject(row.id, row);
+      await indexedDb.addRow(row.id, row);
     }
     await super.add(list);
   }
@@ -120,7 +120,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     for (String id in list) {
       if (_index.contains(id)) {
         _index.remove(id);
-        await indexedDb.delete(id);
+        await indexedDb.removeRow(id);
       }
     }
     await save();
@@ -147,7 +147,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
     final list = _index.sublist(start, end);
     List<T> source = [];
     for (String id in list) {
-      final row = await indexedDb.getObject(id, objectBuilder);
+      final row = await indexedDb.getRow(id, objectBuilder);
       if (row == null) {
         // data is missing, reset data
         await reset();
@@ -166,7 +166,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   Future<T?> read(String id) async {
     for (String row in _index) {
       if (row == id) {
-        return indexedDb.getObject(row, objectBuilder);
+        return indexedDb.getRow(row, objectBuilder);
       }
     }
     return null;
@@ -179,7 +179,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   @override
   Future<void> forEach(void Function(T) callback) async {
     for (String id in _index) {
-      final obj = await indexedDb.getObject(id, objectBuilder);
+      final obj = await indexedDb.getRow(id, objectBuilder);
       if (obj != null) {
         callback(obj);
       }

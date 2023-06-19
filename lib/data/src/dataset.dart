@@ -51,7 +51,7 @@ class Dataset<T extends pb.Object> {
     }
     await indexedDb!.init();
     for (final key in indexedDb!.keys) {
-      final row = await indexedDb!.getObject<T>(key, builder);
+      final row = await indexedDb!.getRow<T>(key, builder);
       if (row != null) {
         _rows.add(row);
       }
@@ -87,7 +87,7 @@ class Dataset<T extends pb.Object> {
 
       if (indexedDb != null && needRemove.isNotEmpty) {
         for (final id in needRemove) {
-          await indexedDb!.delete(id);
+          await indexedDb!.removeRow(id);
         }
       }
     }
@@ -112,15 +112,15 @@ class Dataset<T extends pb.Object> {
     if (downloadRows.isNotEmpty) {
       debugPrint('[dataset] refresh ${downloadRows.length} rows');
       for (final row in downloadRows) {
-        await _addRow(row);
+        await addRow(row);
       }
       pb.Object.sort(_rows);
     }
     return downloadRows;
   }
 
-  /// _addRow put row into db and check if it is newer than existing row
-  Future<void> _addRow(T row) async {
+  /// addRow add row to dataset replace old row if it's already exist
+  Future<void> addRow(T row) async {
     final exists = getRowById(row.id);
     if (exists != null) {
       if (exists.timestamp.toDateTime().isAfter(row.timestamp.toDateTime()) ||
@@ -131,7 +131,18 @@ class Dataset<T extends pb.Object> {
     }
     _rows.insert(0, row);
     if (indexedDb != null) {
-      await indexedDb!.putObject(row.id, row);
+      await indexedDb!.addRow(row.id, row);
+    }
+  }
+
+  /// removeRow remove row from dataset
+  Future<void> removeRow(T row) async {
+    final exists = getRowById(row.id);
+    if (exists != null) {
+      _rows.remove(exists);
+      if (indexedDb != null) {
+        await indexedDb!.removeRow(row.id);
+      }
     }
   }
 

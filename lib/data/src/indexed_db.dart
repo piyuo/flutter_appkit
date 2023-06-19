@@ -122,24 +122,24 @@ class IndexedDb with utils.InitOnceMixin {
     return deppConvertMap(value);
   }
 
-  /// putObject save object to database
+  /// addRow add row to database
   /// ```dart
-  /// await indexedDb.putObject('k', person);
+  /// await indexedDb.addRow('k', person);
   /// ```
-  Future<void> putObject(String key, pb.Object value) async => await putBoxObject(_box, key, value);
+  Future<void> addRow(String key, pb.Object value) async => await putBoxObject(_box, key, value);
 
-  /// getObject return the value associated with the given [key]
+  /// getRow return the row associated with the given [key]
   /// ```dart
-  /// final value = indexedDb.getObject<sample.Person>('k', () => sample.Person());
+  /// final value = indexedDb.getRow<sample.Person>('k', () => sample.Person());
   /// ```
-  Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) async =>
+  Future<T?> getRow<T extends pb.Object>(String key, pb.Builder<T> builder) async =>
       await getBoxObject(_box, key, builder);
 
-  /// delete the given [key] from the box ,if it does not exist, nothing happens.
+  /// removeRow remove row from database by given [key] from the box ,if it does not exist, nothing happens.
   /// ```dart
-  /// await indexedDb.delete('k');
+  /// await indexedDb.removeRow('k');
   /// ```
-  Future<void> delete(String key) async {
+  Future<void> removeRow(String key) async {
     debugPrint('[indexed_db] delete $key');
     await _box.delete(key);
   }

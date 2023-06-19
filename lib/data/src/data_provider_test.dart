@@ -204,6 +204,38 @@ void main() {
       await indexedDb.removeBox();
     });
 
+    test('should add/remove row', () async {
+      final indexedDb = IndexedDb(dbName: 'test_data_add');
+      await indexedDb.init();
+      await indexedDb.clear();
+
+      final ds = Dataset<sample.Person>(
+        utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+        indexedDb: indexedDb,
+        builder: () => sample.Person(),
+        refresher: (timestamp) async => [],
+        selector: (ds) => ds.query(),
+      );
+
+      final dp = DataProvider(
+        dataset: ds,
+        fetcher: DataFetcher<sample.Person>(
+          loader: (timestamp, rowsPerPage, pageIndex) async {
+            return [sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp))];
+          },
+        ),
+      );
+      await dp.init();
+      expect(dp.displayRows.length, 1);
+      final obj = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 2).utcTimestamp));
+      await dp.addRow(obj);
+      expect(dp.displayRows.length, 1);
+      await dp.removeRow(obj);
+      expect(dp.displayRows.length, 0);
+      dp.dispose();
+      await indexedDb.removeBox();
+    });
+
     test('restart should reset fetch result and start from beginning', () async {
       var result = [
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),

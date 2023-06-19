@@ -10,7 +10,7 @@ void main() {
       await indexedDb.init();
       await indexedDb.put('k', true);
       expect(indexedDb.containsKey('k'), true);
-      await indexedDb.delete('k');
+      await indexedDb.removeRow('k');
       expect(indexedDb.containsKey('k'), false);
       await indexedDb.removeBox();
     });
@@ -92,8 +92,8 @@ void main() {
       final indexedDb = IndexedDb(dbName: 'test_object');
       await indexedDb.init();
       final person = sample.Person(name: 'l');
-      await indexedDb.putObject('k', person);
-      final value = await indexedDb.getObject<sample.Person>('k', () => sample.Person());
+      await indexedDb.addRow('k', person);
+      final value = await indexedDb.getRow<sample.Person>('k', () => sample.Person());
       expect(value, isNotNull);
       expect(value!.name, 'l');
       expect(value, person);

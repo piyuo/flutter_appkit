@@ -74,8 +74,8 @@ class DbExample extends StatelessWidget {
           onPressed: () async {
             final dbProvider = data.IndexedDb(dbName: 'data_sample');
             await dbProvider.init();
-            await dbProvider.putObject('e', sample.Person(name: '123'));
-            var person = await dbProvider.getObject<sample.Person>('e', () => sample.Person());
+            await dbProvider.addRow('e', sample.Person(name: '123'));
+            var person = await dbProvider.getRow<sample.Person>('e', () => sample.Person());
             debugPrint('person name: ${person!.name}');
           }),
     ]);
