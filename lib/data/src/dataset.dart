@@ -1,19 +1,19 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'dart:math';
 import 'indexed_db.dart';
+import 'data_loader.dart';
 
 /// DataSelector select data from dataset
 typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
 
 /// DataRefresher is a function to load data from remote, return list of data
-typedef DataRefresher<T extends pb.Object> = Future<List<T>> Function(google.Timestamp? timestamp);
+//typedef DataRefresher<T extends pb.Object> = Future<List<T>> Function(google.Timestamp? timestamp);
 
 /// Dataset keep list of row for later use
 class Dataset<T extends pb.Object> {
   Dataset({
-    required this.refresher,
     required this.builder,
     this.selector,
     this.indexedDb,
@@ -28,9 +28,6 @@ class Dataset<T extends pb.Object> {
 
   /// hasMore return true if there are more data on remote
   bool get hasMore => utcExpiredDate != null;
-
-  /// refresher get data from remote, return data must newer than timestamp
-  final DataRefresher<T> refresher;
 
   /// indexedDb is indexed db that store all object, if null mean do not store data
   final IndexedDb? indexedDb;
@@ -107,16 +104,26 @@ class Dataset<T extends pb.Object> {
   }
 
   /// refresh to get new rows,return list of new rows
-  Future<List<T>> refresh() async {
-    final downloadRows = await refresher(refreshTimestamp);
-    if (downloadRows.isNotEmpty) {
-      debugPrint('[dataset] refresh ${downloadRows.length} rows');
-      for (final row in downloadRows) {
+  Future<SyncResult<T>> refresh({
+    required DataLoader<T> loader,
+    bool isInit = false,
+    int? rowsPerPage,
+    int? pageIndex,
+  }) async {
+    final result = await loader(pb.Sync(
+      act: isInit ? pb.Sync_ACT.ACT_INIT : pb.Sync_ACT.ACT_REFRESH,
+      time: refreshTimestamp,
+      rows: isInit ? rowsPerPage : null, // only init need to set rowsPerPage
+      page: isInit ? pageIndex : null, // only init need to set pageIndex
+    ));
+    if (result.refreshRows.isNotEmpty) {
+      debugPrint('[dataset] refresh ${result.refreshRows.length} rows');
+      for (final row in result.refreshRows) {
         await addRow(row);
       }
       pb.Object.sort(_rows);
     }
-    return downloadRows;
+    return result;
   }
 
   /// addRow add row to dataset replace old row if it's already exist

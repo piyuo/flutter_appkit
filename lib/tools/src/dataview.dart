@@ -93,7 +93,7 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
           execLoadMore() async {
             refreshMoreProvider.setMoreStatus(LoadingStatus.loading);
             try {
-              bool hasMore = await dataProvider.more(notify: false);
+              bool hasMore = await dataProvider.fetch(notify: false);
               if (hasMore) {
                 dataviewProvider.onMore(dataProvider, animateViewProvider);
               }
@@ -119,7 +119,7 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
             },
             child: LoadMoreAnimateView(
                 refreshMoreProvider: refreshMoreProvider,
-                execLoadMore: dataProvider.hasMore ? execLoadMore : null,
+                execLoadMore: dataProvider.isMoreToFetch ? execLoadMore : null,
                 child: dataProvider.displayRows.isEmpty
                     ? const delta.NoDataDisplay()
                     : delta.AnimateView(
@@ -132,7 +132,7 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
                                 ? loadMoreIndicator(
                                     context,
                                     refreshMoreProvider: refreshMoreProvider,
-                                    execLoadMore: dataProvider.hasMore ? execLoadMore : null,
+                                    execLoadMore: dataProvider.isMoreToFetch ? execLoadMore : null,
                                   )
                                 : widgetBuilder(dataProvider.displayRows[index - 1]),
                         mainAxisSpacing: 15,

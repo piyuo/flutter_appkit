@@ -286,53 +286,57 @@ class _ToolsExampleState extends State<ToolsExample> {
           ),
           ChangeNotifierProvider<data.DataProvider<sample.Person>>(
             create: (context) => data.DataProvider<sample.Person>(
+              rowsPerPage: 10,
               dataset: data.Dataset<sample.Person>(
                 utcExpiredDate: DateTime.now().toUtc(),
                 indexedDb: indexedDb,
                 builder: () => sample.Person(),
-                refresher: (timestamp) async {
-                  await Future.delayed(const Duration(seconds: 2));
-                  var result = List<sample.Person>.from(refreshResult);
-                  if (refreshIndex == 0) {
-                    refreshResult = [
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'r0', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'm9', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'm5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                    ];
-                  } else {
-                    refreshResult = [
+                selector: (dataset) => dataset.query(),
+              ),
+              loader: (sync) async {
+                await Future.delayed(const Duration(seconds: 2));
+                switch (sync.act) {
+                  case pb.Sync_ACT.ACT_INIT:
+                    return data.SyncResult(refreshRows: [
                       sample.Person(
                           m: pb.Model(
                               i: 'r${sampleIndex++}',
                               t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                    ];
-                  }
-                  refreshIndex++;
-                  return result;
-                },
-                selector: (dataset) => dataset.query(),
-              ),
-              fetcher: data.DataFetcher<sample.Person>(
-                rowsPerPage: 10,
-                loader: (timestamp, rowsPerPage, pageIndex) async {
-                  await Future.delayed(const Duration(seconds: 2));
-                  final list = List.generate(
-                    10,
-                    (index) => sample.Person(
-                        m: pb.Model(
-                            i: 'm${sampleIndex++}',
-                            t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                  );
-                  list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
-                  return list;
-                },
-              ),
+                    ]);
+                  case pb.Sync_ACT.ACT_REFRESH:
+                    if (refreshIndex == 0) {
+                      refreshIndex++;
+                      return data.SyncResult(refreshRows: [
+                        sample.Person(
+                            m: pb.Model(
+                                d: true, i: 'r0', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                        sample.Person(
+                            m: pb.Model(
+                                d: true, i: 'm9', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                        sample.Person(
+                            m: pb.Model(
+                                d: true, i: 'm5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      ]);
+                    }
+                    refreshIndex++;
+                    return data.SyncResult(refreshRows: [
+                      sample.Person(
+                          m: pb.Model(
+                              i: 'r${sampleIndex++}',
+                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                    ]);
+                  default:
+                    final list = List.generate(
+                      10,
+                      (index) => sample.Person(
+                          m: pb.Model(
+                              i: 'm${sampleIndex++}',
+                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                    );
+                    list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
+                    return data.SyncResult(fetchRows: list, more: true);
+                }
+              },
             ),
           ),
         ],

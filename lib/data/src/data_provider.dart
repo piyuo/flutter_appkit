@@ -3,36 +3,43 @@ import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:provider/provider.dart';
 import 'dataset.dart';
-import 'data_fetcher.dart';
 import 'change_finder.dart';
+import 'data_loader.dart';
 
 /// DataProvider read data from dataset user viewer to create list of page
 class DataProvider<T extends pb.Object> with ChangeNotifier {
   DataProvider({
     required this.dataset,
-    this.fetcher,
-  }) : assert(fetcher != null);
+    required this.loader,
+    this.rowsPerPage,
+  });
+
+  /// loader get data from remote
+  final DataLoader<T> loader;
 
   /// dataset keep data
   final Dataset<T> dataset;
 
-  /// fetcher only fetch data you want display to user (e.g. after filter/sort), these fetch data will not save to dataset
-  final DataFetcher<T>? fetcher;
-
   /// _fetchRows keep rows that fetcher load from remote
   List<T>? _fetchRows;
+
+  /// rowsPerPage is number of rows per page for fetch, if null then no fetch allowed
+  final int? rowsPerPage;
+
+  /// pageIndex is the page index for fetch
+  int pageIndex = 0;
 
   /// displayRows is rows already in memory and ready to use
   final displayRows = <T>[];
 
-  /// hasMore return true when current page is last page and dataset did not have full data
-  bool get hasMore => dataset.hasMore && fetcher != null && fetcher!.hasMore;
-
-  /// noMore return true when no more data on remote
-  bool get noMore => !hasMore;
-
   /// isNotFilledPage return true when available rows can not fill a page and can fetch more
-  bool get isNotFilledPage => fetcher != null && displayRows.length < fetcher!.rowsPerPage;
+  bool get isNotFilledPage => rowsPerPage != null && displayRows.length < rowsPerPage!;
+
+  /// _moreToFetch is true if there are more data on remote to fetch
+  bool _moreToFetch = true;
+
+  /// moreToFetch return true when current page is last page and dataset did not have full data
+  bool get isMoreToFetch => dataset.hasMore && rowsPerPage != null && _moreToFetch;
 
   /// of get DatabaseProvider from context
   static DataProvider<T> of<T extends pb.Object>(BuildContext context) {
@@ -42,7 +49,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// init data view
   Future<void> init() async {
     await dataset.init();
-    await refresh();
+    await refresh(isInit: true);
   }
 
   /// dispose database
@@ -54,21 +61,42 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     super.dispose();
   }
 
+  /// resetFetch reset fetch to start from beginning
+  void resetFetch() {
+    _moreToFetch = true;
+    pageIndex = 0;
+  }
+
   /// restart clean displayRows start from beginning, you should reload if user change filter/sort
   Future<void> restart({bool notify = true}) async {
     _fetchRows = null;
-    fetcher?.reset();
     await _reload(notify);
   }
 
   /// refresh load new data data from remote
-  Future<ChangeFinder<T>?> refresh({bool findDifference = false, bool notify = true}) async {
+  Future<ChangeFinder<T>?> refresh({
+    bool findDifference = false,
+    bool notify = true,
+    bool isInit = false,
+  }) async {
     Future<void> refreshData() async {
-      final downloadRows = await dataset.refresh();
+      final result = await dataset.refresh(
+        loader: loader,
+        isInit: isInit,
+        rowsPerPage: rowsPerPage,
+        pageIndex: rowsPerPage != null ? pageIndex : null,
+      );
+
+      // fetchRows may need to remove some rows because refresh rows have new one
       if (_fetchRows != null) {
-        for (T row in downloadRows) {
+        for (T row in result.refreshRows) {
           _fetchRows!.removeWhere((t) => t.id == row.id);
         }
+      }
+
+      // if refreshRows is not enough, fetch rows will have rows to fill
+      if (result.fetchRows.isNotEmpty) {
+        _saveFetchRow(result.fetchRows);
       }
       await _reload(notify);
     }
@@ -90,29 +118,48 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     displayRows.addAll(dataset.select());
     if (_fetchRows != null) {
       displayRows.addAll(_fetchRows!); // add fetchRows make sure more() work correctly
-    } else if (isNotFilledPage && hasMore) {
-      // when _fetchRows is null, we may need to fetch more data
-      await more();
     }
     notifyListeners();
   }
 
-  /// more fetch more data from remote, return true if load more data
-  Future<bool> more({bool notify = true}) async {
-    if (hasMore) {
+  /// _saveFetchRow save rows to _fetchRows, return true if there is more rows saved
+  bool _saveFetchRow(List<T> fetchRows) {
+    if (rowsPerPage == null) {
+      return false;
+    }
+    if (fetchRows.length < rowsPerPage!) {
+      _moreToFetch = false;
+    }
+    if (fetchRows.isNotEmpty) {
+      debugPrint('[data_provider] fetch ${fetchRows.length} rows, more=$_moreToFetch');
+      pageIndex++;
+
+      if (_fetchRows == null) {
+        _fetchRows = fetchRows;
+      } else {
+        _fetchRows!.addAll(fetchRows);
+      }
+      displayRows.addAll(fetchRows);
+      return true;
+    }
+    return false;
+  }
+
+  /// fetch more data from remote, return true if load more data
+  Future<bool> fetch({bool notify = true}) async {
+    if (isMoreToFetch) {
       final lastTimestamp = _getFetchTimestamp();
       if (lastTimestamp == null) {
         return false;
       }
 
-      final rows = await fetcher!.fetch(lastTimestamp);
-      if (rows.isNotEmpty) {
-        if (_fetchRows == null) {
-          _fetchRows = rows;
-        } else {
-          _fetchRows!.addAll(rows);
-        }
-        displayRows.addAll(rows);
+      final result = await loader(pb.Sync(
+        act: pb.Sync_ACT.ACT_FETCH,
+        time: lastTimestamp,
+        rows: rowsPerPage!, // only init need to set rowsPerPage
+        page: pageIndex, // only init need to set pageIndex
+      ));
+      if (_saveFetchRow(result.fetchRows)) {
         if (notify) {
           notifyListeners();
         }
@@ -124,7 +171,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
   /// _getFetchTimestamp return timestamp to fetch data
   google.Timestamp? _getFetchTimestamp() {
-    if (!hasMore) {
+    if (!isMoreToFetch) {
       return null;
     }
     final rows = displayRows;
