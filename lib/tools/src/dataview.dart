@@ -31,8 +31,8 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
 //      duration: const Duration(milliseconds: 3500),
     );
 
-    // handle delete
-    for (var entry in changed.removed.entries) {
+    for (int i = changed.removed.entries.length - 1; i >= 0; i--) {
+      final entry = changed.removed.entries.elementAt(i);
       debugPrint('remove:${entry.key}');
       Widget removedWidget = widgetBuilder(entry.value);
       animateViewProvider.removeAnimation(
@@ -41,6 +41,7 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
         //      duration: const Duration(milliseconds: 3500),
       );
     }
+
     notifyListeners();
   }
 

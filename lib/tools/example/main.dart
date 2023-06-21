@@ -297,25 +297,35 @@ class _ToolsExampleState extends State<ToolsExample> {
                 await Future.delayed(const Duration(seconds: 2));
                 switch (sync.act) {
                   case pb.Sync_ACT.ACT_INIT:
-                    return data.SyncResult(refreshRows: [
-                      sample.Person(
+                    return data.SyncResult(
+                      refreshRows: [
+                        sample.Person(
                           m: pb.Model(
                               i: 'r${sampleIndex++}',
-                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                    ]);
+                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp),
+                        ),
+                      ],
+                      fetchRows: List.generate(
+                        10,
+                        (index) => sample.Person(
+                            m: pb.Model(
+                                i: 'f${sampleIndex++}',
+                                t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      ),
+                    );
                   case pb.Sync_ACT.ACT_REFRESH:
                     if (refreshIndex == 0) {
                       refreshIndex++;
                       return data.SyncResult(refreshRows: [
                         sample.Person(
                             m: pb.Model(
-                                d: true, i: 'r0', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                                d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
                         sample.Person(
                             m: pb.Model(
-                                d: true, i: 'm9', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                                d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
                         sample.Person(
                             m: pb.Model(
-                                d: true, i: 'm5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                                d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
                       ]);
                     }
                     refreshIndex++;
