@@ -356,8 +356,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                   await dataviewProvider.init(dataProvider);
                 },
                 builder: () => Dataview<sample.Person>(
-                      dataProvider: dataProvider,
-                      dataviewProvider: dataviewProvider,
+                      viewProvider: dataviewProvider,
                       headerBuilder: () => Container(
                           height: 65,
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),

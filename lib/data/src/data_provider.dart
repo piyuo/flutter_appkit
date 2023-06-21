@@ -74,42 +74,29 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// refresh load new data data from remote
-  Future<ChangeFinder<T>?> refresh({
-    bool findDifference = false,
+  Future<void> refresh({
     bool notify = true,
     bool isInit = false,
   }) async {
-    Future<void> refreshData() async {
-      final result = await dataset.refresh(
-        loader: loader,
-        isInit: isInit,
-        rowsPerPage: rowsPerPage,
-        pageIndex: rowsPerPage != null ? pageIndex : null,
-      );
+    final result = await dataset.refresh(
+      loader: loader,
+      isInit: isInit,
+      rowsPerPage: rowsPerPage,
+      pageIndex: rowsPerPage != null ? pageIndex : null,
+    );
 
-      // fetchRows may need to remove some rows because refresh rows have new one
-      if (_fetchRows != null) {
-        for (T row in result.refreshRows) {
-          _fetchRows!.removeWhere((t) => t.id == row.id);
-        }
+    // fetchRows may need to remove some rows because refresh rows have new one
+    if (_fetchRows != null) {
+      for (T row in result.refreshRows) {
+        _fetchRows!.removeWhere((t) => t.id == row.id);
       }
-
-      // if refreshRows is not enough, fetch rows will have rows to fill
-      if (result.fetchRows.isNotEmpty) {
-        _saveFetchRow(result.fetchRows);
-      }
-      await _reload(notify);
     }
 
-    if (findDifference) {
-      final backup = List<T>.from(displayRows);
-      await refreshData();
-      final changeFinder = ChangeFinder<T>();
-      changeFinder.refreshDifference(source: backup, target: displayRows);
-      return changeFinder;
+    // if refreshRows is not enough, fetch rows will have rows to fill
+    if (result.fetchRows.isNotEmpty) {
+      _saveFetchRow(result.fetchRows);
     }
-    await refreshData();
-    return null;
+    await _reload(notify);
   }
 
   /// _reload will build display rows,

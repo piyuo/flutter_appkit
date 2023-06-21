@@ -7,6 +7,7 @@ import 'data_provider.dart';
 import 'data_loader.dart';
 import 'dataset.dart';
 import 'indexed_db.dart';
+import 'change_finder.dart';
 
 void main() {
   group('[data.data_provider]', () {
@@ -400,9 +401,14 @@ void main() {
         sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 4).utcTimestamp, d: true)),
         sample.Person(m: pb.Model(i: '5', t: DateTime(2021, 1, 5).utcTimestamp)),
       ];
-      final changed = await dp.refresh(findDifference: true);
+
+      final backup = List<sample.Person>.from(dp.displayRows);
+      await dp.refresh();
+      final changed = ChangeFinder<sample.Person>();
+      changed.refreshDifference(source: backup, target: dp.displayRows);
+
       expect(dp.displayRows.length, 4);
-      expect(changed!.insertCount, 2);
+      expect(changed.insertCount, 2);
       expect(changed.removed.length, 2);
 
       dp.dispose();
@@ -448,9 +454,14 @@ void main() {
         sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 3, 6).utcTimestamp, d: true)),
       ];
       fetchResult = [];
-      final changed = await dp.refresh(findDifference: true);
+
+      final backup = List<sample.Person>.from(dp.displayRows);
+      await dp.refresh();
+      final changed = ChangeFinder<sample.Person>();
+      changed.refreshDifference(source: backup, target: dp.displayRows);
+
       expect(dp.displayRows.length, 2);
-      expect(changed!.removed.length, 2);
+      expect(changed.removed.length, 2);
       expect(dp.displayRows[0].id, '1');
       expect(dp.displayRows[1].id, '3');
 

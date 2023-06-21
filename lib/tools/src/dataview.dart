@@ -13,16 +13,28 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
   /// animateViewProvider for animation
   delta.AnimateViewProvider animateViewProvider = delta.AnimateViewProvider();
 
-  Future<void> init(data.DataProvider<T> dataProvider) async {
+  /// dataProvider is instance of [DataProvider]
+  late data.DataProvider<T> dataProvider;
+
+  /// selectedRows keep track selected rows
+  List<T> selectedRows = [];
+
+  Future<void> init(data.DataProvider<T> newDataProvider) async {
+    dataProvider = newDataProvider;
     animateViewProvider.setLength(dataProvider.displayRows.length + 2); // 1 for header, 1 for load more
   }
 
-  /// onRefresh is called when dataview pull to refresh
-  void onRefresh(
-    Widget Function(T) widgetBuilder,
-    data.ChangeFinder<T> changed,
-    data.DataProvider<T> dataProvider,
-  ) {
+  /// Widget called when dataview pull to refresh
+  Future<void> refresh(Widget Function(T) widgetBuilder) async {
+    final backup = List<T>.from(dataProvider.displayRows);
+    await dataProvider.refresh(notify: false);
+    final changed = data.ChangeFinder<T>();
+    changed.refreshDifference(source: backup, target: dataProvider.displayRows);
+
+    if (!changed.isChanged) {
+      return;
+    }
+
     debugPrint('insertCount:${changed.insertCount}');
     // handle new insert
     animateViewProvider.insertAnimation(
@@ -44,11 +56,12 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  /// onFetchMore is called when dataview fetch more data
-  void onFetchMore(
-    data.DataProvider<T> dataProvider,
-    delta.AnimateViewProvider animateViewProvider,
-  ) {
+  /// fetch is called when dataview fetch more data
+  Future<void> fetch() async {
+    bool hasMore = await dataProvider.fetch(notify: false);
+    if (!hasMore) {
+      return;
+    }
     animateViewProvider.setLength(dataProvider.displayRows.length + 2); // 1 for header, 1 for load more
     notifyListeners();
   }
@@ -65,8 +78,7 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
 class Dataview<T extends pb.Object> extends StatelessWidget {
   const Dataview({
     required this.widgetBuilder,
-    required this.dataProvider,
-    required this.dataviewProvider,
+    required this.viewProvider,
     this.headerBuilder,
     super.key,
   });
@@ -77,11 +89,8 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
   /// widgetBuilder return widget to show data
   final Widget Function(T) widgetBuilder;
 
-  // dataProvider is instance of [DataProvider]
-  final data.DataProvider<T> dataProvider;
-
-  // dataviewProvider is instance of [DataviewProvider]
-  final DataviewProvider<T> dataviewProvider;
+  // viewProvider is instance of [DataviewProvider]
+  final DataviewProvider<T> viewProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -91,18 +100,15 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
             create: (context) => RefreshMoreProvider(),
           ),
           ChangeNotifierProvider<delta.AnimateViewProvider>.value(
-            value: dataviewProvider.animateViewProvider,
+            value: viewProvider.animateViewProvider,
           ),
         ],
         child: Consumer2<RefreshMoreProvider, delta.AnimateViewProvider>(
             builder: (context, refreshMoreProvider, animateViewProvider, child) {
-          execLoadMore() async {
+          Future<void> goFetch() async {
             refreshMoreProvider.setMoreStatus(LoadingStatus.loading);
             try {
-              bool hasMore = await dataProvider.fetch(notify: false);
-              if (hasMore) {
-                dataviewProvider.onFetchMore(dataProvider, animateViewProvider);
-              }
+              await viewProvider.fetch();
               refreshMoreProvider.setMoreStatus(LoadingStatus.idle);
             } catch (e, s) {
               log.error(e, s);
@@ -112,20 +118,11 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
 
           return PullRefresh(
             refreshMoreProvider: refreshMoreProvider,
-            onRefresh: () async {
-              final changed = await dataProvider.refresh(findDifference: true, notify: false);
-              if (changed!.isChanged) {
-                dataviewProvider.onRefresh(
-                  widgetBuilder,
-                  changed,
-                  dataProvider,
-                );
-              }
-            },
+            onRefresh: () async => await viewProvider.refresh(widgetBuilder),
             child: LoadMoreAnimateView(
                 refreshMoreProvider: refreshMoreProvider,
-                execLoadMore: dataProvider.isMoreToFetch ? execLoadMore : null,
-                child: dataProvider.displayRows.isEmpty
+                execLoadMore: viewProvider.dataProvider.isMoreToFetch ? goFetch : null,
+                child: viewProvider.dataProvider.displayRows.isEmpty
                     ? const delta.NoDataDisplay()
                     : delta.AnimateView(
                         animateViewProvider: animateViewProvider,
@@ -133,13 +130,13 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
                             ? headerBuilder != null
                                 ? SizedBox(width: double.infinity, child: headerBuilder!())
                                 : const SizedBox()
-                            : index - 1 == dataProvider.displayRows.length
+                            : index - 1 == viewProvider.dataProvider.displayRows.length
                                 ? loadMoreIndicator(
                                     context,
                                     refreshMoreProvider: refreshMoreProvider,
-                                    execLoadMore: dataProvider.isMoreToFetch ? execLoadMore : null,
+                                    execLoadMore: viewProvider.dataProvider.isMoreToFetch ? goFetch : null,
                                   )
-                                : widgetBuilder(dataProvider.displayRows[index - 1]),
+                                : widgetBuilder(viewProvider.dataProvider.displayRows[index - 1]),
                         mainAxisSpacing: 15,
                         crossAxisSpacing: 20,
                         crossAxisCount: 1,
