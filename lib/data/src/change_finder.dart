@@ -17,6 +17,7 @@ class ChangeFinder<T extends pb.Object> {
   }
 
   /// RefreshDifference finds differences when refreshing between source and target
+  /// removed is a map of index to the removed item, it sort by source index
   void refreshDifference({required List<T> source, required List<T> target}) {
     // Convert the source list to a set for efficient lookup
     var sourceSet = convertToSet(source);
@@ -34,34 +35,3 @@ class ChangeFinder<T extends pb.Object> {
     }
   }
 }
-
-/*class ChangeFinder<T extends pb.Object> {
-  /// insertCount is number of data has been inserted, use for refresh
-  int insertCount = 0;
-
-  /// removed keep removed data, use for refresh
-  /// key is index of data in list
-  /// value is data
-  Map<int, T> removed = {};
-
-  /// inInList return true if t is in list
-  bool isInList(List<T> list, T t) {
-    return list.where((row) => t.id == row.id && t.utcTime == row.utcTime).isNotEmpty;
-  }
-
-  /// refreshDifference find difference when refresh between source and target
-  void refreshDifference({required List<T> source, required List<T> target}) {
-    for (var t in target) {
-      if (!isInList(source, t)) {
-        insertCount++;
-      }
-    }
-
-    for (int i = 0; i < source.length; i++) {
-      if (!isInList(target, source[i])) {
-        removed[i] = source[i];
-      }
-    }
-  }
-}
-*/
