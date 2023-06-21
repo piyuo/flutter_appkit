@@ -278,9 +278,6 @@ class _ToolsExampleState extends State<ToolsExample> {
   Widget _dataview(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<delta.AnimateViewProvider>(
-            create: (context) => delta.AnimateViewProvider(),
-          ),
           ChangeNotifierProvider<DataviewProvider<sample.Person>>(
             create: (context) => DataviewProvider<sample.Person>(),
           ),
@@ -350,18 +347,17 @@ class _ToolsExampleState extends State<ToolsExample> {
             ),
           ),
         ],
-        child: Consumer3<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>, delta.AnimateViewProvider>(
-            builder: (context, dataProvider, dataviewProvider, animateViewProvider, _) => base.LoadingScreen(
+        child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
+            builder: (context, dataProvider, dataviewProvider, _) => base.LoadingScreen(
                 future: () async {
                   await indexedDb.init();
                   await indexedDb.clear();
                   await dataProvider.init();
-                  await dataviewProvider.init(dataProvider, animateViewProvider);
+                  await dataviewProvider.init(dataProvider);
                 },
                 builder: () => Dataview<sample.Person>(
                       dataProvider: dataProvider,
                       dataviewProvider: dataviewProvider,
-                      animateViewProvider: animateViewProvider,
                       headerBuilder: () => Container(
                           height: 65,
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),

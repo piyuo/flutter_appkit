@@ -10,25 +10,24 @@ import 'load_more_animate_view.dart';
 
 /// DataviewProvider is a provider for [Dataview]
 class DataviewProvider<T extends pb.Object> with ChangeNotifier {
-  Future<void> init(
-    data.DataProvider<T> dataProvider,
-    delta.AnimateViewProvider animateViewProvider,
-  ) async {
+  /// animateViewProvider for animation
+  delta.AnimateViewProvider animateViewProvider = delta.AnimateViewProvider();
+
+  Future<void> init(data.DataProvider<T> dataProvider) async {
     animateViewProvider.setLength(dataProvider.displayRows.length + 2); // 1 for header, 1 for load more
   }
 
+  /// onRefresh is called when dataview pull to refresh
   void onRefresh(
     Widget Function(T) widgetBuilder,
     data.ChangeFinder<T> changed,
     data.DataProvider<T> dataProvider,
-    delta.AnimateViewProvider animateViewProvider,
   ) {
     debugPrint('insertCount:${changed.insertCount}');
     // handle new insert
     animateViewProvider.insertAnimation(
       index: 1,
       count: changed.insertCount,
-//      duration: const Duration(milliseconds: 3500),
     );
 
     for (int i = changed.removed.entries.length - 1; i >= 0; i--) {
@@ -45,7 +44,8 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
-  void onMore(
+  /// onFetchMore is called when dataview fetch more data
+  void onFetchMore(
     data.DataProvider<T> dataProvider,
     delta.AnimateViewProvider animateViewProvider,
   ) {
@@ -57,6 +57,7 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
+    animateViewProvider.dispose();
   }
 }
 
@@ -65,7 +66,6 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
   const Dataview({
     required this.widgetBuilder,
     required this.dataProvider,
-    required this.animateViewProvider,
     required this.dataviewProvider,
     this.headerBuilder,
     super.key,
@@ -83,20 +83,25 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
   // dataviewProvider is instance of [DataviewProvider]
   final DataviewProvider<T> dataviewProvider;
 
-  // animateViewProvider for animation
-  final delta.AnimateViewProvider animateViewProvider;
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<RefreshMoreProvider>(
-        create: (context) => RefreshMoreProvider(),
-        child: Consumer<RefreshMoreProvider>(builder: (context, refreshMoreProvider, child) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<RefreshMoreProvider>(
+            create: (context) => RefreshMoreProvider(),
+          ),
+          ChangeNotifierProvider<delta.AnimateViewProvider>.value(
+            value: dataviewProvider.animateViewProvider,
+          ),
+        ],
+        child: Consumer2<RefreshMoreProvider, delta.AnimateViewProvider>(
+            builder: (context, refreshMoreProvider, animateViewProvider, child) {
           execLoadMore() async {
             refreshMoreProvider.setMoreStatus(LoadingStatus.loading);
             try {
               bool hasMore = await dataProvider.fetch(notify: false);
               if (hasMore) {
-                dataviewProvider.onMore(dataProvider, animateViewProvider);
+                dataviewProvider.onFetchMore(dataProvider, animateViewProvider);
               }
               refreshMoreProvider.setMoreStatus(LoadingStatus.idle);
             } catch (e, s) {
@@ -114,7 +119,6 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
                   widgetBuilder,
                   changed,
                   dataProvider,
-                  animateViewProvider,
                 );
               }
             },
