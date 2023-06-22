@@ -13,17 +13,13 @@ import 'package:protobuf/protobuf.dart' as $pb;
 // ignore: implementation_imports
 import 'package:libcli/google/src/timestamp.pb.dart' as $0;
 
-import 'sync.pbenum.dart';
-
-export 'sync.pbenum.dart';
-
 class Sync extends pb.Object {
   $core.int mapIdXXX() => 8;
   get namespace => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Sync', createEmptyInstance: create)
-    ..e<Sync_ACT>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'act', $pb.PbFieldType.OE, defaultOrMaker: Sync_ACT.ACT_UNSPECIFIED, valueOf: Sync_ACT.valueOf, enumValues: Sync_ACT.values)
-    ..aOM<$0.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'time', subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'refresh', subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fetch', subBuilder: $0.Timestamp.create)
     ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'rows', $pb.PbFieldType.O3)
     ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'page', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
@@ -31,17 +27,17 @@ class Sync extends pb.Object {
 
   Sync._() : super();
   factory Sync({
-    Sync_ACT? act,
-    $0.Timestamp? time,
+    $0.Timestamp? refresh,
+    $0.Timestamp? fetch,
     $core.int? rows,
     $core.int? page,
   }) {
     final _result = create();
-    if (act != null) {
-      _result.act = act;
+    if (refresh != null) {
+      _result.refresh = refresh;
     }
-    if (time != null) {
-      _result.time = time;
+    if (fetch != null) {
+      _result.fetch = fetch;
     }
     if (rows != null) {
       _result.rows = rows;
@@ -73,24 +69,26 @@ class Sync extends pb.Object {
   static Sync? _defaultInstance;
 
   @$pb.TagNumber(1)
-  Sync_ACT get act => $_getN(0);
+  $0.Timestamp get refresh => $_getN(0);
   @$pb.TagNumber(1)
-  set act(Sync_ACT v) { setField(1, v); }
+  set refresh($0.Timestamp v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasAct() => $_has(0);
+  $core.bool hasRefresh() => $_has(0);
   @$pb.TagNumber(1)
-  void clearAct() => clearField(1);
+  void clearRefresh() => clearField(1);
+  @$pb.TagNumber(1)
+  $0.Timestamp ensureRefresh() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $0.Timestamp get time => $_getN(1);
+  $0.Timestamp get fetch => $_getN(1);
   @$pb.TagNumber(2)
-  set time($0.Timestamp v) { setField(2, v); }
+  set fetch($0.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTime() => $_has(1);
+  $core.bool hasFetch() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTime() => clearField(2);
+  void clearFetch() => clearField(2);
   @$pb.TagNumber(2)
-  $0.Timestamp ensureTime() => $_ensure(1);
+  $0.Timestamp ensureFetch() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $core.int get rows => $_getIZ(2);

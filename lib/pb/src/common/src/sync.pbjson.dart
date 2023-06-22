@@ -12,24 +12,12 @@ import 'dart:typed_data' as $typed_data;
 const Sync$json = const {
   '1': 'Sync',
   '2': const [
-    const {'1': 'act', '3': 1, '4': 1, '5': 14, '6': '.Sync.ACT', '10': 'act'},
-    const {'1': 'time', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'time'},
+    const {'1': 'refresh', '3': 1, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'refresh'},
+    const {'1': 'fetch', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'fetch'},
     const {'1': 'rows', '3': 3, '4': 1, '5': 5, '10': 'rows'},
     const {'1': 'page', '3': 4, '4': 1, '5': 5, '10': 'page'},
-  ],
-  '4': const [Sync_ACT$json],
-};
-
-@$core.Deprecated('Use syncDescriptor instead')
-const Sync_ACT$json = const {
-  '1': 'ACT',
-  '2': const [
-    const {'1': 'ACT_UNSPECIFIED', '2': 0},
-    const {'1': 'ACT_INIT', '2': 1},
-    const {'1': 'ACT_REFRESH', '2': 2},
-    const {'1': 'ACT_FETCH', '2': 3},
   ],
 };
 
 /// Descriptor for `Sync`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List syncDescriptor = $convert.base64Decode('CgRTeW5jEhsKA2FjdBgBIAEoDjIJLlN5bmMuQUNUUgNhY3QSLgoEdGltZRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSBHRpbWUSEgoEcm93cxgDIAEoBVIEcm93cxISCgRwYWdlGAQgASgFUgRwYWdlIkgKA0FDVBITCg9BQ1RfVU5TUEVDSUZJRUQQABIMCghBQ1RfSU5JVBABEg8KC0FDVF9SRUZSRVNIEAISDQoJQUNUX0ZFVENIEAM=');
+final $typed_data.Uint8List syncDescriptor = $convert.base64Decode('CgRTeW5jEjQKB3JlZnJlc2gYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgdyZWZyZXNoEjAKBWZldGNoGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIFZmV0Y2gSEgoEcm93cxgDIAEoBVIEcm93cxISCgRwYWdlGAQgASgFUgRwYWdl');

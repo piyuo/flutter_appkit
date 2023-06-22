@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'indexed_db.dart';
-import 'data_loader.dart';
 
 /// DataSelector select data from dataset
 typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
@@ -103,6 +102,15 @@ class Dataset<T extends pb.Object> {
     return null;
   }
 
+  /// insertRows insert list of rows to dataset, replace old row if it's already exist
+  Future<void> insertRows(List<T> rows) async {
+    for (final row in rows) {
+      await _insertRow(row);
+    }
+    pb.Object.sort(_rows);
+  }
+
+/*
   /// refresh to get new rows,return list of new rows
   Future<SyncResult<T>> refresh({
     required DataLoader<T> loader,
@@ -119,15 +127,23 @@ class Dataset<T extends pb.Object> {
     if (result.refreshRows.isNotEmpty) {
       debugPrint('[dataset] refresh ${result.refreshRows.length} rows');
       for (final row in result.refreshRows) {
-        await addRow(row);
+        await insertRow(row);
       }
       pb.Object.sort(_rows);
     }
     return result;
   }
 
-  /// addRow add row to dataset replace old row if it's already exist
-  Future<void> addRow(T row) async {
+ */
+
+  /// insertRow insert row to dataset, replace old row if it's already exist
+  Future<void> insertRow(T row) async {
+    await _insertRow(row);
+    pb.Object.sort(_rows);
+  }
+
+  /// _insertRow insert row to dataset, replace old row if it's already exist
+  Future<void> _insertRow(T row) async {
     final exists = getRowById(row.id);
     if (exists != null) {
       if (exists.timestamp.toDateTime().isAfter(row.timestamp.toDateTime()) ||

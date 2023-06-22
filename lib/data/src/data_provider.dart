@@ -3,8 +3,9 @@ import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:provider/provider.dart';
 import 'dataset.dart';
-import 'change_finder.dart';
-import 'data_loader.dart';
+
+/// DataLoader is a function to load data from remote, return refresh rows and fetch rows
+typedef DataLoader<T extends pb.Object> = Future<(List<T>?, List<T>?)> Function(pb.Sync sync);
 
 /// DataProvider read data from dataset user viewer to create list of page
 class DataProvider<T extends pb.Object> with ChangeNotifier {
@@ -32,9 +33,6 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// displayRows is rows already in memory and ready to use
   final displayRows = <T>[];
 
-  /// isNotFilledPage return true when available rows can not fill a page and can fetch more
-  bool get isNotFilledPage => rowsPerPage != null && displayRows.length < rowsPerPage!;
-
   /// _moreToFetch is true if there are more data on remote to fetch
   bool _moreToFetch = true;
 
@@ -49,7 +47,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// init data view
   Future<void> init() async {
     await dataset.init();
-    await refresh(isInit: true);
+    await reload(isInit: true, notify: false);
   }
 
   /// dispose database
@@ -61,103 +59,122 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     super.dispose();
   }
 
-  /// resetFetch reset fetch to start from beginning
-  void resetFetch() {
-    _moreToFetch = true;
-    pageIndex = 0;
-  }
-
-  /// restart clean displayRows start from beginning, you should reload if user change filter/sort
-  Future<void> restart({bool notify = true}) async {
-    _fetchRows = null;
-    await _reload(notify);
-  }
-
-  /// refresh load new data data from remote
-  Future<void> refresh({
+  /// reload will build display rows,
+  Future<void> reload({
     bool notify = true,
     bool isInit = false,
   }) async {
-    final result = await dataset.refresh(
-      loader: loader,
-      isInit: isInit,
-      rowsPerPage: rowsPerPage,
-      pageIndex: rowsPerPage != null ? pageIndex : null,
-    );
+    _fetchRows = null;
+    _moreToFetch = true;
+    pageIndex = 0;
 
-    // fetchRows may need to remove some rows because refresh rows have new one
-    if (_fetchRows != null) {
-      for (T row in result.refreshRows) {
-        _fetchRows!.removeWhere((t) => t.id == row.id);
-      }
-    }
-
-    // if refreshRows is not enough, fetch rows will have rows to fill
-    if (result.fetchRows.isNotEmpty) {
-      _saveFetchRow(result.fetchRows);
-    }
-    await _reload(notify);
-  }
-
-  /// _reload will build display rows,
-  Future<void> _reload(bool notify) async {
     displayRows.clear();
-    displayRows.addAll(dataset.select());
-    if (_fetchRows != null) {
-      displayRows.addAll(_fetchRows!); // add fetchRows make sure more() work correctly
+    final selectRows = dataset.select();
+    // init mode need refresh data and may need fetch to fit rowsPerPage
+    bool needFetch = isMoreToFetch && rowsPerPage != null && selectRows.length < rowsPerPage!;
+    final (refreshRows, fetchRows) = await loader(
+      pb.Sync(
+        refresh: isInit ? dataset.refreshTimestamp : null,
+        fetch: needFetch ? _fetchTimestamp : null,
+        rows: needFetch ? rowsPerPage! - selectRows.length : null,
+        page: needFetch ? pageIndex : null,
+      ),
+    );
+    if (refreshRows != null && refreshRows.isNotEmpty) {
+      debugPrint('[data_provider] refresh ${refreshRows.length} rows');
+      await dataset.insertRows(refreshRows);
     }
-    notifyListeners();
+    if (fetchRows != null) {
+      _saveFetchRows(fetchRows, fetchRows.length < (rowsPerPage! - selectRows.length));
+    }
+    _binDisplay(notify);
   }
 
-  /// _saveFetchRow save rows to _fetchRows, return true if there is more rows saved
-  bool _saveFetchRow(List<T> fetchRows) {
-    if (rowsPerPage == null) {
+  /// refresh load new data data from remote, return true if load new data
+  Future<bool> refresh({bool notify = true}) async {
+    final (refreshRows, _) = await loader(
+      pb.Sync(
+        refresh: dataset.refreshTimestamp,
+      ),
+    );
+    if (refreshRows == null || refreshRows.isEmpty) {
       return false;
     }
-    if (fetchRows.length < rowsPerPage!) {
-      _moreToFetch = false;
+    debugPrint('[data_provider] refresh ${refreshRows.length} rows');
+    await dataset.insertRows(refreshRows);
+    // fetchRows may need to remove some rows because refresh rows have new one
+    for (T row in refreshRows) {
+      _removeFromFetchRows(row);
     }
-    if (fetchRows.isNotEmpty) {
-      debugPrint('[data_provider] fetch ${fetchRows.length} rows, more=$_moreToFetch');
-      pageIndex++;
+    _binDisplay(notify);
+    return true;
+  }
 
-      if (_fetchRows == null) {
-        _fetchRows = fetchRows;
-      } else {
-        _fetchRows!.addAll(fetchRows);
-      }
-      displayRows.addAll(fetchRows);
+  /// fetch more data from remote, return true if load more data
+  Future<bool> fetch({bool notify = true}) async {
+    final lastTimestamp = _fetchTimestamp;
+    if (lastTimestamp == null) {
+      return false;
+    }
+
+    final (_, fetchRows) = await loader(pb.Sync(
+      fetch: _fetchTimestamp,
+      rows: rowsPerPage!,
+      page: pageIndex,
+    ));
+    if (fetchRows == null) {
+      return false;
+    }
+
+    if (_saveFetchRows(fetchRows, fetchRows.length < rowsPerPage!)) {
+      _binDisplay(notify);
       return true;
     }
     return false;
   }
 
-  /// fetch more data from remote, return true if load more data
-  Future<bool> fetch({bool notify = true}) async {
-    if (isMoreToFetch) {
-      final lastTimestamp = _getFetchTimestamp();
-      if (lastTimestamp == null) {
-        return false;
-      }
+  /// addRow add row to dataset, replace old row if it's already exist
+  Future<void> addRow(T row, {bool notify = true}) async {
+    await dataset.insertRow(row);
+    _removeFromFetchRows(row);
+    _binDisplay(notify);
+  }
 
-      final result = await loader(pb.Sync(
-        act: pb.Sync_ACT.ACT_FETCH,
-        time: lastTimestamp,
-        rows: rowsPerPage!, // only init need to set rowsPerPage
-        page: pageIndex, // only init need to set pageIndex
-      ));
-      if (_saveFetchRow(result.fetchRows)) {
-        if (notify) {
-          notifyListeners();
-        }
-        return true;
-      }
+  /// removeRow remove row from dataset or fetchRows
+  Future<void> removeRow(T row, {bool notify = true}) async {
+    await dataset.removeRow(row);
+    _removeFromFetchRows(row);
+    _binDisplay(notify);
+  }
+
+  /// _bindDisplay load dataset and fetch rows to displayRows
+  void _binDisplay(bool notify) {
+    displayRows.clear();
+    displayRows.addAll(dataset.select());
+    if (_fetchRows != null) {
+      displayRows.addAll(_fetchRows!);
+    }
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
+  /// _saveFetchRows save rows to _fetchRows, return true if there is more rows saved
+  bool _saveFetchRows(List<T> fetchRows, bool noMore) {
+    _moreToFetch = !noMore;
+    if (fetchRows.isNotEmpty) {
+      debugPrint('[data_provider] fetch ${fetchRows.length} rows, more=$_moreToFetch');
+      pageIndex++;
+
+      _fetchRows ??= [];
+      _fetchRows!.addAll(fetchRows);
+      return true;
     }
     return false;
   }
 
-  /// _getFetchTimestamp return timestamp to fetch data
-  google.Timestamp? _getFetchTimestamp() {
+  /// _fetchTimestamp return timestamp to fetch data
+  google.Timestamp? get _fetchTimestamp {
     if (!isMoreToFetch) {
       return null;
     }
@@ -173,19 +190,5 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     if (_fetchRows != null) {
       _fetchRows!.removeWhere((t) => t.id == row.id);
     }
-  }
-
-  /// addRow add row to dataset, replace old row if it's already exist
-  Future<void> addRow(T row) async {
-    await dataset.addRow(row);
-    _removeFromFetchRows(row);
-    await _reload(true);
-  }
-
-  /// removeRow remove row from dataset or fetchRows
-  Future<void> removeRow(T row) async {
-    await dataset.removeRow(row);
-    _removeFromFetchRows(row);
-    await _reload(true);
   }
 }

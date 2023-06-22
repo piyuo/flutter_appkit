@@ -4,49 +4,47 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'data_provider.dart';
-import 'data_loader.dart';
 import 'dataset.dart';
 import 'indexed_db.dart';
 import 'change_finder.dart';
 
 void main() {
   group('[data.data_provider]', () {
-    test('should get more data', () async {
+    test('should init with fetch data', () async {
       int fetchCount = 0;
-
+      int fetchRows = 0;
       final dp = DataProvider<sample.Person>(
         rowsPerPage: 10,
         dataset: Dataset<sample.Person>(
           utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
           builder: () => sample.Person(),
-        )..addRow(
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+          selector: (ds) => ds.query(),
+        )..insertRow(
+            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 2, 1).utcTimestamp)),
           ),
-        loader: (timestamp) async {
+        loader: (sync) async {
           fetchCount++;
-          return SyncResult(
-            fetchRows: [
-              sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+          fetchRows = sync.rows;
+          return (
+            null,
+            [
+              sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
             ],
-            more: true,
           );
         },
       );
-      final result = await dp.fetch();
-      expect(result, true);
-      expect(dp.displayRows.length, 1);
+      await dp.init();
+      expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '1');
-      // no more to fetch when download rows count < rowsPerPage
+      expect(dp.displayRows[1].id, '2');
       expect(dp.isMoreToFetch, isFalse);
       expect(dp.pageIndex, 1);
       expect(fetchCount, 1);
+      expect(fetchRows, 9);
 
-      fetchCount = 0;
-      // should not fetch when no more
+      // should not fetch when no more data
       final result2 = await dp.fetch();
       expect(result2, isFalse);
-      expect(fetchCount, 0);
-      expect(dp.pageIndex, 1);
     });
 
     test('should change page index when fetch', () async {
@@ -57,14 +55,17 @@ void main() {
         dataset: Dataset<sample.Person>(
           utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
           builder: () => sample.Person(),
-        )..addRow(
+        )..insertRow(
             sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
           ),
         loader: (sync) async {
           fetchIndex = sync.page;
-          return SyncResult(fetchRows: [
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-          ]);
+          return (
+            null,
+            [
+              sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+            ]
+          );
         },
       );
       final result = await dp.fetch();
@@ -81,31 +82,52 @@ void main() {
       expect(dp.pageIndex, 2);
     });
 
-    test('should reset pageIndex and no more', () async {
+    test('reload should reset pageIndex and no more', () async {
+      List<sample.Person>? refreshResult;
+      List<sample.Person>? fetchResult = [
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+      ];
+
       final dp = DataProvider<sample.Person>(
-        rowsPerPage: 10,
+        rowsPerPage: 2,
         dataset: Dataset<sample.Person>(
           utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
           builder: () => sample.Person(),
-        )..addRow(
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-          ),
+          selector: (ds) => ds.query(),
+        ),
         loader: (sync) async {
-          return SyncResult(fetchRows: [
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-          ]);
+          return (refreshResult, fetchResult);
         },
       );
-      final result = await dp.fetch();
-      expect(result, isTrue);
+      await dp.init();
       expect(dp.displayRows.length, 1);
-      expect(dp.displayRows[0].id, '1');
       expect(dp.isMoreToFetch, isFalse);
       expect(dp.pageIndex, 1);
 
-      dp.resetFetch();
+      // mimic change result
+      refreshResult = [
+        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
+      ];
+      fetchResult = [
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+      ];
+      await dp.reload();
+      expect(dp.displayRows.length, 3);
+      expect(dp.displayRows[0].id, '3');
+      expect(dp.displayRows[1].id, '2');
+      expect(dp.displayRows[2].id, '1');
       expect(dp.isMoreToFetch, isTrue);
-      expect(dp.pageIndex, 0);
+      expect(dp.pageIndex, 1);
+      fetchResult = [
+        sample.Person(m: pb.Model(i: '4', t: DateTime(2020, 4, 1).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '5', t: DateTime(2020, 2, 5).utcTimestamp)),
+      ];
+
+      final result = await dp.fetch();
+      expect(result, isTrue);
+      expect(dp.isMoreToFetch, isTrue);
+      expect(dp.pageIndex, 2);
     });
 
     test('should cache data in indexed db', () async {
@@ -116,23 +138,24 @@ void main() {
       final ds = Dataset<sample.Person>(
         indexedDb: indexedDb,
         builder: () => sample.Person(),
-        selector: (ds) => [ds['1'], ds['2']],
+        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider(
         dataset: ds,
-        loader: (timestamp) async => SyncResult(refreshRows: [
-          sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-          sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).utcTimestamp)),
-        ]),
+        loader: (sync) async => (
+          [
+            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+            sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).utcTimestamp)),
+          ],
+          null
+        ),
       );
       await dp.init(); // init will call refresh
       expect(dp.displayRows.length, 2);
-      expect(dp.displayRows.length, 2);
-      expect(dp.displayRows[0].id, '1');
-      expect(dp.displayRows[1].id, '2');
+      expect(dp.displayRows[0].id, '2');
+      expect(dp.displayRows[1].id, '1');
       expect(dp.isMoreToFetch, false);
-      expect(dp.isNotFilledPage, false);
 
       dp.dispose();
       await indexedDb.removeBox();
@@ -159,10 +182,7 @@ void main() {
       final dp = DataProvider<sample.Person>(
         dataset: ds,
         rowsPerPage: 2,
-        loader: (timestamp) async => SyncResult(
-          refreshRows: refreshResult,
-          fetchRows: fetchResult,
-        ),
+        loader: (timestamp) async => (refreshResult, fetchResult),
       );
       await dp.init();
       expect(dp.displayRows.length, 2);
@@ -188,7 +208,7 @@ void main() {
       await indexedDb.removeBox();
     });
 
-    test('should reload from dataset', () async {
+    test('selector should able sort data', () async {
       final p1 = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp));
       final p2 = sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp));
 
@@ -206,7 +226,7 @@ void main() {
 
       final dp = DataProvider(
         dataset: ds,
-        loader: (timestamp) async => SyncResult(refreshRows: [p1, p2]),
+        loader: (timestamp) async => ([p1, p2], null),
       );
       await dp.init();
       expect(dp.displayRows.length, 2);
@@ -215,7 +235,7 @@ void main() {
 
       // sort changed, need begin new new
       viewerResult = [p2, p1];
-      await dp.restart();
+      await dp.reload();
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '2');
       expect(dp.displayRows[1].id, '1');
@@ -244,7 +264,7 @@ void main() {
 
       final dp = DataProvider(
         dataset: ds,
-        loader: (timestamp) async => SyncResult(refreshRows: refreshResult),
+        loader: (timestamp) async => (refreshResult, null),
       );
       await dp.init();
       expect(dp.displayRows.length, 2);
@@ -254,7 +274,8 @@ void main() {
       // refresh data
       refreshResult = [p3];
       viewerResult = [p1, p2, p3];
-      await dp.refresh();
+      final result = await dp.refresh();
+      expect(result, isTrue);
       expect(dp.displayRows.length, 3);
       expect(dp.displayRows[0].id, '1');
       expect(dp.displayRows[1].id, '2');
@@ -273,28 +294,26 @@ void main() {
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         indexedDb: indexedDb,
         builder: () => sample.Person(),
-        selector: (ds) => [ds['1'], ds['2']],
+        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider(
         dataset: ds,
         rowsPerPage: 5,
-        loader: (timestamp) async => SyncResult(
-          refreshRows: [
+        loader: (timestamp) async => (
+          [
             sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
             sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
           ],
-          fetchRows: [
+          [
             sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
             sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).utcTimestamp)),
           ],
-          more: false,
         ),
       );
       await dp.init();
       expect(dp.displayRows.length, 4);
       expect(dp.isMoreToFetch, false);
-      expect(dp.isNotFilledPage, true);
 
       dp.dispose();
       await indexedDb.removeBox();
@@ -310,11 +329,11 @@ void main() {
         indexedDb: indexedDb,
         builder: () => sample.Person(),
         selector: (ds) => ds.query(),
-      )..addRow(sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)));
+      )..insertRow(sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)));
 
       final dp = DataProvider<sample.Person>(
         dataset: ds,
-        loader: (timestamp) async => SyncResult(refreshRows: []),
+        loader: (timestamp) async => (null, null),
       );
       await dp.init();
       expect(dp.displayRows.length, 1);
@@ -327,10 +346,14 @@ void main() {
       await indexedDb.removeBox();
     });
 
-    test('restart should reset fetch result and start from beginning', () async {
-      var result = [
+    test('reload should reset fetch result and start from beginning', () async {
+      var refreshResult = [
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
         sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+      ];
+      var fetchResult = [
+        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).utcTimestamp)),
       ];
 
       final indexedDb = IndexedDb(dbName: 'test_data_restart');
@@ -341,30 +364,22 @@ void main() {
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         indexedDb: indexedDb,
         builder: () => sample.Person(),
-        selector: (ds) => [ds['1'], ds['2']],
+        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider<sample.Person>(
         dataset: ds,
-        loader: (timestamp) async => SyncResult(
-          refreshRows: result,
-          fetchRows: [
-            sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
-            sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).utcTimestamp)),
-          ],
-        ),
+        loader: (timestamp) async => (refreshResult, fetchResult),
         rowsPerPage: 5,
       );
       await dp.init();
       expect(dp.displayRows.length, 4);
       expect(dp.isMoreToFetch, false);
-      expect(dp.isNotFilledPage, true);
 
-      result = [];
-      await dp.restart();
+      fetchResult = [];
+      await dp.reload();
       expect(dp.displayRows.length, 2);
       expect(dp.isMoreToFetch, false);
-      expect(dp.isNotFilledPage, true);
 
       dp.dispose();
       await indexedDb.removeBox();
@@ -391,7 +406,7 @@ void main() {
 
       final dp = DataProvider<sample.Person>(
         dataset: ds,
-        loader: (timestamp) async => SyncResult(refreshRows: result),
+        loader: (timestamp) async => (result, null),
       );
       await dp.init();
       expect(dp.displayRows.length, 4);
@@ -440,11 +455,7 @@ void main() {
       final dp = DataProvider<sample.Person>(
         dataset: ds,
         rowsPerPage: 5,
-        loader: (timestamp) async => SyncResult(
-          refreshRows: refreshResult,
-          fetchRows: fetchResult,
-          more: false,
-        ),
+        loader: (timestamp) async => (refreshResult, fetchResult),
       );
       await dp.init();
       expect(dp.displayRows.length, 4);

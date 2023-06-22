@@ -292,57 +292,65 @@ class _ToolsExampleState extends State<ToolsExample> {
               ),
               loader: (sync) async {
                 await Future.delayed(const Duration(seconds: 2));
-                switch (sync.act) {
-                  case pb.Sync_ACT.ACT_INIT:
-                    return data.SyncResult(
-                      refreshRows: [
-                        sample.Person(
-                          m: pb.Model(
-                              i: 'r${sampleIndex++}',
-                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp),
-                        ),
-                      ],
-                      fetchRows: List.generate(
-                        10,
-                        (index) => sample.Person(
-                            m: pb.Model(
-                                i: 'f${sampleIndex++}',
-                                t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                      ),
-                    );
-                  case pb.Sync_ACT.ACT_REFRESH:
-                    if (refreshIndex == 0) {
-                      refreshIndex++;
-                      return data.SyncResult(refreshRows: [
-                        sample.Person(
-                            m: pb.Model(
-                                d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                        sample.Person(
-                            m: pb.Model(
-                                d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                        sample.Person(
-                            m: pb.Model(
-                                d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                      ]);
-                    }
-                    refreshIndex++;
-                    return data.SyncResult(refreshRows: [
+                refreshIndex++;
+                if (sync.hasRefresh() && sync.hasFetch()) {
+                  return (
+                    [
                       sample.Person(
-                          m: pb.Model(
-                              i: 'r${sampleIndex++}',
-                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                    ]);
-                  default:
-                    final list = List.generate(
+                        m: pb.Model(
+                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp),
+                      ),
+                    ],
+                    List.generate(
                       10,
                       (index) => sample.Person(
                           m: pb.Model(
-                              i: 'm${sampleIndex++}',
+                              i: 'f${sampleIndex++}',
                               t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                    );
-                    list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
-                    return data.SyncResult(fetchRows: list, more: true);
+                    ),
+                  );
+                } else if (refreshIndex == 2) {
+                  return (
+                    [
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                    ],
+                    null,
+                  );
+                } else if (sync.hasRefresh()) {
+                  return (
+                    [
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                      sample.Person(
+                          m: pb.Model(
+                              d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                    ],
+                    null,
+                  );
+                } else if (sync.hasFetch()) {
+                  final list = List.generate(
+                    10,
+                    (index) => sample.Person(
+                        m: pb.Model(
+                            i: 'm${sampleIndex++}',
+                            t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                  );
+                  list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
+                  return (null, list);
                 }
+                return (null, null);
               },
             ),
           ),
