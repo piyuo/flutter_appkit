@@ -133,8 +133,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     return false;
   }
 
-  /// addRow add row to dataset, replace old row if it's already exist
-  Future<void> addRow(T row, {bool notify = true}) async {
+  /// insertRow insert row to dataset, replace old row if it's already exist
+  Future<void> insertRow(T row, {bool notify = true}) async {
     await dataset.insertRow(row);
     _removeFromFetchRows(row);
     _binDisplay(notify);

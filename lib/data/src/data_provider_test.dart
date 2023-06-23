@@ -338,7 +338,7 @@ void main() {
       await dp.init();
       expect(dp.displayRows.length, 1);
       final obj = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 2).utcTimestamp));
-      await dp.addRow(obj);
+      await dp.insertRow(obj);
       expect(dp.displayRows.length, 1);
       await dp.removeRow(obj);
       expect(dp.displayRows.length, 0);
