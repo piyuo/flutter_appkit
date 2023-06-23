@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:libcli/pb/pb.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/google/google.dart' as google;
@@ -63,6 +64,21 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
 
   /// deleted return true if model mark as deleted, it is a read only field, if you want to change it use backend service to modify database
   bool get deleted => model != null && model!.d;
+
+  /// deleted set deleted flag
+  set deleted(bool value) {
+    if (model != null) {
+      model!.d = value;
+    }
+    updateTime();
+  }
+
+  /// updateTime update object's timestamp to current utc time
+  void updateTime() {
+    if (model != null) {
+      model!.t = DateTime.now().utcTimestamp;
+    }
+  }
 
   /// setAccessToken set access token
   void setAccessToken(String token) {}

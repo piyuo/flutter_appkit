@@ -92,5 +92,19 @@ void main() {
       expect(person.name, 'iris');
       expect(person.age, 3);
     });
+
+    test('should update time', () {
+      final initTime = DateTime(2023, 6, 15);
+      final person = sample.Person(
+          m: common.Model(
+        i: '1',
+        t: initTime.utcTimestamp,
+        d: false,
+      ));
+
+      person.deleted = true;
+      expect(person.utcTime.isAfter(initTime.toUtc()), isTrue);
+      expect(person.deleted, isTrue);
+    });
   });
 }
