@@ -134,7 +134,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       return false;
     }
 
-    if (_saveFetchRows(fetchRows, fetchRows.length < rowsPerPage!)) {
+    if (_saveFetchRows(fetchRows, fetchRows.length < rows)) {
       _binDisplay(notify);
       return true;
     }
