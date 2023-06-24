@@ -107,15 +107,14 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       _removeFromFetchRows(row);
     }
 
+    _binDisplay(notify);
+
     // check if delete from refresh make page not full
     if (isMoreToFetch) {
-      final selectRows = dataset.select();
-      if (selectRows.length < rowsPerPage!) {
-        await fetch(notify: false, customRowsPerPage: rowsPerPage! - selectRows.length);
+      if (displayRows.length < rowsPerPage!) {
+        await fetch(notify: false, customRowsPerPage: rowsPerPage! - displayRows.length);
       }
     }
-
-    _binDisplay(notify);
     return true;
   }
 
