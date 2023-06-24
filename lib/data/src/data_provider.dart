@@ -71,7 +71,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     displayRows.clear();
     final selectRows = dataset.select();
     // init mode need refresh data and may need fetch to fit rowsPerPage
-    bool needFetch = isMoreToFetch && rowsPerPage != null && selectRows.length < rowsPerPage!;
+    bool needFetch = isMoreToFetch && selectRows.length < rowsPerPage!;
     final (refreshRows, fetchRows) = await loader(
       pb.Sync(
         refresh: isInit ? dataset.refreshTimestamp : null,
@@ -106,20 +106,29 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     for (T row in refreshRows) {
       _removeFromFetchRows(row);
     }
+
+    // check if delete from refresh make page not full
+    if (isMoreToFetch) {
+      final selectRows = dataset.select();
+      if (selectRows.length < rowsPerPage!) {
+        await fetch(notify: false, customRowsPerPage: rowsPerPage! - selectRows.length);
+      }
+    }
+
     _binDisplay(notify);
     return true;
   }
 
   /// fetch more data from remote, return true if load more data
-  Future<bool> fetch({bool notify = true}) async {
+  Future<bool> fetch({bool notify = true, int? customRowsPerPage}) async {
     final lastTimestamp = _fetchTimestamp;
     if (lastTimestamp == null) {
       return false;
     }
-
+    int rows = customRowsPerPage ?? rowsPerPage!;
     final (_, fetchRows) = await loader(pb.Sync(
       fetch: _fetchTimestamp,
-      rows: rowsPerPage!,
+      rows: rows,
       page: pageIndex,
     ));
     if (fetchRows == null) {
@@ -131,20 +140,6 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       return true;
     }
     return false;
-  }
-
-  /// insertRow insert row to dataset, replace old row if it's already exist
-  Future<void> insertRow(T row, {bool notify = true}) async {
-    await dataset.insertRow(row);
-    _removeFromFetchRows(row);
-    _binDisplay(notify);
-  }
-
-  /// removeRow remove row from dataset or fetchRows
-  Future<void> removeRow(T row, {bool notify = true}) async {
-    await dataset.removeRow(row);
-    _removeFromFetchRows(row);
-    _binDisplay(notify);
   }
 
   /// _bindDisplay load dataset and fetch rows to displayRows
@@ -192,3 +187,23 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     }
   }
 }
+/*
+manual insert row or remove row may break refresh and fetch mechanism
+cause refresh/fetch always use row timestamp to increment get new data
+so insert row must refresh first to get all new data in order to get correct timestamp
+then there is no need to manual insert row, just refresh is enough
+
+/// insertRow insert row to dataset, replace old row if it's already exist
+Future<void> insertRow(T row, {bool notify = true}) async {
+  await dataset.insertRow(row);
+  _removeFromFetchRows(row);
+  _binDisplay(notify);
+}
+
+/// removeRow remove row from dataset or fetchRows
+Future<void> removeRow(T row, {bool notify = true}) async {
+  await dataset.removeRow(row);
+  _removeFromFetchRows(row);
+  _binDisplay(notify);
+}
+*/
