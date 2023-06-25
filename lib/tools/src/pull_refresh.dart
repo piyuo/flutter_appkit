@@ -71,7 +71,7 @@ class PullRefresh extends StatelessWidget {
                         alignment: Alignment.topCenter,
                         child: Icon(
                           controller.isArmed ? Icons.swap_vert : Icons.arrow_downward,
-                          size: 30,
+                          size: 40,
                           color: Theme.of(context).colorScheme.surfaceVariant,
                         ),
                       ));

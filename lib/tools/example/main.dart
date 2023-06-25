@@ -324,24 +324,19 @@ class _ToolsExampleState extends State<ToolsExample> {
                     ],
                     null,
                   );
-                } else if (sync.hasRefresh()) {
+                } else if (sync.hasRefresh() && !sync.hasFetch()) {
                   return (
                     [
                       sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                        m: pb.Model(
+                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp),
+                      ),
                     ],
                     null,
                   );
-                } else if (sync.hasFetch()) {
+                } else if (sync.hasFetch() && !sync.hasRefresh()) {
                   final list = List.generate(
-                    10,
+                    sync.rows,
                     (index) => sample.Person(
                         m: pb.Model(
                             i: 'm${sampleIndex++}',
@@ -356,32 +351,48 @@ class _ToolsExampleState extends State<ToolsExample> {
           ),
         ],
         child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
-            builder: (context, dataProvider, dataviewProvider, _) => base.LoadingScreen(
-                future: () async {
+            builder: (context, dataProvider, dataviewProvider, _) => base.LoadingScreen(future: () async {
                   await indexedDb.init();
                   await indexedDb.clear();
                   await dataProvider.init();
                   await dataviewProvider.init(dataProvider);
-                },
-                builder: () => Dataview<sample.Person>(
-                      viewProvider: dataviewProvider,
-                      headerBuilder: () => Container(
-                          height: 65,
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                          child: delta.SearchBox(
-                            controller: _searchBoxController,
-                            //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
-                          )),
-                      widgetBuilder: (person) {
-                        return ListTile(
-                          leading: CircleAvatar(child: Text(person.id)),
-                          title: Text('This item represents ${person.id}.'),
-                          isThreeLine: true,
-                          subtitle:
-                              Text('Even more additional list item information appears on line three ${person.name}'),
-                        );
-                      },
-                    ))));
+                }, builder: () {
+                  widgetBuilder(person) {
+                    return ListTile(
+                      leading: CircleAvatar(child: Text(person.id)),
+                      title: Text('This item represents ${person.id}.'),
+                      isThreeLine: true,
+                      subtitle: Text('Even more additional list item information appears on line three ${person.name}'),
+                    );
+                  }
+
+                  return Column(children: [
+                    Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              dataviewProvider.refresh(widgetBuilder);
+                            },
+                            child: const Text('Refresh'),
+                          ),
+                        ])),
+                    Expanded(
+                      child: Dataview<sample.Person>(
+                        viewProvider: dataviewProvider,
+                        headerBuilder: () => Container(
+                            height: 65,
+                            padding: const EdgeInsets.fromLTRB(15, 5, 15, 20),
+//                            color: Colors.red,
+                            child: delta.SearchBox(
+                              controller: _searchBoxController,
+                              //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
+                            )),
+                        widgetBuilder: widgetBuilder,
+                      ),
+                    ),
+                  ]);
+                })));
   }
 
   Widget _pullFresh(BuildContext context) {

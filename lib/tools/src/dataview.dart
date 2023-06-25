@@ -13,6 +13,9 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
   /// animateViewProvider for animation
   delta.AnimateViewProvider animateViewProvider = delta.AnimateViewProvider();
 
+  /// refreshMoreProvider for pull to refresh and load more
+  RefreshMoreProvider refreshMoreProvider = RefreshMoreProvider();
+
   /// dataProvider is instance of [DataProvider]
   late data.DataProvider<T> dataProvider;
 
@@ -24,8 +27,14 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
     animateViewProvider.setLength(dataProvider.displayRows.length + 2); // 1 for header, 1 for load more
   }
 
-  /// Widget called when dataview pull to refresh
   Future<void> refresh(Widget Function(T) widgetBuilder) async {
+    refreshMoreProvider.showRefreshAnimation(true);
+    await pullRefresh(widgetBuilder);
+    refreshMoreProvider.showRefreshAnimation(false);
+  }
+
+  /// pullRefresh called when dataview pull to refresh
+  Future<void> pullRefresh(Widget Function(T) widgetBuilder) async {
     final backup = List<T>.from(dataProvider.displayRows);
     await dataProvider.refresh(notify: false);
     final changed = data.ChangeFinder<T>();
@@ -35,25 +44,28 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
       return;
     }
 
-    debugPrint('insertCount:${changed.insertCount}');
+    _showChangedAnimation(changed, widgetBuilder);
+    notifyListeners();
+  }
+
+  void _showChangedAnimation(data.ChangeFinder<T> changed, Widget Function(T) widgetBuilder) {
     // handle new insert
     animateViewProvider.insertAnimation(
       index: 1,
       count: changed.insertCount,
+      //duration: const Duration(milliseconds: 3500),
     );
 
     for (int i = changed.removed.entries.length - 1; i >= 0; i--) {
       final entry = changed.removed.entries.elementAt(i);
-      debugPrint('remove:${entry.key}');
+      //debugPrint('remove:${entry.key}');
       Widget removedWidget = widgetBuilder(entry.value);
       animateViewProvider.removeAnimation(
         entry.key + 1,
         removedWidget,
-        //      duration: const Duration(milliseconds: 3500),
+        //duration: const Duration(milliseconds: 3500),
       );
     }
-
-    notifyListeners();
   }
 
   /// fetch is called when dataview fetch more data
@@ -66,11 +78,15 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
     notifyListeners();
   }
 
+  /// displayRows is rows to show
+  List<T> get displayRows => dataProvider.displayRows;
+
   /// dispose database
   @override
   void dispose() {
     super.dispose();
     animateViewProvider.dispose();
+    refreshMoreProvider.dispose();
   }
 }
 
@@ -96,8 +112,8 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<RefreshMoreProvider>(
-            create: (context) => RefreshMoreProvider(),
+          ChangeNotifierProvider<RefreshMoreProvider>.value(
+            value: viewProvider.refreshMoreProvider,
           ),
           ChangeNotifierProvider<delta.AnimateViewProvider>.value(
             value: viewProvider.animateViewProvider,
@@ -116,9 +132,10 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
             }
           }
 
+          final colorScheme = Theme.of(context).colorScheme;
           return PullRefresh(
             refreshMoreProvider: refreshMoreProvider,
-            onRefresh: () async => await viewProvider.refresh(widgetBuilder),
+            onRefresh: () async => await viewProvider.pullRefresh(widgetBuilder),
             child: LoadMoreAnimateView(
                 refreshMoreProvider: refreshMoreProvider,
                 execLoadMore: viewProvider.dataProvider.isMoreToFetch ? goFetch : null,
@@ -128,7 +145,12 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
                         animateViewProvider: animateViewProvider,
                         itemBuilder: (index) => index == 0
                             ? headerBuilder != null
-                                ? SizedBox(width: double.infinity, child: headerBuilder!())
+                                ? Container(
+                                    color: colorScheme
+                                        .surface, // background color make sure header can cover refresh indicator
+                                    width: double.infinity,
+                                    child: headerBuilder!(),
+                                  )
                                 : const SizedBox()
                             : index - 1 == viewProvider.dataProvider.displayRows.length
                                 ? loadMoreIndicator(
