@@ -126,23 +126,6 @@ Widget _slideIt(Widget child, animation) {
   );
 }
 
-/*
-/// _slideIt is slide animation
-Widget _slideIt(Widget child, animation) {
-  return SlideTransition(
-    position: Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: const Offset(0, 0),
-    ).animate(animation),
-    child: SizeTransition(
-      axis: Axis.vertical,
-      sizeFactor: animation,
-      child: child,
-    ),
-  );
-}
- */
-
 /// _slideIt is size animation
 Widget _sizeIt(Widget child, animation) {
   return SizeTransition(

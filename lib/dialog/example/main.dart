@@ -38,12 +38,13 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _showPopupSheet(context),
+            child: _showResponsiveDialog(context),
           ),
           Wrap(
             spacing: 10,
             runSpacing: 10,
             children: [
+              testing.ExampleButton(label: 'show responsive dialog', builder: () => _showResponsiveDialog(context)),
               testing.ExampleButton(label: 'alert', builder: () => _alert(context)),
               testing.ExampleButton(label: 'tooltip', builder: () => _shoreMore(context)),
               testing.ExampleButton(label: 'toast', builder: () => _toast(context)),
@@ -514,6 +515,29 @@ class DialogExample extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _showResponsiveDialog(BuildContext context) {
+    return OutlinedButton(
+      child: const Text('show responsive dialog'),
+      onPressed: () => showResponsiveDialog<void>(
+        context,
+        itemCount: 11,
+        itemBuilder: (context, index) => const [
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          SizedBox(height: 20),
+          SizedBox(height: 180, child: Placeholder()),
+          Text('hello world'),
+          SizedBox(height: 20),
+        ][index],
+      ),
     );
   }
 

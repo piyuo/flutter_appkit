@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/utils/utils.dart' as utils;
-import 'delta.dart';
+import '../../delta/src/delta.dart';
 
 /// showResponsiveDialog responsive show popup if big screen, bottom sheet in small screen
 /// ```dart

@@ -157,8 +157,6 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'listing', builder: () => _listing(context)),
                                 testing.ExampleButton(label: 'check list', builder: () => _checkList(context)),
                                 testing.ExampleButton(
-                                    label: 'show responsive dialog', builder: () => _showResponsiveDialog(context)),
-                                testing.ExampleButton(
                                     label: 'VerticalOnPhoneLayout', builder: () => _verticalOnPhoneLayout(context)),
                                 testing.ExampleButton(
                                     label: 'padding to center', builder: () => _paddingToCenter(context)),
@@ -1314,29 +1312,6 @@ class _DeltaExampleState extends State<DeltaExample> {
                 child: Text('$isColumn'),
               )),
             ]);
-  }
-
-  Widget _showResponsiveDialog(BuildContext context) {
-    return OutlinedButton(
-      child: const Text('show responsive dialog'),
-      onPressed: () => showResponsiveDialog<void>(
-        context,
-        itemCount: 11,
-        itemBuilder: (context, index) => const [
-          SizedBox(height: 180, child: Placeholder()),
-          SizedBox(height: 20),
-          SizedBox(height: 180, child: Placeholder()),
-          SizedBox(height: 20),
-          SizedBox(height: 180, child: Placeholder()),
-          SizedBox(height: 20),
-          SizedBox(height: 180, child: Placeholder()),
-          SizedBox(height: 20),
-          SizedBox(height: 180, child: Placeholder()),
-          Text('hello world'),
-          SizedBox(height: 20),
-        ][index],
-      ),
-    );
   }
 
   Widget _paddingToCenter(BuildContext context) {

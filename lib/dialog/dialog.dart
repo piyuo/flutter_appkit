@@ -10,3 +10,4 @@ export 'src/show_more.dart';
 export 'src/show_banner.dart';
 export 'src/show_side.dart';
 export 'src/popup.dart';
+export 'src/show_responsive_dialog.dart';
