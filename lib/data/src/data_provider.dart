@@ -87,7 +87,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     if (fetchRows != null) {
       _saveFetchRows(fetchRows, fetchRows.length < (rowsPerPage! - selectRows.length));
     }
-    _binDisplay(notify);
+    binDisplay(notify);
   }
 
   /// refresh load new data data from remote, return true if load new data
@@ -107,7 +107,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       _removeFromFetchRows(row);
     }
 
-    _binDisplay(notify);
+    binDisplay(notify);
 
     // check if delete from refresh make page not full
     if (isMoreToFetch) {
@@ -135,14 +135,14 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     }
 
     if (_saveFetchRows(fetchRows, fetchRows.length < rows)) {
-      _binDisplay(notify);
+      binDisplay(notify);
       return true;
     }
     return false;
   }
 
-  /// _bindDisplay load dataset and fetch rows to displayRows
-  void _binDisplay(bool notify) {
+  /// binDisplay load dataset and fetch rows to displayRows
+  void binDisplay(bool notify) {
     displayRows.clear();
     displayRows.addAll(dataset.select());
     if (_fetchRows != null) {
