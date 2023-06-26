@@ -14,7 +14,6 @@ typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> data
 class Dataset<T extends pb.Object> {
   Dataset({
     required this.builder,
-    this.selector,
     this.indexedDb,
     this.utcExpiredDate,
   });
@@ -36,9 +35,6 @@ class Dataset<T extends pb.Object> {
 
   /// rows return all rows
   List<T> get rows => _rows;
-
-  /// selector use in select(), only select data you want display to user (e.g. after filter/sort)
-  final DataSelector<T>? selector;
 
   /// init load data from database and remove old data use cutOffDays
   Future<void> init() async {
@@ -174,9 +170,6 @@ class Dataset<T extends pb.Object> {
 
   /// [] override to get field value
   operator [](String key) => getRowById(key);
-
-  /// select return list of object that match selector or empty if selector is null
-  Iterable<T> select() => selector != null ? selector!(this) : [];
 
   /// query return list of object that match query
   Iterable<T> query({

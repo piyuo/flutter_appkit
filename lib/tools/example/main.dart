@@ -288,7 +288,6 @@ class _ToolsExampleState extends State<ToolsExample> {
                 utcExpiredDate: DateTime.now().toUtc(),
                 indexedDb: indexedDb,
                 builder: () => sample.Person(),
-                selector: (dataset) => dataset.query(),
               ),
               loader: (sync) async {
                 await Future.delayed(const Duration(seconds: 2));

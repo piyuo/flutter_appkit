@@ -18,7 +18,6 @@ void main() {
         dataset: Dataset<sample.Person>(
           utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
           builder: () => sample.Person(),
-          selector: (ds) => ds.query(),
         )..insertRow(
             sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 2, 1).utcTimestamp)),
           ),
@@ -49,7 +48,6 @@ void main() {
 
     test('should change page index when fetch', () async {
       int fetchIndex = 0;
-
       final dp = DataProvider<sample.Person>(
         rowsPerPage: 1,
         dataset: Dataset<sample.Person>(
@@ -62,16 +60,22 @@ void main() {
           fetchIndex = sync.page;
           return (
             null,
-            [
-              sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-            ]
+            sync.hasFetch()
+                ? [
+                    sample.Person(m: pb.Model(i: '${fetchIndex + 2}', t: DateTime(2020, 1, 1).utcTimestamp)),
+                  ]
+                : null
           );
         },
       );
+      await dp.init();
+      expect(dp.displayRows.length, 1);
+
       final result = await dp.fetch();
       expect(result, isTrue);
-      expect(dp.displayRows.length, 1);
+      expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '1');
+      expect(dp.displayRows[1].id, '2');
       expect(dp.isMoreToFetch, isTrue); // still have more data when download rows count == rowsPerPage
       expect(dp.pageIndex, 1);
       expect(fetchIndex, 0);
@@ -93,7 +97,6 @@ void main() {
         dataset: Dataset<sample.Person>(
           utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
           builder: () => sample.Person(),
-          selector: (ds) => ds.query(),
         ),
         loader: (sync) async {
           return (refreshResult, fetchResult);
@@ -138,7 +141,6 @@ void main() {
       final ds = Dataset<sample.Person>(
         indexedDb: indexedDb,
         builder: () => sample.Person(),
-        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider(
@@ -171,7 +173,6 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider<sample.Person>(
@@ -211,11 +212,11 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => viewerResult,
       );
 
       final dp = DataProvider(
         dataset: ds,
+        selector: (ds) => viewerResult,
         loader: (sync) async => ([p1, p2], null),
       );
       await dp.init();
@@ -244,11 +245,11 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => viewerResult,
       );
 
       final dp = DataProvider(
         dataset: ds,
+        selector: (ds) => viewerResult,
         loader: (sync) async => (refreshResult, null),
       );
       await dp.init();
@@ -273,7 +274,6 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider(
@@ -310,7 +310,6 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider<sample.Person>(
@@ -341,11 +340,11 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider<sample.Person>(
         dataset: ds,
+        selector: (ds) => ds.query(),
         loader: (sync) async => (result, null),
       );
       await dp.init();
@@ -383,7 +382,6 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => ds.query(),
       );
 
       final dp = DataProvider<sample.Person>(
@@ -419,7 +417,6 @@ void main() {
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
         builder: () => sample.Person(),
-        selector: (ds) => ds.query(),
       );
       await ds.insertRows([
         sample.Person(m: pb.Model(i: 'a', t: DateTime(2021, 1, 30).utcTimestamp)),
@@ -471,6 +468,54 @@ void main() {
       expect(dp.displayRows[1].id, 'c');
       expect(dp.displayRows[2].id, 'd');
       dp.dispose();
+    });
+
+    test('select should return selector chosen data', () async {
+      final ds = Dataset(
+        builder: () => sample.Person(),
+      );
+
+      await ds.init();
+      await ds.insertRows([
+        sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+        sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+        sample.Person(age: 19, m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp, d: true)),
+        sample.Person(age: 20, m: pb.Model(i: '4', t: DateTime(2021, 1, 4).utcTimestamp)),
+        sample.Person(age: 21, m: pb.Model(i: '5', t: DateTime(2021, 1, 5).utcTimestamp)),
+      ]);
+      final dp = DataProvider<sample.Person>(
+        dataset: ds,
+        selector: (ds) => ds.query(from: DateTime(2021, 1, 2), to: DateTime(2021, 1, 4)),
+        loader: (sync) async => (null, null),
+      );
+      await dp.init();
+
+      final result = dp.select().toList();
+      expect(result.length, 2);
+      expect(result[0].id, '4');
+      expect(result[1].id, '2');
+    });
+
+    test('select should return all but not deleted row if no selector', () async {
+      final ds = Dataset(
+        builder: () => sample.Person(),
+      );
+
+      await ds.init();
+      await ds.insertRows([
+        sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+        sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+        sample.Person(age: 19, m: pb.Model(i: '3', t: DateTime(2021, 1, 2).utcTimestamp, d: true)),
+      ]);
+      final dp = DataProvider<sample.Person>(
+        dataset: ds,
+        selector: (ds) => ds.query(),
+        loader: (sync) async => (null, null),
+      );
+      await dp.init();
+
+      final result = dp.select().toList();
+      expect(result.length, 2);
     });
   });
 }

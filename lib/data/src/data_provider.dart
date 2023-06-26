@@ -12,11 +12,15 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   DataProvider({
     required this.dataset,
     required this.loader,
+    this.selector,
     this.rowsPerPage,
   });
 
   /// loader get data from remote
   final DataLoader<T> loader;
+
+  /// selector use in select(), only select data you want display to user (e.g. after filter/sort)
+  final DataSelector<T>? selector;
 
   /// dataset keep data
   final Dataset<T> dataset;
@@ -59,6 +63,9 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     super.dispose();
   }
 
+  /// select return list of object that match selector or empty if selector is null
+  Iterable<T> select() => selector != null ? selector!(dataset) : dataset.query();
+
   /// reload will build display rows,
   Future<void> reload({
     bool notify = true,
@@ -69,7 +76,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     pageIndex = 0;
 
     displayRows.clear();
-    final selectRows = dataset.select();
+    final selectRows = select();
     // init mode need refresh data and may need fetch to fit rowsPerPage
     bool needFetch = isMoreToFetch && selectRows.length < rowsPerPage!;
     final (refreshRows, fetchRows) = await loader(
@@ -144,7 +151,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// binDisplay load dataset and fetch rows to displayRows
   void binDisplay(bool notify) {
     displayRows.clear();
-    displayRows.addAll(dataset.select());
+    displayRows.addAll(select());
     if (_fetchRows != null) {
       displayRows.addAll(_fetchRows!);
     }
