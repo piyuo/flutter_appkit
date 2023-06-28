@@ -517,5 +517,24 @@ void main() {
       final result = dp.select().toList();
       expect(result.length, 2);
     });
+
+    test('insertRows should put rows in dataset and display', () async {
+      final ds = Dataset(
+        builder: () => sample.Person(),
+      )..insertRows([
+          sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+          sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
+        ]);
+
+      final dp = DataProvider<sample.Person>(
+        dataset: ds,
+        selector: (ds) => ds.query(),
+        loader: (sync) async => (null, null),
+      );
+      await dp.init();
+
+      final result = dp.select().toList();
+      expect(result.length, 2);
+    });
   });
 }

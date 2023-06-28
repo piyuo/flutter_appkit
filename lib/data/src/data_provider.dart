@@ -192,6 +192,12 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       _fetchRows!.removeWhere((t) => t.id == row.id);
     }
   }
+
+  @visibleForTesting
+  Future<void> insertRows(List<T> rows) async {
+    await dataset.insertRows(rows);
+    binDisplay(true);
+  }
 }
 /*
 manual insert row or remove row may break refresh and fetch mechanism

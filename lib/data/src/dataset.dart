@@ -106,32 +106,6 @@ class Dataset<T extends pb.Object> {
     pb.Object.sort(_rows);
   }
 
-/*
-  /// refresh to get new rows,return list of new rows
-  Future<SyncResult<T>> refresh({
-    required DataLoader<T> loader,
-    bool isInit = false,
-    int? rowsPerPage,
-    int? pageIndex,
-  }) async {
-    final result = await loader(pb.Sync(
-      act: isInit ? pb.Sync_ACT.ACT_INIT : pb.Sync_ACT.ACT_REFRESH,
-      time: refreshTimestamp,
-      rows: isInit ? rowsPerPage : null, // only init need to set rowsPerPage
-      page: isInit ? pageIndex : null, // only init need to set pageIndex
-    ));
-    if (result.refreshRows.isNotEmpty) {
-      debugPrint('[dataset] refresh ${result.refreshRows.length} rows');
-      for (final row in result.refreshRows) {
-        await insertRow(row);
-      }
-      pb.Object.sort(_rows);
-    }
-    return result;
-  }
-
- */
-
   /// insertRow insert row to dataset, replace old row if it's already exist
   Future<void> insertRow(T row) async {
     await _insertRow(row);
