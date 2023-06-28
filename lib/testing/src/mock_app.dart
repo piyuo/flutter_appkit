@@ -17,6 +17,9 @@ import 'navigator.dart';
 @visibleForTesting
 class Context extends Mock implements widgets.BuildContext {}
 
+@visibleForTesting
+get context => Context();
+
 /// useTestFont set text scale to 1/2, cause font in flutter test is bigger than real device, need scale down
 ///
 ///     testing.useTestFont(tester);

@@ -112,6 +112,9 @@ Future<void> changeDateFormatting(String locale) async {
   await initializeDateFormatting(locale, null);
 }
 
+/// monthDayFormat return current format only month and day
+DateFormat get monthDayFormat => DateFormat.MMMd(localeKey);
+
 /// dateFormat return current date format
 DateFormat get dateFormat => DateFormat.yMMMMd(localeKey);
 
@@ -155,6 +158,12 @@ String formatTimeFixed(int hour, int minute) {
 /// expect(str, 'Jan 2, 2021');
 /// ```
 String formatDate(DateTime date) => dateFormat.format(date);
+
+/// formatMonthDay convert date to month and day string
+/// ```dart
+/// expect(formatMonthDay(date), 'Jan 2');
+/// ```
+String formatMonthDay(DateTime date) => monthDayFormat.format(date);
 
 /// getMonthName get month name from date
 /// ```dart
@@ -273,4 +282,12 @@ String formatPrettyWeekdayShort(BuildContext context, DateTime date) {
   if (date.isTomorrow) return context.i18n.tomorrow;
   if (date.isYesterday) return context.i18n.yesterday;
   return formatWeekdayShort(date);
+}
+
+/// formatDateWeekday convert date to local date and weekday string
+/// ```dart
+/// expect(formatDateWeekday(context, now), 'Jun 28 Today');
+/// ```
+String formatDateWeekday(BuildContext context, DateTime date) {
+  return '${formatMonthDay(date)} ${formatPrettyWeekdayShort(context, date)}';
 }

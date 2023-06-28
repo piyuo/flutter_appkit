@@ -134,6 +134,15 @@ void main() {
       expect(date.monthNameShort, '1月');
     });
 
+    test('formatMonthDay should convert date to month and day string', () async {
+      await changeDateFormatting('en_US');
+      var date = DateTime(2021, 1, 2, 23, 30);
+      expect(formatMonthDay(date), 'Jan 2');
+
+      await changeDateFormatting('zh_CN');
+      expect(formatMonthDay(date), '1月2日');
+    });
+
     test('should parse string to date', () async {
       await changeDateFormatting('en_US');
       final date = parseDate('January 2, 2021');
@@ -278,21 +287,27 @@ void main() {
     test('should return pretty weekday', () async {
       await changeDateFormatting('en_US');
       var now = DateTime.now();
-      expect(now.prettyWeekdayName(testing.Context()), 'Today');
-      expect(formatPrettyWeekday(testing.Context(), now), 'Today');
-      expect(formatPrettyWeekday(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
-      expect(formatPrettyWeekday(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
-      expect(formatPrettyWeekday(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
+      expect(now.prettyWeekdayName(testing.context), 'Today');
+      expect(formatPrettyWeekday(testing.context, now), 'Today');
+      expect(formatPrettyWeekday(testing.context, now.add(const Duration(days: 1))), 'Tomorrow');
+      expect(formatPrettyWeekday(testing.context, now.add(const Duration(days: -1))), 'Yesterday');
+      expect(formatPrettyWeekday(testing.context, now.add(const Duration(days: 2))), isNotEmpty);
     });
 
     test('should return pretty weekday short', () async {
       await changeDateFormatting('en_US');
       var now = DateTime.now();
-      expect(now.prettyWeekdayNameShort(testing.Context()), 'Today');
-      expect(formatPrettyWeekdayShort(testing.Context(), now), 'Today');
-      expect(formatPrettyWeekdayShort(testing.Context(), now.add(const Duration(days: 1))), 'Tomorrow');
-      expect(formatPrettyWeekdayShort(testing.Context(), now.add(const Duration(days: -1))), 'Yesterday');
-      expect(formatPrettyWeekdayShort(testing.Context(), now.add(const Duration(days: 2))), isNotEmpty);
+      expect(now.prettyWeekdayNameShort(testing.context), 'Today');
+      expect(formatPrettyWeekdayShort(testing.context, now), 'Today');
+      expect(formatPrettyWeekdayShort(testing.context, now.add(const Duration(days: 1))), 'Tomorrow');
+      expect(formatPrettyWeekdayShort(testing.context, now.add(const Duration(days: -1))), 'Yesterday');
+      expect(formatPrettyWeekdayShort(testing.context, now.add(const Duration(days: 2))), isNotEmpty);
+    });
+
+    test('formatDateWeekday should text contain date and weekday', () async {
+      await changeDateFormatting('en_US');
+      var now = DateTime(2023, 06, 28);
+      expect(formatDateWeekday(testing.context, now), 'Jun 28 Today');
     });
   });
 }
