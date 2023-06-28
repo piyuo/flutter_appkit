@@ -115,6 +115,12 @@ Future<void> changeDateFormatting(String locale) async {
 /// monthDayFormat return current format only month and day
 DateFormat get monthDayFormat => DateFormat.MMMd(localeKey);
 
+/// dayFormat return current format only day
+DateFormat get dayFormat => DateFormat.d(localeKey);
+
+/// monthFormat return current format only month
+DateFormat get monthFormat => DateFormat.MMM(localeKey);
+
 /// dateFormat return current date format
 DateFormat get dateFormat => DateFormat.yMMMMd(localeKey);
 
@@ -158,6 +164,18 @@ String formatTimeFixed(int hour, int minute) {
 /// expect(str, 'Jan 2, 2021');
 /// ```
 String formatDate(DateTime date) => dateFormat.format(date);
+
+/// formatMonth convert date to month string
+/// ```dart
+/// expect(formatMonth(date), 'Jan');
+/// ```
+String formatMonth(DateTime date) => monthFormat.format(date);
+
+/// formatDay convert date to day string
+/// ```dart
+/// expect(formatDay(date), '2');
+/// ```
+String formatDay(DateTime date) => dayFormat.format(date);
 
 /// formatMonthDay convert date to month and day string
 /// ```dart

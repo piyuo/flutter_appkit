@@ -134,7 +134,34 @@ void main() {
       expect(date.monthNameShort, '1月');
     });
 
+    test('formatMonth should convert date to month string', () async {
+      await changeDateFormatting('en_US');
+      var date = DateTime(2021, 1, 2, 23, 30);
+      expect(formatMonth(date), 'Jan');
+
+      await changeDateFormatting('zh_CN');
+      expect(formatMonth(date), '1月');
+    });
+
+    test('formatDay should convert date to day string', () async {
+      await changeDateFormatting('en_US');
+      var date = DateTime(2021, 1, 2, 23, 30);
+      expect(formatDay(date), '2');
+
+      await changeDateFormatting('zh_CN');
+      expect(formatDay(date), '2日');
+    });
+
     test('formatMonthDay should convert date to month and day string', () async {
+      await changeDateFormatting('en_US');
+      var date = DateTime(2021, 1, 2, 23, 30);
+      expect(formatMonthDay(date), 'Jan 2');
+
+      await changeDateFormatting('zh_CN');
+      expect(formatMonthDay(date), '1月2日');
+    });
+
+    test('formatMonth should convert date to month and day string', () async {
       await changeDateFormatting('en_US');
       var date = DateTime(2021, 1, 2, 23, 30);
       expect(formatMonthDay(date), 'Jan 2');
