@@ -148,16 +148,6 @@ DateFormat get dateTimeFormat => DateFormat.yMMMMd(localeKey).add_jm();
 /// ```
 String get dateTimePattern => dateTimeFormat.pattern ?? '';
 
-/// formatTimeFixed convert hour and minute to local string
-/// ```dart
-/// var str = formatTimeFixed(07, 30);
-/// expect(str, '7:30 AM');
-/// ```
-String formatTimeFixed(int hour, int minute) {
-  var date = DateTime(2001, 1, 1, hour, minute);
-  return timeFormat.format(date);
-}
-
 /// formatDate convert date to local string
 /// ```dart
 /// var str = formatDate(date);
@@ -224,6 +214,16 @@ DateTime parseDateTime(String datetime) => dateTimeFormat.parse(datetime);
 /// expect(str, '11:30 PM');
 /// ```
 String formatTime(DateTime time) => timeFormat.format(time);
+
+/// formatTimeFixed convert hour and minute to local string
+/// ```dart
+/// var str = formatTimeFixed(07, 30);
+/// expect(str, '7:30 AM');
+/// ```
+String formatTimeFixed(int hour, int minute) {
+  var date = DateTime(2001, 1, 1, hour, minute);
+  return timeFormat.format(date);
+}
 
 /// parseTime parse string to time
 /// ```dart

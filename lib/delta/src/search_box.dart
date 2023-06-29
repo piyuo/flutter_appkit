@@ -35,6 +35,7 @@ class SearchBox extends StatelessWidget {
     this.focusNode,
     this.prefixIcon,
     this.enabled = true,
+    this.contentPadding = const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
   }) : super(key: key);
 
   /// controller is text editing controller for search bar
@@ -58,6 +59,9 @@ class SearchBox extends StatelessWidget {
   /// enabled is text filed's enabled
   final bool enabled;
 
+  /// contentPadding is control's content padding
+  final EdgeInsetsGeometry? contentPadding;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
@@ -73,7 +77,7 @@ class SearchBox extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                      contentPadding: contentPadding,
                       isDense: true,
                       counterText: '',
                       prefixIcon: prefixIcon,

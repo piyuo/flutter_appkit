@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _animatedViewInList(context),
+                          child: _searchBox(context),
                         ),
                         SizedBox(
                           height: 300,
