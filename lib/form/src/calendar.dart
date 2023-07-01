@@ -58,11 +58,11 @@ class Calendar extends ReactiveFormField<List<DateTime?>, List<DateTime?>> {
 class CalendarValueAccessor extends ControlValueAccessor<List<DateTime?>, String> {
   @override
   String? modelToViewValue(List<DateTime?>? modelValue) {
-    return modelValue == null ? '' : modelValue.map((d) => d == null ? '' : i18n.formatDate(d)).join('|');
+    return modelValue == null ? '' : modelValue.map((d) => d == null ? '' : d.formattedDate).join('|');
   }
 
   @override
   List<DateTime?>? viewToModelValue(String? viewValue) {
-    return viewValue == null ? [] : viewValue.split('|').map((d) => d == '' ? null : i18n.parseDate(d)).toList();
+    return viewValue == null ? [] : viewValue.split('|').map((d) => d == '' ? null : d.parseDate).toList();
   }
 }

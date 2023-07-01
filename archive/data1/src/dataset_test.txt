@@ -387,7 +387,7 @@ void main() {
               (index) => sample.Person(
                     entity: pb.Entity(
                       id: idCount.toString(),
-                      updateTime: DateTime.now().utcTimestamp,
+                      updateTime: DateTime.now().timestamp,
                     ),
                   ));
         },
@@ -456,7 +456,7 @@ void main() {
                 (index) => sample.Person(
                       entity: pb.Entity(
                         id: index.toString(),
-                        updateTime: DateTime.now().utcTimestamp,
+                        updateTime: DateTime.now().timestamp,
                       ),
                     ));
           }
@@ -491,7 +491,7 @@ void main() {
                 (index) => sample.Person(
                       entity: pb.Entity(
                         id: index.toString(),
-                        updateTime: DateTime.now().utcTimestamp,
+                        updateTime: DateTime.now().timestamp,
                       ),
                     ));
           }
@@ -501,7 +501,7 @@ void main() {
               (index) => sample.Person(
                     entity: pb.Entity(
                       id: index.toString(),
-                      updateTime: DateTime.now().utcTimestamp,
+                      updateTime: DateTime.now().timestamp,
                     ),
                   ));
         },
@@ -529,7 +529,7 @@ void main() {
               (index) => sample.Person(
                     entity: pb.Entity(
                       id: index.toString(),
-                      updateTime: DateTime.now().utcTimestamp,
+                      updateTime: DateTime.now().timestamp,
                     ),
                   ));
         },

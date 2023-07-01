@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/pb/src/common/common.dart' as common;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'timestamp.dart';
 
 void main() {
   group('[pb.object]', () {
@@ -26,7 +26,7 @@ void main() {
       final person = sample.Person(
           m: common.Model(
         i: '1',
-        t: DateTime(2023, 6, 15).utcTimestamp,
+        t: DateTime(2023, 6, 15).timestamp,
         d: true,
       ));
       expect(person.id, '1');
@@ -37,7 +37,7 @@ void main() {
       final person2 = sample.Person(
           m: common.Model(
         i: '2',
-        t: DateTime(2023, 6, 16).utcTimestamp,
+        t: DateTime(2023, 6, 16).timestamp,
         d: false,
       ));
       expect(person2.id, '2');
@@ -98,7 +98,7 @@ void main() {
       final person = sample.Person(
           m: common.Model(
         i: '1',
-        t: initTime.utcTimestamp,
+        t: initTime.timestamp,
         d: false,
       ));
 

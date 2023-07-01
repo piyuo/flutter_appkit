@@ -1,8 +1,5 @@
 // ignore: implementation_imports
-import 'package:protobuf/src/protobuf/mixins/well_known.dart' as google_mixin;
-import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'datetime.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -102,17 +99,7 @@ Locale stringToLocale(String value) {
   return Locale(ids[0]);
 }
 
-/// timestamp create TimeStamp and convert datetime to utc, if datetime is null use DateTime.now()
-/// ```dart
-/// var t = timestamp();
-/// ```
-google.Timestamp timestamp({
-  DateTime? datetime,
-}) {
-  datetime = datetime ?? DateTime.now();
-  return google.Timestamp.fromDateTime(datetime.toUtc());
-}
-
+/*
 /// I18nTime add time function to TimeStamp
 extension I18nTime on google.Timestamp {
   /// local return local datetime
@@ -161,3 +148,4 @@ extension I18nTime on google.Timestamp {
     return formatTime(local);
   }
 }
+*/

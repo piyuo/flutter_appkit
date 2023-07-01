@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:libcli/pb/pb.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/pb/src/common/common.dart' as common;
 import 'package:libcli/google/google.dart' as google;
+import 'timestamp.dart';
 
 /// Builder function will create empty object instance
 typedef Builder<T> = T Function();
@@ -59,7 +59,7 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   /// timestamp contain last update time, it is a read only field, if you want to change it use backend service to modify database
   google.Timestamp get timestamp => model != null ? model!.t : google.Timestamp();
 
-  /// utcTimestamp contain last update time in utc, it is a read only field, if you want to change it use backend service to modify database
+  /// timestamp contain last update time in utc, it is a read only field, if you want to change it use backend service to modify database
   DateTime get utcTime => timestamp.toDateTime();
 
   /// deleted return true if model mark as deleted, it is a read only field, if you want to change it use backend service to modify database
@@ -76,7 +76,7 @@ abstract class Object extends $pb.GeneratedMessage implements Comparable<Object>
   /// updateTime update object's timestamp to current utc time
   void updateTime() {
     if (model != null) {
-      model!.t = DateTime.now().utcTimestamp;
+      model!.t = DateTime.now().timestamp;
     }
   }
 

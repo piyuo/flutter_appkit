@@ -278,7 +278,7 @@ class AppExampleState extends State<AppExample> {
           Text(context.i18n.okButtonText),
           Text(Localizations.localeOf(context).toString()),
           Text('intl.defaultLocale=$defaultLocale'),
-          Text('current locale=${i18n.localeKey}, date=${i18n.formatDate(DateTime.now())}'),
+          Text('current locale=${i18n.localeKey}, date=${DateTime.now().formattedDate}'),
           OutlinedButton(
               child: const Text('set locale to system default'),
               onPressed: () => languageProvider.setPreferredLocale(null)),

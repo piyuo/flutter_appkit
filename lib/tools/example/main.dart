@@ -271,8 +271,7 @@ class _ToolsExampleState extends State<ToolsExample> {
 
   var refreshIndex = 0;
   var refreshResult = [
-    sample.Person(
-        m: pb.Model(i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+    sample.Person(m: pb.Model(i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
   ];
 
   Widget _dataview(BuildContext context) {
@@ -297,15 +296,14 @@ class _ToolsExampleState extends State<ToolsExample> {
                     [
                       sample.Person(
                         m: pb.Model(
-                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp),
+                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
                       ),
                     ],
                     List.generate(
                       10,
                       (index) => sample.Person(
                           m: pb.Model(
-                              i: 'f${sampleIndex++}',
-                              t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                              i: 'f${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                     ),
                   );
                 } else if (refreshIndex == 2) {
@@ -313,13 +311,13 @@ class _ToolsExampleState extends State<ToolsExample> {
                     [
                       sample.Person(
                           m: pb.Model(
-                              d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                              d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                       sample.Person(
                           m: pb.Model(
-                              d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                              d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                       sample.Person(
                           m: pb.Model(
-                              d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                              d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                     ],
                     null,
                   );
@@ -328,7 +326,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                     [
                       sample.Person(
                         m: pb.Model(
-                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp),
+                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
                       ),
                     ],
                     null,
@@ -338,8 +336,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                     sync.rows,
                     (index) => sample.Person(
                         m: pb.Model(
-                            i: 'm${sampleIndex++}',
-                            t: DateTime.now().add(Duration(seconds: sampleIndex)).utcTimestamp)),
+                            i: 'm${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                   );
                   list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
                   return (null, list);

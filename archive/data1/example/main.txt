@@ -85,7 +85,7 @@ class DataExample extends StatelessWidget {
                   sample.Person(
                     entity: pb.Entity(
                       id: unique.uuid(),
-                      updateTime: DateTime.now().utcTimestamp,
+                      updateTime: DateTime.now().timestamp,
                       notGoingToChange: false,
                       deleted: false,
                     ),
@@ -106,7 +106,7 @@ class DataExample extends StatelessWidget {
                   sample.Person(
                     entity: pb.Entity(
                       id: unique.uuid(),
-                      updateTime: DateTime.now().utcTimestamp,
+                      updateTime: DateTime.now().timestamp,
                       notGoingToChange: true,
                       deleted: true,
                     ),
@@ -199,7 +199,7 @@ class DataExample extends StatelessWidget {
                       (index) => sample.Person(
                             entity: pb.Entity(
                               id: unique.uuid(),
-                              updateTime: DateTime.now().utcTimestamp,
+                              updateTime: DateTime.now().timestamp,
                               notGoingToChange: false,
                               deleted: false,
                             ),
@@ -219,7 +219,7 @@ class DataExample extends StatelessWidget {
                     (index) => sample.Person(
                           entity: pb.Entity(
                             id: unique.uuid(),
-                            updateTime: DateTime.now().utcTimestamp,
+                            updateTime: DateTime.now().timestamp,
                             notGoingToChange: false,
                             deleted: false,
                           ),
@@ -276,7 +276,7 @@ class DataExample extends StatelessWidget {
                 (index) => sample.Person(
                       entity: pb.Entity(
                         id: unique.uuid(),
-                        updateTime: DateTime.now().utcTimestamp,
+                        updateTime: DateTime.now().timestamp,
                         notGoingToChange: false,
                         deleted: false,
                       ),
@@ -296,7 +296,7 @@ class DataExample extends StatelessWidget {
               (index) => sample.Person(
                     entity: pb.Entity(
                       id: unique.uuid(),
-                      updateTime: DateTime.now().utcTimestamp,
+                      updateTime: DateTime.now().timestamp,
                       notGoingToChange: false,
                       deleted: false,
                     ),

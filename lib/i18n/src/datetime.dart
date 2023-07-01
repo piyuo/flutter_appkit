@@ -1,9 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:duration/duration.dart';
-import 'package:duration/locale.dart';
-import 'package:libcli/google/google.dart' as google;
 import 'i18n.dart';
 
 /// minDateTime return the minimum date
@@ -12,7 +9,47 @@ DateTime get minDateTime => DateTime.utc(-271821, 04, 20);
 /// maxDateTime return the maximum date
 DateTime get maxDateTime => DateTime.utc(275760, 09, 13);
 
-extension DateHelpers on DateTime {
+/// monthDayFormat return current format only month and day
+DateFormat get monthDayFormat => DateFormat.MMMd(localeKey);
+
+/// dayFormat return current format only day
+DateFormat get dayFormat => DateFormat.d(localeKey);
+
+/// yearFormat return current format only year
+DateFormat get yearFormat => DateFormat.y(localeKey);
+
+/// monthFormat return current format only month
+DateFormat get monthFormat => DateFormat.MMM(localeKey);
+
+/// dateFormat return current date format
+DateFormat get dateFormat => DateFormat.yMMMMd(localeKey);
+
+/// datePattern return current date pattern
+/// ```dart
+/// expect(datePattern, 'MMMM d, y');
+/// ```
+String get datePattern => dateFormat.pattern ?? '';
+
+/// timeFormat return current time format
+DateFormat get timeFormat => DateFormat.jm(localeKey);
+
+/// timePattern return current time pattern
+/// ```dart
+/// expect(timePattern, 'h:mm a');
+/// ```
+String get timePattern => timeFormat.pattern ?? '';
+
+/// dateTimeFormat return current date time format
+DateFormat get dateTimeFormat => DateFormat.yMMMMd(localeKey).add_jm();
+
+/// dateTimePattern return current date time pattern
+/// ```dart
+/// expect(dateTimePattern, 'MMMM d, y h:mm a');
+/// ```
+String get dateTimePattern => dateTimeFormat.pattern ?? '';
+
+/// DatetimeHelpers define date helpers
+extension DatetimeHelpers on DateTime {
   /// difference return the difference (in full days) between today
   int get difference {
     DateTime now = DateTime.now();
@@ -46,61 +83,85 @@ extension DateHelpers on DateTime {
   /// ```
   bool get isMax => compareTo(maxDateTime) == 0;
 
-  /// dateName return localized date string
+  /// formattedDate return formatted date string
   /// ```dart
-  /// expect(date.dateName, 'January');
+  /// expect(date.formattedDate, 'Jan 2, 2021');
   /// ```
-  String get dateName => formatDate(this);
+  String get formattedDate => dateFormat.format(this);
 
-  String get dateNameShort => DateFormat.MMMMd(localeKey).format(this);
-
-  /// dateTimeName return localized date string
+  /// formattedTime convert time to local string
   /// ```dart
-  /// expect(date.dateTimeName, 'January');
+  /// var str = formatTime();
+  /// expect(date.formattedTime, '11:30 PM');
   /// ```
-  String get dateTimeName => formatDateTime(this);
+  String get formattedTime => timeFormat.format(this);
 
-  /// timeName return localized date string
+  /// formattedDateTime convert date and time to local string
   /// ```dart
-  /// expect(date.timeName, 'January');
+  /// expect(date.formattedDateTime, 'January 2, 2021 11:30 PM');
   /// ```
-  String get timeName => formatTime(this);
+  String get formattedDateTime => dateTimeFormat.format(this);
 
-  /// monthName get month name from date
-  /// ```dart
-  /// expect(date.monthName, 'January');
-  /// ```
-  String get monthName => getMonthName(this);
+  /// formattedMonthDay convert date to month and day string
+  String get formattedMonthDay => DateFormat.MMMd(localeKey).format(this);
 
-  /// monthNameShort get month short name from date
+  /// formattedMonth get formatted month
   /// ```dart
-  /// expect(date.monthNameShort, 'Jan');
+  /// expect(date.formattedMonth, 'January');
   /// ```
-  String get monthNameShort => getMonthNameShort(this);
+  String get formattedMonth => DateFormat.MMMM(localeKey).format(this);
 
-  /// weekdayName return weekday string
+  /// formattedDay convert date to day string
   /// ```dart
-  /// expect(date.weekdayName, 'Monday');
+  /// expect(date.formattedDay, '2');
   /// ```
-  String get weekdayName => formatWeekday(this);
+  String get formattedDay => dayFormat.format(this);
 
-  /// weekdayNameShort get short weekday string
+  /// formattedYear convert date to year string
   /// ```dart
-  /// expect(date.weekdayNameShort, 'Mon');
+  /// expect(date.formattedYear, '2023');
   /// ```
-  String get weekdayNameShort => formatWeekdayShort(this);
+  String get formattedYear => yearFormat.format(this);
 
-  /// prettyWeekdayName return pretty weekday string
+  /// formattedMonthShort get month short name from date
   /// ```dart
-  /// expect(date.prettyWeekdayName, 'Monday');
+  /// expect(date.formattedMonthShort, 'Jan');
   /// ```
-  String prettyWeekdayName(context) => formatPrettyWeekday(context, this);
+  String get formattedMonthShort => DateFormat.MMM(localeKey).format(this);
 
-  /// prettyWeekdayNameShort get pretty short weekday string
+  /// formattedWeekday return weekday string
   /// ```dart
-  /// expect(date.prettyWeekdayNameShort, 'Mon');
+  /// expect(date.formattedWeekday, 'Monday');
   /// ```
-  String prettyWeekdayNameShort(context) => formatPrettyWeekdayShort(context, this);
+  String get formattedWeekday => DateFormat.EEEE(localeKey).format(this);
+
+  /// formattedWeekdayShort return short weekday string
+  /// ```dart
+  /// expect(date.formattedWeekdayShort, 'Mon');
+  /// ```
+  String get formattedWeekdayShort => DateFormat.E(localeKey).format(this);
+
+  /// formattedWeekdayAware convert date to local weekday string but show yesterday, today and tomorrow
+  /// ```dart
+  /// expect(date.formattedWeekdayAware(context), 'Monday');
+  /// ```
+  String formattedWeekdayAware(BuildContext context) {
+    if (isToday) return context.i18n.today;
+    if (isTomorrow) return context.i18n.tomorrow;
+    if (isYesterday) return context.i18n.yesterday;
+    return formattedWeekday;
+  }
+
+  /// formattedWeekdayAwareShort convert date to local weekday short string but show yesterday, today and tomorrow
+  /// ```dart
+  /// expect(formattedWeekdayAwareShort(context), 'Mon');
+  /// ```
+  String formattedWeekdayAwareShort(BuildContext context) {
+    if (isToday) return context.i18n.today;
+    if (isTomorrow) return context.i18n.tomorrow;
+    if (isYesterday) return context.i18n.yesterday;
+    return formattedWeekdayShort;
+  }
 }
 
 /// changeDateFormatting change locale and load date formatting resource
@@ -112,109 +173,6 @@ Future<void> changeDateFormatting(String locale) async {
   await initializeDateFormatting(locale, null);
 }
 
-/// monthDayFormat return current format only month and day
-DateFormat get monthDayFormat => DateFormat.MMMd(localeKey);
-
-/// dayFormat return current format only day
-DateFormat get dayFormat => DateFormat.d(localeKey);
-
-/// monthFormat return current format only month
-DateFormat get monthFormat => DateFormat.MMM(localeKey);
-
-/// dateFormat return current date format
-DateFormat get dateFormat => DateFormat.yMMMMd(localeKey);
-
-/// datePattern return current date pattern
-/// ```dart
-/// expect(datePattern, 'MMMM d, y');
-/// ```
-String get datePattern => dateFormat.pattern ?? '';
-
-/// timeFormat return current time format
-DateFormat get timeFormat => DateFormat.jm(localeKey);
-
-/// timePattern return current time pattern
-/// ```dart
-/// expect(timePattern, 'h:mm a');
-/// ```
-String get timePattern => timeFormat.pattern ?? '';
-
-/// dateTimeFormat return current date time format
-DateFormat get dateTimeFormat => DateFormat.yMMMMd(localeKey).add_jm();
-
-/// dateTimePattern return current date time pattern
-/// ```dart
-/// expect(dateTimePattern, 'MMMM d, y h:mm a');
-/// ```
-String get dateTimePattern => dateTimeFormat.pattern ?? '';
-
-/// formatDate convert date to local string
-/// ```dart
-/// var str = formatDate(date);
-/// expect(str, 'Jan 2, 2021');
-/// ```
-String formatDate(DateTime date) => dateFormat.format(date);
-
-/// formatMonth convert date to month string
-/// ```dart
-/// expect(formatMonth(date), 'Jan');
-/// ```
-String formatMonth(DateTime date) => monthFormat.format(date);
-
-/// formatDay convert date to day string
-/// ```dart
-/// expect(formatDay(date), '2');
-/// ```
-String formatDay(DateTime date) => dayFormat.format(date);
-
-/// formatMonthDay convert date to month and day string
-/// ```dart
-/// expect(formatMonthDay(date), 'Jan 2');
-/// ```
-String formatMonthDay(DateTime date) => monthDayFormat.format(date);
-
-/// getMonthName get month name from date
-/// ```dart
-/// var str = getMonthName(date);
-/// expect(str, 'January');
-/// ```
-String getMonthName(DateTime date) => DateFormat.MMMM(localeKey).format(date);
-
-/// getMonthNameShort get month short name from date
-/// ```dart
-/// var str = getMonthNameShort(date);
-/// expect(str, 'Jan');
-/// ```
-String getMonthNameShort(DateTime date) => DateFormat.MMM(localeKey).format(date);
-
-/// parseDate parse string to date
-/// ```dart
-/// final date = parseDate('January 2, 2021');
-/// expect(date.year, 2021);
-/// ```
-DateTime parseDate(String date) => dateFormat.parse(date);
-
-/// formatDateTime convert date and time to local string
-/// ```dart
-///  var str = formatDateTime(date);
-///  expect(str, 'January 2, 2021 11:30 PM');
-/// ```
-String formatDateTime(DateTime datetime) => dateTimeFormat.format(datetime);
-
-/// parseDateTime parse string to date and time
-/// ```dart
-/// final date = parseDateTime('January 2, 2021 11:30 PM');
-/// expect(date.year, 2021);
-/// ```
-DateTime parseDateTime(String datetime) => dateTimeFormat.parse(datetime);
-
-/// formatTime convert time to local string
-/// ```dart
-/// var str = formatTime(date);
-/// expect(str, '11:30 PM');
-/// ```
-String formatTime(DateTime time) => timeFormat.format(time);
-
 /// formatTimeFixed convert hour and minute to local string
 /// ```dart
 /// var str = formatTimeFixed(07, 30);
@@ -223,89 +181,4 @@ String formatTime(DateTime time) => timeFormat.format(time);
 String formatTimeFixed(int hour, int minute) {
   var date = DateTime(2001, 1, 1, hour, minute);
   return timeFormat.format(date);
-}
-
-/// parseTime parse string to time
-/// ```dart
-/// final time = parseTime('11:30 PM');
-/// ```
-DateTime parseTime(String datetime) => timeFormat.parse(datetime);
-
-/// formatDateStamp convert stamp to local date string
-/// ```dart
-/// var str = formatDateStamp(stamp);
-/// expect(str, 'Jan 2, 2021');
-/// ```
-String formatDateStamp(google.Timestamp stamp) => formatDate(stamp.toDateTime().toLocal());
-
-/// formatDateTimeStamp convert stamp to local date time string
-/// ```dart
-///  var str = formatDateTimeStamp(stamp);
-///  expect(str, 'January 2, 2021 11:30 PM');
-/// ```
-String formatDateTimeStamp(google.Timestamp stamp) => formatDateTime(stamp.toDateTime().toLocal());
-
-/// formatTime convert stamp to local time string
-/// ```dart
-/// var str = formatTimeStamp(stamp);
-/// expect(str, '11:30 PM');
-/// ```
-String formatTimeStamp(google.Timestamp stamp) => formatTime(stamp.toDateTime().toLocal());
-
-/// formatDuration convert duration to local string
-/// ```dart
-/// expect(formatDuration(dur), '5 days 23 hours 59 minutes 59 seconds');
-/// ```
-String formatDuration(Duration duration) {
-  final l = locale;
-  DurationLocale? dl;
-  if (localeKey == 'zh_TW') {
-    dl = chineseTraditionalLocale;
-  } else {
-    dl = DurationLocale.fromLanguageCode(l.languageCode);
-    dl ??= englishLocale;
-  }
-  return prettyDuration(duration, locale: dl);
-}
-
-/// formatWeekday convert date to local weekday string
-/// ```dart
-/// expect(formatWeekday(date), 'Monday');
-/// ```
-String formatWeekday(DateTime date) => DateFormat.EEEE(localeKey).format(date);
-
-/// formatWeekdayShort convert date to local weekday short string
-/// ```dart
-/// expect(formatWeekdayShort(date), 'Mon');
-/// ```
-String formatWeekdayShort(DateTime date) => DateFormat.E(localeKey).format(date);
-
-/// formatPrettyWeekday convert date to local weekday string but show yesterday, today and tomorrow
-/// ```dart
-/// expect(prettyWeekday(date), 'Monday');
-/// ```
-String formatPrettyWeekday(BuildContext context, DateTime date) {
-  if (date.isToday) return context.i18n.today;
-  if (date.isTomorrow) return context.i18n.tomorrow;
-  if (date.isYesterday) return context.i18n.yesterday;
-  return formatWeekday(date);
-}
-
-/// formatPrettyWeekdayShort convert date to local weekday short string but show yesterday, today and tomorrow
-/// ```dart
-/// expect(prettyWeekdayShort(date), 'Monday');
-/// ```
-String formatPrettyWeekdayShort(BuildContext context, DateTime date) {
-  if (date.isToday) return context.i18n.today;
-  if (date.isTomorrow) return context.i18n.tomorrow;
-  if (date.isYesterday) return context.i18n.yesterday;
-  return formatWeekdayShort(date);
-}
-
-/// formatDateWeekday convert date to local date and weekday string
-/// ```dart
-/// expect(formatDateWeekday(context, now), 'Jun 28 Today');
-/// ```
-String formatDateWeekday(BuildContext context, DateTime date) {
-  return '${formatMonthDay(date)} ${formatPrettyWeekdayShort(context, date)}';
 }

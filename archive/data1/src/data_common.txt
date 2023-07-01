@@ -27,7 +27,7 @@ class DataCommon<T extends pb.Object> {
       item.setEntity(
         pb.Entity(
           id: id,
-          updateTime: DateTime.now().utcTimestamp,
+          updateTime: DateTime.now().timestamp,
           deleted: true,
         ),
       );

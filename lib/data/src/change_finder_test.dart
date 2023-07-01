@@ -11,13 +11,13 @@ void main() {
       final finder = ChangeFinder();
 
       finder.refreshDifference(source: [
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).utcTimestamp)),
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
       ], target: [
-        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 1).utcTimestamp)),
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 3).utcTimestamp)),
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).utcTimestamp)),
+        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 3).timestamp)),
+        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
       ]);
 
       expect(finder.isChanged, true);

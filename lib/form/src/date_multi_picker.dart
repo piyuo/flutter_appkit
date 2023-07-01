@@ -82,14 +82,14 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
                         elevation: 2,
                         label: Wrap(children: [
                           Text(
-                            date!.dateNameShort,
+                            date!.formattedDate,
                             style: TextStyle(
                               color: colorScheme.onPrimary,
                             ),
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            date.prettyWeekdayNameShort(field.context),
+                            date.formattedWeekdayAwareShort(field.context),
                             style: TextStyle(
                               color: colorScheme.primaryContainer,
                             ),

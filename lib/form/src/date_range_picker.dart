@@ -203,11 +203,11 @@ class BigDateLabel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              date.monthName,
+              date.formattedMonth,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Text(
-              date.prettyWeekdayName(context),
+              date.formattedWeekdayAware(context),
               style: delta.mergeTextStyle(
                 Theme.of(context).textTheme.bodyMedium,
                 color: colorScheme.secondary,
