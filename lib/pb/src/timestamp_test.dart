@@ -20,6 +20,10 @@ void main() {
       expect(t.localDateTime, d);
     });
 
+    test('should return date only', () async {
+      expect(DateTime(2023, 1, 18, 23, 11).timestamp.dateOnly, DateTime(2023, 1, 18).timestamp);
+    });
+
     test('should format timestamp', () async {
       await i18n.changeDateFormatting('en_US');
       final stamp = DateTime(2021, 1, 2, 23, 30).timestamp;

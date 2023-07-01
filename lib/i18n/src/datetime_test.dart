@@ -14,6 +14,10 @@ void main() {
       expect(DateTime(2023, 1, 18).isSameDay(DateTime(2023, 1, 19)), isFalse);
     });
 
+    test('should return date only', () async {
+      expect(DateTime(2023, 1, 18, 23, 11).dateOnly, DateTime(2023, 1, 18));
+    });
+
     test('should check min and max value', () async {
       var now = DateTime.now();
       expect(now.isMax, isFalse);

@@ -83,6 +83,12 @@ extension DatetimeHelpers on DateTime {
   /// ```
   bool get isMax => compareTo(maxDateTime) == 0;
 
+  /// dateOnly return date without time
+  /// ```dart
+  /// expect(DateTime(2023, 1, 18, 23, 11).dateOnly, DateTime(2023, 1, 18));
+  /// ```
+  DateTime get dateOnly => DateTime(year, month, day);
+
   /// formattedDate return formatted date string
   /// ```dart
   /// expect(date.formattedDate, 'Jan 2, 2021');

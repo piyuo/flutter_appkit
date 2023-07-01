@@ -25,6 +25,9 @@ extension TimestampHelper on google.Timestamp {
   /// isSameDay return true if the date is same day with other day. (ignore time)
   bool isSameDay(google.Timestamp other) => localDateTime.isSameDay(other.localDateTime);
 
+  /// dateOnly return date only timestamp
+  google.Timestamp get dateOnly => localDateTime.dateOnly.timestamp;
+
   /// localDateTime return local date time
   DateTime get localDateTime => toDateTime().toLocal();
 
