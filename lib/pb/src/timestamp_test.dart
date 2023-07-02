@@ -14,6 +14,13 @@ void main() {
       expect(t.localDateTime, date);
     });
 
+    test('should convert to Iso8601 string', () async {
+      final t = DateTime(2021, 1, 2, 23, 30).timestamp;
+      final str = t.toIso8601String();
+      final t2 = fromIso8601String(str);
+      expect(t2.localDateTime, DateTime(2021, 1, 2, 23, 30));
+    });
+
     test('should set local date', () async {
       var d = DateTime(2021, 1, 2, 23, 30);
       var t = d.timestamp;

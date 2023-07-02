@@ -100,4 +100,12 @@ extension TimestampHelper on google.Timestamp {
   /// expect(formattedWeekdayAwareShort(context), 'Mon');
   /// ```
   String formattedWeekdayAwareShort(context) => localDateTime.formattedWeekdayAwareShort(context);
+
+  /// toIso8601String convert timestamp to iso8601 string
+  String toIso8601String() => toDateTime().toIso8601String();
+}
+
+/// fromIso8601String parse iso8601 string to timestamp
+google.Timestamp fromIso8601String(String formattedString) {
+  return DateTime.parse(formattedString).timestamp;
 }
