@@ -57,7 +57,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                   body: Column(
                     children: [
                       Expanded(
-                        child: _dataview(context),
+                        child: _showTagView(context),
                       ),
                       SizedBox(
                         height: 100,

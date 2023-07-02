@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:universal_platform/universal_platform.dart';
 import 'tag.dart';
 
 class TagView<T> extends StatelessWidget {
@@ -46,6 +47,7 @@ class TagView<T> extends StatelessWidget {
     }
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
+        padding: UniversalPlatform.isMacOS ? const EdgeInsets.only(top: 20) : null,
         color: colorScheme.surfaceVariant,
         child: Column(children: [
           if (header != null) header!,
