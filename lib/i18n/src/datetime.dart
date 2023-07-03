@@ -168,6 +168,18 @@ extension DatetimeHelpers on DateTime {
     if (isYesterday) return context.i18n.yesterday;
     return formattedWeekdayShort;
   }
+
+  /// formattedWeekdayShortMonthDay convert date to weekday short and month day string
+  /// ```dart
+  /// expect(DateTime(2023, 1, 16).formattedWeekdayShortMonthDay, 'Mon, Jan 16');
+  /// ```
+  String get formattedWeekdayShortMonthDay => '$formattedWeekdayShort, $formattedMonthDay';
+
+  /// formattedWeekdayShortMonthDayTime convert date to weekday short and month day time string
+  /// ```dart
+  /// expect(DateTime(2023, 1, 16, 17, 23).formattedWeekdayShortMonthDayTime, 'Mon, Jan 16, 5:23 PM');
+  /// ```
+  String get formattedWeekdayShortMonthDayTime => '$formattedWeekdayShort, $formattedMonthDay, $formattedTime';
 }
 
 /// changeDateFormatting change locale and load date formatting resource

@@ -208,6 +208,22 @@ void main() {
       expect(date.formattedWeekdayShort, '周一');
     });
 
+    test('should formatted weekday short month day', () async {
+      await changeDateFormatting('en_US');
+      expect(DateTime(2023, 1, 16).formattedWeekdayShortMonthDay, 'Mon, Jan 16');
+
+      await changeDateFormatting('zh_CN');
+      expect(DateTime(2023, 1, 16).formattedWeekdayShortMonthDay, '周一, 1月16日');
+    });
+
+    test('should formatted weekday short month day time', () async {
+      await changeDateFormatting('en_US');
+      expect(DateTime(2023, 1, 16, 17, 23).formattedWeekdayShortMonthDayTime, 'Mon, Jan 16, 5:23 PM');
+
+      await changeDateFormatting('zh_CN');
+      expect(DateTime(2023, 1, 16, 17, 23).formattedWeekdayShortMonthDayTime, '周一, 1月16日, 17:23');
+    });
+
     test('should return pretty weekday', () async {
       await changeDateFormatting('en_US');
       var now = DateTime.now();

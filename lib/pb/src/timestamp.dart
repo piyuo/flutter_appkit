@@ -103,6 +103,18 @@ extension TimestampHelper on google.Timestamp {
 
   /// toIso8601String convert timestamp to iso8601 string
   String toIso8601String() => toDateTime().toIso8601String();
+
+  /// formattedWeekdayShortMonthDay convert date to weekday short and month day string
+  /// ```dart
+  /// expect(DateTime(2023, 1, 16).timestamp.formattedWeekdayShortMonthDay, 'Mon, Jan 16');
+  /// ```
+  String get formattedWeekdayShortMonthDay => '$formattedWeekdayShort, $formattedMonthDay';
+
+  /// formattedWeekdayShortMonthDayTime convert date to weekday short and month day time string
+  /// ```dart
+  /// expect(DateTime(2023, 1, 16, 17, 23).timestamp.formattedWeekdayShortMonthDayTime, 'Mon, Jan 16, 5:23 PM');
+  /// ```
+  String get formattedWeekdayShortMonthDayTime => '$formattedWeekdayShort, $formattedMonthDay, $formattedTime';
 }
 
 /// fromIso8601String parse iso8601 string to timestamp

@@ -123,19 +123,33 @@ void main() {
     });
 
     test('isAfter should return true when date is after other stamp', () async {
+      await i18n.changeDateFormatting('en_US');
       expect(DateTime(2021, 1, 2, 23, 31).timestamp.isAfter(DateTime(2021, 1, 2, 23, 30).timestamp), isTrue);
     });
 
     test('isBefore should return true when date is before other stamp', () async {
+      await i18n.changeDateFormatting('en_US');
       expect(DateTime(2021, 1, 2, 23, 29).timestamp.isBefore(DateTime(2021, 1, 2, 23, 30).timestamp), isTrue);
     });
 
     test('isAtSameMomentAs should return true when date is after to other stamp', () async {
+      await i18n.changeDateFormatting('en_US');
       expect(DateTime(2021, 1, 2, 23, 30).timestamp.isAtSameMomentAs(DateTime(2021, 1, 2, 23, 30).timestamp), isTrue);
     });
 
     test('isSameDay should return true when date is same day to other stamp', () async {
+      await i18n.changeDateFormatting('en_US');
       expect(DateTime(2021, 1, 2, 11, 30).timestamp.isSameDay(DateTime(2021, 1, 2, 22, 30).timestamp), isTrue);
+    });
+
+    test('should formatted weekday short month day', () async {
+      await i18n.changeDateFormatting('en_US');
+      expect(DateTime(2023, 1, 16).timestamp.formattedWeekdayShortMonthDay, 'Mon, Jan 16');
+    });
+
+    test('should formatted weekday short month day time', () async {
+      await i18n.changeDateFormatting('en_US');
+      expect(DateTime(2023, 1, 16, 17, 23).timestamp.formattedWeekdayShortMonthDayTime, 'Mon, Jan 16, 5:23 PM');
     });
   });
 }
