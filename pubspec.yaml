@@ -96,7 +96,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   analyzer: ^5.11.0
 dependency_overrides:
-  intl: ^0.18.1 # cause reactive_touch_spin need intl 0.17
+  intl: ^0.18.1 # cause reactive_touch_spin need intl 0.18
   analyzer: ^6.0.0
 
 
