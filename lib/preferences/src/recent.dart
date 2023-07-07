@@ -12,6 +12,7 @@ const _maxRecentShow = 10;
 /// ```
 Future<void> addRecent(String key, String value, {int maxLength = _maxRecentHistory}) async {
   assert(key.isNotEmpty);
+  value = value.trim();
   if (value.isEmpty) {
     return;
   }
