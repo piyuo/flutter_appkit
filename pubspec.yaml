@@ -62,7 +62,7 @@ dependencies:
   synchronized: ^3.0.0+3
   date_field: ^3.0.1
   webview_flutter: ^4.0.2
-  flutter_typeahead: ^4.1.1
+  flutter_typeahead: ^4.6.2
   slide_countdown: ^0.6.0
   fl_chart: ^0.62.0
   badges: ^3.0.2
