@@ -90,11 +90,11 @@ dependencies:
   path_provider: ^2.0.11
   clock: ^1.1.1
   duration: ^3.0.12
-  csslib: ^0.17.0
 dev_dependencies:
   mockito: ^5.4.2
   flutter_lints: ^2.0.1
   analyzer: ^5.11.0
+  csslib: ^0.17.0
 dependency_overrides:
   intl: ^0.18.1 # cause reactive_touch_spin need intl 0.18
   analyzer: ^6.0.0
