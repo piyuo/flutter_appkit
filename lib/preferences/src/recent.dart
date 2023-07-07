@@ -1,10 +1,10 @@
 import 'preferences.dart';
 
 /// _maxRecentHistory is max length of recent history
-const _maxRecentHistory = 100;
+const _maxRecentHistory = 60;
 
 /// _maxRecentShow is max length of recent to show
-const _maxRecentShow = 10;
+const _maxRecentShow = 6;
 
 /// addRecent add recent value to preferences
 /// ```dart
