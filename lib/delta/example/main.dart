@@ -131,7 +131,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                           child: _searchBox(context),
                         ),
                         SizedBox(
-                          height: 300,
+                          height: 100,
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
@@ -1043,6 +1043,12 @@ class _DeltaExampleState extends State<DeltaExample> {
                 }
                 return [SearchSuggestion('hello', icon: Icons.add), SearchSuggestion('world')];
               },
+            ),
+            SearchBox(
+              controller: _searchBoxController,
+              prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
+              hintText: 'recent searches',
+              recentKey: 'recentSearch',
             ),
             ElevatedButton(
                 child: const Text('set text'),
