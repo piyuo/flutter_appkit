@@ -12,7 +12,9 @@ const _maxRecentShow = 10;
 /// ```
 Future<void> addRecent(String key, String value, {int maxLength = _maxRecentHistory}) async {
   assert(key.isNotEmpty);
-
+  if (value.isEmpty) {
+    return;
+  }
   var history = (await getStringList(key)) ?? <String>[];
   history.removeWhere((String s) => s == value);
   history.insert(0, value);
