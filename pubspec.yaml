@@ -20,7 +20,7 @@ dependencies:
     sdk: flutter
   beamer: ^1.5.3
   hive: ^2.2.3
-  http: ^0.13.0
+  http: ^1.1.0
   protobuf: ^3.0.0
   meta: ^1.9.1
   provider: ^6.0.3
@@ -97,8 +97,7 @@ dev_dependencies:
   analyzer: ^5.11.0
 dependency_overrides:
   intl: ^0.18.1 # cause reactive_touch_spin need intl 0.17
-  http: ^1.0.0
-  #csslib: 0.17.0
+  analyzer: ^6.0.0
 
 
   #meta: ^1.9.0 # cause flutter_test need intl 1.8.0
