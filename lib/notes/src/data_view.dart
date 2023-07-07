@@ -64,6 +64,7 @@ class DataView<T extends pb.Object> extends StatelessWidget {
       final colorScheme = Theme.of(context).colorScheme;
       final pageInfoText = notesProvider.pageInfo(context);
       final searchBox = delta.SearchBox(
+        focusNode: notesProvider.searchFocusNode,
         enabled: notesProvider.isReadyToShow,
         controller: notesProvider.searchController,
       );

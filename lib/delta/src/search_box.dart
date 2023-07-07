@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
+import 'package:provider/provider.dart';
 import 'delta.dart';
 
 /// SearchBox is a widget that displays a search box with a selection.
@@ -18,14 +18,15 @@ class SearchBox extends StatelessWidget {
   ///  ```
   const SearchBox({
     required this.controller,
+    required this.focusNode,
     this.onSuggestion,
     this.hintText,
     this.keyboardType,
-    this.focusNode,
     this.prefixIcon,
     this.enabled = true,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
     this.recentKey,
+    this.onSubmitted,
     super.key,
   });
 
@@ -41,8 +42,8 @@ class SearchBox extends StatelessWidget {
   /// onNeedSuggestion trigger when select a suggestion
   final Future<Iterable<SearchSuggestion>> Function(String)? onSuggestion;
 
-  /// focusNode is control's focus node
-  final FocusNode? focusNode;
+  /// focusNode is control's focus node, we required this to unfocus the control so suggestion box can be closed
+  final FocusNode focusNode;
 
   /// hintText is control's hintText
   final String? hintText;
@@ -56,76 +57,84 @@ class SearchBox extends StatelessWidget {
   /// contentPadding is control's content padding
   final EdgeInsetsGeometry? contentPadding;
 
+  /// onSubmitted called when user submit the search text
+  final void Function(String)? onSubmitted;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-        value: controller,
+        value: controller, // consumer for redrawing when text changed need show clear button
         child: Consumer<TextEditingController>(
-            builder: (context, provide, child) => TypeAheadField<SearchSuggestion>(
-                  textFieldConfiguration: TextFieldConfiguration(
-                    enabled: enabled,
-                    controller: controller,
-                    onEditingComplete: () {
-                      if (recentKey != null) {
-                        preferences.addRecent(recentKey!, controller.text);
-                      }
-                    },
-                    focusNode: focusNode,
-                    maxLength: 60,
-                    style: DefaultTextStyle.of(context).style.copyWith(
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                    decoration: InputDecoration(
-                      contentPadding: contentPadding,
-                      isDense: true,
-                      counterText: '',
-                      prefixIcon: prefixIcon,
-                      prefixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
-                      suffixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
-                      suffixIcon: controller.text.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () => controller.text = '',
-                            )
-                          : const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        gapPadding: 0,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      hintText: hintText,
-                    ),
-                  ),
-                  loadingBuilder: (_) => const SizedBox(),
-                  transitionBuilder: (context, suggestionsBox, controller) => suggestionsBox,
-                  noItemsFoundBuilder: (_) => const SizedBox(),
-                  suggestionsCallback: (value) async {
+            builder: (context, _, __) => TypeAheadField<SearchSuggestion>(
+                textFieldConfiguration: TextFieldConfiguration(
+                  enabled: enabled,
+                  controller: controller,
+                  onSubmitted: (text) {
+                    focusNode.unfocus();
                     if (recentKey != null) {
-                      final recent = await preferences.getRecent(recentKey!, input: controller.text);
-                      return recent.map((text) => SearchSuggestion(text, icon: Icons.history));
+                      preferences.addRecent(recentKey!, text);
                     }
-                    if (onSuggestion == null) {
-                      return const [];
-                    }
-                    return await onSuggestion!(value);
+                    onSubmitted?.call(text);
                   },
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
+                  focusNode: focusNode,
+                  textInputAction: TextInputAction.search,
+                  maxLength: 60,
+                  style: DefaultTextStyle.of(context).style.copyWith(
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  decoration: InputDecoration(
+                    contentPadding: contentPadding,
+                    isDense: true,
+                    counterText: '',
+                    prefixIcon: prefixIcon,
+                    prefixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
+                    suffixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
+                    suffixIcon: controller.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.close),
+                            onPressed: () => controller.text = '',
+                          )
+                        : const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      gapPadding: 0,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(.95),
-                    clipBehavior: Clip.antiAlias,
+                    hintText: hintText,
                   ),
-                  itemBuilder: (context, suggestion) {
-                    return ListTile(
-                      dense: !phoneScreen,
-                      title: Text(suggestion.text,
-                          style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer)),
-                      leading: Icon(suggestion.icon, color: Theme.of(context).colorScheme.onSecondaryContainer),
-                    );
-                  },
-                  onSuggestionSelected: (suggestion) => controller.text = suggestion.text,
-                )));
+                ),
+                loadingBuilder: (_) => const SizedBox(),
+                //transitionBuilder: (context, suggestionsBox, controller) => suggestionsBox,
+                noItemsFoundBuilder: (_) => const SizedBox(),
+                suggestionsCallback: (value) async {
+                  if (recentKey != null) {
+                    final recent = await preferences.getRecent(recentKey!, input: controller.text);
+                    return recent.map((text) => SearchSuggestion(text, icon: Icons.history));
+                  }
+                  if (onSuggestion == null) {
+                    return const [];
+                  }
+                  return await onSuggestion!(value);
+                },
+                suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(.95),
+                  clipBehavior: Clip.antiAlias,
+                ),
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    dense: !phoneScreen,
+                    title: Text(suggestion.text,
+                        style: TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer)),
+                    leading: Icon(suggestion.icon, color: Theme.of(context).colorScheme.onSecondaryContainer),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  onSubmitted?.call(suggestion.text);
+                  controller.text = suggestion.text;
+                })));
   }
 }
 

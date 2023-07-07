@@ -208,6 +208,8 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   /// isReadyToShow return true if provider is ready to show
   bool get isReadyToShow => dataView != null;
 
+  FocusNode searchFocusNode = FocusNode();
+
   /// isReadyForAction return true if provider is ready to do any action
   Future<bool> isReadyForAction() async => dataView != null && await _isAllowToExit();
 

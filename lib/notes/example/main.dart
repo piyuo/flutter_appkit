@@ -24,6 +24,7 @@ Stream<int> counterStream = Stream<int>.periodic(const Duration(seconds: 3), (x)
 int sampleID = 0;
 var animationListItems = ['a', 'b', 'c', 'd', 'e'];
 int stepCount = 0;
+FocusNode _focusNode = FocusNode();
 
 final sampleDb = data.IndexedDb(
   dbName: 'notes_sample',
@@ -240,6 +241,7 @@ class NotesExample extends StatelessWidget {
           Expanded(
             child: SimpleList<String>(
               headerBuilder: () => delta.SearchBox(
+                focusNode: _focusNode,
                 controller: _searchBoxController,
               ),
               footerBuilder: () => Container(
@@ -262,6 +264,7 @@ class NotesExample extends StatelessWidget {
       Expanded(
         child: SimpleList<String>(
           headerBuilder: () => delta.SearchBox(
+            focusNode: _focusNode,
             controller: _searchBoxController,
           ),
           checkMode: true,
@@ -299,6 +302,7 @@ class NotesExample extends StatelessWidget {
       Expanded(
         child: SimpleGrid<String>(
           headerBuilder: () => delta.SearchBox(
+            focusNode: _focusNode,
             controller: _searchBoxController,
           ),
           footerBuilder: () => Container(
@@ -335,6 +339,7 @@ class NotesExample extends StatelessWidget {
                     child: DynamicList<String>(
                       animateViewProvider: provide,
                       headerBuilder: () => delta.SearchBox(
+                        focusNode: _focusNode,
                         controller: _searchBoxController,
                       ),
                       footerBuilder: () => Container(
@@ -370,6 +375,7 @@ class NotesExample extends StatelessWidget {
                     child: DynamicGrid<String>(
                       animateViewProvider: provide,
                       headerBuilder: () => delta.SearchBox(
+                        focusNode: _focusNode,
                         controller: _searchBoxController,
                       ),
                       footerBuilder: () => Container(
@@ -404,6 +410,7 @@ class NotesExample extends StatelessWidget {
             builder: (context, selectedController, animateViewProvider, child) => GridListView<String>(
                   animateViewProvider: animateViewProvider,
                   headerBuilder: () => delta.SearchBox(
+                    focusNode: _focusNode,
                     prefixIcon: IconButton(
                       icon: const Icon(Icons.menu),
                       onPressed: () => tools.showTagView<SampleFilter>(

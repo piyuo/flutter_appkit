@@ -63,7 +63,7 @@ main() {
 
   _trigger = SearchTrigger(
     controller: _searchBoxController,
-    onSearch: (text) => debugPrint('search:$text'),
+    onSearch: (text) => debugPrint('searchX:$text'),
     onSearchBegin: () => debugPrint('search begin'),
     onSearchEnd: () => debugPrint('search end'),
   );
@@ -1016,8 +1016,12 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _searchBox(BuildContext context) {
+    var searchBox3Controller = TextEditingController();
     var controller1 = TextEditingController();
     var focusNode1 = FocusNode();
+    var focusSearch1 = FocusNode();
+    var focusSearch2 = FocusNode();
+    var focusSearch3 = FocusNode();
     return Padding(
         padding: const EdgeInsets.all(20),
         child: Wrap(
@@ -1026,10 +1030,12 @@ class _DeltaExampleState extends State<DeltaExample> {
           children: [
             const TextField(),
             SearchBox(
+              focusNode: focusSearch1,
               controller: _searchBoxController,
               //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
             ),
             SearchBox(
+              focusNode: focusSearch2,
               controller: _searchBoxController,
               prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
               hintText: 'Search orders/products here',
@@ -1045,10 +1051,11 @@ class _DeltaExampleState extends State<DeltaExample> {
               },
             ),
             SearchBox(
-              controller: _searchBoxController,
-              prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
+              focusNode: focusSearch3,
+              controller: searchBox3Controller,
               hintText: 'recent searches',
               recentKey: 'recentSearch',
+              onSubmitted: (text) => debugPrint('submitted $text'),
             ),
             ElevatedButton(
                 child: const Text('set text'),

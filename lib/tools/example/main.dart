@@ -16,6 +16,7 @@ final indexedDb = data.IndexedDb(dbName: 'tools_sample');
 int sampleIndex = 0;
 DateTime sampleDate = DateTime.now();
 final _searchBoxController = TextEditingController();
+FocusNode _focusNode = FocusNode();
 
 main() {
   base.start(
@@ -381,6 +382,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                             padding: const EdgeInsets.fromLTRB(15, 5, 15, 20),
 //                            color: Colors.red,
                             child: delta.SearchBox(
+                              focusNode: _focusNode,
                               controller: _searchBoxController,
                               //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
                             )),
