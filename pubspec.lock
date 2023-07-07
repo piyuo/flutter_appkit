@@ -213,10 +213,10 @@ packages:
     dependency: "direct main"
     description:
       name: csslib
-      sha256: f857285c8dc0b4f2f77b49a1c083ff8c75223a7549de20f3e607df58cf497a43
+      sha256: "831883fb353c8bdc1d71979e5b342c7d88acfbc643113c14ae51e2442ea0f20f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.17.3"
   cupertino_listview:
     dependency: "direct main"
     description:
@@ -341,10 +341,10 @@ packages:
     dependency: transitive
     description:
       name: extended_image_library
-      sha256: af3ff1c09c23ca7663f94272313d63499a6bd19121e99378e375e0cf2ac7a3e4
+      sha256: bb8d08c504ebc73d476ec1c99451a61f12e95538869e734fc4f55a3a2d5c98ec
       url: "https://pub.dev"
     source: hosted
-    version: "3.5.2"
+    version: "3.5.3"
   fake_async:
     dependency: transitive
     description:
@@ -745,10 +745,10 @@ packages:
     dependency: "direct main"
     description:
       name: http_client_helper
-      sha256: "14c6e756644339f561321dab021215475ba4779aa962466f59ccb3ecf66b36c3"
+      sha256: "8a9127650734da86b5c73760de2b404494c968a3fd55602045ffec789dac3cb1"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4"
+    version: "3.0.0"
   http_parser:
     dependency: transitive
     description:
@@ -1218,10 +1218,10 @@ packages:
     dependency: "direct main"
     description:
       name: protobuf
-      sha256: "01dd9bd0fa02548bf2ceee13545d4a0ec6046459d847b6b061d8a27237108a08"
+      sha256: "4034a02b7e231e7e60bff30a8ac13a7347abfdac0798595fae0b90a3f0afe759"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "3.0.0"
   provider:
     dependency: "direct main"
     description:
@@ -1266,26 +1266,26 @@ packages:
     dependency: "direct main"
     description:
       name: reactive_forms
-      sha256: "5aa9c48a0626c20d00a005e597cb10efbdebbfeecb9c4227b03a5945fbb91ec4"
+      sha256: "7f3c7b53d5a875f002658bf675313d0d11795ee58cf8591f26c906b7a86c2b0a"
       url: "https://pub.dev"
     source: hosted
-    version: "14.3.0"
+    version: "15.0.0"
   reactive_phone_form_field:
     dependency: "direct main"
     description:
       name: reactive_phone_form_field
-      sha256: "427e9b145ed16dcbe0ac37e49f801aceeba5d074ab70567f99694abf7a808038"
+      sha256: "022c8e28136d0af225b9083caf7a444767adf2eca715103d1da765e8caeb9a28"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.0"
+    version: "1.0.1"
   reactive_raw_autocomplete:
     dependency: "direct main"
     description:
       name: reactive_raw_autocomplete
-      sha256: "26cbbaa94950e3a967d8a9893be61cf6f7fb521805e58db351714d68db80ad08"
+      sha256: f842202b8dc839c98504440fea8af61d445fc8768b6255b7f0c63d8c42683782
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.0"
+    version: "1.0.0"
   rxdart:
     dependency: transitive
     description:

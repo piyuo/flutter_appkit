@@ -21,7 +21,7 @@ dependencies:
   beamer: ^1.5.3
   hive: ^2.2.3
   http: ^0.13.0
-  protobuf: ^2.1.0
+  protobuf: ^3.0.0
   meta: ^1.9.1
   provider: ^6.0.3
   nested: ^1.0.0
@@ -70,11 +70,11 @@ dependencies:
   split_view: ^3.2.1
   drag_select_grid_view: ^0.6.1
   animations: ^2.0.5
-  reactive_forms: ^14.3.0
+  reactive_forms: ^15.0.0
   flutter_rating_bar: ^4.0.1
   #reactive_touch_spin: ^0.8.0
-  reactive_phone_form_field: ^0.12.0
-  reactive_raw_autocomplete: ^0.6.0
+  reactive_phone_form_field: ^1.0.1
+  reactive_raw_autocomplete: ^1.0.0
   calendar_date_picker2: ^0.5.2
   pinput: ^2.2.23
   sign_button: ^2.0.3
@@ -86,19 +86,19 @@ dependencies:
      url: https://github.com/eli1stark/modal_bottom_sheet.git
      ref: main
      path: modal_bottom_sheet
-  http_client_helper: ^2.0.3
+  http_client_helper: ^3.0.0
   path_provider: ^2.0.11
   clock: ^1.1.1
   duration: ^3.0.12
-  csslib: 0.17.0
+  csslib: ^0.17.0
 dev_dependencies:
-  mockito: ^5.4.1
+  mockito: ^5.4.2
   flutter_lints: ^2.0.1
-  analyzer: ^5.13.0
+  analyzer: ^5.11.0
 dependency_overrides:
   intl: ^0.18.1 # cause reactive_touch_spin need intl 0.17
   http: ^1.0.0
-  csslib: 0.17.0
+  #csslib: 0.17.0
 
 
   #meta: ^1.9.0 # cause flutter_test need intl 1.8.0
