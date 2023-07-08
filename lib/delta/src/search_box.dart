@@ -74,7 +74,7 @@ class SearchBox extends StatelessWidget {
                     if (recentKey != null) {
                       preferences.addRecent(recentKey!, text);
                     }
-                    onSubmitted?.call(text);
+                    onSubmitted?.call(text.trim());
                   },
                   focusNode: focusNode,
                   textInputAction: TextInputAction.search,
@@ -132,7 +132,7 @@ class SearchBox extends StatelessWidget {
                   );
                 },
                 onSuggestionSelected: (suggestion) {
-                  onSubmitted?.call(suggestion.text);
+                  onSubmitted?.call(suggestion.text.trim());
                   controller.text = suggestion.text;
                 })));
   }
