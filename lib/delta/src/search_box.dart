@@ -92,7 +92,10 @@ class SearchBox extends StatelessWidget {
                     suffixIcon: controller.text.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.close),
-                            onPressed: () => controller.text = '',
+                            onPressed: () {
+                              onSubmitted?.call('');
+                              controller.text = '';
+                            },
                           )
                         : const Icon(Icons.search),
                     border: OutlineInputBorder(
