@@ -64,19 +64,19 @@ LineChartData mainData() {
       horizontalInterval: 1,
       verticalInterval: 1,
       getDrawingHorizontalLine: (value) {
-        return FlLine(
+        return const FlLine(
           //color: AppColors.mainGridLineColor,
           strokeWidth: 1,
         );
       },
       getDrawingVerticalLine: (value) {
-        return FlLine(
+        return const FlLine(
           //color: AppColors.mainGridLineColor,
           strokeWidth: 1,
         );
       },
     ),
-    titlesData: FlTitlesData(
+    titlesData: const FlTitlesData(
       show: true,
       rightTitles: AxisTitles(
         sideTitles: SideTitles(showTitles: false),
@@ -126,7 +126,7 @@ LineChartData mainData() {
         ),
         barWidth: 5,
         isStrokeCapRound: true,
-        dotData: FlDotData(
+        dotData: const FlDotData(
           show: false,
         ),
         belowBarData: BarAreaData(

@@ -23,7 +23,7 @@ dependencies:
   http: ^1.1.0
   protobuf: ^3.0.0
   meta: ^1.9.1
-  provider: ^6.0.3
+  provider: ^6.0.5
   nested: ^1.0.0
   intl: ^0.18.0
   uuid: ^3.0.7
@@ -31,32 +31,32 @@ dependencies:
   dotted_decoration: ^2.0.0
   dotted_line: ^3.1.0
   mime: ^1.0.2
-  universal_html: ^2.2.2
+  universal_html: ^2.2.3
   universal_platform: ^1.0.0+1
-  universal_io: ^2.2.0
-  shared_preferences: ^2.0.18
-  url_launcher: ^6.1.7
+  universal_io: ^2.2.2
+  shared_preferences: ^2.2.0
+  url_launcher: ^6.1.11
   auto_size_text: ^3.0.0
   flutter_easyloading: ^3.0.5
   flutter_markdown: ^0.6.13
   #location: ^4.3.0 # device lat lng
   geolocator: ^9.0.2
   apple_maps_flutter: ^1.2.0
-  google_maps_flutter: ^2.2.1
-  google_maps_flutter_web: ^0.4.0+3
+  google_maps_flutter: ^2.2.8
+  google_maps_flutter_web: ^0.5.1
   extended_image: ^8.0.1
   flutter_staggered_grid_view: ^0.6.2
-  custom_refresh_indicator: ^2.2.0
+  custom_refresh_indicator: ^2.2.1
   flutter_sticky_header: ^0.6.5
   flutter_dropzone: ^3.0.5
-  image_picker: ^0.8.5+3
+  image_picker: ^1.0.0
   flutter_quill: ^7.0.1
   image: ^4.0.15
   image_editor: ^1.1.0
   qr_flutter: ^4.1.0
   mobile_scanner: ^3.2.0
   permission_handler: ^10.2.0
-  app_settings: ^4.2.0
+  app_settings: ^4.3.0
   just_audio: ^0.9.30
   loading_indicator: ^3.1.0
   synchronized: ^3.0.0+3
@@ -64,7 +64,7 @@ dependencies:
   webview_flutter: ^4.0.2
   flutter_typeahead: ^4.6.2
   slide_countdown: ^0.6.0
-  fl_chart: ^0.62.0
+  fl_chart: ^0.63.0
   badges: ^3.0.2
   cupertino_listview: ^2.0.0
   split_view: ^3.2.1
@@ -79,7 +79,7 @@ dependencies:
   pinput: ^2.2.23
   sign_button: ^2.0.3
   text_divider: ^1.0.0
-  flutter_cache_manager: ^3.3.0
+  flutter_cache_manager: ^3.3.1
   #modal_bottom_sheet: ^2.1.2
   modal_bottom_sheet:
    git:
@@ -92,12 +92,12 @@ dependencies:
   duration: ^3.0.12
 dev_dependencies:
   mockito: ^5.4.2
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.2
   analyzer: ^5.11.0
-  csslib: ^0.17.0
 dependency_overrides:
   intl: ^0.18.1 # cause reactive_touch_spin need intl 0.18
   analyzer: ^6.0.0
+  csslib: ^1.0.0
 
 
   #meta: ^1.9.0 # cause flutter_test need intl 1.8.0
