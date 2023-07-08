@@ -93,6 +93,7 @@ class SearchBox extends StatelessWidget {
                         ? IconButton(
                             icon: const Icon(Icons.close),
                             onPressed: () {
+                              focusNode.unfocus();
                               onSubmitted?.call('');
                               controller.text = '';
                             },
