@@ -136,6 +136,9 @@ class SearchBox extends StatelessWidget {
                   );
                 },
                 onSuggestionSelected: (suggestion) {
+                  if (recentKey != null) {
+                    preferences.addRecent(recentKey!, suggestion.text);
+                  }
                   onSubmitted?.call(suggestion.text.trim());
                   controller.text = suggestion.text;
                 })));
