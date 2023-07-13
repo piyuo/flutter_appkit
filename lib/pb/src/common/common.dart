@@ -5,3 +5,4 @@ export 'src/model.pb.dart';
 export 'src/ok.pb.dart';
 export 'src/error.pb.dart';
 export 'src/sync.pb.dart';
+export 'src/word.pb.dart';

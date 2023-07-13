@@ -50,7 +50,7 @@ dependencies:
   flutter_sticky_header: ^0.6.5
   flutter_dropzone: ^3.0.5
   image_picker: ^1.0.0
-  flutter_quill: ^7.0.1
+  flutter_quill: ^7.2.11
   image: ^4.0.15
   image_editor: ^1.1.0
   qr_flutter: ^4.1.0

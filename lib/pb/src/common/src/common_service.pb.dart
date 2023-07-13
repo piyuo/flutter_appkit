@@ -4,6 +4,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'ok.pb.dart';
 import 'error.pb.dart';
 import 'sync.pb.dart';
+import 'word.pb.dart';
 
   pb.Object objectBuilder(int id, List<int> bytes) {
     switch (id) {
@@ -13,6 +14,8 @@ import 'sync.pb.dart';
         return Error.fromBuffer(bytes);
       case 8:
         return Sync.fromBuffer(bytes);
+      case 9:
+        return Word.fromBuffer(bytes);
     }
     throw Exception('failed to create object in commonObjectByID. id($id) out of range');
 }
