@@ -21,7 +21,7 @@ class File extends pb.Object {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'File', createEmptyInstance: create)
     ..e<File_FileType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: File_FileType.FILE_TYPE_UNSPECIFIED, valueOf: File_FileType.valueOf, enumValues: File_FileType.values)
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..a<$core.List<$core.int>>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'content', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'data', $pb.PbFieldType.OY)
     ..hasRequiredFields = false
   ;
 
@@ -29,7 +29,7 @@ class File extends pb.Object {
   factory File({
     File_FileType? type,
     $core.String? name,
-    $core.List<$core.int>? content,
+    $core.List<$core.int>? data,
   }) {
     final _result = create();
     if (type != null) {
@@ -38,8 +38,8 @@ class File extends pb.Object {
     if (name != null) {
       _result.name = name;
     }
-    if (content != null) {
-      _result.content = content;
+    if (data != null) {
+      _result.data = data;
     }
     return _result;
   }
@@ -83,12 +83,12 @@ class File extends pb.Object {
   void clearName() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<$core.int> get content => $_getN(2);
+  $core.List<$core.int> get data => $_getN(2);
   @$pb.TagNumber(3)
-  set content($core.List<$core.int> v) { $_setBytes(2, v); }
+  set data($core.List<$core.int> v) { $_setBytes(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasContent() => $_has(2);
+  $core.bool hasData() => $_has(2);
   @$pb.TagNumber(3)
-  void clearContent() => clearField(3);
+  void clearData() => clearField(3);
 }
 
