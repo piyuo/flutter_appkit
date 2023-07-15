@@ -6,3 +6,4 @@ export 'src/ok.pb.dart';
 export 'src/error.pb.dart';
 export 'src/sync.pb.dart';
 export 'src/word.pb.dart';
+export 'src/file.pb.dart';
