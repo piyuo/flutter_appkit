@@ -10,16 +10,12 @@ import 'package:libcli/pb/pb.dart' as pb;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'file.pbenum.dart';
-
-export 'file.pbenum.dart';
-
 class File extends pb.Object {
   $core.int mapIdXXX() => 10;
   get namespace => 'common';
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'File', createEmptyInstance: create)
-    ..e<File_FileType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: File_FileType.FILE_TYPE_UNSPECIFIED, valueOf: File_FileType.valueOf, enumValues: File_FileType.values)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mime')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..a<$core.List<$core.int>>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'data', $pb.PbFieldType.OY)
     ..hasRequiredFields = false
@@ -27,13 +23,13 @@ class File extends pb.Object {
 
   File._() : super();
   factory File({
-    File_FileType? type,
+    $core.String? mime,
     $core.String? name,
     $core.List<$core.int>? data,
   }) {
     final _result = create();
-    if (type != null) {
-      _result.type = type;
+    if (mime != null) {
+      _result.mime = mime;
     }
     if (name != null) {
       _result.name = name;
@@ -65,13 +61,13 @@ class File extends pb.Object {
   static File? _defaultInstance;
 
   @$pb.TagNumber(1)
-  File_FileType get type => $_getN(0);
+  $core.String get mime => $_getSZ(0);
   @$pb.TagNumber(1)
-  set type(File_FileType v) { setField(1, v); }
+  set mime($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasType() => $_has(0);
+  $core.bool hasMime() => $_has(0);
   @$pb.TagNumber(1)
-  void clearType() => clearField(1);
+  void clearMime() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
