@@ -31,13 +31,13 @@ bool isMimeAudio(String mime) => mime.startsWith('audio/');
 /// FileUtil provide toFile method for XFile
 extension FileUtil on XFile {
   /// mimeTypeByLookup try to get mime type by lookupMimeType
-  String? get mimeTypeByLookup => lookupMimeType(path);
+  String get mimeTypeByLookup => mimeType ?? lookupMimeType(path) ?? 'application/octet-stream';
 
   /// toFile convert XFile to File
   Future<common.File> toFile() async {
     return common.File(
       name: name,
-      mime: mimeType ?? mimeTypeByLookup ?? 'application/octet-stream',
+      mime: mimeTypeByLookup,
       data: await readAsBytes(),
     );
   }
