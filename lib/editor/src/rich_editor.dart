@@ -24,7 +24,7 @@ class RichEditor extends StatelessWidget {
                 multiRowsDisplay: false,
                 showSmallButton: false,
                 showInlineCode: false,
-                showLink: false,
+                showLink: true,
                 showCodeBlock: false,
                 showListCheck: false,
               ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/testing/testing.dart' as testing;
-import '../src/rich_editor.dart';
-import '../src/rich_editor_provider.dart';
-import '../src/image_editor.dart';
-import '../src/image_editor_dialog.dart';
+import '../editor.dart';
 
 main() => base.start(
       theme: testing.theme(),
@@ -22,17 +20,20 @@ class EditorExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
+        child: Column(children: [
+          Expanded(
+              child: Container(
+            child: _messageView(),
+          )),
+          Wrap(
             children: [
-              Container(
-                child: _richEditor(),
-              ),
+              testing.ExampleButton(label: 'message view', builder: () => _messageView()),
+              testing.ExampleButton(label: 'message editor', builder: () => _messageEditor()),
               testing.ExampleButton(label: 'rich editor', builder: () => _richEditor()),
               testing.ExampleButton(label: 'image editor', builder: () => _imageEditor()),
             ],
           ),
-        ),
+        ]),
       ),
     );
   }
@@ -94,5 +95,67 @@ class EditorExample extends StatelessWidget {
                 }),
           ]);
         }));
+  }
+
+  Widget _messageEditor() {
+    return ChangeNotifierProvider<MessageEditorProvider>(
+      create: (context) => MessageEditorProvider(),
+      child: Consumer<MessageEditorProvider>(builder: (context, messageEditorProvider, child) {
+        return Column(children: [
+          const Spacer(),
+          MessageEditor(
+            messageEditorProvider: messageEditorProvider,
+            onSend: (words, map) async {
+              debugPrint('onSend: ${words.length}');
+            },
+          ),
+        ]);
+      }),
+    );
+  }
+
+  Widget _messageView() {
+    final words = [
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_TEXT,
+        value: 'hello',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        value: 'video1',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_TEXT,
+        value: ' world',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        value: 'img1',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_TEXT,
+        value: 'Regards,\nMy name',
+      ),
+    ];
+
+    return Container(
+        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.all(30),
+        color: Colors.blue,
+        child: ChangeNotifierProvider<MessageViewProvider>(
+            create: (context) => MessageViewProvider(
+                  urlBuilder: (type, id) {
+                    if (id == 'video1') {
+                      return 'https://download.samplelib.com/mp4/sample-5s.mp4';
+                    }
+                    return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+                  },
+                )..scanVideo(words),
+            child: Consumer<MessageViewProvider>(builder: (context, messageViewProvider, child) {
+              return MessageView(
+                messageViewProvider: messageViewProvider,
+                words: words,
+              );
+            })));
   }
 }
