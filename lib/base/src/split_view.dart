@@ -19,9 +19,6 @@ class SplitViewProvider with ChangeNotifier, utils.InitOnceMixin {
   /// key in preferences
   final String key;
 
-  /// splitViewKey is key for [SplitView], we use it to get is's position and size
-  GlobalKey splitViewKey = GlobalKey();
-
   /// _weights is a map that contains the side weight
   Map<String, dynamic> weights = {};
 
@@ -103,7 +100,6 @@ class SplitView extends StatelessWidget {
     }
 
     return sv.SplitView(
-      key: splitViewProvider.splitViewKey,
       gripSize: 5,
       gripColor: colorScheme.outlineVariant.withOpacity(.2),
       gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
