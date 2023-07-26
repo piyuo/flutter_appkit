@@ -19,6 +19,9 @@ class SplitViewProvider with ChangeNotifier, utils.InitOnceMixin {
   /// key in preferences
   final String key;
 
+  /// splitViewKey is key for [SplitView], we use it to get is's position and size
+  GlobalKey splitViewKey = GlobalKey();
+
   /// _weights is a map that contains the side weight
   Map<String, dynamic> weights = {};
 
@@ -26,9 +29,10 @@ class SplitViewProvider with ChangeNotifier, utils.InitOnceMixin {
   utils.DelayedRun delayRun = utils.DelayedRun();
 
   /// set weights to [SplitViewProvider]
-  void set(String viewKey, double value) {
+  void set(String viewKey, double weight, double width) {
     delayRun.run(() {
-      final roundValue = double.parse((value).toStringAsFixed(2));
+      debugPrint(width.toString());
+      final roundValue = double.parse((weight).toStringAsFixed(2));
       weights[viewKey] = roundValue;
       preferences.setMap(key, weights);
     });
@@ -48,6 +52,8 @@ class SplitView extends StatelessWidget {
     this.sideWeight = 0.4,
     this.sideWeightMax = 0.8,
     this.sideWeightMin = 0.2,
+    this.sideBar,
+    this.bar,
     required ValueKey<String> key,
   }) : super(key: key);
 
@@ -72,6 +78,12 @@ class SplitView extends StatelessWidget {
   /// sideWeight is side min widget weight, default is 0.2
   final double sideWeightMin;
 
+  /// sideBar is a widget that will be shown on the left side of the side widget
+  final Widget? sideBar;
+
+  /// bar is a widget that will be shown on the right side of the side widget
+  final Widget? bar;
+
   @override
   Widget build(BuildContext context) {
     if (sideBuilder == null && builder == null) return const SizedBox();
@@ -81,13 +93,20 @@ class SplitView extends StatelessWidget {
     final valueKey = (key! as ValueKey<String>).value;
     final savedWeight = splitViewProvider.get(valueKey);
     final colorScheme = Theme.of(context).colorScheme;
+
+    buildSide() {
+      return sideBar != null ? Column(children: [sideBar!, Expanded(child: sideBuilder!())]) : sideBuilder!();
+    }
+
+    buildMain() {
+      return bar != null ? Column(children: [bar!, Expanded(child: builder!())]) : builder!();
+    }
+
     return sv.SplitView(
+      key: splitViewProvider.splitViewKey,
       gripSize: 5,
       gripColor: colorScheme.outlineVariant.withOpacity(.2),
       gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
-      onWeightChanged: (weights) {
-        if (weights[0] != null) splitViewProvider.set(valueKey, weights[0]!);
-      },
       controller: sv.SplitViewController(
         weights: [savedWeight ?? sideWeight],
         limits: [sv.WeightLimit(min: sideWeightMin, max: sideWeightMax)],
@@ -103,8 +122,8 @@ class SplitView extends StatelessWidget {
         color: colorScheme.outlineVariant,
       ),
       children: [
-        if (sideBuilder != null) sideBuilder!(),
-        if (builder != null) builder!(),
+        if (sideBuilder != null) buildSide(),
+        if (builder != null) buildMain(),
       ],
     );
   }

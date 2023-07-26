@@ -84,13 +84,15 @@ class AppExampleState extends State<AppExample> {
           body: Column(
             children: [
               Expanded(
-                child: _navigationScaffold(context),
+                child: _splitView(context),
                 // child: _routing(context, widget.data),
                 //child: _setPageTitle(context),
               ),
               Container(
+                  height: 100,
                   color: Colors.black,
-                  child: Wrap(
+                  child: SingleChildScrollView(
+                      child: Wrap(
                     children: [
                       OutlinedButton(
                         child: const Text('show alert use global context'),
@@ -140,7 +142,7 @@ class AppExampleState extends State<AppExample> {
                       testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
                       testing.ExampleButton(label: 'SplitView', builder: () => _splitView(context)),
                     ],
-                  ))
+                  )))
             ],
           )),
     );
@@ -437,19 +439,37 @@ class AppExampleState extends State<AppExample> {
                   future: () async {
                     await splitterViewProvider.init();
                   },
-                  builder: () => SplitView(
-                    isVertical: false,
-                    key: const ValueKey<String>('_first'),
-                    splitViewProvider: splitterViewProvider,
-                    sideBuilder: () => Container(
-                      color: Colors.blue,
-                      child: const Center(child: Text('side')),
-                    ),
-                    builder: () => Container(
-                      color: Colors.red,
-                      child: const Center(child: Text('main')),
-                    ),
-                  ),
+                  builder: () => Row(children: [
+                    const SizedBox(width: 50),
+                    Expanded(
+                        child: SplitView(
+                      isVertical: false,
+                      key: const ValueKey<String>('_first'),
+                      splitViewProvider: splitterViewProvider,
+                      sideBar: AppBar(
+                          toolbarHeight: 42,
+                          title: const Text('side'),
+                          leading: const Icon(Icons.menu),
+                          actions: const [
+                            Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.people)),
+                          ]),
+                      sideBuilder: () => Container(
+                        color: Colors.blue,
+                        child: const Center(child: Text('side')),
+                      ),
+                      bar: AppBar(
+                          toolbarHeight: 42,
+                          title: const Text('main'),
+                          leading: const Icon(Icons.add),
+                          actions: const [
+                            Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.store)),
+                          ]),
+                      builder: () => Container(
+                        color: Colors.red,
+                        child: const Center(child: Text('main')),
+                      ),
+                    )),
+                  ]),
                 )));
   }
 }
