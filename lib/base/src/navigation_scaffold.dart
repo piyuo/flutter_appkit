@@ -163,22 +163,24 @@ class NavigationScaffold extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: bigDisplay ? railWidth : null,
-                  child: NavigationRail(
-                    leading: bigDisplay ? leadingInRail : null,
-                    trailing: bigDisplay ? trailingInRail : null,
-                    extended: bigDisplay,
-                    labelType: bigDisplay ? NavigationRailLabelType.none : NavigationRailLabelType.all,
-                    destinations: destinations
-                        .map((n) => NavigationRailDestination(
-                              icon: buildIcon(n),
-                              label: buildLabel(n),
-                            ))
-                        .toList(),
-                    selectedIndex: selectedIndex,
-                    onDestinationSelected: onSelected,
-                  ),
-                ),
+                    width: bigDisplay ? railWidth : null,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: NavigationRail(
+                        leading: bigDisplay ? leadingInRail : null,
+                        trailing: bigDisplay ? trailingInRail : null,
+                        extended: bigDisplay,
+                        labelType: bigDisplay ? NavigationRailLabelType.none : NavigationRailLabelType.all,
+                        destinations: destinations
+                            .map((n) => NavigationRailDestination(
+                                  icon: buildIcon(n),
+                                  label: buildLabel(n),
+                                ))
+                            .toList(),
+                        selectedIndex: selectedIndex,
+                        onDestinationSelected: onSelected,
+                      ),
+                    )),
                 const VerticalDivider(
                   width: 1,
                   thickness: 1,
