@@ -83,14 +83,6 @@ class SplitView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (sideBuilder == null && builder == null) return const SizedBox();
-    if (sideBuilder == null) return builder!();
-    if (builder == null) return sideBuilder!();
-
-    final valueKey = (key! as ValueKey<String>).value;
-    final savedWeight = splitViewProvider.get(valueKey);
-    final colorScheme = Theme.of(context).colorScheme;
-
     buildSide() {
       return sideBar != null ? Column(children: [sideBar!, Expanded(child: sideBuilder!())]) : sideBuilder!();
     }
@@ -98,6 +90,14 @@ class SplitView extends StatelessWidget {
     buildMain() {
       return bar != null ? Column(children: [bar!, Expanded(child: builder!())]) : builder!();
     }
+
+    if (sideBuilder == null && builder == null) return const SizedBox();
+    if (sideBuilder == null) return buildMain();
+    if (builder == null) return buildSide();
+
+    final valueKey = (key! as ValueKey<String>).value;
+    final savedWeight = splitViewProvider.get(valueKey);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return sv.SplitView(
       gripSize: 5,
