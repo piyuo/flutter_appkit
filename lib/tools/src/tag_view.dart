@@ -49,7 +49,8 @@ class TagView<T> extends StatelessWidget {
     return Container(
         padding: UniversalPlatform.isMacOS ? const EdgeInsets.only(top: 20) : null,
         color: colorScheme.surfaceVariant,
-        child: Column(children: [
+        child: SafeArea(
+            child: Column(children: [
           if (header != null) header!,
           Expanded(
               child: ListView.builder(
@@ -100,7 +101,7 @@ class TagView<T> extends StatelessWidget {
               );
             },
           )),
-        ]));
+        ])));
   }
 }
 

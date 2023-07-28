@@ -150,7 +150,7 @@ class _ToolsExampleState extends State<ToolsExample> {
 
   Widget _showTagView(BuildContext context) {
     return OutlinedButton(
-      child: const Text('show folder view'),
+      child: const Text('show tag view'),
       onPressed: () => showTagView<SampleFilter>(
         context,
         onTagSelected: (value) => debugPrint('$value selected'),
