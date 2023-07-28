@@ -28,9 +28,8 @@ Future<T?> showSide<T>(
           child: ConstrainedBox(
               constraints: constraints,
               child: Material(
-                  child: SafeArea(
                 child: child,
-              ))));
+              )));
     },
     transitionBuilder: (context, anim1, anim2, child) {
       return SlideTransition(

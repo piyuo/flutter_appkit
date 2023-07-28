@@ -38,7 +38,7 @@ class DialogExample extends StatelessWidget {
           child: Column(
         children: [
           Expanded(
-            child: _showResponsiveDialog(context),
+            child: _showPopupSheet(context),
           ),
           Wrap(
             spacing: 10,
