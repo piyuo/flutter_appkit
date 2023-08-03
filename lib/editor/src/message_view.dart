@@ -9,6 +9,9 @@ import 'package:video_player/video_player.dart';
 /// _kBorderRadius is the border radius for embed
 const _kBorderRadius = BorderRadius.all(Radius.circular(12));
 
+/// UrlBuilder return the url of the image base on word type and id
+typedef UrlBuilder = String Function(pb.Word_WordType type, String id);
+
 /// MessageViewProvider provide video controller to MessageView
 class MessageViewProvider with ChangeNotifier {
   MessageViewProvider({
@@ -19,7 +22,7 @@ class MessageViewProvider with ChangeNotifier {
   final Map<String, ChewieController> _videoPlayers = {};
 
   /// imageUrlBuilder return the url of the image base on given image id
-  final String Function(pb.Word_WordType type, String id) urlBuilder;
+  final UrlBuilder urlBuilder;
 
   /// clear clear all data, let user start from scratch
   void clear() {
