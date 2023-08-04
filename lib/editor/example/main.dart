@@ -153,6 +153,7 @@ class EditorExample extends StatelessWidget {
                 )..scanVideo(words),
             child: Consumer<MessageViewProvider>(builder: (context, messageViewProvider, child) {
               return MessageView(
+                textStyle: const TextStyle(color: Colors.red),
                 messageViewProvider: messageViewProvider,
                 words: words,
               );

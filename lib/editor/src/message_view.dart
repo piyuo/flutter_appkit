@@ -73,13 +73,18 @@ class MessageView extends StatelessWidget {
   const MessageView({
     required this.words,
     required this.messageViewProvider,
+    this.textStyle,
     super.key,
   });
 
   /// words is a list of words that will be display
   final List<pb.Word> words;
 
+  /// messageViewProvider provide video controller to MessageView
   final MessageViewProvider messageViewProvider;
+
+  /// textStyle for message
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +114,7 @@ class MessageView extends StatelessWidget {
       children: words.map((word) {
         switch (word.type) {
           case pb.Word_WordType.WORD_TYPE_TEXT:
-            return Text(word.value);
+            return Text(word.value, style: textStyle);
           case pb.Word_WordType.WORD_TYPE_IMAGE:
             return buildEmbed(delta.WebImage(
               url: messageViewProvider.urlBuilder(word.type, word.value),
