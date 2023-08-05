@@ -117,6 +117,10 @@ class EditorExample extends StatelessWidget {
   Widget _messageView() {
     final words = [
       pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        value: 'video1',
+      ),
+/*      pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
         value: 'hello',
       ),
@@ -135,13 +139,13 @@ class EditorExample extends StatelessWidget {
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
         value: 'Regards,\nMy name',
-      ),
+      ),*/
     ];
 
     return Align(
         alignment: Alignment.centerLeft,
         child: Container(
-            padding: const EdgeInsets.all(10),
+            //padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.all(10),
             color: Colors.blue,
             child: ChangeNotifierProvider<MessageViewProvider>(

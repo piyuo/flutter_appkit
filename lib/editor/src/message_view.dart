@@ -9,6 +9,9 @@ import 'package:video_player/video_player.dart';
 /// _kBorderRadius is the border radius for embed
 const _kBorderRadius = BorderRadius.all(Radius.circular(12));
 
+/// _kMaxImageSize is the max size of the image
+const _kMaxImageSize = 480.0;
+
 /// UrlBuilder return the url of the image base on word type and id
 typedef UrlBuilder = String Function(pb.Word_WordType type, String id);
 
@@ -75,6 +78,7 @@ class MessageView extends StatelessWidget {
     required this.messageViewProvider,
     this.textStyle,
     this.imageWidthMax,
+    this.maxImageSize = _kMaxImageSize,
     super.key,
   });
 
@@ -90,25 +94,31 @@ class MessageView extends StatelessWidget {
   /// imageWidthMax is the max width of the image
   final double? imageWidthMax;
 
+  /// maxImageSize is the max size of the image
+  final double maxImageSize;
+
   @override
   Widget build(BuildContext context) {
     buildEmbed(Widget child) {
       return Align(
           child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: 480,
-                maxHeight: 480,
+              constraints: BoxConstraints(
+                maxWidth: maxImageSize,
+                maxHeight: maxImageSize,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(vertical: words.length == 1 ? 0 : 10),
                 child: child,
               )));
     }
 
-    buildPreview(Widget child) {
+    buildVideo(Widget child) {
       return buildEmbed(Container(
         height: 200,
-        decoration: BoxDecoration(color: Colors.black.withOpacity(0.1), borderRadius: _kBorderRadius),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.1),
+          borderRadius: words.length == 1 ? null : _kBorderRadius,
+        ),
         child: Center(child: child),
       ));
     }
@@ -119,14 +129,16 @@ class MessageView extends StatelessWidget {
           case pb.Word_WordType.WORD_TYPE_TEXT:
             return Text(word.value, style: textStyle);
           case pb.Word_WordType.WORD_TYPE_IMAGE:
-            return buildEmbed(delta.WebImage(
-              url: messageViewProvider.urlBuilder(word.type, word.value),
-              borderRadius: _kBorderRadius,
-              width: imageWidthMax,
-            ));
+            return buildEmbed(
+              delta.WebImage(
+                url: messageViewProvider.urlBuilder(word.type, word.value),
+                borderRadius: words.length == 1 ? null : _kBorderRadius,
+                width: imageWidthMax,
+              ),
+            );
           case pb.Word_WordType.WORD_TYPE_VIDEO:
             if (UniversalPlatform.isDesktop) {
-              return buildPreview(IconButton(
+              return buildVideo(IconButton(
                 onPressed: () {
                   utils.openUrl(messageViewProvider.urlBuilder(word.type, word.value));
                 },
@@ -140,7 +152,7 @@ class MessageView extends StatelessWidget {
             final videoPlayer = messageViewProvider.getVideoPlayerById(word.value);
             if (videoPlayer == null) {
               //video player not load yet
-              return buildPreview(const Icon(
+              return buildVideo(const Icon(
                 size: 46,
                 Icons.play_circle,
               ));
