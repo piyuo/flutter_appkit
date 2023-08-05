@@ -9,8 +9,11 @@ import 'package:video_player/video_player.dart';
 /// _kBorderRadius is the border radius for embed
 const _kBorderRadius = BorderRadius.all(Radius.circular(12));
 
-/// _kMaxImageSize is the max size of the image
-const _kMaxImageSize = 480.0;
+/// _kImageConstraints is the the image constraints
+const _kImageConstraints = BoxConstraints(
+  maxWidth: 480,
+  maxHeight: 480,
+);
 
 /// UrlBuilder return the url of the image base on word type and id
 typedef UrlBuilder = String Function(pb.Word_WordType type, String id);
@@ -77,8 +80,7 @@ class MessageView extends StatelessWidget {
     required this.words,
     required this.messageViewProvider,
     this.textStyle,
-    this.imageWidthMax,
-    this.maxImageSize = _kMaxImageSize,
+    this.imageConstraints = _kImageConstraints,
     super.key,
   });
 
@@ -91,21 +93,15 @@ class MessageView extends StatelessWidget {
   /// textStyle for message
   final TextStyle? textStyle;
 
-  /// imageWidthMax is the max width of the image
-  final double? imageWidthMax;
-
-  /// maxImageSize is the max size of the image
-  final double maxImageSize;
+  /// imageConstraints is the image constraints
+  final BoxConstraints imageConstraints;
 
   @override
   Widget build(BuildContext context) {
     buildEmbed(Widget child) {
       return Align(
           child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: maxImageSize,
-                maxHeight: maxImageSize,
-              ),
+              constraints: imageConstraints,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: words.length == 1 ? 0 : 10),
                 child: child,
@@ -133,7 +129,6 @@ class MessageView extends StatelessWidget {
               delta.WebImage(
                 url: messageViewProvider.urlBuilder(word.type, word.value),
                 borderRadius: words.length == 1 ? null : _kBorderRadius,
-                width: imageWidthMax,
               ),
             );
           case pb.Word_WordType.WORD_TYPE_VIDEO:
