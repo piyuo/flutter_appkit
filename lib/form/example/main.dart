@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 //import 'package:reactive_touch_spin/reactive_touch_spin.dart';
 import 'package:reactive_phone_form_field/reactive_phone_form_field.dart';
-import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
+//import 'package:reactive_raw_autocomplete/reactive_raw_autocomplete.dart';
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/testing/testing.dart' as testing;
@@ -133,7 +133,7 @@ class FormExample extends StatelessWidget {
               color: Colors.amber,
             ),
           ),
-          ReactiveRawAutocomplete<String, String>(
+          /*ReactiveRawAutocomplete<String, String>(
             formControlName: 'raw',
             optionsBuilder: (TextEditingValue textEditingValue) {
               List<String> options = <String>[
@@ -172,7 +172,7 @@ class FormExample extends StatelessWidget {
                 ),
               );
             },
-          ),
+          ),*/
           ReactivePhoneFormField<PhoneNumber>(
             formControlName: 'phone',
             focusNode: FocusNode(),

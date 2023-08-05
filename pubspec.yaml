@@ -73,11 +73,11 @@ dependencies:
   split_view: ^3.2.1
   drag_select_grid_view: ^0.6.1
   animations: ^2.0.5
-  reactive_forms: ^15.0.0
+  reactive_forms: ^16.0.3
+  reactive_phone_form_field: ^2.0.0
   flutter_rating_bar: ^4.0.1
   #reactive_touch_spin: ^0.8.0
-  reactive_phone_form_field: ^1.0.1
-  reactive_raw_autocomplete: ^1.0.0
+  #reactive_raw_autocomplete: ^1.0.0
   calendar_date_picker2: ^0.5.2
   pinput: ^3.0.0
   sign_button: ^2.0.3
