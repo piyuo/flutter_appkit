@@ -79,7 +79,7 @@ dependencies:
   reactive_phone_form_field: ^1.0.1
   reactive_raw_autocomplete: ^1.0.0
   calendar_date_picker2: ^0.5.2
-  pinput: ^2.2.23
+  pinput: ^3.0.0
   sign_button: ^2.0.3
   text_divider: ^1.0.0
   flutter_cache_manager: ^3.3.1
