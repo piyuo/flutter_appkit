@@ -47,7 +47,7 @@ Future<void> askLocationPermission(String reason) async {
       yesText: 'Go to location settings',
     );
     if (gotoSetting == true) {
-      AppSettings.openLocationSettings();
+      AppSettings.openAppSettings(type: AppSettingsType.location);
     }
     return;
   }
