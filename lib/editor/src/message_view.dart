@@ -74,6 +74,7 @@ class MessageView extends StatelessWidget {
     required this.words,
     required this.messageViewProvider,
     this.textStyle,
+    this.imageWidthMax,
     super.key,
   });
 
@@ -85,6 +86,9 @@ class MessageView extends StatelessWidget {
 
   /// textStyle for message
   final TextStyle? textStyle;
+
+  /// imageWidthMax is the max width of the image
+  final double? imageWidthMax;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +123,7 @@ class MessageView extends StatelessWidget {
             return buildEmbed(delta.WebImage(
               url: messageViewProvider.urlBuilder(word.type, word.value),
               borderRadius: _kBorderRadius,
+              width: imageWidthMax,
             ));
           case pb.Word_WordType.WORD_TYPE_VIDEO:
             if (UniversalPlatform.isDesktop) {
