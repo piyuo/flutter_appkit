@@ -94,7 +94,6 @@ class MessageView extends StatelessWidget {
   Widget build(BuildContext context) {
     buildEmbed(Widget child) {
       return Align(
-          alignment: Alignment.centerLeft,
           child: ConstrainedBox(
               constraints: const BoxConstraints(
                 maxWidth: 480,

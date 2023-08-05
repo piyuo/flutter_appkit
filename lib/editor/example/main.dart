@@ -138,26 +138,29 @@ class EditorExample extends StatelessWidget {
       ),
     ];
 
-    return Container(
-        padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.all(30),
-        color: Colors.blue,
-        child: ChangeNotifierProvider<MessageViewProvider>(
-            create: (context) => MessageViewProvider(
-                  urlBuilder: (type, id) {
-                    if (id == 'video1') {
-                      return 'https://download.samplelib.com/mp4/sample-5s.mp4';
-                    }
-                    return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
-                  },
-                )..scanVideo(words),
-            child: Consumer<MessageViewProvider>(builder: (context, messageViewProvider, child) {
-              return MessageView(
-                imageWidthMax: 200,
-                textStyle: const TextStyle(color: Colors.red),
-                messageViewProvider: messageViewProvider,
-                words: words,
-              );
-            })));
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
+            color: Colors.blue,
+            child: ChangeNotifierProvider<MessageViewProvider>(
+                create: (context) => MessageViewProvider(
+                      urlBuilder: (type, id) {
+                        if (id == 'video1') {
+                          return 'https://download.samplelib.com/mp4/sample-5s.mp4';
+                        }
+                        return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+                      },
+                    )..scanVideo(words),
+                child: Consumer<MessageViewProvider>(builder: (context, messageViewProvider, child) {
+                  // return Container(width: 100, height: 100);
+                  return MessageView(
+                    imageWidthMax: 200,
+                    textStyle: const TextStyle(color: Colors.red),
+                    messageViewProvider: messageViewProvider,
+                    words: words,
+                  );
+                }))));
   }
 }
