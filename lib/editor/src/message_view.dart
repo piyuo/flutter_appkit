@@ -15,6 +15,9 @@ const _kImageConstraints = BoxConstraints(
   maxHeight: 480,
 );
 
+/// _kEmojiSize is a emoji size
+const _kEmojiSize = 28.0;
+
 /// UrlBuilder return the url of the image base on word type and id
 typedef UrlBuilder = String Function(pb.Word_WordType type, String id);
 
@@ -103,7 +106,7 @@ class MessageView extends StatelessWidget {
           child: ConstrainedBox(
               constraints: imageConstraints,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: words.length == 1 ? 0 : 10),
+                padding: EdgeInsets.symmetric(vertical: words.length == 1 ? 0 : 5),
                 child: child,
               )));
     }
@@ -120,10 +123,16 @@ class MessageView extends StatelessWidget {
     }
 
     return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: words.map((word) {
         switch (word.type) {
           case pb.Word_WordType.WORD_TYPE_TEXT:
             return Text(word.value, style: textStyle);
+          case pb.Word_WordType.WORD_TYPE_EMOJI:
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Text(word.value, style: const TextStyle(fontSize: _kEmojiSize)),
+            );
           case pb.Word_WordType.WORD_TYPE_IMAGE:
             return buildEmbed(
               delta.WebImage(

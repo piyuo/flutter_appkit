@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:cross_file_image/cross_file_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
@@ -14,6 +14,9 @@ const kVideoKey = 'v';
 /// kFileKey is [FileEmbed] key.
 const kFileKey = 'f';
 
+/// kEmojiKey is [EmojiEmbed] key.
+const kEmojiKey = 'e';
+
 /// ImageEmbed is a custom block embed for image.
 class ImageEmbed extends CustomBlockEmbed {
   const ImageEmbed(String value) : super(kImageKey, value);
@@ -27,6 +30,35 @@ class VideoEmbed extends CustomBlockEmbed {
 /// FileEmbed is a custom block embed for file.
 class FileEmbed extends CustomBlockEmbed {
   const FileEmbed(String value) : super(kFileKey, value);
+}
+
+/// EmojiEmbed is a custom block embed for emoji.
+class EmojiEmbed extends CustomBlockEmbed {
+  const EmojiEmbed(String value) : super(kEmojiKey, value);
+}
+
+class EmojiEmbedBuilder extends EmbedBuilder {
+  @override
+  String get key => kEmojiKey;
+
+  @override
+  bool get expanded => false;
+
+  @override
+  Widget build(
+    BuildContext context,
+    QuillController controller,
+    Embed node,
+    bool readOnly,
+    bool inline,
+    TextStyle textStyle,
+  ) {
+    final emoji = node.value.data;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Text(emoji, style: const TextStyle(fontSize: 24)),
+    );
+  }
 }
 
 /// MediaEmbed is a custom block embed for image/video/file

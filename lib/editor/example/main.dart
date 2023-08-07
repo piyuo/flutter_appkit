@@ -14,7 +14,7 @@ main() => base.start(
     );
 
 class EditorExample extends StatelessWidget {
-  const EditorExample({Key? key}) : super(key: key);
+  const EditorExample({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +118,22 @@ class EditorExample extends StatelessWidget {
     final words = [
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
+        value: 'hi',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_EMOJI,
+        value: '😀',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_TEXT,
+        value: 'Everyone',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        value: 'video1',
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_TEXT,
         value: 'hello',
       ),
       pb.Word(
@@ -157,7 +173,7 @@ class EditorExample extends StatelessWidget {
                   // return Container(width: 100, height: 100);
                   return MessageView(
                     imageConstraints: const BoxConstraints(maxWidth: 300, maxHeight: 300),
-                    textStyle: const TextStyle(color: Colors.red),
+                    textStyle: const TextStyle(color: Colors.red, fontSize: 16),
                     messageViewProvider: messageViewProvider,
                     words: words,
                   );
