@@ -34,3 +34,4 @@ export 'src/transform_container.dart';
 export 'src/animate_view.dart';
 export 'src/animate_grid.dart';
 export 'src/pick_media.dart';
+export 'src/chat_bubble.dart';

@@ -128,13 +128,14 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _searchBox(context),
+                          child: _chatBubble(context),
                         ),
                         SizedBox(
                           height: 100,
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
+                                testing.ExampleButton(label: 'chat bubble', builder: () => _chatBubble(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(
@@ -797,6 +798,19 @@ class _DeltaExampleState extends State<DeltaExample> {
                         ),
                       ],
                     ))));
+  }
+
+  Widget _chatBubble(BuildContext context) {
+    return const Column(children: [
+      ChatBubble(
+        isSender: false,
+        color: Colors.blue,
+        child: Text('Hello'),
+      ),
+      ChatBubble(
+        child: Text('Hello World'),
+      ),
+    ]);
   }
 
   Widget _mounted(BuildContext context) {
