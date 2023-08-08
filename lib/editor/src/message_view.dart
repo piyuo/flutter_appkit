@@ -78,6 +78,7 @@ class MessageViewProvider with ChangeNotifier {
   ChewieController? getVideoPlayerById(String id) => _videoPlayers[id];
 }
 
+/// MessageView is a widget that display message
 class MessageView extends StatelessWidget {
   const MessageView({
     required this.words,
@@ -173,4 +174,10 @@ class MessageView extends StatelessWidget {
       }).toList(),
     );
   }
+}
+
+/// isSingleMedia return true if words is a single media
+bool isSingleMedia(List<pb.Word> words) {
+  return words.length == 1 &&
+      (words[0].type == pb.Word_WordType.WORD_TYPE_IMAGE || words[0].type == pb.Word_WordType.WORD_TYPE_VIDEO);
 }
