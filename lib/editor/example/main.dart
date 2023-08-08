@@ -171,12 +171,15 @@ class EditorExample extends StatelessWidget {
                     )..scanVideo(words),
                 child: Consumer<MessageViewProvider>(builder: (context, messageViewProvider, child) {
                   // return Container(width: 100, height: 100);
-                  return MessageView(
-                    imageConstraints: const BoxConstraints(maxWidth: 300, maxHeight: 300),
-                    textStyle: const TextStyle(color: Colors.red, fontSize: 16),
-                    messageViewProvider: messageViewProvider,
-                    words: words,
-                  );
+                  return SingleChildScrollView(
+                      child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 360),
+                          child: MessageView(
+                            //imageConstraints: const BoxConstraints(maxWidth: 200, maxHeight: 200),
+                            textStyle: const TextStyle(color: Colors.red, fontSize: 16),
+                            messageViewProvider: messageViewProvider,
+                            words: words,
+                          )));
                 }))));
   }
 }

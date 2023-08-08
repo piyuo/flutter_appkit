@@ -83,7 +83,7 @@ class MessageView extends StatelessWidget {
     required this.words,
     required this.messageViewProvider,
     this.textStyle,
-    this.imageConstraints = _kImageConstraints,
+    this.mediaConstraints = _kImageConstraints,
     super.key,
   });
 
@@ -96,30 +96,19 @@ class MessageView extends StatelessWidget {
   /// textStyle for message
   final TextStyle? textStyle;
 
-  /// imageConstraints is the image constraints
-  final BoxConstraints imageConstraints;
+  /// mediaConstraints is the image constraints
+  final BoxConstraints mediaConstraints;
 
   @override
   Widget build(BuildContext context) {
     buildEmbed(Widget child) {
       return Align(
           child: ConstrainedBox(
-              constraints: imageConstraints,
+              constraints: mediaConstraints,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: words.length == 1 ? 0 : 5),
+                padding: EdgeInsets.all(words.length == 1 ? 0 : 10),
                 child: child,
               )));
-    }
-
-    buildVideo(Widget child) {
-      return buildEmbed(Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.1),
-          borderRadius: words.length == 1 ? null : _kBorderRadius,
-        ),
-        child: Center(child: child),
-      ));
     }
 
     return Wrap(
@@ -142,13 +131,16 @@ class MessageView extends StatelessWidget {
             );
           case pb.Word_WordType.WORD_TYPE_VIDEO:
             if (UniversalPlatform.isDesktop) {
-              return buildVideo(IconButton(
-                onPressed: () {
-                  utils.openUrl(messageViewProvider.urlBuilder(word.type, word.value));
-                },
-                icon: const Icon(
-                  size: 46,
-                  Icons.play_circle,
+              return buildEmbed(Padding(
+                padding: const EdgeInsets.all(20),
+                child: IconButton(
+                  onPressed: () {
+                    utils.openUrl(messageViewProvider.urlBuilder(word.type, word.value));
+                  },
+                  icon: const Icon(
+                    size: 46,
+                    Icons.play_circle,
+                  ),
                 ),
               ));
             }
@@ -156,17 +148,24 @@ class MessageView extends StatelessWidget {
             final videoPlayer = messageViewProvider.getVideoPlayerById(word.value);
             if (videoPlayer == null) {
               //video player not load yet
-              return buildVideo(const Icon(
-                size: 46,
-                Icons.play_circle,
-              ));
+              return buildEmbed(
+                const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Icon(
+                      size: 46,
+                      Icons.play_circle,
+                    )),
+              );
             }
 
-            return buildEmbed(AspectRatio(
-                aspectRatio: videoPlayer.videoPlayerController.value.aspectRatio,
-                child: Chewie(
-                  controller: videoPlayer,
-                )));
+            return buildEmbed(ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: AspectRatio(
+                  aspectRatio: videoPlayer.videoPlayerController.value.aspectRatio,
+                  child: Chewie(
+                    controller: videoPlayer,
+                  )),
+            ));
 
           default:
         }
