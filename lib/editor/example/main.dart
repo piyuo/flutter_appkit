@@ -117,8 +117,8 @@ class EditorExample extends StatelessWidget {
   Widget _messageView() {
     final words = [
       pb.Word(
-        type: pb.Word_WordType.WORD_TYPE_IMAGE,
-        value: 'img1',
+        type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        value: 'video1',
       ),
       /*pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,

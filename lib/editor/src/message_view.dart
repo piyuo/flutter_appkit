@@ -58,10 +58,6 @@ class MessageViewProvider with ChangeNotifier {
             //autoPlay: true,
             looping: true,
           );
-          /*
-          await controller.setLooping(true);
-          await controller.play();
-          */
         }
       }
     }
@@ -136,14 +132,17 @@ class MessageView extends StatelessWidget {
               return buildEmbed(Padding(
                 padding: const EdgeInsets.all(20),
                 child: IconButton(
-                  onPressed: () {
-                    utils.openUrl(messageViewProvider.urlBuilder(word.type, word.value));
-                  },
-                  icon: const Icon(
-                    size: 46,
-                    Icons.play_circle,
-                  ),
-                ),
+                    onPressed: () {
+                      utils.openUrl(messageViewProvider.urlBuilder(word.type, word.value));
+                    },
+                    icon: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 45),
+                      color: Colors.grey.withOpacity(.7),
+                      child: const Icon(
+                        size: 46,
+                        Icons.play_circle,
+                      ),
+                    )),
               ));
             }
 
