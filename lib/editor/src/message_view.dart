@@ -9,12 +9,6 @@ import 'package:video_player/video_player.dart';
 /// _kBorderRadius is the border radius for embed
 const _kBorderRadius = BorderRadius.all(Radius.circular(12));
 
-/// _kImageConstraints is the the image constraints
-const _kImageConstraints = BoxConstraints(
-  maxWidth: 480,
-  maxHeight: 480,
-);
-
 /// _kEmojiSize is a emoji size
 const _kEmojiSize = 28.0;
 
@@ -33,8 +27,8 @@ class MessageViewProvider with ChangeNotifier {
   /// imageUrlBuilder return the url of the image base on given image id
   final UrlBuilder urlBuilder;
 
-  /// clear clear all data, let user start from scratch
-  void clear() {
+  /// reset all data, let user start from scratch
+  void reset() {
     for (final entry in _videoPlayers.entries) {
       entry.value.videoPlayerController.dispose();
       entry.value.dispose();
@@ -44,7 +38,7 @@ class MessageViewProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    clear();
+    reset();
     super.dispose();
   }
 
@@ -84,7 +78,7 @@ class MessageView extends StatelessWidget {
     required this.words,
     required this.messageViewProvider,
     this.textStyle,
-    this.mediaConstraints = _kImageConstraints,
+    this.mediaConstraints,
     super.key,
   });
 
@@ -98,13 +92,13 @@ class MessageView extends StatelessWidget {
   final TextStyle? textStyle;
 
   /// mediaConstraints is the image constraints
-  final BoxConstraints mediaConstraints;
+  final BoxConstraints? mediaConstraints;
 
   @override
   Widget build(BuildContext context) {
     buildEmbed(Widget child) {
       return Align(
-          child: ConstrainedBox(
+          child: Container(
               constraints: mediaConstraints,
               child: Padding(
                 padding: EdgeInsets.all(words.length == 1 ? 0 : 10),
