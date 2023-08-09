@@ -117,6 +117,10 @@ class EditorExample extends StatelessWidget {
   Widget _messageView() {
     final words = [
       pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        value: 'img1',
+      ),
+      /*pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
         value: 'hi',
       ),
@@ -151,7 +155,7 @@ class EditorExample extends StatelessWidget {
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
         value: 'Regards,\nMy name',
-      ),
+      ),*/
     ];
 
     return Align(

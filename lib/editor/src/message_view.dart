@@ -94,16 +94,23 @@ class MessageView extends StatelessWidget {
   /// mediaConstraints is the image constraints
   final BoxConstraints? mediaConstraints;
 
+  /// _isSingleMedia return true if words is a single media
+  bool get _isSingleMedia => isSingleMedia(words);
+
   @override
   Widget build(BuildContext context) {
     buildEmbed(Widget child) {
-      return Align(
-          child: Container(
-              constraints: mediaConstraints,
-              child: Padding(
-                padding: EdgeInsets.all(words.length == 1 ? 0 : 10),
-                child: child,
-              )));
+      final result = Container(
+          constraints: mediaConstraints,
+          child: Padding(
+            padding: EdgeInsets.all(_isSingleMedia ? 0 : 10),
+            child: child,
+          ));
+
+      if (_isSingleMedia) {
+        return result;
+      }
+      return Align(child: result);
     }
 
     return Wrap(
@@ -121,7 +128,7 @@ class MessageView extends StatelessWidget {
             return buildEmbed(
               delta.WebImage(
                 url: messageViewProvider.urlBuilder(word.type, word.value),
-                borderRadius: words.length == 1 ? null : _kBorderRadius,
+                borderRadius: _isSingleMedia ? null : _kBorderRadius,
               ),
             );
           case pb.Word_WordType.WORD_TYPE_VIDEO:
