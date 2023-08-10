@@ -3,7 +3,7 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:cross_file_image/cross_file_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-import 'message_editor.dart';
+import 'chat_bar_provider.dart';
 
 /// kImageKey is [ImageEmbed] key.
 const kImageKey = 'i';
@@ -67,7 +67,7 @@ abstract class MediaEmbedBuilder extends EmbedBuilder {
     required this.messageEditorProvider,
   });
 
-  final MessageEditorProvider messageEditorProvider;
+  final ChatBarProvider messageEditorProvider;
 
   @override
   bool get expanded => false;
