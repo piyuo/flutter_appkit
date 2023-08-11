@@ -82,6 +82,7 @@ dependencies:
   pinput: ^3.0.0
   sign_button: ^2.0.3
   text_divider: ^1.0.0
+  cached_network_image: ^3.2.3
   flutter_cache_manager: ^3.3.1
   #modal_bottom_sheet: ^2.1.2
   modal_bottom_sheet:
