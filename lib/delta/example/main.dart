@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: _chatBubble(context),
+                          child: SingleChildScrollView(child: _webVideo(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -149,6 +149,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'indicator', builder: () => _indicator(context)),
                                 testing.ExampleButton(label: 'tap breaker', builder: () => _tapBreaker(context)),
                                 testing.ExampleButton(label: 'web image', builder: () => _webImage(context)),
+                                testing.ExampleButton(label: 'web video', builder: () => _webVideo(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
                                 testing.ExampleButton(label: 'switch', builder: () => _switching(context)),
@@ -801,14 +802,24 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _chatBubble(BuildContext context) {
-    return const Column(children: [
-      ChatBubble(
+    return Column(children: [
+      const ChatBubble(
         isSender: false,
         color: Colors.blue,
         child: Text('Hello'),
       ),
-      ChatBubble(
+      const ChatBubble(
         child: Text('Hello World'),
+      ),
+      ChatBubble(
+        isSender: false,
+        color: Colors.blue,
+        padding: EdgeInsets.zero,
+        child: Container(
+          height: 100,
+          width: 980,
+          color: Colors.red,
+        ),
       ),
     ]);
   }
@@ -861,25 +872,39 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _webImage(BuildContext context) {
+    final img = getWebImage(
+      'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    );
     return Wrap(
       spacing: 10.0,
       runSpacing: 10.0,
       children: [
-        OutlinedButton(
-          child: const Text('clear image cache'),
-          onPressed: () => webImageClearCache(),
-        ),
         Image.network(
           'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           width: 300,
           height: 300,
         ),
         WebImage(
+          image: img,
+          width: 300,
+          height: 300,
+          opacity: 0.5,
+          border: Border.all(color: Colors.red, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
+        ),
+        WebImage(
+          width: 300,
+          height: 300,
+          opacity: 0.5,
+          border: Border.all(color: Colors.red, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
+        ),
+        WebImage(
           url:
               'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           width: 300,
           height: 300,
-          opacity: const AlwaysStoppedAnimation<double>(0.5),
+          opacity: 0.5,
           border: Border.all(color: Colors.red, width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
         ),
@@ -924,6 +949,21 @@ class _DeltaExampleState extends State<DeltaExample> {
               url: '',
               borderRadius: BorderRadius.all(Radius.circular(20)),
             )),
+      ],
+    );
+  }
+
+  Widget _webVideo(BuildContext context) {
+    return const Wrap(
+      spacing: 10.0,
+      runSpacing: 10.0,
+      children: [
+        WebVideo(
+          url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
+          width: 320,
+          height: 240,
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+        ),
       ],
     );
   }

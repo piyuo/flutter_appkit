@@ -1,31 +1,30 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/log/log.dart' as log;
-import 'package:extended_image/extended_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'shimmer.dart';
 
-/// _kDefaultCachePeriod is default cache period
-const _kDefaultCachePeriod = Duration(days: 365);
-
-class WebImage extends StatefulWidget {
-  /// WebImage display image from url,display loading and failed place holder and cache image for period of time
+/// WebImage display image from a url, display loading/failed place holder and cache image for period of time
+class WebImage extends StatelessWidget {
   /// you can use SizedBox() to set width and height
   /// ```dart
   /// WebImage(url:'https://image-url',width:100,height:100),
   /// ```
   const WebImage({
-    required this.url,
+    this.url,
+    this.image,
     this.width,
     this.height,
     this.borderRadius,
     this.border,
     this.fit = BoxFit.cover,
-    this.opacity,
-    Key? key,
-  }) : super(key: key);
+    this.opacity = 1.0,
+    super.key,
+  });
 
   /// url is image url, set to empty will display empty icon
-  final String url;
+  final String? url;
+
+  /// image is image provider, if set, url will be ignored
+  final ImageProvider? image;
 
   /// borderRadius if non-null, the corners of this box are rounded by this [BorderRadius].
   final BorderRadius? borderRadius;
@@ -70,164 +69,79 @@ class WebImage extends StatefulWidget {
   final BoxFit? fit;
 
   /// opacity is image opacity
-  final Animation<double>? opacity;
-
-  @override
-  WebImageState createState() => WebImageState();
-}
-
-class WebImageState extends State<WebImage> {
-  /// hasError is image load error
-  bool hasError = false;
+  final double opacity;
 
   @override
   Widget build(BuildContext context) {
-    loadingBuilder() {
-      return ShimmerScope(
-          child: Container(
-        width: widget.width,
-        height: widget.height,
-        color: Colors.grey,
-      ));
-    }
+    final colorScheme = Theme.of(context).colorScheme;
+    errorBuilder() => Container(
+          width: width,
+          height: height,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            border: border,
+            borderRadius: borderRadius,
+            color: colorScheme.surfaceVariant.withOpacity(0.5),
+          ),
+          child: Icon(
+            Icons.question_mark,
+            size: width != null ? width! / 2 : 64,
+            color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+          ),
+        );
 
-    placeHolderBuilder(bool emptyOrError) {
-      return SizedBox(
-        width: widget.width,
-        height: widget.height,
-        child: Icon(
-          emptyOrError ? Icons.photo_camera : Icons.question_mark,
-          size: widget.width != null ? widget.width! / 2 : 64,
-          color: Colors.grey,
+    imageBuilder(imgProvider) {
+      final img = Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          border: border,
+          borderRadius: borderRadius,
+          image: DecorationImage(image: imgProvider, fit: fit),
         ),
       );
+
+      if (opacity < 1.0) {
+        return Opacity(
+          opacity: opacity,
+          child: img,
+        );
+      }
+      return img;
     }
 
-    errorBuilder(e, s) {
-      Future.microtask(() {
-        setState(() {
-          log.log('[web_image] missing ${widget.url}');
-          if (e != null && s != null) log.error(e, s);
-          hasError = true;
-        });
-      });
-      return placeHolderBuilder(false);
+    if (url == null && image == null) {
+      return errorBuilder();
     }
 
-    if (hasError) {
-      return placeHolderBuilder(false);
+    if (image != null) {
+      return imageBuilder(image!);
     }
 
-    if (widget.url.isEmpty) {
-      return placeHolderBuilder(true);
-    }
-
-    if (kIsWeb) {
-      ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
-          widget.url,
-          fit: widget.fit,
-          width: widget.width,
-          height: widget.height,
-          opacity: widget.opacity,
-          loadingBuilder: (_, __, ___) => loadingBuilder(),
-          errorBuilder: (_, e, s) => errorBuilder(e, s),
-        ),
-      );
-    }
-
-    // app mode
-    return ExtendedImage.network(
-      widget.url,
-      fit: widget.fit,
-      width: widget.width,
-      height: widget.height,
-      cache: true,
-      cacheMaxAge: _kDefaultCachePeriod,
-      shape: BoxShape.rectangle,
-      opacity: widget.opacity,
-      borderRadius: widget.borderRadius,
-      border: widget.border,
-      isAntiAlias: true,
-      retries: 0,
-      loadStateChanged: (ExtendedImageState state) {
-        switch (state.extendedImageLoadState) {
-          case LoadState.loading:
-            return loadingBuilder();
-          case LoadState.completed:
-            return null;
-          case LoadState.failed:
-            return errorBuilder(null, null);
-        }
+    return CachedNetworkImage(
+      imageUrl: url!,
+      width: width,
+      height: height,
+      fit: fit,
+      imageBuilder: (context, imageProvider) => imageBuilder(imageProvider),
+      placeholder: (context, url) {
+        return ShimmerScope(
+            child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            border: border,
+            borderRadius: borderRadius,
+            color: colorScheme.surfaceVariant.withOpacity(0.5),
+          ),
+        ));
       },
+      errorWidget: (context, url, error) => errorBuilder(),
     );
   }
 }
 
-/// webImageClearCache clear cache image
-void webImageClearCache() async {
-  if (!kIsWeb) {
-    await clearDiskCachedImages(duration: _kDefaultCachePeriod);
-    debugPrint('[web_image] cache cleared');
-  }
+/// getWebImage return ImageProvider from url
+ImageProvider getWebImage(String url) {
+  return CachedNetworkImageProvider(url);
 }
-
-
-/*
-
-/// webImageData get binary image data from url
-Future<Uint8List?> webImageData(String url) async {
-  return await getNetworkImageData(url);
-}
-
-                                testing.ExampleButton(label: 'web image data', builder: () => _webImageData(context)),
-
-  Widget _webImageData(BuildContext context) {
-    const url =
-        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000';
-
-    return OutlinedButton(
-      child: const Text('load image'),
-      onPressed: () async {
-        final bytes = await webImageData(url);
-        if (bytes != null) {
-          debugPrint('${bytes.length} loaded');
-          return;
-        }
-        debugPrint('image not exists');
-      },
-    );
-  }
-
-
-/// webImageProvider get image provider from url
-ImageProvider webImageProvider(
-  String url, {
-  Duration cacheMaxAge = const Duration(days: 360),
-}) {
-  return ExtendedNetworkImageProvider(
-    url,
-    cacheMaxAge: cacheMaxAge,
-  );
-}
-
-
-                                testing.ExampleButton(
-                                    label: 'web image provider', builder: () => _webImageProvider(context)),
-
-  Widget _webImageProvider(BuildContext context) {
-    final imageProvider = webImageProvider(
-        'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-card-40-iphone13pink-202109?wid=340&hei=264&fmt=p-jpg&qlt=95&.v=1629948812000');
-
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.green,
-          image: DecorationImage(
-            image: imageProvider,
-          )),
-    );
-  }
-
-
- */

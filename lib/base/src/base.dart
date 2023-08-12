@@ -119,7 +119,6 @@ class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBinding
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    Future.delayed(_kDefaultMaintenancePeriod).then((_) => delta.webImageClearCache());
   }
 
   @override
