@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _singleImage(context)),
+                          child: SingleChildScrollView(child: _webVideo(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -979,8 +979,15 @@ class _DeltaExampleState extends State<DeltaExample> {
         WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
           width: 320,
-          height: 240,
+          height: 140,
           borderRadius: BorderRadius.all(Radius.circular(30)),
+        ),
+        WebVideo(
+          url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
+          width: 320,
+          height: 140,
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          showControls: false,
         ),
       ],
     );

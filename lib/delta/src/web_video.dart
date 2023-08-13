@@ -11,11 +11,14 @@ import 'shimmer.dart';
 
 /// _WebVideoProvider provide video controller to WebVideo
 class _WebVideoProvider with ChangeNotifier {
-  /// _videoPlayers keep track of all videoPlayers
+  /// _videoPlayerController play video
+  VideoPlayerController? _videoPlayerController;
+
+  /// _chewieController display controls for video
   ChewieController? _chewieController;
 
   /// isReady return true if video is ready to play
-  bool get isReady => _chewieController != null;
+  bool get isReady => _videoPlayerController != null;
 
   BaseCacheManager getCacheManager() => CacheManager(
         Config(
@@ -27,21 +30,23 @@ class _WebVideoProvider with ChangeNotifier {
 
   @override
   void dispose() {
+    if (_videoPlayerController != null) {
+      _videoPlayerController!.dispose();
+      _videoPlayerController = null;
+    }
     if (_chewieController != null) {
-      _chewieController!.videoPlayerController.dispose();
       _chewieController!.dispose();
+      _chewieController = null;
     }
     super.dispose();
   }
 
   /// load video from url and support cache
   /// video player may support cache in the future, right now we use cache manager to cache video
-  Future<void> load(String? url, String? path) async {
-    VideoPlayerController? videoController;
-
+  Future<void> load(String? url, String? path, bool showControls) async {
     if (kIsWeb) {
       if (url != null) {
-        videoController = VideoPlayerController.networkUrl(Uri.parse(url));
+        _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(url));
       }
     } else if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
       // download whole video to cache then play
@@ -50,23 +55,25 @@ class _WebVideoProvider with ChangeNotifier {
       if (url != null) {
         FileInfo? fileInfo = await cacheManager.getFileFromCache(url);
         fileInfo ??= await cacheManager.downloadFile(url);
-        videoController = VideoPlayerController.file(fileInfo.file);
+        _videoPlayerController = VideoPlayerController.file(fileInfo.file);
       } else if (path != null) {
-        videoController = VideoPlayerController.file(File(path));
+        _videoPlayerController = VideoPlayerController.file(File(path));
       }
     }
 
-    if (videoController == null) {
+    if (_videoPlayerController == null) {
       debugPrint('video player by ${url != null ? 'url' : 'path'} is not support on this platform');
       return;
     }
 
-    await videoController.initialize();
-    _chewieController = ChewieController(
-      videoPlayerController: videoController,
-      //autoPlay: true,
-      looping: true,
-    );
+    await _videoPlayerController!.initialize();
+    if (showControls) {
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController!,
+        //autoPlay: true,
+        looping: true,
+      );
+    }
     notifyListeners();
   }
 }
@@ -83,6 +90,7 @@ class WebVideo extends StatelessWidget {
     this.width,
     this.height,
     this.borderRadius,
+    this.showControls = true,
     super.key,
   });
 
@@ -119,13 +127,16 @@ class WebVideo extends StatelessWidget {
   /// borderRadius if non-null, the corners of this box are rounded by this [BorderRadius].
   final BorderRadius? borderRadius;
 
+  /// showControls if true, show video controls
+  final bool showControls;
+
   @override
   Widget build(BuildContext context) {
     assert(url != null || path != null, 'url or path must not be null');
     final colorScheme = Theme.of(context).colorScheme;
 
     return ChangeNotifierProvider<_WebVideoProvider>(
-        create: (_) => _WebVideoProvider()..load(url, path),
+        create: (_) => _WebVideoProvider()..load(url, path, showControls),
         child: Consumer<_WebVideoProvider>(builder: (context, webVideoProvider, _) {
           if (UniversalPlatform.isDesktop) {
             return Container(
@@ -153,10 +164,13 @@ class WebVideo extends StatelessWidget {
                   maxHeight: height ?? double.infinity,
                 ),
                 child: AspectRatio(
-                    aspectRatio: webVideoProvider._chewieController!.videoPlayerController.value.aspectRatio,
-                    child: Chewie(
-                      controller: webVideoProvider._chewieController!,
-                    )));
+                  aspectRatio: webVideoProvider._videoPlayerController!.value.aspectRatio,
+                  child: webVideoProvider._chewieController != null
+                      ? Chewie(
+                          controller: webVideoProvider._chewieController!,
+                        )
+                      : VideoPlayer(webVideoProvider._videoPlayerController!),
+                ));
             if (borderRadius != null) {
               return ClipRRect(
                 borderRadius: borderRadius,
