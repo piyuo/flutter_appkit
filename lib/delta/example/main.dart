@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _webVideo(context)),
+                          child: SingleChildScrollView(child: _qrImage(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -148,6 +148,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'refresh button', builder: () => _refreshButton(context)),
                                 testing.ExampleButton(label: 'indicator', builder: () => _indicator(context)),
                                 testing.ExampleButton(label: 'tap breaker', builder: () => _tapBreaker(context)),
+                                testing.ExampleButton(label: 'qr image', builder: () => _qrImage(context)),
                                 testing.ExampleButton(label: 'web image', builder: () => _webImage(context)),
                                 testing.ExampleButton(label: 'web video', builder: () => _webVideo(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
@@ -869,6 +870,15 @@ class _DeltaExampleState extends State<DeltaExample> {
             ),
           ]);
         }));
+  }
+
+  Widget _qrImage(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(30),
+        color: Colors.lightBlue,
+        child: const QrImage(
+          data: 'http://cacake.piyuo.com/location=12348234234s',
+        ));
   }
 
   Widget _webImage(BuildContext context) {

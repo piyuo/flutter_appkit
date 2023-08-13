@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/qrcode/qrcode.dart' as qrcode;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'error.dart';
 
@@ -70,7 +70,7 @@ class ErrorScreen extends StatelessWidget {
                           child: const Text('Retry'),
                         ),
                       if (onRetry != null) const SizedBox(height: 20),
-                      qrcode.Generator(
+                      delta.QrImage(
                         size: 300,
                         data: log.printLastError(),
                       ),

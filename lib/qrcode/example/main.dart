@@ -28,10 +28,6 @@ class QRCodeExample extends StatelessWidget {
                 child: _showScanner(context),
               ),
               testing.ExampleButton(
-                label: 'generator',
-                builder: () => _generator(),
-              ),
-              testing.ExampleButton(
                 label: 'scanner',
                 builder: () => _scanner(),
               ),
@@ -43,12 +39,6 @@ class QRCodeExample extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _generator() {
-    return const Generator(
-      data: 'http://cacake.piyuo.com/location=12348234234s',
     );
   }
 
