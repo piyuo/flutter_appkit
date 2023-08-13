@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:video_player/video_player.dart';
+import 'package:universal_io/io.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
@@ -35,21 +36,28 @@ class _WebVideoProvider with ChangeNotifier {
 
   /// load video from url and support cache
   /// video player may support cache in the future, right now we use cache manager to cache video
-  Future<void> load(String url) async {
+  Future<void> load(String? url, String? path) async {
     VideoPlayerController? videoController;
+
     if (kIsWeb) {
-      videoController = VideoPlayerController.networkUrl(Uri.parse(url));
+      if (url != null) {
+        videoController = VideoPlayerController.networkUrl(Uri.parse(url));
+      }
     } else if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
       // download whole video to cache then play
       // video player may support stream and cache in the future
       final cacheManager = getCacheManager();
-      FileInfo? fileInfo = await cacheManager.getFileFromCache(url);
-      fileInfo ??= await cacheManager.downloadFile(url);
-      videoController = VideoPlayerController.file(fileInfo.file);
+      if (url != null) {
+        FileInfo? fileInfo = await cacheManager.getFileFromCache(url);
+        fileInfo ??= await cacheManager.downloadFile(url);
+        videoController = VideoPlayerController.file(fileInfo.file);
+      } else if (path != null) {
+        videoController = VideoPlayerController.file(File(path));
+      }
     }
 
     if (videoController == null) {
-      debugPrint('video player is not support on this platform');
+      debugPrint('video player by ${url != null ? 'url' : 'path'} is not support on this platform');
       return;
     }
 
@@ -70,15 +78,19 @@ class WebVideo extends StatelessWidget {
   /// WebVideo(url:'https://image-url',width:100,height:100),
   /// ```
   const WebVideo({
-    required this.url,
+    this.url,
+    this.path,
     this.width,
     this.height,
     this.borderRadius,
     super.key,
   });
 
-  /// url is image url, set to empty will display empty icon
-  final String url;
+  /// url is video url
+  final String? url;
+
+  /// path is video path
+  final String? path;
 
   /// width if non-null, require the image to have this width.
   ///
@@ -109,10 +121,11 @@ class WebVideo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(url != null || path != null, 'url or path must not be null');
     final colorScheme = Theme.of(context).colorScheme;
 
     return ChangeNotifierProvider<_WebVideoProvider>(
-        create: (_) => _WebVideoProvider()..load(url),
+        create: (_) => _WebVideoProvider()..load(url, path),
         child: Consumer<_WebVideoProvider>(builder: (context, webVideoProvider, _) {
           if (UniversalPlatform.isDesktop) {
             return Container(
@@ -124,9 +137,7 @@ class WebVideo extends StatelessWidget {
               ),
               child: Align(
                   child: IconButton(
-                      onPressed: () {
-                        utils.openUrl(url);
-                      },
+                      onPressed: url != null ? () => utils.openUrl(url!) : null,
                       icon: Icon(
                         size: width != null ? width! / 2 : 64,
                         color: colorScheme.onSurfaceVariant.withOpacity(0.5),
