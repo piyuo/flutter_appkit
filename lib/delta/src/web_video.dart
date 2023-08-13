@@ -60,7 +60,8 @@ class _WebVideoProvider with ChangeNotifier {
         try {
           fileInfo ??= await cacheManager.downloadFile(url);
           _videoPlayerController = VideoPlayerController.file(fileInfo.file);
-        } on SocketException catch (_) {
+        } catch (_) {
+          /// video download failed
           hasError = true;
           notifyListeners();
           return;
