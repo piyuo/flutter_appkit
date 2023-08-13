@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _qrImage(context)),
+                          child: SingleChildScrollView(child: _singleImage(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -150,6 +150,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'tap breaker', builder: () => _tapBreaker(context)),
                                 testing.ExampleButton(label: 'qr image', builder: () => _qrImage(context)),
                                 testing.ExampleButton(label: 'web image', builder: () => _webImage(context)),
+                                testing.ExampleButton(label: 'single image', builder: () => _singleImage(context)),
                                 testing.ExampleButton(label: 'web video', builder: () => _webVideo(context)),
                                 testing.ExampleButton(label: 'checkbox', builder: () => _checkbox(context, model)),
                                 testing.ExampleButton(label: 'status light', builder: () => _statusLight(context)),
@@ -960,6 +961,13 @@ class _DeltaExampleState extends State<DeltaExample> {
               borderRadius: BorderRadius.all(Radius.circular(20)),
             )),
       ],
+    );
+  }
+
+  Widget _singleImage(BuildContext context) {
+    return const WebImage(
+      url:
+          'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     );
   }
 

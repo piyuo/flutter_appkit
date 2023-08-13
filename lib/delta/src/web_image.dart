@@ -91,23 +91,32 @@ class WebImage extends StatelessWidget {
         );
 
     imageBuilder(imgProvider) {
-      final img = Container(
+      Widget image = Image(image: imgProvider, fit: fit);
+      if (borderRadius != null) {
+        image = ClipRRect(
+          borderRadius: borderRadius,
+          child: image,
+        );
+      }
+
+      final container = Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
           border: border,
           borderRadius: borderRadius,
-          image: DecorationImage(image: imgProvider, fit: fit),
+          //image: DecorationImage(image: imgProvider, fit: fit),
         ),
+        child: image,
       );
 
       if (opacity < 1.0) {
         return Opacity(
           opacity: opacity,
-          child: img,
+          child: container,
         );
       }
-      return img;
+      return container;
     }
 
     if (url == null && image == null) {
