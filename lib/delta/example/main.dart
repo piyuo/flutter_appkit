@@ -972,20 +972,25 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget _webVideo(BuildContext context) {
-    return const Wrap(
-      spacing: 10.0,
-      runSpacing: 10.0,
+    return const Column(
       children: [
         WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
-          width: 320,
-          height: 140,
+          width: 360,
+          height: 180,
           borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
         WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
-          width: 320,
-          height: 140,
+          width: 360,
+          height: 180,
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          showControls: false,
+        ),
+        WebVideo(
+          url: 'https://notexistsanymore.com/sample-5s.mp4',
+          width: 360,
+          height: 180,
           borderRadius: BorderRadius.all(Radius.circular(30)),
           showControls: false,
         ),

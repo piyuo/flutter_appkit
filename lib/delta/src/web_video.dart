@@ -20,6 +20,9 @@ class _WebVideoProvider with ChangeNotifier {
   /// isReady return true if video is ready to play
   bool get isReady => _videoPlayerController != null;
 
+  /// hasError return true if video has error
+  bool hasError = false;
+
   BaseCacheManager getCacheManager() => CacheManager(
         Config(
           'videoCache',
@@ -54,24 +57,38 @@ class _WebVideoProvider with ChangeNotifier {
       final cacheManager = getCacheManager();
       if (url != null) {
         FileInfo? fileInfo = await cacheManager.getFileFromCache(url);
-        fileInfo ??= await cacheManager.downloadFile(url);
-        _videoPlayerController = VideoPlayerController.file(fileInfo.file);
+        try {
+          fileInfo ??= await cacheManager.downloadFile(url);
+          _videoPlayerController = VideoPlayerController.file(fileInfo.file);
+        } on SocketException catch (_) {
+          hasError = true;
+          notifyListeners();
+          return;
+        }
       } else if (path != null) {
         _videoPlayerController = VideoPlayerController.file(File(path));
       }
     }
-
-    if (_videoPlayerController == null) {
+    if (_videoPlayerController != null) {
+      try {
+        await _videoPlayerController!.initialize();
+      } catch (e) {
+        hasError = true;
+        notifyListeners();
+        return;
+      }
+    } else {
       debugPrint('video player by ${url != null ? 'url' : 'path'} is not support on this platform');
+      notifyListeners();
       return;
     }
 
-    await _videoPlayerController!.initialize();
     if (showControls) {
       _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController!,
         //autoPlay: true,
         looping: true,
+        controlsSafeAreaMinimum: const EdgeInsets.all(10),
       );
     }
     notifyListeners();
@@ -134,27 +151,38 @@ class WebVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(url != null || path != null, 'url or path must not be null');
     final colorScheme = Theme.of(context).colorScheme;
+    buildIcon(Widget child) {
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          color: colorScheme.surfaceVariant.withOpacity(0.5),
+        ),
+        child: Align(child: child),
+      );
+    }
 
     return ChangeNotifierProvider<_WebVideoProvider>(
         create: (_) => _WebVideoProvider()..load(url, path, showControls),
         child: Consumer<_WebVideoProvider>(builder: (context, webVideoProvider, _) {
+          if (webVideoProvider.hasError ||
+              (webVideoProvider._videoPlayerController != null &&
+                  webVideoProvider._videoPlayerController!.value.hasError)) {
+            return buildIcon(Icon(
+              size: width != null ? width! / 3 : 64,
+              color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+              Icons.videocam_off,
+            ));
+          }
           if (UniversalPlatform.isDesktop) {
-            return Container(
-              width: width,
-              height: height,
-              decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                color: colorScheme.surfaceVariant.withOpacity(0.5),
-              ),
-              child: Align(
-                  child: IconButton(
-                      onPressed: url != null ? () => utils.openUrl(url!) : null,
-                      icon: Icon(
-                        size: width != null ? width! / 2 : 64,
-                        color: colorScheme.onSurfaceVariant.withOpacity(0.5),
-                        Icons.play_circle,
-                      ))),
-            );
+            return buildIcon(IconButton(
+                onPressed: url != null ? () => utils.openUrl(url!) : null,
+                icon: Icon(
+                  size: width != null ? width! / 3 : 64,
+                  color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+                  Icons.play_circle,
+                )));
           }
 
           if (webVideoProvider.isReady) {
