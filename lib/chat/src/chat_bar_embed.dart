@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:cross_file_image/cross_file_image.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
 import 'chat_bar_provider.dart';
 
 /// kImageKey is [ImageEmbed] key.
@@ -158,24 +158,11 @@ class VideoEmbedBuilder extends MediaEmbedBuilder {
   /// buildThumb build the thumbnail for the embed
   @override
   Widget buildThumb(BuildContext context, String id, XFile file) {
-    if (isVideoPlayerAvailable(file)) {
-      final videoPlayer = messageEditorProvider.getVideoPlayerById(id);
-      return AspectRatio(
-        aspectRatio: videoPlayer.value.aspectRatio,
-        child: VideoPlayer(videoPlayer),
-      );
-    }
-
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      width: 100,
+    return delta.WebVideo(
+      path: file.path,
+      width: 240,
       height: 120,
-      color: colorScheme.secondary,
-      child: Icon(
-        size: 46,
-        Icons.play_circle,
-        color: colorScheme.onSecondary,
-      ),
+      showControls: false,
     );
   }
 }

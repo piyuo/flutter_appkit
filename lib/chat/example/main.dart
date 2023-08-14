@@ -27,8 +27,10 @@ class EditorExample extends StatelessWidget {
           )),
           Wrap(
             children: [
+              testing.ExampleButton(label: 'single video', builder: () => _singleVideo()),
+              testing.ExampleButton(label: 'single image', builder: () => _singleImage()),
               testing.ExampleButton(label: 'message view', builder: () => _messageView()),
-              testing.ExampleButton(label: 'message editor', builder: () => _messageEditor()),
+              testing.ExampleButton(label: 'chatBar', builder: () => _chatBar()),
             ],
           ),
         ]),
@@ -36,7 +38,7 @@ class EditorExample extends StatelessWidget {
     );
   }
 
-  Widget _messageEditor() {
+  Widget _chatBar() {
     return ChangeNotifierProvider<ChatBarProvider>(
       create: (context) => ChatBarProvider(),
       child: Consumer<ChatBarProvider>(builder: (context, messageEditorProvider, child) {
@@ -51,6 +53,50 @@ class EditorExample extends StatelessWidget {
         ]);
       }),
     );
+  }
+
+  Widget _singleVideo() {
+    final words = [
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        value: 'video1',
+      ),
+    ];
+
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+            margin: const EdgeInsets.all(10),
+            color: Colors.blue,
+            child: MessageView(
+              textStyle: const TextStyle(color: Colors.red, fontSize: 16),
+              urlBuilder: (type, id) {
+                return 'https://download.samplelib.com/mp4/sample-5s.mp4';
+              },
+              words: words,
+            )));
+  }
+
+  Widget _singleImage() {
+    final words = [
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        value: 'img1',
+      ),
+    ];
+
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+            margin: const EdgeInsets.all(10),
+            color: Colors.blue,
+            child: MessageView(
+              textStyle: const TextStyle(color: Colors.red, fontSize: 16),
+              urlBuilder: (type, id) {
+                return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+              },
+              words: words,
+            )));
   }
 
   Widget _messageView() {
@@ -98,25 +144,18 @@ class EditorExample extends StatelessWidget {
         child: Container(
             margin: const EdgeInsets.all(10),
             color: Colors.blue,
-            child: ChangeNotifierProvider<MessageViewProvider>(
-                create: (context) => MessageViewProvider(
+            child: SingleChildScrollView(
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 360),
+                    child: MessageView(
                       urlBuilder: (type, id) {
                         if (id == 'video1') {
                           return 'https://download.samplelib.com/mp4/sample-5s.mp4';
                         }
                         return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
                       },
-                    )..scanVideo(words),
-                child: Consumer<MessageViewProvider>(builder: (context, messageViewProvider, child) {
-                  // return Container(width: 100, height: 100);
-                  return SingleChildScrollView(
-                      child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 360),
-                          child: MessageView(
-                            textStyle: const TextStyle(color: Colors.red, fontSize: 16),
-                            messageViewProvider: messageViewProvider,
-                            words: words,
-                          )));
-                }))));
+                      textStyle: const TextStyle(color: Colors.red, fontSize: 16),
+                      words: words,
+                    )))));
   }
 }

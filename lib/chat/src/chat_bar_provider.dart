@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:universal_platform/universal_platform.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:image_picker/image_picker.dart';
@@ -7,9 +6,6 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:video_player/video_player.dart';
 import 'package:universal_io/io.dart';
 import 'chat_bar_embed.dart';
-
-/// isVideoPlayerAvailable return true if file is video and can play on current platform
-bool isVideoPlayerAvailable(XFile file) => !UniversalPlatform.isWeb && !UniversalPlatform.isDesktop && file.isVideo;
 
 /// insertFiles insert video or image at current index
 Future<VideoPlayerController> initVideoPlayerController(XFile file) async {
@@ -31,14 +27,8 @@ class ChatBarProvider with ChangeNotifier {
   /// files keep track of all files that user selected
   final Map<String, XFile> files = {};
 
-  /// _videoPlayers keep track of all videoPlayers
-  final Map<String, VideoPlayerController> _videoPlayers = {};
-
   /// getFiles return file by id
   XFile getFileById(String id) => files[id]!;
-
-  /// getVideoPlayerById return video player by id
-  VideoPlayerController getVideoPlayerById(String id) => _videoPlayers[id]!;
 
   /// isCameraBarVisible is a flag to show/hide camera toolbar
   bool isCameraBarVisible = false;
@@ -48,10 +38,6 @@ class ChatBarProvider with ChangeNotifier {
 
   /// reset clear all data, let user start from scratch
   void reset() {
-    for (final entry in _videoPlayers.entries) {
-      entry.value.dispose();
-    }
-    _videoPlayers.clear();
     files.clear();
     quillController.clear();
     notifyListeners();
@@ -86,9 +72,6 @@ class ChatBarProvider with ChangeNotifier {
       final id = utils.uuid();
       files[id] = file;
 
-      if (isVideoPlayerAvailable(file)) {
-        _videoPlayers[id] = await initVideoPlayerController(file);
-      }
       quillController.document.insert(quillController.selection.baseOffset, getFileEmbed(id, file));
       quillController.moveCursorToPosition(quillController.selection.baseOffset + 1);
     }
