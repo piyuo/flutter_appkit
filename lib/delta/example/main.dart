@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _webVideo(context)),
+                          child: SingleChildScrollView(child: _webImage(context)),
                         ),
                         SizedBox(
                           height: 100,
