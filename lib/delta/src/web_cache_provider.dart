@@ -42,7 +42,7 @@ class WebCacheProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    if (isCacheAllowed) {
+    if (isCacheAllowed && _cacheManager != null) {
       _cacheManager!.dispose();
       _cacheManager = null;
     }

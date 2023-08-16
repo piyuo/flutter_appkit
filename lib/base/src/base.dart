@@ -142,6 +142,9 @@ class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBinding
       case AppLifecycleState.detached:
         debugPrint('appLifeCycleState detached');
         break;
+      case AppLifecycleState.hidden:
+        debugPrint('appLifeCycleState hidden');
+        break;
     }
   }
 

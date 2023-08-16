@@ -106,30 +106,10 @@ class WebImage extends StatelessWidget {
             );
           }
 
-          imageBuilder() {
-            // loading
-            if (webImageProvider._file == null) {
-              return ShimmerScope(
-                  child: Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                  border: border,
-                  borderRadius: borderRadius,
-                  color: colorScheme.surfaceVariant.withOpacity(0.5),
-                ),
-              ));
-            }
-
-            // show
-            Widget image = Image.file(
-              webImageProvider._file!,
-              fit: fit,
-              errorBuilder: (_, __, ___) => errorBuilder(),
-            );
+          imageBuilder(Widget image) {
             if (borderRadius != null) {
               image = ClipRRect(
-                borderRadius: borderRadius,
+                borderRadius: borderRadius!,
                 child: image,
               );
             }
@@ -154,15 +134,52 @@ class WebImage extends StatelessWidget {
             return container;
           }
 
+          loadingBuilder() {
+            return ShimmerScope(
+                child: Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                border: border,
+                borderRadius: borderRadius,
+                color: colorScheme.surfaceVariant.withOpacity(0.5),
+              ),
+            ));
+          }
+
+          cachedBuilder() {
+            if (webImageProvider._file == null) {
+              return loadingBuilder();
+            }
+            // show
+            final image = Image.file(
+              webImageProvider._file!,
+              fit: fit,
+              errorBuilder: (_, __, ___) => errorBuilder(),
+            );
+            return imageBuilder(image);
+          }
+
+          noneCacheBuilder() {
+            final image = Image.network(
+              url,
+              fit: fit,
+              errorBuilder: (_, __, ___) => errorBuilder(),
+            );
+            return imageBuilder(image);
+          }
+
           // error
           if (webImageProvider.hasError) {
             return errorBuilder();
           }
 
+          // loading
+
           return AnimatedOpacity(
               opacity: webImageProvider._file == null ? 0.5 : 1,
               duration: const Duration(milliseconds: 600),
-              child: imageBuilder());
+              child: webImageProvider.isCacheAllowed ? cachedBuilder() : noneCacheBuilder());
         }));
   }
 }

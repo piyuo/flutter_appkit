@@ -188,7 +188,7 @@ class WebVideo extends StatelessWidget {
                 ));
             if (borderRadius != null) {
               return ClipRRect(
-                borderRadius: borderRadius,
+                borderRadius: borderRadius!,
                 child: video,
               );
             }
