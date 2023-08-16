@@ -70,10 +70,7 @@ class ErrorScreen extends StatelessWidget {
                           child: const Text('Retry'),
                         ),
                       if (onRetry != null) const SizedBox(height: 20),
-                      delta.QrImage(
-                        size: 300,
-                        data: log.printLastError(),
-                      ),
+                      SizedBox(width: 300, height: 300, child: delta.QrImage(log.printLastError())),
                       const SizedBox(height: 10),
                       TextButton(
                           onPressed: () => eventbus.broadcast(EmailSupportEvent()),

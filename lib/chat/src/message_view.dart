@@ -66,7 +66,7 @@ class MessageView extends StatelessWidget {
           case pb.Word_WordType.WORD_TYPE_IMAGE:
             return buildEmbed(
               delta.WebImage(
-                url: urlBuilder(word.type, word.value),
+                urlBuilder(word.type, word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
               ),
             );

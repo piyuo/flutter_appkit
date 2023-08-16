@@ -143,7 +143,7 @@ class ImageUpload extends StatelessWidget {
                 width: width,
                 height: height,
                 child: delta.WebImage(
-                  url: imageRoot + controller.firstFile!,
+                  imageRoot + controller.firstFile!,
                   width: width,
                   height: height,
                 ),
