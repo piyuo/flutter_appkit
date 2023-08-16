@@ -875,17 +875,18 @@ class _DeltaExampleState extends State<DeltaExample> {
 
   Widget _qrImage(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(30),
-        color: Colors.lightBlue,
-        child: const QrImage(
-          data: 'http://cacake.piyuo.com/location=12348234234s',
-        ));
+      padding: const EdgeInsets.all(30),
+      color: Colors.lightBlue,
+      child: const SizedBox(
+          width: 200,
+          height: 200,
+          child: QrImage(
+            'http://cacake.piyuo.com/location=12348234234s',
+          )),
+    );
   }
 
   Widget _webImage(BuildContext context) {
-    final img = getWebImage(
-      'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    );
     return Wrap(
       spacing: 10.0,
       runSpacing: 10.0,
@@ -896,23 +897,7 @@ class _DeltaExampleState extends State<DeltaExample> {
           height: 300,
         ),
         WebImage(
-          image: img,
-          width: 300,
-          height: 300,
-          opacity: 0.5,
-          border: Border.all(color: Colors.red, width: 1),
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
-        ),
-        WebImage(
-          width: 300,
-          height: 300,
-          opacity: 0.5,
-          border: Border.all(color: Colors.red, width: 1),
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
-        ),
-        WebImage(
-          url:
-              'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           width: 300,
           height: 300,
           opacity: 0.5,
@@ -920,44 +905,42 @@ class _DeltaExampleState extends State<DeltaExample> {
           borderRadius: const BorderRadius.all(Radius.circular(30)),
         ),
         const WebImage(
-          url:
+          'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          width: 300,
+          height: 300,
+        ),
+        const WebImage(
+          'https://not-exists',
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          width: 300,
+          height: 300,
+        ),
+        const WebImage(
+          '',
+          width: 300,
+          height: 300,
+        ),
+        const SizedBox(
+            height: 100,
+            width: 200,
+            child: WebImage(
               'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-          width: 300,
-          height: 300,
-        ),
-        const WebImage(
-          url: 'https://not-exists',
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          width: 300,
-          height: 300,
-        ),
-        const WebImage(
-          url: '',
-          width: 300,
-          height: 300,
-        ),
-        const SizedBox(
-            height: 100,
-            width: 200,
-            child: WebImage(
-              url:
-                  'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             )),
         const SizedBox(
             height: 100,
             width: 200,
             child: WebImage(
-              url: '',
+              '',
             )),
         const WebImage(
-          url: 'https://not-exists',
+          'https://not-exists',
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         const SizedBox(
             height: 100,
             width: 200,
             child: WebImage(
-              url: '',
+              '',
               borderRadius: BorderRadius.all(Radius.circular(20)),
             )),
       ],
@@ -966,13 +949,14 @@ class _DeltaExampleState extends State<DeltaExample> {
 
   Widget _singleImage(BuildContext context) {
     return const WebImage(
-      url:
-          'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     );
   }
 
   Widget _webVideo(BuildContext context) {
-    return const Column(
+    return const Wrap(
+      spacing: 10.0,
+      runSpacing: 10.0,
       children: [
         WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
@@ -1473,6 +1457,19 @@ class _DeltaExampleState extends State<DeltaExample> {
       phoneScreen: () => Container(color: Colors.red, child: const Text('phone')),
       notPhoneScreen: () => Container(color: Colors.blue, child: const Text('not phone')),
       bigScreen: () => Container(color: Colors.green, child: const Text('big screen')),
+    );
+  }
+
+  Widget _preview(BuildContext context) {
+    String imgUrl =
+        'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+    String videoUrl = 'https://download.samplelib.com/mp4/sample-5s.mp4';
+    return Wrap(
+      children: [
+        SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl)),
+        SizedBox(width: 200, height: 200, child: PreviewQrImage(imgUrl)),
+        SizedBox(width: 380, height: 240, child: PreviewVideo(videoUrl)),
+      ],
     );
   }
 }

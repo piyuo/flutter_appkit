@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart';
 import 'shimmer.dart';
+import 'web_cache_provider.dart';
+
+/// _WebImageProvider is web image provider
+class _WebImageProvider extends WebCacheProvider {
+  File? _file;
+
+  Future<void> load(String url) async {
+    _file = await getFileFromCache(url);
+    if (_file == null) {
+      hasError = true;
+    }
+    notifyListeners();
+  }
+}
 
 /// WebImage display image from a url, display loading/failed place holder and cache image for period of time
 class WebImage extends StatelessWidget {
@@ -8,9 +23,8 @@ class WebImage extends StatelessWidget {
   /// ```dart
   /// WebImage(url:'https://image-url',width:100,height:100),
   /// ```
-  const WebImage({
-    this.url,
-    this.image,
+  const WebImage(
+    this.url, {
     this.width,
     this.height,
     this.borderRadius,
@@ -21,10 +35,7 @@ class WebImage extends StatelessWidget {
   });
 
   /// url is image url, set to empty will display empty icon
-  final String? url;
-
-  /// image is image provider, if set, url will be ignored
-  final ImageProvider? image;
+  final String url;
 
   /// borderRadius if non-null, the corners of this box are rounded by this [BorderRadius].
   final BorderRadius? borderRadius;
@@ -73,84 +84,85 @@ class WebImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    errorBuilder() => Container(
-          width: width,
-          height: height,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            border: border,
-            borderRadius: borderRadius,
-            color: colorScheme.surfaceVariant.withOpacity(0.5),
-          ),
-          child: Icon(
-            Icons.question_mark,
-            size: width != null ? width! / 2 : 64,
-            color: colorScheme.onSurfaceVariant.withOpacity(0.5),
-          ),
-        );
+    return ChangeNotifierProvider<_WebImageProvider>(
+        create: (_) => _WebImageProvider()..load(url),
+        child: Consumer<_WebImageProvider>(builder: (context, webImageProvider, _) {
+          final colorScheme = Theme.of(context).colorScheme;
+          errorBuilder() {
+            return Container(
+              width: width,
+              height: height,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                border: border,
+                borderRadius: borderRadius,
+                color: colorScheme.surfaceVariant.withOpacity(0.5),
+              ),
+              child: Icon(
+                Icons.question_mark,
+                size: width != null ? width! / 2 : 64,
+                color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+              ),
+            );
+          }
 
-    imageBuilder(imgProvider) {
-      Widget image = Image(image: imgProvider, fit: fit);
-      if (borderRadius != null) {
-        image = ClipRRect(
-          borderRadius: borderRadius,
-          child: image,
-        );
-      }
+          imageBuilder() {
+            // loading
+            if (webImageProvider._file == null) {
+              return ShimmerScope(
+                  child: Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  border: border,
+                  borderRadius: borderRadius,
+                  color: colorScheme.surfaceVariant.withOpacity(0.5),
+                ),
+              ));
+            }
 
-      final container = Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          border: border,
-          borderRadius: borderRadius,
-          //image: DecorationImage(image: imgProvider, fit: fit),
-        ),
-        child: image,
-      );
+            // show
+            Widget image = Image.file(
+              webImageProvider._file!,
+              fit: fit,
+              errorBuilder: (_, __, ___) => errorBuilder(),
+            );
+            if (borderRadius != null) {
+              image = ClipRRect(
+                borderRadius: borderRadius,
+                child: image,
+              );
+            }
 
-      if (opacity < 1.0) {
-        return Opacity(
-          opacity: opacity,
-          child: container,
-        );
-      }
-      return container;
-    }
+            final container = Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                border: border,
+                borderRadius: borderRadius,
+                //image: DecorationImage(image: imgProvider, fit: fit),
+              ),
+              child: image,
+            );
 
-    if (url == null && image == null) {
-      return errorBuilder();
-    }
+            if (opacity < 1.0) {
+              return Opacity(
+                opacity: opacity,
+                child: container,
+              );
+            }
+            return container;
+          }
 
-    if (image != null) {
-      return imageBuilder(image!);
-    }
+          // error
+          if (webImageProvider.hasError) {
+            return errorBuilder();
+          }
 
-    return CachedNetworkImage(
-      imageUrl: url!,
-      width: width,
-      height: height,
-      fit: fit,
-      imageBuilder: (context, imageProvider) => imageBuilder(imageProvider),
-      placeholder: (context, url) {
-        return ShimmerScope(
-            child: Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            border: border,
-            borderRadius: borderRadius,
-            color: colorScheme.surfaceVariant.withOpacity(0.5),
-          ),
-        ));
-      },
-      errorWidget: (context, url, error) => errorBuilder(),
-    );
+          return AnimatedOpacity(
+              opacity: webImageProvider._file == null ? 0.5 : 1,
+              duration: const Duration(milliseconds: 600),
+              child: imageBuilder());
+        }));
   }
-}
-
-/// getWebImage return ImageProvider from url
-ImageProvider getWebImage(String url) {
-  return CachedNetworkImageProvider(url);
 }

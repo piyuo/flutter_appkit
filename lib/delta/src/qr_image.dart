@@ -5,17 +5,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 class QrImage extends StatelessWidget {
   /// ```dart
   /// final image=const QrImage(
-  ///   data: 'http://cacake.piyuo.com/location=12348234234s',
+  ///   'http://cacake.piyuo.com/location=12348234234s',
   /// )
   /// ```
-  const QrImage({
-    required this.data,
-    this.size = 300,
-    super.key,
-  });
-
-  /// size is QR code size
-  final double size;
+  const QrImage(this.data, {super.key});
 
   /// data is QR code contain data
   final String data;
@@ -28,7 +21,6 @@ class QrImage extends StatelessWidget {
       data: data,
       version: QrVersions.auto,
       //errorCorrectionLevel: highCorrectionLevel ? QrErrorCorrectLevel.H : QrErrorCorrectLevel.L,
-      size: size,
       backgroundColor: Colors.white,
     );
   }

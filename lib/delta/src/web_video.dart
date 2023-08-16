@@ -4,13 +4,13 @@ import 'package:universal_platform/universal_platform.dart';
 import 'package:video_player/video_player.dart';
 import 'package:universal_io/io.dart';
 import 'package:chewie/chewie.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/utils/utils.dart' as utils;
 import 'shimmer.dart';
+import 'web_cache_provider.dart';
 
 /// _WebVideoProvider provide video controller to WebVideo
-class _WebVideoProvider with ChangeNotifier {
+class _WebVideoProvider extends WebCacheProvider {
   /// _videoPlayerController play video
   VideoPlayerController? _videoPlayerController;
 
@@ -19,17 +19,6 @@ class _WebVideoProvider with ChangeNotifier {
 
   /// isReady return true if video is ready to play
   bool get isReady => _videoPlayerController != null;
-
-  /// hasError return true if video has error
-  bool hasError = false;
-
-  BaseCacheManager getCacheManager() => CacheManager(
-        Config(
-          'videoCache',
-          stalePeriod: const Duration(days: 360),
-          maxNrOfCacheObjects: 1000,
-        ),
-      );
 
   @override
   void dispose() {
@@ -44,50 +33,43 @@ class _WebVideoProvider with ChangeNotifier {
     super.dispose();
   }
 
+  /// _createVideoPlayerController create video player controller from url or path
+  Future<VideoPlayerController> _createVideoPlayerController(String? url, String? path) async {
+    if (path != null) {
+      return VideoPlayerController.file(File(path));
+    }
+
+    if (isCacheAllowed) {
+      // download whole video to cache then play
+      // video player may support stream and cache in the future
+      final file = await getFileFromCache(url!);
+      if (file != null) {
+        return VideoPlayerController.file(file);
+      }
+    }
+    return VideoPlayerController.networkUrl(Uri.parse(url!));
+  }
+
+  /// return true if video player is allowed on this platform
+  bool get isVideoPlayerAllowed => kIsWeb || UniversalPlatform.isAndroid || UniversalPlatform.isIOS;
+
   /// load video from url and support cache
   /// video player may support cache in the future, right now we use cache manager to cache video
   Future<void> load(String? url, String? path, bool showControls) async {
-    if (kIsWeb) {
-      if (url != null) {
-        _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(url));
-      }
-    } else if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
-      // download whole video to cache then play
-      // video player may support stream and cache in the future
-      final cacheManager = getCacheManager();
-      if (url != null) {
-        FileInfo? fileInfo = await cacheManager.getFileFromCache(url);
-        try {
-          fileInfo ??= await cacheManager.downloadFile(url);
-          _videoPlayerController = VideoPlayerController.file(fileInfo.file);
-        } catch (_) {
-          /// video download failed
-          hasError = true;
-          notifyListeners();
-          return;
-        }
-      } else if (path != null) {
-        _videoPlayerController = VideoPlayerController.file(File(path));
-      }
-    }
-    if (_videoPlayerController != null) {
-      try {
-        await _videoPlayerController!.initialize();
-      } catch (e) {
-        hasError = true;
-        notifyListeners();
-        return;
-      }
-    } else {
-      debugPrint('video player by ${url != null ? 'url' : 'path'} is not support on this platform');
-      notifyListeners();
+    if (!isVideoPlayerAllowed) {
       return;
+    }
+
+    _videoPlayerController = await _createVideoPlayerController(url, path);
+    try {
+      await _videoPlayerController!.initialize();
+    } catch (e) {
+      hasError = true;
     }
 
     if (showControls) {
       _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController!,
-        //autoPlay: true,
         looping: true,
         controlsSafeAreaMinimum: const EdgeInsets.all(10),
       );
@@ -167,6 +149,7 @@ class WebVideo extends StatelessWidget {
     return ChangeNotifierProvider<_WebVideoProvider>(
         create: (_) => _WebVideoProvider()..load(url, path, showControls),
         child: Consumer<_WebVideoProvider>(builder: (context, webVideoProvider, _) {
+          // show error
           if (webVideoProvider.hasError ||
               (webVideoProvider._videoPlayerController != null &&
                   webVideoProvider._videoPlayerController!.value.hasError)) {
@@ -176,7 +159,9 @@ class WebVideo extends StatelessWidget {
               Icons.videocam_off,
             ));
           }
-          if (UniversalPlatform.isDesktop) {
+
+          // show not supported
+          if (!webVideoProvider.isVideoPlayerAllowed) {
             return buildIcon(IconButton(
                 onPressed: url != null ? () => utils.openUrl(url!) : null,
                 icon: Icon(
@@ -186,6 +171,7 @@ class WebVideo extends StatelessWidget {
                 )));
           }
 
+          // show video
           if (webVideoProvider.isReady) {
             final video = ConstrainedBox(
                 constraints: BoxConstraints(
@@ -209,6 +195,7 @@ class WebVideo extends StatelessWidget {
             return video;
           }
 
+          // show loading
           return ShimmerScope(
               child: Container(
             width: width,
