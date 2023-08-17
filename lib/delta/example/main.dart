@@ -135,6 +135,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
+                                testing.ExampleButton(label: 'preview', builder: () => _preview(context)),
                                 testing.ExampleButton(label: 'chat bubble', builder: () => _chatBubble(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),

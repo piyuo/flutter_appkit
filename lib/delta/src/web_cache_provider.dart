@@ -3,6 +3,10 @@ import 'package:universal_io/io.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
+/// isCacheAllowed return true if cache is allowed
+bool get isCacheAllowed =>
+    !kIsWeb && (UniversalPlatform.isAndroid || UniversalPlatform.isIOS || UniversalPlatform.isMacOS);
+
 /// WebCacheProvider provide cache manager for android/ios/mac platform
 class WebCacheProvider with ChangeNotifier {
   WebCacheProvider() {
@@ -16,10 +20,6 @@ class WebCacheProvider with ChangeNotifier {
       );
     }
   }
-
-  /// isCacheAllowed return true if cache is allowed
-  bool get isCacheAllowed =>
-      !kIsWeb && (UniversalPlatform.isAndroid || UniversalPlatform.isIOS || UniversalPlatform.isMacOS);
 
   /// _cacheManager is the cache manager
   BaseCacheManager? _cacheManager;

@@ -84,102 +84,105 @@ class WebImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<_WebImageProvider>(
-        create: (_) => _WebImageProvider()..load(url),
-        child: Consumer<_WebImageProvider>(builder: (context, webImageProvider, _) {
-          final colorScheme = Theme.of(context).colorScheme;
-          errorBuilder() {
-            return Container(
-              width: width,
-              height: height,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                border: border,
-                borderRadius: borderRadius,
-                color: colorScheme.surfaceVariant.withOpacity(0.5),
-              ),
-              child: Icon(
-                Icons.question_mark,
-                size: width != null ? width! / 2 : 64,
-                color: colorScheme.onSurfaceVariant.withOpacity(0.5),
-              ),
-            );
-          }
+    final colorScheme = Theme.of(context).colorScheme;
+    errorBuilder() {
+      return Container(
+        width: width,
+        height: height,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          border: border,
+          borderRadius: borderRadius,
+          color: colorScheme.surfaceVariant.withOpacity(0.5),
+        ),
+        child: Icon(
+          Icons.question_mark,
+          size: width != null ? width! / 2 : 64,
+          color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+        ),
+      );
+    }
 
-          imageBuilder(Widget image) {
-            if (borderRadius != null) {
-              image = ClipRRect(
-                borderRadius: borderRadius!,
-                child: image,
+    loadingBuilder() {
+      return ShimmerScope(
+          child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          border: border,
+          borderRadius: borderRadius,
+          color: colorScheme.surfaceVariant.withOpacity(0.5),
+        ),
+      ));
+    }
+
+    imageBuilder(Widget image) {
+      if (borderRadius != null) {
+        image = ClipRRect(
+          borderRadius: borderRadius!,
+          child: image,
+        );
+      }
+
+      if (border != null) {
+        return Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            border: border,
+            borderRadius: borderRadius,
+          ),
+          child: image,
+        );
+      }
+
+      return SizedBox(
+        width: width,
+        height: height,
+        child: image,
+      );
+    }
+
+    if (isCacheAllowed) {
+      return ChangeNotifierProvider<_WebImageProvider>(
+          create: (_) => _WebImageProvider()..load(url),
+          child: Consumer<_WebImageProvider>(builder: (context, webImageProvider, _) {
+            cachedBuilder() {
+              if (webImageProvider._file == null) {
+                return loadingBuilder();
+              }
+              // show
+              final image = Image.file(
+                webImageProvider._file!,
+                fit: fit,
+                opacity: AlwaysStoppedAnimation(opacity),
+                errorBuilder: (_, __, ___) => errorBuilder(),
               );
+              return imageBuilder(image);
             }
 
-            final container = Container(
-              width: width,
-              height: height,
-              decoration: BoxDecoration(
-                border: border,
-                borderRadius: borderRadius,
-                //image: DecorationImage(image: imgProvider, fit: fit),
-              ),
-              child: image,
-            );
-
-            if (opacity < 1.0) {
-              return Opacity(
-                opacity: opacity,
-                child: container,
-              );
+            // error
+            if (webImageProvider.hasError) {
+              return errorBuilder();
             }
-            return container;
-          }
 
-          loadingBuilder() {
-            return ShimmerScope(
-                child: Container(
-              width: width,
-              height: height,
-              decoration: BoxDecoration(
-                border: border,
-                borderRadius: borderRadius,
-                color: colorScheme.surfaceVariant.withOpacity(0.5),
-              ),
-            ));
-          }
-
-          cachedBuilder() {
-            if (webImageProvider._file == null) {
-              return loadingBuilder();
-            }
-            // show
-            final image = Image.file(
-              webImageProvider._file!,
-              fit: fit,
-              errorBuilder: (_, __, ___) => errorBuilder(),
-            );
-            return imageBuilder(image);
-          }
-
-          noneCacheBuilder() {
-            final image = Image.network(
-              url,
-              fit: fit,
-              errorBuilder: (_, __, ___) => errorBuilder(),
-            );
-            return imageBuilder(image);
-          }
-
-          // error
-          if (webImageProvider.hasError) {
-            return errorBuilder();
-          }
-
-          // loading
-
-          return AnimatedOpacity(
-              opacity: webImageProvider._file == null ? 0.5 : 1,
+            // loading
+            return AnimatedOpacity(
+              opacity: webImageProvider._file == null ? .5 : 1,
               duration: const Duration(milliseconds: 600),
-              child: webImageProvider.isCacheAllowed ? cachedBuilder() : noneCacheBuilder());
-        }));
+              child: cachedBuilder(),
+            );
+          }));
+    }
+
+    // no cache
+    final image = Image.network(
+      url,
+      fit: fit,
+      opacity: AlwaysStoppedAnimation(opacity),
+      //loadingBuilder: (_, __, ___) => loadingBuilder(),
+      errorBuilder: (_, __, ___) => errorBuilder(),
+    );
+    return imageBuilder(image);
   }
 }
