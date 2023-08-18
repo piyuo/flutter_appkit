@@ -8,7 +8,7 @@ class ChatBubble extends StatelessWidget {
     required this.child,
     this.bubbleRadius = _bubbleRadius,
     this.isSender = true,
-    this.color = Colors.white70,
+    this.color,
     this.tail = true,
     this.padding = const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
     super.key,
@@ -20,8 +20,8 @@ class ChatBubble extends StatelessWidget {
   /// isSender is sender or receiver
   final bool isSender;
 
-  /// bubble color
-  final Color color;
+  /// color is bubble color
+  final Color? color;
 
   /// tail is show tail
   final bool tail;
@@ -37,15 +37,8 @@ class ChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        isSender
-            ? const Expanded(
-                child: SizedBox(
-                  width: 5,
-                ),
-              )
-            : Container(),
-        Container(
-          color: Colors.transparent,
+        if (isSender) const Spacer(),
+        ConstrainedBox(
           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
@@ -65,20 +58,9 @@ class ChatBubble extends StatelessWidget {
                     : _bubbleRadius),
               ),
               child: Container(
-                decoration: BoxDecoration(
-                  color: color,
-                ),
-                child: Stack(
-                  children: <Widget>[
-                    Padding(
-                      padding: padding,
-                      child: child,
-                    ),
-                    const SizedBox(
-                      width: 1,
-                    ),
-                  ],
-                ),
+                color: color,
+                padding: padding,
+                child: child,
               ),
             ),
           ),

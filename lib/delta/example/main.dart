@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _preview(context)),
+                          child: SingleChildScrollView(child: _chatBubble(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -812,7 +812,18 @@ class _DeltaExampleState extends State<DeltaExample> {
         child: Text('Hello'),
       ),
       const ChatBubble(
+        color: Colors.grey,
         child: Text('Hello World'),
+      ),
+      const ChatBubble(
+        isSender: false,
+        padding: EdgeInsets.zero,
+        child: SizedBox(
+            height: 300,
+            width: 300,
+            child: WebImage(
+              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+            )),
       ),
       ChatBubble(
         isSender: false,
