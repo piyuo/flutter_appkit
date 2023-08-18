@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/dialog/dialog.dart' as dialog;
@@ -128,7 +129,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _webImage(context)),
+                          child: SingleChildScrollView(child: _preview(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -961,6 +962,12 @@ class _DeltaExampleState extends State<DeltaExample> {
       children: [
         WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          width: 300,
+          height: 200,
+        ),
+        WebVideo(
+          url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
           width: 360,
           height: 180,
           borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -1467,9 +1474,19 @@ class _DeltaExampleState extends State<DeltaExample> {
     String videoUrl = 'https://download.samplelib.com/mp4/sample-5s.mp4';
     return Wrap(
       children: [
+        ElevatedButton(
+            onPressed: () {
+              Share.shareUri(Uri.parse('http://www.starbucks.com'));
+            },
+            child: Text('share')),
         SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl)),
         SizedBox(width: 200, height: 200, child: PreviewQrImage(imgUrl)),
-        SizedBox(width: 380, height: 240, child: PreviewVideo(videoUrl)),
+        ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 360,
+              maxHeight: 240,
+            ),
+            child: PreviewVideo(videoUrl)),
       ],
     );
   }

@@ -70,8 +70,7 @@ class _WebVideoProvider extends WebCacheProvider {
     if (showControls) {
       _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController!,
-        looping: true,
-        controlsSafeAreaMinimum: const EdgeInsets.all(10),
+        showOptions: false,
       );
     }
     notifyListeners();

@@ -33,6 +33,7 @@ export 'src/shimmer.dart';
 export 'src/search_trigger.dart';
 export 'src/side_panel.dart';
 export 'src/shifter.dart';
+export 'src/share.dart';
 export 'src/transform_container.dart';
 export 'src/pick_media.dart';
 export 'src/chat_bubble.dart';
