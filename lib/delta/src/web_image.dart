@@ -31,6 +31,7 @@ class WebImage extends StatelessWidget {
     this.border,
     this.fit = BoxFit.cover,
     this.opacity = 1.0,
+    this.fadeIn = true,
     super.key,
   });
 
@@ -81,6 +82,9 @@ class WebImage extends StatelessWidget {
 
   /// opacity is image opacity
   final double opacity;
+
+  /// fade in image
+  final bool fadeIn;
 
   @override
   Widget build(BuildContext context) {
@@ -167,11 +171,13 @@ class WebImage extends StatelessWidget {
             }
 
             // loading
-            return AnimatedOpacity(
-              opacity: webImageProvider._file == null ? .5 : 1,
-              duration: const Duration(milliseconds: 600),
-              child: cachedBuilder(),
-            );
+            return fadeIn
+                ? AnimatedOpacity(
+                    opacity: webImageProvider._file == null ? .3 : 1,
+                    duration: const Duration(milliseconds: 500),
+                    child: cachedBuilder(),
+                  )
+                : cachedBuilder();
           }));
     }
 

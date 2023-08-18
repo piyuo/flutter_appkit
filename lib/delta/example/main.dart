@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/dialog/dialog.dart' as dialog;
@@ -1474,11 +1473,6 @@ class _DeltaExampleState extends State<DeltaExample> {
     String videoUrl = 'https://download.samplelib.com/mp4/sample-5s.mp4';
     return Wrap(
       children: [
-        ElevatedButton(
-            onPressed: () {
-              Share.shareUri(Uri.parse('http://www.starbucks.com'));
-            },
-            child: Text('share')),
         SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl)),
         SizedBox(width: 200, height: 200, child: PreviewQrImage(imgUrl)),
         ConstrainedBox(
