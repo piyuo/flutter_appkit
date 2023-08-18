@@ -182,6 +182,9 @@ class PreviewVideo extends StatelessWidget {
       builder: () => WebVideo(
         url: url,
         showControls: false,
+        borderRadius: borderRadius,
+        width: width,
+        height: height,
       ),
       previewBuilder: () => SafeArea(
         child: Padding(
@@ -189,9 +192,6 @@ class PreviewVideo extends StatelessWidget {
           child: Center(
             child: WebVideo(
               url: url,
-              width: width,
-              height: height,
-              borderRadius: borderRadius,
             ),
           ),
         ),
