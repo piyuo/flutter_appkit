@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _chatBubble(context)),
+                          child: SingleChildScrollView(child: _webImage(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -920,6 +920,7 @@ class _DeltaExampleState extends State<DeltaExample> {
           'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           width: 300,
           height: 300,
+          fadeIn: true,
         ),
         const WebImage(
           'https://not-exists',

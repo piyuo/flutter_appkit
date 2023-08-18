@@ -21,7 +21,7 @@ class _WebImageProvider extends WebCacheProvider {
 class WebImage extends StatelessWidget {
   /// you can use SizedBox() to set width and height
   /// ```dart
-  /// WebImage(url:'https://image-url',width:100,height:100),
+  /// WebImage('https://image-url',width:100,height:100),
   /// ```
   const WebImage(
     this.url, {
@@ -148,37 +148,39 @@ class WebImage extends StatelessWidget {
     }
 
     if (isCacheAllowed) {
-      return ChangeNotifierProvider<_WebImageProvider>(
-          create: (_) => _WebImageProvider()..load(url),
-          child: Consumer<_WebImageProvider>(builder: (context, webImageProvider, _) {
-            cachedBuilder() {
-              if (webImageProvider._file == null) {
-                return loadingBuilder();
-              }
-              // show
-              final image = Image.file(
-                webImageProvider._file!,
-                fit: fit,
-                opacity: AlwaysStoppedAnimation(opacity),
-                errorBuilder: (_, __, ___) => errorBuilder(),
-              );
-              return imageBuilder(image);
-            }
+      return ChangeNotifierProvider<_WebImageProvider>(create: (_) {
+        final webImageProvider = _WebImageProvider();
+        Future.microtask(() => webImageProvider.load(url));
+        return webImageProvider;
+      }, child: Consumer<_WebImageProvider>(builder: (context, webImageProvider, _) {
+        cachedBuilder() {
+          if (webImageProvider._file == null) {
+            return loadingBuilder();
+          }
+          // show
+          final image = Image.file(
+            webImageProvider._file!,
+            fit: fit,
+            opacity: AlwaysStoppedAnimation(opacity),
+            errorBuilder: (_, __, ___) => errorBuilder(),
+          );
+          return imageBuilder(image);
+        }
 
-            // error
-            if (webImageProvider.hasError) {
-              return errorBuilder();
-            }
+        // error
+        if (webImageProvider.hasError) {
+          return errorBuilder();
+        }
 
-            // loading
-            return fadeIn
-                ? AnimatedOpacity(
-                    opacity: webImageProvider._file == null ? .3 : 1,
-                    duration: const Duration(milliseconds: 500),
-                    child: cachedBuilder(),
-                  )
-                : cachedBuilder();
-          }));
+        // loading
+        return fadeIn
+            ? AnimatedOpacity(
+                opacity: webImageProvider._file == null ? .3 : 1,
+                duration: const Duration(milliseconds: 500),
+                child: cachedBuilder(),
+              )
+            : cachedBuilder();
+      }));
     }
 
     // no cache
