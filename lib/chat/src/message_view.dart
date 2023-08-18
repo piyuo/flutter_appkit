@@ -65,15 +65,15 @@ class MessageView extends StatelessWidget {
             );
           case pb.Word_WordType.WORD_TYPE_IMAGE:
             return buildEmbed(
-              delta.WebImage(
+              delta.PreviewImage(
                 urlBuilder(word.type, word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
               ),
             );
           case pb.Word_WordType.WORD_TYPE_VIDEO:
             return buildEmbed(
-              delta.WebVideo(
-                url: urlBuilder(word.type, word.value),
+              delta.PreviewVideo(
+                urlBuilder(word.type, word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
                 height: 240,
               ),
