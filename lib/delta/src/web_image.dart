@@ -31,7 +31,7 @@ class WebImage extends StatelessWidget {
     this.border,
     this.fit = BoxFit.cover,
     this.opacity = 1.0,
-    this.fadeIn = true,
+    this.fadeIn = false,
     super.key,
   });
 
