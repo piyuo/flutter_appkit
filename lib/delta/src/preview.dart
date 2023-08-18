@@ -22,6 +22,7 @@ class Preview extends StatelessWidget {
     required this.previewBuilder,
     this.onShare,
     this.useHeroEffect = true,
+    this.interactive = true,
     super.key,
   });
 
@@ -36,6 +37,9 @@ class Preview extends StatelessWidget {
 
   /// useHeroEffect is true if use hero effect
   final bool useHeroEffect;
+
+  /// interactive is true if allow interactive
+  final bool interactive;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +57,7 @@ class Preview extends StatelessWidget {
             onTapDown: (_) {
               preview(
                 context,
+                interactive: interactive,
                 heroTag: heroTag,
                 onShare: onShare,
                 child: previewBuilder(),
@@ -172,6 +177,7 @@ class PreviewVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Preview(
       useHeroEffect: false,
+      interactive: false,
       onShare: () => shareByCacheOrUrl(url),
       builder: () => WebVideo(
         url: url,
