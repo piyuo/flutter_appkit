@@ -120,16 +120,27 @@ void preview<T>(
 
 /// PreviewImage allow image to enlarge
 class PreviewImage extends StatelessWidget {
-  const PreviewImage(this.url, {super.key});
+  const PreviewImage(
+    this.url, {
+    this.borderRadius,
+    super.key,
+  });
 
   /// url is the image url
   final String url;
+
+  /// borderRadius is the image border radius
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return Preview(
       builder: () => WebImage(url),
-      previewBuilder: () => WebImage(url, fit: null),
+      previewBuilder: () => WebImage(
+        url,
+        borderRadius: borderRadius,
+        fit: null,
+      ),
       onShare: () => shareByCacheOrUrl(url),
     );
   }
