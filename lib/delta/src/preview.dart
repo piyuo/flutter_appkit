@@ -148,10 +148,25 @@ class PreviewImage extends StatelessWidget {
 
 /// PreviewVideo allow image to enlarge
 class PreviewVideo extends StatelessWidget {
-  const PreviewVideo(this.url, {super.key});
+  const PreviewVideo(
+    this.url, {
+    this.width,
+    this.height,
+    this.borderRadius,
+    super.key,
+  });
 
   /// url is the image url
   final String url;
+
+  /// width is the video width
+  final double? width;
+
+  /// height is the video height
+  final double? height;
+
+  /// borderRadius is the video border radius
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +180,14 @@ class PreviewVideo extends StatelessWidget {
       previewBuilder: () => SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 56),
-          child: Center(child: WebVideo(url: url)),
+          child: Center(
+            child: WebVideo(
+              url: url,
+              width: width,
+              height: height,
+              borderRadius: borderRadius,
+            ),
+          ),
         ),
       ),
     );
