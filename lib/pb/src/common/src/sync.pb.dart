@@ -1,9 +1,13 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: sync.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
+
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
 import 'package:libcli/pb/pb.dart' as pb;
@@ -13,42 +17,51 @@ import 'package:protobuf/protobuf.dart' as $pb;
 // ignore: implementation_imports
 import 'package:libcli/google/src/timestamp.pb.dart' as $0;
 
+/// / Sync is a request for sync client dataset and server database
+/// / handler must deal 3 cases:
+/// / 1. has refresh and has fetch: it always happens when client init, need make
+/// / sure result is fill with enough rows
+/// / 2. has refresh and no fetch: it happens when client refresh, no need to
+/// / fetch
+/// / 3. no refresh and has fetch: it happens when client scroll, need to fetch
+/// / but no refresh
 class Sync extends pb.Object {
   $core.int mapIdXXX() => 8;
   get namespace => 'common';
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Sync', createEmptyInstance: create)
-    ..aOM<$0.Timestamp>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'refresh', subBuilder: $0.Timestamp.create)
-    ..aOM<$0.Timestamp>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'fetch', subBuilder: $0.Timestamp.create)
-    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'rows', $pb.PbFieldType.O3)
-    ..a<$core.int>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'page', $pb.PbFieldType.O3)
-    ..hasRequiredFields = false
-  ;
-
-  Sync._() : super();
   factory Sync({
     $0.Timestamp? refresh,
     $0.Timestamp? fetch,
     $core.int? rows,
     $core.int? page,
   }) {
-    final _result = create();
+    final $result = create();
     if (refresh != null) {
-      _result.refresh = refresh;
+      $result.refresh = refresh;
     }
     if (fetch != null) {
-      _result.fetch = fetch;
+      $result.fetch = fetch;
     }
     if (rows != null) {
-      _result.rows = rows;
+      $result.rows = rows;
     }
     if (page != null) {
-      _result.page = page;
+      $result.page = page;
     }
-    return _result;
+    return $result;
   }
+  Sync._() : super();
   factory Sync.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory Sync.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Sync', createEmptyInstance: create)
+    ..aOM<$0.Timestamp>(1, _omitFieldNames ? '' : 'refresh', subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(2, _omitFieldNames ? '' : 'fetch', subBuilder: $0.Timestamp.create)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'rows', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'page', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false
+  ;
+
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -58,8 +71,10 @@ class Sync extends pb.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Sync copyWith(void Function(Sync) updates) => super.copyWith((message) => updates(message as Sync)) as Sync; // ignore: deprecated_member_use
+  Sync copyWith(void Function(Sync) updates) => super.copyWith((message) => updates(message as Sync)) as Sync;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static Sync create() => Sync._();
   Sync createEmptyInstance() => create();
@@ -68,6 +83,7 @@ class Sync extends pb.Object {
   static Sync getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Sync>(create);
   static Sync? _defaultInstance;
 
+  /// / refresh time stamp for refresh
   @$pb.TagNumber(1)
   $0.Timestamp get refresh => $_getN(0);
   @$pb.TagNumber(1)
@@ -79,6 +95,7 @@ class Sync extends pb.Object {
   @$pb.TagNumber(1)
   $0.Timestamp ensureRefresh() => $_ensure(0);
 
+  /// / fetch time stamp for fetch
   @$pb.TagNumber(2)
   $0.Timestamp get fetch => $_getN(1);
   @$pb.TagNumber(2)
@@ -90,6 +107,7 @@ class Sync extends pb.Object {
   @$pb.TagNumber(2)
   $0.Timestamp ensureFetch() => $_ensure(1);
 
+  /// / rows is rows per page for fetch
   @$pb.TagNumber(3)
   $core.int get rows => $_getIZ(2);
   @$pb.TagNumber(3)
@@ -99,6 +117,7 @@ class Sync extends pb.Object {
   @$pb.TagNumber(3)
   void clearRows() => clearField(3);
 
+  /// / page is page number for fetch
   @$pb.TagNumber(4)
   $core.int get page => $_getIZ(3);
   @$pb.TagNumber(4)
@@ -109,3 +128,6 @@ class Sync extends pb.Object {
   void clearPage() => clearField(4);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
