@@ -979,7 +979,7 @@ class _DeltaExampleState extends State<DeltaExample> {
       children: [
         WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
-          borderRadius: BorderRadius.all(Radius.circular(30)),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
           width: 300,
           height: 200,
           onVideoLoaded: (video) => debugPrint('video loaded width:${video.size.width} height:${video.size.height}'),
