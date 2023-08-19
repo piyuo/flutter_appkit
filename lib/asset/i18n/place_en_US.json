@@ -1,8 +1,0 @@
-{
-    "enterAddr": "Please enter your address",
-    "confirm": "Confirm",
-    "confirmAddr": "Confirm address",
-    "myLoc": "My Location",
-    "correct": "is your address on map correct?",
-    "myLocFail": "Fail to locate your address"
-}
