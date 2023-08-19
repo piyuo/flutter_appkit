@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _webImage(context)),
+                          child: SingleChildScrollView(child: _webVideo(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -822,7 +822,8 @@ class _DeltaExampleState extends State<DeltaExample> {
             height: 300,
             width: 300,
             child: WebImage(
-              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+              url:
+                  'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             )),
       ),
       ChatBubble(
@@ -909,27 +910,30 @@ class _DeltaExampleState extends State<DeltaExample> {
           height: 300,
         ),
         WebImage(
-          'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          url:
+              'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           width: 300,
           height: 300,
           opacity: 0.5,
           border: Border.all(color: Colors.red, width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
+          onImageLoaded: (image) => debugPrint('image loaded width:${image.width} height:${image.height}'),
         ),
         const WebImage(
-          'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          url:
+              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           width: 300,
           height: 300,
           fadeIn: true,
         ),
         const WebImage(
-          'https://not-exists',
+          url: 'https://not-exists',
           borderRadius: BorderRadius.all(Radius.circular(20)),
           width: 300,
           height: 300,
         ),
         const WebImage(
-          '',
+          url: '',
           width: 300,
           height: 300,
         ),
@@ -937,23 +941,24 @@ class _DeltaExampleState extends State<DeltaExample> {
             height: 100,
             width: 200,
             child: WebImage(
-              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+              url:
+                  'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             )),
         const SizedBox(
             height: 100,
             width: 200,
             child: WebImage(
-              '',
+              url: '',
             )),
         const WebImage(
-          'https://not-exists',
+          url: 'https://not-exists',
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         const SizedBox(
             height: 100,
             width: 200,
             child: WebImage(
-              '',
+              url: '',
               borderRadius: BorderRadius.all(Radius.circular(20)),
             )),
       ],
@@ -962,12 +967,13 @@ class _DeltaExampleState extends State<DeltaExample> {
 
   Widget _singleImage(BuildContext context) {
     return const WebImage(
-      'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+      url:
+          'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     );
   }
 
   Widget _webVideo(BuildContext context) {
-    return const Wrap(
+    return Wrap(
       spacing: 10.0,
       runSpacing: 10.0,
       children: [
@@ -976,21 +982,22 @@ class _DeltaExampleState extends State<DeltaExample> {
           borderRadius: BorderRadius.all(Radius.circular(30)),
           width: 300,
           height: 200,
+          onVideoLoaded: (video) => debugPrint('video loaded width:${video.size.width} height:${video.size.height}'),
         ),
-        WebVideo(
+        const WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
           width: 360,
           height: 180,
           borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
-        WebVideo(
+        const WebVideo(
           url: 'https://download.samplelib.com/mp4/sample-5s.mp4',
           width: 360,
           height: 180,
           borderRadius: BorderRadius.all(Radius.circular(30)),
           showControls: false,
         ),
-        WebVideo(
+        const WebVideo(
           url: 'https://notexistsanymore.com/sample-5s.mp4',
           width: 360,
           height: 180,

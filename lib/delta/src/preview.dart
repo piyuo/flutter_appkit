@@ -141,11 +141,11 @@ class PreviewImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Preview(
       builder: () => WebImage(
-        url,
+        url: url,
         borderRadius: borderRadius,
       ),
       previewBuilder: () => WebImage(
-        url,
+        url: url,
         borderRadius: borderRadius,
         fit: null,
       ),

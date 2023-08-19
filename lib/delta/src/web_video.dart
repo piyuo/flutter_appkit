@@ -9,6 +9,12 @@ import 'package:libcli/utils/utils.dart' as utils;
 import 'shimmer.dart';
 import 'web_cache_provider.dart';
 
+/// VideoLoadedCallback is called when video is loaded
+typedef VideoLoadedCallback = void Function(VideoPlayerValue video);
+
+/// isVideoPlayerAllowed return true if video player is allowed on this platform
+bool isVideoPlayerAllowed() => kIsWeb || UniversalPlatform.isAndroid || UniversalPlatform.isIOS;
+
 /// _WebVideoProvider provide video controller to WebVideo
 class _WebVideoProvider extends WebCacheProvider {
   /// _videoPlayerController play video
@@ -22,6 +28,7 @@ class _WebVideoProvider extends WebCacheProvider {
 
   @override
   void dispose() {
+    super.dispose();
     if (_videoPlayerController != null) {
       _videoPlayerController!.dispose();
       _videoPlayerController = null;
@@ -30,7 +37,6 @@ class _WebVideoProvider extends WebCacheProvider {
       _chewieController!.dispose();
       _chewieController = null;
     }
-    super.dispose();
   }
 
   /// _createVideoPlayerController create video player controller from url or path
@@ -50,21 +56,22 @@ class _WebVideoProvider extends WebCacheProvider {
     return VideoPlayerController.networkUrl(Uri.parse(url!));
   }
 
-  /// return true if video player is allowed on this platform
-  bool get isVideoPlayerAllowed => kIsWeb || UniversalPlatform.isAndroid || UniversalPlatform.isIOS;
-
   /// load video from url and support cache
   /// video player may support cache in the future, right now we use cache manager to cache video
-  Future<void> load(String? url, String? path, bool showControls) async {
-    if (!isVideoPlayerAllowed) {
-      return;
-    }
-
+  Future<void> load(String? url, String? path, bool showControls, VideoLoadedCallback? callback) async {
     _videoPlayerController = await _createVideoPlayerController(url, path);
     try {
       await _videoPlayerController!.initialize();
     } catch (e) {
       hasError = true;
+    }
+
+    if (disposed) {
+      return;
+    }
+
+    if (callback != null) {
+      callback(_videoPlayerController!.value);
     }
 
     if (showControls) {
@@ -90,6 +97,7 @@ class WebVideo extends StatelessWidget {
     this.height,
     this.borderRadius,
     this.showControls = true,
+    this.onVideoLoaded,
     super.key,
   });
 
@@ -129,6 +137,9 @@ class WebVideo extends StatelessWidget {
   /// showControls if true, show video controls
   final bool showControls;
 
+  /// onVideoLoaded called when video loaded
+  final VideoLoadedCallback? onVideoLoaded;
+
   @override
   Widget build(BuildContext context) {
     assert(url != null || path != null, 'url or path must not be null');
@@ -145,8 +156,19 @@ class WebVideo extends StatelessWidget {
       );
     }
 
+    if (!isVideoPlayerAllowed()) {
+      // no video player support
+      return buildIcon(IconButton(
+          onPressed: url != null ? () => utils.openUrl(url!) : null,
+          icon: Icon(
+            size: width != null ? width! / 3 : 64,
+            color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+            Icons.play_circle,
+          )));
+    }
+
     return ChangeNotifierProvider<_WebVideoProvider>(
-        create: (_) => _WebVideoProvider()..load(url, path, showControls),
+        create: (_) => _WebVideoProvider()..load(url, path, showControls, onVideoLoaded),
         child: Consumer<_WebVideoProvider>(builder: (context, webVideoProvider, _) {
           // show error
           if (webVideoProvider.hasError ||
@@ -157,17 +179,6 @@ class WebVideo extends StatelessWidget {
               color: colorScheme.onSurfaceVariant.withOpacity(0.5),
               Icons.videocam_off,
             ));
-          }
-
-          // show not supported
-          if (!webVideoProvider.isVideoPlayerAllowed) {
-            return buildIcon(IconButton(
-                onPressed: url != null ? () => utils.openUrl(url!) : null,
-                icon: Icon(
-                  size: width != null ? width! / 3 : 64,
-                  color: colorScheme.onSurfaceVariant.withOpacity(0.5),
-                  Icons.play_circle,
-                )));
           }
 
           // show video

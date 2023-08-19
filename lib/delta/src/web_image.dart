@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
+import 'dart:ui' as ui;
 import 'shimmer.dart';
 import 'web_cache_provider.dart';
 
@@ -18,13 +19,14 @@ class _WebImageProvider extends WebCacheProvider {
 }
 
 /// WebImage display image from a url, display loading/failed place holder and cache image for period of time
+/// you can use SizedBox() to set width and height
 class WebImage extends StatelessWidget {
-  /// you can use SizedBox() to set width and height
   /// ```dart
-  /// WebImage('https://image-url',width:100,height:100),
+  /// WebImage('url https://image-url',width:100,height:100),
   /// ```
-  const WebImage(
-    this.url, {
+  const WebImage({
+    this.url,
+    this.image,
     this.width,
     this.height,
     this.borderRadius,
@@ -32,11 +34,15 @@ class WebImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.opacity = 1.0,
     this.fadeIn = false,
+    this.onImageLoaded,
     super.key,
-  });
+  }) : assert(url != null || image != null);
 
   /// url is image url, set to empty will display empty icon
-  final String url;
+  final String? url;
+
+  /// image is the image provider
+  final ImageProvider? image;
 
   /// borderRadius if non-null, the corners of this box are rounded by this [BorderRadius].
   final BorderRadius? borderRadius;
@@ -86,6 +92,9 @@ class WebImage extends StatelessWidget {
   /// fade in image
   final bool fadeIn;
 
+  /// onImageLoaded called when image loaded
+  final void Function(ui.Image image)? onImageLoaded;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -120,11 +129,18 @@ class WebImage extends StatelessWidget {
       ));
     }
 
-    imageBuilder(Widget image) {
+    imageBuilder(Image image) {
+      if (onImageLoaded != null) {
+        image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) {
+          onImageLoaded!(info.image);
+        }));
+      }
+
+      Widget child = image;
       if (borderRadius != null) {
-        image = ClipRRect(
+        child = ClipRRect(
           borderRadius: borderRadius!,
-          child: image,
+          child: child,
         );
       }
 
@@ -136,21 +152,33 @@ class WebImage extends StatelessWidget {
             border: border,
             borderRadius: borderRadius,
           ),
-          child: image,
+          child: child,
         );
       }
 
       return SizedBox(
         width: width,
         height: height,
-        child: image,
+        child: child,
+      );
+    }
+
+    if (image != null) {
+      // no cache
+      return imageBuilder(
+        Image(
+          image: image!,
+          fit: fit,
+          opacity: AlwaysStoppedAnimation(opacity),
+          errorBuilder: (_, __, ___) => errorBuilder(),
+        ),
       );
     }
 
     if (isCacheAllowed) {
       return ChangeNotifierProvider<_WebImageProvider>(create: (_) {
         final webImageProvider = _WebImageProvider();
-        Future.microtask(() => webImageProvider.load(url));
+        Future.microtask(() => webImageProvider.load(url!));
         return webImageProvider;
       }, child: Consumer<_WebImageProvider>(builder: (context, webImageProvider, _) {
         cachedBuilder() {
@@ -184,13 +212,12 @@ class WebImage extends StatelessWidget {
     }
 
     // no cache
-    final image = Image.network(
-      url,
+    return imageBuilder(Image.network(
+      url!,
       fit: fit,
       opacity: AlwaysStoppedAnimation(opacity),
       //loadingBuilder: (_, __, ___) => loadingBuilder(),
       errorBuilder: (_, __, ___) => errorBuilder(),
-    );
-    return imageBuilder(image);
+    ));
   }
 }
