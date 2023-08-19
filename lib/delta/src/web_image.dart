@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
-import 'dart:ui' as ui;
 import 'shimmer.dart';
 import 'web_cache_provider.dart';
 
@@ -93,8 +91,8 @@ class WebImage extends StatelessWidget {
   /// fade in image
   final bool fadeIn;
 
-  /// onImageLoaded called when image loaded
-  final void Function(ui.Image image)? onBeforeImageLoad;
+  /// onBeforeImageLoad called when image prepare to load
+  final void Function(ImageProvider image)? onBeforeImageLoad;
 
   @override
   Widget build(BuildContext context) {
@@ -132,16 +130,7 @@ class WebImage extends StatelessWidget {
 
     imageBuilder(Image image) {
       if (onBeforeImageLoad != null) {
-        /*
-        Completer<ui.Image> completer = Completer<ui.Image>();
-        image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) {
-          try {
-            onBeforeImageLoad!(info.image);
-          } finally {
-            completer.complete(info.image);
-          }
-        }));
-        */
+        onBeforeImageLoad!(image.image);
       }
 
       Widget child = image;

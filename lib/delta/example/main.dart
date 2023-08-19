@@ -917,7 +917,6 @@ class _DeltaExampleState extends State<DeltaExample> {
           opacity: 0.5,
           border: Border.all(color: Colors.red, width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
-          onBeforeImageLoad: (image) => debugPrint('image loaded width:${image.width} height:${image.height}'),
         ),
         const WebImage(
           url:
