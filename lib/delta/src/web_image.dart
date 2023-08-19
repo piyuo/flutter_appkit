@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart';
@@ -34,7 +35,7 @@ class WebImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.opacity = 1.0,
     this.fadeIn = false,
-    this.onImageLoaded,
+    this.onBeforeImageLoad,
     super.key,
   }) : assert(url != null || image != null);
 
@@ -93,7 +94,7 @@ class WebImage extends StatelessWidget {
   final bool fadeIn;
 
   /// onImageLoaded called when image loaded
-  final void Function(ui.Image image)? onImageLoaded;
+  final void Function(ui.Image image)? onBeforeImageLoad;
 
   @override
   Widget build(BuildContext context) {
@@ -130,10 +131,17 @@ class WebImage extends StatelessWidget {
     }
 
     imageBuilder(Image image) {
-      if (onImageLoaded != null) {
+      if (onBeforeImageLoad != null) {
+        /*
+        Completer<ui.Image> completer = Completer<ui.Image>();
         image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) {
-          onImageLoaded!(info.image);
+          try {
+            onBeforeImageLoad!(info.image);
+          } finally {
+            completer.complete(info.image);
+          }
         }));
+        */
       }
 
       Widget child = image;

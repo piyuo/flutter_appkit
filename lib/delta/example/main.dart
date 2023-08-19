@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _webVideo(context)),
+                          child: SingleChildScrollView(child: _webImage(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -917,7 +917,7 @@ class _DeltaExampleState extends State<DeltaExample> {
           opacity: 0.5,
           border: Border.all(color: Colors.red, width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
-          onImageLoaded: (image) => debugPrint('image loaded width:${image.width} height:${image.height}'),
+          onBeforeImageLoad: (image) => debugPrint('image loaded width:${image.width} height:${image.height}'),
         ),
         const WebImage(
           url:
