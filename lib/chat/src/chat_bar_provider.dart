@@ -27,6 +27,9 @@ class ChatBarProvider with ChangeNotifier {
   /// files keep track of all files that user selected
   final Map<String, XFile> files = {};
 
+  /// mediaSizes keep track of all media ratios
+  final Map<String, Size> mediaSizes = {};
+
   /// getFiles return file by id
   XFile getFileById(String id) => files[id]!;
 
@@ -39,6 +42,7 @@ class ChatBarProvider with ChangeNotifier {
   /// reset clear all data, let user start from scratch
   void reset() {
     files.clear();
+    mediaSizes.clear();
     quillController.clear();
     notifyListeners();
   }
@@ -46,10 +50,23 @@ class ChatBarProvider with ChangeNotifier {
   @override
   void dispose() {
     reset();
+    quillController.dispose();
+    focusNode.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
-  void removeMedia(String id) {
+  /// hasText return true if quillController.document.length > 0
+  bool get hasText => quillController.document.length > 0;
+
+  /// hasMediaSizes return true if media already set it's ratio
+  bool hasMediaSizes(String id) => mediaSizes.containsKey(id);
+
+  /// setMediaSize set media ratio
+  void setMediaSize(String id, value) => mediaSizes[id] = value;
+
+  /// removeFile remove file
+  void removeFile(String id) {
     files.remove(id);
     notifyListeners();
   }
@@ -97,9 +114,6 @@ class ChatBarProvider with ChangeNotifier {
 */
   }
 
-  /// hasText return true if quillController.document.length > 0
-  bool get hasText => quillController.document.length > 0;
-
   /// getTypeFromEmbed return pb.Word_WordType from embed key
   pb.Word_WordType getTypeFromEmbed(String key) {
     switch (key) {
@@ -128,13 +142,19 @@ class ChatBarProvider with ChangeNotifier {
         words.add(pb.Word(type: pb.Word_WordType.WORD_TYPE_TEXT, value: text));
       } else if (operation.data is Map) {
         for (final entry in (operation.data as Map).entries) {
+          final type = getTypeFromEmbed(entry.key);
+          Size? size;
+          if (type == pb.Word_WordType.WORD_TYPE_IMAGE || type == pb.Word_WordType.WORD_TYPE_VIDEO) {
+            size = mediaSizes[entry.value];
+          }
           words.add(
             pb.Word(
-              type: getTypeFromEmbed(entry.key),
+              type: type,
               value: entry.value,
+              width: size?.width.round(),
+              height: size?.height.round(),
             ),
           );
-          if (entry.key == kImageKey) {}
         }
       }
     }

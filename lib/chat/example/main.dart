@@ -116,6 +116,8 @@ class EditorExample extends StatelessWidget {
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_VIDEO,
         value: 'video1',
+        width: 1920,
+        height: 1080,
       ),
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
@@ -124,6 +126,8 @@ class EditorExample extends StatelessWidget {
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_VIDEO,
         value: 'video1',
+        width: 1920,
+        height: 1080,
       ),
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
@@ -132,6 +136,8 @@ class EditorExample extends StatelessWidget {
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_IMAGE,
         value: 'img1',
+        width: 4000,
+        height: 6000,
       ),
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,

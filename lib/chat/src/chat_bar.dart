@@ -63,9 +63,9 @@ class ChatBar extends StatelessWidget {
                           expands: false,
                           controller: messageEditorProvider.quillController,
                           embedBuilders: [
-                            ImageEmbedBuilder(messageEditorProvider: messageEditorProvider),
-                            VideoEmbedBuilder(messageEditorProvider: messageEditorProvider),
-                            FileEmbedBuilder(messageEditorProvider: messageEditorProvider),
+                            ImageEmbedBuilder(chatBarProvider: messageEditorProvider),
+                            VideoEmbedBuilder(chatBarProvider: messageEditorProvider),
+                            FileEmbedBuilder(chatBarProvider: messageEditorProvider),
                             EmojiEmbedBuilder(),
                           ],
                           readOnly: false, // true for view only mode

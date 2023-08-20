@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _webVideo(context)),
+                          child: SingleChildScrollView(child: _preview(context)),
                         ),
                         SizedBox(
                           height: 100,
@@ -1491,6 +1491,7 @@ class _DeltaExampleState extends State<DeltaExample> {
     String videoUrl = 'https://download.samplelib.com/mp4/sample-5s.mp4';
     return Wrap(
       children: [
+        AspectRatio(aspectRatio: 1125 / 750, child: PreviewImage(imgUrl)),
         SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl)),
         SizedBox(width: 200, height: 200, child: PreviewQrImage(imgUrl)),
         ConstrainedBox(

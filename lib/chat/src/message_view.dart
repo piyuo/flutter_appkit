@@ -38,18 +38,22 @@ class MessageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    buildEmbed(Widget child) {
-      final result = Container(
+    buildEmbed(Widget child, Size? size) {
+      Widget result = Container(
           constraints: mediaConstraints,
           child: Padding(
             padding: EdgeInsets.all(_isSingleMedia ? 0 : 10),
             child: child,
           ));
 
-      if (_isSingleMedia) {
-        return result;
+      if (size != null && size.width > 0 && size.height > 0) {
+        result = AspectRatio(aspectRatio: size.width / size.height, child: result);
       }
-      return Align(child: result);
+
+      if (!_isSingleMedia) {
+        result = Align(child: result);
+      }
+      return result;
     }
 
     return Wrap(
@@ -69,6 +73,7 @@ class MessageView extends StatelessWidget {
                 urlBuilder(word.type, word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
               ),
+              Size(word.width.toDouble(), word.height.toDouble()),
             );
           case pb.Word_WordType.WORD_TYPE_VIDEO:
             return buildEmbed(
@@ -77,6 +82,7 @@ class MessageView extends StatelessWidget {
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
                 height: 240,
               ),
+              Size(word.width.toDouble(), word.height.toDouble()),
             );
 
           default:

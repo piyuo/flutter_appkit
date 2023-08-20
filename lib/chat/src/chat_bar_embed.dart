@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
@@ -64,10 +66,10 @@ class EmojiEmbedBuilder extends EmbedBuilder {
 /// MediaEmbed is a custom block embed for image/video/file
 abstract class MediaEmbedBuilder extends EmbedBuilder {
   MediaEmbedBuilder({
-    required this.messageEditorProvider,
+    required this.chatBarProvider,
   });
 
-  final ChatBarProvider messageEditorProvider;
+  final ChatBarProvider chatBarProvider;
 
   @override
   bool get expanded => false;
@@ -86,7 +88,7 @@ abstract class MediaEmbedBuilder extends EmbedBuilder {
   ) {
     final colorScheme = Theme.of(context).colorScheme;
     final id = node.value.data;
-    final file = messageEditorProvider.getFileById(id);
+    final file = chatBarProvider.getFileById(id);
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Stack(children: [
@@ -108,18 +110,18 @@ abstract class MediaEmbedBuilder extends EmbedBuilder {
                 maxWidth: 24,
               ),
               decoration: BoxDecoration(
-                color: colorScheme.tertiaryContainer,
+                color: colorScheme.primary,
                 borderRadius: const BorderRadius.all(Radius.circular(20)),
               ),
               child: IconButton(
                 iconSize: 18,
                 visualDensity: VisualDensity.compact,
                 padding: EdgeInsets.zero,
-                color: colorScheme.onTertiaryContainer,
+                color: colorScheme.onPrimary,
                 icon: const Icon(Icons.close),
                 onPressed: () {
                   controller.document.delete(node.documentOffset, 1);
-                  messageEditorProvider.removeMedia(node.value.data);
+                  chatBarProvider.removeFile(node.value.data);
                 },
               )),
         ),
@@ -131,7 +133,7 @@ abstract class MediaEmbedBuilder extends EmbedBuilder {
 /// ImageEmbedBuilder is a custom embed builder for [ImageEmbed].
 class ImageEmbedBuilder extends MediaEmbedBuilder {
   ImageEmbedBuilder({
-    required super.messageEditorProvider,
+    required super.chatBarProvider,
   });
 
   @override
@@ -140,16 +142,30 @@ class ImageEmbedBuilder extends MediaEmbedBuilder {
   /// buildThumb build the thumbnail for the embed
   @override
   Widget buildThumb(BuildContext context, String id, XFile file) {
-    return Image(
+    final image = delta.WebImage(
       image: XFileImage(file),
+      onBeforeImageLoad: chatBarProvider.hasMediaSizes(id)
+          ? null
+          : (image) {
+              Completer<ui.Image> completer = Completer<ui.Image>();
+              image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) {
+                try {
+                  chatBarProvider.setMediaSize(id, info.image.width / info.image.height);
+                } finally {
+                  completer.complete(info.image);
+                }
+              }));
+            },
     );
+
+    return image;
   }
 }
 
 /// VideoEmbedBuilder is a custom embed builder for [ImageEmbed].
 class VideoEmbedBuilder extends MediaEmbedBuilder {
   VideoEmbedBuilder({
-    required super.messageEditorProvider,
+    required super.chatBarProvider,
   });
 
   @override
@@ -163,6 +179,12 @@ class VideoEmbedBuilder extends MediaEmbedBuilder {
       width: 240,
       height: 120,
       showControls: false,
+      onVideoLoaded: chatBarProvider.hasMediaSizes(id)
+          ? null
+          : (video) {
+              final size = video.size;
+              chatBarProvider.setMediaSize(id, size.width / size.height);
+            },
     );
   }
 }
@@ -170,7 +192,7 @@ class VideoEmbedBuilder extends MediaEmbedBuilder {
 /// FileEmbedBuilder is a custom embed builder for [FileEmbed].
 class FileEmbedBuilder extends MediaEmbedBuilder {
   FileEmbedBuilder({
-    required super.messageEditorProvider,
+    required super.chatBarProvider,
   });
 
   @override
@@ -192,3 +214,14 @@ class FileEmbedBuilder extends MediaEmbedBuilder {
     );
   }
 }
+
+      /*
+        Completer<ui.Image> completer = Completer<ui.Image>();
+        image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) {
+          try {
+            onBeforeImageLoad!(info.image);
+          } finally {
+            completer.complete(info.image);
+          }
+        }));
+        */
