@@ -153,7 +153,7 @@ class WebVideo extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           borderRadius: borderRadius,
-          color: colorScheme.surfaceVariant.withOpacity(0.5),
+          color: colorScheme.surfaceVariant.withOpacity(.9),
         ),
         child: Align(child: child),
       );
@@ -165,7 +165,7 @@ class WebVideo extends StatelessWidget {
           onPressed: url != null ? () => utils.openUrl(url!) : null,
           icon: Icon(
             size: width != null ? width! / 3 : 64,
-            color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+            color: colorScheme.onSurfaceVariant.withOpacity(.9),
             Icons.play_circle,
           )));
     }
