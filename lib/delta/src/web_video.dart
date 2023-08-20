@@ -42,6 +42,9 @@ class _WebVideoProvider extends WebCacheProvider {
   /// _createVideoPlayerController create video player controller from url or path
   Future<VideoPlayerController> _createVideoPlayerController(String? url, String? path) async {
     if (path != null) {
+      if (kIsWeb) {
+        return VideoPlayerController.networkUrl(Uri.parse(path));
+      }
       return VideoPlayerController.file(File(path));
     }
 
