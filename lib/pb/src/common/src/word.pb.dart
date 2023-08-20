@@ -26,7 +26,8 @@ class Word extends pb.Object {
   factory Word({
     Word_WordType? type,
     $core.String? value,
-    $core.double? ratio,
+    $core.int? width,
+    $core.int? height,
   }) {
     final $result = create();
     if (type != null) {
@@ -35,8 +36,11 @@ class Word extends pb.Object {
     if (value != null) {
       $result.value = value;
     }
-    if (ratio != null) {
-      $result.ratio = ratio;
+    if (width != null) {
+      $result.width = width;
+    }
+    if (height != null) {
+      $result.height = height;
     }
     return $result;
   }
@@ -47,7 +51,8 @@ class Word extends pb.Object {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Word', createEmptyInstance: create)
     ..e<Word_WordType>(1, _omitFieldNames ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: Word_WordType.WORD_TYPE_UNSPECIFIED, valueOf: Word_WordType.valueOf, enumValues: Word_WordType.values)
     ..aOS(2, _omitFieldNames ? '' : 'value')
-    ..a<$core.double>(3, _omitFieldNames ? '' : 'ratio', $pb.PbFieldType.OD)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'width', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'height', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -97,15 +102,25 @@ class Word extends pb.Object {
   @$pb.TagNumber(2)
   void clearValue() => clearField(2);
 
-  /// / ratio is the display ratio of the word, it is used for image, video
+  /// / width is the display width of the word, it is used for image, video
   @$pb.TagNumber(3)
-  $core.double get ratio => $_getN(2);
+  $core.int get width => $_getIZ(2);
   @$pb.TagNumber(3)
-  set ratio($core.double v) { $_setDouble(2, v); }
+  set width($core.int v) { $_setSignedInt32(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasRatio() => $_has(2);
+  $core.bool hasWidth() => $_has(2);
   @$pb.TagNumber(3)
-  void clearRatio() => clearField(3);
+  void clearWidth() => clearField(3);
+
+  /// / height is the display height of the word, it is used for image, video
+  @$pb.TagNumber(4)
+  $core.int get height => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set height($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasHeight() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearHeight() => clearField(4);
 }
 
 
