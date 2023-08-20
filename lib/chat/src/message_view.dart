@@ -43,12 +43,10 @@ class MessageView extends StatelessWidget {
           constraints: mediaConstraints,
           child: Padding(
             padding: EdgeInsets.all(_isSingleMedia ? 0 : 10),
-            child: child,
+            child: (size != null && size.width > 0 && size.height > 0)
+                ? AspectRatio(aspectRatio: size.width / size.height, child: child)
+                : child,
           ));
-
-      if (size != null && size.width > 0 && size.height > 0) {
-        result = AspectRatio(aspectRatio: size.width / size.height, child: result);
-      }
 
       if (!_isSingleMedia) {
         result = Align(child: result);
