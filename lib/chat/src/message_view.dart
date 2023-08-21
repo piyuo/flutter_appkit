@@ -38,15 +38,13 @@ class MessageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    buildEmbed(Widget child, Size? size) {
+    buildMedia(Widget child, Size? size) {
       Widget result = Container(
           constraints: mediaConstraints,
-          child: Padding(
-            padding: EdgeInsets.all(_isSingleMedia ? 0 : 10),
-            child: (size != null && size.width > 0 && size.height > 0)
-                ? AspectRatio(aspectRatio: size.width / size.height, child: child)
-                : child,
-          ));
+          padding: EdgeInsets.all(_isSingleMedia ? 0 : 10),
+          child: (size != null && size.width > 0 && size.height > 0)
+              ? AspectRatio(aspectRatio: size.width / size.height, child: child)
+              : child);
 
       if (!_isSingleMedia) {
         result = Align(child: result);
@@ -66,7 +64,7 @@ class MessageView extends StatelessWidget {
               child: Text(word.value, style: const TextStyle(fontSize: _kEmojiSize)),
             );
           case pb.Word_WordType.WORD_TYPE_IMAGE:
-            return buildEmbed(
+            return buildMedia(
               delta.PreviewImage(
                 urlBuilder(word.type, word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
@@ -74,7 +72,7 @@ class MessageView extends StatelessWidget {
               Size(word.width.toDouble(), word.height.toDouble()),
             );
           case pb.Word_WordType.WORD_TYPE_VIDEO:
-            return buildEmbed(
+            return buildMedia(
               delta.PreviewVideo(
                 urlBuilder(word.type, word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,

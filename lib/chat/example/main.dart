@@ -22,9 +22,8 @@ class EditorExample extends StatelessWidget {
       body: SafeArea(
         child: Column(children: [
           Expanded(
-              child: Container(
             child: _messageView(),
-          )),
+          ),
           Wrap(
             children: [
               testing.ExampleButton(label: 'single video', builder: () => _singleVideo()),
@@ -60,6 +59,8 @@ class EditorExample extends StatelessWidget {
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_VIDEO,
         value: 'video1',
+        width: 1926,
+        height: 1080,
       ),
     ];
 
@@ -69,7 +70,6 @@ class EditorExample extends StatelessWidget {
             margin: const EdgeInsets.all(10),
             color: Colors.blue,
             child: MessageView(
-              textStyle: const TextStyle(color: Colors.red, fontSize: 16),
               urlBuilder: (type, id) {
                 return 'https://download.samplelib.com/mp4/sample-5s.mp4';
               },
@@ -82,6 +82,8 @@ class EditorExample extends StatelessWidget {
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_IMAGE,
         value: 'img1',
+        width: 4000,
+        height: 6000,
       ),
     ];
 
@@ -124,12 +126,6 @@ class EditorExample extends StatelessWidget {
         value: 'hello',
       ),
       pb.Word(
-        type: pb.Word_WordType.WORD_TYPE_VIDEO,
-        value: 'video1',
-        width: 1920,
-        height: 1080,
-      ),
-      pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
         value: ' world',
       ),
@@ -138,6 +134,12 @@ class EditorExample extends StatelessWidget {
         value: 'img1',
         width: 4000,
         height: 6000,
+      ),
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        value: 'video1',
+        width: 1920,
+        height: 1080,
       ),
       pb.Word(
         type: pb.Word_WordType.WORD_TYPE_TEXT,
