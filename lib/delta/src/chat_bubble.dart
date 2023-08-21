@@ -9,7 +9,6 @@ class ChatBubble extends StatelessWidget {
     this.bubbleRadius = _bubbleRadius,
     this.isSender = true,
     this.color,
-    this.tail = true,
     this.padding = const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
     super.key,
   });
@@ -23,9 +22,6 @@ class ChatBubble extends StatelessWidget {
   /// color is bubble color
   final Color? color;
 
-  /// tail is show tail
-  final bool tail;
-
   /// chat bubble child
   final Widget child;
 
@@ -35,10 +31,9 @@ class ChatBubble extends StatelessWidget {
   ///chat bubble builder method
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        if (isSender) const Spacer(),
-        ConstrainedBox(
+    return Align(
+        alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
+        child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
@@ -46,16 +41,8 @@ class ChatBubble extends StatelessWidget {
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(bubbleRadius),
                 topRight: Radius.circular(bubbleRadius),
-                bottomLeft: Radius.circular(tail
-                    ? isSender
-                        ? bubbleRadius
-                        : 0
-                    : _bubbleRadius),
-                bottomRight: Radius.circular(tail
-                    ? isSender
-                        ? 0
-                        : bubbleRadius
-                    : _bubbleRadius),
+                bottomLeft: Radius.circular(isSender ? bubbleRadius : 0),
+                bottomRight: Radius.circular(isSender ? 0 : bubbleRadius),
               ),
               child: Container(
                 color: color,
@@ -64,8 +51,6 @@ class ChatBubble extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ));
   }
 }
