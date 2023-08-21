@@ -10,18 +10,18 @@ final _listingController = ValueNotifier<int>(1);
 
 final _checkListController = ValueNotifier<List<int>>([]);
 
-final sidePanelProvider = SidePanelProvider();
+final _sidePanelProvider = SidePanelProvider();
 
-var scrollController = ScrollController();
+var _scrollController = ScrollController();
 
-final GlobalKey<AnimateGridState> gridKey = GlobalKey<AnimateGridState>();
+final GlobalKey<AnimateGridState> _gridKey = GlobalKey<AnimateGridState>();
 
-var gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+var _gridItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-int gridIndex = 10;
+int _gridIndex = 10;
 
-Widget itemBuilder(bool isListView, int index) {
-  int item = gridItems[index];
+Widget _itemBuilder(bool isListView, int index) {
+  int item = _gridItems[index];
   if (isListView) {
     return SizedBox(
       // Actual widget to display
@@ -278,7 +278,7 @@ class _DeltaExampleState extends State<DeltaExample> {
   }
 
   Widget slideIt(BuildContext context, int index, animation) {
-    int item = gridItems[index];
+    int item = _gridItems[index];
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(0, -1),
@@ -302,24 +302,24 @@ class _DeltaExampleState extends State<DeltaExample> {
         OutlinedButton(
           child: const Text('insert'),
           onPressed: () {
-            gridItems.insert(0, gridIndex++);
-            gridKey.currentState!.insertItem(0);
+            _gridItems.insert(0, _gridIndex++);
+            _gridKey.currentState!.insertItem(0);
           },
         ),
         OutlinedButton(
             child: const Text('remove'),
             onPressed: () {
-              gridKey.currentState!.removeItem(1, (_, animation) => slideIt(context, 0, animation));
-              gridItems.removeAt(1);
+              _gridKey.currentState!.removeItem(1, (_, animation) => slideIt(context, 0, animation));
+              _gridItems.removeAt(1);
             }),
       ]),
       Expanded(
           child: AnimateGrid(
-        key: gridKey,
+        key: _gridKey,
         mainAxisSpacing: 5,
         crossAxisSpacing: 20,
         crossAxisCount: 2,
-        initialItemCount: gridItems.length,
+        initialItemCount: _gridItems.length,
         itemBuilder: (context, index, animation) {
           return slideIt(context, index, animation); // Refer step 3
         },
@@ -419,7 +419,7 @@ class _DeltaExampleState extends State<DeltaExample> {
 
   Widget _animatedViewInList(BuildContext context) {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider()..setLength(gridItems.length),
+      create: (context) => AnimateViewProvider()..setLength(_gridItems.length),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
@@ -438,15 +438,15 @@ class _DeltaExampleState extends State<DeltaExample> {
                   OutlinedButton(
                     child: const Text('insert'),
                     onPressed: () {
-                      gridItems.insert(0, 9);
+                      _gridItems.insert(0, 9);
                       provide.insertAnimation(index: 0, duration: const Duration(milliseconds: 3500));
                     },
                   ),
                   OutlinedButton(
                       child: const Text('remove'),
                       onPressed: () async {
-                        Widget removedItem = itemBuilder(true, 2);
-                        gridItems.removeAt(2);
+                        Widget removedItem = _itemBuilder(true, 2);
+                        _gridItems.removeAt(2);
                         provide.removeAnimation(2, removedItem);
                         await provide.waitForAnimationDone();
                         debugPrint('animation done');
@@ -454,17 +454,17 @@ class _DeltaExampleState extends State<DeltaExample> {
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () {
-                      Widget removedItem = itemBuilder(true, 2);
-                      gridItems.removeAt(2);
+                      Widget removedItem = _itemBuilder(true, 2);
+                      _gridItems.removeAt(2);
                       provide.removeAnimation(2, removedItem);
-                      gridItems.insert(0, 2);
+                      _gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
                   ),
                   OutlinedButton(
                     child: const Text('next page'),
                     onPressed: () {
-                      gridItems = [11, 12, 13];
+                      _gridItems = [11, 12, 13];
 
                       provide.nextPageAnimation(3);
                     },
@@ -472,14 +472,14 @@ class _DeltaExampleState extends State<DeltaExample> {
                   OutlinedButton(
                     child: const Text('prev page'),
                     onPressed: () {
-                      gridItems = [21, 22, 23, 24, 25];
+                      _gridItems = [21, 22, 23, 24, 25];
                       provide.prevPageAnimation(5);
                     },
                   ),
                   OutlinedButton(
                     child: const Text('refresh'),
                     onPressed: () {
-                      gridItems = [31, 32, 33, 34, 35];
+                      _gridItems = [31, 32, 33, 34, 35];
                       provide.refreshPageAnimation(5);
                     },
                   ),
@@ -488,7 +488,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                   builder: (context, provide, _) => Expanded(
                       child: AnimateShiftView(
                     animateViewProvider: provide,
-                    itemBuilder: (index) => itemBuilder(true, index),
+                    itemBuilder: (index) => _itemBuilder(true, index),
                     mainAxisSpacing: 15,
                     crossAxisSpacing: 20,
                     crossAxisCount: 1,
@@ -500,7 +500,7 @@ class _DeltaExampleState extends State<DeltaExample> {
 
   Widget _animatedViewInGrid() {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider()..setLength(gridItems.length),
+      create: (context) => AnimateViewProvider()..setLength(_gridItems.length),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 Row(children: [
@@ -513,15 +513,15 @@ class _DeltaExampleState extends State<DeltaExample> {
                   OutlinedButton(
                     child: const Text('insert'),
                     onPressed: () {
-                      gridItems.insert(0, 9);
+                      _gridItems.insert(0, 9);
                       provide.insertAnimation();
                     },
                   ),
                   OutlinedButton(
                       child: const Text('remove'),
                       onPressed: () async {
-                        Widget removedItem = itemBuilder(false, 2);
-                        gridItems.removeAt(0);
+                        Widget removedItem = _itemBuilder(false, 2);
+                        _gridItems.removeAt(0);
                         provide.removeAnimation(0, removedItem, isSizeAnimation: false);
                         await provide.waitForAnimationDone();
                         debugPrint('animation done');
@@ -529,32 +529,32 @@ class _DeltaExampleState extends State<DeltaExample> {
                   OutlinedButton(
                     child: const Text('reorder'),
                     onPressed: () async {
-                      Widget removedItem = itemBuilder(false, 2);
-                      gridItems.removeAt(2);
+                      Widget removedItem = _itemBuilder(false, 2);
+                      _gridItems.removeAt(2);
                       provide.removeAnimation(2, removedItem, isSizeAnimation: false);
                       await provide.waitForAnimationDone();
-                      gridItems.insert(0, 2);
+                      _gridItems.insert(0, 2);
                       provide.insertAnimation();
                     },
                   ),
                   OutlinedButton(
                     child: const Text('next page'),
                     onPressed: () {
-                      gridItems = [11, 12, 13];
+                      _gridItems = [11, 12, 13];
                       provide.nextPageAnimation(3);
                     },
                   ),
                   OutlinedButton(
                     child: const Text('prev page'),
                     onPressed: () {
-                      gridItems = [21, 22, 23, 24, 25];
+                      _gridItems = [21, 22, 23, 24, 25];
                       provide.prevPageAnimation(5);
                     },
                   ),
                   OutlinedButton(
                     child: const Text('refresh'),
                     onPressed: () {
-                      gridItems = [31, 32, 33, 34, 35];
+                      _gridItems = [31, 32, 33, 34, 35];
                       provide.refreshPageAnimation(5);
                     },
                   ),
@@ -563,7 +563,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                   builder: (context, provide, _) => Expanded(
                       child: AnimateView(
                     animateViewProvider: provide,
-                    itemBuilder: (index) => itemBuilder(false, index),
+                    itemBuilder: (index) => _itemBuilder(false, index),
                     mainAxisSpacing: 15,
                     crossAxisSpacing: 20,
                     crossAxisCount: 3,
@@ -575,19 +575,19 @@ class _DeltaExampleState extends State<DeltaExample> {
 
   Widget _animatedViewInListView(BuildContext context) {
     return ChangeNotifierProvider<AnimateViewProvider>(
-      create: (context) => AnimateViewProvider()..setLength(gridItems.length),
+      create: (context) => AnimateViewProvider()..setLength(_gridItems.length),
       child: Consumer<AnimateViewProvider>(
           builder: (context, provide, child) => Column(children: [
                 OutlinedButton(
                   child: const Text('insert'),
                   onPressed: () {
-                    gridItems.insert(0, 9);
+                    _gridItems.insert(0, 9);
                     provide.insertAnimation();
                   },
                 ),
                 Expanded(
                     child: ListView.builder(
-                        controller: scrollController,
+                        controller: _scrollController,
                         itemCount: 3,
                         itemBuilder: (BuildContext context, int index) {
                           if (index == 0) {
@@ -607,8 +607,8 @@ class _DeltaExampleState extends State<DeltaExample> {
                           return Consumer<AnimateViewProvider>(
                             builder: (context, provide, _) => AnimateView(
                               animateViewProvider: provide,
-                              controller: scrollController,
-                              itemBuilder: (index) => itemBuilder(true, index),
+                              controller: _scrollController,
+                              itemBuilder: (index) => _itemBuilder(true, index),
                               shrinkWrap: true,
                             ),
                           );
@@ -743,7 +743,7 @@ class _DeltaExampleState extends State<DeltaExample> {
     return SizedBox(
         height: 600,
         child: ChangeNotifierProvider<SidePanelProvider>.value(
-            value: sidePanelProvider,
+            value: _sidePanelProvider,
             child: Consumer<SidePanelProvider>(
                 builder: (context, sidePanelProvider, _) => Column(
                       children: [
@@ -818,13 +818,10 @@ class _DeltaExampleState extends State<DeltaExample> {
       const ChatBubble(
         isSender: false,
         padding: EdgeInsets.zero,
-        child: SizedBox(
-            height: 300,
-            width: 300,
-            child: WebImage(
-              url:
-                  'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-            )),
+        child: WebImage(
+          url:
+              'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        ),
       ),
       ChatBubble(
         isSender: false,
