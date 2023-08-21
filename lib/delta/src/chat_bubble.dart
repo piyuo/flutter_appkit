@@ -10,6 +10,7 @@ class ChatBubble extends StatelessWidget {
     this.isSender = true,
     this.color,
     this.padding = const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+    this.maxWidth = 300,
     super.key,
   });
 
@@ -28,13 +29,16 @@ class ChatBubble extends StatelessWidget {
   /// padding is bubble padding
   final EdgeInsetsGeometry padding;
 
+  /// maxWidth is bubble max width
+  final double maxWidth;
+
   ///chat bubble builder method
   @override
   Widget build(BuildContext context) {
     return Align(
         alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
+          constraints: BoxConstraints(maxWidth: maxWidth),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
             child: ClipRRect(
@@ -54,3 +58,5 @@ class ChatBubble extends StatelessWidget {
         ));
   }
 }
+
+//MediaQuery.of(context).size.width * .8
