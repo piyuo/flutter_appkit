@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libcli/base/base.dart' as base;
 
 /// ExampleButton is button that will navigate to example builder
 /// ```dart
@@ -43,7 +44,10 @@ class ExampleButton extends StatelessWidget {
                 builder: (_) => useScaffold
                     ? Scaffold(
                         appBar: AppBar(),
-                        body: SafeArea(child: builder()),
+                        body: base.BarView(
+                          barBuilder: () => base.bar(context),
+                          child: builder(),
+                        ),
                       )
                     : builder(),
               ))),
