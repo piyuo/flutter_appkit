@@ -123,18 +123,20 @@ class _DeltaExampleState extends State<DeltaExample> {
         ],
         child: Consumer<ValueNotifier<bool>>(
             builder: (context, model, child) => Scaffold(
-                  appBar: AppBar(),
                   body: SafeArea(
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _preview(context)),
+                          //child: SingleChildScrollView(child: _barView(context)),
+                          child: _preview(context),
                         ),
                         SizedBox(
                           height: 100,
                           child: SingleChildScrollView(
                             child: Wrap(
                               children: [
+                                testing.ExampleButton(
+                                    label: 'BarView', useScaffold: false, builder: () => _barView(context)),
                                 testing.ExampleButton(label: 'preview', builder: () => _preview(context)),
                                 testing.ExampleButton(label: 'chat bubble', builder: () => _chatBubble(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
@@ -1479,6 +1481,28 @@ class _DeltaExampleState extends State<DeltaExample> {
       phoneScreen: () => Container(color: Colors.red, child: const Text('phone')),
       notPhoneScreen: () => Container(color: Colors.blue, child: const Text('not phone')),
       bigScreen: () => Container(color: Colors.green, child: const Text('big screen')),
+    );
+  }
+
+  Widget _barView(BuildContext context) {
+    return ResponsiveBarView(
+      barBuilder: () => responsiveBar(context,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              debugPrint('back');
+            },
+          ),
+          //backgroundColor: Colors.blue.withOpacity(.5),
+          title: const Text('Hello World'),
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {},
+            ),
+          ]),
+      child: Container(height: 1200, color: Colors.green),
     );
   }
 

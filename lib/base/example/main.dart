@@ -76,26 +76,10 @@ class AppExampleState extends State<AppExample> {
         await languageProvider.init();
       },
       builder: () => Scaffold(
-/*          appBar: BaseBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  debugPrint('back');
-                },
-              ),
-              backgroundColor: Colors.blue,
-              title: const Text('Hello World'),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {},
-                ),
-              ]),
-*/
           body: Column(
         children: [
           Expanded(
-            child: _barView(context),
+            child: _navigationScaffold(context),
           ),
           Container(
               height: 100,
@@ -109,7 +93,6 @@ class AppExampleState extends State<AppExample> {
                       dialog.alert('hello');
                     },
                   ),
-                  testing.ExampleButton(label: 'BarView', useScaffold: false, builder: () => _barView(context)),
                   testing.ExampleButton(
                       label: 'NavigationScaffold', useScaffold: false, builder: () => _navigationScaffold(context)),
                   testing.ExampleButton(label: 'open web url', builder: () => _openWebUrl(context)),
@@ -154,28 +137,6 @@ class AppExampleState extends State<AppExample> {
               )))
         ],
       )),
-    );
-  }
-
-  Widget _barView(BuildContext context) {
-    return BarView(
-      barBuilder: () => bar(context,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              debugPrint('back');
-            },
-          ),
-          backgroundColor: Colors.blue.withOpacity(.5),
-          title: const Text('Hello World'),
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {},
-            ),
-          ]),
-      child: Container(height: 1200, color: Colors.green),
     );
   }
 

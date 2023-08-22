@@ -4,6 +4,7 @@ export 'src/axis_animation.dart';
 export 'src/animate_view.dart';
 export 'src/animate_grid.dart';
 export 'src/animated_badge.dart';
+export 'src/reponsive_bar_view.dart';
 export 'src/qr_image.dart';
 export 'src/check.dart';
 export 'src/check_list.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/delta/delta.dart' as delta;
 
 /// ExampleButton is button that will navigate to example builder
 /// ```dart
@@ -43,8 +43,8 @@ class ExampleButton extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => useScaffold
                     ? Scaffold(
-                        body: base.BarView(
-                          barBuilder: () => base.bar(context),
+                        body: delta.ResponsiveBarView(
+                          barBuilder: () => delta.responsiveBar(context),
                           child: builder(),
                         ),
                       )
