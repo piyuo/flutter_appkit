@@ -51,8 +51,8 @@ class SplitView extends StatelessWidget {
     this.sideWeightMin = 0.2,
     this.sideBar,
     this.bar,
-    required ValueKey<String> key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// sideBuilder return side widget, if null side will be hidden
   final Widget Function()? sideBuilder;

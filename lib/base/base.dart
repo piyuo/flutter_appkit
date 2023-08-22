@@ -1,6 +1,7 @@
 library base;
 
 export 'src/base.dart';
+export 'src/base_bar.dart';
 export 'src/beam_link.dart';
 export 'src/error.dart';
 export 'src/language_provider.dart';
