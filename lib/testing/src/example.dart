@@ -43,7 +43,6 @@ class ExampleButton extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => useScaffold
                     ? Scaffold(
-                        appBar: AppBar(),
                         body: base.BarView(
                           barBuilder: () => base.bar(context),
                           child: builder(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:universal_platform/universal_platform.dart';
 import 'tag.dart';
 
 class TagView<T> extends StatelessWidget {
