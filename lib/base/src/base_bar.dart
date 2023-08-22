@@ -3,16 +3,16 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:universal_platform/universal_platform.dart';
 
 /// _kMobileToolbarHeight is height of toolbar on mobile
-const _kMobileToolbarHeight = 42.0;
+const _kMobileToolbarHeight = 48.0;
 
 /// _kDesktopToolbarHeight is height of toolbar on desktop
-const _kDesktopToolbarHeight = 36.0;
+const _kDesktopToolbarHeight = 40.0;
 
 /// _kDesktopToolbarTitleFontSize is font size of toolbar title on desktop
 const _kDesktopToolbarTitleFontSize = 15.0;
 
 /// _kDesktopToolbarIconSize is icon size of toolbar on desktop
-const _kDesktopToolbarIconSize = 20.0;
+const _kDesktopToolbarIconSize = 19.0;
 
 /// _kMacOSLeading is width of leading on macos
 const _kMacOSLeading = 168.0;
