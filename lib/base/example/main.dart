@@ -159,14 +159,15 @@ class AppExampleState extends State<AppExample> {
 
   Widget _barView(BuildContext context) {
     return BarView(
-      barBuilder: () => bar(context,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              debugPrint('back');
-            },
-          ),
-          backgroundColor: Colors.blue.withOpacity(.5),
+      barBuilder: () => bar(
+        context,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            debugPrint('back');
+          },
+        ),
+        /*backgroundColor: Colors.blue.withOpacity(.5),
           title: const Text('Hello World'),
           elevation: 0,
           actions: [
@@ -174,7 +175,8 @@ class AppExampleState extends State<AppExample> {
               icon: const Icon(Icons.settings),
               onPressed: () {},
             ),
-          ]),
+          ]*/
+      ),
       child: Container(height: 1200, color: Colors.green),
     );
   }

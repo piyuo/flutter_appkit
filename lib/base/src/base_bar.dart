@@ -15,7 +15,7 @@ const _kDesktopToolbarTitleFontSize = 15.0;
 const _kDesktopToolbarIconSize = 19.0;
 
 /// _kMacOSLeading is width of leading on macos
-const _kMacOSLeading = 168.0;
+const _kMacOSLeading = 64.0;
 
 /// _isMobile return true if is mobile
 bool get _isMobile => delta.phoneScreen && !UniversalPlatform.isMacOS;
@@ -120,7 +120,7 @@ Widget bar(
     actions: actions,
     leading: leading,
     elevation: elevation,
-    leadingWidth: UniversalPlatform.isMacOS ? _kMacOSLeading : null,
+    //leadingWidth: UniversalPlatform.isMacOS ? _kMacOSLeading : null,
     flexibleSpace: Container(),
     primary: primary,
     pinned: pinned,
@@ -142,7 +142,9 @@ Widget bar(
             : const IconThemeData(size: _kDesktopToolbarIconSize),
       ),
     ),
-    child: appBar,
+    child: UniversalPlatform.isMacOS
+        ? SliverPadding(padding: const EdgeInsets.only(left: _kMacOSLeading), sliver: appBar)
+        : appBar,
   );
 }
 
