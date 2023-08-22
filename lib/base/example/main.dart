@@ -159,7 +159,7 @@ class AppExampleState extends State<AppExample> {
 
   Widget _barView(BuildContext context) {
     return BarView(
-      bar: viewBar(context,
+      barBuilder: () => bar(context,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
@@ -168,6 +168,7 @@ class AppExampleState extends State<AppExample> {
           ),
           backgroundColor: Colors.blue.withOpacity(.5),
           title: const Text('Hello World'),
+          elevation: 0,
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),

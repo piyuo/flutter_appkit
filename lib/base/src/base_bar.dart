@@ -96,8 +96,8 @@ class BaseBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(_isMobile ? _kMobileToolbarHeight : _kDesktopToolbarHeight);
 }
 
-/// viewBar create app bar for view
-Widget viewBar(
+/// bar create app bar for view
+Widget bar(
   BuildContext context, {
   Widget? title,
   Color? backgroundColor,
@@ -108,9 +108,9 @@ Widget viewBar(
   bool? centerTitle,
   bool pinned = true,
   bool float = false,
+  bool snap = false,
 }) {
   final barHeight = _isMobile ? _kMobileToolbarHeight : _kDesktopToolbarHeight;
-
   final theme = Theme.of(context);
   final appBar = SliverAppBar(
     title: title,
@@ -125,6 +125,7 @@ Widget viewBar(
     primary: primary,
     pinned: pinned,
     floating: float,
+    snap: snap,
   );
 
   if (_isMobile) {
@@ -148,14 +149,14 @@ Widget viewBar(
 /// BarView show [BaseBar] in view
 class BarView extends StatelessWidget {
   const BarView({
-    required this.bar,
+    required this.barBuilder,
     this.slivers,
     this.child,
     super.key,
   });
 
   /// bar is app bar
-  final Widget bar;
+  final Widget Function() barBuilder;
 
   /// slivers is slivers
   final List<Widget>? slivers;
@@ -167,7 +168,7 @@ class BarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        bar,
+        SliverLayoutBuilder(builder: (_, __) => barBuilder()),
         if (slivers != null) ...slivers!,
         if (child != null) SliverToBoxAdapter(child: child!),
       ],
