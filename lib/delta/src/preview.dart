@@ -6,7 +6,7 @@ import 'web_image.dart';
 import 'web_video.dart';
 import 'qr_image.dart';
 import 'page_route.dart';
-import 'reponsive_bar_view.dart';
+import 'responsive_bar_view.dart';
 
 /// kPreviewHeroTag is the hero tag for preview
 int kPreviewHeroIndex = 0;
@@ -86,29 +86,6 @@ void preview<T>(
   Navigator.push<T>(context, FadeRouteBuilder(
     () {
       final colorScheme = Theme.of(context).colorScheme;
-/*
-      return Scaffold(
-        body: BarView(
-          barBuilder: () => bar(context, floating: true, backgroundColor: Colors.blue.withOpacity(.1), pinned: false),
-          slivers: [
-            SliverFillRemaining(
-                hasScrollBody: false,
-                child: Hero(
-                    tag: heroTag,
-                    child: interactive
-                        ? InteractiveViewer(
-                            constrained: true,
-                            panEnabled: true, // Set it to false to prevent panning.
-                            panAxis: PanAxis.aligned,
-                            minScale: 0.5,
-                            maxScale: 3.5,
-                            child: Container(color: Colors.red) //child,
-                            )
-                        : child))
-          ],
-        ),
-      );
-*/
       return Container(
           color: colorScheme.background,
           child: Stack(
