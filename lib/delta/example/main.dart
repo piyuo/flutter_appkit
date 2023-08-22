@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: SingleChildScrollView(child: _chatBubble(context)),
+                          child: SingleChildScrollView(child: _preview(context)),
                         ),
                         SizedBox(
                           height: 100,

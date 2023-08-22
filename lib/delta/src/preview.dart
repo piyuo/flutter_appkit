@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/utils/utils.dart' as utils;
+import 'package:libcli/base/base.dart' as base;
 import 'share.dart';
 import 'web_image.dart';
 import 'web_video.dart';
@@ -85,40 +86,34 @@ void preview<T>(
   Navigator.push<T>(context, FadeRouteBuilder(
     () {
       final colorScheme = Theme.of(context).colorScheme;
-      return Container(
-          color: colorScheme.background,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Hero(
-                    tag: heroTag,
-                    child: interactive
-                        ? InteractiveViewer(
-                            constrained: true,
-                            panEnabled: true, // Set it to false to prevent panning.
-                            panAxis: PanAxis.aligned,
-                            minScale: 0.5,
-                            maxScale: 3.5,
-                            child: child,
-                          )
-                        : child),
-              ),
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: AppBar(
-                    backgroundColor: colorScheme.primary.withOpacity(.1),
-                    actions: [
-                      if (onShare != null)
-                        IconButton(
-                          icon: const Icon(Icons.ios_share),
-                          onPressed: () => onShare(),
-                        ),
-                    ],
-                  )),
+
+      return Scaffold(
+        body: base.BarView(
+          barBuilder: () => base.bar(
+            context,
+            backgroundColor: colorScheme.primary.withOpacity(.1),
+            actions: [
+              if (onShare != null)
+                IconButton(
+                  icon: const Icon(Icons.ios_share),
+                  onPressed: () => onShare(),
+                ),
             ],
-          ));
+          ),
+          child: Hero(
+              tag: heroTag,
+              child: interactive
+                  ? InteractiveViewer(
+                      constrained: true,
+                      panEnabled: true, // Set it to false to prevent panning.
+                      panAxis: PanAxis.aligned,
+                      minScale: 0.5,
+                      maxScale: 3.5,
+                      child: child,
+                    )
+                  : child),
+        ),
+      );
     },
   ));
 }
