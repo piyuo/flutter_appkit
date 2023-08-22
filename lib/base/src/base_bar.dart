@@ -62,14 +62,23 @@ class BaseBar extends StatelessWidget implements PreferredSizeWidget {
   Widget createAppBar(BuildContext context) {
     final theme = Theme.of(context);
     final appBar = AppBar(
+      iconTheme: theme.appBarTheme.iconTheme != null
+          ? theme.appBarTheme.iconTheme!.copyWith(size: _kDesktopToolbarIconSize)
+          : const IconThemeData(size: _kDesktopToolbarIconSize),
+      automaticallyImplyLeading: false,
       title: title,
       centerTitle: centerTitle,
       toolbarHeight: preferredSize.height,
       backgroundColor: backgroundColor,
       actions: actions,
-      leading: leading,
+      leading: leading ??
+          (Navigator.canPop(context)
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back_ios),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              : null),
       elevation: elevation,
-      leadingWidth: UniversalPlatform.isMacOS ? _kMacOSLeading : null,
       flexibleSpace: Container(),
       primary: primary,
     );
@@ -83,12 +92,11 @@ class BaseBar extends StatelessWidget implements PreferredSizeWidget {
           titleTextStyle: theme.appBarTheme.titleTextStyle != null
               ? theme.appBarTheme.titleTextStyle!.copyWith(fontSize: _kDesktopToolbarTitleFontSize)
               : const TextStyle(fontSize: _kDesktopToolbarTitleFontSize),
-          iconTheme: theme.appBarTheme.iconTheme != null
-              ? theme.appBarTheme.iconTheme!.copyWith(size: _kDesktopToolbarIconSize)
-              : const IconThemeData(size: _kDesktopToolbarIconSize),
         ),
       ),
-      child: appBar,
+      child: UniversalPlatform.isMacOS
+          ? Padding(padding: const EdgeInsets.only(left: _kMacOSLeading), child: appBar)
+          : appBar,
     );
   }
 
@@ -113,14 +121,25 @@ Widget bar(
   final barHeight = _isMobile ? _kMobileToolbarHeight : _kDesktopToolbarHeight;
   final theme = Theme.of(context);
   final appBar = SliverAppBar(
+    automaticallyImplyLeading: false,
+    iconTheme: _isMobile
+        ? null
+        : theme.appBarTheme.iconTheme != null
+            ? theme.appBarTheme.iconTheme!.copyWith(size: _kDesktopToolbarIconSize)
+            : const IconThemeData(size: _kDesktopToolbarIconSize),
     title: title,
     centerTitle: centerTitle,
     toolbarHeight: barHeight,
     backgroundColor: backgroundColor,
     actions: actions,
-    leading: leading,
+    leading: leading ??
+        (Navigator.canPop(context)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null),
     elevation: elevation,
-    //leadingWidth: UniversalPlatform.isMacOS ? _kMacOSLeading : null,
     flexibleSpace: Container(),
     primary: primary,
     pinned: pinned,
@@ -137,9 +156,6 @@ Widget bar(
         titleTextStyle: theme.appBarTheme.titleTextStyle != null
             ? theme.appBarTheme.titleTextStyle!.copyWith(fontSize: _kDesktopToolbarTitleFontSize)
             : TextStyle(fontSize: _kDesktopToolbarTitleFontSize, color: theme.colorScheme.onBackground),
-        iconTheme: theme.appBarTheme.iconTheme != null
-            ? theme.appBarTheme.iconTheme!.copyWith(size: _kDesktopToolbarIconSize)
-            : const IconThemeData(size: _kDesktopToolbarIconSize),
       ),
     ),
     child: UniversalPlatform.isMacOS
