@@ -44,13 +44,13 @@ class SplitView extends StatelessWidget {
   const SplitView({
     required this.splitViewProvider,
     this.builder,
+    this.bar,
     this.sideBuilder,
+    this.sideBar,
     this.isVertical = false,
     this.sideWeight = 0.4,
     this.sideWeightMax = 0.8,
     this.sideWeightMin = 0.2,
-    this.sideBar,
-    this.bar,
     super.key,
   });
 

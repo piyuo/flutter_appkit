@@ -11,6 +11,7 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../base.dart';
@@ -79,7 +80,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
         children: [
           Expanded(
-            child: _navigationScaffold(context),
+            child: _splitView(context),
           ),
           Container(
               height: 100,
@@ -438,22 +439,23 @@ class AppExampleState extends State<AppExample> {
                       isVertical: false,
                       key: const ValueKey<String>('_first'),
                       splitViewProvider: splitterViewProvider,
-                      sideBar: AppBar(
-                          toolbarHeight: 42,
-                          title: const Text('side'),
-                          leading: const Icon(Icons.menu),
-                          actions: const [
-                            Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.people)),
-                          ]),
+                      sideBar: const delta.ResponsiveAppBar(
+                        macPadding: false,
+                        title: Text('side'),
+                        leading: Icon(Icons.menu),
+                        actions: [
+                          Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.people)),
+                        ],
+                      ),
                       sideBuilder: () => Container(
                         color: Colors.blue,
                         child: const Center(child: Text('side')),
                       ),
-                      bar: AppBar(
-                          toolbarHeight: 42,
-                          title: const Text('main'),
-                          leading: const Icon(Icons.add),
-                          actions: const [
+                      bar: const delta.ResponsiveAppBar(
+                          macPadding: false,
+                          title: Text('main'),
+                          leading: Icon(Icons.add),
+                          actions: [
                             Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.store)),
                           ]),
                       builder: () => Container(
