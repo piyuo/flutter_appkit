@@ -33,6 +33,7 @@ Widget responsiveBar(
   bool pinned = true,
   bool floating = false,
   bool snap = false,
+  bool macPadding = true, // padding for macos to avoid overlap with system bar
 }) {
   final barHeight = _isMobile ? _kMobileToolbarHeight : _kDesktopToolbarHeight;
   final theme = Theme.of(context);
@@ -74,7 +75,7 @@ Widget responsiveBar(
             : TextStyle(fontSize: _kDesktopToolbarTitleFontSize, color: theme.colorScheme.onBackground),
       ),
     ),
-    child: UniversalPlatform.isMacOS
+    child: UniversalPlatform.isMacOS && macPadding
         ? SliverPadding(padding: const EdgeInsets.only(left: _kMacOSLeading), sliver: appBar)
         : appBar,
   );
@@ -120,6 +121,7 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation,
     this.primary = true,
     this.centerTitle,
+    this.macPadding = true,
     super.key,
   });
 
@@ -143,6 +145,9 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// centerTitle is app bar center title
   final bool? centerTitle;
+
+  // macPadding is padding for macos to avoid overlap with system bar
+  final bool macPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +189,7 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
               : const TextStyle(fontSize: _kDesktopToolbarTitleFontSize),
         ),
       ),
-      child: UniversalPlatform.isMacOS
+      child: UniversalPlatform.isMacOS && macPadding
           ? Padding(padding: const EdgeInsets.only(left: _kMacOSLeading), child: appBar)
           : appBar,
     );
