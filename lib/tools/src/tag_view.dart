@@ -47,7 +47,6 @@ class TagView<T> extends StatelessWidget {
     }
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
-        padding: UniversalPlatform.isMacOS ? const EdgeInsets.only(top: 20) : null,
         color: colorScheme.surfaceVariant,
         child: SafeArea(
             child: Column(children: [
