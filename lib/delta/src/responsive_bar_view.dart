@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:universal_platform/universal_platform.dart';
 
 /// _kMobileToolbarHeight is height of toolbar on mobile
 const _kMobileToolbarHeight = 48.0;
@@ -14,11 +13,8 @@ const _kDesktopToolbarTitleFontSize = 15.0;
 /// _kDesktopToolbarIconSize is icon size of toolbar on desktop
 const _kDesktopToolbarIconSize = 19.0;
 
-/// _kMacOSLeading is width of leading on macos
-const _kMacOSLeading = 64.0;
-
 /// _isMobile return true if is mobile
-bool get _isMobile => delta.phoneScreen && !UniversalPlatform.isMacOS;
+bool get _isMobile => delta.phoneScreen;
 
 /// responsiveBar create sliver app bar for bar view
 Widget responsiveBar(
@@ -33,7 +29,6 @@ Widget responsiveBar(
   bool pinned = true,
   bool floating = false,
   bool snap = false,
-  bool macPadding = true, // padding for macos to avoid overlap with system bar
 }) {
   final barHeight = _isMobile ? _kMobileToolbarHeight : _kDesktopToolbarHeight;
   final theme = Theme.of(context);
@@ -75,9 +70,7 @@ Widget responsiveBar(
             : TextStyle(fontSize: _kDesktopToolbarTitleFontSize, color: theme.colorScheme.onBackground),
       ),
     ),
-    child: UniversalPlatform.isMacOS && macPadding
-        ? SliverPadding(padding: const EdgeInsets.only(left: _kMacOSLeading), sliver: appBar)
-        : appBar,
+    child: appBar,
   );
 }
 
@@ -121,7 +114,6 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation,
     this.primary = true,
     this.centerTitle,
-    this.macPadding = true,
     super.key,
   });
 
@@ -145,9 +137,6 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// centerTitle is app bar center title
   final bool? centerTitle;
-
-  // macPadding is padding for macos to avoid overlap with system bar
-  final bool macPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -189,31 +178,10 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
               : const TextStyle(fontSize: _kDesktopToolbarTitleFontSize),
         ),
       ),
-      child: UniversalPlatform.isMacOS && macPadding
-          ? Padding(padding: const EdgeInsets.only(left: _kMacOSLeading), child: appBar)
-          : appBar,
+      child: appBar,
     );
   }
 
   @override
   Size get preferredSize => Size.fromHeight(_isMobile ? _kMobileToolbarHeight : _kDesktopToolbarHeight);
 }
-/*
-          appBar: BaseBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  debugPrint('back');
-                },
-              ),
-              backgroundColor: Colors.blue,
-              title: const Text('Hello World'),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {},
-                ),
-              ]),
-
-
-*/

@@ -443,7 +443,6 @@ class AppExampleState extends State<AppExample> {
                             key: const ValueKey<String>('_first'),
                             splitViewProvider: splitterViewProvider,
                             sideBarBuilder: (context) => const delta.ResponsiveAppBar(
-                                  macPadding: false,
                                   title: Text('side'),
                                   leading: Icon(Icons.menu),
                                   actions: [
@@ -454,13 +453,10 @@ class AppExampleState extends State<AppExample> {
                                   color: Colors.blue,
                                   child: const Center(child: Text('side')),
                                 ),
-                            barBuilder: (_) => const delta.ResponsiveAppBar(
-                                    macPadding: false,
-                                    title: Text('main'),
-                                    leading: Icon(Icons.add),
-                                    actions: [
-                                      Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.store)),
-                                    ]),
+                            barBuilder: (_) =>
+                                const delta.ResponsiveAppBar(title: Text('main'), leading: Icon(Icons.add), actions: [
+                                  Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.store)),
+                                ]),
                             builder: (context) => Container(
                                   color: Colors.red,
                                   child: Center(
@@ -468,9 +464,7 @@ class AppExampleState extends State<AppExample> {
                                       onPressed: () {
                                         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
                                           return Scaffold(
-                                            appBar: const delta.ResponsiveAppBar(
-                                              macPadding: false,
-                                            ),
+                                            appBar: const delta.ResponsiveAppBar(),
                                             body: SafeArea(
                                                 child: SingleChildScrollView(
                                               child: Column(children: [
