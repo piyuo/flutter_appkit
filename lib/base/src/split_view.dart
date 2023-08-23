@@ -55,14 +55,14 @@ class SplitView extends StatelessWidget {
     super.key,
   });
 
+  /// sideBar is a widget that will be shown on the left side of the side widget
+  final Widget? Function(BuildContext context)? sideBarBuilder;
+
   /// sideBuilder return side widget, if null side will be hidden
   final utils.WidgetContextBuilder? sideBuilder;
 
-  /// sideBar is a widget that will be shown on the left side of the side widget
-  final utils.WidgetContextBuilder? sideBarBuilder;
-
   /// bar is a widget that will be shown on the right side of the side widget
-  final utils.WidgetContextBuilder? barBuilder;
+  final Widget? Function(BuildContext context)? barBuilder;
 
   /// builder is main content widget builder, if null main content will be hidden
   final utils.WidgetContextBuilder? builder;
@@ -88,14 +88,17 @@ class SplitView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     buildSide() {
-      return sideBarBuilder != null
-          ? Column(children: [sideBarBuilder!(context), Expanded(child: sideBuilder!(context))])
+      final sidebar = sideBarBuilder != null ? sideBarBuilder!(context) : null;
+      return sidebar != null
+          ? Column(children: [sidebar, Expanded(child: sideBuilder!(context))])
           : sideBuilder!(context);
     }
 
     buildMain() {
-      mainContent(ctx) =>
-          barBuilder != null ? Column(children: [barBuilder!(ctx), Expanded(child: builder!(ctx))]) : builder!(ctx);
+      mainContent(ctx) {
+        final bar = barBuilder != null ? barBuilder!(ctx) : null;
+        return bar != null ? Column(children: [bar, Expanded(child: builder!(ctx))]) : builder!(ctx);
+      }
 
       if (newNavigatorKey != null) {
         return Navigator(
