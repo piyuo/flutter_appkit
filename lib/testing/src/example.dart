@@ -45,7 +45,9 @@ class ExampleButton extends StatelessWidget {
                     ? Scaffold(
                         body: delta.ResponsiveBarView(
                           barBuilder: () => delta.responsiveBar(context),
-                          child: builder(),
+                          slivers: [
+                            SliverToBoxAdapter(child: builder()),
+                          ],
                         ),
                       )
                     : builder(),
