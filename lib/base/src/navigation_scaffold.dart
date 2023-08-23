@@ -164,22 +164,19 @@ class NavigationScaffold extends StatelessWidget {
               children: [
                 SizedBox(
                     width: bigDisplay ? railWidth : null,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: NavigationRail(
-                        leading: bigDisplay ? leadingInRail : null,
-                        trailing: bigDisplay ? trailingInRail : null,
-                        extended: bigDisplay,
-                        labelType: bigDisplay ? NavigationRailLabelType.none : NavigationRailLabelType.all,
-                        destinations: destinations
-                            .map((n) => NavigationRailDestination(
-                                  icon: buildIcon(n),
-                                  label: buildLabel(n),
-                                ))
-                            .toList(),
-                        selectedIndex: selectedIndex,
-                        onDestinationSelected: onSelected,
-                      ),
+                    child: NavigationRail(
+                      leading: bigDisplay ? leadingInRail : null,
+                      trailing: bigDisplay ? trailingInRail : null,
+                      extended: bigDisplay,
+                      labelType: bigDisplay ? NavigationRailLabelType.none : NavigationRailLabelType.all,
+                      destinations: destinations
+                          .map((n) => NavigationRailDestination(
+                                icon: buildIcon(n),
+                                label: buildLabel(n),
+                              ))
+                          .toList(),
+                      selectedIndex: selectedIndex,
+                      onDestinationSelected: onSelected,
                     )),
                 const VerticalDivider(
                   width: 1,

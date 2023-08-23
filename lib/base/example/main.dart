@@ -480,33 +480,7 @@ class AppExampleState extends State<AppExample> {
                                       child: const Text('main'),
                                     ),
                                   ),
-                                )
-/*
-                      Container(
-                        color: Colors.red,
-                        child: Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                                return Scaffold(
-                                  appBar: const delta.ResponsiveAppBar(),
-                                  body: SafeArea(
-                                      child: SingleChildScrollView(
-                                    child: Column(children: [
-                                      Container(height: 500, color: Colors.red),
-                                      Container(height: 500, color: Colors.blue),
-                                      Container(height: 500, color: Colors.yellow),
-                                      Container(height: 500, color: Colors.green),
-                                    ]),
-                                  )),
-                                );
-                              }));
-                            },
-                            child: const Text('main'),
-                          ),
-                        ),
-                      ),*/
-                            )),
+                                ))),
                   ]),
                 )));
   }
