@@ -79,7 +79,6 @@ class ResponsiveBarView extends StatelessWidget {
   const ResponsiveBarView({
     required this.barBuilder,
     this.slivers,
-    this.child,
     super.key,
   });
 
@@ -89,16 +88,12 @@ class ResponsiveBarView extends StatelessWidget {
   /// slivers is slivers
   final List<Widget>? slivers;
 
-  /// child is child
-  final Widget? child;
-
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
         SliverLayoutBuilder(builder: (_, __) => barBuilder()),
         if (slivers != null) ...slivers!,
-        if (child != null) SliverToBoxAdapter(child: child!),
       ],
     );
   }

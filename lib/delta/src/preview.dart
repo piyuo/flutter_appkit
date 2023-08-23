@@ -85,41 +85,40 @@ void preview<T>(
 }) {
   Navigator.push<T>(context, FadeRouteBuilder(
     () {
-      final colorScheme = Theme.of(context).colorScheme;
-      return Container(
-          color: colorScheme.background,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Hero(
-                    tag: heroTag,
-                    child: interactive
-                        ? InteractiveViewer(
-                            constrained: true,
-                            panEnabled: true, // Set it to false to prevent panning.
-                            panAxis: PanAxis.aligned,
-                            minScale: 0.5,
-                            maxScale: 3.5,
-                            child: child,
-                          )
-                        : child),
-              ),
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: ResponsiveAppBar(
-                    backgroundColor: Colors.transparent,
-                    actions: [
-                      if (onShare != null)
-                        IconButton(
-                          icon: const Icon(Icons.ios_share),
-                          onPressed: () => onShare(),
-                        ),
-                    ],
-                  )),
+      return Scaffold(
+        body: ResponsiveBarView(
+          barBuilder: () => responsiveBar(
+            context,
+            actions: [
+              if (onShare != null)
+                IconButton(
+                  icon: const Icon(Icons.ios_share),
+                  onPressed: () => onShare(),
+                ),
             ],
-          ));
+          ),
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Hero(
+                  tag: heroTag,
+                  child: interactive
+                      ? InteractiveViewer(
+                          constrained: true,
+                          panEnabled: true, // Set it to false to prevent panning.
+                          panAxis: PanAxis.aligned,
+                          minScale: 0.25,
+                          maxScale: 4,
+                          child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: child), //strange fix for InteractiveViewer,if no sized box, image will be scroll
+                        )
+                      : child),
+            )
+          ],
+        ),
+      );
     },
   ));
 }
@@ -148,7 +147,7 @@ class PreviewImage extends StatelessWidget {
       previewBuilder: () => WebImage(
         url: url,
         borderRadius: borderRadius,
-        fit: null,
+        fit: BoxFit.contain,
       ),
       onShare: () => shareByCacheOrUrl(url),
     );
