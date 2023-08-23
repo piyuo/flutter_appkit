@@ -16,6 +16,8 @@ import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../base.dart';
 
+final _navigatorKey = GlobalKey();
+
 main() async {
   await start(
     theme: testing.theme(),
@@ -436,33 +438,81 @@ class AppExampleState extends State<AppExample> {
                     const SizedBox(width: 50),
                     Expanded(
                         child: SplitView(
-                      isVertical: false,
-                      key: const ValueKey<String>('_first'),
-                      splitViewProvider: splitterViewProvider,
-                      sideBar: const delta.ResponsiveAppBar(
-                        macPadding: false,
-                        title: Text('side'),
-                        leading: Icon(Icons.menu),
-                        actions: [
-                          Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.people)),
-                        ],
-                      ),
-                      sideBuilder: () => Container(
-                        color: Colors.blue,
-                        child: const Center(child: Text('side')),
-                      ),
-                      bar: const delta.ResponsiveAppBar(
-                          macPadding: false,
-                          title: Text('main'),
-                          leading: Icon(Icons.add),
-                          actions: [
-                            Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.store)),
-                          ]),
-                      builder: () => Container(
+                            newNavigatorKey: _navigatorKey,
+                            isVertical: false,
+                            key: const ValueKey<String>('_first'),
+                            splitViewProvider: splitterViewProvider,
+                            sideBarBuilder: (context) => const delta.ResponsiveAppBar(
+                                  macPadding: false,
+                                  title: Text('side'),
+                                  leading: Icon(Icons.menu),
+                                  actions: [
+                                    Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.people)),
+                                  ],
+                                ),
+                            sideBuilder: (_) => Container(
+                                  color: Colors.blue,
+                                  child: const Center(child: Text('side')),
+                                ),
+                            barBuilder: (_) => const delta.ResponsiveAppBar(
+                                    macPadding: false,
+                                    title: Text('main'),
+                                    leading: Icon(Icons.add),
+                                    actions: [
+                                      Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.store)),
+                                    ]),
+                            builder: (context) => Container(
+                                  color: Colors.red,
+                                  child: Center(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                                          return Scaffold(
+                                            appBar: const delta.ResponsiveAppBar(
+                                              macPadding: false,
+                                            ),
+                                            body: SafeArea(
+                                                child: SingleChildScrollView(
+                                              child: Column(children: [
+                                                Container(height: 500, color: Colors.yellow),
+                                                Container(height: 500, color: Colors.blue),
+                                                Container(height: 500, color: Colors.red),
+                                                Container(height: 500, color: Colors.green),
+                                              ]),
+                                            )),
+                                          );
+                                        }));
+                                      },
+                                      child: const Text('main'),
+                                    ),
+                                  ),
+                                )
+/*
+                      Container(
                         color: Colors.red,
-                        child: const Center(child: Text('main')),
-                      ),
-                    )),
+                        child: Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                                return Scaffold(
+                                  appBar: const delta.ResponsiveAppBar(),
+                                  body: SafeArea(
+                                      child: SingleChildScrollView(
+                                    child: Column(children: [
+                                      Container(height: 500, color: Colors.red),
+                                      Container(height: 500, color: Colors.blue),
+                                      Container(height: 500, color: Colors.yellow),
+                                      Container(height: 500, color: Colors.green),
+                                    ]),
+                                  )),
+                                );
+                              }));
+                            },
+                            child: const Text('main'),
+                          ),
+                        ),
+                      ),*/
+                            )),
                   ]),
                 )));
   }

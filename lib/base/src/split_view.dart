@@ -44,21 +44,28 @@ class SplitView extends StatelessWidget {
   const SplitView({
     required this.splitViewProvider,
     this.builder,
-    this.bar,
+    this.barBuilder,
     this.sideBuilder,
-    this.sideBar,
+    this.sideBarBuilder,
     this.isVertical = false,
     this.sideWeight = 0.4,
     this.sideWeightMax = 0.8,
     this.sideWeightMin = 0.2,
+    this.newNavigatorKey,
     super.key,
   });
 
   /// sideBuilder return side widget, if null side will be hidden
-  final Widget Function()? sideBuilder;
+  final utils.WidgetContextBuilder? sideBuilder;
+
+  /// sideBar is a widget that will be shown on the left side of the side widget
+  final utils.WidgetContextBuilder? sideBarBuilder;
+
+  /// bar is a widget that will be shown on the right side of the side widget
+  final utils.WidgetContextBuilder? barBuilder;
 
   /// builder is main content widget builder, if null main content will be hidden
-  final Widget Function()? builder;
+  final utils.WidgetContextBuilder? builder;
 
   /// isVertical is split view orientation, default is horizontal
   final bool isVertical;
@@ -75,20 +82,28 @@ class SplitView extends StatelessWidget {
   /// sideWeight is side min widget weight, default is 0.2
   final double sideWeightMin;
 
-  /// sideBar is a widget that will be shown on the left side of the side widget
-  final Widget? sideBar;
-
-  /// bar is a widget that will be shown on the right side of the side widget
-  final Widget? bar;
+  /// newNavigatorKey is not null will use navigator to navigate to the main content, default is true
+  final GlobalKey? newNavigatorKey;
 
   @override
   Widget build(BuildContext context) {
     buildSide() {
-      return sideBar != null ? Column(children: [sideBar!, Expanded(child: sideBuilder!())]) : sideBuilder!();
+      return sideBarBuilder != null
+          ? Column(children: [sideBarBuilder!(context), Expanded(child: sideBuilder!(context))])
+          : sideBuilder!(context);
     }
 
     buildMain() {
-      return bar != null ? Column(children: [bar!, Expanded(child: builder!())]) : builder!();
+      mainContent(ctx) =>
+          barBuilder != null ? Column(children: [barBuilder!(ctx), Expanded(child: builder!(ctx))]) : builder!(ctx);
+
+      if (newNavigatorKey != null) {
+        return Navigator(
+          key: newNavigatorKey,
+          onGenerateRoute: (settings) => MaterialPageRoute(builder: (ctx) => mainContent(ctx)),
+        );
+      }
+      return mainContent(context);
     }
 
     if (sideBuilder == null && builder == null) return const SizedBox();
