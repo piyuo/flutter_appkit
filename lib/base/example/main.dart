@@ -442,22 +442,11 @@ class AppExampleState extends State<AppExample> {
                             isVertical: false,
                             key: const ValueKey<String>('_first'),
                             splitViewProvider: splitterViewProvider,
-                            sideBarBuilder: (context) => const delta.ResponsiveAppBar(
-                                  title: Text('side'),
-                                  leading: Icon(Icons.menu),
-                                  actions: [
-                                    Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.people)),
-                                  ],
-                                ),
                             sideBuilder: (_) => Container(
                                   color: Colors.blue,
                                   child: const Center(child: Text('side')),
                                 ),
-                            barBuilder: (_) =>
-                                const delta.ResponsiveAppBar(title: Text('main'), leading: Icon(Icons.add), actions: [
-                                  Padding(padding: EdgeInsets.only(right: 16), child: Icon(Icons.store)),
-                                ]),
-                            builder: (context) => Container(
+                            contentBuilder: (context) => Container(
                                   color: Colors.red,
                                   child: Center(
                                     child: ElevatedButton(

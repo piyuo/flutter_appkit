@@ -43,10 +43,8 @@ class SplitViewProvider with ChangeNotifier, utils.InitOnceMixin {
 class SplitView extends StatelessWidget {
   const SplitView({
     required this.splitViewProvider,
-    this.builder,
-    this.barBuilder,
+    this.contentBuilder,
     this.sideBuilder,
-    this.sideBarBuilder,
     this.isVertical = false,
     this.sideWeight = 0.4,
     this.sideWeightMax = 0.8,
@@ -55,17 +53,11 @@ class SplitView extends StatelessWidget {
     super.key,
   });
 
-  /// sideBar is a widget that will be shown on the left side of the side widget
-  final Widget? Function(BuildContext context)? sideBarBuilder;
-
   /// sideBuilder return side widget, if null side will be hidden
   final utils.WidgetContextBuilder? sideBuilder;
 
-  /// bar is a widget that will be shown on the right side of the side widget
-  final Widget? Function(BuildContext context)? barBuilder;
-
-  /// builder is main content widget builder, if null main content will be hidden
-  final utils.WidgetContextBuilder? builder;
+  /// contentBuilder is main content widget builder, if null main content will be hidden
+  final utils.WidgetContextBuilder? contentBuilder;
 
   /// isVertical is split view orientation, default is horizontal
   final bool isVertical;
@@ -87,31 +79,19 @@ class SplitView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    buildSide() {
-      final sidebar = sideBarBuilder != null ? sideBarBuilder!(context) : null;
-      return sidebar != null
-          ? Column(children: [sidebar, Expanded(child: sideBuilder!(context))])
-          : sideBuilder!(context);
-    }
-
-    buildMain() {
-      mainContent(ctx) {
-        final bar = barBuilder != null ? barBuilder!(ctx) : null;
-        return bar != null ? Column(children: [bar, Expanded(child: builder!(ctx))]) : builder!(ctx);
-      }
-
+    buildContent() {
       if (newNavigatorKey != null) {
         return Navigator(
           key: newNavigatorKey,
-          onGenerateRoute: (settings) => MaterialPageRoute(builder: (ctx) => mainContent(ctx)),
+          onGenerateRoute: (settings) => MaterialPageRoute(builder: (ctx) => contentBuilder!(ctx)),
         );
       }
-      return mainContent(context);
+      return contentBuilder!(context);
     }
 
-    if (sideBuilder == null && builder == null) return const SizedBox();
-    if (sideBuilder == null) return buildMain();
-    if (builder == null) return buildSide();
+    if (sideBuilder == null && contentBuilder == null) return const SizedBox();
+    if (sideBuilder == null) return buildContent();
+    if (contentBuilder == null) return sideBuilder!(context);
 
     final valueKey = (key! as ValueKey<String>).value;
     final savedWeight = splitViewProvider.get(valueKey);
@@ -136,8 +116,8 @@ class SplitView extends StatelessWidget {
         color: colorScheme.outlineVariant,
       ),
       children: [
-        if (sideBuilder != null) buildSide(),
-        if (builder != null) buildMain(),
+        if (sideBuilder != null) sideBuilder!(context),
+        if (contentBuilder != null) buildContent(),
       ],
     );
   }
