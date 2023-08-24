@@ -442,14 +442,20 @@ class AppExampleState extends State<AppExample> {
                             isVertical: false,
                             key: const ValueKey<String>('_first'),
                             splitViewProvider: splitterViewProvider,
-                            sideBuilder: (_) => Container(
+                            sideBuilder: (_, splitView) => Container(
                                   color: Colors.blue,
-                                  child: const Center(child: Text('side')),
-                                ),
-                            contentBuilder: (context) => Container(
-                                  color: Colors.red,
                                   child: Center(
-                                    child: ElevatedButton(
+                                      child: ElevatedButton(
+                                    child: const Text('side'),
+                                    onPressed: () => splitView.showContent(context),
+                                  )),
+                                ),
+                            contentBuilder: (context, splitView) => Container(
+                                  color: Colors.red,
+                                  child: Scaffold(
+                                    appBar: const delta.ResponsiveAppBar(),
+                                    body: Center(
+                                        child: ElevatedButton(
                                       onPressed: () {
                                         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
                                           return Scaffold(
@@ -467,7 +473,7 @@ class AppExampleState extends State<AppExample> {
                                         }));
                                       },
                                       child: const Text('main'),
-                                    ),
+                                    )),
                                   ),
                                 ))),
                   ]),

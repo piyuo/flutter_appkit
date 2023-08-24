@@ -54,10 +54,10 @@ class SplitView extends StatelessWidget {
   });
 
   /// sideBuilder return side widget, if null side will be hidden
-  final utils.WidgetContextBuilder? sideBuilder;
+  final Widget Function(BuildContext context, SplitView splitView)? sideBuilder;
 
   /// contentBuilder is main content widget builder, if null main content will be hidden
-  final utils.WidgetContextBuilder? contentBuilder;
+  final Widget Function(BuildContext context, SplitView splitView)? contentBuilder;
 
   /// isVertical is split view orientation, default is horizontal
   final bool isVertical;
@@ -77,21 +77,30 @@ class SplitView extends StatelessWidget {
   /// newNavigatorKey is not null will use navigator to navigate to the main content, default is true
   final GlobalKey? newNavigatorKey;
 
+  /// showContent push new route to show content, it's often used in mobile layout to show content in new page
+  void showContent(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => contentBuilder!(context, this),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     buildContent() {
       if (newNavigatorKey != null) {
         return Navigator(
           key: newNavigatorKey,
-          onGenerateRoute: (settings) => MaterialPageRoute(builder: (ctx) => contentBuilder!(ctx)),
+          onGenerateRoute: (settings) => MaterialPageRoute(builder: (ctx) => contentBuilder!(ctx, this)),
         );
       }
-      return contentBuilder!(context);
+      return contentBuilder!(context, this);
     }
 
     if (sideBuilder == null && contentBuilder == null) return const SizedBox();
     if (sideBuilder == null) return buildContent();
-    if (contentBuilder == null) return sideBuilder!(context);
+    if (contentBuilder == null) return sideBuilder!(context, this);
 
     final valueKey = (key! as ValueKey<String>).value;
     final savedWeight = splitViewProvider.get(valueKey);
@@ -116,7 +125,7 @@ class SplitView extends StatelessWidget {
         color: colorScheme.outlineVariant,
       ),
       children: [
-        if (sideBuilder != null) sideBuilder!(context),
+        if (sideBuilder != null) sideBuilder!(context, this),
         if (contentBuilder != null) buildContent(),
       ],
     );
