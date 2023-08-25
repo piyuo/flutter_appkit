@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:split_view/split_view.dart' as sv;
+import 'package:libcli/delta/delta.dart' as delta;
 
 /// SplitViewProvider is A provider that provides the [SplitView] with the ability to save and load side weight
 class SplitViewProvider with ChangeNotifier, utils.InitOnceMixin {
@@ -50,6 +51,7 @@ class SplitView extends StatelessWidget {
     this.sideWeightMax = 0.8,
     this.sideWeightMin = 0.2,
     this.newNavigatorKey,
+    this.hideContentInMobile = true,
     super.key,
   });
 
@@ -77,8 +79,12 @@ class SplitView extends StatelessWidget {
   /// newNavigatorKey is not null will use navigator to navigate to the main content, default is true
   final GlobalKey? newNavigatorKey;
 
+  /// hideContentInMobile is true will hide main content in mobile layout, default is true
+  final bool hideContentInMobile;
+
   /// showContent push new route to show content, it's often used in mobile layout to show content in new page
   void showContent(BuildContext context) {
+    if (hideContentInMobile && !delta.phoneScreen) return;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => contentBuilder!(context, this),
@@ -88,46 +94,48 @@ class SplitView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    buildContent() {
-      if (newNavigatorKey != null) {
-        return Navigator(
-          key: newNavigatorKey,
-          onGenerateRoute: (settings) => MaterialPageRoute(builder: (ctx) => contentBuilder!(ctx, this)),
-        );
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      buildContent() {
+        if (newNavigatorKey != null) {
+          return Navigator(
+            key: newNavigatorKey,
+            onGenerateRoute: (settings) => MaterialPageRoute(builder: (ctx) => contentBuilder!(ctx, this)),
+          );
+        }
+        return contentBuilder!(context, this);
       }
-      return contentBuilder!(context, this);
-    }
 
-    if (sideBuilder == null && contentBuilder == null) return const SizedBox();
-    if (sideBuilder == null) return buildContent();
-    if (contentBuilder == null) return sideBuilder!(context, this);
+      if (sideBuilder == null && contentBuilder == null) return const SizedBox();
+      if (sideBuilder == null) return buildContent();
+      if (contentBuilder == null || (delta.phoneScreen && hideContentInMobile)) return sideBuilder!(context, this);
 
-    final valueKey = (key! as ValueKey<String>).value;
-    final savedWeight = splitViewProvider.get(valueKey);
-    final colorScheme = Theme.of(context).colorScheme;
+      final valueKey = (key! as ValueKey<String>).value;
+      final savedWeight = splitViewProvider.get(valueKey);
+      final colorScheme = Theme.of(context).colorScheme;
 
-    return sv.SplitView(
-      gripSize: 5,
-      gripColor: colorScheme.outlineVariant.withOpacity(.2),
-      gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
-      controller: sv.SplitViewController(
-        weights: [savedWeight ?? sideWeight],
-        limits: [sv.WeightLimit(min: sideWeightMin, max: sideWeightMax)],
-      ),
-      viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
-      indicator: sv.SplitIndicator(
+      return sv.SplitView(
+        gripSize: 5,
+        gripColor: colorScheme.outlineVariant.withOpacity(.2),
+        gripColorActive: colorScheme.outlineVariant.withOpacity(.5),
+        controller: sv.SplitViewController(
+          weights: [savedWeight ?? sideWeight],
+          limits: [sv.WeightLimit(min: sideWeightMin, max: sideWeightMax)],
+        ),
         viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
-        color: colorScheme.outlineVariant.withOpacity(.9),
-      ),
-      activeIndicator: sv.SplitIndicator(
-        viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
-        isActive: true,
-        color: colorScheme.outlineVariant,
-      ),
-      children: [
-        if (sideBuilder != null) sideBuilder!(context, this),
-        if (contentBuilder != null) buildContent(),
-      ],
-    );
+        indicator: sv.SplitIndicator(
+          viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
+          color: colorScheme.outlineVariant.withOpacity(.9),
+        ),
+        activeIndicator: sv.SplitIndicator(
+          viewMode: isVertical ? sv.SplitViewMode.Vertical : sv.SplitViewMode.Horizontal,
+          isActive: true,
+          color: colorScheme.outlineVariant,
+        ),
+        children: [
+          if (sideBuilder != null) sideBuilder!(context, this),
+          if (contentBuilder != null) buildContent(),
+        ],
+      );
+    });
   }
 }
