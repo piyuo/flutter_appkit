@@ -139,7 +139,7 @@ class NavigationScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final bigDisplay = railWidth != 0 && delta.isBigScreen(screenWidth);
-    final phoneDisplay = delta.isPhoneScreen(screenWidth);
+    final bottomMode = screenWidth <= 744; // 744 is ipad mini portrait width
 
     buildIcon(Navigation n) {
       return Tooltip(
@@ -157,7 +157,7 @@ class NavigationScaffold extends StatelessWidget {
     return Scaffold(
       key: key,
       appBar: appBar,
-      body: phoneDisplay
+      body: bottomMode
           ? body
           : Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +187,7 @@ class NavigationScaffold extends StatelessWidget {
                 ),
               ],
             ),
-      bottomNavigationBar: phoneDisplay
+      bottomNavigationBar: bottomMode
           ? BottomNavigationBar(
               items: destinations
                   .map((n) => BottomNavigationBarItem(

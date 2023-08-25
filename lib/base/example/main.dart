@@ -82,7 +82,7 @@ class AppExampleState extends State<AppExample> {
           body: Column(
         children: [
           Expanded(
-            child: _splitView(context),
+            child: _navigationScaffold(context),
           ),
           Container(
               height: 100,
