@@ -14,7 +14,7 @@ Size get screenSize =>
 const phoneScreenMax = 600.0;
 
 /// bigScreenDesignMin is min width to use big screen design
-const bigScreenMin = 1100.0;
+const bigScreenMin = 1134.0; // 1133 is ipad mini in landscape
 
 /// space is proper space for phone screen and bigger screen
 double get space => phoneScreen ? 10 : 20;
