@@ -21,7 +21,7 @@ class Preview extends StatelessWidget {
   const Preview({
     required this.builder,
     required this.previewBuilder,
-    this.onShare,
+    this.shareUrl,
     this.useHeroEffect = true,
     this.interactive = true,
     super.key,
@@ -33,8 +33,8 @@ class Preview extends StatelessWidget {
   /// previewBuilder is the widget builder for preview
   final utils.WidgetBuilder previewBuilder;
 
-  /// onShare is the share button callback
-  final VoidCallback? onShare;
+  /// shareUrl is the share button callback
+  final String? shareUrl;
 
   /// useHeroEffect is true if use hero effect
   final bool useHeroEffect;
@@ -60,7 +60,7 @@ class Preview extends StatelessWidget {
                 context,
                 interactive: interactive,
                 heroTag: heroTag,
-                onShare: onShare,
+                shareUrl: shareUrl,
                 child: previewBuilder(),
               );
             },
@@ -81,7 +81,7 @@ void preview<T>(
   required Widget child,
   required String heroTag,
   bool interactive = true,
-  VoidCallback? onShare,
+  String? shareUrl,
 }) {
   Navigator.push<T>(context, FadeRouteBuilder(
     () {
@@ -90,10 +90,18 @@ void preview<T>(
           barBuilder: () => responsiveBar(
             context,
             actions: [
-              if (onShare != null)
-                IconButton(
-                  icon: const Icon(Icons.ios_share),
-                  onPressed: () => onShare(),
+              if (shareUrl != null)
+                Builder(
+                  builder: (BuildContext context) => IconButton(
+                    icon: const Icon(Icons.ios_share),
+                    onPressed: () {
+                      final box = context.findRenderObject() as RenderBox?;
+                      shareByCacheOrUrl(
+                        shareUrl,
+                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                      );
+                    },
+                  ),
                 ),
             ],
           ),
@@ -149,7 +157,7 @@ class PreviewImage extends StatelessWidget {
         borderRadius: borderRadius,
         fit: BoxFit.contain,
       ),
-      onShare: () => shareByCacheOrUrl(url),
+      shareUrl: url,
     );
   }
 }
@@ -181,7 +189,7 @@ class PreviewVideo extends StatelessWidget {
     return Preview(
       useHeroEffect: false,
       interactive: false,
-      onShare: () => shareByCacheOrUrl(url),
+      shareUrl: url,
       builder: () => WebVideo(
         url: url,
         showControls: false,
