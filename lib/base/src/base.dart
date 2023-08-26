@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
@@ -77,8 +78,8 @@ Future<void> start({
                   );
                 },
                 debugShowCheckedModeBanner: false,
-                theme: theme,
-                darkTheme: darkTheme,
+                theme: theme != null ? adjustFontSpacing(theme) : null,
+                darkTheme: darkTheme != null ? adjustFontSpacing(darkTheme) : null,
                 locale: languageProvider.preferredLocale,
                 localizationsDelegates: [
                   ...localizationsDelegates,
@@ -214,7 +215,48 @@ void setWebPageTitle(String title) {
   }
 }
 
-
+/// adjustFontSpacing fix text labels on Flutter's MaterialApp looks worse on iOS and macOS
+/// https://reinhart1010.id/blog/2023/02/11/why-text-labels-on-flutters-materialapp-looks-worse-on-ios-and-macos
+ThemeData adjustFontSpacing(ThemeData theme) {
+  if (kIsWeb || !(UniversalPlatform.isIOS || UniversalPlatform.isMacOS)) return theme;
+  return theme.copyWith(
+    textTheme: theme.textTheme.copyWith(
+      bodyLarge: theme.textTheme.bodyLarge?.copyWith(letterSpacing: -0.31),
+      bodyMedium: theme.textTheme.bodyMedium?.copyWith(letterSpacing: -0.15),
+      bodySmall: theme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
+      displayLarge: theme.textTheme.displayLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.29 - 1.5,
+      ),
+      displayMedium: theme.textTheme.displayMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.35 - 1.5,
+      ),
+      displaySmall: theme.textTheme.displaySmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.37 - 1.5,
+      ),
+      headlineLarge: theme.textTheme.headlineLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.41 - 1.5,
+      ),
+      headlineMedium: theme.textTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.38 - 1.5,
+      ),
+      headlineSmall: theme.textTheme.headlineSmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.07 - 1.5,
+      ),
+      labelLarge: theme.textTheme.labelLarge?.copyWith(letterSpacing: -0.15),
+      labelMedium: theme.textTheme.labelMedium?.copyWith(letterSpacing: 0),
+      labelSmall: theme.textTheme.labelSmall?.copyWith(letterSpacing: 0.06),
+      titleLarge: theme.textTheme.titleLarge?.copyWith(letterSpacing: -0.26),
+      titleMedium: theme.textTheme.titleMedium?.copyWith(letterSpacing: -0.31),
+      titleSmall: theme.textTheme.titleSmall?.copyWith(letterSpacing: -0.15),
+    ),
+  );
+}
 
 /*
 /// isRootCanPop return true if root page still can go back to previous page
