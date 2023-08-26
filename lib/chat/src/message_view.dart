@@ -31,7 +31,7 @@ class MessageView extends StatelessWidget {
   final BoxConstraints? mediaConstraints;
 
   /// urlBuilder return the url of the image base on word type and id
-  final String Function(pb.Word_WordType type, String id) urlBuilder;
+  final String Function(String id) urlBuilder;
 
   /// _isSingleMedia return true if words is a single media
   bool get _isSingleMedia => isSingleMedia(words);
@@ -66,7 +66,7 @@ class MessageView extends StatelessWidget {
           case pb.Word_WordType.WORD_TYPE_IMAGE:
             return buildMedia(
               delta.PreviewImage(
-                urlBuilder(word.type, word.value),
+                urlBuilder(word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
               ),
               Size(word.width.toDouble(), word.height.toDouble()),
@@ -74,7 +74,7 @@ class MessageView extends StatelessWidget {
           case pb.Word_WordType.WORD_TYPE_VIDEO:
             return buildMedia(
               delta.PreviewVideo(
-                urlBuilder(word.type, word.value),
+                urlBuilder(word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
                 height: 240,
               ),

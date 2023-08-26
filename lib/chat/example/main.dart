@@ -70,7 +70,7 @@ class EditorExample extends StatelessWidget {
             margin: const EdgeInsets.all(10),
             color: Colors.blue,
             child: MessageView(
-              urlBuilder: (type, id) {
+              urlBuilder: (id) {
                 return 'https://download.samplelib.com/mp4/sample-5s.mp4';
               },
               words: words,
@@ -94,7 +94,7 @@ class EditorExample extends StatelessWidget {
             color: Colors.blue,
             child: MessageView(
               textStyle: const TextStyle(color: Colors.red, fontSize: 16),
-              urlBuilder: (type, id) {
+              urlBuilder: (id) {
                 return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
               },
               words: words,
@@ -156,7 +156,7 @@ class EditorExample extends StatelessWidget {
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 360),
                     child: MessageView(
-                      urlBuilder: (type, id) {
+                      urlBuilder: (id) {
                         if (id == 'video1') {
                           return 'https://download.samplelib.com/mp4/sample-5s.mp4';
                         }
