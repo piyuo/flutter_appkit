@@ -44,7 +44,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   flutter_markdown: ^0.6.13
   #location: ^4.3.0 # device lat lng
-  geolocator: ^9.0.2
+  geolocator: ^10.0.0
   apple_maps_flutter: ^1.2.0
   google_maps_flutter: ^2.2.8
   google_maps_flutter_web: ^0.5.1
