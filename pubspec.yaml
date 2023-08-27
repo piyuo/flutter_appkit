@@ -25,7 +25,7 @@ dependencies:
   meta: ^1.9.1
   provider: ^6.0.5
   nested: ^1.0.0
-  intl: ^0.18.0
+  intl: ^0.18.1
   uuid: ^3.0.7
   cross_file: ^0.3.3+4
   cross_file_image: ^1.0.0
@@ -100,7 +100,6 @@ dev_dependencies:
   flutter_lints: ^2.0.2
   analyzer: ^5.11.0
 dependency_overrides:
-  intl: ^0.18.1 # cause reactive_touch_spin need intl 0.18
   analyzer: ^6.2.0
 
 
