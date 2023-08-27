@@ -101,8 +101,7 @@ dev_dependencies:
   analyzer: ^5.11.0
 dependency_overrides:
   intl: ^0.18.1 # cause reactive_touch_spin need intl 0.18
-  analyzer: ^6.0.0
-  #csslib: ^1.0.0
+  analyzer: ^6.2.0
 
 
   #meta: ^1.9.0 # cause flutter_test need intl 1.8.0
