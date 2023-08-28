@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart' as shimmer;
 
+/// ShimmerScope set scope for all shimmer spot
 class ShimmerScope extends StatelessWidget {
-  /// ShimmerScope set scope for all shimmer spot
   const ShimmerScope({
     required this.child,
-    Key? key,
     this.enabled = true,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// enabled is true will show shimmer
   final bool enabled;
 
+  /// child is widget that will be show
   final Widget child;
 
   @override
@@ -34,8 +35,8 @@ class Shimmer extends StatelessWidget {
     this.height,
     this.radius = 10,
     this.margin = EdgeInsets.zero,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// width is shimmer width
   final double? width;
@@ -60,5 +61,67 @@ class Shimmer extends StatelessWidget {
       width: width,
       height: height,
     );
+  }
+}
+
+/// ShimmerColumn display column full of shimmer
+class ShimmerColumn extends StatelessWidget {
+  const ShimmerColumn({
+    this.shimmerCount = 20,
+    this.shimmerHeight = 58.0,
+    this.shimmerMargin = const EdgeInsets.all(10),
+    super.key,
+  });
+
+  /// shimmerCount is count of shimmer
+  final int shimmerCount;
+
+  /// shimmerHeight is shimmer height
+  final double shimmerHeight;
+
+  /// shimmerHeight is shimmer height
+  final EdgeInsetsGeometry? shimmerMargin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        children: List.generate(
+      shimmerCount,
+      (index) => Shimmer(
+        margin: shimmerMargin,
+        height: shimmerHeight,
+      ),
+    ));
+  }
+}
+
+/// ShimmerRow display row full of shimmer
+class ShimmerRow extends StatelessWidget {
+  const ShimmerRow({
+    this.shimmerCount = 20,
+    this.shimmerWidth = 200.0,
+    this.shimmerMargin = const EdgeInsets.all(10),
+    super.key,
+  });
+
+  /// shimmerCount is count of shimmer
+  final int shimmerCount;
+
+  /// shimmerWidth is shimmer width
+  final double shimmerWidth;
+
+  /// shimmerHeight is shimmer height
+  final EdgeInsetsGeometry? shimmerMargin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        children: List.generate(
+      shimmerCount,
+      (index) => Shimmer(
+        margin: shimmerMargin,
+        width: shimmerWidth,
+      ),
+    ));
   }
 }

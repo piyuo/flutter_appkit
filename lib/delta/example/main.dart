@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       children: [
                         Expanded(
                           //child: SingleChildScrollView(child: _barView(context)),
-                          child: _webImage(context),
+                          child: _shimmer(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -1039,6 +1039,8 @@ class _DeltaExampleState extends State<DeltaExample> {
           size: 120,
         ),
       ),
+      SizedBox(height: 80, child: ShimmerRow()),
+      SizedBox(width: 220, child: ShimmerColumn()),
     ]));
   }
 
