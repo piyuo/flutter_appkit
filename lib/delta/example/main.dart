@@ -1039,8 +1039,8 @@ class _DeltaExampleState extends State<DeltaExample> {
           size: 120,
         ),
       ),
-      SizedBox(height: 80, child: ShimmerRow()),
-      SizedBox(width: 220, child: ShimmerColumn()),
+      SizedBox(height: 180, width: 350, child: ShimmerRow()),
+      SizedBox(height: 350, width: 220, child: ShimmerColumn()),
     ]));
   }
 

@@ -84,14 +84,15 @@ class ShimmerColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: List.generate(
-      shimmerCount,
+    return SingleChildScrollView(
+        child: Column(
+            children: List.generate(
+      5, //shimmerCount,
       (index) => Shimmer(
         margin: shimmerMargin,
         height: shimmerHeight,
       ),
-    ));
+    )));
   }
 }
 
@@ -99,7 +100,7 @@ class ShimmerColumn extends StatelessWidget {
 class ShimmerRow extends StatelessWidget {
   const ShimmerRow({
     this.shimmerCount = 20,
-    this.shimmerWidth = 200.0,
+    this.shimmerWidth = 100.0,
     this.shimmerMargin = const EdgeInsets.all(10),
     super.key,
   });
@@ -115,13 +116,15 @@ class ShimmerRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        children: List.generate(
-      shimmerCount,
-      (index) => Shimmer(
-        margin: shimmerMargin,
-        width: shimmerWidth,
-      ),
-    ));
+    return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+            children: List.generate(
+          shimmerCount,
+          (index) => Shimmer(
+            margin: shimmerMargin,
+            width: shimmerWidth,
+          ),
+        )));
   }
 }
