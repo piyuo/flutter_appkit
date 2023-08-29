@@ -87,7 +87,7 @@ class ShimmerColumn extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(
             children: List.generate(
-      5, //shimmerCount,
+      shimmerCount,
       (index) => Shimmer(
         margin: shimmerMargin,
         height: shimmerHeight,
