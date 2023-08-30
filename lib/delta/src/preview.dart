@@ -85,48 +85,48 @@ void preview<T>(
 }) {
   Navigator.push<T>(context, FadeRouteBuilder(
     () {
-      return Scaffold(
-        body: ResponsiveBarView(
-          barBuilder: () => responsiveBar(
-            context,
-            actions: [
-              if (shareUrl != null)
-                Builder(
-                  builder: (BuildContext context) => IconButton(
-                    icon: const Icon(Icons.ios_share),
-                    onPressed: () {
-                      final box = context.findRenderObject() as RenderBox?;
-                      shareByCacheOrUrl(
-                        shareUrl,
-                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-                      );
-                    },
-                  ),
-                ),
-            ],
+      return Material(
+          child: Stack(
+        children: [
+          Positioned.fill(
+            child: Hero(
+                tag: heroTag,
+                child: interactive
+                    ? InteractiveViewer(
+                        constrained: true,
+                        panEnabled: true, // Set it to false to prevent panning.
+                        panAxis: PanAxis.aligned,
+                        minScale: 0.25,
+                        maxScale: 4,
+                        child: child)
+                    : child),
           ),
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Hero(
-                  tag: heroTag,
-                  child: interactive
-                      ? InteractiveViewer(
-                          constrained: true,
-                          panEnabled: true, // Set it to false to prevent panning.
-                          panAxis: PanAxis.aligned,
-                          minScale: 0.25,
-                          maxScale: 4,
-                          child: SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: child), //strange fix for InteractiveViewer,if no sized box, image will be scroll
-                        )
-                      : child),
-            )
-          ],
-        ),
-      );
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            child: ResponsiveAppBar(
+              backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.3),
+              actions: [
+                if (shareUrl != null)
+                  Builder(
+                    builder: (BuildContext context) => IconButton(
+                      icon: const Icon(Icons.ios_share),
+                      onPressed: () {
+                        final box = context.findRenderObject() as RenderBox?;
+                        shareByCacheOrUrl(
+                          shareUrl,
+                          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
+            //Container(width: 100, height: 100, color: Colors.red),
+          ),
+        ],
+      ));
     },
   ));
 }
@@ -197,13 +197,11 @@ class PreviewVideo extends StatelessWidget {
         width: width,
         height: height,
       ),
-      previewBuilder: () => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 56),
-          child: Center(
-            child: WebVideo(
-              url: url,
-            ),
+      previewBuilder: () => Padding(
+        padding: const EdgeInsets.only(top: 56),
+        child: Center(
+          child: WebVideo(
+            url: url,
           ),
         ),
       ),

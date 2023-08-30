@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       children: [
                         Expanded(
                           //child: SingleChildScrollView(child: _barView(context)),
-                          child: _shimmer(context),
+                          child: _preview(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -921,7 +921,6 @@ class _DeltaExampleState extends State<DeltaExample> {
                           'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                       width: 300,
                       height: 300,
-                      opacity: 0.5,
                       border: Border.all(color: Colors.red, width: 1),
                       borderRadius: const BorderRadius.all(Radius.circular(30)),
                     ),
