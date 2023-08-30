@@ -22,7 +22,7 @@ class EditorExample extends StatelessWidget {
       body: SafeArea(
         child: Column(children: [
           Expanded(
-            child: _chatBar(),
+            child: _messageView(),
           ),
           Wrap(
             children: [
@@ -147,23 +147,48 @@ class EditorExample extends StatelessWidget {
       ),
     ];
 
-    return Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-            margin: const EdgeInsets.all(10),
-            color: Colors.blue,
-            child: SingleChildScrollView(
-                child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 360),
-                    child: MessageView(
-                      urlBuilder: (id) {
-                        if (id == 'video1') {
-                          return 'https://download.samplelib.com/mp4/sample-5s.mp4';
-                        }
-                        return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
-                      },
-                      textStyle: const TextStyle(color: Colors.red, fontSize: 16),
-                      words: words,
-                    )))));
+    final words2 = [
+      pb.Word(
+        type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        value: 'img1',
+        width: 4000,
+        height: 6000,
+      ),
+    ];
+
+    return SingleChildScrollView(
+        child: Column(children: [
+      Container(
+          margin: const EdgeInsets.all(10),
+          color: Colors.blue,
+          child: SingleChildScrollView(
+              child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 300),
+                  child: MessageView(
+                    urlBuilder: (id) {
+                      if (id == 'video1') {
+                        return 'https://download.samplelib.com/mp4/sample-5s.mp4';
+                      }
+                      return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+                    },
+                    textStyle: const TextStyle(color: Colors.red, fontSize: 16),
+                    words: words,
+                  )))),
+      Container(
+          margin: const EdgeInsets.all(10),
+          color: Colors.green,
+          child: SingleChildScrollView(
+              child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 360),
+                  child: MessageView(
+                    urlBuilder: (id) {
+                      if (id == 'video1') {
+                        return 'https://download.samplelib.com/mp4/sample-5s.mp4';
+                      }
+                      return 'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+                    },
+                    words: words2,
+                  ))))
+    ]));
   }
 }

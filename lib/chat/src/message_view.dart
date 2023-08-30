@@ -17,7 +17,7 @@ class MessageView extends StatelessWidget {
     required this.words,
     required this.urlBuilder,
     this.textStyle,
-    this.mediaConstraints,
+    this.maxMediaHeight = 320,
     super.key,
   });
 
@@ -27,25 +27,23 @@ class MessageView extends StatelessWidget {
   /// textStyle for message
   final TextStyle? textStyle;
 
-  /// mediaConstraints is the image constraints
-  final BoxConstraints? mediaConstraints;
-
   /// urlBuilder return the url of the image base on word type and id
   final String Function(String id) urlBuilder;
 
   /// _isSingleMedia return true if words is a single media
   bool get _isSingleMedia => isSingleMedia(words);
 
+  /// maxMediaHeight is the max height of media
+  final double maxMediaHeight;
+
   @override
   Widget build(BuildContext context) {
     buildMedia(Widget child, Size? size) {
-      Widget result = Container(
-          constraints: mediaConstraints,
-          padding: EdgeInsets.all(_isSingleMedia ? 0 : 10),
+      Widget result = ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: maxMediaHeight),
           child: (size != null && size.width > 0 && size.height > 0)
               ? AspectRatio(aspectRatio: size.width / size.height, child: child)
               : child);
-
       if (!_isSingleMedia) {
         result = Align(child: result);
       }
@@ -53,6 +51,7 @@ class MessageView extends StatelessWidget {
     }
 
     return Wrap(
+      runSpacing: 12,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: words.map((word) {
         switch (word.type) {
