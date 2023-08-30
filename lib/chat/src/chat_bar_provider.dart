@@ -63,7 +63,7 @@ class ChatBarProvider with ChangeNotifier {
   bool hasMediaSizes(String id) => mediaSizes.containsKey(id);
 
   /// setMediaSize set media ratio
-  void setMediaSize(String id, value) => mediaSizes[id] = value;
+  void setMediaSize(String id, Size value) => mediaSizes[id] = value;
 
   /// removeFile remove file
   void removeFile(String id) {

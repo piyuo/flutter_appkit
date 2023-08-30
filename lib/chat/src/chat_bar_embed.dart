@@ -150,7 +150,7 @@ class ImageEmbedBuilder extends MediaEmbedBuilder {
               Completer<ui.Image> completer = Completer<ui.Image>();
               image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) {
                 try {
-                  chatBarProvider.setMediaSize(id, info.image.width / info.image.height);
+                  chatBarProvider.setMediaSize(id, Size(info.image.width.toDouble(), info.image.height.toDouble()));
                 } finally {
                   completer.complete(info.image);
                 }
@@ -182,8 +182,7 @@ class VideoEmbedBuilder extends MediaEmbedBuilder {
       onVideoLoaded: chatBarProvider.hasMediaSizes(id)
           ? null
           : (video) {
-              final size = video.size;
-              chatBarProvider.setMediaSize(id, size.width / size.height);
+              chatBarProvider.setMediaSize(id, video.size);
             },
     );
   }
@@ -214,14 +213,3 @@ class FileEmbedBuilder extends MediaEmbedBuilder {
     );
   }
 }
-
-      /*
-        Completer<ui.Image> completer = Completer<ui.Image>();
-        image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) {
-          try {
-            onBeforeImageLoad!(info.image);
-          } finally {
-            completer.complete(info.image);
-          }
-        }));
-        */

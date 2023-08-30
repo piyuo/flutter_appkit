@@ -22,7 +22,7 @@ class EditorExample extends StatelessWidget {
       body: SafeArea(
         child: Column(children: [
           Expanded(
-            child: _messageView(),
+            child: _chatBar(),
           ),
           Wrap(
             children: [
