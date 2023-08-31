@@ -22,7 +22,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   }
 
   /// _database is database that store data
-  final data.IndexedDb indexedDb;
+  final data.IndexedDbProvider indexedDb;
 
   /// _index keep all id of rows
   // ignore: prefer_final_fields

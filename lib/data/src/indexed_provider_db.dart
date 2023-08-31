@@ -1,37 +1,15 @@
 //import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:hive/hive.dart';
 import 'hive.dart';
 
-/// IndexedDb use hive to store data in local or indexed db in browser
-/// it inherit from ChangeNotifier so we can use dispose to close database
-class IndexedDb with utils.InitOnceMixin {
-  IndexedDb({
-    required String dbName,
-  }) {
-    initFuture = () async {
-      debugPrint('[indexed_db] open $dbName');
-      _box = await openBox(dbName);
-    };
-  }
-
+/// IndexedDbProvider use [hive] to store data in local or indexed db in browser
+/// it use ChangeNotifier so we can use dispose to close database
+class IndexedDbProvider with ChangeNotifier {
   /// _box is hive box
   late LazyBox _box;
-
-  /// dispose database
-  @mustCallSuper
-  void dispose() {
-    debugPrint('[indexed_db] close ${_box.name}');
-    closeBox(_box);
-  }
-
-  /// of get instance from context
-  static IndexedDb of(BuildContext context) {
-    return Provider.of<IndexedDb>(context, listen: false);
-  }
 
   /// keys is all the keys in the box, The keys are sorted alphabetically in ascending order.
   Iterable<String> get keys => _box.keys.map((e) => e.toString());
@@ -66,6 +44,38 @@ class IndexedDb with utils.InitOnceMixin {
   /// ```
   Future<T?> get<T>(String key) async => await _box.get(key);
 
+  /// clear everything in box
+  /// ```dart
+  /// await clear();
+  /// ```
+  Future<void> clear() async => await resetBox(_box);
+
+  /// removeBox remove db box file
+  /// ```dart
+  /// await removeBox();
+  /// ```
+  @visibleForTesting
+  Future<void> removeBox() async => await deleteBox(_box);
+
+  /// dispose database
+  @override
+  void dispose() {
+    debugPrint('[indexed_db] close ${_box.name}');
+    closeBox(_box);
+    super.dispose();
+  }
+
+  /// of get instance from context
+  static IndexedDbProvider of(BuildContext context) {
+    return Provider.of<IndexedDbProvider>(context, listen: false);
+  }
+
+  /// init open database
+  Future<void> init(String dbName) async {
+    debugPrint('[indexed_db] open $dbName');
+    _box = await openBox(dbName);
+  }
+
   /// deppConvertMap convert map to json map
   Map<String, dynamic> deppConvertMap(Map<dynamic, dynamic> inputMap) {
     List<dynamic> convertList(List<dynamic> inputList) {
@@ -95,7 +105,6 @@ class IndexedDb with utils.InitOnceMixin {
     }
 
     Map<String, dynamic> newMap = {};
-
     inputMap.forEach((key, value) {
       if (key is String) {
         newMap[key] = convertValue(value);
@@ -104,7 +113,6 @@ class IndexedDb with utils.InitOnceMixin {
         newMap[stringKey] = convertValue(value);
       }
     });
-
     return newMap;
   }
 
@@ -143,19 +151,6 @@ class IndexedDb with utils.InitOnceMixin {
     debugPrint('[indexed_db] delete $key');
     await _box.delete(key);
   }
-
-  /// clear everything in box
-  /// ```dart
-  /// await clear();
-  /// ```
-  Future<void> clear() async => await resetBox(_box);
-
-  /// removeBox remove db box file
-  /// ```dart
-  /// await removeBox();
-  /// ```
-  @visibleForTesting
-  Future<void> removeBox() async => await deleteBox(_box);
 }
 
 /*

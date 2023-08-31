@@ -26,10 +26,6 @@ var animationListItems = ['a', 'b', 'c', 'd', 'e'];
 int stepCount = 0;
 FocusNode _focusNode = FocusNode();
 
-final sampleDb = data.IndexedDb(
-  dbName: 'notes_sample',
-);
-
 final formGroup = fb.group({
   'name': [Validators.required],
   'age': FormControl<int>(),
@@ -608,13 +604,16 @@ class NotesExample extends StatelessWidget {
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
                         value: _notesProvider,
                       ),
+                      ChangeNotifierProvider<data.IndexedDbProvider>(
+                        create: (_) => data.IndexedDbProvider(),
+                      ),
                     ],
-                    child: Consumer<NotesProvider<sample.Person>>(
-                      builder: (context, notesProvider, _) {
+                    child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
+                      builder: (context, notesProvider, sampleDb, _) {
                         return base.LoadingScreen(
                           future: () async {
                             final isPreferMouse = context.isPreferMouse;
-                            await sampleDb.init();
+                            await sampleDb.init('notes_sample');
                             _notesProvider.load(
                                 isPreferMouse,
                                 dataview.DatasetDb<sample.Person>(
@@ -654,13 +653,16 @@ class NotesExample extends StatelessWidget {
                       ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
                         value: _notesProvider,
                       ),
+                      ChangeNotifierProvider<data.IndexedDbProvider>(
+                        create: (_) => data.IndexedDbProvider(),
+                      ),
                     ],
-                    child: Consumer<NotesProvider<sample.Person>>(
-                      builder: (context, notesProvider, _) {
+                    child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
+                      builder: (context, notesProvider, sampleDb, _) {
                         return base.LoadingScreen(
                           future: () async {
                             final isPreferMouse = context.isPreferMouse;
-                            await sampleDb.init();
+                            await sampleDb.init('notes_sample');
                             _notesProvider.load(
                                 isPreferMouse,
                                 dataview.DatasetDb<sample.Person>(
@@ -702,9 +704,12 @@ Widget _noteItem(BuildContext context, String id) {
         ChangeNotifierProvider<NoteFormController<sample.Person>>(
           create: (context) => createFormController(),
         ),
+        ChangeNotifierProvider<data.IndexedDbProvider>(
+          create: (_) => data.IndexedDbProvider(),
+        ),
       ],
-      child: Consumer<NoteFormController<sample.Person>>(
-          builder: (context, formController, _) => Scaffold(
+      child: Consumer2<NoteFormController<sample.Person>, data.IndexedDbProvider>(
+          builder: (context, formController, sampleDb, _) => Scaffold(
                 appBar: AppBar(title: const Text('Detail'), actions: [
                   Consumer<NoteFormController<sample.Person>>(
                       builder: (context, formController, _) => NoteFormMenuButton<sample.Person>(
@@ -714,7 +719,7 @@ Widget _noteItem(BuildContext context, String id) {
                 body: base.LoadingScreen(
                   future: () async {
                     final noteFormController = NoteFormController.of<sample.Person>(context);
-                    await sampleDb.init();
+                    await sampleDb.init('notes_sample');
                     noteFormController.load(
                         dataset: dataview.DatasetDb<sample.Person>(
                           indexedDb: sampleDb,

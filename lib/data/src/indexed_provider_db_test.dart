@@ -1,13 +1,13 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:flutter_test/flutter_test.dart';
-import 'indexed_db.dart';
+import 'indexed_provider_db.dart';
 
 void main() {
   group('[cache.indexed_db]', () {
     test('should delete', () async {
-      final indexedDb = IndexedDb(dbName: 'test_delete');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_delete');
       await indexedDb.put('k', true);
       expect(indexedDb.containsKey('k'), true);
       await indexedDb.removeRow('k');
@@ -16,8 +16,8 @@ void main() {
     });
 
     test('should put/get', () async {
-      final indexedDb = IndexedDb(dbName: 'test_put');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_put');
       await indexedDb.put('k', false);
       final value = await indexedDb.get('k');
       expect(value, false);
@@ -25,8 +25,8 @@ void main() {
     });
 
     test('should set/get map', () async {
-      final indexedDb = IndexedDb(dbName: 'test_map');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_map');
       await indexedDb.put('k', {
         'a': 1,
         'b': ['x', 'y'],
@@ -39,8 +39,8 @@ void main() {
     });
 
     test('should get json map', () async {
-      final indexedDb = IndexedDb(dbName: 'test_json_map');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_json_map');
       await indexedDb.put('k', {
         'a': 1,
         'b': ['x', 'y'],
@@ -57,8 +57,8 @@ void main() {
     });
 
     test('should set/get int', () async {
-      final indexedDb = IndexedDb(dbName: 'test_int');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_int');
       await indexedDb.put('k', 1);
       final value = await indexedDb.get('k');
       expect(value, 1);
@@ -66,8 +66,8 @@ void main() {
     });
 
     test('should set/get string', () async {
-      final indexedDb = IndexedDb(dbName: 'test_string');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_string');
       await indexedDb.put('k', 'hi');
       final value = await indexedDb.get('k');
       expect(value, 'hi');
@@ -75,8 +75,8 @@ void main() {
     });
 
     test('should set/get datetime', () async {
-      final indexedDb = IndexedDb(dbName: 'test_datetime');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_datetime');
       final now = DateTime.now();
       await indexedDb.put('k', now);
       final value = await indexedDb.get('k');
@@ -89,8 +89,8 @@ void main() {
     });
 
     test('should set/get pb.object', () async {
-      final indexedDb = IndexedDb(dbName: 'test_object');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_object');
       final person = sample.Person(name: 'l');
       await indexedDb.addRow('k', person);
       final value = await indexedDb.getRow<sample.Person>('k', () => sample.Person());
@@ -101,8 +101,8 @@ void main() {
     });
 
     test('should save string list', () async {
-      final indexedDb = IndexedDb(dbName: 'test_string_list');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_string_list');
       final list = <String>['1', '2', '3'];
       await indexedDb.put('l', list);
       var list2 = await indexedDb.get('l');
@@ -112,8 +112,8 @@ void main() {
     });
 
     test('should save int list', () async {
-      final indexedDb = IndexedDb(dbName: 'test_string_list');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_string_list');
       final list = <int>[1, 2, 3];
       await indexedDb.put('l', list);
       var list2 = await indexedDb.get('l');
@@ -123,8 +123,8 @@ void main() {
     });
 
     test('should clear', () async {
-      final indexedDb = IndexedDb(dbName: 'test_string_list');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_string_list');
       await indexedDb.put('a', 'b');
       await indexedDb.put('1', '2');
       await indexedDb.clear();
@@ -134,8 +134,8 @@ void main() {
     });
 
     test('keys should iterable', () async {
-      final indexedDb = IndexedDb(dbName: 'test_indexed_db_keys');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_indexed_db_keys');
       await indexedDb.put('a', 'b');
       await indexedDb.put('1', '2');
       final keys = indexedDb.keys;

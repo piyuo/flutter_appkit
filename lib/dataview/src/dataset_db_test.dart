@@ -8,8 +8,8 @@ import 'dataset_db.dart';
 void main() {
   group('[data.data.dataset_db]', () {
     test('should init and clear data', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_init');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_init');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -37,8 +37,8 @@ void main() {
     });
 
     test('should load', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_load');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_load');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -60,8 +60,8 @@ void main() {
     });
 
     test('should remove duplicate when insert', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_remove_insert');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_remove_insert');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -83,8 +83,8 @@ void main() {
     });
 
     test('should remove data', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_remove_data');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_remove_data');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -104,8 +104,8 @@ void main() {
     });
 
     test('should remove duplicate when add', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_remove_add');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_remove_add');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -127,8 +127,8 @@ void main() {
     });
 
     test('should get sub rows', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_sub_rows');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_sub_rows');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -151,8 +151,8 @@ void main() {
     });
 
     test('should save state', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_save_state');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_save_state');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -178,8 +178,8 @@ void main() {
     });
 
     test('should get row by id', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_row_id');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_row_id');
       await dbProvider.clear();
       final dataset = DatasetDb(
         indexedDb: dbProvider,
@@ -196,8 +196,8 @@ void main() {
     });
 
     test('should use forEach to iterate all row', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_for');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_for');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,
@@ -219,8 +219,8 @@ void main() {
     });
 
     test('should check id exists', () async {
-      final dbProvider = data.IndexedDb(dbName: 'dd_check');
-      await dbProvider.init();
+      final dbProvider = data.IndexedDbProvider();
+      await dbProvider.init('dd_check');
       await dbProvider.clear();
       final dataset = DatasetDb<sample.Person>(
         indexedDb: dbProvider,

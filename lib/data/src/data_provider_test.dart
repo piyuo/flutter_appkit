@@ -5,7 +5,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'data_provider.dart';
 import 'dataset.dart';
-import 'indexed_db.dart';
+import 'indexed_provider_db.dart';
 import 'change_finder.dart';
 
 void main() {
@@ -33,15 +33,19 @@ void main() {
         },
       );
       await dp.init();
-      expect(dp.displayRows.length, 2);
+      expect(dp.displayRows.length, 1);
       expect(dp.displayRows[0].id, '1');
-      expect(dp.displayRows[1].id, '2');
-      expect(dp.isMoreToFetch, isFalse);
+      expect(dp.isMoreToFetch, isTrue);
+      expect(dp.pageIndex, 0);
+      expect(fetchCount, 0);
+      expect(fetchRows, 0);
+
+      // should not fetch when no more data
+      await dp.reload();
       expect(dp.pageIndex, 1);
       expect(fetchCount, 1);
       expect(fetchRows, 9);
 
-      // should not fetch when no more data
       final result2 = await dp.fetch();
       expect(result2, isFalse);
     });
@@ -103,6 +107,7 @@ void main() {
         },
       );
       await dp.init();
+      await dp.reload();
       expect(dp.displayRows.length, 1);
       expect(dp.isMoreToFetch, isFalse);
       expect(dp.pageIndex, 1);
@@ -134,12 +139,12 @@ void main() {
     });
 
     test('should cache data in indexed db', () async {
-      final indexedDb = IndexedDb(dbName: 'test_data_keep');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_data_keep');
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
@@ -153,7 +158,8 @@ void main() {
           null
         ),
       );
-      await dp.init(); // init will call refresh
+      await dp.init();
+      await dp.refresh();
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '2');
       expect(dp.displayRows[1].id, '1');
@@ -168,7 +174,7 @@ void main() {
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
         sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
       ];
-      var fetchResult = <sample.Person>[];
+      List<sample.Person>? fetchResult;
 
       final ds = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
@@ -181,6 +187,7 @@ void main() {
         loader: (sync) async => (refreshResult, fetchResult),
       );
       await dp.init();
+      await dp.reload();
       expect(dp.displayRows.length, 2);
       expect(dp.isMoreToFetch, isTrue);
 
@@ -291,6 +298,7 @@ void main() {
         ),
       );
       await dp.init();
+      await dp.reload();
       expect(dp.displayRows.length, 4);
       expect(dp.isMoreToFetch, false);
 
@@ -318,6 +326,7 @@ void main() {
         rowsPerPage: 5,
       );
       await dp.init();
+      await dp.reload();
       expect(dp.displayRows.length, 4);
       expect(dp.isMoreToFetch, false);
 
@@ -348,6 +357,7 @@ void main() {
         loader: (sync) async => (result, null),
       );
       await dp.init();
+      await dp.reload();
       expect(dp.displayRows.length, 4);
 
       result = [
@@ -390,6 +400,7 @@ void main() {
         loader: (sync) async => (refreshResult, fetchResult),
       );
       await dp.init();
+      await dp.reload();
       expect(dp.displayRows.length, 4);
 
       refreshResult = [
@@ -462,11 +473,19 @@ void main() {
       expect(dp.displayRows.length, 3);
 
       await dp.refresh();
+      expect(loadingCount, 1);
+      expect(dp.displayRows.length, 3);
+      expect(dp.displayRows[0].id, 'a');
+      expect(dp.displayRows[1].id, 'b');
+      expect(dp.displayRows[2].id, 'c');
+
+      await dp.refresh();
       expect(loadingCount, 3);
       expect(dp.displayRows.length, 3);
       expect(dp.displayRows[0].id, 'b');
       expect(dp.displayRows[1].id, 'c');
       expect(dp.displayRows[2].id, 'd');
+
       dp.dispose();
     });
 

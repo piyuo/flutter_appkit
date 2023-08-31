@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'dataset.dart';
-import 'indexed_db.dart';
+import 'indexed_provider_db.dart';
 
 void main() {
   group('[data.dataset]', () {
@@ -37,12 +37,12 @@ void main() {
     });
 
     test('should cache data in indexed db', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_keep');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_keep');
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
       await ds.init();
@@ -60,7 +60,7 @@ void main() {
       expect(obj1!.id, '1');
 
       final ds2 = Dataset<sample.Person>(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
       await ds2.init();
@@ -74,13 +74,13 @@ void main() {
     });
 
     test('should remove expired data', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_expired');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_expired');
       await indexedDb.clear();
 
       final ds = Dataset(
         utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
@@ -96,7 +96,7 @@ void main() {
 
       final ds2 = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
       await ds2.init();
@@ -109,12 +109,12 @@ void main() {
     });
 
     test('refresh should only add new data and sort', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_refresh');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_refresh');
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
       await ds.init();
@@ -149,13 +149,13 @@ void main() {
     });
 
     test('should return timestamp to refresh data', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_timestamp_latest');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_timestamp_latest');
       await indexedDb.clear();
 
       final ds = Dataset(
         utcExpiredDate: DateTime(2020, 1, 20).toUtc(),
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
@@ -174,11 +174,11 @@ void main() {
     });
 
     test('should return null if need refresh to get all data', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_timestamp_null');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_timestamp_null');
       await indexedDb.clear();
       final ds = Dataset<sample.Person>(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
@@ -191,12 +191,12 @@ void main() {
     });
 
     test('query should return result by from,to and skipDeleted ', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_query');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_query');
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
@@ -219,12 +219,12 @@ void main() {
     });
 
     test('query should return result by keyword', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_keyword');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_keyword');
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
@@ -246,12 +246,12 @@ void main() {
     });
 
     test('query should return result by start and length', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_start');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_start');
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
@@ -273,12 +273,12 @@ void main() {
     });
 
     test('query should return result by filter', () async {
-      final indexedDb = IndexedDb(dbName: 'test_dataset_filter');
-      await indexedDb.init();
+      final indexedDb = IndexedDbProvider();
+      await indexedDb.init('test_dataset_filter');
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDb: indexedDb,
+        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 

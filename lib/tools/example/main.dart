@@ -12,7 +12,6 @@ import '../tools.dart';
 
 enum SampleFilter { inbox, vip, sent, all }
 
-final indexedDb = data.IndexedDb(dbName: 'tools_sample');
 int sampleIndex = 0;
 DateTime sampleDate = DateTime.now();
 final _searchBoxController = TextEditingController();
@@ -276,121 +275,135 @@ class _ToolsExampleState extends State<ToolsExample> {
   ];
 
   Widget _dataview(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<DataviewProvider<sample.Person>>(
-            create: (context) => DataviewProvider<sample.Person>(),
-          ),
-          ChangeNotifierProvider<data.DataProvider<sample.Person>>(
-            create: (context) => data.DataProvider<sample.Person>(
-              rowsPerPage: 10,
-              dataset: data.Dataset<sample.Person>(
-                utcExpiredDate: DateTime.now().toUtc(),
-                indexedDb: indexedDb,
-                builder: () => sample.Person(),
-              ),
-              loader: (sync) async {
-                await Future.delayed(const Duration(seconds: 2));
-                refreshIndex++;
-                if (sync.hasRefresh() && sync.hasFetch()) {
-                  return (
-                    [
-                      sample.Person(
-                        m: pb.Model(
-                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
+    return ChangeNotifierProvider<data.IndexedDbProvider>(
+        create: (context) => data.IndexedDbProvider(),
+        child: Consumer<data.IndexedDbProvider>(
+            builder: (context, indexedDbProvider, _) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider<DataviewProvider<sample.Person>>(
+                        create: (context) => DataviewProvider<sample.Person>(),
                       ),
-                    ],
-                    List.generate(
-                      10,
-                      (index) => sample.Person(
-                          m: pb.Model(
-                              i: 'f${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                    ),
-                  );
-                } else if (refreshIndex == 2) {
-                  return (
-                    [
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'r1', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'f11', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                      sample.Person(
-                          m: pb.Model(
-                              d: true, i: 'f5', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                    ],
-                    null,
-                  );
-                } else if (sync.hasRefresh() && !sync.hasFetch()) {
-                  return (
-                    [
-                      sample.Person(
-                        m: pb.Model(
-                            i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
-                      ),
-                    ],
-                    null,
-                  );
-                } else if (sync.hasFetch() && !sync.hasRefresh()) {
-                  final list = List.generate(
-                    sync.rows,
-                    (index) => sample.Person(
-                        m: pb.Model(
-                            i: 'm${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                  );
-                  list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
-                  return (null, list);
-                }
-                return (null, null);
-              },
-            ),
-          ),
-        ],
-        child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
-            builder: (context, dataProvider, dataviewProvider, _) => base.LoadingScreen(future: () async {
-                  await indexedDb.init();
-                  await indexedDb.clear();
-                  await dataProvider.init();
-                  await dataviewProvider.init(dataProvider);
-                }, builder: () {
-                  widgetBuilder(person) {
-                    return ListTile(
-                      leading: CircleAvatar(child: Text(person.id)),
-                      title: Text('This item represents ${person.id}.'),
-                      isThreeLine: true,
-                      subtitle: Text('Even more additional list item information appears on line three ${person.name}'),
-                    );
-                  }
-
-                  return Column(children: [
-                    Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              dataviewProvider.refresh(widgetBuilder);
-                            },
-                            child: const Text('Refresh'),
+                      ChangeNotifierProvider<data.DataProvider<sample.Person>>(
+                        create: (context) => data.DataProvider<sample.Person>(
+                          rowsPerPage: 10,
+                          dataset: data.Dataset<sample.Person>(
+                            utcExpiredDate: DateTime.now().toUtc(),
+                            indexedDbProvider: indexedDbProvider,
+                            builder: () => sample.Person(),
                           ),
-                        ])),
-                    Expanded(
-                      child: Dataview<sample.Person>(
-                        viewProvider: dataviewProvider,
-                        headerBuilder: () => Container(
-                            height: 65,
-                            padding: const EdgeInsets.fromLTRB(15, 5, 15, 20),
-//                            color: Colors.red,
-                            child: delta.SearchBox(
-                              focusNode: _focusNode,
-                              controller: _searchBoxController,
-                              //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
-                            )),
-                        widgetBuilder: widgetBuilder,
+                          loader: (sync) async {
+                            await Future.delayed(const Duration(seconds: 2));
+                            refreshIndex++;
+                            if (sync.hasRefresh() && sync.hasFetch()) {
+                              return (
+                                [
+                                  sample.Person(
+                                    m: pb.Model(
+                                        i: 'r${sampleIndex++}',
+                                        t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
+                                  ),
+                                ],
+                                List.generate(
+                                  10,
+                                  (index) => sample.Person(
+                                      m: pb.Model(
+                                          i: 'f${sampleIndex++}',
+                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                ),
+                              );
+                            } else if (refreshIndex == 2) {
+                              return (
+                                [
+                                  sample.Person(
+                                      m: pb.Model(
+                                          d: true,
+                                          i: 'r1',
+                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                  sample.Person(
+                                      m: pb.Model(
+                                          d: true,
+                                          i: 'f11',
+                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                  sample.Person(
+                                      m: pb.Model(
+                                          d: true,
+                                          i: 'f5',
+                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                ],
+                                null,
+                              );
+                            } else if (sync.hasRefresh() && !sync.hasFetch()) {
+                              return (
+                                [
+                                  sample.Person(
+                                    m: pb.Model(
+                                        i: 'r${sampleIndex++}',
+                                        t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
+                                  ),
+                                ],
+                                null,
+                              );
+                            } else if (sync.hasFetch() && !sync.hasRefresh()) {
+                              final list = List.generate(
+                                sync.rows,
+                                (index) => sample.Person(
+                                    m: pb.Model(
+                                        i: 'm${sampleIndex++}',
+                                        t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                              );
+                              list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
+                              return (null, list);
+                            }
+                            return (null, null);
+                          },
+                        ),
                       ),
-                    ),
-                  ]);
-                })));
+                    ],
+                    child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
+                        builder: (context, dataProvider, dataviewProvider, _) => base.LoadingScreen(future: () async {
+                              await indexedDbProvider.init('tools_sample');
+                              await indexedDbProvider.clear();
+                              await dataProvider.init();
+                              await dataviewProvider.init(dataProvider);
+                            }, builder: () {
+                              widgetBuilder(person) {
+                                return ListTile(
+                                  leading: CircleAvatar(child: Text(person.id)),
+                                  title: Text('This item represents ${person.id}.'),
+                                  isThreeLine: true,
+                                  subtitle: Text(
+                                      'Even more additional list item information appears on line three ${person.name}'),
+                                );
+                              }
+
+                              return Column(children: [
+                                Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          dataviewProvider.refresh(widgetBuilder);
+                                        },
+                                        child: const Text('Refresh'),
+                                      ),
+                                    ])),
+                                Expanded(
+                                  child: Dataview<sample.Person>(
+                                    viewProvider: dataviewProvider,
+                                    headerBuilder: () => Container(
+                                        height: 65,
+                                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 20),
+//                            color: Colors.red,
+                                        child: delta.SearchBox(
+                                          focusNode: _focusNode,
+                                          controller: _searchBoxController,
+                                          //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
+                                        )),
+                                    widgetBuilder: widgetBuilder,
+                                  ),
+                                ),
+                              ]);
+                            })))));
   }
 
   Widget _pullFresh(BuildContext context) {

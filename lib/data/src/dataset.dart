@@ -1,8 +1,7 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/pb/pb.dart' as pb;
-import 'indexed_db.dart';
+import 'indexed_provider_db.dart';
 
 /// DataSelector select data from dataset
 typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
@@ -14,7 +13,7 @@ typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> data
 class Dataset<T extends pb.Object> {
   Dataset({
     required this.builder,
-    this.indexedDb,
+    this.indexedDbProvider,
     this.utcExpiredDate,
   });
 
@@ -27,8 +26,8 @@ class Dataset<T extends pb.Object> {
   /// hasMore return true if there are more data on remote
   bool get hasMore => utcExpiredDate != null;
 
-  /// indexedDb is indexed db that store all object, if null mean do not store data
-  final IndexedDb? indexedDb;
+  /// indexedDbProvider is a [IndexedDbProvider] that store all object, if null mean do not store data
+  final IndexedDbProvider? indexedDbProvider;
 
   /// builder is builder to build object
   final pb.Builder<T> builder;
@@ -38,12 +37,11 @@ class Dataset<T extends pb.Object> {
 
   /// init load data from database and remove old data use cutOffDays
   Future<void> init() async {
-    if (indexedDb == null) {
+    if (indexedDbProvider == null) {
       return;
     }
-    await indexedDb!.init();
-    for (final key in indexedDb!.keys) {
-      final row = await indexedDb!.getRow<T>(key, builder);
+    for (final key in indexedDbProvider!.keys) {
+      final row = await indexedDbProvider!.getRow<T>(key, builder);
       if (row != null) {
         _rows.add(row);
       }
@@ -53,14 +51,6 @@ class Dataset<T extends pb.Object> {
     // no need to remove expired every time, 1/10 chance to remove is enough
     if (Random().nextInt(10) == 1) {
       await removeExpired();
-    }
-  }
-
-  /// dispose database
-  @mustCallSuper
-  void dispose() {
-    if (indexedDb != null) {
-      indexedDb!.dispose();
     }
   }
 
@@ -77,9 +67,9 @@ class Dataset<T extends pb.Object> {
         return deleted;
       });
 
-      if (indexedDb != null && needRemove.isNotEmpty) {
+      if (indexedDbProvider != null && needRemove.isNotEmpty) {
         for (final id in needRemove) {
-          await indexedDb!.removeRow(id);
+          await indexedDbProvider!.removeRow(id);
         }
       }
     }
@@ -123,8 +113,8 @@ class Dataset<T extends pb.Object> {
       _rows.remove(exists);
     }
     _rows.insert(0, row);
-    if (indexedDb != null) {
-      await indexedDb!.addRow(row.id, row);
+    if (indexedDbProvider != null) {
+      await indexedDbProvider!.addRow(row.id, row);
     }
   }
 
@@ -133,8 +123,8 @@ class Dataset<T extends pb.Object> {
     final exists = getRowById(row.id);
     if (exists != null) {
       _rows.remove(exists);
-      if (indexedDb != null) {
-        await indexedDb!.removeRow(row.id);
+      if (indexedDbProvider != null) {
+        await indexedDbProvider!.removeRow(row.id);
       }
     }
   }

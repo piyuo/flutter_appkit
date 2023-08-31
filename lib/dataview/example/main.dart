@@ -50,8 +50,8 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('helloWorld'),
           onPressed: () async {
-            final dbProvider = data.IndexedDb(dbName: 'data_sample');
-            await dbProvider.init();
+            final dbProvider = data.IndexedDbProvider();
+            await dbProvider.init('data_sample');
             await dbProvider.put('hello', 'world');
             var name = await dbProvider.get('hello');
             debugPrint('hello:$name');
@@ -72,8 +72,8 @@ class DbExample extends StatelessWidget {
       OutlinedButton(
           child: const Text('pb.Object'),
           onPressed: () async {
-            final dbProvider = data.IndexedDb(dbName: 'data_sample');
-            await dbProvider.init();
+            final dbProvider = data.IndexedDbProvider();
+            await dbProvider.init('data_sample');
             await dbProvider.addRow('e', sample.Person(name: '123'));
             var person = await dbProvider.getRow<sample.Person>('e', () => sample.Person());
             debugPrint('person name: ${person!.name}');

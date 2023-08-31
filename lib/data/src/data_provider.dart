@@ -51,7 +51,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   /// init data view
   Future<void> init() async {
     await dataset.init();
-    await reload(isInit: true, notify: false);
+    binDisplay(false);
+    //await reload(isInit: true, notify: false);
   }
 
   /// dispose database
@@ -59,14 +60,13 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   void dispose() {
     _fetchRows = null;
     displayRows.clear();
-    dataset.dispose();
     super.dispose();
   }
 
   /// select return list of object that match selector or empty if selector is null
   Iterable<T> select() => selector != null ? selector!(dataset) : dataset.query();
 
-  /// reload will build display rows,
+  /// reload often used in search, it will clear display rows and use new query to refresh/load from remote
   Future<void> reload({
     bool notify = true,
     bool isInit = false,
@@ -91,7 +91,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       debugPrint('[data_provider] refresh ${newRows.length} rows');
       await dataset.insertRows(newRows);
     }
-    if (oldRows != null && oldRows.isNotEmpty) {
+    // oldRows is null mead there may be more data to fetch, if you want no more data use empty list
+    if (oldRows != null) {
       _saveOldRows(oldRows, oldRows.length < (rowsPerPage! - selectRows.length));
     }
     binDisplay(notify);
@@ -137,6 +138,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       rows: rows,
       page: pageIndex,
     ));
+    // fetchRows is null mean there may be more data to fetch, if you want no more data use empty list
     if (fetchRows == null) {
       return false;
     }
@@ -199,6 +201,11 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     binDisplay(true);
   }
 }
+
+/*
+
+*/
+
 /*
 manual insert row or remove row may break refresh and fetch mechanism
 cause refresh/fetch always use row timestamp to increment get new data
