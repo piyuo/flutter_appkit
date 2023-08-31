@@ -79,7 +79,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     final selectRows = select();
     // init mode need refresh data and may need fetch to fit rowsPerPage
     bool needFetch = isMoreToFetch && selectRows.length < rowsPerPage!;
-    final (refreshRows, fetchRows) = await loader(
+    final (newRows, oldRows) = await loader(
       pb.Sync(
         refresh: isInit ? dataset.refreshTimestamp : null,
         fetch: needFetch ? _fetchTimestamp : null,
@@ -87,12 +87,12 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
         page: needFetch ? pageIndex : null,
       ),
     );
-    if (refreshRows != null && refreshRows.isNotEmpty) {
-      debugPrint('[data_provider] refresh ${refreshRows.length} rows');
-      await dataset.insertRows(refreshRows);
+    if (newRows != null && newRows.isNotEmpty) {
+      debugPrint('[data_provider] refresh ${newRows.length} rows');
+      await dataset.insertRows(newRows);
     }
-    if (fetchRows != null) {
-      _saveFetchRows(fetchRows, fetchRows.length < (rowsPerPage! - selectRows.length));
+    if (oldRows != null && oldRows.isNotEmpty) {
+      _saveOldRows(oldRows, oldRows.length < (rowsPerPage! - selectRows.length));
     }
     binDisplay(notify);
   }
@@ -141,7 +141,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       return false;
     }
 
-    if (_saveFetchRows(fetchRows, fetchRows.length < rows)) {
+    if (_saveOldRows(fetchRows, fetchRows.length < rows)) {
       binDisplay(notify);
       return true;
     }
@@ -161,7 +161,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// _saveFetchRows save rows to _fetchRows, return true if there is more rows saved
-  bool _saveFetchRows(List<T> fetchRows, bool noMore) {
+  bool _saveOldRows(List<T> fetchRows, bool noMore) {
     _moreToFetch = !noMore;
     if (fetchRows.isNotEmpty) {
       debugPrint('[data_provider] fetch ${fetchRows.length} rows, more=$_moreToFetch');
