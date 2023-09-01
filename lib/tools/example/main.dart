@@ -57,13 +57,15 @@ class _ToolsExampleState extends State<ToolsExample> {
                   body: Column(
                     children: [
                       Expanded(
-                        child: _dataview(context),
+                        child: _responsiveListView(context),
                       ),
                       SizedBox(
                         height: 100,
                         child: SingleChildScrollView(
                           child: Wrap(
                             children: [
+                              testing.ExampleButton(
+                                  label: 'ResponsiveListView', builder: () => _responsiveListView(context)),
                               testing.ExampleButton(
                                   label: 'NavigationView', useScaffold: false, builder: () => _pullFresh(context)),
                               testing.ExampleButton(label: 'Dataview', builder: () => _dataview(context)),
@@ -284,11 +286,6 @@ class _ToolsExampleState extends State<ToolsExample> {
                       ChangeNotifierProvider<data.DataProvider<sample.Person>>(
                         create: (context) => data.DataProvider<sample.Person>(
                           rowsPerPage: 10,
-                          dataset: data.Dataset<sample.Person>(
-                            utcExpiredDate: DateTime.now().toUtc(),
-                            indexedDbProvider: indexedDbProvider,
-                            builder: () => sample.Person(),
-                          ),
                           loader: (sync) async {
                             await Future.delayed(const Duration(seconds: 2));
                             refreshIndex++;
@@ -361,7 +358,12 @@ class _ToolsExampleState extends State<ToolsExample> {
                         builder: (context, dataProvider, dataviewProvider, _) => base.LoadingScreen(future: () async {
                               await indexedDbProvider.init('tools_sample');
                               await indexedDbProvider.clear();
-                              await dataProvider.init();
+                              final ds = data.Dataset<sample.Person>(
+                                utcExpiredDate: DateTime.now().toUtc(),
+                                builder: () => sample.Person(),
+                              );
+                              await ds.init(indexedDbProvider: indexedDbProvider);
+                              await dataProvider.init(dataset: ds);
                               await dataviewProvider.init(dataProvider);
                             }, builder: () {
                               widgetBuilder(person) {

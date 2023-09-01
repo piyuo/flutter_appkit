@@ -15,12 +15,6 @@ void main() {
       int fetchRows = 0;
       final dp = DataProvider<sample.Person>(
         rowsPerPage: 10,
-        dataset: Dataset<sample.Person>(
-          utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
-          builder: () => sample.Person(),
-        )..insertRow(
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 2, 1).timestamp)),
-          ),
         loader: (sync) async {
           fetchCount++;
           fetchRows = sync.rows;
@@ -32,7 +26,14 @@ void main() {
           );
         },
       );
-      await dp.init();
+      await dp.init(
+        dataset: Dataset<sample.Person>(
+          utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+          builder: () => sample.Person(),
+        )..insertRow(
+            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 2, 1).timestamp)),
+          ),
+      );
       expect(dp.displayRows.length, 1);
       expect(dp.displayRows[0].id, '1');
       expect(dp.isMoreToFetch, isTrue);
@@ -54,12 +55,6 @@ void main() {
       int fetchIndex = 0;
       final dp = DataProvider<sample.Person>(
         rowsPerPage: 1,
-        dataset: Dataset<sample.Person>(
-          utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
-          builder: () => sample.Person(),
-        )..insertRow(
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-          ),
         loader: (sync) async {
           fetchIndex = sync.page;
           return (
@@ -72,7 +67,14 @@ void main() {
           );
         },
       );
-      await dp.init();
+      await dp.init(
+        dataset: Dataset<sample.Person>(
+          utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+          builder: () => sample.Person(),
+        )..insertRow(
+            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+          ),
+      );
       expect(dp.displayRows.length, 1);
 
       final result = await dp.fetch();
@@ -98,15 +100,16 @@ void main() {
 
       final dp = DataProvider<sample.Person>(
         rowsPerPage: 2,
-        dataset: Dataset<sample.Person>(
-          utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
-          builder: () => sample.Person(),
-        ),
         loader: (sync) async {
           return (refreshResult, fetchResult);
         },
       );
-      await dp.init();
+      await dp.init(
+        dataset: Dataset<sample.Person>(
+          utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
+          builder: () => sample.Person(),
+        ),
+      );
       await dp.reload();
       expect(dp.displayRows.length, 1);
       expect(dp.isMoreToFetch, isFalse);
@@ -144,12 +147,10 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
       final dp = DataProvider(
-        dataset: ds,
         loader: (sync) async => (
           [
             sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
@@ -158,7 +159,12 @@ void main() {
           null
         ),
       );
-      await dp.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
+      await dp.init(
+        dataset: ds,
+      );
       await dp.refresh();
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '2');
@@ -182,11 +188,13 @@ void main() {
       );
 
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         rowsPerPage: 2,
         loader: (sync) async => (refreshResult, fetchResult),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(
+        dataset: ds,
+      );
       await dp.reload();
       expect(dp.displayRows.length, 2);
       expect(dp.isMoreToFetch, isTrue);
@@ -222,11 +230,13 @@ void main() {
       );
 
       final dp = DataProvider(
-        dataset: ds,
         selector: (ds) => viewerResult,
         loader: (sync) async => ([p1, p2], null),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(
+        dataset: ds,
+      );
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '1');
       expect(dp.displayRows[1].id, '2');
@@ -255,11 +265,13 @@ void main() {
       );
 
       final dp = DataProvider(
-        dataset: ds,
         selector: (ds) => viewerResult,
         loader: (sync) async => (refreshResult, null),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(
+        dataset: ds,
+      );
       expect(dp.displayRows.length, 2);
       expect(dp.displayRows[0].id, '1');
       expect(dp.displayRows[1].id, '2');
@@ -284,7 +296,6 @@ void main() {
       );
 
       final dp = DataProvider(
-        dataset: ds,
         rowsPerPage: 5,
         loader: (sync) async => (
           [
@@ -297,7 +308,10 @@ void main() {
           ],
         ),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(
+        dataset: ds,
+      );
       await dp.reload();
       expect(dp.displayRows.length, 4);
       expect(dp.isMoreToFetch, false);
@@ -321,11 +335,13 @@ void main() {
       );
 
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         loader: (sync) async => (refreshResult, fetchResult),
         rowsPerPage: 5,
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(
+        dataset: ds,
+      );
       await dp.reload();
       expect(dp.displayRows.length, 4);
       expect(dp.isMoreToFetch, false);
@@ -352,11 +368,13 @@ void main() {
       );
 
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         selector: (ds) => ds.query(),
         loader: (sync) async => (result, null),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(
+        dataset: ds,
+      );
       await dp.reload();
       expect(dp.displayRows.length, 4);
 
@@ -395,11 +413,13 @@ void main() {
       );
 
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         rowsPerPage: 5,
         loader: (sync) async => (refreshResult, fetchResult),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(
+        dataset: ds,
+      );
       await dp.reload();
       expect(dp.displayRows.length, 4);
 
@@ -436,7 +456,6 @@ void main() {
       ]);
 
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         rowsPerPage: 3,
         loader: (sync) async {
           loadingCount++;
@@ -469,7 +488,8 @@ void main() {
           );
         },
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(dataset: ds);
       expect(dp.displayRows.length, 3);
 
       await dp.refresh();
@@ -503,11 +523,11 @@ void main() {
         sample.Person(age: 21, m: pb.Model(i: '5', t: DateTime(2021, 1, 5).timestamp)),
       ]);
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         selector: (ds) => ds.query(from: DateTime(2021, 1, 2), to: DateTime(2021, 1, 4)),
         loader: (sync) async => (null, null),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(dataset: ds);
 
       final result = dp.select().toList();
       expect(result.length, 2);
@@ -527,11 +547,11 @@ void main() {
         sample.Person(age: 19, m: pb.Model(i: '3', t: DateTime(2021, 1, 2).timestamp, d: true)),
       ]);
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         selector: (ds) => ds.query(),
         loader: (sync) async => (null, null),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(dataset: ds);
 
       final result = dp.select().toList();
       expect(result.length, 2);
@@ -546,11 +566,11 @@ void main() {
         ]);
 
       final dp = DataProvider<sample.Person>(
-        dataset: ds,
         selector: (ds) => ds.query(),
         loader: (sync) async => (null, null),
       );
-      await dp.init();
+      await ds.init();
+      await dp.init(dataset: ds);
 
       final result = dp.select().toList();
       expect(result.length, 2);

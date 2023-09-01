@@ -10,7 +10,6 @@ typedef DataLoader<T extends pb.Object> = Future<(List<T>?, List<T>?)> Function(
 /// DataProvider read data from dataset user viewer to create list of page
 class DataProvider<T extends pb.Object> with ChangeNotifier {
   DataProvider({
-    required this.dataset,
     required this.loader,
     this.selector,
     this.rowsPerPage,
@@ -23,7 +22,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   final DataSelector<T>? selector;
 
   /// dataset keep data
-  final Dataset<T> dataset;
+  late Dataset<T> _dataset;
 
   /// _fetchRows keep rows that fetcher load from remote
   List<T>? _fetchRows;
@@ -41,7 +40,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   bool _moreToFetch = true;
 
   /// moreToFetch return true when current page is last page and dataset did not have full data
-  bool get isMoreToFetch => dataset.hasMore && rowsPerPage != null && _moreToFetch;
+  bool get isMoreToFetch => _dataset.hasMore && rowsPerPage != null && _moreToFetch;
 
   /// of get DatabaseProvider from context
   static DataProvider<T> of<T extends pb.Object>(BuildContext context) {
@@ -49,8 +48,8 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// init data view
-  Future<void> init() async {
-    await dataset.init();
+  Future<void> init({required Dataset<T> dataset}) async {
+    _dataset = dataset;
     binDisplay(false);
     //await reload(isInit: true, notify: false);
   }
@@ -64,7 +63,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// select return list of object that match selector or empty if selector is null
-  Iterable<T> select() => selector != null ? selector!(dataset) : dataset.query();
+  Iterable<T> select() => selector != null ? selector!(_dataset) : _dataset.query();
 
   /// reload often used in search, it will clear display rows and use new query to refresh/load from remote
   Future<void> reload({
@@ -81,7 +80,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     bool needFetch = isMoreToFetch && selectRows.length < rowsPerPage!;
     final (newRows, oldRows) = await loader(
       pb.Sync(
-        refresh: isInit ? dataset.refreshTimestamp : null,
+        refresh: isInit ? _dataset.refreshTimestamp : null,
         fetch: needFetch ? _fetchTimestamp : null,
         rows: needFetch ? rowsPerPage! - selectRows.length : null,
         page: needFetch ? pageIndex : null,
@@ -89,7 +88,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     );
     if (newRows != null && newRows.isNotEmpty) {
       debugPrint('[data_provider] refresh ${newRows.length} rows');
-      await dataset.insertRows(newRows);
+      await _dataset.insertRows(newRows);
     }
     // oldRows is null mead there may be more data to fetch, if you want no more data use empty list
     if (oldRows != null) {
@@ -102,14 +101,14 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   Future<bool> refresh({bool notify = true}) async {
     final (refreshRows, _) = await loader(
       pb.Sync(
-        refresh: dataset.refreshTimestamp,
+        refresh: _dataset.refreshTimestamp,
       ),
     );
     if (refreshRows == null || refreshRows.isEmpty) {
       return false;
     }
     debugPrint('[data_provider] refresh ${refreshRows.length} rows');
-    await dataset.insertRows(refreshRows);
+    await _dataset.insertRows(refreshRows);
     // fetchRows may need to remove some rows because refresh rows have new one
     for (T row in refreshRows) {
       _removeFromFetchRows(row);
@@ -185,7 +184,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     if (rows.isNotEmpty) {
       return rows.last.timestamp;
     }
-    return dataset.utcExpiredDate!.timestamp;
+    return _dataset.utcExpiredDate!.timestamp;
   }
 
   /// _removeFromFetchRows remove row from fetchRows
@@ -197,7 +196,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
 
   @visibleForTesting
   Future<void> insertRows(List<T> rows) async {
-    await dataset.insertRows(rows);
+    await _dataset.insertRows(rows);
     binDisplay(true);
   }
 }

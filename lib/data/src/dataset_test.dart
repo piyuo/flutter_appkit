@@ -42,10 +42,11 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds.insertRows([
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
         sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).timestamp)),
@@ -60,10 +61,11 @@ void main() {
       expect(obj1!.id, '1');
 
       final ds2 = Dataset<sample.Person>(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
-      await ds2.init();
+      await ds2.init(
+        indexedDbProvider: indexedDb,
+      );
       final list2 = ds2.query().toList();
       expect(list2.length, 2);
       expect(list2[0].id, '2');
@@ -80,11 +82,12 @@ void main() {
 
       final ds = Dataset(
         utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds.insertRows([
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
         sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).timestamp)),
@@ -96,10 +99,11 @@ void main() {
 
       final ds2 = Dataset<sample.Person>(
         utcExpiredDate: DateTime(2021, 2, 1).toUtc(),
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
-      await ds2.init();
+      await ds2.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds2.removeExpired();
       final list2 = ds2.query().toList();
       expect(list2.length, 1);
@@ -114,10 +118,11 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset<sample.Person>(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds.insertRows([
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
       ]);
@@ -155,11 +160,12 @@ void main() {
 
       final ds = Dataset(
         utcExpiredDate: DateTime(2020, 1, 20).toUtc(),
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       // no data, use expired date
       expect(ds.refreshTimestamp!.toDateTime(), DateTime(2020, 1, 20).toUtc());
 
@@ -178,11 +184,12 @@ void main() {
       await indexedDb.init('test_dataset_timestamp_null');
       await indexedDb.clear();
       final ds = Dataset<sample.Person>(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       expect(ds.refreshTimestamp, isNull);
 
       expect(ds.refreshTimestamp, isNull);
@@ -196,11 +203,12 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds.insertRows([
         sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
         sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
@@ -224,11 +232,12 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds.insertRows([
         sample.Person(name: 'john1', m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
         sample.Person(name: 'john2', m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
@@ -251,11 +260,12 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds.insertRows([
         sample.Person(name: 'john1', m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
         sample.Person(name: 'john2', m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
@@ -278,11 +288,12 @@ void main() {
       await indexedDb.clear();
 
       final ds = Dataset(
-        indexedDbProvider: indexedDb,
         builder: () => sample.Person(),
       );
 
-      await ds.init();
+      await ds.init(
+        indexedDbProvider: indexedDb,
+      );
       await ds.insertRows([
         sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
         sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),

@@ -13,7 +13,6 @@ typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> data
 class Dataset<T extends pb.Object> {
   Dataset({
     required this.builder,
-    this.indexedDbProvider,
     this.utcExpiredDate,
   });
 
@@ -27,7 +26,7 @@ class Dataset<T extends pb.Object> {
   bool get hasMore => utcExpiredDate != null;
 
   /// indexedDbProvider is a [IndexedDbProvider] that store all object, if null mean do not store data
-  final IndexedDbProvider? indexedDbProvider;
+  IndexedDbProvider? _indexedDbProvider;
 
   /// builder is builder to build object
   final pb.Builder<T> builder;
@@ -36,12 +35,15 @@ class Dataset<T extends pb.Object> {
   List<T> get rows => _rows;
 
   /// init load data from database and remove old data use cutOffDays
-  Future<void> init() async {
-    if (indexedDbProvider == null) {
+  Future<void> init({
+    IndexedDbProvider? indexedDbProvider,
+  }) async {
+    _indexedDbProvider = indexedDbProvider;
+    if (_indexedDbProvider == null) {
       return;
     }
-    for (final key in indexedDbProvider!.keys) {
-      final row = await indexedDbProvider!.getRow<T>(key, builder);
+    for (final key in _indexedDbProvider!.keys) {
+      final row = await _indexedDbProvider!.getRow<T>(key, builder);
       if (row != null) {
         _rows.add(row);
       }
@@ -67,9 +69,9 @@ class Dataset<T extends pb.Object> {
         return deleted;
       });
 
-      if (indexedDbProvider != null && needRemove.isNotEmpty) {
+      if (_indexedDbProvider != null && needRemove.isNotEmpty) {
         for (final id in needRemove) {
-          await indexedDbProvider!.removeRow(id);
+          await _indexedDbProvider!.removeRow(id);
         }
       }
     }
@@ -113,8 +115,8 @@ class Dataset<T extends pb.Object> {
       _rows.remove(exists);
     }
     _rows.insert(0, row);
-    if (indexedDbProvider != null) {
-      await indexedDbProvider!.addRow(row.id, row);
+    if (_indexedDbProvider != null) {
+      await _indexedDbProvider!.addRow(row.id, row);
     }
   }
 
@@ -123,8 +125,8 @@ class Dataset<T extends pb.Object> {
     final exists = getRowById(row.id);
     if (exists != null) {
       _rows.remove(exists);
-      if (indexedDbProvider != null) {
-        await indexedDbProvider!.removeRow(row.id);
+      if (_indexedDbProvider != null) {
+        await _indexedDbProvider!.removeRow(row.id);
       }
     }
   }
