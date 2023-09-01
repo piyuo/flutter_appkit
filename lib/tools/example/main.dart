@@ -57,7 +57,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                   body: Column(
                     children: [
                       Expanded(
-                        child: _showTagView(context),
+                        child: _dataview(context),
                       ),
                       SizedBox(
                         height: 100,
@@ -65,9 +65,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                           child: Wrap(
                             children: [
                               testing.ExampleButton(
-                                  label: 'NavigationView',
-                                  useScaffold: false,
-                                  builder: () => _responsiveListView(context)),
+                                  label: 'NavigationView', useScaffold: false, builder: () => _pullFresh(context)),
                               testing.ExampleButton(label: 'Dataview', builder: () => _dataview(context)),
                               testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
                               testing.ExampleButton(label: 'show tag view', builder: () => _showTagView(context)),

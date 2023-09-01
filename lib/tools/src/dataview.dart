@@ -133,32 +133,40 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
           }
 
           final colorScheme = Theme.of(context).colorScheme;
+          Widget header = headerBuilder != null
+              ? Container(
+                  color: colorScheme.surface, // background color make sure header can cover refresh indicator
+                  width: double.infinity,
+                  child: headerBuilder!(),
+                )
+              : const SizedBox();
+          final displayRows = viewProvider.dataProvider.displayRows;
           return PullRefresh(
             refreshMoreProvider: refreshMoreProvider,
             onRefresh: () async => await viewProvider.pullRefresh(widgetBuilder),
             child: LoadMoreAnimateView(
                 refreshMoreProvider: refreshMoreProvider,
                 execLoadMore: viewProvider.dataProvider.isMoreToFetch ? goFetch : null,
-                child: viewProvider.dataProvider.displayRows.isEmpty
-                    ? const delta.NoDataDisplay()
+                child: displayRows.isEmpty
+                    ? ListView(
+                        children: [
+                          header,
+                          const delta.NoDataDisplay(),
+                        ],
+                      )
                     : delta.AnimateView(
                         animateViewProvider: animateViewProvider,
                         itemBuilder: (index) => index == 0
-                            ? headerBuilder != null
-                                ? Container(
-                                    color: colorScheme
-                                        .surface, // background color make sure header can cover refresh indicator
-                                    width: double.infinity,
-                                    child: headerBuilder!(),
-                                  )
-                                : const SizedBox()
-                            : index - 1 == viewProvider.dataProvider.displayRows.length
+                            ? header
+                            : index - 1 == displayRows.length
                                 ? loadMoreIndicator(
                                     context,
                                     refreshMoreProvider: refreshMoreProvider,
                                     execLoadMore: viewProvider.dataProvider.isMoreToFetch ? goFetch : null,
                                   )
-                                : widgetBuilder(viewProvider.dataProvider.displayRows[index - 1]),
+                                : index < displayRows.length
+                                    ? widgetBuilder(displayRows[index - 1])
+                                    : const SizedBox(), //displayRows changed in render procedure
                         mainAxisSpacing: 15,
                         crossAxisSpacing: 20,
                         crossAxisCount: 1,
