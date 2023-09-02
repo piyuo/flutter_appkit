@@ -97,6 +97,7 @@ dependencies:
   clock: ^1.1.1
   duration: ^3.0.12
   emoji_picker_flutter: ^1.6.1
+  auto_animated: ^3.2.0
 dev_dependencies:
   mockito: ^5.4.2
   flutter_lints: ^2.0.2

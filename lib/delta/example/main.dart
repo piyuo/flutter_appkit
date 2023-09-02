@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       children: [
                         Expanded(
                           //child: SingleChildScrollView(child: _barView(context)),
-                          child: _animatedViewInList(context),
+                          child: _animateSliverList(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -175,8 +175,12 @@ class _DeltaExampleState extends State<DeltaExample> {
                                   builder: () => _shifter(context),
                                 ),
                                 testing.ExampleButton(
+                                  label: 'AnimateSliverList',
+                                  builder: () => _animateSliverList(context),
+                                ),
+                                testing.ExampleButton(
                                   label: 'animated grid',
-                                  builder: () => _animatedGrid(),
+                                  builder: () => _animatedGrid(context),
                                 ),
                                 testing.ExampleButton(
                                   label: 'animated view in list',
@@ -298,7 +302,19 @@ class _DeltaExampleState extends State<DeltaExample> {
     );
   }
 
-  Widget _animatedGrid() {
+  Widget _animateSliverList(BuildContext context) {
+    return CustomScrollView(slivers: [
+      AnimateSliverList(
+          itemCount: 20,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text('Item $index'),
+            );
+          }),
+    ]);
+  }
+
+  Widget _animatedGrid(BuildContext context) {
     return Column(children: [
       Row(children: [
         OutlinedButton(
