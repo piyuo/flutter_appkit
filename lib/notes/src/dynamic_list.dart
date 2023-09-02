@@ -122,7 +122,8 @@ class DynamicList<T> extends Selectable<T> {
                                   }
 
                                   return delta.AnimateView(
-                                    animateViewProvider: animateViewProvider,
+                                    gridKey: animateViewProvider.gridKey,
+                                    length: animateViewProvider.length,
                                     controller: animatedViewScrollController,
                                     shrinkWrap: true,
                                     itemBuilder: (int index) {

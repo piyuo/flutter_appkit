@@ -139,7 +139,8 @@ class DynamicGrid<T> extends Selectable<T> {
                                   }
 
                                   return delta.AnimateView(
-                                    animateViewProvider: animateViewProvider,
+                                    gridKey: animateViewProvider.gridKey,
+                                    length: animateViewProvider.length,
                                     crossAxisCount: crossAxisCount,
                                     crossAxisSpacing: 40,
                                     mainAxisSpacing: 5,

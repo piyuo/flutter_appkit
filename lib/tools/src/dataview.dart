@@ -155,7 +155,8 @@ class Dataview<T extends pb.Object> extends StatelessWidget {
                         ],
                       )
                     : delta.AnimateView(
-                        animateViewProvider: animateViewProvider,
+                        gridKey: animateViewProvider.gridKey,
+                        length: animateViewProvider.length,
                         itemBuilder: (index) => index == 0
                             ? header
                             : index - 1 == displayRows.length
