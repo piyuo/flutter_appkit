@@ -1,154 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'animate_grid.dart';
 import 'shifter.dart';
-
-/// shakeShift is for shift animation
-const shakeShift = 10.0;
-
-/// AnimatedViewProvider control view's animation
-class AnimateViewProvider with ChangeNotifier {
-  /// of get DatabaseProvider from context
-  static AnimateViewProvider of(BuildContext context) {
-    return Provider.of(context, listen: false);
-  }
-
-  /// _length is items length in view
-  int _length = 0;
-
-  /// length return items length in view
-  int get length => _length;
-
-  /// setLength set new item length in view, notify is true will notify listener
-  void setLength(int value, {bool notify = false}) {
-    _length = value;
-    if (_gridKey.currentState != null) {
-      _gridKey.currentState!.itemCount = _length;
-    }
-    if (notify) {
-      notifyListeners();
-    }
-  }
-
-  /// _shifterReverse is true will reverse shifter animation
-  bool _shifterReverse = false;
-
-  /// _shifterVertical is true will use vertical shifter animation
-  bool _shifterVertical = false;
-
-  /// _gridKey is the key of the animated grid
-  GlobalKey<AnimateGridState> _gridKey = GlobalKey<AnimateGridState>(debugLabel: 'animateGridKey');
-
-  /// refreshPageAnimation show refresh page animation
-  void refreshPageAnimation(newPageLength) {
-    _shifterReverse = true;
-    _shifterVertical = true;
-    _gridKey = GlobalKey<AnimateGridState>();
-    _length = newPageLength;
-    notifyListeners();
-  }
-
-  /// nextPageAnimation show next page animation
-  void nextPageAnimation(int nextPageLength) {
-    _shifterReverse = false;
-    _shifterVertical = false;
-    _gridKey = GlobalKey<AnimateGridState>();
-    _length = nextPageLength;
-    notifyListeners();
-  }
-
-  /// prevPageAnimation show prev page animation
-  void prevPageAnimation(int prevPageLength) {
-    _shifterReverse = true;
-    _shifterVertical = false;
-    _gridKey = GlobalKey<AnimateGridState>();
-    _length = prevPageLength;
-    notifyListeners();
-  }
-
-  /// insertAnimation show insert animation
-  void insertAnimation({int? index, int count = 1, Duration? duration}) {
-    _length += count;
-    if (_gridKey.currentState != null) {
-      for (int i = 0; i < count; i++) {
-        _gridKey.currentState!.insertItem(index ?? 0, duration: duration ?? animatedDuration);
-      }
-    }
-  }
-
-  /// removeAnimation show remove animation
-  void removeAnimation(
-    int index,
-    Widget child, {
-    bool isSizeAnimation = true,
-    Duration? duration,
-  }) {
-    if (index != -1 && _gridKey.currentState != null) {
-      _gridKey.currentState!.removeItem(
-        index,
-        (context, animation) => isSizeAnimation ? _sizeIt(child, animation) : _slideIt(child, animation),
-        duration: duration ?? animatedDuration,
-      );
-      _length--;
-    }
-  }
-
-  /// shakeAnimation show shake animation
-  void shakeAnimation(int index) {
-    if (index != -1 && _gridKey.currentState != null) {
-      _gridKey.currentState!.shakeItem(
-        index,
-        (context, animation, child) => _shakeIt(child, animation),
-        duration: animatedDuration,
-      );
-    }
-  }
-
-  /// waitForAnimationDone will wait for animation done
-  Future<void> waitForAnimationDone() async {
-    // wait a little longer to make sure animation is done
-    await Future.delayed(Duration(milliseconds: animatedDuration.inMilliseconds + 300));
-  }
-}
-
-/// _slideIt is slide animation
-Widget _slideIt(Widget child, animation) {
-  return SlideTransition(
-    position: Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: const Offset(0, 0),
-    ).animate(animation),
-    child: SizeTransition(
-      axis: Axis.vertical,
-      sizeFactor: animation,
-      child: child,
-    ),
-  );
-}
-
-/// _slideIt is size animation
-Widget _sizeIt(Widget child, animation) {
-  return SizeTransition(
-    axis: Axis.vertical,
-    sizeFactor: animation,
-    child: child,
-  );
-}
-
-/// _shakeIt is shake animation
-Widget _shakeIt(Widget child, animation) {
-  final curve = CurveTween(curve: Curves.elasticIn);
-  double shake(double animation) => 2 * (0.5 - (0.5 - curve.transform(animation)).abs());
-  return AnimatedBuilder(
-      animation: animation,
-      builder: (buildContext, _) {
-        final aValue = shake(animation.value) * shakeShift;
-        return Transform.translate(
-          offset: Offset(aValue, 0),
-          child: child,
-        );
-      });
-}
+import 'animate_view_provider.dart';
 
 /// AnimateView show animation list or grid
 class AnimateView extends StatelessWidget {
@@ -157,7 +10,8 @@ class AnimateView extends StatelessWidget {
   /// AnimateView<int>(items: gridItems)
   /// ```
   const AnimateView({
-    required this.animateViewProvider,
+    required this.gridKey,
+    required this.length,
     required this.itemBuilder,
     this.crossAxisCount = 1,
     this.shrinkWrap = false,
@@ -167,9 +21,6 @@ class AnimateView extends StatelessWidget {
     this.childAspectRatio = 1,
     Key? key,
   }) : super(key: key);
-
-  /// animateViewProvider is the provider of the animate view
-  final AnimateViewProvider animateViewProvider;
 
   /// itemBuilder is builder use index to build item
   final Widget Function(int index) itemBuilder;
@@ -215,6 +66,12 @@ class AnimateView extends StatelessWidget {
   /// scroll position (see [ScrollController.offset]), or change it (see
   /// [ScrollController.animateTo]).
   final ScrollController? controller;
+
+  /// length is [AnimateViewProvider]'s length
+  final int length;
+
+  /// gridKey is the key of the animated grid
+  final GlobalKey<AnimateGridState> gridKey;
 
   @override
   Widget build(BuildContext context) {
@@ -224,12 +81,12 @@ class AnimateView extends StatelessWidget {
       mainAxisSpacing: mainAxisSpacing,
       crossAxisSpacing: crossAxisSpacing,
       childAspectRatio: childAspectRatio,
-      key: animateViewProvider._gridKey,
+      key: gridKey,
       crossAxisCount: crossAxisCount,
-      initialItemCount: animateViewProvider._length,
+      initialItemCount: length,
       itemBuilder: (context, index, animation) {
         Widget widget = itemBuilder(index);
-        return _slideIt(widget, animation);
+        return slideIt(widget, animation);
       },
     );
   }
@@ -238,7 +95,8 @@ class AnimateView extends StatelessWidget {
 /// AnimateShiftView show shift animation list or grid
 class AnimateShiftView extends StatelessWidget {
   const AnimateShiftView({
-    required this.animateViewProvider,
+    required this.gridKey,
+    required this.length,
     required this.itemBuilder,
     this.crossAxisCount = 1,
     this.shrinkWrap = false,
@@ -246,11 +104,10 @@ class AnimateShiftView extends StatelessWidget {
     this.mainAxisSpacing = 0,
     this.crossAxisSpacing = 0,
     this.childAspectRatio = 1,
+    this.shifterReverse = false,
+    this.shifterVertical = false,
     Key? key,
   }) : super(key: key);
-
-  /// animateViewProvider is the provider of the animate view
-  final AnimateViewProvider animateViewProvider;
 
   /// itemBuilder is builder use index to build item
   final Widget Function(int index) itemBuilder;
@@ -297,24 +154,36 @@ class AnimateShiftView extends StatelessWidget {
   /// [ScrollController.animateTo]).
   final ScrollController? controller;
 
+  /// shifterReverse is true will reverse shifter animation
+  final bool shifterReverse;
+
+  /// shifterVertical is true will use vertical shifter animation
+  final bool shifterVertical;
+
+  /// length is [AnimateViewProvider]'s length
+  final int length;
+
+  /// gridKey is the key of the animated grid
+  final GlobalKey<AnimateGridState> gridKey;
+
   @override
   Widget build(BuildContext context) {
     return Shifter(
-      reverse: animateViewProvider._shifterReverse,
-      vertical: animateViewProvider._shifterVertical,
-      newChildKey: animateViewProvider._gridKey,
+      reverse: shifterReverse,
+      vertical: shifterVertical,
+      newChildKey: gridKey,
       child: AnimateGrid(
         controller: controller,
         shrinkWrap: shrinkWrap,
         mainAxisSpacing: mainAxisSpacing,
         crossAxisSpacing: crossAxisSpacing,
         childAspectRatio: childAspectRatio,
-        key: animateViewProvider._gridKey,
+        key: gridKey,
         crossAxisCount: crossAxisCount,
-        initialItemCount: animateViewProvider._length,
+        initialItemCount: length,
         itemBuilder: (context, index, animation) {
           Widget widget = itemBuilder(index);
-          return _slideIt(widget, animation);
+          return slideIt(widget, animation);
         },
       ),
     );

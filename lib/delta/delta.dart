@@ -1,6 +1,7 @@
 library delta;
 
 export 'src/axis_animation.dart';
+export 'src/animate_view_provider.dart';
 export 'src/animate_view.dart';
 export 'src/animate_grid.dart';
 export 'src/animated_badge.dart';

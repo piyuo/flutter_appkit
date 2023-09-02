@@ -128,7 +128,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       children: [
                         Expanded(
                           //child: SingleChildScrollView(child: _barView(context)),
-                          child: _preview(context),
+                          child: _animatedViewInList(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -172,7 +172,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                                 testing.ExampleButton(label: 'responsive', builder: () => _responsive(context)),
                                 testing.ExampleButton(
                                   label: 'shifter',
-                                  builder: () => _shifter(),
+                                  builder: () => _shifter(context),
                                 ),
                                 testing.ExampleButton(
                                   label: 'animated grid',
@@ -208,7 +208,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                 )));
   }
 
-  Widget _shifter() {
+  Widget _shifter(BuildContext context) {
     return Column(
       children: [
         Row(children: [
@@ -441,7 +441,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     child: const Text('insert'),
                     onPressed: () {
                       _gridItems.insert(0, 9);
-                      provide.insertAnimation(index: 0, duration: const Duration(milliseconds: 3500));
+                      provide.insertAnimation(index: 0, duration: const Duration(milliseconds: 500));
                     },
                   ),
                   OutlinedButton(
@@ -487,14 +487,16 @@ class _DeltaExampleState extends State<DeltaExample> {
                   ),
                 ]),
                 Consumer<AnimateViewProvider>(
-                  builder: (context, provide, _) => Expanded(
-                      child: AnimateShiftView(
-                    animateViewProvider: provide,
-                    itemBuilder: (index) => _itemBuilder(true, index),
-                    mainAxisSpacing: 15,
-                    crossAxisSpacing: 20,
-                    crossAxisCount: 1,
-                  )),
+                  builder: (context, animateViewProvider, _) => Expanded(
+                    child: AnimateShiftView(
+                      gridKey: animateViewProvider.gridKey,
+                      length: animateViewProvider.length,
+                      itemBuilder: (index) => _itemBuilder(true, index),
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 20,
+                      crossAxisCount: 1,
+                    ),
+                  ),
                 ),
               ])),
     );
@@ -562,9 +564,10 @@ class _DeltaExampleState extends State<DeltaExample> {
                   ),
                 ]),
                 Consumer<AnimateViewProvider>(
-                  builder: (context, provide, _) => Expanded(
+                  builder: (context, animateViewProvider, _) => Expanded(
                       child: AnimateView(
-                    animateViewProvider: provide,
+                    gridKey: animateViewProvider.gridKey,
+                    length: animateViewProvider.length,
                     itemBuilder: (index) => _itemBuilder(false, index),
                     mainAxisSpacing: 15,
                     crossAxisSpacing: 20,
@@ -588,33 +591,35 @@ class _DeltaExampleState extends State<DeltaExample> {
                   },
                 ),
                 Expanded(
-                    child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: 3,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index == 0) {
-                            return Container(
-                              height: 50,
-                              color: Colors.amber,
-                              child: const Center(child: Text('header')),
-                            );
-                          }
-                          if (index == 2) {
-                            return Container(
-                              height: 50,
-                              color: Colors.green,
-                              child: const Center(child: Text('footer')),
-                            );
-                          }
-                          return Consumer<AnimateViewProvider>(
-                            builder: (context, provide, _) => AnimateView(
-                              animateViewProvider: provide,
-                              controller: _scrollController,
-                              itemBuilder: (index) => _itemBuilder(true, index),
-                              shrinkWrap: true,
-                            ),
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: 3,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == 0) {
+                          return Container(
+                            height: 50,
+                            color: Colors.amber,
+                            child: const Center(child: Text('header')),
                           );
-                        })),
+                        }
+                        if (index == 2) {
+                          return Container(
+                            height: 50,
+                            color: Colors.green,
+                            child: const Center(child: Text('footer')),
+                          );
+                        }
+                        return Consumer<AnimateViewProvider>(
+                          builder: (context, animateViewProvider, _) => AnimateView(
+                            gridKey: animateViewProvider.gridKey,
+                            length: animateViewProvider.length,
+                            controller: _scrollController,
+                            itemBuilder: (index) => _itemBuilder(true, index),
+                            shrinkWrap: true,
+                          ),
+                        );
+                      }),
+                ),
               ])),
     );
   }
