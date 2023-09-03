@@ -21,7 +21,7 @@ class ChatBar extends StatelessWidget {
   final ChatBarProvider messageEditorProvider;
 
   /// onSend is a callback function that will be called when user click send button
-  final Future<void> Function(List<pb.Word> words, Map<String, XFile>) onSend;
+  final Future<void> Function(BuildContext context, List<pb.Word> words, Map<String, XFile>) onSend;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class ChatBar extends StatelessWidget {
                   icon: Icon(Icons.send_outlined, color: colorScheme.secondary),
                   onPressed: () async {
                     if (messageEditorProvider.hasText) {
-                      await onSend(messageEditorProvider.toWords(), messageEditorProvider.files);
+                      await onSend(context, messageEditorProvider.toWords(), messageEditorProvider.files);
                     }
                     messageEditorProvider.reset();
                   },
