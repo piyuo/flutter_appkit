@@ -86,9 +86,9 @@ class ChatBar extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.send_outlined, color: colorScheme.secondary),
                   onPressed: () async {
-                    if (messageEditorProvider.hasText) {
-                      await onSend(context, messageEditorProvider.toWords(), messageEditorProvider.files);
-                    }
+                    final words = messageEditorProvider.toWords();
+                    if (words.isEmpty) return;
+                    await onSend(context, words, messageEditorProvider.files);
                     messageEditorProvider.reset();
                   },
                 ),

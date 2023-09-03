@@ -137,8 +137,8 @@ class ChatBarProvider with ChangeNotifier {
     for (int i = 0; i < operations.length; i++) {
       final operation = operations[i];
       if (operation.data is String) {
-        String text = operation.data as String;
-        if (text.isEmpty || (i == text.length - 1 && text.trim() == '\n')) continue;
+        String text = (operation.data as String).trim();
+        if (text.isEmpty || (i == text.length - 1 && text == '\n')) continue;
         words.add(pb.Word(type: pb.Word_WordType.WORD_TYPE_TEXT, value: text));
       } else if (operation.data is Map) {
         for (final entry in (operation.data as Map).entries) {
