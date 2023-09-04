@@ -13,15 +13,16 @@ const _kEmojiSize = 28.0;
 
 class ChatBar extends StatelessWidget {
   const ChatBar({
-    required this.messageEditorProvider,
+    required this.chatBarProvider,
     required this.onSend,
     super.key,
   });
 
-  final ChatBarProvider messageEditorProvider;
+  /// chatBarProvider provide chat bar state
+  final ChatBarProvider chatBarProvider;
 
-  /// onSend is a callback function that will be called when user click send button
-  final void Function(BuildContext context, List<pb.Word> words, Map<String, XFile>) onSend;
+  /// onSend called when user click send button, return true if send success
+  final Future<bool> Function(BuildContext context, List<pb.Word> words, Map<String, XFile>) onSend;
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +32,16 @@ class ChatBar extends StatelessWidget {
             color: colorScheme.secondaryContainer,
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(children: [
-              Row(children: [
+              Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 IconButton(
                   icon: Icon(Icons.photo_camera, color: colorScheme.secondary),
                   onPressed: () async {
                     if (UniversalPlatform.isDesktop || UniversalPlatform.isWeb) {
                       final picked = await delta.pickMedia(mediaType: delta.MediaType.gallery);
-                      messageEditorProvider.insertFiles(picked);
+                      chatBarProvider.insertFiles(picked);
                       return;
                     }
-                    messageEditorProvider.showCameraBar(!messageEditorProvider.isCameraBarVisible);
+                    chatBarProvider.showCameraBar(!chatBarProvider.isCameraBarVisible);
                   },
                 ),
                 const SizedBox(width: 4),
@@ -52,88 +53,93 @@ class ChatBar extends StatelessWidget {
                         ),
                         borderRadius: const BorderRadius.all(Radius.circular(20))),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Expanded(
-                            child: QuillEditor(
-                          focusNode: messageEditorProvider.focusNode,
-                          scrollController: messageEditorProvider.scrollController,
-                          scrollable: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                          autoFocus: false,
-                          expands: false,
-                          controller: messageEditorProvider.quillController,
-                          embedBuilders: [
-                            ImageEmbedBuilder(chatBarProvider: messageEditorProvider),
-                            VideoEmbedBuilder(chatBarProvider: messageEditorProvider),
-                            FileEmbedBuilder(chatBarProvider: messageEditorProvider),
-                            EmojiEmbedBuilder(),
-                          ],
-                          readOnly: false, // true for view only mode
-                          maxHeight: 210,
-                        )),
+                          child: QuillEditor(
+                            readOnly: false,
+                            focusNode: chatBarProvider.focusNode,
+                            scrollController: chatBarProvider.scrollController,
+                            scrollable: true,
+                            padding: const EdgeInsets.fromLTRB(20, 6, 5, 8),
+                            autoFocus: false,
+                            expands: false,
+                            controller: chatBarProvider.quillController,
+                            embedBuilders: [
+                              ImageEmbedBuilder(chatBarProvider: chatBarProvider),
+                              VideoEmbedBuilder(chatBarProvider: chatBarProvider),
+                              FileEmbedBuilder(chatBarProvider: chatBarProvider),
+                              EmojiEmbedBuilder(),
+                            ],
+                            maxHeight: 210,
+                          ),
+                        ),
                         IconButton(
                           visualDensity: VisualDensity.compact,
                           icon: Icon(Icons.insert_emoticon, color: colorScheme.secondary),
                           onPressed: () {
-                            messageEditorProvider.showEmojiBar(!messageEditorProvider.isEmojiBarVisible);
+                            chatBarProvider.showEmojiBar(!chatBarProvider.isEmojiBarVisible);
                           },
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
-                IconButton(
-                  icon: Icon(Icons.send_outlined, color: colorScheme.secondary),
-                  onPressed: () async {
-                    final words = messageEditorProvider.toWords();
-                    if (words.isEmpty) return;
-                    final files = messageEditorProvider.files;
-                    onSend(context, words, files); // async onSend call, so we can reset ASAP
-                    messageEditorProvider.reset();
-                  },
-                ),
+                SizedBox(
+                    width: 54,
+                    child: IconButton(
+                      icon: Icon(Icons.send_outlined, color: colorScheme.secondary),
+                      onPressed: () async {
+                        final words = chatBarProvider.toWords();
+                        if (words.isEmpty) return;
+                        final files = chatBarProvider.files;
+                        final ok = await onSend(context, words, files); // async onSend call, so we can reset ASAP
+                        if (ok) {
+                          chatBarProvider.reset();
+                        }
+                      },
+                    )),
               ]),
               SizedBox(
-                  height: messageEditorProvider.isCameraBarVisible ? 58 : 0,
+                  height: chatBarProvider.isCameraBarVisible ? 58 : 0,
                   child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: messageEditorProvider.isCameraBarVisible
+                      child: chatBarProvider.isCameraBarVisible
                           ? Row(
                               children: [
                                 ElevatedButton(
                                     onPressed: () async {
-                                      messageEditorProvider.showCameraBar(false);
+                                      chatBarProvider.showCameraBar(false);
                                       final picked = await delta.pickMedia(mediaType: delta.MediaType.cameraPhoto);
-                                      messageEditorProvider.insertFiles(picked);
+                                      chatBarProvider.insertFiles(picked);
                                     },
                                     child: const Text('Photo')),
                                 const SizedBox(width: 10),
                                 ElevatedButton(
                                     onPressed: () async {
-                                      messageEditorProvider.showCameraBar(false);
+                                      chatBarProvider.showCameraBar(false);
                                       final picked = await delta.pickMedia(mediaType: delta.MediaType.cameraVideo);
-                                      messageEditorProvider.insertFiles(picked);
+                                      chatBarProvider.insertFiles(picked);
                                     },
                                     child: const Text('Video')),
                                 const SizedBox(width: 10),
                                 ElevatedButton(
                                     onPressed: () async {
-                                      messageEditorProvider.showCameraBar(false);
+                                      chatBarProvider.showCameraBar(false);
                                       final picked = await delta.pickMedia(mediaType: delta.MediaType.gallery);
-                                      messageEditorProvider.insertFiles(picked);
+                                      chatBarProvider.insertFiles(picked);
                                     },
                                     child: const Text('Gallery')),
                               ],
                             )
                           : null)),
               SizedBox(
-                  height: messageEditorProvider.isEmojiBarVisible ? 150 : 0,
-                  child: messageEditorProvider.isEmojiBarVisible
+                  height: chatBarProvider.isEmojiBarVisible ? 150 : 0,
+                  child: chatBarProvider.isEmojiBarVisible
                       ? EmojiPicker(
                           onEmojiSelected: (category, Emoji emoji) {
-                            messageEditorProvider.insertEmoji(emoji.emoji);
-                            messageEditorProvider.showEmojiBar(false);
+                            chatBarProvider.insertEmoji(emoji.emoji);
+                            chatBarProvider.showEmojiBar(false);
                           },
                           config: Config(
                             columns: (constraints.maxWidth / (_kEmojiSize + 15)).ceil(),

@@ -39,14 +39,6 @@ class ChatBarProvider with ChangeNotifier {
   /// isEmojiBarVisible is a flag to show/hide emoji toolbar
   bool isEmojiBarVisible = false;
 
-  /// reset clear all data, let user start from scratch
-  void reset() {
-    files = {};
-    mediaSizes = {};
-    quillController.clear();
-    notifyListeners();
-  }
-
   @override
   void dispose() {
     reset();
@@ -64,6 +56,14 @@ class ChatBarProvider with ChangeNotifier {
 
   /// setMediaSize set media ratio
   void setMediaSize(String id, Size value) => mediaSizes[id] = value;
+
+  /// reset clear all data, let user start from scratch
+  void reset() {
+    files = {};
+    mediaSizes = {};
+    quillController.clear();
+    notifyListeners();
+  }
 
   /// removeFile remove file
   void removeFile(String id) {

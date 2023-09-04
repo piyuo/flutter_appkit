@@ -44,10 +44,11 @@ class EditorExample extends StatelessWidget {
         return Column(children: [
           const Spacer(),
           ChatBar(
-            messageEditorProvider: messageEditorProvider,
+            chatBarProvider: messageEditorProvider,
             onSend: (context, words, map) async {
-              await Future.delayed(const Duration(milliseconds: 3000));
+              await Future.delayed(const Duration(milliseconds: 800));
               debugPrint('onSend: ${map.length}');
+              return true;
             },
           ),
         ]);
