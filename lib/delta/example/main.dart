@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/base/base.dart' as base;
 import 'package:libcli/dialog/dialog.dart' as dialog;
-
 import '../delta.dart';
 
 final _listingController = ValueNotifier<int>(1);
@@ -128,7 +127,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       children: [
                         Expanded(
                           //child: SingleChildScrollView(child: _barView(context)),
-                          child: _animateSliverList(context),
+                          child: _expansionDrawer(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -139,6 +138,8 @@ class _DeltaExampleState extends State<DeltaExample> {
                                     label: 'BarView', useScaffold: false, builder: () => _barView(context)),
                                 testing.ExampleButton(label: 'preview', builder: () => _preview(context)),
                                 testing.ExampleButton(label: 'chat bubble', builder: () => _chatBubble(context)),
+                                testing.ExampleButton(
+                                    label: 'ExpansionPanel', builder: () => _expansionDrawer(context)),
                                 testing.ExampleButton(label: 'mounted pop', builder: () => _mounted(context)),
                                 testing.ExampleButton(label: 'search trigger', builder: () => _searchTrigger(context)),
                                 testing.ExampleButton(
@@ -825,6 +826,14 @@ class _DeltaExampleState extends State<DeltaExample> {
                         ),
                       ],
                     ))));
+  }
+
+  Widget _expansionDrawer(BuildContext context) {
+    return ExpansionDrawer(
+      initiallyExpanded: true,
+      expandedHeight: 200,
+      child: Container(height: 200, color: Colors.green),
+    );
   }
 
   Widget _chatBubble(BuildContext context) {
