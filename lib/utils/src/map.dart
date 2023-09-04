@@ -1,5 +1,14 @@
 /// Copy on map will allow you to add [.deepCopy] to your strings
-extension Copy on Map {
+extension UtilsMap<K, V> on Map<K, V> {
+  // clone entire map to new map
+  Map<K, V> clone() {
+    Map<K, V> newMap = {};
+    forEach((key, value) {
+      newMap[key] = value;
+    });
+    return newMap;
+  }
+
   /// deepCopy clone entire map include child to new map
   /// ```dart
   /// var newState = oldState.deepCopy();

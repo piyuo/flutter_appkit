@@ -25,10 +25,10 @@ class ChatBarProvider with ChangeNotifier {
   ScrollController scrollController = ScrollController();
 
   /// files keep track of all files that user selected
-  final Map<String, XFile> files = {};
+  Map<String, XFile> files = {};
 
   /// mediaSizes keep track of all media ratios
-  final Map<String, Size> mediaSizes = {};
+  Map<String, Size> mediaSizes = {};
 
   /// getFiles return file by id
   XFile getFileById(String id) => files[id]!;
@@ -41,8 +41,8 @@ class ChatBarProvider with ChangeNotifier {
 
   /// reset clear all data, let user start from scratch
   void reset() {
-    files.clear();
-    mediaSizes.clear();
+    files = {};
+    mediaSizes = {};
     quillController.clear();
     notifyListeners();
   }

@@ -18,5 +18,16 @@ void main() {
       newMap['child']['text'] = 'changed';
       expect(map['child']['text'], 'hi');
     });
+
+    test('should clone new map', () async {
+      Map<String, int> map = {
+        'a': 1,
+        'b': 2,
+      };
+
+      final newMap = map.clone();
+      expect(newMap['a'], 1);
+      expect(newMap['b'], 2);
+    });
   });
 }
