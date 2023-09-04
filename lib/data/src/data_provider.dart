@@ -98,22 +98,30 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// refresh load new data data from remote, return true if load new data
-  Future<bool> refresh({bool notify = true}) async {
-    final (refreshRows, _) = await loader(
-      pb.Sync(
-        refresh: _dataset.refreshTimestamp,
-      ),
-    );
-    if (refreshRows == null || refreshRows.isEmpty) {
-      return false;
+  Future<bool> refresh({
+    bool notify = true,
+    List<T>? manualRefreshRows,
+  }) async {
+    List<T>? readyRows;
+    if (manualRefreshRows == null) {
+      final (refreshRows, _) = await loader(
+        pb.Sync(
+          refresh: _dataset.refreshTimestamp,
+        ),
+      );
+      if (refreshRows == null || refreshRows.isEmpty) {
+        return false;
+      }
+      readyRows = refreshRows;
+    } else {
+      readyRows = manualRefreshRows;
     }
-    debugPrint('[data_provider] refresh ${refreshRows.length} rows');
-    await _dataset.insertRows(refreshRows);
+    debugPrint('[data_provider] refresh ${readyRows.length} rows');
+    await _dataset.insertRows(readyRows);
     // fetchRows may need to remove some rows because refresh rows have new one
-    for (T row in refreshRows) {
+    for (T row in readyRows) {
       _removeFromFetchRows(row);
     }
-
     binDisplay(notify);
 
     // check if delete from refresh make page not full
