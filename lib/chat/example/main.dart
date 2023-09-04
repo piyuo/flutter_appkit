@@ -46,7 +46,8 @@ class EditorExample extends StatelessWidget {
           ChatBar(
             messageEditorProvider: messageEditorProvider,
             onSend: (context, words, map) async {
-              debugPrint('onSend: ${words.length}');
+              await Future.delayed(const Duration(milliseconds: 3000));
+              debugPrint('onSend: ${map.length}');
             },
           ),
         ]);
