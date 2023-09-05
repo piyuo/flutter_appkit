@@ -23,6 +23,7 @@ class ExpansionDrawer<T> extends StatelessWidget {
     this.expandedHeight = 100,
     this.collapsedHeight = 0,
     this.iconColor,
+    this.iconBackgroundColor,
     super.key,
   });
 
@@ -41,6 +42,9 @@ class ExpansionDrawer<T> extends StatelessWidget {
   /// iconColor is the color of the icon
   final Color? iconColor;
 
+  /// iconBackgroundColor is the color of the icon background
+  final Color? iconBackgroundColor;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<_ExpansionDrawerProvider>(
@@ -52,15 +56,22 @@ class ExpansionDrawer<T> extends StatelessWidget {
                     duration: const Duration(milliseconds: 250),
                     child: child,
                   ),
-                  IconButton(
-                    onPressed: () {
-                      expansionDrawerProvider.expanded = !expansionDrawerProvider._expanded;
-                    },
-                    icon: Icon(
-                      color: iconColor,
-                      expansionDrawerProvider._expanded
-                          ? Icons.keyboard_double_arrow_up_outlined
-                          : Icons.keyboard_double_arrow_down_outlined,
+                  Container(
+                    width: double.infinity,
+                    color: iconBackgroundColor,
+                    height: 26,
+                    child: IconButton(
+                      iconSize: 24,
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        expansionDrawerProvider.expanded = !expansionDrawerProvider._expanded;
+                      },
+                      icon: Icon(
+                        color: iconColor,
+                        expansionDrawerProvider._expanded
+                            ? Icons.keyboard_double_arrow_up_outlined
+                            : Icons.keyboard_double_arrow_down_outlined,
+                      ),
                     ),
                   ),
                 ])));

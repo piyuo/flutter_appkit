@@ -832,6 +832,8 @@ class _DeltaExampleState extends State<DeltaExample> {
     return ExpansionDrawer(
       initiallyExpanded: true,
       expandedHeight: 200,
+      iconBackgroundColor: Colors.blue,
+      iconColor: Colors.red,
       child: Container(height: 200, color: Colors.green),
     );
   }
