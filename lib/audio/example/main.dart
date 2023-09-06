@@ -18,49 +18,46 @@ class AudioExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    playAudio() {
+      return ChangeNotifierProvider<AudioProvider>(
+          create: (context) => AudioProvider(),
+          child: Consumer<AudioProvider>(builder: (context, audioProvider, child) {
+            return Column(children: [
+              OutlinedButton(
+                  child: const Text('play asset audio'),
+                  onPressed: () async {
+                    await audioProvider.playAsset('new_order');
+                  }),
+              OutlinedButton(
+                  child: const Text('play zh_TW audio'),
+                  onPressed: () async {
+                    i18n.withLocale('zh_TW', () async {
+                      await audioProvider.playAsset('new_order');
+                    });
+                  }),
+              OutlinedButton(
+                  child: const Text('play online audio'),
+                  onPressed: () async {
+                    await audioProvider
+                        .playURL('https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3');
+                  })
+            ]);
+          }));
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Wrap(
             children: [
               Container(
-                child: _playAudio(),
+                child: playAudio(),
               ),
-              testing.ExampleButton(
-                label: 'play audio',
-                builder: () => _playAudio(),
-              ),
+              testing.ExampleButton('play audio', builder: playAudio),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Widget _playAudio() {
-    return ChangeNotifierProvider<AudioProvider>(
-        create: (context) => AudioProvider(),
-        child: Consumer<AudioProvider>(builder: (context, audioProvider, child) {
-          return Column(children: [
-            OutlinedButton(
-                child: const Text('play asset audio'),
-                onPressed: () async {
-                  await audioProvider.playAsset('new_order');
-                }),
-            OutlinedButton(
-                child: const Text('play zh_TW audio'),
-                onPressed: () async {
-                  i18n.withLocale('zh_TW', () async {
-                    await audioProvider.playAsset('new_order');
-                  });
-                }),
-            OutlinedButton(
-                child: const Text('play online audio'),
-                onPressed: () async {
-                  await audioProvider
-                      .playURL('https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3');
-                })
-          ]);
-        }));
   }
 }

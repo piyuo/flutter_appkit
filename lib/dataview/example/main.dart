@@ -32,31 +32,18 @@ class DbExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Expanded(child: _sample(context)),
-      Wrap(
-        children: [
-          testing.ExampleButton(
-            label: 'padding to tablet',
-            builder: () => _sample(context),
-          ),
-        ],
-      )
-    ]);
-  }
-
-  Widget _sample(BuildContext context) {
-    return Column(children: [
-      OutlinedButton(
-          child: const Text('helloWorld'),
-          onPressed: () async {
-            final dbProvider = data.IndexedDbProvider();
-            await dbProvider.init('data_sample');
-            await dbProvider.put('hello', 'world');
-            var name = await dbProvider.get('hello');
-            debugPrint('hello:$name');
-          }),
-      /*OutlinedButton(
+    paddingToTablet() {
+      return Column(children: [
+        OutlinedButton(
+            child: const Text('helloWorld'),
+            onPressed: () async {
+              final dbProvider = data.IndexedDbProvider();
+              await dbProvider.init('data_sample');
+              await dbProvider.put('hello', 'world');
+              var name = await dbProvider.get('hello');
+              debugPrint('hello:$name');
+            }),
+        /*OutlinedButton(
           child: const Text('custom type'),
           onPressed: () async {
             final testDB = await open('testDB');
@@ -69,15 +56,25 @@ class DbExample extends StatelessWidget {
             var inventory = await testDB.get('i');
             debugPrint('Name: ${inventory.name}');
           }),*/
-      OutlinedButton(
-          child: const Text('pb.Object'),
-          onPressed: () async {
-            final dbProvider = data.IndexedDbProvider();
-            await dbProvider.init('data_sample');
-            await dbProvider.addRow('e', sample.Person(name: '123'));
-            var person = await dbProvider.getRow<sample.Person>('e', () => sample.Person());
-            debugPrint('person name: ${person!.name}');
-          }),
+        OutlinedButton(
+            child: const Text('pb.Object'),
+            onPressed: () async {
+              final dbProvider = data.IndexedDbProvider();
+              await dbProvider.init('data_sample');
+              await dbProvider.addRow('e', sample.Person(name: '123'));
+              var person = await dbProvider.getRow<sample.Person>('e', () => sample.Person());
+              debugPrint('person name: ${person!.name}');
+            }),
+      ]);
+    }
+
+    return Column(children: [
+      Expanded(child: paddingToTablet()),
+      Wrap(
+        children: [
+          testing.ExampleButton('padding to tablet', builder: paddingToTablet),
+        ],
+      )
     ]);
   }
 }

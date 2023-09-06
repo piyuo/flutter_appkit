@@ -96,46 +96,46 @@ class AppExampleState extends State<AppExample> {
                       dialog.alert('hello');
                     },
                   ),
+                  testing.ExampleButton('NavigationScaffold',
+                      useScaffold: false, builder: () => _navigationScaffold(context)),
+                  testing.ExampleButton('open web url', builder: () => _openWebUrl(context)),
                   testing.ExampleButton(
-                      label: 'NavigationScaffold', useScaffold: false, builder: () => _navigationScaffold(context)),
-                  testing.ExampleButton(label: 'open web url', builder: () => _openWebUrl(context)),
-                  testing.ExampleButton(
-                    label: 'error screen',
+                    'error screen',
                     builder: () => _errorScreen(context),
                   ),
                   testing.ExampleButton(
-                    label: 'web_app',
+                    'web_app',
                     useScaffold: false,
                     builder: () => _webApp(context),
                   ),
                   testing.ExampleButton(
-                    label: 'language provider',
+                    'language provider',
                     builder: () => _languageProvider(context),
                   ),
                   testing.ExampleButton(
-                    label: 'session provider',
+                    'session provider',
                     builder: () => _sessionProvider(context),
                   ),
                   testing.ExampleButton(
-                    label: 'test root context with dialog',
+                    'test root context with dialog',
                     builder: () => _testRootContext(context),
                   ),
                   testing.ExampleButton(
-                    label: 'scroll behavior',
+                    'scroll behavior',
                     useScaffold: false,
                     builder: () => _scrollBehavior(context),
                   ),
                   testing.ExampleButton(
-                    label: 'error',
+                    'error',
                     builder: () => _error(context),
                   ),
-                  testing.ExampleButton(label: 'loadingScreen default', builder: () => _loadingScreenDefault(context)),
-                  testing.ExampleButton(label: 'loadingScreen custom', builder: () => _loadingScreenReady(context)),
-                  testing.ExampleButton(label: 'loadingScreen error', builder: () => _loadingScreenError(context)),
-                  testing.ExampleButton(
-                      label: 'loadingScreen network error', builder: () => _loadingScreenNetworkError(context)),
-                  testing.ExampleButton(label: 'hypertext', builder: () => _hypertext(context)),
-                  testing.ExampleButton(label: 'SplitView', builder: () => _splitView(context)),
+                  testing.ExampleButton('loadingScreen default', builder: () => _loadingScreenDefault(context)),
+                  testing.ExampleButton('loadingScreen custom', builder: () => _loadingScreenReady(context)),
+                  testing.ExampleButton('loadingScreen error', builder: () => _loadingScreenError(context)),
+                  testing.ExampleButton('loadingScreen network error',
+                      builder: () => _loadingScreenNetworkError(context)),
+                  testing.ExampleButton('hypertext', builder: () => _hypertext(context)),
+                  testing.ExampleButton('SplitView', builder: () => _splitView(context)),
                 ],
               )))
         ],

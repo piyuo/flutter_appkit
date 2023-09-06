@@ -50,7 +50,7 @@ class ExampleButton extends StatelessWidget {
 class ExampleScaffold extends StatelessWidget {
   const ExampleScaffold({
     required this.builder,
-    this.exampleButtons = const [],
+    this.buttons = const [],
     this.title = 'Example',
     super.key,
   });
@@ -62,7 +62,7 @@ class ExampleScaffold extends StatelessWidget {
   final Widget Function() builder;
 
   /// exampleButtons is list of example buttons
-  final List<ExampleButton> exampleButtons;
+  final List<Widget> buttons;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class ExampleScaffold extends StatelessWidget {
                   child: Wrap(
                 spacing: 10,
                 runSpacing: 10,
-                children: exampleButtons,
+                children: buttons,
               )),
             ),
           ),

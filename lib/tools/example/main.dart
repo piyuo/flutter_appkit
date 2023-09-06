@@ -43,663 +43,667 @@ class _ToolsExampleState extends State<ToolsExample> {
           ChangeNotifierProvider<ResponsiveListViewProvider<int>>(
               create: (context) => ResponsiveListViewProvider<int>(value: 0)),
         ],
-        child: Consumer<ResponsiveListViewProvider<int>>(
-            builder: (context, responsiveListViewProvider, child) => Scaffold(
-                  appBar: AppBar(
-                    title: const Text('tools example'),
-                    leading: delta.isPhoneScreen(width) && !responsiveListViewProvider.isSideView
-                        ? IconButton(
-                            icon: const Icon(Icons.arrow_back_ios_new),
-                            onPressed: () => responsiveListViewProvider.useSideView(),
-                          )
-                        : null,
-                  ),
-                  body: Column(
+        child: Consumer<ResponsiveListViewProvider<int>>(builder: (context, responsiveListViewProvider, child) {
+          responsiveListView() {
+            return ResponsiveListView<int>(
+              sideBuilder: (navigationViewProvider) => Container(
+                  color: Colors.blue,
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: _responsiveListView(context),
+                      ElevatedButton(
+                        onPressed: () => navigationViewProvider.show(context, 1),
+                        child: const Text('show 1'),
                       ),
-                      SizedBox(
-                        height: 100,
-                        child: SingleChildScrollView(
-                          child: Wrap(
-                            children: [
-                              testing.ExampleButton(
-                                  label: 'ResponsiveListView', builder: () => _responsiveListView(context)),
-                              testing.ExampleButton(
-                                  label: 'NavigationView', useScaffold: false, builder: () => _pullFresh(context)),
-                              testing.ExampleButton(label: 'Dataview', builder: () => _dataview(context)),
-                              testing.ExampleButton(label: 'tag view', builder: () => _tagView(context)),
-                              testing.ExampleButton(label: 'show tag view', builder: () => _showTagView(context)),
-                              testing.ExampleButton(label: 'StickyHeader', builder: () => _stickyHeader(context)),
-                              testing.ExampleButton(label: 'PullRefresh', builder: () => _pullFresh(context)),
-                              testing.ExampleButton(label: 'LoadMore', builder: () => _loadMore(context)),
-                              testing.ExampleButton(label: 'Refresh More', builder: () => _refreshMore(context)),
-                              testing.ExampleButton(label: 'toolbar', builder: () => _toolbar(context)),
-                              testing.ExampleButton(label: 'menu button', builder: () => _menuButton(context)),
-                              testing.ExampleButton(label: 'button panel', builder: () => _buttonPanel(context)),
-                              testing.ExampleButton(label: 'PagingToolbar', builder: () => _selectBar(context)),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () => navigationViewProvider.show(context, 2),
+                        child: const Text('show 2'),
+                      ),
+                    ],
+                  )),
+              builder: (int value) => Container(
+                color: Colors.green,
+                child: Column(children: [Text('$value')]),
+              ),
+            );
+          }
+
+          tagView() {
+            return TagView<SampleFilter>(
+              onTagSelected: (value) => debugPrint('$value selected'),
+              header: const Text('I am header'),
+              tags: [
+                Tag<SampleFilter>(
+                  label: 'Inbox',
+                  value: SampleFilter.inbox,
+                  icon: Icons.inbox,
+                  count: 0,
+                ),
+                Tag<SampleFilter>(
+                  label: 'VIPs',
+                  value: SampleFilter.vip,
+                  icon: Icons.verified_user,
+                  count: 1,
+                  selected: true,
+                ),
+                Tag<SampleFilter>(
+                  label: 'Sent',
+                  value: SampleFilter.sent,
+                  icon: Icons.send,
+                  count: 20,
+                ),
+                Tag<SampleFilter>(
+                  label: 'All',
+                  value: SampleFilter.all,
+                  icon: Icons.all_inbox,
+                  count: 120,
+                  category: 'iCloud',
+                ),
+              ],
+            );
+          }
+
+          tryShowTagView() {
+            return OutlinedButton(
+              child: const Text('show tag view'),
+              onPressed: () => showTagView<SampleFilter>(
+                context,
+                onTagSelected: (value) => debugPrint('$value selected'),
+                tags: [
+                  Tag<SampleFilter>(
+                    label: 'Inbox',
+                    value: SampleFilter.inbox,
+                    icon: Icons.inbox,
+                    count: 0,
+                  ),
+                  Tag<SampleFilter>(
+                    label: 'VIPs',
+                    value: SampleFilter.vip,
+                    icon: Icons.verified_user,
+                    count: 1,
+                    selected: true,
+                  ),
+                  Tag<SampleFilter>(
+                    label: 'Sent',
+                    value: SampleFilter.sent,
+                    icon: Icons.send,
+                    count: 20,
+                  ),
+                  Tag<SampleFilter>(
+                    label: 'All',
+                    value: SampleFilter.all,
+                    icon: Icons.all_inbox,
+                    count: 120,
+                    category: 'iCloud',
+                  ),
+                ],
+              ),
+            );
+          }
+
+          int itemIndex = 6;
+          final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
+
+          refreshMore() {
+            return ChangeNotifierProvider<RefreshMoreProvider>(
+                create: (context) => RefreshMoreProvider(),
+                child: Consumer<RefreshMoreProvider>(
+                    builder: (context, refreshMoreProvider, _) => RefreshMore(
+                        refreshMoreProvider: refreshMoreProvider,
+                        onRefresh: () async {
+                          await Future.delayed(const Duration(seconds: 3));
+                          //throw Exception('error');
+                          itemIndex = 6;
+                          debugPrint('refresh done');
+                        },
+                        onMore: () async {
+                          await Future.delayed(const Duration(seconds: 3));
+                          //return true;
+                          //throw Exception('error');
+                          itemIndex += 2;
+                          if (itemIndex >= items.length) {
+                            itemIndex = items.length;
+                            return true; // no more data
+                          }
+                          return false;
+                        },
+                        child: CustomScrollView(
+                          slivers: <Widget>[
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  final String item = items[index];
+                                  return ListTile(
+                                    leading: CircleAvatar(child: Text(item)),
+                                    title: Text('This item represents $item.'),
+                                    isThreeLine: true,
+                                    subtitle:
+                                        const Text('Even more additional list item information appears on line three'),
+                                  );
+                                },
+                                childCount: itemIndex,
+                              ),
+                            ),
+                          ],
+                        ))));
+          }
+
+          loadMore() {
+            return ChangeNotifierProvider<RefreshMoreProvider>(
+                create: (context) => RefreshMoreProvider(),
+                child: Consumer<RefreshMoreProvider>(
+                    builder: (context, refreshMoreProvider, _) => LoadMore(
+                          refreshMoreProvider: refreshMoreProvider,
+                          onMore: () async {
+                            debugPrint('more...');
+                            await Future.delayed(const Duration(seconds: 2));
+
+                            //return true;
+                            //throw Exception('error');
+                            itemIndex += 2;
+                            if (itemIndex >= items.length) {
+                              itemIndex = items.length;
+                            }
+                          },
+                          child: CustomScrollView(
+                            slivers: <Widget>[
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (BuildContext context, int index) {
+                                    final String item = items[index];
+                                    return ListTile(
+                                      leading: CircleAvatar(child: Text(item)),
+                                      title: Text('This item represents $item.'),
+                                      isThreeLine: true,
+                                      subtitle: const Text(
+                                          'Even more additional list item information appears on line three'),
+                                    );
+                                  },
+                                  childCount: itemIndex,
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )));
-  }
+                        )));
+          }
 
-  Widget _responsiveListView(BuildContext context) {
-    return ResponsiveListView<int>(
-      sideBuilder: (navigationViewProvider) => Container(
-          color: Colors.blue,
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () => navigationViewProvider.show(context, 1),
-                child: const Text('show 1'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () => navigationViewProvider.show(context, 2),
-                child: const Text('show 2'),
-              ),
-            ],
-          )),
-      builder: (int value) => Container(
-        color: Colors.green,
-        child: Column(children: [Text('$value')]),
-      ),
-    );
-  }
+          var refreshIndex = 0;
+          var refreshResult = [
+            sample.Person(
+                m: pb.Model(i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+          ];
 
-  Widget _tagView(BuildContext context) {
-    return TagView<SampleFilter>(
-      onTagSelected: (value) => debugPrint('$value selected'),
-      header: const Text('I am header'),
-      tags: [
-        Tag<SampleFilter>(
-          label: 'Inbox',
-          value: SampleFilter.inbox,
-          icon: Icons.inbox,
-          count: 0,
-        ),
-        Tag<SampleFilter>(
-          label: 'VIPs',
-          value: SampleFilter.vip,
-          icon: Icons.verified_user,
-          count: 1,
-          selected: true,
-        ),
-        Tag<SampleFilter>(
-          label: 'Sent',
-          value: SampleFilter.sent,
-          icon: Icons.send,
-          count: 20,
-        ),
-        Tag<SampleFilter>(
-          label: 'All',
-          value: SampleFilter.all,
-          icon: Icons.all_inbox,
-          count: 120,
-          category: 'iCloud',
-        ),
-      ],
-    );
-  }
-
-  Widget _showTagView(BuildContext context) {
-    return OutlinedButton(
-      child: const Text('show tag view'),
-      onPressed: () => showTagView<SampleFilter>(
-        context,
-        onTagSelected: (value) => debugPrint('$value selected'),
-        tags: [
-          Tag<SampleFilter>(
-            label: 'Inbox',
-            value: SampleFilter.inbox,
-            icon: Icons.inbox,
-            count: 0,
-          ),
-          Tag<SampleFilter>(
-            label: 'VIPs',
-            value: SampleFilter.vip,
-            icon: Icons.verified_user,
-            count: 1,
-            selected: true,
-          ),
-          Tag<SampleFilter>(
-            label: 'Sent',
-            value: SampleFilter.sent,
-            icon: Icons.send,
-            count: 20,
-          ),
-          Tag<SampleFilter>(
-            label: 'All',
-            value: SampleFilter.all,
-            icon: Icons.all_inbox,
-            count: 120,
-            category: 'iCloud',
-          ),
-        ],
-      ),
-    );
-  }
-
-  int itemIndex = 6;
-  final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-
-  Widget _refreshMore(BuildContext context) {
-    return ChangeNotifierProvider<RefreshMoreProvider>(
-        create: (context) => RefreshMoreProvider(),
-        child: Consumer<RefreshMoreProvider>(
-            builder: (context, refreshMoreProvider, _) => RefreshMore(
-                refreshMoreProvider: refreshMoreProvider,
-                onRefresh: () async {
-                  await Future.delayed(const Duration(seconds: 3));
-                  //throw Exception('error');
-                  itemIndex = 6;
-                  debugPrint('refresh done');
-                },
-                onMore: () async {
-                  await Future.delayed(const Duration(seconds: 3));
-                  //return true;
-                  //throw Exception('error');
-                  itemIndex += 2;
-                  if (itemIndex >= items.length) {
-                    itemIndex = items.length;
-                    return true; // no more data
-                  }
-                  return false;
-                },
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          final String item = items[index];
-                          return ListTile(
-                            leading: CircleAvatar(child: Text(item)),
-                            title: Text('This item represents $item.'),
-                            isThreeLine: true,
-                            subtitle: const Text('Even more additional list item information appears on line three'),
-                          );
-                        },
-                        childCount: itemIndex,
-                      ),
-                    ),
-                  ],
-                ))));
-  }
-
-  Widget _loadMore(BuildContext context) {
-    return ChangeNotifierProvider<RefreshMoreProvider>(
-        create: (context) => RefreshMoreProvider(),
-        child: Consumer<RefreshMoreProvider>(
-            builder: (context, refreshMoreProvider, _) => LoadMore(
-                  refreshMoreProvider: refreshMoreProvider,
-                  onMore: () async {
-                    debugPrint('more...');
-                    await Future.delayed(const Duration(seconds: 2));
-
-                    //return true;
-                    //throw Exception('error');
-                    itemIndex += 2;
-                    if (itemIndex >= items.length) {
-                      itemIndex = items.length;
-                    }
-                  },
-                  child: CustomScrollView(
-                    slivers: <Widget>[
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            final String item = items[index];
-                            return ListTile(
-                              leading: CircleAvatar(child: Text(item)),
-                              title: Text('This item represents $item.'),
-                              isThreeLine: true,
-                              subtitle: const Text('Even more additional list item information appears on line three'),
-                            );
-                          },
-                          childCount: itemIndex,
-                        ),
-                      ),
-                    ],
-                  ),
-                )));
-  }
-
-  var refreshIndex = 0;
-  var refreshResult = [
-    sample.Person(m: pb.Model(i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-  ];
-
-  Widget _dataview(BuildContext context) {
-    return ChangeNotifierProvider<data.IndexedDbProvider>(
-        create: (context) => data.IndexedDbProvider(),
-        child: Consumer<data.IndexedDbProvider>(
-            builder: (context, indexedDbProvider, _) => MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<DataviewProvider<sample.Person>>(
-                        create: (context) => DataviewProvider<sample.Person>(),
-                      ),
-                      ChangeNotifierProvider<data.DataProvider<sample.Person>>(
-                        create: (context) => data.DataProvider<sample.Person>(
-                          rowsPerPage: 10,
-                          loader: (sync) async {
-                            await Future.delayed(const Duration(seconds: 2));
-                            refreshIndex++;
-                            if (sync.hasRefresh() && sync.hasFetch()) {
-                              return (
-                                [
-                                  sample.Person(
-                                    m: pb.Model(
-                                        i: 'r${sampleIndex++}',
-                                        t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
-                                  ),
-                                ],
-                                List.generate(
-                                  10,
-                                  (index) => sample.Person(
-                                      m: pb.Model(
-                                          i: 'f${sampleIndex++}',
-                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+          dataview() {
+            return ChangeNotifierProvider<data.IndexedDbProvider>(
+                create: (context) => data.IndexedDbProvider(),
+                child: Consumer<data.IndexedDbProvider>(
+                    builder: (context, indexedDbProvider, _) => MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider<DataviewProvider<sample.Person>>(
+                                create: (context) => DataviewProvider<sample.Person>(),
+                              ),
+                              ChangeNotifierProvider<data.DataProvider<sample.Person>>(
+                                create: (context) => data.DataProvider<sample.Person>(
+                                  rowsPerPage: 10,
+                                  loader: (sync) async {
+                                    await Future.delayed(const Duration(seconds: 2));
+                                    refreshIndex++;
+                                    if (sync.hasRefresh() && sync.hasFetch()) {
+                                      return (
+                                        [
+                                          sample.Person(
+                                            m: pb.Model(
+                                                i: 'r${sampleIndex++}',
+                                                t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
+                                          ),
+                                        ],
+                                        List.generate(
+                                          10,
+                                          (index) => sample.Person(
+                                              m: pb.Model(
+                                                  i: 'f${sampleIndex++}',
+                                                  t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                        ),
+                                      );
+                                    } else if (refreshIndex == 2) {
+                                      return (
+                                        [
+                                          sample.Person(
+                                              m: pb.Model(
+                                                  d: true,
+                                                  i: 'r1',
+                                                  t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                          sample.Person(
+                                              m: pb.Model(
+                                                  d: true,
+                                                  i: 'f11',
+                                                  t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                          sample.Person(
+                                              m: pb.Model(
+                                                  d: true,
+                                                  i: 'f5',
+                                                  t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                        ],
+                                        null,
+                                      );
+                                    } else if (sync.hasRefresh() && !sync.hasFetch()) {
+                                      return (
+                                        [
+                                          sample.Person(
+                                            m: pb.Model(
+                                                i: 'r${sampleIndex++}',
+                                                t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
+                                          ),
+                                        ],
+                                        null,
+                                      );
+                                    } else if (sync.hasFetch() && !sync.hasRefresh()) {
+                                      final list = List.generate(
+                                        sync.rows,
+                                        (index) => sample.Person(
+                                            m: pb.Model(
+                                                i: 'm${sampleIndex++}',
+                                                t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
+                                      );
+                                      list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
+                                      return (null, list);
+                                    }
+                                    return (null, null);
+                                  },
                                 ),
-                              );
-                            } else if (refreshIndex == 2) {
-                              return (
-                                [
-                                  sample.Person(
-                                      m: pb.Model(
-                                          d: true,
-                                          i: 'r1',
-                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                                  sample.Person(
-                                      m: pb.Model(
-                                          d: true,
-                                          i: 'f11',
-                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                                  sample.Person(
-                                      m: pb.Model(
-                                          d: true,
-                                          i: 'f5',
-                                          t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                                ],
-                                null,
-                              );
-                            } else if (sync.hasRefresh() && !sync.hasFetch()) {
-                              return (
-                                [
-                                  sample.Person(
-                                    m: pb.Model(
-                                        i: 'r${sampleIndex++}',
-                                        t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
-                                  ),
-                                ],
-                                null,
-                              );
-                            } else if (sync.hasFetch() && !sync.hasRefresh()) {
-                              final list = List.generate(
-                                sync.rows,
-                                (index) => sample.Person(
-                                    m: pb.Model(
-                                        i: 'm${sampleIndex++}',
-                                        t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-                              );
-                              list.sort((a, b) => b.utcTime.compareTo(a.utcTime));
-                              return (null, list);
-                            }
-                            return (null, null);
-                          },
-                        ),
-                      ),
-                    ],
-                    child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
-                        builder: (context, dataProvider, dataviewProvider, _) => base.LoadingScreen(future: () async {
-                              await indexedDbProvider.init('tools_sample');
-                              await indexedDbProvider.clear();
-                              final ds = data.Dataset<sample.Person>(
-                                utcExpiredDate: DateTime.now().toUtc(),
-                                builder: () => sample.Person(),
-                              );
-                              await ds.init(indexedDbProvider: indexedDbProvider);
-                              await dataProvider.init(dataset: ds);
-                              await dataviewProvider.init(dataProvider);
-                            }, builder: () {
-                              widgetBuilder(person) {
-                                return ListTile(
-                                  leading: CircleAvatar(child: Text(person.id)),
-                                  title: Text('This item represents ${person.id}.'),
-                                  isThreeLine: true,
-                                  subtitle: Text(
-                                      'Even more additional list item information appears on line three ${person.name}'),
-                                );
-                              }
+                              ),
+                            ],
+                            child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
+                                builder: (context, dataProvider, dataviewProvider, _) =>
+                                    base.LoadingScreen(future: () async {
+                                      await indexedDbProvider.init('tools_sample');
+                                      await indexedDbProvider.clear();
+                                      final ds = data.Dataset<sample.Person>(
+                                        utcExpiredDate: DateTime.now().toUtc(),
+                                        builder: () => sample.Person(),
+                                      );
+                                      await ds.init(indexedDbProvider: indexedDbProvider);
+                                      await dataProvider.init(dataset: ds);
+                                      await dataviewProvider.init(dataProvider);
+                                    }, builder: () {
+                                      widgetBuilder(person) {
+                                        return ListTile(
+                                          leading: CircleAvatar(child: Text(person.id)),
+                                          title: Text('This item represents ${person.id}.'),
+                                          isThreeLine: true,
+                                          subtitle: Text(
+                                              'Even more additional list item information appears on line three ${person.name}'),
+                                        );
+                                      }
 
-                              return Column(children: [
-                                Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Row(children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          dataviewProvider.refresh(widgetBuilder);
-                                        },
-                                        child: const Text('Refresh'),
-                                      ),
-                                    ])),
-                                Expanded(
-                                  child: Dataview<sample.Person>(
-                                    viewProvider: dataviewProvider,
-                                    headerBuilder: () => Container(
-                                        height: 65,
-                                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 20),
+                                      return Column(children: [
+                                        Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Row(children: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  dataviewProvider.refresh(widgetBuilder);
+                                                },
+                                                child: const Text('Refresh'),
+                                              ),
+                                            ])),
+                                        Expanded(
+                                          child: Dataview<sample.Person>(
+                                            viewProvider: dataviewProvider,
+                                            headerBuilder: () => Container(
+                                                height: 65,
+                                                padding: const EdgeInsets.fromLTRB(15, 5, 15, 20),
 //                            color: Colors.red,
-                                        child: delta.SearchBox(
-                                          focusNode: _focusNode,
-                                          controller: _searchBoxController,
-                                          //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
-                                        )),
-                                    widgetBuilder: widgetBuilder,
-                                  ),
+                                                child: delta.SearchBox(
+                                                  focusNode: _focusNode,
+                                                  controller: _searchBoxController,
+                                                  //prefixIcon: IconButton(icon: const Icon(Icons.menu), onPressed: () => debugPrint('menu pressed')),
+                                                )),
+                                            widgetBuilder: widgetBuilder,
+                                          ),
+                                        ),
+                                      ]);
+                                    })))));
+          }
+
+          pullFresh() {
+            return ChangeNotifierProvider<RefreshMoreProvider>(
+                create: (context) => RefreshMoreProvider(),
+                child: Consumer<RefreshMoreProvider>(
+                    builder: (context, refreshMoreProvider, _) => PullRefresh(
+                          refreshMoreProvider: refreshMoreProvider,
+                          onRefresh: () async {
+                            debugPrint('refresh');
+                            await Future.delayed(const Duration(seconds: 2));
+                            debugPrint('refresh done');
+                          },
+                          child: CustomScrollView(
+                            slivers: <Widget>[
+                              SliverToBoxAdapter(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    refreshMoreProvider.showRefreshAnimation(!refreshMoreProvider.isRefreshAnimation);
+                                  },
+                                  child: const Text('Refresh'),
                                 ),
-                              ]);
-                            })))));
-  }
+                              ),
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (BuildContext context, int index) {
+                                    final String item = items[index];
+                                    return ListTile(
+                                      leading: CircleAvatar(child: Text(item)),
+                                      title: Text('This item represents $item.'),
+                                      isThreeLine: true,
+                                      subtitle: const Text(
+                                          'Even more additional list item information appears on line three'),
+                                    );
+                                  },
+                                  childCount: itemIndex,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )));
+          }
 
-  Widget _pullFresh(BuildContext context) {
-    return ChangeNotifierProvider<RefreshMoreProvider>(
-        create: (context) => RefreshMoreProvider(),
-        child: Consumer<RefreshMoreProvider>(
-            builder: (context, refreshMoreProvider, _) => PullRefresh(
-                  refreshMoreProvider: refreshMoreProvider,
-                  onRefresh: () async {
-                    debugPrint('refresh');
-                    await Future.delayed(const Duration(seconds: 2));
-                    debugPrint('refresh done');
-                  },
-                  child: CustomScrollView(
-                    slivers: <Widget>[
-                      SliverToBoxAdapter(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            refreshMoreProvider.showRefreshAnimation(!refreshMoreProvider.isRefreshAnimation);
-                          },
-                          child: const Text('Refresh'),
-                        ),
-                      ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            final String item = items[index];
-                            return ListTile(
-                              leading: CircleAvatar(child: Text(item)),
-                              title: Text('This item represents $item.'),
-                              isThreeLine: true,
-                              subtitle: const Text('Even more additional list item information appears on line three'),
-                            );
-                          },
-                          childCount: itemIndex,
-                        ),
-                      ),
-                    ],
+          List groupItems = [
+            {'name': 'John', 'group': 'Team A'},
+            {'name': 'Will', 'group': 'Team B'},
+            {'name': 'Beth', 'group': 'Team A'},
+            {'name': 'Miranda', 'group': 'Team B'},
+            {'name': 'Mike', 'group': 'Team C'},
+            {'name': 'Danny', 'group': 'Team C'},
+          ];
+
+          stickyHeader() {
+            return CustomScrollView(
+              slivers: [
+                StickyHeader(
+                  headerBuilder: () => Container(
+                    height: 60.0,
+                    color: Colors.lightBlue,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    alignment: Alignment.centerLeft,
+                    child: const Text('Header #0', style: TextStyle(color: Colors.white)),
                   ),
-                )));
-  }
-
-  List groupItems = [
-    {'name': 'John', 'group': 'Team A'},
-    {'name': 'Will', 'group': 'Team B'},
-    {'name': 'Beth', 'group': 'Team A'},
-    {'name': 'Miranda', 'group': 'Team B'},
-    {'name': 'Mike', 'group': 'Team C'},
-    {'name': 'Danny', 'group': 'Team C'},
-  ];
-
-  Widget _stickyHeader(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        StickyHeader(
-          headerBuilder: () => Container(
-            height: 60.0,
-            color: Colors.lightBlue,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.centerLeft,
-            child: const Text('Header #0', style: TextStyle(color: Colors.white)),
-          ),
-          builder: () => SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, i) => ListTile(
-                leading: const CircleAvatar(child: Text('0')),
-                title: Text('List tile #$i'),
-              ),
-              childCount: 4,
-            ),
-          ),
-        ),
-        StickyHeader(
-          headerBuilder: () => Container(
-            height: 60.0,
-            color: Colors.lightBlue,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.centerLeft,
-            child: const Text('Header #1', style: TextStyle(color: Colors.white)),
-          ),
-          builder: () => SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, i) => ListTile(
-                leading: const CircleAvatar(child: Text('0')),
-                title: Text('List tile #$i'),
-              ),
-              childCount: 4,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _selectBar(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => SelectBarProvider(),
-        child: Consumer<SelectBarProvider>(
-            builder: (context, pagingToolbarProvider, _) => SelectBar(
-                  selectBarProvider: pagingToolbarProvider,
-                  onSelectAllChanged: (selectAll) {
-                    selectAll
-                        ? pagingToolbarProvider.setSelectedInfo(12, 12)
-                        : pagingToolbarProvider.setSelectedInfo(0, 12);
-                    debugPrint('select all: $selectAll');
-                  },
-                  onRefresh: () async {},
-                  onNew: () {},
-                  actionsAfterSelect: [
-                    ToolButton(
-                      label: 'Archive',
-                      icon: Icons.archive,
-                      onPressed: () {},
+                  builder: () => SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, i) => ListTile(
+                        leading: const CircleAvatar(child: Text('0')),
+                        title: Text('List tile #$i'),
+                      ),
+                      childCount: 4,
                     ),
-                    ToolButton(
-                      label: 'Delete',
-                      icon: Icons.delete,
-                      onPressed: () {},
+                  ),
+                ),
+                StickyHeader(
+                  headerBuilder: () => Container(
+                    height: 60.0,
+                    color: Colors.lightBlue,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    alignment: Alignment.centerLeft,
+                    child: const Text('Header #1', style: TextStyle(color: Colors.white)),
+                  ),
+                  builder: () => SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, i) => ListTile(
+                        leading: const CircleAvatar(child: Text('0')),
+                        title: Text('List tile #$i'),
+                      ),
+                      childCount: 4,
                     ),
-                  ],
-                  child: Container(color: Colors.red),
-                )));
-  }
+                  ),
+                ),
+              ],
+            );
+          }
 
-  Widget _buttonPanel(BuildContext context) {
-    return ButtonPanel<String>(
-      onPressed: (item) => debugPrint('$item pressed'),
-      checkedValues: const ['1'],
-      children: const {
-        '0': Row(children: [
-          Expanded(
-            child: Text('button', style: TextStyle(fontSize: 18)),
-          ),
-          Icon(Icons.add),
-        ]),
-        '1': Row(children: [
-          Expanded(
-            child: Text('button 1', style: TextStyle(fontSize: 18)),
-          ),
-          Icon(Icons.dark_mode),
-        ]),
-        '2': Row(children: [
-          Expanded(
-            child: Text('button 2', style: TextStyle(fontSize: 18)),
-          ),
-          Icon(Icons.accessibility),
-        ]),
-      },
-    );
-  }
+          selectBar() {
+            return ChangeNotifierProvider(
+                create: (_) => SelectBarProvider(),
+                child: Consumer<SelectBarProvider>(
+                    builder: (context, pagingToolbarProvider, _) => SelectBar(
+                          selectBarProvider: pagingToolbarProvider,
+                          onSelectAllChanged: (selectAll) {
+                            selectAll
+                                ? pagingToolbarProvider.setSelectedInfo(12, 12)
+                                : pagingToolbarProvider.setSelectedInfo(0, 12);
+                            debugPrint('select all: $selectAll');
+                          },
+                          onRefresh: () async {},
+                          onNew: () {},
+                          actionsAfterSelect: [
+                            ToolButton(
+                              label: 'Archive',
+                              icon: Icons.archive,
+                              onPressed: () {},
+                            ),
+                            ToolButton(
+                              label: 'Delete',
+                              icon: Icons.delete,
+                              onPressed: () {},
+                            ),
+                          ],
+                          child: Container(color: Colors.red),
+                        )));
+          }
 
-  Widget _menuButton(BuildContext context) {
-    return Column(children: [
-      const SizedBox(height: 40),
-      const Text('General'),
-      SizedBox(
-        width: 140,
-        child: MenuButton<String>(
-            icon: const Icon(Icons.settings, size: 18),
-            label: const Text('Settings'),
-            onPressed: (value) {
-              debugPrint('$value pressed');
-            },
-            selectedValue: '2',
-            selection: const {
-              '1': 'hello',
-              '2': 'world',
-            }),
-      ),
-      const Text('Disabled'),
-      const MenuButton<String>(
-        icon: Icon(Icons.settings),
-        onPressed: null,
-        selectedValue: '2',
-        selection: {
-          '1': 'hello',
-          '2': 'world',
-        },
-      ),
-      const Text('Empty'),
-      const MenuButton<String>(
-        onPressed: null,
-        selectedValue: '2',
-        selection: {},
-      ),
-    ]);
-  }
+          buttonPanel() {
+            return ButtonPanel<String>(
+              onPressed: (item) => debugPrint('$item pressed'),
+              checkedValues: const ['1'],
+              children: const {
+                '0': Row(children: [
+                  Expanded(
+                    child: Text('button', style: TextStyle(fontSize: 18)),
+                  ),
+                  Icon(Icons.add),
+                ]),
+                '1': Row(children: [
+                  Expanded(
+                    child: Text('button 1', style: TextStyle(fontSize: 18)),
+                  ),
+                  Icon(Icons.dark_mode),
+                ]),
+                '2': Row(children: [
+                  Expanded(
+                    child: Text('button 2', style: TextStyle(fontSize: 18)),
+                  ),
+                  Icon(Icons.accessibility),
+                ]),
+              },
+            );
+          }
 
-  Widget _toolbar(BuildContext context) {
-    return Column(children: [
-      Toolbar(
-        items: [
-          ToolButton(
-            label: 'Show tool sheet',
-            icon: Icons.new_label,
-            onPressed: () async {
-              await showToolSheet(
-                context,
+          menuButton() {
+            return Column(children: [
+              const SizedBox(height: 40),
+              const Text('General'),
+              SizedBox(
+                width: 140,
+                child: MenuButton<String>(
+                    icon: const Icon(Icons.settings, size: 18),
+                    label: const Text('Settings'),
+                    onPressed: (value) {
+                      debugPrint('$value pressed');
+                    },
+                    selectedValue: '2',
+                    selection: const {
+                      '1': 'hello',
+                      '2': 'world',
+                    }),
+              ),
+              const Text('Disabled'),
+              const MenuButton<String>(
+                icon: Icon(Icons.settings),
+                onPressed: null,
+                selectedValue: '2',
+                selection: {
+                  '1': 'hello',
+                  '2': 'world',
+                },
+              ),
+              const Text('Empty'),
+              const MenuButton<String>(
+                onPressed: null,
+                selectedValue: '2',
+                selection: {},
+              ),
+            ]);
+          }
+
+          toolbar() {
+            return Column(children: [
+              Toolbar(
                 items: [
                   ToolButton(
-                    label: 'New File',
-                    //text: 'Hello File',
+                    label: 'Show tool sheet',
                     icon: Icons.new_label,
-                    onPressed: () => debugPrint('new_file pressed'),
+                    onPressed: () async {
+                      await showToolSheet(
+                        context,
+                        items: [
+                          ToolButton(
+                            label: 'New File',
+                            //text: 'Hello File',
+                            icon: Icons.new_label,
+                            onPressed: () => debugPrint('new_file pressed'),
+                          ),
+                          ToolButton(
+                            label: 'Disabled',
+                            icon: Icons.cabin,
+                          ),
+                          ToolButton(
+                            label: 'abc',
+                            icon: Icons.abc_outlined,
+                            onPressed: () => debugPrint('abc pressed'),
+                          ),
+                          ToolSelection(
+                            label: 'Rows per page',
+                            icon: Icons.table_rows,
+                            selection: {
+                              '10': '10 rows2',
+                              '20': '20 rows2',
+                              '50': '50 rows2',
+                              '100': '100 rows2',
+                              '200': '200 rows2',
+                            },
+                            onPressed: (value) => debugPrint('$value pressed'),
+                          ),
+                          ToolText(label: '1 of 10'),
+                          ToolButton(
+                            label: 'hi',
+                            icon: Icons.hail,
+                            onPressed: () => debugPrint('hi pressed'),
+                          ),
+                          ToolButton(
+                            label: 'hello',
+                            icon: Icons.handshake,
+                            onPressed: () => debugPrint('hello pressed'),
+                          ),
+                        ],
+                      );
+                    },
+                    space: 10,
+                  ),
+                  ToolButton(
+                    label: 'List View',
+                    icon: Icons.list,
+                    onPressed: () => debugPrint('list_view pressed'),
+                    active: true,
+                  ),
+                  ToolButton(
+                    label: 'Grid View',
+                    icon: Icons.grid_view,
+                    onPressed: () => debugPrint('grid_view pressed'),
+                    active: false,
+                    space: 10,
+                  ),
+                  ToolSelection(
+                    width: 150,
+                    label: 'rows per page',
+                    selection: {
+                      '10': '10 rows',
+                      '20': '20 rows',
+                      '50': '50 rows',
+                    },
+                    onPressed: (value) => debugPrint('$value pressed'),
+                  ),
+                  ToolSelection(
+                    width: 120,
+                    label: 'disabled',
+                    selection: {
+                      '10': '10 rows',
+                    },
+                  ),
+                  ToolButton(
+                    label: 'disabled',
+                    icon: Icons.delete,
+                  ),
+                  ToolSpacer(),
+                  ToolText(label: '1 of 10'),
+                  ToolButton(
+                    label: 'Back1',
+                    icon: Icons.chevron_left,
+                    onPressed: () => debugPrint('back pressed'),
+                  ),
+                  ToolButton(
+                    label: 'Next',
+                    icon: Icons.chevron_right,
+                    onPressed: () => debugPrint('next pressed'),
                   ),
                   ToolButton(
                     label: 'Disabled',
                     icon: Icons.cabin,
-                  ),
-                  ToolButton(
-                    label: 'abc',
-                    icon: Icons.abc_outlined,
-                    onPressed: () => debugPrint('abc pressed'),
-                  ),
-                  ToolSelection(
-                    label: 'Rows per page',
-                    icon: Icons.table_rows,
-                    selection: {
-                      '10': '10 rows2',
-                      '20': '20 rows2',
-                      '50': '50 rows2',
-                      '100': '100 rows2',
-                      '200': '200 rows2',
-                    },
-                    onPressed: (value) => debugPrint('$value pressed'),
-                  ),
-                  ToolText(label: '1 of 10'),
-                  ToolButton(
-                    label: 'hi',
-                    icon: Icons.hail,
-                    onPressed: () => debugPrint('hi pressed'),
-                  ),
-                  ToolButton(
-                    label: 'hello',
-                    icon: Icons.handshake,
-                    onPressed: () => debugPrint('hello pressed'),
+                    onPressed: () => debugPrint('disabled pressed'),
+                    space: 10,
                   ),
                 ],
-              );
-            },
-            space: 10,
-          ),
-          ToolButton(
-            label: 'List View',
-            icon: Icons.list,
-            onPressed: () => debugPrint('list_view pressed'),
-            active: true,
-          ),
-          ToolButton(
-            label: 'Grid View',
-            icon: Icons.grid_view,
-            onPressed: () => debugPrint('grid_view pressed'),
-            active: false,
-            space: 10,
-          ),
-          ToolSelection(
-            width: 150,
-            label: 'rows per page',
-            selection: {
-              '10': '10 rows',
-              '20': '20 rows',
-              '50': '50 rows',
-            },
-            onPressed: (value) => debugPrint('$value pressed'),
-          ),
-          ToolSelection(
-            width: 120,
-            label: 'disabled',
-            selection: {
-              '10': '10 rows',
-            },
-          ),
-          ToolButton(
-            label: 'disabled',
-            icon: Icons.delete,
-          ),
-          ToolSpacer(),
-          ToolText(label: '1 of 10'),
-          ToolButton(
-            label: 'Back1',
-            icon: Icons.chevron_left,
-            onPressed: () => debugPrint('back pressed'),
-          ),
-          ToolButton(
-            label: 'Next',
-            icon: Icons.chevron_right,
-            onPressed: () => debugPrint('next pressed'),
-          ),
-          ToolButton(
-            label: 'Disabled',
-            icon: Icons.cabin,
-            onPressed: () => debugPrint('disabled pressed'),
-            space: 10,
-          ),
-        ],
-      ),
-    ]);
+              ),
+            ]);
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('tools example'),
+              leading: delta.isPhoneScreen(width) && !responsiveListViewProvider.isSideView
+                  ? IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_new),
+                      onPressed: () => responsiveListViewProvider.useSideView(),
+                    )
+                  : null,
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: responsiveListView(),
+                ),
+                SizedBox(
+                  height: 100,
+                  child: SingleChildScrollView(
+                    child: Wrap(
+                      children: [
+                        testing.ExampleButton('ResponsiveListView', builder: responsiveListView),
+                        testing.ExampleButton('NavigationView', useScaffold: false, builder: pullFresh),
+                        testing.ExampleButton('Dataview', builder: dataview),
+                        testing.ExampleButton('tag view', builder: tagView),
+                        testing.ExampleButton('show tag view', builder: tryShowTagView),
+                        testing.ExampleButton('StickyHeader', builder: stickyHeader),
+                        testing.ExampleButton('PullRefresh', builder: pullFresh),
+                        testing.ExampleButton('LoadMore', builder: loadMore),
+                        testing.ExampleButton('Refresh More', builder: refreshMore),
+                        testing.ExampleButton('toolbar', builder: toolbar),
+                        testing.ExampleButton('menu button', builder: menuButton),
+                        testing.ExampleButton('button panel', builder: buttonPanel),
+                        testing.ExampleButton('PagingToolbar', builder: selectBar),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }));
   }
 }

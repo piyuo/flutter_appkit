@@ -162,539 +162,6 @@ main() {
   );
 }
 
-class _SelectedController with ChangeNotifier {
-  List<String> _items = [];
-
-  List<String> get items => _items;
-
-  set items(items) {
-    _items = items;
-    notifyListeners();
-  }
-}
-
-class NotesExample extends StatelessWidget {
-  const NotesExample({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        title: const Text('Example Application'),
-        actions: [
-          NotesViewMenuButton<sample.Person>(
-            viewProvider: _notesProvider,
-            formController: _notesProvider.formController,
-            items: [
-              tools.ToolButton(
-                label: 'hello',
-                icon: Icons.favorite,
-                onPressed: () => debugPrint('hello'),
-              ),
-            ],
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: _checkableList(context),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  testing.ExampleButton(label: 'simple list', builder: () => _simpleList(context)),
-                  testing.ExampleButton(label: 'simple grid', builder: () => _simpleGrid(context)),
-                  testing.ExampleButton(label: 'checkable grid', builder: () => _checkableGrid(context)),
-                  testing.ExampleButton(label: 'checkable list', builder: () => _checkableList(context)),
-                  testing.ExampleButton(label: 'DynamicList', builder: () => _dynamicList(context)),
-                  testing.ExampleButton(label: 'DynamicGrid', builder: () => _dynamicGrid(context)),
-                  testing.ExampleButton(label: 'GridListView', builder: () => _gridListView(context)),
-                  testing.ExampleButton(label: 'DataView', builder: () => _dataView(context)),
-                  testing.ExampleButton(label: 'NotesView', builder: () => _notesView(context)),
-                  OutlinedButton(
-                      child: const Text('scroll to top'),
-                      onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
-                  testing.ExampleButton(label: 'filter split view', builder: () => _filterSplitView(context)),
-                  testing.ExampleButton(label: 'selection header', builder: () => _selectionHeader(context)),
-                  testing.ExampleButton(label: 'loading data', builder: () => _loadingMasterDetailView(context)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _simpleList(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(children: [
-          Expanded(
-            child: SimpleList<String>(
-              headerBuilder: () => delta.SearchBox(
-                focusNode: _focusNode,
-                controller: _searchBoxController,
-              ),
-              footerBuilder: () => Container(
-                color: Colors.red,
-                child: const Text('footer'),
-              ),
-              items: const ['a', 'b', 'c', 'd', 'e'],
-              selectedItems: const ['b'],
-              itemBuilder: (context, String item, bool isSelected) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: Text(item),
-              ),
-            ),
-          ),
-        ]));
-  }
-
-  Widget _checkableList(BuildContext context) {
-    return Column(children: [
-      Expanded(
-        child: SimpleList<String>(
-          headerBuilder: () => delta.SearchBox(
-            focusNode: _focusNode,
-            controller: _searchBoxController,
-          ),
-          checkMode: true,
-          items: const ['a', 'b', 'c', 'd', 'e'],
-          selectedItems: const ['b'],
-          itemBuilder: (context, String item, bool isSelected) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: Text(item),
-          ),
-        ),
-      ),
-    ]);
-  }
-
-  Widget _simpleGrid(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: SimpleGrid<String>(
-        crossAxisCount: 2,
-/*        headerBuilder: () => delta.SearchBox(
-          controller: _searchBoxController,
-        ),*/
-        items: const ['a', 'b', 'c', 'd', 'e'],
-        selectedItems: const ['b'],
-        itemBuilder: (context, String item, bool isSelected) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          child: Text(item),
-        ),
-      ),
-    );
-  }
-
-  Widget _checkableGrid(BuildContext context) {
-    return Column(children: [
-      Expanded(
-        child: SimpleGrid<String>(
-          headerBuilder: () => delta.SearchBox(
-            focusNode: _focusNode,
-            controller: _searchBoxController,
-          ),
-          footerBuilder: () => Container(
-            color: Colors.red,
-            child: const Text('footer'),
-          ),
-          checkMode: true,
-          items: const ['a', 'b', 'c', 'd', 'e'],
-          selectedItems: const ['b'],
-          itemBuilder: (context, String item, bool isSelected) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-            child: Text(item),
-          ),
-        ),
-      ),
-    ]);
-  }
-
-  Widget _dynamicList(BuildContext context) {
-    return ChangeNotifierProvider<delta.AnimateViewProvider>(
-        create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
-        child: Consumer<delta.AnimateViewProvider>(
-            builder: (context, provide, child) => Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(children: [
-                  OutlinedButton(
-                    child: const Text('insert'),
-                    onPressed: () {
-                      animationListItems.insert(0, 'z');
-                      provide.insertAnimation();
-                    },
-                  ),
-                  Expanded(
-                    child: DynamicList<String>(
-                      animateViewProvider: provide,
-                      headerBuilder: () => delta.SearchBox(
-                        focusNode: _focusNode,
-                        controller: _searchBoxController,
-                      ),
-                      footerBuilder: () => Container(
-                        color: Colors.red,
-                        child: const Text('footer'),
-                      ),
-                      items: animationListItems,
-                      selectedItems: const ['b'],
-                      itemBuilder: (context, String item, bool isSelected) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                        child: Text(item),
-                      ),
-                    ),
-                  ),
-                ]))));
-  }
-
-  Widget _dynamicGrid(BuildContext context) {
-    return ChangeNotifierProvider<delta.AnimateViewProvider>(
-        create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
-        child: Consumer<delta.AnimateViewProvider>(
-            builder: (context, provide, child) => Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(children: [
-                  OutlinedButton(
-                    child: const Text('insert'),
-                    onPressed: () {
-                      animationListItems.insert(0, 'z');
-                      provide.insertAnimation();
-                    },
-                  ),
-                  Expanded(
-                    child: DynamicGrid<String>(
-                      animateViewProvider: provide,
-                      headerBuilder: () => delta.SearchBox(
-                        focusNode: _focusNode,
-                        controller: _searchBoxController,
-                      ),
-                      footerBuilder: () => Container(
-                        color: Colors.red,
-                        child: const Text('footer'),
-                      ),
-                      items: animationListItems,
-                      selectedItems: const ['b'],
-                      itemBuilder: (context, String item, bool isSelected) => Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                        child: Text(item),
-                      ),
-                    ),
-                  ),
-                ]))));
-  }
-
-  Widget _gridListView(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<delta.AnimateViewProvider>(
-            create: (context) => delta.AnimateViewProvider()..setLength(5),
-          ),
-          ChangeNotifierProvider<delta.RefreshButtonController>(
-            create: (context) => delta.RefreshButtonController(),
-          ),
-          ChangeNotifierProvider<_SelectedController>(
-            create: (context) => _SelectedController(),
-          )
-        ],
-        child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
-            builder: (context, selectedController, animateViewProvider, child) => GridListView<String>(
-                  animateViewProvider: animateViewProvider,
-                  headerBuilder: () => delta.SearchBox(
-                    focusNode: _focusNode,
-                    prefixIcon: IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () => tools.showTagView<SampleFilter>(
-                        context,
-                        onTagSelected: (value) => debugPrint('$value selected'),
-                        tags: [
-                          tools.Tag<SampleFilter>(
-                            label: 'Inbox',
-                            value: SampleFilter.inbox,
-                            icon: Icons.inbox,
-                            count: 0,
-                          ),
-                          tools.Tag<SampleFilter>(
-                            label: 'VIPs',
-                            value: SampleFilter.vip,
-                            icon: Icons.verified_user,
-                            count: 1,
-                            selected: true,
-                          ),
-                          tools.Tag<SampleFilter>(
-                            label: 'Sent',
-                            value: SampleFilter.sent,
-                            icon: Icons.send,
-                            count: 20,
-                          ),
-                          tools.Tag<SampleFilter>(
-                            label: 'All',
-                            value: SampleFilter.all,
-                            icon: Icons.all_inbox,
-                            count: 120,
-                            category: 'iCloud',
-                          ),
-                        ],
-                      ),
-                    ),
-                    controller: _searchBoxController,
-                  ),
-                  items: const ['a', 'b', 'c', 'd', 'e'],
-                  selectedItems: const ['a'],
-                  listBuilder: (context, String item, bool isSelected) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                    child: Text('list:$item'),
-                  ),
-                  gridBuilder: (context, String item, bool isSelected) => Container(
-                    padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
-                    child: Text('grid:$item'),
-                  ),
-                  contentBuilder: () => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    child: Center(child: Text('content view')),
-                  ),
-                  onItemSelected: (items) {
-                    selectedController.items = items;
-                  },
-                  onItemChecked: (items) {
-                    selectedController.items = items;
-                  },
-                )));
-  }
-
-  Widget _filterSplitView(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<delta.AnimateViewProvider>(
-            create: (context) => delta.AnimateViewProvider()..setLength(5),
-          ),
-          ChangeNotifierProvider<delta.RefreshButtonController>(
-            create: (context) => delta.RefreshButtonController(),
-          ),
-          ChangeNotifierProvider<_SelectedController>(
-            create: (context) => _SelectedController(),
-          )
-        ],
-        child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
-          builder: (context, selectedController, animateViewProvider, child) => TagSplitView(
-              tagView: tools.TagView<SampleFilter>(
-                onTagSelected: (value) => debugPrint('$value selected'),
-                tags: [
-                  tools.Tag<SampleFilter>(
-                    label: 'Inbox',
-                    value: SampleFilter.inbox,
-                    icon: Icons.inbox,
-                    count: 0,
-                  ),
-                  tools.Tag<SampleFilter>(
-                    label: 'VIPs',
-                    value: SampleFilter.vip,
-                    icon: Icons.verified_user,
-                    count: 1,
-                    selected: true,
-                  ),
-                  tools.Tag<SampleFilter>(
-                    label: 'Sent',
-                    value: SampleFilter.sent,
-                    icon: Icons.send,
-                    count: 20,
-                  ),
-                  tools.Tag<SampleFilter>(
-                    label: 'All',
-                    value: SampleFilter.all,
-                    icon: Icons.all_inbox,
-                    count: 120,
-                    category: 'iCloud',
-                  ),
-                ],
-              ),
-              child: GridListView<String>(
-                animateViewProvider: animateViewProvider,
-                items: const ['a', 'b', 'c', 'd', 'e'],
-                selectedItems: const ['a'],
-                listBuilder: (context, String item, bool isSelected) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Text('list:$item'),
-                ),
-                gridBuilder: (context, String item, bool isSelected) => Container(
-                  padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
-                  child: Text('grid:$item'),
-                ),
-                contentBuilder: () => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                  child: Center(child: Text('content view')),
-                ),
-                onItemSelected: (items) {
-                  selectedController.items = items;
-                },
-                onItemChecked: (items) {
-                  selectedController.items = items;
-                },
-              )),
-        ));
-  }
-
-  Widget _selectionHeader(BuildContext context) {
-    return Column(children: [
-      CheckableHeader(
-        onSelectAll: () => debugPrint('select all'),
-        onUnselectAll: () => debugPrint('unselect all'),
-        selectedItemCount: 12,
-        isAllSelected: true,
-        actions: [
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.grey.shade900,
-            ),
-            label: const Text('Archive'),
-            icon: const Icon(Icons.archive),
-            onPressed: () {},
-          ),
-          SizedBox(height: 20, child: VerticalDivider(width: 5, color: Colors.grey.shade900)),
-          TextButton.icon(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.grey.shade900,
-            ),
-            label: const Text('Delete'),
-            icon: const Icon(Icons.delete),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      const SizedBox(height: 20),
-      const CheckableHeader(
-        selectedItemCount: 3,
-        isAllSelected: true,
-      ),
-    ]);
-  }
-
-  Widget _loadingMasterDetailView(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<delta.RefreshButtonController>(
-            create: (context) => delta.RefreshButtonController(),
-          ),
-          ChangeNotifierProvider<delta.AnimateViewProvider>(
-            create: (context) => delta.AnimateViewProvider()..setLength(5),
-          ),
-        ],
-        child: Consumer<delta.AnimateViewProvider>(
-            builder: (context, animateViewProvider, _) => GridListView<String>(
-                  animateViewProvider: animateViewProvider,
-                  items: const [],
-                  selectedItems: const [],
-                  listBuilder: (context, String item, bool isSelected) => const SizedBox(),
-                  gridBuilder: (context, String item, bool isSelected) => const SizedBox(),
-                  contentBuilder: () => const Text('detail view'),
-                )));
-  }
-
-  Widget _dataView(BuildContext context) {
-    return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
-        value: _animateViewProvider,
-        child: Consumer<delta.AnimateViewProvider>(
-            builder: (context, animateViewProvider, _) => MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
-                        value: _notesProvider,
-                      ),
-                      ChangeNotifierProvider<data.IndexedDbProvider>(
-                        create: (_) => data.IndexedDbProvider(),
-                      ),
-                    ],
-                    child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
-                      builder: (context, notesProvider, sampleDb, _) {
-                        return base.LoadingScreen(
-                          future: () async {
-                            final isPreferMouse = context.isPreferMouse;
-                            await sampleDb.init('notes_sample');
-                            _notesProvider.load(
-                                isPreferMouse,
-                                dataview.DatasetDb<sample.Person>(
-                                  indexedDb: sampleDb,
-                                  objectBuilder: () => sample.Person(),
-                                ));
-                          },
-                          builder: () => DataView<sample.Person>(
-                            notesProvider: notesProvider,
-                            contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
-                            leftTools: [
-                              tools.ToolButton(
-                                label: 'leftTool',
-                                icon: Icons.favorite,
-                                onPressed: () => debugPrint('hello'),
-                              ),
-                            ],
-                            rightTools: [
-                              tools.ToolButton(
-                                label: 'rightTool',
-                                icon: Icons.ac_unit,
-                                onPressed: () => debugPrint('hi'),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ))));
-  }
-
-  Widget _notesView(BuildContext context) {
-    return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
-        value: _animateViewProvider,
-        child: Consumer<delta.AnimateViewProvider>(
-            builder: (context, animateViewProvider, _) => MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
-                        value: _notesProvider,
-                      ),
-                      ChangeNotifierProvider<data.IndexedDbProvider>(
-                        create: (_) => data.IndexedDbProvider(),
-                      ),
-                    ],
-                    child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
-                      builder: (context, notesProvider, sampleDb, _) {
-                        return base.LoadingScreen(
-                          future: () async {
-                            final isPreferMouse = context.isPreferMouse;
-                            await sampleDb.init('notes_sample');
-                            _notesProvider.load(
-                                isPreferMouse,
-                                dataview.DatasetDb<sample.Person>(
-                                  indexedDb: sampleDb,
-                                  objectBuilder: () => sample.Person(),
-                                ));
-                          },
-                          builder: () => NotesView<sample.Person>(
-                            notesProvider: notesProvider,
-                            contentBuilder: () => NoteForm<sample.Person>(formController: notesProvider.formController),
-                            tagViewHeader: const Text('hello world'),
-                            leftTools: [
-                              tools.ToolButton(
-                                label: 'leftTool',
-                                icon: Icons.favorite,
-                                onPressed: () => debugPrint('hello'),
-                              ),
-                            ],
-                            rightTools: [
-                              tools.ToolButton(
-                                label: 'rightTool',
-                                icon: Icons.ac_unit,
-                                onPressed: () => debugPrint('hi'),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ))));
-  }
-}
-
 Widget _noteItem(BuildContext context, String id) {
   return MultiProvider(
       providers: [
@@ -737,4 +204,539 @@ Widget _noteItem(BuildContext context, String id) {
                   ),
                 ),
               )));
+}
+
+class _SelectedController with ChangeNotifier {
+  List<String> _items = [];
+
+  List<String> get items => _items;
+
+  set items(items) {
+    _items = items;
+    notifyListeners();
+  }
+}
+
+class NotesExample extends StatelessWidget {
+  const NotesExample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    simpleList() {
+      return Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(children: [
+            Expanded(
+              child: SimpleList<String>(
+                headerBuilder: () => delta.SearchBox(
+                  focusNode: _focusNode,
+                  controller: _searchBoxController,
+                ),
+                footerBuilder: () => Container(
+                  color: Colors.red,
+                  child: const Text('footer'),
+                ),
+                items: const ['a', 'b', 'c', 'd', 'e'],
+                selectedItems: const ['b'],
+                itemBuilder: (context, String item, bool isSelected) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  child: Text(item),
+                ),
+              ),
+            ),
+          ]));
+    }
+
+    checkableList() {
+      return Column(children: [
+        Expanded(
+          child: SimpleList<String>(
+            headerBuilder: () => delta.SearchBox(
+              focusNode: _focusNode,
+              controller: _searchBoxController,
+            ),
+            checkMode: true,
+            items: const ['a', 'b', 'c', 'd', 'e'],
+            selectedItems: const ['b'],
+            itemBuilder: (context, String item, bool isSelected) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              child: Text(item),
+            ),
+          ),
+        ),
+      ]);
+    }
+
+    simpleGrid() {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: SimpleGrid<String>(
+          crossAxisCount: 2,
+/*        headerBuilder: () => delta.SearchBox(
+          controller: _searchBoxController,
+        ),*/
+          items: const ['a', 'b', 'c', 'd', 'e'],
+          selectedItems: const ['b'],
+          itemBuilder: (context, String item, bool isSelected) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Text(item),
+          ),
+        ),
+      );
+    }
+
+    checkableGrid() {
+      return Column(children: [
+        Expanded(
+          child: SimpleGrid<String>(
+            headerBuilder: () => delta.SearchBox(
+              focusNode: _focusNode,
+              controller: _searchBoxController,
+            ),
+            footerBuilder: () => Container(
+              color: Colors.red,
+              child: const Text('footer'),
+            ),
+            checkMode: true,
+            items: const ['a', 'b', 'c', 'd', 'e'],
+            selectedItems: const ['b'],
+            itemBuilder: (context, String item, bool isSelected) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+              child: Text(item),
+            ),
+          ),
+        ),
+      ]);
+    }
+
+    dynamicList() {
+      return ChangeNotifierProvider<delta.AnimateViewProvider>(
+          create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
+          child: Consumer<delta.AnimateViewProvider>(
+              builder: (context, provide, child) => Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(children: [
+                    OutlinedButton(
+                      child: const Text('insert'),
+                      onPressed: () {
+                        animationListItems.insert(0, 'z');
+                        provide.insertAnimation();
+                      },
+                    ),
+                    Expanded(
+                      child: DynamicList<String>(
+                        animateViewProvider: provide,
+                        headerBuilder: () => delta.SearchBox(
+                          focusNode: _focusNode,
+                          controller: _searchBoxController,
+                        ),
+                        footerBuilder: () => Container(
+                          color: Colors.red,
+                          child: const Text('footer'),
+                        ),
+                        items: animationListItems,
+                        selectedItems: const ['b'],
+                        itemBuilder: (context, String item, bool isSelected) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                          child: Text(item),
+                        ),
+                      ),
+                    ),
+                  ]))));
+    }
+
+    dynamicGrid() {
+      return ChangeNotifierProvider<delta.AnimateViewProvider>(
+          create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
+          child: Consumer<delta.AnimateViewProvider>(
+              builder: (context, provide, child) => Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(children: [
+                    OutlinedButton(
+                      child: const Text('insert'),
+                      onPressed: () {
+                        animationListItems.insert(0, 'z');
+                        provide.insertAnimation();
+                      },
+                    ),
+                    Expanded(
+                      child: DynamicGrid<String>(
+                        animateViewProvider: provide,
+                        headerBuilder: () => delta.SearchBox(
+                          focusNode: _focusNode,
+                          controller: _searchBoxController,
+                        ),
+                        footerBuilder: () => Container(
+                          color: Colors.red,
+                          child: const Text('footer'),
+                        ),
+                        items: animationListItems,
+                        selectedItems: const ['b'],
+                        itemBuilder: (context, String item, bool isSelected) => Container(
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                          child: Text(item),
+                        ),
+                      ),
+                    ),
+                  ]))));
+    }
+
+    gridListView() {
+      return MultiProvider(
+          providers: [
+            ChangeNotifierProvider<delta.AnimateViewProvider>(
+              create: (context) => delta.AnimateViewProvider()..setLength(5),
+            ),
+            ChangeNotifierProvider<delta.RefreshButtonController>(
+              create: (context) => delta.RefreshButtonController(),
+            ),
+            ChangeNotifierProvider<_SelectedController>(
+              create: (context) => _SelectedController(),
+            )
+          ],
+          child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
+              builder: (context, selectedController, animateViewProvider, child) => GridListView<String>(
+                    animateViewProvider: animateViewProvider,
+                    headerBuilder: () => delta.SearchBox(
+                      focusNode: _focusNode,
+                      prefixIcon: IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () => tools.showTagView<SampleFilter>(
+                          context,
+                          onTagSelected: (value) => debugPrint('$value selected'),
+                          tags: [
+                            tools.Tag<SampleFilter>(
+                              label: 'Inbox',
+                              value: SampleFilter.inbox,
+                              icon: Icons.inbox,
+                              count: 0,
+                            ),
+                            tools.Tag<SampleFilter>(
+                              label: 'VIPs',
+                              value: SampleFilter.vip,
+                              icon: Icons.verified_user,
+                              count: 1,
+                              selected: true,
+                            ),
+                            tools.Tag<SampleFilter>(
+                              label: 'Sent',
+                              value: SampleFilter.sent,
+                              icon: Icons.send,
+                              count: 20,
+                            ),
+                            tools.Tag<SampleFilter>(
+                              label: 'All',
+                              value: SampleFilter.all,
+                              icon: Icons.all_inbox,
+                              count: 120,
+                              category: 'iCloud',
+                            ),
+                          ],
+                        ),
+                      ),
+                      controller: _searchBoxController,
+                    ),
+                    items: const ['a', 'b', 'c', 'd', 'e'],
+                    selectedItems: const ['a'],
+                    listBuilder: (context, String item, bool isSelected) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                      child: Text('list:$item'),
+                    ),
+                    gridBuilder: (context, String item, bool isSelected) => Container(
+                      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
+                      child: Text('grid:$item'),
+                    ),
+                    contentBuilder: () => const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                      child: Center(child: Text('content view')),
+                    ),
+                    onItemSelected: (items) {
+                      selectedController.items = items;
+                    },
+                    onItemChecked: (items) {
+                      selectedController.items = items;
+                    },
+                  )));
+    }
+
+    filterSplitView() {
+      return MultiProvider(
+          providers: [
+            ChangeNotifierProvider<delta.AnimateViewProvider>(
+              create: (context) => delta.AnimateViewProvider()..setLength(5),
+            ),
+            ChangeNotifierProvider<delta.RefreshButtonController>(
+              create: (context) => delta.RefreshButtonController(),
+            ),
+            ChangeNotifierProvider<_SelectedController>(
+              create: (context) => _SelectedController(),
+            )
+          ],
+          child: Consumer2<_SelectedController, delta.AnimateViewProvider>(
+            builder: (context, selectedController, animateViewProvider, child) => TagSplitView(
+                tagView: tools.TagView<SampleFilter>(
+                  onTagSelected: (value) => debugPrint('$value selected'),
+                  tags: [
+                    tools.Tag<SampleFilter>(
+                      label: 'Inbox',
+                      value: SampleFilter.inbox,
+                      icon: Icons.inbox,
+                      count: 0,
+                    ),
+                    tools.Tag<SampleFilter>(
+                      label: 'VIPs',
+                      value: SampleFilter.vip,
+                      icon: Icons.verified_user,
+                      count: 1,
+                      selected: true,
+                    ),
+                    tools.Tag<SampleFilter>(
+                      label: 'Sent',
+                      value: SampleFilter.sent,
+                      icon: Icons.send,
+                      count: 20,
+                    ),
+                    tools.Tag<SampleFilter>(
+                      label: 'All',
+                      value: SampleFilter.all,
+                      icon: Icons.all_inbox,
+                      count: 120,
+                      category: 'iCloud',
+                    ),
+                  ],
+                ),
+                child: GridListView<String>(
+                  animateViewProvider: animateViewProvider,
+                  items: const ['a', 'b', 'c', 'd', 'e'],
+                  selectedItems: const ['a'],
+                  listBuilder: (context, String item, bool isSelected) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    child: Text('list:$item'),
+                  ),
+                  gridBuilder: (context, String item, bool isSelected) => Container(
+                    padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 10),
+                    child: Text('grid:$item'),
+                  ),
+                  contentBuilder: () => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                    child: Center(child: Text('content view')),
+                  ),
+                  onItemSelected: (items) {
+                    selectedController.items = items;
+                  },
+                  onItemChecked: (items) {
+                    selectedController.items = items;
+                  },
+                )),
+          ));
+    }
+
+    selectionHeader() {
+      return Column(children: [
+        CheckableHeader(
+          onSelectAll: () => debugPrint('select all'),
+          onUnselectAll: () => debugPrint('unselect all'),
+          selectedItemCount: 12,
+          isAllSelected: true,
+          actions: [
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey.shade900,
+              ),
+              label: const Text('Archive'),
+              icon: const Icon(Icons.archive),
+              onPressed: () {},
+            ),
+            SizedBox(height: 20, child: VerticalDivider(width: 5, color: Colors.grey.shade900)),
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey.shade900,
+              ),
+              label: const Text('Delete'),
+              icon: const Icon(Icons.delete),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        const CheckableHeader(
+          selectedItemCount: 3,
+          isAllSelected: true,
+        ),
+      ]);
+    }
+
+    loadingMasterDetailView() {
+      return MultiProvider(
+          providers: [
+            ChangeNotifierProvider<delta.RefreshButtonController>(
+              create: (context) => delta.RefreshButtonController(),
+            ),
+            ChangeNotifierProvider<delta.AnimateViewProvider>(
+              create: (context) => delta.AnimateViewProvider()..setLength(5),
+            ),
+          ],
+          child: Consumer<delta.AnimateViewProvider>(
+              builder: (context, animateViewProvider, _) => GridListView<String>(
+                    animateViewProvider: animateViewProvider,
+                    items: const [],
+                    selectedItems: const [],
+                    listBuilder: (context, String item, bool isSelected) => const SizedBox(),
+                    gridBuilder: (context, String item, bool isSelected) => const SizedBox(),
+                    contentBuilder: () => const Text('detail view'),
+                  )));
+    }
+
+    dataView() {
+      return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
+          value: _animateViewProvider,
+          child: Consumer<delta.AnimateViewProvider>(
+              builder: (context, animateViewProvider, _) => MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
+                          value: _notesProvider,
+                        ),
+                        ChangeNotifierProvider<data.IndexedDbProvider>(
+                          create: (_) => data.IndexedDbProvider(),
+                        ),
+                      ],
+                      child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
+                        builder: (context, notesProvider, sampleDb, _) {
+                          return base.LoadingScreen(
+                            future: () async {
+                              final isPreferMouse = context.isPreferMouse;
+                              await sampleDb.init('notes_sample');
+                              _notesProvider.load(
+                                  isPreferMouse,
+                                  dataview.DatasetDb<sample.Person>(
+                                    indexedDb: sampleDb,
+                                    objectBuilder: () => sample.Person(),
+                                  ));
+                            },
+                            builder: () => DataView<sample.Person>(
+                              notesProvider: notesProvider,
+                              contentBuilder: () =>
+                                  NoteForm<sample.Person>(formController: notesProvider.formController),
+                              leftTools: [
+                                tools.ToolButton(
+                                  label: 'leftTool',
+                                  icon: Icons.favorite,
+                                  onPressed: () => debugPrint('hello'),
+                                ),
+                              ],
+                              rightTools: [
+                                tools.ToolButton(
+                                  label: 'rightTool',
+                                  icon: Icons.ac_unit,
+                                  onPressed: () => debugPrint('hi'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ))));
+    }
+
+    notesView() {
+      return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
+          value: _animateViewProvider,
+          child: Consumer<delta.AnimateViewProvider>(
+              builder: (context, animateViewProvider, _) => MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider<NotesProvider<sample.Person>>.value(
+                          value: _notesProvider,
+                        ),
+                        ChangeNotifierProvider<data.IndexedDbProvider>(
+                          create: (_) => data.IndexedDbProvider(),
+                        ),
+                      ],
+                      child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
+                        builder: (context, notesProvider, sampleDb, _) {
+                          return base.LoadingScreen(
+                            future: () async {
+                              final isPreferMouse = context.isPreferMouse;
+                              await sampleDb.init('notes_sample');
+                              _notesProvider.load(
+                                  isPreferMouse,
+                                  dataview.DatasetDb<sample.Person>(
+                                    indexedDb: sampleDb,
+                                    objectBuilder: () => sample.Person(),
+                                  ));
+                            },
+                            builder: () => NotesView<sample.Person>(
+                              notesProvider: notesProvider,
+                              contentBuilder: () =>
+                                  NoteForm<sample.Person>(formController: notesProvider.formController),
+                              tagViewHeader: const Text('hello world'),
+                              leftTools: [
+                                tools.ToolButton(
+                                  label: 'leftTool',
+                                  icon: Icons.favorite,
+                                  onPressed: () => debugPrint('hello'),
+                                ),
+                              ],
+                              rightTools: [
+                                tools.ToolButton(
+                                  label: 'rightTool',
+                                  icon: Icons.ac_unit,
+                                  onPressed: () => debugPrint('hi'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ))));
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        title: const Text('Example Application'),
+        actions: [
+          NotesViewMenuButton<sample.Person>(
+            viewProvider: _notesProvider,
+            formController: _notesProvider.formController,
+            items: [
+              tools.ToolButton(
+                label: 'hello',
+                icon: Icons.favorite,
+                onPressed: () => debugPrint('hello'),
+              ),
+            ],
+          )
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: checkableList(),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  testing.ExampleButton('simple list', builder: simpleList),
+                  testing.ExampleButton('simple grid', builder: simpleGrid),
+                  testing.ExampleButton('checkable grid', builder: checkableGrid),
+                  testing.ExampleButton('checkable list', builder: checkableList),
+                  testing.ExampleButton('DynamicList', builder: dynamicList),
+                  testing.ExampleButton('DynamicGrid', builder: dynamicGrid),
+                  testing.ExampleButton('GridListView', builder: gridListView),
+                  testing.ExampleButton('DataView', builder: dataView),
+                  testing.ExampleButton('NotesView', builder: notesView),
+                  OutlinedButton(
+                      child: const Text('scroll to top'),
+                      onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
+                  testing.ExampleButton('filter split view', builder: filterSplitView),
+                  testing.ExampleButton('selection header', builder: selectionHeader),
+                  testing.ExampleButton('loading data', builder: loadingMasterDetailView),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

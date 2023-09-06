@@ -61,117 +61,105 @@ class LocationExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    tryGetCurrentLocation() {
+      return OutlinedButton(
+          child: const Text('get current location'),
+          onPressed: () async {
+            final latLng = await getCurrentLocation('to get current location');
+            latLng != null ? debugPrint('got lat:${latLng.lat}, lng:${latLng.lng}') : debugPrint('permission denied');
+          });
+    }
+
+    locateTextField() {
+      return Column(children: [
+        Container(
+          padding: const EdgeInsets.all(20),
+          child: LocateTextField(
+            reason: 'to get current location',
+            controller: _textEditingController,
+            focusNode: _focusNode,
+            suggestionsBuilder: (TextEditingValue value) {
+              return ['aa', 'bb', 'cc'];
+            },
+            onUseMyLocation: (utils.LatLng value) {
+              debugPrint('lat:${value.lat}, lng:${value.lng}');
+            },
+            onSubmitted: (String text) {
+              debugPrint('text:$text, controller:${_textEditingController.text}');
+            },
+          ),
+        ),
+        OutlinedButton(
+          focusNode: _focusNode2,
+          onPressed: () {},
+          child: const Text('hello'),
+        ),
+      ]);
+    }
+
+    tryPlace() {
+      return ReactiveForm(
+          formGroup: formGroup,
+          child: SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: <Widget>[
+                      PlaceField(
+                        formControlName: 'address',
+                      ),
+                      ReactiveTextField(
+                        formControlName: 'address2',
+                        decoration: const InputDecoration(
+                          hintText: '(Optional) Floor/Room/Building number',
+                        ),
+                      ),
+                      form.p(),
+                      OpenInMap(
+                        label: 'open in external map',
+                        address: '成都市锦江区人民南路二段80号 邮政编码: 610012',
+                        latlng: utils.LatLng(104.06534639982326, 30.648558245938407),
+                      ),
+                      form.p(),
+                      form.Submit(
+                        onSubmit: (context) async => true,
+                      ),
+                      PlaceField(
+                        formControlName: 'address',
+                      ),
+                      ReactiveTextField(
+                        formControlName: 'address2',
+                        decoration: const InputDecoration(
+                          hintText: '(Optional) Floor/Room/Building number',
+                        ),
+                      ),
+                    ],
+                  ))));
+    }
+
+    // not working, need to fix
+    tryMap() {
+      return Consumer<MapProvider>(
+        builder: (context, provide, child) => map(),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Wrap(
             children: [
               Container(
-                child: _locateTextField(),
+                child: locateTextField(),
               ),
-              testing.ExampleButton(
-                label: 'get location',
-                builder: () => _getCurrentLocation(),
-              ),
-              testing.ExampleButton(
-                label: 'place',
-                builder: () => _place(),
-              ),
-              testing.ExampleButton(
-                label: 'LocateTextField',
-                builder: () => _locateTextField(),
-              ),
-              testing.ExampleButton(
-                label: 'map',
-                builder: () => _map(),
-              ),
+              testing.ExampleButton('get location', builder: tryGetCurrentLocation),
+              testing.ExampleButton('place', builder: tryPlace),
+              testing.ExampleButton('LocateTextField', builder: locateTextField),
+              testing.ExampleButton('map', builder: tryMap),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _getCurrentLocation() {
-    return OutlinedButton(
-        child: const Text('get current location'),
-        onPressed: () async {
-          final latLng = await getCurrentLocation('to get current location');
-          latLng != null ? debugPrint('got lat:${latLng.lat}, lng:${latLng.lng}') : debugPrint('permission denied');
-        });
-  }
-
-  Widget _locateTextField() {
-    return Column(children: [
-      Container(
-        padding: const EdgeInsets.all(20),
-        child: LocateTextField(
-          reason: 'to get current location',
-          controller: _textEditingController,
-          focusNode: _focusNode,
-          suggestionsBuilder: (TextEditingValue value) {
-            return ['aa', 'bb', 'cc'];
-          },
-          onUseMyLocation: (utils.LatLng value) {
-            debugPrint('lat:${value.lat}, lng:${value.lng}');
-          },
-          onSubmitted: (String text) {
-            debugPrint('text:$text, controller:${_textEditingController.text}');
-          },
-        ),
-      ),
-      OutlinedButton(
-        focusNode: _focusNode2,
-        onPressed: () {},
-        child: const Text('hello'),
-      ),
-    ]);
-  }
-
-  Widget _place() {
-    return ReactiveForm(
-        formGroup: formGroup,
-        child: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    PlaceField(
-                      formControlName: 'address',
-                    ),
-                    ReactiveTextField(
-                      formControlName: 'address2',
-                      decoration: const InputDecoration(
-                        hintText: '(Optional) Floor/Room/Building number',
-                      ),
-                    ),
-                    form.p(),
-                    OpenInMap(
-                      label: 'open in external map',
-                      address: '成都市锦江区人民南路二段80号 邮政编码: 610012',
-                      latlng: utils.LatLng(104.06534639982326, 30.648558245938407),
-                    ),
-                    form.p(),
-                    form.Submit(
-                      onSubmit: (context) async => true,
-                    ),
-                    PlaceField(
-                      formControlName: 'address',
-                    ),
-                    ReactiveTextField(
-                      formControlName: 'address2',
-                      decoration: const InputDecoration(
-                        hintText: '(Optional) Floor/Room/Building number',
-                      ),
-                    ),
-                  ],
-                ))));
-  }
-
-  // not working, need to fix
-  Widget _map() {
-    return Consumer<MapProvider>(
-      builder: (context, provide, child) => map(),
     );
   }
 }

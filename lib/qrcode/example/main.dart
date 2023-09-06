@@ -17,6 +17,24 @@ class QRCodeExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    scanner() {
+      return ChangeNotifierProvider<ScannerProvider>(
+        create: (context) => ScannerProvider(
+          onCodeScanned: (code) {
+            Navigator.pop(context, code);
+          },
+        ),
+        child: const Scanner(),
+      );
+    }
+
+    tryShowScanner() {
+      return OutlinedButton(
+        child: const Text('show qr code scanner'),
+        onPressed: () => showScanner(context),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -25,38 +43,14 @@ class QRCodeExample extends StatelessWidget {
               SizedBox(
                 width: 300,
                 height: 300,
-                child: _showScanner(context),
+                child: tryShowScanner(),
               ),
-              testing.ExampleButton(
-                label: 'scanner',
-                builder: () => _scanner(),
-              ),
-              testing.ExampleButton(
-                label: 'scanner dialog',
-                builder: () => _showScanner(context),
-              ),
+              testing.ExampleButton('scanner', builder: scanner),
+              testing.ExampleButton('scanner dialog', builder: tryShowScanner),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _scanner() {
-    return ChangeNotifierProvider<ScannerProvider>(
-      create: (context) => ScannerProvider(
-        onCodeScanned: (code) {
-          Navigator.pop(context, code);
-        },
-      ),
-      child: const Scanner(),
-    );
-  }
-
-  Widget _showScanner(BuildContext context) {
-    return OutlinedButton(
-      child: const Text('show qr code scanner'),
-      onPressed: () => showScanner(context),
     );
   }
 }

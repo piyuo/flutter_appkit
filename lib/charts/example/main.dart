@@ -18,34 +18,28 @@ class ChartsExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    indicator() {
+      return const Indicator(title: '翻桌率', text: '3.2');
+    }
+
+    timeChart() {
+      return const TimeChart(title: 'Sales', subtitle: '\$32,437');
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Wrap(
             children: [
               Expanded(
-                child: _timeChart(),
+                child: timeChart(),
               ),
-              testing.ExampleButton(
-                label: 'time chart',
-                builder: () => _timeChart(),
-              ),
-              testing.ExampleButton(
-                label: 'indicator',
-                builder: () => _indicator(),
-              ),
+              testing.ExampleButton('time chart', builder: timeChart),
+              testing.ExampleButton('indicator', builder: indicator),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Widget _indicator() {
-    return const Indicator(title: '翻桌率', text: '3.2');
-  }
-
-  Widget _timeChart() {
-    return const TimeChart(title: 'Sales', subtitle: '\$32,437');
   }
 }

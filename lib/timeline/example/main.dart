@@ -16,6 +16,23 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    timeline() {
+      return Container(
+          padding: const EdgeInsets.all(20),
+          child: Timeline(
+            completedIndex: 0,
+            showLabel: true,
+            steps: [
+              TimelineStep(label: 'Create Order'),
+              TimelineStep(label: 'Go to Store', icon: Icons.store),
+              TimelineStep(
+                label: 'Pick up',
+                icon: Icons.fastfood,
+              ),
+            ],
+          ));
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -23,33 +40,13 @@ class Example extends StatelessWidget {
             children: [
               SizedBox(
                 width: 590,
-                child: _timeline(),
+                child: timeline(),
               ),
-              testing.ExampleButton(
-                label: 'timeline',
-                builder: () => _timeline(),
-              ),
+              testing.ExampleButton('timeline', builder: timeline),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Widget _timeline() {
-    return Container(
-        padding: const EdgeInsets.all(20),
-        child: Timeline(
-          completedIndex: 0,
-          showLabel: true,
-          steps: [
-            TimelineStep(label: 'Create Order'),
-            TimelineStep(label: 'Go to Store', icon: Icons.store),
-            TimelineStep(
-              label: 'Pick up',
-              icon: Icons.fastfood,
-            ),
-          ],
-        ));
   }
 }
