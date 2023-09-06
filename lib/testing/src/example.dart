@@ -70,7 +70,7 @@ class ExampleScaffold extends StatelessWidget {
       body: delta.ResponsiveBarView(
         barBuilder: () => delta.responsiveBar(context, title: Text(title)),
         slivers: [
-          SliverFillRemaining(child: builder()),
+          SliverFillRemaining(child: SingleChildScrollView(child: builder())),
           SliverToBoxAdapter(
             child: SizedBox(
               height: 100,
