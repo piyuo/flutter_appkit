@@ -27,7 +27,7 @@ class ExampleButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: ElevatedButton(
-          child: Text(label),
+          child: Text(builder.runtimeType.toString()),
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
