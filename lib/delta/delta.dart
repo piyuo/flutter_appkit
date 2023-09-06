@@ -6,6 +6,7 @@ export 'src/animate_view_provider.dart';
 export 'src/animate_view.dart';
 export 'src/animate_grid.dart';
 export 'src/animated_badge.dart';
+export 'src/avatar.dart';
 export 'src/count_down.dart';
 export 'src/responsive_bar_view.dart';
 export 'src/qr_image.dart';

@@ -127,7 +127,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                       children: [
                         Expanded(
                           //child: SingleChildScrollView(child: _barView(context)),
-                          child: _expansionDrawer(context),
+                          child: _avatar(context),
                         ),
                         SizedBox(
                           height: 100,
@@ -136,6 +136,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                               children: [
                                 testing.ExampleButton(
                                     label: 'BarView', useScaffold: false, builder: () => _barView(context)),
+                                testing.ExampleButton(label: 'Avatar', builder: () => _avatar(context)),
                                 testing.ExampleButton(label: 'preview', builder: () => _preview(context)),
                                 testing.ExampleButton(label: 'chat bubble', builder: () => _chatBubble(context)),
                                 testing.ExampleButton(
@@ -1544,6 +1545,47 @@ class _DeltaExampleState extends State<DeltaExample> {
             ),
           ]),
       slivers: [SliverToBoxAdapter(child: Container(height: 1200, color: Colors.green))],
+    );
+  }
+
+  Widget _avatar(BuildContext context) {
+    return const Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        Avatar(
+            imageUrl:
+                'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+            name: 'A'),
+        Avatar(faceId: 1, name: 'A'),
+        Avatar(name: 'AB'),
+        Avatar(name: '中'),
+        Avatar(name: 'B'),
+        Avatar(name: 'C'),
+        Avatar(name: 'D'),
+        Avatar(name: 'E'),
+        Avatar(name: 'F'),
+        Avatar(name: 'G'),
+        Avatar(name: 'H'),
+        Avatar(name: 'I'),
+        Avatar(name: 'J'),
+        Avatar(name: 'K'),
+        Avatar(name: 'L'),
+        Avatar(name: 'M'),
+        Avatar(name: 'N'),
+        Avatar(name: 'O'),
+        Avatar(name: 'P'),
+        Avatar(name: 'Q'),
+        Avatar(name: 'R'),
+        Avatar(name: 'S'),
+        Avatar(name: 'T'),
+        Avatar(name: 'U'),
+        Avatar(name: 'V'),
+        Avatar(name: 'W'),
+        Avatar(name: 'X'),
+        Avatar(name: 'Y'),
+        Avatar(name: 'Z')
+      ],
     );
   }
 
