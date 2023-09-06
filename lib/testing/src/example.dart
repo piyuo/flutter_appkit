@@ -2,26 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
 
 /// ExampleButton is button that will navigate to example builder
-/// ```dart
-/// ExampleButton(
-///  label: 'example1',
-///  builder: ()=>Container(),
-///  )
-/// ```
 class ExampleButton extends StatelessWidget {
-  /// ExampleButton is button that will navigate to example builder
   /// ```dart
-  /// ExampleButton(
-  ///  label: 'example1',
-  ///  builder: ()=>Container(),
-  ///  )
+  /// ExampleButton('example1',builder: testFunc)
   /// ```
-  const ExampleButton({
-    Key? key,
-    required this.label,
+  const ExampleButton(
+    this.label, {
     required this.builder,
     this.useScaffold = true,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// label is button label
   final String label;
@@ -52,6 +42,48 @@ class ExampleButton extends StatelessWidget {
                       )
                     : builder(),
               ))),
+    );
+  }
+}
+
+/// ExampleScaffold is scaffold for example showing
+class ExampleScaffold extends StatelessWidget {
+  const ExampleScaffold({
+    required this.builder,
+    this.exampleButtons = const [],
+    this.title = 'Example',
+    super.key,
+  });
+
+  /// title is example title
+  final String title;
+
+  /// builder is function that will be called when button is pressed
+  final Widget Function() builder;
+
+  /// exampleButtons is list of example buttons
+  final List<ExampleButton> exampleButtons;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: delta.ResponsiveBarView(
+        barBuilder: () => delta.responsiveBar(context, title: Text(title)),
+        slivers: [
+          SliverFillRemaining(child: builder()),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 100,
+              child: SingleChildScrollView(
+                  child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: exampleButtons,
+              )),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
