@@ -98,12 +98,13 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   }
 
   /// refresh load new data data from remote, return true if load new data
+  /// if newRows is not null then use newRows to refresh, in this case loader will not be called
   Future<bool> refresh({
     bool notify = true,
-    List<T>? manualRefreshRows,
+    List<T>? newRows,
   }) async {
     List<T>? readyRows;
-    if (manualRefreshRows == null) {
+    if (newRows == null) {
       final (refreshRows, _) = await loader(
         pb.Sync(
           refresh: _dataset.refreshTimestamp,
@@ -114,7 +115,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       }
       readyRows = refreshRows;
     } else {
-      readyRows = manualRefreshRows;
+      readyRows = newRows;
     }
     debugPrint('[data_provider] refresh ${readyRows.length} rows');
     await _dataset.insertRows(readyRows);
