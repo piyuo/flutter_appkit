@@ -82,7 +82,7 @@ void main() {
 
       await post(
           Request(
-            service: _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
+            service: _FakeOkService()..mockSender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
             client: client,
             action: pb.OK(),
             url: 'http://mock',
@@ -100,7 +100,7 @@ void main() {
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await post(
           Request(
-            service: _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
+            service: _FakeOkService()..mockSender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
             client: client,
             action: pb.OK(),
             url: 'http://mock',
@@ -163,7 +163,7 @@ _FakeOkService? _fakeService;
 
 /// _fakeRequest return a fake service request
 Request _fakeOkRequest(MockClient client) {
-  _fakeService = _FakeOkService()..sender = (pb.Object command, {pb.Builder? builder}) async => pb.OK();
+  _fakeService = _FakeOkService()..mockSender = (pb.Object command, {pb.Builder? builder}) async => pb.OK();
   return Request(
     service: _fakeService!,
     client: client,

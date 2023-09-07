@@ -77,16 +77,16 @@ abstract class Service {
   /// ```
   String Function()? acceptLanguage;
 
-  /// sender can set custom send handler for test
-  Sender? sender;
+  /// mockSender is a test function can set custom send handler for test
+  Sender? mockSender;
 
   /// send action to remote service, no need to handle exception, all exception are contract to eventBus
   /// ```dart
   /// var response = await service.send(EchoAction());
   /// ```
   Future<pb.Object> send(pb.Object command, {pb.Builder? builder}) async {
-    if (sender != null) {
-      return sender!(command, builder: builder);
+    if (!kReleaseMode && mockSender != null) {
+      return mockSender!(command, builder: builder);
     }
     http.Client client = http.Client();
     return await sendByClient(command, client, builder);
