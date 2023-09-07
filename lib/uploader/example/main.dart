@@ -85,21 +85,13 @@ class UploaderExample extends StatelessWidget {
           }));
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              Container(
-                child: newImageUpload(),
-              ),
-              testing.ExampleButton('new image upload', builder: newImageUpload),
-              testing.ExampleButton('change image upload', builder: changeImageUpload),
-              testing.ExampleButton('edit image', builder: editImage),
-            ],
-          ),
-        ),
-      ),
+    return testing.ExampleScaffold(
+      builder: newImageUpload,
+      buttons: [
+        testing.ExampleButton('new image upload', builder: newImageUpload),
+        testing.ExampleButton('change image upload', builder: changeImageUpload),
+        testing.ExampleButton('edit image', builder: editImage),
+      ],
     );
   }
 }

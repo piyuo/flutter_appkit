@@ -228,10 +228,6 @@ class _ToolsExampleState extends State<ToolsExample> {
           }
 
           var refreshIndex = 0;
-          var refreshResult = [
-            sample.Person(
-                m: pb.Model(i: 'r${sampleIndex++}', t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
-          ];
 
           dataview() {
             return ChangeNotifierProvider<data.IndexedDbProvider>(
@@ -406,15 +402,6 @@ class _ToolsExampleState extends State<ToolsExample> {
                           ),
                         )));
           }
-
-          List groupItems = [
-            {'name': 'John', 'group': 'Team A'},
-            {'name': 'Will', 'group': 'Team B'},
-            {'name': 'Beth', 'group': 'Team A'},
-            {'name': 'Miranda', 'group': 'Team B'},
-            {'name': 'Mike', 'group': 'Team C'},
-            {'name': 'Danny', 'group': 'Team C'},
-          ];
 
           stickyHeader() {
             return CustomScrollView(
@@ -664,7 +651,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             ]);
           }
 
-          return Scaffold(
+          return testing.ExampleScaffold(
             appBar: AppBar(
               title: const Text('tools example'),
               leading: delta.isPhoneScreen(width) && !responsiveListViewProvider.isSideView
@@ -674,35 +661,22 @@ class _ToolsExampleState extends State<ToolsExample> {
                     )
                   : null,
             ),
-            body: Column(
-              children: [
-                Expanded(
-                  child: responsiveListView(),
-                ),
-                SizedBox(
-                  height: 100,
-                  child: SingleChildScrollView(
-                    child: Wrap(
-                      children: [
-                        testing.ExampleButton('ResponsiveListView', builder: responsiveListView),
-                        testing.ExampleButton('NavigationView', useScaffold: false, builder: pullFresh),
-                        testing.ExampleButton('Dataview', builder: dataview),
-                        testing.ExampleButton('tag view', builder: tagView),
-                        testing.ExampleButton('show tag view', builder: tryShowTagView),
-                        testing.ExampleButton('StickyHeader', builder: stickyHeader),
-                        testing.ExampleButton('PullRefresh', builder: pullFresh),
-                        testing.ExampleButton('LoadMore', builder: loadMore),
-                        testing.ExampleButton('Refresh More', builder: refreshMore),
-                        testing.ExampleButton('toolbar', builder: toolbar),
-                        testing.ExampleButton('menu button', builder: menuButton),
-                        testing.ExampleButton('button panel', builder: buttonPanel),
-                        testing.ExampleButton('PagingToolbar', builder: selectBar),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            builder: responsiveListView,
+            buttons: [
+              testing.ExampleButton('ResponsiveListView', builder: responsiveListView),
+              testing.ExampleButton('NavigationView', useScaffold: false, builder: pullFresh),
+              testing.ExampleButton('Dataview', builder: dataview),
+              testing.ExampleButton('tag view', builder: tagView),
+              testing.ExampleButton('show tag view', builder: tryShowTagView),
+              testing.ExampleButton('StickyHeader', builder: stickyHeader),
+              testing.ExampleButton('PullRefresh', builder: pullFresh),
+              testing.ExampleButton('LoadMore', builder: loadMore),
+              testing.ExampleButton('Refresh More', builder: refreshMore),
+              testing.ExampleButton('toolbar', builder: toolbar),
+              testing.ExampleButton('menu button', builder: menuButton),
+              testing.ExampleButton('button panel', builder: buttonPanel),
+              testing.ExampleButton('PagingToolbar', builder: selectBar),
+            ],
           );
         }));
   }
