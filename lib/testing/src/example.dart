@@ -66,11 +66,13 @@ class ExampleScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
         appBar: delta.ResponsiveAppBar(title: Text(title)),
         body: Column(children: [
           Expanded(child: SingleChildScrollView(child: builder())),
-          SizedBox(
+          Container(
+            color: colorScheme.secondaryContainer,
             height: 100,
             child: SingleChildScrollView(
                 child: Wrap(
