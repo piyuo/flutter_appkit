@@ -78,6 +78,7 @@ abstract class Service {
   String Function()? acceptLanguage;
 
   /// mockSender is a test function can set custom send handler for test
+  @visibleForTesting
   Sender? mockSender;
 
   /// send action to remote service, no need to handle exception, all exception are contract to eventBus

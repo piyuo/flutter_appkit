@@ -14,6 +14,7 @@ import 'protobuf.dart';
 /// ```
 class HttpProtoFileProvider {
   /// mockDownloader is a test function, it can be overwrite to mock download object
+  @visibleForTesting
   Future<pb.Object> Function(String url)? mockDownloader;
 
   /// fileProvider to get object file
