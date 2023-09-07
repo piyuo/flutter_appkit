@@ -76,21 +76,12 @@ class EditorExample extends StatelessWidget {
           }));
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(children: [
-          Expanded(
-              child: Container(
-            child: richEditor(),
-          )),
-          Wrap(
-            children: [
-              testing.ExampleButton('rich editor', builder: richEditor),
-              testing.ExampleButton('image editor', builder: imageEditor),
-            ],
-          ),
-        ]),
-      ),
+    return testing.ExampleScaffold(
+      builder: richEditor,
+      buttons: [
+        testing.ExampleButton('rich editor', builder: richEditor),
+        testing.ExampleButton('image editor', builder: imageEditor),
+      ],
     );
   }
 }

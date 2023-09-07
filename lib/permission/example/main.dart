@@ -97,20 +97,12 @@ class DeltaExample extends StatelessWidget {
       );
     }
 
-    return SafeArea(
-      child: Wrap(
-        children: [
-          SizedBox(
-            height: 400,
-            child: askPermission(),
-          ),
-          testing.ExampleButton(
-            'ask location permission on mobile',
-            builder: askPermission,
-          ),
-          testing.ExampleButton('ask permission', builder: mayHaveProblemPermission),
-        ],
-      ),
+    return testing.ExampleScaffold(
+      builder: askPermission,
+      buttons: [
+        testing.ExampleButton('ask location permission on mobile', builder: askPermission),
+        testing.ExampleButton('ask permission', builder: mayHaveProblemPermission),
+      ],
     );
   }
 }

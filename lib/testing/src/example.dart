@@ -49,6 +49,7 @@ class ExampleScaffold extends StatelessWidget {
     required this.builder,
     this.buttons = const [],
     this.title = 'Example',
+    this.appBar,
     super.key,
   });
 
@@ -61,11 +62,14 @@ class ExampleScaffold extends StatelessWidget {
   /// exampleButtons is list of example buttons
   final List<Widget> buttons;
 
+  /// appBar is app bar for example
+  final PreferredSizeWidget? appBar;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-        appBar: delta.ResponsiveAppBar(title: Text(title)),
+        appBar: appBar ?? delta.ResponsiveAppBar(title: Text(title)),
         body: Column(
           children: [
             Expanded(child: builder()),

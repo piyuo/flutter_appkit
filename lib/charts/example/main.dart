@@ -26,20 +26,12 @@ class ChartsExample extends StatelessWidget {
       return const TimeChart(title: 'Sales', subtitle: '\$32,437');
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              Expanded(
-                child: timeChart(),
-              ),
-              testing.ExampleButton('time chart', builder: timeChart),
-              testing.ExampleButton('indicator', builder: indicator),
-            ],
-          ),
-        ),
-      ),
+    return testing.ExampleScaffold(
+      builder: timeChart,
+      buttons: [
+        testing.ExampleButton('time chart', builder: timeChart),
+        testing.ExampleButton('indicator', builder: indicator),
+      ],
     );
   }
 }

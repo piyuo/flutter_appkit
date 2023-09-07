@@ -706,36 +706,25 @@ class NotesExample extends StatelessWidget {
           )
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: checkableList(),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  testing.ExampleButton('simple list', builder: simpleList),
-                  testing.ExampleButton('simple grid', builder: simpleGrid),
-                  testing.ExampleButton('checkable grid', builder: checkableGrid),
-                  testing.ExampleButton('checkable list', builder: checkableList),
-                  testing.ExampleButton('DynamicList', builder: dynamicList),
-                  testing.ExampleButton('DynamicGrid', builder: dynamicGrid),
-                  testing.ExampleButton('GridListView', builder: gridListView),
-                  testing.ExampleButton('DataView', builder: dataView),
-                  testing.ExampleButton('NotesView', builder: notesView),
-                  OutlinedButton(
-                      child: const Text('scroll to top'),
-                      onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
-                  testing.ExampleButton('filter split view', builder: filterSplitView),
-                  testing.ExampleButton('selection header', builder: selectionHeader),
-                  testing.ExampleButton('loading data', builder: loadingMasterDetailView),
-                ],
-              ),
-            ),
-          ],
-        ),
+      body: testing.ExampleScaffold(
+        builder: checkableList,
+        buttons: [
+          testing.ExampleButton('simple list', builder: simpleList),
+          testing.ExampleButton('simple grid', builder: simpleGrid),
+          testing.ExampleButton('checkable grid', builder: checkableGrid),
+          testing.ExampleButton('checkable list', builder: checkableList),
+          testing.ExampleButton('DynamicList', builder: dynamicList),
+          testing.ExampleButton('DynamicGrid', builder: dynamicGrid),
+          testing.ExampleButton('GridListView', builder: gridListView),
+          testing.ExampleButton('DataView', builder: dataView),
+          testing.ExampleButton('NotesView', builder: notesView),
+          OutlinedButton(
+              child: const Text('scroll to top'),
+              onPressed: () => NotesProvider.of<sample.Person>(context).scrollToTop()),
+          testing.ExampleButton('filter split view', builder: filterSplitView),
+          testing.ExampleButton('selection header', builder: selectionHeader),
+          testing.ExampleButton('loading data', builder: loadingMasterDetailView),
+        ],
       ),
     );
   }

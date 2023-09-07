@@ -602,31 +602,19 @@ class DialogExample extends StatelessWidget {
       ]);
     }
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-          child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(child: popShowResponsiveDialog()),
-          ),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              testing.ExampleButton('show responsive dialog', builder: popShowResponsiveDialog),
-              testing.ExampleButton('alert', builder: popAlert),
-              testing.ExampleButton('tooltip', builder: showMore),
-              testing.ExampleButton('toast', builder: toast),
-              testing.ExampleButton('show popup/sheet', builder: showPopupSheet),
-              testing.ExampleButton('banner', builder: banner),
-              testing.ExampleButton('route', builder: popRouteOrDialog),
-              testing.ExampleButton('selection', builder: selection),
-              testing.ExampleButton('popup', builder: pop),
-            ],
-          ),
-        ],
-      )),
+    return testing.ExampleScaffold(
+      builder: popShowResponsiveDialog,
+      buttons: [
+        testing.ExampleButton('show responsive dialog', builder: popShowResponsiveDialog),
+        testing.ExampleButton('alert', builder: popAlert),
+        testing.ExampleButton('tooltip', builder: showMore),
+        testing.ExampleButton('toast', builder: toast),
+        testing.ExampleButton('show popup/sheet', builder: showPopupSheet),
+        testing.ExampleButton('banner', builder: banner),
+        testing.ExampleButton('route', builder: popRouteOrDialog),
+        testing.ExampleButton('selection', builder: selection),
+        testing.ExampleButton('popup', builder: pop),
+      ],
     );
   }
 }

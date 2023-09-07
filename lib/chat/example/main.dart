@@ -203,22 +203,14 @@ class EditorExample extends StatelessWidget {
       ]));
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(children: [
-          Expanded(
-            child: chatBar(),
-          ),
-          Wrap(
-            children: [
-              testing.ExampleButton('single video', builder: singleVideo),
-              testing.ExampleButton('single image', builder: singleImage),
-              testing.ExampleButton('message view', builder: messageView),
-              testing.ExampleButton('chatBar', builder: chatBar),
-            ],
-          ),
-        ]),
-      ),
+    return testing.ExampleScaffold(
+      builder: chatBar,
+      buttons: [
+        testing.ExampleButton('single video', builder: singleVideo),
+        testing.ExampleButton('single image', builder: singleImage),
+        testing.ExampleButton('message view', builder: messageView),
+        testing.ExampleButton('chatBar', builder: chatBar),
+      ],
     );
   }
 }

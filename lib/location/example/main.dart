@@ -144,22 +144,14 @@ class LocationExample extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              Container(
-                child: locateTextField(),
-              ),
-              testing.ExampleButton('get location', builder: tryGetCurrentLocation),
-              testing.ExampleButton('place', builder: tryPlace),
-              testing.ExampleButton('LocateTextField', builder: locateTextField),
-              testing.ExampleButton('map', builder: tryMap),
-            ],
-          ),
-        ),
-      ),
+    return testing.ExampleScaffold(
+      builder: locateTextField,
+      buttons: [
+        testing.ExampleButton('get location', builder: tryGetCurrentLocation),
+        testing.ExampleButton('place', builder: tryPlace),
+        testing.ExampleButton('LocateTextField', builder: locateTextField),
+        testing.ExampleButton('map', builder: tryMap),
+      ],
     );
   }
 }

@@ -40,18 +40,11 @@ class LayoutExample extends StatelessWidget {
       ]);
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Layout Example'),
-      ),
-      body: Column(children: [
-        Expanded(child: loginForm()),
-        Wrap(
-          children: [
-            testing.ExampleButton('login form', builder: loginForm, useScaffold: false),
-          ],
-        )
-      ]),
+    return testing.ExampleScaffold(
+      builder: loginForm,
+      buttons: [
+        testing.ExampleButton('login form', builder: loginForm, useScaffold: false),
+      ],
     );
   }
 }

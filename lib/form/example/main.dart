@@ -86,54 +86,43 @@ class FormExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: _form(context),
+    form() {
+      final colorScheme = Theme.of(context).colorScheme;
+      final defaultPinTheme = PinTheme(
+        width: 45,
+        height: 45,
+        textStyle: TextStyle(fontSize: 24, color: colorScheme.onBackground),
+        decoration: BoxDecoration(
+          border: Border.all(color: colorScheme.secondary),
+          borderRadius: BorderRadius.circular(8),
         ),
-      ),
-    );
-  }
-
-  Widget _form(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final defaultPinTheme = PinTheme(
-      width: 45,
-      height: 45,
-      textStyle: TextStyle(fontSize: 24, color: colorScheme.onBackground),
-      decoration: BoxDecoration(
-        border: Border.all(color: colorScheme.secondary),
-        borderRadius: BorderRadius.circular(8),
-      ),
-    );
-    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: colorScheme.primary, width: 2),
-    );
-    final submittedPinTheme = defaultPinTheme.copyDecorationWith(
-        //border: Border.all(color: Colors.grey.shade300, width: 1),
-        );
-    return ShimmerForm(
-      showShimmer: false,
-      formGroup: formGroup,
-      child: Column(
-        children: <Widget>[
-          OutlinedButton(
-            child: const Text('is allow to exit'),
-            onPressed: () {
-              isAllowToExit(formGroup: formGroup, submitCallback: (context) async => true);
-            },
-          ),
-          RatingField<double>(
-            formControlName: 'rating',
-            allowHalfRating: true,
-            itemBuilder: (context, _) => const Icon(
-              Icons.star,
-              color: Colors.amber,
+      );
+      final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+        border: Border.all(color: colorScheme.primary, width: 2),
+      );
+      final submittedPinTheme = defaultPinTheme.copyDecorationWith(
+          //border: Border.all(color: Colors.grey.shade300, width: 1),
+          );
+      return ShimmerForm(
+        showShimmer: false,
+        formGroup: formGroup,
+        child: Column(
+          children: <Widget>[
+            OutlinedButton(
+              child: const Text('is allow to exit'),
+              onPressed: () {
+                isAllowToExit(formGroup: formGroup, submitCallback: (context) async => true);
+              },
             ),
-          ),
-          /*ReactiveRawAutocomplete<String, String>(
+            RatingField<double>(
+              formControlName: 'rating',
+              allowHalfRating: true,
+              itemBuilder: (context, _) => const Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+            ),
+            /*ReactiveRawAutocomplete<String, String>(
             formControlName: 'raw',
             optionsBuilder: (TextEditingValue textEditingValue) {
               List<String> options = <String>[
@@ -173,207 +162,208 @@ class FormExample extends StatelessWidget {
               );
             },
           ),*/
-          ReactivePhoneFormField<PhoneNumber>(
-            formControlName: 'phone',
-            focusNode: FocusNode(),
-          ),
-          p(),
-          FormPinPut<String>(
-              formControlName: 'input',
-              length: 6,
-              autofocus: true,
-              defaultPinTheme: defaultPinTheme,
-              focusedPinTheme: focusedPinTheme,
-              submittedPinTheme: submittedPinTheme,
-              pinAnimationType: PinAnimationType.fade,
-              showCursor: false,
-              androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
-              hapticFeedbackType: HapticFeedbackType.lightImpact,
+            ReactivePhoneFormField<PhoneNumber>(
+              formControlName: 'phone',
+              focusNode: FocusNode(),
+            ),
+            p(),
+            FormPinPut<String>(
+                formControlName: 'input',
+                length: 6,
+                autofocus: true,
+                defaultPinTheme: defaultPinTheme,
+                focusedPinTheme: focusedPinTheme,
+                submittedPinTheme: submittedPinTheme,
+                pinAnimationType: PinAnimationType.fade,
+                showCursor: false,
+                androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
+                hapticFeedbackType: HapticFeedbackType.lightImpact,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ]),
+            br(),
+            Submit(
+              onSubmit: (context) async {
+                debugPrint(formGroup.value.toString());
+                return true;
+              },
+            ),
+            FutureField<String>(
+              onPressed: (context, String? text) async {
+                return 'ax';
+              },
+              valueBuilder: (String? value) => value != null ? Text(value) : const SizedBox(),
+              formControlName: 'future',
+              decoration: const InputDecoration(
+                labelText: 'future name',
+                hintText: 'please input future name',
+              ),
+              validationMessages: {
+                ValidationMessage.required: (error) => 'The name must not be empty',
+              },
+            ),
+            br(),
+            ReactiveTextField(
+              formControlName: 'name',
+              decoration: const InputDecoration(
+                labelText: 'Your name',
+                hintText: 'please input your name',
+              ),
+              validationMessages: {
+                ValidationMessage.required: (error) => 'The name must not be empty',
+              },
+            ),
+            EmailField(
+              formControlName: 'email',
+              decoration: const InputDecoration(
+                labelText: 'Your email',
+                hintText: 'please input your email',
+              ),
+              validationMessages: {
+                ValidationMessage.required: (error) => 'The email must not be empty',
+                ValidationMessage.email: (error) => context.i18n.fieldValueInvalid
+                    .replaceAll('%1', 'Your email')
+                    .replaceAll('%2', 'johndoe@domain.com'),
+              },
+            ),
+            ReactiveTextField(
+              formControlName: 'address',
               inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ]),
-          br(),
-          Submit(
-            onSubmit: (context) async {
-              debugPrint(formGroup.value.toString());
-              return true;
-            },
-          ),
-          FutureField<String>(
-            onPressed: (context, String? text) async {
-              return 'ax';
-            },
-            valueBuilder: (String? value) => value != null ? Text(value) : const SizedBox(),
-            formControlName: 'future',
-            decoration: const InputDecoration(
-              labelText: 'future name',
-              hintText: 'please input future name',
-            ),
-            validationMessages: {
-              ValidationMessage.required: (error) => 'The name must not be empty',
-            },
-          ),
-          br(),
-          ReactiveTextField(
-            formControlName: 'name',
-            decoration: const InputDecoration(
-              labelText: 'Your name',
-              hintText: 'please input your name',
-            ),
-            validationMessages: {
-              ValidationMessage.required: (error) => 'The name must not be empty',
-            },
-          ),
-          EmailField(
-            formControlName: 'email',
-            decoration: const InputDecoration(
-              labelText: 'Your email',
-              hintText: 'please input your email',
-            ),
-            validationMessages: {
-              ValidationMessage.required: (error) => 'The email must not be empty',
-              ValidationMessage.email: (error) =>
-                  context.i18n.fieldValueInvalid.replaceAll('%1', 'Your email').replaceAll('%2', 'johndoe@domain.com'),
-            },
-          ),
-          ReactiveTextField(
-            formControlName: 'address',
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(8),
-            ],
-            decoration: const InputDecoration(
-              labelText: 'Your address',
-              hintText: 'please input your address',
-            ),
-            validationMessages: {
-              ValidationMessage.required: (error) => 'The address must not be empty',
-            },
-          ),
-          ReactiveTextField(
-            formControlName: 'selection',
-            decoration: InputDecoration(
-              labelText: 'Your selection',
-              hintText: 'please search a selection',
-              suffixIcon: ElevatedButton.icon(
-                  style: const ButtonStyle(visualDensity: VisualDensity.compact),
-                  icon: const Icon(Icons.bluetooth),
-                  label: const Text('Search'),
-                  onPressed: () {
-                    formGroup.control('selection').value = 'option 1';
-                  }),
-            ),
-            readOnly: true,
-            validationMessages: {
-              ValidationMessage.required: (error) => 'The email must not be empty',
-            },
-          ),
-          ReactiveTextField(
-            formControlName: 'password',
-            obscureText: true,
-            validationMessages: {
-              ValidationMessage.required: (error) => 'The password must not be empty',
-              ValidationMessage.minLength: (error) => 'The password min length is 8',
-            },
-          ),
-          ReactiveDropdownField<int>(
-            formControlName: 'payment',
-            hint: const Text('Select payment...'),
-            items: const [
-              DropdownMenuItem(
-                value: 0,
-                child: Text('Free'),
+                LengthLimitingTextInputFormatter(8),
+              ],
+              decoration: const InputDecoration(
+                labelText: 'Your address',
+                hintText: 'please input your address',
               ),
-              DropdownMenuItem(
-                value: 1,
-                child: Text('Visa'),
+              validationMessages: {
+                ValidationMessage.required: (error) => 'The address must not be empty',
+              },
+            ),
+            ReactiveTextField(
+              formControlName: 'selection',
+              decoration: InputDecoration(
+                labelText: 'Your selection',
+                hintText: 'please search a selection',
+                suffixIcon: ElevatedButton.icon(
+                    style: const ButtonStyle(visualDensity: VisualDensity.compact),
+                    icon: const Icon(Icons.bluetooth),
+                    label: const Text('Search'),
+                    onPressed: () {
+                      formGroup.control('selection').value = 'option 1';
+                    }),
               ),
-              DropdownMenuItem(
-                value: 2,
-                child: Text('Mastercard'),
-              ),
-              DropdownMenuItem(
-                value: 3,
-                child: Text('PayPal'),
-              ),
-            ],
-          ),
-          ReactiveSlider(
-            formControlName: 'progress',
-            max: 100,
-            divisions: 100,
-            labelBuilder: (double value) => '${value.toStringAsFixed(2)}%',
-          ),
-          ReactiveSwitch(
-            formControlName: 'switch',
-          ),
-          ReactiveCheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            formControlName: 'checkbox',
-            title: const Text('check option1'),
-          ),
-          ReactiveCheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            formControlName: 'checkbox2',
-            title: const Text('check option2'),
-          ),
-          ReactiveRadioListTile(
-            title: const Text('Send notifications'),
-            value: true,
-            formControlName: 'sendNotifications',
-          ),
-          ReactiveRadioListTile(
-            title: const Text('Not Send notifications'),
-            value: false,
-            formControlName: 'sendNotifications',
-          ),
-          ReactiveTextField<TimeOfDay>(
-            formControlName: 'time',
-            readOnly: true,
-            decoration: InputDecoration(
-              labelText: 'Birthday time',
-              suffixIcon: ReactiveTimePicker(
-                formControlName: 'time',
-                builder: (context, picker, child) {
-                  return IconButton(
-                    onPressed: picker.showPicker,
-                    icon: const Icon(Icons.access_time),
-                  );
-                },
+              readOnly: true,
+              validationMessages: {
+                ValidationMessage.required: (error) => 'The email must not be empty',
+              },
+            ),
+            ReactiveTextField(
+              formControlName: 'password',
+              obscureText: true,
+              validationMessages: {
+                ValidationMessage.required: (error) => 'The password must not be empty',
+                ValidationMessage.minLength: (error) => 'The password min length is 8',
+              },
+            ),
+            ReactiveDropdownField<int>(
+              formControlName: 'payment',
+              hint: const Text('Select payment...'),
+              items: const [
+                DropdownMenuItem(
+                  value: 0,
+                  child: Text('Free'),
+                ),
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text('Visa'),
+                ),
+                DropdownMenuItem(
+                  value: 2,
+                  child: Text('Mastercard'),
+                ),
+                DropdownMenuItem(
+                  value: 3,
+                  child: Text('PayPal'),
+                ),
+              ],
+            ),
+            ReactiveSlider(
+              formControlName: 'progress',
+              max: 100,
+              divisions: 100,
+              labelBuilder: (double value) => '${value.toStringAsFixed(2)}%',
+            ),
+            ReactiveSwitch(
+              formControlName: 'switch',
+            ),
+            ReactiveCheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              formControlName: 'checkbox',
+              title: const Text('check option1'),
+            ),
+            ReactiveCheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              formControlName: 'checkbox2',
+              title: const Text('check option2'),
+            ),
+            ReactiveRadioListTile(
+              title: const Text('Send notifications'),
+              value: true,
+              formControlName: 'sendNotifications',
+            ),
+            ReactiveRadioListTile(
+              title: const Text('Not Send notifications'),
+              value: false,
+              formControlName: 'sendNotifications',
+            ),
+            ReactiveTextField<TimeOfDay>(
+              formControlName: 'time',
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Birthday time',
+                suffixIcon: ReactiveTimePicker(
+                  formControlName: 'time',
+                  builder: (context, picker, child) {
+                    return IconButton(
+                      onPressed: picker.showPicker,
+                      icon: const Icon(Icons.access_time),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          DatePicker(
-            formControlName: 'datePicker',
-            decoration: const InputDecoration(
-              labelText: 'Date Picker',
-              suffixIcon: Icon(Icons.calendar_month),
+            DatePicker(
+              formControlName: 'datePicker',
+              decoration: const InputDecoration(
+                labelText: 'Date Picker',
+                suffixIcon: Icon(Icons.calendar_month),
+              ),
+              firstDate: DateTime(1985),
+              lastDate: DateTime(2030),
+              validationMessages: {
+                ValidationMessage.required: (error) => 'The date picker must not be empty',
+              },
             ),
-            firstDate: DateTime(1985),
-            lastDate: DateTime(2030),
-            validationMessages: {
-              ValidationMessage.required: (error) => 'The date picker must not be empty',
-            },
-          ),
-          DateRangePicker(
-            formControlName: 'dateRange',
-            decoration: const InputDecoration(
-              labelText: 'Date range',
-              helperText: '',
-              suffixIcon: Icon(Icons.date_range),
+            DateRangePicker(
+              formControlName: 'dateRange',
+              decoration: const InputDecoration(
+                labelText: 'Date range',
+                helperText: '',
+                suffixIcon: Icon(Icons.date_range),
+              ),
             ),
-          ),
-          DateRangePicker(
-            formControlName: 'dateRange',
-            widgetBuilder: buildBigDateRange,
-          ),
-          DateMultiPicker(
-            formControlName: 'multiDate',
-            decoration: const InputDecoration(
-              labelText: 'Multi date',
-              suffixIcon: Icon(Icons.calendar_month),
+            DateRangePicker(
+              formControlName: 'dateRange',
+              widgetBuilder: buildBigDateRange,
             ),
-          ),
-          /*ReactiveTouchSpin<int>(
+            DateMultiPicker(
+              formControlName: 'multiDate',
+              decoration: const InputDecoration(
+                labelText: 'Multi date',
+                suffixIcon: Icon(Icons.calendar_month),
+              ),
+            ),
+            /*ReactiveTouchSpin<int>(
             formControlName: 'touchSpin',
             valueAccessor: NumValueAccessor(),
             displayFormat: NumberFormat()..minimumFractionDigits = 0,
@@ -387,47 +377,55 @@ class FormExample extends StatelessWidget {
               helperText: '',
             ),
           ),*/
-          const Divider(),
-          br(),
-          Calendar(
-            formControlName: 'singleDate',
-          ),
-          const Divider(),
-          Calendar(
-            calendarType: CalendarType.multi,
-            formControlName: 'multiDate',
-          ),
-          const Divider(),
-          Calendar(
-            calendarType: CalendarType.range,
-            formControlName: 'rangeDate',
-          ),
-          const Divider(),
-          br(),
-          Submit(
-            onSubmit: (context) async {
-              await Future.delayed(const Duration(seconds: 5));
-              debugPrint('form submitted');
-              return true;
-            },
-          ),
-          br(),
-          const Submit(child: Text('my Submit')),
-          br(),
-          OutlinedButton(
-            child: const Text('Submit very long waiting form'),
-            onPressed: () async {
-              await Future.delayed(const Duration(seconds: 5));
-            },
-          ),
-          br(),
-          const OutlinedButton(
-            onPressed: null,
-            child: Text('Submit very long waiting form'),
-          ),
-          br(),
-        ],
-      ),
+            const Divider(),
+            br(),
+            Calendar(
+              formControlName: 'singleDate',
+            ),
+            const Divider(),
+            Calendar(
+              calendarType: CalendarType.multi,
+              formControlName: 'multiDate',
+            ),
+            const Divider(),
+            Calendar(
+              calendarType: CalendarType.range,
+              formControlName: 'rangeDate',
+            ),
+            const Divider(),
+            br(),
+            Submit(
+              onSubmit: (context) async {
+                await Future.delayed(const Duration(seconds: 5));
+                debugPrint('form submitted');
+                return true;
+              },
+            ),
+            br(),
+            const Submit(child: Text('my Submit')),
+            br(),
+            OutlinedButton(
+              child: const Text('Submit very long waiting form'),
+              onPressed: () async {
+                await Future.delayed(const Duration(seconds: 5));
+              },
+            ),
+            br(),
+            const OutlinedButton(
+              onPressed: null,
+              child: Text('Submit very long waiting form'),
+            ),
+            br(),
+          ],
+        ),
+      );
+    }
+
+    return testing.ExampleScaffold(
+      builder: form,
+      buttons: [
+        testing.ExampleButton('form', builder: form),
+      ],
     );
   }
 }

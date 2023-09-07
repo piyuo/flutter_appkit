@@ -35,22 +35,12 @@ class QRCodeExample extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              SizedBox(
-                width: 300,
-                height: 300,
-                child: tryShowScanner(),
-              ),
-              testing.ExampleButton('scanner', builder: scanner),
-              testing.ExampleButton('scanner dialog', builder: tryShowScanner),
-            ],
-          ),
-        ),
-      ),
+    return testing.ExampleScaffold(
+      builder: tryShowScanner,
+      buttons: [
+        testing.ExampleButton('scanner', builder: scanner),
+        testing.ExampleButton('scanner dialog', builder: tryShowScanner),
+      ],
     );
   }
 }

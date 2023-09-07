@@ -68,13 +68,11 @@ class DbExample extends StatelessWidget {
       ]);
     }
 
-    return Column(children: [
-      Expanded(child: paddingToTablet()),
-      Wrap(
-        children: [
-          testing.ExampleButton('padding to tablet', builder: paddingToTablet),
-        ],
-      )
-    ]);
+    return testing.ExampleScaffold(
+      builder: paddingToTablet,
+      buttons: [
+        testing.ExampleButton('padding to tablet', builder: paddingToTablet),
+      ],
+    );
   }
 }

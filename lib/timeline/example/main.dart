@@ -33,20 +33,11 @@ class Example extends StatelessWidget {
           ));
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              SizedBox(
-                width: 590,
-                child: timeline(),
-              ),
-              testing.ExampleButton('timeline', builder: timeline),
-            ],
-          ),
-        ),
-      ),
+    return testing.ExampleScaffold(
+      builder: timeline,
+      buttons: [
+        testing.ExampleButton('timeline', builder: timeline),
+      ],
     );
   }
 }
