@@ -67,23 +67,18 @@ class ExampleScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: delta.ResponsiveBarView(
-        barBuilder: () => delta.responsiveBar(context, title: Text(title)),
-        slivers: [
-          SliverFillRemaining(child: SingleChildScrollView(child: builder())),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 100,
-              child: SingleChildScrollView(
-                  child: Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: buttons,
-              )),
-            ),
+        appBar: delta.ResponsiveAppBar(title: Text(title)),
+        body: Column(children: [
+          Expanded(child: SingleChildScrollView(child: builder())),
+          SizedBox(
+            height: 100,
+            child: SingleChildScrollView(
+                child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: buttons,
+            )),
           ),
-        ],
-      ),
-    );
+        ]));
   }
 }
