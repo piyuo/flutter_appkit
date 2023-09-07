@@ -2,13 +2,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'http_object_provider.dart';
+import 'http_proto_file_provider.dart';
 
 void main() {
-  group('[command.http_object_provider]', () {
+  group('[command.http_proto_file_provider]', () {
     test('should return OK', () async {
-      final httpObjectProvider = HttpObjectProvider(mockObjectBuilder: (String url) async => pb.OK());
-      final obj = await httpObjectProvider.download<pb.OK>(
+      final httpProtoFileProvider = HttpProtoFileProvider();
+      httpProtoFileProvider.mockDownloader = (String url) async => pb.OK();
+      final obj = await httpProtoFileProvider.download<pb.OK>(
         'https://piyuo.com/brand/index.pb',
         () => pb.OK(),
       );
@@ -16,19 +17,16 @@ void main() {
     });
 
     test('should throw exception when builder is wrong', () async {
-      final httpObjectProvider = HttpObjectProvider(
-        mockObjectBuilder: (String url) async => sample.StringResponse(),
-      );
-
+      final httpProtoFileProvider = HttpProtoFileProvider();
+      httpProtoFileProvider.mockDownloader = (String url) async => sample.StringResponse();
       try {
-        await httpObjectProvider.download(
+        await httpProtoFileProvider.download(
           'https://piyuo.com/brand/index.pb',
           () => pb.Error(),
         );
         fail("exception not thrown");
       } catch (e) {
         expect(e, isA<AssertionError>());
-        // more expect statements can go here
       }
     });
   });

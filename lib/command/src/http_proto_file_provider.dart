@@ -6,23 +6,22 @@ import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'protobuf.dart';
 
-/// HttpObjectProvider can download a protobuf file from remote service and convert it to object
+/// HttpProtoFileProvider can download a protobuf file from remote service and convert it to object
 /// ```dart
-/// final httpObjectProvider = HttpObjectProvider(mockObjectBuilder: (String url) async => pb.OK());
-/// final obj = await httpObjectProvider.download('https://piyuo.com/brand/index.pb');
+/// final httpProtoFiletProvider = HttpProtoFileProvider();
+/// httpProtoFiletProvider.mockDownloader = (String url) async => pb.OK();
+/// final obj = await httpProtoFiletProvider.download('https://piyuo.com/brand/index.pb');
 /// ```
-class HttpObjectProvider {
-  HttpObjectProvider({this.mockObjectBuilder});
-
-  /// mockObjectBuilder is a test function, it can be overwrite to mock get object
-  final Future<pb.Object> Function(String url)? mockObjectBuilder;
+class HttpProtoFileProvider {
+  /// mockDownloader is a test function, it can be overwrite to mock download object
+  Future<pb.Object> Function(String url)? mockDownloader;
 
   /// fileProvider to get object file
   final cache.HttpFileProvider fileProvider = cache.HttpFileProvider();
 
   /// of get SessionProvider from context
-  static HttpObjectProvider of(BuildContext context) {
-    return Provider.of<HttpObjectProvider>(context, listen: false);
+  static HttpProtoFileProvider of(BuildContext context) {
+    return Provider.of<HttpProtoFileProvider>(context, listen: false);
   }
 
   /// download protobuf file from remote service and convert it to object
@@ -33,8 +32,8 @@ class HttpObjectProvider {
   Future<T> download<T extends pb.Object>(String url, pb.Builder<T>? builder) async {
     // for test
     dynamic obj;
-    if (!kReleaseMode && mockObjectBuilder != null) {
-      obj = await mockObjectBuilder!(url);
+    if (!kReleaseMode && mockDownloader != null) {
+      obj = await mockDownloader!(url);
     } else {
       final bytes = await fileProvider.getSingleFile(url);
       obj = decode(bytes, builder);
