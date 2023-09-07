@@ -68,11 +68,7 @@ class ExampleScaffold extends StatelessWidget {
         appBar: delta.ResponsiveAppBar(title: Text(title)),
         body: Column(
           children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: builder(),
-              ),
-            ),
+            Expanded(child: builder()),
             Container(
               color: colorScheme.secondaryContainer,
               padding: const EdgeInsets.all(10),
