@@ -24,25 +24,22 @@ class ExampleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: ElevatedButton(
-          child: Text(label),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => useScaffold
-                    ? Scaffold(
-                        body: delta.ResponsiveBarView(
-                          barBuilder: () => delta.responsiveBar(context),
-                          slivers: [
-                            SliverToBoxAdapter(child: builder()),
-                          ],
-                        ),
-                      )
-                    : builder(),
-              ))),
-    );
+    return ElevatedButton(
+        child: Text(label),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => useScaffold
+                  ? Scaffold(
+                      body: delta.ResponsiveBarView(
+                        barBuilder: () => delta.responsiveBar(context),
+                        slivers: [
+                          SliverToBoxAdapter(child: builder()),
+                        ],
+                      ),
+                    )
+                  : builder(),
+            )));
   }
 }
 
