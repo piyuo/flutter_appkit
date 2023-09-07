@@ -74,7 +74,7 @@ class ExampleScaffold extends StatelessWidget {
           children: [
             Expanded(child: builder()),
             Container(
-              color: colorScheme.secondaryContainer,
+              color: colorScheme.primaryContainer,
               padding: const EdgeInsets.all(10),
               width: double.infinity,
               height: 70,
