@@ -66,25 +66,27 @@ class ExampleScaffold extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
         appBar: delta.ResponsiveAppBar(title: Text(title)),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: builder(),
-              ),
-            ),
-            Container(
-              color: colorScheme.secondaryContainer,
-              width: double.infinity,
-              height: 80,
-              child: SingleChildScrollView(
-                  child: Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: buttons,
-              )),
-            ),
-          ],
-        ));
+        body: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: builder(),
+                  ),
+                ),
+                Container(
+                  color: colorScheme.secondaryContainer,
+                  width: double.infinity,
+                  height: 80,
+                  child: SingleChildScrollView(
+                      child: Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: buttons,
+                  )),
+                ),
+              ],
+            )));
   }
 }
