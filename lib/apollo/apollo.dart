@@ -1,6 +1,6 @@
-library base;
+library apollo;
 
-export 'src/base.dart';
+export 'src/apollo.dart';
 export 'src/beam_link.dart';
 export 'src/error.dart';
 export 'src/language_provider.dart';

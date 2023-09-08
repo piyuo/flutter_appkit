@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:convert';
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/utils/utils.dart' as utils;
-import 'base.dart';
+import 'apollo.dart';
 
 class ErrorEmail {
   final String _subject = 'Report an error';

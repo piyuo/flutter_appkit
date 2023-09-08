@@ -14,7 +14,7 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
-import '../base.dart';
+import '../apollo.dart';
 
 final _navigatorKey = GlobalKey();
 
@@ -22,13 +22,7 @@ main() async {
   await start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
-    supportedLocales: const [
-      Locale('en'),
-      Locale('en', 'US'),
-      Locale('zh'),
-      Locale('zh', 'CN'),
-      Locale('zh', 'TW'),
-    ],
+    appBuilder: (child) => child,
     routesBuilder: () => {
       '/': (context, state, data) => BeamPage(
             key: const ValueKey('home'),

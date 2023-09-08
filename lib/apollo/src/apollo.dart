@@ -9,7 +9,6 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:beamer/beamer.dart';
 import 'package:universal_html/html.dart' as html;
 import 'error.dart';
-import 'language_provider.dart';
 
 /// _serviceEmail is service email, alert dialog will guide user to send email
 String _serviceEmail = '';
@@ -32,10 +31,10 @@ typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, O
 /// ```
 Future<void> start({
   required RoutesBuilder routesBuilder,
-  String initialRoute = '/',
-  List<SingleChildWidget>? providers,
-  Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
+  required Widget Function(Widget) appBuilder,
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
+  String initialRoute = '/',
+  Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
   ThemeData? darkTheme,
@@ -56,44 +55,39 @@ Future<void> start({
   );
 
   // run app
-  return watch(() => runApp(LifecycleWatcher(
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider<LanguageProvider>(
-              create: (context) => LanguageProvider(supportedLocales.toList()),
+  return watch(
+    () => runApp(
+      LifecycleWatcher(
+        child: appBuilder(
+          delta.GlobalContextSupport(
+            child: MaterialApp.router(
+              builder: (context, child) {
+                Widget childWrap = dialog.init()(context, child);
+                return ScrollConfiguration(
+                  behavior: const ScrollBehaviorModified(),
+                  child: childWrap,
+                );
+              },
+              debugShowCheckedModeBanner: false,
+              theme: theme != null ? adjustFontSpacing(theme) : null,
+              darkTheme: darkTheme != null ? adjustFontSpacing(darkTheme) : null,
+              //locale: languageProvider.preferredLocale,
+              localizationsDelegates: [
+                ...localizationsDelegates,
+                ...i18n.localizationsDelegates,
+              ],
+              supportedLocales: supportedLocales,
+              routeInformationParser: BeamerParser(),
+              routerDelegate: beamerDelegate,
+              backButtonDispatcher: BeamerBackButtonDispatcher(
+                delegate: beamerDelegate,
+              ),
             ),
-            if (providers != null) ...providers,
-          ],
-          child: Consumer<LanguageProvider>(
-            builder: (context, languageProvider, child) {
-              return delta.GlobalContextSupport(
-                  child: MaterialApp.router(
-                builder: (context, child) {
-                  Widget childWrap = dialog.init()(context, child);
-                  return ScrollConfiguration(
-                    behavior: const ScrollBehaviorModified(),
-                    child: childWrap,
-                  );
-                },
-                debugShowCheckedModeBanner: false,
-                theme: theme != null ? adjustFontSpacing(theme) : null,
-                darkTheme: darkTheme != null ? adjustFontSpacing(darkTheme) : null,
-                locale: languageProvider.preferredLocale,
-                localizationsDelegates: [
-                  ...localizationsDelegates,
-                  ...i18n.localizationsDelegates,
-                ],
-                supportedLocales: languageProvider.supportedLocales,
-                routeInformationParser: BeamerParser(),
-                routerDelegate: beamerDelegate,
-                backButtonDispatcher: BeamerBackButtonDispatcher(
-                  delegate: beamerDelegate,
-                ),
-              ));
-            },
           ),
         ),
-      )));
+      ),
+    ),
+  );
 }
 
 /// LifecycleWatcher watch app life cycle
