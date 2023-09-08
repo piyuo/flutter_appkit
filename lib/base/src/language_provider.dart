@@ -3,27 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as storage;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/utils/utils.dart' as utils;
 
 /// _kPreferredLocaleKey is preferred locale key in storage
 const _kPreferredLocaleKey = 'locale';
 
 /// LanguageProvider provide a way to change locale
-class LanguageProvider with ChangeNotifier, utils.InitOnceMixin {
+class LanguageProvider with ChangeNotifier {
   LanguageProvider(this._locales);
-
-  /// initWithPreferredLocale init with preferred locale
-  Future<void> initWithPreferredLocale() async {
-    initFuture = () async {
-      _preferredLocale = await loadPreferredLocale();
-      if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
-        await setPreferredLocale(null);
-        return;
-      }
-    };
-    await init();
-    notifyListeners();
-  }
 
   /// _locales is supported locales
   List<Locale> _locales;
@@ -33,6 +19,26 @@ class LanguageProvider with ChangeNotifier, utils.InitOnceMixin {
 
   /// preferredLocale return preferred locale
   Locale? get preferredLocale => _preferredLocale;
+
+  /// initWithPreferredLocale init with preferred locale
+  Future<void> init() async {
+    _preferredLocale = await loadPreferredLocale();
+    if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
+      await setPreferredLocale(null);
+      return;
+    }
+    notifyListeners();
+  }
+
+  /// setLocales set supported locales
+  Future<void> setLocales(List<Locale> newLocales) async {
+    _locales = newLocales;
+    if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
+      _preferredLocale = null;
+      await setPreferredLocale(null);
+    }
+    notifyListeners();
+  }
 
   /// supportedLocales return supported locales
   Iterable<Locale> get supportedLocales {
@@ -57,16 +63,6 @@ class LanguageProvider with ChangeNotifier, utils.InitOnceMixin {
       }
     }
     return false;
-  }
-
-  /// setLocales set supported locales
-  Future<void> setLocales(List<Locale> newLocales) async {
-    _locales = newLocales;
-    if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
-      _preferredLocale = null;
-      await setPreferredLocale(null);
-    }
-    notifyListeners();
   }
 
   /// loadPreferredLocale load preferred locale from storage
