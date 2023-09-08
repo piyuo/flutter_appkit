@@ -24,18 +24,16 @@ typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, O
 
 /// start application
 /// ```dart
-///   await start(
-///    name: 'app',
-///    builder: () async => const [],
-///    routesBuilder: () => {
+/// await start(
+///   routesBuilder: () => {
 ///      '/': (context, state, data) => const HomeScreen(),
-///    },
-///   );
+///   },
+/// );
 /// ```
 Future<void> start({
   required RoutesBuilder routesBuilder,
   String initialRoute = '/',
-  List<SingleChildWidget> Function()? dependencyBuilder,
+  List<SingleChildWidget>? providers,
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String serviceEmail = 'support@piyuo.com',
@@ -64,7 +62,7 @@ Future<void> start({
             ChangeNotifierProvider<LanguageProvider>(
               create: (context) => LanguageProvider(supportedLocales.toList()),
             ),
-            if (dependencyBuilder != null) ...dependencyBuilder()
+            if (providers != null) ...providers,
           ],
           child: Consumer<LanguageProvider>(
             builder: (context, languageProvider, child) {
@@ -276,12 +274,6 @@ void rootPop(BuildContext context) {
 
  */
 
-
-/*
-  await database.init();
-  // init cache
-  await cache.init();
-*/
 /*
   final beamerDelegate = BeamerDelegate(
     initialPath: initialRoute,
