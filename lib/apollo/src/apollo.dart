@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:nested/nested.dart';
-import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
@@ -31,7 +29,7 @@ typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, O
 /// ```
 Future<void> start({
   required RoutesBuilder routesBuilder,
-  required Widget Function(Widget) appBuilder,
+  Widget Function(Widget)? appBuilder,
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String initialRoute = '/',
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
@@ -54,37 +52,37 @@ Future<void> start({
     locationBuilder: RoutesLocationBuilder(routes: routesBuilder()),
   );
 
+  final router = delta.GlobalContextSupport(
+    child: MaterialApp.router(
+      builder: (context, child) {
+        Widget childWrap = dialog.init()(context, child);
+        return ScrollConfiguration(
+          behavior: const ScrollBehaviorModified(),
+          child: childWrap,
+        );
+      },
+      debugShowCheckedModeBanner: false,
+      theme: theme != null ? adjustFontSpacing(theme) : null,
+      darkTheme: darkTheme != null ? adjustFontSpacing(darkTheme) : null,
+      locale: i18n.locale,
+      localizationsDelegates: [
+        ...localizationsDelegates,
+        ...i18n.localizationsDelegates,
+      ],
+      supportedLocales: supportedLocales,
+      routeInformationParser: BeamerParser(),
+      routerDelegate: beamerDelegate,
+      backButtonDispatcher: BeamerBackButtonDispatcher(
+        delegate: beamerDelegate,
+      ),
+    ),
+  );
+
   // run app
   return watch(
     () => runApp(
       LifecycleWatcher(
-        child: appBuilder(
-          delta.GlobalContextSupport(
-            child: MaterialApp.router(
-              builder: (context, child) {
-                Widget childWrap = dialog.init()(context, child);
-                return ScrollConfiguration(
-                  behavior: const ScrollBehaviorModified(),
-                  child: childWrap,
-                );
-              },
-              debugShowCheckedModeBanner: false,
-              theme: theme != null ? adjustFontSpacing(theme) : null,
-              darkTheme: darkTheme != null ? adjustFontSpacing(darkTheme) : null,
-              //locale: languageProvider.preferredLocale,
-              localizationsDelegates: [
-                ...localizationsDelegates,
-                ...i18n.localizationsDelegates,
-              ],
-              supportedLocales: supportedLocales,
-              routeInformationParser: BeamerParser(),
-              routerDelegate: beamerDelegate,
-              backButtonDispatcher: BeamerBackButtonDispatcher(
-                delegate: beamerDelegate,
-              ),
-            ),
-          ),
-        ),
+        child: appBuilder != null ? appBuilder(router) : router,
       ),
     ),
   );
