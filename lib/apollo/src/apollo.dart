@@ -14,11 +14,6 @@ String _serviceEmail = '';
 /// serviceEmail is service email, alert dialog will guide user to send email
 String get serviceEmail => _serviceEmail;
 
-/// RouterBuilder used in web to build a route
-//typedef RouteBuilder = Widget Function(BuildContext context, Map<String, String> arguments);
-
-typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> Function();
-
 /// start application
 /// ```dart
 /// await start(
@@ -28,7 +23,7 @@ typedef RoutesBuilder = Map<Pattern, dynamic Function(BuildContext, BeamState, O
 /// );
 /// ```
 Future<void> start({
-  required RoutesBuilder routesBuilder,
+  required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
   Widget Function(Widget)? appBuilder,
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String initialRoute = '/',
@@ -49,7 +44,7 @@ Future<void> start({
   // put delegate outside of build to avoid hot reload error
   final beamerDelegate = BeamerDelegate(
     initialPath: initialRoute,
-    locationBuilder: RoutesLocationBuilder(routes: routesBuilder()),
+    locationBuilder: RoutesLocationBuilder(routes: routes),
   );
 
   final router = delta.GlobalContextSupport(

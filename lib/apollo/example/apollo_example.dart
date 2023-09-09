@@ -23,7 +23,7 @@ main() async {
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     appBuilder: (child) => child,
-    routesBuilder: () => {
+    routes: {
       '/': (context, state, data) => BeamPage(
             key: const ValueKey('home'),
             title: 'home [${i18n.localeKey}]',
