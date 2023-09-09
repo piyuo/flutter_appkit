@@ -71,9 +71,12 @@ String get localeKey => Intl.defaultLocale ?? 'en';
 /// locale is current locale, it set by Intl.defaultLocale
 Locale get locale => stringToLocale(localeKey);
 
+/// locale can set new locale
+set locale(newLocale) => Intl.defaultLocale = newLocale.toString();
+
 /// mockLocale mock intl default locale
-@visibleForTesting
-void mockLocale(String newLocaleName) => Intl.defaultLocale = newLocaleName;
+//@visibleForTesting
+//void mockLocale(String newLocaleName) => Intl.defaultLocale = newLocaleName;
 
 /// countryCode is current locale country code
 String get countryCode => locale.countryCode ?? 'US';
@@ -92,12 +95,13 @@ String localeToAcceptLanguage(Locale value) {
 }
 
 /// stringToLocale 'en_US' to Locale(''en,'US')
-///
 Locale stringToLocale(String value) {
   var ids = value.split('_');
   if (ids.length > 1) return Locale(ids[0], ids[1]);
   return Locale(ids[0]);
 }
+
+
 
 /*
 /// I18nTime add time function to TimeStamp
