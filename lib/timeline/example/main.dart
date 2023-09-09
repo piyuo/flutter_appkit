@@ -1,11 +1,11 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../timeline.dart';
 
-main() => base.start(
+main() => apollo.start(
       routesBuilder: () => {
         '/': (context, state, data) => const Example(),
       },

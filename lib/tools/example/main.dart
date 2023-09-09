@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/data/data.dart' as data;
@@ -18,7 +18,7 @@ final _searchBoxController = TextEditingController();
 FocusNode _focusNode = FocusNode();
 
 main() {
-  base.start(
+  apollo.start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     routesBuilder: () => {
@@ -311,7 +311,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                             ],
                             child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
                                 builder: (context, dataProvider, dataviewProvider, _) =>
-                                    base.LoadingScreen(future: () async {
+                                    apollo.LoadingScreen(future: () async {
                                       await indexedDbProvider.init('tools_sample');
                                       await indexedDbProvider.clear();
                                       final ds = data.Dataset<sample.Person>(

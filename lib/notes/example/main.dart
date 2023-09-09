@@ -5,7 +5,7 @@ import 'package:beamer/beamer.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/sample/sample.dart' as sample;
@@ -145,7 +145,7 @@ NoteFormController<sample.Person> createFormController() => NoteFormController<s
       },
     );
 main() {
-  base.start(
+  apollo.start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     routesBuilder: () => {
@@ -183,7 +183,7 @@ Widget _noteItem(BuildContext context, String id) {
                             formController: formController,
                           )),
                 ]),
-                body: base.LoadingScreen(
+                body: apollo.LoadingScreen(
                   future: () async {
                     final noteFormController = NoteFormController.of<sample.Person>(context);
                     await sampleDb.init('notes_sample');
@@ -602,7 +602,7 @@ class NotesExample extends StatelessWidget {
                       ],
                       child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
                         builder: (context, notesProvider, sampleDb, _) {
-                          return base.LoadingScreen(
+                          return apollo.LoadingScreen(
                             future: () async {
                               final isPreferMouse = context.isPreferMouse;
                               await sampleDb.init('notes_sample');
@@ -652,7 +652,7 @@ class NotesExample extends StatelessWidget {
                       ],
                       child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
                         builder: (context, notesProvider, sampleDb, _) {
-                          return base.LoadingScreen(
+                          return apollo.LoadingScreen(
                             future: () async {
                               final isPreferMouse = context.isPreferMouse;
                               await sampleDb.init('notes_sample');

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../chat.dart';
 
-main() => base.start(
+main() => apollo.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
       routesBuilder: () => {

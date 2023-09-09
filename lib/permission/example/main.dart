@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import '../permission.dart';
 
 main() {
@@ -8,7 +8,7 @@ main() {
     debugPrint('check controller:${_checkController.value}');
   });
 
-  base.start(
+  apollo.start(
     routesBuilder: () => {
       '/': (context, state, data) => const DeltaExample(),
     },

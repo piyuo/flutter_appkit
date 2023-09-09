@@ -3,12 +3,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../dialog.dart';
 
-main() => base.start(
+main() => apollo.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
       routesBuilder: () => {

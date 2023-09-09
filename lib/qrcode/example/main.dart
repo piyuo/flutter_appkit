@@ -2,11 +2,11 @@
 
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../qrcode.dart';
 
-main() => base.start(
+main() => apollo.start(
       routesBuilder: () => {
         '/': (context, state, data) => const QRCodeExample(),
       },
