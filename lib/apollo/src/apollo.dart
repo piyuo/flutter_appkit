@@ -14,6 +14,9 @@ String _serviceEmail = '';
 /// serviceEmail is service email, alert dialog will guide user to send email
 String get serviceEmail => _serviceEmail;
 
+/// Routes is a map of route pattern and builder
+typedef Routes = Map<Pattern, dynamic Function(BuildContext, BeamState, Object? data)>;
+
 /// start application
 /// ```dart
 /// await start(
@@ -23,7 +26,7 @@ String get serviceEmail => _serviceEmail;
 /// );
 /// ```
 Future<void> start({
-  required Map<Pattern, dynamic Function(BuildContext, BeamState, Object?)> routes,
+  required Routes routes,
   Widget Function(Widget)? appBuilder,
   Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String initialRoute = '/',
