@@ -28,11 +28,16 @@ class _I18nDelegate extends LocalizationsDelegate<Locale> {
   bool isSupported(Locale locale) => true;
 
   @override
-  Future<Locale> load(Locale locale) async {
-    Intl.defaultLocale = locale.toString();
-    eventbus.broadcast(LocaleChangedEvent());
-    debugPrint('[i18n] locale=${Intl.defaultLocale}');
-    return locale;
+  Future<Locale> load(Locale newLocale) async {
+    if (_preferLocale != null) {
+      return _preferLocale!;
+    }
+    if (Intl.defaultLocale != newLocale.toString()) {
+      Intl.defaultLocale = newLocale.toString();
+      eventbus.broadcast(LocaleChangedEvent());
+      debugPrint('[i18n] locale=${Intl.defaultLocale}');
+    }
+    return newLocale;
   }
 
   @override
@@ -65,21 +70,20 @@ extension I18nBuildContext on BuildContext {
   LibLocalizations get i18n => Localizations.of<LibLocalizations>(this, LibLocalizations) ?? LibLocalizationsEn();
 }
 
-/// localeKey return current locale name, like 'en_US'
-String get localeKey => Intl.defaultLocale ?? 'en';
+/// preferLocale is prefer locale, it set by user, if not null it will be override locale
+Locale? _preferLocale;
 
-/// locale is current locale, it set by Intl.defaultLocale
-Locale get locale => stringToLocale(localeKey);
+/// locale is current locale, it set by Intl.defaultLocale and may be override by preferLocale
+Locale? get locale => _preferLocale ?? stringToLocale(Intl.defaultLocale);
 
-/// locale can set new locale
-set locale(newLocale) => Intl.defaultLocale = newLocale.toString();
+/// preferLocale can set new prefer locale
+Locale? get preferLocale => _preferLocale;
 
-/// mockLocale mock intl default locale
-//@visibleForTesting
-//void mockLocale(String newLocaleName) => Intl.defaultLocale = newLocaleName;
+/// preferLocale will override locale, set null to disable override
+set preferLocale(Locale? newLocale) => _preferLocale = newLocale;
 
 /// countryCode is current locale country code
-String get countryCode => locale.countryCode ?? 'US';
+String? get countryCode => locale?.countryCode;
 
 /// withLocale run function in Intl zone
 withLocale(String newLocaleName, Function() function) {
@@ -95,61 +99,12 @@ String localeToAcceptLanguage(Locale value) {
 }
 
 /// stringToLocale 'en_US' to Locale(''en,'US')
-Locale stringToLocale(String value) {
+Locale? stringToLocale(String? value) {
+  if (value == null) {
+    return null;
+  }
+
   var ids = value.split('_');
   if (ids.length > 1) return Locale(ids[0], ids[1]);
   return Locale(ids[0]);
 }
-
-
-
-/*
-/// I18nTime add time function to TimeStamp
-extension I18nTime on google.Timestamp {
-  /// local return local datetime
-  /// ```dart
-  /// var d = DateTime(2021, 1, 2, 23, 30);
-  /// var t = timestamp();
-  /// t.local = d;
-  /// expect(t.local, d);
-  /// ```
-  DateTime get local {
-    return toDateTime().toLocal();
-  }
-
-  /// local set local datetime
-  /// ```dart
-  /// var d = DateTime(2021, 1, 2, 23, 30);
-  /// var t = timestamp();
-  /// t.local = d;
-  /// expect(t.local, d);
-  /// ```
-  set local(DateTime d) {
-    google_mixin.TimestampMixin.setFromDateTime(this, d.toUtc());
-  }
-
-  /// localDateString return local date string in current locale
-  /// ```dart
-  /// expect(t.localDateString, 'Jan 2, 2021');
-  /// ```
-  String get localDateString {
-    return formatDate(local);
-  }
-
-  /// localDateTimeString return local date time string in current locale
-  /// ```dart
-  /// expect(t.localTimeString, '11:30 PM');
-  /// ```
-  String get localDateTimeString {
-    return formatDateTime(local);
-  }
-
-  /// localDateString return local time string in current locale
-  /// ```dart
-  /// expect(t.localDateTimeString, 'Jan 2, 2021 11:30 PM');
-  /// ```
-  String get localTimeString {
-    return formatTime(local);
-  }
-}
-*/

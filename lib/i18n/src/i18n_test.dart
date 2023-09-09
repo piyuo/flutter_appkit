@@ -20,7 +20,9 @@ void main() {
 
   group('[i18n]', () {
     test('should get default locale en', () async {
-      expect(localeKey, 'en');
+      expect(locale, isNull);
+      preferLocale = const Locale('en', 'US');
+      expect(locale, preferLocale);
     });
 
 /*
@@ -47,7 +49,7 @@ void main() {
     test('should convert locale to string', () async {
       final str = const Locale('en', 'US').toString();
       expect('en_US', str);
-      final l = stringToLocale(str);
+      final l = stringToLocale(str)!;
       expect(l.languageCode, 'en');
       expect(l.countryCode, 'US');
     });

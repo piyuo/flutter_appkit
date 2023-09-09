@@ -10,19 +10,19 @@ DateTime get minDateTime => DateTime.utc(-271821, 04, 20);
 DateTime get maxDateTime => DateTime.utc(275760, 09, 13);
 
 /// monthDayFormat return current format only month and day
-DateFormat get monthDayFormat => DateFormat.MMMd(localeKey);
+DateFormat get monthDayFormat => DateFormat.MMMd();
 
 /// dayFormat return current format only day
-DateFormat get dayFormat => DateFormat.d(localeKey);
+DateFormat get dayFormat => DateFormat.d();
 
 /// yearFormat return current format only year
-DateFormat get yearFormat => DateFormat.y(localeKey);
+DateFormat get yearFormat => DateFormat.y();
 
 /// monthFormat return current format only month
-DateFormat get monthFormat => DateFormat.MMM(localeKey);
+DateFormat get monthFormat => DateFormat.MMM();
 
 /// dateFormat return current date format
-DateFormat get dateFormat => DateFormat.yMMMMd(localeKey);
+DateFormat get dateFormat => DateFormat.yMMMMd();
 
 /// datePattern return current date pattern
 /// ```dart
@@ -31,7 +31,7 @@ DateFormat get dateFormat => DateFormat.yMMMMd(localeKey);
 String get datePattern => dateFormat.pattern ?? '';
 
 /// timeFormat return current time format
-DateFormat get timeFormat => DateFormat.jm(localeKey);
+DateFormat get timeFormat => DateFormat.jm();
 
 /// timePattern return current time pattern
 /// ```dart
@@ -40,7 +40,7 @@ DateFormat get timeFormat => DateFormat.jm(localeKey);
 String get timePattern => timeFormat.pattern ?? '';
 
 /// dateTimeFormat return current date time format
-DateFormat get dateTimeFormat => DateFormat.yMMMMd(localeKey).add_jm();
+DateFormat get dateTimeFormat => DateFormat.yMMMMd().add_jm();
 
 /// dateTimePattern return current date time pattern
 /// ```dart
@@ -109,13 +109,13 @@ extension DatetimeHelpers on DateTime {
   String get formattedDateTime => dateTimeFormat.format(this);
 
   /// formattedMonthDay convert date to month and day string
-  String get formattedMonthDay => DateFormat.MMMd(localeKey).format(this);
+  String get formattedMonthDay => DateFormat.MMMd().format(this);
 
   /// formattedMonth get formatted month
   /// ```dart
   /// expect(date.formattedMonth, 'January');
   /// ```
-  String get formattedMonth => DateFormat.MMMM(localeKey).format(this);
+  String get formattedMonth => DateFormat.MMMM().format(this);
 
   /// formattedDay convert date to day string
   /// ```dart
@@ -133,19 +133,19 @@ extension DatetimeHelpers on DateTime {
   /// ```dart
   /// expect(date.formattedMonthShort, 'Jan');
   /// ```
-  String get formattedMonthShort => DateFormat.MMM(localeKey).format(this);
+  String get formattedMonthShort => DateFormat.MMM().format(this);
 
   /// formattedWeekday return weekday string
   /// ```dart
   /// expect(date.formattedWeekday, 'Monday');
   /// ```
-  String get formattedWeekday => DateFormat.EEEE(localeKey).format(this);
+  String get formattedWeekday => DateFormat.EEEE().format(this);
 
   /// formattedWeekdayShort return short weekday string
   /// ```dart
   /// expect(date.formattedWeekdayShort, 'Mon');
   /// ```
-  String get formattedWeekdayShort => DateFormat.E(localeKey).format(this);
+  String get formattedWeekdayShort => DateFormat.E().format(this);
 
   /// formattedWeekdayAware convert date to local weekday string but show yesterday, today and tomorrow
   /// ```dart

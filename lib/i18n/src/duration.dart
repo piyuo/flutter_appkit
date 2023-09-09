@@ -9,6 +9,7 @@ extension DurationHelpers on Duration {
   /// expect(dur.formatted, '5 days 23 hours 59 minutes 59 seconds');
   /// ```
   String get formattedPretty {
+    /*
     final l = locale;
     DurationLocale? dl;
     if (localeKey == 'zh_TW') {
@@ -18,5 +19,9 @@ extension DurationHelpers on Duration {
       dl ??= englishLocale;
     }
     return prettyDuration(this, locale: dl);
+    */
+    final currentLocale =
+        locale != null ? DurationLocale.fromLanguageCode(locale!.languageCode) ?? englishLocale : englishLocale;
+    return prettyDuration(this, locale: currentLocale);
   }
 }
