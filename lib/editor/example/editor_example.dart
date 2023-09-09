@@ -7,7 +7,7 @@ import '../editor.dart';
 main() => apollo.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
-      routesBuilder: () => {
+      routes: {
         '/': (context, state, data) => const EditorExample(),
       },
     );

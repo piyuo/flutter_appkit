@@ -38,7 +38,7 @@ final FocusNode _focusNode2 = FocusNode();
 
 main() {
   apollo.start(
-    routesBuilder: () => {
+    routes: {
       '/': (context, state, data) => const LocationExample(),
     },
     theme: testing.theme(),

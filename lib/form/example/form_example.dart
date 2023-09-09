@@ -12,7 +12,7 @@ import '../form.dart';
 main() => apollo.start(
       theme: testing.theme(),
       darkTheme: testing.darkTheme(),
-      routesBuilder: () => {
+      routes: {
         '/': (context, state, data) => const FormExample(),
       },
     );

@@ -70,7 +70,7 @@ main() {
   apollo.start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
-    routesBuilder: () => {
+    routes: {
       '/': (context, _, __) => dialog.cupertinoBottomSheet(const DeltaExample()),
     },
   );

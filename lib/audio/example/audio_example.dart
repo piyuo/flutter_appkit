@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../src/audio.dart';
 
 main() => apollo.start(
-      routesBuilder: () => {
+      routes: {
         '/': (context, state, data) => const AudioExample(),
       },
     );

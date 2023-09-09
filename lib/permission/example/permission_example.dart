@@ -9,7 +9,7 @@ main() {
   });
 
   apollo.start(
-    routesBuilder: () => {
+    routes: {
       '/': (context, state, data) => const DeltaExample(),
     },
   );

@@ -7,7 +7,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import '../qrcode.dart';
 
 main() => apollo.start(
-      routesBuilder: () => {
+      routes: {
         '/': (context, state, data) => const QRCodeExample(),
       },
     );

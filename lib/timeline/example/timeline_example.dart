@@ -6,7 +6,7 @@ import 'package:libcli/testing/testing.dart' as testing;
 import '../timeline.dart';
 
 main() => apollo.start(
-      routesBuilder: () => {
+      routes: {
         '/': (context, state, data) => const Example(),
       },
     );

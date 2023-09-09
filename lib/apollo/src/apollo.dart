@@ -17,7 +17,7 @@ String get serviceEmail => _serviceEmail;
 /// start application
 /// ```dart
 /// await start(
-///   routesBuilder: () => {
+///   routes:  {
 ///      '/': (context, state, data) => const HomeScreen(),
 ///   },
 /// );
