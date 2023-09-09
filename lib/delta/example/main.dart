@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import '../delta.dart';
 
@@ -67,7 +67,7 @@ main() {
     onSearchEnd: () => debugPrint('search end'),
   );
 
-  base.start(
+  apollo.start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
     routesBuilder: () => {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/form/form.dart' as form;
 //import 'package:libcli/general/general.dart' as general;
 import '../location.dart';
@@ -37,7 +37,7 @@ final FocusNode _focusNode = FocusNode();
 final FocusNode _focusNode2 = FocusNode();
 
 main() {
-  base.start(
+  apollo.start(
     routesBuilder: () => {
       '/': (context, state, data) => const LocationExample(),
     },

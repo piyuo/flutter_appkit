@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/base/base.dart' as base;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:provider/provider.dart';
 import '../src/audio.dart';
 
-main() => base.start(
+main() => apollo.start(
       routesBuilder: () => {
         '/': (context, state, data) => const AudioExample(),
       },
@@ -45,19 +45,11 @@ class AudioExample extends StatelessWidget {
           }));
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Wrap(
-            children: [
-              Container(
-                child: playAudio(),
-              ),
-              testing.ExampleButton('play audio', builder: playAudio),
-            ],
-          ),
-        ),
-      ),
+    return testing.ExampleScaffold(
+      builder: playAudio,
+      buttons: [
+        testing.ExampleButton('play audio', builder: playAudio),
+      ],
     );
   }
 }

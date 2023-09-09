@@ -501,6 +501,16 @@ class AppExampleState extends State<AppExample> {
       );
     }
 
+    loginForm() {
+      return Column(children: [
+        Container(
+          color: Colors.grey.shade100,
+          padding: const EdgeInsets.all(40),
+          child: LoginForm(onLoginSucceeded: () => debugPrint('login succeeded')),
+        ),
+      ]);
+    }
+
     return LoadingScreen(
       future: () async {
         final languageProvider = LanguageProvider.of(context);
@@ -530,6 +540,7 @@ class AppExampleState extends State<AppExample> {
           testing.ExampleButton('loadingScreen network error', builder: loadingScreenNetworkError),
           testing.ExampleButton('hypertext', builder: hypertext),
           testing.ExampleButton('SplitView', builder: trySplitView),
+          testing.ExampleButton('login form', builder: loginForm, useScaffold: false),
         ],
       ),
     );
