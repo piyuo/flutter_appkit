@@ -1,5 +1,4 @@
 // ignore: implementation_imports
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +6,40 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
 import '../gen/lib_localizations_en.dart';
 
+//import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 /// LocaleChangedEvent happen when locale changed
-class LocaleChangedEvent {}
+//class LocaleChangedEvent {}
+//  eventbus.broadcast(LocaleChangedEvent());
 
 /// supportedLocales return i18n package supported locales
 Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
+
+/// locale is current locale, it set by Intl.defaultLocale and may be override by preferLocale
+Locale get locale => _preferLocale ?? stringToLocale(Intl.defaultLocale) ?? const Locale('en');
+
+/// _appLocale is app locale, it set by _I18nDelegate
+Locale? _appLocale;
+
+/// _preferLocale is prefer locale, it set by user, if not null it will be override locale
+Locale? _preferLocale;
+
+/// preferLocale can set new prefer locale
+Locale? get preferLocale => _preferLocale;
+
+/// preferLocale will override locale, set null to disable override
+set preferLocale(Locale? newLocale) {
+  if (newLocale == null) {
+    _preferLocale = null;
+    Intl.defaultLocale = _appLocale?.toString();
+    return;
+  }
+  _preferLocale = newLocale;
+  Intl.defaultLocale = newLocale.toString();
+  debugPrint('[i18n] locale=${Intl.defaultLocale}');
+}
+
+/// countryCode is current locale country code
+String? get countryCode => locale.countryCode;
 
 /// localizationsDelegates return i18n package localizations delegates
 Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
@@ -29,12 +57,12 @@ class _I18nDelegate extends LocalizationsDelegate<Locale> {
 
   @override
   Future<Locale> load(Locale newLocale) async {
+    _appLocale = newLocale;
     if (_preferLocale != null) {
       return _preferLocale!;
     }
     if (Intl.defaultLocale != newLocale.toString()) {
       Intl.defaultLocale = newLocale.toString();
-      eventbus.broadcast(LocaleChangedEvent());
       debugPrint('[i18n] locale=${Intl.defaultLocale}');
     }
     return newLocale;
@@ -69,21 +97,6 @@ extension I18nBuildContext on BuildContext {
   /// i18n return AppLocalizations of current context
   LibLocalizations get i18n => Localizations.of<LibLocalizations>(this, LibLocalizations) ?? LibLocalizationsEn();
 }
-
-/// preferLocale is prefer locale, it set by user, if not null it will be override locale
-Locale? _preferLocale;
-
-/// locale is current locale, it set by Intl.defaultLocale and may be override by preferLocale
-Locale? get locale => _preferLocale ?? stringToLocale(Intl.defaultLocale);
-
-/// preferLocale can set new prefer locale
-Locale? get preferLocale => _preferLocale;
-
-/// preferLocale will override locale, set null to disable override
-set preferLocale(Locale? newLocale) => _preferLocale = newLocale;
-
-/// countryCode is current locale country code
-String? get countryCode => locale?.countryCode;
 
 /// withLocale run function in Intl zone
 withLocale(String newLocaleName, Function() function) {
