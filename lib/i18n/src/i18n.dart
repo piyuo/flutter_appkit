@@ -28,12 +28,15 @@ Locale? get preferLocale => _preferLocale;
 
 /// _setLocale change locale
 Future<void> _setLocale(Locale? newLocale) async {
+  bool hasLocale = Intl.defaultLocale != null;
   if (locale != newLocale) {
     _preferLocale = newLocale;
     Intl.defaultLocale = newLocale?.toString();
     await initializeDateFormatting(Intl.defaultLocale, null); // load date formatting resource
-    eventbus.broadcast(LocaleChangedEvent());
-    debugPrint('[i18n] locale=${Intl.defaultLocale}');
+    if (hasLocale && locale != newLocale) {
+      eventbus.broadcast(LocaleChangedEvent());
+      debugPrint('[i18n] locale=${Intl.defaultLocale}');
+    }
   }
 }
 
