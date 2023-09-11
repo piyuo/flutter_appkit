@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'i18n.dart';
 
 /// minDateTime return the minimum date
