@@ -28,6 +28,16 @@ Locale? _preferLocale;
 /// preferLocale can set new prefer locale
 Locale? get preferLocale => _preferLocale;
 
+/// _setLocale change locale
+Future<void> _setLocale(Locale? newLocale) async {
+  if (locale != newLocale) {
+    _preferLocale = newLocale;
+    Intl.defaultLocale = newLocale?.toString();
+    await initializeDateFormatting(Intl.defaultLocale, null); // load date formatting resource
+    debugPrint('[i18n] locale=${Intl.defaultLocale}');
+  }
+}
+
 /// preferLocale will override locale, set null to disable override
 Future<void> setPreferLocale(Locale? newLocale) async {
   if (newLocale == null) {
@@ -35,10 +45,8 @@ Future<void> setPreferLocale(Locale? newLocale) async {
     Intl.defaultLocale = _appLocale?.toString();
     return;
   }
+  _setLocale(newLocale);
   _preferLocale = newLocale;
-  Intl.defaultLocale = newLocale.toString();
-  await initializeDateFormatting(Intl.defaultLocale, null); // load date formatting resource
-  debugPrint('[i18n] locale=${Intl.defaultLocale}');
 }
 
 /// countryCode is current locale country code
@@ -64,9 +72,7 @@ class _I18nDelegate extends LocalizationsDelegate<Locale> {
     if (_preferLocale != null) {
       return _preferLocale!;
     }
-    Intl.defaultLocale = newLocale.toString();
-    await initializeDateFormatting(Intl.defaultLocale, null); // load date formatting resource
-    debugPrint('[i18n] locale=${Intl.defaultLocale}');
+    _setLocale(newLocale);
     return newLocale;
   }
 

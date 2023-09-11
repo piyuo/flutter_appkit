@@ -27,6 +27,10 @@ class LanguageProvider with ChangeNotifier {
 
   /// initWithPreferredLocale init with preferred locale
   Future<void> init() async {
+    if (i18n.preferLocale != null) {
+      // session provider may set prefer locale for user, so we don't need set from storage
+      return;
+    }
     final savedLocale = await _readLocale();
     if (savedLocale != null) {
       if (!isLocaleAvailable(savedLocale)) {

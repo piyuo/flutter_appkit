@@ -4,6 +4,7 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/command/command.dart' as command;
 import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// LoginEvent is event when user login through UI
 class LoginEvent {}
@@ -187,11 +188,15 @@ class SessionProvider with ChangeNotifier {
     session = await Session.load();
     if (session != null) {
       await getValidSession();
+      if (session!.isValid) {
+        final locale = session![kSessionLocaleKey];
+        if (locale != null) {
+          await i18n.setPreferLocale(Locale(locale));
+        }
+        log.log('[app] session ${session!.userId}');
+      }
+      notifyListeners();
     }
-    if (session != null && session!.isValid) {
-      log.log('[app] session ${session!.userId}');
-    }
-    notifyListeners();
   }
 
   /// of get SessionProvider from context
