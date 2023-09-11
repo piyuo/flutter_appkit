@@ -35,7 +35,7 @@ class LanguageProvider with ChangeNotifier {
       }
 
       if (i18n.preferLocale != savedLocale) {
-        i18n.preferLocale = savedLocale;
+        await i18n.setPreferLocale(savedLocale);
         notifyListeners();
       }
     }
@@ -44,7 +44,7 @@ class LanguageProvider with ChangeNotifier {
   /// changeLocale set preferred locale, it often used when user change locale in setting page
   Future<void> changeLocale(Locale? newLocale) async {
     if (await _writeLocale(newLocale)) {
-      i18n.preferLocale = newLocale;
+      await i18n.setPreferLocale(newLocale);
       notifyListeners();
     }
   }
@@ -54,7 +54,7 @@ class LanguageProvider with ChangeNotifier {
   Future<void> limitSupportedLocales(List<Locale> limitLocales) async {
     _limitSupportedLocales = limitLocales;
     if (!isLocaleAvailable(i18n.locale)) {
-      i18n.preferLocale = availableLocales.first;
+      await i18n.setPreferLocale(availableLocales.first);
       notifyListeners();
       return;
     }
