@@ -2,16 +2,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
 import '../gen/lib_localizations_en.dart';
 
-//import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 /// LocaleChangedEvent happen when locale changed
-//class LocaleChangedEvent {}
-//  eventbus.broadcast(LocaleChangedEvent());
+class LocaleChangedEvent {}
 
 /// supportedLocales return i18n package supported locales
 Iterable<Locale> supportedLocales = LibLocalizations.supportedLocales;
@@ -34,6 +32,7 @@ Future<void> _setLocale(Locale? newLocale) async {
     _preferLocale = newLocale;
     Intl.defaultLocale = newLocale?.toString();
     await initializeDateFormatting(Intl.defaultLocale, null); // load date formatting resource
+    eventbus.broadcast(LocaleChangedEvent());
     debugPrint('[i18n] locale=${Intl.defaultLocale}');
   }
 }
