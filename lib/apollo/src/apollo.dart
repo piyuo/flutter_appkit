@@ -28,13 +28,17 @@ typedef Routes = Map<Pattern, dynamic Function(BuildContext, BeamState, Object? 
 Future<void> start({
   required Routes routes,
   Widget Function(Widget)? appBuilder,
-  Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
   String initialRoute = '/',
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
   String serviceEmail = 'support@piyuo.com',
   ThemeData? theme,
   ThemeData? darkTheme,
 }) async {
+  if (kReleaseMode) {
+    // avoid print debug message in release mode
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
+
   //  WidgetsFlutterBinding.ensureInitialized(); no need to call this
   // init cache && db
   _serviceEmail = serviceEmail;
@@ -63,11 +67,11 @@ Future<void> start({
       theme: theme != null ? adjustFontSpacing(theme) : null,
       darkTheme: darkTheme != null ? adjustFontSpacing(darkTheme) : null,
       locale: i18n.locale,
+      supportedLocales: i18n.supportedLocales,
       localizationsDelegates: [
         ...localizationsDelegates,
         ...i18n.localizationsDelegates,
       ],
-      supportedLocales: supportedLocales,
       routeInformationParser: BeamerParser(),
       routerDelegate: beamerDelegate,
       backButtonDispatcher: BeamerBackButtonDispatcher(

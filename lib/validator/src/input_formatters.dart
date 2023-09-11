@@ -8,7 +8,7 @@ TextEditingValue currencyFormatter(TextEditingValue oldValue, TextEditingValue n
     return newValue;
   }
   double value = double.parse(newValue.text);
-  final formatter = NumberFormat.simpleCurrency(locale: i18n.localeKey);
+  final formatter = NumberFormat.simpleCurrency(locale: i18n.locale.toString());
   String newText = formatter.format(value);
   return newValue.copyWith(text: newText, selection: TextSelection.collapsed(offset: newText.length));
 //      selection: new TextSelection.collapsed());

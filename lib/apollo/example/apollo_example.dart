@@ -22,31 +22,36 @@ main() async {
   await start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
-    appBuilder: (child) => child,
+    appBuilder: (Widget child) {
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LanguageProvider>(
+            create: (context) => LanguageProvider(),
+          ),
+        ],
+        child: Consumer<LanguageProvider>(
+          builder: (context, languageProvider, _) => child,
+        ),
+      );
+    },
     routes: {
-      '/': (context, state, data) => BeamPage(
-            key: const ValueKey('home'),
-            title: 'home [${i18n.localeKey}]',
-            child: const AppExample(
-              color: null,
-            ),
+      '/': (context, state, data) => const BeamPage(
+            key: ValueKey('home'),
+            title: 'home',
+            child: AppExample(color: null),
           ),
       '/other/:id': (context, state, data) {
         final id = state.pathParameters['id']!;
         return BeamPage(
           key: ValueKey('other-$id'),
-          title: 'other-$id [${i18n.localeKey}]',
-          child: const AppExample(
-            color: Colors.red,
-          ),
+          title: 'other-$id',
+          child: const AppExample(color: Colors.red),
         );
       },
-      '/other': (context, state, data) => BeamPage(
-            key: const ValueKey('other'),
-            title: 'other [${i18n.localeKey}]',
-            child: const AppExample(
-              color: Colors.red,
-            ),
+      '/other': (context, state, data) => const BeamPage(
+            key: ValueKey('other'),
+            title: 'other',
+            child: AppExample(color: Colors.red),
           ),
     },
   );
@@ -199,22 +204,22 @@ class AppExampleState extends State<AppExample> {
             Text(context.i18n.okButtonText),
             Text(Localizations.localeOf(context).toString()),
             Text('intl.defaultLocale=$defaultLocale'),
-            Text('current locale=${i18n.localeKey}, date=${DateTime.now().formattedDate}'),
+            Text('current locale=${i18n.locale.toString()}, date=${DateTime.now().formattedDate}'),
             OutlinedButton(
                 child: const Text('set locale to system default'),
-                onPressed: () => languageProvider.setPreferredLocale(null)),
+                onPressed: () => languageProvider.changeLocale(null)),
             OutlinedButton(
                 child: const Text('change locale to en'),
-                onPressed: () => languageProvider.setPreferredLocale(const Locale('en'))),
+                onPressed: () => languageProvider.changeLocale(const Locale('en'))),
             OutlinedButton(
                 child: const Text('change locale to zh'),
-                onPressed: () => languageProvider.setPreferredLocale(const Locale('zh', 'CN'))),
+                onPressed: () => languageProvider.changeLocale(const Locale('zh', 'CN'))),
             OutlinedButton(
                 child: const Text('change locale to zh_TW'),
-                onPressed: () => languageProvider.setPreferredLocale(const Locale('zh', 'TW'))),
+                onPressed: () => languageProvider.changeLocale(const Locale('zh', 'TW'))),
             OutlinedButton(
                 child: const Text('set support locales to en'),
-                onPressed: () => languageProvider.setLocales([const Locale('en', 'US')])),
+                onPressed: () => languageProvider.limitSupportedLocales([const Locale('en', 'US')])),
           ],
         );
       });

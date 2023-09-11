@@ -35,13 +35,16 @@ const _kTokenValueKey = 'V';
 const _kTokenExpiredKey = 'E';
 
 /// kSessionUserNameKey is the key for the user name in the session.
-const kSessionUserNameKey = 'uName';
+const kSessionUserNameKey = 'N';
 
 /// kSessionUserPhotoKey is the key for the user photo in the session.
-const kSessionUserPhotoKey = 'uPhoto';
+const kSessionUserPhotoKey = 'P';
 
 /// kSessionRegionKey is the key for the region in the session.
-const kSessionRegionKey = 'region';
+const kSessionRegionKey = 'O';
+
+/// kSessionLocaleKey is the key for the locale in the session.
+const kSessionLocaleKey = 'L';
 
 /// Token keep value and expired time
 class Token {
@@ -67,7 +70,7 @@ class Token {
     });
   }
 
-  /// load load token from storage
+  /// load token from storage
   static Future<Token?> load(String prefix) async {
     final data = await preferences.getMap(prefix);
     if (data != null) {

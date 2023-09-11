@@ -182,15 +182,6 @@ extension DatetimeHelpers on DateTime {
   String get formattedWeekdayShortMonthDayTime => '$formattedWeekdayShort, $formattedMonthDay, $formattedTime';
 }
 
-/// changeDateFormatting change locale and load date formatting resource
-/// ```dart
-/// await changeDateFormatting('en_US');
-/// ```
-Future<void> changeDateFormatting(String locale) async {
-  Intl.defaultLocale = locale;
-  await initializeDateFormatting(locale, null);
-}
-
 /// formatTimeFixed convert hour and minute to local string
 /// ```dart
 /// var str = formatTimeFixed(07, 30);

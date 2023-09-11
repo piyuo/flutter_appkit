@@ -20,8 +20,8 @@ void main() {
 
   group('[i18n]', () {
     test('should get default locale en', () async {
-      expect(locale, isNull);
-      preferLocale = const Locale('en', 'US');
+      expect(locale, const Locale('en'));
+      await setPreferLocale(const Locale('en', 'US'));
       expect(locale, preferLocale);
     });
 

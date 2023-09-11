@@ -206,7 +206,7 @@ class _DocumentViewerProvider with ChangeNotifier {
 
   Future<void> load() async {
     md = await asset.loadString(
-      assetName: 'docs/${docName}_${i18n.localeKey}.md',
+      assetName: 'docs/${docName}_${i18n.locale.toString()}.md',
     );
     notifyListeners();
   }

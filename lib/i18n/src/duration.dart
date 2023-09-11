@@ -1,4 +1,5 @@
 import 'package:duration/duration.dart';
+import 'package:flutter/widgets.dart';
 import 'package:duration/locale.dart';
 import 'i18n.dart';
 
@@ -20,8 +21,10 @@ extension DurationHelpers on Duration {
     }
     return prettyDuration(this, locale: dl);
     */
-    final currentLocale =
-        locale != null ? DurationLocale.fromLanguageCode(locale!.languageCode) ?? englishLocale : englishLocale;
+    if (locale == const Locale('zh', 'TW')) {
+      return prettyDuration(this, locale: chineseTraditionalLocale);
+    }
+    final currentLocale = DurationLocale.fromLanguageCode(locale.languageCode) ?? englishLocale;
     return prettyDuration(this, locale: currentLocale);
   }
 }

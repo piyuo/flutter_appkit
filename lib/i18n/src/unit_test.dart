@@ -10,12 +10,12 @@ void main() {
 
   group('[i18n.unit]', () {
     test('should get miles', () async {
-      preferLocale = const Locale('en', 'US');
+      await setPreferLocale(const Locale('en', 'US'));
       expect(metersToKmOrMiles(100), '0.06 miles');
     });
 
     test('should get km', () async {
-      preferLocale = const Locale('zh', 'TW');
+      await setPreferLocale(const Locale('zh', 'TW'));
       expect(metersToKmOrMiles(100), '0.10 km');
     });
   });

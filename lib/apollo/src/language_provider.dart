@@ -9,55 +9,72 @@ const _kPreferredLocaleKey = 'locale';
 
 /// LanguageProvider provide a way to change locale
 class LanguageProvider with ChangeNotifier {
-  LanguageProvider(this._locales);
+  LanguageProvider({
+    this.domain = '',
+  });
 
-  /// _locales is supported locales
-  List<Locale> _locales;
+  /// domain used to separate different app, in some app may user use different domain but same app, so we need separate them
+  String domain;
 
-  /// _preferredLocale is user preferred locale
-  Locale? _preferredLocale;
+  /// _storeKey is key in storage
+  String get _storeKey => '$domain$_kPreferredLocaleKey';
 
-  /// preferredLocale return preferred locale
-  Locale? get preferredLocale => _preferredLocale;
+  /// _limitSupportedLocales is subset of supported locales, used when backend only support part of app supported locales
+  List<Locale>? _limitSupportedLocales;
+
+  /// availableLocales return available locales
+  List<Locale> get _availableLocales => _limitSupportedLocales ?? i18n.supportedLocales.toList();
 
   /// initWithPreferredLocale init with preferred locale
   Future<void> init() async {
-    _preferredLocale = await loadPreferredLocale();
-    if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
-      await setPreferredLocale(null);
-      return;
-    }
-    notifyListeners();
-  }
+    final savedLocale = await _readLocale();
+    if (savedLocale != null) {
+      if (!isLocaleAvailable(savedLocale)) {
+        await _writeLocale(null);
+        return;
+      }
 
-  /// setLocales set supported locales
-  Future<void> setLocales(List<Locale> newLocales) async {
-    _locales = newLocales;
-    if (_preferredLocale != null && !isLocaleValid(_preferredLocale!)) {
-      _preferredLocale = null;
-      await setPreferredLocale(null);
-    }
-    notifyListeners();
-  }
-
-  /// supportedLocales return supported locales
-  Iterable<Locale> get supportedLocales {
-    if (_preferredLocale != null && _preferredLocale != _locales.first) {
-      // move preferred locale to first
-      for (Locale locale in _locales) {
-        if (locale == _preferredLocale!) {
-          _locales.remove(locale);
-          _locales.insert(0, _preferredLocale!);
-          break;
-        }
+      if (i18n.preferLocale != savedLocale) {
+        i18n.preferLocale = savedLocale;
+        notifyListeners();
       }
     }
-    return _locales;
   }
 
-  /// isLocaleValid check a locale is valid
-  bool isLocaleValid(Locale aLocale) {
-    for (Locale locale in _locales) {
+  /// changeLocale set preferred locale, it often used when user change locale in setting page
+  Future<void> changeLocale(Locale? newLocale) async {
+    if (await _writeLocale(newLocale)) {
+      i18n.preferLocale = newLocale;
+      notifyListeners();
+    }
+  }
+
+  /// limitSupportedLocales limit supported locales, this limit will not be saved in storage,
+  /// need call this function every time when app start
+  Future<void> limitSupportedLocales(List<Locale> limitLocales) async {
+    _limitSupportedLocales = limitLocales;
+    if (!isLocaleAvailable(i18n.locale)) {
+      i18n.preferLocale = availableLocales.first;
+      notifyListeners();
+      return;
+    }
+  }
+
+  /// availableLocales return available locales, often used in display locales to user
+  Iterable<Locale> get availableLocales {
+    for (Locale locale in _availableLocales) {
+      if (locale == i18n.locale) {
+        _availableLocales.remove(locale);
+        _availableLocales.insert(0, locale);
+        break;
+      }
+    }
+    return _availableLocales;
+  }
+
+  /// isLocaleAvailable check a locale is available or not
+  bool isLocaleAvailable(Locale? aLocale) {
+    for (Locale locale in _availableLocales) {
       if (locale == aLocale) {
         return true;
       }
@@ -65,30 +82,29 @@ class LanguageProvider with ChangeNotifier {
     return false;
   }
 
-  /// loadPreferredLocale load preferred locale from storage
-  Future<Locale?> loadPreferredLocale() async {
-    final localeTemp = await storage.getStringWithExp(_kPreferredLocaleKey);
+  /// _readLocale read saved locale from storage
+  Future<Locale?> _readLocale() async {
+    final localeTemp = await storage.getStringWithExp(_storeKey);
     if (localeTemp != null) {
       return i18n.stringToLocale(localeTemp);
     }
     return null;
   }
 
-  /// overrideLocaleTemporary override locale for 24 hour, cause when web mode
+  /// _writeLocale write preferred locale to storage
   /// if user change one page's locale, other page need reflect change
-  Future<void> setPreferredLocale(Locale? newLocale) async {
+  Future<bool> _writeLocale(Locale? newLocale) async {
     if (newLocale == null) {
-      _preferredLocale = null;
-      await storage.remove(_kPreferredLocaleKey);
-      return;
+      await storage.remove(_storeKey);
+      return true;
     }
 
-    if (_preferredLocale == newLocale || !isLocaleValid(newLocale)) {
-      return;
+    if (!isLocaleAvailable(newLocale)) {
+      return false;
     }
-    _preferredLocale = newLocale;
-    await storage.setString(_kPreferredLocaleKey, newLocale.toString());
-    notifyListeners();
+
+    await storage.setString(_storeKey, newLocale.toString());
+    return true;
   }
 
   /// of get I18nProvider from context

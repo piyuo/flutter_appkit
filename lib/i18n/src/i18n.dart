@@ -1,6 +1,8 @@
 // ignore: implementation_imports
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
@@ -27,7 +29,7 @@ Locale? _preferLocale;
 Locale? get preferLocale => _preferLocale;
 
 /// preferLocale will override locale, set null to disable override
-set preferLocale(Locale? newLocale) {
+Future<void> setPreferLocale(Locale? newLocale) async {
   if (newLocale == null) {
     _preferLocale = null;
     Intl.defaultLocale = _appLocale?.toString();
@@ -35,6 +37,7 @@ set preferLocale(Locale? newLocale) {
   }
   _preferLocale = newLocale;
   Intl.defaultLocale = newLocale.toString();
+  await initializeDateFormatting(Intl.defaultLocale, null); // load date formatting resource
   debugPrint('[i18n] locale=${Intl.defaultLocale}');
 }
 
@@ -61,10 +64,9 @@ class _I18nDelegate extends LocalizationsDelegate<Locale> {
     if (_preferLocale != null) {
       return _preferLocale!;
     }
-    if (Intl.defaultLocale != newLocale.toString()) {
-      Intl.defaultLocale = newLocale.toString();
-      debugPrint('[i18n] locale=${Intl.defaultLocale}');
-    }
+    Intl.defaultLocale = newLocale.toString();
+    await initializeDateFormatting(Intl.defaultLocale, null); // load date formatting resource
+    debugPrint('[i18n] locale=${Intl.defaultLocale}');
     return newLocale;
   }
 
