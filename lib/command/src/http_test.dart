@@ -151,7 +151,6 @@ class _FakeOkService extends Service {
       accessTokenBuilderCallCount++;
       return 'mockAccessToken';
     };
-    acceptLanguage = () => 'en-US';
   }
 
   int urlBuilderCallCount = 0;

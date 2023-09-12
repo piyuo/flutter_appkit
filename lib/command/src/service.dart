@@ -51,7 +51,6 @@ abstract class Service {
     }
     assert(urlBuilder != null, 'urlBuilder must not be null');
     assert(accessTokenBuilder != null, 'accessKeyBuilder should not be null');
-    assert(acceptLanguage != null, 'acceptLanguage should not be null');
     //String region = regionBuilder != null ? '-${regionBuilder!()}' : '';
     //String branch = branchBuilder != null ? '-${branchBuilder!()}' : '';
     //return 'https://$serviceName$region$branch.$baseDomain/?q'; // add ? to avoid cache
@@ -70,12 +69,6 @@ abstract class Service {
   /// urlBuilder = () => 'http://mock';
   /// ```
   String Function()? urlBuilder;
-
-  /// acceptLanguage set the locale the remote service use
-  /// ```dart
-  /// acceptLanguage = () => 'en-US';
-  /// ```
-  String Function()? acceptLanguage;
 
   /// mockSender is a test function can set custom send handler for test
   @visibleForTesting

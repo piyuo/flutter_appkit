@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:universal_io/io.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/pb/pb.dart' as pb;
 import 'events.dart';
@@ -42,14 +43,11 @@ class Request {
   bool isRetry = false;
 }
 
-Future<Map<String, String>> doRequestHeaders(String acceptLanguage) async {
-  Map<String, String> headers = {
-    'Content-Type': 'multipart/form-data',
-    'Accept-Language': acceptLanguage,
-    //'accept': '',
-  };
-  return headers;
-}
+/// _requestHeaders return request headers
+Map<String, String> get _requestHeaders => {
+      'Content-Type': 'multipart/form-data',
+      'Accept-Language': i18n.acceptLanguage,
+    };
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
 Future<pb.Object> post(Request request, pb.Builder? builder) async {
@@ -87,10 +85,15 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
       }
       r.action.setAccessToken(accessToken);
     }
-    var headers = await doRequestHeaders(r.service.acceptLanguage!());
     Uint8List bytes = encode(r.action);
     var uri = Uri.parse(r.url);
-    var resp = await r.client.post(uri, headers: headers, body: bytes).timeout(r.timeout);
+    var resp = await r.client
+        .post(
+          uri,
+          headers: _requestHeaders,
+          body: bytes,
+        )
+        .timeout(r.timeout);
 
     if (resp.statusCode == 200) {
       return decode(resp.bodyBytes, builder);

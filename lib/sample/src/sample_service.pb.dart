@@ -14,7 +14,6 @@ class SampleService extends Service {
   SampleService() : super('sample') {
     urlBuilder = () => 'http://mock';
     accessTokenBuilder = () async => null;
-    acceptLanguage = () => 'en-US';
   }
 
   /// of get SampleService from context

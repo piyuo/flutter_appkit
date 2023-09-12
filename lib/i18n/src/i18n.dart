@@ -113,13 +113,11 @@ withLocale(String newLocaleName, Function() function) {
   Intl.withLocale(newLocaleName, function);
 }
 
-/// localeToAcceptLanguage convert Locale(''en,'US') to 'en-US', use by command http header
+/// acceptLanguage return locale in string format like 'en-US', use by command http header
 /// ```dart
-/// var id = localeToAcceptLanguage(Locale('en','US'));
+/// final str = i18n.acceptLanguage;
 /// ```
-String localeToAcceptLanguage(Locale value) {
-  return '${value.languageCode}-${value.countryCode}';
-}
+String get acceptLanguage => '${locale.languageCode}-${locale.countryCode}';
 
 /// stringToLocale 'en_US' to Locale(''en,'US')
 Locale? stringToLocale(String? value) {

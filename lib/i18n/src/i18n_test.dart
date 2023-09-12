@@ -53,26 +53,6 @@ void main() {
       expect(l.languageCode, 'en');
       expect(l.countryCode, 'US');
     });
-
-/*
-    test('should convert locale to http accept language header', () async {
-      final l = localeToAcceptLanguage(const Locale('en', 'US'));
-      expect(l, 'en-US');
-    });
-    test('should determine locale', () async {
-      List<Locale> emptyList = [];
-      Locale loc = determineLocale(emptyList);
-      expect(
-        localeToString(loc),
-        'en_US',
-      );
-      expect(country, 'US');
-
-      List<Locale> list = [const Locale('zh', 'TW'), const Locale('en', 'CA')];
-      loc = determineLocale(list);
-      expect(localeToString(loc), 'zh_TW');
-      expect(country, 'TW');
-    });*/
   });
 }
 
