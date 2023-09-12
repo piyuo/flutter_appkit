@@ -198,12 +198,10 @@ class AppExampleState extends State<AppExample> {
 
     tryLanguageProvider() {
       return Consumer<LanguageProvider>(builder: (context, languageProvider, child) {
-        String defaultLocale = Intl.defaultLocale ?? '';
         return Column(
           children: [
             Text(context.i18n.okButtonText),
             Text(Localizations.localeOf(context).toString()),
-            Text('intl.defaultLocale=$defaultLocale'),
             Text('current locale=${i18n.locale.toString()}, date=${DateTime.now().formattedDate}'),
             OutlinedButton(
                 child: const Text('set locale to system default'),
@@ -213,7 +211,7 @@ class AppExampleState extends State<AppExample> {
                 onPressed: () => languageProvider.changeLocale(const Locale('en'))),
             OutlinedButton(
                 child: const Text('change locale to zh'),
-                onPressed: () => languageProvider.changeLocale(const Locale('zh', 'CN'))),
+                onPressed: () => languageProvider.changeLocale(const Locale('zh'))),
             OutlinedButton(
                 child: const Text('change locale to zh_TW'),
                 onPressed: () => languageProvider.changeLocale(const Locale('zh', 'TW'))),
@@ -522,7 +520,7 @@ class AppExampleState extends State<AppExample> {
         await languageProvider.init();
       },
       builder: () => testing.ExampleScaffold(
-        builder: loadingScreenDefault,
+        builder: tryLanguageProvider,
         buttons: [
           OutlinedButton(
             child: const Text('show alert use global context'),

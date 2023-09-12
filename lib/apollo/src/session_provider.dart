@@ -204,6 +204,16 @@ class SessionProvider with ChangeNotifier {
     return Provider.of<SessionProvider>(context, listen: false);
   }
 
+  /// accessTokenBuilder is used by apollo client to get access token to command service
+  static Future<String?> accessTokenBuilder(BuildContext context) async {
+    final sessionProvider = SessionProvider.of(context);
+    final session = await sessionProvider.getValidSession();
+    if (session == null) {
+      return null;
+    }
+    return session.accessToken.value;
+  }
+
   late eventbus.Subscription subscription;
 
   /// loader called when session expired and need refresh
