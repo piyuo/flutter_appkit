@@ -17,22 +17,22 @@ const _kDesktopToolbarIconSize = 19.0;
 bool get _isMobile => delta.phoneScreen;
 
 /// responsiveBar create sliver app bar for bar view
-Widget responsiveBar(
-  BuildContext context, {
-  Widget? title,
-  Color? backgroundColor,
-  List<Widget>? actions,
-  Widget? leading,
-  double? elevation,
-  bool primary = true,
-  bool? centerTitle,
-  bool pinned = true,
-  bool floating = false,
-  bool snap = false,
-}) {
+Widget responsiveBar(BuildContext context,
+    {Widget? title,
+    Color? backgroundColor,
+    List<Widget>? actions,
+    Widget? leading,
+    double? elevation,
+    bool primary = true,
+    bool? centerTitle,
+    bool pinned = true,
+    bool floating = false,
+    bool snap = false,
+    double spacing = 0}) {
   final barHeight = _isMobile ? _kMobileToolbarHeight : _kDesktopToolbarHeight;
   final theme = Theme.of(context);
   final appBar = SliverAppBar(
+    titleSpacing: spacing,
     automaticallyImplyLeading: false,
     iconTheme: _isMobile
         ? null
