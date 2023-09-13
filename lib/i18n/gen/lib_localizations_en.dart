@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_string_escapes
-
 import 'lib_localizations.dart';
 
 /// The translations for English (`en`).
@@ -22,8 +20,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get loginCodeScreenResend => 'Resend';
 
   @override
-  String get loginCodeScreenResendEmail =>
-      'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder';
+  String get loginCodeScreenResendEmail => 'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder';
 
   @override
   String get loginCodeScreenErrorCodeInvalid => 'The verification code you entered is not valid';
@@ -32,16 +29,13 @@ class LibLocalizationsEn extends LibLocalizations {
   String get loginCodeScreenErrorCodeMismatch => 'The verification code you entered is not correct';
 
   @override
-  String get loginCodeScreenErrorNoCode =>
-      'The verification code has expired. Please go back and try verify email again';
+  String get loginCodeScreenErrorNoCode => 'The verification code has expired. Please go back and try verify email again';
 
   @override
-  String get loginCodeScreenErrorEnterBlockShort =>
-      'You have entered an incorrect verification code too many times. Try again later';
+  String get loginCodeScreenErrorEnterBlockShort => 'You have entered an incorrect verification code too many times. Try again later';
 
   @override
-  String get loginCodeScreenErrorEnterBlockLong =>
-      'You have entered an incorrect verification code too many times. Try again tomorrow';
+  String get loginCodeScreenErrorEnterBlockLong => 'You have entered an incorrect verification code too many times. Try again tomorrow';
 
   @override
   String get tomorrow => 'Tomorrow';
@@ -398,8 +392,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get printerFindIP => 'How to Print Printer\'s IP Address';
 
   @override
-  String get bluetoothPrinterNotSupport =>
-      'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';
+  String get bluetoothPrinterNotSupport => 'Bluetooth printer only support on iPhone or Android device. and you need enable bluetooth permission in app settings';
 
   @override
   String get bluetoothPrinterHint => 'Click Search to select bluetooth device';
@@ -423,8 +416,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get noName => 'no name';
 
   @override
-  String get errorConnect =>
-      'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
+  String get errorConnect => 'Cannot Connect to the printer, make sure printer is turned on, and connected to the network, also IP address is correct';
 
   @override
   String get errorTimeout => 'Printer connection timeout, make sure printer is turned on';
@@ -445,8 +437,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get errorUnknown => 'Unknown error';
 
   @override
-  String get testTicketInstruction =>
-      'change Paper Size in Printer Settings (58mm <-> 80mm) if receipt content not fitting page';
+  String get testTicketInstruction => 'change Paper Size in Printer Settings (58mm <-> 80mm) if receipt content not fitting page';
 
   @override
   String get testTicketTitle => 'piyuo.com';
@@ -497,5 +488,5 @@ class LibLocalizationsEn extends LibLocalizations {
   String get placeErrorLocateYourAddress => 'Fail to locate your address';
 
   @override
-  String get hello => 'Hello';
+  String get language => 'English';
 }

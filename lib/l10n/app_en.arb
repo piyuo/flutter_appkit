@@ -162,5 +162,5 @@
     "placeMyLocation": "My Location",
     "placeIsAddressCorrect": "is your address on map correct?",
     "placeErrorLocateYourAddress": "Fail to locate your address",
-    "hello":"Hello"
+    "language":"English"
 }

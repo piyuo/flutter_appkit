@@ -64,8 +64,8 @@ abstract class LibLocalizations {
 
   final String localeName;
 
-  static LibLocalizations of(BuildContext context) {
-    return Localizations.of<LibLocalizations>(context, LibLocalizations)!;
+  static LibLocalizations? of(BuildContext context) {
+    return Localizations.of<LibLocalizations>(context, LibLocalizations);
   }
 
   static const LocalizationsDelegate<LibLocalizations> delegate = _LibLocalizationsDelegate();
@@ -1060,11 +1060,11 @@ abstract class LibLocalizations {
   /// **'Fail to locate your address'**
   String get placeErrorLocateYourAddress;
 
-  /// No description provided for @hello.
+  /// No description provided for @language.
   ///
   /// In en, this message translates to:
-  /// **'Hello'**
-  String get hello;
+  /// **'English'**
+  String get language;
 }
 
 class _LibLocalizationsDelegate extends LocalizationsDelegate<LibLocalizations> {
