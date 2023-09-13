@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart' hide Builder;
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'protobuf.dart';
+import 'object.dart';
 
 /// HttpProtoFileProvider can download a protobuf file from remote service and convert it to object
 /// ```dart
@@ -15,7 +15,7 @@ import 'protobuf.dart';
 class HttpProtoFileProvider {
   /// mockDownloader is a test function, it can be overwrite to mock download object
   @visibleForTesting
-  Future<pb.Object> Function(String url)? mockDownloader;
+  Future<Object> Function(String url)? mockDownloader;
 
   /// fileProvider to get object file
   final cache.HttpFileProvider fileProvider = cache.HttpFileProvider();
@@ -30,7 +30,7 @@ class HttpProtoFileProvider {
   /// ```dart
   /// download('https://piyuo.com/brand/index.pb');
   /// ```
-  Future<T> download<T extends pb.Object>(String url, pb.Builder<T>? builder) async {
+  Future<T> download<T extends Object>(String url, Builder<T>? builder) async {
     // for test
     dynamic obj;
     if (!kReleaseMode && mockDownloader != null) {

@@ -10,7 +10,7 @@
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
@@ -19,7 +19,7 @@ import 'word.pbenum.dart';
 export 'word.pbenum.dart';
 
 /// Word used in chat message, it represents a word (like text, image, etc.)
-class Word extends pb.Object {
+class Word extends net.Object {
   $core.int mapIdXXX() => 9;
   get namespace => 'common';
 

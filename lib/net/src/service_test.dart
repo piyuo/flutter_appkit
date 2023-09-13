@@ -3,11 +3,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/command/src/protobuf.dart';
-import 'package:libcli/command/src/firewall.dart';
+import 'protobuf.dart';
+import 'firewall.dart';
+import 'object.dart';
+import 'empty.dart';
 
 void main() {
   dynamic lastEvent;
@@ -38,7 +39,7 @@ void main() {
 
     test('should use sender to mock response', () async {
       final service = sample.SampleService()
-        ..mockSender = (pb.Object command, {pb.Builder? builder}) async {
+        ..mockSender = (Object command, {Builder? builder}) async {
           return sample.StringResponse()..value = 'fake';
         };
 
@@ -55,7 +56,7 @@ void main() {
       });
       final service = sample.SampleService();
       var response = await service.sendByClient(sample.CmdEcho(), client, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
+      expect(response is Empty, true);
     });
 
     test('should return null when send wrong action to test server', () async {

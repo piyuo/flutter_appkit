@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:libcli/pb/src/object.dart';
+import 'object.dart';
 
 /// standardDateFormat return internal use standard date format like '1999-01-11 23:22:02'
 DateFormat get standardDateFormat {

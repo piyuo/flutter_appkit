@@ -1,5 +1,7 @@
 import 'dart:typed_data';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'object.dart';
+import 'empty.dart';
+import '../common/common.dart' as common;
 
 /// encode protobuf object into bytes
 /// ```dart
@@ -7,7 +9,7 @@ import 'package:libcli/pb/pb.dart' as pb;
 /// echoAction.text = 'hi';
 /// List<int> bytes = commandProtobuf.encode(echoAction);
 /// ```
-Uint8List encode(pb.Object obj) {
+Uint8List encode(Object obj) {
   Uint8List bytes = obj.writeToBuffer();
   Uint8List list = Uint8List(bytes.length + 2);
   list.setRange(0, bytes.length, bytes);
@@ -22,14 +24,14 @@ Uint8List encode(pb.Object obj) {
 /// EchoAction decodeAction = commandProtobuf.decode(bytes, builder);
 /// expect(decodeAction.text, 'hi');
 /// ```
-pb.Object decode(List<int> bytes, pb.Builder? builder) {
+Object decode(List<int> bytes, Builder? builder) {
   List<int> protoBytes = bytes.sublist(0, bytes.length - 2);
   Uint8List idBytes = Uint8List.fromList(bytes.sublist(bytes.length - 2, bytes.length));
   final id = idBytes.buffer.asByteData().getInt16(0, Endian.little);
 
   // common objects like error, ok
   if (id <= 1000) {
-    return pb.objectBuilder(id, protoBytes);
+    return common.objectBuilder(id, protoBytes);
   }
   if (builder != null) {
     final obj = builder();
@@ -38,5 +40,5 @@ pb.Object decode(List<int> bytes, pb.Builder? builder) {
     return obj;
   }
   assert(false, 'unexpected id $id, please set builder to decode it');
-  return pb.Empty();
+  return empty;
 }

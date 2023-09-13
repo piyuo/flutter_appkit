@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/pb/src/common/common.dart' as common;
 import 'timestamp.dart';
+import '../common/common.dart' as common;
 
 void main() {
   group('[pb.object]', () {

@@ -1,41 +1,52 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: cmd-reverse-geocoding.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers, unnecessary_import, annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class CmdReverseGeocoding extends pb.Object {
+///  Do return reverse geocode base on user current gps coordinates
+///
+/// 	lat {double} user gps latitude
+/// 	lng {double} user gps longitude
+///
+/// 	return {GeoLocations} if success
+class CmdReverseGeocoding extends net.Object {
   $core.int mapIdXXX() => 1002;
   get namespace => 'sys';
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CmdReverseGeocoding', createEmptyInstance: create)
-    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lat', $pb.PbFieldType.OD)
-    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lng', $pb.PbFieldType.OD)
-    ..hasRequiredFields = false
-  ;
-
-  CmdReverseGeocoding._() : super();
   factory CmdReverseGeocoding({
     $core.double? lat,
     $core.double? lng,
   }) {
-    final _result = create();
+    final $result = create();
     if (lat != null) {
-      _result.lat = lat;
+      $result.lat = lat;
     }
     if (lng != null) {
-      _result.lng = lng;
+      $result.lng = lng;
     }
-    return _result;
+    return $result;
   }
+  CmdReverseGeocoding._() : super();
   factory CmdReverseGeocoding.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory CmdReverseGeocoding.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdReverseGeocoding', createEmptyInstance: create)
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'lat', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'lng', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -45,8 +56,10 @@ class CmdReverseGeocoding extends pb.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdReverseGeocoding copyWith(void Function(CmdReverseGeocoding) updates) => super.copyWith((message) => updates(message as CmdReverseGeocoding)) as CmdReverseGeocoding; // ignore: deprecated_member_use
+  CmdReverseGeocoding copyWith(void Function(CmdReverseGeocoding) updates) => super.copyWith((message) => updates(message as CmdReverseGeocoding)) as CmdReverseGeocoding;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static CmdReverseGeocoding create() => CmdReverseGeocoding._();
   CmdReverseGeocoding createEmptyInstance() => create();
@@ -74,3 +87,6 @@ class CmdReverseGeocoding extends pb.Object {
   void clearLng() => clearField(2);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

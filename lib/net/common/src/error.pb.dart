@@ -10,12 +10,12 @@
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
 /// Error is general OK response
-class Error extends pb.Object {
+class Error extends net.Object {
   $core.int mapIdXXX() => 5;
   get namespace => 'common';
 

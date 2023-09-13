@@ -1,51 +1,32 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: person.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers, unnecessary_import, annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
+
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'package:libcli/pb/src/common/src/model.pb.dart' as $0;
 import 'package:libcli/google/src/timestamp.pb.dart' as $1;
-
+import 'package:libcli/net/common/src/model.pb.dart' as $0;
 import 'person.pbenum.dart';
 
 export 'person.pbenum.dart';
 
-class Person extends pb.Object {
+/// Person object for entity test
+class Person extends net.Object {
   $core.int mapIdXXX() => 1001;
-  get hasModel => true;
   get model => m;
   set model(v) => m = v!;
   get namespace => 'sample';
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Person', createEmptyInstance: create)
-    ..aOM<$0.Model>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'm', subBuilder: $0.Model.create)
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..a<$core.int>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'age', $pb.PbFieldType.O3)
-    ..e<Person_PersonGender>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'enumValue', $pb.PbFieldType.OE, protoName: 'enumValue', defaultOrMaker: Person_PersonGender.PersonMale, valueOf: Person_PersonGender.valueOf, enumValues: Person_PersonGender.values)
-    ..aOM<$1.Timestamp>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestampValue', protoName: 'timestampValue', subBuilder: $1.Timestamp.create)
-    ..m<$core.String, $core.int>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'mapValue', protoName: 'mapValue', entryClassName: 'Person.MapValueEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
-    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stringValue', protoName: 'stringValue')
-    ..a<$core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'int32Value', $pb.PbFieldType.O3, protoName: 'int32Value')
-    ..a<$core.double>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'floatValue', $pb.PbFieldType.OF, protoName: 'floatValue')
-    ..a<$core.double>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'doubleValue', $pb.PbFieldType.OD, protoName: 'doubleValue')
-    ..aOB(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'boolValue', protoName: 'boolValue')
-    ..pPS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stringListValue', protoName: 'stringListValue')
-    ..p<$core.int>(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'int32ListValue', $pb.PbFieldType.P3, protoName: 'int32ListValue')
-    ..p<$core.double>(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'floatListValue', $pb.PbFieldType.PF, protoName: 'floatListValue')
-    ..p<$core.double>(15, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'doubleListValue', $pb.PbFieldType.PD, protoName: 'doubleListValue')
-    ..p<$core.bool>(16, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'boolListValue', $pb.PbFieldType.PB, protoName: 'boolListValue')
-    ..pc<$1.Timestamp>(17, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestampListValue', $pb.PbFieldType.PM, protoName: 'timestampListValue', subBuilder: $1.Timestamp.create)
-    ..hasRequiredFields = false
-  ;
-
-  Person._() : super();
   factory Person({
     $0.Model? m,
     $core.String? name,
@@ -65,62 +46,85 @@ class Person extends pb.Object {
     $core.Iterable<$core.bool>? boolListValue,
     $core.Iterable<$1.Timestamp>? timestampListValue,
   }) {
-    final _result = create();
+    final $result = create();
     if (m != null) {
-      _result.m = m;
+      $result.m = m;
     }
     if (name != null) {
-      _result.name = name;
+      $result.name = name;
     }
     if (age != null) {
-      _result.age = age;
+      $result.age = age;
     }
     if (enumValue != null) {
-      _result.enumValue = enumValue;
+      $result.enumValue = enumValue;
     }
     if (timestampValue != null) {
-      _result.timestampValue = timestampValue;
+      $result.timestampValue = timestampValue;
     }
     if (mapValue != null) {
-      _result.mapValue.addAll(mapValue);
+      $result.mapValue.addAll(mapValue);
     }
     if (stringValue != null) {
-      _result.stringValue = stringValue;
+      $result.stringValue = stringValue;
     }
     if (int32Value != null) {
-      _result.int32Value = int32Value;
+      $result.int32Value = int32Value;
     }
     if (floatValue != null) {
-      _result.floatValue = floatValue;
+      $result.floatValue = floatValue;
     }
     if (doubleValue != null) {
-      _result.doubleValue = doubleValue;
+      $result.doubleValue = doubleValue;
     }
     if (boolValue != null) {
-      _result.boolValue = boolValue;
+      $result.boolValue = boolValue;
     }
     if (stringListValue != null) {
-      _result.stringListValue.addAll(stringListValue);
+      $result.stringListValue.addAll(stringListValue);
     }
     if (int32ListValue != null) {
-      _result.int32ListValue.addAll(int32ListValue);
+      $result.int32ListValue.addAll(int32ListValue);
     }
     if (floatListValue != null) {
-      _result.floatListValue.addAll(floatListValue);
+      $result.floatListValue.addAll(floatListValue);
     }
     if (doubleListValue != null) {
-      _result.doubleListValue.addAll(doubleListValue);
+      $result.doubleListValue.addAll(doubleListValue);
     }
     if (boolListValue != null) {
-      _result.boolListValue.addAll(boolListValue);
+      $result.boolListValue.addAll(boolListValue);
     }
     if (timestampListValue != null) {
-      _result.timestampListValue.addAll(timestampListValue);
+      $result.timestampListValue.addAll(timestampListValue);
     }
-    return _result;
+    return $result;
   }
+  Person._() : super();
   factory Person.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory Person.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Person', createEmptyInstance: create)
+    ..aOM<$0.Model>(1, _omitFieldNames ? '' : 'm', subBuilder: $0.Model.create)
+    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'age', $pb.PbFieldType.O3)
+    ..e<Person_PersonGender>(4, _omitFieldNames ? '' : 'enumValue', $pb.PbFieldType.OE, protoName: 'enumValue', defaultOrMaker: Person_PersonGender.PersonMale, valueOf: Person_PersonGender.valueOf, enumValues: Person_PersonGender.values)
+    ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'timestampValue', protoName: 'timestampValue', subBuilder: $1.Timestamp.create)
+    ..m<$core.String, $core.int>(6, _omitFieldNames ? '' : 'mapValue', protoName: 'mapValue', entryClassName: 'Person.MapValueEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
+    ..aOS(7, _omitFieldNames ? '' : 'stringValue', protoName: 'stringValue')
+    ..a<$core.int>(8, _omitFieldNames ? '' : 'int32Value', $pb.PbFieldType.O3, protoName: 'int32Value')
+    ..a<$core.double>(9, _omitFieldNames ? '' : 'floatValue', $pb.PbFieldType.OF, protoName: 'floatValue')
+    ..a<$core.double>(10, _omitFieldNames ? '' : 'doubleValue', $pb.PbFieldType.OD, protoName: 'doubleValue')
+    ..aOB(11, _omitFieldNames ? '' : 'boolValue', protoName: 'boolValue')
+    ..pPS(12, _omitFieldNames ? '' : 'stringListValue', protoName: 'stringListValue')
+    ..p<$core.int>(13, _omitFieldNames ? '' : 'int32ListValue', $pb.PbFieldType.K3, protoName: 'int32ListValue')
+    ..p<$core.double>(14, _omitFieldNames ? '' : 'floatListValue', $pb.PbFieldType.KF, protoName: 'floatListValue')
+    ..p<$core.double>(15, _omitFieldNames ? '' : 'doubleListValue', $pb.PbFieldType.KD, protoName: 'doubleListValue')
+    ..p<$core.bool>(16, _omitFieldNames ? '' : 'boolListValue', $pb.PbFieldType.KB, protoName: 'boolListValue')
+    ..pc<$1.Timestamp>(17, _omitFieldNames ? '' : 'timestampListValue', $pb.PbFieldType.PM, protoName: 'timestampListValue', subBuilder: $1.Timestamp.create)
+    ..hasRequiredFields = false
+  ;
+
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -130,8 +134,10 @@ class Person extends pb.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Person copyWith(void Function(Person) updates) => super.copyWith((message) => updates(message as Person)) as Person; // ignore: deprecated_member_use
+  Person copyWith(void Function(Person) updates) => super.copyWith((message) => updates(message as Person)) as Person;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static Person create() => Person._();
   Person createEmptyInstance() => create();
@@ -256,3 +262,6 @@ class Person extends pb.Object {
   $core.List<$1.Timestamp> get timestampListValue => $_getList(16);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

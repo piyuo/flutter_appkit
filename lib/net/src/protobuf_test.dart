@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/command/src/protobuf.dart';
+import 'protobuf.dart';
 
 void main() {
   group('[command_protobuf]', () {

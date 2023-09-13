@@ -10,7 +10,7 @@
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
@@ -25,7 +25,7 @@ import 'package:libcli/google/src/timestamp.pb.dart' as $0;
 /// / fetch
 /// / 3. no refresh and has fetch: it happens when client scroll, need to fetch
 /// / but no refresh
-class Sync extends pb.Object {
+class Sync extends net.Object {
   $core.int mapIdXXX() => 8;
   get namespace => 'common';
 

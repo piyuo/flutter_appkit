@@ -3,10 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/command/src/events.dart';
-import 'package:libcli/command/src/http.dart';
+import '../common/common.dart' as common;
+import 'events.dart';
+import 'http.dart';
+import 'empty.dart';
 
 void main() {
   dynamic lastEvent;
@@ -38,7 +39,7 @@ void main() {
 
       req.timeout = const Duration(milliseconds: 1);
       var obj = await doPost(req, () => sample.StringResponse());
-      expect(obj is pb.Empty, true);
+      expect(obj is Empty, true);
       expect(lastEvent is RequestTimeoutEvent, true);
     });
   });
@@ -49,7 +50,7 @@ Request _fakeSampleRequest(MockClient client) {
   return Request(
     service: sample.SampleService(),
     client: client,
-    action: pb.OK(),
+    action: common.OK(),
     url: 'http://mock',
     timeout: const Duration(milliseconds: 9000),
     slow: const Duration(milliseconds: 9000),

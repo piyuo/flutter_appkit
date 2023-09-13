@@ -3,12 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/command/src/events.dart';
-import 'package:libcli/command/src/http.dart';
-import 'package:libcli/command/src/service.dart';
-import 'package:libcli/command/src/protobuf.dart';
+import 'events.dart';
+import 'http.dart';
+import 'service.dart';
+import 'protobuf.dart';
+import 'empty.dart';
+import 'object.dart';
+import '../common/common.dart' as common;
 
 void main() {
   dynamic eventHappening;
@@ -24,48 +26,48 @@ void main() {
   group('[command_http]', () {
     test('should return object', () async {
       var req = _fakeOkRequest(statusOkMock());
-      var obj = await doPost(req, () => pb.OK());
-      expect(obj is pb.OK, true);
+      var obj = await doPost(req, () => common.OK());
+      expect(obj is common.OK, true);
     });
 
     test('should handle 500, internal server error', () async {
       var req = _fakeOkRequest(statusMockClient(500));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
+      expect(response is Empty, true);
       expect(eventHappening is InternalServerErrorEvent, true);
     });
 
     test('should handle 501, service is not properly setup', () async {
       var req = _fakeOkRequest(statusMockClient(501));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
+      expect(response is Empty, true);
       expect(eventHappening is ServerNotReadyEvent, true);
     });
 
     test('should handle 504, service context deadline exceeded', () async {
       var req = _fakeOkRequest(statusMockClient(504));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
+      expect(response is Empty, true);
       expect(eventHappening is RequestTimeoutEvent, true);
     });
 
     test('should retry 511 and ok, logout required', () async {
       var req = _fakeOkRequest(statusMockClient(511));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.Empty, true);
+      expect(response is Empty, true);
       expect(eventHappening is ForceLogOutEvent, isTrue);
     });
     test('should retry 412 and ok, access token expired', () async {
       var req = _fakeOkRequest(statusMockClient(412));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.OK, true);
+      expect(response is common.OK, true);
       expect(eventHappening is AccessTokenRevokedEvent, isTrue);
     });
 
     test('should retry 402 and ok, payment token expired', () async {
       var req = _fakeOkRequest(statusMockClient(402));
       var response = await doPost(req, () => sample.StringResponse());
-      expect(response is pb.OK, true);
+      expect(response is common.OK, true);
       expect(eventHappening is AccessTokenRevokedEvent, isTrue);
     });
 
@@ -77,37 +79,37 @@ void main() {
     test('should broadcast slow network', () async {
       var client = MockClient((request) async {
         await Future.delayed(const Duration(milliseconds: 2));
-        return http.Response.bytes(encode(pb.OK()), 200);
+        return http.Response.bytes(encode(common.OK()), 200);
       });
 
       await post(
           Request(
-            service: _FakeOkService()..mockSender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
+            service: _FakeOkService()..mockSender = (Object command, {Builder? builder}) async => common.OK(),
             client: client,
-            action: pb.OK(),
+            action: common.OK(),
             url: 'http://mock',
             timeout: const Duration(milliseconds: 500),
             slow: const Duration(milliseconds: 1),
           ),
-          () => pb.OK());
+          () => common.OK());
       expect(eventHappening.runtimeType, SlowNetworkEvent);
     });
 
     test('should no slow network', () async {
       var client = MockClient((request) async {
-        return http.Response.bytes(encode(pb.OK()), 200);
+        return http.Response.bytes(encode(common.OK()), 200);
       });
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await post(
           Request(
-            service: _FakeOkService()..mockSender = (pb.Object command, {pb.Builder? builder}) async => pb.OK(),
+            service: _FakeOkService()..mockSender = (Object command, {Builder? builder}) async => common.OK(),
             client: client,
-            action: pb.OK(),
+            action: common.OK(),
             url: 'http://mock',
             timeout: const Duration(milliseconds: 500),
             slow: const Duration(milliseconds: 3000),
           ),
-          () => pb.OK());
+          () => common.OK());
       expect(eventHappening, null);
     });
 
@@ -120,7 +122,7 @@ void main() {
 
 MockClient statusOkMock() {
   return MockClient((request) async {
-    return http.Response.bytes(encode(pb.OK()), 200);
+    return http.Response.bytes(encode(common.OK()), 200);
   });
 }
 
@@ -132,7 +134,7 @@ MockClient statusMockClient(int status) {
       if (badNews) {
         resp = http.Response('', status);
       } else {
-        resp = http.Response.bytes(encode(pb.OK()), 200);
+        resp = http.Response.bytes(encode(common.OK()), 200);
       }
       badNews = !badNews;
     }
@@ -140,7 +142,7 @@ MockClient statusMockClient(int status) {
   });
 }
 
-/// _FakeService only return pb.OK object
+/// _FakeService only return common.OK object
 class _FakeOkService extends Service {
   _FakeOkService() : super('mock') {
     urlBuilder = () {
@@ -162,11 +164,11 @@ _FakeOkService? _fakeService;
 
 /// _fakeRequest return a fake service request
 Request _fakeOkRequest(MockClient client) {
-  _fakeService = _FakeOkService()..mockSender = (pb.Object command, {pb.Builder? builder}) async => pb.OK();
+  _fakeService = _FakeOkService()..mockSender = (Object command, {Builder? builder}) async => common.OK();
   return Request(
     service: _fakeService!,
     client: client,
-    action: pb.OK(),
+    action: common.OK(),
     url: 'http://mock',
     timeout: const Duration(milliseconds: 9000),
     slow: const Duration(milliseconds: 9000),

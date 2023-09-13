@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'ram_provider.dart';
 
 void main() {
@@ -19,14 +19,14 @@ void main() {
 
     test('should use pb.object as key', () {
       final cache = RamProvider();
-      final key = pb.Error()..code = 'err1';
+      final key = net.Error()..code = 'err1';
       var len = cache.length;
       expect(cache.get(key), isNull);
       cache.put(key, "value1");
       expect(cache.get(key), "value1");
       expect(cache.containsKey(key), true);
 
-      final key2 = pb.Error()..code = 'err1';
+      final key2 = net.Error()..code = 'err1';
       expect(cache.get(key2), "value1");
       expect(cache.containsKey(key2), true);
 

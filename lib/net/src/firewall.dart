@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:libcli/cache/cache.dart' as cache;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/utils/utils.dart' as utils;
+import 'empty.dart';
+import 'object.dart';
+import '../common/common.dart' as common;
 
 /// _blockList keep action need block
 final _blockList = cache.RamProvider();
@@ -13,10 +15,10 @@ class FirewallBlockEvent {
 }
 
 /// FirewallPass is firewall return result
-class FirewallPass extends pb.Empty {}
+class FirewallPass extends Empty {}
 
 /// FirewallBlock is firewall return result
-class FirewallBlock extends pb.Empty {
+class FirewallBlock extends Empty {
   String reason;
   FirewallBlock(this.reason);
 }
@@ -66,7 +68,7 @@ var blockLongDuration = const Duration(days: 1);
 ///   3. it will cache "LAST_RESPONSE", return last response if same request happen in 30 seconds
 ///   4. it will block command for 1 minutes when receive server "BLOCK_SHORT"
 ///   5. it will block command for 24 hour when receive server "BLOCK_LONG"
-pb.Object firewallBegin(pb.Object action) {
+Object firewallBegin(Object action) {
   if (firewallDisable) {
     return FirewallPass();
   }
@@ -78,7 +80,7 @@ pb.Object firewallBegin(pb.Object action) {
   }
 
   // check IN_FLIGHT/LAST_RESPONSE
-  var lastReq = cache.get<pb.Object>(memoryKeyLastRequest);
+  var lastReq = cache.get<Object>(memoryKeyLastRequest);
   if (lastReq != null) {
     // hit cache
     if (lastReq == action) {
@@ -109,7 +111,7 @@ pb.Object firewallBegin(pb.Object action) {
 }
 
 /// firewallPostComplete must be call when post complete
-void firewallEnd(pb.Object action, pb.Object? response) {
+void firewallEnd(Object action, Object? response) {
   if (firewallDisable) {
     return;
   }
@@ -125,7 +127,7 @@ void firewallEnd(pb.Object action, pb.Object? response) {
   cache.put(memoryKeyLastResponse, response, expire: cacheDuration);
 
   // check block by server
-  if (response is pb.Error) {
+  if (response is common.Error) {
     if (response.code == blockShort) {
       _blockList.put(action, blockShort, expire: blockShortDuration);
     }
@@ -136,7 +138,7 @@ void firewallEnd(pb.Object action, pb.Object? response) {
 }
 
 @visibleForTesting
-void mockFirewallInFlight(pb.Object action) {
+void mockFirewallInFlight(Object action) {
   cache.put(memoryKeyLastRequest, action, expire: cacheDuration);
   cache.delete(memoryKeyLastResponse);
 }

@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'firewall.dart';
 import 'http.dart';
+import 'object.dart';
 
 /// Sender define send function use in service, only for test
-typedef Sender = Future<pb.Object> Function(pb.Object command, {pb.Builder? builder});
+typedef Sender = Future<Object> Function(Object command, {Builder? builder});
 
 /// AccessKeyBuilder return access key for action
 typedef AccessTokenBuilder = Future<String?> Function();
@@ -78,7 +78,7 @@ abstract class Service {
   /// ```dart
   /// var response = await service.send(EchoAction());
   /// ```
-  Future<pb.Object> send(pb.Object command, {pb.Builder? builder}) async {
+  Future<Object> send(Object command, {Builder? builder}) async {
     if (!kReleaseMode && mockSender != null) {
       return mockSender!(command, builder: builder);
     }
@@ -90,14 +90,14 @@ abstract class Service {
   /// ```dart
   /// var response = await service.sendByClient(EchoAction());
   /// ```
-  Future<pb.Object> sendByClient(pb.Object action, http.Client client, pb.Builder? builder) async {
+  Future<Object> sendByClient(Object action, http.Client client, Builder? builder) async {
     dynamic result = FirewallPass;
     if (!ignoreFirewall) {
       result = firewallBegin(action);
     }
     if (result is FirewallPass) {
       log.log('[command] send ${action.jsonString} to $url');
-      pb.Object? returnObj;
+      Object? returnObj;
       try {
         returnObj = await post(
             Request(

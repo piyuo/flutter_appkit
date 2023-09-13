@@ -10,7 +10,7 @@
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
@@ -18,7 +18,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:libcli/google/src/timestamp.pb.dart' as $0;
 
 /// Model contain data model identify information
-class Model extends pb.Object {
+class Model extends net.Object {
   $core.int mapIdXXX() => 3;
   get namespace => 'common';
 

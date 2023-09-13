@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/command/command.dart';
+import 'package:libcli/net/net.dart';
 
 
  /// SysService define sys service, source .proto can be found in /pb/sys

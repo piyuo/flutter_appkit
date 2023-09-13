@@ -5,10 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/pb/pb.dart' as pb;
 import 'events.dart';
 import 'protobuf.dart';
 import 'service.dart';
+import 'object.dart';
+import 'empty.dart';
 
 /// Request for post()
 class Request {
@@ -31,7 +32,7 @@ class Request {
   final String url;
 
   /// action for post request
-  final pb.Object action;
+  final Object action;
 
   /// timeout for post request
   Duration timeout;
@@ -50,8 +51,8 @@ Map<String, String> get _requestHeaders => {
     };
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
-Future<pb.Object> post(Request request, pb.Builder? builder) async {
-  Completer<pb.Object> completer = Completer<pb.Object>();
+Future<Object> post(Request request, Builder? builder) async {
+  Completer<Object> completer = Completer<Object>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
       eventbus.broadcast(SlowNetworkEvent());
@@ -74,7 +75,7 @@ Future<pb.Object> post(Request request, pb.Builder? builder) async {
 /// req.timeout = 9000;
 /// var bytes = await commandHttp.doPost(req);
 /// ```
-Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
+Future<Object> doPost(Request r, Builder? builder) async {
   try {
     // auto add access token
     String? accessToken;
@@ -140,16 +141,16 @@ Future<pb.Object> doPost(Request r, pb.Builder? builder) async {
 /// ```dart
 /// commandHttp.giveup(ctx,BadRequestEvent());
 /// ```
-Future<pb.Object> giveup(dynamic e) async {
+Future<Object> giveup(dynamic e) async {
   eventbus.broadcast(e);
-  return pb.empty;
+  return empty;
 }
 
 /// retry use contract, return empty proto object is contract failed
 /// ```dart
 /// await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 /// ```
-Future<pb.Object> retry(pb.Builder? builder, dynamic event, Request request) async {
+Future<Object> retry(Builder? builder, dynamic event, Request request) async {
   if (request.isRetry) {
     // if already in retry, giveup
     return await giveup(TooManyRetryEvent());

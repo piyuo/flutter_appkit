@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 /// DiskErrorException happen when there is a [disk error] when save data to disk may be not enough space or permission
 class DiskErrorException implements Exception {}
@@ -277,7 +277,7 @@ Future<void> setMapList(String key, List<Map<String, dynamic>> mapList) async {
 /// ```dart
 /// await preferences.setObject('item1', sample);
 /// ```
-Future<void> setObject(String key, pb.Object obj) async {
+Future<void> setObject(String key, net.Object obj) async {
   await setString(key, obj.writeToJson());
 }
 
@@ -285,7 +285,7 @@ Future<void> setObject(String key, pb.Object obj) async {
 /// ```dart
 /// final item1 = await preferences.get('item1');
 /// ```
-Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) async {
+Future<T?> getObject<T extends net.Object>(String key, net.Builder<T> builder) async {
   final str = await getString(key);
   if (str != null) {
     T item = builder();

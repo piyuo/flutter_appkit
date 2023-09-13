@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:libcli/utils/utils.dart' as utils;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/data/data.dart' as data;
 import 'package:hive/hive.dart';
 
@@ -159,14 +159,14 @@ class MemoryProvider with ChangeNotifier, utils.InitOnceMixin {
   /// ```dart
   /// await setObject('k', sample.Person(name: 'john'));
   /// ```
-  Future<void> putObject(String key, pb.Object value) async =>
+  Future<void> putObject(String key, net.Object value) async =>
       await _addTimeTag(key, (newKey) async => data.putBoxObject(_cacheBox, newKey, value));
 
   /// getObject returns the value associated with the given [key]. If the key does not exist, `null` is returned.
   /// ```dart
   /// expect(await getObject<sample.Person>('k', () => sample.Person())!.name, 'john');
   /// ```
-  Future<T?> getObject<T extends pb.Object>(String key, pb.Builder<T> builder) async =>
+  Future<T?> getObject<T extends net.Object>(String key, net.Builder<T> builder) async =>
       await data.getBoxObject(_cacheBox, key, builder);
 
   /// deletes the given [key] from the box , If it does not exist, nothing happens.
