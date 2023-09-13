@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'dataset.dart';
 
@@ -25,7 +25,7 @@ Future<void> deleteDatasetCache(cache.MemoryProvider memoryProvider, String id) 
 }
 
 /// DatasetMemory keep data in memory
-class DatasetMemory<T extends pb.Object> extends Dataset<T> {
+class DatasetMemory<T extends net.Object> extends Dataset<T> {
   /// DatasetCache keep data in cache
   /// ```dart
   /// final ds = DatasetMemory<sample.Person>(memoryProvider:memoryProvider,name: 'test', objectBuilder: () => sample.Person());
@@ -34,7 +34,7 @@ class DatasetMemory<T extends pb.Object> extends Dataset<T> {
   DatasetMemory({
     required this.memoryProvider,
     required this.name,
-    required pb.Builder<T> objectBuilder,
+    required net.Builder<T> objectBuilder,
   }) : super(objectBuilder: objectBuilder);
 
   /// memoryProvider use for database or cache id

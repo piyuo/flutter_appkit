@@ -1,7 +1,7 @@
 //import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:hive/hive.dart';
 import 'hive.dart';
 
@@ -134,13 +134,13 @@ class IndexedDbProvider with ChangeNotifier {
   /// ```dart
   /// await indexedDb.addRow('k', person);
   /// ```
-  Future<void> addRow(String key, pb.Object value) async => await putBoxObject(_box, key, value);
+  Future<void> addRow(String key, net.Object value) async => await putBoxObject(_box, key, value);
 
   /// getRow return the row associated with the given [key]
   /// ```dart
   /// final value = indexedDb.getRow<sample.Person>('k', () => sample.Person());
   /// ```
-  Future<T?> getRow<T extends pb.Object>(String key, pb.Builder<T> builder) async =>
+  Future<T?> getRow<T extends net.Object>(String key, net.Builder<T> builder) async =>
       await getBoxObject(_box, key, builder);
 
   /// removeRow remove row from database by given [key] from the box ,if it does not exist, nothing happens.

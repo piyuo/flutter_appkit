@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
@@ -166,12 +166,12 @@ class SessionProvider with ChangeNotifier {
     required this.loader,
   }) {
     subscription = eventbus.listen((event) async {
-      if (event is command.AccessTokenRevokedEvent) {
+      if (event is net.AccessTokenRevokedEvent) {
         if (session != null) {
           session!.accessToken.value = '';
         }
       }
-      if (event is command.ForceLogOutEvent) {
+      if (event is net.ForceLogOutEvent) {
         await logout();
       }
     });

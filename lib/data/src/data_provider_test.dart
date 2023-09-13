@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'data_provider.dart';
 import 'dataset.dart';
@@ -21,7 +21,7 @@ void main() {
           return (
             null,
             [
-              sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+              sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
             ],
           );
         },
@@ -31,7 +31,7 @@ void main() {
           utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
           builder: () => sample.Person(),
         )..insertRow(
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 2, 1).timestamp)),
+            sample.Person(m: net.Model(i: '1', t: DateTime(2021, 2, 1).timestamp)),
           ),
       );
       expect(dp.displayRows.length, 1);
@@ -61,7 +61,7 @@ void main() {
             null,
             sync.hasFetch()
                 ? [
-                    sample.Person(m: pb.Model(i: '${fetchIndex + 2}', t: DateTime(2020, 1, 1).timestamp)),
+                    sample.Person(m: net.Model(i: '${fetchIndex + 2}', t: DateTime(2020, 1, 1).timestamp)),
                   ]
                 : null
           );
@@ -72,7 +72,7 @@ void main() {
           utcExpiredDate: DateTime(2021, 1, 1).toUtc(),
           builder: () => sample.Person(),
         )..insertRow(
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+            sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
           ),
       );
       expect(dp.displayRows.length, 1);
@@ -95,7 +95,7 @@ void main() {
     test('reload should reset pageIndex and no more', () async {
       List<sample.Person>? refreshResult;
       List<sample.Person>? fetchResult = [
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
       ];
 
       final dp = DataProvider<sample.Person>(
@@ -117,11 +117,11 @@ void main() {
 
       // mimic change result
       refreshResult = [
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
+        sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
       ];
       fetchResult = [
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+        sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
       ];
       await dp.reload();
       expect(dp.displayRows.length, 3);
@@ -131,8 +131,8 @@ void main() {
       expect(dp.isMoreToFetch, isTrue);
       expect(dp.pageIndex, 1);
       fetchResult = [
-        sample.Person(m: pb.Model(i: '4', t: DateTime(2020, 4, 1).timestamp)),
-        sample.Person(m: pb.Model(i: '5', t: DateTime(2020, 2, 5).timestamp)),
+        sample.Person(m: net.Model(i: '4', t: DateTime(2020, 4, 1).timestamp)),
+        sample.Person(m: net.Model(i: '5', t: DateTime(2020, 2, 5).timestamp)),
       ];
 
       final result = await dp.fetch();
@@ -153,8 +153,8 @@ void main() {
       final dp = DataProvider(
         loader: (sync) async => (
           [
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-            sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 1).timestamp)),
+            sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+            sample.Person(m: net.Model(i: '2', t: DateTime(2021, 2, 1).timestamp)),
           ],
           null
         ),
@@ -177,8 +177,8 @@ void main() {
 
     test('should fetch more page', () async {
       var refreshResult = [
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+        sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
       ];
       List<sample.Person>? fetchResult;
 
@@ -200,8 +200,8 @@ void main() {
       expect(dp.isMoreToFetch, isTrue);
 
       fetchResult = [
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
-        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
+        sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
+        sample.Person(m: net.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
       ];
 
       await dp.fetch();
@@ -209,7 +209,7 @@ void main() {
       expect(dp.isMoreToFetch, isTrue);
 
       fetchResult = [
-        sample.Person(m: pb.Model(i: '5', t: DateTime(2021, 1, 5).timestamp)),
+        sample.Person(m: net.Model(i: '5', t: DateTime(2021, 1, 5).timestamp)),
       ];
       await dp.fetch();
       expect(dp.displayRows.length, 5);
@@ -219,8 +219,8 @@ void main() {
     });
 
     test('selector should able sort data', () async {
-      final p1 = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp));
-      final p2 = sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp));
+      final p1 = sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp));
+      final p2 = sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp));
 
       var viewerResult = [p1, p2];
 
@@ -252,9 +252,9 @@ void main() {
     });
 
     test('refresh should not reset data', () async {
-      final p1 = sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp));
-      final p2 = sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp));
-      final p3 = sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp));
+      final p1 = sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp));
+      final p2 = sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp));
+      final p3 = sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp));
 
       var refreshResult = [p1, p2];
       var viewerResult = [p1, p2];
@@ -299,12 +299,12 @@ void main() {
         rowsPerPage: 5,
         loader: (sync) async => (
           [
-            sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-            sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+            sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+            sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
           ],
           [
-            sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
-            sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
+            sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
+            sample.Person(m: net.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
           ],
         ),
       );
@@ -321,12 +321,12 @@ void main() {
 
     test('reload should reset fetch result and start from beginning', () async {
       var refreshResult = [
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+        sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
       ];
       var fetchResult = [
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
-        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
+        sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
+        sample.Person(m: net.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
       ];
 
       final ds = Dataset<sample.Person>(
@@ -356,10 +356,10 @@ void main() {
 
     test('refresh should find difference', () async {
       var result = [
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
-        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
+        sample.Person(m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+        sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
+        sample.Person(m: net.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
       ];
 
       final ds = Dataset<sample.Person>(
@@ -379,9 +379,9 @@ void main() {
       expect(dp.displayRows.length, 4);
 
       result = [
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 1, 3).timestamp)), // change date
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 4).timestamp, d: true)),
-        sample.Person(m: pb.Model(i: '5', t: DateTime(2021, 1, 5).timestamp)),
+        sample.Person(m: net.Model(i: '2', t: DateTime(2021, 1, 3).timestamp)), // change date
+        sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 4).timestamp, d: true)),
+        sample.Person(m: net.Model(i: '5', t: DateTime(2021, 1, 5).timestamp)),
       ];
 
       final backup = List<sample.Person>.from(dp.displayRows);
@@ -398,13 +398,13 @@ void main() {
 
     test('refresh should remove duplicate rows in fetchRows', () async {
       var refreshResult = [
-        sample.Person(m: pb.Model(i: '1', t: DateTime(2021, 2, 1).timestamp)),
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 2, 2).timestamp)),
+        sample.Person(m: net.Model(i: '1', t: DateTime(2021, 2, 1).timestamp)),
+        sample.Person(m: net.Model(i: '2', t: DateTime(2021, 2, 2).timestamp)),
       ];
 
       var fetchResult = [
-        sample.Person(m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
-        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
+        sample.Person(m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp)),
+        sample.Person(m: net.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
       ];
 
       final ds = Dataset<sample.Person>(
@@ -424,8 +424,8 @@ void main() {
       expect(dp.displayRows.length, 4);
 
       refreshResult = [
-        sample.Person(m: pb.Model(i: '2', t: DateTime(2021, 3, 5).timestamp, d: true)), // change date
-        sample.Person(m: pb.Model(i: '4', t: DateTime(2021, 3, 6).timestamp, d: true)),
+        sample.Person(m: net.Model(i: '2', t: DateTime(2021, 3, 5).timestamp, d: true)), // change date
+        sample.Person(m: net.Model(i: '4', t: DateTime(2021, 3, 6).timestamp, d: true)),
       ];
       fetchResult = [];
 
@@ -450,9 +450,9 @@ void main() {
         builder: () => sample.Person(),
       );
       await ds.insertRows([
-        sample.Person(m: pb.Model(i: 'a', t: DateTime(2021, 1, 30).timestamp)),
-        sample.Person(m: pb.Model(i: 'b', t: DateTime(2021, 1, 29).timestamp)),
-        sample.Person(m: pb.Model(i: 'c', t: DateTime(2021, 1, 28).timestamp)),
+        sample.Person(m: net.Model(i: 'a', t: DateTime(2021, 1, 30).timestamp)),
+        sample.Person(m: net.Model(i: 'b', t: DateTime(2021, 1, 29).timestamp)),
+        sample.Person(m: net.Model(i: 'c', t: DateTime(2021, 1, 28).timestamp)),
       ]);
 
       final dp = DataProvider<sample.Person>(
@@ -471,7 +471,7 @@ void main() {
             expect(sync.hasFetch(), isFalse);
             return (
               [
-                sample.Person(m: pb.Model(i: 'a', t: DateTime(2021, 2, 1).timestamp, d: true)),
+                sample.Person(m: net.Model(i: 'a', t: DateTime(2021, 2, 1).timestamp, d: true)),
               ],
               null
             );
@@ -483,7 +483,7 @@ void main() {
           return (
             null,
             [
-              sample.Person(m: pb.Model(i: 'd', t: DateTime(2021, 1, 27).timestamp)),
+              sample.Person(m: net.Model(i: 'd', t: DateTime(2021, 1, 27).timestamp)),
             ]
           );
         },
@@ -516,11 +516,11 @@ void main() {
 
       await ds.init();
       await ds.insertRows([
-        sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-        sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
-        sample.Person(age: 19, m: pb.Model(i: '3', t: DateTime(2021, 1, 3).timestamp, d: true)),
-        sample.Person(age: 20, m: pb.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
-        sample.Person(age: 21, m: pb.Model(i: '5', t: DateTime(2021, 1, 5).timestamp)),
+        sample.Person(age: 17, m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(age: 18, m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+        sample.Person(age: 19, m: net.Model(i: '3', t: DateTime(2021, 1, 3).timestamp, d: true)),
+        sample.Person(age: 20, m: net.Model(i: '4', t: DateTime(2021, 1, 4).timestamp)),
+        sample.Person(age: 21, m: net.Model(i: '5', t: DateTime(2021, 1, 5).timestamp)),
       ]);
       final dp = DataProvider<sample.Person>(
         selector: (ds) => ds.query(from: DateTime(2021, 1, 2), to: DateTime(2021, 1, 4)),
@@ -542,9 +542,9 @@ void main() {
 
       await ds.init();
       await ds.insertRows([
-        sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-        sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
-        sample.Person(age: 19, m: pb.Model(i: '3', t: DateTime(2021, 1, 2).timestamp, d: true)),
+        sample.Person(age: 17, m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+        sample.Person(age: 18, m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+        sample.Person(age: 19, m: net.Model(i: '3', t: DateTime(2021, 1, 2).timestamp, d: true)),
       ]);
       final dp = DataProvider<sample.Person>(
         selector: (ds) => ds.query(),
@@ -561,8 +561,8 @@ void main() {
       final ds = Dataset(
         builder: () => sample.Person(),
       )..insertRows([
-          sample.Person(age: 17, m: pb.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
-          sample.Person(age: 18, m: pb.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
+          sample.Person(age: 17, m: net.Model(i: '1', t: DateTime(2021, 1, 1).timestamp)),
+          sample.Person(age: 18, m: net.Model(i: '2', t: DateTime(2021, 1, 2).timestamp)),
         ]);
 
       final dp = DataProvider<sample.Person>(

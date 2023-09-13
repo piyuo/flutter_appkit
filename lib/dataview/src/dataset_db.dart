@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/data/data.dart' as data;
 import 'dataset.dart';
 
@@ -8,7 +8,7 @@ import 'dataset.dart';
 /// final dataset = DatasetDb<sample.Person>(await database.open('test'), objectBuilder: () => sample.Person());
 /// await dataset.load();
 /// ```
-class DatasetDb<T extends pb.Object> extends Dataset<T> {
+class DatasetDb<T extends net.Object> extends Dataset<T> {
   /// DatasetDatabase keep all data into a database
   /// ```dart
   /// final dataset = DatasetDb<sample.Person>(await database.open('test'), objectBuilder: () => sample.Person());
@@ -16,7 +16,7 @@ class DatasetDb<T extends pb.Object> extends Dataset<T> {
   /// ```
   DatasetDb({
     required this.indexedDb,
-    required pb.Builder<T> objectBuilder,
+    required net.Builder<T> objectBuilder,
   }) : super(objectBuilder: objectBuilder) {
     internalNoMore = true;
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/auth/auth.dart' as auth;
 import 'package:beamer/beamer.dart';
@@ -48,7 +48,7 @@ class CodeScreenProvider with ChangeNotifier {
     final signupCodeResendEmail = context.i18n.loginCodeScreenResendEmail;
     final resendCommand = auth.CmdResendCode(email: email);
     final response = await auth.AuthService.of(context).send(resendCommand);
-    if (response is pb.Error) {
+    if (response is net.Error) {
       dialog.alert(_getErrorTranslation(response.code), isError: true);
       return;
     }
@@ -82,13 +82,13 @@ class CodeScreenProvider with ChangeNotifier {
     status = VerifyStatus.busy;
     final verifyCommand = auth.CmdSignupVerify(email: email, code: formGroup.control(codeField).value);
     final response = await auth.AuthService.of(delta.globalContext).send(verifyCommand);
-    if (response is pb.Error) {
+    if (response is net.Error) {
       status = VerifyStatus.wait;
       dialog.alert(_getErrorTranslation(response.code), isError: true);
       return;
     }
 
-    if (response is pb.OK) {
+    if (response is net.OK) {
       status = VerifyStatus.ok;
       final mounted = isMounted();
       if (mounted) {

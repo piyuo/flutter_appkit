@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:universal_io/io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
@@ -55,7 +55,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(command.FirewallBlockEvent('BLOCK_SHORT'));
+          await eventbus.broadcast(net.FirewallBlockEvent('BLOCK_SHORT'));
         }),
       );
 
@@ -84,7 +84,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          var contract = command.InternetRequiredEvent(url: 'http://mock');
+          var contract = net.InternetRequiredEvent(url: 'http://mock');
           contract.isInternetConnected = () async {
             return true;
           };
@@ -106,7 +106,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          var contract = command.InternetRequiredEvent(url: 'http://mock');
+          var contract = net.InternetRequiredEvent(url: 'http://mock');
           contract.isInternetConnected = () async {
             return true;
           };
@@ -128,7 +128,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(command.InternalServerErrorEvent());
+          await eventbus.broadcast(net.InternalServerErrorEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -142,7 +142,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(command.ServerNotReadyEvent());
+          await eventbus.broadcast(net.ServerNotReadyEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -156,7 +156,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(command.BadRequestEvent());
+          await eventbus.broadcast(net.BadRequestEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -173,7 +173,7 @@ void main() {
           try {
             throw TimeoutException('client timeout');
           } catch (e) {
-            await eventbus.broadcast(command.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
+            await eventbus.broadcast(net.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
           }
         }),
       );
@@ -188,7 +188,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(command.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
+          await eventbus.broadcast(net.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);
@@ -215,7 +215,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(command.SlowNetworkEvent());
+          await eventbus.broadcast(net.SlowNetworkEvent());
         }),
       );
       expect(find.byType(TextButton), findsOneWidget);

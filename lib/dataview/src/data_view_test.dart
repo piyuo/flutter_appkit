@@ -2,7 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'dataset_ram.dart';
 import 'paged_data_view.dart';
 
@@ -17,7 +17,7 @@ void main() {
       final dataView = PagedDataView<sample.Person>(
         dataset,
         loader: (isRefresh, limit, anchorTimestamp, anchorId) async {
-          return List.generate(limit, (index) => sample.Person(m: pb.Model(i: index.toString())));
+          return List.generate(limit, (index) => sample.Person(m: net.Model(i: index.toString())));
         },
       );
       await dataView.load();

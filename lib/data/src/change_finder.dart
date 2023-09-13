@@ -1,7 +1,7 @@
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 /// ChangeFinder find how many data has been changed
-class ChangeFinder<T extends pb.Object> {
+class ChangeFinder<T extends net.Object> {
   /// insertCount is number of data has been inserted, use for refresh
   int insertCount = 0;
 

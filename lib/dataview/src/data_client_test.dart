@@ -2,7 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'data_client.dart';
 import 'dataset_ram.dart';
 
@@ -15,7 +15,7 @@ void main() {
         creator: () async => sample.Person(),
         loader: (id) async {
           isGet = true;
-          return sample.Person(m: pb.Model(i: 'myId'));
+          return sample.Person(m: net.Model(i: 'myId'));
         },
         saver: (_) async {},
       );
@@ -89,7 +89,7 @@ void main() {
     test('should save data', () async {
       sample.Person? saved;
       final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
-      final person = sample.Person(name: 'john', m: pb.Model(i: 'person1'));
+      final person = sample.Person(name: 'john', m: net.Model(i: 'person1'));
       dataset.add([person]);
 
       final dataClient = DataClient<sample.Person>(

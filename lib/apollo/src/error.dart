@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/preferences/preferences.dart' as preferences;
@@ -82,11 +82,11 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
 
 String firewallBlockMessage(BuildContext context, String reason) {
   switch (reason) {
-    case command.blockShort:
+    case net.blockShort:
       return context.i18n.errorFirewallBlockShort;
-    case command.blockLong:
+    case net.blockLong:
       return context.i18n.errorFirewallBlockLong;
-    case command.inFlight:
+    case net.inFlight:
       return context.i18n.errorFirewallInFlight;
   }
   return context.i18n.errorFirewallOverflow;
@@ -107,7 +107,7 @@ Widget emailUs(BuildContext context) {
 
 @visibleForTesting
 Future<void> listened(dynamic e) async {
-  if (e is command.FirewallBlockEvent) {
+  if (e is net.FirewallBlockEvent) {
     dialog.show(
       textContent: firewallBlockMessage(delta.globalContext, e.reason),
       isError: true,
@@ -115,7 +115,7 @@ Future<void> listened(dynamic e) async {
     );
     return;
   }
-  if (e is command.InternalServerErrorEvent) {
+  if (e is net.InternalServerErrorEvent) {
     dialog.show(
       textContent: '500 internal server error',
       isError: true,
@@ -124,7 +124,7 @@ Future<void> listened(dynamic e) async {
     return;
   }
 
-  if (e is command.ServerNotReadyEvent) {
+  if (e is net.ServerNotReadyEvent) {
     dialog.show(
       textContent: '501 server not ready',
       isError: true,
@@ -133,7 +133,7 @@ Future<void> listened(dynamic e) async {
     return;
   }
 
-  if (e is command.BadRequestEvent) {
+  if (e is net.BadRequestEvent) {
     dialog.show(
       textContent: '400 bad request',
       isError: true,
@@ -142,7 +142,7 @@ Future<void> listened(dynamic e) async {
     return;
   }
 
-  if (e is command.SlowNetworkEvent) {
+  if (e is net.SlowNetworkEvent) {
     dialog.toastInfo(
       delta.i18n.errorNetworkSlowMessage,
       widget: const Icon(
@@ -153,7 +153,7 @@ Future<void> listened(dynamic e) async {
     return;
   }
 
-  if (e is command.RequestTimeoutEvent) {
+  if (e is net.RequestTimeoutEvent) {
     String errorCode = e.isServer ? '504 deadline exceeded ${e.errorID}' : '408 request timeout';
     await dialog.show(
       textContent: delta.i18n.errorNetworkTimeoutMessage,
@@ -164,7 +164,7 @@ Future<void> listened(dynamic e) async {
     return;
   }
 
-  if (e is command.InternetRequiredEvent) {
+  if (e is net.InternetRequiredEvent) {
     if (await e.isInternetConnected()) {
       if (await e.isGoogleCloudFunctionAvailable()) {
         dialog.show(

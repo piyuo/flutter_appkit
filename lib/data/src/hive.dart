@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 /// _hivePath is hive database path, empty string for web
 String? _hivePath;
@@ -93,13 +93,13 @@ Future<void> closeBox(LazyBox box) async {
 /// ```dart
 /// await putBoxObject('k', person);
 /// ```
-Future<void> putBoxObject(LazyBox box, String key, pb.Object value) async => await box.put(key, value.writeToBuffer());
+Future<void> putBoxObject(LazyBox box, String key, net.Object value) async => await box.put(key, value.writeToBuffer());
 
 /// getBoxObject return the value associated with the given [key]
 /// ```dart
 /// final value = getBoxObject<sample.Person>('k', () => sample.Person());
 /// ```
-Future<T?> getBoxObject<T extends pb.Object>(LazyBox box, String key, pb.Builder<T> builder) async {
+Future<T?> getBoxObject<T extends net.Object>(LazyBox box, String key, net.Builder<T> builder) async {
   final value = await box.get(key);
   if (value == null) {
     return null;

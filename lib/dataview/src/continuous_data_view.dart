@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'dataset.dart';
 import 'data_view.dart';
 
 /// ContinuousDataView is view support continuous display
-class ContinuousDataView<T extends pb.Object> extends DataView<T> {
+class ContinuousDataView<T extends net.Object> extends DataView<T> {
   ContinuousDataView(
     Dataset<T> dataset, {
     required DataViewLoader<T> loader,

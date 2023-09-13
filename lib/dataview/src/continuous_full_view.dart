@@ -1,11 +1,11 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'data_view.dart';
 import 'continuous_data_view.dart';
 import 'dataset.dart';
 
-class ContinuousFullView<T extends pb.Object> extends ContinuousDataView<T> {
+class ContinuousFullView<T extends net.Object> extends ContinuousDataView<T> {
   ContinuousFullView(
     Dataset<T> dataset, {
     required String id,

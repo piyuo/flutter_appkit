@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/google/google.dart' as google;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:provider/provider.dart';
 import 'dataset.dart';
 
 /// DataLoader is a function to load data from remote, return refresh rows and fetch rows
-typedef DataLoader<T extends pb.Object> = Future<(List<T>?, List<T>?)> Function(pb.Sync sync);
+typedef DataLoader<T extends net.Object> = Future<(List<T>?, List<T>?)> Function(net.Sync sync);
 
 /// DataProvider read data from dataset user viewer to create list of page
-class DataProvider<T extends pb.Object> with ChangeNotifier {
+class DataProvider<T extends net.Object> with ChangeNotifier {
   DataProvider({
     required this.loader,
     this.selector,
@@ -43,7 +43,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
   bool get isMoreToFetch => _dataset.hasMore && rowsPerPage != null && _moreToFetch;
 
   /// of get DatabaseProvider from context
-  static DataProvider<T> of<T extends pb.Object>(BuildContext context) {
+  static DataProvider<T> of<T extends net.Object>(BuildContext context) {
     return Provider.of<DataProvider<T>>(context, listen: false);
   }
 
@@ -79,7 +79,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     // init mode need refresh data and may need fetch to fit rowsPerPage
     bool needFetch = isMoreToFetch && selectRows.length < rowsPerPage!;
     final (newRows, oldRows) = await loader(
-      pb.Sync(
+      net.Sync(
         refresh: isInit ? _dataset.refreshTimestamp : null,
         fetch: needFetch ? _fetchTimestamp : null,
         rows: needFetch ? rowsPerPage! - selectRows.length : null,
@@ -106,7 +106,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
     List<T>? readyRows;
     if (newRows == null) {
       final (refreshRows, _) = await loader(
-        pb.Sync(
+        net.Sync(
           refresh: _dataset.refreshTimestamp,
         ),
       );
@@ -141,7 +141,7 @@ class DataProvider<T extends pb.Object> with ChangeNotifier {
       return false;
     }
     int rows = customRowsPerPage ?? rowsPerPage!;
-    final (_, fetchRows) = await loader(pb.Sync(
+    final (_, fetchRows) = await loader(net.Sync(
       fetch: _fetchTimestamp,
       rows: rows,
       page: pageIndex,

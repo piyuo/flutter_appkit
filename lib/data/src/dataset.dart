@@ -1,16 +1,16 @@
 import 'dart:math';
 import 'package:libcli/google/google.dart' as google;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'indexed_provider_db.dart';
 
 /// DataSelector select data from dataset
-typedef DataSelector<T extends pb.Object> = Iterable<T> Function(Dataset<T> dataset);
+typedef DataSelector<T extends net.Object> = Iterable<T> Function(Dataset<T> dataset);
 
 /// DataRefresher is a function to load data from remote, return list of data
 //typedef DataRefresher<T extends pb.Object> = Future<List<T>> Function(google.Timestamp? timestamp);
 
 /// Dataset keep list of row for later use
-class Dataset<T extends pb.Object> {
+class Dataset<T extends net.Object> {
   Dataset({
     required this.builder,
     this.utcExpiredDate,
@@ -29,7 +29,7 @@ class Dataset<T extends pb.Object> {
   IndexedDbProvider? _indexedDbProvider;
 
   /// builder is builder to build object
-  final pb.Builder<T> builder;
+  final net.Builder<T> builder;
 
   /// rows return all rows
   List<T> get rows => _rows;
@@ -48,7 +48,7 @@ class Dataset<T extends pb.Object> {
         _rows.add(row);
       }
     }
-    pb.Object.sort(_rows);
+    net.Object.sort(_rows);
 
     // no need to remove expired every time, 1/10 chance to remove is enough
     if (Random().nextInt(10) == 1) {
@@ -95,13 +95,13 @@ class Dataset<T extends pb.Object> {
     for (final row in rows) {
       await _insertRow(row);
     }
-    pb.Object.sort(_rows);
+    net.Object.sort(_rows);
   }
 
   /// insertRow insert row to dataset, replace old row if it's already exist
   Future<void> insertRow(T row) async {
     await _insertRow(row);
-    pb.Object.sort(_rows);
+    net.Object.sort(_rows);
   }
 
   /// _insertRow insert row to dataset, replace old row if it's already exist

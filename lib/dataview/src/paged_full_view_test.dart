@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/testing/testing.dart' as testing;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'paged_full_view.dart';
 import 'dataset_ram.dart';
 
@@ -24,7 +24,7 @@ void main() {
           return List.generate(
               limit,
               (i) => sample.Person(
-                    m: pb.Model(i: '$refreshCount$i'),
+                    m: net.Model(i: '$refreshCount$i'),
                   ));
         },
       );
@@ -49,7 +49,7 @@ void main() {
       final view = PagedFullView<sample.Person>(
         DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test2',
-        loader: (_, __, anchorTimestamp, anchorId) async => [sample.Person(m: pb.Model(i: 'duplicate'))],
+        loader: (_, __, anchorTimestamp, anchorId) async => [sample.Person(m: net.Model(i: 'duplicate'))],
       );
       await view.load();
       await view.refresh();
@@ -88,7 +88,7 @@ void main() {
           anchorTimestampResult = anchorTimestamp;
           anchorIdResult = anchorId;
           idCount++;
-          return List.generate(10, (index) => sample.Person(m: pb.Model(i: idCount.toString())));
+          return List.generate(10, (index) => sample.Person(m: net.Model(i: idCount.toString())));
         },
       );
       await view.load();
@@ -108,7 +108,7 @@ void main() {
         DatasetRam(objectBuilder: () => sample.Person()),
         id: 'test',
         loader: (_, __, anchorTimestamp, anchorId) async {
-          return [sample.Person(m: pb.Model(i: 'only'))];
+          return [sample.Person(m: net.Model(i: 'only'))];
         },
       );
       await view.load();
@@ -291,17 +291,17 @@ void main() {
           if (step == 0) {
             // init
             step++;
-            return List.generate(limit, (index) => sample.Person(m: pb.Model(i: 'init$index')));
+            return List.generate(limit, (index) => sample.Person(m: net.Model(i: 'init$index')));
           }
           if (step == 1) {
             // first more
             step++;
-            return List.generate(limit, (index) => sample.Person(m: pb.Model(i: 'firstRefresh$index')));
+            return List.generate(limit, (index) => sample.Person(m: net.Model(i: 'firstRefresh$index')));
           }
           if (step == 2) {
             // second refresh
             step++;
-            return List.generate(2, (index) => sample.Person(m: pb.Model(i: 'secondRefresh$index')));
+            return List.generate(2, (index) => sample.Person(m: net.Model(i: 'secondRefresh$index')));
           }
           return [];
         },

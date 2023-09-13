@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'dataset.dart';
 
 /// DatasetRam keep data in ram
 /// ```dart
 /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
 /// ```
-class DatasetRam<T extends pb.Object> extends Dataset<T> {
+class DatasetRam<T extends net.Object> extends Dataset<T> {
   /// DatasetRam keep data in ram
   /// ```dart
   /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
   /// ```
   DatasetRam({
-    required pb.Builder<T> objectBuilder,
+    required net.Builder<T> objectBuilder,
   }) : super(objectBuilder: objectBuilder);
 
   /// _rows keep all rows in ram

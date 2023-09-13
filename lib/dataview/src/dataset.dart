@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 /// keyAll is key for keep all rows
 const keyIndex = '__idx';
@@ -18,7 +18,7 @@ const keyNoRefresh = '__nr';
 /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
 /// await dataset.load();
 /// ```
-abstract class Dataset<T extends pb.Object> {
+abstract class Dataset<T extends net.Object> {
   /// Dataset keep rows for later use
   /// ```dart
   /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
@@ -33,7 +33,7 @@ abstract class Dataset<T extends pb.Object> {
   /// ```dart
   /// objectBuilder: () => sample.Person()
   /// ```
-  final pb.Builder<T> objectBuilder;
+  final net.Builder<T> objectBuilder;
 
   /// onRowsPerPageChanged is callback when rows per page changed
   Future<void> Function()? onRowsPerPageChanged;

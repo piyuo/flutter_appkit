@@ -1,4 +1,4 @@
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'dataset.dart';
 
@@ -14,7 +14,7 @@ typedef DataClientLoader<T> = Future<T?> Function(String id);
 typedef DataClientSaver<T> = Future<void> Function(List<T> list);
 
 /// DataClient provide a way to access data though dataset
-class DataClient<T extends pb.Object> {
+class DataClient<T extends net.Object> {
   /// DataClient provide a way to access data though dataset
   /// ```dart
   /// final dc = DataClient<sample.Person>(

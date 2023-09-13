@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/google/google.dart' as google;
 import 'dataset.dart';
 
@@ -13,7 +13,7 @@ typedef DataViewLoader<T> = Future<List<T>> Function(
     bool isRefresh, int limit, google.Timestamp? anchorTime, String? anchorId);
 
 /// DataView read data save to local, manage paging and select row,
-abstract class DataView<T extends pb.Object> {
+abstract class DataView<T extends net.Object> {
   /// ```dart
   /// final dataView = DataView<sample.Person>(
   ///   DatasetRam(

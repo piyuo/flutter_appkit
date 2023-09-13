@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'data_view.dart';
 import 'paged_data_view.dart';
@@ -17,7 +17,7 @@ import 'paginator.dart';
 ///   );
 /// await ds.start(testing.Context());
 /// ```
-class PagedFullView<T extends pb.Object> extends PagedDataView<T> {
+class PagedFullView<T extends net.Object> extends PagedDataView<T> {
   /// PagedFullView keep full table data in local, no data allow to be deleted due to local cache can not detect server delete data
   /// ```dart
   /// final ds = PagedFullView<sample.Person>(

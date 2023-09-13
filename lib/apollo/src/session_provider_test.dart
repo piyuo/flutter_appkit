@@ -4,7 +4,7 @@ import 'package:libcli/preferences/preferences.dart' as storage;
 import 'session_provider.dart';
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/preferences/preferences.dart' as preferences;
-import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/net/net.dart' as net;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -261,7 +261,7 @@ void main() {
 
       var session = await sessionProvider.getValidSession();
       expect(session, isNotNull);
-      await eventbus.broadcast(command.AccessTokenRevokedEvent('invalid'));
+      await eventbus.broadcast(net.AccessTokenRevokedEvent('invalid'));
       expect(session!.isValid, isFalse);
 
       var session2 = await sessionProvider.getValidSession();
@@ -288,7 +288,7 @@ void main() {
 
       var session = await sessionProvider.getValidSession();
       expect(session, isNotNull);
-      await eventbus.broadcast(command.ForceLogOutEvent());
+      await eventbus.broadcast(net.ForceLogOutEvent());
       expect(session!.isValid, isFalse);
 
       var session2 = await sessionProvider.getValidSession();

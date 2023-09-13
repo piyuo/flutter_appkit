@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'dataset.dart';
 import 'filter.dart';
 
@@ -8,7 +8,7 @@ import 'filter.dart';
 /// final dsRam = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
 /// final filter = FilteredDataset(dsRam);
 /// ```
-class FilteredDataset<T extends pb.Object> extends Dataset<T> {
+class FilteredDataset<T extends net.Object> extends Dataset<T> {
   /// FilteredDataset filter data from Dataset
   /// ```dart
   /// final dsRam = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
