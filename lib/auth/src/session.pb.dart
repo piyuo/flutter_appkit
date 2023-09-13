@@ -1,42 +1,42 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: session.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
+
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
 // ignore: implementation_imports
 import 'package:libcli/google/src/timestamp.pb.dart' as $0;
-
 import 'session.pbenum.dart';
 
 export 'session.pbenum.dart';
 
-class Session extends pb.Object {
+///  Session return session that store user data between requests
+///
+///   Status {AccountStatus}
+/// 	Region {string} is account data center region
+/// 	AccessToken {string} is access token
+///   AccessExpired {Timestamp} is access token expired time
+///   RefreshToken {string} is refresh token, keep it safe
+///   RefreshExpired {Timestamp} is refresh token expired time
+///   UserType {int32} is user typ
+///   StoreRoles {map<string,int32>} in role-store.go, define user role in specifc store
+///   LocationRoles {map<string,int32>} in role-location.go, define user role in specifc location
+class Session extends net.Object {
   $core.int mapIdXXX() => 1011;
   get namespace => 'auth';
   setAccessToken(token) => accessToken = token;
   get accessTokenRequired => true;
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Session', createEmptyInstance: create)
-    ..e<Session_AccountStatus>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: Session_AccountStatus.AccountNormal, valueOf: Session_AccountStatus.valueOf, enumValues: Session_AccountStatus.values)
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'region')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'accessToken', protoName: 'accessToken')
-    ..aOM<$0.Timestamp>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'accessExpired', protoName: 'accessExpired', subBuilder: $0.Timestamp.create)
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'refreshToken', protoName: 'refreshToken')
-    ..aOM<$0.Timestamp>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'refreshExpired', protoName: 'refreshExpired', subBuilder: $0.Timestamp.create)
-    ..a<$core.int>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'userType', $pb.PbFieldType.O3, protoName: 'userType')
-    ..m<$core.String, $core.int>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'storeRoles', protoName: 'storeRoles', entryClassName: 'Session.StoreRolesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
-    ..m<$core.String, $core.int>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'locationRoles', protoName: 'locationRoles', entryClassName: 'Session.LocationRolesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
-    ..hasRequiredFields = false
-  ;
-
-  Session._() : super();
   factory Session({
     Session_AccountStatus? status,
     $core.String? region,
@@ -48,38 +48,53 @@ class Session extends pb.Object {
     $core.Map<$core.String, $core.int>? storeRoles,
     $core.Map<$core.String, $core.int>? locationRoles,
   }) {
-    final _result = create();
+    final $result = create();
     if (status != null) {
-      _result.status = status;
+      $result.status = status;
     }
     if (region != null) {
-      _result.region = region;
+      $result.region = region;
     }
     if (accessToken != null) {
-      _result.accessToken = accessToken;
+      $result.accessToken = accessToken;
     }
     if (accessExpired != null) {
-      _result.accessExpired = accessExpired;
+      $result.accessExpired = accessExpired;
     }
     if (refreshToken != null) {
-      _result.refreshToken = refreshToken;
+      $result.refreshToken = refreshToken;
     }
     if (refreshExpired != null) {
-      _result.refreshExpired = refreshExpired;
+      $result.refreshExpired = refreshExpired;
     }
     if (userType != null) {
-      _result.userType = userType;
+      $result.userType = userType;
     }
     if (storeRoles != null) {
-      _result.storeRoles.addAll(storeRoles);
+      $result.storeRoles.addAll(storeRoles);
     }
     if (locationRoles != null) {
-      _result.locationRoles.addAll(locationRoles);
+      $result.locationRoles.addAll(locationRoles);
     }
-    return _result;
+    return $result;
   }
+  Session._() : super();
   factory Session.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory Session.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Session', createEmptyInstance: create)
+    ..e<Session_AccountStatus>(1, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: Session_AccountStatus.AccountNormal, valueOf: Session_AccountStatus.valueOf, enumValues: Session_AccountStatus.values)
+    ..aOS(2, _omitFieldNames ? '' : 'region')
+    ..aOS(3, _omitFieldNames ? '' : 'accessToken', protoName: 'accessToken')
+    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'accessExpired', protoName: 'accessExpired', subBuilder: $0.Timestamp.create)
+    ..aOS(5, _omitFieldNames ? '' : 'refreshToken', protoName: 'refreshToken')
+    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'refreshExpired', protoName: 'refreshExpired', subBuilder: $0.Timestamp.create)
+    ..a<$core.int>(7, _omitFieldNames ? '' : 'userType', $pb.PbFieldType.O3, protoName: 'userType')
+    ..m<$core.String, $core.int>(8, _omitFieldNames ? '' : 'storeRoles', protoName: 'storeRoles', entryClassName: 'Session.StoreRolesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
+    ..m<$core.String, $core.int>(9, _omitFieldNames ? '' : 'locationRoles', protoName: 'locationRoles', entryClassName: 'Session.LocationRolesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
+    ..hasRequiredFields = false
+  ;
+
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -89,8 +104,10 @@ class Session extends pb.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Session copyWith(void Function(Session) updates) => super.copyWith((message) => updates(message as Session)) as Session; // ignore: deprecated_member_use
+  Session copyWith(void Function(Session) updates) => super.copyWith((message) => updates(message as Session)) as Session;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static Session create() => Session._();
   Session createEmptyInstance() => create();
@@ -173,3 +190,6 @@ class Session extends pb.Object {
   $core.Map<$core.String, $core.int> get locationRoles => $_getMap(8);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

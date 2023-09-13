@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/apollo/apollo.dart' as apollo;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/testing/testing.dart' as testing;
 import '../chat.dart';
 
@@ -39,8 +39,8 @@ class EditorExample extends StatelessWidget {
 
     Widget singleVideo() {
       final words = [
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_VIDEO,
           value: 'video1',
           width: 1926,
           height: 1080,
@@ -62,8 +62,8 @@ class EditorExample extends StatelessWidget {
 
     Widget singleImage() {
       final words = [
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_IMAGE,
           value: 'img1',
           width: 4000,
           height: 6000,
@@ -86,53 +86,53 @@ class EditorExample extends StatelessWidget {
 
     Widget messageView() {
       final words = [
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_TEXT,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_TEXT,
           value: 'hi',
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_EMOJI,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_EMOJI,
           value: '😀',
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_TEXT,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_TEXT,
           value: 'Everyone',
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_VIDEO,
           value: 'video1',
           width: 1920,
           height: 1080,
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_TEXT,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_TEXT,
           value: 'hello',
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_TEXT,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_TEXT,
           value: ' world',
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_IMAGE,
           value: 'img1',
           width: 4000,
           height: 6000,
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_VIDEO,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_VIDEO,
           value: 'video1',
           width: 1920,
           height: 1080,
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_TEXT,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_TEXT,
           value: 'Regards,\nMy name',
         ),
       ];
 
       final words2 = [
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_IMAGE,
           value: 'img1',
           width: 4000,
           height: 6000,
@@ -140,12 +140,12 @@ class EditorExample extends StatelessWidget {
       ];
 
       final words3 = [
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_TEXT,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_TEXT,
           value: 'Regards,\nMy name',
         ),
-        pb.Word(
-          type: pb.Word_WordType.WORD_TYPE_IMAGE,
+        net.Word(
+          type: net.Word_WordType.WORD_TYPE_IMAGE,
           value: 'img1',
           width: 4000,
           height: 6000,

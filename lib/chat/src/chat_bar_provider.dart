@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
@@ -115,40 +115,40 @@ class ChatBarProvider with ChangeNotifier {
   }
 
   /// getTypeFromEmbed return pb.Word_WordType from embed key
-  pb.Word_WordType getTypeFromEmbed(String key) {
+  net.Word_WordType getTypeFromEmbed(String key) {
     switch (key) {
       case kImageKey:
-        return pb.Word_WordType.WORD_TYPE_IMAGE;
+        return net.Word_WordType.WORD_TYPE_IMAGE;
       case kVideoKey:
-        return pb.Word_WordType.WORD_TYPE_VIDEO;
+        return net.Word_WordType.WORD_TYPE_VIDEO;
       case kFileKey:
-        return pb.Word_WordType.WORD_TYPE_FILE;
+        return net.Word_WordType.WORD_TYPE_FILE;
       case kEmojiKey:
-        return pb.Word_WordType.WORD_TYPE_EMOJI;
+        return net.Word_WordType.WORD_TYPE_EMOJI;
       default:
-        return pb.Word_WordType.WORD_TYPE_UNSPECIFIED;
+        return net.Word_WordType.WORD_TYPE_UNSPECIFIED;
     }
   }
 
   /// toWords convert quillController.document to List<pb.Word>
-  List<pb.Word> toWords() {
-    final words = <pb.Word>[];
+  List<net.Word> toWords() {
+    final words = <net.Word>[];
     final operations = quillController.document.toDelta().toList();
     for (int i = 0; i < operations.length; i++) {
       final operation = operations[i];
       if (operation.data is String) {
         String text = (operation.data as String).trim();
         if (text.isEmpty || (i == text.length - 1 && text == '\n')) continue;
-        words.add(pb.Word(type: pb.Word_WordType.WORD_TYPE_TEXT, value: text));
+        words.add(net.Word(type: net.Word_WordType.WORD_TYPE_TEXT, value: text));
       } else if (operation.data is Map) {
         for (final entry in (operation.data as Map).entries) {
           final type = getTypeFromEmbed(entry.key);
           Size? size;
-          if (type == pb.Word_WordType.WORD_TYPE_IMAGE || type == pb.Word_WordType.WORD_TYPE_VIDEO) {
+          if (type == net.Word_WordType.WORD_TYPE_IMAGE || type == net.Word_WordType.WORD_TYPE_VIDEO) {
             size = mediaSizes[entry.value];
           }
           words.add(
-            pb.Word(
+            net.Word(
               type: type,
               value: entry.value,
               width: size?.width.round(),

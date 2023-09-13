@@ -8,11 +8,10 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/preferences/preferences.dart' as preferences;
-import 'package:libcli/command/command.dart' as command;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:intl/intl.dart';
 import 'package:beamer/beamer.dart';
 import '../apollo.dart';
 
@@ -428,7 +427,7 @@ class AppExampleState extends State<AppExample> {
           ElevatedButton(
               child: const Text('firewall block'),
               onPressed: () {
-                eventbus.broadcast(command.FirewallBlockEvent('BLOCK_SHORT'));
+                eventbus.broadcast(net.FirewallBlockEvent('BLOCK_SHORT'));
               }),
           ElevatedButton(
               child: const Text('no internet'),
@@ -436,7 +435,7 @@ class AppExampleState extends State<AppExample> {
                 try {
                   throw const SocketException('wifi off');
                 } catch (e) {
-                  var contract = command.InternetRequiredEvent(exception: e, url: 'http://mock');
+                  var contract = net.InternetRequiredEvent(exception: e, url: 'http://mock');
                   contract.isInternetConnected = () async {
                     return false;
                   };
@@ -446,7 +445,7 @@ class AppExampleState extends State<AppExample> {
           ElevatedButton(
               child: const Text('service not available'),
               onPressed: () async {
-                var contract = command.InternetRequiredEvent(url: 'http://mock');
+                var contract = net.InternetRequiredEvent(url: 'http://mock');
                 contract.isInternetConnected = () async {
                   return true;
                 };
@@ -458,7 +457,7 @@ class AppExampleState extends State<AppExample> {
           ElevatedButton(
               child: const Text('internet blocked'),
               onPressed: () async {
-                var contract = command.InternetRequiredEvent(url: 'http://mock');
+                var contract = net.InternetRequiredEvent(url: 'http://mock');
                 contract.isInternetConnected = () async {
                   return true;
                 };
@@ -470,17 +469,17 @@ class AppExampleState extends State<AppExample> {
           ElevatedButton(
               child: const Text('internal server error'),
               onPressed: () {
-                eventbus.broadcast(command.InternalServerErrorEvent());
+                eventbus.broadcast(net.InternalServerErrorEvent());
               }),
           ElevatedButton(
               child: const Text('server not ready'),
               onPressed: () {
-                eventbus.broadcast(command.ServerNotReadyEvent());
+                eventbus.broadcast(net.ServerNotReadyEvent());
               }),
           ElevatedButton(
               child: const Text('bad request'),
               onPressed: () {
-                eventbus.broadcast(command.BadRequestEvent());
+                eventbus.broadcast(net.BadRequestEvent());
               }),
           ElevatedButton(
               child: const Text('client timeout'),
@@ -488,17 +487,16 @@ class AppExampleState extends State<AppExample> {
                 try {
                   throw TimeoutException('client timeout');
                 } catch (e) {
-                  await eventbus
-                      .broadcast(command.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
+                  await eventbus.broadcast(net.RequestTimeoutEvent(isServer: false, exception: e, url: 'http://mock'));
                 }
               }),
           ElevatedButton(
               child: const Text('deadline exceeded'),
               onPressed: () async {
-                await eventbus.broadcast(command.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
+                await eventbus.broadcast(net.RequestTimeoutEvent(isServer: true, url: 'http://mock'));
               }),
           ElevatedButton(
-              child: const Text('slow network'), onPressed: () => eventbus.broadcast(command.SlowNetworkEvent())),
+              child: const Text('slow network'), onPressed: () => eventbus.broadcast(net.SlowNetworkEvent())),
           ElevatedButton(child: const Text('disk error'), onPressed: () => throw preferences.DiskErrorException()),
         ],
       );

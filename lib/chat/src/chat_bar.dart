@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
@@ -23,7 +23,7 @@ class ChatBar extends StatelessWidget {
   final ChatBarProvider chatBarProvider;
 
   /// onSend called when user click send button, return true if send success
-  final Future<bool> Function(BuildContext context, List<pb.Word> words, Map<String, XFile>) onSend;
+  final Future<bool> Function(BuildContext context, List<net.Word> words, Map<String, XFile>) onSend;
 
   /// color is the color of the icon and border
   final Color? color;

@@ -1,46 +1,71 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: cmd-code-login.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
+
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class CmdCodeLogin extends pb.Object {
+///  Do login user using email and code
+///
+/// 	Email is user login email
+/// 	Code is user input code
+/// 	IssueRefreshToken is true mean user need refresh token
+///
+/// 	return SessionResponse if login successfully
+/// 	error "INVALID_CODE" if Code is not 6 digit number
+/// 	error "INVALID_EMAIL" if Email is empty
+/// 	error "CODE_MISMATCH" if code is not in verify record
+/// 	error "USER_NOT_EXIST"
+/// 	error "USER_LEAVE"
+/// 	error "USER_CANCELED"
+/// 	error "ACCOUNT_NOT_EXIST"
+/// 	error "ACCOUNT_SUSPEND"
+/// 	error "ACCOUNT_CANCELED"
+/// 	error "PIN_ENTER_BLOCK_SHORT"
+/// 	error "PIN_ENTER_BLOCK_LONG"
+/// 	error "PIN_ENTER_BLOCK"
+/// 	error "PIN_NOT_EXISTS"
+class CmdCodeLogin extends net.Object {
   $core.int mapIdXXX() => 1002;
   get namespace => 'auth';
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CmdCodeLogin', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
-    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'code')
-    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'issueRefreshToken', protoName: 'issueRefreshToken')
-    ..hasRequiredFields = false
-  ;
-
-  CmdCodeLogin._() : super();
   factory CmdCodeLogin({
     $core.String? email,
     $core.String? code,
     $core.bool? issueRefreshToken,
   }) {
-    final _result = create();
+    final $result = create();
     if (email != null) {
-      _result.email = email;
+      $result.email = email;
     }
     if (code != null) {
-      _result.code = code;
+      $result.code = code;
     }
     if (issueRefreshToken != null) {
-      _result.issueRefreshToken = issueRefreshToken;
+      $result.issueRefreshToken = issueRefreshToken;
     }
-    return _result;
+    return $result;
   }
+  CmdCodeLogin._() : super();
   factory CmdCodeLogin.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory CmdCodeLogin.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdCodeLogin', createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'email')
+    ..aOS(2, _omitFieldNames ? '' : 'code')
+    ..aOB(3, _omitFieldNames ? '' : 'issueRefreshToken', protoName: 'issueRefreshToken')
+    ..hasRequiredFields = false
+  ;
+
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -50,8 +75,10 @@ class CmdCodeLogin extends pb.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdCodeLogin copyWith(void Function(CmdCodeLogin) updates) => super.copyWith((message) => updates(message as CmdCodeLogin)) as CmdCodeLogin; // ignore: deprecated_member_use
+  CmdCodeLogin copyWith(void Function(CmdCodeLogin) updates) => super.copyWith((message) => updates(message as CmdCodeLogin)) as CmdCodeLogin;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static CmdCodeLogin create() => CmdCodeLogin._();
   CmdCodeLogin createEmptyInstance() => create();
@@ -88,3 +115,6 @@ class CmdCodeLogin extends pb.Object {
   void clearIssueRefreshToken() => clearField(3);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

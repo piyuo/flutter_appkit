@@ -1,38 +1,45 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: cmd_signup_account.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
+
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class CmdSignupAccount extends pb.Object {
+///  Do create account using verified encrypted token
+///
+///   timezone {string} user current timezone
+///   timezoneOffset {int32} user current timezone offset
+/// 	verifiedToken {string} code verification token
+/// 	email {string} account email
+/// 	firstName {string} account owner First name
+/// 	lastName {string} account owner Last name
+/// 	storeName {string} account store name
+/// 	subDomain {string} account selected sub domain name and it is unique
+/// 	placeLat {double} is user enter place latitude
+/// 	placeLng {double} is user enter place longitude
+/// 	placeTags {[]string} is user enter place tags
+/// 	placeCountry {string} is user enter place country
+/// 	placeAddress {string} is user enter place address
+/// 	placeAddress2 {string} is user enter place second line
+///
+/// 	return {Session} if success
+/// 	return TOKEN_INVALID {PbError} if encrypted token is invalid
+/// 	return STORE_EMPTY {PbError} if store name is empty
+/// 	return SUBDOMAIN_TAKEN {PbError} if sub domain is taken
+/// 	return EMAIL_TAKEN {PbError} if email is taken
+class CmdSignupAccount extends net.Object {
   $core.int mapIdXXX() => 1014;
   get namespace => 'auth';
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CmdSignupAccount', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timezone')
-    ..a<$core.int>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timezoneOffset', $pb.PbFieldType.O3, protoName: 'timezoneOffset')
-    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'verifiedToken', protoName: 'verifiedToken')
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'firstName', protoName: 'firstName')
-    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'lastName', protoName: 'lastName')
-    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'storeName', protoName: 'storeName')
-    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'subDomain', protoName: 'subDomain')
-    ..a<$core.double>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'placeLat', $pb.PbFieldType.OD, protoName: 'placeLat')
-    ..a<$core.double>(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'placeLng', $pb.PbFieldType.OD, protoName: 'placeLng')
-    ..pPS(11, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'placeTags', protoName: 'placeTags')
-    ..aOS(12, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'placeCountry', protoName: 'placeCountry')
-    ..aOS(13, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'placeAddress', protoName: 'placeAddress')
-    ..aOS(14, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'placeAddress2', protoName: 'placeAddress2')
-    ..hasRequiredFields = false
-  ;
-
-  CmdSignupAccount._() : super();
   factory CmdSignupAccount({
     $core.String? timezone,
     $core.int? timezoneOffset,
@@ -49,53 +56,73 @@ class CmdSignupAccount extends pb.Object {
     $core.String? placeAddress,
     $core.String? placeAddress2,
   }) {
-    final _result = create();
+    final $result = create();
     if (timezone != null) {
-      _result.timezone = timezone;
+      $result.timezone = timezone;
     }
     if (timezoneOffset != null) {
-      _result.timezoneOffset = timezoneOffset;
+      $result.timezoneOffset = timezoneOffset;
     }
     if (verifiedToken != null) {
-      _result.verifiedToken = verifiedToken;
+      $result.verifiedToken = verifiedToken;
     }
     if (email != null) {
-      _result.email = email;
+      $result.email = email;
     }
     if (firstName != null) {
-      _result.firstName = firstName;
+      $result.firstName = firstName;
     }
     if (lastName != null) {
-      _result.lastName = lastName;
+      $result.lastName = lastName;
     }
     if (storeName != null) {
-      _result.storeName = storeName;
+      $result.storeName = storeName;
     }
     if (subDomain != null) {
-      _result.subDomain = subDomain;
+      $result.subDomain = subDomain;
     }
     if (placeLat != null) {
-      _result.placeLat = placeLat;
+      $result.placeLat = placeLat;
     }
     if (placeLng != null) {
-      _result.placeLng = placeLng;
+      $result.placeLng = placeLng;
     }
     if (placeTags != null) {
-      _result.placeTags.addAll(placeTags);
+      $result.placeTags.addAll(placeTags);
     }
     if (placeCountry != null) {
-      _result.placeCountry = placeCountry;
+      $result.placeCountry = placeCountry;
     }
     if (placeAddress != null) {
-      _result.placeAddress = placeAddress;
+      $result.placeAddress = placeAddress;
     }
     if (placeAddress2 != null) {
-      _result.placeAddress2 = placeAddress2;
+      $result.placeAddress2 = placeAddress2;
     }
-    return _result;
+    return $result;
   }
+  CmdSignupAccount._() : super();
   factory CmdSignupAccount.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory CmdSignupAccount.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdSignupAccount', createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'timezone')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'timezoneOffset', $pb.PbFieldType.O3, protoName: 'timezoneOffset')
+    ..aOS(3, _omitFieldNames ? '' : 'verifiedToken', protoName: 'verifiedToken')
+    ..aOS(4, _omitFieldNames ? '' : 'email')
+    ..aOS(5, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
+    ..aOS(6, _omitFieldNames ? '' : 'lastName', protoName: 'lastName')
+    ..aOS(7, _omitFieldNames ? '' : 'storeName', protoName: 'storeName')
+    ..aOS(8, _omitFieldNames ? '' : 'subDomain', protoName: 'subDomain')
+    ..a<$core.double>(9, _omitFieldNames ? '' : 'placeLat', $pb.PbFieldType.OD, protoName: 'placeLat')
+    ..a<$core.double>(10, _omitFieldNames ? '' : 'placeLng', $pb.PbFieldType.OD, protoName: 'placeLng')
+    ..pPS(11, _omitFieldNames ? '' : 'placeTags', protoName: 'placeTags')
+    ..aOS(12, _omitFieldNames ? '' : 'placeCountry', protoName: 'placeCountry')
+    ..aOS(13, _omitFieldNames ? '' : 'placeAddress', protoName: 'placeAddress')
+    ..aOS(14, _omitFieldNames ? '' : 'placeAddress2', protoName: 'placeAddress2')
+    ..hasRequiredFields = false
+  ;
+
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -105,8 +132,10 @@ class CmdSignupAccount extends pb.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdSignupAccount copyWith(void Function(CmdSignupAccount) updates) => super.copyWith((message) => updates(message as CmdSignupAccount)) as CmdSignupAccount; // ignore: deprecated_member_use
+  CmdSignupAccount copyWith(void Function(CmdSignupAccount) updates) => super.copyWith((message) => updates(message as CmdSignupAccount)) as CmdSignupAccount;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static CmdSignupAccount create() => CmdSignupAccount._();
   CmdSignupAccount createEmptyInstance() => create();
@@ -236,3 +265,6 @@ class CmdSignupAccount extends pb.Object {
   void clearPlaceAddress2() => clearField(14);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

@@ -1,36 +1,48 @@
-///
+//
 //  Generated code. Do not modify.
 //  source: cmd-resend-code.proto
 //
 // @dart = 2.12
-// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
+
+// ignore_for_file: depend_on_referenced_packages,no_leading_underscores_for_local_identifiers, annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:core' as $core;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class CmdResendCode extends pb.Object {
+///  Do re-send verification code to email
+///
+/// 	Email {string} email address to resend the code
+///
+/// 	return {PbOK} if success
+/// 	return EMAIL_INVALID {PbError} if email is invalid
+/// 	return NO_CODE {PbError} if code is never create for this email
+class CmdResendCode extends net.Object {
   $core.int mapIdXXX() => 1005;
   get namespace => 'auth';
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'CmdResendCode', createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
-    ..hasRequiredFields = false
-  ;
-
-  CmdResendCode._() : super();
   factory CmdResendCode({
     $core.String? email,
   }) {
-    final _result = create();
+    final $result = create();
     if (email != null) {
-      _result.email = email;
+      $result.email = email;
     }
-    return _result;
+    return $result;
   }
+  CmdResendCode._() : super();
   factory CmdResendCode.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory CmdResendCode.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdResendCode', createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'email')
+    ..hasRequiredFields = false
+  ;
+
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
@@ -40,8 +52,10 @@ class CmdResendCode extends pb.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdResendCode copyWith(void Function(CmdResendCode) updates) => super.copyWith((message) => updates(message as CmdResendCode)) as CmdResendCode; // ignore: deprecated_member_use
+  CmdResendCode copyWith(void Function(CmdResendCode) updates) => super.copyWith((message) => updates(message as CmdResendCode)) as CmdResendCode;
+
   $pb.BuilderInfo get info_ => _i;
+
   @$core.pragma('dart2js:noInline')
   static CmdResendCode create() => CmdResendCode._();
   CmdResendCode createEmptyInstance() => create();
@@ -60,3 +74,6 @@ class CmdResendCode extends pb.Object {
   void clearEmail() => clearField(1);
 }
 
+
+const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
