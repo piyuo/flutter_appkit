@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'refresh_more.dart';
 import 'pull_refresh.dart';
 import 'load_more_animate_view.dart';
 
 /// DataviewProvider is a provider for [Dataview]
-class DataviewProvider<T extends pb.Object> with ChangeNotifier {
+class DataviewProvider<T extends net.Object> with ChangeNotifier {
   /// animateViewProvider for animation
   delta.AnimateViewProvider animateViewProvider = delta.AnimateViewProvider();
 
@@ -91,7 +91,7 @@ class DataviewProvider<T extends pb.Object> with ChangeNotifier {
 }
 
 /// Dataview provide a view to show data
-class Dataview<T extends pb.Object> extends StatelessWidget {
+class Dataview<T extends net.Object> extends StatelessWidget {
   const Dataview({
     required this.widgetBuilder,
     required this.viewProvider,

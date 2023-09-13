@@ -6,7 +6,7 @@ import 'timestamp.dart';
 import '../common/common.dart' as common;
 
 void main() {
-  group('[pb.object]', () {
+  group('[net.object]', () {
     test('should return JSON', () {
       final obj = sample.Person(name: 'p1');
       expect(obj.jsonString, isNotEmpty);

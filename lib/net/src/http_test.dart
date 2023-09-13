@@ -23,7 +23,7 @@ void main() {
     });
   });
 
-  group('[command_http]', () {
+  group('[net.http]', () {
     test('should return object', () async {
       var req = _fakeOkRequest(statusOkMock());
       var obj = await doPost(req, () => common.OK());

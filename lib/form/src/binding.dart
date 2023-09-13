@@ -1,5 +1,5 @@
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/google/google.dart' as google;
 
 /// toFormValue convert value to use on form
@@ -21,7 +21,7 @@ dynamic toObjectValue(dynamic value) {
 }
 
 /// objectToForm convert object to form
-void objectToForm(pb.Object obj, FormGroup form) {
+void objectToForm(net.Object obj, FormGroup form) {
   for (final key in form.controls.keys) {
     if (obj.isFieldExists(key)) {
       form.control(key).value = toFormValue(obj[key]);
@@ -30,7 +30,7 @@ void objectToForm(pb.Object obj, FormGroup form) {
 }
 
 /// formToObject convert form to object
-void formToObject(FormGroup form, pb.Object obj) {
+void formToObject(FormGroup form, net.Object obj) {
   for (final key in form.controls.keys) {
     if (obj.isFieldExists(key)) {
       obj[key] = toObjectValue(form.control(key).value);

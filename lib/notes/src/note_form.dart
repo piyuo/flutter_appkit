@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
 import 'note_form_controller.dart';
 
 /// NoteForm is form to edit item with [NoteFormController]
-class NoteForm<T extends pb.Object> extends StatelessWidget {
+class NoteForm<T extends net.Object> extends StatelessWidget {
   const NoteForm({
     required this.formController,
     Key? key,

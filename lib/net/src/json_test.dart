@@ -3,7 +3,7 @@ import '../common/common.dart' as common;
 import 'json.dart';
 
 void main() {
-  group('[object_json]', () {
+  group('[net.json]', () {
     test('should use standard format', () async {
       // utc
       var date = DateTime(2021, 1, 2, 23, 30);

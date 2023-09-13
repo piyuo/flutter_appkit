@@ -3,7 +3,7 @@ import '../common/common.dart' as common;
 import 'util.dart';
 
 void main() {
-  group('[util]', () {
+  group('[net.util]', () {
     test('should able test PbOK', () {
       expect(isOK(common.Error()), false);
       expect(isOK(common.OK()), true);

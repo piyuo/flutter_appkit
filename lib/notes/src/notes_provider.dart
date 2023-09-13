@@ -5,13 +5,13 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/dataview/dataview.dart' as dataview;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'selectable.dart';
 import 'types.dart';
 import 'note_form_controller.dart';
 
 /// NotesProvider provide notes for notes view
-class NotesProvider<T extends pb.Object> with ChangeNotifier {
+class NotesProvider<T extends net.Object> with ChangeNotifier {
   NotesProvider({
     required this.animateViewProvider,
     required this.formController,
@@ -151,7 +151,7 @@ class NotesProvider<T extends pb.Object> with ChangeNotifier {
   final ScrollController gridAnimatedViewScrollController = ScrollController();
 
   /// of get [NotesProvider] from context
-  static NotesProvider<T> of<T extends pb.Object>(BuildContext context) {
+  static NotesProvider<T> of<T extends net.Object>(BuildContext context) {
     return Provider.of<NotesProvider<T>>(context, listen: false);
   }
 

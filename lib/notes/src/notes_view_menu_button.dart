@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'notes_provider.dart';
 import 'note_form_controller.dart';
 
 /// NotesViewMenuButton is menu button for notes view
-class NotesViewMenuButton<T extends pb.Object> extends StatelessWidget {
+class NotesViewMenuButton<T extends net.Object> extends StatelessWidget {
   const NotesViewMenuButton({
     required this.viewProvider,
     required this.formController,

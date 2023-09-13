@@ -7,7 +7,7 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/testing/testing.dart' as testing;
 
 void main() {
-  group('[pb.timestamp]', () {
+  group('[net.timestamp]', () {
     test('should get local date', () async {
       var date = DateTime(2021, 1, 2, 23, 30);
       google.Timestamp t = date.toUtc().timestamp;

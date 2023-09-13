@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/tools/tools.dart' as tools;
 import 'package:libcli/i18n/i18n.dart' as i18n;
@@ -9,7 +9,7 @@ import 'grid_list_view.dart';
 import 'checkable_header.dart';
 
 /// DataView is a widget to display data in list or grid view, add tools and paginator
-class DataView<T extends pb.Object> extends StatelessWidget {
+class DataView<T extends net.Object> extends StatelessWidget {
   const DataView({
     required this.notesProvider,
     required this.contentBuilder,

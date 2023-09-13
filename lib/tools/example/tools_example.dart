@@ -6,7 +6,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/data/data.dart' as data;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
 import '../tools.dart';
 
@@ -248,7 +248,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                       return (
                                         [
                                           sample.Person(
-                                            m: pb.Model(
+                                            m: net.Model(
                                                 i: 'r${sampleIndex++}',
                                                 t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
                                           ),
@@ -256,7 +256,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                         List.generate(
                                           10,
                                           (index) => sample.Person(
-                                              m: pb.Model(
+                                              m: net.Model(
                                                   i: 'f${sampleIndex++}',
                                                   t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                                         ),
@@ -265,17 +265,17 @@ class _ToolsExampleState extends State<ToolsExample> {
                                       return (
                                         [
                                           sample.Person(
-                                              m: pb.Model(
+                                              m: net.Model(
                                                   d: true,
                                                   i: 'r1',
                                                   t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                                           sample.Person(
-                                              m: pb.Model(
+                                              m: net.Model(
                                                   d: true,
                                                   i: 'f11',
                                                   t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                                           sample.Person(
-                                              m: pb.Model(
+                                              m: net.Model(
                                                   d: true,
                                                   i: 'f5',
                                                   t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
@@ -286,7 +286,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                       return (
                                         [
                                           sample.Person(
-                                            m: pb.Model(
+                                            m: net.Model(
                                                 i: 'r${sampleIndex++}',
                                                 t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp),
                                           ),
@@ -297,7 +297,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                       final list = List.generate(
                                         sync.rows,
                                         (index) => sample.Person(
-                                            m: pb.Model(
+                                            m: net.Model(
                                                 i: 'm${sampleIndex++}',
                                                 t: DateTime.now().add(Duration(seconds: sampleIndex)).timestamp)),
                                       );

@@ -20,7 +20,7 @@ void main() {
     lastEvent = null;
   });
 
-  group('[command_service]', () {
+  group('[net.service]', () {
     test('should send command and receive response', () async {
       var client = MockClient((request) async {
         sample.StringResponse sr = sample.StringResponse();

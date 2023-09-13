@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 
-class NotesBeamPage<T extends pb.Object> extends BeamPage {
+class NotesBeamPage<T extends net.Object> extends BeamPage {
   NotesBeamPage({
     required String id,
     required String title,
@@ -24,4 +24,3 @@ class NotesBeamPage<T extends pb.Object> extends BeamPage {
           },
         );
 }
- 

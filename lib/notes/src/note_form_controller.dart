@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:libcli/pb/pb.dart' as pb;
+import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/dataview/dataview.dart' as dataview;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
@@ -15,7 +15,7 @@ const creatingID = '_';
 enum NotesFormState { loading, loaded, formEmpty, formNotExists }
 
 /// NoteFormController load single item and provide a way to save/delete/archive it
-class NoteFormController<T extends pb.Object> with ChangeNotifier {
+class NoteFormController<T extends net.Object> with ChangeNotifier {
   NoteFormController({
     required this.formGroup,
     required this.formBuilder,
@@ -74,7 +74,7 @@ class NoteFormController<T extends pb.Object> with ChangeNotifier {
   //bool get _isDirty => formGroup.valid && formGroup.dirty;
 
   /// of get [NoteFormController] from context
-  static NoteFormController<T> of<T extends pb.Object>(BuildContext context) {
+  static NoteFormController<T> of<T extends net.Object>(BuildContext context) {
     return Provider.of<NoteFormController<T>>(context, listen: false);
   }
 

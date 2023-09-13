@@ -5,7 +5,7 @@ import 'http_proto_file_provider.dart';
 import '../common/common.dart' as common;
 
 void main() {
-  group('[command.http_proto_file_provider]', () {
+  group('[net.http_proto_file_provider]', () {
     test('should return OK', () async {
       final httpProtoFileProvider = HttpProtoFileProvider();
       httpProtoFileProvider.mockDownloader = (String url) async => common.OK();
