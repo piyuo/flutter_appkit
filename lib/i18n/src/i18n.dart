@@ -53,23 +53,25 @@ Future<void> setPreferLocale(Locale? newLocale) async {
 /// countryCode is current locale country code
 String? get countryCode => locale.countryCode;
 
-/// lookupLanguage return display language of locale
-String lookupLanguage(Locale locale) => lookupLibLocalizations(locale).language;
-
-/// isCurrentLocale return true if locale is current locale
-bool isCurrentLocale(Locale supportedLocale) {
-  // supportedLocale often come from supportedLocales and it may not same as locale
-  return lookupLibLocalizations(locale) == lookupLibLocalizations(supportedLocale);
+/// getDisplayLanguage return display language of locale
+String getDisplayLanguage(Locale locale) {
+  switch (locale.toString()) {
+    case 'zh':
+      return '简体中文';
+    case 'zh_TW':
+      return '繁體中文';
+    default:
+      return 'English';
+  }
 }
 
 /// localizationsDelegates return i18n package localizations delegates
 Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
   _I18nDelegate(),
-  ...LibLocalizations.localizationsDelegates,
-//  LibLocalizations.delegate,
-//  GlobalMaterialLocalizations.delegate,
-//  GlobalCupertinoLocalizations.delegate,
-//  GlobalWidgetsLocalizations.delegate,
+  LibLocalizations.delegate,
+  GlobalMaterialLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate,
 ];
 
 /// _I18nDelegate used to get localized change events
