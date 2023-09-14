@@ -55,7 +55,7 @@ String? get countryCode => locale.countryCode;
 
 /// getDisplayLanguage return display language of locale
 String getDisplayLanguage(Locale locale) {
-  switch (countryCode) {
+  switch (locale.toString()) {
     case 'zh':
       return '简体中文';
     case 'zh_TW':

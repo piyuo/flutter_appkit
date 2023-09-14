@@ -1059,12 +1059,6 @@ abstract class LibLocalizations {
   /// In en, this message translates to:
   /// **'Fail to locate your address'**
   String get placeErrorLocateYourAddress;
-
-  /// No description provided for @language.
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get language;
 }
 
 class _LibLocalizationsDelegate extends LocalizationsDelegate<LibLocalizations> {
