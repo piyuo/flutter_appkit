@@ -162,5 +162,4 @@
     "placeMyLocation": "我的位址",
     "placeIsAddressCorrect": "你的地址有正确的显示在地图中吗?",
     "placeErrorLocateYourAddress": "无法取得你的地址，请在 App setting 中给我们存取位置的权限",
-    "language":"简体中文"
 }
