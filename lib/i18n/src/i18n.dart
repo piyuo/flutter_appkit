@@ -57,10 +57,10 @@ String? get countryCode => locale.countryCode;
 String lookupLanguage(Locale locale) => lookupLibLocalizations(locale).language;
 
 /// isCurrentLocale return true if locale is current locale
-bool isCurrentLocale(Locale supportedLocale) {
-  // supportedLocale often come from supportedLocales and it may not same as locale
-  return lookupLibLocalizations(locale) == lookupLibLocalizations(supportedLocale);
-}
+//bool isCurrentLocale(Locale supportedLocale) {
+// supportedLocale often come from supportedLocales and it may not same as locale
+//return lookupLibLocalizations(locale) == lookupLibLocalizations(supportedLocale);
+//}
 
 /// localizationsDelegates return i18n package localizations delegates
 Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = [
