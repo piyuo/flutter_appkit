@@ -486,4 +486,7 @@ class LibLocalizationsEn extends LibLocalizations {
 
   @override
   String get placeErrorLocateYourAddress => 'Fail to locate your address';
+
+  @override
+  String get language => 'English';
 }

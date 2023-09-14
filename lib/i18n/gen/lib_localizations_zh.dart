@@ -486,6 +486,9 @@ class LibLocalizationsZh extends LibLocalizations {
 
   @override
   String get placeErrorLocateYourAddress => '无法取得你的地址，请在 App setting 中给我们存取位置的权限';
+
+  @override
+  String get language => '简体中文';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -974,4 +977,7 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
 
   @override
   String get placeErrorLocateYourAddress => '無法取得你的地址，請在 App setting 中給我們存取位置的權限';
+
+  @override
+  String get language => '繁體中文';
 }

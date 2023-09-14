@@ -161,5 +161,6 @@
     "placeConfirmAddress": "Confirm address",
     "placeMyLocation": "My Location",
     "placeIsAddressCorrect": "is your address on map correct?",
-    "placeErrorLocateYourAddress": "Fail to locate your address"
+    "placeErrorLocateYourAddress": "Fail to locate your address",
+    "language":"English"
 }
