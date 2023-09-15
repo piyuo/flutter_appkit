@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd_signup.proto
+//  source: login_code_action.proto
 //
 // @dart = 2.12
 
@@ -24,7 +24,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// 	return BLOCK_SHORT {PbError} if email is blocked by short period
 /// 	return BLOCK_LONG {PbError} if email is blocked by long period
 class CmdSignup extends net.Object {
-  $core.int mapIdXXX() => 1013;
+  $core.int mapIdXXX() => 1018;
   get namespace => 'auth';
 
   factory CmdSignup({

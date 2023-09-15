@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd-facebook-login.proto
+//  source: access.proto
 //
 // @dart = 2.12
 
@@ -10,5 +10,5 @@
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
-export 'cmd-facebook-login.pb.dart';
+export 'access.pb.dart';
 

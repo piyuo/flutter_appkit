@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd-token-login.proto
+//  source: verify_email_action.proto
 //
 // @dart = 2.12
 
@@ -13,15 +13,15 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use cmdTokenLoginDescriptor instead')
-const CmdTokenLogin$json = {
-  '1': 'CmdTokenLogin',
+@$core.Deprecated('Use verifyEmailActionDescriptor instead')
+const VerifyEmailAction$json = {
+  '1': 'VerifyEmailAction',
   '2': [
-    {'1': 'refreshToken', '3': 1, '4': 1, '5': 9, '10': 'refreshToken'},
+    {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
   ],
 };
 
-/// Descriptor for `CmdTokenLogin`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List cmdTokenLoginDescriptor = $convert.base64Decode(
-    'Cg1DbWRUb2tlbkxvZ2luEiIKDHJlZnJlc2hUb2tlbhgBIAEoCVIMcmVmcmVzaFRva2Vu');
+/// Descriptor for `VerifyEmailAction`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List verifyEmailActionDescriptor = $convert.base64Decode(
+    'ChFWZXJpZnlFbWFpbEFjdGlvbhIUCgVlbWFpbBgBIAEoCVIFZW1haWw=');
 

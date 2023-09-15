@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd_signup.proto
+//  source: login_code_action.proto
 //
 // @dart = 2.12
 

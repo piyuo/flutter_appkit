@@ -37,7 +37,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// 	return SUBDOMAIN_TAKEN {PbError} if sub domain is taken
 /// 	return EMAIL_TAKEN {PbError} if email is taken
 class CmdSignupAccount extends net.Object {
-  $core.int mapIdXXX() => 1014;
+  $core.int mapIdXXX() => 1022;
   get namespace => 'auth';
 
   factory CmdSignupAccount({

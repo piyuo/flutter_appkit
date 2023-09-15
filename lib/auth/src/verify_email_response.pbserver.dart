@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd-code-login.proto
+//  source: verify_email_response.proto
 //
 // @dart = 2.12
 
@@ -10,5 +10,5 @@
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
-export 'cmd-code-login.pb.dart';
+export 'verify_email_response.pb.dart';
 

@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd-token-login.proto
+//  source: login-token-action.proto
 //
 // @dart = 2.12
 
@@ -28,7 +28,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// 	error "USER_LEAVE"
 /// 	error "USER_CANCELED"
 class CmdTokenLogin extends net.Object {
-  $core.int mapIdXXX() => 1010;
+  $core.int mapIdXXX() => 1017;
   get namespace => 'auth';
 
   factory CmdTokenLogin({

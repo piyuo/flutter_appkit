@@ -27,7 +27,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// 	return BLOCK_SHORT {PbError} if email is blocked by short period
 /// 	return BLOCK_LONG {PbError} if email is blocked by long period
 class CmdSignupVerify extends net.Object {
-  $core.int mapIdXXX() => 1015;
+  $core.int mapIdXXX() => 1023;
   get namespace => 'auth';
 
   factory CmdSignupVerify({

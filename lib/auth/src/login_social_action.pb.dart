@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd-code-login.proto
+//  source: login_social_action.proto
 //
 // @dart = 2.12
 
@@ -35,7 +35,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// 	error "PIN_ENTER_BLOCK"
 /// 	error "PIN_NOT_EXISTS"
 class CmdCodeLogin extends net.Object {
-  $core.int mapIdXXX() => 1002;
+  $core.int mapIdXXX() => 1019;
   get namespace => 'auth';
 
   factory CmdCodeLogin({
