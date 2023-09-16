@@ -1,12 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:provider/provider.dart';
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/auth/auth.dart' as auth;
 import 'package:beamer/beamer.dart';
 import 'package:universal_html/html.dart' as html;
 import 'error.dart';
+import 'language_provider.dart';
+import 'session_provider.dart';
 
 /// _serviceEmail is service email, alert dialog will guide user to send email
 String _serviceEmail = '';
@@ -27,6 +31,7 @@ typedef Routes = Map<Pattern, dynamic Function(BuildContext, BeamState, Object? 
 /// ```
 Future<void> start({
   required Routes routes,
+  String authServiceUrl = '', //https://auth-us.piyuo.com/?q'
   Widget Function(Widget)? appBuilder,
   String initialRoute = '/',
   Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates = const <LocalizationsDelegate<dynamic>>[],
@@ -84,7 +89,40 @@ Future<void> start({
   return watch(
     () => runApp(
       LifecycleWatcher(
-        child: appBuilder != null ? appBuilder(router) : router,
+        child: MultiProvider(
+          providers: [
+            Provider<auth.AuthService>(
+              create: (context) => auth.AuthService(authServiceUrl),
+            ),
+            ChangeNotifierProvider<LanguageProvider>(
+              create: (context) => LanguageProvider(),
+            ),
+            ChangeNotifierProvider<SessionProvider>(
+              create: (_) => SessionProvider(loader: (Token? refreshToken) async {
+                if (refreshToken != null) {
+                  /*   var resp = await petapiService.send(
+        auth.CmdSignupVerify(), // refresh ticket
+      );
+      if (resp is auth.CmdSignupVerify) {
+        return base.Session(
+          userId: 'user1',
+          accessToken: base.Token(
+            value: 'fakeAccessKey2',
+            expired: DateTime.now().add(const Duration(seconds: 30)),
+          ),
+          refreshToken: refreshToken,
+        );
+      }*/
+                }
+                return null;
+              }),
+            ),
+          ],
+          child: Consumer2<LanguageProvider, SessionProvider>(
+            builder: (context, languageProvider, sessionProvider, _) =>
+                appBuilder != null ? appBuilder(router) : router,
+          ),
+        ),
       ),
     ),
   );

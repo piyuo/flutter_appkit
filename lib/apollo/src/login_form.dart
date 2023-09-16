@@ -5,8 +5,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:text_divider/text_divider.dart';
 import 'package:libcli/form/form.dart' as form;
+import 'package:libcli/delta/delta.dart' as delta;
 import 'login_form_provider.dart';
-import 'code_screen.dart';
+import 'login_verify_email.dart';
+import 'session_provider.dart';
 
 Map<LoginType, ButtonType> _allSocialButton(BuildContext context) => {
       LoginType.apple:
@@ -20,12 +22,12 @@ Map<LoginType, ButtonType> _allSocialButton(BuildContext context) => {
 /// LoginForm is a login form
 class LoginForm extends StatelessWidget {
   const LoginForm({
-    required this.onLoginSucceeded,
-    Key? key,
-  }) : super(key: key);
+    required this.onLogin,
+    super.key,
+  });
 
-  /// onLoginSucceeded is called when login succeeded
-  final VoidCallback onLoginSucceeded;
+  /// onLogin is called when login succeeded
+  final Function(Session session) onLogin;
 
   List<LoginType> get _buttons {
     if (UniversalPlatform.isAndroid) {
@@ -39,17 +41,18 @@ class LoginForm extends StatelessWidget {
     final allButtons = _allSocialButton(context);
 
     return ChangeNotifierProvider<LoginFormProvider>(
-        create: (context) => LoginFormProvider(onLoginSucceeded: onLoginSucceeded),
+        create: (context) => LoginFormProvider(),
         child: Consumer<LoginFormProvider>(builder: (context, loginFormProvider, child) {
           Widget createSignin(LoginType loginType, ButtonType buttonType, VoidCallback onPressed) => SignInButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: 12,
-              width: 260,
-              buttonSize: ButtonSize.medium,
-              buttonType: buttonType,
-              onPressed: onPressed);
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: 12,
+                width: 260,
+                buttonSize: ButtonSize.medium,
+                buttonType: buttonType,
+                onPressed: onPressed,
+              );
 
           return ReactiveForm(
               formGroup: loginFormProvider.formGroup,
@@ -63,8 +66,12 @@ class LoginForm extends StatelessWidget {
                       final loginType = _buttons[index];
                       return Padding(
                         padding: const EdgeInsets.only(top: 20),
-                        child: createSignin(loginType, allButtons[loginType]!,
-                            () => loginFormProvider.onSocialLogin(context, loginType)),
+                        child: createSignin(loginType, allButtons[loginType]!, () async {
+                          final session = await loginFormProvider.socialLogin(context, loginType);
+                          if (session != null) {
+                            onLogin(session);
+                          }
+                        }),
                       );
                     },
                   ),
@@ -88,22 +95,31 @@ class LoginForm extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  createSignin(
-                      LoginType.email,
-                      ButtonType.mail,
-                      () => form.submit(
-                            showDone: false,
-                            formGroup: loginFormProvider.formGroup,
-                            callback: (_) async {
-                              final email = loginFormProvider.formGroup.control(emailField).value as String;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CodeScreen(email: email),
-                                  ));
-                              return false;
-                            },
-                          )),
+                  delta.Mounted(
+                      builder: (
+                    context,
+                    isMounted,
+                  ) =>
+                          createSignin(
+                              LoginType.email,
+                              ButtonType.mail,
+                              () => form.submit(
+                                    showDone: false,
+                                    formGroup: loginFormProvider.formGroup,
+                                    callback: (_) async {
+                                      final email = loginFormProvider.formGroup.control(emailField).value as String;
+                                      final ok = await loginFormProvider.emailLogin(context, email);
+                                      final mounted = isMounted();
+                                      if (ok && mounted) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => LoginVerifyEmail(email: email),
+                                            ));
+                                      }
+                                      return false;
+                                    },
+                                  ))),
                 ]),
               )));
         }));

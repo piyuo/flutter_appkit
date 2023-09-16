@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'dart:async';
 // ignore: depend_on_referenced_packages
 import 'package:universal_io/io.dart';
@@ -12,6 +14,7 @@ import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/auth/auth.dart' as auth;
 import 'package:beamer/beamer.dart';
 import '../apollo.dart';
 
@@ -21,54 +24,37 @@ main() async {
   await start(
     theme: testing.theme(),
     darkTheme: testing.darkTheme(),
-    appBuilder: (Widget child) {
-      return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<LanguageProvider>(
-            create: (context) => LanguageProvider(),
-          ),
-        ],
-        child: Consumer<LanguageProvider>(
-          builder: (context, languageProvider, _) => child,
-        ),
-      );
-    },
     routes: {
       '/': (context, state, data) => const BeamPage(
             key: ValueKey('home'),
             title: 'home',
-            child: AppExample(color: null),
+            child: Example(color: null),
           ),
       '/other/:id': (context, state, data) {
         final id = state.pathParameters['id']!;
         return BeamPage(
           key: ValueKey('other-$id'),
           title: 'other-$id',
-          child: const AppExample(color: Colors.red),
+          child: const Example(color: Colors.red),
         );
       },
       '/other': (context, state, data) => const BeamPage(
             key: ValueKey('other'),
             title: 'other',
-            child: AppExample(color: Colors.red),
+            child: Example(color: Colors.red),
           ),
     },
   );
 }
 
-class AppExample extends StatefulWidget {
-  const AppExample({
+class Example extends StatelessWidget {
+  const Example({
     required this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Color? color;
 
-  @override
-  State<StatefulWidget> createState() => AppExampleState();
-}
-
-class AppExampleState extends State<AppExample> {
   @override
   Widget build(BuildContext context) {
     navigationScaffold() {
@@ -507,18 +493,26 @@ class AppExampleState extends State<AppExample> {
         Container(
           color: Colors.grey.shade100,
           padding: const EdgeInsets.all(40),
-          child: LoginForm(onLoginSucceeded: () => debugPrint('login succeeded')),
+          child: LoginForm(onLogin: (session) => debugPrint('login succeeded')),
         ),
       ]);
     }
 
     return LoadingScreen(
       future: () async {
+        final authService = auth.AuthService.of(context);
         final languageProvider = LanguageProvider.of(context);
         await languageProvider.init();
+
+        authService.mockSender = (net.Object action, {net.Builder? builder}) async {
+          if (action is auth.VerifyEmailAction) {
+            return auth.VerifyEmailResponse()..result = auth.VerifyEmailResponse_Result.RESULT_OK;
+          }
+          throw Exception('$action is not supported');
+        };
       },
       builder: () => testing.ExampleScaffold(
-        builder: tryLanguageProvider,
+        builder: loginForm,
         buttons: [
           OutlinedButton(
             child: const Text('show alert use global context'),
@@ -541,7 +535,7 @@ class AppExampleState extends State<AppExample> {
           testing.ExampleButton('loadingScreen network error', builder: loadingScreenNetworkError),
           testing.ExampleButton('hypertext', builder: hypertext),
           testing.ExampleButton('SplitView', builder: trySplitView),
-          testing.ExampleButton('login form', builder: loginForm, useScaffold: false),
+          testing.ExampleButton('LoginForm', builder: loginForm, useScaffold: false),
         ],
       ),
     );

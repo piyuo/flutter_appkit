@@ -12,9 +12,9 @@ const codeField = 'code';
 
 enum VerifyStatus { wait, busy, ok }
 
-/// CodeScreenProvider is provider for code screen
-class CodeScreenProvider with ChangeNotifier {
-  CodeScreenProvider({
+/// LoginVerifyEmailProvider is provider for login code screen
+class LoginVerifyEmailProvider with ChangeNotifier {
+  LoginVerifyEmailProvider({
     required this.email,
   });
 

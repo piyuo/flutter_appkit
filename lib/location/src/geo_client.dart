@@ -8,7 +8,7 @@ class GeoClient {
   var sessionToken = '';
 
   /// use sys service to get suggestion
-  final sys.SysService sysService = sys.SysService('http://mock');
+  final sys.SysService sysService = sys.SysService('http://not-exist');
 
   /// autoComplete return suggestion base on input
   ///

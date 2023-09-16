@@ -5,26 +5,26 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 //import 'package:pinput/pin_put/pin_put.dart';
-import 'code_screen_provider.dart';
+import 'login_verify_email_provider.dart';
 import 'hypertext.dart';
 
-/// CodeScreen verify email by check code is correct
-class CodeScreen extends StatelessWidget {
-  const CodeScreen({required this.email, Key? key}) : super(key: key);
+/// LoginVerifyEmail verify email by check code is correct
+class LoginVerifyEmail extends StatelessWidget {
+  const LoginVerifyEmail({required this.email, Key? key}) : super(key: key);
 
   final String email;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CodeScreenProvider>(
-      create: (context) => CodeScreenProvider(email: email),
+    return ChangeNotifierProvider<LoginVerifyEmailProvider>(
+      create: (context) => LoginVerifyEmailProvider(email: email),
       child: Scaffold(
         appBar: AppBar(
           //backToRoot: true,
           centerTitle: true,
           title: const Text('Verify code'),
         ),
-        body: Consumer<CodeScreenProvider>(
+        body: Consumer<LoginVerifyEmailProvider>(
           builder: (context, model, _) {
             final defaultPinTheme = form.PinTheme(
               width: 45,

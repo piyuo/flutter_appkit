@@ -2,7 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
-import 'backend_branch.dart';
+import 'backend_branch.txt';
 
 void main() {
   preferences.initForTest({});

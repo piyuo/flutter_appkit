@@ -14,7 +14,7 @@ main() => apollo.start(
     );
 
 class ChartsExample extends StatelessWidget {
-  const ChartsExample({Key? key}) : super(key: key);
+  const ChartsExample({super.key});
 
   @override
   Widget build(BuildContext context) {
