@@ -30,11 +30,11 @@ class Access extends net.Object {
   factory Access({
     Access_State? state,
     Access_Region? region,
-    $core.String? id,
     $core.String? accessToken,
     $0.Timestamp? accessExpire,
     $core.String? refreshToken,
     $0.Timestamp? refreshExpired,
+    $core.Map<$core.String, $core.String>? args,
   }) {
     final $result = create();
     if (state != null) {
@@ -42,9 +42,6 @@ class Access extends net.Object {
     }
     if (region != null) {
       $result.region = region;
-    }
-    if (id != null) {
-      $result.id = id;
     }
     if (accessToken != null) {
       $result.accessToken = accessToken;
@@ -58,6 +55,9 @@ class Access extends net.Object {
     if (refreshExpired != null) {
       $result.refreshExpired = refreshExpired;
     }
+    if (args != null) {
+      $result.args.addAll(args);
+    }
     return $result;
   }
   Access._() : super();
@@ -67,11 +67,11 @@ class Access extends net.Object {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Access', createEmptyInstance: create)
     ..e<Access_State>(1, _omitFieldNames ? '' : 'state', $pb.PbFieldType.OE, defaultOrMaker: Access_State.STATE_UNSPECIFIED, valueOf: Access_State.valueOf, enumValues: Access_State.values)
     ..e<Access_Region>(2, _omitFieldNames ? '' : 'region', $pb.PbFieldType.OE, defaultOrMaker: Access_Region.REGION_UNSPECIFIED, valueOf: Access_Region.valueOf, enumValues: Access_Region.values)
-    ..aOS(3, _omitFieldNames ? '' : 'id')
-    ..aOS(4, _omitFieldNames ? '' : 'accessToken')
-    ..aOM<$0.Timestamp>(5, _omitFieldNames ? '' : 'accessExpire', subBuilder: $0.Timestamp.create)
-    ..aOS(6, _omitFieldNames ? '' : 'refreshToken')
-    ..aOM<$0.Timestamp>(7, _omitFieldNames ? '' : 'refreshExpired', subBuilder: $0.Timestamp.create)
+    ..aOS(3, _omitFieldNames ? '' : 'accessToken')
+    ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'accessExpire', subBuilder: $0.Timestamp.create)
+    ..aOS(5, _omitFieldNames ? '' : 'refreshToken')
+    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'refreshExpired', subBuilder: $0.Timestamp.create)
+    ..m<$core.String, $core.String>(7, _omitFieldNames ? '' : 'args', entryClassName: 'Access.ArgsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS)
     ..hasRequiredFields = false
   ;
 
@@ -116,59 +116,53 @@ class Access extends net.Object {
   @$pb.TagNumber(2)
   void clearRegion() => clearField(2);
 
-  /// id is this user id
-  @$pb.TagNumber(3)
-  $core.String get id => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set id($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearId() => clearField(3);
-
   /// access_token is access token
-  @$pb.TagNumber(4)
-  $core.String get accessToken => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set accessToken($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasAccessToken() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearAccessToken() => clearField(4);
+  @$pb.TagNumber(3)
+  $core.String get accessToken => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set accessToken($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasAccessToken() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAccessToken() => clearField(3);
 
   /// access_expire is access token expired time
-  @$pb.TagNumber(5)
-  $0.Timestamp get accessExpire => $_getN(4);
-  @$pb.TagNumber(5)
-  set accessExpire($0.Timestamp v) { setField(5, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasAccessExpire() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearAccessExpire() => clearField(5);
-  @$pb.TagNumber(5)
-  $0.Timestamp ensureAccessExpire() => $_ensure(4);
+  @$pb.TagNumber(4)
+  $0.Timestamp get accessExpire => $_getN(3);
+  @$pb.TagNumber(4)
+  set accessExpire($0.Timestamp v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasAccessExpire() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearAccessExpire() => clearField(4);
+  @$pb.TagNumber(4)
+  $0.Timestamp ensureAccessExpire() => $_ensure(3);
 
   /// refresh_token is refresh token
-  @$pb.TagNumber(6)
-  $core.String get refreshToken => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set refreshToken($core.String v) { $_setString(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasRefreshToken() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearRefreshToken() => clearField(6);
+  @$pb.TagNumber(5)
+  $core.String get refreshToken => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set refreshToken($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasRefreshToken() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearRefreshToken() => clearField(5);
 
   /// refresh_expired is refresh token expired time
+  @$pb.TagNumber(6)
+  $0.Timestamp get refreshExpired => $_getN(5);
+  @$pb.TagNumber(6)
+  set refreshExpired($0.Timestamp v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasRefreshExpired() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearRefreshExpired() => clearField(6);
+  @$pb.TagNumber(6)
+  $0.Timestamp ensureRefreshExpired() => $_ensure(5);
+
+  /// args is extra arguments
   @$pb.TagNumber(7)
-  $0.Timestamp get refreshExpired => $_getN(6);
-  @$pb.TagNumber(7)
-  set refreshExpired($0.Timestamp v) { setField(7, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasRefreshExpired() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearRefreshExpired() => clearField(7);
-  @$pb.TagNumber(7)
-  $0.Timestamp ensureRefreshExpired() => $_ensure(6);
+  $core.Map<$core.String, $core.String> get args => $_getMap(6);
 }
 
 

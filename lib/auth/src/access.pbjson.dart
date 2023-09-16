@@ -19,13 +19,24 @@ const Access$json = {
   '2': [
     {'1': 'state', '3': 1, '4': 1, '5': 14, '6': '.Access.State', '10': 'state'},
     {'1': 'region', '3': 2, '4': 1, '5': 14, '6': '.Access.Region', '10': 'region'},
-    {'1': 'id', '3': 3, '4': 1, '5': 9, '10': 'id'},
-    {'1': 'access_token', '3': 4, '4': 1, '5': 9, '10': 'accessToken'},
-    {'1': 'access_expire', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'accessExpire'},
-    {'1': 'refresh_token', '3': 6, '4': 1, '5': 9, '10': 'refreshToken'},
-    {'1': 'refresh_expired', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'refreshExpired'},
+    {'1': 'access_token', '3': 3, '4': 1, '5': 9, '10': 'accessToken'},
+    {'1': 'access_expire', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'accessExpire'},
+    {'1': 'refresh_token', '3': 5, '4': 1, '5': 9, '10': 'refreshToken'},
+    {'1': 'refresh_expired', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'refreshExpired'},
+    {'1': 'args', '3': 7, '4': 3, '5': 11, '6': '.Access.ArgsEntry', '10': 'args'},
   ],
+  '3': [Access_ArgsEntry$json],
   '4': [Access_State$json, Access_Region$json],
+};
+
+@$core.Deprecated('Use accessDescriptor instead')
+const Access_ArgsEntry$json = {
+  '1': 'ArgsEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
 };
 
 @$core.Deprecated('Use accessDescriptor instead')
@@ -51,11 +62,13 @@ const Access_Region$json = {
 /// Descriptor for `Access`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List accessDescriptor = $convert.base64Decode(
     'CgZBY2Nlc3MSIwoFc3RhdGUYASABKA4yDS5BY2Nlc3MuU3RhdGVSBXN0YXRlEiYKBnJlZ2lvbh'
-    'gCIAEoDjIOLkFjY2Vzcy5SZWdpb25SBnJlZ2lvbhIOCgJpZBgDIAEoCVICaWQSIQoMYWNjZXNz'
-    'X3Rva2VuGAQgASgJUgthY2Nlc3NUb2tlbhI/Cg1hY2Nlc3NfZXhwaXJlGAUgASgLMhouZ29vZ2'
-    'xlLnByb3RvYnVmLlRpbWVzdGFtcFIMYWNjZXNzRXhwaXJlEiMKDXJlZnJlc2hfdG9rZW4YBiAB'
-    'KAlSDHJlZnJlc2hUb2tlbhJDCg9yZWZyZXNoX2V4cGlyZWQYByABKAsyGi5nb29nbGUucHJvdG'
-    '9idWYuVGltZXN0YW1wUg5yZWZyZXNoRXhwaXJlZCJPCgVTdGF0ZRIVChFTVEFURV9VTlNQRUNJ'
-    'RklFRBAAEgwKCFNUQVRFX09LEAESEQoNU1RBVEVfU1VTUEVORBACEg4KClNUQVRFX0JBTkQQAy'
-    'IvCgZSZWdpb24SFgoSUkVHSU9OX1VOU1BFQ0lGSUVEEAASDQoJUkVHSU9OX1RXEAE=');
+    'gCIAEoDjIOLkFjY2Vzcy5SZWdpb25SBnJlZ2lvbhIhCgxhY2Nlc3NfdG9rZW4YAyABKAlSC2Fj'
+    'Y2Vzc1Rva2VuEj8KDWFjY2Vzc19leHBpcmUYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZX'
+    'N0YW1wUgxhY2Nlc3NFeHBpcmUSIwoNcmVmcmVzaF90b2tlbhgFIAEoCVIMcmVmcmVzaFRva2Vu'
+    'EkMKD3JlZnJlc2hfZXhwaXJlZBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDn'
+    'JlZnJlc2hFeHBpcmVkEiUKBGFyZ3MYByADKAsyES5BY2Nlc3MuQXJnc0VudHJ5UgRhcmdzGjcK'
+    'CUFyZ3NFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBIk'
+    '8KBVN0YXRlEhUKEVNUQVRFX1VOU1BFQ0lGSUVEEAASDAoIU1RBVEVfT0sQARIRCg1TVEFURV9T'
+    'VVNQRU5EEAISDgoKU1RBVEVfQkFORBADIi8KBlJlZ2lvbhIWChJSRUdJT05fVU5TUEVDSUZJRU'
+    'QQABINCglSRUdJT05fVFcQAQ==');
 
