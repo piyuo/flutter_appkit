@@ -14,34 +14,32 @@ import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-///  Do check email can sign up account and send verification code to the email address
-///
-/// 	Email {string} this email to create account
-///
-/// 	return {PbOK} if account can be create
-/// 	return EMAIL_INVALID {PbError} if email is invalid
-/// 	return EMAIL_TAKEN {PbError} if email already registered
-/// 	return BLOCK_SHORT {PbError} if email is blocked by short period
-/// 	return BLOCK_LONG {PbError} if email is blocked by long period
-class CmdSignup extends net.Object {
+/// LoginCodeAction is the action to take when a user logs in with a email
+/// verification code
+class LoginCodeAction extends net.Object {
   $core.int mapIdXXX() => 1018;
   get namespace => 'auth';
 
-  factory CmdSignup({
+  factory LoginCodeAction({
     $core.String? email,
+    $core.String? code,
   }) {
     final $result = create();
     if (email != null) {
       $result.email = email;
     }
+    if (code != null) {
+      $result.code = code;
+    }
     return $result;
   }
-  CmdSignup._() : super();
-  factory CmdSignup.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CmdSignup.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  LoginCodeAction._() : super();
+  factory LoginCodeAction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LoginCodeAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdSignup', createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginCodeAction', createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
+    ..aOS(2, _omitFieldNames ? '' : 'code')
     ..hasRequiredFields = false
   ;
 
@@ -49,23 +47,24 @@ class CmdSignup extends net.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  CmdSignup clone() => CmdSignup()..mergeFromMessage(this);
+  LoginCodeAction clone() => LoginCodeAction()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdSignup copyWith(void Function(CmdSignup) updates) => super.copyWith((message) => updates(message as CmdSignup)) as CmdSignup;
+  LoginCodeAction copyWith(void Function(LoginCodeAction) updates) => super.copyWith((message) => updates(message as LoginCodeAction)) as LoginCodeAction;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CmdSignup create() => CmdSignup._();
-  CmdSignup createEmptyInstance() => create();
-  static $pb.PbList<CmdSignup> createRepeated() => $pb.PbList<CmdSignup>();
+  static LoginCodeAction create() => LoginCodeAction._();
+  LoginCodeAction createEmptyInstance() => create();
+  static $pb.PbList<LoginCodeAction> createRepeated() => $pb.PbList<LoginCodeAction>();
   @$core.pragma('dart2js:noInline')
-  static CmdSignup getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CmdSignup>(create);
-  static CmdSignup? _defaultInstance;
+  static LoginCodeAction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LoginCodeAction>(create);
+  static LoginCodeAction? _defaultInstance;
 
+  /// email to verify
   @$pb.TagNumber(1)
   $core.String get email => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -74,6 +73,16 @@ class CmdSignup extends net.Object {
   $core.bool hasEmail() => $_has(0);
   @$pb.TagNumber(1)
   void clearEmail() => clearField(1);
+
+  /// code is verification code
+  @$pb.TagNumber(2)
+  $core.String get code => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set code($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCode() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCode() => clearField(2);
 }
 
 

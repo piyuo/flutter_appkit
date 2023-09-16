@@ -14,8 +14,7 @@ import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-/// *
-///   string response
+/// String Response
 class StringResponse extends net.Object {
   $core.int mapIdXXX() => 1003;
   get namespace => 'sample';
@@ -64,6 +63,7 @@ class StringResponse extends net.Object {
   static StringResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StringResponse>(create);
   static StringResponse? _defaultInstance;
 
+  /// name is string
   @$pb.TagNumber(1)
   $core.String get name => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -73,6 +73,7 @@ class StringResponse extends net.Object {
   @$pb.TagNumber(1)
   void clearName() => clearField(1);
 
+  /// value is string
   @$pb.TagNumber(2)
   $core.String get value => $_getSZ(1);
   @$pb.TagNumber(2)

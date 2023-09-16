@@ -13,3 +13,4 @@ export 'src/verify_email_action.pb.dart';
 export 'src/verify_email_response.pb.dart';
 export 'src/cmd_signup_account.pb.dart';
 export 'src/cmd_signup_verify.pb.dart';
+export 'src/cmd-signup.pb.dart';

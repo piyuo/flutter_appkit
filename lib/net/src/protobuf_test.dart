@@ -5,7 +5,7 @@ import 'protobuf.dart';
 void main() {
   group('[net.protobuf]', () {
     test('should encode Object', () {
-      sample.CmdEcho echoAction = sample.CmdEcho();
+      sample.EchoAction echoAction = sample.EchoAction();
       echoAction.value = 'hi';
       List<int> bytes = encode(echoAction);
       expect(bytes.length, 6);
@@ -20,7 +20,7 @@ void main() {
     });
 
     test('should decode fail when id is wrong', () {
-      sample.CmdEcho echoAction = sample.CmdEcho();
+      sample.EchoAction echoAction = sample.EchoAction();
       echoAction.value = 'hi';
       List<int> bytes = encode(echoAction);
       bytes[bytes.length - 1] = 255;

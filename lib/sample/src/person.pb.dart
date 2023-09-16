@@ -31,7 +31,7 @@ class Person extends net.Object {
     $0.Model? m,
     $core.String? name,
     $core.int? age,
-    Person_PersonGender? enumValue,
+    Person_Gender? enumValue,
     $1.Timestamp? timestampValue,
     $core.Map<$core.String, $core.int>? mapValue,
     $core.String? stringValue,
@@ -39,12 +39,12 @@ class Person extends net.Object {
     $core.double? floatValue,
     $core.double? doubleValue,
     $core.bool? boolValue,
-    $core.Iterable<$core.String>? stringListValue,
-    $core.Iterable<$core.int>? int32ListValue,
-    $core.Iterable<$core.double>? floatListValue,
-    $core.Iterable<$core.double>? doubleListValue,
-    $core.Iterable<$core.bool>? boolListValue,
-    $core.Iterable<$1.Timestamp>? timestampListValue,
+    $core.Iterable<$core.String>? stringListValues,
+    $core.Iterable<$core.int>? int32ListValues,
+    $core.Iterable<$core.double>? floatListValues,
+    $core.Iterable<$core.double>? doubleListValues,
+    $core.Iterable<$core.bool>? boolListValues,
+    $core.Iterable<$1.Timestamp>? timestampListValues,
   }) {
     final $result = create();
     if (m != null) {
@@ -80,23 +80,23 @@ class Person extends net.Object {
     if (boolValue != null) {
       $result.boolValue = boolValue;
     }
-    if (stringListValue != null) {
-      $result.stringListValue.addAll(stringListValue);
+    if (stringListValues != null) {
+      $result.stringListValues.addAll(stringListValues);
     }
-    if (int32ListValue != null) {
-      $result.int32ListValue.addAll(int32ListValue);
+    if (int32ListValues != null) {
+      $result.int32ListValues.addAll(int32ListValues);
     }
-    if (floatListValue != null) {
-      $result.floatListValue.addAll(floatListValue);
+    if (floatListValues != null) {
+      $result.floatListValues.addAll(floatListValues);
     }
-    if (doubleListValue != null) {
-      $result.doubleListValue.addAll(doubleListValue);
+    if (doubleListValues != null) {
+      $result.doubleListValues.addAll(doubleListValues);
     }
-    if (boolListValue != null) {
-      $result.boolListValue.addAll(boolListValue);
+    if (boolListValues != null) {
+      $result.boolListValues.addAll(boolListValues);
     }
-    if (timestampListValue != null) {
-      $result.timestampListValue.addAll(timestampListValue);
+    if (timestampListValues != null) {
+      $result.timestampListValues.addAll(timestampListValues);
     }
     return $result;
   }
@@ -108,20 +108,20 @@ class Person extends net.Object {
     ..aOM<$0.Model>(1, _omitFieldNames ? '' : 'm', subBuilder: $0.Model.create)
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'age', $pb.PbFieldType.O3)
-    ..e<Person_PersonGender>(4, _omitFieldNames ? '' : 'enumValue', $pb.PbFieldType.OE, protoName: 'enumValue', defaultOrMaker: Person_PersonGender.PersonMale, valueOf: Person_PersonGender.valueOf, enumValues: Person_PersonGender.values)
-    ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'timestampValue', protoName: 'timestampValue', subBuilder: $1.Timestamp.create)
-    ..m<$core.String, $core.int>(6, _omitFieldNames ? '' : 'mapValue', protoName: 'mapValue', entryClassName: 'Person.MapValueEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
-    ..aOS(7, _omitFieldNames ? '' : 'stringValue', protoName: 'stringValue')
-    ..a<$core.int>(8, _omitFieldNames ? '' : 'int32Value', $pb.PbFieldType.O3, protoName: 'int32Value')
-    ..a<$core.double>(9, _omitFieldNames ? '' : 'floatValue', $pb.PbFieldType.OF, protoName: 'floatValue')
-    ..a<$core.double>(10, _omitFieldNames ? '' : 'doubleValue', $pb.PbFieldType.OD, protoName: 'doubleValue')
-    ..aOB(11, _omitFieldNames ? '' : 'boolValue', protoName: 'boolValue')
-    ..pPS(12, _omitFieldNames ? '' : 'stringListValue', protoName: 'stringListValue')
-    ..p<$core.int>(13, _omitFieldNames ? '' : 'int32ListValue', $pb.PbFieldType.K3, protoName: 'int32ListValue')
-    ..p<$core.double>(14, _omitFieldNames ? '' : 'floatListValue', $pb.PbFieldType.KF, protoName: 'floatListValue')
-    ..p<$core.double>(15, _omitFieldNames ? '' : 'doubleListValue', $pb.PbFieldType.KD, protoName: 'doubleListValue')
-    ..p<$core.bool>(16, _omitFieldNames ? '' : 'boolListValue', $pb.PbFieldType.KB, protoName: 'boolListValue')
-    ..pc<$1.Timestamp>(17, _omitFieldNames ? '' : 'timestampListValue', $pb.PbFieldType.PM, protoName: 'timestampListValue', subBuilder: $1.Timestamp.create)
+    ..e<Person_Gender>(4, _omitFieldNames ? '' : 'enumValue', $pb.PbFieldType.OE, defaultOrMaker: Person_Gender.GENDER_UNSPECIFIED, valueOf: Person_Gender.valueOf, enumValues: Person_Gender.values)
+    ..aOM<$1.Timestamp>(5, _omitFieldNames ? '' : 'timestampValue', subBuilder: $1.Timestamp.create)
+    ..m<$core.String, $core.int>(6, _omitFieldNames ? '' : 'mapValue', entryClassName: 'Person.MapValueEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.O3)
+    ..aOS(7, _omitFieldNames ? '' : 'stringValue')
+    ..a<$core.int>(8, _omitFieldNames ? '' : 'int32Value', $pb.PbFieldType.O3)
+    ..a<$core.double>(9, _omitFieldNames ? '' : 'floatValue', $pb.PbFieldType.OF)
+    ..a<$core.double>(10, _omitFieldNames ? '' : 'doubleValue', $pb.PbFieldType.OD)
+    ..aOB(11, _omitFieldNames ? '' : 'boolValue')
+    ..pPS(12, _omitFieldNames ? '' : 'stringListValues')
+    ..p<$core.int>(13, _omitFieldNames ? '' : 'int32ListValues', $pb.PbFieldType.K3)
+    ..p<$core.double>(14, _omitFieldNames ? '' : 'floatListValues', $pb.PbFieldType.KF)
+    ..p<$core.double>(15, _omitFieldNames ? '' : 'doubleListValues', $pb.PbFieldType.KD)
+    ..p<$core.bool>(16, _omitFieldNames ? '' : 'boolListValues', $pb.PbFieldType.KB)
+    ..pc<$1.Timestamp>(17, _omitFieldNames ? '' : 'timestampListValues', $pb.PbFieldType.PM, subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -146,6 +146,7 @@ class Person extends net.Object {
   static Person getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Person>(create);
   static Person? _defaultInstance;
 
+  /// m is model
   @$pb.TagNumber(1)
   $0.Model get m => $_getN(0);
   @$pb.TagNumber(1)
@@ -157,6 +158,7 @@ class Person extends net.Object {
   @$pb.TagNumber(1)
   $0.Model ensureM() => $_ensure(0);
 
+  /// name is string
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -166,6 +168,7 @@ class Person extends net.Object {
   @$pb.TagNumber(2)
   void clearName() => clearField(2);
 
+  /// age is int32
   @$pb.TagNumber(3)
   $core.int get age => $_getIZ(2);
   @$pb.TagNumber(3)
@@ -175,15 +178,17 @@ class Person extends net.Object {
   @$pb.TagNumber(3)
   void clearAge() => clearField(3);
 
+  /// enumValue is enum
   @$pb.TagNumber(4)
-  Person_PersonGender get enumValue => $_getN(3);
+  Person_Gender get enumValue => $_getN(3);
   @$pb.TagNumber(4)
-  set enumValue(Person_PersonGender v) { setField(4, v); }
+  set enumValue(Person_Gender v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasEnumValue() => $_has(3);
   @$pb.TagNumber(4)
   void clearEnumValue() => clearField(4);
 
+  /// timestampValue is timestamp
   @$pb.TagNumber(5)
   $1.Timestamp get timestampValue => $_getN(4);
   @$pb.TagNumber(5)
@@ -195,9 +200,11 @@ class Person extends net.Object {
   @$pb.TagNumber(5)
   $1.Timestamp ensureTimestampValue() => $_ensure(4);
 
+  /// mapValue is map
   @$pb.TagNumber(6)
   $core.Map<$core.String, $core.int> get mapValue => $_getMap(5);
 
+  /// stringListValue is list of string
   @$pb.TagNumber(7)
   $core.String get stringValue => $_getSZ(6);
   @$pb.TagNumber(7)
@@ -207,6 +214,7 @@ class Person extends net.Object {
   @$pb.TagNumber(7)
   void clearStringValue() => clearField(7);
 
+  /// int32ListValue is list of int32
   @$pb.TagNumber(8)
   $core.int get int32Value => $_getIZ(7);
   @$pb.TagNumber(8)
@@ -244,22 +252,22 @@ class Person extends net.Object {
   void clearBoolValue() => clearField(11);
 
   @$pb.TagNumber(12)
-  $core.List<$core.String> get stringListValue => $_getList(11);
+  $core.List<$core.String> get stringListValues => $_getList(11);
 
   @$pb.TagNumber(13)
-  $core.List<$core.int> get int32ListValue => $_getList(12);
+  $core.List<$core.int> get int32ListValues => $_getList(12);
 
   @$pb.TagNumber(14)
-  $core.List<$core.double> get floatListValue => $_getList(13);
+  $core.List<$core.double> get floatListValues => $_getList(13);
 
   @$pb.TagNumber(15)
-  $core.List<$core.double> get doubleListValue => $_getList(14);
+  $core.List<$core.double> get doubleListValues => $_getList(14);
 
   @$pb.TagNumber(16)
-  $core.List<$core.bool> get boolListValue => $_getList(15);
+  $core.List<$core.bool> get boolListValues => $_getList(15);
 
   @$pb.TagNumber(17)
-  $core.List<$1.Timestamp> get timestampListValue => $_getList(16);
+  $core.List<$1.Timestamp> get timestampListValues => $_getList(16);
 }
 
 

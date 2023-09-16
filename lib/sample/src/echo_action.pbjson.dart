@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd_echo.proto
+//  source: echo_action.proto
 //
 // @dart = 2.12
 
@@ -13,15 +13,15 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use cmdEchoDescriptor instead')
-const CmdEcho$json = {
-  '1': 'CmdEcho',
+@$core.Deprecated('Use echoActionDescriptor instead')
+const EchoAction$json = {
+  '1': 'EchoAction',
   '2': [
     {'1': 'value', '3': 1, '4': 1, '5': 9, '10': 'value'},
   ],
 };
 
-/// Descriptor for `CmdEcho`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List cmdEchoDescriptor = $convert.base64Decode(
-    'CgdDbWRFY2hvEhQKBXZhbHVlGAEgASgJUgV2YWx1ZQ==');
+/// Descriptor for `EchoAction`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List echoActionDescriptor = $convert.base64Decode(
+    'CgpFY2hvQWN0aW9uEhQKBXZhbHVlGAEgASgJUgV2YWx1ZQ==');
 

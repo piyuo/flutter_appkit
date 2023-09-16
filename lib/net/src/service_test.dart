@@ -27,7 +27,7 @@ void main() {
       });
       final service = sample.SampleService('http://not-exist');
       var response =
-          await service.sendByClient(sample.CmdEcho()..value = 'hello', client, () => sample.StringResponse());
+          await service.sendByClient(sample.EchoAction()..value = 'hello', client, () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
       if (response is sample.StringResponse) {
         expect(response.value, 'hi');
@@ -40,7 +40,7 @@ void main() {
           return sample.StringResponse()..value = 'fake';
         };
 
-      var response = await service.send(sample.CmdEcho()..value = 'hello', builder: () => sample.StringResponse());
+      var response = await service.send(sample.EchoAction()..value = 'hello', builder: () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
       if (response is sample.StringResponse) {
         expect(response.value, 'fake');
@@ -52,7 +52,7 @@ void main() {
         return http.Response('', 501);
       });
       final service = sample.SampleService('http://not-exist');
-      var response = await service.sendByClient(sample.CmdEcho(), client, () => sample.StringResponse());
+      var response = await service.sendByClient(sample.EchoAction(), client, () => sample.StringResponse());
       expect(response is net.Empty, true);
     });
 
@@ -61,7 +61,7 @@ void main() {
         ..mockSender = (action, {builder}) async {
           throw Exception('mock');
         };
-      sample.CmdEcho action = sample.CmdEcho();
+      sample.EchoAction action = sample.EchoAction();
       expect(() async {
         await service.send(action, builder: () => sample.StringResponse());
       }, throwsException);
@@ -73,7 +73,7 @@ void main() {
           return sample.StringResponse()..value = 'hi';
         };
 
-      sample.CmdEcho action = sample.CmdEcho();
+      sample.EchoAction action = sample.EchoAction();
       var response = await service.send(action, builder: () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
       if (response is sample.StringResponse) {
@@ -87,7 +87,7 @@ void main() {
           return sample.StringResponse()..value = 'hi';
         };
 
-      sample.CmdEcho action = sample.CmdEcho();
+      sample.EchoAction action = sample.EchoAction();
       var response = await service.send(action, builder: () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
     });
@@ -104,7 +104,7 @@ void main() {
       });
       sample.SampleService service = sample.SampleService('http://not-exist');
 
-      final action = sample.CmdEcho(value: 'firewallBlock');
+      final action = sample.EchoAction(value: 'firewallBlock');
       net.mockFirewallInFlight(action);
 
       var response = await service.sendByClient(action, client, () => sample.StringResponse());
@@ -120,8 +120,8 @@ void main() {
       });
       sample.SampleService service = sample.SampleService('http://not-exist');
 
-      final cmd1 = sample.CmdEcho(value: 'twin');
-      final cmd2 = sample.CmdEcho(value: 'twin');
+      final cmd1 = sample.EchoAction(value: 'twin');
+      final cmd2 = sample.EchoAction(value: 'twin');
 
       var response = await service.sendByClient(cmd1, client, () => sample.StringResponse());
       var response2 = await service.sendByClient(cmd2, client, () => sample.StringResponse());

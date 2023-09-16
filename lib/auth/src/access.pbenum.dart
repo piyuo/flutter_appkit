@@ -49,25 +49,5 @@ class Access_Region extends $pb.ProtobufEnum {
   const Access_Region._($core.int v, $core.String n) : super(v, n);
 }
 
-/// type is type of of user
-class Access_Type extends $pb.ProtobufEnum {
-  static const Access_Type TYPE_UNSPECIFIED = Access_Type._(0, _omitEnumNames ? '' : 'TYPE_UNSPECIFIED');
-  static const Access_Type TYPE_USER = Access_Type._(1, _omitEnumNames ? '' : 'TYPE_USER');
-  static const Access_Type TYPE_STAFF = Access_Type._(2, _omitEnumNames ? '' : 'TYPE_STAFF');
-  static const Access_Type TYPE_OWNER = Access_Type._(3, _omitEnumNames ? '' : 'TYPE_OWNER');
-
-  static const $core.List<Access_Type> values = <Access_Type> [
-    TYPE_UNSPECIFIED,
-    TYPE_USER,
-    TYPE_STAFF,
-    TYPE_OWNER,
-  ];
-
-  static final $core.Map<$core.int, Access_Type> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static Access_Type? valueOf($core.int value) => _byValue[value];
-
-  const Access_Type._($core.int v, $core.String n) : super(v, n);
-}
-
 
 const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');

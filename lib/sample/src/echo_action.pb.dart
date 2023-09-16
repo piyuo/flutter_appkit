@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd_echo.proto
+//  source: echo_action.proto
 //
 // @dart = 2.12
 
@@ -14,13 +14,12 @@ import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-/// *
-///    CmdEcho
-class CmdEcho extends net.Object {
-  $core.int mapIdXXX() => 1002;
+/// EchoAction
+class EchoAction extends net.Object {
+  $core.int mapIdXXX() => 1004;
   get namespace => 'sample';
 
-  factory CmdEcho({
+  factory EchoAction({
     $core.String? value,
   }) {
     final $result = create();
@@ -29,11 +28,11 @@ class CmdEcho extends net.Object {
     }
     return $result;
   }
-  CmdEcho._() : super();
-  factory CmdEcho.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CmdEcho.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  EchoAction._() : super();
+  factory EchoAction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory EchoAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdEcho', createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'EchoAction', createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'value')
     ..hasRequiredFields = false
   ;
@@ -42,23 +41,24 @@ class CmdEcho extends net.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  CmdEcho clone() => CmdEcho()..mergeFromMessage(this);
+  EchoAction clone() => EchoAction()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdEcho copyWith(void Function(CmdEcho) updates) => super.copyWith((message) => updates(message as CmdEcho)) as CmdEcho;
+  EchoAction copyWith(void Function(EchoAction) updates) => super.copyWith((message) => updates(message as EchoAction)) as EchoAction;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CmdEcho create() => CmdEcho._();
-  CmdEcho createEmptyInstance() => create();
-  static $pb.PbList<CmdEcho> createRepeated() => $pb.PbList<CmdEcho>();
+  static EchoAction create() => EchoAction._();
+  EchoAction createEmptyInstance() => create();
+  static $pb.PbList<EchoAction> createRepeated() => $pb.PbList<EchoAction>();
   @$core.pragma('dart2js:noInline')
-  static CmdEcho getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CmdEcho>(create);
-  static CmdEcho? _defaultInstance;
+  static EchoAction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EchoAction>(create);
+  static EchoAction? _defaultInstance;
 
+  /// value is string value
   @$pb.TagNumber(1)
   $core.String get value => $_getSZ(0);
   @$pb.TagNumber(1)

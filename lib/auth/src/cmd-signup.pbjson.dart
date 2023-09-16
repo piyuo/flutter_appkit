@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: login_code_action.proto
+//  source: cmd-signup.proto
 //
 // @dart = 2.12
 
@@ -13,17 +13,15 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use loginCodeActionDescriptor instead')
-const LoginCodeAction$json = {
-  '1': 'LoginCodeAction',
+@$core.Deprecated('Use cmdSignupDescriptor instead')
+const CmdSignup$json = {
+  '1': 'CmdSignup',
   '2': [
     {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
-    {'1': 'code', '3': 2, '4': 1, '5': 9, '10': 'code'},
   ],
 };
 
-/// Descriptor for `LoginCodeAction`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List loginCodeActionDescriptor = $convert.base64Decode(
-    'Cg9Mb2dpbkNvZGVBY3Rpb24SFAoFZW1haWwYASABKAlSBWVtYWlsEhIKBGNvZGUYAiABKAlSBG'
-    'NvZGU=');
+/// Descriptor for `CmdSignup`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List cmdSignupDescriptor = $convert.base64Decode(
+    'CglDbWRTaWdudXASFAoFZW1haWwYASABKAlSBWVtYWls');
 

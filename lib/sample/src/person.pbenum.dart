@@ -13,19 +13,21 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class Person_PersonGender extends $pb.ProtobufEnum {
-  static const Person_PersonGender PersonMale = Person_PersonGender._(0, _omitEnumNames ? '' : 'PersonMale');
-  static const Person_PersonGender PersonFemale = Person_PersonGender._(1, _omitEnumNames ? '' : 'PersonFemale');
+class Person_Gender extends $pb.ProtobufEnum {
+  static const Person_Gender GENDER_UNSPECIFIED = Person_Gender._(0, _omitEnumNames ? '' : 'GENDER_UNSPECIFIED');
+  static const Person_Gender GENDER_MALE = Person_Gender._(1, _omitEnumNames ? '' : 'GENDER_MALE');
+  static const Person_Gender GENDER_FEMALE = Person_Gender._(2, _omitEnumNames ? '' : 'GENDER_FEMALE');
 
-  static const $core.List<Person_PersonGender> values = <Person_PersonGender> [
-    PersonMale,
-    PersonFemale,
+  static const $core.List<Person_Gender> values = <Person_Gender> [
+    GENDER_UNSPECIFIED,
+    GENDER_MALE,
+    GENDER_FEMALE,
   ];
 
-  static final $core.Map<$core.int, Person_PersonGender> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static Person_PersonGender? valueOf($core.int value) => _byValue[value];
+  static final $core.Map<$core.int, Person_Gender> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static Person_Gender? valueOf($core.int value) => _byValue[value];
 
-  const Person_PersonGender._($core.int v, $core.String n) : super(v, n);
+  const Person_Gender._($core.int v, $core.String n) : super(v, n);
 }
 
 
