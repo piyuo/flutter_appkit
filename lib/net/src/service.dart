@@ -34,7 +34,10 @@ abstract class Service {
   bool ignoreFirewall = false;
 
   /// _url keep remote service url
-  final String _url;
+  String _url;
+
+  /// url set remote service url
+  set url(value) => _url = value;
 
   /// url return remote service url
   /// ```dart
