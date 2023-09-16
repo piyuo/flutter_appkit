@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'firewall.dart';
-import '../common/common.dart' as common;
+import 'package:libcli/common/common.dart' as common;
 
 void main() {
   setUp(() async {

@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart' hide Builder;
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:libcli/cache/cache.dart' as cache;
-import 'protobuf.dart';
-import 'object.dart';
+import 'package:libcli/net/net.dart' as net;
 
 /// HttpProtoFileProvider can download a protobuf file from remote service and convert it to object
 /// ```dart
@@ -30,14 +29,14 @@ class HttpProtoFileProvider {
   /// ```dart
   /// download('https://piyuo.com/brand/index.pb');
   /// ```
-  Future<T> download<T extends Object>(String url, Builder<T>? builder) async {
+  Future<T> download<T extends Object>(String url, net.Builder<T>? builder) async {
     // for test
     dynamic obj;
     if (!kReleaseMode && mockDownloader != null) {
       obj = await mockDownloader!(url);
     } else {
       final bytes = await fileProvider.getSingleFile(url);
-      obj = decode(bytes, builder);
+      obj = net.decode(bytes, builder);
     }
     if (obj is T) {
       return obj;

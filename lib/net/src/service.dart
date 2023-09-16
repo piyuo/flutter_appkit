@@ -3,12 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'firewall.dart';
-import 'http.dart';
-import 'object.dart';
+import 'package:libcli/net/net.dart' as net;
 
 /// Sender define send function use in service, only for test
-typedef Sender = Future<Object> Function(Object command, {Builder? builder});
+typedef Sender = Future<net.Object> Function(net.Object command, {net.Builder? builder});
 
 /// AccessKeyBuilder return access key for action
 typedef AccessTokenBuilder = Future<String?> Function();
@@ -18,9 +16,7 @@ typedef AccessTokenBuilder = Future<String?> Function();
 abstract class Service {
   /// Service create service with remote cloud function name,timeout and slow
   /// debug port used in debug branch
-  Service(this.serviceName) {
-    assert(serviceName.isNotEmpty, 'must have service name');
-  }
+  Service(this.serviceName, this._url) : assert(serviceName.isNotEmpty, 'must have service name');
 
   /// debugPort used debug local service, service url will change to http://localhost:$debugPort
   int? debugPort;
@@ -37,6 +33,9 @@ abstract class Service {
   /// ignoreFirewall is true will ignore firewall check
   bool ignoreFirewall = false;
 
+  /// _url keep remote service url
+  final String _url;
+
   /// url return remote service url
   /// ```dart
   /// url; // https://auth-us.piyuo.com , https://auth-us-master.piyuo.com
@@ -49,13 +48,7 @@ abstract class Service {
         return 'http://localhost:$debugPort';
       }
     }
-    assert(urlBuilder != null, 'urlBuilder must not be null');
-    assert(accessTokenBuilder != null, 'accessKeyBuilder should not be null');
-    //String region = regionBuilder != null ? '-${regionBuilder!()}' : '';
-    //String branch = branchBuilder != null ? '-${branchBuilder!()}' : '';
-    //return 'https://$serviceName$region$branch.$baseDomain/?q'; // add ? to avoid cache
-    //import 'package:libcli/command/src/url.dart';
-    return urlBuilder!();
+    return _url;
   }
 
   /// accessTokenBuilder return access token that action need
@@ -63,12 +56,6 @@ abstract class Service {
   /// accessTokenBuilder = () async => null;
   /// ```
   AccessTokenBuilder? accessTokenBuilder;
-
-  /// urlBuilder return region that action need
-  /// ```dart
-  /// urlBuilder = () => 'http://mock';
-  /// ```
-  String Function()? urlBuilder;
 
   /// mockSender is a test function can set custom send handler for test
   @visibleForTesting
@@ -78,7 +65,7 @@ abstract class Service {
   /// ```dart
   /// var response = await service.send(EchoAction());
   /// ```
-  Future<Object> send(Object command, {Builder? builder}) async {
+  Future<net.Object> send(net.Object command, {net.Builder? builder}) async {
     if (!kReleaseMode && mockSender != null) {
       return mockSender!(command, builder: builder);
     }
@@ -90,17 +77,17 @@ abstract class Service {
   /// ```dart
   /// var response = await service.sendByClient(EchoAction());
   /// ```
-  Future<Object> sendByClient(Object action, http.Client client, Builder? builder) async {
-    dynamic result = FirewallPass;
+  Future<net.Object> sendByClient(net.Object action, http.Client client, net.Builder? builder) async {
+    dynamic result = net.FirewallPass;
     if (!ignoreFirewall) {
-      result = firewallBegin(action);
+      result = net.firewallBegin(action);
     }
-    if (result is FirewallPass) {
-      log.log('[command] send ${action.jsonString} to $url');
-      Object? returnObj;
+    if (result is net.FirewallPass) {
+      log.log('[net] send ${action.jsonString} to $url');
+      net.Object? returnObj;
       try {
-        returnObj = await post(
-            Request(
+        returnObj = await net.post(
+            net.Request(
               service: this,
               client: client,
               url: url,
@@ -112,21 +99,21 @@ abstract class Service {
         return returnObj;
       } finally {
         if (!ignoreFirewall) {
-          firewallEnd(action, returnObj);
+          net.firewallEnd(action, returnObj);
         }
         if (returnObj != null) {
-          log.log('[command] got ${returnObj.jsonString}');
+          log.log('[net] got ${returnObj.jsonString}');
         } else {
-          log.log('[command] failed to send');
+          log.log('[net] failed to send');
         }
       }
-    } else if (result is FirewallBlock) {
-      log.log('[command] block ${result.reason} ${action.jsonString}');
-      eventbus.broadcast(FirewallBlockEvent(result.reason));
+    } else if (result is net.FirewallBlock) {
+      log.log('[net] block ${result.reason} ${action.jsonString}');
+      eventbus.broadcast(net.FirewallBlockEvent(result.reason));
       return result;
     }
     //cached object
-    log.log('[command] send ${action.jsonString} to $url and return cache ${result.jsonString}');
+    log.log('[net] send ${action.jsonString} to $url and return cache ${result.jsonString}');
     return result;
   }
 }

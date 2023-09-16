@@ -6,13 +6,14 @@ import 'package:libcli/net/net.dart';
 
 
  /// AuthService define auth service, source .proto can be found in /pb/auth
- ///
- ///     final service = AuthService()..sender = (context, action) async {
- ///         return StringResponse()..value = 'fake';
- ///     };
- ///
+ /// ```dart
+ /// final service = AuthService()..sender = (context, action) async {
+ ///     return StringResponse()..value = 'fake';
+ /// };
+ /// ```
  class AuthService extends Service {
-  AuthService(): super('auth');
+  /// SysService create service with remote url
+  AuthService(String url): super('auth', url);
 
   /// of get AuthService from context
   static AuthService of(BuildContext context) {

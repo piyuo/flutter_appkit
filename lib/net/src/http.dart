@@ -5,11 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'events.dart';
-import 'protobuf.dart';
-import 'service.dart';
-import 'object.dart';
-import 'empty.dart';
+import 'package:libcli/net/net.dart' as net;
 
 /// Request for post()
 class Request {
@@ -23,7 +19,7 @@ class Request {
   });
 
   /// service that fire this request
-  final Service service;
+  final net.Service service;
 
   /// client for post request
   final http.Client client;
@@ -32,7 +28,7 @@ class Request {
   final String url;
 
   /// action for post request
-  final Object action;
+  final net.Object action;
 
   /// timeout for post request
   Duration timeout;
@@ -51,11 +47,11 @@ Map<String, String> get _requestHeaders => {
     };
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
-Future<Object> post(Request request, Builder? builder) async {
-  Completer<Object> completer = Completer<Object>();
+Future<net.Object> post(Request request, net.Builder? builder) async {
+  Completer<net.Object> completer = Completer<net.Object>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
-      eventbus.broadcast(SlowNetworkEvent());
+      eventbus.broadcast(net.SlowNetworkEvent());
     }
   });
   doPost(request, builder).then((response) {
@@ -75,18 +71,18 @@ Future<Object> post(Request request, Builder? builder) async {
 /// req.timeout = 9000;
 /// var bytes = await commandHttp.doPost(req);
 /// ```
-Future<Object> doPost(Request r, Builder? builder) async {
+Future<net.Object> doPost(Request r, net.Builder? builder) async {
   try {
     // auto add access token
     String? accessToken;
     if (r.action.accessTokenRequired) {
       accessToken = await r.service.accessTokenBuilder!();
       if (accessToken == null) {
-        return await giveup(NeedLoginEvent());
+        return await giveup(net.NeedLoginEvent());
       }
       r.action.setAccessToken(accessToken);
     }
-    Uint8List bytes = encode(r.action);
+    Uint8List bytes = net.encode(r.action);
     var uri = Uri.parse(r.url);
     var resp = await r.client
         .post(
@@ -97,36 +93,36 @@ Future<Object> doPost(Request r, Builder? builder) async {
         .timeout(r.timeout);
 
     if (resp.statusCode == 200) {
-      return decode(resp.bodyBytes, builder);
+      return net.decode(resp.bodyBytes, builder);
     }
 
     var msg = '${resp.statusCode} ${resp.body} from ${r.url}';
     log.log('[http] caught $msg');
     switch (resp.statusCode) {
       case 500: // internal server error
-        return await giveup(InternalServerErrorEvent()); //body is err id
+        return await giveup(net.InternalServerErrorEvent()); //body is err id
       case 501: // the remote service is not properly setup
-        return await giveup(ServerNotReadyEvent()); //body is err id
+        return await giveup(net.ServerNotReadyEvent()); //body is err id
       case 504: // service context deadline exceeded
         log.log('[http] caught 504 deadline exceeded ${r.url}, body:${resp.body}');
-        return await giveup(RequestTimeoutEvent(isServer: true, errorID: resp.body, url: r.url)); //body is err id
+        return await giveup(net.RequestTimeoutEvent(isServer: true, errorID: resp.body, url: r.url)); //body is err id
       // todo: handle 511 on remote
       case 511: // force logout
-        return await giveup(ForceLogOutEvent());
+        return await giveup(net.ForceLogOutEvent());
       case 412: // access token expired
       case 402: // payment token expired
-        return await retry(builder, AccessTokenRevokedEvent(accessToken), r);
+        return await retry(builder, net.AccessTokenRevokedEvent(accessToken), r);
       case 400: // bad request
-        return await giveup(BadRequestEvent()); //body is err id
+        return await giveup(net.BadRequestEvent()); //body is err id
     }
     //unknown status code
     throw Exception('unknown $msg');
   } on SocketException catch (e) {
     log.log('[http] failed to connect ${r.url} cause $e');
-    return await giveup(InternetRequiredEvent(exception: e, url: r.url));
+    return await giveup(net.InternetRequiredEvent(exception: e, url: r.url));
   } on TimeoutException catch (e) {
     log.log('[http] connect timeout ${r.url} cause $e');
-    return await giveup(RequestTimeoutEvent(isServer: false, exception: e, url: r.url));
+    return await giveup(net.RequestTimeoutEvent(isServer: false, exception: e, url: r.url));
   }
   //throw everything else
   //catch (e, s) {
@@ -141,19 +137,19 @@ Future<Object> doPost(Request r, Builder? builder) async {
 /// ```dart
 /// commandHttp.giveup(ctx,BadRequestEvent());
 /// ```
-Future<Object> giveup(dynamic e) async {
+Future<net.Object> giveup(dynamic e) async {
   eventbus.broadcast(e);
-  return empty;
+  return net.empty;
 }
 
 /// retry use contract, return empty proto object is contract failed
 /// ```dart
 /// await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 /// ```
-Future<Object> retry(Builder? builder, dynamic event, Request request) async {
+Future<net.Object> retry(net.Builder? builder, dynamic event, Request request) async {
   if (request.isRetry) {
     // if already in retry, giveup
-    return await giveup(TooManyRetryEvent());
+    return await giveup(net.TooManyRetryEvent());
   }
   request.isRetry = true;
   await eventbus.broadcast(event);

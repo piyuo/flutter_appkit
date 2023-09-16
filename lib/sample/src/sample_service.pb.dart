@@ -6,13 +6,14 @@ import 'package:libcli/net/net.dart';
 
 
  /// SampleService define sample service, source .proto can be found in /pb/sample
- ///
- ///     final service = SampleService()..sender = (context, action) async {
- ///         return StringResponse()..value = 'fake';
- ///     };
- ///
+ /// ```dart
+ /// final service = SampleService()..sender = (context, action) async {
+ ///     return StringResponse()..value = 'fake';
+ /// };
+ /// ```
  class SampleService extends Service {
-  SampleService(): super('sample');
+  /// SysService create service with remote url
+  SampleService(String url): super('sample', url);
 
   /// of get SampleService from context
   static SampleService of(BuildContext context) {

@@ -20,7 +20,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get loginCodeScreenResend => 'Resend';
 
   @override
-  String get loginCodeScreenResendEmail => 'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder';
+  String get loginCodeScreenResendEmail => 'We already send the email so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder';
 
   @override
   String get loginCodeScreenErrorCodeInvalid => 'The verification code you entered is not valid';

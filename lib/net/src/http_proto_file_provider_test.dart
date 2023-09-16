@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'http_proto_file_provider.dart';
-import '../common/common.dart' as common;
+import 'package:libcli/common/common.dart' as common;
 
 void main() {
   group('[net.http_proto_file_provider]', () {

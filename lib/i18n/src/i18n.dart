@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import '../gen/lib_localizations.dart';
+import '../gen/lib_localizations_en.dart';
 
 /// LocaleChangedEvent happen when locale changed
 class LocaleChangedEvent {}
@@ -114,7 +114,7 @@ extension I18nString on String {
 
 extension I18nBuildContext on BuildContext {
   /// i18n return AppLocalizations of current context
-  LibLocalizations get i18n => Localizations.of<LibLocalizations>(this, LibLocalizations)!;
+  LibLocalizations get i18n => Localizations.of<LibLocalizations>(this, LibLocalizations) ?? LibLocalizationsEn();
 }
 
 /// withLocale run function in Intl zone

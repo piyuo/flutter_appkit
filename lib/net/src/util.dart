@@ -1,5 +1,5 @@
 import 'package:mime/mime.dart';
-import '../common/common.dart' as common;
+import 'package:libcli/common/common.dart' as common;
 import 'package:cross_file/cross_file.dart';
 
 /// isOK return true if obj is OK

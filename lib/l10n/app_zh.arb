@@ -4,7 +4,7 @@
     "loginCodeScreenChange": "Change",
     "loginCodeScreenReceive": "Don't receive the code?  ",
     "loginCodeScreenResend": "Resend",
-    "loginCodeScreenResendEmail": "We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn't in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder",
+    "loginCodeScreenResendEmail": "We already send the email from so you can quickly search for it. If it isn't in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder",
     "loginCodeScreenErrorCodeInvalid": "The verification code you entered is not valid",
     "loginCodeScreenErrorCodeMismatch": "The verification code you entered is not correct",
     "loginCodeScreenErrorNoCode": "The verification code has expired. Please go back and try verify email again",

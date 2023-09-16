@@ -5,14 +5,11 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'protobuf.dart';
-import 'firewall.dart';
-import 'object.dart';
-import 'empty.dart';
+import 'package:libcli/net/net.dart' as net;
 
 void main() {
   dynamic lastEvent;
-  eventbus.listen<FirewallBlockEvent>((event) async {
+  eventbus.listen<net.FirewallBlockEvent>((event) async {
     lastEvent = event;
   });
 
@@ -25,10 +22,10 @@ void main() {
       var client = MockClient((request) async {
         sample.StringResponse sr = sample.StringResponse();
         sr.value = 'hi';
-        List<int> bytes = encode(sr);
+        List<int> bytes = net.encode(sr);
         return http.Response.bytes(bytes, 200);
       });
-      final service = sample.SampleService();
+      final service = sample.SampleService('http://not-exist');
       var response =
           await service.sendByClient(sample.CmdEcho()..value = 'hello', client, () => sample.StringResponse());
       expect(response is sample.StringResponse, true);
@@ -38,8 +35,8 @@ void main() {
     });
 
     test('should use sender to mock response', () async {
-      final service = sample.SampleService()
-        ..mockSender = (Object command, {Builder? builder}) async {
+      final service = sample.SampleService('http://not-exist')
+        ..mockSender = (Object command, {net.Builder? builder}) async {
           return sample.StringResponse()..value = 'fake';
         };
 
@@ -54,13 +51,13 @@ void main() {
       var client = MockClient((request) async {
         return http.Response('', 501);
       });
-      final service = sample.SampleService();
+      final service = sample.SampleService('http://not-exist');
       var response = await service.sendByClient(sample.CmdEcho(), client, () => sample.StringResponse());
-      expect(response is Empty, true);
+      expect(response is net.Empty, true);
     });
 
     test('should return null when send wrong action to test server', () async {
-      final service = sample.SampleService()
+      final service = sample.SampleService('http://not-exist')
         ..mockSender = (action, {builder}) async {
           throw Exception('mock');
         };
@@ -71,7 +68,7 @@ void main() {
     });
 
     test('should mock execute', () async {
-      final service = sample.SampleService()
+      final service = sample.SampleService('http://not-exist')
         ..mockSender = (action, {builder}) async {
           return sample.StringResponse()..value = 'hi';
         };
@@ -85,7 +82,7 @@ void main() {
     });
 
     test('should use shared object', () async {
-      final service = sample.SampleService()
+      final service = sample.SampleService('http://not-exist')
         ..mockSender = (action, {builder}) async {
           return sample.StringResponse()..value = 'hi';
         };
@@ -96,32 +93,32 @@ void main() {
     });
 
     test('debugPort should return local test url', () async {
-      final service = sample.SampleService();
+      final service = sample.SampleService('http://not-exist');
       service.debugPort = 3001;
       expect(service.url, 'http://localhost:3001');
     });
 
     test('should block by firewall', () async {
       var client = MockClient((request) async {
-        return http.Response.bytes(encode(sample.StringResponse()..value = 'hi'), 200);
+        return http.Response.bytes(net.encode(sample.StringResponse()..value = 'hi'), 200);
       });
-      sample.SampleService service = sample.SampleService();
+      sample.SampleService service = sample.SampleService('http://not-exist');
 
       final action = sample.CmdEcho(value: 'firewallBlock');
-      mockFirewallInFlight(action);
+      net.mockFirewallInFlight(action);
 
       var response = await service.sendByClient(action, client, () => sample.StringResponse());
-      expect(response is FirewallBlock, true);
-      expect(lastEvent is FirewallBlockEvent, true);
+      expect(response is net.FirewallBlock, true);
+      expect(lastEvent is net.FirewallBlockEvent, true);
     });
 
     test('should get from cache if same command send twice', () async {
       var execCount = 0;
       var client = MockClient((request) async {
         execCount++;
-        return http.Response.bytes(encode(sample.StringResponse()..value = 'hi'), 200);
+        return http.Response.bytes(net.encode(sample.StringResponse()..value = 'hi'), 200);
       });
-      sample.SampleService service = sample.SampleService();
+      sample.SampleService service = sample.SampleService('http://not-exist');
 
       final cmd1 = sample.CmdEcho(value: 'twin');
       final cmd2 = sample.CmdEcho(value: 'twin');

@@ -127,7 +127,7 @@ abstract class LibLocalizations {
   /// No description provided for @loginCodeScreenResendEmail.
   ///
   /// In en, this message translates to:
-  /// **'We already send the email from \"piyuo.com\" so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder'**
+  /// **'We already send the email so you can quickly search for it. If it isn\'t in your inbox, check your folders. If a spam filter or email rule moved the email, it might be in the Spam, Junk, Trash, Deleted Items, or Archive folder'**
   String get loginCodeScreenResendEmail;
 
   /// No description provided for @loginCodeScreenErrorCodeInvalid.

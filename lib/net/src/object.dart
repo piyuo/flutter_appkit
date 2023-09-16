@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:protobuf/protobuf.dart' as $pb;
-import '../common/common.dart' as common;
+import 'package:libcli/common/common.dart' as common;
 import 'package:libcli/google/google.dart' as google;
 import 'timestamp.dart';
 

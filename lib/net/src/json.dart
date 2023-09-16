@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'object.dart';
+import 'package:libcli/net/net.dart' as net;
 
 /// standardDateFormat return internal use standard date format like '1999-01-11 23:22:02'
 DateFormat get standardDateFormat {
@@ -7,19 +7,19 @@ DateFormat get standardDateFormat {
 }
 
 /// formatDate convert date time to standard date format
-///
-///      var str = formatDate(date);
-///      expect(str, '2021-01-02 23:30:00Z');
-///
+/// ```dart
+/// var str = formatDate(date);
+/// expect(str, '2021-01-02 23:30:00Z');
+/// ```
 String formatDate(DateTime date) {
   return standardDateFormat.format(date) + (date.isUtc ? 'Z' : '');
 }
 
 /// parseDate parse standard date format string to date
-///
-///     final date = parseDate('2021-01-02 23:30:00Z');
-///     expect(date.year, 2021);
-///
+/// ```dart
+/// final date = parseDate('2021-01-02 23:30:00Z');
+/// expect(date.year, 2021);
+/// ```
 DateTime parseDate(String date) {
   if (date[date.length - 1] == 'Z') {
     date = date.substring(0, date.length - 1);
@@ -29,23 +29,23 @@ DateTime parseDate(String date) {
 }
 
 /// formatObject convert object to string format
-///
-///      var str = formatObject(Error());
-///
-String formatObject(Object obj) => obj.toBase64();
+/// ```dart
+/// var str = formatObject(Error());
+/// ```
+String formatObject(net.Object obj) => obj.toBase64();
 
 /// parseObject parse object format string to object
-///
-///     final obj = parseObject('CgJoaQ==', Error());
-///
-T parseObject<T extends Object>(String str, T obj) => obj..fromBase64(str);
+/// ```dart
+/// final obj = parseObject('CgJoaQ==', Error());
+/// ```
+T parseObject<T extends net.Object>(String str, T obj) => obj..fromBase64(str);
 
 /// formatObjectList convert object list to string format
-///
-///     final list = [Error()..code = 'hello', Error()..code = 'world'];
-///     List<String> strList = formatObjectList(list);
-///
-List<String> formatObjectList(List<Object> src) {
+/// ```dart
+/// final list = [Error()..code = 'hello', Error()..code = 'world'];
+/// List<String> strList = formatObjectList(list);
+/// ```
+List<String> formatObjectList(List<net.Object> src) {
   final list = <String>[];
   for (final item in src) {
     list.add(item.toBase64());
@@ -54,10 +54,10 @@ List<String> formatObjectList(List<Object> src) {
 }
 
 /// parseObject parse object format string list to object
-///
-///     final list2 = parseObjectList(strList, () => Error());
-///
-List<T> parseObjectList<T extends Object>(List<String> src, Builder<T> builder) {
+/// ```dart
+/// final list2 = parseObjectList(strList, () => Error());
+/// ```
+List<T> parseObjectList<T extends net.Object>(List<String> src, net.Builder<T> builder) {
   final list = <T>[];
   for (final item in src) {
     final obj = builder();

@@ -6,13 +6,14 @@ import 'package:libcli/net/net.dart';
 
 
  /// SysService define sys service, source .proto can be found in /pb/sys
- ///
- ///     final service = SysService()..sender = (context, action) async {
- ///         return StringResponse()..value = 'fake';
- ///     };
- ///
+ /// ```dart
+ /// final service = SysService()..sender = (context, action) async {
+ ///     return StringResponse()..value = 'fake';
+ /// };
+ /// ```
  class SysService extends Service {
-  SysService(): super('sys');
+  /// SysService create service with remote url
+  SysService(String url): super('sys', url);
 
   /// of get SysService from context
   static SysService of(BuildContext context) {

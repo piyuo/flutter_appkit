@@ -4,10 +4,8 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/sample/sample.dart' as sample;
-import '../common/common.dart' as common;
-import 'events.dart';
-import 'http.dart';
-import 'empty.dart';
+import 'package:libcli/common/common.dart' as common;
+import 'package:libcli/net/net.dart' as net;
 
 void main() {
   dynamic lastEvent;
@@ -26,7 +24,7 @@ void main() {
         throw Exception('mock');
       }));
       expect(() async {
-        await doPost(req, () => sample.StringResponse());
+        await net.doPost(req, () => sample.StringResponse());
       }, throwsException);
     });
 
@@ -38,17 +36,17 @@ void main() {
       var req = _fakeSampleRequest(client);
 
       req.timeout = const Duration(milliseconds: 1);
-      var obj = await doPost(req, () => sample.StringResponse());
-      expect(obj is Empty, true);
-      expect(lastEvent is RequestTimeoutEvent, true);
+      var obj = await net.doPost(req, () => sample.StringResponse());
+      expect(obj is net.Empty, true);
+      expect(lastEvent is net.RequestTimeoutEvent, true);
     });
   });
 }
 
 /// _fakeRequest return a fake service request
-Request _fakeSampleRequest(MockClient client) {
-  return Request(
-    service: sample.SampleService(),
+net.Request _fakeSampleRequest(MockClient client) {
+  return net.Request(
+    service: sample.SampleService('http://mock'),
     client: client,
     action: common.OK(),
     url: 'http://mock',

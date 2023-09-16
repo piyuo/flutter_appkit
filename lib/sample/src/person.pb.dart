@@ -15,7 +15,7 @@ import 'package:libcli/net/net.dart' as net;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'package:libcli/google/src/timestamp.pb.dart' as $1;
-import 'package:libcli/net/common/src/model.pb.dart' as $0;
+import 'package:libcli/common/src/model.pb.dart' as $0;
 import 'person.pbenum.dart';
 
 export 'person.pbenum.dart';

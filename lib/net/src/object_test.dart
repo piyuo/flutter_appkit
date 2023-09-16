@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
 import 'timestamp.dart';
-import '../common/common.dart' as common;
+import 'package:libcli/common/common.dart' as common;
 
 void main() {
   group('[net.object]', () {

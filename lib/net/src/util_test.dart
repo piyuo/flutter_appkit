@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../common/common.dart' as common;
+import 'package:libcli/common/common.dart' as common;
 import 'util.dart';
 
 void main() {
