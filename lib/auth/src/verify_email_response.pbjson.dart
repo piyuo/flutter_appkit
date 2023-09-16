@@ -29,15 +29,14 @@ const VerifyEmailResponse_Result$json = {
     {'1': 'RESULT_UNSPECIFIED', '2': 0},
     {'1': 'RESULT_OK', '2': 1},
     {'1': 'RESULT_EMAIL_INVALID', '2': 2},
-    {'1': 'RESULT_TRY_TOO_MANY', '2': 3},
-    {'1': 'RESULT_EMAIL_REJECT', '2': 4},
+    {'1': 'RESULT_EMAIL_REJECT', '2': 3},
   ],
 };
 
 /// Descriptor for `VerifyEmailResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List verifyEmailResponseDescriptor = $convert.base64Decode(
     'ChNWZXJpZnlFbWFpbFJlc3BvbnNlEjMKBnJlc3VsdBgBIAEoDjIbLlZlcmlmeUVtYWlsUmVzcG'
-    '9uc2UuUmVzdWx0UgZyZXN1bHQiewoGUmVzdWx0EhYKElJFU1VMVF9VTlNQRUNJRklFRBAAEg0K'
-    'CVJFU1VMVF9PSxABEhgKFFJFU1VMVF9FTUFJTF9JTlZBTElEEAISFwoTUkVTVUxUX1RSWV9UT0'
-    '9fTUFOWRADEhcKE1JFU1VMVF9FTUFJTF9SRUpFQ1QQBA==');
+    '9uc2UuUmVzdWx0UgZyZXN1bHQiYgoGUmVzdWx0EhYKElJFU1VMVF9VTlNQRUNJRklFRBAAEg0K'
+    'CVJFU1VMVF9PSxABEhgKFFJFU1VMVF9FTUFJTF9JTlZBTElEEAISFwoTUkVTVUxUX0VNQUlMX1'
+    'JFSkVDVBAD');
 

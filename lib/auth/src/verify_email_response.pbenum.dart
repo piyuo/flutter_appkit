@@ -18,14 +18,12 @@ class VerifyEmailResponse_Result extends $pb.ProtobufEnum {
   static const VerifyEmailResponse_Result RESULT_UNSPECIFIED = VerifyEmailResponse_Result._(0, _omitEnumNames ? '' : 'RESULT_UNSPECIFIED');
   static const VerifyEmailResponse_Result RESULT_OK = VerifyEmailResponse_Result._(1, _omitEnumNames ? '' : 'RESULT_OK');
   static const VerifyEmailResponse_Result RESULT_EMAIL_INVALID = VerifyEmailResponse_Result._(2, _omitEnumNames ? '' : 'RESULT_EMAIL_INVALID');
-  static const VerifyEmailResponse_Result RESULT_TRY_TOO_MANY = VerifyEmailResponse_Result._(3, _omitEnumNames ? '' : 'RESULT_TRY_TOO_MANY');
-  static const VerifyEmailResponse_Result RESULT_EMAIL_REJECT = VerifyEmailResponse_Result._(4, _omitEnumNames ? '' : 'RESULT_EMAIL_REJECT');
+  static const VerifyEmailResponse_Result RESULT_EMAIL_REJECT = VerifyEmailResponse_Result._(3, _omitEnumNames ? '' : 'RESULT_EMAIL_REJECT');
 
   static const $core.List<VerifyEmailResponse_Result> values = <VerifyEmailResponse_Result> [
     RESULT_UNSPECIFIED,
     RESULT_OK,
     RESULT_EMAIL_INVALID,
-    RESULT_TRY_TOO_MANY,
     RESULT_EMAIL_REJECT,
   ];
 
