@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: login-token-action.proto
+//  source: login_token_action.proto
 //
 // @dart = 2.12
 
