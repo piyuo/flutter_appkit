@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: login_code_action.proto
+//  source: login_pin_action.proto
 //
 // @dart = 2.12
 

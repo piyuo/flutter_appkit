@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: login_code_action.proto
+//  source: login_pin_action.proto
 //
 // @dart = 2.12
 
@@ -10,5 +10,5 @@
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
-export 'login_code_action.pb.dart';
+export 'login_pin_action.pb.dart';
 

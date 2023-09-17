@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: login_code_action.proto
+//  source: login_pin_action.proto
 //
 // @dart = 2.12
 
@@ -13,17 +13,17 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use loginCodeActionDescriptor instead')
-const LoginCodeAction$json = {
-  '1': 'LoginCodeAction',
+@$core.Deprecated('Use loginPinActionDescriptor instead')
+const LoginPinAction$json = {
+  '1': 'LoginPinAction',
   '2': [
     {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
-    {'1': 'code', '3': 2, '4': 1, '5': 9, '10': 'code'},
+    {'1': 'pin', '3': 2, '4': 1, '5': 9, '10': 'pin'},
   ],
 };
 
-/// Descriptor for `LoginCodeAction`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List loginCodeActionDescriptor = $convert.base64Decode(
-    'Cg9Mb2dpbkNvZGVBY3Rpb24SFAoFZW1haWwYASABKAlSBWVtYWlsEhIKBGNvZGUYAiABKAlSBG'
-    'NvZGU=');
+/// Descriptor for `LoginPinAction`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List loginPinActionDescriptor = $convert.base64Decode(
+    'Cg5Mb2dpblBpbkFjdGlvbhIUCgVlbWFpbBgBIAEoCVIFZW1haWwSEAoDcGluGAIgASgJUgNwaW'
+    '4=');
 

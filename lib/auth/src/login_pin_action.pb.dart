@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: login_code_action.proto
+//  source: login_pin_action.proto
 //
 // @dart = 2.12
 
@@ -14,32 +14,32 @@ import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-/// LoginCodeAction is the action to take when a user logs in with a email
-/// verification code
-class LoginCodeAction extends net.Object {
-  $core.int mapIdXXX() => 1018;
+/// LoginPinAction is the action to take when a user logs in with a email
+/// and verification code
+class LoginPinAction extends net.Object {
+  $core.int mapIdXXX() => 1025;
   get namespace => 'auth';
 
-  factory LoginCodeAction({
+  factory LoginPinAction({
     $core.String? email,
-    $core.String? code,
+    $core.String? pin,
   }) {
     final $result = create();
     if (email != null) {
       $result.email = email;
     }
-    if (code != null) {
-      $result.code = code;
+    if (pin != null) {
+      $result.pin = pin;
     }
     return $result;
   }
-  LoginCodeAction._() : super();
-  factory LoginCodeAction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory LoginCodeAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  LoginPinAction._() : super();
+  factory LoginPinAction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LoginPinAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginCodeAction', createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginPinAction', createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
-    ..aOS(2, _omitFieldNames ? '' : 'code')
+    ..aOS(2, _omitFieldNames ? '' : 'pin')
     ..hasRequiredFields = false
   ;
 
@@ -47,22 +47,22 @@ class LoginCodeAction extends net.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  LoginCodeAction clone() => LoginCodeAction()..mergeFromMessage(this);
+  LoginPinAction clone() => LoginPinAction()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  LoginCodeAction copyWith(void Function(LoginCodeAction) updates) => super.copyWith((message) => updates(message as LoginCodeAction)) as LoginCodeAction;
+  LoginPinAction copyWith(void Function(LoginPinAction) updates) => super.copyWith((message) => updates(message as LoginPinAction)) as LoginPinAction;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static LoginCodeAction create() => LoginCodeAction._();
-  LoginCodeAction createEmptyInstance() => create();
-  static $pb.PbList<LoginCodeAction> createRepeated() => $pb.PbList<LoginCodeAction>();
+  static LoginPinAction create() => LoginPinAction._();
+  LoginPinAction createEmptyInstance() => create();
+  static $pb.PbList<LoginPinAction> createRepeated() => $pb.PbList<LoginPinAction>();
   @$core.pragma('dart2js:noInline')
-  static LoginCodeAction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LoginCodeAction>(create);
-  static LoginCodeAction? _defaultInstance;
+  static LoginPinAction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LoginPinAction>(create);
+  static LoginPinAction? _defaultInstance;
 
   /// email to verify
   @$pb.TagNumber(1)
@@ -76,13 +76,13 @@ class LoginCodeAction extends net.Object {
 
   /// code is verification code
   @$pb.TagNumber(2)
-  $core.String get code => $_getSZ(1);
+  $core.String get pin => $_getSZ(1);
   @$pb.TagNumber(2)
-  set code($core.String v) { $_setString(1, v); }
+  set pin($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCode() => $_has(1);
+  $core.bool hasPin() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCode() => clearField(2);
+  void clearPin() => clearField(2);
 }
 
 
