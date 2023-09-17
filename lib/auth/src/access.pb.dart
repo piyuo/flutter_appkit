@@ -33,7 +33,7 @@ class Access extends net.Object {
     $core.String? accessToken,
     $0.Timestamp? accessExpire,
     $core.String? refreshToken,
-    $0.Timestamp? refreshExpired,
+    $0.Timestamp? refreshExpire,
     $core.Map<$core.String, $core.String>? args,
   }) {
     final $result = create();
@@ -52,8 +52,8 @@ class Access extends net.Object {
     if (refreshToken != null) {
       $result.refreshToken = refreshToken;
     }
-    if (refreshExpired != null) {
-      $result.refreshExpired = refreshExpired;
+    if (refreshExpire != null) {
+      $result.refreshExpire = refreshExpire;
     }
     if (args != null) {
       $result.args.addAll(args);
@@ -70,7 +70,7 @@ class Access extends net.Object {
     ..aOS(3, _omitFieldNames ? '' : 'accessToken')
     ..aOM<$0.Timestamp>(4, _omitFieldNames ? '' : 'accessExpire', subBuilder: $0.Timestamp.create)
     ..aOS(5, _omitFieldNames ? '' : 'refreshToken')
-    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'refreshExpired', subBuilder: $0.Timestamp.create)
+    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'refreshExpire', subBuilder: $0.Timestamp.create)
     ..m<$core.String, $core.String>(7, _omitFieldNames ? '' : 'args', entryClassName: 'Access.ArgsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS)
     ..hasRequiredFields = false
   ;
@@ -148,17 +148,17 @@ class Access extends net.Object {
   @$pb.TagNumber(5)
   void clearRefreshToken() => clearField(5);
 
-  /// refresh_expired is refresh token expired time
+  /// refresh_expire is refresh token expired time
   @$pb.TagNumber(6)
-  $0.Timestamp get refreshExpired => $_getN(5);
+  $0.Timestamp get refreshExpire => $_getN(5);
   @$pb.TagNumber(6)
-  set refreshExpired($0.Timestamp v) { setField(6, v); }
+  set refreshExpire($0.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
-  $core.bool hasRefreshExpired() => $_has(5);
+  $core.bool hasRefreshExpire() => $_has(5);
   @$pb.TagNumber(6)
-  void clearRefreshExpired() => clearField(6);
+  void clearRefreshExpire() => clearField(6);
   @$pb.TagNumber(6)
-  $0.Timestamp ensureRefreshExpired() => $_ensure(5);
+  $0.Timestamp ensureRefreshExpire() => $_ensure(5);
 
   /// args is extra arguments
   @$pb.TagNumber(7)

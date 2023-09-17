@@ -22,7 +22,7 @@ const Access$json = {
     {'1': 'access_token', '3': 3, '4': 1, '5': 9, '10': 'accessToken'},
     {'1': 'access_expire', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'accessExpire'},
     {'1': 'refresh_token', '3': 5, '4': 1, '5': 9, '10': 'refreshToken'},
-    {'1': 'refresh_expired', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'refreshExpired'},
+    {'1': 'refresh_expire', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'refreshExpire'},
     {'1': 'args', '3': 7, '4': 3, '5': 11, '6': '.Access.ArgsEntry', '10': 'args'},
   ],
   '3': [Access_ArgsEntry$json],
@@ -65,10 +65,10 @@ final $typed_data.Uint8List accessDescriptor = $convert.base64Decode(
     'gCIAEoDjIOLkFjY2Vzcy5SZWdpb25SBnJlZ2lvbhIhCgxhY2Nlc3NfdG9rZW4YAyABKAlSC2Fj'
     'Y2Vzc1Rva2VuEj8KDWFjY2Vzc19leHBpcmUYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZX'
     'N0YW1wUgxhY2Nlc3NFeHBpcmUSIwoNcmVmcmVzaF90b2tlbhgFIAEoCVIMcmVmcmVzaFRva2Vu'
-    'EkMKD3JlZnJlc2hfZXhwaXJlZBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDn'
-    'JlZnJlc2hFeHBpcmVkEiUKBGFyZ3MYByADKAsyES5BY2Nlc3MuQXJnc0VudHJ5UgRhcmdzGjcK'
-    'CUFyZ3NFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBIk'
-    '8KBVN0YXRlEhUKEVNUQVRFX1VOU1BFQ0lGSUVEEAASDAoIU1RBVEVfT0sQARIRCg1TVEFURV9T'
-    'VVNQRU5EEAISDgoKU1RBVEVfQkFORBADIi8KBlJlZ2lvbhIWChJSRUdJT05fVU5TUEVDSUZJRU'
-    'QQABINCglSRUdJT05fVFcQAQ==');
+    'EkEKDnJlZnJlc2hfZXhwaXJlGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFINcm'
+    'VmcmVzaEV4cGlyZRIlCgRhcmdzGAcgAygLMhEuQWNjZXNzLkFyZ3NFbnRyeVIEYXJncxo3CglB'
+    'cmdzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4ASJPCg'
+    'VTdGF0ZRIVChFTVEFURV9VTlNQRUNJRklFRBAAEgwKCFNUQVRFX09LEAESEQoNU1RBVEVfU1VT'
+    'UEVORBACEg4KClNUQVRFX0JBTkQQAyIvCgZSZWdpb24SFgoSUkVHSU9OX1VOU1BFQ0lGSUVEEA'
+    'ASDQoJUkVHSU9OX1RXEAE=');
 
