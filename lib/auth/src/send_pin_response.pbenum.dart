@@ -17,14 +17,14 @@ import 'package:protobuf/protobuf.dart' as $pb;
 class SendPinResponse_Result extends $pb.ProtobufEnum {
   static const SendPinResponse_Result RESULT_UNSPECIFIED = SendPinResponse_Result._(0, _omitEnumNames ? '' : 'RESULT_UNSPECIFIED');
   static const SendPinResponse_Result RESULT_OK = SendPinResponse_Result._(1, _omitEnumNames ? '' : 'RESULT_OK');
-  static const SendPinResponse_Result RESULT_EMAIL_INVALID = SendPinResponse_Result._(2, _omitEnumNames ? '' : 'RESULT_EMAIL_INVALID');
-  static const SendPinResponse_Result RESULT_EMAIL_REJECT = SendPinResponse_Result._(3, _omitEnumNames ? '' : 'RESULT_EMAIL_REJECT');
+  static const SendPinResponse_Result RESULT_EMAIL_REJECT = SendPinResponse_Result._(2, _omitEnumNames ? '' : 'RESULT_EMAIL_REJECT');
+  static const SendPinResponse_Result RESULT_MAIL_SERVICE_ERROR = SendPinResponse_Result._(3, _omitEnumNames ? '' : 'RESULT_MAIL_SERVICE_ERROR');
 
   static const $core.List<SendPinResponse_Result> values = <SendPinResponse_Result> [
     RESULT_UNSPECIFIED,
     RESULT_OK,
-    RESULT_EMAIL_INVALID,
     RESULT_EMAIL_REJECT,
+    RESULT_MAIL_SERVICE_ERROR,
   ];
 
   static final $core.Map<$core.int, SendPinResponse_Result> _byValue = $pb.ProtobufEnum.initByValue(values);

@@ -28,15 +28,15 @@ const SendPinResponse_Result$json = {
   '2': [
     {'1': 'RESULT_UNSPECIFIED', '2': 0},
     {'1': 'RESULT_OK', '2': 1},
-    {'1': 'RESULT_EMAIL_INVALID', '2': 2},
-    {'1': 'RESULT_EMAIL_REJECT', '2': 3},
+    {'1': 'RESULT_EMAIL_REJECT', '2': 2},
+    {'1': 'RESULT_MAIL_SERVICE_ERROR', '2': 3},
   ],
 };
 
 /// Descriptor for `SendPinResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List sendPinResponseDescriptor = $convert.base64Decode(
     'Cg9TZW5kUGluUmVzcG9uc2USLwoGcmVzdWx0GAEgASgOMhcuU2VuZFBpblJlc3BvbnNlLlJlc3'
-    'VsdFIGcmVzdWx0ImIKBlJlc3VsdBIWChJSRVNVTFRfVU5TUEVDSUZJRUQQABINCglSRVNVTFRf'
-    'T0sQARIYChRSRVNVTFRfRU1BSUxfSU5WQUxJRBACEhcKE1JFU1VMVF9FTUFJTF9SRUpFQ1QQAw'
-    '==');
+    'VsdFIGcmVzdWx0ImcKBlJlc3VsdBIWChJSRVNVTFRfVU5TUEVDSUZJRUQQABINCglSRVNVTFRf'
+    'T0sQARIXChNSRVNVTFRfRU1BSUxfUkVKRUNUEAISHQoZUkVTVUxUX01BSUxfU0VSVklDRV9FUl'
+    'JPUhAD');
 
