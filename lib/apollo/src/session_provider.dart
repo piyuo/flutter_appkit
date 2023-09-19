@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/auth/auth.dart' as auth;
 import 'package:libcli/net/net.dart' as net;
-import 'package:libcli/log/log.dart' as log;
+//import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
 /// LoginEvent is event when user login through UI
@@ -87,14 +88,25 @@ class Token {
 /// Session keep access token, refresh token and extra data
 class Session {
   Session({
-    required this.userId,
     required this.accessToken,
     this.refreshToken,
     this.args = const {},
   });
 
-  /// userId usually is user's email address like 'john@gmail.com'
-  String userId;
+  /// fromAccess create session from access
+  static Session fromAccess(auth.Access access) {
+    return Session(
+      accessToken: Token(
+        value: access.accessToken,
+        expired: access.accessExpire.toDateTime(toLocal: true),
+      ),
+      refreshToken: Token(
+        value: access.refreshToken,
+        expired: access.refreshExpire.toDateTime(toLocal: true),
+      ),
+      args: access.args,
+    );
+  }
 
   /// accessToken keep access token value and expired time
   Token accessToken;
@@ -109,7 +121,7 @@ class Session {
   bool get canRefresh => refreshToken != null && refreshToken!.isValid;
 
   /// args can keep extra data like region, language, etc
-  Map<String, dynamic> args;
+  Map<String, String> args;
 
   /// operator [] get args
   operator [](String i) => args[i]; // get
@@ -122,7 +134,6 @@ class Session {
 
   /// save session to preferences
   Future<void> save() async {
-    await preferences.setString(_kUserIdKey, userId);
     await accessToken.save(_kAccessTokenKey);
     if (refreshToken != null) {
       await refreshToken!.save(_kRefreshTokenKey);
@@ -138,7 +149,6 @@ class Session {
     final maybeUserId = await preferences.getString(_kUserIdKey);
     if (maybeUserId != null && accessToken != null) {
       return Session(
-        userId: maybeUserId,
         accessToken: accessToken,
         refreshToken: await Token.load(_kRefreshTokenKey),
         args: await preferences.getMap(_kArgsKey) ?? {},
@@ -156,7 +166,7 @@ class Session {
 
   @override
   String toString() {
-    return 'Session{userId: $userId, accessToken: ${accessToken.expired}, refreshToken: ${refreshToken?.expired}, args: $args}';
+    return 'Session{accessToken: ${accessToken.expired}, refreshToken: ${refreshToken?.expired}, args: $args}';
   }
 }
 
@@ -193,7 +203,6 @@ class SessionProvider with ChangeNotifier {
         if (locale != null) {
           await i18n.setPreferLocale(Locale(locale));
         }
-        log.log('[app] session ${session!.userId}');
       }
       notifyListeners();
     }
@@ -258,7 +267,7 @@ class SessionProvider with ChangeNotifier {
     if (noPreviousSession) {
       await eventbus.broadcast(LoginEvent());
     }
-    log.log('[app] login ${newSession.userId}');
+    //  log.log('[app] login ${newSession.accessToken.value}');
     notifyListeners();
   }
 
@@ -269,7 +278,7 @@ class SessionProvider with ChangeNotifier {
   Future<void> logout() async {
     bool hasSession = session != null;
     if (hasSession) {
-      log.log('[app] logout ${session!.userId}');
+//      log.log('[app] logout ${session!.userId}');
     }
     session?.accessToken.value = '';
     session = null;

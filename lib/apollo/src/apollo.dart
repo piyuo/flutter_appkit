@@ -314,4 +314,68 @@ void rootPop(BuildContext context) {
       return routesLocationBuilder(info, param);
     },
   );
+
+
+            Provider<auth.AuthService>(
+              create: (context) => auth.AuthService()
+                ..accessTokenBuilder = () async {
+                  final session = await apollo.SessionProvider.of(context).getValidSession();
+                  if (session == null) {
+                    return null;
+                  }
+                  return session.accessToken.value;
+                }
+                ..urlBuilder = () => 'https://auth-us${apollo.backendBranchUrl}.piyuo.com/?q',
+            ),
+            ChangeNotifierProvider<apollo.LanguageProvider>(
+              create: (context) => apollo.LanguageProvider(),
+            ),
+            ChangeNotifierProvider<apollo.SessionProvider>(
+              create: (_) => apollo.SessionProvider(loader: (apollo.Token? refreshToken) async {
+                if (refreshToken != null) {
+                  final authService = auth.AuthService.of(delta.globalContext);
+                  var resp = await authService.send(
+                    auth.CmdSignupVerify(), // refresh ticket
+                  );
+                  if (resp is auth.CmdSignupVerify) {
+                    return apollo.Session(
+                      userId: 'user1',
+                      accessToken: apollo.Token(
+                        value: 'fakeAccessKey2',
+                        expired: DateTime.now().add(const Duration(seconds: 30)),
+                      ),
+                      refreshToken: refreshToken,
+                    );
+                  }
+                }
+                return null;
+              }),
+            ),
+            Provider<net.HttpProtoFileProvider>(
+              // for protobuf file
+              create: (_) => net.HttpProtoFileProvider(),
+            ),
+
+            ChangeNotifierProvider<apollo.SessionProvider>(
+              create: (_) => apollo.SessionProvider(loader: (apollo.Token? refreshToken) async {
+                if (refreshToken != null) {
+                  final authService = auth.AuthService.of(delta.globalContext);
+                  var resp = await authService.send(
+                    auth.CmdSignupVerify(), // refresh ticket
+                  );
+                  if (resp is auth.CmdSignupVerify) {
+                    return apollo.Session(
+                      userId: resp.id,
+                      accessToken: apollo.Token(
+                        value: 'fakeAccessKey2',
+                        expired: DateTime.now().add(const Duration(seconds: 30)),
+                      ),
+                      refreshToken: refreshToken,
+                    );
+                  }
+                }
+                return null;
+              }),
+            ),
+
 */

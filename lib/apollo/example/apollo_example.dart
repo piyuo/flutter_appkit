@@ -55,6 +55,33 @@ class Example extends StatelessWidget {
 
   final Color? color;
 
+  /// _load to mock data
+  static Future<void> _load(BuildContext context) async {
+    final authService = auth.AuthService.of(context);
+    final languageProvider = LanguageProvider.of(context);
+    await languageProvider.init();
+
+    authService.mockSender = (net.Object action, {net.Builder? builder}) async {
+      if (action is auth.VerifyEmailAction) {
+        return auth.VerifyEmailResponse(result: auth.VerifyEmailResponse_Result.RESULT_OK);
+      }
+      if (action is auth.LoginPinAction) {
+        return auth.LoginPinResponse(
+          result: auth.LoginPinResponse_Result.RESULT_OK,
+          access: auth.Access(
+            state: auth.Access_State.STATE_OK,
+            region: auth.Access_Region.REGION_UNSPECIFIED,
+            accessToken: 'fakeAccess',
+            accessExpire: DateTime.now().add(const Duration(seconds: 300)).timestamp,
+            refreshToken: 'fakeRefresh',
+            refreshExpire: DateTime.now().add(const Duration(days: 300)).timestamp,
+          ),
+        );
+      }
+      throw Exception('$action is not supported');
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     navigationScaffold() {
@@ -218,7 +245,6 @@ class Example extends StatelessWidget {
                     child: const Text('login'),
                     onPressed: () async {
                       await sessionProvider.login(Session(
-                        userId: 'user1',
                         accessToken: Token(
                           value: 'fakeAccess',
                           expired: DateTime.now().add(const Duration(seconds: 300)),
@@ -488,31 +514,10 @@ class Example extends StatelessWidget {
       );
     }
 
-    loginForm() {
-      return Column(children: [
-        Container(
-          color: Colors.grey.shade100,
-          padding: const EdgeInsets.all(40),
-          child: LoginForm(onLogin: (session) => debugPrint('login succeeded')),
-        ),
-      ]);
-    }
-
     return LoadingScreen(
-      future: () async {
-        final authService = auth.AuthService.of(context);
-        final languageProvider = LanguageProvider.of(context);
-        await languageProvider.init();
-
-        authService.mockSender = (net.Object action, {net.Builder? builder}) async {
-          if (action is auth.VerifyEmailAction) {
-            return auth.VerifyEmailResponse()..result = auth.VerifyEmailResponse_Result.RESULT_OK;
-          }
-          throw Exception('$action is not supported');
-        };
-      },
+      future: () async => await _load(context),
       builder: () => testing.ExampleScaffold(
-        builder: loginForm,
+        builder: navigationScaffold,
         buttons: [
           OutlinedButton(
             child: const Text('show alert use global context'),
@@ -535,7 +540,6 @@ class Example extends StatelessWidget {
           testing.ExampleButton('loadingScreen network error', builder: loadingScreenNetworkError),
           testing.ExampleButton('hypertext', builder: hypertext),
           testing.ExampleButton('SplitView', builder: trySplitView),
-          testing.ExampleButton('LoginForm', builder: loginForm, useScaffold: false),
         ],
       ),
     );

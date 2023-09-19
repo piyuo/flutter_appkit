@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class Mounted extends StatefulWidget {
   const Mounted({
     required this.builder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget Function(BuildContext context, bool Function() isMounted) builder;
 
