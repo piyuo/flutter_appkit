@@ -14,7 +14,6 @@ import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/auth/auth.dart' as auth;
 import 'package:beamer/beamer.dart';
 import '../apollo.dart';
 
@@ -57,29 +56,8 @@ class Example extends StatelessWidget {
 
   /// _load to mock data
   static Future<void> _load(BuildContext context) async {
-    final authService = auth.AuthService.of(context);
     final languageProvider = LanguageProvider.of(context);
     await languageProvider.init();
-
-    authService.mockSender = (net.Object action, {net.Builder? builder}) async {
-      if (action is auth.VerifyEmailAction) {
-        return auth.VerifyEmailResponse(result: auth.VerifyEmailResponse_Result.RESULT_OK);
-      }
-      if (action is auth.LoginPinAction) {
-        return auth.LoginPinResponse(
-          result: auth.LoginPinResponse_Result.RESULT_OK,
-          access: auth.Access(
-            state: auth.Access_State.STATE_OK,
-            region: auth.Access_Region.REGION_UNSPECIFIED,
-            accessToken: 'fakeAccess',
-            accessExpire: DateTime.now().add(const Duration(seconds: 300)).timestamp,
-            refreshToken: 'fakeRefresh',
-            refreshExpire: DateTime.now().add(const Duration(days: 300)).timestamp,
-          ),
-        );
-      }
-      throw Exception('$action is not supported');
-    };
   }
 
   @override
