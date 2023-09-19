@@ -15,6 +15,7 @@ import 'package:libcli/net/net.dart' as net;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 /// VerifyEmailAction tell the server to send email with code to user
+/// return SendPinResponse
 class VerifyEmailAction extends net.Object {
   $core.int mapIdXXX() => 1020;
   get namespace => 'auth';
@@ -58,7 +59,7 @@ class VerifyEmailAction extends net.Object {
   static VerifyEmailAction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<VerifyEmailAction>(create);
   static VerifyEmailAction? _defaultInstance;
 
-  /// email
+  /// email is the email address of the user
   @$pb.TagNumber(1)
   $core.String get email => $_getSZ(0);
   @$pb.TagNumber(1)

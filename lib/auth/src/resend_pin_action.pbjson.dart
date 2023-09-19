@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd-resend-code.proto
+//  source: resend_pin_action.proto
 //
 // @dart = 2.12
 
@@ -13,15 +13,15 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use cmdResendCodeDescriptor instead')
-const CmdResendCode$json = {
-  '1': 'CmdResendCode',
+@$core.Deprecated('Use resendPinActionDescriptor instead')
+const ResendPinAction$json = {
+  '1': 'ResendPinAction',
   '2': [
     {'1': 'email', '3': 1, '4': 1, '5': 9, '10': 'email'},
   ],
 };
 
-/// Descriptor for `CmdResendCode`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List cmdResendCodeDescriptor = $convert.base64Decode(
-    'Cg1DbWRSZXNlbmRDb2RlEhQKBWVtYWlsGAEgASgJUgVlbWFpbA==');
+/// Descriptor for `ResendPinAction`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List resendPinActionDescriptor = $convert.base64Decode(
+    'Cg9SZXNlbmRQaW5BY3Rpb24SFAoFZW1haWwYASABKAlSBWVtYWls');
 

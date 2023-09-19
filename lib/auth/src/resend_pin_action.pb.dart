@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: cmd-resend-code.proto
+//  source: resend_pin_action.proto
 //
 // @dart = 2.12
 
@@ -14,18 +14,13 @@ import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-///  Do re-send verification code to email
-///
-/// 	Email {string} email address to resend the code
-///
-/// 	return {PbOK} if success
-/// 	return EMAIL_INVALID {PbError} if email is invalid
-/// 	return NO_CODE {PbError} if code is never create for this email
-class CmdResendCode extends net.Object {
-  $core.int mapIdXXX() => 1005;
+/// ResendPinAction is the action to resend the verification code to the user
+/// return SendPinResponse
+class ResendPinAction extends net.Object {
+  $core.int mapIdXXX() => 1030;
   get namespace => 'auth';
 
-  factory CmdResendCode({
+  factory ResendPinAction({
     $core.String? email,
   }) {
     final $result = create();
@@ -34,11 +29,11 @@ class CmdResendCode extends net.Object {
     }
     return $result;
   }
-  CmdResendCode._() : super();
-  factory CmdResendCode.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CmdResendCode.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ResendPinAction._() : super();
+  factory ResendPinAction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ResendPinAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdResendCode', createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ResendPinAction', createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'email')
     ..hasRequiredFields = false
   ;
@@ -47,23 +42,24 @@ class CmdResendCode extends net.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  CmdResendCode clone() => CmdResendCode()..mergeFromMessage(this);
+  ResendPinAction clone() => ResendPinAction()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdResendCode copyWith(void Function(CmdResendCode) updates) => super.copyWith((message) => updates(message as CmdResendCode)) as CmdResendCode;
+  ResendPinAction copyWith(void Function(ResendPinAction) updates) => super.copyWith((message) => updates(message as ResendPinAction)) as ResendPinAction;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CmdResendCode create() => CmdResendCode._();
-  CmdResendCode createEmptyInstance() => create();
-  static $pb.PbList<CmdResendCode> createRepeated() => $pb.PbList<CmdResendCode>();
+  static ResendPinAction create() => ResendPinAction._();
+  ResendPinAction createEmptyInstance() => create();
+  static $pb.PbList<ResendPinAction> createRepeated() => $pb.PbList<ResendPinAction>();
   @$core.pragma('dart2js:noInline')
-  static CmdResendCode getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CmdResendCode>(create);
-  static CmdResendCode? _defaultInstance;
+  static ResendPinAction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ResendPinAction>(create);
+  static ResendPinAction? _defaultInstance;
 
+  /// email is the email address of the user
   @$pb.TagNumber(1)
   $core.String get email => $_getSZ(0);
   @$pb.TagNumber(1)
