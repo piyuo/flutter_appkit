@@ -40,7 +40,7 @@ Widget responsiveBar(BuildContext context,
             ? theme.appBarTheme.iconTheme!.copyWith(size: _kDesktopToolbarIconSize)
             : const IconThemeData(size: _kDesktopToolbarIconSize),
     title: title,
-    centerTitle: centerTitle,
+    centerTitle: centerTitle ?? true, // default center title, cause mobile and desktop have different default
     toolbarHeight: barHeight,
     backgroundColor: backgroundColor,
     actions: actions,
