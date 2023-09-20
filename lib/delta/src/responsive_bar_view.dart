@@ -146,7 +146,7 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
           : const IconThemeData(size: _kDesktopToolbarIconSize),
       automaticallyImplyLeading: false,
       title: title,
-      centerTitle: centerTitle,
+      centerTitle: centerTitle ?? true,
       toolbarHeight: preferredSize.height,
       backgroundColor: backgroundColor,
       actions: actions,
