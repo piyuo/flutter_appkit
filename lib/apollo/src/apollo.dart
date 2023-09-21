@@ -202,49 +202,6 @@ class ScrollBehaviorModified extends ScrollBehavior {
   }
 }
 
-/// redirect to other section of app, it open route in native mode, redirect to web url in web mode
-void redirect(
-  BuildContext context,
-  String path,
-) {
-  if (kIsWeb) {
-    final l = html.window.location;
-    l.href = ('${l.protocol}//${l.host}$path');
-    return;
-  }
-  Beamer.of(context).beamToNamed(path);
-}
-
-/// goHome go to home page
-void goHome(BuildContext context) => redirect(context, '/');
-
-/// goBack go to previous page
-void goBack(BuildContext context) {
-  if (kIsWeb) {
-    html.window.history.back();
-    return;
-  }
-  Beamer.of(context).beamBack();
-}
-
-/// buildBackButton put back button in app entry Scaffold.appBar
-Widget? buildBackButton() {
-  if (kIsWeb && html.window.location.pathname != '/' && html.window.history.length > 1) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back_ios_new),
-      onPressed: () => html.window.history.back(),
-    );
-  }
-  return null;
-}
-
-/// setWebPageTitle will set html page title if run in web mode
-void setWebPageTitle(String title) {
-  if (kIsWeb) {
-    html.document.title = title;
-  }
-}
-
 /// adjustFontSpacing fix text labels on Flutter's MaterialApp looks worse on iOS and macOS
 /// https://reinhart1010.id/blog/2023/02/11/why-text-labels-on-flutters-materialapp-looks-worse-on-ios-and-macos
 ThemeData adjustFontSpacing(ThemeData theme) {
@@ -286,6 +243,35 @@ ThemeData adjustFontSpacing(ThemeData theme) {
       titleSmall: theme.textTheme.titleSmall?.copyWith(letterSpacing: -0.15),
     ),
   );
+}
+
+/// goHome go to home page
+void goHome(BuildContext context) => goTo(context, '/');
+
+/// goBack go to previous page
+void goBack(BuildContext context) {
+  if (kIsWeb) {
+    html.window.history.back();
+    return;
+  }
+  Beamer.of(context).beamBack();
+}
+
+/// goTo to other section of app, it open route in app mode, redirect to url path in web mode
+void goTo(BuildContext context, String path) {
+  if (kIsWeb) {
+    final l = html.window.location;
+    l.href = ('${l.protocol}//${l.host}$path');
+    return;
+  }
+  Beamer.of(context).beamToNamed(path);
+}
+
+/// setWebPageTitle will set html page title if run in web mode
+void setWebPageTitle(String title) {
+  if (kIsWeb) {
+    html.document.title = title;
+  }
 }
 
 /*

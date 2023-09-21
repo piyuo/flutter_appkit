@@ -1434,28 +1434,6 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          barView() {
-            return ResponsiveBarView(
-              barBuilder: () => responsiveBar(context,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      debugPrint('back');
-                    },
-                  ),
-                  //backgroundColor: Colors.blue.withOpacity(.5),
-                  title: const Text('Hello World'),
-                  elevation: 0,
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.settings),
-                      onPressed: () {},
-                    ),
-                  ]),
-              slivers: [SliverToBoxAdapter(child: Container(height: 1200, color: Colors.green))],
-            );
-          }
-
           avatar() {
             return const Wrap(
               spacing: 10,
@@ -1523,7 +1501,6 @@ class _DeltaExampleState extends State<DeltaExample> {
           return testing.ExampleScaffold(
             builder: avatar,
             buttons: [
-              testing.ExampleButton('BarView', useScaffold: false, builder: barView),
               testing.ExampleButton('Avatar', builder: avatar),
               testing.ExampleButton('preview', builder: preview),
               testing.ExampleButton('chat bubble', builder: chatBubble),

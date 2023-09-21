@@ -4,14 +4,15 @@ import 'package:url_launcher/link.dart';
 import 'package:beamer/beamer.dart';
 import 'package:universal_html/html.dart' as html;
 
+/// BeamLink is used to create link to other page
 class BeamLink extends StatelessWidget {
   const BeamLink({
     required this.child,
     required this.path,
     this.newTab = false,
     this.beamBack = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
 

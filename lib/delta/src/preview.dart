@@ -6,7 +6,7 @@ import 'web_image.dart';
 import 'web_video.dart';
 import 'qr_image.dart';
 import 'page_route.dart';
-import 'responsive_bar_view.dart';
+import '../../apollo/src/bar.dart';
 
 /// kPreviewHeroTag is the hero tag for preview
 int kPreviewHeroIndex = 0;
@@ -105,7 +105,7 @@ void preview<T>(
             top: 0,
             right: 0,
             left: 0,
-            child: ResponsiveAppBar(
+            child: Bar(
               backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.3),
               actions: [
                 if (shareUrl != null)

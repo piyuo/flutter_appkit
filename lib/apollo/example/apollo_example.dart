@@ -122,8 +122,8 @@ class Example extends StatelessWidget {
         body: SingleChildScrollView(
             child: Column(children: [
           OutlinedButton(
-            child: const Text('redirect to other'),
-            onPressed: () => redirect(context, '/other'),
+            child: const Text('go to other'),
+            onPressed: () => goTo(context, '/other'),
           ),
           OutlinedButton(
             child: const Text('go back'),
@@ -134,8 +134,8 @@ class Example extends StatelessWidget {
             onPressed: () => goHome(context),
           ),
           OutlinedButton(
-            child: const Text('redirect to other with path param'),
-            onPressed: () => redirect(context, '/other/2fb83m'),
+            child: const Text('go to other with path param'),
+            onPressed: () => goTo(context, '/other/2fb83m'),
           ),
           OutlinedButton(
               child: const Text('beam to other with data'),
@@ -492,10 +492,61 @@ class Example extends StatelessWidget {
       );
     }
 
+    bar() {
+      return Scaffold(
+        appBar: Bar(
+            homeButton: const HomeButton(
+                icon: delta.WebImage(
+                  width: 24,
+                  height: 24,
+                  url: 'https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png',
+                ),
+                text: 'Home'),
+            //backgroundColor: Colors.blue.withOpacity(.5),
+            title: const Text('Hello World'),
+            elevation: 0,
+            actionsBuilder: () => [
+                  BarButton(
+                    icon: const Icon(Icons.settings),
+                    text: 'Settings',
+                    onPressed: () {},
+                  ),
+                ]),
+        body: Container(height: 1200, color: Colors.green),
+      );
+    }
+
+    sliverBar() {
+      return Scaffold(
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverBar(
+                homeButton: const HomeButton(
+                    icon: delta.WebImage(
+                      width: 24,
+                      height: 24,
+                      url: 'https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png',
+                    ),
+                    text: 'Home'), //backgroundColor: Colors.blue.withOpacity(.5),
+                title: const Text('Hello World'),
+                elevation: 0,
+                actionsBuilder: () => [
+                      BarButton(
+                        icon: const Icon(Icons.settings),
+                        text: 'Settings',
+                        onPressed: () {},
+                      ),
+                    ]),
+            SliverToBoxAdapter(child: Container(height: 1200, color: Colors.green)),
+          ],
+        ),
+      );
+    }
+
     return LoadingScreen(
       future: () async => await _load(context),
       builder: () => testing.ExampleScaffold(
-        builder: navigationScaffold,
+        builder: bar,
         buttons: [
           OutlinedButton(
             child: const Text('show alert use global context'),
@@ -503,6 +554,8 @@ class Example extends StatelessWidget {
               dialog.alert('hello');
             },
           ),
+          testing.ExampleButton('Bar', useScaffold: false, builder: bar),
+          testing.ExampleButton('SliverBar', useScaffold: false, builder: sliverBar),
           testing.ExampleButton('NavigationScaffold', useScaffold: false, builder: navigationScaffold),
           testing.ExampleButton('open web url', builder: tryOpenWebUrl),
           testing.ExampleButton('error screen', builder: errorScreen),
