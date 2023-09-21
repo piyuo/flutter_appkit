@@ -13,3 +13,4 @@ export 'src/open_web_url.dart';
 export 'src/split_view.dart';
 export 'src/navigation_scaffold.dart';
 export 'src/bar.dart';
+export 'src/preview.dart';

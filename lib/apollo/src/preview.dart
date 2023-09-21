@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/utils/utils.dart' as utils;
-import 'share.dart';
-import 'web_image.dart';
-import 'web_video.dart';
-import 'qr_image.dart';
-import 'page_route.dart';
-import '../../apollo/src/bar.dart';
+import '../../delta/src/share.dart';
+import '../../delta/src/web_image.dart';
+import '../../delta/src/web_video.dart';
+import '../../delta/src/qr_image.dart';
+import '../../delta/src/page_route.dart';
+import 'bar.dart';
 
 /// kPreviewHeroTag is the hero tag for preview
 int kPreviewHeroIndex = 0;
@@ -107,7 +107,7 @@ void preview<T>(
             left: 0,
             child: Bar(
               backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.3),
-              actions: [
+              actionsBuilder: () => [
                 if (shareUrl != null)
                   Builder(
                     builder: (BuildContext context) => IconButton(

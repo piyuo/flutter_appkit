@@ -1475,34 +1475,10 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          preview() {
-            String imgUrl =
-                'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
-            String imgUrl2 =
-                'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
-
-            String videoUrl = 'https://download.samplelib.com/mp4/sample-5s.mp4';
-            return Wrap(
-              children: [
-                SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl)),
-                SizedBox(width: 200, height: 200, child: PreviewQrImage(imgUrl)),
-                ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: 360,
-                      maxHeight: 240,
-                    ),
-                    child: PreviewVideo(videoUrl)),
-                SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl2)),
-                AspectRatio(aspectRatio: 1125 / 750, child: PreviewImage(imgUrl)),
-              ],
-            );
-          }
-
           return testing.ExampleScaffold(
             builder: avatar,
             buttons: [
               testing.ExampleButton('Avatar', builder: avatar),
-              testing.ExampleButton('preview', builder: preview),
               testing.ExampleButton('chat bubble', builder: chatBubble),
               testing.ExampleButton('ExpansionPanel', builder: expansionDrawer),
               testing.ExampleButton('mounted pop', builder: mounted),

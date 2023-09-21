@@ -18,7 +18,6 @@ export 'src/expansion_drawer.dart';
 export 'src/global_context_support.dart';
 export 'src/mounted.dart';
 export 'src/page_route.dart';
-export 'src/preview.dart';
 export 'src/tap_breaker.dart';
 export 'src/indicator.dart';
 export 'src/refresh_button.dart';

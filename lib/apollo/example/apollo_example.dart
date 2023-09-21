@@ -369,13 +369,13 @@ class Example extends StatelessWidget {
                               contentBuilder: (context, splitView) => Container(
                                     color: Colors.red,
                                     child: Scaffold(
-                                      appBar: const delta.ResponsiveAppBar(),
+                                      appBar: const Bar(),
                                       body: Center(
                                           child: ElevatedButton(
                                         onPressed: () {
                                           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
                                             return Scaffold(
-                                              appBar: const delta.ResponsiveAppBar(),
+                                              appBar: const Bar(),
                                               body: SafeArea(
                                                   child: SingleChildScrollView(
                                                 child: Column(children: [
@@ -543,6 +543,29 @@ class Example extends StatelessWidget {
       );
     }
 
+    preview() {
+      String imgUrl =
+          'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+      String imgUrl2 =
+          'https://images.pexels.com/photos/13766623/pexels-photo-13766623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+
+      String videoUrl = 'https://download.samplelib.com/mp4/sample-5s.mp4';
+      return Wrap(
+        children: [
+          SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl)),
+          SizedBox(width: 200, height: 200, child: PreviewQrImage(imgUrl)),
+          ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: 360,
+                maxHeight: 240,
+              ),
+              child: PreviewVideo(videoUrl)),
+          SizedBox(width: 200, height: 150, child: PreviewImage(imgUrl2)),
+          AspectRatio(aspectRatio: 1125 / 750, child: PreviewImage(imgUrl)),
+        ],
+      );
+    }
+
     return LoadingScreen(
       future: () async => await _load(context),
       builder: () => testing.ExampleScaffold(
@@ -554,6 +577,7 @@ class Example extends StatelessWidget {
               dialog.alert('hello');
             },
           ),
+          testing.ExampleButton('preview', builder: preview),
           testing.ExampleButton('Bar', useScaffold: false, builder: bar),
           testing.ExampleButton('SliverBar', useScaffold: false, builder: sliverBar),
           testing.ExampleButton('NavigationScaffold', useScaffold: false, builder: navigationScaffold),
