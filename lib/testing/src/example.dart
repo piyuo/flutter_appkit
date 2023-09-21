@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 
 /// ExampleButton is button that will navigate to example builder
 class ExampleButton extends StatelessWidget {
@@ -31,13 +31,10 @@ class ExampleButton extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => useScaffold
                   ? Scaffold(
-                      body: delta.ResponsiveBarView(
-                        barBuilder: () => delta.responsiveBar(context),
-                        slivers: [
-                          SliverToBoxAdapter(child: builder()),
-                        ],
-                      ),
-                    )
+                      appBar: const apollo.Bar(),
+                      body: SingleChildScrollView(
+                        child: builder(),
+                      ))
                   : builder(),
             )));
   }

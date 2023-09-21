@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/net/net.dart' as net;
-import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 
 /// _kBorderRadius is the border radius for embed
 const _kBorderRadius = BorderRadius.all(Radius.circular(12));
@@ -64,7 +64,7 @@ class MessageView extends StatelessWidget {
             );
           case net.Word_WordType.WORD_TYPE_IMAGE:
             return buildMedia(
-              delta.PreviewImage(
+              apollo.PreviewImage(
                 urlBuilder(word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
               ),
@@ -72,7 +72,7 @@ class MessageView extends StatelessWidget {
             );
           case net.Word_WordType.WORD_TYPE_VIDEO:
             return buildMedia(
-              delta.PreviewVideo(
+              apollo.PreviewVideo(
                 urlBuilder(word.value),
                 borderRadius: _isSingleMedia ? null : _kBorderRadius,
                 height: 240,
