@@ -49,6 +49,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
     this.leadingWidth,
     this.homeButton,
     this.homeButtonSize = _kHomeButtonSize,
+    this.bottom,
     super.key,
   });
 
@@ -82,6 +83,9 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
   /// homeButtonSize is home button size
   final double homeButtonSize;
 
+  /// bottom is app bar bottom
+  final PreferredSizeWidget? bottom;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -105,6 +109,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
               : leadingWidth,
           elevation: elevation,
           primary: primary,
+          bottom: bottom,
         );
       }),
     );
@@ -132,6 +137,7 @@ class SliverBar extends SliverLayoutBuilder {
     Widget? homeButton,
     double homeButtonSize = _kHomeButtonSize,
     List<Widget> Function()? actionsBuilder,
+    PreferredSizeWidget? bottom,
   }) : super(builder: (context, constraints) {
           final theme = Theme.of(context);
           return _changeTheme(
@@ -157,6 +163,7 @@ class SliverBar extends SliverLayoutBuilder {
               pinned: pinned,
               floating: floating,
               snap: snap,
+              bottom: bottom,
             ),
           );
         });
