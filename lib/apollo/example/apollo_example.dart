@@ -27,20 +27,20 @@ main() async {
       '/': (context, state, data) => const BeamPage(
             key: ValueKey('home'),
             title: 'home',
-            child: Example(color: null),
+            child: Example(title: 'home'),
           ),
       '/other/:id': (context, state, data) {
         final id = state.pathParameters['id']!;
         return BeamPage(
           key: ValueKey('other-$id'),
           title: 'other-$id',
-          child: const Example(color: Colors.red),
+          child: Example(title: 'other-$id'),
         );
       },
       '/other': (context, state, data) => const BeamPage(
             key: ValueKey('other'),
             title: 'other',
-            child: Example(color: Colors.red),
+            child: Example(title: 'other'),
           ),
     },
   );
@@ -48,11 +48,11 @@ main() async {
 
 class Example extends StatelessWidget {
   const Example({
-    required this.color,
+    required this.title,
     super.key,
   });
 
-  final Color? color;
+  final String? title;
 
   /// _load to mock data
   static Future<void> _load(BuildContext context) async {
@@ -62,6 +62,7 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('title: $title');
     navigationScaffold() {
       return NavigationScaffold(
         railWidth: 0,
@@ -117,8 +118,11 @@ class Example extends StatelessWidget {
       return ErrorScreen(onRetry: () {});
     }
 
-    webApp() {
+    goto() {
       return Scaffold(
+        appBar: const Bar(
+          title: Text('Goto Test'),
+        ),
         body: SingleChildScrollView(
             child: Column(children: [
           OutlinedButton(
@@ -495,7 +499,7 @@ class Example extends StatelessWidget {
     bar() {
       return Scaffold(
         appBar: Bar(
-            homeButton: const HomeButton(
+            homeButton: const BarHomeButton(
                 icon: delta.WebImage(
                   width: 24,
                   height: 24,
@@ -521,7 +525,7 @@ class Example extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             SliverBar(
-                homeButton: const HomeButton(
+                homeButton: const BarHomeButton(
                     icon: delta.WebImage(
                       width: 24,
                       height: 24,
@@ -569,7 +573,7 @@ class Example extends StatelessWidget {
     return LoadingScreen(
       future: () async => await _load(context),
       builder: () => testing.ExampleScaffold(
-        builder: bar,
+        builder: goto,
         buttons: [
           OutlinedButton(
             child: const Text('show alert use global context'),
@@ -583,7 +587,7 @@ class Example extends StatelessWidget {
           testing.ExampleButton('NavigationScaffold', useScaffold: false, builder: navigationScaffold),
           testing.ExampleButton('open web url', builder: tryOpenWebUrl),
           testing.ExampleButton('error screen', builder: errorScreen),
-          testing.ExampleButton('web_app', useScaffold: false, builder: webApp),
+          testing.ExampleButton('goto', useScaffold: false, builder: goto),
           testing.ExampleButton('language provider', builder: tryLanguageProvider),
           testing.ExampleButton('session provider', builder: trySessionProvider),
           testing.ExampleButton('test root context with dialog', builder: testRootContext),

@@ -14,7 +14,7 @@ const _kToolbarTitleFontSize = 15.0;
 const _kToolbarIconSize = 19.0;
 
 /// _kHomeButtonSize is home button size
-const _kHomeButtonSize = 100.0;
+const _kHomeButtonSize = 96.0;
 
 /// _changeTheme change theme of app bar
 Widget _changeTheme(BuildContext context, Widget child) {
@@ -33,15 +33,7 @@ Widget _changeTheme(BuildContext context, Widget child) {
 
 /// _changeLeading change back button on web mode
 Widget? _changeLeading(BuildContext context, Widget? leading) {
-  return kIsWeb
-      ? leading ??
-          (Navigator.canPop(context)
-              ? IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
-              : null)
-      : leading;
+  return kIsWeb ? leading ?? (Navigator.canPop(context) ? const BarBackButton() : null) : leading;
 }
 
 /// Bar used to create app bar, we change it's height and font size and back button behavior
@@ -100,14 +92,13 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
           iconTheme: theme.appBarTheme.iconTheme != null
               ? theme.appBarTheme.iconTheme!.copyWith(size: _kToolbarIconSize)
               : const IconThemeData(size: _kToolbarIconSize),
-          automaticallyImplyLeading: false,
           title: title,
           centerTitle: centerTitle ?? true,
           toolbarHeight: preferredSize.height,
           backgroundColor: backgroundColor,
           actions: actionsBuilder?.call(),
           leading: homeButton ?? _changeLeading(context, leading),
-          leadingWidth: homeButton != null
+          leadingWidth: homeButton != null || kIsWeb
               ? delta.phoneScreen
                   ? null
                   : homeButtonSize
@@ -147,7 +138,6 @@ class SliverBar extends SliverLayoutBuilder {
             context,
             SliverAppBar(
               titleSpacing: spacing,
-              automaticallyImplyLeading: false,
               iconTheme: theme.appBarTheme.iconTheme != null
                   ? theme.appBarTheme.iconTheme!.copyWith(size: _kToolbarIconSize)
                   : const IconThemeData(size: _kToolbarIconSize),
@@ -209,9 +199,9 @@ class BarButton extends StatelessWidget {
   }
 }
 
-/// HomeButton goto home page in web mode go to route '/' in app mode
-class HomeButton extends StatelessWidget {
-  const HomeButton({
+/// BarHomeButton goto home page in web mode go to route '/' in app mode
+class BarHomeButton extends StatelessWidget {
+  const BarHomeButton({
     required this.icon,
     required this.text,
     super.key,
@@ -233,45 +223,16 @@ class HomeButton extends StatelessWidget {
   }
 }
 
-
-
-/*
-/// ResponsiveBarView show [BaseBar] in view
-class ResponsiveBarView extends StatelessWidget {
-  const ResponsiveBarView({
-    required this.barBuilder,
-    this.slivers,
-    super.key,
-  });
-
-  /// bar is app bar
-  final Widget Function() barBuilder;
-
-  /// slivers is slivers
-  final List<Widget>? slivers;
+/// BarBackButton go back to previous page
+class BarBackButton extends StatelessWidget {
+  const BarBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverLayoutBuilder(builder: (_, __) => barBuilder()),
-        if (slivers != null) ...slivers!,
-      ],
-    );
-  }
-}
- */
-
-/*
-
-/// buildBackButton put back button in app entry Scaffold.appBar
-Widget? buildBackButton() {
-  if (kIsWeb && html.window.location.pathname != '/' && html.window.history.length > 1) {
-    return IconButton(
+    return BarButton(
       icon: const Icon(Icons.arrow_back_ios_new),
-      onPressed: () => html.window.history.back(),
+      text: 'Back',
+      onPressed: () => goBack(context),
     );
   }
-  return null;
 }
-*/
