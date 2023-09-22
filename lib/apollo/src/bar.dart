@@ -60,7 +60,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
 
   /// actionsBuilder is build app bar actions
-  final List<Widget> Function()? actionsBuilder;
+  final List<Widget>? Function()? actionsBuilder;
 
   /// leading is app bar leading
   final Widget? leading;
@@ -136,7 +136,7 @@ class SliverBar extends SliverLayoutBuilder {
     double spacing = 0,
     Widget? homeButton,
     double homeButtonSize = _kHomeButtonSize,
-    List<Widget> Function()? actionsBuilder,
+    List<Widget>? Function()? actionsBuilder,
     PreferredSizeWidget? bottom,
   }) : super(builder: (context, constraints) {
           final theme = Theme.of(context);
