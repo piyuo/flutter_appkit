@@ -38,6 +38,9 @@ ThemeData? theme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: lightColorScheme,
+    appBarTheme: const AppBarTheme(
+      foregroundColor: Colors.black,
+    ),
   );
 }
 
@@ -79,5 +82,8 @@ ThemeData? darkTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: dartColorScheme,
+    appBarTheme: const AppBarTheme(
+      foregroundColor: Colors.white,
+    ),
   );
 }
