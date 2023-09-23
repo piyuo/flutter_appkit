@@ -38,8 +38,12 @@ ThemeData? theme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: lightColorScheme,
-    appBarTheme: const AppBarTheme(
-      foregroundColor: Colors.black,
+    appBarTheme: AppBarTheme(
+      foregroundColor: Colors.grey.shade800,
+      titleTextStyle: const TextStyle(fontSize: 14, color: Colors.white),
+      elevation: 0,
+      iconTheme: const IconThemeData(color: Colors.white, size: 20),
+      actionsIconTheme: const IconThemeData(color: Colors.white),
     ),
   );
 }
