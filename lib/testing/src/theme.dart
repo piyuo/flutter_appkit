@@ -40,7 +40,7 @@ ThemeData? theme() {
     colorScheme: lightColorScheme,
     appBarTheme: AppBarTheme(
       foregroundColor: Colors.grey.shade800,
-      titleTextStyle: TextStyle(fontSize: 14, color: Colors.grey.shade800),
+      titleTextStyle: TextStyle(fontSize: 12, color: Colors.grey.shade800),
       elevation: 0,
       iconTheme: IconThemeData(color: Colors.grey.shade800, size: 20),
       actionsIconTheme: IconThemeData(color: Colors.grey.shade800),
@@ -88,7 +88,7 @@ ThemeData? darkTheme() {
     colorScheme: dartColorScheme,
     appBarTheme: AppBarTheme(
       foregroundColor: Colors.grey.shade200,
-      titleTextStyle: TextStyle(fontSize: 14, color: Colors.grey.shade200),
+      titleTextStyle: TextStyle(fontSize: 12, color: Colors.grey.shade200),
       elevation: 0,
       iconTheme: IconThemeData(color: Colors.grey.shade200, size: 20),
       actionsIconTheme: IconThemeData(color: Colors.grey.shade200),
