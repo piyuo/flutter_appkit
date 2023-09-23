@@ -40,10 +40,10 @@ ThemeData? theme() {
     colorScheme: lightColorScheme,
     appBarTheme: AppBarTheme(
       foregroundColor: Colors.grey.shade800,
-      titleTextStyle: const TextStyle(fontSize: 14, color: Colors.white),
+      titleTextStyle: TextStyle(fontSize: 14, color: Colors.grey.shade800),
       elevation: 0,
-      iconTheme: const IconThemeData(color: Colors.white, size: 20),
-      actionsIconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.grey.shade800, size: 20),
+      actionsIconTheme: IconThemeData(color: Colors.grey.shade800),
     ),
   );
 }
@@ -86,8 +86,12 @@ ThemeData? darkTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: dartColorScheme,
-    appBarTheme: const AppBarTheme(
-      foregroundColor: Colors.white,
+    appBarTheme: AppBarTheme(
+      foregroundColor: Colors.grey.shade200,
+      titleTextStyle: TextStyle(fontSize: 14, color: Colors.grey.shade200),
+      elevation: 0,
+      iconTheme: IconThemeData(color: Colors.grey.shade200, size: 20),
+      actionsIconTheme: IconThemeData(color: Colors.grey.shade200),
     ),
   );
 }
