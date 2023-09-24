@@ -39,6 +39,7 @@ ThemeData? theme() {
     useMaterial3: true,
     colorScheme: lightColorScheme,
     appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey.withOpacity(.4),
       foregroundColor: Colors.grey.shade800,
       titleTextStyle: TextStyle(fontSize: 13, color: Colors.grey.shade800),
       elevation: 0,
@@ -87,6 +88,7 @@ ThemeData? darkTheme() {
     useMaterial3: true,
     colorScheme: dartColorScheme,
     appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey.withOpacity(.4),
       foregroundColor: Colors.grey.shade200,
       titleTextStyle: TextStyle(fontSize: 13, color: Colors.grey.shade200),
       elevation: 0,
