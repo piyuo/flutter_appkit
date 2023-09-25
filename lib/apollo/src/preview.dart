@@ -6,7 +6,6 @@ import '../../delta/src/web_image.dart';
 import '../../delta/src/web_video.dart';
 import '../../delta/src/qr_image.dart';
 import '../../delta/src/page_route.dart';
-import 'bar.dart';
 
 /// kPreviewHeroTag is the hero tag for preview
 int kPreviewHeroIndex = 0;
@@ -105,9 +104,9 @@ void preview<T>(
             top: 0,
             right: 0,
             left: 0,
-            child: Bar(
+            child: AppBar(
               backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.3),
-              actionsBuilder: () => [
+              actions: [
                 if (shareUrl != null)
                   Builder(
                     builder: (BuildContext context) => IconButton(

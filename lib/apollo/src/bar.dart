@@ -1,233 +1,152 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:provider/provider.dart';
 import 'apollo.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'session_provider.dart';
 
-/// _kToolbarHeight is height of toolbar
-const _kToolbarHeight = 40.0;
 
-/// _kToolbarTitleFontSize is font size of toolbar
-const _kToolbarTitleFontSize = 15.0;
+/// kBarHeightDesktop is height of toolbar
+const kBarHeightDesktop = 36.0;
 
-/// _kToolbarIconSize is icon size of toolbar
-const _kToolbarIconSize = 19.0;
+/// kLogoSizeDesktop is logo size on desktop
+const kLogoSizeDesktop = 22.0;
 
-/// _kHomeButtonSize is home button size
-const _kHomeButtonSize = 96.0;
+/// kBarHeightMobile is height of toolbar
+const kBarHeightMobile = 40.0;
 
-/// _changeTheme change theme of app bar
-Widget _changeTheme(BuildContext context, Widget child) {
-  final theme = Theme.of(context);
-  return Theme(
-    data: theme.copyWith(
-      appBarTheme: theme.appBarTheme.copyWith(
-        titleTextStyle: theme.appBarTheme.titleTextStyle != null
-            ? theme.appBarTheme.titleTextStyle!.copyWith(fontSize: _kToolbarTitleFontSize)
-            : TextStyle(fontSize: _kToolbarTitleFontSize, color: theme.colorScheme.onBackground),
-      ),
-    ),
-    child: child,
-  );
-}
-
-/// _changeLeading change back button on web mode
-Widget? _changeLeading(BuildContext context, Widget? leading) {
-  return kIsWeb ? leading ?? (Navigator.canPop(context) ? const BarBackButton() : null) : leading;
-}
+/// kLogoSizeMobile is logo size on mobile
+const kLogoSizeMobile = 24.0;
 
 /// Bar used to create app bar, we change it's height and font size and back button behavior
 class Bar extends StatelessWidget implements PreferredSizeWidget {
   const Bar({
-    this.title,
-    this.backgroundColor,
-    this.actionsBuilder,
-    this.leading,
-    this.elevation,
+    required this.home,
+    this.items = const [],
+    this.actions = const [],
     this.primary = true,
-    this.centerTitle,
-    this.leadingWidth,
-    this.homeButton,
-    this.homeButtonSize = _kHomeButtonSize,
     this.bottom,
     super.key,
   });
 
-  /// title is app bar title
-  final Widget? title;
+  /// home is home button widget
+  final Widget home;
 
-  /// backgroundColor is app bar background color
-  final Color? backgroundColor;
+  /// items is menu item widgets on bar
+  final List<Widget> items;
 
-  /// actionsBuilder is build app bar actions
-  final List<Widget>? Function()? actionsBuilder;
-
-  /// leading is app bar leading
-  final Widget? leading;
-
-  /// leadingWidth is app bar leading width
-  final double? leadingWidth;
-
-  /// elevation is app bar elevation
-  final double? elevation;
+  /// actions is app bar actions
+  final List<Widget> actions;
 
   /// primary is app bar primary
   final bool primary;
-
-  /// centerTitle is app bar center title
-  final bool? centerTitle;
-
-  /// homeButton is home button to go home page
-  final Widget? homeButton;
-
-  /// homeButtonSize is home button size
-  final double homeButtonSize;
 
   /// bottom is app bar bottom
   final PreferredSizeWidget? bottom;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return _changeTheme(
-      context,
-      LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-        return AppBar(
-          iconTheme: theme.appBarTheme.iconTheme != null
-              ? theme.appBarTheme.iconTheme!.copyWith(size: _kToolbarIconSize)
-              : const IconThemeData(size: _kToolbarIconSize),
-          title: title,
-          centerTitle: centerTitle ?? true,
-          toolbarHeight: preferredSize.height,
-          backgroundColor: backgroundColor,
-          actions: actionsBuilder?.call(),
-          leading: homeButton ?? _changeLeading(context, leading),
-          leadingWidth: homeButton != null || kIsWeb
-              ? delta.phoneScreen
-                  ? null
-                  : homeButtonSize
-              : leadingWidth,
-          elevation: elevation,
-          primary: primary,
-          bottom: bottom,
-        );
-      }),
-    );
-  }
+  Size get preferredSize => Size.fromHeight(delta.phoneScreen ? kBarHeightMobile : kBarHeightDesktop);
 
   @override
-  Size get preferredSize => const Size.fromHeight(_kToolbarHeight);
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      buildMobile() {
+        return AppBar(
+          centerTitle: false,
+          title: home,
+          actions: [
+            ...actions,
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+            ),
+            const SizedBox(width: 10),
+          ],
+          primary: primary,
+          bottom: bottom,
+          elevation: 0,
+        );
+      }
+
+      buildDesktop() {
+        return AppBar(
+          centerTitle: false,
+          title: Row(
+            children: [
+              home,
+              const SizedBox(width: 15),
+              ...items,
+            ],
+          ),
+          actions: [...actions, const SizedBox()], // SizedBox prevent show endDrawer button
+          primary: primary,
+          bottom: bottom,
+          elevation: 0,
+        );
+      }
+
+      return delta.phoneScreen ? buildMobile() : buildDesktop();
+    });
+  }
 }
 
 /// SliverBar is app bar in sliver
 class SliverBar extends SliverLayoutBuilder {
   SliverBar({
-    super.key,
-    Widget? title,
-    Color? backgroundColor,
-    Widget? leading,
-    double? elevation,
+    required Widget home,
+    List<Widget> items = const [],
+    List<Widget> actions = const [],
     bool primary = true,
-    bool? centerTitle,
-    bool pinned = true,
-    bool floating = false,
-    bool snap = false,
-    double? leadingWidth,
-    double spacing = 0,
-    Widget? homeButton,
-    double homeButtonSize = _kHomeButtonSize,
-    List<Widget>? Function()? actionsBuilder,
     PreferredSizeWidget? bottom,
+    super.key,
   }) : super(builder: (context, constraints) {
-          final theme = Theme.of(context);
-          return _changeTheme(
-            context,
-            SliverAppBar(
-              titleSpacing: spacing,
-              iconTheme: theme.appBarTheme.iconTheme != null
-                  ? theme.appBarTheme.iconTheme!.copyWith(size: _kToolbarIconSize)
-                  : const IconThemeData(size: _kToolbarIconSize),
-              title: title,
-              centerTitle: centerTitle ?? true, // default center title, cause mobile and desktop have different default
-              toolbarHeight: _kToolbarHeight,
-              backgroundColor: backgroundColor,
-              actions: actionsBuilder?.call(),
-              leading: homeButton ?? _changeLeading(context, leading),
-              leadingWidth: homeButton != null
-                  ? delta.phoneScreen
-                      ? null
-                      : homeButtonSize
-                  : leadingWidth,
-              elevation: elevation,
+          final appBarTheme = Theme.of(context).appBarTheme;
+          buildMobile() {
+            return SliverAppBar(
+              toolbarHeight: kBarHeightMobile,
+              centerTitle: false,
+              title: home,
+              actions: [
+                ...actions,
+                IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                ),
+                const SizedBox(width: 10),
+              ],
               primary: primary,
-              pinned: pinned,
-              floating: floating,
-              snap: snap,
               bottom: bottom,
-            ),
-          );
+              elevation: 0,
+              pinned: true,
+              floating: true,
+              snap: true,
+            );
+          }
+
+          buildDesktop() {
+            return SliverAppBar(
+              toolbarHeight: kBarHeightDesktop,
+              centerTitle: false,
+              title: Row(
+                children: [
+                  home,
+                  const SizedBox(width: 15),
+                  ...items,
+                ],
+              ),
+              //actions: actions,
+              actions: [...actions, const SizedBox()], // SizedBox prevent show endDrawer button
+              primary: primary,
+              bottom: bottom,
+              elevation: 0,
+              pinned: true,
+              floating: true,
+              snap: true,
+              backgroundColor: appBarTheme.backgroundColor,
+            );
+          }
+
+          return delta.phoneScreen ? buildMobile() : buildDesktop();
         });
-}
-
-/// BarButton show icon on phone and icon with text on desktop, only icon on mobile
-class BarButton extends StatelessWidget {
-  const BarButton({
-    this.onPressed,
-    required this.icon,
-    required this.text,
-    super.key,
-  });
-
-  /// onRefresh call when user press button
-  final VoidCallback? onPressed;
-
-  /// size is icon size
-  final Widget icon;
-
-  /// text icon text
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final appBarTheme = Theme.of(context).appBarTheme;
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) => IconButton(
-            icon: delta.phoneScreen
-                ? icon
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      icon,
-                      const SizedBox(width: 5),
-                      AutoSizeText(text, style: TextStyle(color: appBarTheme.foregroundColor)),
-                    ],
-                  ),
-            onPressed: onPressed));
-  }
-}
-
-/// BarHomeButton goto home page in web mode go to route '/' in app mode
-class BarHomeButton extends StatelessWidget {
-  const BarHomeButton({
-    required this.icon,
-    required this.text,
-    super.key,
-  });
-
-  /// size is icon size
-  final Widget icon;
-
-  /// text icon text
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return BarButton(
-      icon: icon,
-      text: text,
-      onPressed: () => goHome(context),
-    );
-  }
 }
 
 /// BarBackButton go back to previous page
@@ -236,10 +155,142 @@ class BarBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BarButton(
+    return IconButton(
       icon: const Icon(Icons.arrow_back_ios_new),
-      text: 'Back',
       onPressed: () => goBack(context),
+    );
+  }
+}
+
+/// BarLogoButton display go home button on bar
+class BarLogoButton extends StatelessWidget {
+  const BarLogoButton({
+    required this.url,
+    super.key,
+  });
+
+  /// url is logo image url
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: currentRoute(context) == '/' ? null : () => currentRoute(context),
+      child: delta.WebImage(
+        width: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
+        height: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
+        url: url,
+      ),
+    );
+  }
+}
+
+/// BarItemButton display a menu item on bar
+class BarItemButton extends StatelessWidget {
+  const BarItemButton({
+    required this.text,
+    this.onPressed,
+    super.key,
+  });
+
+  /// text is item text
+  final String text;
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final appBarTheme = Theme.of(context).appBarTheme;
+    return TextButton(
+      style: TextButton.styleFrom().copyWith(
+        overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: appBarTheme.titleTextStyle,
+      ),
+    );
+  }
+}
+
+/// BarUserButton display user avatar and name on bar
+class BarUserButton<T> extends StatelessWidget {
+  const BarUserButton({
+    required this.menuBuilder,
+    required this.onMenuSelected,
+    super.key,
+  });
+
+  /// menuBuilder show menu when user already signed in
+  final List<PopupMenuEntry<T>> Function() menuBuilder;
+
+  /// onMenuSelected is menu item selected callback
+  final void Function(T)? onMenuSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final appBarTheme = Theme.of(context).appBarTheme;
+    return Consumer<SessionProvider>(builder: (context, sessionProvider, _) {
+      final session = sessionProvider.session;
+      final hasSession = session != null && (session.isValid || session.canRefresh);
+      return PopupMenuButton<T>(
+        tooltip: hasSession ? 'User menu' : 'Login / Create Account',
+        onSelected: onMenuSelected,
+        offset: const Offset(10, 32),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        itemBuilder: (BuildContext context) => hasSession ? menuBuilder() : [],
+        child: TextButton.icon(
+          style: TextButton.styleFrom().copyWith(
+            overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+          ),
+          icon: SizedBox(
+              width: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
+              height: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
+              child: hasSession
+                  ? delta.Avatar(
+                      imageUrl: session[kSessionUserPhotoKey],
+                      name: session[kSessionUserNameKey],
+                    )
+                  : Icon(Icons.account_circle, color: Theme.of(context).appBarTheme.foregroundColor)),
+          label: Text(
+            hasSession ? session[kSessionUserNameKey] : 'Login / Create Account',
+            style: appBarTheme.titleTextStyle,
+          ),
+          onPressed: hasSession ? null : () => goTo(context, '/signin'),
+        ),
+      );
+    });
+  }
+}
+
+/// BarLanguageButton display a language menu on bar
+class BarLanguageButton extends StatelessWidget {
+  const BarLanguageButton({
+    required this.text,
+    this.onPressed,
+    super.key,
+  });
+
+  /// text is item text
+  final String text;
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final appBarTheme = Theme.of(context).appBarTheme;
+    return TextButton(
+      style: TextButton.styleFrom().copyWith(
+        overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: appBarTheme.titleTextStyle,
+      ),
     );
   }
 }

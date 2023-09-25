@@ -18,9 +18,6 @@ class LogoutEvent {}
 /// return null if you want to logout, or return new session
 typedef SessionLoader = Future<Session?> Function(Token? refreshToken);
 
-/// _kUserIdKey is user id key in preferences
-const _kUserIdKey = 'U';
-
 /// _kAccessTokenKey is access token key in preferences
 const _kAccessTokenKey = 'A';
 
@@ -121,7 +118,7 @@ class Session {
   bool get canRefresh => refreshToken != null && refreshToken!.isValid;
 
   /// args can keep extra data like region, language, etc
-  Map<String, String> args;
+  Map<String, dynamic> args;
 
   /// operator [] get args
   operator [](String i) => args[i]; // get
@@ -146,8 +143,7 @@ class Session {
   /// load session from preferences
   static Future<Session?> load() async {
     final accessToken = await Token.load(_kAccessTokenKey);
-    final maybeUserId = await preferences.getString(_kUserIdKey);
-    if (maybeUserId != null && accessToken != null) {
+    if (accessToken != null) {
       return Session(
         accessToken: accessToken,
         refreshToken: await Token.load(_kRefreshTokenKey),

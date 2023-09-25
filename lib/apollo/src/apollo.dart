@@ -245,6 +245,11 @@ ThemeData adjustFontSpacing(ThemeData theme) {
   );
 }
 
+/// currentRoute return current beamer route
+currentRoute(BuildContext context) {
+  return Beamer.of(context).currentBeamLocation.state.routeInformation.uri.path;
+}
+
 /// goHome go to home page
 void goHome(BuildContext context) => goTo(context, '/');
 

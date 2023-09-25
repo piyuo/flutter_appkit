@@ -13,7 +13,7 @@ import 'package:libcli/preferences/preferences.dart' as preferences;
 import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/log/log.dart' as log;
-import 'package:libcli/delta/delta.dart' as delta;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:beamer/beamer.dart';
 import '../apollo.dart';
 
@@ -57,7 +57,9 @@ class Example extends StatelessWidget {
   /// _load to mock data
   static Future<void> _load(BuildContext context) async {
     final languageProvider = LanguageProvider.of(context);
+    final sessionProvider = SessionProvider.of(context);
     await languageProvider.init();
+    await sessionProvider.init();
   }
 
   @override
@@ -120,8 +122,8 @@ class Example extends StatelessWidget {
 
     goto() {
       return Scaffold(
-        appBar: const Bar(
-          title: Text('Goto Test'),
+        appBar: AppBar(
+          title: const Text('Goto Test'),
         ),
         body: SingleChildScrollView(
             child: Column(children: [
@@ -218,38 +220,35 @@ class Example extends StatelessWidget {
     }
 
     trySessionProvider() {
-      return ChangeNotifierProvider<SessionProvider>(
-          create: (context) => SessionProvider(loader: (_) async => null),
-          child: Consumer<SessionProvider>(builder: (context, sessionProvider, child) {
-            return Column(
-              children: [
-                OutlinedButton(
-                    child: const Text('login'),
-                    onPressed: () async {
-                      await sessionProvider.login(Session(
-                        accessToken: Token(
-                          value: 'fakeAccess',
-                          expired: DateTime.now().add(const Duration(seconds: 300)),
-                        ),
-                        refreshToken: Token(
-                          value: 'fakeRefresh',
-                          expired: DateTime.now().add(const Duration(seconds: 300)),
-                        ),
-                        args: {
-                          'user': 'user1',
-                          'img': 'img1',
-                          'region': 'region1',
-                        },
-                      ));
-                    }),
-                OutlinedButton(
-                    child: const Text('logout'),
-                    onPressed: () async {
-                      await sessionProvider.logout();
-                    }),
-              ],
-            );
-          }));
+      final sessionProvider = SessionProvider.of(context);
+      return Column(
+        children: [
+          OutlinedButton(
+              child: const Text('login'),
+              onPressed: () async {
+                await sessionProvider.login(Session(
+                  accessToken: Token(
+                    value: 'fakeAccess',
+                    expired: DateTime.now().add(const Duration(seconds: 300)),
+                  ),
+                  refreshToken: Token(
+                    value: 'fakeRefresh',
+                    expired: DateTime.now().add(const Duration(seconds: 300)),
+                  ),
+                  args: {
+                    kSessionUserNameKey: 'user1',
+                    kSessionUserPhotoKey: 'https://cdn.pixabay.com/photo/2014/04/03/11/56/avatar-312603_640.png',
+                    'region': 'region1',
+                  },
+                ));
+              }),
+          OutlinedButton(
+              child: const Text('logout'),
+              onPressed: () async {
+                await sessionProvider.logout();
+              }),
+        ],
+      );
     }
 
     loadingScreenError() {
@@ -373,13 +372,13 @@ class Example extends StatelessWidget {
                               contentBuilder: (context, splitView) => Container(
                                     color: Colors.red,
                                     child: Scaffold(
-                                      appBar: const Bar(),
+                                      appBar: AppBar(),
                                       body: Center(
                                           child: ElevatedButton(
                                         onPressed: () {
                                           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
                                             return Scaffold(
-                                              appBar: const Bar(),
+                                              appBar: AppBar(),
                                               body: SafeArea(
                                                   child: SingleChildScrollView(
                                                 child: Column(children: [
@@ -499,52 +498,103 @@ class Example extends StatelessWidget {
     bar() {
       return Scaffold(
         appBar: Bar(
-            homeButton: const BarHomeButton(
-                icon: delta.WebImage(
-                  width: 24,
-                  height: 24,
-                  url: 'https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png',
-                ),
-                text: 'Home'),
-            //backgroundColor: Colors.blue.withOpacity(.5),
-            title: const Text('Hello World'),
-            elevation: 0,
-            actionsBuilder: () => [
-                  BarButton(
-                    icon: const Icon(Icons.settings),
-                    text: 'Settings',
-                    onPressed: () {},
-                  ),
-                ]),
+          home: const BarLogoButton(url: 'https://cryptologos.cc/logos/stacks-stx-logo.png'),
+          items: [
+            BarItemButton(text: 'Store', onPressed: () => debugPrint('store pressed')),
+            BarItemButton(text: 'Mac', onPressed: () => debugPrint('Mac pressed')),
+            BarItemButton(text: 'iPad', onPressed: () => debugPrint('iPad pressed')),
+            BarItemButton(text: 'Watch', onPressed: () => debugPrint('Watch pressed')),
+          ],
+          actions: [
+            BarUserButton(
+              menuBuilder: () {
+                return [
+                  const PopupMenuItem(child: Text('Profile')),
+                  const PopupMenuItem(child: Text('Sign out')),
+                ];
+              },
+              onMenuSelected: (index) {
+                debugPrint(index.toString());
+              },
+            ),
+          ],
+        ),
         body: Container(height: 1200, color: Colors.green),
+        endDrawer: Drawer(
+          shape: const RoundedRectangleBorder(),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              ListTile(title: const Text('Home'), onTap: () => Navigator.pop(context)),
+              ListTile(title: const Text('Mac'), onTap: () => Navigator.pop(context)),
+              ListTile(title: const Text('iPad'), onTap: () => Navigator.pop(context)),
+              ListTile(title: const Text('Watch'), onTap: () => Navigator.pop(context)),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Footer(
+          copyRight: const AutoSizeText('Copyright © 2023 Inc. All rights reserved.',
+              maxLines: 2, style: TextStyle(fontSize: 12)),
+          actions: const [LanguageButton()],
+          items: [
+            BarItemButton(text: 'Privacy Policy', onPressed: () => debugPrint('store pressed')),
+            BarItemButton(text: 'Terms of Use', onPressed: () => debugPrint('Mac pressed')),
+          ],
+        ),
       );
     }
 
     sliverBar() {
       return Scaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverBar(
-                homeButton: const BarHomeButton(
-                    icon: delta.WebImage(
-                      width: 24,
-                      height: 24,
-                      url: 'https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png',
-                    ),
-                    text: 'Home'), //backgroundColor: Colors.blue.withOpacity(.5),
-                title: const Text('Hello World'),
-                elevation: 0,
-                actionsBuilder: () => [
-                      BarButton(
-                        icon: const Icon(Icons.settings),
-                        text: 'Settings',
-                        onPressed: () {},
-                      ),
-                    ]),
-            SliverToBoxAdapter(child: Container(height: 1200, color: Colors.green)),
-          ],
-        ),
-      );
+          body: CustomScrollView(
+            slivers: <Widget>[
+              SliverBar(
+                home: const BarLogoButton(url: 'https://cryptologos.cc/logos/stacks-stx-logo.png'),
+                items: [
+                  BarItemButton(text: 'Store', onPressed: () => debugPrint('store pressed')),
+                  BarItemButton(text: 'Mac', onPressed: () => debugPrint('Mac pressed')),
+                  BarItemButton(text: 'iPad', onPressed: () => debugPrint('iPad pressed')),
+                  BarItemButton(text: 'Watch', onPressed: () => debugPrint('Watch pressed')),
+                ],
+                actions: [
+                  BarUserButton(
+                    menuBuilder: () {
+                      return [
+                        const PopupMenuItem(child: Text('Profile')),
+                        const PopupMenuItem(child: Text('Sign out')),
+                      ];
+                    },
+                    onMenuSelected: (index) {
+                      debugPrint(index.toString());
+                    },
+                  ),
+                ],
+              ),
+              SliverToBoxAdapter(child: Container(height: 1200, color: Colors.green)),
+              SliverToBoxAdapter(
+                  child: Footer(
+                copyRight: const AutoSizeText('Copyright © 2023 Inc. All rights reserved.',
+                    maxLines: 2, style: TextStyle(fontSize: 12)),
+                actions: const [LanguageButton()],
+                items: [
+                  BarItemButton(text: 'Privacy Policy', onPressed: () => debugPrint('store pressed')),
+                  BarItemButton(text: 'Terms of Use', onPressed: () => debugPrint('Mac pressed')),
+                ],
+              )),
+            ],
+          ),
+          endDrawer: Drawer(
+            shape: const RoundedRectangleBorder(),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                ListTile(title: const Text('Home'), onTap: () => Navigator.pop(context)),
+                ListTile(title: const Text('Mac'), onTap: () => Navigator.pop(context)),
+                ListTile(title: const Text('iPad'), onTap: () => Navigator.pop(context)),
+                ListTile(title: const Text('Watch'), onTap: () => Navigator.pop(context)),
+              ],
+            ),
+          ));
     }
 
     preview() {
@@ -573,7 +623,7 @@ class Example extends StatelessWidget {
     return LoadingScreen(
       future: () async => await _load(context),
       builder: () => testing.ExampleScaffold(
-        builder: goto,
+        builder: sliverBar,
         buttons: [
           OutlinedButton(
             child: const Text('show alert use global context'),
