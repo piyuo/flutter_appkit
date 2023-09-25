@@ -27,6 +27,7 @@ class SigninScreen extends StatelessWidget {
   const SigninScreen({
     this.redirectTo,
     this.loader = _load,
+    this.appBar,
     super.key,
   });
 
@@ -35,6 +36,9 @@ class SigninScreen extends StatelessWidget {
 
   /// loader is a function that will be called when the screen is loading
   final Future<void> Function(BuildContext) loader;
+
+  /// appBar is the app bar
+  final PreferredSizeWidget? appBar;
 
   /// _load load providers when loading screen show
   static Future<void> _load(BuildContext context) async {
@@ -161,9 +165,11 @@ class SigninScreen extends StatelessWidget {
               }
 
               return Scaffold(
-                appBar: const apollo.Bar(
-                  title: Text('Sign in to continue'),
-                ),
+                appBar: appBar ??
+                    AppBar(
+                      toolbarHeight: apollo.barHeight,
+                      title: const Text('Sign in to continue'),
+                    ),
                 body: buildLoginForm(),
 /*                slivers: [
                   SliverToBoxAdapter(

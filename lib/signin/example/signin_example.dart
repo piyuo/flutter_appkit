@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
-import 'package:beamer/beamer.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/auth/auth.dart' as auth;

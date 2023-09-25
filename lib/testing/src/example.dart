@@ -31,7 +31,7 @@ class ExampleButton extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => useScaffold
                   ? Scaffold(
-                      appBar: const apollo.Bar(),
+                      appBar: AppBar(toolbarHeight: apollo.barHeight),
                       body: SingleChildScrollView(
                         child: builder(),
                       ))

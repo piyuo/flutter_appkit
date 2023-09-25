@@ -13,6 +13,7 @@ class CodeView extends StatelessWidget {
   const CodeView({
     required this.onLogin,
     required this.email,
+    this.appBar,
     super.key,
   });
 
@@ -22,15 +23,20 @@ class CodeView extends StatelessWidget {
   /// onLogin is called when login succeeded
   final Function(apollo.Session session) onLogin;
 
+  /// appBar is the app bar
+  final PreferredSizeWidget? appBar;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return ChangeNotifierProvider<LoginCodeScreenProvider>(
       create: (context) => LoginCodeScreenProvider(email: email),
       child: Scaffold(
-        appBar: const apollo.Bar(
-          title: Text('Verify code'),
-        ),
+        appBar: appBar ??
+            AppBar(
+              toolbarHeight: apollo.barHeight,
+              title: const Text('Verify code'),
+            ),
         body: Consumer<LoginCodeScreenProvider>(
           builder: (context, loginCodeScreenProvider, _) {
             final defaultPinTheme = form.PinTheme(
