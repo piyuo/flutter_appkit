@@ -82,7 +82,7 @@ dependencies:
   #reactive_raw_autocomplete: ^1.0.0
   calendar_date_picker2: ^0.5.2
   pinput: ^3.0.0
-  sign_button: ^2.0.3
+  sign_button: ^2.0.6
   text_divider: ^1.0.0
   flutter_cache_manager: ^3.3.1
   share_plus: ^7.1.0
@@ -98,6 +98,9 @@ dependencies:
   duration: ^3.0.12
   emoji_picker_flutter: ^1.6.1
   auto_animated: ^3.2.0
+  sign_in_with_apple: ^5.0.0
+  google_sign_in: ^6.1.5
+  flutter_facebook_auth: ^6.0.2
 dev_dependencies:
   mockito: ^5.4.2
   flutter_lints: ^2.0.2
