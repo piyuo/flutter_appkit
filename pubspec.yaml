@@ -121,7 +121,8 @@ flutter:
     fonts:
         - family: CustomIcons
           fonts:
-              - asset: fonts/custom-icons.ttf
+              - images/
+        #      - asset: fonts/custom-icons.ttf
 
         # To add assets to your package, add an assets section, like this:
         # assets:
