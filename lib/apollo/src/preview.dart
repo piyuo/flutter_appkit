@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/utils/utils.dart' as utils;
-import '../../delta/src/share.dart';
-import '../../delta/src/web_image.dart';
-import '../../delta/src/web_video.dart';
-import '../../delta/src/qr_image.dart';
-import '../../delta/src/page_route.dart';
+import 'package:libcli/delta/delta.dart' as delta;
+import 'bar.dart';
 
 /// kPreviewHeroTag is the hero tag for preview
 int kPreviewHeroIndex = 0;
@@ -82,7 +79,7 @@ void preview<T>(
   bool interactive = true,
   String? shareUrl,
 }) {
-  Navigator.push<T>(context, FadeRouteBuilder(
+  Navigator.push<T>(context, delta.FadeRouteBuilder(
     () {
       return Material(
           child: Stack(
@@ -105,6 +102,7 @@ void preview<T>(
             right: 0,
             left: 0,
             child: AppBar(
+              toolbarHeight: barHeight,
               backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(.3),
               actions: [
                 if (shareUrl != null)
@@ -113,7 +111,7 @@ void preview<T>(
                       icon: const Icon(Icons.ios_share),
                       onPressed: () {
                         final box = context.findRenderObject() as RenderBox?;
-                        shareByCacheOrUrl(
+                        delta.shareByCacheOrUrl(
                           shareUrl,
                           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                         );
@@ -147,11 +145,11 @@ class PreviewImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Preview(
-      builder: () => WebImage(
+      builder: () => delta.WebImage(
         url: url,
         borderRadius: borderRadius,
       ),
-      previewBuilder: () => WebImage(
+      previewBuilder: () => delta.WebImage(
         url: url,
         borderRadius: borderRadius,
         fit: BoxFit.contain,
@@ -189,7 +187,7 @@ class PreviewVideo extends StatelessWidget {
       useHeroEffect: false,
       interactive: false,
       shareUrl: url,
-      builder: () => WebVideo(
+      builder: () => delta.WebVideo(
         url: url,
         showControls: false,
         borderRadius: borderRadius,
@@ -199,7 +197,7 @@ class PreviewVideo extends StatelessWidget {
       previewBuilder: () => Padding(
         padding: const EdgeInsets.only(top: 56),
         child: Center(
-          child: WebVideo(
+          child: delta.WebVideo(
             url: url,
           ),
         ),
@@ -225,14 +223,14 @@ class PreviewQrImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Preview(
-        builder: () => QrImage(
+        builder: () => delta.QrImage(
               data,
             ),
         previewBuilder: () => Center(
               child: SizedBox(
                 width: 400,
                 height: 400,
-                child: QrImage(data),
+                child: delta.QrImage(data),
               ),
             ));
   }

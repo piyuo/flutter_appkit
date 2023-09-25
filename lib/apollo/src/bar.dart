@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'apollo.dart';
 import 'session_provider.dart';
 
-
 /// kBarHeightDesktop is height of toolbar
 const kBarHeightDesktop = 36.0;
 
@@ -16,6 +15,12 @@ const kBarHeightMobile = 40.0;
 
 /// kLogoSizeMobile is logo size on mobile
 const kLogoSizeMobile = 24.0;
+
+/// barHeight is height of toolbar
+get barHeight => delta.phoneScreen ? kBarHeightMobile : kBarHeightDesktop;
+
+/// barIconSize is height of toolbar
+get barIconSize => delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop;
 
 /// Bar used to create app bar, we change it's height and font size and back button behavior
 class Bar extends StatelessWidget implements PreferredSizeWidget {
@@ -44,7 +49,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
 
   @override
-  Size get preferredSize => Size.fromHeight(delta.phoneScreen ? kBarHeightMobile : kBarHeightDesktop);
+  Size get preferredSize => Size.fromHeight(barHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -177,8 +182,8 @@ class BarLogoButton extends StatelessWidget {
     return InkWell(
       onTap: currentRoute(context) == '/' ? null : () => currentRoute(context),
       child: delta.WebImage(
-        width: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
-        height: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
+        width: barIconSize,
+        height: barIconSize,
         url: url,
       ),
     );
@@ -247,8 +252,8 @@ class BarUserButton<T> extends StatelessWidget {
             overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
           ),
           icon: SizedBox(
-              width: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
-              height: delta.phoneScreen ? kLogoSizeMobile : kLogoSizeDesktop,
+              width: barIconSize,
+              height: barIconSize,
               child: hasSession
                   ? delta.Avatar(
                       imageUrl: session[kSessionUserPhotoKey],
