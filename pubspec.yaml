@@ -118,11 +118,13 @@ dependency_overrides:
 flutter:
     generate: true
     uses-material-design: true
+    # To add assets to your package, add an assets section, like this:
+    assets:
+      - images/
     fonts:
         - family: CustomIcons
           fonts:
-              - asset: images/
-        #      - asset: fonts/custom-icons.ttf
+              - asset: fonts/custom-icons.ttf
 
         # To add assets to your package, add an assets section, like this:
         # assets:
