@@ -13,6 +13,7 @@ main() => apollo.start(
       routes: {
         '/': (context, state, data) => const Example(),
         '/signin': (context, state, data) => const SigninScreen(),
+        '/success': (context, state, data) => const Text('Success'),
       },
     );
 
@@ -53,7 +54,7 @@ class Example extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     signinScreen() {
-      return const SigninScreen(loader: _load);
+      return const SigninScreen(loader: _load, redirectTo: '/success');
     }
 
     return testing.ExampleScaffold(

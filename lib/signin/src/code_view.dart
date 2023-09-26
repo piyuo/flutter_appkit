@@ -114,22 +114,6 @@ class CodeView extends StatelessWidget {
                                       )),
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          /*Center(
-                            child: Visibility(
-                              visible: loginCodeScreenProvider.status != VerifyStatus.wait,
-                              child: SizedBox(
-                                  width: 58,
-                                  height: 58,
-                                  child: loginCodeScreenProvider.status == VerifyStatus.busy
-                                      ? delta.ballSpinIndicator()
-                                      : Icon(
-                                          Icons.check_circle,
-                                          color: colorScheme.secondary,
-                                          size: 42,
-                                        )),
-                            ),
-                          ),*/
                         ],
                       ),
                     ),

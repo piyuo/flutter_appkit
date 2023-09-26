@@ -54,9 +54,10 @@ class SigninScreen extends StatelessWidget {
             builder: () {
               onSuccessLogin(session) {
                 if (redirectTo != null) {
-                  Beamer.of(context).beamToNamed(redirectTo!);
+                  apollo.goTo(context, redirectTo!);
                   return;
                 }
+
                 if (kIsWeb) {
                   html.window.history.back();
                   return;
