@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sign_button/sign_button.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:text_divider/text_divider.dart';
 import 'package:beamer/beamer.dart';
@@ -12,15 +11,7 @@ import 'package:libcli/form/form.dart' as form;
 import 'package:universal_platform/universal_platform.dart';
 import 'signin_provider.dart';
 import 'code_view.dart';
-
-List<LoginType> get _supportedLoginTypes {
-  return [
-    if (UniversalPlatform.isIOS || UniversalPlatform.isMacOS || UniversalPlatform.isWeb || UniversalPlatform.isAndroid)
-      LoginType.apple,
-    if (UniversalPlatform.isIOS || UniversalPlatform.isWeb || UniversalPlatform.isAndroid) LoginType.google,
-    if (UniversalPlatform.isIOS || UniversalPlatform.isWeb || UniversalPlatform.isAndroid) LoginType.facebook,
-  ];
-}
+import 'signin_button.dart';
 
 /// SigninScreen is a screen for sign in
 class SigninScreen extends StatelessWidget {
@@ -61,17 +52,6 @@ class SigninScreen extends StatelessWidget {
           return apollo.LoadingScreen(
             future: () => loader(context),
             builder: () {
-              final socialButtons = {
-                LoginType.apple: MediaQuery.of(context).platformBrightness == Brightness.dark
-                    ? ButtonType.appleDark
-                    : ButtonType.apple,
-                LoginType.google: MediaQuery.of(context).platformBrightness == Brightness.dark
-                    ? ButtonType.googleDark
-                    : ButtonType.google,
-                LoginType.facebook: ButtonType.facebook,
-                LoginType.email: ButtonType.mail,
-              };
-
               onSuccessLogin(session) {
                 if (redirectTo != null) {
                   Beamer.of(context).beamToNamed(redirectTo!);
@@ -85,40 +65,54 @@ class SigninScreen extends StatelessWidget {
                 Navigator.of(context).popUntil((_) => count++ >= 2);
               }
 
-              Widget createSignin(LoginType loginType, ButtonType buttonType, VoidCallback onPressed) => SignInButton(
+              Widget buildSigninButton(ButtonType buttonType, VoidCallback onPressed) => Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SigninButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: 12,
-                    width: 260,
-                    buttonSize: ButtonSize.medium,
+                    buttonSize: ButtonSize.large,
                     buttonType: buttonType,
                     onPressed: onPressed,
-                  );
+                  ));
 
-              Widget buildLoginForm() {
-                return ReactiveForm(
+              return Scaffold(
+                appBar: appBar ??
+                    AppBar(
+                      centerTitle: true,
+                      toolbarHeight: apollo.barHeight,
+                      title: const Text('Sign in to continue'),
+                    ),
+                body: ReactiveForm(
                     formGroup: signinProvider.formGroup,
-                    child: Center(
-                        child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 280), //SET max width
+                    child: SingleChildScrollView(
+                        child: Center(
+                            child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 320), //SET max width
                       child: Column(children: [
-                        ...List.generate(
-                          _supportedLoginTypes.length,
-                          (int index) {
-                            final loginType = _supportedLoginTypes[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: createSignin(loginType, socialButtons[loginType]!, () async {
-                                final session = await signinProvider.socialLogin(context, loginType);
-                                if (session != null) {}
-                              }),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 30),
+                        if (UniversalPlatform.isIOS ||
+                            UniversalPlatform.isMacOS ||
+                            UniversalPlatform.isWeb ||
+                            UniversalPlatform.isAndroid)
+                          buildSigninButton(
+                            context.isDark ? ButtonType.appleDark : ButtonType.apple,
+                            signinProvider.withApple,
+                          ),
+                        if (UniversalPlatform.isIOS || UniversalPlatform.isWeb || UniversalPlatform.isAndroid)
+                          buildSigninButton(
+                            context.isDark ? ButtonType.googleDark : ButtonType.google,
+                            signinProvider.withGoogle,
+                          ),
+                        if (UniversalPlatform.isIOS ||
+                            UniversalPlatform.isMacOS ||
+                            UniversalPlatform.isWeb ||
+                            UniversalPlatform.isAndroid)
+                          buildSigninButton(
+                            context.isDark ? ButtonType.facebookDark : ButtonType.facebook,
+                            signinProvider.withApple,
+                          ),
+                        const SizedBox(height: 20),
                         TextDivider.horizontal(text: const Text('OR', style: TextStyle(color: Colors.grey))),
-                        const SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: form.EmailField(
@@ -135,10 +129,8 @@ class SigninScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                        const SizedBox(height: 20),
                         delta.Mounted(
-                            builder: (context, isMounted) => createSignin(
-                                LoginType.email,
+                            builder: (context, isMounted) => buildSigninButton(
                                 ButtonType.mail,
                                 () => form.submit(
                                       showDone: false,
@@ -161,21 +153,7 @@ class SigninScreen extends StatelessWidget {
                                       },
                                     ))),
                       ]),
-                    )));
-              }
-
-              return Scaffold(
-                appBar: appBar ??
-                    AppBar(
-                      toolbarHeight: apollo.barHeight,
-                      title: const Text('Sign in to continue'),
-                    ),
-                body: buildLoginForm(),
-/*                slivers: [
-                  SliverToBoxAdapter(
-                    child: buildLoginForm(),
-                  ),
-                ],*/
+                    )))),
               );
             },
           );
