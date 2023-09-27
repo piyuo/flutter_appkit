@@ -12,7 +12,6 @@ main() => apollo.start(
       darkTheme: testing.darkTheme(),
       routes: {
         '/': (context, state, data) => const Example(),
-        '/signin': (context, state, data) => const SigninScreen(),
         '/success': (context, state, data) => const Text('Success'),
       },
     );

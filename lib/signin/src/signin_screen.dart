@@ -115,7 +115,7 @@ class SigninScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         TextDivider.horizontal(text: const Text('OR', style: TextStyle(color: Colors.grey))),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
                           child: form.EmailField(
                             formControlName: emailField,
                             decoration: const InputDecoration(
