@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:text_divider/text_divider.dart';
-import 'package:beamer/beamer.dart';
 import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
@@ -47,8 +46,8 @@ class SigninScreen extends StatelessWidget {
           create: (_) => SigninProvider(),
         ),
       ],
-      child: Consumer2<apollo.SessionProvider, SigninProvider>(
-        builder: (context, sessionProvider, signinProvider, _) {
+      child: Consumer<SigninProvider>(
+        builder: (context, signinProvider, _) {
           return apollo.LoadingScreen(
             future: () => loader(context),
             builder: () {
@@ -163,18 +162,3 @@ class SigninScreen extends StatelessWidget {
     );
   }
 }
-
-/*
-              return delta.ResponsiveBarView(
-                barBuilder: () => delta.responsiveBar(
-                  context,
-                  title: const Text('Sign in to continue'),
-                  leading: apollo.buildBackButton(),
-                ),
-/*                slivers: [
-                  SliverToBoxAdapter(
-                    child: buildLoginForm(),
-                  ),
-                ],*/
-              );
- */
