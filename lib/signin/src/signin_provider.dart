@@ -5,10 +5,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/auth/auth.dart' as auth;
 import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:libcli/global/global.dart' as global;
 
 /// LoginType define the type of login
 enum LoginType { apple, google, facebook, email }
@@ -91,21 +91,21 @@ class SigninProvider with ChangeNotifier {
   }
 
   /// onSocialLogin is called when the social button is pressed
-  Future<apollo.Session?> socialLogin(BuildContext context, LoginType type) async {
-    final sessionProvider = apollo.SessionProvider.of(context);
+  Future<global.Session?> socialLogin(BuildContext context, LoginType type) async {
+    final sessionProvider = global.SessionProvider.of(context);
     final aExpired = DateTime.now().add(const Duration(minutes: 300));
     final rExpired = DateTime.now().add(const Duration(minutes: 800));
-    final session = apollo.Session(
-      accessToken: apollo.Token(
+    final session = global.Session(
+      accessToken: global.Token(
         value: 'access',
         expired: aExpired,
       ),
-      refreshToken: apollo.Token(
+      refreshToken: global.Token(
         value: 'refresh',
         expired: rExpired,
       ),
       args: {
-        apollo.kSessionUserNameKey: 'userName1',
+        global.kSessionUserNameKey: 'userName1',
       },
     );
     await sessionProvider.login(session);

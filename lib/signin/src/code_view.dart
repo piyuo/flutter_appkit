@@ -6,6 +6,7 @@ import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/global/global.dart' as global;
 import 'code_view_provider.dart';
 
 /// CodeView enter code to verify email
@@ -21,7 +22,7 @@ class CodeView extends StatelessWidget {
   final String email;
 
   /// onLogin is called when login succeeded
-  final Function(apollo.Session session) onLogin;
+  final Function(global.Session session) onLogin;
 
   /// appBar is the app bar
   final PreferredSizeWidget? appBar;

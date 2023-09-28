@@ -8,6 +8,7 @@ import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/auth/auth.dart' as auth;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
+import 'package:libcli/global/global.dart' as global;
 import 'package:universal_platform/universal_platform.dart';
 import 'signin_provider.dart';
 import 'code_view.dart';
@@ -46,8 +47,8 @@ class SigninScreen extends StatelessWidget {
 
   /// _load load providers when loading screen show
   static Future<void> _load(BuildContext context) async {
-    final languageProvider = apollo.LanguageProvider.of(context);
-    final sessionProvider = apollo.SessionProvider.of(context);
+    final languageProvider = global.LanguageProvider.of(context);
+    final sessionProvider = global.SessionProvider.of(context);
     await languageProvider.init();
     await sessionProvider.init();
   }
