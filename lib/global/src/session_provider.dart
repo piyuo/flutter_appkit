@@ -191,10 +191,10 @@ class SessionProvider with ChangeNotifier {
 
   /// init session and refresh session if expired
   Future<void> init() async {
-    session = await Session.load();
+    session = await Session.load(); // load from storage
     if (session != null) {
-      await getValidSession();
-      if (session!.isValid) {
+      session = await getValidSession(); // make sure it's valid
+      if (session != null && session!.isValid) {
         final locale = session![kSessionLocaleKey];
         if (locale != null) {
           await i18n.setPreferLocale(Locale(locale));
