@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:text_divider/text_divider.dart';
 import 'package:libcli/apollo/apollo.dart' as apollo;
-import 'package:libcli/auth/auth.dart' as auth;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/global/global.dart' as global;
@@ -13,19 +12,6 @@ import 'package:universal_platform/universal_platform.dart';
 import 'signin_provider.dart';
 import 'code_view.dart';
 import 'signin_button.dart';
-
-class TestProvider extends StatelessWidget {
-  const TestProvider({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<auth.AuthService>(builder: (context, authService, _) {
-      return Text(authService.toString());
-    });
-  }
-}
 
 /// SigninScreen is a screen for sign in
 class SigninScreen extends StatelessWidget {
