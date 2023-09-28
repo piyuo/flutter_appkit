@@ -44,7 +44,7 @@ main() async {
             title: 'other',
             child: Example(title: 'other'),
           ),
-      '/signin': (context, state, data) => const signin.TestProvider() //const signin.SigninScreen(),
+      '/signin': (context, state, data) => const signin.SigninScreen(),
     },
   );
 }
