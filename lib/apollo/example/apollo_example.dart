@@ -512,14 +512,18 @@ class Example extends StatelessWidget {
             BarItemButton(text: 'Watch', onPressed: () => debugPrint('Watch pressed')),
           ],
           actions: [
-            BarUserButton(
+            BarUserButton<String>(
               menuBuilder: () {
                 return [
-                  const PopupMenuItem(child: Text('Profile')),
-                  const PopupMenuItem(child: Text('Sign out')),
+                  const PopupMenuItem(value: 'profile', child: Text('Profile')),
+                  const PopupMenuItem(value: 'logout', child: Text('Sign out')),
                 ];
               },
               onMenuSelected: (index) {
+                if (index == 'logout') {
+                  final sessionProvider = global.SessionProvider.of(context);
+                  sessionProvider.logout();
+                }
                 debugPrint(index.toString());
               },
             ),
@@ -629,7 +633,7 @@ class Example extends StatelessWidget {
     return LoadingScreen(
       future: () async => await _load(context),
       builder: () => testing.ExampleScaffold(
-        builder: sliverBar,
+        builder: bar,
         buttons: [
           OutlinedButton(
             child: const Text('show alert use global context'),

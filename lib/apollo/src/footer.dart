@@ -52,7 +52,6 @@ class Footer extends StatelessWidget implements PreferredSizeWidget {
           Row(
             children: [
               if (copyRight != null) Expanded(child: copyRight!),
-//              const Spacer(),
               ...actions,
             ],
           ),
@@ -70,14 +69,13 @@ class Footer extends StatelessWidget implements PreferredSizeWidget {
     buildDesktop() {
       return Row(
         children: [
-          if (copyRight != null) copyRight!,
-          Expanded(
-              child: SizedBox(
-                  height: 18,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: itemsWithDivider,
-                  ))),
+          if (copyRight != null) Expanded(child: copyRight!),
+          SizedBox(
+              height: 18,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: itemsWithDivider,
+              )),
           ...actions,
         ],
       );

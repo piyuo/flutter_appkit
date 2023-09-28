@@ -115,9 +115,9 @@ Future<void> start({
               }),
             ),
           ],
-          child: Consumer2<global.LanguageProvider, global.SessionProvider>(
-            builder: (context, languageProvider, sessionProvider, _) =>
-                appBuilder != null ? appBuilder(router) : router,
+          child: Consumer<global.LanguageProvider>(
+            // don't put sessionProvider here, it won't work,it possible because sessionProvider change it value on other route
+            builder: (context, languageProvider, _) => appBuilder != null ? appBuilder(router) : router,
           ),
         ),
       ),
