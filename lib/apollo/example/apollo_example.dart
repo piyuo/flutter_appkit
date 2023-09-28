@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:libcli/auth/auth.dart' as auth;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/preferences/preferences.dart' as preferences;
@@ -59,10 +60,12 @@ class Example extends StatelessWidget {
 
   /// _load to mock data
   static Future<void> _load(BuildContext context) async {
+    final authService = auth.AuthService.of(context);
     final languageProvider = global.LanguageProvider.of(context);
     final sessionProvider = global.SessionProvider.of(context);
     await languageProvider.init();
     await sessionProvider.init();
+    testing.mockAuthResponse(authService);
   }
 
   @override
