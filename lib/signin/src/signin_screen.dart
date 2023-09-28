@@ -12,6 +12,20 @@ import 'signin_provider.dart';
 import 'code_view.dart';
 import 'signin_button.dart';
 
+class TestProvider extends StatelessWidget {
+  const TestProvider({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final sessionProvider = apollo.SessionProvider.of(context);
+    return Consumer<apollo.LanguageProvider>(builder: (context, languageProvider, _) {
+      return Text(languageProvider.toString() + sessionProvider.toString());
+    });
+  }
+}
+
 /// SigninScreen is a screen for sign in
 class SigninScreen extends StatelessWidget {
   const SigninScreen({
