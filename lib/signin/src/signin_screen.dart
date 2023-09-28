@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:text_divider/text_divider.dart';
 import 'package:libcli/apollo/apollo.dart' as apollo;
+import 'package:libcli/auth/auth.dart' as auth;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
 import 'package:universal_platform/universal_platform.dart';
@@ -19,9 +20,8 @@ class TestProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sessionProvider = apollo.SessionProvider.of(context);
-    return Consumer<apollo.LanguageProvider>(builder: (context, languageProvider, _) {
-      return Text(languageProvider.toString() + sessionProvider.toString());
+    return Consumer<auth.AuthService>(builder: (context, authService, _) {
+      return Text(authService.toString());
     });
   }
 }
