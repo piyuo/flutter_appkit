@@ -9,8 +9,7 @@ import 'package:libcli/auth/auth.dart' as auth;
 import 'package:beamer/beamer.dart';
 import 'package:universal_html/html.dart' as html;
 import 'error.dart';
-import 'language_provider.dart';
-import 'session_provider.dart';
+import 'package:libcli/global/global.dart' as global;
 
 /// _serviceEmail is service email, alert dialog will guide user to send email
 String _serviceEmail = '';
@@ -79,9 +78,7 @@ Future<void> start({
       ],
       routeInformationParser: BeamerParser(),
       routerDelegate: beamerDelegate,
-      backButtonDispatcher: BeamerBackButtonDispatcher(
-        delegate: beamerDelegate,
-      ),
+      backButtonDispatcher: BeamerBackButtonDispatcher(delegate: beamerDelegate),
     ),
   );
 
@@ -94,11 +91,11 @@ Future<void> start({
             Provider<auth.AuthService>(
               create: (context) => auth.AuthService(authServiceUrl),
             ),
-            ChangeNotifierProvider<LanguageProvider>(
-              create: (context) => LanguageProvider(),
+            ChangeNotifierProvider<global.LanguageProvider>(
+              create: (context) => global.LanguageProvider(),
             ),
-            ChangeNotifierProvider<SessionProvider>(
-              create: (_) => SessionProvider(loader: (Token? refreshToken) async {
+            ChangeNotifierProvider<global.SessionProvider>(
+              create: (_) => global.SessionProvider(loader: (global.Token? refreshToken) async {
                 if (refreshToken != null) {
                   /*   var resp = await petapiService.send(
         auth.CmdSignupVerify(), // refresh ticket
@@ -118,7 +115,7 @@ Future<void> start({
               }),
             ),
           ],
-          child: Consumer2<LanguageProvider, SessionProvider>(
+          child: Consumer2<global.LanguageProvider, global.SessionProvider>(
             builder: (context, languageProvider, sessionProvider, _) =>
                 appBuilder != null ? appBuilder(router) : router,
           ),

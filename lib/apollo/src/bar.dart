@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'package:provider/provider.dart';
 import 'apollo.dart';
-import 'session_provider.dart';
+import 'package:libcli/global/global.dart' as global;
+
+/// kSigninPath is signin path
+const kSigninPath = '/signin/';
 
 /// kBarHeightDesktop is height of toolbar
 const kBarHeightDesktop = 36.0;
@@ -236,38 +238,36 @@ class BarUserButton<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appBarTheme = Theme.of(context).appBarTheme;
-    return Consumer<SessionProvider>(builder: (context, sessionProvider, _) {
-      final session = sessionProvider.session;
-      final hasSession = session != null && (session.isValid || session.canRefresh);
-      return PopupMenuButton<T>(
-        tooltip: hasSession ? 'User menu' : 'Login / Create Account',
-        onSelected: onMenuSelected,
-        offset: const Offset(10, 32),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+    final session = global.SessionProvider.of(context).session;
+    final hasSession = session != null && (session.isValid || session.canRefresh);
+    return PopupMenuButton<T>(
+      tooltip: hasSession ? 'User menu' : 'Login / Create Account',
+      onSelected: onMenuSelected,
+      offset: const Offset(10, 32),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      itemBuilder: (BuildContext context) => hasSession ? menuBuilder() : [],
+      child: TextButton.icon(
+        style: TextButton.styleFrom().copyWith(
+          overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
         ),
-        itemBuilder: (BuildContext context) => hasSession ? menuBuilder() : [],
-        child: TextButton.icon(
-          style: TextButton.styleFrom().copyWith(
-            overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
-          ),
-          icon: SizedBox(
-              width: barIconSize,
-              height: barIconSize,
-              child: hasSession
-                  ? delta.Avatar(
-                      imageUrl: session[kSessionUserPhotoKey],
-                      name: session[kSessionUserNameKey],
-                    )
-                  : Icon(Icons.account_circle, color: Theme.of(context).appBarTheme.foregroundColor)),
-          label: Text(
-            hasSession ? session[kSessionUserNameKey] : 'Login / Create Account',
-            style: appBarTheme.titleTextStyle,
-          ),
-          onPressed: hasSession ? null : () => goTo(context, '/signin'),
+        icon: SizedBox(
+            width: barIconSize,
+            height: barIconSize,
+            child: hasSession
+                ? delta.Avatar(
+                    imageUrl: session[global.kSessionUserPhotoKey],
+                    name: session[global.kSessionUserNameKey],
+                  )
+                : Icon(Icons.account_circle, color: Theme.of(context).appBarTheme.foregroundColor)),
+        label: Text(
+          hasSession ? session[global.kSessionUserNameKey] : 'Login / Create Account',
+          style: appBarTheme.titleTextStyle,
         ),
-      );
-    });
+        onPressed: hasSession ? null : () => goTo(context, kSigninPath),
+      ),
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:provider/provider.dart';
-import 'language_provider.dart';
+import 'package:libcli/global/global.dart' as global;
 
 /// LanguageButton show language pop menu let user change language
 class LanguageButton extends StatelessWidget {
@@ -15,7 +15,7 @@ class LanguageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LanguageProvider>(builder: (context, languageProvider, _) {
+    return Consumer<global.LanguageProvider>(builder: (context, languageProvider, _) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 3),
         child: PopupMenuButton<String>(

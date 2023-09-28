@@ -15,6 +15,8 @@ import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/log/log.dart' as log;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:beamer/beamer.dart';
+import 'package:libcli/signin/signin.dart' as signin;
+import 'package:libcli/global/global.dart' as global;
 import '../apollo.dart';
 
 final _navigatorKey = GlobalKey();
@@ -42,6 +44,7 @@ main() async {
             title: 'other',
             child: Example(title: 'other'),
           ),
+      '/signin': (context, state, data) => const signin.TestProvider() //const signin.SigninScreen(),
     },
   );
 }
@@ -56,8 +59,8 @@ class Example extends StatelessWidget {
 
   /// _load to mock data
   static Future<void> _load(BuildContext context) async {
-    final languageProvider = LanguageProvider.of(context);
-    final sessionProvider = SessionProvider.of(context);
+    final languageProvider = global.LanguageProvider.of(context);
+    final sessionProvider = global.SessionProvider.of(context);
     await languageProvider.init();
     await sessionProvider.init();
   }
@@ -193,7 +196,7 @@ class Example extends StatelessWidget {
     }
 
     tryLanguageProvider() {
-      return Consumer<LanguageProvider>(builder: (context, languageProvider, child) {
+      return Consumer<global.LanguageProvider>(builder: (context, languageProvider, child) {
         return Column(
           children: [
             Text(context.i18n.okButtonText),
@@ -220,24 +223,24 @@ class Example extends StatelessWidget {
     }
 
     trySessionProvider() {
-      final sessionProvider = SessionProvider.of(context);
+      final sessionProvider = global.SessionProvider.of(context);
       return Column(
         children: [
           OutlinedButton(
               child: const Text('login'),
               onPressed: () async {
-                await sessionProvider.login(Session(
-                  accessToken: Token(
+                await sessionProvider.login(global.Session(
+                  accessToken: global.Token(
                     value: 'fakeAccess',
                     expired: DateTime.now().add(const Duration(seconds: 300)),
                   ),
-                  refreshToken: Token(
+                  refreshToken: global.Token(
                     value: 'fakeRefresh',
                     expired: DateTime.now().add(const Duration(seconds: 300)),
                   ),
                   args: {
-                    kSessionUserNameKey: 'user1',
-                    kSessionUserPhotoKey: 'https://cdn.pixabay.com/photo/2014/04/03/11/56/avatar-312603_640.png',
+                    global.kSessionUserNameKey: 'user1',
+                    global.kSessionUserPhotoKey: 'https://cdn.pixabay.com/photo/2014/04/03/11/56/avatar-312603_640.png',
                     'region': 'region1',
                   },
                 ));
