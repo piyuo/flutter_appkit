@@ -8,7 +8,6 @@ import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:libcli/global/global.dart' as global;
 
 /// LoginType define the type of login
 enum LoginType { apple, google, facebook, email }
@@ -90,28 +89,6 @@ class SigninProvider with ChangeNotifier {
     return true;
   }
 
-  /// onSocialLogin is called when the social button is pressed
-  Future<global.Session?> socialLogin(BuildContext context, LoginType type) async {
-    final sessionProvider = global.SessionProvider.of(context);
-    final aExpired = DateTime.now().add(const Duration(minutes: 300));
-    final rExpired = DateTime.now().add(const Duration(minutes: 800));
-    final session = global.Session(
-      accessToken: global.Token(
-        value: 'access',
-        expired: aExpired,
-      ),
-      refreshToken: global.Token(
-        value: 'refresh',
-        expired: rExpired,
-      ),
-      args: {
-        global.kSessionUserNameKey: 'userName1',
-      },
-    );
-    await sessionProvider.login(session);
-    return session;
-  }
-
   /// sendVerificationEmail is called when user choose email to login, return true if verification email is sent
   Future<bool> sendVerificationEmail(BuildContext context, String email) async {
     final authService = auth.AuthService.of(context);
@@ -138,3 +115,27 @@ bool isPinSent(response) {
   }
   return false;
 }
+
+/*
+  /// onSocialLogin is called when the social button is pressed
+  Future<global.Session?> socialLogin(BuildContext context, LoginType type) async {
+    final sessionProvider = global.SessionProvider.of(context);
+    final aExpired = DateTime.now().add(const Duration(minutes: 300));
+    final rExpired = DateTime.now().add(const Duration(minutes: 800));
+    final session = global.Session(
+      accessToken: global.Token(
+        value: 'access',
+        expired: aExpired,
+      ),
+      refreshToken: global.Token(
+        value: 'refresh',
+        expired: rExpired,
+      ),
+      args: {
+        global.kSessionUserNameKey: 'userName1',
+      },
+    );
+    await sessionProvider.login(session);
+    return session;
+  }
+ */

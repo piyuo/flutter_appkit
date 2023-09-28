@@ -22,7 +22,7 @@ class CodeView extends StatelessWidget {
   final String email;
 
   /// onLogin is called when login succeeded
-  final Function(global.Session session) onLogin;
+  final Future<void> Function(global.Session session) onLogin;
 
   /// appBar is the app bar
   final PreferredSizeWidget? appBar;

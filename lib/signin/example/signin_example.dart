@@ -31,7 +31,7 @@ class Example extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     signinScreen() {
-      return const SigninScreen(loader: _load, redirectTo: '/success');
+      return const SigninScreen(loader: _load, redirectTo: '/success/');
     }
 
     return testing.ExampleScaffold(

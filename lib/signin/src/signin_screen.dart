@@ -52,7 +52,7 @@ class SigninScreen extends StatelessWidget {
           return apollo.LoadingScreen(
             future: () => loader(context),
             builder: () {
-              onSuccessLogin(session) {
+              onSuccessLogin() {
                 if (redirectTo != null) {
                   apollo.goTo(context, redirectTo!);
                   return;
@@ -146,7 +146,11 @@ class SigninScreen extends StatelessWidget {
                                               MaterialPageRoute(
                                                 builder: (_) => CodeView(
                                                   email: email,
-                                                  onLogin: onSuccessLogin,
+                                                  onLogin: (session) async {
+                                                    final sessionProvider = global.SessionProvider.of(context);
+                                                    await sessionProvider.login(session);
+                                                    onSuccessLogin();
+                                                  },
                                                 ),
                                               ));
                                         }
