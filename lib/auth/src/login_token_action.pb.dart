@@ -14,24 +14,12 @@ import 'package:libcli/net/net.dart' as net;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-///  Do login user using refresh token
-///
-/// 	RefreshToken issued when user login
-///
-/// 	return LoginResponse if login successfully
-/// 	error "INVALID_TOKEN"
-/// 	error "TOKEN_EXPIRED"
-/// 	error "USER_NOT_EXIST"
-/// 	error "STORE_NOT_EXIST"
-/// 	error "ACCOUNT_SUSPEND"
-/// 	error "ACCOUNT_CANCELED"
-/// 	error "USER_LEAVE"
-/// 	error "USER_CANCELED"
-class CmdTokenLogin extends net.Object {
+/// Do Login by using refresh token
+class LoginTokenAction extends net.Object {
   $core.int mapIdXXX() => 1027;
   get namespace => 'auth';
 
-  factory CmdTokenLogin({
+  factory LoginTokenAction({
     $core.String? refreshToken,
   }) {
     final $result = create();
@@ -40,12 +28,12 @@ class CmdTokenLogin extends net.Object {
     }
     return $result;
   }
-  CmdTokenLogin._() : super();
-  factory CmdTokenLogin.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CmdTokenLogin.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  LoginTokenAction._() : super();
+  factory LoginTokenAction.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LoginTokenAction.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CmdTokenLogin', createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'refreshToken', protoName: 'refreshToken')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginTokenAction', createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'refreshToken')
     ..hasRequiredFields = false
   ;
 
@@ -53,23 +41,24 @@ class CmdTokenLogin extends net.Object {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  CmdTokenLogin clone() => CmdTokenLogin()..mergeFromMessage(this);
+  LoginTokenAction clone() => LoginTokenAction()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  CmdTokenLogin copyWith(void Function(CmdTokenLogin) updates) => super.copyWith((message) => updates(message as CmdTokenLogin)) as CmdTokenLogin;
+  LoginTokenAction copyWith(void Function(LoginTokenAction) updates) => super.copyWith((message) => updates(message as LoginTokenAction)) as LoginTokenAction;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CmdTokenLogin create() => CmdTokenLogin._();
-  CmdTokenLogin createEmptyInstance() => create();
-  static $pb.PbList<CmdTokenLogin> createRepeated() => $pb.PbList<CmdTokenLogin>();
+  static LoginTokenAction create() => LoginTokenAction._();
+  LoginTokenAction createEmptyInstance() => create();
+  static $pb.PbList<LoginTokenAction> createRepeated() => $pb.PbList<LoginTokenAction>();
   @$core.pragma('dart2js:noInline')
-  static CmdTokenLogin getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CmdTokenLogin>(create);
-  static CmdTokenLogin? _defaultInstance;
+  static LoginTokenAction getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LoginTokenAction>(create);
+  static LoginTokenAction? _defaultInstance;
 
+  /// [refreshToken] is refresh token issued when user last time login
   @$pb.TagNumber(1)
   $core.String get refreshToken => $_getSZ(0);
   @$pb.TagNumber(1)

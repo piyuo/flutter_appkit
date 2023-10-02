@@ -13,15 +13,16 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use cmdTokenLoginDescriptor instead')
-const CmdTokenLogin$json = {
-  '1': 'CmdTokenLogin',
+@$core.Deprecated('Use loginTokenActionDescriptor instead')
+const LoginTokenAction$json = {
+  '1': 'LoginTokenAction',
   '2': [
-    {'1': 'refreshToken', '3': 1, '4': 1, '5': 9, '10': 'refreshToken'},
+    {'1': 'refresh_token', '3': 1, '4': 1, '5': 9, '10': 'refreshToken'},
   ],
 };
 
-/// Descriptor for `CmdTokenLogin`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List cmdTokenLoginDescriptor = $convert.base64Decode(
-    'Cg1DbWRUb2tlbkxvZ2luEiIKDHJlZnJlc2hUb2tlbhgBIAEoCVIMcmVmcmVzaFRva2Vu');
+/// Descriptor for `LoginTokenAction`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List loginTokenActionDescriptor = $convert.base64Decode(
+    'ChBMb2dpblRva2VuQWN0aW9uEiMKDXJlZnJlc2hfdG9rZW4YASABKAlSDHJlZnJlc2hUb2tlbg'
+    '==');
 
