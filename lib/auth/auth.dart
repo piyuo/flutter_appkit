@@ -15,3 +15,4 @@ export 'src/login_pin_response.pb.dart';
 export 'src/login_token_action.pb.dart';
 export 'src/resend_pin_action.pb.dart';
 export 'src/send_pin_response.pb.dart';
+export 'src/login_token_response.pb.dart';
