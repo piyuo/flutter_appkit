@@ -89,27 +89,23 @@ Future<void> start({
         child: MultiProvider(
           providers: [
             Provider<auth.AuthService>(
-              create: (context) => auth.AuthService(authServiceUrl),
+              create: (_) => auth.AuthService(authServiceUrl),
             ),
             ChangeNotifierProvider<global.LanguageProvider>(
-              create: (context) => global.LanguageProvider(),
+              create: (_) => global.LanguageProvider(),
             ),
             ChangeNotifierProvider<global.SessionProvider>(
-              create: (_) => global.SessionProvider(loader: (global.Token? refreshToken) async {
+              create: (context) => global.SessionProvider(loader: (global.Token? refreshToken) async {
                 if (refreshToken != null) {
-                  /*   var resp = await petapiService.send(
-        auth.CmdSignupVerify(), // refresh ticket
-      );
-      if (resp is auth.CmdSignupVerify) {
-        return base.Session(
-          userId: 'user1',
-          accessToken: base.Token(
-            value: 'fakeAccessKey2',
-            expired: DateTime.now().add(const Duration(seconds: 30)),
-          ),
-          refreshToken: refreshToken,
-        );
-      }*/
+                  final authService = auth.AuthService.of(context);
+                  var response = await authService.send(
+                    auth.LoginTokenAction(refreshToken: refreshToken.value), // refresh ticket
+                  );
+                  if (response is auth.LoginTokenResponse) {
+                    if (response.result == auth.LoginTokenResponse_Result.RESULT_OK) {
+                      return global.Session.fromAccess(response.access);
+                    }
+                  }
                 }
                 return null;
               }),
