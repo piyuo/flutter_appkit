@@ -135,19 +135,19 @@ class Example extends StatelessWidget {
             child: Column(children: [
           OutlinedButton(
             child: const Text('go to other'),
-            onPressed: () => goTo(context, '/other'),
+            onPressed: () => Beamer.of(context).goTo('/other'),
           ),
           OutlinedButton(
             child: const Text('go back'),
-            onPressed: () => goBack(context),
+            onPressed: () => Beamer.of(context).goBack(),
           ),
           OutlinedButton(
             child: const Text('go home'),
-            onPressed: () => goHome(context),
+            onPressed: () => Beamer.of(context).goHome(),
           ),
           OutlinedButton(
             child: const Text('go to other with path param'),
-            onPressed: () => goTo(context, '/other/2fb83m'),
+            onPressed: () => Beamer.of(context).goTo('/other/2fb83m'),
           ),
           OutlinedButton(
               child: const Text('beam to other with data'),

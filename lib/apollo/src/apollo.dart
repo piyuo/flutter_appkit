@@ -243,33 +243,6 @@ currentRoute(BuildContext context) {
   return Beamer.of(context).currentBeamLocation.state.routeInformation.uri.path;
 }
 
-/// goHome go to home page
-void goHome(BuildContext context) => goTo(context, '/');
-
-/// goBack go to previous page
-void goBack(BuildContext context) {
-  if (kIsWeb) {
-    html.window.history.back();
-    return;
-  }
-  Beamer.of(context).beamBack();
-}
-
-/// goTo to other section of app, it open route in app mode, redirect to url path in web mode
-void goTo(BuildContext context, String path) {
-  if (kIsWeb) {
-    final l = html.window.location;
-    l.href = ('${l.protocol}//${l.host}$path');
-    return;
-  }
-  Beamer.of(context).beamToNamed(path);
-}
-
-/// goSignIn go to sign in page
-void goSignIn(BuildContext context) {
-  goTo(context, '/signin');
-}
-
 /// setWebPageTitle will set html page title if run in web mode
 void setWebPageTitle(String title) {
   if (kIsWeb) {

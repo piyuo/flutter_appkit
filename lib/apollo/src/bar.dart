@@ -3,6 +3,8 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'apollo.dart';
 import 'package:libcli/global/global.dart' as global;
 import 'package:provider/provider.dart';
+import 'package:beamer/beamer.dart';
+import 'beamer_extension.dart';
 
 /// kSigninPath is signin path
 const kSigninPath = '/signin/';
@@ -165,7 +167,7 @@ class BarBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_back_ios_new),
-      onPressed: () => goBack(context),
+      onPressed: () => Beamer.of(context).goBack(),
     );
   }
 }
@@ -267,7 +269,7 @@ class BarUserButton<T> extends StatelessWidget {
             hasSession ? session[global.kSessionUserNameKey] : 'Login / Create Account',
             style: appBarTheme.titleTextStyle,
           ),
-          onPressed: hasSession ? null : () => goTo(context, kSigninPath),
+          onPressed: hasSession ? null : () => Beamer.of(context).goTo(kSigninPath),
         ),
       );
     });
