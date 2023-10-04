@@ -265,6 +265,11 @@ void goTo(BuildContext context, String path) {
   Beamer.of(context).beamToNamed(path);
 }
 
+/// goSignIn go to sign in page
+void goSignIn(BuildContext context) {
+  goTo(context, '/signin');
+}
+
 /// setWebPageTitle will set html page title if run in web mode
 void setWebPageTitle(String title) {
   if (kIsWeb) {
