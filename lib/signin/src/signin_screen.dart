@@ -9,6 +9,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
 import 'package:libcli/global/global.dart' as global;
 import 'package:universal_platform/universal_platform.dart';
+import 'package:beamer/beamer.dart';
 import 'signin_provider.dart';
 import 'code_view.dart';
 import 'signin_button.dart';
@@ -54,7 +55,7 @@ class SigninScreen extends StatelessWidget {
             builder: () {
               onSuccessLogin() {
                 if (redirectTo != null) {
-                  apollo.goTo(context, redirectTo!);
+                  Beamer.of(context).goTo(redirectTo!);
                   return;
                 }
 
