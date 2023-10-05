@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:libcli/testing/testing.dart' as testing;
 import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/auth/auth.dart' as auth;
-import 'package:libcli/global/global.dart' as global;
 import '../signin.dart';
 
 main() => apollo.start(
@@ -21,8 +20,8 @@ class Example extends StatelessWidget {
 
   static Future<void> _load(BuildContext context) async {
     final authService = auth.AuthService.of(context);
-    final languageProvider = global.LanguageProvider.of(context);
-    final sessionProvider = global.SessionProvider.of(context);
+    final languageProvider = apollo.LanguageProvider.of(context);
+    final sessionProvider = apollo.SessionProvider.of(context);
     await languageProvider.init();
     await sessionProvider.init();
     testing.mockAuthResponse(authService);

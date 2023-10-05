@@ -1,5 +1,6 @@
 library apollo;
 
+export 'package:libcli/auth/auth.dart';
 export 'package:libcli/global/global.dart';
 export 'src/apollo.dart';
 export 'src/beam_link.dart';

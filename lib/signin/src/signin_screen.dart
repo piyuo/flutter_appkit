@@ -7,7 +7,6 @@ import 'package:text_divider/text_divider.dart';
 import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
-import 'package:libcli/global/global.dart' as global;
 import 'package:universal_platform/universal_platform.dart';
 import 'package:beamer/beamer.dart';
 import 'signin_provider.dart';
@@ -34,8 +33,8 @@ class SigninScreen extends StatelessWidget {
 
   /// _load load providers when loading screen show
   static Future<void> _load(BuildContext context) async {
-    final languageProvider = global.LanguageProvider.of(context);
-    final sessionProvider = global.SessionProvider.of(context);
+    final languageProvider = apollo.LanguageProvider.of(context);
+    final sessionProvider = apollo.SessionProvider.of(context);
     await languageProvider.init();
     await sessionProvider.init();
   }
@@ -148,7 +147,7 @@ class SigninScreen extends StatelessWidget {
                                                 builder: (_) => CodeView(
                                                   email: email,
                                                   onLogin: (session) async {
-                                                    final sessionProvider = global.SessionProvider.of(context);
+                                                    final sessionProvider = apollo.SessionProvider.of(context);
                                                     await sessionProvider.login(session);
                                                     onSuccessLogin();
                                                   },

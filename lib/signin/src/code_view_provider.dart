@@ -4,7 +4,7 @@ import 'package:libcli/delta/delta.dart' as delta;
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/auth/auth.dart' as auth;
-import 'package:libcli/global/global.dart' as global;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 import 'signin_provider.dart';
 
 /// Code is code field name
@@ -75,7 +75,7 @@ class LoginCodeScreenProvider with ChangeNotifier {
     }
   }
 
-  Future<global.Session?> onPinSubmit(BuildContext context, String pin) async {
+  Future<apollo.Session?> onPinSubmit(BuildContext context, String pin) async {
     status = VerifyStatus.busy;
     final response = await auth.AuthService.of(context).send(
       auth.LoginPinAction(email: email, pin: pin),
@@ -84,7 +84,7 @@ class LoginCodeScreenProvider with ChangeNotifier {
     if (response is auth.LoginPinResponse) {
       switch (response.result) {
         case auth.LoginPinResponse_Result.RESULT_OK:
-          return global.Session.fromAccess(response.access);
+          return apollo.Session.fromAccess(response.access);
         case auth.LoginPinResponse_Result.RESULT_WRONG_PIN:
           dialog.alert(_getErrorTranslation('CODE_MISMATCH'), isError: true);
           break;
