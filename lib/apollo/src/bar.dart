@@ -256,15 +256,15 @@ class BarUserButton<T> extends StatelessWidget {
           style: TextButton.styleFrom().copyWith(
             overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
           ),
-          icon: SizedBox(
-              width: barIconSize,
-              height: barIconSize,
-              child: hasSession
-                  ? delta.Avatar(
-                      imageUrl: session[global.kSessionUserPhotoKey],
-                      name: session[global.kSessionUserNameKey] ?? 'N/A',
-                    )
-                  : Icon(Icons.account_circle, color: Theme.of(context).appBarTheme.foregroundColor)),
+          icon: hasSession
+              ? SizedBox(
+                  width: barIconSize,
+                  height: barIconSize,
+                  child: delta.Avatar(
+                    imageUrl: session[global.kSessionUserPhotoKey],
+                    name: session[global.kSessionUserNameKey] ?? 'N/A',
+                  ))
+              : const SizedBox(),
           label: Text(
             hasSession ? session[global.kSessionUserNameKey] : 'Login / Create Account',
             style: appBarTheme.titleTextStyle,

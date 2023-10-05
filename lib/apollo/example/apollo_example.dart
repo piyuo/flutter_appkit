@@ -532,7 +532,8 @@ class Example extends StatelessWidget {
         body: Container(height: 1200, color: Colors.green),
         endDrawer: Drawer(
           shape: const RoundedRectangleBorder(),
-          child: ListView(
+          child: SafeArea(
+              child: ListView(
             padding: EdgeInsets.zero,
             children: [
               ListTile(title: const Text('Home'), onTap: () => Navigator.pop(context)),
@@ -540,7 +541,7 @@ class Example extends StatelessWidget {
               ListTile(title: const Text('iPad'), onTap: () => Navigator.pop(context)),
               ListTile(title: const Text('Watch'), onTap: () => Navigator.pop(context)),
             ],
-          ),
+          )),
         ),
         bottomNavigationBar: Footer(
           copyRight: const AutoSizeText('Copyright © 2023 Inc. All rights reserved.',
