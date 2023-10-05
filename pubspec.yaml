@@ -106,7 +106,7 @@ dev_dependencies:
   analyzer: ^5.11.0
 dependency_overrides:
   analyzer: ^6.2.0
-  meta: ^1.10.0
+  meta: ^1.10.0 #cause flutter_test blocked
   uuid: ^4.1.0
   permission_handler: ^11.0.1
 
