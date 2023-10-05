@@ -9,7 +9,7 @@ import 'package:libcli/auth/auth.dart' as auth;
 import 'package:beamer/beamer.dart';
 import 'package:universal_html/html.dart' as html;
 import 'error.dart';
-import 'package:libcli/global/global.dart' as global;
+import 'package:libcli/apollo/apollo.dart' as apollo;
 
 /// _serviceEmail is service email, alert dialog will guide user to send email
 String _serviceEmail = '';
@@ -91,11 +91,11 @@ Future<void> start({
             Provider<auth.AuthService>(
               create: (_) => auth.AuthService(authServiceUrl),
             ),
-            ChangeNotifierProvider<global.LanguageProvider>(
-              create: (_) => global.LanguageProvider(),
+            ChangeNotifierProvider<apollo.LanguageProvider>(
+              create: (_) => apollo.LanguageProvider(),
             ),
-            ChangeNotifierProvider<global.SessionProvider>(
-              create: (context) => global.SessionProvider(loader: (global.Token? refreshToken) async {
+            ChangeNotifierProvider<apollo.SessionProvider>(
+              create: (context) => apollo.SessionProvider(loader: (apollo.Token? refreshToken) async {
                 if (refreshToken != null) {
                   final authService = auth.AuthService.of(context);
                   var response = await authService.send(
@@ -103,7 +103,7 @@ Future<void> start({
                   );
                   if (response is auth.LoginTokenResponse) {
                     if (response.result == auth.LoginTokenResponse_Result.RESULT_OK) {
-                      return global.Session.fromAccess(response.access);
+                      return apollo.Session.fromAccess(response.access);
                     }
                   }
                 }
@@ -111,7 +111,7 @@ Future<void> start({
               }),
             ),
           ],
-          child: Consumer<global.LanguageProvider>(
+          child: Consumer<apollo.LanguageProvider>(
             // don't put sessionProvider here, it won't work,it possible because sessionProvider change it value on other route
             builder: (context, languageProvider, _) => appBuilder != null ? appBuilder(router) : router,
           ),

@@ -63,9 +63,9 @@ class Example extends StatelessWidget {
     final authService = auth.AuthService.of(context);
     final languageProvider = global.LanguageProvider.of(context);
     final sessionProvider = global.SessionProvider.of(context);
+    testing.mockAuthResponse(authService);
     await languageProvider.init();
     await sessionProvider.init();
-    testing.mockAuthResponse(authService);
   }
 
   @override
