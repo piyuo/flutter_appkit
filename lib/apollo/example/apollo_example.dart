@@ -262,12 +262,12 @@ class Example extends StatelessWidget {
         child: const Text('loading screen error'),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-            return LoadingScreen(
-              future: () async {
+            return FutureLoader(
+              loader: () async {
                 await Future.delayed(const Duration(seconds: 3));
                 throw Exception('error');
               },
-              builder: () => Container(width: 100, height: 100, color: Colors.red),
+              builder: (isReady) => Container(width: 100, height: 100, color: Colors.red),
             );
           }));
         },
@@ -279,12 +279,13 @@ class Example extends StatelessWidget {
         child: const Text('loading screen network error'),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-            return LoadingScreen(
-              future: () async {
+            return FutureLoader(
+              loader: () async {
                 await Future.delayed(const Duration(seconds: 1));
                 throw const utils.TryAgainLaterException('error'); //TimeoutException('error');
               },
-              builder: () => Container(width: 100, height: 100, color: Colors.red),
+              builder: (isReady) =>
+                  isReady ? Container(width: 100, height: 100, color: Colors.red) : const LoadingScreen(),
             );
           }));
         },
@@ -296,9 +297,9 @@ class Example extends StatelessWidget {
         child: const Text('provider need wait 3 seconds'),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-            return LoadingScreen(
-              future: () async => await Future.delayed(const Duration(seconds: 3)),
-              builder: () => const Text('done'),
+            return FutureLoader(
+              loader: () async => await Future.delayed(const Duration(seconds: 3)),
+              builder: (isReady) => isReady ? const Text('done') : const LoadingScreen(),
             );
           }));
         },
@@ -318,10 +319,9 @@ class Example extends StatelessWidget {
         child: const Text('provider need wait 3 seconds'),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-            return LoadingScreen(
-              future: () async => await Future.delayed(const Duration(seconds: 3)),
-              loadingWidgetBuilder: () => buildChild(false),
-              builder: () => buildChild(true),
+            return FutureLoader(
+              loader: () async => await Future.delayed(const Duration(seconds: 3)),
+              builder: (isReady) => buildChild(isReady),
             );
           }));
         },
@@ -355,11 +355,11 @@ class Example extends StatelessWidget {
       return ChangeNotifierProvider<SplitViewProvider>(
           create: (_) => SplitViewProvider(key: '_splitView'),
           child: Consumer<SplitViewProvider>(
-              builder: (context, splitterViewProvider, _) => LoadingScreen(
-                    future: () async {
+              builder: (context, splitterViewProvider, _) => FutureLoader(
+                    loader: () async {
                       await splitterViewProvider.init();
                     },
-                    builder: () => Row(children: [
+                    builder: (isReady) => Row(children: [
                       const SizedBox(width: 50),
                       Expanded(
                           child: SplitView(
@@ -631,9 +631,9 @@ class Example extends StatelessWidget {
       );
     }
 
-    return LoadingScreen(
-      future: () async => await _load(context),
-      builder: () => testing.ExampleScaffold(
+    return FutureLoader(
+      loader: () async => await _load(context),
+      builder: (isReady) => testing.ExampleScaffold(
         builder: bar,
         buttons: [
           OutlinedButton(

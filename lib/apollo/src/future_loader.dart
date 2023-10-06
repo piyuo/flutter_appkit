@@ -12,26 +12,26 @@ import 'error_screen.dart';
 /// _Status is status of wait future
 enum _Status { loading, error, ready }
 
-/// _LoadingScreenProvider control [LoadingScreen]
-class _LoadingScreenProvider with ChangeNotifier {
-  _LoadingScreenProvider({
-    required this.future,
+/// [_FutureLoaderProvider] control [LoadingScreen]
+class _FutureLoaderProvider with ChangeNotifier {
+  _FutureLoaderProvider({
+    required this.loader,
     required this.allowRetry,
   });
 
-  /// future to wait, return true if success, return false to retry
-  final Future<void> Function() future;
+  /// [loader] to wait, return true if success, return false to retry
+  final Future<void> Function() loader;
 
-  /// allowRetry is true if allow retry
+  /// [allowRetry] is true if allow retry
   final bool allowRetry;
 
-  /// status is status of wait future
+  /// [status] is status of wait future
   _Status status = _Status.loading;
 
-  /// futureAutoRetried is true if future already retried automatically
+  /// [futureAutoRetried] is true if future already retried automatically
   bool futureAutoRetried = false;
 
-  /// isNetworkError is true if error is network error or retry error
+  /// [isNetworkError] is true if error is network error or retry error
   bool isNetworkError(e) {
     return e is SocketException || e is TimeoutException || e is utils.TryAgainLaterException;
   }
@@ -39,7 +39,7 @@ class _LoadingScreenProvider with ChangeNotifier {
   /// load run future and update status
   Future<void> _init(VoidCallback? popHandler) async {
     try {
-      await future();
+      await loader();
       status = _Status.ready;
     } catch (e, s) {
       if (isNetworkError(e) && allowRetry && !futureAutoRetried) {
@@ -59,7 +59,7 @@ class _LoadingScreenProvider with ChangeNotifier {
       status = _Status.loading;
       notifyListeners();
       await Future.delayed(const Duration(seconds: 3));
-      await future();
+      await loader();
     } catch (e, s) {
       log.error(e, s);
       final result = await dialog.show(
@@ -92,8 +92,8 @@ class _LoadingScreenProvider with ChangeNotifier {
   }
 }
 
-/// LoadingScreen wait for a future to complete
-class LoadingScreen extends StatelessWidget {
+/// [FutureLoader] wait for a future to complete
+class FutureLoader extends StatelessWidget {
   /// Wait for a future to complete
   ///
   /// show progress indicator when future still loading
@@ -102,55 +102,59 @@ class LoadingScreen extends StatelessWidget {
   ///
   /// show child view when provider successfully load
   ///
-  const LoadingScreen({
-    required this.future,
+  const FutureLoader({
+    required this.loader,
     required this.builder,
-    this.loadingWidgetBuilder,
     this.allowRetry = true,
     Key? key,
   }) : super(key: key);
 
-  /// future to wait, return true if success, return false to retry
-  final Future<void> Function() future;
+  /// [loader] to wait, return true if success, return false to retry
+  final Future<void> Function() loader;
 
-  /// builder build widget to show when future complete
-  final Widget Function() builder;
+  /// [builder] build widget to show when future complete
+  final Widget Function(bool isReady) builder;
 
-  /// loadingWidgetBuilder build widget to show when future still loading
-  final Widget Function()? loadingWidgetBuilder;
-
-  /// allowRetry is true if allow retry when future throw exception
+  /// [allowRetry] is true if allow retry when future throw exception
   final bool allowRetry;
 
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
     final popHandler = navigator.canPop() ? () => navigator.pop() : null;
-    return ChangeNotifierProvider<_LoadingScreenProvider>(
-        create: (_) => _LoadingScreenProvider(
-              future: future,
+    return ChangeNotifierProvider<_FutureLoaderProvider>(
+        create: (_) => _FutureLoaderProvider(
+              loader: loader,
               allowRetry: allowRetry,
             ).._init(popHandler),
-        child: Consumer<_LoadingScreenProvider>(
+        child: Consumer<_FutureLoaderProvider>(
           builder: (context, loadingScreenProvider, child) {
             switch (loadingScreenProvider.status) {
               case _Status.ready:
-                return builder();
+                return builder(true);
               case _Status.error:
                 return ErrorScreen(onRetry: allowRetry ? () => loadingScreenProvider.retry(popHandler) : null);
               default:
-                return loadingWidgetBuilder != null
-                    ? loadingWidgetBuilder!()
-                    : const Scaffold(
-                        body: Center(
-                          child: Icon(
-                            Icons.access_time,
-                            size: 128,
-                          ),
-                        ),
-                      );
+                return builder(false);
             }
           },
         ));
+  }
+}
+
+/// [LoadingScreen] show loading screen
+class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Icon(
+          Icons.access_time,
+          size: 128,
+        ),
+      ),
+    );
   }
 }

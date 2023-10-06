@@ -6,7 +6,7 @@ export 'src/beam_link.dart';
 export 'src/error.dart';
 export 'src/footer.dart';
 export 'src/language_button.dart';
-export 'src/loading_screen.dart';
+export 'src/future_loader.dart';
 export 'src/datacenter_region.dart';
 export 'src/error_screen.dart';
 export 'src/hypertext.dart';

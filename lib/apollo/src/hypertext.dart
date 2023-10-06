@@ -7,7 +7,7 @@ import 'package:libcli/assets/assets.dart' as asset;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/dialog/dialog.dart' as dialog;
 import 'package:libcli/delta/delta.dart' as delta;
-import 'loading_screen.dart';
+import 'future_loader.dart';
 
 /// Span is a part of Hypertext
 class Span {
@@ -173,9 +173,9 @@ class DocumentViewer extends StatelessWidget {
               title: title,
             ),
         child: Consumer<_DocumentViewerProvider>(
-            builder: (context, docProvider, child) => LoadingScreen(
-                  future: () async => await docProvider.load(),
-                  builder: () => Scaffold(
+            builder: (context, docProvider, child) => FutureLoader(
+                  loader: () async => await docProvider.load(),
+                  builder: (isReady) => Scaffold(
                       appBar: AppBar(
                         title: Text(docProvider.title),
                       ),

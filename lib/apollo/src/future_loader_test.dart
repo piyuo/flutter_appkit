@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'loading_screen.dart';
+import 'future_loader.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -11,10 +11,9 @@ void main() {
       MockLoadingView.count = 0;
       MockReadyView.count = 0;
       await tester.pumpWidget(MaterialApp(
-        home: LoadingScreen(
-          future: () async {},
-          loadingWidgetBuilder: () => const MockLoadingView(),
-          builder: () => const MockReadyView(),
+        home: FutureLoader(
+          loader: () async {},
+          builder: (isReady) => isReady ? const MockReadyView() : const MockLoadingView(),
         ),
       ));
       await tester.pumpAndSettle();
@@ -26,12 +25,11 @@ void main() {
       MockLoadingView.count = 0;
       MockReadyView.count = 0;
       await tester.pumpWidget(MaterialApp(
-        home: LoadingScreen(
-          future: () async {
+        home: FutureLoader(
+          loader: () async {
             throw Exception();
           },
-          loadingWidgetBuilder: () => const MockLoadingView(),
-          builder: () => const MockReadyView(),
+          builder: (isReady) => isReady ? const MockReadyView() : const MockLoadingView(),
         ),
       ));
       await tester.pumpAndSettle();
