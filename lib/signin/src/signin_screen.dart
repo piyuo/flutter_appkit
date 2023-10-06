@@ -49,9 +49,9 @@ class SigninScreen extends StatelessWidget {
       ],
       child: Consumer<SigninProvider>(
         builder: (context, signinProvider, _) {
-          return apollo.LoadingScreen(
-            future: () => loader(context),
-            builder: () {
+          return apollo.FutureLoader(
+            loader: () => loader(context),
+            builder: (isReady) {
               onSuccessLogin() {
                 if (redirectTo != null) {
                   Beamer.of(context).goTo(redirectTo!);

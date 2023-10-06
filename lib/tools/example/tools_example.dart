@@ -311,7 +311,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                             ],
                             child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
                                 builder: (context, dataProvider, dataviewProvider, _) =>
-                                    apollo.LoadingScreen(future: () async {
+                                    apollo.FutureLoader(loader: () async {
                                       await indexedDbProvider.init('tools_sample');
                                       await indexedDbProvider.clear();
                                       final ds = data.Dataset<sample.Person>(
@@ -321,7 +321,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                       await ds.init(indexedDbProvider: indexedDbProvider);
                                       await dataProvider.init(dataset: ds);
                                       await dataviewProvider.init(dataProvider);
-                                    }, builder: () {
+                                    }, builder: (isReady) {
                                       widgetBuilder(person) {
                                         return ListTile(
                                           leading: CircleAvatar(child: Text(person.id)),

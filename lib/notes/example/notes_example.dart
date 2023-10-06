@@ -183,8 +183,8 @@ Widget _noteItem(BuildContext context, String id) {
                             formController: formController,
                           )),
                 ]),
-                body: apollo.LoadingScreen(
-                  future: () async {
+                body: apollo.FutureLoader(
+                  loader: () async {
                     final noteFormController = NoteFormController.of<sample.Person>(context);
                     await sampleDb.init('notes_sample');
                     noteFormController.load(
@@ -194,7 +194,7 @@ Widget _noteItem(BuildContext context, String id) {
                         ),
                         id: id);
                   },
-                  builder: () => SafeArea(
+                  builder: (isReady) => SafeArea(
                     child: Center(
                       child: NoteForm<sample.Person>(
                         formController: formController,
@@ -602,8 +602,8 @@ class NotesExample extends StatelessWidget {
                       ],
                       child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
                         builder: (context, notesProvider, sampleDb, _) {
-                          return apollo.LoadingScreen(
-                            future: () async {
+                          return apollo.FutureLoader(
+                            loader: () async {
                               final isPreferMouse = context.isPreferMouse;
                               await sampleDb.init('notes_sample');
                               _notesProvider.load(
@@ -613,7 +613,7 @@ class NotesExample extends StatelessWidget {
                                     objectBuilder: () => sample.Person(),
                                   ));
                             },
-                            builder: () => DataView<sample.Person>(
+                            builder: (isReady) => DataView<sample.Person>(
                               notesProvider: notesProvider,
                               contentBuilder: () =>
                                   NoteForm<sample.Person>(formController: notesProvider.formController),
@@ -652,8 +652,8 @@ class NotesExample extends StatelessWidget {
                       ],
                       child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
                         builder: (context, notesProvider, sampleDb, _) {
-                          return apollo.LoadingScreen(
-                            future: () async {
+                          return apollo.FutureLoader(
+                            loader: () async {
                               final isPreferMouse = context.isPreferMouse;
                               await sampleDb.init('notes_sample');
                               _notesProvider.load(
@@ -663,7 +663,7 @@ class NotesExample extends StatelessWidget {
                                     objectBuilder: () => sample.Person(),
                                   ));
                             },
-                            builder: () => NotesView<sample.Person>(
+                            builder: (isReady) => NotesView<sample.Person>(
                               notesProvider: notesProvider,
                               contentBuilder: () =>
                                   NoteForm<sample.Person>(formController: notesProvider.formController),

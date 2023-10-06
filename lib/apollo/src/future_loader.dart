@@ -12,7 +12,7 @@ import 'error_screen.dart';
 /// _Status is status of wait future
 enum _Status { loading, error, ready }
 
-/// [_FutureLoaderProvider] control [LoadingScreen]
+/// [_FutureLoaderProvider] control [FutureLoader]
 class _FutureLoaderProvider with ChangeNotifier {
   _FutureLoaderProvider({
     required this.loader,
