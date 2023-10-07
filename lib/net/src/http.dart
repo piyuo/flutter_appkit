@@ -47,8 +47,8 @@ Map<String, String> get _requestHeaders => {
     };
 
 /// post call doPost() and broadcast network slow if request time is longer than slow
-Future<net.Object> post(Request request, net.Builder? builder) async {
-  Completer<net.Object> completer = Completer<net.Object>();
+Future<net.Object?> post(Request request, net.Builder? builder) async {
+  Completer<net.Object?> completer = Completer<net.Object?>();
   var timer = Timer(request.slow, () {
     if (!completer.isCompleted) {
       eventbus.broadcast(net.SlowNetworkEvent());

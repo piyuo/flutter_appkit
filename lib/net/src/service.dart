@@ -96,8 +96,6 @@ abstract class Service {
         net.firewallEnd(action);
         if (returnObj != null) {
           log.log('[net] got ${returnObj.jsonString}');
-        } else {
-          log.log('[net] failed to send');
         }
       }
     }

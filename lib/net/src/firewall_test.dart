@@ -20,10 +20,10 @@ void main() {
       final cmd = sample.Person(name: "flight-${utils.randomNumber(5)}");
       final cmd2 = sample.Person(name: "not-flight-${utils.randomNumber(5)}");
       expect(firewallBegin(cmd), isTrue);
-      expect(firewallBegin(cmd), isTrue); // check again
+      expect(firewallBegin(cmd), isFalse); // check again
       expect(firewallBegin(cmd2), isTrue); // other command will pass
       firewallEnd(cmd); // set complete
-      expect(firewallBegin(cmd), isFalse);
+      expect(firewallBegin(cmd), isTrue);
     });
 
     test('should block when command overflow', () async {

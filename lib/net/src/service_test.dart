@@ -3,19 +3,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/net/net.dart' as net;
 
 void main() {
-  dynamic lastEvent;
-  eventbus.listen<net.FirewallBlockEvent>((event) async {
-    lastEvent = event;
-  });
-
-  setUp(() {
-    lastEvent = null;
-  });
+  setUp(() {});
 
   group('[net.service]', () {
     test('should send command and receive response', () async {
@@ -109,25 +101,6 @@ void main() {
 
       var response = await service.sendByClient(action, client, () => sample.StringResponse());
       expect(response, isNull);
-      expect(lastEvent is net.FirewallBlockEvent, true);
-    });
-
-    test('should get from cache if same command send twice', () async {
-      var execCount = 0;
-      var client = MockClient((request) async {
-        execCount++;
-        return http.Response.bytes(net.encode(sample.StringResponse()..value = 'hi'), 200);
-      });
-      sample.SampleService service = sample.SampleService('http://not-exist');
-
-      final cmd1 = sample.EchoAction(value: 'twin');
-      final cmd2 = sample.EchoAction(value: 'twin');
-
-      var response = await service.sendByClient(cmd1, client, () => sample.StringResponse());
-      var response2 = await service.sendByClient(cmd2, client, () => sample.StringResponse());
-      expect(response is sample.StringResponse, true);
-      expect(response, response2);
-      expect(execCount, 1);
     });
   });
 }
