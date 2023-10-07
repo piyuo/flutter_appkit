@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:libcli/common/common.dart' as common;
 import 'package:libcli/net/net.dart' as net;
 
-/// encode protobuf object into bytes
+/// [encode] encode protobuf object into bytes
 /// ```dart
 /// EchoAction echoAction = EchoAction();
 /// echoAction.text = 'hi';
@@ -18,12 +18,12 @@ Uint8List encode(net.Object obj) {
   return list;
 }
 
-/// decode bytes array to protobuf object, set builder if result is anything other than common objects
+/// [decode] decode bytes array to protobuf object, set builder if result is anything other than common objects
 /// ```dart
 /// EchoAction decodeAction = commandProtobuf.decode(bytes, builder);
 /// expect(decodeAction.text, 'hi');
 /// ```
-net.Object decode(List<int> bytes, net.Builder? builder) {
+net.Object? decode(List<int> bytes, net.Builder? builder) {
   List<int> protoBytes = bytes.sublist(0, bytes.length - 2);
   Uint8List idBytes = Uint8List.fromList(bytes.sublist(bytes.length - 2, bytes.length));
   final id = idBytes.buffer.asByteData().getInt16(0, Endian.little);
@@ -39,5 +39,5 @@ net.Object decode(List<int> bytes, net.Builder? builder) {
     return obj;
   }
   assert(false, 'unexpected id $id, please set builder to decode it');
-  return net.empty;
+  return null;
 }

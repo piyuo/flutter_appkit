@@ -4,7 +4,6 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
 import 'package:libcli/sample/sample.dart' as sample;
-import 'package:libcli/common/common.dart' as common;
 import 'package:libcli/net/net.dart' as net;
 
 void main() {
@@ -37,7 +36,7 @@ void main() {
 
       req.timeout = const Duration(milliseconds: 1);
       var obj = await net.doPost(req, () => sample.StringResponse());
-      expect(obj is net.Empty, true);
+      expect(obj, isNull);
       expect(lastEvent is net.RequestTimeoutEvent, true);
     });
   });
@@ -48,7 +47,7 @@ net.Request _fakeSampleRequest(MockClient client) {
   return net.Request(
     service: sample.SampleService('http://mock'),
     client: client,
-    action: common.OK(),
+    action: sample.EchoAction(),
     url: 'http://mock',
     timeout: const Duration(milliseconds: 9000),
     slow: const Duration(milliseconds: 9000),

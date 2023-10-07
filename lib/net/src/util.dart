@@ -2,23 +2,6 @@ import 'package:mime/mime.dart';
 import 'package:libcli/common/common.dart' as common;
 import 'package:cross_file/cross_file.dart';
 
-/// isOK return true if obj is OK
-/// ```dart
-/// isOK(response);
-/// ```
-bool isOK(dynamic obj) => obj is common.OK;
-
-/// isError return true if obj is Error and code==code
-/// ```dart
-/// isError(response,'code-1');
-/// ```
-bool isError(dynamic obj, String code) {
-  if (obj is common.Error) {
-    return obj.code == code;
-  }
-  return false;
-}
-
 /// isMimeImage return true if mime is image
 bool isMimeImage(String mime) => mime.startsWith('image/');
 

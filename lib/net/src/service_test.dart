@@ -47,13 +47,13 @@ void main() {
       }
     });
 
-    test('should receive empty', () async {
+    test('should receive null', () async {
       var client = MockClient((request) async {
         return http.Response('', 501);
       });
       final service = sample.SampleService('http://not-exist');
       var response = await service.sendByClient(sample.EchoAction(), client, () => sample.StringResponse());
-      expect(response is net.Empty, true);
+      expect(response, isNull);
     });
 
     test('should return null when send wrong action to test server', () async {
@@ -108,7 +108,7 @@ void main() {
       net.mockFirewallInFlight(action);
 
       var response = await service.sendByClient(action, client, () => sample.StringResponse());
-      expect(response is net.FirewallBlock, true);
+      expect(response, isNull);
       expect(lastEvent is net.FirewallBlockEvent, true);
     });
 

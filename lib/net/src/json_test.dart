@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/common/common.dart' as common;
 import 'package:libcli/net/net.dart' as net;
+import 'package:libcli/sample/sample.dart' as sample;
 
 void main() {
   group('[net.json]', () {
@@ -23,22 +23,22 @@ void main() {
     });
 
     test('should stringify object', () async {
-      final obj = common.Error()..code = 'hi';
+      final obj = sample.Person(name: 'hi');
       String str = net.formatObject(obj);
-      expect(str, 'CgJoaQ==');
+      expect(str, 'EgJoaQ==');
 
-      final obj2 = net.parseObject(str, common.Error());
-      expect(obj.code, obj2.code);
+      final obj2 = net.parseObject(str, sample.Person());
+      expect(obj.name, obj2.name);
     });
 
     test('should stringify object list', () async {
-      final list = [common.Error()..code = 'hello', common.Error()..code = 'world'];
+      final list = [sample.Person(name: 'hello'), sample.Person(name: 'world')];
       List<String> strList = net.formatObjectList(list);
       expect(strList.length, 2);
 
-      final list2 = net.parseObjectList(strList, () => common.Error());
-      expect(list[0].code, list2[0].code);
-      expect(list[0].code, list2[0].code);
+      final list2 = net.parseObjectList(strList, () => sample.Person());
+      expect(list[0].name, list2[0].name);
+      expect(list[0].name, list2[0].name);
     });
   });
 }

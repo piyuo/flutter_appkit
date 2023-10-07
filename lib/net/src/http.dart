@@ -62,16 +62,16 @@ Future<net.Object> post(Request request, net.Builder? builder) async {
   return completer.future;
 }
 
-/// doPost  send action bytes to remote url and return response bytes, this function will use contract to fix error
+/// [doPost] send action bytes to remote url and return response bytes, this function will use contract to fix error
 /// ```dart
-/// var req = commandHttp.Request();
+/// var req = Request();
 /// req.client = client;
 /// req.bytes = Uint8List(2);
 /// req.url = 'http://mock';
 /// req.timeout = 9000;
-/// var bytes = await commandHttp.doPost(req);
+/// var bytes = await doPost(req);
 /// ```
-Future<net.Object> doPost(Request r, net.Builder? builder) async {
+Future<net.Object?> doPost(Request r, net.Builder? builder) async {
   try {
     // auto add access token
     String? accessToken;
@@ -137,16 +137,16 @@ Future<net.Object> doPost(Request r, net.Builder? builder) async {
 /// ```dart
 /// commandHttp.giveup(ctx,BadRequestEvent());
 /// ```
-Future<net.Object> giveup(dynamic e) async {
+Future<net.Object?> giveup(dynamic e) async {
   eventbus.broadcast(e);
-  return net.empty;
+  return null;
 }
 
 /// retry use contract, return empty proto object is contract failed
 /// ```dart
 /// await commandHttp.retry(ctx,c.CAccessTokenExpired(), c.ERefuseSignin(), req);
 /// ```
-Future<net.Object> retry(net.Builder? builder, dynamic event, Request request) async {
+Future<net.Object?> retry(net.Builder? builder, dynamic event, Request request) async {
   if (request.isRetry) {
     // if already in retry, giveup
     return await giveup(net.TooManyRetryEvent());
