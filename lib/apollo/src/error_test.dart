@@ -55,7 +55,7 @@ void main() {
         tester,
         child: createSample(onPressed: (context) async {
           watch(() {});
-          await eventbus.broadcast(net.FirewallBlockEvent('BLOCK_SHORT'));
+          await eventbus.broadcast(net.FirewallBlockEvent());
         }),
       );
 

@@ -80,18 +80,6 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
   }
 }
 
-String firewallBlockMessage(BuildContext context, String reason) {
-  switch (reason) {
-    case net.blockShort:
-      return context.i18n.errorFirewallBlockShort;
-    case net.blockLong:
-      return context.i18n.errorFirewallBlockLong;
-    case net.inFlight:
-      return context.i18n.errorFirewallInFlight;
-  }
-  return context.i18n.errorFirewallOverflow;
-}
-
 Widget emailUs(BuildContext context) {
   final colorScheme = Theme.of(context).colorScheme;
   return Padding(
@@ -109,7 +97,7 @@ Widget emailUs(BuildContext context) {
 Future<void> listened(dynamic e) async {
   if (e is net.FirewallBlockEvent) {
     dialog.show(
-      textContent: firewallBlockMessage(delta.globalContext, e.reason),
+      textContent: delta.globalContext.i18n.errorFirewall,
       isError: true,
       footerBuilder: emailUs,
     );
