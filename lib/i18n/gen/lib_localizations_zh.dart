@@ -179,16 +179,7 @@ class LibLocalizationsZh extends LibLocalizations {
   String get errorDiskErrorMessage => '写入错误! 请检查是否空间不足或是权限不够';
 
   @override
-  String get errorFirewallBlockShort => '处理中，请稍候';
-
-  @override
-  String get errorFirewallBlockLong => '您嚐试了太多失败的请求, 请明天再试';
-
-  @override
-  String get errorFirewallInFlight => '请求正在处理中，请稍候';
-
-  @override
-  String get errorFirewallOverflow => '操作过于频繁，请稍后再试';
+  String get errorFirewall => '操作过于频繁，请稍后再试';
 
   @override
   String get emailField => '电子邮件地址';
@@ -670,16 +661,7 @@ class LibLocalizationsZhTw extends LibLocalizationsZh {
   String get errorDiskErrorMessage => '寫入錯誤! 請檢查是否空間不足或是權限不夠';
 
   @override
-  String get errorFirewallBlockShort => '處理中，請稍候';
-
-  @override
-  String get errorFirewallBlockLong => '您嚐試了太多失敗的請求, 請明天再試';
-
-  @override
-  String get errorFirewallInFlight => '請求正在處理中，請稍候';
-
-  @override
-  String get errorFirewallOverflow => '操作過於頻繁，請稍後再試';
+  String get errorFirewall => '操作過於頻繁，請稍後再試';
 
   @override
   String get emailField => '電子郵件地址';

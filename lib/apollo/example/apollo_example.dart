@@ -426,7 +426,7 @@ class Example extends StatelessWidget {
           ElevatedButton(
               child: const Text('firewall block'),
               onPressed: () {
-                eventbus.broadcast(net.FirewallBlockEvent('BLOCK_SHORT'));
+                eventbus.broadcast(net.FirewallBlockEvent());
               }),
           ElevatedButton(
               child: const Text('no internet'),

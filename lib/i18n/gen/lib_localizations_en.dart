@@ -179,16 +179,7 @@ class LibLocalizationsEn extends LibLocalizations {
   String get errorDiskErrorMessage => 'Write failed!, Insufficient disk space or write access denied';
 
   @override
-  String get errorFirewallBlockShort => 'Processing Request. Please Wait';
-
-  @override
-  String get errorFirewallBlockLong => 'Too many failed attempts, Please try again tomorrow';
-
-  @override
-  String get errorFirewallInFlight => 'Please wait while we are processing your request';
-
-  @override
-  String get errorFirewallOverflow => 'Too many attempts, Please try again later';
+  String get errorFirewall => 'Too many attempts, Please try again later';
 
   @override
   String get emailField => 'email address';

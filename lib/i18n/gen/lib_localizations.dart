@@ -442,29 +442,11 @@ abstract class LibLocalizations {
   /// **'Write failed!, Insufficient disk space or write access denied'**
   String get errorDiskErrorMessage;
 
-  /// No description provided for @errorFirewallBlockShort.
-  ///
-  /// In en, this message translates to:
-  /// **'Processing Request. Please Wait'**
-  String get errorFirewallBlockShort;
-
-  /// No description provided for @errorFirewallBlockLong.
-  ///
-  /// In en, this message translates to:
-  /// **'Too many failed attempts, Please try again tomorrow'**
-  String get errorFirewallBlockLong;
-
-  /// No description provided for @errorFirewallInFlight.
-  ///
-  /// In en, this message translates to:
-  /// **'Please wait while we are processing your request'**
-  String get errorFirewallInFlight;
-
-  /// No description provided for @errorFirewallOverflow.
+  /// No description provided for @errorFirewall.
   ///
   /// In en, this message translates to:
   /// **'Too many attempts, Please try again later'**
-  String get errorFirewallOverflow;
+  String get errorFirewall;
 
   /// No description provided for @emailField.
   ///
