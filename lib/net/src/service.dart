@@ -5,7 +5,7 @@ import 'package:libcli/log/log.dart' as log;
 import 'package:libcli/net/net.dart' as net;
 
 /// Sender define send function use in service, only for test
-typedef Sender = Future<net.Object> Function(net.Object command, {net.Builder? builder});
+typedef Sender = Future<net.Object?> Function(net.Object command, {net.Builder? builder});
 
 /// AccessKeyBuilder return access key for action
 typedef AccessTokenBuilder = Future<String?> Function();
@@ -62,14 +62,14 @@ abstract class Service {
 
   /// send action to remote service, no need to handle exception, all exception are contract to eventBus
   /// ```dart
-  /// var response = await service.send(EchoAction());
+  /// var response = await service.send<StringResponse>(EchoAction());
   /// ```
-  Future<net.Object?> send(net.Object command, {net.Builder? builder}) async {
+  Future<T?> send<T extends net.Object>(net.Object command, {net.Builder? builder}) async {
     if (!kReleaseMode && mockSender != null) {
-      return mockSender!(command, builder: builder);
+      return mockSender!(command, builder: builder) as T;
     }
     http.Client client = http.Client();
-    return await sendByClient(command, client, builder);
+    return await sendByClient(command, client, builder) as T;
   }
 
   /// sendByClient send action to remote service,return object if success, return null if exception happen
@@ -82,15 +82,16 @@ abstract class Service {
       net.Object? returnObj;
       try {
         returnObj = await net.post(
-            net.Request(
-              service: this,
-              client: client,
-              url: url,
-              action: action,
-              timeout: Duration(milliseconds: timeout),
-              slow: Duration(milliseconds: slow),
-            ),
-            builder);
+          net.Request(
+            service: this,
+            client: client,
+            url: url,
+            action: action,
+            timeout: Duration(milliseconds: timeout),
+            slow: Duration(milliseconds: slow),
+          ),
+          builder,
+        );
         return returnObj;
       } finally {
         net.firewallEnd(action);
