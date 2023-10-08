@@ -7,7 +7,7 @@ import 'package:beamer/beamer.dart';
 import 'beamer_extension.dart';
 
 /// kSigninPath is signin path
-const kSigninPath = '/signin/';
+const kSigninPath = '/signin';
 
 /// kBarHeightDesktop is height of toolbar
 const kBarHeightDesktop = 36.0;
