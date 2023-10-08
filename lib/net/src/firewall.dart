@@ -16,14 +16,14 @@ const _kMemoryKeyCall = "net_call";
 var kCacheDuration = const Duration(seconds: 30);
 
 /// [kMaxAllowPostDuration] is firewall monitor duration
-var kMaxAllowPostDuration = const Duration(minutes: 10);
+var kMaxAllowPostDuration = const Duration(minutes: 1);
 
 /// [kMaxAllowPostCount] max allow post count in MaxAllowPostDuration
-const kMaxAllowPostCount = 60;
+const kMaxAllowPostCount = 5;
 
 /// firewall return true if action is allowed
-///   1. it will block "IN_FLIGHT", stop send second command when same first command is not finish
-///   2. it will block "OVERFLOW", stop send more than 60 command in 10 minutes, more than this limit consider it is a bug cause overflow
+///   1. it will block "IN_FLIGHT", stop send second request when same first request is not finish
+///   2. it will block "OVERFLOW", stop send more than 5 request in 1 minutes, more than this limit consider it is a bug cause overflow
 bool firewallBegin(Object action) {
   // check IN_FLIGHT/LAST_RESPONSE
   var lastReq = cache.get<Object>(_kMemoryKeyLastRequest);
