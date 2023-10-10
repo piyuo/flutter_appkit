@@ -35,23 +35,27 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
     this.actions = const [],
     this.primary = true,
     this.bottom,
+    this.spacing = 0,
     super.key,
   });
 
-  /// home is home button widget
+  /// [home] is home button widget
   final Widget home;
 
-  /// items is menu item widgets on bar
+  /// [items] is menu item widgets on bar
   final List<Widget> items;
 
-  /// actions is app bar actions
+  /// [actions] is app bar actions
   final List<Widget> actions;
 
-  /// primary is app bar primary
+  /// [primary] is app bar primary
   final bool primary;
 
-  /// bottom is app bar bottom
+  /// [bottom] is app bar bottom
   final PreferredSizeWidget? bottom;
+
+  /// [spacing] provide extra space on left and right of items
+  final double spacing;
 
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
@@ -79,6 +83,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
 
       buildDesktop() {
         return AppBar(
+          titleSpacing: spacing,
           centerTitle: false,
           title: Row(
             children: [
@@ -87,7 +92,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
               ...items,
             ],
           ),
-          actions: [...actions, const SizedBox()], // SizedBox prevent show endDrawer button
+          actions: [...actions, SizedBox(width: spacing)], // SizedBox prevent show endDrawer button
           primary: primary,
           bottom: bottom,
           elevation: 0,
@@ -107,6 +112,7 @@ class SliverBar extends SliverLayoutBuilder {
     List<Widget> actions = const [],
     bool primary = true,
     PreferredSizeWidget? bottom,
+    double spacing = 0,
     super.key,
   }) : super(builder: (context, constraints) {
           final appBarTheme = Theme.of(context).appBarTheme;
@@ -134,6 +140,7 @@ class SliverBar extends SliverLayoutBuilder {
 
           buildDesktop() {
             return SliverAppBar(
+              titleSpacing: spacing,
               toolbarHeight: kBarHeightDesktop,
               centerTitle: false,
               title: Row(
@@ -144,7 +151,7 @@ class SliverBar extends SliverLayoutBuilder {
                 ],
               ),
               //actions: actions,
-              actions: [...actions, const SizedBox()], // SizedBox prevent show endDrawer button
+              actions: [...actions, SizedBox(width: spacing)], // SizedBox prevent show endDrawer button
               primary: primary,
               bottom: bottom,
               elevation: 0,

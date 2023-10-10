@@ -504,6 +504,7 @@ class Example extends StatelessWidget {
     bar() {
       return Scaffold(
         appBar: Bar(
+          spacing: 30,
           home: const BarLogoButton(url: 'https://cryptologos.cc/logos/stacks-stx-logo.png'),
           items: [
             BarItemButton(text: 'Store', onPressed: () => debugPrint('store pressed')),
@@ -560,6 +561,7 @@ class Example extends StatelessWidget {
           body: CustomScrollView(
             slivers: <Widget>[
               SliverBar(
+                spacing: 20,
                 home: const BarLogoButton(url: 'https://cryptologos.cc/logos/stacks-stx-logo.png'),
                 items: [
                   BarItemButton(text: 'Store', onPressed: () => debugPrint('store pressed')),
