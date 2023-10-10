@@ -207,13 +207,18 @@ class BarItemButton extends StatelessWidget {
   const BarItemButton({
     required this.text,
     this.onPressed,
+    this.style,
     super.key,
   });
 
-  /// text is item text
+  /// [text] is item text
   final String text;
 
+  /// [onPressed] is item pressed callback
   final VoidCallback? onPressed;
+
+  /// [style] is item text style
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +230,7 @@ class BarItemButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         text,
-        style: appBarTheme.titleTextStyle,
+        style: style ?? appBarTheme.titleTextStyle,
       ),
     );
   }
