@@ -14,20 +14,24 @@ class Footer extends StatelessWidget implements PreferredSizeWidget {
     this.items = const [],
     this.actions = const [],
     this.backgroundColor,
+    this.spacing = 0,
     super.key,
   });
 
-  /// copyRight is copy right widget
+  /// [copyRight] is copy right widget
   final Widget? copyRight;
 
-  /// items is menu item widgets on bar
+  /// [items] is menu item widgets on bar
   final List<Widget> items;
 
-  /// actions is app bar actions
+  /// [actions] is app bar actions
   final List<Widget> actions;
 
-  /// backgroundColor is background color of footer
+  /// [backgroundColor] is background color of footer
   final Color? backgroundColor;
+
+  /// [spacing] provide extra space on left and right of items
+  final double spacing;
 
   @override
   Size get preferredSize => Size.fromHeight(delta.phoneScreen ? kFooterHeightMobile : kFooterHeightDesktop);
@@ -67,18 +71,20 @@ class Footer extends StatelessWidget implements PreferredSizeWidget {
     }
 
     buildDesktop() {
-      return Row(
-        children: [
-          if (copyRight != null) Expanded(child: copyRight!),
-          SizedBox(
-              height: 18,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: itemsWithDivider,
-              )),
-          ...actions,
-        ],
-      );
+      return Padding(
+          padding: EdgeInsets.symmetric(horizontal: spacing),
+          child: Row(
+            children: [
+              if (copyRight != null) Expanded(child: copyRight!),
+              SizedBox(
+                  height: 18,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: itemsWithDivider,
+                  )),
+              ...actions,
+            ],
+          ));
     }
 
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {

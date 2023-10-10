@@ -545,6 +545,7 @@ class Example extends StatelessWidget {
           )),
         ),
         bottomNavigationBar: Footer(
+          spacing: 30,
           copyRight: const AutoSizeText('Copyright © 2023 Inc. All rights reserved.',
               maxLines: 2, style: TextStyle(fontSize: 12)),
           actions: const [LanguageButton()],
