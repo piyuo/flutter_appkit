@@ -15,29 +15,35 @@ class RichEditor extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(10),
         height: 340,
-        child: Column(
-          children: [
-            Card(
-              elevation: 4,
-              child: QuillToolbar.basic(
-                controller: controller.quill,
-                multiRowsDisplay: false,
-                showSmallButton: false,
-                showInlineCode: false,
-                showLink: true,
-                showCodeBlock: false,
-                showListCheck: false,
-              ),
+        child: QuillProvider(
+            configurations: QuillConfigurations(
+              controller: controller.quill,
             ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: QuillEditor.basic(
-                controller: controller.quill,
-                readOnly: false, // true for view only mode
-              ),
-            ))
-          ],
-        ));
+            child: Column(
+              children: [
+                const Card(
+                  elevation: 4,
+                  child: QuillToolbar(
+                    configurations: QuillToolbarConfigurations(
+                      multiRowsDisplay: false,
+                      showSmallButton: false,
+                      showInlineCode: false,
+                      showLink: true,
+                      showCodeBlock: false,
+                      showListCheck: false,
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: QuillEditor.basic(
+                    configurations: const QuillEditorConfigurations(
+                      readOnly: false, // true for view only mode
+                    ),
+                  ),
+                ))
+              ],
+            )));
   }
 }

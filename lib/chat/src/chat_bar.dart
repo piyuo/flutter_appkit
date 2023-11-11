@@ -58,22 +58,28 @@ class ChatBar extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Expanded(
-                            child: QuillEditor(
-                              readOnly: false,
-                              focusNode: chatBarProvider.focusNode,
-                              scrollController: chatBarProvider.scrollController,
-                              scrollable: true,
-                              padding: const EdgeInsets.fromLTRB(20, 6, 5, 8),
-                              autoFocus: false,
-                              expands: false,
-                              controller: chatBarProvider.quillController,
-                              embedBuilders: [
-                                ImageEmbedBuilder(chatBarProvider: chatBarProvider),
-                                VideoEmbedBuilder(chatBarProvider: chatBarProvider),
-                                FileEmbedBuilder(chatBarProvider: chatBarProvider),
-                                EmojiEmbedBuilder(),
-                              ],
-                              maxHeight: 210,
+                            child: QuillProvider(
+                              configurations: QuillConfigurations(
+                                controller: chatBarProvider.quillController,
+                              ),
+                              child: QuillEditor(
+                                configurations: QuillEditorConfigurations(
+                                  readOnly: false,
+                                  scrollable: true,
+                                  padding: const EdgeInsets.fromLTRB(20, 6, 5, 8),
+                                  autoFocus: false,
+                                  expands: false,
+                                  embedBuilders: [
+                                    ImageEmbedBuilder(chatBarProvider: chatBarProvider),
+                                    VideoEmbedBuilder(chatBarProvider: chatBarProvider),
+                                    FileEmbedBuilder(chatBarProvider: chatBarProvider),
+                                    EmojiEmbedBuilder(),
+                                  ],
+                                  maxHeight: 210,
+                                ),
+                                focusNode: chatBarProvider.focusNode,
+                                scrollController: chatBarProvider.scrollController,
+                              ),
                             ),
                           ),
                           Padding(
