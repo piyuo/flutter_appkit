@@ -4,7 +4,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:flutter_quill/flutter_quill.dart';
 import 'chat_bar_embed.dart';
 import 'chat_bar_provider.dart';
 

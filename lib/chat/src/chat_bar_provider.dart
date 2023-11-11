@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/utils/utils.dart' as utils;
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:video_player/video_player.dart';
 import 'package:universal_io/io.dart';
 import 'chat_bar_embed.dart';
