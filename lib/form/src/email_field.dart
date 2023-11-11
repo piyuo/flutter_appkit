@@ -51,12 +51,12 @@ class EmailField<T> extends ReactiveFormField<T, String> {
   /// ),
   /// ```
   EmailField({
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ControlValueAccessor<T, String>? valueAccessor,
-    ShowErrorsFunction? showErrors,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.validationMessages,
+    super.valueAccessor,
+    ShowErrorsFunction? super.showErrors,
     InputDecoration decoration = const InputDecoration(),
     TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -110,12 +110,6 @@ class EmailField<T> extends ReactiveFormField<T, String> {
     bool scribbleEnabled = true,
   })  : _textController = controller,
         super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          valueAccessor: valueAccessor,
-          validationMessages: validationMessages,
-          showErrors: showErrors,
           builder: (ReactiveFormFieldState<T, String> field) {
             final state = field as _EmailFieldState<T>;
             final effectiveDecoration = decoration.applyDefaults(Theme.of(state.context).inputDecorationTheme);

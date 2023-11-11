@@ -3,28 +3,20 @@ import 'selectable.dart';
 
 class SimpleGrid<T> extends Selectable<T> {
   const SimpleGrid({
-    required List<T> items,
-    required List<T> selectedItems,
+    required super.items,
+    required super.selectedItems,
     bool checkMode = false,
-    void Function(List<T> items)? onItemSelected,
-    void Function(List<T> items)? onItemChecked,
-    required ItemBuilder<T> itemBuilder,
-    Widget Function()? headerBuilder,
-    Widget Function()? footerBuilder,
+    super.onItemSelected,
+    super.onItemChecked,
+    required super.itemBuilder,
+    super.headerBuilder,
+    super.footerBuilder,
     Color? borderColor,
     Color? selectedBorderColor,
     this.crossAxisCount = 2,
-    Key? key,
+    super.key,
   }) : super(
-          items: items,
-          selectedItems: selectedItems,
-          itemBuilder: itemBuilder,
           itemDecorationBuilder: defaultGridDecorationBuilder,
-          onItemSelected: onItemSelected,
-          onItemChecked: onItemChecked,
-          headerBuilder: headerBuilder,
-          footerBuilder: footerBuilder,
-          key: key,
         );
 
   /// crossAxisCount is the number of children in the cross axis.

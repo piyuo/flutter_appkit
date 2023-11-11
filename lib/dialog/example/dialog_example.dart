@@ -28,7 +28,7 @@ final printers = [
 ];
 
 class DialogExample extends StatelessWidget {
-  const DialogExample({Key? key}) : super(key: key);
+  const DialogExample({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -28,7 +28,7 @@ main() {
 }
 
 class ToolsExample extends StatefulWidget {
-  const ToolsExample({Key? key}) : super(key: key);
+  const ToolsExample({super.key});
 
   @override
   State<StatefulWidget> createState() => _ToolsExampleState();

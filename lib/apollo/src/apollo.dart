@@ -55,7 +55,7 @@ Future<void> start({
   // put delegate outside of build to avoid hot reload error
   final beamerDelegate = BeamerDelegate(
     initialPath: initialRoute,
-    locationBuilder: RoutesLocationBuilder(routes: routes),
+    locationBuilder: RoutesLocationBuilder(routes: routes).call,
   );
 
   final router = delta.GlobalContextSupport(
@@ -125,8 +125,8 @@ Future<void> start({
 class LifecycleWatcher extends StatefulWidget {
   const LifecycleWatcher({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// child to show
   final Widget child;

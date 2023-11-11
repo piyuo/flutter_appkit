@@ -34,8 +34,8 @@ class DatasetMemory<T extends net.Object> extends Dataset<T> {
   DatasetMemory({
     required this.memoryProvider,
     required this.name,
-    required net.Builder<T> objectBuilder,
-  }) : super(objectBuilder: objectBuilder);
+    required super.objectBuilder,
+  });
 
   /// memoryProvider use for database or cache id
   final cache.MemoryProvider memoryProvider;

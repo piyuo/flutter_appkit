@@ -5,12 +5,10 @@ import 'package:libcli/net/net.dart' as net;
 class NotesBeamPage<T extends net.Object> extends BeamPage {
   NotesBeamPage({
     required String id,
-    required String title,
-    required Widget child,
+    required String super.title,
+    required super.child,
   }) : super(
           key: ValueKey(id),
-          title: title,
-          child: child,
           onPopPage: (
             BuildContext context,
             BeamerDelegate delegate,

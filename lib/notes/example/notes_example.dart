@@ -218,7 +218,7 @@ class _SelectedController with ChangeNotifier {
 }
 
 class NotesExample extends StatelessWidget {
-  const NotesExample({Key? key}) : super(key: key);
+  const NotesExample({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -25,8 +25,8 @@ abstract class Selectable<T> extends StatelessWidget {
     this.footerBuilder,
     this.creating,
     this.isReady = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// items is all items need to display
   final List<T> items;

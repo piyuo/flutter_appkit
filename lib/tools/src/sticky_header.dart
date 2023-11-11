@@ -26,8 +26,8 @@ class StickyHeader extends StatelessWidget {
   const StickyHeader({
     required this.headerBuilder,
     required this.builder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// headerBuilder is the builder for the sticky header
   final Widget Function() headerBuilder;

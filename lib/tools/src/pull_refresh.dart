@@ -19,8 +19,8 @@ class PullRefresh extends StatelessWidget {
     required this.refreshMoreProvider,
     required this.child,
     this.onRefresh,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// refreshMoreProvider control status of load more
   final RefreshMoreProvider refreshMoreProvider;

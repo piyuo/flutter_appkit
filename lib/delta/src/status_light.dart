@@ -6,13 +6,13 @@ enum LightStatus { green, yellow, red }
 /// StatusLight show green/yellow/red status light
 class StatusLight extends StatelessWidget {
   const StatusLight({
-    Key? key,
+    super.key,
     this.status = LightStatus.green,
     this.iconSize = 16,
     this.onPressed,
     this.tooltip,
     this.label,
-  }) : super(key: key);
+  });
 
   /// status of status light
   final LightStatus status;

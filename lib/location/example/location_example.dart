@@ -57,7 +57,7 @@ main() {
 }
 
 class LocationExample extends StatelessWidget {
-  const LocationExample({Key? key}) : super(key: key);
+  const LocationExample({super.key});
 
   @override
   Widget build(BuildContext context) {

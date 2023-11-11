@@ -19,8 +19,8 @@ class AnimateView extends StatelessWidget {
     this.mainAxisSpacing = 0,
     this.crossAxisSpacing = 0,
     this.childAspectRatio = 1,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// itemBuilder is builder use index to build item
   final Widget Function(int index) itemBuilder;
@@ -106,8 +106,8 @@ class AnimateShiftView extends StatelessWidget {
     this.childAspectRatio = 1,
     this.shifterReverse = false,
     this.shifterVertical = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// itemBuilder is builder use index to build item
   final Widget Function(int index) itemBuilder;

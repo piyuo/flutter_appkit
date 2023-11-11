@@ -106,8 +106,8 @@ class FutureLoader extends StatelessWidget {
     required this.loader,
     required this.builder,
     this.allowRetry = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// [loader] to wait, return true if success, return false to retry
   final Future<void> Function() loader;

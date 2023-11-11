@@ -45,7 +45,7 @@ class AppleImpl extends MapProviderImpl {
 
 /// MapApple run ios apple map, no key required
 class MapApple extends Map {
-  const MapApple({Key? key}) : super(key: key);
+  const MapApple({super.key});
 
   @override
   Widget build(BuildContext context) {

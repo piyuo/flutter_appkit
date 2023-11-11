@@ -99,7 +99,7 @@ final _searchBoxController = TextEditingController();
 SearchTrigger? _trigger;
 
 class DeltaExample extends StatefulWidget {
-  const DeltaExample({Key? key}) : super(key: key);
+  const DeltaExample({super.key});
 
   @override
   State<StatefulWidget> createState() => _DeltaExampleState();

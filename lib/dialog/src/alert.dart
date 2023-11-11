@@ -256,7 +256,7 @@ Future<int?> promptInt({
 /// BlurryContainer is container support blurry
 class BlurryContainer extends StatelessWidget {
   const BlurryContainer({
-    Key? key,
+    super.key,
     required this.child,
     this.blur = 8,
     this.height,
@@ -266,7 +266,7 @@ class BlurryContainer extends StatelessWidget {
     this.shadow,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(20)),
-  }) : super(key: key);
+  });
 
   final Widget child;
 

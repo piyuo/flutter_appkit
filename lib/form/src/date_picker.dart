@@ -17,8 +17,8 @@ class DatePicker extends StatelessWidget {
     this.textDirection,
     this.textAlign = TextAlign.start,
     this.inputFormatters,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final DateTime firstDate;
   final DateTime lastDate;

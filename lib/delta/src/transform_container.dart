@@ -41,8 +41,8 @@ class TransformContainer extends StatelessWidget {
     required this.openBuilder,
     this.closedColor = Colors.white,
     this.openColor = Colors.white,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// closedBuilder is the builder for the closed state
   final TransformContainerBuilder closedBuilder;

@@ -15,8 +15,8 @@ class Listing<T> extends StatelessWidget {
     this.dense = false,
     this.padding,
     this.physics,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// controller is for item selection control, if must be set if you want show selected color
   final ValueNotifier<T?> controller;

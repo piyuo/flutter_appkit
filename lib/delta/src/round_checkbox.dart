@@ -9,8 +9,8 @@ class RoundCheckbox extends StatelessWidget {
     this.size = 24,
     this.checkColor,
     this.fillColor,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool checked;
 

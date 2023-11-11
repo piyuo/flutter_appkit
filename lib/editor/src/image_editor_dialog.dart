@@ -35,8 +35,8 @@ class ImageEditorDialog extends StatelessWidget {
     this.url,
     this.bytes,
     this.cropAspectRatio = 1,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Uint8List? bytes;
 

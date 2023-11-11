@@ -8,8 +8,8 @@ import 'package:libcli/i18n/i18n.dart' as i18n;
 class LoadingDisplay extends StatelessWidget {
   const LoadingDisplay({
     this.showAnimation = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// showAnimation is a boolean value that indicates whether show animation
   final bool showAnimation;
@@ -43,8 +43,8 @@ class LoadingDisplay extends StatelessWidget {
 /// NoDataDisplay show a no data display on page
 class NoDataDisplay extends StatelessWidget {
   const NoDataDisplay({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => SizedBox(

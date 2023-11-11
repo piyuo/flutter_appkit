@@ -49,8 +49,8 @@ class NavigationScaffold extends StatelessWidget {
     this.drawerEnableOpenDragGesture = true,
     this.endDrawerEnableOpenDragGesture = true,
     this.railWidth,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// See [Scaffold.appBar].
   final PreferredSizeWidget? appBar;

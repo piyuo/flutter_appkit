@@ -35,8 +35,8 @@ class ResponsiveListView<T> extends StatelessWidget {
   const ResponsiveListView({
     required this.sideBuilder,
     required this.builder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget Function(T) builder;
 

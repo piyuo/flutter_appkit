@@ -6,8 +6,8 @@ class CountDown extends StatelessWidget {
   const CountDown({
     required this.duration,
     this.onDone,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Duration duration;
 
@@ -30,8 +30,8 @@ class CountUp extends StatefulWidget {
   const CountUp({
     this.greenLight = 300,
     this.yellowLight = 600,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int greenLight;
 

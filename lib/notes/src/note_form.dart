@@ -8,10 +8,10 @@ import 'note_form_controller.dart';
 class NoteForm<T extends net.Object> extends StatelessWidget {
   const NoteForm({
     required this.formController,
-    Key? key,
+    super.key,
     this.showSubmitButton = true,
     this.onWillPop,
-  }) : super(key: key);
+  });
 
   /// showSubmitButton is true mean show submit button
   final bool showSubmitButton;

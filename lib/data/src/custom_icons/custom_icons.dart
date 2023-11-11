@@ -4,9 +4,8 @@ import 'package:flutter/widgets.dart';
 
 @immutable
 class _CustomIconsData extends IconData {
-  const _CustomIconsData(int codePoint)
+  const _CustomIconsData(super.codePoint)
       : super(
-          codePoint,
           fontFamily: 'CustomIcons',
           fontPackage: 'libcli',
         );

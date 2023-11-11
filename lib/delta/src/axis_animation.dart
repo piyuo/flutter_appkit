@@ -38,8 +38,8 @@ class AxisAnimation extends StatelessWidget {
     required this.child,
     this.reverse = false,
     this.type = AxisAnimationType.horizontal,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// child is the child need to animate
   final Widget child;

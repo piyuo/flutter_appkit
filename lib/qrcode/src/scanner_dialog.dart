@@ -19,8 +19,8 @@ Future<String?> showScanner(BuildContext context) async {
 
 class ScannerDialog extends StatelessWidget {
   const ScannerDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 ///
 class Switching extends StatelessWidget {
   const Switching({
-    Key? key,
+    super.key,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<bool>? controller;
 

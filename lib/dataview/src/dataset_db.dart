@@ -16,8 +16,8 @@ class DatasetDb<T extends net.Object> extends Dataset<T> {
   /// ```
   DatasetDb({
     required this.indexedDb,
-    required net.Builder<T> objectBuilder,
-  }) : super(objectBuilder: objectBuilder) {
+    required super.objectBuilder,
+  }) {
     internalNoMore = true;
   }
 

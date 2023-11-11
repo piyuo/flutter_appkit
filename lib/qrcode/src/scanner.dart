@@ -36,8 +36,8 @@ class ScannerProvider with ChangeNotifier {
 
 class Scanner extends StatelessWidget {
   const Scanner({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   Widget _noAccessToCamera(BuildContext context) {
     return Container(

@@ -11,8 +11,8 @@ class CheckList<T> extends StatelessWidget {
     this.dense = false,
     this.padding,
     this.physics,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// controller keep selected item keys
   final ValueNotifier<List<T>> controller;

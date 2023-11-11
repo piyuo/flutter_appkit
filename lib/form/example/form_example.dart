@@ -82,7 +82,7 @@ class NumValueAccessor extends ControlValueAccessor<int, num> {
 }
 
 class FormExample extends StatelessWidget {
-  const FormExample({Key? key}) : super(key: key);
+  const FormExample({super.key});
 
   @override
   Widget build(BuildContext context) {

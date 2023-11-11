@@ -4,8 +4,8 @@ class Indicator extends StatelessWidget {
   const Indicator({
     required this.title,
     required this.text,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
 

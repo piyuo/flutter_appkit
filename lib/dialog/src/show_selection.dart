@@ -24,11 +24,11 @@ Future<T?> showSingleSelection<T>(
 
 class SingleSelection<T> extends StatefulWidget {
   const SingleSelection({
-    Key? key,
+    super.key,
     required this.items,
     required this.controller,
     this.title,
-  }) : super(key: key);
+  });
 
   final Map<T, String> items;
 
@@ -99,8 +99,8 @@ class CheckListDialog<T> extends StatelessWidget {
     this.hint,
     this.onItemTap,
     this.itemBuilder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// items keep all list item
   final ValueNotifier<List<delta.ListItem<T>>> items;

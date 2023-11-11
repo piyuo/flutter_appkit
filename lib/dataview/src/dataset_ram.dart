@@ -12,8 +12,8 @@ class DatasetRam<T extends net.Object> extends Dataset<T> {
   /// final dataset = DatasetRam<sample.Person>(objectBuilder: () => sample.Person());
   /// ```
   DatasetRam({
-    required net.Builder<T> objectBuilder,
-  }) : super(objectBuilder: objectBuilder);
+    required super.objectBuilder,
+  });
 
   /// _rows keep all rows in ram
   // ignore: prefer_final_fields

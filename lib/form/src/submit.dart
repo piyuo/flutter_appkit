@@ -15,8 +15,8 @@ class Submit extends StatelessWidget {
     this.showToastWait = true,
     this.showToastDone = true,
     this.onlySubmitOnDirty = true,
-    Key? key, // all submit must have key, it's important for test and identify field
-  }) : super(key: key);
+    super.key, // all submit must have key, it's important for test and identify field
+  });
 
   /// padding is button padding
   final EdgeInsets padding;

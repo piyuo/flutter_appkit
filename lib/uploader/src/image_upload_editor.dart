@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:libcli/editor/editor.dart' as editor;
-import 'uploader.dart';
 import 'image_upload_controller.dart';
 import 'abstract_file.dart';
 
 /// ImageUploadController upload single image through uploader
 class ImageUploadEditor extends ImageUploadController {
   ImageUploadEditor({
-    required Uploader uploader,
+    required super.uploader,
     this.cropAspectRatio = 1,
-  }) : super(uploader: uploader);
+  });
 
   final double cropAspectRatio;
 

@@ -6,11 +6,11 @@ import 'map.dart';
 /// PlaceField let user set his place, it contain address, lat/lng and address tags
 class OpenInMap extends StatelessWidget {
   const OpenInMap({
-    Key? key,
+    super.key,
     required this.latlng,
     required this.address,
     required this.label,
-  }) : super(key: key);
+  });
 
   /// latlng is the lat/lng need to open in map
   final utils.LatLng latlng;

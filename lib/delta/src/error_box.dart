@@ -9,8 +9,8 @@ class ErrorLabel extends StatelessWidget {
     this.space = 4,
     this.icon = Icons.priority_high_outlined,
     this.color,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// message is the error message to display
   final String message;
@@ -49,8 +49,8 @@ class ErrorBox extends StatelessWidget {
   const ErrorBox({
     required this.message,
     this.maxLines = 6,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// message is the error message to display
   final String message;

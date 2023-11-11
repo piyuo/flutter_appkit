@@ -24,7 +24,7 @@ final GlobalKey btnMenuOnBottom = GlobalKey();
 final _checkController = ValueNotifier<bool>(false);
 
 class DeltaExample extends StatelessWidget {
-  const DeltaExample({Key? key}) : super(key: key);
+  const DeltaExample({super.key});
 
   @override
   Widget build(BuildContext context) {

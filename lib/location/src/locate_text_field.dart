@@ -35,8 +35,8 @@ class LocateTextField extends StatelessWidget {
     required this.reason,
     this.decoration = const InputDecoration(),
     this.suggestionsBuilder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// focusNode control focus
   final FocusNode focusNode;

@@ -40,7 +40,7 @@ class MapProvider with ChangeNotifier {
 
 /// Map is abstract map
 abstract class Map extends StatelessWidget {
-  const Map({Key? key}) : super(key: key);
+  const Map({super.key});
 }
 
 enum LocationMapType { google, apple } //, amap

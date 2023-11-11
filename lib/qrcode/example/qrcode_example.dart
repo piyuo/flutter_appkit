@@ -13,7 +13,7 @@ main() => apollo.start(
     );
 
 class QRCodeExample extends StatelessWidget {
-  const QRCodeExample({Key? key}) : super(key: key);
+  const QRCodeExample({super.key});
 
   @override
   Widget build(BuildContext context) {

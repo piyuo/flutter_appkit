@@ -10,12 +10,12 @@ class ShimmerForm extends StatelessWidget {
   ///
   /// The [formGroup] and [child] arguments are required.
   const ShimmerForm({
-    Key? key,
+    super.key,
     required this.formGroup,
     required this.child,
     this.onWillPop,
     this.showShimmer = false,
-  }) : super(key: key);
+  });
 
   /// child is the form widget
   final Widget child;

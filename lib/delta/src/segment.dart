@@ -6,8 +6,8 @@ class Segment<T extends Object> extends StatefulWidget {
     required this.children,
     required this.controller,
     this.onBeforeChange,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// children is segment children widget
   final Map<T, Widget> children;
@@ -70,8 +70,8 @@ class SlideSegment<T> extends StatefulWidget {
     required this.children,
     required this.controller,
     this.onBeforeChange,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// children is segment children widget
   final Map<T, Widget> children;
@@ -126,8 +126,8 @@ class SwipeContainer extends StatefulWidget {
   const SwipeContainer({
     required this.children,
     required this.controller,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// children is segment children widget
   final List<Widget> children;
@@ -185,8 +185,8 @@ class SegmentContainer extends StatelessWidget {
     required this.controller,
     required this.segmentControl,
     this.padding,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// segmentControl show segments control
   final Widget segmentControl;

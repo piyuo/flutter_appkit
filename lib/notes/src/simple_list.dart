@@ -3,27 +3,18 @@ import 'selectable.dart';
 
 class SimpleList<T> extends Selectable<T> {
   const SimpleList({
-    required List<T> items,
-    required List<T> selectedItems,
-    bool checkMode = false,
-    void Function(List<T> items)? onItemSelected,
-    void Function(List<T> items)? onItemChecked,
+    required super.items,
+    required super.selectedItems,
+    super.checkMode,
+    super.onItemSelected,
+    super.onItemChecked,
     Color? selectedColor,
-    required ItemBuilder<T> itemBuilder,
-    Widget Function()? headerBuilder,
-    Widget Function()? footerBuilder,
-    Key? key,
+    required super.itemBuilder,
+    super.headerBuilder,
+    super.footerBuilder,
+    super.key,
   }) : super(
-          items: items,
-          selectedItems: selectedItems,
-          checkMode: checkMode,
-          itemBuilder: itemBuilder,
           itemDecorationBuilder: defaultListDecorationBuilder,
-          onItemSelected: onItemSelected,
-          onItemChecked: onItemChecked,
-          headerBuilder: headerBuilder,
-          footerBuilder: footerBuilder,
-          key: key,
         );
 
   /// rowCount is actual row count to display

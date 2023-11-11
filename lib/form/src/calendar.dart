@@ -9,10 +9,10 @@ enum CalendarType { single, multi, range }
 class Calendar extends ReactiveFormField<List<DateTime?>, List<DateTime?>> {
   Calendar({
     CalendarType calendarType = CalendarType.single,
-    String? formControlName,
-    FormControl<List<DateTime?>>? formControl,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ShowErrorsFunction? showErrors,
+    super.formControlName,
+    super.formControl,
+    super.validationMessages,
+    ShowErrorsFunction? super.showErrors,
     DateTime? firstDate,
     DateTime? lastDate,
     DateTime? currentDate,
@@ -24,13 +24,8 @@ class Calendar extends ReactiveFormField<List<DateTime?>, List<DateTime?>> {
             bool? isToday,
             TextStyle? textStyle})?
         dayBuilder,
-    Key? key,
+    super.key,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          validationMessages: validationMessages,
-          showErrors: showErrors,
           builder: (field) {
             return CalendarDatePicker2(
               config: CalendarDatePicker2Config(

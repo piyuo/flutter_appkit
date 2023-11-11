@@ -39,8 +39,8 @@ class GridListView<T> extends StatelessWidget {
     this.listScrollController,
     this.gridAnimatedViewScrollController,
     this.listAnimatedViewScrollController,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// animateViewProvider is the provider of the animate view
   final delta.AnimateViewProvider animateViewProvider;

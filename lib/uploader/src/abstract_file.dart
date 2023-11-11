@@ -37,9 +37,9 @@ abstract class AbstractFile {
 
 class MemoryFile extends AbstractFile {
   MemoryFile({
-    required String mimeType,
+    required super.mimeType,
     required this.bytes,
-  }) : super(mimeType: mimeType);
+  });
 
   /// bytes is image raw data
   Uint8List bytes;

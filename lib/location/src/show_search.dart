@@ -183,7 +183,7 @@ class ShowSearchProvider with ChangeNotifier {
 }
 
 class ShowSearch extends StatelessWidget {
-  const ShowSearch({Key? key}) : super(key: key);
+  const ShowSearch({super.key});
 
   @override
   Widget build(BuildContext context) {

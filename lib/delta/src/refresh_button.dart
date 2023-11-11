@@ -32,10 +32,10 @@ class RefreshButton extends StatelessWidget {
   /// ```
   const RefreshButton({
     required this.onPressed,
-    Key? key,
+    super.key,
     this.size = 24,
     this.color,
-  }) : super(key: key);
+  });
 
   /// onRefresh call when user press button
   final Future<void> Function()? onPressed;

@@ -13,8 +13,8 @@ class CheckboxLabel extends StatelessWidget {
     this.textStyle,
     this.checkColor,
     this.fillColor,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool checked;
 

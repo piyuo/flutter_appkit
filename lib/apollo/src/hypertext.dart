@@ -33,9 +33,9 @@ class Span {
 /// Span is a part of Hypertext
 class Bold extends Span {
   const Bold({
-    required String text,
-    TextStyle? textStyle,
-  }) : super(text: text, textStyle: textStyle);
+    required super.text,
+    super.textStyle,
+  });
 
   @override
   TextSpan build(BuildContext context) {
@@ -49,10 +49,10 @@ class Bold extends Span {
 /// Link is a part of Hypertext, it can be clicked
 class Link extends Span {
   const Link({
-    required String text,
+    required super.text,
     required this.onPressed,
-    TextStyle? textStyle,
-  }) : super(text: text, textStyle: textStyle);
+    super.textStyle,
+  });
 
   /// onTap callback
   final void Function(BuildContext context, TapUpDetails details) onPressed;
@@ -73,12 +73,10 @@ class Link extends Span {
 /// Url is a part of Hypertext, it can be clicked and open url
 class Url extends Link {
   Url({
-    required String text,
+    required super.text,
     this.url,
-    TextStyle? textStyle,
+    super.textStyle,
   }) : super(
-          text: text,
-          textStyle: textStyle,
           onPressed: (_, __) {
             var openUrl = url ?? text;
             if (!openUrl.startsWith('http')) {
@@ -95,13 +93,11 @@ class Url extends Link {
 /// PopText is a part of Hypertext, it can be clicked and show popup text content
 class PopText extends Link {
   PopText({
-    required String text,
+    required super.text,
     required this.content,
     this.popupSize = const Size(240, 180),
-    TextStyle? textStyle,
+    super.textStyle,
   }) : super(
-          text: text,
-          textStyle: textStyle,
           onPressed: (context, details) => dialog.showHint(
             context,
             text: content,
@@ -120,12 +116,10 @@ class PopText extends Link {
 /// DocumentLink is a part of Hypertext, it can be clicked and show document content
 class DocumentLink extends Link {
   DocumentLink({
-    required String text,
+    required super.text,
     required this.docName,
-    TextStyle? textStyle,
+    super.textStyle,
   }) : super(
-          text: text,
-          textStyle: textStyle,
           onPressed: (context, details) => delta.pushRoute(context, DocumentViewer(docName: docName, title: text)),
         );
 
@@ -136,9 +130,9 @@ class DocumentLink extends Link {
 /// Hypertext is a widget to show text with bold and link
 class Hypertext extends StatelessWidget {
   const Hypertext({
-    Key? key,
+    super.key,
     this.children = const [],
-  }) : super(key: key);
+  });
 
   /// children is a list of Span
   final List<Span> children;
@@ -158,8 +152,8 @@ class DocumentViewer extends StatelessWidget {
   const DocumentViewer({
     required this.docName,
     this.title = '',
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
 

@@ -7,12 +7,12 @@ export 'package:pinput/pinput.dart';
 
 class FormPinPut<T> extends ReactiveFormField<T, String> {
   FormPinPut({
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ControlValueAccessor<T, String>? valueAccessor,
-    ShowErrorsFunction? showErrors,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.validationMessages,
+    super.valueAccessor,
+    ShowErrorsFunction? super.showErrors,
     required int length,
     VoidCallback? onTap,
     TextInputType keyboardType = TextInputType.number,
@@ -67,12 +67,6 @@ class FormPinPut<T> extends ReactiveFormField<T, String> {
     TextSelectionControls? selectionControls,
     Iterable<String>? autofillHints,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          valueAccessor: valueAccessor,
-          validationMessages: validationMessages,
-          showErrors: showErrors,
           builder: (field) {
             final state = field as _ReactiveMacosTextFieldState<T>;
 

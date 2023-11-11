@@ -52,8 +52,8 @@ class SelectBar extends StatelessWidget {
     this.onNew,
     this.caption,
     this.onRefresh,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final SelectBarProvider selectBarProvider;
 

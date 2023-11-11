@@ -23,18 +23,13 @@ class FutureField<T> extends ReactiveFormField<T, T> {
   FutureField({
     Future<T?> Function(BuildContext context, T? value)? onPressed,
     required Widget Function(T?) valueBuilder,
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ShowErrorsFunction? showErrors,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.validationMessages,
+    ShowErrorsFunction? super.showErrors,
     InputDecoration decoration = const InputDecoration(),
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          validationMessages: validationMessages,
-          showErrors: showErrors,
           builder: (ReactiveFormFieldState<T, T> field) {
             Widget suffixIcon = Icon(
               Icons.navigate_next,

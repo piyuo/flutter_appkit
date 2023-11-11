@@ -52,8 +52,8 @@ class Responsive extends StatelessWidget {
     required this.phoneScreen,
     this.notPhoneScreen,
     this.bigScreen,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// phoneScreen is widget for phone screen
   final DesignBuilder phoneScreen;

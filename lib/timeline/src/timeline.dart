@@ -27,7 +27,7 @@ class TimelineStep {
 /// Timeline is a widget that shows a timeline.
 class Timeline extends StatelessWidget {
   const Timeline({
-    Key? key,
+    super.key,
     required this.steps,
     required this.completedIndex,
     this.showLabel = true,
@@ -48,7 +48,7 @@ class Timeline extends StatelessWidget {
     this.shape = BoxShape.circle,
     this.activeLabelStyle,
     this.inActiveLabelStyle,
-  }) : super(key: key);
+  });
 
   /// steps is The steps to be displayed in the timeline
   final List<TimelineStep> steps;

@@ -26,10 +26,10 @@ abstract class ToolItem {
 abstract class ToolControl extends ToolItem {
   ToolControl({
     required this.label,
-    required double width,
-    double? space,
+    required super.width,
+    super.space,
     this.icon,
-  }) : super(width: width, space: space);
+  });
 
   /// icon of control
   final IconData? icon;
@@ -60,8 +60,8 @@ class Toolbar extends StatelessWidget {
     this.activeColor,
     this.iconColor,
     this.mainAxisAlignment = MainAxisAlignment.start,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// children contain tool item need show on toolbar
   final List<ToolItem> items;

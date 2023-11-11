@@ -14,7 +14,7 @@ main() => apollo.start(
     );
 
 class AudioExample extends StatelessWidget {
-  const AudioExample({Key? key}) : super(key: key);
+  const AudioExample({super.key});
 
   @override
   Widget build(BuildContext context) {

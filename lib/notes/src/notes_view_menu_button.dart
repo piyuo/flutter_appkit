@@ -11,8 +11,8 @@ class NotesViewMenuButton<T extends net.Object> extends StatelessWidget {
     required this.viewProvider,
     required this.formController,
     this.items,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// tools is extra tools for master detail view
   final List<tools.ToolItem>? items;

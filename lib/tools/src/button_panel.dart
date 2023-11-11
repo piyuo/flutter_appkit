@@ -16,13 +16,13 @@ class ButtonPanel<T> extends StatelessWidget {
   ///   )
   /// ```
   const ButtonPanel({
-    Key? key,
+    super.key,
     required this.children,
     required this.onPressed,
     this.checkedValues,
     this.foregroundColor,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   /// children is the list of buttons
   final Map<T, Widget> children;

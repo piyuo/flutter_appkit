@@ -48,8 +48,8 @@ class Shifter extends StatelessWidget {
     this.vertical = false,
     this.alignment = Alignment.topLeft,
     this.duration = const Duration(milliseconds: 300),
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// child need to animate, child must have key
   final Widget child;

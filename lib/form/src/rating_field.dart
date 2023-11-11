@@ -28,12 +28,12 @@ class RatingField<T> extends ReactiveFormField<T, double> {
   /// ),
   /// ```
   RatingField({
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ControlValueAccessor<T, double>? valueAccessor,
-    ShowErrorsFunction? showErrors,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.validationMessages,
+    super.valueAccessor,
+    ShowErrorsFunction? super.showErrors,
     InputDecoration decoration = const InputDecoration(
       border: InputBorder.none,
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -58,12 +58,6 @@ class RatingField<T> extends ReactiveFormField<T, double> {
     WrapAlignment wrapAlignment = WrapAlignment.start,
     required Widget Function(BuildContext, int) itemBuilder,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          valueAccessor: valueAccessor,
-          validationMessages: validationMessages,
-          showErrors: showErrors,
           builder: (field) {
             final InputDecoration effectiveDecoration =
                 decoration.applyDefaults(Theme.of(field.context).inputDecorationTheme);

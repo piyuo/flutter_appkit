@@ -10,8 +10,8 @@ import 'error.dart';
 class ErrorScreen extends StatelessWidget {
   const ErrorScreen({
     this.onRetry,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// onRetry is callback when retry button clicked
   final VoidCallback? onRetry;

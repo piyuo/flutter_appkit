@@ -15,8 +15,8 @@ class DataView<T extends net.Object> extends StatelessWidget {
     required this.contentBuilder,
     this.leftTools,
     this.rightTools,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
   final NotesProvider<T> notesProvider;

@@ -15,7 +15,7 @@ main() => apollo.start(
     );
 
 class UploaderExample extends StatelessWidget {
-  const UploaderExample({Key? key}) : super(key: key);
+  const UploaderExample({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -59,7 +59,7 @@ void main() {
 class L10nWidget extends StatelessWidget {
   static String value = '';
 
-  const L10nWidget({Key? key}) : super(key: key);
+  const L10nWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

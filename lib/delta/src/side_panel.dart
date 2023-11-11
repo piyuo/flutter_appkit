@@ -44,8 +44,8 @@ class SidePanel extends StatelessWidget {
     required this.mainWidget,
     required this.sideWidth,
     this.decoration,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// sideWidget is the widget place on the side
   final Widget sideWidget;

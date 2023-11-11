@@ -16,8 +16,8 @@ class NotesView<T extends net.Object> extends StatelessWidget {
     this.leftTools,
     this.rightTools,
     this.tagViewHeader,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// notesProvider provide notes, don't direct consume it, this provider maybe inhibit by other provider
   final NotesProvider<T> notesProvider;

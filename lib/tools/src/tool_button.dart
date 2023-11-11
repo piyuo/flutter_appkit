@@ -12,13 +12,13 @@ class ToolButton extends ToolControl {
   ///  ),
   /// ```
   ToolButton({
-    double width = 38,
-    double? space,
-    required String label,
+    super.width = 38,
+    super.space,
+    required super.label,
     this.onPressed,
-    IconData? icon,
+    super.icon,
     this.active = false,
-  }) : super(width: width, label: label, space: space, icon: icon);
+  });
 
   final bool active;
 

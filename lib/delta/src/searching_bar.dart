@@ -6,7 +6,7 @@ typedef SuggestionBuilder = Future<List<String>> Function(String text);
 
 class SearchingBar extends StatelessWidget {
   const SearchingBar({
-    Key? key,
+    super.key,
     required this.controller,
     this.suggestionBuilder,
     this.onSuggestionChanged,
@@ -15,7 +15,7 @@ class SearchingBar extends StatelessWidget {
     this.isDense = true,
     this.keyboardType,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   /// controller is text editing controller for search bar
   final TextEditingController controller;

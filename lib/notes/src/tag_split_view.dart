@@ -8,8 +8,8 @@ class TagSplitView extends StatelessWidget {
   const TagSplitView({
     required this.child,
     this.tagView,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// tagView is tag view, if tag view is null it will show child directly
   final tools.TagView? tagView;

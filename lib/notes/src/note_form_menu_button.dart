@@ -8,9 +8,9 @@ import 'note_form_controller.dart';
 class NoteFormMenuButton<T extends net.Object> extends StatelessWidget {
   const NoteFormMenuButton({
     required this.formController,
-    Key? key,
+    super.key,
     this.items,
-  }) : super(key: key);
+  });
 
   /// tools is extra tools for master detail view
   final List<tools.ToolItem>? items;

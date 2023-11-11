@@ -42,7 +42,7 @@ void main() {
 class MockLoadingView extends StatelessWidget {
   static int count = 0;
 
-  const MockLoadingView({Key? key}) : super(key: key);
+  const MockLoadingView({super.key});
   @override
   Widget build(BuildContext context) {
     count++;
@@ -53,7 +53,7 @@ class MockLoadingView extends StatelessWidget {
 class MockReadyView extends StatelessWidget {
   static int count = 0;
 
-  const MockReadyView({Key? key}) : super(key: key);
+  const MockReadyView({super.key});
   @override
   Widget build(BuildContext context) {
     count++;

@@ -5,8 +5,8 @@ class TimeChart extends StatelessWidget {
   const TimeChart({
     this.title,
     this.subtitle,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String? title;
 

@@ -23,8 +23,8 @@ class CheckableHeader extends StatelessWidget {
     this.onUnselectAll,
     this.actions,
     this.onCancel,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// selectedItemCount is the number of selected items
   final int selectedItemCount;

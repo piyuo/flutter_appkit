@@ -58,7 +58,7 @@ class AnimateGrid extends StatefulWidget {
   /// Creates a scrolling container that animates items when they are inserted
   /// or removed.
   const AnimateGrid({
-    Key? key,
+    super.key,
     required this.itemBuilder,
     this.initialItemCount = 0,
     this.scrollDirection = Axis.vertical,
@@ -73,7 +73,7 @@ class AnimateGrid extends StatefulWidget {
     this.mainAxisSpacing = 0,
     this.crossAxisSpacing = 0,
     this.childAspectRatio = 1,
-  }) : super(key: key);
+  });
 
   /// The number of children in the cross axis.
   final int crossAxisCount;
@@ -359,14 +359,14 @@ class AnimateGridState extends State<AnimateGrid> with TickerProviderStateMixin<
 class SliverAnimatedGrid extends StatefulWidget {
   /// Creates a sliver that animates items when they are inserted or removed.
   const SliverAnimatedGrid({
-    Key? key,
+    super.key,
     required this.itemBuilder,
     this.initialItemCount = 0,
     this.crossAxisCount = 1,
     this.mainAxisSpacing = 0,
     this.crossAxisSpacing = 0,
     this.childAspectRatio = 1,
-  }) : super(key: key);
+  });
 
   /// Called, as needed, to build list item widgets.
   ///

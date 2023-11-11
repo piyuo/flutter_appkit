@@ -5,8 +5,8 @@ class Separator extends StatelessWidget {
     this.height = 1,
     this.color = Colors.grey,
     this.dashWidth = 8.0,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final double height;
 

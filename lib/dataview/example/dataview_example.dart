@@ -28,7 +28,7 @@ main() {
 }
 
 class DbExample extends StatelessWidget {
-  const DbExample({Key? key}) : super(key: key);
+  const DbExample({super.key});
 
   @override
   Widget build(BuildContext context) {

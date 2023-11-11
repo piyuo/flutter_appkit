@@ -21,8 +21,8 @@ class TagView<T> extends StatelessWidget {
     required this.tags,
     this.onTagSelected,
     this.header,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// tags is a list of tags to display.
   final List<Tag<T>> tags;

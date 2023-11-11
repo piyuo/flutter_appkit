@@ -7,7 +7,7 @@ import 'checkbox_label.dart';
 ///
 class Check extends StatelessWidget {
   const Check({
-    Key? key,
+    super.key,
     this.controller,
     this.label,
     this.size = 24,
@@ -15,7 +15,7 @@ class Check extends StatelessWidget {
     this.checkColor,
     this.fillColor,
     this.disabled,
-  }) : super(key: key);
+  });
 
   /// controller is null will disable control
   final ValueNotifier<bool>? controller;

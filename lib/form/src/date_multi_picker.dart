@@ -8,11 +8,11 @@ import 'calendar.dart';
 /// DateMultiPicker is a convenience widget that can  multi date
 class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
   DateMultiPicker({
-    String? formControlName,
-    FormControl<List<DateTime?>>? formControl,
+    super.formControlName,
+    super.formControl,
     ControlValueAccessor<List<DateTime?>, String>? valueAccessor,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ShowErrorsFunction? showErrors,
+    super.validationMessages,
+    ShowErrorsFunction? super.showErrors,
     InputDecoration? decoration,
     bool showClearIcon = true,
     Widget clearIcon = const Icon(Icons.clear),
@@ -43,14 +43,9 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
             bool? isToday,
             TextStyle? textStyle})?
         dayBuilder,
-    Key? key,
+    super.key,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          validationMessages: validationMessages,
           valueAccessor: valueAccessor ?? CalendarValueAccessor(),
-          showErrors: showErrors,
           builder: (field) {
             Widget? suffixIcon = decoration?.suffixIcon;
             final isEmptyValue = field.value == null || field.value.toString().isEmpty;

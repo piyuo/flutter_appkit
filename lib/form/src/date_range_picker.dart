@@ -21,12 +21,12 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
   /// For documentation about the various parameters, see the [showDateRangePicker]
   /// function parameters.
   DateRangePicker({
-    Key? key,
-    String? formControlName,
-    FormControl<DateTimeRange>? formControl,
+    super.key,
+    super.formControlName,
+    super.formControl,
     ControlValueAccessor<DateTimeRange, String>? valueAccessor,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ShowErrorsFunction? showErrors,
+    super.validationMessages,
+    ShowErrorsFunction? super.showErrors,
     InputDecoration? decoration,
     Widget Function(BuildContext, DateTimeRange? range, String? text)? widgetBuilder,
     bool showClearIcon = true,
@@ -53,12 +53,7 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
     TextDirection? textDirection,
     RouteSettings? routeSettings,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          validationMessages: validationMessages,
           valueAccessor: valueAccessor ?? DateRangePickerValueAccessor(),
-          showErrors: showErrors,
           builder: (field) {
             Widget? suffixIcon = decoration?.suffixIcon;
             final isEmptyValue = field.value == null || field.value.toString().isEmpty;
@@ -180,8 +175,8 @@ class DateRangePickerValueAccessor extends ControlValueAccessor<DateTimeRange, S
 class BigDateLabel extends StatelessWidget {
   const BigDateLabel({
     required this.date,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final DateTime date;
 
@@ -223,8 +218,8 @@ class BigDateLabel extends StatelessWidget {
 class BigDateRange extends StatelessWidget {
   const BigDateRange({
     required this.range,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final DateTimeRange range;
 

@@ -22,8 +22,8 @@ class VerticalOnPhoneLayout extends StatelessWidget {
     required this.builder,
     this.columnCrossAxisAlignment = CrossAxisAlignment.center,
     this.rowMainAxisAlignment = MainAxisAlignment.center,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// children show column in small screen, row on big screen
   final List<Widget> Function(bool isColumn) builder;

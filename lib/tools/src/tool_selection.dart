@@ -18,14 +18,14 @@ class ToolSelection extends ToolControl {
   /// ),
   /// ```
   ToolSelection({
-    double width = 60,
-    double? space,
-    required String label,
+    super.width = 60,
+    super.space,
+    required super.label,
     required this.selection,
     this.onPressed,
     this.selectedValue,
-    IconData? icon,
-  }) : super(width: width, label: label, icon: icon, space: space);
+    super.icon,
+  });
 
   final Map<dynamic, String> selection;
 
@@ -100,7 +100,7 @@ class ToolSelection extends ToolControl {
             title: Text(entry.value),
           ),
         );
-      }).toList(),
+      }),
       if (!last) const PopupMenuDivider()
     ];
   }

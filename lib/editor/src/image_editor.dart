@@ -47,8 +47,8 @@ class ImageEditor extends StatelessWidget {
   const ImageEditor({
     required this.controller,
     this.cropAspectRatio = 1,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final double cropAspectRatio;
 

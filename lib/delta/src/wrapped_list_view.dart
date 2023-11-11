@@ -51,9 +51,9 @@ class Wrapped {
 /// WrappedListView is wrap items in list view
 class WrappedListView extends StatelessWidget {
   const WrappedListView({
-    Key? key,
+    super.key,
     required this.children,
-  }) : super(key: key);
+  });
 
   final List<Wrapped> children;
 

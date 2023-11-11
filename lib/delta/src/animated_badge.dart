@@ -19,8 +19,8 @@ class AnimatedBadge extends StatelessWidget {
     this.backgroundColor,
     this.textColor = Colors.white,
     this.onBottom = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// label is a widget that shows a badge on top of another widget.
   final String? label;

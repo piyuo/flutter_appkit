@@ -25,8 +25,8 @@ class MenuButton<T> extends StatelessWidget {
     this.padding,
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.initialValue,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// icon is button icon
   final Widget? icon;

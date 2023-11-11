@@ -14,8 +14,8 @@ class ImageUpload extends StatelessWidget {
     this.width = 240,
     this.height = 240,
     this.description,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// imageRoot image url root path like 'https://customer1.piyuo.com/a'
   final String imageRoot;
