@@ -48,7 +48,7 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
     DateTime? firstDate,
     DateTime? lastDate,
     DateTime? currentDate,
-    DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
+    DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendarOnly,
     Locale? locale,
     TextDirection? textDirection,
     RouteSettings? routeSettings,
@@ -90,7 +90,7 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
                     onTap: () async {
                       final dateRange = await showDateRangePicker(
                         builder: (context, child) {
-                          /// _DateRangePickerDialogState has some issue with the colorScheme, remove this Theme when it's fixed
+                          // _DateRangePickerDialogState has some issue with the colorScheme, remove this Theme when it's fixed
                           final colorScheme = Theme.of(context).colorScheme;
                           return Theme(
                             data: Theme.of(context).copyWith(
@@ -122,7 +122,6 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
                         useRootNavigator: useRootNavigator,
                         routeSettings: routeSettings,
                         textDirection: textDirection,
-                        //builder: builder,
                       );
 
                       if (dateRange == null) {
