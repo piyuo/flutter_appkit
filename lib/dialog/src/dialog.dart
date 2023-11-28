@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+//import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'toast.dart';
@@ -6,12 +6,14 @@ import 'toast.dart';
 Widget Function(BuildContext, Widget? child) init() {
   /// init toast
   return EasyLoading.init(builder: (ctx, w) {
-    return MaxScaleTextWidget(
-      child: w!,
-    );
+    return w!;
+    //  return MaxScaleTextWidget(
+    //  child: w!,
+    //);
   });
 }
 
+/*
 /// MaxScaleTextWidget prevent user set scale too big, the layout may not show correctly
 class MaxScaleTextWidget extends StatelessWidget {
   final Widget child;
@@ -24,14 +26,16 @@ class MaxScaleTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var data = MediaQuery.of(context);
-    var scale = math.min(1.0, data.textScaleFactor);
+    final textScaleFactor = data.textScaler.scale(10) / 10;
+    var scale = math.min(1.0, textScaleFactor);
     return MediaQuery(
-      data: data.copyWith(textScaleFactor: scale),
+      data: data.copyWith(textScaler: TextScaler.linear(scale)),
+      //data: data.copyWith(textScaleFactor: scale),
       child: child,
     );
   }
 }
-
+*/
 /// routeOrDialog will push route if screen size small than 600, otherwise it will show widget in dialog with width 600
 /// ```dart
 /// routeOrDialog(

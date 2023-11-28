@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonType {
@@ -94,7 +93,7 @@ class SigninButton extends StatelessWidget {
     final disabledTextColor = Theme.of(context).disabledColor.withOpacity(0.38);
 
     Widget image = Image.asset(
-      'images/${describeEnum(buttonType)}.png',
+      'images/${buttonType.name}.png',
       package: 'libcli',
       width: imageSize,
       height: imageSize,
