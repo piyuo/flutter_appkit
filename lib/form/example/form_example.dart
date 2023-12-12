@@ -361,7 +361,8 @@ class FormExample extends StatelessWidget {
                 DateMultiPicker(
                   formControlName: 'multiDate',
                   decoration: const InputDecoration(
-                    labelText: 'Multi date',
+                    //labelText: 'Multi date',
+                    labelText: 'Click here to select date',
                     suffixIcon: Icon(Icons.calendar_month),
                   ),
                 ),

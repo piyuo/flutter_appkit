@@ -28,14 +28,7 @@ class ShimmerForm extends StatelessWidget {
 
   /// onWillPop enables the form to veto attempts by the user to dismiss the [ModalRoute]
   /// that contains the form.
-  ///
-  /// If the callback returns a Future that resolves to false, the form's route
-  /// will not be popped.
-  ///
-  /// See also:
-  ///
-  ///  * [WillPopScope], another widget that provides a way to intercept the
-  ///    back button.
+  // ignore: deprecated_member_use
   final WillPopCallback? onWillPop;
 
   @override

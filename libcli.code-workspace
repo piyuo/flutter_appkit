@@ -46,7 +46,7 @@
         ],
 
         "editor.codeActionsOnSave": {
-            "source.fixAll.tslint": true
+            "source.fixAll.tslint": "explicit"
         },
         "files.autoGuessEncoding": true,
         "files.trimTrailingWhitespace": true,

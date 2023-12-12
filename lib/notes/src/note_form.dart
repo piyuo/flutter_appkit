@@ -20,6 +20,7 @@ class NoteForm<T extends net.Object> extends StatelessWidget {
   final NoteFormController<T> formController;
 
   /// onWillPop provides a way to intercept the back button
+  // ignore: deprecated_member_use
   final WillPopCallback? onWillPop;
 
   @override
