@@ -103,9 +103,8 @@ dependencies:
 dev_dependencies:
   mockito: ^5.4.2
   flutter_lints: ^3.0.1
-  analyzer: ^5.11.0
-dependency_overrides:
   analyzer: ^6.3.0
+dependency_overrides:
   meta: ^1.11.0 #cause flutter_test blocked
 
 
