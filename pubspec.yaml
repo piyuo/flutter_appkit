@@ -98,8 +98,8 @@ dependencies:
   emoji_picker_flutter: ^1.6.1
   auto_animated: ^3.2.0
   sign_in_with_apple: ^5.0.0
-  google_sign_in: ^6.1.5
-  flutter_facebook_auth: ^6.0.2
+  google_sign_in: ^6.1.6
+  flutter_facebook_auth: ^6.0.3
 dev_dependencies:
   mockito: ^5.4.3
   flutter_lints: ^3.0.1
