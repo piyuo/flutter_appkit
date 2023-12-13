@@ -64,12 +64,12 @@ abstract class Service {
   /// ```dart
   /// var response = await service.send<StringResponse>(EchoAction());
   /// ```
-  Future<T?> send<T extends net.Object>(net.Object command, {net.Builder? builder}) async {
+  Future<net.Object?> send(net.Object command, {net.Builder? builder}) async {
     if (!kReleaseMode && mockSender != null) {
-      return mockSender!(command, builder: builder) as T;
+      return mockSender!(command, builder: builder);
     }
     http.Client client = http.Client();
-    return await sendByClient(command, client, builder) as T;
+    return await sendByClient(command, client, builder);
   }
 
   /// sendByClient send action to remote service,return object if success, return null if exception happen
