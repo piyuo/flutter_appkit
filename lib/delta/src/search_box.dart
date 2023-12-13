@@ -40,7 +40,7 @@ class SearchBox extends StatelessWidget {
   final String? recentKey;
 
   /// onNeedSuggestion trigger when select a suggestion
-  final Future<Iterable<SearchSuggestion>> Function(String)? onSuggestion;
+  final Future<List<SearchSuggestion>> Function(String)? onSuggestion;
 
   /// focusNode is control's focus node, we required this to unfocus the control so suggestion box can be closed
   final FocusNode focusNode;
@@ -66,67 +66,69 @@ class SearchBox extends StatelessWidget {
         value: controller, // consumer for redrawing when text changed need show clear button
         child: Consumer<TextEditingController>(
             builder: (context, _, __) => TypeAheadField<SearchSuggestion>(
-                textFieldConfiguration: TextFieldConfiguration(
-                  enabled: enabled,
-                  controller: controller,
-                  onSubmitted: (text) {
-                    focusNode.unfocus();
-                    if (recentKey != null) {
-                      preferences.addRecent(recentKey!, text);
-                    }
-                    onSubmitted?.call(text.trim());
-                  },
-                  focusNode: focusNode,
-                  textInputAction: TextInputAction.search,
-                  maxLength: 60,
-                  style: DefaultTextStyle.of(context).style.copyWith(
-                        overflow: TextOverflow.ellipsis,
+                builder: (context, controller, focusNode) {
+                  return TextField(
+                    enabled: enabled,
+                    controller: controller,
+                    onSubmitted: (text) {
+                      focusNode.unfocus();
+                      if (recentKey != null) {
+                        preferences.addRecent(recentKey!, text);
+                      }
+                      onSubmitted?.call(text.trim());
+                    },
+                    focusNode: focusNode,
+                    textInputAction: TextInputAction.search,
+                    maxLength: 60,
+                    style: DefaultTextStyle.of(context).style.copyWith(
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                    decoration: InputDecoration(
+                      contentPadding: contentPadding,
+                      isDense: true,
+                      counterText: '',
+                      prefixIcon: prefixIcon,
+                      prefixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
+                      suffixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
+                      suffixIcon: controller.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                focusNode.unfocus();
+                                onSubmitted?.call('');
+                                controller.text = '';
+                              },
+                            )
+                          : const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        gapPadding: 0,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                  decoration: InputDecoration(
-                    contentPadding: contentPadding,
-                    isDense: true,
-                    counterText: '',
-                    prefixIcon: prefixIcon,
-                    prefixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
-                    suffixIconConstraints: const BoxConstraints(minWidth: 42, maxHeight: 31),
-                    suffixIcon: controller.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () {
-                              focusNode.unfocus();
-                              onSubmitted?.call('');
-                              controller.text = '';
-                            },
-                          )
-                        : const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      gapPadding: 0,
-                      borderRadius: BorderRadius.circular(10),
+                      hintText: hintText,
                     ),
-                    hintText: hintText,
-                  ),
-                ),
+                  );
+                },
                 loadingBuilder: (_) => const SizedBox(),
                 //transitionBuilder: (context, suggestionsBox, controller) => suggestionsBox,
-                noItemsFoundBuilder: (_) => const SizedBox(),
+                emptyBuilder: (_) => const SizedBox(),
                 suggestionsCallback: (value) async {
                   if (recentKey != null) {
                     final recent = await preferences.getRecent(recentKey!, input: controller.text);
-                    return recent.map((text) => SearchSuggestion(text, icon: Icons.history));
+                    return recent.map((text) => SearchSuggestion(text, icon: Icons.history)).toList();
                   }
                   if (onSuggestion == null) {
                     return const [];
                   }
                   return await onSuggestion!(value);
                 },
-                suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                  elevation: 1,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(.95),
-                  clipBehavior: Clip.antiAlias,
-                ),
+                decorationBuilder: (context, suggestion) => Material(
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(.95),
+                      clipBehavior: Clip.antiAlias,
+                    ),
                 itemBuilder: (context, suggestion) {
                   return ListTile(
                     dense: !phoneScreen,
@@ -135,7 +137,7 @@ class SearchBox extends StatelessWidget {
                     leading: Icon(suggestion.icon, color: Theme.of(context).colorScheme.onSecondaryContainer),
                   );
                 },
-                onSuggestionSelected: (suggestion) {
+                onSelected: (suggestion) {
                   if (recentKey != null) {
                     preferences.addRecent(recentKey!, suggestion.text);
                   }

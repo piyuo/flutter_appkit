@@ -15,35 +15,33 @@ class RichEditor extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(10),
         height: 340,
-        child: QuillProvider(
-            configurations: QuillConfigurations(
-              controller: controller.quill,
-            ),
-            child: Column(
-              children: [
-                const Card(
-                  elevation: 4,
-                  child: QuillToolbar(
-                    configurations: QuillToolbarConfigurations(
-                      multiRowsDisplay: false,
-                      showSmallButton: false,
-                      showInlineCode: false,
-                      showLink: true,
-                      showCodeBlock: false,
-                      showListCheck: false,
-                    ),
-                  ),
+        child: Column(
+          children: [
+            Card(
+              elevation: 4,
+              child: QuillToolbar.simple(
+                configurations: QuillSimpleToolbarConfigurations(
+                  controller: controller.quill,
+                  multiRowsDisplay: false,
+                  showSmallButton: false,
+                  showInlineCode: false,
+                  showLink: true,
+                  showCodeBlock: false,
+                  showListCheck: false,
                 ),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: QuillEditor.basic(
-                    configurations: const QuillEditorConfigurations(
-                      readOnly: false, // true for view only mode
-                    ),
-                  ),
-                ))
-              ],
-            )));
+              ),
+            ),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: QuillEditor.basic(
+                configurations: QuillEditorConfigurations(
+                  controller: controller.quill,
+                  readOnly: false, // true for view only mode
+                ),
+              ),
+            ))
+          ],
+        ));
   }
 }
