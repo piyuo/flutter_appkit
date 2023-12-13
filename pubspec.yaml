@@ -107,7 +107,6 @@ dev_dependencies:
 dependency_overrides:
   analyzer: ^6.3.0
   meta: ^1.11.0 #cause flutter_test blocked
-  permission_handler: ^11.0.1
 
 
   #meta: ^1.9.0 # cause flutter_test need intl 1.8.0
