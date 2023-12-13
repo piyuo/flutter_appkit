@@ -68,7 +68,7 @@ dependencies:
   date_field: ^3.0.1
   webview_flutter: ^4.4.2
   flutter_typeahead: ^5.0.1
-  slide_countdown: ^1.1.1
+  slide_countdown: ^1.5.0
   fl_chart: ^0.65.0
   badges: ^3.0.2
   cupertino_listview: ^2.0.0

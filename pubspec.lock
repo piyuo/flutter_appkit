@@ -1623,10 +1623,10 @@ packages:
     dependency: "direct main"
     description:
       name: slide_countdown
-      sha256: e51b06eeb998ff95ae0e0b3d6b196cfa6512a53d93e8f16a4420fc2bac4e9247
+      sha256: fceed5e1f3e752d262ef3395299a5f8c7e36ec26ba715dbf5ef1ba9227633aa1
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "1.5.0"
   smart_auth:
     dependency: transitive
     description:
