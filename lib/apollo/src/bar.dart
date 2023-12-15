@@ -10,13 +10,13 @@ import 'beamer_extension.dart';
 const kSigninPath = '/signin';
 
 /// kBarHeightDesktop is height of toolbar
-const kBarHeightDesktop = 36.0;
+const kBarHeightDesktop = 42.0;
 
 /// kLogoSizeDesktop is logo size on desktop
-const kLogoSizeDesktop = 22.0;
+const kLogoSizeDesktop = 24.0;
 
 /// kBarHeightMobile is height of toolbar
-const kBarHeightMobile = 40.0;
+const kBarHeightMobile = 42.0;
 
 /// kLogoSizeMobile is logo size on mobile
 const kLogoSizeMobile = 24.0;
