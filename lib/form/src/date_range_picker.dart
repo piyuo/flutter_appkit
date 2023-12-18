@@ -214,42 +214,26 @@ class BigDateLabel extends StatelessWidget {
   }
 }
 
-/// BigDateRange show two BigDateLabel with a dash in between.
-class BigDateRange extends StatelessWidget {
-  const BigDateRange({
-    required this.range,
-    super.key,
-  });
-
-  final DateTimeRange range;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Row(children: [
-      BigDateLabel(
-        date: range.start,
-      ),
-      Expanded(
-        child: Text(
-          ' - ',
-          textAlign: TextAlign.center,
-          style: delta.mergeTextStyle(
-            Theme.of(context).textTheme.headlineLarge,
-            color: colorScheme.outline,
-          ),
-        ),
-      ),
-      BigDateLabel(
-        date: range.end,
-      ),
-    ]);
-  }
-}
-
 /// buildBigDateRange is a helper function to build a BigDateRange widget.
 Widget buildBigDateRange(BuildContext context, DateTimeRange? range, String? text) {
-  return BigDateRange(
-    range: range ?? DateTimeRange(start: DateTime.now(), end: DateTime.now()),
-  );
+  final colorScheme = Theme.of(context).colorScheme;
+  final actualRange = range ?? DateTimeRange(start: DateTime.now(), end: DateTime.now());
+  return Row(children: [
+    BigDateLabel(
+      date: actualRange.start,
+    ),
+    Expanded(
+      child: Text(
+        ' - ',
+        textAlign: TextAlign.center,
+        style: delta.mergeTextStyle(
+          Theme.of(context).textTheme.headlineLarge,
+          color: colorScheme.outline,
+        ),
+      ),
+    ),
+    BigDateLabel(
+      date: actualRange.end,
+    ),
+  ]);
 }

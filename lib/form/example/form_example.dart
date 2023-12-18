@@ -123,6 +123,13 @@ class FormExample extends StatelessWidget {
                     color: Colors.amber,
                   ),
                 ),
+                Padding(
+                    padding: const EdgeInsets.all(40),
+                    child: DateRangePicker(
+                      initialEntryMode: DatePickerEntryMode.calendarOnly,
+                      formControlName: 'dateRange',
+                      widgetBuilder: buildBigDateRange,
+                    )),
                 /*ReactiveRawAutocomplete<String, String>(
             formControlName: 'raw',
             optionsBuilder: (TextEditingValue textEditingValue) {
@@ -352,11 +359,6 @@ class FormExample extends StatelessWidget {
                     helperText: '',
                     suffixIcon: Icon(Icons.date_range),
                   ),
-                ),
-                DateRangePicker(
-                  initialEntryMode: DatePickerEntryMode.calendarOnly,
-                  formControlName: 'dateRange',
-                  widgetBuilder: buildBigDateRange,
                 ),
                 DateMultiPicker(
                   formControlName: 'multiDate',
