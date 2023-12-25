@@ -5,23 +5,23 @@ import 'package:flutter/foundation.dart';
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/net/net.dart' as net;
 
-/// HttpProtoFileProvider can download a protobuf file from remote service and convert it to object
+/// Downloader can download a protobuf file from remote service and convert it to object
 /// ```dart
-/// final httpProtoFiletProvider = HttpProtoFileProvider();
-/// httpProtoFiletProvider.mockDownloader = (String url) async => pb.OK();
-/// final obj = await httpProtoFiletProvider.download('https://piyuo.com/brand/index.pb');
+/// final downloader = Downloader();
+/// downloader.mock = (String url) async => pb.OK();
+/// final obj = await downloader.download('https://piyuo.com/brand/index.pb');
 /// ```
-class HttpProtoFileProvider {
-  /// mockDownloader is a test function, it can be overwrite to mock download object
+class Downloader {
+  /// mock is a test function, it can be overwrite to mock download object
   @visibleForTesting
-  Future<Object> Function(String url)? mockDownloader;
+  Future<Object> Function(String url)? mock;
 
   /// fileProvider to get object file
   final cache.HttpFileProvider fileProvider = cache.HttpFileProvider();
 
   /// of get SessionProvider from context
-  static HttpProtoFileProvider of(BuildContext context) {
-    return Provider.of<HttpProtoFileProvider>(context, listen: false);
+  static Downloader of(BuildContext context) {
+    return Provider.of<Downloader>(context, listen: false);
   }
 
   /// download protobuf file from remote service and convert it to object
@@ -32,8 +32,8 @@ class HttpProtoFileProvider {
   Future<T> download<T extends Object>(String url, net.Builder<T>? builder) async {
     // for test
     dynamic obj;
-    if (!kReleaseMode && mockDownloader != null) {
-      obj = await mockDownloader!(url);
+    if (!kReleaseMode && mock != null) {
+      obj = await mock!(url);
     } else {
       final bytes = await fileProvider.getSingleFile(url);
       obj = net.decode(bytes, builder);
