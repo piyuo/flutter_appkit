@@ -78,8 +78,7 @@ void main() {
 
       await net.post(
           net.Request(
-            service: _FakeOkService()
-              ..mockSender = (Object command, {net.Builder? builder}) async => sample.StringResponse(),
+            service: _FakeOkService()..mock = (Object command, {net.Builder? builder}) async => sample.StringResponse(),
             client: client,
             action: sample.StringResponse(),
             url: 'http://mock',
@@ -97,8 +96,7 @@ void main() {
       //Uint8List bytes = Uint8List.fromList(''.codeUnits);
       await net.post(
           net.Request(
-            service: _FakeOkService()
-              ..mockSender = (Object command, {net.Builder? builder}) async => sample.StringResponse(),
+            service: _FakeOkService()..mock = (Object command, {net.Builder? builder}) async => sample.StringResponse(),
             client: client,
             action: sample.StringResponse(),
             url: 'http://mock',
@@ -154,8 +152,7 @@ _FakeOkService? _fakeService;
 
 /// _fakeRequest return a fake service request
 net.Request _fakeRequest(MockClient client) {
-  _fakeService = _FakeOkService()
-    ..mockSender = (Object command, {net.Builder? builder}) async => sample.StringResponse();
+  _fakeService = _FakeOkService()..mock = (Object command, {net.Builder? builder}) async => sample.StringResponse();
   return net.Request(
     service: _fakeService!,
     client: client,

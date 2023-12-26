@@ -28,7 +28,7 @@ void main() {
 
     test('should use sender to mock response', () async {
       final service = sample.SampleService('http://not-exist')
-        ..mockSender = (Object command, {net.Builder? builder}) async {
+        ..mock = (Object command, {net.Builder? builder}) async {
           return sample.StringResponse()..value = 'fake';
         };
 
@@ -50,7 +50,7 @@ void main() {
 
     test('should return null when send wrong action to test server', () async {
       final service = sample.SampleService('http://not-exist')
-        ..mockSender = (action, {builder}) async {
+        ..mock = (action, {builder}) async {
           throw Exception('mock');
         };
       sample.EchoAction action = sample.EchoAction();
@@ -61,7 +61,7 @@ void main() {
 
     test('should mock execute', () async {
       final service = sample.SampleService('http://not-exist')
-        ..mockSender = (action, {builder}) async {
+        ..mock = (action, {builder}) async {
           return sample.StringResponse()..value = 'hi';
         };
 
@@ -75,7 +75,7 @@ void main() {
 
     test('should use shared object', () async {
       final service = sample.SampleService('http://not-exist')
-        ..mockSender = (action, {builder}) async {
+        ..mock = (action, {builder}) async {
           return sample.StringResponse()..value = 'hi';
         };
 

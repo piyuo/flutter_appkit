@@ -56,17 +56,17 @@ abstract class Service {
   /// ```
   AccessTokenBuilder? accessTokenBuilder;
 
-  /// mockSender is a test function can set custom send handler for test
+  /// mock is a test function can set custom send handler for test
   @visibleForTesting
-  Sender? mockSender;
+  Sender? mock;
 
   /// send action to remote service, no need to handle exception, all exception are contract to eventBus
   /// ```dart
   /// var response = await service.send<StringResponse>(EchoAction());
   /// ```
   Future<net.Object?> send(net.Object command, {net.Builder? builder}) async {
-    if (!kReleaseMode && mockSender != null) {
-      return mockSender!(command, builder: builder);
+    if (!kReleaseMode && mock != null) {
+      return mock!(command, builder: builder);
     }
     http.Client client = http.Client();
     return await sendByClient(command, client, builder);

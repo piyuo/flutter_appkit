@@ -3,7 +3,7 @@ import 'package:libcli/global/global.dart' as global;
 import 'package:libcli/net/net.dart' as net;
 
 void mockAuthResponse(auth.AuthService authService) {
-  authService.mockSender = (net.Object action, {net.Builder? builder}) async {
+  authService.mock = (net.Object action, {net.Builder? builder}) async {
     if (action is auth.VerifyEmailAction) {
       return auth.SendPinResponse(result: auth.SendPinResponse_Result.RESULT_OK);
     }
