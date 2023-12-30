@@ -50,7 +50,7 @@ class ExampleScaffold extends StatelessWidget {
   });
 
   /// builder is function that will be called when button is pressed
-  final Widget Function() builder;
+  final Widget Function(BuildContext) builder;
 
   /// exampleButtons is list of example buttons
   final List<Widget> buttons;
@@ -65,7 +65,7 @@ class ExampleScaffold extends StatelessWidget {
         appBar: appBar,
         body: Column(
           children: [
-            Expanded(child: builder()),
+            Expanded(child: builder(context)),
             Container(
               color: colorScheme.primaryContainer,
               padding: const EdgeInsets.all(10),
