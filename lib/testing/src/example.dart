@@ -17,7 +17,7 @@ class ExampleButton extends StatelessWidget {
   final String label;
 
   /// builder is function that will be called when button is pressed
-  final Widget Function() builder;
+  final Widget Function(BuildContext) builder;
 
   /// useScaffold is true if you want to use scaffold
   final bool useScaffold;
@@ -33,9 +33,9 @@ class ExampleButton extends StatelessWidget {
                   ? Scaffold(
                       appBar: AppBar(toolbarHeight: apollo.barHeight),
                       body: SingleChildScrollView(
-                        child: builder(),
+                        child: builder(context),
                       ))
-                  : builder(),
+                  : builder(context),
             )));
   }
 }
