@@ -184,7 +184,7 @@ Widget _noteItem(BuildContext context, String id) {
                           )),
                 ]),
                 body: apollo.FutureLoader(
-                  loader: () async {
+                  loader: (notifyListener) async {
                     final noteFormController = NoteFormController.of<sample.Person>(context);
                     await sampleDb.init('notes_sample');
                     noteFormController.load(
@@ -603,7 +603,7 @@ class NotesExample extends StatelessWidget {
                       child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
                         builder: (context, notesProvider, sampleDb, _) {
                           return apollo.FutureLoader(
-                            loader: () async {
+                            loader: (notifyListener) async {
                               final isPreferMouse = context.isPreferMouse;
                               await sampleDb.init('notes_sample');
                               _notesProvider.load(
@@ -653,7 +653,7 @@ class NotesExample extends StatelessWidget {
                       child: Consumer2<NotesProvider<sample.Person>, data.IndexedDbProvider>(
                         builder: (context, notesProvider, sampleDb, _) {
                           return apollo.FutureLoader(
-                            loader: () async {
+                            loader: (notifyListener) async {
                               final isPreferMouse = context.isPreferMouse;
                               await sampleDb.init('notes_sample');
                               _notesProvider.load(

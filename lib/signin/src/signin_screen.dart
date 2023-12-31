@@ -50,7 +50,7 @@ class SigninScreen extends StatelessWidget {
       child: Consumer<SigninProvider>(
         builder: (context, signinProvider, _) {
           return apollo.FutureLoader(
-            loader: () => loader(context),
+            loader: (notifyListener) => loader(context),
             builder: (isReady) {
               onSuccessLogin() {
                 if (redirectTo != null) {

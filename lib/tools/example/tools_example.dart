@@ -311,7 +311,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                             ],
                             child: Consumer2<data.DataProvider<sample.Person>, DataviewProvider<sample.Person>>(
                                 builder: (context, dataProvider, dataviewProvider, _) =>
-                                    apollo.FutureLoader(loader: () async {
+                                    apollo.FutureLoader(loader: (notifyListener) async {
                                       await indexedDbProvider.init('tools_sample');
                                       await indexedDbProvider.clear();
                                       final ds = data.Dataset<sample.Person>(
