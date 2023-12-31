@@ -71,7 +71,7 @@ class Example extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('title: $title');
-    navigationScaffold() {
+    navigationScaffold(_) {
       return NavigationScaffold(
         railWidth: 0,
         leadingInRail: Container(width: 256, height: 100, color: Colors.blue),
@@ -91,14 +91,14 @@ class Example extends StatelessWidget {
       );
     }
 
-    tryOpenWebUrl() {
+    tryOpenWebUrl(_) {
       return OutlinedButton(
         child: const Text('open web url'),
         onPressed: () => openWebUrl(context, 'https://starbucks.com', caption: 'starbucks.com'),
       );
     }
 
-    hypertext() {
+    hypertext(_) {
       return Padding(
           padding: const EdgeInsets.all(20),
           child: Hypertext(
@@ -117,7 +117,7 @@ class Example extends StatelessWidget {
           ));
     }
 
-    errorScreen() {
+    errorScreen(_) {
       try {
         throw Exception('http://piyuo.com/my_burger/.pb not found');
       } catch (e, s) {
@@ -126,7 +126,7 @@ class Example extends StatelessWidget {
       return ErrorScreen(onRetry: () {});
     }
 
-    goto() {
+    goto(_) {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Goto Test'),
@@ -198,7 +198,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    tryLanguageProvider() {
+    tryLanguageProvider(_) {
       return Consumer<global.LanguageProvider>(builder: (context, languageProvider, child) {
         return Column(
           children: [
@@ -225,7 +225,7 @@ class Example extends StatelessWidget {
       });
     }
 
-    trySessionProvider() {
+    trySessionProvider(_) {
       final sessionProvider = global.SessionProvider.of(context);
       return Column(
         children: [
@@ -257,7 +257,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    loadingScreenError() {
+    loadingScreenError(_) {
       return TextButton(
         child: const Text('loading screen error'),
         onPressed: () {
@@ -274,7 +274,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    loadingScreenNetworkError() {
+    loadingScreenNetworkError(_) {
       return TextButton(
         child: const Text('loading screen network error'),
         onPressed: () {
@@ -292,7 +292,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    loadingScreenDefault() {
+    loadingScreenDefault(_) {
       return TextButton(
         child: const Text('provider need wait 3 seconds'),
         onPressed: () {
@@ -306,7 +306,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    loadingScreenReady() {
+    loadingScreenReady(_) {
       buildChild(isReady) {
         return Container(
             width: 100,
@@ -328,7 +328,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    testRootContext() {
+    testRootContext(_) {
       return OutlinedButton(
         child: const Text('alert'),
         onPressed: () {
@@ -337,7 +337,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    scrollBehavior() {
+    scrollBehavior(_) {
       return Scaffold(
           appBar: AppBar(),
           body: SafeArea(
@@ -351,7 +351,7 @@ class Example extends StatelessWidget {
           )));
     }
 
-    trySplitView() {
+    trySplitView(_) {
       return ChangeNotifierProvider<SplitViewProvider>(
           create: (_) => SplitViewProvider(key: '_splitView'),
           child: Consumer<SplitViewProvider>(
@@ -405,7 +405,7 @@ class Example extends StatelessWidget {
                   )));
     }
 
-    error() {
+    error(_) {
       return Wrap(
         children: [
           ElevatedButton(
@@ -501,7 +501,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    bar() {
+    bar(_) {
       return Scaffold(
         appBar: Bar(
           spacing: 30,
@@ -557,7 +557,7 @@ class Example extends StatelessWidget {
       );
     }
 
-    sliverBar() {
+    sliverBar(_) {
       return Scaffold(
           body: CustomScrollView(
             slivers: <Widget>[
@@ -611,7 +611,7 @@ class Example extends StatelessWidget {
           ));
     }
 
-    preview() {
+    preview(_) {
       String imgUrl =
           'https://images.pexels.com/photos/11213783/pexels-photo-11213783.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
       String imgUrl2 =

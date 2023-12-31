@@ -28,7 +28,7 @@ class DeltaExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    askPermission() {
+    askPermission(_) {
       return Column(
         children: [
           OutlinedButton(
@@ -48,7 +48,7 @@ class DeltaExample extends StatelessWidget {
       );
     }
 
-    mayHaveProblemPermission() {
+    mayHaveProblemPermission(_) {
       return Column(
         children: [
           OutlinedButton(

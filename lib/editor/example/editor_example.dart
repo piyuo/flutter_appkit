@@ -17,7 +17,7 @@ class EditorExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    richEditor() {
+    richEditor(_) {
       return ChangeNotifierProvider<RichEditorProvider>(
         create: (context) => RichEditorProvider(),
         child: Consumer<RichEditorProvider>(builder: (context, provide, child) {
@@ -41,7 +41,7 @@ class EditorExample extends StatelessWidget {
       );
     }
 
-    imageEditor() {
+    imageEditor(_) {
       return ChangeNotifierProvider<ImageEditorProvider>(
           create: (context) => ImageEditorProvider(
                 url:

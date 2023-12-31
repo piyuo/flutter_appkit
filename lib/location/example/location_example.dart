@@ -61,7 +61,7 @@ class LocationExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    tryGetCurrentLocation() {
+    tryGetCurrentLocation(_) {
       return OutlinedButton(
           child: const Text('get current location'),
           onPressed: () async {
@@ -70,7 +70,7 @@ class LocationExample extends StatelessWidget {
           });
     }
 
-    locateTextField() {
+    locateTextField(_) {
       return Column(children: [
         Container(
           padding: const EdgeInsets.all(20),
@@ -97,7 +97,7 @@ class LocationExample extends StatelessWidget {
       ]);
     }
 
-    tryPlace() {
+    tryPlace(_) {
       return ReactiveForm(
           formGroup: formGroup,
           child: SingleChildScrollView(
@@ -138,7 +138,7 @@ class LocationExample extends StatelessWidget {
     }
 
     // not working, need to fix
-    tryMap() {
+    tryMap(_) {
       return Consumer<MapProvider>(
         builder: (context, provide, child) => map(),
       );

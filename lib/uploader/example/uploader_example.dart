@@ -19,7 +19,7 @@ class UploaderExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    newImageUpload() {
+    newImageUpload(_) {
       return Padding(
           padding: const EdgeInsets.all(10),
           child: ChangeNotifierProvider<ImageUploadController>(
@@ -43,7 +43,7 @@ class UploaderExample extends StatelessWidget {
               })));
     }
 
-    changeImageUpload() {
+    changeImageUpload(_) {
       return ChangeNotifierProvider<ImageUploadController>(
           create: (context) => ImageUploadController(
                 uploader: Uploader(
@@ -65,7 +65,7 @@ class UploaderExample extends StatelessWidget {
           }));
     }
 
-    editImage() {
+    editImage(_) {
       return ChangeNotifierProvider<ImageUploadEditor>(
           create: (context) => ImageUploadEditor(
                 uploader: Uploader(

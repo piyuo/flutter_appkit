@@ -222,7 +222,7 @@ class NotesExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    simpleList() {
+    simpleList(_) {
       return Padding(
           padding: const EdgeInsets.all(10),
           child: Column(children: [
@@ -247,7 +247,7 @@ class NotesExample extends StatelessWidget {
           ]));
     }
 
-    checkableList() {
+    checkableList(_) {
       return Column(children: [
         Expanded(
           child: SimpleList<String>(
@@ -267,7 +267,7 @@ class NotesExample extends StatelessWidget {
       ]);
     }
 
-    simpleGrid() {
+    simpleGrid(_) {
       return Padding(
         padding: const EdgeInsets.all(10),
         child: SimpleGrid<String>(
@@ -285,7 +285,7 @@ class NotesExample extends StatelessWidget {
       );
     }
 
-    checkableGrid() {
+    checkableGrid(_) {
       return Column(children: [
         Expanded(
           child: SimpleGrid<String>(
@@ -309,7 +309,7 @@ class NotesExample extends StatelessWidget {
       ]);
     }
 
-    dynamicList() {
+    dynamicList(_) {
       return ChangeNotifierProvider<delta.AnimateViewProvider>(
           create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
           child: Consumer<delta.AnimateViewProvider>(
@@ -345,7 +345,7 @@ class NotesExample extends StatelessWidget {
                   ]))));
     }
 
-    dynamicGrid() {
+    dynamicGrid(_) {
       return ChangeNotifierProvider<delta.AnimateViewProvider>(
           create: (context) => delta.AnimateViewProvider()..setLength(animationListItems.length),
           child: Consumer<delta.AnimateViewProvider>(
@@ -381,7 +381,7 @@ class NotesExample extends StatelessWidget {
                   ]))));
     }
 
-    gridListView() {
+    gridListView(_) {
       return MultiProvider(
           providers: [
             ChangeNotifierProvider<delta.AnimateViewProvider>(
@@ -459,7 +459,7 @@ class NotesExample extends StatelessWidget {
                   )));
     }
 
-    filterSplitView() {
+    filterSplitView(_) {
       return MultiProvider(
           providers: [
             ChangeNotifierProvider<delta.AnimateViewProvider>(
@@ -531,7 +531,7 @@ class NotesExample extends StatelessWidget {
           ));
     }
 
-    selectionHeader() {
+    selectionHeader(_) {
       return Column(children: [
         CheckableHeader(
           onSelectAll: () => debugPrint('select all'),
@@ -566,7 +566,7 @@ class NotesExample extends StatelessWidget {
       ]);
     }
 
-    loadingMasterDetailView() {
+    loadingMasterDetailView(_) {
       return MultiProvider(
           providers: [
             ChangeNotifierProvider<delta.RefreshButtonController>(
@@ -587,7 +587,7 @@ class NotesExample extends StatelessWidget {
                   )));
     }
 
-    dataView() {
+    dataView(_) {
       return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
           value: _animateViewProvider,
           child: Consumer<delta.AnimateViewProvider>(
@@ -637,7 +637,7 @@ class NotesExample extends StatelessWidget {
                       ))));
     }
 
-    notesView() {
+    notesView(_) {
       return ChangeNotifierProvider<delta.AnimateViewProvider>.value(
           value: _animateViewProvider,
           child: Consumer<delta.AnimateViewProvider>(

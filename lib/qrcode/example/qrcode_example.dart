@@ -17,7 +17,7 @@ class QRCodeExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    scanner() {
+    scanner(_) {
       return ChangeNotifierProvider<ScannerProvider>(
         create: (context) => ScannerProvider(
           onCodeScanned: (code) {
@@ -28,7 +28,7 @@ class QRCodeExample extends StatelessWidget {
       );
     }
 
-    tryShowScanner() {
+    tryShowScanner(_) {
       return OutlinedButton(
         child: const Text('show qr code scanner'),
         onPressed: () => showScanner(context),

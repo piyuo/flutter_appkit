@@ -86,7 +86,7 @@ class FormExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    form() {
+    form(_) {
       final colorScheme = Theme.of(context).colorScheme;
       final defaultPinTheme = PinTheme(
         width: 45,
@@ -391,6 +391,16 @@ class FormExample extends StatelessWidget {
                 Calendar(
                   calendarType: CalendarType.multi,
                   formControlName: 'multiDate',
+                  dayBuilder: ({required date, decoration, isDisabled, isSelected, isToday, textStyle}) => Container(
+                    decoration: decoration,
+                    child: Container(
+                      color: Colors.red,
+                      child: Text(
+                        date.day.toString(),
+                        style: textStyle,
+                      ),
+                    ),
+                  ),
                 ),
                 const Divider(),
                 Calendar(

@@ -18,7 +18,7 @@ class AudioExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    playAudio() {
+    playAudio(_) {
       return ChangeNotifierProvider<AudioProvider>(
           create: (context) => AudioProvider(),
           child: Consumer<AudioProvider>(builder: (context, audioProvider, child) {

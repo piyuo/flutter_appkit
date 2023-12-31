@@ -32,7 +32,7 @@ class DbExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    paddingToTablet() {
+    paddingToTablet(_) {
       return Column(children: [
         OutlinedButton(
             child: const Text('helloWorld'),

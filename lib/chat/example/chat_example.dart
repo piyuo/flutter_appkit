@@ -18,7 +18,7 @@ class EditorExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget chatBar() {
+    Widget chatBar(_) {
       return ChangeNotifierProvider<ChatBarProvider>(
         create: (context) => ChatBarProvider(),
         child: Consumer<ChatBarProvider>(builder: (context, messageEditorProvider, child) {
@@ -37,7 +37,7 @@ class EditorExample extends StatelessWidget {
       );
     }
 
-    Widget singleVideo() {
+    Widget singleVideo(_) {
       final words = [
         net.Word(
           type: net.Word_WordType.WORD_TYPE_VIDEO,
@@ -60,7 +60,7 @@ class EditorExample extends StatelessWidget {
               )));
     }
 
-    Widget singleImage() {
+    Widget singleImage(_) {
       final words = [
         net.Word(
           type: net.Word_WordType.WORD_TYPE_IMAGE,
@@ -84,7 +84,7 @@ class EditorExample extends StatelessWidget {
               )));
     }
 
-    Widget messageView() {
+    Widget messageView(_) {
       final words = [
         net.Word(
           type: net.Word_WordType.WORD_TYPE_TEXT,

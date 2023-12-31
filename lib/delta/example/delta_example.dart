@@ -121,7 +121,7 @@ class _DeltaExampleState extends State<DeltaExample> {
           ChangeNotifierProvider.value(value: _checkController),
         ],
         child: Consumer<ValueNotifier<bool>>(builder: (context, model, child) {
-          shifter() {
+          shifter(_) {
             return Column(
               children: [
                 Row(children: [
@@ -192,7 +192,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          animateSliverList() {
+          animateSliverList(_) {
             return CustomScrollView(slivers: [
               AnimateSliverList(
                   itemCount: 20,
@@ -204,7 +204,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]);
           }
 
-          animatedGrid() {
+          animatedGrid(_) {
             Widget slideIt(BuildContext context, int index, animation) {
               int item = _gridItems[index];
               return SlideTransition(
@@ -254,7 +254,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]);
           }
 
-          axisAnimate() {
+          axisAnimate(_) {
             return Column(
               children: [
                 OutlinedButton(
@@ -314,7 +314,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          transformContainer() {
+          transformContainer(_) {
             return TransformContainer(
                 closedBuilder: (_, openContainer) {
                   return OutlinedButton(
@@ -344,7 +344,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                 });
           }
 
-          animatedViewInList() {
+          animatedViewInList(_) {
             return ChangeNotifierProvider<AnimateViewProvider>(
               create: (context) => AnimateViewProvider()..setLength(_gridItems.length),
               child: Consumer<AnimateViewProvider>(
@@ -427,7 +427,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          animatedViewInGrid() {
+          animatedViewInGrid(_) {
             return ChangeNotifierProvider<AnimateViewProvider>(
               create: (context) => AnimateViewProvider()..setLength(_gridItems.length),
               child: Consumer<AnimateViewProvider>(
@@ -503,7 +503,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          animatedViewInListView() {
+          animatedViewInListView(_) {
             return ChangeNotifierProvider<AnimateViewProvider>(
               create: (context) => AnimateViewProvider()..setLength(_gridItems.length),
               child: Consumer<AnimateViewProvider>(
@@ -549,7 +549,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          checkList() {
+          checkList(_) {
             return CheckList(
               controller: _checkListController,
               onItemTap: (int key) {
@@ -578,7 +578,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          listing() {
+          listing(_) {
             return Row(
               children: [
                 SizedBox(
@@ -671,7 +671,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          sidePanel() {
+          sidePanel(_) {
             return SizedBox(
                 height: 600,
                 child: ChangeNotifierProvider<SidePanelProvider>.value(
@@ -736,7 +736,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                             ))));
           }
 
-          expansionDrawer() {
+          expansionDrawer(_) {
             return ExpansionDrawer(
               initiallyExpanded: true,
               expandedHeight: 200,
@@ -746,7 +746,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          chatBubble() {
+          chatBubble(_) {
             return Column(children: [
               const ChatBubble(
                 isSender: false,
@@ -778,7 +778,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]);
           }
 
-          mounted() {
+          mounted(_) {
             return OutlinedButton(
               child: const Text('safely navigator pop'),
               onPressed: () => Navigator.push(
@@ -788,7 +788,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          searchTrigger() {
+          searchTrigger(_) {
             return Column(children: [
               TextField(controller: _searchBoxController),
               ElevatedButton(
@@ -802,7 +802,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]);
           }
 
-          tapBreaker() {
+          tapBreaker(_) {
             return ChangeNotifierProvider<TapBreaker>(
                 create: (context) => TapBreaker(),
                 child: Consumer<TapBreaker>(builder: (context, breaker, child) {
@@ -825,7 +825,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                 }));
           }
 
-          qrImage() {
+          qrImage(_) {
             return Container(
               padding: const EdgeInsets.all(30),
               color: Colors.lightBlue,
@@ -838,7 +838,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          webImage() {
+          webImage(_) {
             return ChangeNotifierProvider(
                 create: (_) => testing.RedrawProvider(),
                 child: Consumer<testing.RedrawProvider>(
@@ -910,14 +910,14 @@ class _DeltaExampleState extends State<DeltaExample> {
                         )));
           }
 
-          singleImage() {
+          singleImage(_) {
             return const WebImage(
               url:
                   'https://images.pexels.com/photos/7479003/pexels-photo-7479003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
             );
           }
 
-          webVideo() {
+          webVideo(_) {
             return Wrap(
               spacing: 10.0,
               runSpacing: 10.0,
@@ -954,11 +954,11 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          isTouchSupported() {
+          isTouchSupported(_) {
             return context.isTouchSupported ? const Text('touch supported') : const Text('touch not support');
           }
 
-          noData() {
+          noData(_) {
             return const Column(
               children: [
                 NoDataDisplay(),
@@ -968,7 +968,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          shimmer() {
+          shimmer(_) {
             return const ShimmerScope(
                 child: Wrap(spacing: 10, runSpacing: 10, children: [
               SizedBox(width: 200, height: 100, child: Shimmer()),
@@ -984,7 +984,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]));
           }
 
-          animatedBadge() {
+          animatedBadge(_) {
             return const Column(
               children: [
                 Padding(
@@ -1043,7 +1043,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          countdown() {
+          countdown(_) {
             return const Column(
               children: [
                 CountUp(
@@ -1057,7 +1057,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          searchBox() {
+          searchBox(_) {
             var searchBox3Controller = TextEditingController();
             var controller1 = TextEditingController();
             var focusNode1 = FocusNode();
@@ -1165,7 +1165,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                 ));
           }
 
-          checkbox() {
+          checkbox(_) {
             return Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -1212,11 +1212,11 @@ class _DeltaExampleState extends State<DeltaExample> {
                 ));
           }
 
-          switching() {
+          switching(_) {
             return Switching(controller: _switchController);
           }
 
-          segment() {
+          segment(_) {
             return Column(children: [
               SlideSegment<int>(
                 onBeforeChange: (index) {
@@ -1285,7 +1285,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]);
           }
 
-          errorLabel() {
+          errorLabel(_) {
             return Container(
                 padding: const EdgeInsets.all(20),
                 child: const Column(children: [
@@ -1301,7 +1301,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                 ]));
           }
 
-          statusLight() {
+          statusLight(_) {
             return const Row(children: [
               Expanded(
                 child: StatusLight(status: LightStatus.green, tooltip: 'connected', label: 'connected'),
@@ -1317,7 +1317,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]);
           }
 
-          indicator() {
+          indicator(_) {
             return Column(children: [
               OutlinedButton(
                 child: const Text('toggle busy'),
@@ -1333,7 +1333,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             ]);
           }
 
-          refreshButton() {
+          refreshButton(_) {
             return ChangeNotifierProvider<RefreshButtonController>(
               create: (context) => RefreshButtonController(),
               child: Consumer<RefreshButtonController>(
@@ -1353,7 +1353,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          verticalOnPhoneLayout() {
+          verticalOnPhoneLayout(_) {
             return VerticalOnPhoneLayout(
                 builder: (isColumn) => [
                       Expanded(
@@ -1369,7 +1369,7 @@ class _DeltaExampleState extends State<DeltaExample> {
                     ]);
           }
 
-          paddingToCenters() {
+          paddingToCenters(_) {
             return Container(
               margin: paddingToCenter(context, 1024),
               color: Colors.red,
@@ -1377,7 +1377,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          wrappedListView() {
+          wrappedListView(_) {
             return WrappedListView(
               children: [
                 Wrapped(
@@ -1426,7 +1426,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          responsive() {
+          responsive(_) {
             return Responsive(
               phoneScreen: () => Container(color: Colors.red, child: const Text('phone')),
               notPhoneScreen: () => Container(color: Colors.blue, child: const Text('not phone')),
@@ -1434,7 +1434,7 @@ class _DeltaExampleState extends State<DeltaExample> {
             );
           }
 
-          avatar() {
+          avatar(_) {
             return const Wrap(
               spacing: 10,
               runSpacing: 10,
@@ -1476,7 +1476,7 @@ class _DeltaExampleState extends State<DeltaExample> {
           }
 
           return testing.ExampleScaffold(
-            builder: avatar,
+            builder: searchBox,
             buttons: [
               testing.ExampleButton('Avatar', builder: avatar),
               testing.ExampleButton('chat bubble', builder: chatBubble),

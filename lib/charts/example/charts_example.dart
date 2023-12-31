@@ -18,11 +18,11 @@ class ChartsExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    indicator() {
+    indicator(_) {
       return const Indicator(title: '翻桌率', text: '3.2');
     }
 
-    timeChart() {
+    timeChart(_) {
       return const TimeChart(title: 'Sales', subtitle: '\$32,437');
     }
 

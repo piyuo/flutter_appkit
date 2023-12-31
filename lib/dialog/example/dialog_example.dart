@@ -32,7 +32,7 @@ class DialogExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pop() {
+    pop(_) {
       final GlobalKey btnPopup = GlobalKey();
       return ElevatedButton(
         key: btnPopup,
@@ -56,7 +56,7 @@ class DialogExample extends StatelessWidget {
       );
     }
 
-    popAlert() {
+    popAlert(_) {
       return Container(
           padding: const EdgeInsets.all(20),
           decoration: const BoxDecoration(
@@ -206,7 +206,7 @@ class DialogExample extends StatelessWidget {
           ]));
     }
 
-    showMore() {
+    showMore(_) {
       return Wrap(
         spacing: 10,
         runSpacing: 10,
@@ -255,7 +255,7 @@ class DialogExample extends StatelessWidget {
       );
     }
 
-    toast() {
+    toast(_) {
       return Wrap(children: [
         ElevatedButton(
           child: const Text('Done'),
@@ -362,7 +362,7 @@ class DialogExample extends StatelessWidget {
       ]);
     }
 
-    showPopupSheet() {
+    showPopupSheet(_) {
       return Wrap(
         spacing: 10,
         runSpacing: 10,
@@ -490,7 +490,7 @@ class DialogExample extends StatelessWidget {
       );
     }
 
-    popShowResponsiveDialog() {
+    popShowResponsiveDialog(_) {
       return OutlinedButton(
         child: const Text('show responsive dialog'),
         onPressed: () => showResponsiveDialog<void>(
@@ -513,7 +513,7 @@ class DialogExample extends StatelessWidget {
       );
     }
 
-    banner() {
+    banner(_) {
       return Wrap(spacing: 10, runSpacing: 10, children: [
         ElevatedButton(
           child: const Text('show banner'),
@@ -538,7 +538,7 @@ class DialogExample extends StatelessWidget {
       ]);
     }
 
-    popRouteOrDialog() {
+    popRouteOrDialog(_) {
       return Wrap(spacing: 10, runSpacing: 10, children: [
         ElevatedButton(
           child: const Text('normal'),
@@ -553,7 +553,7 @@ class DialogExample extends StatelessWidget {
       ]);
     }
 
-    selection() {
+    selection(_) {
       return Wrap(spacing: 10, runSpacing: 10, children: [
         ElevatedButton(
           child: const Text('single selection'),

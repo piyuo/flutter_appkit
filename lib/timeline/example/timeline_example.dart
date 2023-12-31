@@ -16,7 +16,7 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    timeline() {
+    timeline(_) {
       return Container(
           padding: const EdgeInsets.all(20),
           child: Timeline(

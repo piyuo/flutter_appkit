@@ -44,7 +44,7 @@ class _ToolsExampleState extends State<ToolsExample> {
               create: (context) => ResponsiveListViewProvider<int>(value: 0)),
         ],
         child: Consumer<ResponsiveListViewProvider<int>>(builder: (context, responsiveListViewProvider, child) {
-          responsiveListView() {
+          responsiveListView(_) {
             return ResponsiveListView<int>(
               sideBuilder: (navigationViewProvider) => Container(
                   color: Colors.blue,
@@ -68,7 +68,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             );
           }
 
-          tagView() {
+          tagView(_) {
             return TagView<SampleFilter>(
               onTagSelected: (value) => debugPrint('$value selected'),
               header: const Text('I am header'),
@@ -103,7 +103,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             );
           }
 
-          tryShowTagView() {
+          tryShowTagView(_) {
             return OutlinedButton(
               child: const Text('show tag view'),
               onPressed: () => showTagView<SampleFilter>(
@@ -144,7 +144,7 @@ class _ToolsExampleState extends State<ToolsExample> {
           int itemIndex = 6;
           final List<String> items = <String>['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
 
-          refreshMore() {
+          refreshMore(_) {
             return ChangeNotifierProvider<RefreshMoreProvider>(
                 create: (context) => RefreshMoreProvider(),
                 child: Consumer<RefreshMoreProvider>(
@@ -188,7 +188,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                         ))));
           }
 
-          loadMore() {
+          loadMore(_) {
             return ChangeNotifierProvider<RefreshMoreProvider>(
                 create: (context) => RefreshMoreProvider(),
                 child: Consumer<RefreshMoreProvider>(
@@ -229,7 +229,7 @@ class _ToolsExampleState extends State<ToolsExample> {
 
           var refreshIndex = 0;
 
-          dataview() {
+          dataview(_) {
             return ChangeNotifierProvider<data.IndexedDbProvider>(
                 create: (context) => data.IndexedDbProvider(),
                 child: Consumer<data.IndexedDbProvider>(
@@ -362,7 +362,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                                     })))));
           }
 
-          pullFresh() {
+          pullFresh(_) {
             return ChangeNotifierProvider<RefreshMoreProvider>(
                 create: (context) => RefreshMoreProvider(),
                 child: Consumer<RefreshMoreProvider>(
@@ -403,7 +403,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                         )));
           }
 
-          stickyHeader() {
+          stickyHeader(_) {
             return CustomScrollView(
               slivers: [
                 StickyHeader(
@@ -446,7 +446,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             );
           }
 
-          selectBar() {
+          selectBar(_) {
             return ChangeNotifierProvider(
                 create: (_) => SelectBarProvider(),
                 child: Consumer<SelectBarProvider>(
@@ -476,7 +476,7 @@ class _ToolsExampleState extends State<ToolsExample> {
                         )));
           }
 
-          buttonPanel() {
+          buttonPanel(_) {
             return ButtonPanel<String>(
               onPressed: (item) => debugPrint('$item pressed'),
               checkedValues: const ['1'],
@@ -503,7 +503,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             );
           }
 
-          menuButton() {
+          menuButton(_) {
             return Column(children: [
               const SizedBox(height: 40),
               const Text('General'),
@@ -540,7 +540,7 @@ class _ToolsExampleState extends State<ToolsExample> {
             ]);
           }
 
-          toolbar() {
+          toolbar(_) {
             return Column(children: [
               Toolbar(
                 items: [

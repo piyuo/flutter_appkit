@@ -29,7 +29,7 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    signinScreen() {
+    signinScreen(_) {
       return const SigninScreen(loader: _load, redirectTo: '/success/');
     }
 
