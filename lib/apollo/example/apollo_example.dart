@@ -263,7 +263,7 @@ class Example extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
             return FutureLoader(
-              loader: () async {
+              loader: (notifyListener) async {
                 await Future.delayed(const Duration(seconds: 3));
                 throw Exception('error');
               },
@@ -280,7 +280,7 @@ class Example extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
             return FutureLoader(
-              loader: () async {
+              loader: (notifyListener) async {
                 await Future.delayed(const Duration(seconds: 1));
                 throw const utils.TryAgainLaterException('error'); //TimeoutException('error');
               },
@@ -298,7 +298,7 @@ class Example extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
             return FutureLoader(
-              loader: () async => await Future.delayed(const Duration(seconds: 3)),
+              loader: (notifyListener) async => await Future.delayed(const Duration(seconds: 3)),
               builder: (isReady) => isReady ? const Text('done') : const LoadingScreen(),
             );
           }));
@@ -320,7 +320,7 @@ class Example extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
             return FutureLoader(
-              loader: () async => await Future.delayed(const Duration(seconds: 3)),
+              loader: (notifyListener) async => await Future.delayed(const Duration(seconds: 3)),
               builder: (isReady) => buildChild(isReady),
             );
           }));
@@ -356,7 +356,7 @@ class Example extends StatelessWidget {
           create: (_) => SplitViewProvider(key: '_splitView'),
           child: Consumer<SplitViewProvider>(
               builder: (context, splitterViewProvider, _) => FutureLoader(
-                    loader: () async {
+                    loader: (notifyListener) async {
                       await splitterViewProvider.init();
                     },
                     builder: (isReady) => Row(children: [
@@ -635,7 +635,7 @@ class Example extends StatelessWidget {
     }
 
     return FutureLoader(
-      loader: () async => await _load(context),
+      loader: (notifyListener) async => await _load(context),
       builder: (isReady) => testing.ExampleScaffold(
         builder: bar,
         buttons: [

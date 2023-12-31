@@ -12,6 +12,9 @@ import 'error_screen.dart';
 /// _Status is status of wait future
 enum _Status { loading, error, ready }
 
+/// FutureLoader is a function to wait for a future to complete, use notifyListener to update status
+typedef Loader = Future<void> Function(VoidCallback notifyListener);
+
 /// [_FutureLoaderProvider] control [FutureLoader]
 class _FutureLoaderProvider with ChangeNotifier {
   _FutureLoaderProvider({
@@ -20,7 +23,7 @@ class _FutureLoaderProvider with ChangeNotifier {
   });
 
   /// [loader] to wait, return true if success, return false to retry
-  final Future<void> Function() loader;
+  final Loader loader;
 
   /// [allowRetry] is true if allow retry
   final bool allowRetry;
@@ -39,7 +42,7 @@ class _FutureLoaderProvider with ChangeNotifier {
   /// load run future and update status
   Future<void> _init(VoidCallback? popHandler) async {
     try {
-      await loader();
+      await loader(notifyListeners);
       status = _Status.ready;
     } catch (e, s) {
       if (isNetworkError(e) && allowRetry && !futureAutoRetried) {
@@ -59,7 +62,7 @@ class _FutureLoaderProvider with ChangeNotifier {
       status = _Status.loading;
       notifyListeners();
       await Future.delayed(const Duration(seconds: 3));
-      await loader();
+      await loader(notifyListeners);
     } catch (e, s) {
       log.error(e, s);
       final result = await dialog.show(
@@ -110,7 +113,7 @@ class FutureLoader extends StatelessWidget {
   });
 
   /// [loader] to wait, return true if success, return false to retry
-  final Future<void> Function() loader;
+  final Loader loader;
 
   /// [builder] build widget to show when future complete
   final Widget Function(bool isReady) builder;

@@ -168,7 +168,7 @@ class DocumentViewer extends StatelessWidget {
             ),
         child: Consumer<_DocumentViewerProvider>(
             builder: (context, docProvider, child) => FutureLoader(
-                  loader: () async => await docProvider.load(),
+                  loader: (notifyListener) async => await docProvider.load(),
                   builder: (isReady) => Scaffold(
                       appBar: AppBar(
                         title: Text(docProvider.title),

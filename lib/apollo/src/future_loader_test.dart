@@ -12,7 +12,7 @@ void main() {
       MockReadyView.count = 0;
       await tester.pumpWidget(MaterialApp(
         home: FutureLoader(
-          loader: () async {},
+          loader: (notifyListener) async {},
           builder: (isReady) => isReady ? const MockReadyView() : const MockLoadingView(),
         ),
       ));
@@ -26,7 +26,7 @@ void main() {
       MockReadyView.count = 0;
       await tester.pumpWidget(MaterialApp(
         home: FutureLoader(
-          loader: () async {
+          loader: (notifyListener) async {
             throw Exception();
           },
           builder: (isReady) => isReady ? const MockReadyView() : const MockLoadingView(),
