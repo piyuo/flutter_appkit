@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/delta/delta.dart' as delta;
+import 'date_value_accessor.dart';
 
-class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
-  /// Creates a [DateRangePicker] that wraps the function [showDateRangePicker].
+/// [DatePickerRange] will show full screen date picker for select range.
+class DatePickerRange extends ReactiveFormField<DateTimeRange?, String> {
+  /// Creates a [DatePickerRange] that wraps the function [showDateRangePicker].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
   ///
@@ -20,11 +21,10 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
   ///
   /// For documentation about the various parameters, see the [showDateRangePicker]
   /// function parameters.
-  DateRangePicker({
+  DatePickerRange({
     super.key,
     super.formControlName,
     super.formControl,
-    ControlValueAccessor<DateTimeRange, String>? valueAccessor,
     super.validationMessages,
     ShowErrorsFunction? super.showErrors,
     InputDecoration? decoration,
@@ -53,7 +53,7 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
     TextDirection? textDirection,
     RouteSettings? routeSettings,
   }) : super(
-          valueAccessor: valueAccessor ?? DateRangePickerValueAccessor(),
+          valueAccessor: DateRangeValueAccessor(),
           builder: (field) {
             Widget? suffixIcon = decoration?.suffixIcon;
             final isEmptyValue = field.value == null || field.value.toString().isEmpty;
@@ -73,10 +73,8 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
                 .applyDefaults(Theme.of(field.context).inputDecorationTheme)
                 .copyWith(suffixIcon: suffixIcon);
 
-            final effectiveValueAccessor = valueAccessor ?? DateRangePickerValueAccessor();
-
+            final effectiveValueAccessor = DateRangeValueAccessor();
             final effectiveLastDate = lastDate ?? DateTime(2100);
-
             return IgnorePointer(
                 ignoring: !field.control.enabled,
                 child: MouseRegion(
@@ -135,7 +133,8 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
                             ),
                             isEmpty: isEmptyValue && effectiveDecoration.hintText == null,
                             child: Text(
-                              field.value ?? '',
+                              DateRangeDisplayValueAccessor().modelToViewValue(field.control.value) ?? '',
+                              //field.value == null ? '' : DateRangeDisplayValueAccessor.modelToViewValue(field.value!),
                               style: Theme.of(field.context).textTheme.titleMedium?.merge(style),
                             ),
                           ),
@@ -143,32 +142,6 @@ class DateRangePicker extends ReactiveFormField<DateTimeRange, String> {
                 ));
           },
         );
-}
-
-/// Represents a control value accessor that convert between data types
-/// [DateTimeRange] and [String].
-class DateRangePickerValueAccessor extends ControlValueAccessor<DateTimeRange, String> {
-  final intl.DateFormat dateTimeFormat;
-  final String delimiter;
-
-  DateRangePickerValueAccessor({intl.DateFormat? dateTimeFormat, this.delimiter = ' - '})
-      : dateTimeFormat = dateTimeFormat ?? intl.DateFormat('yyyy/MM/dd');
-
-  @override
-  String? modelToViewValue(DateTimeRange? modelValue) {
-    return modelValue == null
-        ? ''
-        : '${dateTimeFormat.format(modelValue.start)}$delimiter${dateTimeFormat.format(modelValue.end)}';
-  }
-
-  @override
-  DateTimeRange? viewToModelValue(String? viewValue) {
-    final dateRange = viewValue?.trim().split(delimiter);
-
-    return dateRange == null || dateRange.isEmpty
-        ? null
-        : DateTimeRange(start: dateTimeFormat.parse(dateRange.first), end: dateTimeFormat.parse(dateRange.last));
-  }
 }
 
 /// BigDateLabel show one big date and the weekday name.

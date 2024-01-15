@@ -1,39 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/delta/delta.dart' as delta;
-import 'calendar.dart';
+import 'date_value_accessor.dart';
+import 'date_picker2.dart';
 
-/// DateMultiPicker is a convenience widget that can  multi date
-class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
-  DateMultiPicker({
+/// DatePicker2 is a multi date picker using calendar_date_picker2 package
+class DatePicker2Multi extends ReactiveFormField<List<DateTime>, String> {
+  DatePicker2Multi({
     super.formControlName,
     super.formControl,
-    ControlValueAccessor<List<DateTime?>, String>? valueAccessor,
     super.validationMessages,
     ShowErrorsFunction? super.showErrors,
     InputDecoration? decoration,
     bool showClearIcon = true,
     Widget clearIcon = const Icon(Icons.clear),
-    TextStyle? style,
     TransitionBuilder? builder,
     bool useRootNavigator = true,
-    String? cancelText,
-    String? confirmText,
-    String? helpText,
-    String? saveText,
-    String? errorFormatText,
-    String? errorInvalidText,
-    String? errorInvalidRangeText,
-    String? fieldStartHintText,
-    String? fieldEndHintText,
-    String? fieldStartLabelText,
-    String? fieldEndLabelText,
     DateTime? firstDate,
     DateTime? lastDate,
     DateTime? currentDate,
-    DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
     RouteSettings? routeSettings,
     Widget? Function(
             {required DateTime date,
@@ -43,10 +29,68 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
             bool? isToday,
             TextStyle? textStyle})?
         dayBuilder,
+    TextStyle? style,
+    List<TextInputFormatter>? inputFormatters,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    TextDirection? textDirection,
+    TextAlign textAlign = TextAlign.start,
     super.key,
   }) : super(
-          valueAccessor: valueAccessor ?? CalendarValueAccessor(),
+          valueAccessor: DateMultiValueAccessor(),
           builder: (field) {
+            return ReactiveTextField<List<DateTime>>(
+              formControlName: formControlName,
+              decoration: decoration ?? const InputDecoration(),
+              valueAccessor: DateMultiDisplayValueAccessor(),
+              onTap: (FormControl control) async {
+                final dates = await showCalendarDatePicker2Dialog(
+                  context: field.context,
+                  config: CalendarDatePicker2WithActionButtonsConfig(
+                    calendarType: CalendarDatePicker2Type.multi,
+                    firstDate: firstDate,
+                    lastDate: lastDate,
+                    currentDate: currentDate,
+                    dayBuilder: dayBuilder,
+                  ),
+                  value: field.control.value ?? [],
+                  dialogSize: kDatePicker2DefaultSize,
+                  useRootNavigator: useRootNavigator,
+                  routeSettings: routeSettings,
+                  builder: builder,
+                );
+
+                if (dates == null) {
+                  return;
+                }
+
+                List<DateTime> dateRange = [];
+                for (final date in dates) {
+                  if (date != null) {
+                    dateRange.add(date);
+                  }
+                }
+
+                field.control.markAsTouched();
+                final effectiveValueAccessor = DateMultiValueAccessor();
+                field.didChange(dates.isEmpty ? null : effectiveValueAccessor.modelToViewValue(dateRange));
+              },
+              mouseCursor: SystemMouseCursors.click,
+              style: style,
+              textAlign: textAlign,
+              textDirection: textDirection,
+              textCapitalization: textCapitalization,
+              autofocus: false,
+              readOnly: true,
+              inputFormatters: inputFormatters,
+              validationMessages: validationMessages,
+            );
+          },
+        );
+}
+
+
+/*
+builder: (field) {
             Widget? suffixIcon = decoration?.suffixIcon;
             final isEmptyValue = field.value == null || field.value.toString().isEmpty;
 
@@ -65,19 +109,24 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
                 .copyWith(suffixIcon: suffixIcon);
 
             final effectiveValueAccessor = valueAccessor ?? CalendarValueAccessor();
-
             final colorScheme = Theme.of(field.context).colorScheme;
-            buildChips(List<DateTime?> dateTimes) {
+            List<Widget> buildChips() {
+              List<DateTime>? dateTimes = field.control.value;
+              if (dateTimes == null) {
+                return [];
+              }
               return dateTimes
-                  .map((date) => Padding(
+                  .map(
+                    (date) => Padding(
                       padding: delta.phoneScreen
                           ? const EdgeInsets.fromLTRB(4, 0, 4, 0)
                           : const EdgeInsets.fromLTRB(5, 10, 5, 0),
                       child: Chip(
-                        elevation: 2,
+                        elevation: 1,
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
                         label: Wrap(children: [
                           Text(
-                            date!.formattedDate,
+                            date.formattedDate,
                             style: TextStyle(
                               color: colorScheme.onPrimary,
                             ),
@@ -96,16 +145,21 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
                           size: 20,
                         ),
                         onDeleted: () {
+                          final newDateTimes = dateTimes.where((element) => element != date).toList();
+                          if (newDateTimes.isEmpty) {
+                            field.control.updateValue(null);
+                            return;
+                          }
                           field.control.markAsTouched();
-                          field.didChange(effectiveValueAccessor.modelToViewValue(
-                            dateTimes.where((element) => element != date).toList(),
-                          ));
+                          field.didChange(effectiveValueAccessor.modelToViewValue(newDateTimes));
                         },
                         backgroundColor: colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                      )))
+                      ),
+                    ),
+                  )
                   .toList();
             }
 
@@ -113,7 +167,7 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
               ignoring: !field.control.enabled,
               child: GestureDetector(
                 onTap: () async {
-                  final dateRange = await showCalendarDatePicker2Dialog(
+                  final result = await showCalendarDatePicker2Dialog(
                     context: field.context,
                     config: CalendarDatePicker2WithActionButtonsConfig(
                       calendarType: CalendarDatePicker2Type.multi,
@@ -129,7 +183,18 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
                     builder: builder,
                   );
 
-                  if (dateRange == null) {
+                  if (result == null) {
+                    return; // user canceled
+                  }
+                  List<DateTime> dateRange = [];
+                  for (final date in result) {
+                    if (date != null) {
+                      dateRange.add(date);
+                    }
+                  }
+
+                  if (dateRange.isEmpty) {
+                    field.control.updateValue(null);
                     return;
                   }
                   field.control.markAsTouched();
@@ -144,11 +209,10 @@ class DateMultiPicker extends ReactiveFormField<List<DateTime?>, String> {
                   child: field.control.value == null
                       ? const SizedBox()
                       : Wrap(
-                          children: buildChips(field.control.value!),
+                          children: buildChips(),
                         ),
                 ),
               ),
             );
-          },
-        );
-}
+          }
+*/

@@ -51,6 +51,8 @@ final formGroup = fb.group({
   'sendNotifications': [false, Validators.required],
   'time': TimeOfDay.now(),
   'datePicker': FormControl<DateTime>(validators: [Validators.required]),
+  'datePickerMulti': FormControl<List<DateTime>>(validators: [Validators.required, Validators.minLength(1)]),
+  'datePickerRange': FormControl<DateTimeRange>(validators: [Validators.required]),
   'dateRange': FormControl<DateTimeRange>(
     value: DateTimeRange(
       start: DateTime.now(),
@@ -58,9 +60,9 @@ final formGroup = fb.group({
     ),
   ),
   'touchSpin': FormControl<int>(value: 10),
-  'singleDate': FormControl<List<DateTime?>>(),
-  'multiDate': FormControl<List<DateTime?>>(),
-  'rangeDate': FormControl<List<DateTime?>>(),
+  'singleDate': FormControl<List<DateTime>>(),
+  'multiDate': FormControl<List<DateTime>>(validators: [Validators.required, Validators.minLength(1)]),
+  'rangeDate': FormControl<List<DateTime>>(),
 });
 
 class NumValueAccessor extends ControlValueAccessor<int, num> {
@@ -123,9 +125,48 @@ class FormExample extends StatelessWidget {
                     color: Colors.amber,
                   ),
                 ),
+                DatePicker(
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime.now().add(const Duration(days: 30)),
+                  formControlName: 'datePicker',
+                  decoration: const InputDecoration(
+                    labelText: 'DatePicker',
+                    suffixIcon: Icon(Icons.calendar_month),
+                  ),
+                ),
+                DatePickerRange(
+                  formControlName: 'datePickerRange',
+                  decoration: const InputDecoration(
+                    labelText: 'DatePickerRange',
+                    helperText: '',
+                    suffixIcon: Icon(Icons.date_range),
+                  ),
+                ),
+                DatePicker2(
+                  formControlName: 'datePicker',
+                  decoration: const InputDecoration(
+                    labelText: 'DatePicker2',
+                    suffixIcon: Icon(Icons.calendar_month),
+                  ),
+                ),
+                DatePicker2Multi(
+                  formControlName: 'datePickerMulti',
+                  decoration: const InputDecoration(
+                    labelText: 'DatePicker2 Multi',
+                    suffixIcon: Icon(Icons.calendar_month),
+                  ),
+                ),
+                DatePicker2Range(
+                  formControlName: 'datePickerRange',
+                  decoration: const InputDecoration(
+                    labelText: 'DatePicker2 Range',
+                    helperText: '',
+                    suffixIcon: Icon(Icons.date_range),
+                  ),
+                ),
                 Padding(
                     padding: const EdgeInsets.all(40),
-                    child: DateRangePicker(
+                    child: DatePickerRange(
                       initialEntryMode: DatePickerEntryMode.calendarOnly,
                       formControlName: 'dateRange',
                       widgetBuilder: buildBigDateRange,
@@ -340,34 +381,6 @@ class FormExample extends StatelessWidget {
                     ),
                   ),
                 ),
-                DatePicker(
-                  formControlName: 'datePicker',
-                  decoration: const InputDecoration(
-                    labelText: 'Date Picker',
-                    suffixIcon: Icon(Icons.calendar_month),
-                  ),
-                  firstDate: DateTime(1985),
-                  lastDate: DateTime(2030),
-                  validationMessages: {
-                    ValidationMessage.required: (error) => 'The date picker must not be empty',
-                  },
-                ),
-                DateRangePicker(
-                  formControlName: 'dateRange',
-                  decoration: const InputDecoration(
-                    labelText: 'Date range',
-                    helperText: '',
-                    suffixIcon: Icon(Icons.date_range),
-                  ),
-                ),
-                DateMultiPicker(
-                  formControlName: 'multiDate',
-                  decoration: const InputDecoration(
-                    //labelText: 'Multi date',
-                    labelText: 'Click here to select date',
-                    suffixIcon: Icon(Icons.calendar_month),
-                  ),
-                ),
                 /*ReactiveTouchSpin<int>(
             formControlName: 'touchSpin',
             valueAccessor: NumValueAccessor(),
@@ -391,7 +404,13 @@ class FormExample extends StatelessWidget {
                 Calendar(
                   calendarType: CalendarType.multi,
                   formControlName: 'multiDate',
-                  dayBuilder: ({required date, decoration, isDisabled, isSelected, isToday, textStyle}) => Container(
+                  /*showErrors: (control) {
+                      return true;
+                    },
+                    validationMessages: {
+                      ValidationMessage.required: (error) => 'The date must not be empty',
+                    }*/
+                  /*dayBuilder: ({required date, decoration, isDisabled, isSelected, isToday, textStyle}) => Container(
                     decoration: decoration,
                     child: Container(
                       color: Colors.red,
@@ -400,7 +419,7 @@ class FormExample extends StatelessWidget {
                         style: textStyle,
                       ),
                     ),
-                  ),
+                  ),*/
                 ),
                 const Divider(),
                 Calendar(
