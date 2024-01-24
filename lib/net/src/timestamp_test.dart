@@ -1,10 +1,11 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'timestamp.dart';
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/testing/testing.dart' as testing;
+
+import 'timestamp.dart';
 
 void main() {
   group('[net.timestamp]', () {
@@ -158,7 +159,7 @@ void main() {
       expect(dates.contains(DateTime(2021, 1, 5).timestamp), isFalse);
     });
 
-    test('should return true if is utc', () async {
+    test('utcDate should return current date as utc', () async {
       final date1 = DateTime(2021, 1, 1);
       final timestamp = date1.timestamp;
       final date2 = timestamp.localDateTime;
@@ -166,8 +167,53 @@ void main() {
       expect(date2.isUtc, isFalse);
       expect(date1, date2);
 
+      final now = DateTime.now();
+      final date3 = utcCurrentDate();
+      expect(date3.year, now.year);
+      expect(date3.month, now.month);
+      expect(date3.day, now.day);
+
       expect(DateTime(2021, 1, 1).isUtc, isFalse);
       expect(google.Timestamp.fromDateTime(DateTime(2021, 1, 1)).toDateTime().isUtc, isTrue);
+    });
+
+    test('utcCurrentDate should return current date as utc', () async {
+      final now = DateTime.now();
+      final date = utcCurrentDate();
+      expect(date.year, now.year);
+      expect(date.month, now.month);
+      expect(date.day, now.day);
+      expect(date.isUtc, isTrue);
+    });
+
+    test('utcDateOnly should return date only in utc timezone', () async {
+      final date1 = DateTime(2021, 1, 2, 23, 30);
+      final result1 = utcDateOnly(date1);
+      expect(result1, DateTime.utc(2021, 1, 2));
+
+      final date2 = DateTime(2022, 3, 4, 12, 0);
+      final result2 = utcDateOnly(date2);
+      expect(result2, DateTime.utc(2022, 3, 4));
+
+      final date3 = DateTime(2023, 5, 6, 9, 15);
+      final result3 = utcDateOnly(date3);
+      expect(result3, DateTime.utc(2023, 5, 6));
+    });
+
+    test('dateOnly should return date only', () async {
+      var date = DateTime(2021, 1, 2, 23, 30);
+      var result = dateOnly(date);
+      expect(result, DateTime(2021, 1, 2));
+    });
+
+    test('dateOnly should return date only for different dates', () async {
+      var date1 = DateTime(2022, 3, 4, 12, 0);
+      var result1 = dateOnly(date1);
+      expect(result1, DateTime(2022, 3, 4));
+
+      var date2 = DateTime(2023, 5, 6, 9, 15);
+      var result2 = dateOnly(date2);
+      expect(result2, DateTime(2023, 5, 6));
     });
   });
 }
