@@ -6,7 +6,13 @@ extension DatetimeHelpers on DateTime {
   /// ```dart
   /// var t = date.timestamp;
   /// ```
-  google.Timestamp get timestamp => google.Timestamp.fromDateTime(toUtc());
+  google.Timestamp get timestamp => google.Timestamp.fromDateTime(this);
+
+  /// timestamp create utc timestamp
+  /// ```dart
+  /// var t = date.timestamp;
+  /// ```
+  google.Timestamp get utcTimestamp => google.Timestamp.fromDateTime(toUtc());
 }
 
 extension TimestampHelper on google.Timestamp {

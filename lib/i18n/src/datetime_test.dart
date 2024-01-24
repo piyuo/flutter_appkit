@@ -241,5 +241,11 @@ void main() {
       expect(now.add(const Duration(days: -1)).formattedWeekdayAwareShort(testing.context), 'Yesterday');
       expect(now.add(const Duration(days: 2)).formattedWeekdayAwareShort(testing.context), isNotEmpty);
     });
+
+    test('should return true if date is in date list', () async {
+      final dates = [DateTime(2021, 1, 1), DateTime(2021, 1, 2), DateTime(2021, 1, 3)];
+      expect(dates.contains(DateTime(2021, 1, 1)), isTrue);
+      expect(dates.contains(DateTime(2021, 1, 5)), isFalse);
+    });
   });
 }

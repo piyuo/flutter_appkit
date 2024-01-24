@@ -151,5 +151,11 @@ void main() {
       await i18n.setPreferLocale(const Locale('en', 'US'));
       expect(DateTime(2023, 1, 16, 17, 23).timestamp.formattedWeekdayShortMonthDayTime, 'Mon, Jan 16, 5:23 PM');
     });
+
+    test('should return true if timestamp is in timestamp list', () async {
+      final dates = [DateTime(2021, 1, 1).timestamp, DateTime(2021, 1, 2).timestamp, DateTime(2021, 1, 3).timestamp];
+      expect(dates.contains(DateTime(2021, 1, 1).timestamp), isTrue);
+      expect(dates.contains(DateTime(2021, 1, 5).timestamp), isFalse);
+    });
   });
 }
