@@ -157,5 +157,17 @@ void main() {
       expect(dates.contains(DateTime(2021, 1, 1).timestamp), isTrue);
       expect(dates.contains(DateTime(2021, 1, 5).timestamp), isFalse);
     });
+
+    test('should return true if is utc', () async {
+      final date1 = DateTime(2021, 1, 1);
+      final timestamp = date1.timestamp;
+      final date2 = timestamp.localDateTime;
+      expect(date1.isUtc, isFalse);
+      expect(date2.isUtc, isFalse);
+      expect(date1, date2);
+
+      expect(DateTime(2021, 1, 1).isUtc, isFalse);
+      expect(google.Timestamp.fromDateTime(DateTime(2021, 1, 1)).toDateTime().isUtc, isTrue);
+    });
   });
 }
