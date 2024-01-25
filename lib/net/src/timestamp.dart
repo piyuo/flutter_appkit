@@ -1,28 +1,18 @@
 import 'package:libcli/google/google.dart' as google;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 
-/// [dateOnly] return date only
-DateTime dateOnly(DateTime date) {
-  return DateTime(date.year, date.month, date.day);
-}
-
 /// [fromIso8601String] parse iso8601 string to timestamp
 google.Timestamp fromIso8601String(String formattedString) {
   return DateTime.parse(formattedString).timestamp;
 }
 
-/// [utcCurrentDate] get utc date from current y/m/d
-DateTime utcCurrentDate() {
-  DateTime originalDateTime = DateTime.now();
-  return utcDateOnly(originalDateTime);
-}
-
-/// [utcDateOnly] return date only in utc timezone
-DateTime utcDateOnly(DateTime date) {
-  return DateTime.utc(date.year, date.month, date.day);
-}
-
 extension DatetimeHelpers on DateTime {
+  /// fixedDateTimestamp create utc timestamp use date's year, month and day
+  /// ```dart
+  /// var t = date.fixedDateTimestamp;
+  /// ```
+  google.Timestamp get fixedDateTimestamp => google.Timestamp.fromDateTime(DateTime.utc(year, month, day));
+
   /// timestamp create utc timestamp
   /// ```dart
   /// var t = date.timestamp;
@@ -33,6 +23,15 @@ extension DatetimeHelpers on DateTime {
 extension TimestampHelper on google.Timestamp {
   /// dateOnly return date only timestamp
   google.Timestamp get dateOnly => localDateTime.dateOnly.timestamp;
+
+  /// [fixedDate] Returns the fixed date portion of the timestamp.
+  ///
+  /// The fixed date is obtained by extracting the year, month, and day from the timestamp.
+  /// The time portion of the timestamp is ignored.
+  DateTime get fixedDate {
+    final dt = toDateTime();
+    return DateTime(dt.year, dt.month, dt.day);
+  }
 
   /// formattedDate return formatted date string
   /// ```dart

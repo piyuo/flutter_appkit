@@ -167,53 +167,29 @@ void main() {
       expect(date2.isUtc, isFalse);
       expect(date1, date2);
 
-      final now = DateTime.now();
-      final date3 = utcCurrentDate();
-      expect(date3.year, now.year);
-      expect(date3.month, now.month);
-      expect(date3.day, now.day);
-
       expect(DateTime(2021, 1, 1).isUtc, isFalse);
       expect(google.Timestamp.fromDateTime(DateTime(2021, 1, 1)).toDateTime().isUtc, isTrue);
+
+      final stamp = DateTime.utc(2021, 1, 1).timestamp;
+      final date = stamp.toDateTime();
+      final to = stamp.toDateTime();
+      expect(date.year, to.year);
+      expect(date.month, to.month);
+      expect(date.day, to.day);
+
+      final utcDate = DateTime.utc(2021, 1, 1);
+      final nonUtcDate = DateTime(2021, 1, 1);
+      expect(utcDate.isAfter(nonUtcDate), isFalse);
+      expect(utcDate.isBefore(nonUtcDate), isFalse);
+      expect(utcDate.isAtSameMomentAs(nonUtcDate), isTrue);
+      expect(utcDate, nonUtcDate);
     });
-
-    test('utcCurrentDate should return current date as utc', () async {
-      final now = DateTime.now();
-      final date = utcCurrentDate();
-      expect(date.year, now.year);
-      expect(date.month, now.month);
-      expect(date.day, now.day);
-      expect(date.isUtc, isTrue);
-    });
-
-    test('utcDateOnly should return date only in utc timezone', () async {
-      final date1 = DateTime(2021, 1, 2, 23, 30);
-      final result1 = utcDateOnly(date1);
-      expect(result1, DateTime.utc(2021, 1, 2));
-
-      final date2 = DateTime(2022, 3, 4, 12, 0);
-      final result2 = utcDateOnly(date2);
-      expect(result2, DateTime.utc(2022, 3, 4));
-
-      final date3 = DateTime(2023, 5, 6, 9, 15);
-      final result3 = utcDateOnly(date3);
-      expect(result3, DateTime.utc(2023, 5, 6));
-    });
-
-    test('dateOnly should return date only', () async {
-      var date = DateTime(2021, 1, 2, 23, 30);
-      var result = dateOnly(date);
-      expect(result, DateTime(2021, 1, 2));
-    });
-
-    test('dateOnly should return date only for different dates', () async {
-      var date1 = DateTime(2022, 3, 4, 12, 0);
-      var result1 = dateOnly(date1);
-      expect(result1, DateTime(2022, 3, 4));
-
-      var date2 = DateTime(2023, 5, 6, 9, 15);
-      var result2 = dateOnly(date2);
-      expect(result2, DateTime(2023, 5, 6));
+    test('should create fixed date timestamp', () async {
+      var date = DateTime(2021, 1, 2);
+      var t = date.fixedDateTimestamp;
+      expect(t.toDateTime(), DateTime.utc(2021, 1, 2));
+      var date2 = t.fixedDate;
+      expect(date, date2);
     });
   });
 }
