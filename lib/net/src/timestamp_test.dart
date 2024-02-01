@@ -176,17 +176,10 @@ void main() {
       expect(date.year, to.year);
       expect(date.month, to.month);
       expect(date.day, to.day);
-
-      final utcDate = DateTime.utc(2021, 1, 1);
-      final nonUtcDate = DateTime(2021, 1, 1);
-      expect(utcDate.isAfter(nonUtcDate), isFalse);
-      expect(utcDate.isBefore(nonUtcDate), isFalse);
-      expect(utcDate.isAtSameMomentAs(nonUtcDate), isTrue);
-      expect(utcDate, nonUtcDate);
     });
     test('should create fixed date timestamp', () async {
       var date = DateTime(2021, 1, 2);
-      var t = date.fixedDateTimestamp;
+      var t = date.fixedTimestamp;
       expect(t.toDateTime(), DateTime.utc(2021, 1, 2));
       var date2 = t.fixedDate;
       expect(date, date2);

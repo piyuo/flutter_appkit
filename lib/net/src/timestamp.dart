@@ -7,11 +7,11 @@ google.Timestamp fromIso8601String(String formattedString) {
 }
 
 extension DatetimeHelpers on DateTime {
-  /// fixedDateTimestamp create utc timestamp use date's year, month and day
+  /// fixedTimestamp create utc timestamp only use date's year, month and day
   /// ```dart
-  /// var t = date.fixedDateTimestamp;
+  /// var t = date.fixedTimestamp;
   /// ```
-  google.Timestamp get fixedDateTimestamp => google.Timestamp.fromDateTime(DateTime.utc(year, month, day));
+  google.Timestamp get fixedTimestamp => google.Timestamp.fromDateTime(DateTime.utc(year, month, day));
 
   /// timestamp create utc timestamp
   /// ```dart
