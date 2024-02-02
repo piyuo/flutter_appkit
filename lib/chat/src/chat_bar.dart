@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:universal_platform/universal_platform.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:libcli/net/net.dart' as net;
-import 'package:libcli/delta/delta.dart' as delta;
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/net/net.dart' as net;
+import 'package:universal_platform/universal_platform.dart';
+
 import 'chat_bar_embed.dart';
 import 'chat_bar_provider.dart';
 
@@ -12,13 +13,6 @@ import 'chat_bar_provider.dart';
 const _kEmojiSize = 28.0;
 
 class ChatBar extends StatelessWidget {
-  const ChatBar({
-    required this.chatBarProvider,
-    required this.onSend,
-    this.color,
-    super.key,
-  });
-
   /// chatBarProvider provide chat bar state
   final ChatBarProvider chatBarProvider;
 
@@ -27,6 +21,13 @@ class ChatBar extends StatelessWidget {
 
   /// color is the color of the icon and border
   final Color? color;
+
+  const ChatBar({
+    required this.chatBarProvider,
+    required this.onSend,
+    this.color,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -148,13 +149,19 @@ class ChatBar extends StatelessWidget {
                               chatBarProvider.showEmojiBar(false);
                             },
                             config: Config(
-                              columns: (constraints.maxWidth / (_kEmojiSize + 15)).ceil(),
-                              bgColor: Colors.transparent,
-                              iconColor: colorScheme.secondary,
-                              iconColorSelected: colorScheme.primary,
-                              indicatorColor: colorScheme.primary,
-                              emojiSizeMax: _kEmojiSize,
-                              recentTabBehavior: RecentTabBehavior.NONE,
+                              categoryViewConfig: CategoryViewConfig(
+                                backgroundColor: Colors.transparent,
+                                iconColor: colorScheme.secondary,
+                                iconColorSelected: colorScheme.primary,
+                                indicatorColor: colorScheme.primary,
+                                recentTabBehavior: RecentTabBehavior.NONE,
+                              ),
+                              bottomActionBarConfig: const BottomActionBarConfig(),
+                              emojiViewConfig: EmojiViewConfig(
+                                columns: (constraints.maxWidth / (_kEmojiSize + 15)).ceil(),
+                                emojiSizeMax: _kEmojiSize,
+                                backgroundColor: Colors.transparent,
+                              ),
                             ),
                           )
                         : null),
