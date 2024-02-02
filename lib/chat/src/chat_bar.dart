@@ -156,12 +156,13 @@ class ChatBar extends StatelessWidget {
                                 indicatorColor: colorScheme.primary,
                                 recentTabBehavior: RecentTabBehavior.NONE,
                               ),
-                              bottomActionBarConfig: const BottomActionBarConfig(),
+                              bottomActionBarConfig: const BottomActionBarConfig(enabled: false),
                               emojiViewConfig: EmojiViewConfig(
                                 columns: (constraints.maxWidth / (_kEmojiSize + 15)).ceil(),
                                 emojiSizeMax: _kEmojiSize,
                                 backgroundColor: Colors.transparent,
                               ),
+                              searchViewConfig: const SearchViewConfig(),
                             ),
                           )
                         : null),
