@@ -1,5 +1,22 @@
-import 'package:intl/intl.dart';
 import 'dart:math';
+
+import 'package:intl/intl.dart';
+
+/// currencyName return current currency name
+/// ```dart
+/// expect(currencyName, 'USD');
+/// ```
+String get currencyName {
+  return currencyFormat().currencyName ?? '';
+}
+
+/// numberFormat return current currency symbol
+/// ```dart
+/// expect(currencySymbol, '\$');
+/// ```
+String get currencySymbol {
+  return currencyFormat().currencySymbol;
+}
 
 /// numberFormat return current number format
 NumberFormat get numberFormat {
@@ -15,20 +32,15 @@ NumberFormat currencyFormat({
   );
 }
 
-/// numberFormat return current currency symbol
+/// formatBytes format value to computer size like bytes, KB, MB, GB, TB
 /// ```dart
-/// expect(currencySymbol, '\$');
+/// expect(formatBytes(2 * 1024 * 1024, 2), '2.00 MB');
 /// ```
-String get currencySymbol {
-  return currencyFormat().currencySymbol;
-}
-
-/// currencyName return current currency name
-/// ```dart
-/// expect(currencyName, 'USD');
-/// ```
-String get currencyName {
-  return currencyFormat().currencyName ?? '';
+String formatBytes(int bytes, int decimals) {
+  if (bytes <= 0) return "0 B";
+  const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  var i = (log(bytes) / log(1024)).floor();
+  return '${(bytes / pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
 }
 
 /// formatCurrency format value to currency format
@@ -58,13 +70,10 @@ String formatPercentage(dynamic value) {
   return NumberFormat.percentPattern().format(value);
 }
 
-/// formatBytes format value to computer size like bytes, KB, MB, GB, TB
-/// ```dart
-/// expect(formatBytes(2 * 1024 * 1024, 2), '2.00 MB');
-/// ```
-String formatBytes(int bytes, int decimals) {
-  if (bytes <= 0) return "0 B";
-  const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  var i = (log(bytes) / log(1024)).floor();
-  return '${(bytes / pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
+extension DoubleHelpers on double {
+  /// [formattedCurrency] return formatted currency string
+  /// ```dart
+  /// expect(num.formattedCurrency, '\$10.99');
+  /// ```
+  String get formattedCurrency => formatCurrency(this);
 }
