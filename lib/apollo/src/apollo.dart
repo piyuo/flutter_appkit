@@ -1,14 +1,16 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:beamer/beamer.dart';
+import 'package:libcli/auth/auth.dart' as auth;
+import 'package:libcli/delta/delta.dart' as delta;
+import 'package:libcli/dialog/dialog.dart' as dialog;
+import 'package:libcli/eventbus/eventbus.dart' as eventbus;
+import 'package:libcli/global/global.dart' as global;
+import 'package:libcli/i18n/i18n.dart' as i18n;
+import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_platform/universal_platform.dart';
-import 'package:provider/provider.dart';
-import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/delta/delta.dart' as delta;
-import 'package:libcli/i18n/i18n.dart' as i18n;
-import 'package:libcli/auth/auth.dart' as auth;
-import 'package:libcli/global/global.dart' as global;
+
 import 'error.dart';
 
 /// _serviceEmail is service email, alert dialog will guide user to send email
@@ -17,8 +19,60 @@ String _serviceEmail = '';
 /// serviceEmail is service email, alert dialog will guide user to send email
 String get serviceEmail => _serviceEmail;
 
-/// Routes is a map of route pattern and builder
-typedef Routes = Map<Pattern, dynamic Function(BuildContext, BeamState, Object? data)>;
+/// adjustFontSpacing fix text labels on Flutter's MaterialApp looks worse on iOS and macOS
+/// https://reinhart1010.id/blog/2023/02/11/why-text-labels-on-flutters-materialapp-looks-worse-on-ios-and-macos
+ThemeData adjustFontSpacing(ThemeData theme) {
+  if (kIsWeb || !(UniversalPlatform.isIOS || UniversalPlatform.isMacOS)) return theme;
+  return theme.copyWith(
+    textTheme: theme.textTheme.copyWith(
+      bodyLarge: theme.textTheme.bodyLarge?.copyWith(letterSpacing: -0.31),
+      bodyMedium: theme.textTheme.bodyMedium?.copyWith(letterSpacing: -0.15),
+      bodySmall: theme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
+      displayLarge: theme.textTheme.displayLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.29 - 1.5,
+      ),
+      displayMedium: theme.textTheme.displayMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.35 - 1.5,
+      ),
+      displaySmall: theme.textTheme.displaySmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.37 - 1.5,
+      ),
+      headlineLarge: theme.textTheme.headlineLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.41 - 1.5,
+      ),
+      headlineMedium: theme.textTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.38 - 1.5,
+      ),
+      headlineSmall: theme.textTheme.headlineSmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.07 - 1.5,
+      ),
+      labelLarge: theme.textTheme.labelLarge?.copyWith(letterSpacing: -0.15),
+      labelMedium: theme.textTheme.labelMedium?.copyWith(letterSpacing: 0),
+      labelSmall: theme.textTheme.labelSmall?.copyWith(letterSpacing: 0.06),
+      titleLarge: theme.textTheme.titleLarge?.copyWith(letterSpacing: -0.26),
+      titleMedium: theme.textTheme.titleMedium?.copyWith(letterSpacing: -0.31),
+      titleSmall: theme.textTheme.titleSmall?.copyWith(letterSpacing: -0.15),
+    ),
+  );
+}
+
+/// currentRoute return current beamer route
+currentRoute(BuildContext context) {
+  return Beamer.of(context).currentBeamLocation.state.routeInformation.uri.path;
+}
+
+/// setWebPageTitle will set html page title if run in web mode
+void setWebPageTitle(String title) {
+  if (kIsWeb) {
+    html.document.title = title;
+  }
+}
 
 /// start application
 /// ```dart
@@ -121,61 +175,21 @@ Future<void> start({
   );
 }
 
+/// Routes is a map of route pattern and builder
+typedef Routes = Map<Pattern, dynamic Function(BuildContext, BeamState, Object? data)>;
+
 /// LifecycleWatcher watch app life cycle
 class LifecycleWatcher extends StatefulWidget {
+  /// child to show
+  final Widget child;
+
   const LifecycleWatcher({
     required this.child,
     super.key,
   });
 
-  /// child to show
-  final Widget child;
-
   @override
   State<LifecycleWatcher> createState() => _LifecycleWatcherState();
-}
-
-class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBindingObserver {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    debugPrint('appLifeCycleState dispose');
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    /// only work on iOS/Android platform
-    super.didChangeAppLifecycleState(state);
-    switch (state) {
-      case AppLifecycleState.inactive:
-        debugPrint('appLifeCycleState inactive');
-        break;
-      case AppLifecycleState.resumed:
-        debugPrint('appLifeCycleState resumed');
-        break;
-      case AppLifecycleState.paused:
-        debugPrint('appLifeCycleState paused');
-        break;
-      case AppLifecycleState.detached:
-        debugPrint('appLifeCycleState detached');
-        break;
-      case AppLifecycleState.hidden:
-        debugPrint('appLifeCycleState hidden');
-        break;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.child;
-  }
 }
 
 class ScrollBehaviorModified extends ScrollBehavior {
@@ -195,58 +209,30 @@ class ScrollBehaviorModified extends ScrollBehavior {
   }
 }
 
-/// adjustFontSpacing fix text labels on Flutter's MaterialApp looks worse on iOS and macOS
-/// https://reinhart1010.id/blog/2023/02/11/why-text-labels-on-flutters-materialapp-looks-worse-on-ios-and-macos
-ThemeData adjustFontSpacing(ThemeData theme) {
-  if (kIsWeb || !(UniversalPlatform.isIOS || UniversalPlatform.isMacOS)) return theme;
-  return theme.copyWith(
-    textTheme: theme.textTheme.copyWith(
-      bodyLarge: theme.textTheme.bodyLarge?.copyWith(letterSpacing: -0.31),
-      bodyMedium: theme.textTheme.bodyMedium?.copyWith(letterSpacing: -0.15),
-      bodySmall: theme.textTheme.bodySmall?.copyWith(letterSpacing: 0),
-      displayLarge: theme.textTheme.displayLarge?.copyWith(
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.29 - 1.5,
-      ),
-      displayMedium: theme.textTheme.displayMedium?.copyWith(
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.35 - 1.5,
-      ),
-      displaySmall: theme.textTheme.displaySmall?.copyWith(
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.37 - 1.5,
-      ),
-      headlineLarge: theme.textTheme.headlineLarge?.copyWith(
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.41 - 1.5,
-      ),
-      headlineMedium: theme.textTheme.headlineMedium?.copyWith(
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.38 - 1.5,
-      ),
-      headlineSmall: theme.textTheme.headlineSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.07 - 1.5,
-      ),
-      labelLarge: theme.textTheme.labelLarge?.copyWith(letterSpacing: -0.15),
-      labelMedium: theme.textTheme.labelMedium?.copyWith(letterSpacing: 0),
-      labelSmall: theme.textTheme.labelSmall?.copyWith(letterSpacing: 0.06),
-      titleLarge: theme.textTheme.titleLarge?.copyWith(letterSpacing: -0.26),
-      titleMedium: theme.textTheme.titleMedium?.copyWith(letterSpacing: -0.31),
-      titleSmall: theme.textTheme.titleSmall?.copyWith(letterSpacing: -0.15),
-    ),
-  );
-}
+class _LifecycleWatcherState extends State<LifecycleWatcher> with WidgetsBindingObserver {
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
 
-/// currentRoute return current beamer route
-currentRoute(BuildContext context) {
-  return Beamer.of(context).currentBeamLocation.state.routeInformation.uri.path;
-}
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    /// only work on iOS/Android platform
+    super.didChangeAppLifecycleState(state);
+    eventbus.broadcast(state); // broadcast app life cycle state
+  }
 
-/// setWebPageTitle will set html page title if run in web mode
-void setWebPageTitle(String title) {
-  if (kIsWeb) {
-    html.document.title = title;
+  @override
+  void dispose() {
+    debugPrint('appLifeCycleState dispose');
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 }
 
