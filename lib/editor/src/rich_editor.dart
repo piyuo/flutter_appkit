@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+
 import 'rich_editor_provider.dart';
 
 class RichEditor extends StatelessWidget {
@@ -37,7 +38,7 @@ class RichEditor extends StatelessWidget {
               child: QuillEditor.basic(
                 configurations: QuillEditorConfigurations(
                   controller: controller.quill,
-                  readOnly: false, // true for view only mode
+                  //readOnly: false, // true for view only mode
                 ),
               ),
             ))

@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+
+class MyData extends DataTableSource {
+  // Generate some made-up data
+  final List<Map<String, dynamic>> _data =
+      List.generate(200, (index) => {"id": index, "title": "Item $index", "price": 100 + index});
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _data.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(
+      onSelectChanged: (selected) {},
+      cells: [
+        DataCell(
+          Text(_data[index]['id'].toString()),
+        ),
+//        DataCell(Text(_data[index]["title"])),
+        DataCell(
+          ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 250), //SET max width
+              child: Text('very long text blah blah blah blah blah blah', overflow: TextOverflow.ellipsis)),
+        ),
+        DataCell(Text(_data[index]["price"].toString())),
+      ],
+    );
+  }
+}
+
+class SimpleTable extends StatelessWidget {
+  /// Tile basic unit is 16
+  const SimpleTable({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    DataTableSource _data = MyData();
+    return DataTable(
+      columns: [
+        DataColumn(label: const Text('ID')),
+        DataColumn(label: const Text('Name')),
+        DataColumn(label: const Text('Price')),
+      ],
+      rows: List<DataRow>.generate(
+        10,
+        (int index) => DataRow(
+          onSelectChanged: (selected) {},
+          cells: [
+            DataCell(
+              Text(index.toString()),
+            ),
+//        DataCell(Text(_data[index]["title"])),
+            DataCell(
+              ConstrainedBox(
+                  constraints: BoxConstraints(minWidth: 250), //SET max width
+                  child: Text('very long text blah blah blah blah blah blah', overflow: TextOverflow.ellipsis)),
+            ),
+            DataCell(Text(index.toString())),
+          ],
+        ),
+      ),
+      columnSpacing: 100,
+      horizontalMargin: 10,
+      checkboxHorizontalMargin: 10,
+      showCheckboxColumn: true,
+      sortAscending: true,
+    );
+  }
+}

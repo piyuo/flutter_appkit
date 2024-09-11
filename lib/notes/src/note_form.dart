@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/net/net.dart' as net;
 import 'package:libcli/delta/delta.dart' as delta;
 import 'package:libcli/form/form.dart' as form;
+import 'package:libcli/net/net.dart' as net;
+import 'package:reactive_forms/reactive_forms.dart';
+
 import 'note_form_controller.dart';
 
 /// NoteForm is form to edit item with [NoteFormController]
@@ -21,7 +23,7 @@ class NoteForm<T extends net.Object> extends StatelessWidget {
 
   /// onWillPop provides a way to intercept the back button
   // ignore: deprecated_member_use
-  final WillPopCallback? onWillPop;
+  final void Function(FormGroup, bool)? onWillPop;
 
   @override
   Widget build(BuildContext context) {

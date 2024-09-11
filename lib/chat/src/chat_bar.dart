@@ -62,7 +62,7 @@ class ChatBar extends StatelessWidget {
                             child: QuillEditor(
                               configurations: QuillEditorConfigurations(
                                 controller: chatBarProvider.quillController,
-                                readOnly: false,
+                                //readOnly: false,
                                 scrollable: true,
                                 padding: const EdgeInsets.fromLTRB(20, 6, 5, 8),
                                 autoFocus: false,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:libcli/delta/delta.dart' as delta;
+import 'package:reactive_forms/reactive_forms.dart';
 
 /// From creates and instance of [ReactiveForm]  and support shimmer
 ///
@@ -29,7 +29,7 @@ class ShimmerForm extends StatelessWidget {
   /// onWillPop enables the form to veto attempts by the user to dismiss the [ModalRoute]
   /// that contains the form.
   // ignore: deprecated_member_use
-  final WillPopCallback? onWillPop;
+  final void Function(FormGroup, bool)? onWillPop;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class ShimmerForm extends StatelessWidget {
       enabled: showShimmer,
       child: ReactiveForm(
         formGroup: formGroup,
-        onWillPop: onWillPop,
+        onPopInvoked: onWillPop,
         child: child,
       ),
     );

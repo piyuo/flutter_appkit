@@ -1,0 +1,43 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import 'package:flutter/material.dart';
+import 'package:libcli/apollo/apollo.dart' as apollo;
+import 'package:libcli/testing/testing.dart' as testing;
+import 'package:libcli/timeline/timeline.dart';
+
+main() => apollo.start(
+      routes: {
+        '/': (context, state, data) => const Example(),
+      },
+    );
+
+class Example extends StatelessWidget {
+  const Example({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    timeline(_) {
+      return Container(
+          padding: const EdgeInsets.all(20),
+          child: Timeline(
+            completedIndex: 0,
+            showLabel: true,
+            steps: [
+              TimelineStep(label: 'Create Order'),
+              TimelineStep(label: 'Go to Store', icon: Icons.store),
+              TimelineStep(
+                label: 'Pick up',
+                icon: Icons.fastfood,
+              ),
+            ],
+          ));
+    }
+
+    return testing.ExampleScaffold(
+      builder: timeline,
+      buttons: [
+        testing.ExampleButton('timeline', builder: timeline),
+      ],
+    );
+  }
+}

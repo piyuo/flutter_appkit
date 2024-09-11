@@ -1,0 +1,19 @@
+library notes;
+
+export 'src/types.txt';
+export 'src/notes_provider.txt';
+export 'src/selectable.txt';
+export 'src/simple_list.txt';
+export 'src/simple_grid.txt';
+export 'src/dynamic_list.txt';
+export 'src/dynamic_grid.txt';
+export 'src/grid_list_view.txt';
+export 'src/checkable_header.txt';
+export 'src/tag_split_view.txt';
+export 'src/notes_view_menu_button.txt';
+export 'src/notes_view.txt';
+export 'src/note_beam_page.txt';
+export 'src/note_form.txt';
+export 'src/note_form_controller.txt';
+export 'src/note_form_menu_button.txt';
+export 'src/data_view.txt';

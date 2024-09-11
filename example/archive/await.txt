@@ -1,0 +1,108 @@
+import 'package:flutter/material.dart';
+import 'package:libcli/log/log.dart' as log;
+import 'package:libcli/delta/delta.dart' as delta;
+import '../lib/app/src/wait.dart';
+
+/// Await load provider in list
+class Await extends StatefulWidget {
+  final List<delta.AsyncProvider> list;
+
+  final Widget child;
+
+  final Widget? error;
+
+  final Widget? progress;
+
+  /// Await load provider in list
+  ///
+  /// show progress indicator when provider still loading
+  ///
+  /// show error message when provider throw exception
+  ///
+  /// show child view when provider successfully load
+  ///
+  const Await(
+    this.list, {
+    Key? key,
+    required this.child,
+    this.progress,
+    this.error,
+  }) : super(key: key);
+
+  @override
+  AwaitState createState() => AwaitState();
+}
+
+class AwaitState extends State<Await> {
+  @override
+  void initState() {
+    Future.microtask(() => reload(context));
+    super.initState();
+  }
+
+  /// status return wait if there is a provider need wait, return error if provider is error
+  delta.AsyncStatus status() {
+    for (var p in widget.list) {
+      if (p.asyncStatus == delta.AsyncStatus.loading || p.asyncStatus == delta.AsyncStatus.none) {
+        log.log('[await] loading');
+        return delta.AsyncStatus.loading;
+      } else if (p.asyncStatus == delta.AsyncStatus.error) {
+        log.log('[await] error');
+        return delta.AsyncStatus.error;
+      }
+    }
+    log.log('[await] ready');
+    return delta.AsyncStatus.ready;
+  }
+
+  /// reload provider in list, but skip ready provider
+  ///
+  void reload(BuildContext context) {
+    for (var provider in widget.list) {
+      if (provider.asyncStatus == delta.AsyncStatus.error) {
+        log.log('[await] reload ${provider.runtimeType}');
+        provider.asyncStatus = delta.AsyncStatus.none;
+      }
+
+      if (provider.asyncStatus == delta.AsyncStatus.none) {
+        provider.asyncStatus = delta.AsyncStatus.loading;
+        Future.microtask(() {
+          provider.load(context).then((_) {
+            provider.asyncStatus = delta.AsyncStatus.ready;
+            provider.notifyListeners();
+            log.log('[await] ${provider.runtimeType} loaded');
+          }).catchError((e, s) async {
+            log.error(e, s);
+            provider.asyncStatus = delta.AsyncStatus.error;
+            provider.notifyListeners();
+          });
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    switch (status()) {
+      case delta.AsyncStatus.ready:
+        return widget.child;
+      case delta.AsyncStatus.error:
+        return widget.error != null ? widget.error! : const WaitErrorMessage();
+      default:
+        return widget.progress != null
+            ? widget.progress!
+            : Scaffold(
+                body: Center(
+                  child: Icon(
+                    Icons.access_time,
+                    size: 128,
+                    color: context.themeColor(
+                      light: Colors.grey.shade300,
+                      dark: Colors.grey.shade800,
+                    ),
+                  ),
+                ),
+              );
+    }
+  }
+}

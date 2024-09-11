@@ -1,5 +1,113 @@
 {
-    "version": "0.2.0",
+    "version": "0.3.1",
     "configurations": [
+        {
+            "name": "example",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/main.dart"
+        },
+        {
+            "name": "audio",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/audio_example.dart"
+        },
+        {
+            "name": "apollo",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/apollo_example.dart"
+        },
+        {
+            "name": "chat",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/chat_example.dart"
+        },
+        {
+            "name": "charts",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/charts_example.dart"
+        },
+        {
+            "name": "dataview",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/dataview_example.dart"
+        },
+        {
+            "name": "delta",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/delta_example.dart"
+        },
+        {
+            "name": "dialog",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/dialog_example.dart"
+        },
+        {
+            "name": "editor",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/libeditor_example.dart"
+        },
+        {
+            "name": "form",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/form_example.dart"
+        },
+        {
+            "name": "location",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/location_example.dart"
+        },
+        {
+            "name": "notes",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/notes_example.dart"
+        },
+        {
+            "name": "permission",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/permission_example.dart"
+        },
+        {
+            "name": "qrcode",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/qrcode_example.dart"
+        },
+        {
+            "name": "signin",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/signin_example.dart"
+        },
+        {
+            "name": "timeline",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/timeline_example.dart"
+        },
+        {
+            "name": "tools",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/tools_example.dart"
+        },
+        {
+            "name": "uploader",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/uploader_example.dart"
+        },
     ]
 }

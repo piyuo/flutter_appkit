@@ -16,95 +16,95 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_test:
-    sdk: flutter
-  beamer: ^1.5.6
+  beamer: ^1.6.1
   hive: ^2.2.3
-  http: ^1.1.0
+  http: ^1.2.2
   protobuf: ^3.1.0
-  meta: ^1.10.0
-  provider: ^6.0.5
+  meta: ^1.15.0
+  provider: ^6.1.2
   nested: ^1.0.0
-  intl: ^0.18.1
+  intl: ^0.19.0
   uuid: ^4.1.0
-  cross_file: ^0.3.3+5
-  cross_file_image: ^1.0.0
-  cached_network_image: ^3.3.0
-  octo_image: ^2.0.0
-  video_player: ^2.7.0
-  chewie: ^1.7.0
+  cross_file: ^0.3.4+2
+  cross_file_image: ^1.1.0
+  cached_network_image: ^3.4.1
+  octo_image: ^2.1.0
+  video_player: ^2.9.1
+  chewie: ^1.8.5
   shimmer: ^3.0.0
   dotted_decoration: ^2.0.0
   dotted_line: ^3.1.0
-  mime: ^1.0.4
-  universal_html: ^2.2.3
-  universal_platform: ^1.0.0+1
+  mime: ^1.0.6
+  universal_html: ^2.2.4
+  universal_platform: ^1.1.0
   universal_io: ^2.2.2
-  shared_preferences: ^2.2.0
-  url_launcher: ^6.2.2
+  shared_preferences: ^2.3.2
+  url_launcher: ^6.3.0
   auto_size_text: ^3.0.0
   flutter_easyloading: ^3.0.5
-  flutter_markdown: ^0.6.13
+  flutter_markdown: ^0.7.3+1
   #location: ^4.3.0 # device lat lng
-  geolocator: ^10.0.0
-  apple_maps_flutter: ^1.2.0
-  google_maps_flutter: ^2.2.8
-  google_maps_flutter_web: ^0.5.1
-  extended_image: ^8.0.1
-  custom_refresh_indicator: ^3.0.0
+  geolocator: ^13.0.1
+  apple_maps_flutter: ^1.3.0
+  google_maps_flutter: ^2.9.0
+  google_maps_flutter_web: ^0.5.10
+  extended_image: ^8.2.2
+  custom_refresh_indicator: ^4.0.1
   flutter_sticky_header: ^0.6.5
-  flutter_dropzone: ^3.0.5
-  image_picker: ^1.0.1
-  flutter_quill: ^9.0.1
-  image: ^4.0.15
-  image_editor: ^1.3.0
+  flutter_dropzone: ^4.0.3
+  image_picker: ^1.1.2
+  flutter_quill: ^10.5.13
+  image: ^4.2.0
+  image_editor: ^1.5.1
   qr_flutter: ^4.1.0
-  mobile_scanner: ^4.0.0
-  permission_handler: ^11.0.1
-  app_settings: ^5.0.0
-  just_audio: ^0.9.30
-  loading_indicator: ^3.1.0
-  synchronized: ^3.0.0+3
-  webview_flutter: ^4.4.2
-  flutter_typeahead: ^5.0.1
-  slide_countdown: ^1.5.0
-  fl_chart: ^0.66.0
-  badges: ^3.0.2
+  mobile_scanner: ^5.2.3
+  permission_handler: ^11.3.1
+  app_settings: ^5.1.1
+  just_audio: ^0.9.40
+  loading_indicator: ^3.1.1
+  synchronized: ^3.2.0
+  webview_flutter: ^4.9.0
+  flutter_typeahead: ^5.2.0
+  slide_countdown: ^1.6.1
+  fl_chart: ^0.69.0
+  badges: ^3.1.2
   cupertino_listview: ^2.0.0
   split_view: ^3.2.1
-  drag_select_grid_view: ^0.6.1
-  animations: ^2.0.5
-  reactive_forms: ^16.0.3
-  reactive_phone_form_field: ^2.0.0
+  drag_select_grid_view: ^0.6.2
+  animations: ^2.0.11
+  reactive_forms: ^17.0.1
+  reactive_phone_form_field: ^4.0.0
   flutter_rating_bar: ^4.0.1
   #reactive_touch_spin: ^0.8.0
   #reactive_raw_autocomplete: ^1.0.0
-  calendar_date_picker2: ^0.5.2
-  pinput: ^3.0.0
+  calendar_date_picker2: ^1.1.7
+  pinput: ^5.0.0
   text_divider: ^1.0.0
-  flutter_cache_manager: ^3.3.1
-  share_plus: ^7.1.0
-  #modal_bottom_sheet: ^2.1.2
-  modal_bottom_sheet:
-   git:
-     url: https://github.com/eli1stark/modal_bottom_sheet.git
-     ref: main
-     path: modal_bottom_sheet
+  flutter_cache_manager: ^3.4.1
+  share_plus: ^10.0.2
+  modal_bottom_sheet: ^3.0.0
+  #modal_bottom_sheet:
+  # git:
+  #   url: https://github.com/eli1stark/modal_bottom_sheet.git
+  #   ref: main
+  #   path: modal_bottom_sheet
   http_client_helper: ^3.0.0
-  path_provider: ^2.0.11
+  path_provider: ^2.1.4
   clock: ^1.1.1
-  duration: ^3.0.12
-  emoji_picker_flutter: ^2.0.0
+  duration: ^4.0.3
+  emoji_picker_flutter: ^3.0.0
   auto_animated: ^3.2.0
-  sign_in_with_apple: ^5.0.0
-  google_sign_in: ^6.1.6
-  flutter_facebook_auth: ^6.0.3
+  sign_in_with_apple: ^6.1.2
+  google_sign_in: ^6.2.1
+  flutter_facebook_auth: ^7.1.1
 dev_dependencies:
-  mockito: ^5.4.3
-  flutter_lints: ^3.0.1
-  analyzer: ^6.3.0
-dependency_overrides:
-  meta: ^1.11.0 #cause flutter_test blocked
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.4
+  flutter_lints: ^4.0.0
+  analyzer: ^6.7.0
+#dependency_overrides:
+  #meta: ^1.11.0 #cause flutter_test blocked
 
 
   #meta: ^1.9.0 # cause flutter_test need intl 1.8.0
