@@ -271,7 +271,7 @@ class NotesExample extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.all(10),
         child: SimpleGrid<String>(
-          crossAxisCount: 2,
+          crossAxisCount: 4,
 /*        headerBuilder: () => delta.SearchBox(
           controller: _searchBoxController,
         ),*/
@@ -707,7 +707,7 @@ class NotesExample extends StatelessWidget {
         ],
       ),
       body: testing.ExampleScaffold(
-        builder: checkableList,
+        builder: simpleGrid,
         buttons: [
           testing.ExampleButton('simple list', builder: simpleList),
           testing.ExampleButton('simple grid', builder: simpleGrid),
