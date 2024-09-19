@@ -114,6 +114,7 @@ class SliverBar extends SliverLayoutBuilder {
     bool primary = true,
     PreferredSizeWidget? bottom,
     double spacing = 0,
+    bool hasEndDrawer = false,
     super.key,
   }) : super(builder: (context, constraints) {
           final appBarTheme = Theme.of(context).appBarTheme;
@@ -124,10 +125,11 @@ class SliverBar extends SliverLayoutBuilder {
               title: title,
               actions: [
                 ...actions,
-                IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () => Scaffold.of(context).openEndDrawer(),
-                ),
+                if (hasEndDrawer)
+                  IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  ),
                 const SizedBox(width: 10),
               ],
               primary: primary,
