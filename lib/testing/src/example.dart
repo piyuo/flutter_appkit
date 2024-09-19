@@ -63,22 +63,24 @@ class ExampleScaffold extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
         appBar: appBar,
-        body: Column(
-          children: [
-            Expanded(child: builder(context)),
-            Container(
-              color: colorScheme.primaryContainer,
-              padding: const EdgeInsets.all(10),
-              width: double.infinity,
-              height: 70,
-              child: SingleChildScrollView(
-                  child: Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: buttons,
-              )),
-            ),
-          ],
-        ));
+        body: buttons.isEmpty
+            ? builder(context)
+            : Column(
+                children: [
+                  Expanded(child: builder(context)),
+                  Container(
+                    color: colorScheme.primaryContainer,
+                    padding: const EdgeInsets.all(10),
+                    width: double.infinity,
+                    height: 70,
+                    child: SingleChildScrollView(
+                        child: Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: buttons,
+                    )),
+                  ),
+                ],
+              ));
   }
 }
