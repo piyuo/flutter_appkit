@@ -1,9 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:libcli/delta/delta.dart' as delta;
-import 'apollo.dart';
 import 'package:libcli/global/global.dart' as global;
 import 'package:provider/provider.dart';
-import 'package:beamer/beamer.dart';
+
+import 'apollo.dart';
 import 'beamer_extension.dart';
 
 /// kSigninPath is signin path
@@ -107,7 +108,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
 /// SliverBar is app bar in sliver
 class SliverBar extends SliverLayoutBuilder {
   SliverBar({
-    required Widget home,
+    Widget? title,
     List<Widget> items = const [],
     List<Widget> actions = const [],
     bool primary = true,
@@ -120,7 +121,7 @@ class SliverBar extends SliverLayoutBuilder {
             return SliverAppBar(
               toolbarHeight: kBarHeightMobile,
               centerTitle: false,
-              title: home,
+              title: title,
               actions: [
                 ...actions,
                 IconButton(
@@ -145,7 +146,7 @@ class SliverBar extends SliverLayoutBuilder {
               centerTitle: false,
               title: Row(
                 children: [
-                  home,
+                  if (title != null) title,
                   const SizedBox(width: 15),
                   ...items,
                 ],

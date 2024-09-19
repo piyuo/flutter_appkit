@@ -564,7 +564,7 @@ class Example extends StatelessWidget {
             slivers: <Widget>[
               SliverBar(
                 spacing: 20,
-                home: const BarLogoButton(url: 'https://cryptologos.cc/logos/stacks-stx-logo.png'),
+                title: const BarLogoButton(url: 'https://cryptologos.cc/logos/stacks-stx-logo.png'),
                 items: [
                   BarItemButton(text: 'Store', onPressed: () => debugPrint('store pressed')),
                   BarItemButton(text: 'Mac', onPressed: () => debugPrint('Mac pressed')),
