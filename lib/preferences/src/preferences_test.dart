@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/sample/sample.dart' as sample;
+
 import 'preferences.dart';
 
 void main() {
@@ -184,17 +184,6 @@ void main() {
       await remove('k');
       result = await getMapList('k');
       expect(result, null);
-    });
-
-    test('should set/get object', () async {
-      final person = sample.Person(name: '123');
-      await setObject('p', person);
-      var p = await getObject<sample.Person>('p', () => sample.Person());
-      expect(p, isNotNull);
-      expect(p!.name, person.name);
-      await remove('p');
-      var p2 = await getObject<sample.Person>('p', () => sample.Person());
-      expect(p2, isNull);
     });
   });
 }

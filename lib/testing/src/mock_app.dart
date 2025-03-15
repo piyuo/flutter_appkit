@@ -1,15 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart' as widgets;
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
-import 'package:nested/nested.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:libcli/cli/cli.dart' as cli;
 import 'package:libcli/i18n/i18n.dart' as i18n;
 import 'package:libcli/preferences/preferences.dart' as storage;
-import 'package:libcli/dialog/dialog.dart' as dialog;
-import 'package:libcli/delta/delta.dart' as delta;
+import 'package:mockito/mockito.dart';
+import 'package:nested/nested.dart';
+import 'package:provider/provider.dart';
+
 import 'navigator.dart';
 
 /// Context used for mock BuildContext
@@ -49,10 +49,9 @@ Future<void> mockApp(
   useTestFont(tester);
   storage.initForTest({});
 
-  final materialApp = delta.GlobalContextSupport(
+  final materialApp = cli.GlobalContextSupport(
     child: MaterialApp(
       navigatorObservers: [navigatorObserver],
-      builder: dialog.init(),
       home: providers != null
           ? MultiProvider(
               providers: providers,

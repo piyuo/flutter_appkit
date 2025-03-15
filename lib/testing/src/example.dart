@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:libcli/apollo/apollo.dart' as apollo;
 
 /// ExampleButton is button that will navigate to example builder
 class ExampleButton extends StatelessWidget {
@@ -31,7 +30,7 @@ class ExampleButton extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => useScaffold
                   ? Scaffold(
-                      appBar: AppBar(toolbarHeight: apollo.barHeight),
+                      appBar: AppBar(toolbarHeight: 25),
                       body: SingleChildScrollView(
                         child: builder(context),
                       ))

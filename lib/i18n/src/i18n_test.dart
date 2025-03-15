@@ -1,22 +1,18 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/widgets.dart';
-import 'i18n.dart';
 import 'package:flutter/material.dart';
-import 'package:libcli/assets/assets.dart' as asset;
+import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/preferences/preferences.dart' as storage;
+
+import 'i18n.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   storage.initForTest({});
-  setUp(() async {
-    asset.mock('{"a": "A"}');
-  });
+  setUp(() async {});
 
-  tearDown(() async {
-    asset.mockDone();
-  });
+  tearDown(() async {});
 
   group('[i18n]', () {
     test('should get default locale en', () async {
