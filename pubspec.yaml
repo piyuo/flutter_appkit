@@ -78,7 +78,7 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.4.4
   flutter_lints: ^5.0.0
-  analyzer: ^6.11.0
+  analyzer: ^7.3.0
   build_runner: ^2.4.15
  #dependency_overrides:
   #meta: ^1.11.0 #cause flutter_test blocked
