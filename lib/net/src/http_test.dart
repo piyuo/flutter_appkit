@@ -1,10 +1,11 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:libcli/eventbus/eventbus.dart' as eventbus;
-import 'package:libcli/sample/sample.dart' as sample;
 import 'package:libcli/net/net.dart' as net;
+import 'package:libcli/sample/sample.dart' as sample;
 
 void main() {
   dynamic eventHappening;

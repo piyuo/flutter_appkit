@@ -1,5 +1,3 @@
-library google;
-
 export 'src/any.pb.dart';
 export 'src/api.pb.dart';
 export 'src/descriptor.pb.dart';

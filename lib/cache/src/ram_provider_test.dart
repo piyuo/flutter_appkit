@@ -1,5 +1,7 @@
+// ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libcli/sample/sample.dart' as sample;
+
 import 'ram_provider.dart';
 
 void main() {

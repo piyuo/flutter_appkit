@@ -1,9 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/sample/sample.dart' as sample;
-import 'timestamp.dart';
 import 'package:libcli/common/common.dart' as common;
+import 'package:libcli/sample/sample.dart' as sample;
+
+import 'timestamp.dart';
 
 void main() {
   group('[net.object]', () {

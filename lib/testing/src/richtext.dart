@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
 
 /// containInRichText return true if find contain string in rich text widget

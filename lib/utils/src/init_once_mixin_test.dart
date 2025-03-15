@@ -1,4 +1,6 @@
+// ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
+
 import 'init_once_mixin.dart';
 
 class TestClass with InitOnceMixin {

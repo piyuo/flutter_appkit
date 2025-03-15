@@ -1,7 +1,9 @@
+// ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/utils/utils.dart' as utils;
 import 'package:libcli/cache/cache.dart' as cache;
 import 'package:libcli/sample/sample.dart' as sample;
+import 'package:libcli/utils/utils.dart' as utils;
+
 import 'firewall.dart';
 
 void main() {
