@@ -1,12 +1,12 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-import 'lib_localization.dart';
+import 'localization.dart';
 
 // ignore_for_file: type=lint
 
 /// The translations for Chinese (`zh`).
-class LibLocalizationZh extends LibLocalization {
-  LibLocalizationZh([String locale = 'zh']) : super(locale);
+class LocalizationZh extends Localization {
+  LocalizationZh([String locale = 'zh']) : super(locale);
 
   @override
   String get cli_error_oops => '糟糕，出了點問題';

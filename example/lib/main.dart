@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:libcli/cli/cli.dart' as cli;
-import 'package:libcli/l10n/lib_localization.dart';
+import 'package:libcli/l10n/localization.dart';
 
 main() => cli.run(() => const ExampleApp());
 
@@ -17,12 +17,12 @@ class ExampleApp extends StatelessWidget {
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       locale: Intl.defaultLocale == null ? const Locale('en', 'US') : Locale(Intl.defaultLocale!),
       localizationsDelegates: const [
-        LibLocalization.delegate,
+        Localization.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: LibLocalization.supportedLocales,
+      supportedLocales: Localization.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {
         for (var supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == locale?.languageCode &&

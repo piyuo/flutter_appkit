@@ -1,28 +1,27 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
-import 'lib_localization_en.dart';
-import 'lib_localization_zh.dart';
+import 'localization_en.dart' deferred as localization_en;
+import 'localization_zh.dart' deferred as localization_zh;
 
 // ignore_for_file: type=lint
 
-/// Callers can lookup localized strings with an instance of LibLocalization
-/// returned by `LibLocalization.of(context)`.
+/// Callers can lookup localized strings with an instance of Localization
+/// returned by `Localization.of(context)`.
 ///
-/// Applications need to include `LibLocalization.delegate()` in their app's
+/// Applications need to include `Localization.delegate()` in their app's
 /// `localizationDelegates` list, and the locales they support in the app's
 /// `supportedLocales` list. For example:
 ///
 /// ```dart
-/// import 'l10n/lib_localization.dart';
+/// import 'l10n/localization.dart';
 ///
 /// return MaterialApp(
-///   localizationsDelegates: LibLocalization.localizationsDelegates,
-///   supportedLocales: LibLocalization.supportedLocales,
+///   localizationsDelegates: Localization.localizationsDelegates,
+///   supportedLocales: Localization.supportedLocales,
 ///   home: MyApplicationHome(),
 /// );
 /// ```
@@ -59,18 +58,18 @@ import 'lib_localization_zh.dart';
 /// Select and expand the newly-created Localizations item then, for each
 /// locale your application supports, add a new item and select the locale
 /// you wish to add from the pop-up menu in the Value field. This list should
-/// be consistent with the languages listed in the LibLocalization.supportedLocales
+/// be consistent with the languages listed in the Localization.supportedLocales
 /// property.
-abstract class LibLocalization {
-  LibLocalization(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+abstract class Localization {
+  Localization(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
-  static LibLocalization of(BuildContext context) {
-    return Localizations.of<LibLocalization>(context, LibLocalization)!;
+  static Localization of(BuildContext context) {
+    return Localizations.of<Localization>(context, Localization)!;
   }
 
-  static const LocalizationsDelegate<LibLocalization> delegate = _LibLocalizationDelegate();
+  static const LocalizationsDelegate<Localization> delegate = _LocalizationDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -156,32 +155,32 @@ abstract class LibLocalization {
   String get back;
 }
 
-class _LibLocalizationDelegate extends LocalizationsDelegate<LibLocalization> {
-  const _LibLocalizationDelegate();
+class _LocalizationDelegate extends LocalizationsDelegate<Localization> {
+  const _LocalizationDelegate();
 
   @override
-  Future<LibLocalization> load(Locale locale) {
-    return SynchronousFuture<LibLocalization>(lookupLibLocalization(locale));
+  Future<Localization> load(Locale locale) {
+    return lookupLocalization(locale);
   }
 
   @override
   bool isSupported(Locale locale) => <String>['en', 'zh'].contains(locale.languageCode);
 
   @override
-  bool shouldReload(_LibLocalizationDelegate old) => false;
+  bool shouldReload(_LocalizationDelegate old) => false;
 }
 
-LibLocalization lookupLibLocalization(Locale locale) {
+Future<Localization> lookupLocalization(Locale locale) {
 
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return LibLocalizationEn();
-    case 'zh': return LibLocalizationZh();
+    case 'en': return localization_en.loadLibrary().then((dynamic _) => localization_en.LocalizationEn());
+    case 'zh': return localization_zh.loadLibrary().then((dynamic _) => localization_zh.LocalizationZh());
   }
 
   throw FlutterError(
-    'LibLocalization.delegate failed to load unsupported locale "$locale". This is likely '
+    'Localization.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
     'that was used.'
