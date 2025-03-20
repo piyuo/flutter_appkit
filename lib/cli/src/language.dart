@@ -34,3 +34,27 @@ class Language {
     return result;
   }
 }
+
+/// A function that returns the locale resolution callback for the app.
+Locale? localeResolutionCallback(locale, supportedLocales) {
+  if (locale == null) {
+    return const Locale('en'); // default to 'en'
+  }
+
+  // languageCode + countryCode
+  for (var supportedLocale in supportedLocales) {
+    if (supportedLocale.languageCode == locale.languageCode && supportedLocale.countryCode == locale.countryCode) {
+      return supportedLocale;
+    }
+  }
+
+  // only languageCode
+  for (var supportedLocale in supportedLocales) {
+    if (supportedLocale.languageCode == locale.languageCode) {
+      return supportedLocale;
+    }
+  }
+
+  // default 'en'
+  return const Locale('en');
+}
