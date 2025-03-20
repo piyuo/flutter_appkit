@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Ups, ceva nu a funcționat",
+  "cli_error_content": "A apărut o eroare neașteptată. Doriți să trimiteți un raport prin e-mail?",
+  "cli_error_report": "Trimite-ne un e-mail",
+  "submit": "Trimite",
+  "ok": "OK",
+  "cancel": "Anulează",
+  "yes": "Da",
+  "no": "Nu",
+  "close": "Închide",
+  "back": "Înapoi"
+}

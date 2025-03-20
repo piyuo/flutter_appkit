@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Vaja, alguna cosa ha anat malament",
+  "cli_error_content": "S'ha produït un error inesperat. Vols enviar un informe per correu electrònic?",
+  "cli_error_report": "Envia'ns un correu",
+  "submit": "Enviar",
+  "ok": "D'acord",
+  "cancel": "Cancel·lar",
+  "yes": "Sí",
+  "no": "No",
+  "close": "Tancar",
+  "back": "Enrere"
+}

@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Ups, midagi läks valesti",
+  "cli_error_content": "Ilmnes ootamatu viga. Kas soovite saata e-posti aruande?",
+  "cli_error_report": "Saada meile e-kiri",
+  "submit": "Saada",
+  "ok": "OK",
+  "cancel": "Tühista",
+  "yes": "Jah",
+  "no": "Ei",
+  "close": "Sulge",
+  "back": "Tagasi"
+}

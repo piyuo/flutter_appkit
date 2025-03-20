@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Hoppá, valami hiba történt",
+  "cli_error_content": "Váratlan hiba történt. Szeretne e-mail jelentést küldeni?",
+  "cli_error_report": "E-mail küldése nekünk",
+  "submit": "Küldés",
+  "ok": "OK",
+  "cancel": "Mégse",
+  "yes": "Igen",
+  "no": "Nem",
+  "close": "Bezárás",
+  "back": "Vissza"
+}

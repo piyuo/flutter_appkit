@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Ak vai, kaut kas nogāja greizi",
+  "cli_error_content": "Notika neparedzēta kļūda. Vai vēlaties nosūtīt ziņojumu pa e-pastu?",
+  "cli_error_report": "Rakstiet mums e-pastu",
+  "submit": "Iesniegt",
+  "ok": "Labi",
+  "cancel": "Atcelt",
+  "yes": "Jā",
+  "no": "Nē",
+  "close": "Aizvērt",
+  "back": "Atpakaļ"
+}

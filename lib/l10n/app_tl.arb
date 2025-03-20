@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Oops, may mali na nangyari",
+  "cli_error_content": "Mayroong hindi inaasahang error na nangyari. Gusto mo bang magsumite ng email report?",
+  "cli_error_report": "Mag-email sa amin",
+  "submit": "Isumite",
+  "ok": "OK",
+  "cancel": "Kanselahin",
+  "yes": "Oo",
+  "no": "Hindi",
+  "close": "Isara",
+  "back": "Bumalik"
+}

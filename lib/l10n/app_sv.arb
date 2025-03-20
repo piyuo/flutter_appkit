@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Hoppsan, något gick fel",
+  "cli_error_content": "Ett oväntat fel inträffade. Vill du skicka en rapport via e-post?",
+  "cli_error_report": "Mejla oss",
+  "submit": "Skicka",
+  "ok": "OK",
+  "cancel": "Avbryt",
+  "yes": "Ja",
+  "no": "Nej",
+  "close": "Stäng",
+  "back": "Tillbaka"
+}

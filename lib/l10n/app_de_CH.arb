@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Hoppla, etwas ist schiefgelaufen",
+  "cli_error_content": "Ein unerwarteter Fehler ist aufgetreten. Möchten Sie einen Fehlerbericht per E-Mail senden?",
+  "cli_error_report": "E-Mail an uns",
+  "submit": "Absenden",
+  "ok": "OK",
+  "cancel": "Abbrechen",
+  "yes": "Ja",
+  "no": "Nein",
+  "close": "Schliessen",
+  "back": "Zurück"
+}

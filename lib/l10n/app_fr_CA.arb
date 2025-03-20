@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Oups, quelque chose s'est mal passé",
+  "cli_error_content": "Une erreur inattendue est survenue. Souhaitez-vous envoyer un rapport par courriel ?",
+  "cli_error_report": "Nous contacter par courriel",
+  "submit": "Soumettre",
+  "ok": "OK",
+  "cancel": "Annuler",
+  "yes": "Oui",
+  "no": "Non",
+  "close": "Fermer",
+  "back": "Retour"
+}

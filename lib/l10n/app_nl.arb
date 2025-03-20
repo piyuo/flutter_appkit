@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Oeps, er is iets misgegaan",
+  "cli_error_content": "Er is een onverwachte fout opgetreden. Wil je een e-mailrapport sturen?",
+  "cli_error_report": "Mail ons",
+  "submit": "Verzenden",
+  "ok": "OK",
+  "cancel": "Annuleren",
+  "yes": "Ja",
+  "no": "Nee",
+  "close": "Sluiten",
+  "back": "Terug"
+}

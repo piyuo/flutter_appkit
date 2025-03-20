@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Haiwa, pane chakakanganisika",
+  "cli_error_content": "Pane chikanganiso chakaitika. Munoda kutumira ripoti neimeri here?",
+  "cli_error_report": "Titumireiwo imeri",
+  "submit": "Tumira",
+  "ok": "Zvakanaka",
+  "cancel": "Kanzura",
+  "yes": "Hongu",
+  "no": "Kwete",
+  "close": "Vhara",
+  "back": "Dzokera"
+}

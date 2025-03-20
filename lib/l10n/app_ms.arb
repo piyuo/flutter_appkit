@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Alamak, ada sesuatu yang tidak kena",
+  "cli_error_content": "Ralat tidak dijangka telah berlaku. Adakah anda ingin menghantar laporan melalui e-mel?",
+  "cli_error_report": "E-mel kepada kami",
+  "submit": "Hantar",
+  "ok": "OK",
+  "cancel": "Batal",
+  "yes": "Ya",
+  "no": "Tidak",
+  "close": "Tutup",
+  "back": "Kembali"
+}

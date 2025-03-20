@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Oyo, eloko moko esalemi malamu te",
+  "cli_error_content": "Mbeba oyo toyebaki te esalemi. Olingi kotinda rapport na email?",
+  "cli_error_report": "Tindela biso email",
+  "submit": "Tinda",
+  "ok": "OK",
+  "cancel": "Annuler",
+  "yes": "Iyo",
+  "no": "Te",
+  "close": "Kanga",
+  "back": "Zonga"
+}

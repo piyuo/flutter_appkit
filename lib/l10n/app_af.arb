@@ -1,0 +1,12 @@
+{
+  "cli_error_oops": "Oeps, iets het verkeerd gegaan",
+  "cli_error_content": "'n Onverwagse fout het voorgekom. Wil jy 'n e-posverslag indien?",
+  "cli_error_report": "E-pos ons",
+  "submit": "Indien",
+  "ok": "OK",
+  "cancel": "Kanselleer",
+  "yes": "Ja",
+  "no": "Nee",
+  "close": "Sluit",
+  "back": "Terug"
+}
