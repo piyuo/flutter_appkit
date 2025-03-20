@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:locale_names/locale_names.dart';
 
 /// A class that represents a language with its locale and name.
@@ -34,6 +35,19 @@ class Language {
     return result;
   }
 }
+
+/// parse the locale string to a [Locale] object
+Locale parseLocale(String localeString) {
+  final parts = localeString.split('_');
+  if (parts.length == 2) {
+    return Locale(parts[0], parts[1]);
+  } else {
+    return Locale(localeString);
+  }
+}
+
+/// return the default locale of the app
+Locale get defaultLocale => Intl.defaultLocale == null ? Locale('en') : parseLocale(Intl.defaultLocale!);
 
 /// A function that returns the locale resolution callback for the app.
 Locale? localeResolutionCallback(locale, supportedLocales) {
