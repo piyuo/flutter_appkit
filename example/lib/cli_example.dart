@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:libcli/cli/cli.dart' as cli;
-import 'package:libcli/testing/testing.dart' as testing;
 
 main() => cli.run(() => const AudioExample());
 
@@ -11,7 +10,7 @@ class AudioExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    exceptionHandling(_) {
+    exceptionHandling() {
       return Column(
         children: [
           ElevatedButton(
@@ -26,11 +25,8 @@ class AudioExample extends StatelessWidget {
       );
     }
 
-    return testing.ExampleScaffold(
-      builder: exceptionHandling,
-      buttons: [
-        testing.ExampleButton('Exception Handling', builder: exceptionHandling),
-      ],
+    return Scaffold(
+      body: exceptionHandling(),
     );
   }
 }

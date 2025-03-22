@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:locale_names/locale_names.dart';
+//import 'package:locale_names/locale_names.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +13,8 @@ class LanguageProvider with ChangeNotifier {
 
   /// get language name
   String getLanguage(BuildContext context) {
-    return Locale(Intl.getCurrentLocale()).nativeDisplayLanguage;
+    return Intl.getCurrentLocale();
+    //  return Locale(Intl.getCurrentLocale()).nativeDisplayLanguage;
   }
 
   /// load locale from shared preferences

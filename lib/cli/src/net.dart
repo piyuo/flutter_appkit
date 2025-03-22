@@ -1,37 +1,4 @@
-import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-/// _lookup return true if url can be lookup
-/// ```dart
-/// bool result = _lookup('baidu.com');
-/// ```
-Future<bool> _lookup(String url) async {
-  try {
-    final result = await InternetAddress.lookup(url);
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      return true;
-    }
-  } catch (e) {
-//    print(e);
-  }
-  return false;
-}
-
-/// isInternetConnected return true if internet is connected
-/// ```dart
-/// bool result = await isInternetConnected();
-/// ```
-Future<bool> isInternetConnected() async {
-  return _lookup('starbucks.com');
-}
-
-/// isGoogleCloudFunctionAvailable check google cloud function can be connect
-/// ```dart
-/// bool result = await isGoogleCloudFunctionAvailable();
-/// ```
-Future<bool> isGoogleCloudFunctionAvailable() async {
-  return _lookup('www.cloudfunctions.net');
-}
 
 /// openUrl open external url
 /// ```dart
