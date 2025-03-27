@@ -103,7 +103,6 @@ Map<String, String> localeNames = {
   'es_AR': 'Español (Argentina)',
   'es_CO': 'Español (Colombia)',
   'es_MX': 'Español (México)',
-  'es_MS': 'Español (Mesoamérica)',
   'et': 'Eesti', // Estonian
 
   // F
