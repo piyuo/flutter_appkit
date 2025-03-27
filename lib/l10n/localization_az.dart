@@ -37,4 +37,7 @@ class LocalizationAz extends Localization {
 
   @override
   String get back => 'Geri';
+
+  @override
+  String get system_language => 'Sistem Dili';
 }

@@ -37,4 +37,7 @@ class LocalizationRo extends Localization {
 
   @override
   String get back => 'Înapoi';
+
+  @override
+  String get system_language => 'Limba sistemului';
 }

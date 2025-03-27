@@ -37,4 +37,7 @@ class LocalizationMy extends Localization {
 
   @override
   String get back => 'နောက်သို့';
+
+  @override
+  String get system_language => 'စစ်စဉ်ဘာသာ';
 }

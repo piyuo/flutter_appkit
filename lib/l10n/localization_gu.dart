@@ -37,4 +37,7 @@ class LocalizationGu extends Localization {
 
   @override
   String get back => 'પાછળ';
+
+  @override
+  String get system_language => 'સિસ્ટમ ભાષા';
 }

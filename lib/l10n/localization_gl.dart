@@ -37,4 +37,7 @@ class LocalizationGl extends Localization {
 
   @override
   String get back => 'Atrás';
+
+  @override
+  String get system_language => 'Idioma do sistema';
 }

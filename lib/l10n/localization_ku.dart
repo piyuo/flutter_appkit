@@ -37,4 +37,7 @@ class LocalizationKu extends Localization {
 
   @override
   String get back => 'Vegere';
+
+  @override
+  String get system_language => 'Zmmana ya Mpate';
 }

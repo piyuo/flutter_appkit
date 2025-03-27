@@ -37,4 +37,7 @@ class LocalizationUz extends Localization {
 
   @override
   String get back => 'Orqaga';
+
+  @override
+  String get system_language => 'Tizim tili';
 }

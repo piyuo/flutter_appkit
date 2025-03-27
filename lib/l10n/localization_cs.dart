@@ -37,4 +37,7 @@ class LocalizationCs extends Localization {
 
   @override
   String get back => 'Zpět';
+
+  @override
+  String get system_language => 'Systémový jazyk';
 }

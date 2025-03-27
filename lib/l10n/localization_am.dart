@@ -37,4 +37,7 @@ class LocalizationAm extends Localization {
 
   @override
   String get back => 'ተመለስ';
+
+  @override
+  String get system_language => 'የስርዓት ቋንቋ';
 }

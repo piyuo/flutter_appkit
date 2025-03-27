@@ -37,4 +37,7 @@ class LocalizationSk extends Localization {
 
   @override
   String get back => 'Späť';
+
+  @override
+  String get system_language => 'Systémový jazyk';
 }

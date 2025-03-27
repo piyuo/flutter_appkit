@@ -37,4 +37,7 @@ class LocalizationLv extends Localization {
 
   @override
   String get back => 'Atpakaļ';
+
+  @override
+  String get system_language => 'Sistēmas valoda';
 }

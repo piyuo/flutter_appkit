@@ -37,4 +37,7 @@ class LocalizationEt extends Localization {
 
   @override
   String get back => 'Tagasi';
+
+  @override
+  String get system_language => 'Süsteemi keel';
 }

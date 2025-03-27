@@ -37,4 +37,7 @@ class LocalizationSn extends Localization {
 
   @override
   String get back => 'Dzokera';
+
+  @override
+  String get system_language => 'Rurimi rwechisimbiso';
 }

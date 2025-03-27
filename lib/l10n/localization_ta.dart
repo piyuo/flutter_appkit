@@ -37,4 +37,7 @@ class LocalizationTa extends Localization {
 
   @override
   String get back => 'பின்செல்';
+
+  @override
+  String get system_language => 'கணினி மொழி';
 }

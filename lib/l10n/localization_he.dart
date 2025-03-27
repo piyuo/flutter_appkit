@@ -37,4 +37,7 @@ class LocalizationHe extends Localization {
 
   @override
   String get back => 'חזרה';
+
+  @override
+  String get system_language => 'שפת מערכת';
 }

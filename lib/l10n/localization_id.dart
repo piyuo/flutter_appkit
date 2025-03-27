@@ -37,4 +37,7 @@ class LocalizationId extends Localization {
 
   @override
   String get back => 'Kembali';
+
+  @override
+  String get system_language => 'Bahasa Sistem';
 }

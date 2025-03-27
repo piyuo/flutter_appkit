@@ -37,6 +37,9 @@ class LocalizationUr extends Localization {
 
   @override
   String get back => 'واپس';
+
+  @override
+  String get system_language => 'نظام کی زبان';
 }
 
 /// The translations for Urdu, as used in India (`ur_IN`).
@@ -72,4 +75,7 @@ class LocalizationUrIn extends LocalizationUr {
 
   @override
   String get back => 'واپس';
+
+  @override
+  String get system_language => 'نظام کی زبان';
 }

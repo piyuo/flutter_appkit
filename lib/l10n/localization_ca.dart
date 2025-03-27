@@ -37,4 +37,7 @@ class LocalizationCa extends Localization {
 
   @override
   String get back => 'Enrere';
+
+  @override
+  String get system_language => 'Idioma del sistema';
 }

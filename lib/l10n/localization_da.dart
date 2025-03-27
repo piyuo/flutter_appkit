@@ -37,4 +37,7 @@ class LocalizationDa extends Localization {
 
   @override
   String get back => 'Tilbage';
+
+  @override
+  String get system_language => 'Systemsprog';
 }

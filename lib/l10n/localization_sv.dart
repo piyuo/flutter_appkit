@@ -37,4 +37,7 @@ class LocalizationSv extends Localization {
 
   @override
   String get back => 'Tillbaka';
+
+  @override
+  String get system_language => 'Systemspråk';
 }

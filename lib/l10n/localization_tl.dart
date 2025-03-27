@@ -37,4 +37,7 @@ class LocalizationTl extends Localization {
 
   @override
   String get back => 'Bumalik';
+
+  @override
+  String get system_language => 'Wika ng sistema';
 }

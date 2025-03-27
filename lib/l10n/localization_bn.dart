@@ -37,6 +37,9 @@ class LocalizationBn extends Localization {
 
   @override
   String get back => 'পিছনে';
+
+  @override
+  String get system_language => 'সিস্টেম ভাষা';
 }
 
 /// The translations for Bengali Bangla, as used in India (`bn_IN`).
@@ -72,4 +75,7 @@ class LocalizationBnIn extends LocalizationBn {
 
   @override
   String get back => 'পিছনে';
+
+  @override
+  String get system_language => 'সিস্টেম ভাষা';
 }

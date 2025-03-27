@@ -37,4 +37,7 @@ class LocalizationMl extends Localization {
 
   @override
   String get back => 'തിരികെ';
+
+  @override
+  String get system_language => 'സിസ്റ്റം ഭാഷ';
 }

@@ -37,6 +37,9 @@ class LocalizationAr extends Localization {
 
   @override
   String get back => 'رجوع';
+
+  @override
+  String get system_language => 'لغة النظام';
 }
 
 /// The translations for Arabic, as used in the United Arab Emirates (`ar_AE`).
@@ -72,6 +75,9 @@ class LocalizationArAe extends LocalizationAr {
 
   @override
   String get back => 'رجوع';
+
+  @override
+  String get system_language => 'لغة النظام';
 }
 
 /// The translations for Arabic, as used in Algeria (`ar_DZ`).
@@ -107,6 +113,9 @@ class LocalizationArDz extends LocalizationAr {
 
   @override
   String get back => 'رجوع';
+
+  @override
+  String get system_language => 'لغة النظام';
 }
 
 /// The translations for Arabic, as used in Egypt (`ar_EG`).
@@ -142,4 +151,7 @@ class LocalizationArEg extends LocalizationAr {
 
   @override
   String get back => 'رجوع';
+
+  @override
+  String get system_language => 'لغة النظام';
 }

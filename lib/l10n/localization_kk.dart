@@ -37,4 +37,7 @@ class LocalizationKk extends Localization {
 
   @override
   String get back => 'Артқа';
+
+  @override
+  String get system_language => 'Жүйе тілі';
 }

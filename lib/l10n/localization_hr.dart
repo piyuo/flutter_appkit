@@ -37,4 +37,7 @@ class LocalizationHr extends Localization {
 
   @override
   String get back => 'Natrag';
+
+  @override
+  String get system_language => 'Sistemski jezik';
 }

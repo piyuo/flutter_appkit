@@ -37,4 +37,7 @@ class LocalizationHa extends Localization {
 
   @override
   String get back => 'Koma';
+
+  @override
+  String get system_language => 'HarshenSystem';
 }

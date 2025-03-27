@@ -37,4 +37,7 @@ class LocalizationMn extends Localization {
 
   @override
   String get back => 'Буцах';
+
+  @override
+  String get system_language => 'Системийн хэл';
 }

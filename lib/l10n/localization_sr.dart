@@ -37,4 +37,7 @@ class LocalizationSr extends Localization {
 
   @override
   String get back => 'Назад';
+
+  @override
+  String get system_language => 'Језик система';
 }

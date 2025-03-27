@@ -37,4 +37,7 @@ class LocalizationHi extends Localization {
 
   @override
   String get back => 'वापस';
+
+  @override
+  String get system_language => 'सिस्टम भाषा';
 }

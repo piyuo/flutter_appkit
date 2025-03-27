@@ -37,4 +37,7 @@ class LocalizationPl extends Localization {
 
   @override
   String get back => 'Wstecz';
+
+  @override
+  String get system_language => 'Język systemu';
 }

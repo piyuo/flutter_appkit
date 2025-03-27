@@ -37,4 +37,7 @@ class LocalizationMr extends Localization {
 
   @override
   String get back => 'मागे';
+
+  @override
+  String get system_language => 'प्रणाली भाषा';
 }

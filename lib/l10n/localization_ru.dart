@@ -37,6 +37,9 @@ class LocalizationRu extends Localization {
 
   @override
   String get back => 'Назад';
+
+  @override
+  String get system_language => 'Язык системы';
 }
 
 /// The translations for Russian, as used in Kazakhstan (`ru_KZ`).
@@ -72,6 +75,9 @@ class LocalizationRuKz extends LocalizationRu {
 
   @override
   String get back => 'Назад';
+
+  @override
+  String get system_language => 'Мова системи';
 }
 
 /// The translations for Russian, as used in Ukraine (`ru_UA`).
@@ -107,4 +113,7 @@ class LocalizationRuUa extends LocalizationRu {
 
   @override
   String get back => 'Назад';
+
+  @override
+  String get system_language => 'Системски језик';
 }

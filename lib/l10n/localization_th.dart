@@ -37,4 +37,7 @@ class LocalizationTh extends Localization {
 
   @override
   String get back => 'กลับ';
+
+  @override
+  String get system_language => 'ภาษาระบบ';
 }

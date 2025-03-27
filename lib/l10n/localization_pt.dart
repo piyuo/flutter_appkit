@@ -37,6 +37,9 @@ class LocalizationPt extends Localization {
 
   @override
   String get back => 'Voltar';
+
+  @override
+  String get system_language => 'Língua do sistema';
 }
 
 /// The translations for Portuguese, as used in Portugal (`pt_PT`).
@@ -72,4 +75,7 @@ class LocalizationPtPt extends LocalizationPt {
 
   @override
   String get back => 'Voltar';
+
+  @override
+  String get system_language => 'Língua do sistema';
 }

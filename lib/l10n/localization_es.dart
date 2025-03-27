@@ -37,6 +37,9 @@ class LocalizationEs extends Localization {
 
   @override
   String get back => 'Atrás';
+
+  @override
+  String get system_language => 'Idioma del sistema';
 }
 
 /// The translations for Spanish Castilian, as used in Argentina (`es_AR`).
@@ -72,6 +75,9 @@ class LocalizationEsAr extends LocalizationEs {
 
   @override
   String get back => 'Atrás';
+
+  @override
+  String get system_language => 'Idioma del sistema';
 }
 
 /// The translations for Spanish Castilian, as used in Colombia (`es_CO`).
@@ -107,6 +113,9 @@ class LocalizationEsCo extends LocalizationEs {
 
   @override
   String get back => 'Atrás';
+
+  @override
+  String get system_language => 'Idioma del sistema';
 }
 
 /// The translations for Spanish Castilian, as used in Mexico (`es_MX`).
@@ -142,4 +151,7 @@ class LocalizationEsMx extends LocalizationEs {
 
   @override
   String get back => 'Atrás';
+
+  @override
+  String get system_language => 'Idioma del sistema';
 }

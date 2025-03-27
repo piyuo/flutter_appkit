@@ -37,4 +37,7 @@ class LocalizationFi extends Localization {
 
   @override
   String get back => 'Takaisin';
+
+  @override
+  String get system_language => 'Järjestelmän kieli';
 }

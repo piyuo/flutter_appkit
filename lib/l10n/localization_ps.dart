@@ -37,4 +37,7 @@ class LocalizationPs extends Localization {
 
   @override
   String get back => 'شاته';
+
+  @override
+  String get system_language => 'د سیستم ژبه';
 }

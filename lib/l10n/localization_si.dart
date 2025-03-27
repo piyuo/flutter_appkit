@@ -37,4 +37,7 @@ class LocalizationSi extends Localization {
 
   @override
   String get back => 'ආපසු';
+
+  @override
+  String get system_language => 'පද්ධති භාෂාව';
 }

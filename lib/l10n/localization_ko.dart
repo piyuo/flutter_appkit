@@ -37,4 +37,7 @@ class LocalizationKo extends Localization {
 
   @override
   String get back => '뒤로';
+
+  @override
+  String get system_language => '시스템 언어';
 }

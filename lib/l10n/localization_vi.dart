@@ -37,4 +37,7 @@ class LocalizationVi extends Localization {
 
   @override
   String get back => 'Quay lại';
+
+  @override
+  String get system_language => 'Ngôn ngữ hệ thống';
 }

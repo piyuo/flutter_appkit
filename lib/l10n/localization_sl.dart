@@ -37,4 +37,7 @@ class LocalizationSl extends Localization {
 
   @override
   String get back => 'Nazaj';
+
+  @override
+  String get system_language => 'Sistemski jezik';
 }

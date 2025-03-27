@@ -37,6 +37,9 @@ class LocalizationDe extends Localization {
 
   @override
   String get back => 'Zurück';
+
+  @override
+  String get system_language => 'Systemsprache';
 }
 
 /// The translations for German, as used in Austria (`de_AT`).
@@ -72,6 +75,9 @@ class LocalizationDeAt extends LocalizationDe {
 
   @override
   String get back => 'Zurück';
+
+  @override
+  String get system_language => 'Systemsprache';
 }
 
 /// The translations for German, as used in Switzerland (`de_CH`).
@@ -107,4 +113,7 @@ class LocalizationDeCh extends LocalizationDe {
 
   @override
   String get back => 'Zurück';
+
+  @override
+  String get system_language => 'Systemsprache';
 }

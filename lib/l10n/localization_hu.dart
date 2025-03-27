@@ -37,4 +37,7 @@ class LocalizationHu extends Localization {
 
   @override
   String get back => 'Vissza';
+
+  @override
+  String get system_language => 'Rendszer nyelve';
 }

@@ -37,6 +37,9 @@ class LocalizationZh extends Localization {
 
   @override
   String get back => '返回';
+
+  @override
+  String get system_language => '系統語言';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -72,6 +75,9 @@ class LocalizationZhCn extends LocalizationZh {
 
   @override
   String get back => '返回';
+
+  @override
+  String get system_language => '系统语言';
 }
 
 /// The translations for Chinese, as used in Hong Kong (`zh_HK`).
@@ -107,6 +113,9 @@ class LocalizationZhHk extends LocalizationZh {
 
   @override
   String get back => '返回';
+
+  @override
+  String get system_language => '系統語言';
 }
 
 /// The translations for Chinese, as used in Macao (`zh_MO`).
@@ -142,6 +151,9 @@ class LocalizationZhMo extends LocalizationZh {
 
   @override
   String get back => '返回';
+
+  @override
+  String get system_language => '系統語言';
 }
 
 /// The translations for Chinese, as used in Singapore (`zh_SG`).
@@ -177,4 +189,7 @@ class LocalizationZhSg extends LocalizationZh {
 
   @override
   String get back => '返回';
+
+  @override
+  String get system_language => '系統語言';
 }

@@ -37,6 +37,9 @@ class LocalizationNl extends Localization {
 
   @override
   String get back => 'Terug';
+
+  @override
+  String get system_language => 'Systeemtaal';
 }
 
 /// The translations for Dutch Flemish, as used in Belgium (`nl_BE`).
@@ -72,4 +75,7 @@ class LocalizationNlBe extends LocalizationNl {
 
   @override
   String get back => 'Terug';
+
+  @override
+  String get system_language => 'Systeemtaal';
 }

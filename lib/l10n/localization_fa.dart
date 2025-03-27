@@ -37,4 +37,7 @@ class LocalizationFa extends Localization {
 
   @override
   String get back => 'بازگشت';
+
+  @override
+  String get system_language => 'زبان سیستم';
 }

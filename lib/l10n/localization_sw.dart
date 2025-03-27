@@ -37,4 +37,7 @@ class LocalizationSw extends Localization {
 
   @override
   String get back => 'Rudi';
+
+  @override
+  String get system_language => 'Lugha ya Mfumo';
 }

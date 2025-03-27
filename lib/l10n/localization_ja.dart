@@ -37,4 +37,7 @@ class LocalizationJa extends Localization {
 
   @override
   String get back => '戻る';
+
+  @override
+  String get system_language => 'システム言語';
 }

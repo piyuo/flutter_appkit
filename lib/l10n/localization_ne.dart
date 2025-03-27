@@ -37,4 +37,7 @@ class LocalizationNe extends Localization {
 
   @override
   String get back => 'पछाडि';
+
+  @override
+  String get system_language => 'प्रणाली भाषा';
 }

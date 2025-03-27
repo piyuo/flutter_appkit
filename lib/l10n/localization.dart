@@ -303,6 +303,12 @@ abstract class Localization {
   /// In en, this message translates to:
   /// **'Back'**
   String get back;
+
+  /// No description provided for @system_language.
+  ///
+  /// In en, this message translates to:
+  /// **'System Language'**
+  String get system_language;
 }
 
 class _LocalizationDelegate extends LocalizationsDelegate<Localization> {

@@ -37,4 +37,7 @@ class LocalizationTe extends Localization {
 
   @override
   String get back => 'వెనుకకు';
+
+  @override
+  String get system_language => 'సిస్టం భాష';
 }

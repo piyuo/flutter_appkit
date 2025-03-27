@@ -37,6 +37,9 @@ class LocalizationMs extends Localization {
 
   @override
   String get back => 'Kembali';
+
+  @override
+  String get system_language => 'Bahasa Sistem';
 }
 
 /// The translations for Malay, as used in Singapore (`ms_SG`).
@@ -72,4 +75,7 @@ class LocalizationMsSg extends LocalizationMs {
 
   @override
   String get back => 'Kembali';
+
+  @override
+  String get system_language => 'Bahasa Sistem';
 }

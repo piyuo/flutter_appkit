@@ -37,6 +37,9 @@ class LocalizationFr extends Localization {
 
   @override
   String get back => 'Retour';
+
+  @override
+  String get system_language => 'Langue du système';
 }
 
 /// The translations for French, as used in Belgium (`fr_BE`).
@@ -72,6 +75,9 @@ class LocalizationFrBe extends LocalizationFr {
 
   @override
   String get back => 'Retour';
+
+  @override
+  String get system_language => 'Langue du système';
 }
 
 /// The translations for French, as used in Canada (`fr_CA`).
@@ -107,6 +113,9 @@ class LocalizationFrCa extends LocalizationFr {
 
   @override
   String get back => 'Retour';
+
+  @override
+  String get system_language => 'Langue du système';
 }
 
 /// The translations for French, as used in Switzerland (`fr_CH`).
@@ -142,4 +151,7 @@ class LocalizationFrCh extends LocalizationFr {
 
   @override
   String get back => 'Retour';
+
+  @override
+  String get system_language => 'Langue du système';
 }

@@ -37,4 +37,7 @@ class LocalizationNb extends Localization {
 
   @override
   String get back => 'Tilbake';
+
+  @override
+  String get system_language => 'Systemspråk';
 }

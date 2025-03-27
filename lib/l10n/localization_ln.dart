@@ -37,4 +37,7 @@ class LocalizationLn extends Localization {
 
   @override
   String get back => 'Zonga';
+
+  @override
+  String get system_language => 'Ya Mpate';
 }

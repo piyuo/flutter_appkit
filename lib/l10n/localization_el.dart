@@ -37,4 +37,7 @@ class LocalizationEl extends Localization {
 
   @override
   String get back => 'Πίσω';
+
+  @override
+  String get system_language => 'Γλώσσα συστήματος';
 }
