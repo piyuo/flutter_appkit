@@ -44,7 +44,7 @@ Locale parseLocale(String localeString) {
 Locale? get defaultLocale => Intl.defaultLocale == null ? null : parseLocale(Intl.defaultLocale!);
 
 /// return the system locale of the app
-Locale? get systemLocale => parseLocale(Intl.systemLocale);
+Locale get systemLocale => parseLocale(Intl.systemLocale);
 
 /// return is using the system locale
 bool get isSystemLocale => Intl.defaultLocale == null || Intl.systemLocale == Intl.defaultLocale;
