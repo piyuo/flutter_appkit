@@ -11,12 +11,6 @@ class LanguageProvider with ChangeNotifier {
     return Provider.of<LanguageProvider>(context, listen: false);
   }
 
-  /// get language name
-  String getLanguage(BuildContext context) {
-    return Intl.getCurrentLocale();
-    //  return Locale(Intl.getCurrentLocale()).nativeDisplayLanguage;
-  }
-
   /// load locale from shared preferences
   Future<void> loadLocale() async {
     final prefs = await SharedPreferences.getInstance();
@@ -29,10 +23,10 @@ class LanguageProvider with ChangeNotifier {
   }
 
   /// set locale to shared preferences
-  Future<void> setLocale(Locale locale) async {
+  Future<void> setLocale(Locale? locale) async {
     Intl.defaultLocale = locale.toString();
     final prefs = await SharedPreferences.getInstance();
-    if (locale.toString() == Intl.systemLocale) {
+    if (locale == null || locale.toString() == Intl.systemLocale) {
       await prefs.remove('language_code');
       await prefs.remove('country_code');
     } else {
