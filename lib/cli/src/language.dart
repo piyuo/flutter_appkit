@@ -41,7 +41,7 @@ Locale parseLocale(String localeString) {
 }
 
 /// return the default locale of the app
-Locale get defaultLocale => Intl.defaultLocale == null ? Locale('en') : parseLocale(Intl.defaultLocale!);
+Locale? get defaultLocale => Intl.defaultLocale == null ? null : parseLocale(Intl.defaultLocale!);
 
 /// A function that returns the locale resolution callback for the app.
 Locale? localeResolutionCallback(locale, supportedLocales) {
@@ -103,6 +103,7 @@ Map<String, String> localeNames = {
   'es_AR': 'Español (Argentina)',
   'es_CO': 'Español (Colombia)',
   'es_MX': 'Español (México)',
+  'es_MS': 'Español (Mesoamérica)',
   'et': 'Eesti', // Estonian
 
   // F
