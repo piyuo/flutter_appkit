@@ -43,6 +43,9 @@ Locale parseLocale(String localeString) {
 /// return the default locale of the app
 Locale? get defaultLocale => Intl.defaultLocale == null ? null : parseLocale(Intl.defaultLocale!);
 
+/// return is using the system locale
+bool get isSystemLocale => Intl.defaultLocale == null || Intl.systemLocale == Intl.defaultLocale;
+
 /// A function that returns the locale resolution callback for the app.
 Locale? localeResolutionCallback(locale, supportedLocales) {
   if (locale == null) {
