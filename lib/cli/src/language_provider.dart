@@ -24,12 +24,13 @@ class LanguageProvider with ChangeNotifier {
 
   /// set locale to shared preferences
   Future<void> setLocale(Locale? locale) async {
-    Intl.defaultLocale = locale.toString();
     final prefs = await SharedPreferences.getInstance();
     if (locale == null || locale.languageCode == ' ' || locale.toString() == Intl.systemLocale) {
+      Intl.defaultLocale = null;
       await prefs.remove('language_code');
       await prefs.remove('country_code');
     } else {
+      Intl.defaultLocale = locale.toString();
       await prefs.setString('language_code', locale.languageCode);
       if (locale.countryCode != null) {
         await prefs.setString('country_code', locale.countryCode!);
