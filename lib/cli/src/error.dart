@@ -13,12 +13,13 @@ var showCatchedAlert = false;
 /// ```dart
 /// errorHandler.watch(suspect);
 /// ```
-void run(Function suspect) {
+void run(Function suspect, {bool Function(dynamic)? alertUser}) {
   final originalOnError = FlutterError.onError;
   FlutterError.onError = (FlutterErrorDetails details) async {
     await catched(
       details.exception,
       details.stack,
+      alertUser,
     );
     originalOnError?.call(details);
   };
@@ -28,15 +29,21 @@ void run(Function suspect) {
     (Object e, StackTrace stack) async => await catched(
       e,
       stack,
+      alertUser,
     ),
   );
 }
 
 @visibleForTesting
-Future<void> catched(dynamic e, StackTrace? stack) async {
+Future<void> catched(dynamic e, StackTrace? stack, bool Function(dynamic)? alertUser) async {
   log.error(e, stack);
   if (e is AssertionError) {
     //don't do anything, assertion only happen in development
+    return;
+  }
+
+  if (alertUser != null && !alertUser(e)) {
+    //don't show alert
     return;
   }
 
