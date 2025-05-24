@@ -12,7 +12,8 @@ class LocalizationAz extends Localization {
   String get cli_error_oops => 'Ups, nəsə səhv getdi';
 
   @override
-  String get cli_error_content => 'Gözlənilməz xəta baş verdi. E-poçt hesabatı göndərmək istəyirsiniz?';
+  String get cli_error_content =>
+      'Gözlənilməz xəta baş verdi. E-poçt hesabatı göndərmək istəyirsiniz?';
 
   @override
   String get cli_error_report => 'Bizə e-poçt göndərin';

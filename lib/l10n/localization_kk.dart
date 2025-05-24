@@ -12,7 +12,8 @@ class LocalizationKk extends Localization {
   String get cli_error_oops => 'Ойбай, бір нәрсе дұрыс болмады';
 
   @override
-  String get cli_error_content => 'Күтпеген қате орын алды. Электрондық пошта арқылы есеп жібергіңіз келе ме?';
+  String get cli_error_content =>
+      'Күтпеген қате орын алды. Электрондық пошта арқылы есеп жібергіңіз келе ме?';
 
   @override
   String get cli_error_report => 'Бізге электрондық хат жіберіңіз';

@@ -12,7 +12,8 @@ class LocalizationEn extends Localization {
   String get cli_error_oops => 'Oops, something went wrong';
 
   @override
-  String get cli_error_content => 'An unexpected error occurred. Would you like to submit a email report?';
+  String get cli_error_content =>
+      'An unexpected error occurred. Would you like to submit a email report?';
 
   @override
   String get cli_error_report => 'Email us';
@@ -44,13 +45,14 @@ class LocalizationEn extends Localization {
 
 /// The translations for English, as used in Australia (`en_AU`).
 class LocalizationEnAu extends LocalizationEn {
-  LocalizationEnAu(): super('en_AU');
+  LocalizationEnAu() : super('en_AU');
 
   @override
   String get cli_error_oops => 'Oops, something went wrong';
 
   @override
-  String get cli_error_content => 'An unexpected error occurred. Would you like to submit an email report?';
+  String get cli_error_content =>
+      'An unexpected error occurred. Would you like to submit an email report?';
 
   @override
   String get cli_error_report => 'Email us';
@@ -82,13 +84,14 @@ class LocalizationEnAu extends LocalizationEn {
 
 /// The translations for English, as used in Canada (`en_CA`).
 class LocalizationEnCa extends LocalizationEn {
-  LocalizationEnCa(): super('en_CA');
+  LocalizationEnCa() : super('en_CA');
 
   @override
   String get cli_error_oops => 'Oops, something went wrong';
 
   @override
-  String get cli_error_content => 'An unexpected error occurred. Would you like to submit an email report?';
+  String get cli_error_content =>
+      'An unexpected error occurred. Would you like to submit an email report?';
 
   @override
   String get cli_error_report => 'Email us';
@@ -120,13 +123,14 @@ class LocalizationEnCa extends LocalizationEn {
 
 /// The translations for English, as used in the United Kingdom (`en_GB`).
 class LocalizationEnGb extends LocalizationEn {
-  LocalizationEnGb(): super('en_GB');
+  LocalizationEnGb() : super('en_GB');
 
   @override
   String get cli_error_oops => 'Oops, something went wrong';
 
   @override
-  String get cli_error_content => 'An unexpected error occurred. Would you like to submit an email report?';
+  String get cli_error_content =>
+      'An unexpected error occurred. Would you like to submit an email report?';
 
   @override
   String get cli_error_report => 'Email us';
@@ -158,13 +162,14 @@ class LocalizationEnGb extends LocalizationEn {
 
 /// The translations for English, as used in India (`en_IN`).
 class LocalizationEnIn extends LocalizationEn {
-  LocalizationEnIn(): super('en_IN');
+  LocalizationEnIn() : super('en_IN');
 
   @override
   String get cli_error_oops => 'Oops, something went wrong';
 
   @override
-  String get cli_error_content => 'An unexpected error occurred. Would you like to submit an email report?';
+  String get cli_error_content =>
+      'An unexpected error occurred. Would you like to submit an email report?';
 
   @override
   String get cli_error_report => 'Email us';

@@ -12,7 +12,8 @@ class LocalizationRu extends Localization {
   String get cli_error_oops => 'Упс, что-то пошло не так';
 
   @override
-  String get cli_error_content => 'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
+  String get cli_error_content =>
+      'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
 
   @override
   String get cli_error_report => 'Напишите нам';
@@ -44,13 +45,14 @@ class LocalizationRu extends Localization {
 
 /// The translations for Russian, as used in Kazakhstan (`ru_KZ`).
 class LocalizationRuKz extends LocalizationRu {
-  LocalizationRuKz(): super('ru_KZ');
+  LocalizationRuKz() : super('ru_KZ');
 
   @override
   String get cli_error_oops => 'Упс, что-то пошло не так';
 
   @override
-  String get cli_error_content => 'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
+  String get cli_error_content =>
+      'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
 
   @override
   String get cli_error_report => 'Напишите нам';
@@ -82,13 +84,14 @@ class LocalizationRuKz extends LocalizationRu {
 
 /// The translations for Russian, as used in Ukraine (`ru_UA`).
 class LocalizationRuUa extends LocalizationRu {
-  LocalizationRuUa(): super('ru_UA');
+  LocalizationRuUa() : super('ru_UA');
 
   @override
   String get cli_error_oops => 'Упс, что-то пошло не так';
 
   @override
-  String get cli_error_content => 'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
+  String get cli_error_content =>
+      'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
 
   @override
   String get cli_error_report => 'Напишите нам';

@@ -12,7 +12,8 @@ class LocalizationTe extends Localization {
   String get cli_error_oops => 'అయ్యో, ఏదో తప్పు జరిగింది';
 
   @override
-  String get cli_error_content => 'ఊహించని లోపం సంభవించింది. మీరు ఇమెయిల్ నివేదికను సమర్పించాలనుకుంటున్నారా?';
+  String get cli_error_content =>
+      'ఊహించని లోపం సంభవించింది. మీరు ఇమెయిల్ నివేదికను సమర్పించాలనుకుంటున్నారా?';
 
   @override
   String get cli_error_report => 'మాకు ఇమెయిల్ చేయండి';

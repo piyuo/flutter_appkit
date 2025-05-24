@@ -12,7 +12,8 @@ class LocalizationMn extends Localization {
   String get cli_error_oops => 'Өө, ямар нэгэн зүйл буруу болсон';
 
   @override
-  String get cli_error_content => 'Гэнэтийн алдаа гарлаа. Та имэйлээр тайлан илгээхийг хүсч байна уу?';
+  String get cli_error_content =>
+      'Гэнэтийн алдаа гарлаа. Та имэйлээр тайлан илгээхийг хүсч байна уу?';
 
   @override
   String get cli_error_report => 'Бидэнд имэйл илгээх';

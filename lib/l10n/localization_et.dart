@@ -12,7 +12,8 @@ class LocalizationEt extends Localization {
   String get cli_error_oops => 'Ups, midagi läks valesti';
 
   @override
-  String get cli_error_content => 'Ilmnes ootamatu viga. Kas soovite saata e-posti aruande?';
+  String get cli_error_content =>
+      'Ilmnes ootamatu viga. Kas soovite saata e-posti aruande?';
 
   @override
   String get cli_error_report => 'Saada meile e-kiri';

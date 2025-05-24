@@ -12,7 +12,8 @@ class LocalizationTl extends Localization {
   String get cli_error_oops => 'Oops, may mali na nangyari';
 
   @override
-  String get cli_error_content => 'Mayroong hindi inaasahang error na nangyari. Gusto mo bang magsumite ng email report?';
+  String get cli_error_content =>
+      'Mayroong hindi inaasahang error na nangyari. Gusto mo bang magsumite ng email report?';
 
   @override
   String get cli_error_report => 'Mag-email sa amin';

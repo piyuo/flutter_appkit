@@ -12,7 +12,8 @@ class LocalizationNe extends Localization {
   String get cli_error_oops => 'उफ्, केही गलत भयो';
 
   @override
-  String get cli_error_content => 'अनपेक्षित त्रुटि भयो। के तपाईं इमेल रिपोर्ट पठाउन चाहनुहुन्छ?';
+  String get cli_error_content =>
+      'अनपेक्षित त्रुटि भयो। के तपाईं इमेल रिपोर्ट पठाउन चाहनुहुन्छ?';
 
   @override
   String get cli_error_report => 'हामीलाई इमेल गर्नुहोस्';

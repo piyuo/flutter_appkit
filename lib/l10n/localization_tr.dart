@@ -12,7 +12,8 @@ class LocalizationTr extends Localization {
   String get cli_error_oops => 'Hata, bir şeyler yanlış gitti';
 
   @override
-  String get cli_error_content => 'Beklenmeyen bir hata oluştu. E-posta raporu göndermek ister misiniz?';
+  String get cli_error_content =>
+      'Beklenmeyen bir hata oluştu. E-posta raporu göndermek ister misiniz?';
 
   @override
   String get cli_error_report => 'Bize e-posta gönderin';

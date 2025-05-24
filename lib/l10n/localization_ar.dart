@@ -12,7 +12,8 @@ class LocalizationAr extends Localization {
   String get cli_error_oops => 'عفواً، حدث خطأ ما';
 
   @override
-  String get cli_error_content => 'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
+  String get cli_error_content =>
+      'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
 
   @override
   String get cli_error_report => 'راسلنا';
@@ -44,13 +45,14 @@ class LocalizationAr extends Localization {
 
 /// The translations for Arabic, as used in the United Arab Emirates (`ar_AE`).
 class LocalizationArAe extends LocalizationAr {
-  LocalizationArAe(): super('ar_AE');
+  LocalizationArAe() : super('ar_AE');
 
   @override
   String get cli_error_oops => 'عفواً، حدث خطأ ما';
 
   @override
-  String get cli_error_content => 'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
+  String get cli_error_content =>
+      'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
 
   @override
   String get cli_error_report => 'راسلنا عبر البريد الإلكتروني';
@@ -82,13 +84,14 @@ class LocalizationArAe extends LocalizationAr {
 
 /// The translations for Arabic, as used in Algeria (`ar_DZ`).
 class LocalizationArDz extends LocalizationAr {
-  LocalizationArDz(): super('ar_DZ');
+  LocalizationArDz() : super('ar_DZ');
 
   @override
   String get cli_error_oops => 'عفواً، حدث خطأ ما';
 
   @override
-  String get cli_error_content => 'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
+  String get cli_error_content =>
+      'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
 
   @override
   String get cli_error_report => 'راسلنا عبر البريد الإلكتروني';
@@ -120,13 +123,14 @@ class LocalizationArDz extends LocalizationAr {
 
 /// The translations for Arabic, as used in Egypt (`ar_EG`).
 class LocalizationArEg extends LocalizationAr {
-  LocalizationArEg(): super('ar_EG');
+  LocalizationArEg() : super('ar_EG');
 
   @override
   String get cli_error_oops => 'عفواً، حدث خطأ ما';
 
   @override
-  String get cli_error_content => 'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
+  String get cli_error_content =>
+      'حدث خطأ غير متوقع. هل ترغب في إرسال تقرير بالبريد الإلكتروني؟';
 
   @override
   String get cli_error_report => 'راسلنا بالبريد الإلكتروني';

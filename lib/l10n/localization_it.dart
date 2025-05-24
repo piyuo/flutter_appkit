@@ -12,7 +12,8 @@ class LocalizationIt extends Localization {
   String get cli_error_oops => 'Ops, qualcosa è andato storto';
 
   @override
-  String get cli_error_content => 'Si è verificato un errore imprevisto. Desideri inviare un rapporto via email?';
+  String get cli_error_content =>
+      'Si è verificato un errore imprevisto. Desideri inviare un rapporto via email?';
 
   @override
   String get cli_error_report => 'Scrivici una email';

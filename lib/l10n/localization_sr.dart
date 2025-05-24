@@ -12,7 +12,8 @@ class LocalizationSr extends Localization {
   String get cli_error_oops => 'Упс, нешто је пошло наопако';
 
   @override
-  String get cli_error_content => 'Догодила се неочекивана грешка. Да ли желите да пошаљете извештај е-поштом?';
+  String get cli_error_content =>
+      'Догодила се неочекивана грешка. Да ли желите да пошаљете извештај е-поштом?';
 
   @override
   String get cli_error_report => 'Пошаљите нам е-пошту';

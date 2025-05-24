@@ -12,7 +12,8 @@ class LocalizationAf extends Localization {
   String get cli_error_oops => 'Oeps, iets het verkeerd gegaan';
 
   @override
-  String get cli_error_content => '\'n Onverwagse fout het voorgekom. Wil jy \'n e-posverslag indien?';
+  String get cli_error_content =>
+      '\'n Onverwagse fout het voorgekom. Wil jy \'n e-posverslag indien?';
 
   @override
   String get cli_error_report => 'E-pos ons';

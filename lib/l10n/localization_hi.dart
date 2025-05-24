@@ -12,7 +12,8 @@ class LocalizationHi extends Localization {
   String get cli_error_oops => 'उफ़, कुछ गलत हो गया';
 
   @override
-  String get cli_error_content => 'एक अप्रत्याशित त्रुटि हुई। क्या आप ईमेल रिपोर्ट भेजना चाहते हैं?';
+  String get cli_error_content =>
+      'एक अप्रत्याशित त्रुटि हुई। क्या आप ईमेल रिपोर्ट भेजना चाहते हैं?';
 
   @override
   String get cli_error_report => 'हमें ईमेल करें';

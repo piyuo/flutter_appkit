@@ -44,7 +44,7 @@ class LocalizationZh extends Localization {
 
 /// The translations for Chinese, as used in China (`zh_CN`).
 class LocalizationZhCn extends LocalizationZh {
-  LocalizationZhCn(): super('zh_CN');
+  LocalizationZhCn() : super('zh_CN');
 
   @override
   String get cli_error_oops => '糟糕，出错了';
@@ -82,7 +82,7 @@ class LocalizationZhCn extends LocalizationZh {
 
 /// The translations for Chinese, as used in Hong Kong (`zh_HK`).
 class LocalizationZhHk extends LocalizationZh {
-  LocalizationZhHk(): super('zh_HK');
+  LocalizationZhHk() : super('zh_HK');
 
   @override
   String get cli_error_oops => '哎呀，出錯了';
@@ -120,7 +120,7 @@ class LocalizationZhHk extends LocalizationZh {
 
 /// The translations for Chinese, as used in Macao (`zh_MO`).
 class LocalizationZhMo extends LocalizationZh {
-  LocalizationZhMo(): super('zh_MO');
+  LocalizationZhMo() : super('zh_MO');
 
   @override
   String get cli_error_oops => '哎呀，出錯了';
@@ -158,7 +158,7 @@ class LocalizationZhMo extends LocalizationZh {
 
 /// The translations for Chinese, as used in Singapore (`zh_SG`).
 class LocalizationZhSg extends LocalizationZh {
-  LocalizationZhSg(): super('zh_SG');
+  LocalizationZhSg() : super('zh_SG');
 
   @override
   String get cli_error_oops => '哎呀，出错了';

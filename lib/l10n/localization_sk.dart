@@ -12,7 +12,8 @@ class LocalizationSk extends Localization {
   String get cli_error_oops => 'Ups, niečo sa pokazilo';
 
   @override
-  String get cli_error_content => 'Vyskytla sa neočakávaná chyba. Chcete odoslať e-mailovú správu?';
+  String get cli_error_content =>
+      'Vyskytla sa neočakávaná chyba. Chcete odoslať e-mailovú správu?';
 
   @override
   String get cli_error_report => 'Napíšte nám e-mail';

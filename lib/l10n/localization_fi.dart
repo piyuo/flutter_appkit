@@ -12,7 +12,8 @@ class LocalizationFi extends Localization {
   String get cli_error_oops => 'Hups, jokin meni pieleen';
 
   @override
-  String get cli_error_content => 'Tapahtui odottamaton virhe. Haluatko lähettää sähköpostiraportin?';
+  String get cli_error_content =>
+      'Tapahtui odottamaton virhe. Haluatko lähettää sähköpostiraportin?';
 
   @override
   String get cli_error_report => 'Lähetä meille sähköpostia';

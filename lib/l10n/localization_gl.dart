@@ -12,7 +12,8 @@ class LocalizationGl extends Localization {
   String get cli_error_oops => 'Vaia, algo saíu mal';
 
   @override
-  String get cli_error_content => 'Ocorreu un erro inesperado. Queres enviar un informe por correo electrónico?';
+  String get cli_error_content =>
+      'Ocorreu un erro inesperado. Queres enviar un informe por correo electrónico?';
 
   @override
   String get cli_error_report => 'Envíanos un correo';

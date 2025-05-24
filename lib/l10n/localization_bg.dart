@@ -12,7 +12,8 @@ class LocalizationBg extends Localization {
   String get cli_error_oops => 'Опа, нещо се обърка';
 
   @override
-  String get cli_error_content => 'Възникна неочаквана грешка. Искате ли да изпратите имейл доклад?';
+  String get cli_error_content =>
+      'Възникна неочаквана грешка. Искате ли да изпратите имейл доклад?';
 
   @override
   String get cli_error_report => 'Пишете ни';

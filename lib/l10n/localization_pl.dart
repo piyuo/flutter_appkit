@@ -12,7 +12,8 @@ class LocalizationPl extends Localization {
   String get cli_error_oops => 'Ups, coś poszło nie tak';
 
   @override
-  String get cli_error_content => 'Wystąpił nieoczekiwany błąd. Czy chcesz wysłać raport e-mail?';
+  String get cli_error_content =>
+      'Wystąpił nieoczekiwany błąd. Czy chcesz wysłać raport e-mail?';
 
   @override
   String get cli_error_report => 'Napisz do nas';

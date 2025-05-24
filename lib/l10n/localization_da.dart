@@ -12,7 +12,8 @@ class LocalizationDa extends Localization {
   String get cli_error_oops => 'Ups, noget gik galt';
 
   @override
-  String get cli_error_content => 'Der opstod en uventet fejl. Vil du indsende en e-mailrapport?';
+  String get cli_error_content =>
+      'Der opstod en uventet fejl. Vil du indsende en e-mailrapport?';
 
   @override
   String get cli_error_report => 'Send os en e-mail';

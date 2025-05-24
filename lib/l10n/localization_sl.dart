@@ -12,7 +12,8 @@ class LocalizationSl extends Localization {
   String get cli_error_oops => 'Ups, nekaj je šlo narobe';
 
   @override
-  String get cli_error_content => 'Prišlo je do nepričakovane napake. Ali želite poslati poročilo po e-pošti?';
+  String get cli_error_content =>
+      'Prišlo je do nepričakovane napake. Ali želite poslati poročilo po e-pošti?';
 
   @override
   String get cli_error_report => 'Pošljite nam e-pošto';

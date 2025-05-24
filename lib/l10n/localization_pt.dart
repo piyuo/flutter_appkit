@@ -12,7 +12,8 @@ class LocalizationPt extends Localization {
   String get cli_error_oops => 'Ops, algo deu errado';
 
   @override
-  String get cli_error_content => 'Ocorreu um erro inesperado. Gostaria de enviar um relatório por e-mail?';
+  String get cli_error_content =>
+      'Ocorreu um erro inesperado. Gostaria de enviar um relatório por e-mail?';
 
   @override
   String get cli_error_report => 'Enviar e-mail';
@@ -44,13 +45,14 @@ class LocalizationPt extends Localization {
 
 /// The translations for Portuguese, as used in Portugal (`pt_PT`).
 class LocalizationPtPt extends LocalizationPt {
-  LocalizationPtPt(): super('pt_PT');
+  LocalizationPtPt() : super('pt_PT');
 
   @override
   String get cli_error_oops => 'Ups, algo correu mal';
 
   @override
-  String get cli_error_content => 'Ocorreu um erro inesperado. Pretende enviar um relatório por e-mail?';
+  String get cli_error_content =>
+      'Ocorreu um erro inesperado. Pretende enviar um relatório por e-mail?';
 
   @override
   String get cli_error_report => 'Enviar-nos e-mail';

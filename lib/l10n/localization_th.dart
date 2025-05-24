@@ -12,7 +12,8 @@ class LocalizationTh extends Localization {
   String get cli_error_oops => 'อุปส์ มีบางอย่างผิดพลาด';
 
   @override
-  String get cli_error_content => 'เกิดข้อผิดพลาดที่ไม่คาดคิด คุณต้องการส่งรายงานทางอีเมลหรือไม่?';
+  String get cli_error_content =>
+      'เกิดข้อผิดพลาดที่ไม่คาดคิด คุณต้องการส่งรายงานทางอีเมลหรือไม่?';
 
   @override
   String get cli_error_report => 'อีเมลถึงเรา';

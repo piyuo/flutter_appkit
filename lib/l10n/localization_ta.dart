@@ -12,7 +12,8 @@ class LocalizationTa extends Localization {
   String get cli_error_oops => 'அடடா, ஏதோ தவறு நடந்துவிட்டது';
 
   @override
-  String get cli_error_content => 'எதிர்பாராத பிழை ஏற்பட்டது. மின்னஞ்சல் அறிக்கையை சமர்ப்பிக்க விரும்புகிறீர்களா?';
+  String get cli_error_content =>
+      'எதிர்பாராத பிழை ஏற்பட்டது. மின்னஞ்சல் அறிக்கையை சமர்ப்பிக்க விரும்புகிறீர்களா?';
 
   @override
   String get cli_error_report => 'எங்களுக்கு மின்னஞ்சல் அனுப்பவும்';

@@ -12,7 +12,8 @@ class LocalizationFr extends Localization {
   String get cli_error_oops => 'Oups, quelque chose s\'est mal passé';
 
   @override
-  String get cli_error_content => 'Une erreur inattendue s\'est produite. Souhaitez-vous envoyer un rapport par email ?';
+  String get cli_error_content =>
+      'Une erreur inattendue s\'est produite. Souhaitez-vous envoyer un rapport par email ?';
 
   @override
   String get cli_error_report => 'Nous contacter par email';
@@ -44,13 +45,14 @@ class LocalizationFr extends Localization {
 
 /// The translations for French, as used in Belgium (`fr_BE`).
 class LocalizationFrBe extends LocalizationFr {
-  LocalizationFrBe(): super('fr_BE');
+  LocalizationFrBe() : super('fr_BE');
 
   @override
   String get cli_error_oops => 'Oups, quelque chose s\'est mal passé';
 
   @override
-  String get cli_error_content => 'Une erreur inattendue s\'est produite. Souhaitez-vous envoyer un rapport par e-mail ?';
+  String get cli_error_content =>
+      'Une erreur inattendue s\'est produite. Souhaitez-vous envoyer un rapport par e-mail ?';
 
   @override
   String get cli_error_report => 'Nous contacter par e-mail';
@@ -82,13 +84,14 @@ class LocalizationFrBe extends LocalizationFr {
 
 /// The translations for French, as used in Canada (`fr_CA`).
 class LocalizationFrCa extends LocalizationFr {
-  LocalizationFrCa(): super('fr_CA');
+  LocalizationFrCa() : super('fr_CA');
 
   @override
   String get cli_error_oops => 'Oups, quelque chose s\'est mal passé';
 
   @override
-  String get cli_error_content => 'Une erreur inattendue est survenue. Souhaitez-vous envoyer un rapport par courriel ?';
+  String get cli_error_content =>
+      'Une erreur inattendue est survenue. Souhaitez-vous envoyer un rapport par courriel ?';
 
   @override
   String get cli_error_report => 'Nous contacter par courriel';
@@ -120,13 +123,14 @@ class LocalizationFrCa extends LocalizationFr {
 
 /// The translations for French, as used in Switzerland (`fr_CH`).
 class LocalizationFrCh extends LocalizationFr {
-  LocalizationFrCh(): super('fr_CH');
+  LocalizationFrCh() : super('fr_CH');
 
   @override
   String get cli_error_oops => 'Oups, quelque chose s\'est mal passé';
 
   @override
-  String get cli_error_content => 'Une erreur inattendue s\'est produite. Souhaitez-vous envoyer un rapport par e-mail ?';
+  String get cli_error_content =>
+      'Une erreur inattendue s\'est produite. Souhaitez-vous envoyer un rapport par e-mail ?';
 
   @override
   String get cli_error_report => 'Nous contacter par e-mail';

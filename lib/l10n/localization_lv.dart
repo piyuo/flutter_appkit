@@ -12,7 +12,8 @@ class LocalizationLv extends Localization {
   String get cli_error_oops => 'Ak vai, kaut kas nogāja greizi';
 
   @override
-  String get cli_error_content => 'Notika neparedzēta kļūda. Vai vēlaties nosūtīt ziņojumu pa e-pastu?';
+  String get cli_error_content =>
+      'Notika neparedzēta kļūda. Vai vēlaties nosūtīt ziņojumu pa e-pastu?';
 
   @override
   String get cli_error_report => 'Rakstiet mums e-pastu';

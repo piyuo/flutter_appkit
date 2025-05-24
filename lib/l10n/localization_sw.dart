@@ -12,7 +12,8 @@ class LocalizationSw extends Localization {
   String get cli_error_oops => 'Samahani, kuna hitilafu imetokea';
 
   @override
-  String get cli_error_content => 'Hitilafu isiyotarajiwa imetokea. Je, ungependa kutuma ripoti kwa barua pepe?';
+  String get cli_error_content =>
+      'Hitilafu isiyotarajiwa imetokea. Je, ungependa kutuma ripoti kwa barua pepe?';
 
   @override
   String get cli_error_report => 'Tutumie barua pepe';

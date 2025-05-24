@@ -12,7 +12,8 @@ class LocalizationNl extends Localization {
   String get cli_error_oops => 'Oeps, er is iets misgegaan';
 
   @override
-  String get cli_error_content => 'Er is een onverwachte fout opgetreden. Wil je een e-mailrapport sturen?';
+  String get cli_error_content =>
+      'Er is een onverwachte fout opgetreden. Wil je een e-mailrapport sturen?';
 
   @override
   String get cli_error_report => 'Mail ons';
@@ -44,13 +45,14 @@ class LocalizationNl extends Localization {
 
 /// The translations for Dutch Flemish, as used in Belgium (`nl_BE`).
 class LocalizationNlBe extends LocalizationNl {
-  LocalizationNlBe(): super('nl_BE');
+  LocalizationNlBe() : super('nl_BE');
 
   @override
   String get cli_error_oops => 'Oeps, er is iets misgelopen';
 
   @override
-  String get cli_error_content => 'Er is een onverwachte fout opgetreden. Wilt u een e-mailrapport versturen?';
+  String get cli_error_content =>
+      'Er is een onverwachte fout opgetreden. Wilt u een e-mailrapport versturen?';
 
   @override
   String get cli_error_report => 'Mail ons';

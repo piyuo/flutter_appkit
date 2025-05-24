@@ -12,7 +12,8 @@ class LocalizationUr extends Localization {
   String get cli_error_oops => 'افسوس، کچھ غلط ہو گیا';
 
   @override
-  String get cli_error_content => 'ایک غیر متوقع خرابی پیش آئی۔ کیا آپ ای میل رپورٹ جمع کرانا چاہتے ہیں؟';
+  String get cli_error_content =>
+      'ایک غیر متوقع خرابی پیش آئی۔ کیا آپ ای میل رپورٹ جمع کرانا چاہتے ہیں؟';
 
   @override
   String get cli_error_report => 'ہمیں ای میل کریں';
@@ -44,13 +45,14 @@ class LocalizationUr extends Localization {
 
 /// The translations for Urdu, as used in India (`ur_IN`).
 class LocalizationUrIn extends LocalizationUr {
-  LocalizationUrIn(): super('ur_IN');
+  LocalizationUrIn() : super('ur_IN');
 
   @override
   String get cli_error_oops => 'افسوس، کچھ غلط ہو گیا';
 
   @override
-  String get cli_error_content => 'ایک غیر متوقع خرابی پیش آئی۔ کیا آپ ای میل رپورٹ جمع کرانا چاہتے ہیں؟';
+  String get cli_error_content =>
+      'ایک غیر متوقع خرابی پیش آئی۔ کیا آپ ای میل رپورٹ جمع کرانا چاہتے ہیں؟';
 
   @override
   String get cli_error_report => 'ہمیں ای میل کریں';

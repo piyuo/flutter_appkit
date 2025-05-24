@@ -12,7 +12,8 @@ class LocalizationCs extends Localization {
   String get cli_error_oops => 'Jejda, něco se pokazilo';
 
   @override
-  String get cli_error_content => 'Došlo k neočekávané chybě. Chcete odeslat zprávu e-mailem?';
+  String get cli_error_content =>
+      'Došlo k neočekávané chybě. Chcete odeslat zprávu e-mailem?';
 
   @override
   String get cli_error_report => 'Napište nám';

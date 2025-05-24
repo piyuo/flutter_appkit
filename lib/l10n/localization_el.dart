@@ -12,7 +12,8 @@ class LocalizationEl extends Localization {
   String get cli_error_oops => 'Ωχ, κάτι πήγε στραβά';
 
   @override
-  String get cli_error_content => 'Παρουσιάστηκε ένα απρόσμενο σφάλμα. Θα θέλατε να υποβάλετε μια αναφορά μέσω email;';
+  String get cli_error_content =>
+      'Παρουσιάστηκε ένα απρόσμενο σφάλμα. Θα θέλατε να υποβάλετε μια αναφορά μέσω email;';
 
   @override
   String get cli_error_report => 'Στείλτε μας email';

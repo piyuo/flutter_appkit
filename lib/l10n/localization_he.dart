@@ -12,7 +12,8 @@ class LocalizationHe extends Localization {
   String get cli_error_oops => 'אופס, משהו השתבש';
 
   @override
-  String get cli_error_content => 'אירעה שגיאה בלתי צפויה. האם תרצה לשלוח דוח באימייל?';
+  String get cli_error_content =>
+      'אירעה שגיאה בלתי צפויה. האם תרצה לשלוח דוח באימייל?';
 
   @override
   String get cli_error_report => 'שלח לנו אימייל';

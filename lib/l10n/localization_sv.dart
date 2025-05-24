@@ -12,7 +12,8 @@ class LocalizationSv extends Localization {
   String get cli_error_oops => 'Hoppsan, något gick fel';
 
   @override
-  String get cli_error_content => 'Ett oväntat fel inträffade. Vill du skicka en rapport via e-post?';
+  String get cli_error_content =>
+      'Ett oväntat fel inträffade. Vill du skicka en rapport via e-post?';
 
   @override
   String get cli_error_report => 'Mejla oss';

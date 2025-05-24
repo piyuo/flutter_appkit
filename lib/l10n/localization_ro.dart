@@ -12,7 +12,8 @@ class LocalizationRo extends Localization {
   String get cli_error_oops => 'Ups, ceva nu a funcționat';
 
   @override
-  String get cli_error_content => 'A apărut o eroare neașteptată. Doriți să trimiteți un raport prin e-mail?';
+  String get cli_error_content =>
+      'A apărut o eroare neașteptată. Doriți să trimiteți un raport prin e-mail?';
 
   @override
   String get cli_error_report => 'Trimite-ne un e-mail';

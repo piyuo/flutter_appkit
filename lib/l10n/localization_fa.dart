@@ -12,7 +12,8 @@ class LocalizationFa extends Localization {
   String get cli_error_oops => 'اوه، مشکلی پیش آمد';
 
   @override
-  String get cli_error_content => 'یک خطای غیرمنتظره رخ داد. آیا می‌خواهید گزارشی از طریق ایمیل ارسال کنید؟';
+  String get cli_error_content =>
+      'یک خطای غیرمنتظره رخ داد. آیا می‌خواهید گزارشی از طریق ایمیل ارسال کنید؟';
 
   @override
   String get cli_error_report => 'به ما ایمیل بزنید';

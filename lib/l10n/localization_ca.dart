@@ -12,7 +12,8 @@ class LocalizationCa extends Localization {
   String get cli_error_oops => 'Vaja, alguna cosa ha anat malament';
 
   @override
-  String get cli_error_content => 'S\'ha produït un error inesperat. Vols enviar un informe per correu electrònic?';
+  String get cli_error_content =>
+      'S\'ha produït un error inesperat. Vols enviar un informe per correu electrònic?';
 
   @override
   String get cli_error_report => 'Envia\'ns un correu';

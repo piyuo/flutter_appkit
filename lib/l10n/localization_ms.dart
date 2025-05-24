@@ -12,7 +12,8 @@ class LocalizationMs extends Localization {
   String get cli_error_oops => 'Alamak, ada sesuatu yang tidak kena';
 
   @override
-  String get cli_error_content => 'Ralat tidak dijangka telah berlaku. Adakah anda ingin menghantar laporan melalui e-mel?';
+  String get cli_error_content =>
+      'Ralat tidak dijangka telah berlaku. Adakah anda ingin menghantar laporan melalui e-mel?';
 
   @override
   String get cli_error_report => 'E-mel kepada kami';
@@ -44,13 +45,14 @@ class LocalizationMs extends Localization {
 
 /// The translations for Malay, as used in Singapore (`ms_SG`).
 class LocalizationMsSg extends LocalizationMs {
-  LocalizationMsSg(): super('ms_SG');
+  LocalizationMsSg() : super('ms_SG');
 
   @override
   String get cli_error_oops => 'Alamak, ada sesuatu yang tidak betul';
 
   @override
-  String get cli_error_content => 'Ralat tidak dijangka telah berlaku. Adakah anda ingin menghantar laporan melalui e-mel?';
+  String get cli_error_content =>
+      'Ralat tidak dijangka telah berlaku. Adakah anda ingin menghantar laporan melalui e-mel?';
 
   @override
   String get cli_error_report => 'E-mel kepada kami';

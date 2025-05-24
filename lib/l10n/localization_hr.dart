@@ -12,7 +12,8 @@ class LocalizationHr extends Localization {
   String get cli_error_oops => 'Ups, nešto je pošlo po krivu';
 
   @override
-  String get cli_error_content => 'Došlo je do neočekivane pogreške. Želite li poslati izvješće e-poštom?';
+  String get cli_error_content =>
+      'Došlo je do neočekivane pogreške. Želite li poslati izvješće e-poštom?';
 
   @override
   String get cli_error_report => 'Pošaljite nam e-poštu';

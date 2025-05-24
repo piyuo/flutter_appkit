@@ -12,7 +12,8 @@ class LocalizationMy extends Localization {
   String get cli_error_oops => 'အို၊ တစ်ခုခုမှားယွင်းသွားပါပြီ';
 
   @override
-  String get cli_error_content => 'မမျှော်လင့်ထားသော အမှားတစ်ခု ဖြစ်ပွားခဲ့သည်။ အီးမေးလ်အစီရင်ခံစာ ပေးပို့လိုပါသလား။';
+  String get cli_error_content =>
+      'မမျှော်လင့်ထားသော အမှားတစ်ခု ဖြစ်ပွားခဲ့သည်။ အီးမေးလ်အစီရင်ခံစာ ပေးပို့လိုပါသလား။';
 
   @override
   String get cli_error_report => 'ကျွန်ုပ်တို့ထံ အီးမေးလ်ပို့ပါ';

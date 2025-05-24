@@ -12,7 +12,8 @@ class LocalizationUz extends Localization {
   String get cli_error_oops => 'Voy, xatolik yuz berdi';
 
   @override
-  String get cli_error_content => 'Kutilmagan xatolik yuz berdi. Elektron pochta hisobotini yuborishni xohlaysizmi?';
+  String get cli_error_content =>
+      'Kutilmagan xatolik yuz berdi. Elektron pochta hisobotini yuborishni xohlaysizmi?';
 
   @override
   String get cli_error_report => 'Bizga elektron pochta yuboring';

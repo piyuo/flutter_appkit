@@ -12,7 +12,8 @@ class LocalizationHu extends Localization {
   String get cli_error_oops => 'Hoppá, valami hiba történt';
 
   @override
-  String get cli_error_content => 'Váratlan hiba történt. Szeretne e-mail jelentést küldeni?';
+  String get cli_error_content =>
+      'Váratlan hiba történt. Szeretne e-mail jelentést küldeni?';
 
   @override
   String get cli_error_report => 'E-mail küldése nekünk';

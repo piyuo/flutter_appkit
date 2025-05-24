@@ -12,7 +12,8 @@ class LocalizationLt extends Localization {
   String get cli_error_oops => 'Oi, kažkas nutiko';
 
   @override
-  String get cli_error_content => 'Įvyko netikėta klaida. Ar norėtumėte pateikti el. pašto ataskaitą?';
+  String get cli_error_content =>
+      'Įvyko netikėta klaida. Ar norėtumėte pateikti el. pašto ataskaitą?';
 
   @override
   String get cli_error_report => 'Susisiekite el. paštu';

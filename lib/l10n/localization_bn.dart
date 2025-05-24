@@ -12,7 +12,8 @@ class LocalizationBn extends Localization {
   String get cli_error_oops => 'উফ, কিছু একটা ভুল হয়েছে';
 
   @override
-  String get cli_error_content => 'একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। আপনি কি একটি ইমেল রিপোর্ট জমা দিতে চান?';
+  String get cli_error_content =>
+      'একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। আপনি কি একটি ইমেল রিপোর্ট জমা দিতে চান?';
 
   @override
   String get cli_error_report => 'আমাদের ইমেল করুন';
@@ -44,13 +45,14 @@ class LocalizationBn extends Localization {
 
 /// The translations for Bengali Bangla, as used in India (`bn_IN`).
 class LocalizationBnIn extends LocalizationBn {
-  LocalizationBnIn(): super('bn_IN');
+  LocalizationBnIn() : super('bn_IN');
 
   @override
   String get cli_error_oops => 'ওহো, কিছু একটা ভুল হয়েছে';
 
   @override
-  String get cli_error_content => 'একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। আপনি কি একটি ইমেল রিপোর্ট পাঠাতে চান?';
+  String get cli_error_content =>
+      'একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। আপনি কি একটি ইমেল রিপোর্ট পাঠাতে চান?';
 
   @override
   String get cli_error_report => 'আমাদের ইমেল করুন';

@@ -12,7 +12,8 @@ class LocalizationDe extends Localization {
   String get cli_error_oops => 'Hoppla, etwas ist schiefgelaufen';
 
   @override
-  String get cli_error_content => 'Ein unerwarteter Fehler ist aufgetreten. Möchten Sie einen Fehlerbericht per E-Mail senden?';
+  String get cli_error_content =>
+      'Ein unerwarteter Fehler ist aufgetreten. Möchten Sie einen Fehlerbericht per E-Mail senden?';
 
   @override
   String get cli_error_report => 'E-Mail an uns';
@@ -44,13 +45,14 @@ class LocalizationDe extends Localization {
 
 /// The translations for German, as used in Austria (`de_AT`).
 class LocalizationDeAt extends LocalizationDe {
-  LocalizationDeAt(): super('de_AT');
+  LocalizationDeAt() : super('de_AT');
 
   @override
   String get cli_error_oops => 'Hoppla, etwas ist schiefgelaufen';
 
   @override
-  String get cli_error_content => 'Ein unerwarteter Fehler ist aufgetreten. Möchten Sie einen Fehlerbericht per E-Mail senden?';
+  String get cli_error_content =>
+      'Ein unerwarteter Fehler ist aufgetreten. Möchten Sie einen Fehlerbericht per E-Mail senden?';
 
   @override
   String get cli_error_report => 'E-Mail an uns';
@@ -82,13 +84,14 @@ class LocalizationDeAt extends LocalizationDe {
 
 /// The translations for German, as used in Switzerland (`de_CH`).
 class LocalizationDeCh extends LocalizationDe {
-  LocalizationDeCh(): super('de_CH');
+  LocalizationDeCh() : super('de_CH');
 
   @override
   String get cli_error_oops => 'Hoppla, etwas ist schiefgelaufen';
 
   @override
-  String get cli_error_content => 'Ein unerwarteter Fehler ist aufgetreten. Möchten Sie einen Fehlerbericht per E-Mail senden?';
+  String get cli_error_content =>
+      'Ein unerwarteter Fehler ist aufgetreten. Möchten Sie einen Fehlerbericht per E-Mail senden?';
 
   @override
   String get cli_error_report => 'E-Mail an uns';

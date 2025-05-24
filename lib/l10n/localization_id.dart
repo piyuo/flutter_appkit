@@ -12,7 +12,8 @@ class LocalizationId extends Localization {
   String get cli_error_oops => 'Ups, terjadi kesalahan';
 
   @override
-  String get cli_error_content => 'Terjadi kesalahan yang tidak terduga. Apakah Anda ingin mengirimkan laporan email?';
+  String get cli_error_content =>
+      'Terjadi kesalahan yang tidak terduga. Apakah Anda ingin mengirimkan laporan email?';
 
   @override
   String get cli_error_report => 'Email kami';

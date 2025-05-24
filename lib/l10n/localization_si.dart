@@ -12,7 +12,8 @@ class LocalizationSi extends Localization {
   String get cli_error_oops => 'අයියෝ, යමක් වැරදී ඇත';
 
   @override
-  String get cli_error_content => 'අනපේක්ෂිත දෝෂයක් සිදුවිය. ඔබට විද්‍යුත් තැපැල් වාර්තාවක් ඉදිරිපත් කිරීමට අවශ්‍යද?';
+  String get cli_error_content =>
+      'අනපේක්ෂිත දෝෂයක් සිදුවිය. ඔබට විද්‍යුත් තැපැල් වාර්තාවක් ඉදිරිපත් කිරීමට අවශ්‍යද?';
 
   @override
   String get cli_error_report => 'අපට ඊමේල් කරන්න';

@@ -12,7 +12,8 @@ class LocalizationMl extends Localization {
   String get cli_error_oops => 'അയ്യോ, എന്തോ തെറ്റ് സംഭവിച്ചു';
 
   @override
-  String get cli_error_content => 'അപ്രതീക്ഷിതമായ ഒരു പിശക് സംഭവിച്ചു. ഇമെയിൽ റിപ്പോർട്ട് സമർപ്പിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?';
+  String get cli_error_content =>
+      'അപ്രതീക്ഷിതമായ ഒരു പിശക് സംഭവിച്ചു. ഇമെയിൽ റിപ്പോർട്ട് സമർപ്പിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?';
 
   @override
   String get cli_error_report => 'ഞങ്ങൾക്ക് ഇമെയിൽ ചെയ്യുക';

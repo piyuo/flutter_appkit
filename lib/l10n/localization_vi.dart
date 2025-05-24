@@ -12,7 +12,8 @@ class LocalizationVi extends Localization {
   String get cli_error_oops => 'Rất tiếc, đã xảy ra lỗi';
 
   @override
-  String get cli_error_content => 'Đã xảy ra lỗi không mong muốn. Bạn có muốn gửi báo cáo qua email không?';
+  String get cli_error_content =>
+      'Đã xảy ra lỗi không mong muốn. Bạn có muốn gửi báo cáo qua email không?';
 
   @override
   String get cli_error_report => 'Gửi email cho chúng tôi';

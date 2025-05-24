@@ -12,7 +12,8 @@ class LocalizationUk extends Localization {
   String get cli_error_oops => 'Упс, щось пішло не так';
 
   @override
-  String get cli_error_content => 'Сталася неочікувана помилка. Бажаєте надіслати звіт електронною поштою?';
+  String get cli_error_content =>
+      'Сталася неочікувана помилка. Бажаєте надіслати звіт електронною поштою?';
 
   @override
   String get cli_error_report => 'Напишіть нам';
