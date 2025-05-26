@@ -1,53 +1,76 @@
-# libcli
+# LibCLI
 
-library for flutter projects
+A robust Flutter foundation library that provides essential application infrastructure including error handling, global context management, logging, and internationalization support.
 
-## Github
+## Features
 
-clone source code to local.
+- **Error Handling**: Comprehensive error catching and reporting mechanism
+- **Global Context**: Centralized application context management
+- **Logging**: Built-in logging system for debugging and monitoring
+- **Internationalization**: Language file support for multi-language applications
+- **Zero Configuration**: Drop-in replacement for Flutter's `runApp()`
 
-```bash
-git clone git@github.com:piyuo/libcli.git
+## Installation
+
+Add this to your package's `pubspec.yaml` file:
+
+```yaml
+dependencies:
+  libcli:
+    git:
+      url: https://github.com/piyuo/libcli.git
 ```
 
-## Update dependencies
+## Quick Start
 
-```bash
-flutter pub upgrade --major-versions
+Replace your existing `runApp()` call with `run()`:
+
+```dart
+import 'package:libcli/libcli.dart';
+
+void main() {
+  run(() => MyApp());
+}
 ```
 
-## Project
+### With Custom Error Handling
 
-using project libcli.code-workspace
-
-### Test
-
-unit test
-
-// --enable-experiment=non-nullable --no-sound-null-safety lib
-
-```bash
-flutter test lib
+```dart
+void main() {
+  run(
+    () => MyApp(),
+    alertUser: (error) {
+      // Custom error handling logic
+      // Return true to show default alert, false to handle silently
+      return true;
+    },
+  );
+}
 ```
 
-debug test using vscode flutter extension
+## API Reference
 
-### Contributing packages
+### `run(Function suspect, {bool Function(dynamic)? alertUser})`
 
-test to see if libcli is ready to publish
+Initializes and runs your Flutter application with enhanced error handling and global context support.
 
-```bash
-flutter packages pub publish --dry-run
-```
+**Parameters:**
+- `suspect`: Function that returns your app widget (typically `() => MyApp()`)
+- `alertUser`: Optional callback for custom error handling. Returns `bool` to indicate whether to show default error alert.
 
-publish libcli to pub.dev
+## Requirements
 
-```bash
-flutter packages pub publish  --force
-```
+- Flutter SDK 3.0+
+- Dart 3.0+
 
-### ignore build folder in dropbox
+## License
 
-``` bash
-xattr -w com.dropbox.ignored 1 /Users/cc/Dropbox/libcli/build
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For issues and questions, please use the [GitHub Issues](https://github.com/piyuo/libcli/issues) page.
