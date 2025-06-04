@@ -1,0 +1,202 @@
+# .github/workflows/update-issue-status-on-pr-to-develop.yml
+name: Update Issue Status on PR to Develop
+
+# Trigger when PR is opened or synchronized targeting develop branch
+on:
+    pull_request:
+        types: [opened, synchronize, reopened]
+        branches:
+            - develop
+
+jobs:
+    update-issue-status:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Extract issue number and update project status
+              run: |
+                  # Get branch name and PR information
+                  BRANCH_NAME="${{ github.head_ref }}"
+                  PR_NUMBER="${{ github.event.pull_request.number }}"
+                  REPO_OWNER="${{ github.repository_owner }}"
+                  REPO_NAME="${{ github.event.repository.name }}"
+
+                  echo "🔍 Processing PR #$PR_NUMBER"
+                  echo "📝 Branch name: $BRANCH_NAME"
+                  echo "📂 Target branch: ${{ github.base_ref }}"
+
+                  # Extract issue number from branch name (assuming format: {issue_id}-{description})
+                  ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -o '^[0-9]\+' || echo "")
+
+                  if [ -z "$ISSUE_NUMBER" ]; then
+                    echo "❌ Could not extract issue number from branch name: $BRANCH_NAME"
+                    echo "Expected format: {issue_id}-{description} (e.g., 2-feature-add-sign-in-screen)"
+                    exit 1
+                  fi
+
+                  echo "✅ Extracted issue number: #$ISSUE_NUMBER"
+
+                  # Verify the issue exists
+                  ISSUE_EXISTS=$(gh api "repos/$REPO_OWNER/$REPO_NAME/issues/$ISSUE_NUMBER" --jq '.number' 2>/dev/null || echo "")
+
+                  if [ -z "$ISSUE_EXISTS" ]; then
+                    echo "❌ Issue #$ISSUE_NUMBER does not exist in repository"
+                    exit 1
+                  fi
+
+                  echo "✅ Confirmed issue #$ISSUE_NUMBER exists"
+
+                  # Replace with your actual project number
+                  PROJECT_NUMBER="13"  # Libcli - Sprint Board
+
+                  # Get the project item ID for this issue
+                  echo "🔍 Looking for issue #$ISSUE_NUMBER in project #$PROJECT_NUMBER..."
+
+                  ITEM_ID=$(gh api graphql -f query='
+                    query($owner: String!, $repo: String!, $number: Int!, $projectNumber: Int!) {
+                      repository(owner: $owner, name: $repo) {
+                        issue(number: $number) {
+                          projectItems(first: 10) {
+                            nodes {
+                              id
+                              project {
+                                number
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }' -f owner="$REPO_OWNER" -f repo="$REPO_NAME" -F number="$ISSUE_NUMBER" -F projectNumber="$PROJECT_NUMBER" --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number == '$PROJECT_NUMBER') | .id')
+
+                  if [ -z "$ITEM_ID" ]; then
+                    echo "❌ Issue #$ISSUE_NUMBER not found in project $PROJECT_NUMBER"
+                    echo "Please make sure the issue is added to your project board"
+                    echo "You can add it manually or set up automation to add new issues automatically"
+                    exit 1
+                  fi
+
+                  echo "✅ Found project item ID: $ITEM_ID"
+
+                  # Get project and field information
+                  echo "📋 Getting project field information..."
+
+                  PROJECT_DATA=$(gh api graphql -f query='
+                    query($owner: String!, $projectNumber: Int!) {
+                      user(login: $owner) {
+                        projectV2(number: $projectNumber) {
+                          id
+                          fields(first: 20) {
+                            nodes {
+                              ... on ProjectV2SingleSelectField {
+                                id
+                                name
+                                options {
+                                  id
+                                  name
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }' -f owner="$REPO_OWNER" -F projectNumber="$PROJECT_NUMBER")
+
+                  PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.id')
+
+                  # Find the Status field and "In Review" option
+                  STATUS_FIELD_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .id')
+                  IN_REVIEW_OPTION_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "In Review") | .id')
+
+                  if [ -z "$STATUS_FIELD_ID" ]; then
+                    echo "❌ Could not find 'Status' field in project"
+                    echo "Available fields:"
+                    echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[].name'
+                    exit 1
+                  fi
+
+                  if [ -z "$IN_REVIEW_OPTION_ID" ]; then
+                    echo "❌ Could not find 'In Review' option in Status field"
+                    echo "Available Status options:"
+                    echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .options[].name'
+                    exit 1
+                  fi
+
+                  echo "✅ Status field ID: $STATUS_FIELD_ID"
+                  echo "✅ In Review option ID: $IN_REVIEW_OPTION_ID"
+
+                  # Update the project item status
+                  echo "🔄 Updating issue #$ISSUE_NUMBER status to 'In Review'..."
+
+                  gh api graphql -f query='
+                    mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                      updateProjectV2ItemFieldValue(input: {
+                        projectId: $projectId
+                        itemId: $itemId
+                        fieldId: $fieldId
+                        value: {
+                          singleSelectOptionId: $optionId
+                        }
+                      }) {
+                        projectV2Item {
+                          id
+                        }
+                      }
+                    }' -f projectId="$PROJECT_ID" -f itemId="$ITEM_ID" -f fieldId="$STATUS_FIELD_ID" -f optionId="$IN_REVIEW_OPTION_ID"
+
+                  echo "✅ Successfully updated issue #$ISSUE_NUMBER status to 'In Review'"
+
+                  # Store issue number for next step
+                  echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # Add comment to the issue about PR creation
+            - name: Comment on issue
+              if: env.ISSUE_NUMBER
+              run: |
+                  gh issue comment ${{ env.ISSUE_NUMBER }} --body "🔄 **Status Update**: This issue has been moved to 'In Review' status.
+
+                  **Reason**: Pull Request [#${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) has been created to merge \`${{ github.head_ref }}\` → \`develop\`.
+
+                  **Next Steps**:
+                  - Review the pull request
+                  - Address any feedback
+                  - Merge when approved
+
+                  **PR Details**:
+                  - **Title**: ${{ github.event.pull_request.title }}
+                  - **Author**: @${{ github.event.pull_request.user.login }}
+                  - **Branch**: \`${{ github.head_ref }}\`"
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # Optional: Add label to the issue
+            - name: Add label to issue
+              if: env.ISSUE_NUMBER
+              run: |
+                  gh issue edit ${{ env.ISSUE_NUMBER }} --add-label "in-review"
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # Summary
+            - name: Workflow summary
+              if: always()
+              run: |
+                  if [ "${{ job.status }}" == "success" ]; then
+                    echo "🎉 Successfully processed PR #${{ github.event.pull_request.number }}"
+                    echo "📋 Updated issue #${{ env.ISSUE_NUMBER }} status to 'In Review'"
+                  else
+                    echo "❌ Workflow failed"
+                    echo ""
+                    echo "💡 Troubleshooting checklist:"
+                    echo "  1. ✓ Branch name follows format: {issue_id}-{description}"
+                    echo "  2. ✓ Issue exists in repository"
+                    echo "  3. ✓ Issue is added to project board"
+                    echo "  4. ✓ Project number is correct"
+                    echo "  5. ✓ 'Status' field exists with 'In Review' option"
+                    echo "  6. ✓ GitHub token has project permissions"
+                  fi
