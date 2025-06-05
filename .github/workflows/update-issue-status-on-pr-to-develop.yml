@@ -1,4 +1,8 @@
 # .github/workflows/update-issue-status-on-pr-to-develop.yml
+#小提醒：如果你之後要改 project number，記得同時修改兩個地方：
+#PROJECT_NUMBER="13"
+#GraphQL query 中的 projectV2(number: 13)
+
 name: Update Issue Status on PR to Develop
 
 # Trigger when PR is opened or synchronized targeting develop branch
@@ -56,7 +60,7 @@ jobs:
                   echo "🔍 Looking for issue #$ISSUE_NUMBER in project #$PROJECT_NUMBER..."
 
                   ITEM_ID=$(gh api graphql -f query='
-                    query($owner: String!, $repo: String!, $number: Int!, $projectNumber: Int!) {
+                    query($owner: String!, $repo: String!, $number: Int!) {
                       repository(owner: $owner, name: $repo) {
                         issue(number: $number) {
                           projectItems(first: 10) {
@@ -69,7 +73,7 @@ jobs:
                           }
                         }
                       }
-                    }' -f owner="$REPO_OWNER" -f repo="$REPO_NAME" -F number="$ISSUE_NUMBER" -F projectNumber="$PROJECT_NUMBER" --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number == '$PROJECT_NUMBER') | .id')
+                    }' -f owner="$REPO_OWNER" -f repo="$REPO_NAME" -F number="$ISSUE_NUMBER" --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number == '$PROJECT_NUMBER') | .id')
 
                   if [ -z "$ITEM_ID" ]; then
                     echo "❌ Issue #$ISSUE_NUMBER not found in project $PROJECT_NUMBER"
@@ -84,9 +88,9 @@ jobs:
                   echo "📋 Getting project field information..."
 
                   PROJECT_DATA=$(gh api graphql -f query='
-                    query($owner: String!, $projectNumber: Int!) {
+                    query($owner: String!) {
                       user(login: $owner) {
-                        projectV2(number: $projectNumber) {
+                        projectV2(number: 13) {
                           id
                           fields(first: 20) {
                             nodes {
@@ -102,7 +106,7 @@ jobs:
                           }
                         }
                       }
-                    }' -f owner="$REPO_OWNER" -F projectNumber="$PROJECT_NUMBER")
+                    }' -f owner="$REPO_OWNER")
 
                   PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.id')
 

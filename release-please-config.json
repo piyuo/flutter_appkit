@@ -1,0 +1,8 @@
+{
+    "packages": {
+        ".": {
+            "release-type": "dart",
+            "default-branch": "main"
+        }
+    }
+}
