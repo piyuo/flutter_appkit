@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1](https://github.com/piyuo/libcli/compare/v1.1.0...v1.1.1) (2025-06-05)
+
+
+### Bug Fixes
+
+* license file ([357f225](https://github.com/piyuo/libcli/commit/357f22596abdb43d5286f538171e093f5a47ea2d))
+* update GraphQL queries in workflow to remove project number dependency ([f89ab86](https://github.com/piyuo/libcli/commit/f89ab86e03deae2bf7f41bfb49abed33c3e54248))
+
 ## [1.1.0](https://github.com/piyuo/libcli/compare/v1.0.0...v1.1.0) (2025-06-04)
 
 
