@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/piyuo/libcli/compare/v1.0.0...v1.1.0) (2025-06-04)
+
+
+### Features
+
+* add GitHub Actions workflow to update issue status on PR to develop ([6191926](https://github.com/piyuo/libcli/commit/61919263e4284a7526bdb5052e959f99cfd5b412))
+
 ## 1.0.0 (2025-06-04)
 
 
