@@ -30,5 +30,4 @@ jobs:
               id: release
               uses: googleapis/release-please-action@v4
               with:
-                  release-type: dart
                   config-file: "release-please-config.json"
