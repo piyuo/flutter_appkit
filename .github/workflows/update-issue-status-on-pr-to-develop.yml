@@ -56,76 +56,150 @@ jobs:
                   # Replace with your actual project number
                   PROJECT_NUMBER="13"  # Libcli - Sprint Board
 
-                  # Get the project item ID for this issue
-                  echo "🔍 Looking for issue #$ISSUE_NUMBER in project #$PROJECT_NUMBER..."
+                  echo "🔍 DEBUG: Searching for issue #$ISSUE_NUMBER in all projects..."
 
-                  ITEM_ID=$(gh api graphql -f query='
+                  # Debug: Get ALL project items for this issue to see what's happening
+                  DEBUG_PROJECT_ITEMS=$(gh api graphql -f query='
                     query($owner: String!, $repo: String!, $number: Int!) {
                       repository(owner: $owner, name: $repo) {
                         issue(number: $number) {
-                          projectItems(first: 10) {
+                          id
+                          projectItems(first: 20) {
                             nodes {
                               id
                               project {
-                                number
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }' -f owner="$REPO_OWNER" -f repo="$REPO_NAME" -F number="$ISSUE_NUMBER" --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number == '$PROJECT_NUMBER') | .id')
-
-                  if [ -z "$ITEM_ID" ]; then
-                    echo "❌ Issue #$ISSUE_NUMBER not found in project $PROJECT_NUMBER"
-                    echo "Please make sure the issue is added to your project board"
-                    echo "You can add it manually or set up automation to add new issues automatically"
-                    exit 1
-                  fi
-
-                  echo "✅ Found project item ID: $ITEM_ID"
-
-                  # Get project and field information
-                  echo "📋 Getting project field information..."
-
-                  PROJECT_DATA=$(gh api graphql -f query='
-                    query($owner: String!) {
-                      user(login: $owner) {
-                        projectV2(number: 13) {
-                          id
-                          fields(first: 20) {
-                            nodes {
-                              ... on ProjectV2SingleSelectField {
                                 id
-                                name
-                                options {
-                                  id
-                                  name
+                                number
+                                title
+                                owner {
+                                  ... on User {
+                                    login
+                                  }
+                                  ... on Organization {
+                                    login
+                                  }
                                 }
                               }
                             }
                           }
                         }
                       }
-                    }' -f owner="$REPO_OWNER")
+                    }' -f owner="$REPO_OWNER" -f repo="$REPO_NAME" -F number="$ISSUE_NUMBER")
 
-                  PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.id')
+                  echo "🔍 DEBUG: All projects containing issue #$ISSUE_NUMBER:"
+                  echo "$DEBUG_PROJECT_ITEMS" | jq -r '.data.repository.issue.projectItems.nodes[] | "Project #\(.project.number): \(.project.title) (Owner: \(.project.owner.login), ID: \(.project.id), Item ID: \(.id))"'
+
+                  # Try different approaches to find the project
+                  echo "🔍 Method 1: Searching in user projects..."
+                  USER_PROJECT_ITEM_ID=$(echo "$DEBUG_PROJECT_ITEMS" | jq -r '.data.repository.issue.projectItems.nodes[] | select(.project.number == '$PROJECT_NUMBER' and .project.owner.login == "'$REPO_OWNER'") | .id')
+
+                  if [ -n "$USER_PROJECT_ITEM_ID" ] && [ "$USER_PROJECT_ITEM_ID" != "null" ]; then
+                    echo "✅ Found in user project: $USER_PROJECT_ITEM_ID"
+                    ITEM_ID="$USER_PROJECT_ITEM_ID"
+                    PROJECT_OWNER_TYPE="user"
+                  else
+                    echo "🔍 Method 2: Searching in organization projects..."
+                    # Try organization projects
+                    ORG_PROJECT_ITEM_ID=$(echo "$DEBUG_PROJECT_ITEMS" | jq -r '.data.repository.issue.projectItems.nodes[] | select(.project.number == '$PROJECT_NUMBER') | .id')
+
+                    if [ -n "$ORG_PROJECT_ITEM_ID" ] && [ "$ORG_PROJECT_ITEM_ID" != "null" ]; then
+                      echo "✅ Found in organization project: $ORG_PROJECT_ITEM_ID"
+                      ITEM_ID="$ORG_PROJECT_ITEM_ID"
+                      PROJECT_OWNER_TYPE="organization"
+                    else
+                      echo "❌ Issue #$ISSUE_NUMBER not found in project $PROJECT_NUMBER"
+                      echo "Available projects for this issue:"
+                      echo "$DEBUG_PROJECT_ITEMS" | jq -r '.data.repository.issue.projectItems.nodes[] | "- Project #\(.project.number): \(.project.title)"'
+                      exit 1
+                    fi
+                  fi
+
+                  echo "✅ Found project item ID: $ITEM_ID"
+                  echo "✅ Project owner type: $PROJECT_OWNER_TYPE"
+
+                  # Get project information based on owner type
+                  echo "📋 Getting project field information..."
+
+                  if [ "$PROJECT_OWNER_TYPE" = "user" ]; then
+                    PROJECT_DATA=$(gh api graphql -f query='
+                      query($owner: String!) {
+                        user(login: $owner) {
+                          projectV2(number: '$PROJECT_NUMBER') {
+                            id
+                            fields(first: 20) {
+                              nodes {
+                                ... on ProjectV2SingleSelectField {
+                                  id
+                                  name
+                                  options {
+                                    id
+                                    name
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }' -f owner="$REPO_OWNER")
+                    PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.id')
+                  else
+                    PROJECT_DATA=$(gh api graphql -f query='
+                      query($owner: String!) {
+                        organization(login: $owner) {
+                          projectV2(number: '$PROJECT_NUMBER') {
+                            id
+                            fields(first: 20) {
+                              nodes {
+                                ... on ProjectV2SingleSelectField {
+                                  id
+                                  name
+                                  options {
+                                    id
+                                    name
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }' -f owner="$REPO_OWNER")
+                    PROJECT_ID=$(echo "$PROJECT_DATA" | jq -r '.data.organization.projectV2.id')
+                  fi
+
+                  if [ -z "$PROJECT_ID" ] || [ "$PROJECT_ID" == "null" ]; then
+                    echo "❌ Could not get project ID"
+                    echo "DEBUG: PROJECT_DATA = $PROJECT_DATA"
+                    exit 1
+                  fi
+
+                  echo "✅ Project ID: $PROJECT_ID"
 
                   # Find the Status field and "In Review" option
-                  STATUS_FIELD_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .id')
-                  IN_REVIEW_OPTION_ID=$(echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "In Review") | .id')
+                  STATUS_FIELD_ID=$(echo "$PROJECT_DATA" | jq -r '.data.'$PROJECT_OWNER_TYPE'.projectV2.fields.nodes[] | select(.name == "Status") | .id')
+                  IN_REVIEW_OPTION_ID=$(echo "$PROJECT_DATA" | jq -r '.data.'$PROJECT_OWNER_TYPE'.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name == "In Review") | .id')
 
                   if [ -z "$STATUS_FIELD_ID" ]; then
                     echo "❌ Could not find 'Status' field in project"
                     echo "Available fields:"
-                    echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[].name'
+                    echo "$PROJECT_DATA" | jq -r '.data.'$PROJECT_OWNER_TYPE'.projectV2.fields.nodes[].name'
                     exit 1
                   fi
 
                   if [ -z "$IN_REVIEW_OPTION_ID" ]; then
                     echo "❌ Could not find 'In Review' option in Status field"
                     echo "Available Status options:"
-                    echo "$PROJECT_DATA" | jq -r '.data.user.projectV2.fields.nodes[] | select(.name == "Status") | .options[].name'
-                    exit 1
+                    echo "$PROJECT_DATA" | jq -r '.data.'$PROJECT_OWNER_TYPE'.projectV2.fields.nodes[] | select(.name == "Status") | .options[].name'
+
+                    # 嘗試尋找其他可能的選項名稱
+                    echo "🔍 Trying alternative option names..."
+                    REVIEW_OPTION_ID=$(echo "$PROJECT_DATA" | jq -r '.data.'$PROJECT_OWNER_TYPE'.projectV2.fields.nodes[] | select(.name == "Status") | .options[] | select(.name | test("Review|review")) | .id')
+
+                    if [ -n "$REVIEW_OPTION_ID" ] && [ "$REVIEW_OPTION_ID" != "null" ]; then
+                      echo "✅ Found review option with ID: $REVIEW_OPTION_ID"
+                      IN_REVIEW_OPTION_ID="$REVIEW_OPTION_ID"
+                    else
+                      exit 1
+                    fi
                   fi
 
                   echo "✅ Status field ID: $STATUS_FIELD_ID"
@@ -134,7 +208,7 @@ jobs:
                   # Update the project item status
                   echo "🔄 Updating issue #$ISSUE_NUMBER status to 'In Review'..."
 
-                  gh api graphql -f query='
+                  UPDATE_RESULT=$(gh api graphql -f query='
                     mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
                       updateProjectV2ItemFieldValue(input: {
                         projectId: $projectId
@@ -148,9 +222,15 @@ jobs:
                           id
                         }
                       }
-                    }' -f projectId="$PROJECT_ID" -f itemId="$ITEM_ID" -f fieldId="$STATUS_FIELD_ID" -f optionId="$IN_REVIEW_OPTION_ID"
+                    }' -f projectId="$PROJECT_ID" -f itemId="$ITEM_ID" -f fieldId="$STATUS_FIELD_ID" -f optionId="$IN_REVIEW_OPTION_ID")
 
-                  echo "✅ Successfully updated issue #$ISSUE_NUMBER status to 'In Review'"
+                  if echo "$UPDATE_RESULT" | jq -e '.data.updateProjectV2ItemFieldValue.projectV2Item.id' > /dev/null; then
+                    echo "✅ Successfully updated issue #$ISSUE_NUMBER status to 'In Review'"
+                  else
+                    echo "❌ Failed to update status"
+                    echo "DEBUG: UPDATE_RESULT = $UPDATE_RESULT"
+                    exit 1
+                  fi
 
                   # Store issue number for next step
                   echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
@@ -194,13 +274,5 @@ jobs:
                     echo "🎉 Successfully processed PR #${{ github.event.pull_request.number }}"
                     echo "📋 Updated issue #${{ env.ISSUE_NUMBER }} status to 'In Review'"
                   else
-                    echo "❌ Workflow failed"
-                    echo ""
-                    echo "💡 Troubleshooting checklist:"
-                    echo "  1. ✓ Branch name follows format: {issue_id}-{description}"
-                    echo "  2. ✓ Issue exists in repository"
-                    echo "  3. ✓ Issue is added to project board"
-                    echo "  4. ✓ Project number is correct"
-                    echo "  5. ✓ 'Status' field exists with 'In Review' option"
-                    echo "  6. ✓ GitHub token has project permissions"
+                    echo "❌ Workflow failed - check debug output above"
                   fi
