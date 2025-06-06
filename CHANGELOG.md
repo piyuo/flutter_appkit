@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1](https://github.com/piyuo/libcli/compare/v1.4.0...v1.4.1) (2025-06-06)
+
+
+### Bug Fixes
+
+* auto merge id message ([2899811](https://github.com/piyuo/libcli/commit/28998113c62010572f9b05dc4d22c5b31af826fb))
+
 ## [1.4.0](https://github.com/piyuo/libcli/compare/v1.3.1...v1.4.0) (2025-06-06)
 
 
