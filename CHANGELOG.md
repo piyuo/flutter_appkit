@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.2](https://github.com/piyuo/libcli/compare/v1.4.1...v1.4.2) (2025-06-06)
+
+
+### Bug Fixes
+
+* add more label ([6427e17](https://github.com/piyuo/libcli/commit/6427e176b3b57c0bded48a5ed05329d878648bad))
+* add more label ([06e4c41](https://github.com/piyuo/libcli/commit/06e4c41089e6566c3e7a5b0686734515b0272368))
+* release please missing ([48ae1e0](https://github.com/piyuo/libcli/commit/48ae1e001d47483fd88fd9c22e201b8a75c68e0e))
+
 ## [1.4.1](https://github.com/piyuo/libcli/compare/v1.4.0...v1.4.1) (2025-06-06)
 
 
