@@ -7,6 +7,8 @@ We follow a **GitHub Projects-driven workflow** that combines issue tracking wit
 - [Project Board Workflow](#project-board-workflow)
 - [Branching Strategy](#branching-strategy)
 - [Development Workflow](#development-workflow)
+- [Pull Request Process](#pull-request-process)
+- [Branch Protection](#branch-protection)
 - [Code Standards](#code-standards)
 
 ## 📊 Project Board Workflow
@@ -14,15 +16,14 @@ We follow a **GitHub Projects-driven workflow** that combines issue tracking wit
 We use **GitHub Projects Sprint Board** for visual project management and automated workflow tracking.
 
 ### Sprint Board Columns
-- **Backlog** - New issues waiting for planning
-- **Ready** - Issues planned and ready to start
-- **In Progress** - Currently being worked on
-- **In Review** - Pull request created, waiting for review
-- **Done** - Completed and merged to develop
-
-### Automated Workflows
-Our project board includes automated rules:
-- **When pull request is merged to develop** → Set status to "Done" and close issue
+- **Backlog** – New issues waiting for planning
+- **Ready** – Issues planned and ready to start
+- **In Progress** – Currently being worked on
+    - *Note: Creating a pull request (PR) is still considered part of the In Progress stage. Developers are responsible for actively seeking reviewers and initiating the review process.*
+- **In Review** – Pull request is under review and either:
+    - A reviewer has requested changes, or
+    - The pull request has been approved by some reviewers (but not all required approvals have been received)
+- **Done** – Completed and merged to develop
 
 ## 🌿 Branching Strategy
 
@@ -51,7 +52,44 @@ gitGraph
 
 ### Main Branches
 - **`main`** - Production branch (stable, released code)
+  - **Purpose**: Production/release branch
+  - **Access**: Only accepts PRs from `develop` branch
+  - **Developer restrictions**: No direct modifications allowed
+  - **Release management**: Managed by release-please automation
 - **`develop`** - Integration branch (latest features for next release)
+  - **Purpose**: Integration branch for next release
+  - **Access**: Accepts PRs from issue branches only
+  - **Version updates**: Receives version and ChangeLog updates from `main` after releases
+
+
+
+Both branches are **PR-only** with strict protection:
+
+- **No direct commits** - All changes must come through Pull Requests
+- **No force push** - History cannot be rewritten
+- **Forward-only** - If issues arise, create new PRs to fix them
+
+```mermaid
+graph LR
+    A[develop branch] --> B[PR to main]
+    B --> C[main branch release]
+    C --> D[release-please automation]
+    D --> E[Version bump & ChangeLog]
+    E --> F[PR back to develop]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Issue-Based Branches
 All development work uses issue-based branches:
@@ -63,7 +101,28 @@ All development work uses issue-based branches:
 ## 🔄 Development Workflow
 
 ### 1. Create an Issue
-All work must begin with a GitHub Issue to track the problem or feature request.
+All work must begin with a GitHub Issue using our predefined templates:
+
+- **Feature Request** - For new features or enhancements
+- **Bug Report** - For bug fixes and issues
+
+Select the appropriate template and fill out the form completely. The template will automatically generate a standardized issue description.
+
+#### Feature Request Flow:
+1. **Create Issue** → Use Feature Request template
+2. **Add to Sprint Board** → Move to "In Progress"
+3. **Create Issue Branch** → From `develop` branch
+4. **Commit Messages** → Use `feat:` prefix
+5. **Create PR** → Target `develop` branch, Use `close: #<Issue ID> <description>`
+6. **After Merge** → Automatically added to ChangeLog under "Features"
+
+#### Bug Report Flow:
+1. **Create Issue** → Use Bug Report template
+2. **Add to Sprint Board** → Move to "In Progress"
+3. **Create Issue Branch** → From `develop` branch
+4. **Commit Messages** → Use `fix:` prefix
+5. **Create PR** → Target `develop` branch, Use `close: #<Issue ID> <description>`
+6. **After Merge** → Automatically added to ChangeLog under "Bug Fixes"
 
 ### 2. Add Issue to Sprint Board
 **Before starting any work**, add the issue to the Sprint Board and fill in the planning fields:
@@ -107,11 +166,44 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/) format:
 | `docs:`  | Documentation | `docs(api): update authentication endpoints`    |
 | `chore:` | Maintenance   | `chore(deps): update dependencies to latest`    |
 
-### 5. Pull Request Process
+## 🔀 Pull Request Process
+
+### Before Creating PR
+**Always sync your branch with the latest develop branch**:
+
+```bash
+# Update branch with latest develop
+git fetch origin
+git rebase origin/develop
+git push --force-with-lease origin <branch-name>
+```
+
+### Creating the PR
 - **Target branch**: Always merge to `develop`
+- **PR Title Format**: `close: #<Issue ID> <description>`
+  - Example: `close: #25 Add user authentication system`
 - **Automated linking**: Issues are automatically linked via branch names
 - **Review required**: Wait for approval and CI checks
-- **Automatic status**: Issue moves to "Done" when merged
+
+### Post-PR Process
+- **Reviews and changes**: All discussions happen within the PR
+- **If issues found after PR is closed**:
+  1. **Small fixes**: Modify the same issue branch and create a new PR
+  2. **Major changes**: Create a new issue and follow the standard workflow
+
+
+
+
+## Automated Workflows
+
+### Issue Management
+- **New issues** → Automatically added to Sprint Board "Backlog"
+- **Branch creation** → Issue status remains in "In Progress"
+- **PR merged to develop** → Issue moves to "Done" and closes automatically
+
+### Release Management
+- **Main branch release** → Triggers release-please
+- **Version updates** → Automatically synced back to develop branch
 
 ## 💡 Code Standards
 
@@ -134,16 +226,6 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/) format:
 - **Meaningful comments**: Explain why, not what
 - **Remove dead code**: Delete unused functions, variables, imports
 
-## 🚨 Emergency Procedures
-
-For **critical production issues** that require immediate fixes, see our detailed guide:
-→ **[Hotfix Guide](docs/HOTFIX_GUIDE.md)**
-
-## 🚀 Release Management
-
-For **release preparation** and deployment procedures, see our detailed guide:
-→ **[Release Process](docs/RELEASE_PROCESS.md)**
-
 ## 🤔 FAQ
 
 **Q: Can I work on multiple issues simultaneously?**
@@ -158,33 +240,10 @@ A: Contact a repository maintainer for write permissions.
 **Q: How specific should commit scopes be?**
 A: Use the most specific scope that makes sense (e.g., `feat(auth)` or `feat(auth/2fa)`).
 
----
-
-## 🎯 Quick Reference
-
-### Standard Workflow:
-```
-1. Create GitHub Issue
-2. Add to Sprint Board (Priority, Estimate, etc.)
-3. Move to "In Progress"
-4. Click "Create a branch for this issue" (from develop)
-5. Develop and commit with conventional format
-6. Create PR to develop
-7. Merge → Auto closes issue and moves to "Done"
-```
-
-### Common Commands:
-```bash
-# Update branch with latest develop
-git fetch origin
-git rebase origin/develop
-git push --force-with-lease origin <branch-name>
-
-# Commit with conventional format
-git commit -m "feat(scope): description"
-git commit -m "fix(scope): bug description"
-```
+**Q: What happens if my PR gets rejected?**
+A: Make the requested changes in the same branch and push updates. The PR will automatically update.
 
 ---
+
 
 Thank you for contributing! 🙏
