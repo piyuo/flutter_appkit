@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.3](https://github.com/piyuo/libcli/compare/v1.4.2...v1.4.3) (2025-06-06)
+
+
+### Bug Fixes
+
+* add label check ([ff11d6c](https://github.com/piyuo/libcli/commit/ff11d6cc5155e075415b33e9016e7b0d070eacdc))
+
 ## [1.4.2](https://github.com/piyuo/libcli/compare/v1.4.1...v1.4.2) (2025-06-06)
 
 
