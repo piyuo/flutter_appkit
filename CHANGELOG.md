@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1](https://github.com/piyuo/libcli/compare/v1.3.0...v1.3.1) (2025-06-06)
+
+
+### Bug Fixes
+
+* release please add outputs ([82845c8](https://github.com/piyuo/libcli/commit/82845c81370d11ffa53d689fb595ccf4a6dbeb09))
+
 ## [1.3.0](https://github.com/piyuo/libcli/compare/v1.2.1...v1.3.0) (2025-06-06)
 
 
