@@ -16,19 +16,35 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
               with:
-                  # Fetch full history for all branches to enable proper merging
                   fetch-depth: 0
-                  # Use a token that has permission to push to protected branches
                   token: ${{ secrets.GITHUB_TOKEN }}
 
-            # Configure Git user for the merge commit
+            # Check if commit message matches release-please pattern
+            - name: Check if should sync
+              id: check-commit
+              run: |
+                  COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+                  echo "Latest commit message: $COMMIT_MSG"
+
+                  # Only accept commits with exact pattern: chore(main): release
+                  if [[ $COMMIT_MSG =~ ^chore\(main\):\ release ]]; then
+                      echo "should_sync=true" >> $GITHUB_OUTPUT
+                      echo "✅ This is a release-please commit, will sync to develop"
+                  else
+                      echo "should_sync=false" >> $GITHUB_OUTPUT
+                      echo "ℹ️ Commit does not match 'chore(main): release' pattern, skipping sync"
+                  fi
+
+            # Configure Git user for the merge commit (only when sync is needed)
             - name: Configure Git
+              if: steps.check-commit.outputs.should_sync == 'true'
               run: |
                   git config --global user.name "github-actions[bot]"
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-            # Switch to develop branch and merge main branch into it
+            # Execute merge (only when sync is needed)
             - name: Merge main into develop
+              if: steps.check-commit.outputs.should_sync == 'true'
               run: |
                   # Switch to develop branch
                   git checkout develop
@@ -45,15 +61,21 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            # Optional: Create a comment or notification about the successful merge
+            # Create success notification
             - name: Create success comment
-              if: success()
+              if: success() && steps.check-commit.outputs.should_sync == 'true'
               run: |
                   echo "✅ Successfully merged main branch into develop branch"
 
+            # Notification when sync is skipped
+            - name: Sync skipped notification
+              if: steps.check-commit.outputs.should_sync == 'false'
+              run: |
+                  echo "ℹ️ Sync to develop was skipped - commit message does not match release pattern"
+
             # Handle merge conflicts or failures
             - name: Handle merge failure
-              if: failure()
+              if: failure() && steps.check-commit.outputs.should_sync == 'true'
               run: |
                   echo "❌ Failed to merge main into develop. Manual intervention required."
                   echo "This could be due to merge conflicts or other issues."
