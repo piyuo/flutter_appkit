@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/piyuo/libcli/compare/v1.4.3...v1.5.0) (2025-06-06)
+
+
+### Features
+
+* add PR template ([ce5e020](https://github.com/piyuo/libcli/commit/ce5e02070dc535fab4ab22fcb869391747374b1e))
+
 ## [1.4.3](https://github.com/piyuo/libcli/compare/v1.4.2...v1.4.3) (2025-06-06)
 
 
