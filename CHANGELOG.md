@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1](https://github.com/piyuo/libcli/compare/libcli-v1.2.0...libcli-v1.2.1) (2025-06-06)
+
+
+### Bug Fixes
+
+* bug2 ([b191d6a](https://github.com/piyuo/libcli/commit/b191d6a3d72cb440544c09a626a34edfb10e1f5c))
+* bug2 ([5ef8ae9](https://github.com/piyuo/libcli/commit/5ef8ae9d0fd83384fc29bb35879262e217489ea1))
+* enhance issue status update workflow with debugging and project owner type handling ([3d0920b](https://github.com/piyuo/libcli/commit/3d0920b5a8ade4fad9cd421b2deabf4a6a0958ad))
+
 ## [1.2.0](https://github.com/piyuo/libcli/compare/libcli-v1.1.0...libcli-v1.2.0) (2025-06-05)
 
 
