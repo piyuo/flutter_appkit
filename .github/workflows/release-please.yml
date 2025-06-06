@@ -1,38 +1,17 @@
+# .github/workflows/release-please.yml
 name: Release Please
 
 on:
     push:
         branches:
-            - main # our release branch
+            - main
+    workflow_dispatch:
 
 jobs:
-    release-please:
-        # 添加條件確保只在 main 分支運行
-        if: github.ref == 'refs/heads/main'
+    release:
         runs-on: ubuntu-latest
-        outputs:
-            release_created: ${{ steps.release.outputs.release_created }}
-            tag_name: ${{ steps.release.outputs.tag_name }}
-            release_url: ${{ steps.release.outputs.release_url }}
-            prerelease: ${{ steps.release.outputs.prerelease }}
-            id: ${{ steps.release.outputs.id }}
-            body: ${{ steps.release.outputs.body }}
-            upload_url: ${{ steps.release.outputs.upload_url }}
-
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-              with:
-                  # 確保檢出 main 分支
-                  ref: main
-
-            - name: Set up Git identity
-              run: |
-                  git config user.name "github-actions[bot]"
-                  git config user.email "github-actions[bot]@users.noreply.github.com"
-
-            - name: Run Release Please
-              id: release
+            - name: Release Please
               uses: googleapis/release-please-action@v4
               with:
-                  config-file: "release-please-config.json"
+                  config-file: .release-please-config.json
