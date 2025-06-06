@@ -14,5 +14,5 @@ jobs:
             - name: Release Please
               uses: googleapis/release-please-action@v4
               with:
-                  config-file: .release-please-config.json
-                  monorepo-tags: false
+                  release-type: dart # 或 node, go, python 等
+                  target-branch: main
