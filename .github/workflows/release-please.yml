@@ -7,6 +7,8 @@ on:
 
 jobs:
     release-please:
+        # 添加條件確保只在 main 分支運行
+        if: github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
         outputs:
             release_created: ${{ steps.release.outputs.release_created }}
@@ -20,6 +22,9 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+              with:
+                  # 確保檢出 main 分支
+                  ref: main
 
             - name: Set up Git identity
               run: |
