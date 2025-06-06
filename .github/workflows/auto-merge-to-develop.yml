@@ -20,17 +20,40 @@ jobs:
             - name: Check if should sync
               id: check-commit
               run: |
-                  COMMIT_MSG=$(git log -1 --pretty=format:"%s")
-                  COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an")
-                  echo "Latest commit message: $COMMIT_MSG"
-                  echo "Commit author: $COMMIT_AUTHOR"
+                  # Get the latest commit message
+                  LATEST_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+                  echo "Latest commit message: $LATEST_COMMIT_MSG"
 
-                  if [[ $COMMIT_MSG =~ ^chore\(.*\):\ release ]] && [[ $COMMIT_AUTHOR == "release-please[bot]" ]]; then
-                    echo "should_sync=true" >> $GITHUB_OUTPUT
-                    echo "✅ This is a release-please commit, will create merge PR"
+                  # Check if this is a merge commit from release-please PR
+                  if [[ $LATEST_COMMIT_MSG =~ ^Merge\ pull\ request.*release-please ]]; then
+                    echo "This is a release-please merge commit"
+
+                    # Get the actual release commit message (the one before the merge)
+                    RELEASE_COMMIT_MSG=$(git log -2 --pretty=format:"%s" | tail -1)
+                    RELEASE_COMMIT_AUTHOR=$(git log -2 --pretty=format:"%an" | tail -1)
+
+                    echo "Release commit message: $RELEASE_COMMIT_MSG"
+                    echo "Release commit author: $RELEASE_COMMIT_AUTHOR"
+
+                    if [[ $RELEASE_COMMIT_MSG =~ ^chore\(.*\):\ release ]]; then
+                      echo "should_sync=true" >> $GITHUB_OUTPUT
+                      echo "✅ Found release commit in merge, will create merge PR"
+                    else
+                      echo "should_sync=false" >> $GITHUB_OUTPUT
+                      echo "ℹ️ Merge commit doesn't contain release commit"
+                    fi
                   else
-                    echo "should_sync=false" >> $GITHUB_OUTPUT
-                    echo "ℹ️ Commit does not match release pattern, skipping sync"
+                    # Check if this is a direct release commit (squash merge case)
+                    COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an")
+                    echo "Commit author: $COMMIT_AUTHOR"
+
+                    if [[ $LATEST_COMMIT_MSG =~ ^chore\(.*\):\ release ]]; then
+                      echo "should_sync=true" >> $GITHUB_OUTPUT
+                      echo "✅ This is a direct release commit, will create merge PR"
+                    else
+                      echo "should_sync=false" >> $GITHUB_OUTPUT
+                      echo "ℹ️ Commit does not match release pattern, skipping sync"
+                    fi
                   fi
 
             - name: Configure Git
