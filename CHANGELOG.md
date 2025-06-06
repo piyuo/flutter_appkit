@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2](https://github.com/piyuo/libcli/compare/libcli-v1.2.1...libcli-v1.2.2) (2025-06-06)
+
+
+### Bug Fixes
+
+* license ([c26e6f5](https://github.com/piyuo/libcli/commit/c26e6f5b88c0a38a6f6c39c2a29aa0e3835361e1))
+* license 3 ([b842565](https://github.com/piyuo/libcli/commit/b84256580a1807529851df8924d03e65e850aaf9))
+* license 4 ([0f5921b](https://github.com/piyuo/libcli/commit/0f5921bffa5cbcc2a5adc8c5e97a2dc99ba8ebd6))
+* license 4 ([1356439](https://github.com/piyuo/libcli/commit/1356439d6b042272dbb6efd6a469b26fef6d8ab7))
+
 ## [1.2.1](https://github.com/piyuo/libcli/compare/libcli-v1.2.0...libcli-v1.2.1) (2025-06-06)
 
 
