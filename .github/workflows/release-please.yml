@@ -4,7 +4,7 @@ name: Release Please
 on:
     push:
         branches:
-            - main # our release branch
+            - develop # our develop branch
     workflow_dispatch:
 
 jobs:
@@ -25,4 +25,4 @@ jobs:
               uses: googleapis/release-please-action@v4
               with:
                   release-type: dart
-                  target-branch: main
+                  target-branch: develop
