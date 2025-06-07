@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0](https://github.com/piyuo/libcli/compare/v1.5.2...v1.6.0) (2025-06-07)
+
+
+### Features
+
+* change workflow to squash and merge ([e2892a6](https://github.com/piyuo/libcli/commit/e2892a69700006b3a588c02c778395b3f96e34ed))
+* **main:** add feature for my squash issue [#54](https://github.com/piyuo/libcli/issues/54) ([#55](https://github.com/piyuo/libcli/issues/55)) ([48ea2fd](https://github.com/piyuo/libcli/commit/48ea2fdf3de19a94b167a650189945245f98b015))
+
 ## [1.5.2](https://github.com/piyuo/libcli/compare/v1.5.1...v1.5.2) (2025-06-07)
 
 
