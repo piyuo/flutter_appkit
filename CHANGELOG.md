@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1](https://github.com/piyuo/libcli/compare/v1.5.0...v1.5.1) (2025-06-07)
+
+
+### Bug Fixes
+
+* add conditional PR template ([d53ae6c](https://github.com/piyuo/libcli/commit/d53ae6c3b25c098c5d3efe356424855b6aeea8f0))
+* license 5 ([6284894](https://github.com/piyuo/libcli/commit/6284894bc3a2880ab85ca8ba10d7436cae8e8aa8))
+
 ## [1.5.0](https://github.com/piyuo/libcli/compare/v1.4.3...v1.5.0) (2025-06-06)
 
 
