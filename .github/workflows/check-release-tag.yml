@@ -3,7 +3,7 @@ name: Check Release Status for Main Merge
 
 on:
     pull_request:
-        types: [opened, synchronize] # Triggered when a PR is opened or new commits are pushed
+        types: [opened, synchronize, reopened] # 加入 reopened 以確保完整覆蓋
         branches:
             - main # Only for PRs targeting the 'main' branch
 
@@ -19,92 +19,159 @@ jobs:
               with:
                   fetch-depth: 0 # Fetch full history including all refs (tags, branches) for accurate checks
 
-            # Explicitly fetch the 'develop' branch from the remote.
-            # This is crucial because 'actions/checkout' for 'pull_request' events typically
-            # only fetches the head and base refs, not all remote tracking branches.
-            # This ensures 'origin/develop' is a valid reference for subsequent git commands.
-            - name: Fetch develop branch from origin
-              run: git fetch origin develop
+            # 明確抓取所有必要的分支和標籤
+            - name: Fetch all refs from origin
+              run: |
+                  git fetch origin develop
+                  git fetch --tags origin
 
             - name: Get latest release tag on develop branch
               id: get_tag_develop
               run: |
-                  # Attempts to find the latest semver-like tag (e.g., v1.2.3) that is an ancestor of 'origin/develop'.
-                  # We use 'origin/develop' to correctly reference the remote 'develop' branch.
-                  # If no such tag exists, it defaults to "no_tag".
-                  latest_tag=$(git describe --tags --abbrev=0 --match "v*" origin/develop || echo "no_tag")
-                  echo "Latest tag found on 'origin/develop': $latest_tag"
-                  echo "latest_tag=${latest_tag}" >> "$GITHUB_OUTPUT" # Use '>>' for appending to GITHUB_OUTPUT
+                  # 使用更精確的方式查找最新的 release 標籤
+                  # 只在 develop 分支上查找，並排序取最新的
+                  latest_tag=$(git tag -l "v*" --sort=-version:refname --merged origin/develop | head -n1 || echo "no_tag")
 
-            - name: Determine develop branch HEAD commit SHA
+                  # 如果沒找到標籤，再用 describe 試一次
+                  if [ "$latest_tag" == "no_tag" ] || [ -z "$latest_tag" ]; then
+                      latest_tag=$(git describe --tags --abbrev=0 --match "v*" origin/develop 2>/dev/null || echo "no_tag")
+                  fi
+
+                  echo "Latest tag found on 'origin/develop': $latest_tag"
+                  echo "latest_tag=${latest_tag}" >> "$GITHUB_OUTPUT"
+
+            - name: Get develop branch HEAD commit SHA
               id: get_develop_head
               run: |
-                  # Get the full SHA of the HEAD commit of the remote 'develop' branch.
-                  # We use 'origin/develop' to explicitly get the SHA of the remote branch.
                   develop_head_commit=$(git rev-parse origin/develop)
                   echo "Develop HEAD commit SHA: ${develop_head_commit}"
                   echo "develop_head_commit=${develop_head_commit}" >> "$GITHUB_OUTPUT"
 
-            - name: Check if develop's HEAD has the latest release tag
-              id: check_if_tagged
+            - name: Check if latest tag points to develop HEAD
+              id: check_tag_at_head
               env:
                   LATEST_TAG: ${{ steps.get_tag_develop.outputs.latest_tag }}
                   DEVELOP_HEAD_COMMIT: ${{ steps.get_develop_head.outputs.develop_head_commit }}
               run: |
-                  # Initialize an empty error message.
-                  # This message will be populated if an issue is detected.
                   ERROR_MESSAGE=""
-                  # Default to no error detected.
                   echo "error_detected=false" >> "$GITHUB_OUTPUT"
 
+                  if [ "$LATEST_TAG" == "no_tag" ] || [ -z "$LATEST_TAG" ]; then
+                      ERROR_MESSAGE="❌ **No release tag found on develop branch**
 
-                  if [ "$LATEST_TAG" == "no_tag" ]; then
-                    ERROR_MESSAGE="Error: No release tag (e.g., 'vX.Y.Z') found on the 'develop' branch. "
-                    ERROR_MESSAGE+="This indicates that no official release has been performed on 'develop' yet. "
-                    ERROR_MESSAGE+="Please ensure a release has been created and merged on 'develop' by the 'release-please' process."
-                    echo "::error::${ERROR_MESSAGE}" # Log error to workflow run summary
-                    echo "error_message=${ERROR_MESSAGE}" >> "$GITHUB_OUTPUT"
-                    echo "error_detected=true" >> "$GITHUB_OUTPUT"
-                    exit 0 # Exit successfully to allow subsequent steps (like posting comment)
+                      This indicates that no official release has been performed on 'develop' yet.
+
+                      **Required Action:**
+                      1. Wait for release-please to create a Release PR on develop branch
+                      2. Review and merge the Release PR
+                      3. This will create a new release tag on develop
+                      4. Then retry this PR to main"
+
+                      echo "::error::${ERROR_MESSAGE}"
+                      echo "error_message=${ERROR_MESSAGE}" >> "$GITHUB_OUTPUT"
+                      echo "error_detected=true" >> "$GITHUB_OUTPUT"
+                      exit 0
                   fi
 
-                  # Check if the latest tag on 'develop' is an ancestor of (or directly points to) the current HEAD of 'develop'.
-                  # This confirms that the 'develop' branch's HEAD includes the release that corresponds to the latest tag.
-                  # If 'git merge-base --is-ancestor' returns non-zero, it means it's NOT an ancestor.
-                  if ! git merge-base --is-ancestor "refs/tags/${LATEST_TAG}" "$DEVELOP_HEAD_COMMIT"; then
-                    ERROR_MESSAGE="Error: The latest release tag '${LATEST_TAG}' on 'develop' is not an ancestor of the current 'develop' HEAD. "
-                    ERROR_MESSAGE+="This implies that new changes have been pushed to 'develop' AFTER the last release tag was created, and these changes are not yet part of a release. "
-                    ERROR_MESSAGE+="Please merge the pending 'release-please' PR on 'develop' to include these new changes in a new release before merging to 'main'."
-                    echo "::error::${ERROR_MESSAGE}" # Log error to workflow run summary
-                    echo "error_message=${ERROR_MESSAGE}" >> "$GITHUB_OUTPUT"
-                    echo "error_detected=true" >> "$GITHUB_OUTPUT"
-                    exit 0 # Exit successfully to allow subsequent steps (like posting comment)
+                  # 獲取標籤指向的 commit SHA
+                  tag_commit=$(git rev-parse "refs/tags/${LATEST_TAG}" 2>/dev/null || echo "")
+
+                  if [ -z "$tag_commit" ]; then
+                      ERROR_MESSAGE="❌ **Release tag '${LATEST_TAG}' not found or invalid**
+
+                      The tag may have been deleted or corrupted.
+
+                      **Required Action:**
+                      Please check the release status on develop branch and ensure the tag exists."
+
+                      echo "::error::${ERROR_MESSAGE}"
+                      echo "error_message=${ERROR_MESSAGE}" >> "$GITHUB_OUTPUT"
+                      echo "error_detected=true" >> "$GITHUB_OUTPUT"
+                      exit 0
                   fi
 
-                  echo "Success: 'develop' branch is in a released state. Ready for merge to 'main'."
-                  echo "error_message=" >> "$GITHUB_OUTPUT" # Clear error message if successful
+                  echo "Tag '${LATEST_TAG}' points to commit: ${tag_commit}"
+                  echo "Develop HEAD is at commit: ${DEVELOP_HEAD_COMMIT}"
+
+                  # 關鍵檢查：標籤是否指向 develop 的 HEAD
+                  if [ "$tag_commit" != "$DEVELOP_HEAD_COMMIT" ]; then
+                      # 檢查是否有未發布的 commits
+                      commits_ahead=$(git rev-list --count "${LATEST_TAG}..origin/develop" 2>/dev/null || echo "unknown")
+
+                      ERROR_MESSAGE="❌ **Develop branch has unreleased changes**
+
+                      The latest release tag '${LATEST_TAG}' does not point to the current HEAD of develop branch.
+
+                      **Details:**
+                      - Latest release tag: \`${LATEST_TAG}\` (${tag_commit:0:8})
+                      - Develop HEAD: \`${DEVELOP_HEAD_COMMIT:0:8}\`
+                      - Commits ahead of release: ${commits_ahead}
+
+                      **Required Action:**
+                      1. Check for a pending Release PR created by release-please on develop
+                      2. If exists, review and merge it to create a new release
+                      3. If no Release PR exists, push a new commit to develop to trigger release-please
+                      4. Then retry this PR to main"
+
+                      echo "::error::${ERROR_MESSAGE}"
+                      echo "error_message=${ERROR_MESSAGE}" >> "$GITHUB_OUTPUT"
+                      echo "error_detected=true" >> "$GITHUB_OUTPUT"
+                      exit 0
+                  fi
+
+                  echo "✅ Success: develop branch HEAD is properly tagged with release '${LATEST_TAG}'"
+                  echo "The develop branch is ready for squash merge to main."
+
+            - name: Validate release-please commit pattern
+              id: validate_release_commit
+              if: ${{ steps.check_tag_at_head.outputs.error_detected == 'false' }}
+              env:
+                  LATEST_TAG: ${{ steps.get_tag_develop.outputs.latest_tag }}
+                  DEVELOP_HEAD_COMMIT: ${{ steps.get_develop_head.outputs.develop_head_commit }}
+              run: |
+                  # 檢查 HEAD commit 是否看起來像 release-please 的 commit
+                  commit_message=$(git log -1 --pretty=format:"%s" "$DEVELOP_HEAD_COMMIT")
+                  echo "HEAD commit message: $commit_message"
+
+                  # release-please 通常會產生類似 "chore(main): release 1.0.0" 的 commit message
+                  if echo "$commit_message" | grep -qE "(chore\(main\)|release|Release)" || \
+                     echo "$commit_message" | grep -qE "^v?[0-9]+\.[0-9]+\.[0-9]+"; then
+                      echo "✅ HEAD commit appears to be from release-please: '$commit_message'"
+                  else
+                      echo "⚠️  Warning: HEAD commit doesn't match typical release-please pattern"
+                      echo "This might be okay if your release process is different"
+                  fi
 
             - name: Post PR comment on failure
-              # This step runs only if an error was detected in the previous step.
-              if: ${{ steps.check_if_tagged.outputs.error_detected == 'true' }}
+              if: ${{ steps.check_tag_at_head.outputs.error_detected == 'true' }}
               uses: actions/github-script@v7
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
-                      const errorMessage = `${{ steps.check_if_tagged.outputs.error_message }}`;
-                      const message = `## ⚠️ Merge Blocked: Develop Branch Not Released ⚠️
+                      const errorMessage = `${{ steps.check_tag_at_head.outputs.error_message }}`;
+                      const message = `## 🚫 PR Merge Blocked - Release Required
 
-                      This Pull Request cannot be merged to \`main\` because the \`develop\` branch is not currently in a released state, or its latest changes have not been included in a release.
+                      This Pull Request from \`develop\` to \`main\` cannot be merged because:
 
-                      **Reason:**
                       ${errorMessage}
 
-                      **Action Required:**
-                      Please go to the \`develop\` branch, find the pending **Release Pull Request** (created by \`release-please\`), review its changes, and **merge it**. This will trigger a new release, update the version number, and generate the CHANGELOG.
+                      ---
 
-                      Once the release is complete on \`develop\` (a new tag \`vX.Y.Z\` appears on \`develop\`'s HEAD), you can push new commits to this PR to re-trigger the checks and allow merging.`
+                      ### 🔄 How to resolve:
 
-                      // Check if a similar comment already exists to avoid spamming the PR
+                      1. **Check for Release PR**: Look for an open PR on \`develop\` created by \`release-please\`
+                      2. **Merge Release PR**: Review and merge it to create a new release tag
+                      3. **Wait for tag**: Ensure the new tag appears on develop's HEAD commit
+                      4. **Retry**: Push a new commit to this PR or close/reopen to re-trigger checks
+
+                      ### 📋 Understanding the process:
+
+                      Since you're using **squash and merge**, the \`main\` branch will only see a single summarized commit (like "Release: my first version"). This workflow ensures that only properly released code from \`develop\` gets merged to \`main\`.
+
+                      ---
+                      *This check ensures release integrity with your squash-and-merge strategy* 🛡️`;
+
+                      // Check if a similar comment already exists
                       const { data: comments } = await github.rest.issues.listComments({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
@@ -113,11 +180,11 @@ jobs:
 
                       const existingComment = comments.find(comment =>
                         comment.user.login === 'github-actions[bot]' &&
-                        comment.body.includes('⚠️ Merge Blocked: Develop Branch Not Released ⚠️')
+                        comment.body.includes('🚫 PR Merge Blocked - Release Required')
                       );
 
                       if (existingComment) {
-                        console.log('Similar blocking comment already exists. Updating it.');
+                        console.log('Updating existing blocking comment...');
                         await github.rest.issues.updateComment({
                           owner: context.repo.owner,
                           repo: context.repo.repo,
@@ -125,7 +192,7 @@ jobs:
                           body: message
                         });
                       } else {
-                        console.log('Posting new blocking comment.');
+                        console.log('Creating new blocking comment...');
                         await github.rest.issues.createComment({
                           owner: context.repo.owner,
                           repo: context.repo.repo,
@@ -134,10 +201,14 @@ jobs:
                         });
                       }
 
-            - name: Block merge if release status is not ready
-              # This step explicitly exits with a non-zero code to mark the job as failed,
-              # thereby blocking the PR merge if branch protection rules are enabled.
-              if: ${{ steps.check_if_tagged.outputs.error_detected == 'true' }}
+            - name: Block merge if not properly released
+              if: ${{ steps.check_tag_at_head.outputs.error_detected == 'true' }}
               run: |
-                  echo "Merge to 'main' is blocked due to unreleased 'develop' branch state."
+                  echo "::error::Blocking merge: develop branch is not in a properly released state"
                   exit 1
+
+            - name: Success summary
+              if: ${{ steps.check_tag_at_head.outputs.error_detected == 'false' }}
+              run: |
+                  echo "::notice::✅ All checks passed! Develop branch is ready for squash merge to main"
+                  echo "The release tag properly marks the HEAD of develop branch"
