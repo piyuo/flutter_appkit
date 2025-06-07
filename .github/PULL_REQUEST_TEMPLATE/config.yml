@@ -1,0 +1,12 @@
+# .github/PULL_REQUEST_TEMPLATE/config.yml
+pull_request_templates:
+  - name: Feature Template
+    path: feature.md
+    conditions:
+      base: develop
+
+  - name: Release Template
+    path: release.md
+    conditions:
+      base: main
+      head: develop
