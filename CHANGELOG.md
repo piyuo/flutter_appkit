@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.1](https://github.com/piyuo/libcli/compare/v1.6.0...v1.6.1) (2025-06-07)
+
+
+### Bug Fixes
+
+* **check-release-tag:** enhance error handling and comments for release status checks ([b428afa](https://github.com/piyuo/libcli/commit/b428afaf3041a5ddeb080e2b63193f92c2992fd6))
+
 ## [1.6.0](https://github.com/piyuo/libcli/compare/v1.5.2...v1.6.0) (2025-06-07)
 
 
