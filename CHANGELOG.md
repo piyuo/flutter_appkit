@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.4](https://github.com/piyuo/libcli/compare/v1.7.3...v1.7.4) (2025-06-08)
+
+
+### Bug Fixes
+
+* update license text to version 15 ([d538dde](https://github.com/piyuo/libcli/commit/d538ddeeccfc53c18e6d76be3cf3f03b8f98a9ee))
+
 ## [1.7.3](https://github.com/piyuo/libcli/compare/v1.7.2...v1.7.3) (2025-06-08)
 
 
