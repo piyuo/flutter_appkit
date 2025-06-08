@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0](https://github.com/piyuo/libcli/compare/v1.6.1...v1.7.0) (2025-06-08)
+
+
+### Features
+
+* add auto-merge workflow to sync main to develop after releases ([e10448c](https://github.com/piyuo/libcli/commit/e10448ca9ee1aa8623d258f5c48a99a07b1bc171))
+
+
+### Bug Fixes
+
+* update license text to version 11 ([8eb13cc](https://github.com/piyuo/libcli/commit/8eb13ccb1abff8807703da1611653b2a9fa4ff3d))
+* update license text to version 12 ([d3778dd](https://github.com/piyuo/libcli/commit/d3778dda4dbc880c0bd73221e26c11e949851112))
+* update license text to version 13 ([86485d9](https://github.com/piyuo/libcli/commit/86485d9c8fd21baf609d21448425d154cc23163b))
+
 ## [1.6.1](https://github.com/piyuo/libcli/compare/v1.6.0...v1.6.1) (2025-06-07)
 
 
