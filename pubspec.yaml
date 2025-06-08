@@ -5,7 +5,11 @@ description: piyuo.com client library.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
+<<<<<<< HEAD
 version: 1.7.1
+=======
+version: 1.7.0
+>>>>>>> origin/main
 homepage: https://github.com/piyuo/libcli
 
 environment:

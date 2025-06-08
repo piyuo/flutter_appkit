@@ -24,7 +24,11 @@ jobs:
 
             - name: Check if this is a squash merge from develop
               id: check-squash-merge
+            - name: Check if this is a squash merge from develop
+              id: check-squash-merge
               run: |
+                  # Get the latest commit on main
+                  LATEST_COMMIT_SHA=$(git rev-parse HEAD)
                   # Get the latest commit on main
                   LATEST_COMMIT_SHA=$(git rev-parse HEAD)
                   LATEST_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
@@ -72,12 +76,15 @@ jobs:
                   if [ "$should_sync" = true ]; then
                     echo "should_sync=true" >> $GITHUB_OUTPUT
                     echo "🔄 Will create sync PR to merge main changes back to develop"
+                    echo "🔄 Will create sync PR to merge main changes back to develop"
                   else
                     echo "should_sync=false" >> $GITHUB_OUTPUT
+                    echo "⏭️ Skipping sync - this doesn't appear to be a squash merge from develop"
                     echo "⏭️ Skipping sync - this doesn't appear to be a squash merge from develop"
                   fi
 
             - name: Configure Git
+              if: steps.check-squash-merge.outputs.should_sync == 'true'
               if: steps.check-squash-merge.outputs.should_sync == 'true'
               run: |
                   # Configure Git user for creating commits/branches
@@ -88,6 +95,17 @@ jobs:
               id: analyze-merge
               if: steps.check-squash-merge.outputs.should_sync == 'true'
               run: |
+                  git fetch origin develop
+                  # Check if all commits on main are already included in develop
+                  if git merge-base --is-ancestor origin/main origin/develop; then
+                    echo "Main branch changes are already included in develop. No sync needed."
+                    echo "already_merged=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "Main has changes that develop doesn't have. Sync needed."
+                    echo "already_merged=false" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Check if a sync PR already exists
                   git fetch origin develop main
 
                   # Check if main can be fast-forwarded into develop
@@ -120,11 +138,16 @@ jobs:
                   # Check for existing open PRs from our sync branch to develop
                   EXISTING_PR=$(gh pr list --base develop --head sync-main-to-develop --state open --json number --jq '.[0].number // empty')
                   if [[ -n "$EXISTING_PR" ]]; then
+                  # Check for existing open PRs from our sync branch to develop
+                  EXISTING_PR=$(gh pr list --base develop --head sync-main-to-develop --state open --json number --jq '.[0].number // empty')
+                  if [[ -n "$EXISTING_PR" ]]; then
                     echo "pr_exists=true" >> "$GITHUB_OUTPUT"
                     echo "existing_pr_number=$EXISTING_PR" >> "$GITHUB_OUTPUT"
                     echo "ℹ️ Found existing sync PR: #$EXISTING_PR"
+                    echo "ℹ️ Found existing sync PR: #$EXISTING_PR"
                   else
                     echo "pr_exists=false" >> "$GITHUB_OUTPUT"
+                    echo "ℹ️ No existing sync PR found"
                     echo "ℹ️ No existing sync PR found"
                   fi
               env:
@@ -133,6 +156,7 @@ jobs:
             - name: Create sync branch with smart merge strategy
               if: steps.check-squash-merge.outputs.should_sync == 'true'
               run: |
+                  SYNC_BRANCH="sync-main-to-develop"
                   SYNC_BRANCH="sync-main-to-develop"
 
                   # Fetch latest changes
@@ -235,9 +259,13 @@ jobs:
                     --base develop \
                     --head sync-main-to-develop \
                     --reviewer "${{ github.actor }}")
+                    --head sync-main-to-develop \
+                    --reviewer "${{ github.actor }}")
 
                   echo "✅ Created sync PR: $PR_URL"
+                  echo "✅ Created sync PR: $PR_URL"
 
+                  # Add labels if they exist
                   # Add labels if they exist
                   PR_NUMBER=$(echo "$PR_URL" | sed 's/.*\/pull\/\([0-9]*\).*/\1/')
                   gh pr edit $PR_NUMBER --add-label "sync" 2>/dev/null || echo "Note: 'sync' label not found"
@@ -260,6 +288,8 @@ jobs:
 
                   # Add update comment to existing PR
                   gh pr comment $PR_NUMBER --body "🔄 **Sync branch updated with new changes from main**
+                  # Add update comment to existing PR
+                  gh pr comment $PR_NUMBER --body "🔄 **Sync branch updated with new changes from main**
 
                   **New commit:** \`${LATEST_COMMIT_SHA}\` - ${LATEST_COMMIT_MSG}
                   **Updated at:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
@@ -269,9 +299,12 @@ jobs:
                   Previous conflicts (if any) should now be resolved."
 
                   echo "✅ Updated existing sync PR #$PR_NUMBER"
+                  echo "✅ Updated existing sync PR #$PR_NUMBER"
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Summary
+              if: steps.check-squash-merge.outputs.should_sync == 'true'
             - name: Summary
               if: steps.check-squash-merge.outputs.should_sync == 'true'
               run: |
@@ -284,14 +317,21 @@ jobs:
 
             - name: No sync needed
               if: steps.check-squash-merge.outputs.should_sync == 'false'
+            - name: No sync needed
+              if: steps.check-squash-merge.outputs.should_sync == 'false'
               run: |
+                  echo "ℹ️ No sync needed - this push doesn't appear to be a squash merge from develop"
                   echo "ℹ️ No sync needed - this push doesn't appear to be a squash merge from develop"
 
             - name: Handle failure
               if: failure() && steps.check-squash-merge.outputs.should_sync == 'true'
+            - name: Handle failure
+              if: failure() && steps.check-squash-merge.outputs.should_sync == 'true'
               run: |
                   echo "❌ Failed to create/update sync PR from main to develop"
+                  echo "❌ Failed to create/update sync PR from main to develop"
 
+                  # Create an issue for manual intervention
                   # Create an issue for manual intervention
                   gh issue create \
                     --title "🚨 Failed to sync main to develop" \
@@ -315,4 +355,5 @@ jobs:
                     --label "bug,sync-failure,needs-attention" \
                     --assignee "${{ github.actor }}" 2>/dev/null || echo "Could not create issue or assign"
               env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
