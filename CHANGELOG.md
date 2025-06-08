@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.2](https://github.com/piyuo/libcli/compare/v1.7.1...v1.7.2) (2025-06-08)
+
+
+### Bug Fixes
+
+* enhance auto-merge workflow for better sync strategy and conflict handling ([ce53a1f](https://github.com/piyuo/libcli/commit/ce53a1fd88a0c0cdbb862d90273bcaee6f66ea24))
+
 ## [1.7.1](https://github.com/piyuo/libcli/compare/v1.7.0...v1.7.1) (2025-06-08)
 
 
