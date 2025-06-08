@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.3](https://github.com/piyuo/libcli/compare/v1.7.2...v1.7.3) (2025-06-08)
+
+
+### Bug Fixes
+
+* update release workflow to target main branch instead of develop ([6849a01](https://github.com/piyuo/libcli/commit/6849a01991cd003dcf4be445a2dd4cee14a46a77))
+
 ## [1.7.2](https://github.com/piyuo/libcli/compare/v1.7.1...v1.7.2) (2025-06-08)
 
 
