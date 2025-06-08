@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Ops, qualcosa è andato storto",
+  "cli_error_content": "Si è verificato un errore imprevisto. Desideri inviare un rapporto via email?",
+  "cli_error_report": "Scrivici una email",
+  "submit": "Invia",
+  "ok": "OK",
+  "cancel": "Annulla",
+  "yes": "Sì",
+  "no": "No",
+  "close": "Chiudi",
+  "back": "Indietro",
+  "system_language": "Lingua di sistema"
+}

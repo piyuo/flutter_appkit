@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Hups, jokin meni pieleen",
+  "cli_error_content": "Tapahtui odottamaton virhe. Haluatko lähettää sähköpostiraportin?",
+  "cli_error_report": "Lähetä meille sähköpostia",
+  "submit": "Lähetä",
+  "ok": "OK",
+  "cancel": "Peruuta",
+  "yes": "Kyllä",
+  "no": "Ei",
+  "close": "Sulje",
+  "back": "Takaisin",
+  "system_language": "Järjestelmän kieli"
+}

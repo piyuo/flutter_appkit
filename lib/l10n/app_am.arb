@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "ይቅርታ፣ የሆነ ስህተት ተከስቷል",
+  "cli_error_content": "የማይጠበቅ ስህተት ተከስቷል። የኢሜይል ሪፖርት ማስገባት ይፈልጋሉ?",
+  "cli_error_report": "ኢሜይል ይላኩልን",
+  "submit": "አስገባ",
+  "ok": "እሺ",
+  "cancel": "ሰርዝ",
+  "yes": "አዎ",
+  "no": "አይ",
+  "close": "ዝጋ",
+  "back": "ተመለስ",
+  "system_language": "የስርዓት ቋንቋ"
+}

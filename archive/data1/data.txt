@@ -1,0 +1,10 @@
+library data;
+
+export 'src/languages.txt';
+export 'src/data.txt';
+export 'src/dataset.txt';
+export 'src/data_provider.txt';
+export 'src/data_source.txt';
+export 'src/page_table.txt';
+export 'src/page_list.txt';
+export 'src/notes_view.txt';

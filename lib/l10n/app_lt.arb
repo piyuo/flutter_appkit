@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Oi, kažkas nutiko",
+  "cli_error_content": "Įvyko netikėta klaida. Ar norėtumėte pateikti el. pašto ataskaitą?",
+  "cli_error_report": "Susisiekite el. paštu",
+  "submit": "Pateikti",
+  "ok": "Gerai",
+  "cancel": "Atšaukti",
+  "yes": "Taip",
+  "no": "Ne",
+  "close": "Uždaryti",
+  "back": "Atgal",
+  "system_language": "Sistemos kalba"
+}

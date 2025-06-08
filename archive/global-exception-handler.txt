@@ -1,0 +1,19 @@
+import 'package:libcli/src/log/log.dart' as log;
+
+typedef void GlobalExceptionHandler(BuildContext context, dynamic e, StackTrace stackTrace);
+
+GlobalExceptionHandler _globalExceptionHandler = (BuildContext context, dynamic e, StackTrace s) {
+  error(e, s);
+};
+
+void set globalExceptionHandler(GlobalExceptionHandler handler) {
+  _globalExceptionHandler = handler;
+}
+
+void throwToGlobalExceptionHandler(
+  BuildContext context,
+  dynamic e,
+  StackTrace stackTrace,
+) {
+  _globalExceptionHandler(context, e, stackTrace);
+}

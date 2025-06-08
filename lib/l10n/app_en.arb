@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Oops, something went wrong",
+  "cli_error_content": "An unexpected error occurred. Would you like to submit a email report?",
+  "cli_error_report": "Email us",
+  "submit": "Submit",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "yes": "Yes",
+  "no": "No",
+  "close": "Close",
+  "back": "Back",
+  "system_language": "System Language"
+}

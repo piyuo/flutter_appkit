@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Ups, nəsə səhv getdi",
+  "cli_error_content": "Gözlənilməz xəta baş verdi. E-poçt hesabatı göndərmək istəyirsiniz?",
+  "cli_error_report": "Bizə e-poçt göndərin",
+  "submit": "Göndər",
+  "ok": "Tamam",
+  "cancel": "Ləğv et",
+  "yes": "Bəli",
+  "no": "Xeyr",
+  "close": "Bağla",
+  "back": "Geri",
+  "system_language": "Sistem Dili"
+}

@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Ups, noe gikk galt",
+  "cli_error_content": "Det oppstod en uventet feil. Vil du sende en e-postrapport?",
+  "cli_error_report": "Send oss e-post",
+  "submit": "Send inn",
+  "ok": "OK",
+  "cancel": "Avbryt",
+  "yes": "Ja",
+  "no": "Nei",
+  "close": "Lukk",
+  "back": "Tilbake",
+  "system_language": "Systemspråk"
+}

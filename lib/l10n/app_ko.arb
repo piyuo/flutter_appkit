@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "앗, 문제가 발생했습니다",
+  "cli_error_content": "예기치 않은 오류가 발생했습니다. 이메일 보고서를 제출하시겠습니까?",
+  "cli_error_report": "이메일 보내기",
+  "submit": "제출",
+  "ok": "확인",
+  "cancel": "취소",
+  "yes": "예",
+  "no": "아니오",
+  "close": "닫기",
+  "back": "뒤로",
+  "system_language": "시스템 언어"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "paly",
+  "builder": "flutter",
+  "domain": "play.piyuo.com",
+  "debugOutput": true
+}

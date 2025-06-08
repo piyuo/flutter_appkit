@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Ups, nekaj je šlo narobe",
+  "cli_error_content": "Prišlo je do nepričakovane napake. Ali želite poslati poročilo po e-pošti?",
+  "cli_error_report": "Pošljite nam e-pošto",
+  "submit": "Pošlji",
+  "ok": "V redu",
+  "cancel": "Prekliči",
+  "yes": "Da",
+  "no": "Ne",
+  "close": "Zapri",
+  "back": "Nazaj",
+  "system_language": "Sistemski jezik"
+}

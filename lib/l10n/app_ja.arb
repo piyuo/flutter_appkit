@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "おっと、問題が発生しました",
+  "cli_error_content": "予期せぬエラーが発生しました。メールでレポートを送信しますか？",
+  "cli_error_report": "メールで連絡する",
+  "submit": "送信",
+  "ok": "OK",
+  "cancel": "キャンセル",
+  "yes": "はい",
+  "no": "いいえ",
+  "close": "閉じる",
+  "back": "戻る",
+  "system_language": "システム言語"
+}

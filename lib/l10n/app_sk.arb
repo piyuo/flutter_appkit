@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Ups, niečo sa pokazilo",
+  "cli_error_content": "Vyskytla sa neočakávaná chyba. Chcete odoslať e-mailovú správu?",
+  "cli_error_report": "Napíšte nám e-mail",
+  "submit": "Odoslať",
+  "ok": "OK",
+  "cancel": "Zrušiť",
+  "yes": "Áno",
+  "no": "Nie",
+  "close": "Zatvoriť",
+  "back": "Späť",
+  "system_language": "Systémový jazyk"
+}

@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "哎呀，出錯了",
+  "cli_error_content": "發生了意外錯誤。您想提交電郵報告嗎？",
+  "cli_error_report": "電郵我們",
+  "submit": "提交",
+  "ok": "確定",
+  "cancel": "取消",
+  "yes": "是",
+  "no": "否",
+  "close": "關閉",
+  "back": "返回",
+  "system_language": "系統語言"
+}

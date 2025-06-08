@@ -1,0 +1,44 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'localization.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Mongolian (`mn`).
+class LocalizationMn extends Localization {
+  LocalizationMn([String locale = 'mn']) : super(locale);
+
+  @override
+  String get cli_error_oops => 'Өө, ямар нэгэн зүйл буруу болсон';
+
+  @override
+  String get cli_error_content =>
+      'Гэнэтийн алдаа гарлаа. Та имэйлээр тайлан илгээхийг хүсч байна уу?';
+
+  @override
+  String get cli_error_report => 'Бидэнд имэйл илгээх';
+
+  @override
+  String get submit => 'Илгээх';
+
+  @override
+  String get ok => 'ЗА';
+
+  @override
+  String get cancel => 'Цуцлах';
+
+  @override
+  String get yes => 'Тийм';
+
+  @override
+  String get no => 'Үгүй';
+
+  @override
+  String get close => 'Хаах';
+
+  @override
+  String get back => 'Буцах';
+
+  @override
+  String get system_language => 'Системийн хэл';
+}

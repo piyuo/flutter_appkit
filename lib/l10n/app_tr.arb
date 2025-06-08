@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Hata, bir şeyler yanlış gitti",
+  "cli_error_content": "Beklenmeyen bir hata oluştu. E-posta raporu göndermek ister misiniz?",
+  "cli_error_report": "Bize e-posta gönderin",
+  "submit": "Gönder",
+  "ok": "Tamam",
+  "cancel": "İptal",
+  "yes": "Evet",
+  "no": "Hayır",
+  "close": "Kapat",
+  "back": "Geri",
+  "system_language": "Sistem Dili"
+}

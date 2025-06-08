@@ -1,0 +1,13 @@
+{
+  "cli_error_oops": "Samahani, kuna hitilafu imetokea",
+  "cli_error_content": "Hitilafu isiyotarajiwa imetokea. Je, ungependa kutuma ripoti kwa barua pepe?",
+  "cli_error_report": "Tutumie barua pepe",
+  "submit": "Wasilisha",
+  "ok": "Sawa",
+  "cancel": "Ghairi",
+  "yes": "Ndio",
+  "no": "La",
+  "close": "Funga",
+  "back": "Rudi",
+  "system_language": "Lugha ya Mfumo"
+}
