@@ -4,356 +4,209 @@ name: Auto Create PR to Merge Main to Develop
 on:
     push:
         branches:
-            - main # This workflow triggers when new commits are pushed to 'main'
+            - main
 
 jobs:
     create-merge-pr:
         runs-on: ubuntu-latest
-        # Give workflow necessary permissions
-        permissions:
-            contents: write # For git push
-            pull-requests: write # For gh pr create/edit/comment
-            issues: write # For gh issue create (on failure)
 
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 0 # Fetch full history including tags
-                  token: ${{ secrets.GITHUB_TOKEN }} # Use GITHUB_TOKEN for operations
+                  fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Check if this is a squash merge from develop
-              id: check-squash-merge
-            - name: Check if this is a squash merge from develop
-              id: check-squash-merge
+            - name: Check if should sync
+              id: check-commit
               run: |
-                  # Get the latest commit on main
-                  LATEST_COMMIT_SHA=$(git rev-parse HEAD)
-                  # Get the latest commit on main
-                  LATEST_COMMIT_SHA=$(git rev-parse HEAD)
+                  # Get the latest commit message
                   LATEST_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
-                  echo "Latest commit message on main: ${LATEST_COMMIT_MSG}"
-                  echo "Latest commit SHA: ${LATEST_COMMIT_SHA}"
+                  echo "Latest commit message: $LATEST_COMMIT_MSG"
 
-                  # Check if this commit has only one parent (indicates squash merge or direct push)
-                  PARENT_COUNT=$(git cat-file -p HEAD | grep "^parent " | wc -l)
-                  echo "Parent count: ${PARENT_COUNT}"
+                  # Check if this is a merge commit from release-please PR
+                  if [[ $LATEST_COMMIT_MSG =~ ^Merge\ pull\ request.*release-please ]]; then
+                    echo "This is a release-please merge commit"
 
-                  # Check various indicators that this might be a squash merge from develop
-                  should_sync=false
+                    # Get the actual release commit message (the one before the merge)
+                    RELEASE_COMMIT_MSG=$(git log -2 --pretty=format:"%s" | tail -1)
+                    RELEASE_COMMIT_AUTHOR=$(git log -2 --pretty=format:"%an" | tail -1)
 
-                  # Method 1: Check if commit message indicates a merge/PR
-                  if echo "$LATEST_COMMIT_MSG" | grep -iqE "(merge|pull request|pr #|#[0-9]+|from.*develop|feat|fix|chore)"; then
-                    echo "✓ Commit message suggests this might be from a PR or merge"
-                    should_sync=true
-                  fi
+                    echo "Release commit message: $RELEASE_COMMIT_MSG"
+                    echo "Release commit author: $RELEASE_COMMIT_AUTHOR"
 
-                  # Method 2: Check if there are significant changes (more than just version bumps)
-                  CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | wc -l)
-                  echo "Changed files count: ${CHANGED_FILES}"
-
-                  if [ "$CHANGED_FILES" -gt 0 ]; then
-                    echo "✓ Multiple files changed, likely a feature merge"
-                    should_sync=true
-                  fi
-
-                  # Method 3: Skip if this looks like an automated sync commit from our own action
-                  if echo "$LATEST_COMMIT_MSG" | grep -iqE "sync.*main.*develop|auto.*merge|automatic.*sync"; then
-                    echo "! This looks like our own sync commit, skipping to avoid loops"
-                    should_sync=false
-                  fi
-
-                  # Method 4: Check if main has diverged from develop significantly
-                  git fetch origin develop
-                  COMMITS_AHEAD=$(git rev-list --count origin/develop..HEAD)
-                  echo "Main is ${COMMITS_AHEAD} commits ahead of develop"
-
-                  if [ "$COMMITS_AHEAD" -gt 0 ] && [ "$should_sync" = true ]; then
-                    echo "✓ Main has new commits that develop doesn't have"
-                    should_sync=true
-                  fi
-
-                  if [ "$should_sync" = true ]; then
-                    echo "should_sync=true" >> $GITHUB_OUTPUT
-                    echo "🔄 Will create sync PR to merge main changes back to develop"
-                    echo "🔄 Will create sync PR to merge main changes back to develop"
+                    if [[ $RELEASE_COMMIT_MSG =~ ^chore\(.*\):\ release ]]; then
+                      echo "should_sync=true" >> $GITHUB_OUTPUT
+                      echo "✅ Found release commit in merge, will create merge PR"
+                    else
+                      echo "should_sync=false" >> $GITHUB_OUTPUT
+                      echo "ℹ️ Merge commit doesn't contain release commit"
+                    fi
                   else
-                    echo "should_sync=false" >> $GITHUB_OUTPUT
-                    echo "⏭️ Skipping sync - this doesn't appear to be a squash merge from develop"
-                    echo "⏭️ Skipping sync - this doesn't appear to be a squash merge from develop"
+                    # Check if this is a direct release commit (squash merge case)
+                    COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an")
+                    echo "Commit author: $COMMIT_AUTHOR"
+
+                    if [[ $LATEST_COMMIT_MSG =~ ^chore\(.*\):\ release ]]; then
+                      echo "should_sync=true" >> $GITHUB_OUTPUT
+                      echo "✅ This is a direct release commit, will create merge PR"
+                    else
+                      echo "should_sync=false" >> $GITHUB_OUTPUT
+                      echo "ℹ️ Commit does not match release pattern, skipping sync"
+                    fi
                   fi
 
             - name: Configure Git
-              if: steps.check-squash-merge.outputs.should_sync == 'true'
-              if: steps.check-squash-merge.outputs.should_sync == 'true'
+              if: steps.check-commit.outputs.should_sync == 'true'
               run: |
-                  # Configure Git user for creating commits/branches
                   git config --global user.name "github-actions[bot]"
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-            - name: Analyze merge strategy needed
-              id: analyze-merge
-              if: steps.check-squash-merge.outputs.should_sync == 'true'
+            - name: Check if main already in develop
+              id: check-already-merged
+              if: steps.check-commit.outputs.should_sync == 'true'
               run: |
-                  git fetch origin develop
-                  # Check if all commits on main are already included in develop
+                  git fetch origin
+                  # Check if main is already fully included in develop
                   if git merge-base --is-ancestor origin/main origin/develop; then
-                    echo "Main branch changes are already included in develop. No sync needed."
+                    echo "Main already in develop. No PR needed."
                     echo "already_merged=true" >> $GITHUB_OUTPUT
                   else
-                    echo "Main has changes that develop doesn't have. Sync needed."
                     echo "already_merged=false" >> $GITHUB_OUTPUT
                   fi
 
-            - name: Check if a sync PR already exists
-                  git fetch origin develop main
-
-                  # Check if main can be fast-forwarded into develop
-                  echo "Analyzing merge strategy needed..."
-
-                  # Check if there are conflicts when merging main into develop
-                  git checkout origin/develop -b temp-analysis
-
-                  # Try to merge main into develop (dry run)
-                  if git merge --no-commit --no-ff origin/main; then
-                    echo "merge_strategy=regular" >> $GITHUB_OUTPUT
-                    echo "✅ Regular merge will work without conflicts"
-                    # Abort the test merge
-                    git merge --abort 2>/dev/null || true
-                  else
-                    echo "merge_strategy=reset" >> $GITHUB_OUTPUT
-                    echo "⚠️ Conflicts detected - will use reset strategy to avoid conflicts"
-                    # Abort the failed merge
-                    git merge --abort 2>/dev/null || true
-                  fi
-
-                  # Clean up temp branch
-                  git checkout main
-                  git branch -D temp-analysis
-
-            - name: Check if sync PR already exists
+            - name: Check if PR already exists
               id: check-existing-pr
-              if: steps.check-squash-merge.outputs.should_sync == 'true'
+              if: steps.check-commit.outputs.should_sync == 'true' && steps.check-already-merged.outputs.already_merged == 'false'
               run: |
-                  # Check for existing open PRs from our sync branch to develop
-                  EXISTING_PR=$(gh pr list --base develop --head sync-main-to-develop --state open --json number --jq '.[0].number // empty')
-                  if [[ -n "$EXISTING_PR" ]]; then
-                  # Check for existing open PRs from our sync branch to develop
-                  EXISTING_PR=$(gh pr list --base develop --head sync-main-to-develop --state open --json number --jq '.[0].number // empty')
-                  if [[ -n "$EXISTING_PR" ]]; then
-                    echo "pr_exists=true" >> "$GITHUB_OUTPUT"
-                    echo "existing_pr_number=$EXISTING_PR" >> "$GITHUB_OUTPUT"
-                    echo "ℹ️ Found existing sync PR: #$EXISTING_PR"
-                    echo "ℹ️ Found existing sync PR: #$EXISTING_PR"
+                  # Check if there's already an open PR for this purpose
+                  EXISTING_PR=$(gh pr list --base develop --head release-merge-to-develop --state open --json number --jq '.[0].number')
+                  if [[ -n "$EXISTING_PR" && "$EXISTING_PR" != "null" ]]; then
+                    echo "pr_exists=true" >> $GITHUB_OUTPUT
+                    echo "existing_pr_number=$EXISTING_PR" >> $GITHUB_OUTPUT
+                    echo "ℹ️ PR already exists: #$EXISTING_PR"
                   else
-                    echo "pr_exists=false" >> "$GITHUB_OUTPUT"
-                    echo "ℹ️ No existing sync PR found"
-                    echo "ℹ️ No existing sync PR found"
+                    echo "pr_exists=false" >> $GITHUB_OUTPUT
+                    echo "ℹ️ No existing PR found"
                   fi
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Create sync branch with smart merge strategy
-              if: steps.check-squash-merge.outputs.should_sync == 'true'
+            - name: Create or update merge branch
+              if: steps.check-commit.outputs.should_sync == 'true' && steps.check-already-merged.outputs.already_merged == 'false'
               run: |
-                  SYNC_BRANCH="sync-main-to-develop"
-                  SYNC_BRANCH="sync-main-to-develop"
+                  BRANCH_NAME="release-merge-to-develop"
 
                   # Fetch latest changes
-                  git fetch origin main develop
+                  git fetch origin
 
-                  # Delete existing sync branch if it exists
-                  git push origin --delete $SYNC_BRANCH 2>/dev/null || echo "Remote sync branch doesn't exist"
-                  git branch -D $SYNC_BRANCH 2>/dev/null || echo "Local sync branch doesn't exist"
-
-                  # Create sync branch based on strategy
-                  if [[ "${{ steps.analyze-merge.outputs.merge_strategy }}" == "reset" ]]; then
-                    echo "🔄 Using reset strategy to avoid conflicts"
-
-                    # Strategy 1: Reset develop to main (for squash workflow)
-                    # This works because after squash merge, main contains all the changes
-                    # and we want develop to be in sync with main
-                    git checkout -b $SYNC_BRANCH origin/main
-
-                    echo "📝 Sync branch created by resetting to main (conflict-free approach)"
-
+                  # Check if branch exists remotely
+                  if git ls-remote --heads origin $BRANCH_NAME | grep -q $BRANCH_NAME; then
+                    echo "Branch exists, updating it"
+                    git checkout $BRANCH_NAME
+                    git pull origin $BRANCH_NAME
+                    git reset --hard origin/main
                   else
-                    echo "🔄 Using regular merge strategy"
-
-                    # Strategy 2: Regular merge (when there are no conflicts)
-                    git checkout -b $SYNC_BRANCH origin/develop
-                    git merge origin/main --no-ff -m "Sync: merge main changes into develop
-
-                    This merge brings the latest changes from main back to develop.
-                    Performed after squash merge to keep branches synchronized.
-
-                    Auto-generated by GitHub Actions."
-
-                    echo "📝 Sync branch created by merging main into develop"
+                    echo "Creating new branch"
+                    git checkout -b $BRANCH_NAME origin/main
                   fi
 
-                  # Push the sync branch
-                  git push origin $SYNC_BRANCH
-                  echo "✅ Sync branch created and pushed"
+                  # Push the branch
+                  git push origin $BRANCH_NAME --force-with-lease
 
-            - name: Create new sync Pull Request
-              if: steps.check-squash-merge.outputs.should_sync == 'true' && steps.check-existing-pr.outputs.pr_exists == 'false'
+            - name: Create Pull Request
+              if: steps.check-commit.outputs.should_sync == 'true' && steps.check-already-merged.outputs.already_merged == 'false' && steps.check-existing-pr.outputs.pr_exists == 'false'
               run: |
-                  # Get commit information for PR details
-                  LATEST_COMMIT_MSG=$(git log -1 origin/main --pretty=format:"%s")
-                  LATEST_COMMIT_SHA=$(git rev-parse --short origin/main)
-                  MERGE_STRATEGY="${{ steps.analyze-merge.outputs.merge_strategy }}"
+                  # Extract version from commit message for better PR title
+                  COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+                  VERSION=$(echo "$COMMIT_MSG" | sed -n 's/^chore.*: release \([0-9.]*\).*/\1/p')
 
-                  # Count changes
-                  if [[ "$MERGE_STRATEGY" == "reset" ]]; then
-                    # For reset strategy, show what's different between develop and the new sync branch
-                    CHANGED_FILES=$(git diff --name-only origin/develop..origin/main | head -10 | tr '\n' ', ' | sed 's/,$//' || echo "Unable to determine")
-                    STRATEGY_DESC="**Reset Strategy** - Develop will be updated to match main exactly (conflict-free)"
+                  if [[ -n "$VERSION" ]]; then
+                    PR_TITLE="🚀 Auto-merge: Release v$VERSION from main to develop"
                   else
-                    # For merge strategy, show the merge changes
-                    CHANGED_FILES=$(git diff --name-only origin/develop..HEAD | head -10 | tr '\n' ', ' | sed 's/,$//' || echo "Unable to determine")
-                    STRATEGY_DESC="**Merge Strategy** - Main changes merged into develop (preserves history)"
+                    PR_TITLE="🚀 Auto-merge: Sync main to develop after release"
                   fi
 
-                  # Create PR title and body
-                  if [[ "$MERGE_STRATEGY" == "reset" ]]; then
-                    PR_TITLE="🔄 Sync: Update develop to match main (conflict-free)"
-                  else
-                    PR_TITLE="🔄 Sync: Merge main changes to develop"
-                  fi
+                  PR_BODY="## 📋 Summary
+                  This PR automatically syncs the latest release changes from \`main\` to \`develop\` branch.
 
-                  PR_BODY="## 🔄 Automatic Sync from Main to Develop
+                  ## 🔄 Changes
+                  - Merges latest release commit from main branch
+                  - Updates CHANGELOG.md with release notes
+                  - Syncs version bumps and tags
 
-                  This PR automatically syncs the latest changes from \`main\` back to \`develop\` branch.
-                  This is necessary after a squash merge to ensure \`develop\` stays up-to-date with \`main\`.
+                  ## 🤖 Automation
+                  This PR was automatically created by the release workflow.
 
-                  ### 📝 Latest Changes from Main
-                  **Commit:** \`${LATEST_COMMIT_SHA}\` - ${LATEST_COMMIT_MSG}
+                  **Commit:** \`$(git rev-parse --short HEAD)\`
+                  **Release Commit:** \`$COMMIT_MSG\`"
 
-                  ### 📁 Modified Files
-                  ${CHANGED_FILES}
-
-                  ### 🛠️ Merge Strategy
-                  ${STRATEGY_DESC}
-
-                  ### 🤖 Automation Details
-                  - **Triggered by:** Push to main branch (likely from squash merge)
-                  - **Source:** \`main\` branch
-                  - **Target:** \`develop\` branch
-                  - **Conflict handling:** Automatic (strategy selected based on analysis)
-
-                  ### ✅ Next Steps
-                  1. **Review the changes** to ensure they're appropriate for develop
-                  2. **Check the files changed** - should match recent main activity
-                  3. **Merge this PR** to complete the sync (can use any merge strategy)
-
-                  > **Note:** This sync helps prevent conflicts in future develop→main PRs by keeping the branches synchronized after squash merges.
-
-                  ---
-                  *This PR was automatically created by GitHub Actions*"
-
-                  # Create the Pull Request
+                  # Create PR first
                   PR_URL=$(gh pr create \
                     --title "$PR_TITLE" \
                     --body "$PR_BODY" \
                     --base develop \
-                    --head sync-main-to-develop \
-                    --reviewer "${{ github.actor }}")
-                    --head sync-main-to-develop \
-                    --reviewer "${{ github.actor }}")
+                    --head release-merge-to-develop)
 
-                  echo "✅ Created sync PR: $PR_URL"
-                  echo "✅ Created sync PR: $PR_URL"
+                  echo "Created PR: $PR_URL"
 
-                  # Add labels if they exist
-                  # Add labels if they exist
+                  # Try to add labels (ignore if they don't exist)
                   PR_NUMBER=$(echo "$PR_URL" | sed 's/.*\/pull\/\([0-9]*\).*/\1/')
-                  gh pr edit $PR_NUMBER --add-label "sync" 2>/dev/null || echo "Note: 'sync' label not found"
-                  gh pr edit $PR_NUMBER --add-label "automated" 2>/dev/null || echo "Note: 'automated' label not found"
-                  gh pr edit $PR_NUMBER --add-label "main-to-develop" 2>/dev/null || echo "Note: 'main-to-develop' label not found"
-
-                  if [[ "$MERGE_STRATEGY" == "reset" ]]; then
-                    gh pr edit $PR_NUMBER --add-label "conflict-free" 2>/dev/null || echo "Note: 'conflict-free' label not found"
-                  fi
+                  gh pr edit $PR_NUMBER --add-label "automated" 2>/dev/null || echo "⚠️ 'automated' label not found, skipping"
+                  gh pr edit $PR_NUMBER --add-label "release" 2>/dev/null || echo "⚠️ 'release' label not found, skipping"
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Update existing sync Pull Request
-              if: steps.check-squash-merge.outputs.should_sync == 'true' && steps.check-existing-pr.outputs.pr_exists == 'true'
+            - name: Update existing PR
+              if: steps.check-commit.outputs.should_sync == 'true' && steps.check-already-merged.outputs.already_merged == 'false' && steps.check-existing-pr.outputs.pr_exists == 'true'
               run: |
-                  LATEST_COMMIT_MSG=$(git log -1 origin/main --pretty=format:"%s")
-                  LATEST_COMMIT_SHA=$(git rev-parse --short origin/main)
+                  COMMIT_MSG=$(git log -1 --pretty=format:"%s")
                   PR_NUMBER="${{ steps.check-existing-pr.outputs.existing_pr_number }}"
-                  MERGE_STRATEGY="${{ steps.analyze-merge.outputs.merge_strategy }}"
 
-                  # Add update comment to existing PR
-                  gh pr comment $PR_NUMBER --body "🔄 **Sync branch updated with new changes from main**
-                  # Add update comment to existing PR
-                  gh pr comment $PR_NUMBER --body "🔄 **Sync branch updated with new changes from main**
+                  # Add comment to existing PR
+                  gh pr comment $PR_NUMBER --body "🔄 **Updated with latest release**
 
-                  **New commit:** \`${LATEST_COMMIT_SHA}\` - ${LATEST_COMMIT_MSG}
-                  **Updated at:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
-                  **Strategy:** ${MERGE_STRATEGY}
+                  New commit: \`$COMMIT_MSG\`
+                  Updated at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
-                  The sync branch has been recreated to include the latest changes from main.
-                  Previous conflicts (if any) should now be resolved."
-
-                  echo "✅ Updated existing sync PR #$PR_NUMBER"
-                  echo "✅ Updated existing sync PR #$PR_NUMBER"
+                  echo "✅ Updated existing PR #$PR_NUMBER with latest changes"
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Summary
-              if: steps.check-squash-merge.outputs.should_sync == 'true'
-            - name: Summary
-              if: steps.check-squash-merge.outputs.should_sync == 'true'
+            - name: Success notification
+              if: success() && steps.check-commit.outputs.should_sync == 'true' && steps.check-already-merged.outputs.already_merged == 'false'
               run: |
-                  MERGE_STRATEGY="${{ steps.analyze-merge.outputs.merge_strategy }}"
                   if [[ "${{ steps.check-existing-pr.outputs.pr_exists }}" == "true" ]]; then
-                    echo "✅ Updated existing sync PR #${{ steps.check-existing-pr.outputs.existing_pr_number }} using ${MERGE_STRATEGY} strategy"
+                    echo "✅ Updated existing PR for merging main to develop"
                   else
-                    echo "✅ Created new sync PR using ${MERGE_STRATEGY} strategy to merge main changes to develop"
+                    echo "✅ Created new PR for merging main to develop"
                   fi
 
-            - name: No sync needed
-              if: steps.check-squash-merge.outputs.should_sync == 'false'
-            - name: No sync needed
-              if: steps.check-squash-merge.outputs.should_sync == 'false'
+            - name: Already up to date notification
+              if: steps.check-already-merged.outputs.already_merged == 'true'
               run: |
-                  echo "ℹ️ No sync needed - this push doesn't appear to be a squash merge from develop"
-                  echo "ℹ️ No sync needed - this push doesn't appear to be a squash merge from develop"
+                  echo "ℹ️ Skipped: main is already merged into develop"
+
+            - name: Sync skipped notification
+              if: steps.check-commit.outputs.should_sync == 'false'
+              run: |
+                  echo "ℹ️ Sync skipped - not a release commit"
 
             - name: Handle failure
-              if: failure() && steps.check-squash-merge.outputs.should_sync == 'true'
-            - name: Handle failure
-              if: failure() && steps.check-squash-merge.outputs.should_sync == 'true'
+              if: failure() && steps.check-commit.outputs.should_sync == 'true'
               run: |
-                  echo "❌ Failed to create/update sync PR from main to develop"
-                  echo "❌ Failed to create/update sync PR from main to develop"
+                  echo "❌ Failed to create/update merge PR. Check logs for details."
 
-                  # Create an issue for manual intervention
-                  # Create an issue for manual intervention
+                  # Optionally create an issue for manual intervention
                   gh issue create \
-                    --title "🚨 Failed to sync main to develop" \
-                    --body "The automatic sync from \`main\` to \`develop\` failed.
+                    --title "🚨 Auto-merge to develop failed" \
+                    --body "The automatic merge from main to develop failed. Manual intervention required.
 
-                    **Failure Details:**
-                    - **Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
-                    - **Workflow:** ${{ github.workflow }}
-                    - **Run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-                    - **Triggered by:** ${{ github.actor }}
-
-                    **Manual Action Required:**
-                    Please manually create a PR to sync main changes to develop or investigate the failure.
-
-                    **Latest Main Commit:** \`$(git log -1 --pretty=format:'%h - %s')\`
-
-                    **Possible Solutions:**
-                    1. Manually merge main into develop
-                    2. Reset develop to main if appropriate
-                    3. Check for any unusual branch states" \
-                    --label "bug,sync-failure,needs-attention" \
-                    --assignee "${{ github.actor }}" 2>/dev/null || echo "Could not create issue or assign"
+                    **Failed at:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+                    **Workflow:** ${{ github.workflow }}
+                    **Run:** ${{ github.run_id }}" \
+                    --label "bug" \
+                    --label "automated" || true \
+                    --assignee "${{ github.actor }}" || true
               env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
