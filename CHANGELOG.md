@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0](https://github.com/piyuo/libcli/compare/v1.7.5...v1.8.0) (2025-06-08)
+
+
+### Features
+
+* update license text to version 20 ([75a5925](https://github.com/piyuo/libcli/commit/75a5925e39fd6f64805305fdb2a0c3b9e374d63f))
+
+
+### Bug Fixes
+
+* update license text to version 18 ([da9840c](https://github.com/piyuo/libcli/commit/da9840c8fa6824c5392741796594f744560b5c90))
+* update license text to version 18 ([27e32b2](https://github.com/piyuo/libcli/commit/27e32b2ac88e48c2ce30272f1ec93d1d8fca6ef8))
+* update license text to version 19 ([931e813](https://github.com/piyuo/libcli/commit/931e8130f518e77e3a58f51cbc311426ce26afea))
+
 ## [1.7.5](https://github.com/piyuo/libcli/compare/v1.7.4...v1.7.5) (2025-06-08)
 
 
