@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.5](https://github.com/piyuo/libcli/compare/v1.7.4...v1.7.5) (2025-06-08)
+
+
+### Bug Fixes
+
+* enhance auto-sync workflow for release-please merges ([3ac462c](https://github.com/piyuo/libcli/commit/3ac462c7af48a68ee1130cb133746c4097a1cd96))
+* update license text to version 16 ([9d66033](https://github.com/piyuo/libcli/commit/9d66033b02902ddfe1d3db91f52a986929302f90))
+* update license text to version 17 ([045f537](https://github.com/piyuo/libcli/commit/045f537d1612bc6939de8fc2e258aeb59ceb8265))
+
 ## [1.7.4](https://github.com/piyuo/libcli/compare/v1.7.3...v1.7.4) (2025-06-08)
 
 
