@@ -11,6 +11,5 @@ export default {
     'header-max-length': [2, 'always', 100],
     'subject-empty': [2, 'never'],
     'type-case': [2, 'always', 'lower-case'],
-    'subject-blacklist': [2, 'always', ['wip', 'typo', 'save']]
   }
 };
