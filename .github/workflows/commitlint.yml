@@ -11,17 +11,19 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  fetch-depth: 0 # important for commitlint to access all commits
+                  fetch-depth: 0
 
-            - name: Install Node.js
+            - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: "20"
 
-            - name: Install dependencies
+            - name: Install commitlint
               run: |
                   npm install --save-dev @commitlint/{config-conventional,cli}
 
-            - name: Lint commits
-              run: |
-                  npx commitlint --from=origin/main --to=HEAD
+            # Load commitlint configuration
+            - name: Validate commits
+              uses: wagoid/commitlint-github-action@v5
+              with:
+                  configFile: "commitlint.config.js"

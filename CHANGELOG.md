@@ -2,13 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-## 1.0.0 (2025-06-09)
-
-
-### Features
-
-* add commitlint workflow for enforcing commit message conventions ([c9ed361](https://github.com/piyuo/libcli/commit/c9ed36125dd97ed321b07e5df787162f0601779b))
-
 ## [1.8.0](https://github.com/piyuo/libcli/compare/v1.7.5...v1.8.0) (2025-06-08)
 
 
