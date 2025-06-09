@@ -144,8 +144,9 @@ git commit -m "debug: add logging for troubleshooting"
 
 ### Before Requesting Review (Critical Step)
 
-**You MUST clean up your commit history** before creating a PR or converting Draft PR to ready for review:
+**You MUST clean up your commit history** before creating a PR or converting Draft PR to ready for review.
 
+#### Option 1: Command Line (Traditional)
 ```bash
 # First, sync with latest main
 git fetch origin
@@ -154,6 +155,30 @@ git rebase origin/main
 # Clean up commits using interactive rebase
 git rebase -i origin/main
 ```
+
+#### Option 2: Visual Studio Code Git Graph (Recommended)
+For developers using VS Code, the **Git Graph extension** provides a more intuitive UI approach:
+
+1. **Install Git Graph extension** (if not already installed)
+2. **Open Git Graph** - Click the graph icon in Source Control panel
+3. **Reset to clean point**:
+   - Right-click on the latest `main` commit
+   - Select "Reset current branch to this Commit"
+   - Choose "**Soft - Keep all changes, but reset head**"
+   - This preserves all your work but removes commit history
+4. **Create meaningful commits**:
+   - Stage and commit your changes as clean, meaningful commits
+   - Follow the commit format: `<type>: <description> #<issue-number>`
+5. **Force push safely**:
+   - Right-click on your branch in Git Graph
+   - Select "**Push branch - Force With Lease**"
+   - This safely updates your remote branch
+
+**Benefits of Git Graph approach:**
+- Visual representation of commit history
+- Point-and-click interface for complex git operations
+- Safer force-push with built-in conflict detection
+- No need to remember git rebase commands
 
 ### Commit Cleanup Guidelines
 
@@ -359,7 +384,7 @@ Following **semantic versioning** (semver):
 
 ## 🛠️ Common Git Operations
 
-### Interactive Rebase Example
+### Interactive Rebase Example (Command Line)
 ```bash
 # Start interactive rebase (make sure to fetch first)
 git fetch origin
@@ -374,6 +399,15 @@ squash jkl3456 remove debug logging
 # Edit the final commit message to be meaningful:
 # feat: implement user authentication with validation #17
 ```
+
+### Git Graph Alternative (Visual Studio Code)
+For VS Code users, commit cleanup can be done visually:
+
+1. **View commit history** in Git Graph extension
+2. **Identify cleanup point** - usually the last commit from main
+3. **Soft reset** to that point (keeps all changes)
+4. **Re-commit cleanly** with meaningful messages
+5. **Force push with lease** to update remote branch
 
 ### Handling Review Changes
 ```bash
@@ -422,8 +456,14 @@ A: Make the requested changes in new commits. Reviewers will merge when satisfie
 **Q: Do I need exactly one commit per PR?**
 A: **No**. You need **1-n meaningful commits**. Simple issues typically result in 1 commit, but complex features can have multiple logical commits (e.g., core implementation + documentation + tests).
 
-**Q: What if I forget to clean up commits before requesting review?**
-A: Reviewers may request commit cleanup before merge. You'll need to rebase interactively and force-push the cleaned history.
+**Q: What's the easiest way to clean up commits if I'm not comfortable with git rebase?**
+A: **Use Visual Studio Code's Git Graph extension**. It provides a visual interface where you can:
+1. Right-click on main's latest commit → "Reset current branch to this Commit" → "Soft"
+2. This keeps all your changes but cleans the commit history
+3. Create new meaningful commits with proper messages
+4. Force push with lease to update your branch
+
+This is much more intuitive than interactive rebase for beginners.
 
 **Q: Why is commit cleanup so important?**
 A: Because commits go directly to main branch via rebase-and-merge. The main branch history becomes our project's permanent record and is used by release-please for changelog generation.
