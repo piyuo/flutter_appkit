@@ -25,12 +25,12 @@ gitGraph
     commit id: "fix: typo"
     commit id: "refactor: cleanup"
     checkout main
-    merge issue-17-fix-auth id: "fix: authentication bug in login flow"
+    merge issue-17-fix-auth id: "fix: authentication bug in login flow #17"
     branch issue-25-add-feature
     checkout issue-25-add-feature
     commit id: "feat: new feature"
     checkout main
-    merge issue-25-add-feature id: "feat: add user dashboard feature"
+    merge issue-25-add-feature id: "feat: add user dashboard feature #25"
     commit id: "v1.1.0"
 ```
 
@@ -39,6 +39,7 @@ gitGraph
 - **Rebase and merge only** - no merge commits
 - **Milestone-driven releases** - all issues must belong to a milestone
 - **Draft PRs for early collaboration** with reviewers
+- **Clear PR-Issue linking** - PR titles must include issue number
 
 ## 📊 Issue and Milestone Management
 
@@ -117,8 +118,11 @@ git commit -m "docs: add authentication flow diagram"
 **Always clean up your commit history** using interactive rebase:
 
 ```bash
-# Rebase and squash commits
-git rebase -i main
+# First, make sure you have the latest changes from main
+git fetch origin
+
+# Rebase and squash commits (this only affects commits unique to your branch)
+git rebase -i origin/main
 
 # Example: Squash multiple commits into one clean commit
 # Before:
@@ -131,12 +135,13 @@ git rebase -i main
 # fix: resolve authentication timeout issues
 ```
 
+**Note**: Using `git rebase -i origin/main` ensures you only rebase commits that are unique to your feature branch, avoiding conflicts with unrelated commits that may have been added to main since you branched.
+
 ### Final Commit Requirements
 Your **first commit** must follow release-please requirements:
 
 - **Use conventional commit format**: `<type>: <description>`
 - **Must be `feat:` or `fix:`** to trigger version updates
-- **PR title must match first commit message**
 - **Keep additional commits for reviewer context** (if any)
 
 #### Good Examples:
@@ -181,9 +186,32 @@ Use our **PR template** which includes:
 
 #### PR Title Format:
 ```
-<type>: <description>
+<type>: <description> #<issue-number>
 ```
-**Must match your first commit message exactly**.
+
+**IMPORTANT**: PR title must include the issue number for proper linking and traceability.
+
+**Examples:**
+```bash
+feat: add user dashboard with activity metrics #95
+fix: resolve payment gateway connection timeout #142
+docs: update API authentication guide #78
+refactor: optimize database query performance #201
+```
+
+**Requirements:**
+- **Must reflect the same intent as your first commit** (but doesn't need to be word-for-word identical)
+- **Issue number is mandatory** - PRs without issue reference will be rejected
+- **Format strictly enforced** - automated checks will validate PR title format
+
+**Example of Intent Alignment:**
+```bash
+# First commit message:
+feat: implement user dashboard with real-time activity tracking
+
+# PR title (reflects same intent):
+feat: add user dashboard with activity metrics #95
+```
 
 ### Review Process
 
@@ -197,6 +225,7 @@ Use our **PR template** which includes:
 - **Only "Rebase and merge" allowed** - other options are disabled
 - **Maintainer performs the merge** after approval
 - **Branch automatically deleted** after merge
+- **Final commit on main includes issue reference** from PR title
 
 ## 🏷️ Release Management
 
@@ -241,8 +270,9 @@ Following **semantic versioning** (semver):
 
 ### Interactive Rebase Example
 ```bash
-# Start interactive rebase
-git rebase -i main
+# Start interactive rebase (make sure to fetch first)
+git fetch origin
+git rebase -i origin/main
 
 # In the editor, change 'pick' to 'squash' or 's' for commits to combine
 pick abc1234 feat: add user authentication
@@ -262,33 +292,38 @@ git commit -m "address review feedback: improve error handling"
 git push origin <branch-name>
 ```
 
-## 🔍 Tracing PR History After Rebase Merge
+## 🔍 Enhanced Traceability with Issue Linking
 
-After rebase and merge, you'll see clean commits on main branch, but the PR discussion history is still accessible:
+With our improved PR title format, traceability is significantly enhanced:
 
-### Finding the Original PR
-1. **From commit page**: Navigate to the commit on GitHub
-2. **Look for PR reference**: You'll see `main(#PR-NUMBER)` below the commit title
-3. **Click the PR link**: `#94` → Takes you to the original Pull Request
-4. **View all discussions**: Code reviews, comments, and approval history
-
-### Tracing Back to Issue
-From the PR page, you can trace back further:
-- **Branch reference**: Shows original branch like `93-docs-update-contributingmd`
-- **Auto-linked issue**: Branch name starts with issue number (`93-docs-update...`)
-- **Complete history**: Issue → Branch → PR → Commit
-
-**Example trace path:**
+### Complete Traceability Chain
 ```
-Issue #93 → Branch 93-docs-update → PR #94 → Commit abc1234
+Issue #93 → Branch 93-docs-update → PR #94 "docs: update contributing guide #93" → Commit "docs: update contributing guide #93"
 ```
 
-This maintains full traceability while keeping main branch history clean.
+### Finding Related Content
+1. **From main branch commit**: Issue number is directly visible in commit message
+2. **From commit to PR**: Click the `#PR-NUMBER` link below commit title
+3. **From PR to issue**: Issue number in PR title links directly to original issue
+4. **Reverse lookup**: GitHub automatically shows all PRs that reference an issue
+
+### Benefits of Enhanced Linking
+- **Instant issue identification** from any commit on main branch
+- **Streamlined code archaeology** - easily trace why changes were made
+- **Automated issue closing** - GitHub closes issues when PR with `#issue-number` is merged
+- **Better project management** - clear visibility of which issues are in progress/completed
+- **Improved changelog generation** - release notes can include issue context
 
 ## 🤔 FAQ
 
 **Q: Should I squash commits during code review?**
 A: No! Keep review changes as separate commits. Only clean up before initial review request.
+
+**Q: What if I forget to add issue number to PR title?**
+A: The PR will be rejected by automated checks. Update the title to include `#<issue-number>` format.
+
+**Q: Can I reference multiple issues in one PR?**
+A: No. Each PR should address only one issue. If you need to reference related issues, mention them in the PR description, not the title.
 
 **Q: What if I need to update my branch during review?**
 A: Rebase on main if needed, but don't squash review feedback commits until after approval.
@@ -300,7 +335,18 @@ A: Yes, but each must have its own branch and milestone assignment.
 A: Create a hotfix issue and follow the same process. No direct commits to main allowed.
 
 **Q: How do I handle breaking changes?**
-A: Include "BREAKING CHANGE:" in commit footer to trigger major version bump.
+A: Use the exclamation mark syntax in your commit type to trigger a major version bump:
+
+```bash
+# Breaking change examples:
+feat!: change user ID from int to UUID
+
+# Or with detailed explanation:
+feat!: migrate authentication to OAuth 2.0
+
+BREAKING CHANGE: Previous API key authentication is no longer supported.
+Users must migrate to OAuth 2.0 authentication flow.
+```
 
 **Q: How do we handle large features?**
 A: Use Epic + Sub-issues approach. Team collaboratively breaks down the epic into 1-2 day sub-issues, each developer claims specific sub-issues and creates their own branch + PR.
@@ -308,9 +354,15 @@ A: Use Epic + Sub-issues approach. Team collaboratively breaks down the epic int
 **Q: What about hotfixes for production issues?**
 A: We don't use hotfix branches. All changes follow the standard workflow. Production issues are handled at the deployment level using CI/CD rollback capabilities.
 
-**Q: How do I find PR discussions after rebase merge?**
-A: Click the commit on GitHub, then click the `#PR-NUMBER` link below the commit title to view the original PR and all its discussions.
+**Q: What if the issue number changes or gets closed before my PR?**
+A: Update your PR title to reflect the correct issue number. If the issue is closed as duplicate, reference the new issue number.
+
+**Q: Does my PR title need to be exactly the same as my first commit?**
+A: No, the PR title should reflect the same intent as your first commit but doesn't need to be word-for-word identical. The important thing is that both clearly communicate what the change accomplishes.
+
+**Q: Why should I use `git rebase -i origin/main` instead of `git rebase -i main`?**
+A: Using `origin/main` ensures you're rebasing against the latest remote version of main, and it only affects commits unique to your feature branch. This prevents rebasing unrelated commits that might have been added to main since you created your branch.
 
 ---
 
-**Remember**: Clean history on main, detailed history during development! 🧹✨
+**Remember**: Clean history on main, detailed history during development, and always link your PRs to issues! 🧹✨🔗
