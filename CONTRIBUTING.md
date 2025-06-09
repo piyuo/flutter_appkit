@@ -4,6 +4,20 @@ We follow a **simplified GitHub Flow** with **rebase and merge** strategy for cl
 
 ## 📋 Quick Start
 
+Here's the complete workflow at a glance:
+
+1. **Create Issue** → Select milestone, use templates, estimate effort
+2. **Create Branch** → From main, using GitHub's branch creation feature
+3. **Open Draft PR** → Enable early collaboration with reviewers
+4. **Develop & Commit** → Frequent commits with descriptive messages
+5. **Clean History** → Squash into meaningful commits before requesting review
+6. **Request Review** → Convert to ready PR, address feedback
+7. **Merge** → Maintainer performs rebase and merge
+8. **Auto-Release** → When milestone complete, release-please handles versioning
+
+For detailed instructions, see the sections below:
+
+- [AI Integration Schema](#-ai-integration-schema)
 - [Workflow Overview](#workflow-overview)
 - [Issue and Milestone Management](#issue-and-milestone-management)
 - [Development Process](#development-process)
@@ -14,7 +28,7 @@ We follow a **simplified GitHub Flow** with **rebase and merge** strategy for cl
 
 ## 🔄 Workflow Overview
 
-Our workflow emphasizes **clean commit history** and **milestone-driven releases**:
+Our workflow emphasizes **meaningful commit history** and **milestone-driven releases**:
 
 ```mermaid
 gitGraph
@@ -28,14 +42,15 @@ gitGraph
     merge issue-17-fix-auth id: "fix: authentication bug in login flow #17"
     branch issue-25-add-feature
     checkout issue-25-add-feature
-    commit id: "feat: new feature"
+    commit id: "feat: implement core logic"
+    commit id: "feat: add validation layer"
     checkout main
     merge issue-25-add-feature id: "feat: add user dashboard feature #25"
     commit id: "v1.1.0"
 ```
 
 ### Key Principles
-- **One clean commit per issue** when merged to main
+- **Meaningful commits on main** - avoid WIP, typo fixes, and noisy commits
 - **Rebase and merge only** - no merge commits
 - **Milestone-driven releases** - all issues must belong to a milestone
 - **Draft PRs for early collaboration** with reviewers
@@ -47,9 +62,14 @@ gitGraph
 All work must begin with a GitHub Issue:
 
 1. **Select milestone first** - Choose from available milestones
-2. **Use issue templates** - Bug Report or Feature Request
-3. **Fill out completely** - All template fields are required
-4. **Estimate effort** - Use story points (1 point ≈ 2 hours, max 20 points per week)
+2. **Use issue templates** - Choose between:
+   - **🐛 Bug Report** - For reporting bugs and issues
+   - **✨ Feature Request** - For suggesting new features or improvements
+3. **Complete required fields**:
+   - **Bug Report**: Description, reproduction steps, expected/actual behavior, severity, version, OS
+   - **Feature Request**: Problem statement, proposed solution, priority
+4. **Add optional details** as helpful (screenshots, logs, additional context)
+5. **Estimate effort** - Use story points (1 point ≈ 2 hours, max 20 points per week)
 
 ### Large Feature Management
 For complex features, we use **Epic + Sub-issues** approach:
@@ -61,15 +81,15 @@ For complex features, we use **Epic + Sub-issues** approach:
 5. **Coordinated Development** - All sub-issues tracked in project board
 
 #### Issue Types and Commit Prefixes:
-| Issue Type      | Commit Prefix | Version Impact | Example                                 |
-| --------------- | ------------- | -------------- | --------------------------------------- |
-| Bug Report      | `fix:`        | Patch          | `fix: resolve payment gateway timeout`  |
-| Feature Request | `feat:`       | Minor          | `feat: add user profile management`     |
-| Documentation   | `docs:`       | None*          | `docs: update API authentication guide` |
-| Refactoring     | `refactor:`   | None*          | `refactor: optimize database queries`   |
-| Maintenance     | `chore:`      | None*          | `chore: update dependencies to latest`  |
+| Issue Type        | Template            | Commit Prefix       | Version Impact   | Example                                                                   |
+| ----------------- | ------------------- | ------------------- | ---------------- | ------------------------------------------------------------------------- |
+| 🐛 Bug Report      | `🐛 Bug Report`      | `fix:`              | Patch            | `fix: resolve payment gateway timeout`                                    |
+| ✨ Feature Request | `✨ Feature Request` | `feat:` or `feat!:` | Minor or Major** | `feat: add user profile management`<br>`feat!: migrate to new API format` |
+| Documentation     | Manual creation     | `docs:`             | None*            | `docs: update API authentication guide`                                   |
 
 *\*Does not trigger version bumps by release-please*
+
+*\*\*Feature Requests can result in either regular features (`feat:` → minor bump) or breaking changes (`feat!:` → major bump) depending on implementation impact*
 
 ### Milestone Management
 - **All issues must have a milestone** assigned before starting work
@@ -101,75 +121,116 @@ git push -u origin <branch-name>
 - Track progress transparently
 
 ### 3. Development and Commits
-During development, commit frequently with descriptive messages:
+During development, commit frequently with any messages you find helpful:
 
 ```bash
-# Examples of work-in-progress commits
+# Examples of work-in-progress commits (these will be cleaned up later)
 git commit -m "WIP: initial authentication setup"
 git commit -m "add password validation logic"
 git commit -m "fix: handle edge case for empty passwords"
 git commit -m "refactor: extract validation functions"
 git commit -m "docs: add authentication flow diagram"
+git commit -m "fix typo in error message"
+git commit -m "debug: add logging for troubleshooting"
 ```
+
+**Development Phase Freedom:**
+- Commit as frequently as you want with any message style
+- Use WIP, debug, typo fix, or any other commit messages
+- Focus on progress, not commit message perfection
+- These commits will be cleaned up before review
 
 ## 📝 Commit Management
 
-### Before Requesting Review
-**Always clean up your commit history** using interactive rebase:
+### Before Requesting Review (Critical Step)
+
+**You MUST clean up your commit history** before creating a PR or converting Draft PR to ready for review:
 
 ```bash
-# First, make sure you have the latest changes from main
+# First, sync with latest main
 git fetch origin
+git rebase origin/main
 
-# Rebase and squash commits (this only affects commits unique to your branch)
+# Clean up commits using interactive rebase
 git rebase -i origin/main
-
-# Example: Squash multiple commits into one clean commit
-# Before:
-# fix: initial auth setup
-# refactor: cleanup code
-# fix: handle edge cases
-# docs: add comments
-
-# After:
-# fix: resolve authentication timeout issues
 ```
 
-**Note**: Using `git rebase -i origin/main` ensures you only rebase commits that are unique to your feature branch, avoiding conflicts with unrelated commits that may have been added to main since you branched.
+### Commit Cleanup Guidelines
+
+**Goal**: Transform messy development commits into **1-n meaningful commits** (typically 1 per issue).
+
+**What to squash/remove:**
+- ❌ WIP commits
+- ❌ Typo fixes
+- ❌ Debug commits
+- ❌ "Fix review comments"
+- ❌ Any noisy, non-meaningful commits
+
+**What constitutes meaningful commits:**
+- ✅ `feat: implement user authentication system #17`
+- ✅ `fix: resolve payment gateway timeout issues #142`
+- ✅ `refactor: optimize database query performance #201`
+- ✅ `docs: add API authentication guide #78`
+
+### Interactive Rebase Example
+```bash
+# Before cleanup (messy development history):
+pick abc1234 WIP: start auth work
+pick def5678 add validation
+pick ghi9012 fix typo in validation
+pick jkl3456 debug: add more logging
+pick mno7890 fix: handle edge cases
+pick pqr1234 remove debug logging
+pick stu5678 final cleanup
+
+# After cleanup (meaningful history):
+pick abc1234 feat: implement user authentication with validation #17
+```
+
+**For Complex Features:**
+You may keep multiple meaningful commits if they represent distinct logical units:
+```bash
+# Acceptable for complex features:
+feat: implement OAuth2 authentication core #17
+feat: add user session management #17
+docs: add authentication flow documentation #17
+```
 
 ### Final Commit Requirements
-Your **first commit** must follow release-please requirements:
+Your cleaned commits must follow these requirements:
 
-- **Use conventional commit format**: `<type>: <description>`
-- **Must be `feat:` or `fix:`** to trigger version updates
-- **Keep additional commits for reviewer context** (if any)
+- **Use conventional commit format**: `<type>: <description> #<issue-number>`
+- **Must be `feat:` or `fix:`** to trigger version updates (unless it's docs/refactor/chore)
+- **Include issue number** for traceability
+- **Be descriptive and actionable**
 
 #### Good Examples:
 ```bash
-feat: add user dashboard with activity metrics
-fix: resolve payment gateway connection timeout
-refactor: optimize database query performance
+feat: add user dashboard with activity metrics #95
+fix: resolve payment gateway connection timeout #142
+refactor: optimize database query performance for large datasets #201
 ```
 
 #### Bad Examples:
 ```bash
-WIP: working on dashboard  # ❌ Not conventional format
-Update code  # ❌ Not descriptive
-feat add dashboard  # ❌ Missing colon
+WIP: working on dashboard  # ❌ Not meaningful
+Update code  # ❌ Not descriptive, no issue number
+fix typo  # ❌ Noisy commit that should be squashed
 ```
 
 ## 🔀 Pull Request Process
 
 ### Before Creating/Converting PR
 
-1. **Sync with main branch**:
+**MANDATORY STEPS:**
+
+1. **Clean up your commits** (see Commit Management section above)
+2. **Sync with main branch**:
 ```bash
 git fetch origin
 git rebase origin/main
 git push --force-with-lease origin <branch-name>
 ```
-
-2. **Clean up commits** using interactive rebase
 3. **Run all tests and linting** locally
 
 ### Creating the PR
@@ -199,35 +260,64 @@ docs: update API authentication guide #78
 refactor: optimize database query performance #201
 ```
 
-**Requirements:**
-- **Must reflect the same intent as your first commit** (but doesn't need to be word-for-word identical)
-- **Issue number is mandatory** - PRs without issue reference will be rejected
-- **Format strictly enforced** - automated checks will validate PR title format
-
-**Example of Intent Alignment:**
-```bash
-# First commit message:
-feat: implement user dashboard with real-time activity tracking
-
-# PR title (reflects same intent):
-feat: add user dashboard with activity metrics #95
-```
-
 ### Review Process
 
 1. **CODEOWNERS automatically assigned** as reviewers
-2. **Address feedback with additional commits** (don't squash during review)
+2. **Address feedback promptly**:
+   ```bash
+   # Address review feedback with additional commits
+   git commit -m "address review: improve error handling per feedback"
+   git commit -m "fix: update tests based on reviewer suggestions"
+   ```
 3. **All CI checks must pass** before merge
 4. **At least one approval required** from CODEOWNERS
+
+### Merge Timing and Responsibilities
+
+**Key Understanding:**
+- **Reviewers decide when to merge** - once they approve, they typically merge immediately
+- **No additional cleanup opportunity** after review approval
+- **Reviewers may request commit cleanup** as part of their review if they notice noisy commits
+- **Developer responsibility**: Ensure commits are clean BEFORE requesting review
+
+**Review Scenarios:**
+
+**Scenario 1: Clean commits submitted**
+```
+✅ Developer submits PR with meaningful commits
+✅ Reviewer approves and merges immediately
+✅ Clean history preserved on main
+```
+
+**Scenario 2: Noisy commits detected**
+```
+❌ Developer submits PR with WIP/typo commits
+🔍 Reviewer requests: "Please clean up commits before merge"
+🛠️ Developer rebases and force-pushes cleaned history
+✅ Reviewer re-approves and merges
+```
 
 ### Merge Process
 
 - **Only "Rebase and merge" allowed** - other options are disabled
 - **Maintainer performs the merge** after approval
+- **Commits appear on main exactly as they exist on feature branch**
 - **Branch automatically deleted** after merge
-- **Final commit on main includes issue reference** from PR title
 
 ## 🏷️ Release Management
+
+### Understanding Release-Please
+
+**Release-please** is an automated tool that handles versioning and releases by:
+
+1. **Analyzing commit messages** on main branch
+2. **Determining version type** based on conventional commits:
+   - `feat:` commits → Minor version bump (1.1.0 → 1.2.0)
+   - `fix:` commits → Patch version bump (1.1.0 → 1.1.1)
+   - `feat!:` or `BREAKING CHANGE` → Major version bump (1.1.0 → 2.0.0)
+3. **Generating changelog** from commit messages and linked issues
+4. **Creating release PR** with version bump and changelog
+5. **Creating Git tags** when release PR is merged
 
 ### Milestone Completion
 When all issues in a milestone are completed:
@@ -243,7 +333,8 @@ Following **semantic versioning** (semver):
 
 - **feat:** commits → Minor version bump (1.1.0 → 1.2.0)
 - **fix:** commits → Patch version bump (1.1.0 → 1.1.1)
-- **BREAKING CHANGE:** → Major version bump (1.1.0 → 2.0.0)
+- **feat!:** or **BREAKING CHANGE** → Major version bump (1.1.0 → 2.0.0)
+- **docs/refactor/chore:** → No version bump
 
 ## 💡 Code Standards
 
@@ -274,22 +365,25 @@ Following **semantic versioning** (semver):
 git fetch origin
 git rebase -i origin/main
 
-# In the editor, change 'pick' to 'squash' or 's' for commits to combine
-pick abc1234 feat: add user authentication
-squash def5678 fix: handle edge cases
-squash ghi9012 refactor: cleanup validation logic
+# In the editor, squash noisy commits:
+pick abc1234 feat: implement user authentication #17
+squash def5678 WIP: add validation
+squash ghi9012 fix typo in validation
+squash jkl3456 remove debug logging
 
-# Result: One clean commit with all changes
+# Edit the final commit message to be meaningful:
+# feat: implement user authentication with validation #17
 ```
 
 ### Handling Review Changes
 ```bash
-# Make changes based on review feedback
-git add .
-git commit -m "address review feedback: improve error handling"
+# After reviewer approval, they merge immediately
+# No opportunity for additional cleanup
 
-# Push changes (PR updates automatically)
-git push origin <branch-name>
+# If reviewer requests commit cleanup:
+git rebase -i origin/main  # Clean up commits
+git push --force-with-lease origin <branch-name>  # Update PR
+# Reviewer will then re-review and merge
 ```
 
 ## 🔍 Enhanced Traceability with Issue Linking
@@ -316,17 +410,39 @@ Issue #93 → Branch 93-docs-update → PR #94 "docs: update contributing guide 
 
 ## 🤔 FAQ
 
-**Q: Should I squash commits during code review?**
-A: No! Keep review changes as separate commits. Only clean up before initial review request.
+**Q: When exactly should I clean up my commits?**
+A: **Before creating a PR or converting Draft PR to ready for review**. This is mandatory - reviewers expect clean, meaningful commits.
 
-**Q: What if I forget to add issue number to PR title?**
-A: The PR will be rejected by automated checks. Update the title to include `#<issue-number>` format.
+**Q: Can I keep WIP commits in my PR?**
+A: **No**. All WIP, typo fixes, debug commits, and other noisy commits must be squashed before review. Use interactive rebase to clean them up.
 
-**Q: Can I reference multiple issues in one PR?**
-A: No. Each PR should address only one issue. If you need to reference related issues, mention them in the PR description, not the title.
+**Q: What if reviewers ask for changes after I submit clean commits?**
+A: Make the requested changes in new commits. Reviewers will merge when satisfied - there's typically no opportunity for you to clean up review feedback commits before merge.
 
-**Q: What if I need to update my branch during review?**
-A: Rebase on main if needed, but don't squash review feedback commits until after approval.
+**Q: Do I need exactly one commit per PR?**
+A: **No**. You need **1-n meaningful commits**. Simple issues typically result in 1 commit, but complex features can have multiple logical commits (e.g., core implementation + documentation + tests).
+
+**Q: What if I forget to clean up commits before requesting review?**
+A: Reviewers may request commit cleanup before merge. You'll need to rebase interactively and force-push the cleaned history.
+
+**Q: Why is commit cleanup so important?**
+A: Because commits go directly to main branch via rebase-and-merge. The main branch history becomes our project's permanent record and is used by release-please for changelog generation.
+
+**Q: What's the difference between "squash all into one" vs "meaningful commits"?**
+A:
+- ❌ **Squash everything**: Forces all work into exactly 1 commit regardless of complexity
+- ✅ **Meaningful commits**: Keep logically distinct work separate, remove noise
+
+**Examples:**
+```bash
+# Complex feature with meaningful commits:
+feat: implement OAuth2 authentication core #17
+feat: add session management and user profiles #17
+docs: add authentication setup guide #17
+
+# Simple bug fix:
+fix: resolve payment gateway timeout issue #17
+```
 
 **Q: Can I work on multiple issues simultaneously?**
 A: Yes, but each must have its own branch and milestone assignment.
@@ -339,10 +455,10 @@ A: Use the exclamation mark syntax in your commit type to trigger a major versio
 
 ```bash
 # Breaking change examples:
-feat!: change user ID from int to UUID
+feat!: change user ID from int to UUID #123
 
 # Or with detailed explanation:
-feat!: migrate authentication to OAuth 2.0
+feat!: migrate authentication to OAuth 2.0 #456
 
 BREAKING CHANGE: Previous API key authentication is no longer supported.
 Users must migrate to OAuth 2.0 authentication flow.
@@ -354,15 +470,130 @@ A: Use Epic + Sub-issues approach. Team collaboratively breaks down the epic int
 **Q: What about hotfixes for production issues?**
 A: We don't use hotfix branches. All changes follow the standard workflow. Production issues are handled at the deployment level using CI/CD rollback capabilities.
 
-**Q: What if the issue number changes or gets closed before my PR?**
-A: Update your PR title to reflect the correct issue number. If the issue is closed as duplicate, reference the new issue number.
-
-**Q: Does my PR title need to be exactly the same as my first commit?**
-A: No, the PR title should reflect the same intent as your first commit but doesn't need to be word-for-word identical. The important thing is that both clearly communicate what the change accomplishes.
-
 **Q: Why should I use `git rebase -i origin/main` instead of `git rebase -i main`?**
-A: Using `origin/main` ensures you're rebasing against the latest remote version of main, and it only affects commits unique to your feature branch. This prevents rebasing unrelated commits that might have been added to main since you created your branch.
+A: Using `origin/main` ensures you're rebasing against the latest remote version of main, and it only affects commits unique to your feature branch.
+
+## 🤖 AI Integration Schema
+
+To support AI-powered development tools, here are the machine-readable format standards:
+
+### Commit Format Schema
+```yaml
+commit:
+  format: "<type>: <description> #<issue>"
+  types:
+    - feat      # New features (minor version bump)
+    - fix       # Bug fixes (patch version bump)
+    - docs      # Documentation changes (no version bump)
+    - refactor  # Code refactoring (no version bump)
+    - chore     # Maintenance tasks (no version bump)
+  breaking_change:
+    format: "<type>!: <description>"
+    description: "Use exclamation mark for major version bumps"
+  cleanup_required: true
+  cleanup_timing: "Before creating PR or converting Draft to ready"
+  examples:
+    - "feat: add user dashboard with activity metrics #95"
+    - "fix: resolve payment gateway timeout issues #142"
+    - "feat!: migrate to OAuth 2.0 authentication #78"
+```
+
+### PR Title Schema
+```yaml
+pr_title:
+  regex: "^(feat|fix|docs|refactor|chore)(!)?:\\s.+\\s#[0-9]+$"
+  format: "<type>: <description> #<issue-number>"
+  required_fields:
+    - type: Must match commit types
+    - description: Clear, actionable description
+    - issue_number: GitHub issue reference
+  examples:
+    - "feat: add user dashboard with activity metrics #95"
+    - "fix: resolve payment gateway connection timeout #142"
+```
+
+### Commit Cleanup Schema
+```yaml
+commit_cleanup:
+  timing: "Before PR creation or Draft conversion to ready"
+  mandatory: true
+  goal: "1-n meaningful commits per issue"
+  remove_commits:
+    - "WIP commits"
+    - "Typo fixes"
+    - "Debug commits"
+    - "Temporary commits"
+  keep_commits:
+    - "Logical feature implementations"
+    - "Distinct bug fixes"
+    - "Documentation additions"
+    - "Refactoring improvements"
+  tools:
+    - "git rebase -i origin/main"
+    - "Interactive rebase for squashing"
+```
+
+### PR Description Schema
+```yaml
+pr_description:
+  required_sections:
+    - checklist:
+        - "Code follows project style guidelines"
+        - "Self-review completed"
+        - "Tests added/updated and passing"
+        - "Documentation updated"
+        - "Commits cleaned up and meaningful"
+    - testing:
+        description: "How changes were tested with evidence"
+        required: true
+    - deployment_notes:
+        description: "Special deployment considerations"
+        required: false
+    - reviewer_notes:
+        description: "Specific areas for review focus"
+        required: false
+  template_auto_populated: true
+```
+
+### Issue Schema
+```yaml
+issue:
+  required_fields:
+    - milestone: "Must be assigned before starting work"
+    - template: "🐛 Bug Report or ✨ Feature Request"
+    - estimation: "Story points (1 point ≈ 2 hours, max 20 points/week)"
+  templates:
+    bug_report:
+      name: "🐛 Bug Report"
+      labels: ["type: bug", "needs-triage"]
+      required_fields:
+        - description: "Clear bug description"
+        - reproduction: "Steps to reproduce"
+        - expected: "Expected behavior"
+        - actual: "Actual behavior"
+        - severity: "Low/Medium/High/Critical"
+        - version: "Software version"
+        - os: "Operating system"
+      optional_fields:
+        - browser: "Browser (if applicable)"
+        - logs: "Error messages/logs"
+        - screenshots: "Visual evidence"
+        - additional: "Additional context"
+      commit_type: "fix"
+      version_impact: "patch"
+    feature_request:
+      name: "✨ Feature Request"
+      labels: ["type: feature", "needs-triage"]
+      required_fields:
+        - problem: "Problem statement"
+        - solution: "Proposed solution with acceptance criteria"
+        - priority: "Low/Medium/High/Critical"
+      optional_fields:
+        - additional: "Additional context, mockups, examples"
+      commit_type: "feat or feat!"
+      version_impact: "minor or major (depending on breaking changes)"
+```
 
 ---
 
-**Remember**: Clean history on main, detailed history during development, and always link your PRs to issues! 🧹✨🔗
+**Remember**: Clean, meaningful commits before review - this is your only opportunity to ensure main branch history stays clean! 🧹✨🔗
