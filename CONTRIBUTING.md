@@ -48,6 +48,16 @@ All work must begin with a GitHub Issue:
 1. **Select milestone first** - Choose from available milestones
 2. **Use issue templates** - Bug Report or Feature Request
 3. **Fill out completely** - All template fields are required
+4. **Estimate effort** - Use story points (1 point ≈ 2 hours, max 20 points per week)
+
+### Large Feature Management
+For complex features, we use **Epic + Sub-issues** approach:
+
+1. **Epic Issue** - Main feature request with overview and background
+2. **Team Planning** - Collaborative breakdown into sub-issues (1-2 days each)
+3. **Sub-issue Creation** - Each with clear acceptance criteria
+4. **Team Assignment** - Developers claim specific sub-issues
+5. **Coordinated Development** - All sub-issues tracked in project board
 
 #### Issue Types and Commit Prefixes:
 | Issue Type      | Commit Prefix | Version Impact | Example                                 |
@@ -62,9 +72,9 @@ All work must begin with a GitHub Issue:
 
 ### Milestone Management
 - **All issues must have a milestone** assigned before starting work
-- **Milestones represent releases** - e.g., v1.1.0, v1.2.0
+- **Milestones represent development cycles** - e.g., "Sprint 7 - Payment Integration"
+- **Version numbers determined by release-please** based on commit types
 - **Release when milestone complete** - all issues closed
-- **Version numbers follow semantic versioning**
 
 ## 🚀 Development Process
 
@@ -161,10 +171,13 @@ git push --force-with-lease origin <branch-name>
 
 Use our **PR template** which includes:
 
-- **Issue reference**: Automatically linked via branch name
-- **Change description**: What was implemented
-- **Testing checklist**: Manual and automated tests
-- **Reviewer checklist**: For CODEOWNERS review
+**Required Sections:**
+- **Checklist** - Code standards, testing, documentation
+- **Testing** - How changes were tested, evidence provided
+- **Deployment Notes** - Any special deployment considerations
+- **Reviewer Notes** - Specific areas for review focus
+
+**Template automatically populated** when creating PR from issue branch.
 
 #### PR Title Format:
 ```
@@ -249,6 +262,29 @@ git commit -m "address review feedback: improve error handling"
 git push origin <branch-name>
 ```
 
+## 🔍 Tracing PR History After Rebase Merge
+
+After rebase and merge, you'll see clean commits on main branch, but the PR discussion history is still accessible:
+
+### Finding the Original PR
+1. **From commit page**: Navigate to the commit on GitHub
+2. **Look for PR reference**: You'll see `main(#PR-NUMBER)` below the commit title
+3. **Click the PR link**: `#94` → Takes you to the original Pull Request
+4. **View all discussions**: Code reviews, comments, and approval history
+
+### Tracing Back to Issue
+From the PR page, you can trace back further:
+- **Branch reference**: Shows original branch like `93-docs-update-contributingmd`
+- **Auto-linked issue**: Branch name starts with issue number (`93-docs-update...`)
+- **Complete history**: Issue → Branch → PR → Commit
+
+**Example trace path:**
+```
+Issue #93 → Branch 93-docs-update → PR #94 → Commit abc1234
+```
+
+This maintains full traceability while keeping main branch history clean.
+
 ## 🤔 FAQ
 
 **Q: Should I squash commits during code review?**
@@ -265,6 +301,15 @@ A: Create a hotfix issue and follow the same process. No direct commits to main 
 
 **Q: How do I handle breaking changes?**
 A: Include "BREAKING CHANGE:" in commit footer to trigger major version bump.
+
+**Q: How do we handle large features?**
+A: Use Epic + Sub-issues approach. Team collaboratively breaks down the epic into 1-2 day sub-issues, each developer claims specific sub-issues and creates their own branch + PR.
+
+**Q: What about hotfixes for production issues?**
+A: We don't use hotfix branches. All changes follow the standard workflow. Production issues are handled at the deployment level using CI/CD rollback capabilities.
+
+**Q: How do I find PR discussions after rebase merge?**
+A: Click the commit on GitHub, then click the `#PR-NUMBER` link below the commit title to view the original PR and all its discussions.
 
 ---
 
