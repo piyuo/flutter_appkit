@@ -1,0 +1,27 @@
+# .github/workflows/commitlint.yml
+name: Lint Commits
+
+on:
+    pull_request:
+        types: [opened, edited, synchronize, reopened]
+
+jobs:
+    commitlint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0 # important for commitlint to access all commits
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Install dependencies
+              run: |
+                  npm install --save-dev @commitlint/{config-conventional,cli}
+
+            - name: Lint commits
+              run: |
+                  npx commitlint --from=origin/main --to=HEAD
