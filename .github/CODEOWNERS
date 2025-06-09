@@ -11,8 +11,8 @@
 
 # File-Specific Owners
 # Ensure these individuals are notified whenever this specific file changes.
-/README.md      @alice # Owner for the README file
-/docs/CONTRIBUTING.md @bob # Owner for the contributing guidelines
+/README.md      @piyuo # Owner for the README file
+/docs/CONTRIBUTING.md @piyuo # Owner for the contributing guidelines
 
 # Folder-Specific Owners
 # When a folder is specified, it covers that folder and all its subfolders and files.
