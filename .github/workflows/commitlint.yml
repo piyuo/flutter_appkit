@@ -1,9 +1,8 @@
-# .github/workflows/commitlint.yml
-name: Lint Commits
+name: Lint Commit Messages
 
 on:
     pull_request:
-        types: [opened, edited, synchronize, reopened]
+        types: [opened, synchronize, reopened]
 
 jobs:
     commitlint:
@@ -13,17 +12,6 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
+            - uses: wagoid/commitlint-github-action@v6
               with:
-                  node-version: "20"
-
-            - name: Install commitlint
-              run: |
-                  npm install --save-dev @commitlint/{config-conventional,cli}
-
-            # Load commitlint configuration
-            - name: Validate commits
-              uses: wagoid/commitlint-github-action@v5
-              with:
-                  configFile: "commitlint.config.js"
+                  configFile: ./commitlint.config.js
