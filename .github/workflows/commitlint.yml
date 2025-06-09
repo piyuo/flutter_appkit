@@ -1,3 +1,4 @@
+# .github/workflows/commitlint.yml
 name: Lint Commit Messages
 
 on:
@@ -14,4 +15,4 @@ jobs:
 
             - uses: wagoid/commitlint-github-action@v6
               with:
-                  configFile: ./commitlint.config.mjs
+                  configFile: .github/workflows/commitlint.config.mjs

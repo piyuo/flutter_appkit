@@ -68,5 +68,6 @@
         "unimported",
         "wrapf",
         "yourname"
-    ]
+    ],
+    "cmake.ignoreCMakeListsMissing": true
 }
