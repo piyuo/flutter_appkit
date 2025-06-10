@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0 (2025-06-10)
+
+
+### Features
+
+* add commitlint workflow for enforcing commit message conventions ([c9ed361](https://github.com/piyuo/libcli/commit/c9ed36125dd97ed321b07e5df787162f0601779b))
+
+
+### Bug Fixes
+
+* remove subject-blacklist rule from commitlint configuration ([07d4570](https://github.com/piyuo/libcli/commit/07d4570f4ac3664eef3f504cfbf800577bdf9772))
+* update commitlint configuration and workflow for improved commit message validation ([33e16de](https://github.com/piyuo/libcli/commit/33e16ded5842028c12b7150d1a7d2ff3bf187769))
+
 ## [1.8.0](https://github.com/piyuo/libcli/compare/v1.7.5...v1.8.0) (2025-06-08)
 
 
