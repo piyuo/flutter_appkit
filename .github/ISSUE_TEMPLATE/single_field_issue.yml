@@ -1,0 +1,8 @@
+name: Single Field Issue
+description: Paste your issue text below
+body:
+  - type: textarea
+    id: content
+    attributes:
+      label: Issue content
+      description: Paste your text here. The first line will become the title.
