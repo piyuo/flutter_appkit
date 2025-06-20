@@ -6,7 +6,11 @@ body:
     id: description
     attributes:
       label: Fill in your raw idea/bug
-      description: Copy both sections (your input + the AI guide), Paste into any AI assistant (ChatGPT, Claude, Gemini, etc.),Copy the AI's markdown result,Create a new issue with that enhanced content
+      description: 1. Copy both sections (your input + the AI guide)
+                  2. Paste into any AI assistant (ChatGPT, Claude, Gemini, etc.),
+                  3. Copy the AI's markdown result back and replace content,
+                  4. Move first line to title
+                  5. Create a new issue
       value: |
 
         Your idea/bug description here ...
