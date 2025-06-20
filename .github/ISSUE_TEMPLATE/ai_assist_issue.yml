@@ -5,9 +5,13 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Copy the instruction guide below along with your raw idea/bug description into any AI** (ChatGPT, Claude, etc.)
-      description: Copy the AI's markdown result back to replace as new issue
+      label: Fill in your raw idea/bug
+      description: Copy both sections (your input + the AI guide), Paste into any AI assistant (ChatGPT, Claude, Gemini, etc.),Copy the AI's markdown result,Create a new issue with that enhanced content
       value: |
+
+        Your idea/bug description here ...
+
+
         # 🤖 AI Issue Assistant for piyuo-next
 
         This document is for AI agents to convert raw user input into complete GitHub issues for the **piyuo-next** project using predefined templates with project-specific context.
@@ -161,30 +165,3 @@ body:
         End of guide.
     validations:
       required: false
-
-  - type: markdown
-    attributes:
-      value: |
-        ---
-
-        ## 📋 Next Steps
-
-        1. **Fill in your raw idea/bug above**
-        2. **Copy both sections** (your input + the AI guide)
-        3. **Paste into any AI assistant** (ChatGPT, Claude, Gemini, etc.)
-        4. **Copy the AI's markdown result**
-        5. **Create a new issue** with that enhanced content
-        6. **Close this template issue** - you won't need it anymore!
-
-        The AI will transform your simple description into a professional, project-specific GitHub issue! 🚀
-
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Usage Agreement
-      description: By using this AI-assisted template, you agree to review the AI-generated content before creating the actual issue.
-      options:
-        - label: I understand this is a helper template and I will create a separate issue with the AI-enhanced content
-          required: true
-        - label: I will review and edit the AI-generated content as needed before posting
-          required: true
