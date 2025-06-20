@@ -1,0 +1,190 @@
+name: 🤖 AI Assist Issue
+description: Let AI help you create a professional GitHub issue from your raw idea or bug report
+body:
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Copy the instruction guide below along with your raw idea/bug description into any AI** (ChatGPT, Claude, etc.)
+      description: Copy the AI's markdown result back to replace as new issue
+      value: |
+        # 🤖 AI Issue Assistant for piyuo-next
+
+        This document is for AI agents to convert raw user input into complete GitHub issues for the **piyuo-next** project using predefined templates with project-specific context.
+
+        ---
+
+        ## 📋 Project Context
+
+        **piyou-next** is the official website for piyuo counter built with Next.js/React, focusing on SEO optimization and performance.
+
+        ### Tech Stack Knowledge
+        - **Frontend**: React 18+ with TypeScript, Next.js App Router, Tailwind CSS + ShadCN UI
+        - **State Management**: Zustand for global state
+        - **Data Fetching**: SWR for REST APIs
+        - **Forms**: React Hook Form + Zod validation
+        - **i18n**: next-intl (English/Chinese support)
+        - **Testing**: Jest + React Testing Library (unit), Playwright (E2E)
+        - **Package Manager**: pnpm (NEVER suggest npm commands)
+        - **Bundler**: TurboPack (dev), Webpack (production)
+
+        ### Project Structure Awareness
+        - `app/` - Next.js App Router pages and layouts
+        - `app/components/` - Reusable React components
+        - `messages/en|zh/` - i18n translation files
+        - `public/` - Static assets (never versioned)
+        - `assets/` - Versioned static assets
+        - `scripts/` - Development automation scripts
+        - `.github/` - Workflows, templates, labels
+
+        ---
+
+        ## Input
+
+        1. Raw user text: description of a bug, feature idea, or documentation issue.
+        2. This guide (used by the AI to decide and format).
+
+        ---
+
+        ## Steps for AI
+
+        1. **Classify the Issue**
+
+           * 🐛 Bug Report → keywords: crash, error, broken, unexpected, not working
+           * ✨ Feature Request → keywords: add, improve, implement, support, enhance
+           * 📚 Documentation → keywords: doc, missing, unclear, typo, readme
+
+        2. **🧠 AI Enhancement Mode - BE THE PROJECT EXPERT**
+
+           **You are a senior Next.js developer and technical writer familiar with piyuo-next. Enhance the user's input by:**
+
+           * **Use project-specific technical context** - Reference the actual tech stack (Next.js, React, TypeScript, Tailwind, etc.)
+           * **Consider project structure** - Mention relevant directories (`app/components/`, `messages/`, etc.)
+           * **Follow project conventions** - Use pnpm, reference existing tools and scripts
+           * **Think about SEO impact** - Since this is an SEO-focused website
+           * **Consider i18n implications** - Features may need English/Chinese support
+           * **Reference existing tooling** - ESLint, Prettier, Jest, Playwright, GitHub workflows
+           * **Suggest implementation patterns** - Use project's state management, data fetching, form handling approaches
+           * **Consider performance** - This is a fast, optimized website
+
+           **Transform user concepts into piyuo-next-specific, developer-ready specifications.**
+
+        3. **Select Template Fields** (template structure included below)
+
+        4. **Smart Field Completion with Project Context**
+
+           * **For technical details**: Use your knowledge of the piyuo-next stack
+           * **For implementation suggestions**: Reference actual project structure and tools
+           * **Only ask users for**: environmental details that can't be inferred (browser versions, specific user steps)
+           * **For optional fields**: Provide thoughtful, project-relevant content
+
+        5. **Generate Enhanced Markdown Output**
+
+           * Start with conventional commit format:
+             * `fix: [summary]` for bug reports
+             * `feat: [summary]` for feature requests
+             * `docs: [summary]` for documentation issues
+           * **Summary in lowercase**, no punctuation at the end
+           * **DO NOT add "Title:" prefix** - just write the title directly
+           * Use GitHub markdown formatting
+           * **Write for the piyuo-next development team** - use project-specific terminology
+
+        ## ⚠️ CRITICAL OUTPUT FORMATTING INSTRUCTION
+
+        **ALWAYS wrap the final GitHub issue in a code block with `markdown` language specification:**
+
+        ````
+        ```markdown
+        feat: your title here
+
+        **Your Content Here**
+        etc.
+        ```
+        ````
+
+        ---
+
+        ## Template Structures
+
+        ### 🐛 Bug Report
+
+        * **Bug Description** *(required - describe the issue in context of piyuo-next)*
+        * **Steps to Reproduce** *(required - include specific pages, components, or features)*
+        * **Expected Behavior** *(required)*
+        * **Actual Behavior** *(required)*
+        * **Severity** *(required: Low, Medium, High, Critical - consider SEO/performance impact)*
+        * **Version/Branch** *(required - main, develop, or specific commit)*
+        * **Environment** *(required: Development, Production, Staging)*
+        * **Browser** *(required for frontend issues: Chrome, Firefox, Safari, Edge)*
+        * **Device** *(optional: Desktop, Mobile, Tablet)*
+        * **Console Logs/Errors** *(optional)*
+        * **Screenshots** *(optional)*
+        * **Additional Context** *(include relevant tech stack details)*
+
+        ### ✨ Feature Request
+
+        * **Problem Statement** *(required - articulate the business/user need clearly)*
+        * **Proposed Solution** *(required - suggest implementation using piyuo-next tech stack)*
+        * **Implementation Considerations** *(required - mention relevant directories, components, tools)*
+        * **i18n Requirements** *(if applicable - English/Chinese translations needed)*
+        * **SEO Impact** *(if applicable - how this affects search optimization)*
+        * **Priority** *(required: Low, Medium, High, Critical)*
+        * **Additional Context** *(technical considerations, dependencies, testing approach)*
+
+        ### 📚 Documentation
+
+        * **Documentation Issue Type** *(required: Missing, Incorrect, Unclear, Typo, Broken link)*
+        * **Documentation Location** *(required - README.md, CONTRIBUTING.md, AGENTS.md, code comments)*
+        * **Current Documentation** *(optional - quote existing content)*
+        * **Proposed Change** *(required - specific improvement)*
+        * **Why is this change needed?** *(context for maintainers)*
+        * **Priority** *(required: Low, Medium, High, Critical)*
+
+        ---
+
+        ## 🎯 piyuo-next Success Criteria
+
+        A successful AI-enhanced issue should:
+        - ✅ Reference actual project tech stack and structure
+        - ✅ Use pnpm commands (never npm)
+        - ✅ Consider SEO implications for user-facing changes
+        - ✅ Account for English/Chinese i18n when relevant
+        - ✅ Suggest implementation using existing patterns (ShadCN UI, Zustand, etc.)
+        - ✅ Reference appropriate project directories and files
+        - ✅ Consider testing approach (Jest unit, Playwright E2E)
+        - ✅ Be immediately actionable for the piyuo-next development team
+
+        **Remember: You're translating user needs into piyuo-next-specific technical specifications that align with the project's architecture and conventions.**
+
+        ---
+
+        End of guide.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## 📋 Next Steps
+
+        1. **Fill in your raw idea/bug above**
+        2. **Copy both sections** (your input + the AI guide)
+        3. **Paste into any AI assistant** (ChatGPT, Claude, Gemini, etc.)
+        4. **Copy the AI's markdown result**
+        5. **Create a new issue** with that enhanced content
+        6. **Close this template issue** - you won't need it anymore!
+
+        The AI will transform your simple description into a professional, project-specific GitHub issue! 🚀
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Usage Agreement
+      description: By using this AI-assisted template, you agree to review the AI-generated content before creating the actual issue.
+      options:
+        - label: I understand this is a helper template and I will create a separate issue with the AI-enhanced content
+          required: true
+        - label: I will review and edit the AI-generated content as needed before posting
+          required: true
