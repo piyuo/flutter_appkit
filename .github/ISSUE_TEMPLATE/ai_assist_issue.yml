@@ -2,15 +2,21 @@ name: 🤖 AI Assist Issue
 description: Let AI help you create a professional GitHub issue from your raw idea or bug report
 body:
 
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        1. **Fill in your raw idea/bug above**
+        2. **Copy both sections** (your input + the AI guide) into any AI assistant** (ChatGPT, Claude, Gemini, etc.)
+        3. **Copy the AI's markdown result back to description to replace content**
+        4. **Move first line to Title Field** - the AI will generate first line as title
+        5. **Create a new issue** with that enhanced content
+        The AI will transform your simple description into a professional, project-specific GitHub issue! 🚀
+
   - type: textarea
     id: description
     attributes:
       label: Fill in your raw idea/bug
-      description: 1. Copy both sections (your input + the AI guide)
-                  2. Paste into any AI assistant (ChatGPT, Claude, Gemini, etc.),
-                  3. Copy the AI's markdown result back and replace content,
-                  4. Move first line to title
-                  5. Create a new issue
       value: |
 
         Your idea/bug description here ...
