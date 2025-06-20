@@ -2,7 +2,13 @@ name: Single Field Issue
 description: Paste your issue text below
 body:
   - type: textarea
-    id: content
+    id: description
     attributes:
-      label: Issue content
-      description: Paste your text here. The first line will become the title.
+      label: Describe the problem
+      description: What happened? What did you expect to happen?
+      placeholder: |
+        Steps to reproduce:
+        1. ...
+        2. ...
+        Expected result:
+        Actual result:
