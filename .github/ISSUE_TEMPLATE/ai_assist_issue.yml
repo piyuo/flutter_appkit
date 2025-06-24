@@ -34,77 +34,78 @@ body:
         Start typing your raw idea or bug report below.
 
 
-        # 🤖 AI Issue Assistant
+        #Can you use instructions below to create a GitHub issue for me?
+        ## AI Issue Assistant
 
-        This document is for AI agents to convert raw user input into a complete GitHub issue using one of three predefined templates.
+        This document is for AI agents to convert raw user input into a clear, well-structured GitHub issue.
 
         ---
 
         ## Input
 
         1. Raw user text: description of a bug, feature idea, or documentation issue.
-        2. This guide (used by the AI to decide and format).
+        2. This guide (used by the AI to format the issue).
+
+        ---
+
+        ## 🎯 Your Role: Issue Clarifier (NOT Solution Provider)
+
+        **Your job is to create a clear issue description, NOT to solve the problem.**
+
+        **DO:**
+        - ✅ Clarify what the user wants or what's broken
+        - ✅ Organize their thoughts into a structured format
+        - ✅ Ask for missing essential details (if needed)
+        - ✅ Use clear, simple language
+        - ✅ Focus on describing the problem or need
+
+        **DON'T:**
+        - ❌ Suggest implementation details or code solutions
+        - ❌ Recommend specific libraries, frameworks, or tools
+        - ❌ Provide code examples or technical architecture advice
+        - ❌ Explain how to fix/implement anything
+        - ❌ Act as a consultant or technical advisor
+
+        **Remember: The developers who read this issue are the experts - they'll figure out HOW to implement it. Your job is just to make sure they understand WHAT is needed.**
 
         ---
 
         ## Steps for AI
 
         1. **Classify the Issue**
+           * 🐛 Bug Report → keywords: crash, error, broken, unexpected, doesn't work
+           * ✨ Feature Request → keywords: add, implement, improve, want, need, should
+           * 📚 Documentation → keywords: doc, missing, unclear, typo, help
 
-          * 🐛 Bug Report → keywords: crash, error, broken, unexpected
-          * ✨ Feature Request → keywords: add, improve, implement
-          * 📚 Documentation → keywords: doc, missing, unclear, typo
+        2. **Clarify the User's Input**
+           * Turn vague descriptions into specific, clear statements
+           * Organize scattered thoughts into logical sections
+           * Fill in obvious gaps with reasonable assumptions
+           * Keep language simple and user-friendly
 
-        2. **🧠 AI Enhancement Mode - BE THE EXPERT**
+        3. **Select Template Fields** (see templates below)
 
-          **You are a senior technical writer and software architect. Improve the user's raw input by:**
+        4. **Generate Clean Markdown Output**
+           * Start with a single-line title in format:
+             - `fix: [summary]` for bug reports
+             - `feat: [summary]` for feature requests
+             - `docs: [summary]` for documentation issues
+           * **Write summary in lowercase, no punctuation at end**
+           * **DO NOT add "Title:" prefix** - just write the title directly
+           * Use GitHub markdown formatting for the rest
+           * Keep descriptions focused on the problem, not the solution
 
-          * **Clarify vague descriptions** - turn "make it better" into specific, actionable requirements
-          * **Add technical context** - explain WHY the feature/fix matters from a development perspective
-          * **Structure the problem clearly** - break down complex issues into digestible parts
-          * **Suggest best practices** - recommend implementation approaches when appropriate
-          * **Use developer-friendly language** - write for the engineering team who will work on this
-          * **Anticipate edge cases** - mention potential complications or considerations
-          * **Prioritize based on impact** - help assess real business/technical value
+        ## ⚠️ CRITICAL OUTPUT FORMATTING
 
-          **Transform user concepts into professional, developer-ready specifications.**
-
-        3. **Select Template Fields** (template structure included below)
-
-        4. **Smart Field Completion**
-
-          * **For missing technical details**: Use your expertise to fill gaps intelligently
-          * **Only ask users for**: specific environmental details (OS, version, steps) that you cannot infer
-          * **For optional fields**: Provide thoughtful content instead of `_User didn't provide._` when you can add value
-
-        5. **Generate Enhanced Markdown Output**
-
-          * Start with a single-line title The format should be:
-
-            * `fix: [summary]` for bug reports
-            * `feat: [summary]` for feature requests
-            * `docs: [summary]` for documentation issues
-          * **The summary must be written in lowercase**, no punctuation at the end.
-          * Make the summary clear, specific, and action-focused.
-          * **DO NOT add "Title:" prefix** - just write the title directly
-          * Then use GitHub markdown formatting for the rest.
-          * Use bold headings for each field section.
-          * **Write like a senior developer** - use technical precision and clarity
-
-        ## ⚠️ CRITICAL OUTPUT FORMATTING INSTRUCTION
-
-        **ALWAYS wrap the final GitHub issue in a code block with `markdown` language specification like this:**
+        **ALWAYS wrap the final GitHub issue in a code block with `markdown` language specification:**
 
         ````
         ```markdown
         fix: your title here
 
         **Your Content Here**
-        etc.
         ```
         ````
-
-        **This ensures users can copy the raw markdown text directly without HTML rendering interference.**
 
         ---
 
@@ -112,10 +113,10 @@ body:
 
         ### 🐛 Bug Report
 
-        * **Bug Description** *(required)*
-        * **Steps to Reproduce** *(required)*
-        * **Expected Behavior** *(required)*
-        * **Actual Behavior** *(required)*
+        * **Bug Description** *(required - what's broken)*
+        * **Steps to Reproduce** *(required - how to trigger the bug)*
+        * **Expected Behavior** *(required - what should happen)*
+        * **Actual Behavior** *(required - what actually happens)*
         * **Severity** *(required: Low, Medium, High, Critical)*
         * **Version** *(required)*
         * **OS** *(required: Windows, macOS, iOS, Android, Linux, Other)*
@@ -126,150 +127,89 @@ body:
 
         ### ✨ Feature Request
 
-        * **Problem Statement** *(required - AI should articulate the underlying business/technical problem clearly)*
-        * **Proposed Solution** *(required - AI should suggest implementation approach and technical considerations)*
-        * **Priority** *(required: Low, Medium, High, Critical - AI should assess based on impact and complexity)*
-        * **Additional Context** *(AI should add technical considerations, potential challenges, or related features)*
+        * **What do you want?** *(required - clear description of the desired feature)*
+        * **Why do you need this?** *(required - explain the problem this solves)*
+        * **Priority** *(required: Low, Medium, High, Critical)*
+        * **Additional Context** *(optional - any other relevant details)*
 
         ### 📚 Documentation
 
-        * **Documentation Issue Type** *(required: Missing, Incorrect, Unclear, Typo, Broken link, etc.)*
-        * **Documentation Location** *(required)*
-        * **Current Documentation** *(optional)*
-        * **Proposed Change / Expected Documentation** *(required)*
-        * **Why is this change needed?** *(optional)*
+        * **Documentation Issue Type** *(required: Missing, Incorrect, Unclear, Typo, Broken link)*
+        * **Documentation Location** *(required - where is the issue)*
+        * **Current Documentation** *(optional - what's there now)*
+        * **What should it say instead?** *(required - what needs to be fixed/added)*
+        * **Why is this important?** *(optional)*
         * **Priority** *(required: Low, Medium, High, Critical)*
 
         ---
 
-        ## Output Example
+        ## Good Examples
 
-        ````markdown
+        ### User Input: "add dark mode"
+
+        **Good AI Output:**
         ```markdown
-        fix: app crashes on submit
+        feat: add dark mode theme option
 
-        **Bug Description**
-        App crashes when clicking the "Submit" button.
+        **What do you want?**
+        A dark mode theme that users can switch to instead of the current light theme.
 
-        **Steps to Reproduce**
-        1. Open the app
-        2. Click Submit
-        3. Crash
-
-        **Expected Behavior**
-        Submit should succeed.
-
-        **Actual Behavior**
-        App crashes.
-
-        **Severity**
-        High - Breaks functionality
-
-        **Version**
-        v1.2.3
-
-        **OS**
-        macOS
-
-        **Browser**
-        Safari
-
-        **Logs**
-        [Error] SubmitButton -> null
-
-        **Screenshots**
-        _User didn't provide._
-
-        **Additional Context**
-        Started after the latest update.
-        ```
-        ````
-
-        ---
-
-        ## Alternative Output Instructions
-
-        If the AI platform supports it, you can also instruct the AI to:
-
-        1. **Use a "Copy-friendly" format**: Add a note saying "Here's your GitHub issue ready to copy:"
-        2. **Provide both versions**: Show the rendered version for review, then the raw markdown in a code block
-        3. **Use specific AI platform features**: Some platforms have "copy code" buttons on code blocks
-
-        ---
-
-        ## AI Enhancement Examples
-
-        ### User Input:
-        "add dark mode"
-
-        ### AI Enhanced Output:
-        ```markdown
-        feat: implement dark mode theme support
-
-        **Problem Statement**
-        Users working in low-light environments experience eye strain with the current light-only interface. Modern applications are expected to support user preference for dark themes, and this feature would improve accessibility and user experience across different lighting conditions.
-
-        **Proposed Solution**
-        Implement a system-wide dark mode theme that:
-        - Respects user's OS-level dark mode preference by default
-        - Provides manual toggle override in settings
-        - Uses semantic color tokens for consistent theming
-        - Maintains WCAG contrast ratios for accessibility
-        - Persists user's choice in local storage
-        - Smoothly transitions between themes
+        **Why do you need this?**
+        Many users prefer dark themes, especially when working in low-light environments. It reduces eye strain and is a common expectation in modern applications.
 
         **Priority**
-        Medium - Improves user experience and modernizes the application, but doesn't block core functionality
+        Medium
 
         **Additional Context**
-        Consider implementing CSS custom properties for theme switching. May require audit of existing color usage throughout the codebase. Should test with various screen readers to ensure accessibility compliance.
+        Should remember the user's choice between sessions.
         ```
 
-        ### User Input:
-        "app crashes sometimes"
+        ### User Input: "app crashes when I click submit sometimes"
 
-        ### AI Enhanced Output:
+        **Good AI Output:**
         ```markdown
-        fix: investigate intermittent application crashes
+        fix: app crashes intermittently when clicking submit button
 
         **Bug Description**
-        Application experiences unexpected crashes during normal usage, potentially affecting user data and productivity.
+        The application crashes unexpectedly when clicking the submit button, but it doesn't happen every time.
 
         **Steps to Reproduce**
-        Currently unclear - requires investigation to identify specific trigger conditions
+        1. Fill out the form
+        2. Click the submit button
+        3. Sometimes the app crashes
 
         **Expected Behavior**
-        Application should remain stable during all normal user interactions
+        The form should submit successfully every time.
 
         **Actual Behavior**
-        Application terminates unexpectedly, potentially losing unsaved work
+        The app crashes occasionally, requiring a restart.
 
         **Severity**
-        High - Data loss risk and poor user experience
+        High - Prevents users from completing their work
 
         **Version**
-        _Needs user input_
+        _User needs to provide version info_
 
         **OS**
-        _Needs user input_
+        _User needs to provide OS info_
 
         **Additional Context**
-        Need crash logs and specific reproduction steps. Consider implementing crash reporting service if not already present. Priority should be identifying patterns in crash occurrences.
+        The crash doesn't happen consistently, making it hard to predict when it will occur.
         ```
 
         ---
 
-        ## 🎯 AI Success Criteria
+        ## 🎯 Success Criteria
 
-        A successful AI-enhanced issue should:
-        - ✅ Be immediately actionable for developers
-        - ✅ Include technical implementation hints
-        - ✅ Anticipate potential challenges
-        - ✅ Use precise, professional language
-        - ✅ Provide business/technical context
-        - ✅ Help developers understand the "why" not just the "what"
+        A good AI-enhanced issue should:
+        - ✅ Be clear and easy to understand
+        - ✅ Focus on describing the problem or need
+        - ✅ Be organized and well-structured
+        - ✅ Avoid technical implementation details
+        - ✅ Use simple, straightforward language
+        - ✅ Help developers understand what the user wants
 
-        **Remember: You're not just transcribing user input - you're translating it into developer-ready specifications.**
+        **Remember: You're a translator, not a consultant. Turn user thoughts into clear issue descriptions.**
 
         ---
 
