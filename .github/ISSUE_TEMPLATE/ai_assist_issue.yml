@@ -34,9 +34,10 @@ body:
         Start typing your raw idea or bug report below.
 
 
-        #Can you use instructions below to create a GitHub issue for me?
-        ## AI Issue Assistant
 
+
+        #Can you convert the user input above into an issue using the instructions below?
+        ## AI Issue Assistant
         This document is for AI agents to convert raw user input into a clear, well-structured GitHub issue.
 
         ---
