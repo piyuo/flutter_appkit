@@ -76,6 +76,8 @@ body:
            * 🐛 Bug Report → keywords: crash, error, broken, unexpected, doesn't work
            * ✨ Feature Request → keywords: add, implement, improve, want, need, should
            * 📚 Documentation → keywords: doc, missing, unclear, typo, help
+           * 🔧 Chore → keywords: build, ci/cd, deploy, config, tools, setup, maintenance
+           * 🔄 Refactor → keywords: refactor, test, cleanup, reorganize, optimize, improve code structure
 
         2. **Clarify the User's Input**
            * Turn vague descriptions into specific, clear statements
@@ -90,6 +92,8 @@ body:
              - `fix: [summary]` for bug reports
              - `feat: [summary]` for feature requests
              - `docs: [summary]` for documentation issues
+             - `chore: [summary]` for chore tasks
+             - `refactor: [summary]` for refactor tasks
            * **Write summary in lowercase, no punctuation at end**
            * **DO NOT add "Title:" prefix** - just write the title directly
            * Use GitHub markdown formatting for the rest
@@ -140,6 +144,23 @@ body:
         * **What should it say instead?** *(required - what needs to be fixed/added)*
         * **Why is this important?** *(optional)*
         * **Priority** *(required: Low, Medium, High, Critical)*
+
+        ### 🔧 Chore
+
+        * **What needs to be done?** *(required - clear description of the maintenance task)*
+        * **Why is this needed?** *(required - explain why this chore is necessary)*
+        * **Type** *(required: Build, CI/CD, Configuration, Tools, Dependencies, Setup, Other)*
+        * **Priority** *(required: Low, Medium, High, Critical)*
+        * **Additional Context** *(optional - any other relevant details)*
+
+        ### 🔄 Refactor
+
+        * **What code needs refactoring?** *(required - describe the code area or component)*
+        * **Why does it need refactoring?** *(required - explain current issues or improvements needed)*
+        * **Current State** *(optional - describe how it works now)*
+        * **Desired Outcome** *(required - what should be improved after refactoring)*
+        * **Priority** *(required: Low, Medium, High, Critical)*
+        * **Additional Context** *(optional - any constraints or considerations)*
 
         ---
 
@@ -195,6 +216,53 @@ body:
 
         **Additional Context**
         The crash doesn't happen consistently, making it hard to predict when it will occur.
+        ```
+
+        ### User Input: "update ci pipeline to use newer node version"
+
+        **Good AI Output:**
+        ```markdown
+        chore: update ci pipeline to use newer node version
+
+        **What needs to be done?**
+        Update the CI/CD pipeline configuration to use a newer version of Node.js.
+
+        **Why is this needed?**
+        The current Node.js version in the pipeline is outdated and may have security vulnerabilities or compatibility issues with newer dependencies.
+
+        **Type**
+        CI/CD
+
+        **Priority**
+        Medium
+
+        **Additional Context**
+        Should also update any related build scripts or documentation that reference the Node.js version.
+        ```
+
+        ### User Input: "clean up the user service code its messy"
+
+        **Good AI Output:**
+        ```markdown
+        refactor: clean up user service code structure
+
+        **What code needs refactoring?**
+        The user service module and its related functions.
+
+        **Why does it need refactoring?**
+        The current code structure is difficult to read and maintain, making it hard for developers to understand and modify.
+
+        **Current State**
+        The user service code is disorganized and hard to follow.
+
+        **Desired Outcome**
+        Clean, well-organized code that is easier to read, understand, and maintain without changing the existing functionality.
+
+        **Priority**
+        Medium
+
+        **Additional Context**
+        Should maintain all existing functionality while improving code organization.
         ```
 
         ---
