@@ -106,3 +106,61 @@ These are common pitfalls and anti-patterns that can lead to performance issues,
 - **Avoid Global Variables for State:** While `GetIt` is a service locator, avoid using simple global variables (`static`) for mutable application state. This makes state harder to track, test, and manage, and can lead to unexpected side effects.
 - **Don't Ship Unused Code/Assets:** Remove commented-out code, unused imports, and unreferenced assets to keep the bundle size small and the codebase clean.
 - **Avoid `as` casts without `is` checks:** Use the `is` operator before casting with `as` to prevent runtime exceptions (e.g., `if (object is MyType) { (object as MyType).doSomething(); }`).
+
+## 📦 Adding a New Module
+
+To keep the project modular and maintainable, each feature or domain should be added as a self-contained module under the `/lib` directory.
+
+### 🛠️ How to Add a Module
+
+1. **Create a new folder** under `/lib` with the module name:
+
+   ```bash
+   /lib
+     /your_module_name
+       /src
+         your_module_impl.dart
+       your_module_name.dart
+   ```
+
+2. **Put internal implementation files** in the `src/` folder.
+
+3. **Expose only the public interface** in `your_module_name.dart`:
+
+   ```dart
+   export 'src/your_module_impl.dart';
+   ```
+
+4. **Import the module using the public API**:
+
+   ```dart
+   import 'package:your_package_name/your_module_name/your_module_name.dart' as yourModule;
+   ```
+
+### ✅ Example
+
+```bash
+/lib
+  /search
+    /src
+      search_impl.dart
+    search.dart
+```
+
+In `search.dart`:
+
+```dart
+export 'src/search_impl.dart';
+```
+
+Usage:
+
+```dart
+import 'package:libcli/search/search.dart' as search;
+```
+
+### 📌 Why This Matters
+
+- Keeps internal logic hidden and promotes clean public APIs.
+- Makes modules easier to test, document, and maintain.
+- AI agents and contributors can safely use the public files without depending on internal implementation details.
