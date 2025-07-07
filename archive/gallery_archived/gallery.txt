@@ -1,5 +1,0 @@
-library gallery;
-
-export 'src/listing.txt';
-export 'src/list_item.txt';
-export 'src/check_list.txt';

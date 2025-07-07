@@ -1,6 +1,0 @@
-library database;
-
-export 'src/base.txt';
-export 'src/database.txt';
-export 'src/database_provider.txt';
-export 'src/helper.txt';
