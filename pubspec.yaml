@@ -31,19 +31,12 @@ dev_dependencies:
  #dependency_overrides:
   #meta: ^1.11.0 #cause flutter_test blocked
 
-
-  #meta: ^1.9.0 # cause flutter_test need intl 1.8.0
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
     generate: true
     uses-material-design: true
     # To add assets to your package, add an assets section, like this:
-    assets:
-      - images/
+    #assets:
         # To add assets to your package, add an assets section, like this:
         # assets:
         #  - images/a_dot_burr.jpeg
