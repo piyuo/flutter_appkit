@@ -8,7 +8,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_ROOT" || exit 1
 
 # Run the Dart script (relative to project root)
-dart run scripts/update-pubspec.dart
+dart run scripts/update_pubspec.dart
 
 # Upgrade dependencies
 flutter pub upgrade --major-versions
