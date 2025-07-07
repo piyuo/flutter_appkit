@@ -1,7 +1,6 @@
 name: 🤖 AI Assist Issue
 description: Let AI assist you in creating a professional GitHub issue...
 body:
-
   - type: checkboxes
     id: checklist
     attributes:
