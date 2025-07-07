@@ -164,3 +164,40 @@ import 'package:libcli/search/search.dart' as search;
 - Keeps internal logic hidden and promotes clean public APIs.
 - Makes modules easier to test, document, and maintain.
 - AI agents and contributors can safely use the public files without depending on internal implementation details.
+
+### Milestone Completion
+
+When all issues in a milestone are completed:
+
+1. **Release-please creates release PR** automatically
+2. **Maintainer reviews and merges** release PR to main
+3. **Automatic version bump and changelog** generation
+4. **Git tag created** with version number
+5. **GitHub Actions deploys to Cloudflare Workers** automatically
+6. **Website at <https://piyuo.com> updates immediately**
+
+## Release
+
+**Release-please** automatically handles versioning and releases by:
+
+1. **Analyzing commit messages** on main branch
+2. **Determining version type** based on conventional commits:
+   - `feat:` commits → Minor version bump (1.1.0 → 1.2.0)
+   - `fix:` commits → Patch version bump (1.1.0 → 1.1.1)
+   - `feat!:` or `BREAKING CHANGE` → Major version bump (1.1.0 → 2.0.0)
+3. **Generating changelog** from commit messages and linked issues
+4. **Creating release PR** with version bump and changelog
+5. **Creating Git tags** when release PR is merged
+6. **Triggering automated deployment** to Cloudflare Workers
+
+### Deployment
+
+because this project is a flutter package, so merge release-please PR to have new version will be enough,
+App use this package can update ref section to get new version
+ref: v2.0.0 <--- change here
+
+## Reference Documents
+
+- **/README.md**: provides a high-level overview of the project, including its purpose, tech stack .
+- **/CONTRIBUTING.md**: outlines the complete development workflow for contributing to the project.
+- **/AGENTS.md**: provides instructions and goals for AI assistants involved in the project.
