@@ -9,38 +9,35 @@ class LocalizationNl extends Localization {
   LocalizationNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Oeps, er is iets misgegaan';
-
-  @override
-  String get cli_error_content =>
-      'Er is een onverwachte fout opgetreden. Wil je een e-mailrapport sturen?';
-
-  @override
-  String get cli_error_report => 'Mail ons';
-
-  @override
-  String get submit => 'Verzenden';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Terug';
 
   @override
   String get cancel => 'Annuleren';
 
   @override
-  String get yes => 'Ja';
+  String get close => 'Sluiten';
+
+  @override
+  String get managed_error_content =>
+      'Er is een onverwachte fout opgetreden. We hebben deze fout al gelogd. Probeer het later opnieuw.';
+
+  @override
+  String get managed_error_oops => 'Oeps, er is iets misgegaan';
 
   @override
   String get no => 'Nee';
 
   @override
-  String get close => 'Sluiten';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Terug';
+  String get submit => 'Verzenden';
 
   @override
   String get system_language => 'Systeemtaal';
+
+  @override
+  String get yes => 'Ja';
 }
 
 /// The translations for Dutch Flemish, as used in Belgium (`nl_BE`).
@@ -48,36 +45,33 @@ class LocalizationNlBe extends LocalizationNl {
   LocalizationNlBe() : super('nl_BE');
 
   @override
-  String get cli_error_oops => 'Oeps, er is iets misgelopen';
-
-  @override
-  String get cli_error_content =>
-      'Er is een onverwachte fout opgetreden. Wilt u een e-mailrapport versturen?';
-
-  @override
-  String get cli_error_report => 'Mail ons';
-
-  @override
-  String get submit => 'Versturen';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Terug';
 
   @override
   String get cancel => 'Annuleren';
 
   @override
-  String get yes => 'Ja';
+  String get close => 'Sluiten';
+
+  @override
+  String get managed_error_content =>
+      'Er is een onverwachte fout opgetreden. We hebben deze fout al gelogd. Probeer het later opnieuw.';
+
+  @override
+  String get managed_error_oops => 'Oeps, er is iets misgelopen';
 
   @override
   String get no => 'Nee';
 
   @override
-  String get close => 'Sluiten';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Terug';
+  String get submit => 'Versturen';
 
   @override
   String get system_language => 'Systeemtaal';
+
+  @override
+  String get yes => 'Ja';
 }

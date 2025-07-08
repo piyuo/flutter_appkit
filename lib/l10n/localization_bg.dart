@@ -9,36 +9,33 @@ class LocalizationBg extends Localization {
   LocalizationBg([String locale = 'bg']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Опа, нещо се обърка';
-
-  @override
-  String get cli_error_content =>
-      'Възникна неочаквана грешка. Искате ли да изпратите имейл доклад?';
-
-  @override
-  String get cli_error_report => 'Пишете ни';
-
-  @override
-  String get submit => 'Изпрати';
-
-  @override
-  String get ok => 'ОК';
+  String get back => 'Назад';
 
   @override
   String get cancel => 'Отказ';
 
   @override
-  String get yes => 'Да';
+  String get close => 'Затвори';
+
+  @override
+  String get managed_error_content =>
+      'Възникна неочаквана грешка. Вече записахме тази грешка. Моля, опитайте отново по-късно.';
+
+  @override
+  String get managed_error_oops => 'Опа, нещо се обърка';
 
   @override
   String get no => 'Не';
 
   @override
-  String get close => 'Затвори';
+  String get ok => 'ОК';
 
   @override
-  String get back => 'Назад';
+  String get submit => 'Изпрати';
 
   @override
   String get system_language => 'Език на системата';
+
+  @override
+  String get yes => 'Да';
 }

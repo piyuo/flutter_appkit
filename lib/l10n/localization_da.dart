@@ -9,36 +9,33 @@ class LocalizationDa extends Localization {
   LocalizationDa([String locale = 'da']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ups, noget gik galt';
-
-  @override
-  String get cli_error_content =>
-      'Der opstod en uventet fejl. Vil du indsende en e-mailrapport?';
-
-  @override
-  String get cli_error_report => 'Send os en e-mail';
-
-  @override
-  String get submit => 'Indsend';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Tilbage';
 
   @override
   String get cancel => 'Annuller';
 
   @override
-  String get yes => 'Ja';
+  String get close => 'Luk';
+
+  @override
+  String get managed_error_content =>
+      'Der opstod en uventet fejl. Vi har allerede logget denne fejl. Prøv venligst igen senere.';
+
+  @override
+  String get managed_error_oops => 'Ups, noget gik galt';
 
   @override
   String get no => 'Nej';
 
   @override
-  String get close => 'Luk';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Tilbage';
+  String get submit => 'Indsend';
 
   @override
   String get system_language => 'Systemsprog';
+
+  @override
+  String get yes => 'Ja';
 }

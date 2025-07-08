@@ -9,36 +9,33 @@ class LocalizationHr extends Localization {
   LocalizationHr([String locale = 'hr']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ups, nešto je pošlo po krivu';
-
-  @override
-  String get cli_error_content =>
-      'Došlo je do neočekivane pogreške. Želite li poslati izvješće e-poštom?';
-
-  @override
-  String get cli_error_report => 'Pošaljite nam e-poštu';
-
-  @override
-  String get submit => 'Pošalji';
-
-  @override
-  String get ok => 'U redu';
+  String get back => 'Natrag';
 
   @override
   String get cancel => 'Odustani';
 
   @override
-  String get yes => 'Da';
+  String get close => 'Zatvori';
+
+  @override
+  String get managed_error_content =>
+      'Došlo je do neočekivane pogreške. Već smo zabilježili ovu grešku. Molimo pokušajte ponovo kasnije.';
+
+  @override
+  String get managed_error_oops => 'Ups, nešto je pošlo po krivu';
 
   @override
   String get no => 'Ne';
 
   @override
-  String get close => 'Zatvori';
+  String get ok => 'U redu';
 
   @override
-  String get back => 'Natrag';
+  String get submit => 'Pošalji';
 
   @override
   String get system_language => 'Sistemski jezik';
+
+  @override
+  String get yes => 'Da';
 }

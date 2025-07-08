@@ -9,36 +9,33 @@ class LocalizationLt extends Localization {
   LocalizationLt([String locale = 'lt']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Oi, kažkas nutiko';
-
-  @override
-  String get cli_error_content =>
-      'Įvyko netikėta klaida. Ar norėtumėte pateikti el. pašto ataskaitą?';
-
-  @override
-  String get cli_error_report => 'Susisiekite el. paštu';
-
-  @override
-  String get submit => 'Pateikti';
-
-  @override
-  String get ok => 'Gerai';
+  String get back => 'Atgal';
 
   @override
   String get cancel => 'Atšaukti';
 
   @override
-  String get yes => 'Taip';
+  String get close => 'Uždaryti';
+
+  @override
+  String get managed_error_content =>
+      'Įvyko netikėta klaida. Jau užregistravome šią klaidą. Bandykite dar kartą vėliau.';
+
+  @override
+  String get managed_error_oops => 'Oi, kažkas nutiko';
 
   @override
   String get no => 'Ne';
 
   @override
-  String get close => 'Uždaryti';
+  String get ok => 'Gerai';
 
   @override
-  String get back => 'Atgal';
+  String get submit => 'Pateikti';
 
   @override
   String get system_language => 'Sistemos kalba';
+
+  @override
+  String get yes => 'Taip';
 }

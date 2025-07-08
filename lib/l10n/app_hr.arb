@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Ups, nešto je pošlo po krivu",
-  "cli_error_content": "Došlo je do neočekivane pogreške. Želite li poslati izvješće e-poštom?",
-  "cli_error_report": "Pošaljite nam e-poštu",
-  "submit": "Pošalji",
-  "ok": "U redu",
-  "cancel": "Odustani",
-  "yes": "Da",
-  "no": "Ne",
-  "close": "Zatvori",
   "back": "Natrag",
-  "system_language": "Sistemski jezik"
+  "cancel": "Odustani",
+  "close": "Zatvori",
+  "managed_error_content": "Došlo je do neočekivane pogreške. Već smo zabilježili ovu grešku. Molimo pokušajte ponovo kasnije.",
+  "managed_error_oops": "Ups, nešto je pošlo po krivu",
+  "no": "Ne",
+  "ok": "U redu",
+  "submit": "Pošalji",
+  "system_language": "Sistemski jezik",
+  "yes": "Da"
 }

@@ -9,36 +9,33 @@ class LocalizationSw extends Localization {
   LocalizationSw([String locale = 'sw']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Samahani, kuna hitilafu imetokea';
-
-  @override
-  String get cli_error_content =>
-      'Hitilafu isiyotarajiwa imetokea. Je, ungependa kutuma ripoti kwa barua pepe?';
-
-  @override
-  String get cli_error_report => 'Tutumie barua pepe';
-
-  @override
-  String get submit => 'Wasilisha';
-
-  @override
-  String get ok => 'Sawa';
+  String get back => 'Rudi';
 
   @override
   String get cancel => 'Ghairi';
 
   @override
-  String get yes => 'Ndio';
+  String get close => 'Funga';
+
+  @override
+  String get managed_error_content =>
+      'Hitilafu isiyotarajiwa imetokea. Tayari tumerejelea hitilafu hii. Tafadhali jaribu tena baadaye.';
+
+  @override
+  String get managed_error_oops => 'Samahani, kuna hitilafu imetokea';
 
   @override
   String get no => 'La';
 
   @override
-  String get close => 'Funga';
+  String get ok => 'Sawa';
 
   @override
-  String get back => 'Rudi';
+  String get submit => 'Wasilisha';
 
   @override
   String get system_language => 'Lugha ya Mfumo';
+
+  @override
+  String get yes => 'Ndio';
 }

@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Samahani, kuna hitilafu imetokea",
-  "cli_error_content": "Hitilafu isiyotarajiwa imetokea. Je, ungependa kutuma ripoti kwa barua pepe?",
-  "cli_error_report": "Tutumie barua pepe",
-  "submit": "Wasilisha",
-  "ok": "Sawa",
-  "cancel": "Ghairi",
-  "yes": "Ndio",
-  "no": "La",
-  "close": "Funga",
   "back": "Rudi",
-  "system_language": "Lugha ya Mfumo"
+  "cancel": "Ghairi",
+  "close": "Funga",
+  "managed_error_content": "Hitilafu isiyotarajiwa imetokea. Tayari tumerejelea hitilafu hii. Tafadhali jaribu tena baadaye.",
+  "managed_error_oops": "Samahani, kuna hitilafu imetokea",
+  "no": "La",
+  "ok": "Sawa",
+  "submit": "Wasilisha",
+  "system_language": "Lugha ya Mfumo",
+  "yes": "Ndio"
 }

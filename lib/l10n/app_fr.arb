@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Oups, quelque chose s'est mal passé",
-  "cli_error_content": "Une erreur inattendue s'est produite. Souhaitez-vous envoyer un rapport par email ?",
-  "cli_error_report": "Nous contacter par email",
-  "submit": "Envoyer",
-  "ok": "OK",
-  "cancel": "Annuler",
-  "yes": "Oui",
-  "no": "Non",
-  "close": "Fermer",
   "back": "Retour",
-  "system_language": "Langue du système"
+  "cancel": "Annuler",
+  "close": "Fermer",
+  "managed_error_content": "Une erreur inattendue s'est produite. Nous avons déjà enregistré cette erreur. Veuillez réessayer plus tard.",
+  "managed_error_oops": "Oups, quelque chose s'est mal passé",
+  "no": "Non",
+  "ok": "OK",
+  "submit": "Envoyer",
+  "system_language": "Langue du système",
+  "yes": "Oui"
 }

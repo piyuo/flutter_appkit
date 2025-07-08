@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Voy, xatolik yuz berdi",
-  "cli_error_content": "Kutilmagan xatolik yuz berdi. Elektron pochta hisobotini yuborishni xohlaysizmi?",
-  "cli_error_report": "Bizga elektron pochta yuboring",
-  "submit": "Yuborish",
-  "ok": "OK",
-  "cancel": "Bekor qilish",
-  "yes": "Ha",
-  "no": "Yo'q",
-  "close": "Yopish",
   "back": "Orqaga",
-  "system_language": "Tizim tili"
+  "cancel": "Bekor qilish",
+  "close": "Yopish",
+  "managed_error_content": "Kutilmagan xatolik yuz berdi. Biz bu xatolikni allaqachon yozib qo'ygamiz. Iltimos keyinroq qayta urinib ko'ring.",
+  "managed_error_oops": "Voy, xatolik yuz berdi",
+  "no": "Yo'q",
+  "ok": "OK",
+  "submit": "Yuborish",
+  "system_language": "Tizim tili",
+  "yes": "Ha"
 }

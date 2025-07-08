@@ -7,7 +7,7 @@ A robust Flutter foundation library that provides essential application infrastr
 - **Error Handling**: Comprehensive error catching and reporting mechanism
 - **Global Context**: Centralized application context management
 - **Logging**: Built-in logging system for debugging and monitoring
-- **Internationalization**: Language file support for multi-language applications
+- **Internationalization**: Language file support for multi-language applications with 70+ locales
 - **Zero Configuration**: Drop-in replacement for Flutter's `runApp()`
 
 ## Installation
@@ -34,6 +34,110 @@ void main() {
 }
 ```
 
+## 🌍 Localization (i18n)
+
+LibCLI provides a streamlined localization system that supports 70+ languages and locales. All translations are managed through a single CSV file for easy maintenance and collaboration.
+
+### 📁 File Structure
+
+```
+/lib
+  /l10n
+    l10n.csv          # Master translation file (edit this)
+    *.arb             # Generated ARB files (do not edit)
+    *.dart            # Generated Dart files (do not edit)
+```
+
+### 🔧 How It Works
+
+1. **Central Translation File**: All translations are stored in `/lib/l10n/l10n.csv`
+2. **CSV Format**: Standard CSV with key column and locale columns
+3. **Automatic Generation**: Script converts CSV to Flutter ARB format and generates Dart code
+
+### 📝 CSV Structure
+
+The `l10n.csv` file follows this format:
+
+```csv
+Key,app_af,app_am,app_ar,app_en,app_es,app_fr,app_de,app_ja,app_ko,app_zh,...
+back,Terug,ተመለስ,رجوع,Back,Atrás,Retour,Zurück,戻る,뒤로,返回,...
+save,Stoor,አስቀምጥ,حفظ,Save,Guardar,Sauvegarder,Speichern,保存,저장,保存,...
+```
+
+**Column Format**:
+- `Key`: Translation key used in your Dart code
+- `app_[locale]`: Translation for specific locale (e.g., `app_en` for English, `app_zh_CN` for Chinese Simplified)
+
+### 🛠️ Adding/Updating Translations
+
+1. **Edit the CSV file**: Open `/lib/l10n/l10n.csv` in any text editor or spreadsheet application
+2. **Add new keys**: Add new rows with translation key and values for each locale
+3. **Update existing translations**: Modify existing values in the CSV
+4. **Generate Flutter files**: Run the convert script
+
+```bash
+# build_translation will Convert CSV to ARB and generate Dart files
+./scripts/build_translation.sh
+```
+
+> **⚠️ CRITICAL: CSV Comma Escaping**
+>
+> When adding or updating translations in the CSV file, **always escape commas properly**:
+> - **Text containing commas MUST be wrapped in double quotes**: `"Hello, world"`
+> - **Double quotes within text must be escaped with double quotes**: `"She said ""Hello"""`
+> - **Failure to escape commas will cause column misalignment and build errors**
+>
+> **Examples**:
+> ```csv
+> Key,app_en,app_es,app_fr
+> greeting,"Hello, welcome!","¡Hola, bienvenido!","Bonjour, bienvenue!"
+> quote_example,"She said ""Hello""","Ella dijo ""Hola""","Elle a dit ""Bonjour"""
+> ```
+
+This script:
+- Converts `l10n.csv` to standard Flutter ARB files
+- Automatically runs `flutter gen-l10n` to generate Dart localization classes
+- Creates ready-to-use localization files in your project
+
+### 💻 Usage in Code
+
+After running the generation script, use translations in your Flutter code with the convenient `context.l` extension:
+
+```dart
+import 'package:libcli/l10n/l10n.dart';
+
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(context.l.back),        // Displays "Back" in current locale;
+  }
+}
+```
+
+### 📋 Best Practices
+
+- **Keep keys descriptive**: Use clear, meaningful keys like `login_button` instead of `btn1`
+- **Use CSV tools**: Edit the CSV in spreadsheet applications for easier management
+- **⚠️ ALWAYS escape commas**: Wrap text containing commas in double quotes to prevent column misalignment
+- **Test translations**: Verify translations in context, especially for RTL languages
+- **Consistent terminology**: Maintain consistent terminology across all locales
+- **Handle pluralization**: Use ICU message format for complex pluralization rules when needed
+
+### 🔄 Workflow for Teams
+
+1. **Developers**: Add new translation keys to CSV with English values
+2. **Translators**: Fill in translations for their assigned locales
+3. **Build Process**: Run `./scripts/build_translation.sh` to generate files
+4. **Version Control**: Commit both CSV and generated files to ensure consistency
+
+### 🚨 Important Notes
+
+- **Never edit generated files**: Only modify `l10n.csv` directly
+- **⚠️ ALWAYS escape commas in CSV**: Text containing commas must be wrapped in double quotes (`"Hello, world!"`) to prevent build errors
+- **Run script after changes**: Always run the generation script after CSV updates
+- **Commit generated files**: Include generated `.arb` and `.dart` files in version control
+- **Test thoroughly**: Test your app in different locales to ensure proper display and functionality
+
 ## 🧰 Tech Stack
 
 - **Flutter (Stable Channel, e.g., 3.x.x)**: Core UI framework for cross-platform mobile, web, and desktop development.
@@ -55,6 +159,16 @@ These tools support local development, collaboration, and testing:
 - **Android Studio** – Used for advanced Android-specific debugging, emulators, and device management.
 - **Xcode** – Essential for iOS development, simulators, device provisioning, and debugging on Apple platforms.
 - **Postman** – For API testing and development, crucial when interacting with backend services.
+
+### 📦 Dependency Management
+
+The project includes automated dependency management tools:
+
+- **upgrade_deps.sh** – Automated script that updates all dependencies in `pubspec.yaml` to their latest versions. Run this script to keep your dependencies current without manual intervention:
+
+```bash
+./scripts/upgrade_deps.sh
+```
 
 ## ✅ Best Practices to Follow
 

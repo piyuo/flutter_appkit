@@ -9,36 +9,33 @@ class LocalizationMl extends Localization {
   LocalizationMl([String locale = 'ml']) : super(locale);
 
   @override
-  String get cli_error_oops => 'അയ്യോ, എന്തോ തെറ്റ് സംഭവിച്ചു';
-
-  @override
-  String get cli_error_content =>
-      'അപ്രതീക്ഷിതമായ ഒരു പിശക് സംഭവിച്ചു. ഇമെയിൽ റിപ്പോർട്ട് സമർപ്പിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?';
-
-  @override
-  String get cli_error_report => 'ഞങ്ങൾക്ക് ഇമെയിൽ ചെയ്യുക';
-
-  @override
-  String get submit => 'സമർപ്പിക്കുക';
-
-  @override
-  String get ok => 'ശരി';
+  String get back => 'തിരികെ';
 
   @override
   String get cancel => 'റദ്ദാക്കുക';
 
   @override
-  String get yes => 'അതെ';
+  String get close => 'അടയ്ക്കുക';
+
+  @override
+  String get managed_error_content =>
+      'അപ്രതീക്ഷിതമായ ഒരു പിശക് സംഭവിച്ചു. ഞങ്ങൾ ഈ പിശക് ഇതിനകം ലോഗ് ചെയ്തിട്ടുണ്ട്. ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.';
+
+  @override
+  String get managed_error_oops => 'അയ്യോ, എന്തോ തെറ്റ് സംഭവിച്ചു';
 
   @override
   String get no => 'അല്ല';
 
   @override
-  String get close => 'അടയ്ക്കുക';
+  String get ok => 'ശരി';
 
   @override
-  String get back => 'തിരികെ';
+  String get submit => 'സമർപ്പിക്കുക';
 
   @override
   String get system_language => 'സിസ്റ്റം ഭാഷ';
+
+  @override
+  String get yes => 'അതെ';
 }

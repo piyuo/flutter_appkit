@@ -9,36 +9,33 @@ class LocalizationMr extends Localization {
   LocalizationMr([String locale = 'mr']) : super(locale);
 
   @override
-  String get cli_error_oops => 'अरेरे, काहीतरी चूक झाली';
-
-  @override
-  String get cli_error_content =>
-      'अनपेक्षित त्रुटी आली. तुम्हाला ईमेल अहवाल सादर करायचा आहे का?';
-
-  @override
-  String get cli_error_report => 'आम्हाला ईमेल करा';
-
-  @override
-  String get submit => 'सबमिट करा';
-
-  @override
-  String get ok => 'ठीक आहे';
+  String get back => 'मागे';
 
   @override
   String get cancel => 'रद्द करा';
 
   @override
-  String get yes => 'होय';
+  String get close => 'बंद करा';
+
+  @override
+  String get managed_error_content =>
+      'अनपेक्षित त्रुटी आली. आम्ही आधीच ही त्रुटी लॉग केली आहे. कृपया नंतर पुन्हा प्रयत्न करा.';
+
+  @override
+  String get managed_error_oops => 'अरेरे, काहीतरी चूक झाली';
 
   @override
   String get no => 'नाही';
 
   @override
-  String get close => 'बंद करा';
+  String get ok => 'ठीक आहे';
 
   @override
-  String get back => 'मागे';
+  String get submit => 'सबमिट करा';
 
   @override
   String get system_language => 'प्रणाली भाषा';
+
+  @override
+  String get yes => 'होय';
 }

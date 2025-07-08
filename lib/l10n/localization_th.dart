@@ -9,36 +9,33 @@ class LocalizationTh extends Localization {
   LocalizationTh([String locale = 'th']) : super(locale);
 
   @override
-  String get cli_error_oops => 'อุปส์ มีบางอย่างผิดพลาด';
-
-  @override
-  String get cli_error_content =>
-      'เกิดข้อผิดพลาดที่ไม่คาดคิด คุณต้องการส่งรายงานทางอีเมลหรือไม่?';
-
-  @override
-  String get cli_error_report => 'อีเมลถึงเรา';
-
-  @override
-  String get submit => 'ส่ง';
-
-  @override
-  String get ok => 'ตกลง';
+  String get back => 'กลับ';
 
   @override
   String get cancel => 'ยกเลิก';
 
   @override
-  String get yes => 'ใช่';
+  String get close => 'ปิด';
+
+  @override
+  String get managed_error_content =>
+      'เกิดข้อผิดพลาดที่ไม่คาดคิด เราได้บันทึกข้อผิดพลาดนี้แล้ว กรุณาลองใหม่อีกครั้งในภายหลัง';
+
+  @override
+  String get managed_error_oops => 'อุปส์ มีบางอย่างผิดพลาด';
 
   @override
   String get no => 'ไม่';
 
   @override
-  String get close => 'ปิด';
+  String get ok => 'ตกลง';
 
   @override
-  String get back => 'กลับ';
+  String get submit => 'ส่ง';
 
   @override
   String get system_language => 'ภาษาระบบ';
+
+  @override
+  String get yes => 'ใช่';
 }

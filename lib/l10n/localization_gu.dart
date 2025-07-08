@@ -9,36 +9,33 @@ class LocalizationGu extends Localization {
   LocalizationGu([String locale = 'gu']) : super(locale);
 
   @override
-  String get cli_error_oops => 'અરે, કંઈક ખોટું થયું';
-
-  @override
-  String get cli_error_content =>
-      'અનપેક્ષિત ભૂલ આવી. શું તમે ઈમેલ રિપોર્ટ મોકલવા માંગો છો?';
-
-  @override
-  String get cli_error_report => 'અમને ઈમેલ કરો';
-
-  @override
-  String get submit => 'સબમિટ કરો';
-
-  @override
-  String get ok => 'ઠીક છે';
+  String get back => 'પાછળ';
 
   @override
   String get cancel => 'રદ કરો';
 
   @override
-  String get yes => 'હા';
+  String get close => 'બંધ કરો';
+
+  @override
+  String get managed_error_content =>
+      'અનપેક્ષિત ભૂલ આવી. અમે આ ભૂલ પહેલાથી લોગ કરી છે. કૃપા કરીને પછી ફરી પ્રયાસ કરો.';
+
+  @override
+  String get managed_error_oops => 'અરે, કંઈક ખોટું થયું';
 
   @override
   String get no => 'ના';
 
   @override
-  String get close => 'બંધ કરો';
+  String get ok => 'ઠીક છે';
 
   @override
-  String get back => 'પાછળ';
+  String get submit => 'સબમિટ કરો';
 
   @override
   String get system_language => 'સિસ્ટમ ભાષા';
+
+  @override
+  String get yes => 'હા';
 }

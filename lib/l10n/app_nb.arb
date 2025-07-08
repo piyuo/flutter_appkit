@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Ups, noe gikk galt",
-  "cli_error_content": "Det oppstod en uventet feil. Vil du sende en e-postrapport?",
-  "cli_error_report": "Send oss e-post",
-  "submit": "Send inn",
-  "ok": "OK",
-  "cancel": "Avbryt",
-  "yes": "Ja",
-  "no": "Nei",
-  "close": "Lukk",
   "back": "Tilbake",
-  "system_language": "Systemspråk"
+  "cancel": "Avbryt",
+  "close": "Lukk",
+  "managed_error_content": "Det oppstod en uventet feil. Vi har allerede loggført denne feilen. Vennligst prøv igjen senere.",
+  "managed_error_oops": "Ups, noe gikk galt",
+  "no": "Nei",
+  "ok": "OK",
+  "submit": "Send inn",
+  "system_language": "Systemspråk",
+  "yes": "Ja"
 }

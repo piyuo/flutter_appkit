@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Rất tiếc, đã xảy ra lỗi",
-  "cli_error_content": "Đã xảy ra lỗi không mong muốn. Bạn có muốn gửi báo cáo qua email không?",
-  "cli_error_report": "Gửi email cho chúng tôi",
-  "submit": "Gửi đi",
-  "ok": "OK",
-  "cancel": "Hủy",
-  "yes": "Có",
-  "no": "Không",
-  "close": "Đóng",
   "back": "Quay lại",
-  "system_language": "Ngôn ngữ hệ thống"
+  "cancel": "Hủy",
+  "close": "Đóng",
+  "managed_error_content": "Đã xảy ra lỗi không mong muốn. Chúng tôi đã ghi lại lỗi này rồi. Vui lòng thử lại sau.",
+  "managed_error_oops": "Rất tiếc, đã xảy ra lỗi",
+  "no": "Không",
+  "ok": "OK",
+  "submit": "Gửi đi",
+  "system_language": "Ngôn ngữ hệ thống",
+  "yes": "Có"
 }

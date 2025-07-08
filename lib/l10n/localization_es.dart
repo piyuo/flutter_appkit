@@ -9,38 +9,35 @@ class LocalizationEs extends Localization {
   LocalizationEs([String locale = 'es']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ups, algo salió mal';
-
-  @override
-  String get cli_error_content =>
-      'Ocurrió un error inesperado. ¿Te gustaría enviar un informe por correo electrónico?';
-
-  @override
-  String get cli_error_report => 'Envíanos un correo';
-
-  @override
-  String get submit => 'Enviar';
-
-  @override
-  String get ok => 'Aceptar';
+  String get back => 'Atrás';
 
   @override
   String get cancel => 'Cancelar';
 
   @override
-  String get yes => 'Sí';
+  String get close => 'Cerrar';
+
+  @override
+  String get managed_error_content =>
+      'Ocurrió un error inesperado. Ya hemos registrado este error. Por favor, inténtalo de nuevo más tarde.';
+
+  @override
+  String get managed_error_oops => 'Ups, algo salió mal';
 
   @override
   String get no => 'No';
 
   @override
-  String get close => 'Cerrar';
+  String get ok => 'Aceptar';
 
   @override
-  String get back => 'Atrás';
+  String get submit => 'Enviar';
 
   @override
   String get system_language => 'Idioma del sistema';
+
+  @override
+  String get yes => 'Sí';
 }
 
 /// The translations for Spanish Castilian, as used in Argentina (`es_AR`).
@@ -48,38 +45,35 @@ class LocalizationEsAr extends LocalizationEs {
   LocalizationEsAr() : super('es_AR');
 
   @override
-  String get cli_error_oops => 'Ups, algo salió mal';
-
-  @override
-  String get cli_error_content =>
-      'Ocurrió un error inesperado. ¿Querés enviar un informe por correo electrónico?';
-
-  @override
-  String get cli_error_report => 'Envianos un correo';
-
-  @override
-  String get submit => 'Enviar';
-
-  @override
-  String get ok => 'Aceptar';
+  String get back => 'Atrás';
 
   @override
   String get cancel => 'Cancelar';
 
   @override
-  String get yes => 'Sí';
+  String get close => 'Cerrar';
+
+  @override
+  String get managed_error_content =>
+      'Ocurrió un error inesperado. Ya registramos este error. Por favor, intentá de nuevo más tarde.';
+
+  @override
+  String get managed_error_oops => 'Ups, algo salió mal';
 
   @override
   String get no => 'No';
 
   @override
-  String get close => 'Cerrar';
+  String get ok => 'Aceptar';
 
   @override
-  String get back => 'Atrás';
+  String get submit => 'Enviar';
 
   @override
   String get system_language => 'Idioma del sistema';
+
+  @override
+  String get yes => 'Sí';
 }
 
 /// The translations for Spanish Castilian, as used in Colombia (`es_CO`).
@@ -87,38 +81,35 @@ class LocalizationEsCo extends LocalizationEs {
   LocalizationEsCo() : super('es_CO');
 
   @override
-  String get cli_error_oops => 'Ups, algo salió mal';
-
-  @override
-  String get cli_error_content =>
-      'Ocurrió un error inesperado. ¿Te gustaría enviar un informe por correo electrónico?';
-
-  @override
-  String get cli_error_report => 'Envíanos un correo';
-
-  @override
-  String get submit => 'Enviar';
-
-  @override
-  String get ok => 'Aceptar';
+  String get back => 'Atrás';
 
   @override
   String get cancel => 'Cancelar';
 
   @override
-  String get yes => 'Sí';
+  String get close => 'Cerrar';
+
+  @override
+  String get managed_error_content =>
+      'Ocurrió un error inesperado. Ya hemos registrado este error. Por favor, inténtalo de nuevo más tarde.';
+
+  @override
+  String get managed_error_oops => 'Ups, algo salió mal';
 
   @override
   String get no => 'No';
 
   @override
-  String get close => 'Cerrar';
+  String get ok => 'Aceptar';
 
   @override
-  String get back => 'Atrás';
+  String get submit => 'Enviar';
 
   @override
   String get system_language => 'Idioma del sistema';
+
+  @override
+  String get yes => 'Sí';
 }
 
 /// The translations for Spanish Castilian, as used in Mexico (`es_MX`).
@@ -126,36 +117,33 @@ class LocalizationEsMx extends LocalizationEs {
   LocalizationEsMx() : super('es_MX');
 
   @override
-  String get cli_error_oops => 'Ups, algo salió mal';
-
-  @override
-  String get cli_error_content =>
-      'Ocurrió un error inesperado. ¿Te gustaría enviar un reporte por correo electrónico?';
-
-  @override
-  String get cli_error_report => 'Envíanos un correo';
-
-  @override
-  String get submit => 'Enviar';
-
-  @override
-  String get ok => 'Aceptar';
+  String get back => 'Atrás';
 
   @override
   String get cancel => 'Cancelar';
 
   @override
-  String get yes => 'Sí';
+  String get close => 'Cerrar';
+
+  @override
+  String get managed_error_content =>
+      'Ocurrió un error inesperado. Ya registramos este error. Por favor, inténtalo de nuevo más tarde.';
+
+  @override
+  String get managed_error_oops => 'Ups, algo salió mal';
 
   @override
   String get no => 'No';
 
   @override
-  String get close => 'Cerrar';
+  String get ok => 'Aceptar';
 
   @override
-  String get back => 'Atrás';
+  String get submit => 'Enviar';
 
   @override
   String get system_language => 'Idioma del sistema';
+
+  @override
+  String get yes => 'Sí';
 }

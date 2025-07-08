@@ -9,36 +9,33 @@ class LocalizationMn extends Localization {
   LocalizationMn([String locale = 'mn']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Өө, ямар нэгэн зүйл буруу болсон';
-
-  @override
-  String get cli_error_content =>
-      'Гэнэтийн алдаа гарлаа. Та имэйлээр тайлан илгээхийг хүсч байна уу?';
-
-  @override
-  String get cli_error_report => 'Бидэнд имэйл илгээх';
-
-  @override
-  String get submit => 'Илгээх';
-
-  @override
-  String get ok => 'ЗА';
+  String get back => 'Буцах';
 
   @override
   String get cancel => 'Цуцлах';
 
   @override
-  String get yes => 'Тийм';
+  String get close => 'Хаах';
+
+  @override
+  String get managed_error_content =>
+      'Гэнэтийн алдаа гарлаа. Бид энэ алдааг аль хэдийн бүртгэсэн. Дараа дахин оролдоно уу.';
+
+  @override
+  String get managed_error_oops => 'Өө, ямар нэгэн зүйл буруу болсон';
 
   @override
   String get no => 'Үгүй';
 
   @override
-  String get close => 'Хаах';
+  String get ok => 'ЗА';
 
   @override
-  String get back => 'Буцах';
+  String get submit => 'Илгээх';
 
   @override
   String get system_language => 'Системийн хэл';
+
+  @override
+  String get yes => 'Тийм';
 }

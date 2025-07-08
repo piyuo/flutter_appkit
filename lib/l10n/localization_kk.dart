@@ -9,36 +9,33 @@ class LocalizationKk extends Localization {
   LocalizationKk([String locale = 'kk']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ойбай, бір нәрсе дұрыс болмады';
-
-  @override
-  String get cli_error_content =>
-      'Күтпеген қате орын алды. Электрондық пошта арқылы есеп жібергіңіз келе ме?';
-
-  @override
-  String get cli_error_report => 'Бізге электрондық хат жіберіңіз';
-
-  @override
-  String get submit => 'Жіберу';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Артқа';
 
   @override
   String get cancel => 'Болдырмау';
 
   @override
-  String get yes => 'Иә';
+  String get close => 'Жабу';
+
+  @override
+  String get managed_error_content =>
+      'Күтпеген қате орын алды. Біз бұл қатені әлдеқашан журналға енгіздік. Кейінірек қайталап көріңіз.';
+
+  @override
+  String get managed_error_oops => 'Ойбай, бір нәрсе дұрыс болмады';
 
   @override
   String get no => 'Жоқ';
 
   @override
-  String get close => 'Жабу';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Артқа';
+  String get submit => 'Жіберу';
 
   @override
   String get system_language => 'Жүйе тілі';
+
+  @override
+  String get yes => 'Иә';
 }

@@ -9,36 +9,33 @@ class LocalizationNb extends Localization {
   LocalizationNb([String locale = 'nb']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ups, noe gikk galt';
-
-  @override
-  String get cli_error_content =>
-      'Det oppstod en uventet feil. Vil du sende en e-postrapport?';
-
-  @override
-  String get cli_error_report => 'Send oss e-post';
-
-  @override
-  String get submit => 'Send inn';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Tilbake';
 
   @override
   String get cancel => 'Avbryt';
 
   @override
-  String get yes => 'Ja';
+  String get close => 'Lukk';
+
+  @override
+  String get managed_error_content =>
+      'Det oppstod en uventet feil. Vi har allerede loggført denne feilen. Vennligst prøv igjen senere.';
+
+  @override
+  String get managed_error_oops => 'Ups, noe gikk galt';
 
   @override
   String get no => 'Nei';
 
   @override
-  String get close => 'Lukk';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Tilbake';
+  String get submit => 'Send inn';
 
   @override
   String get system_language => 'Systemspråk';
+
+  @override
+  String get yes => 'Ja';
 }

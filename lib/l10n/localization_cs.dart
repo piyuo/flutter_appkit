@@ -9,36 +9,33 @@ class LocalizationCs extends Localization {
   LocalizationCs([String locale = 'cs']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Jejda, něco se pokazilo';
-
-  @override
-  String get cli_error_content =>
-      'Došlo k neočekávané chybě. Chcete odeslat zprávu e-mailem?';
-
-  @override
-  String get cli_error_report => 'Napište nám';
-
-  @override
-  String get submit => 'Odeslat';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Zpět';
 
   @override
   String get cancel => 'Zrušit';
 
   @override
-  String get yes => 'Ano';
+  String get close => 'Zavřít';
+
+  @override
+  String get managed_error_content =>
+      'Došlo k neočekávané chybě. Tuto chybu jsme již zaznamenali. Zkuste to prosím znovu později.';
+
+  @override
+  String get managed_error_oops => 'Jejda, něco se pokazilo';
 
   @override
   String get no => 'Ne';
 
   @override
-  String get close => 'Zavřít';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Zpět';
+  String get submit => 'Odeslat';
 
   @override
   String get system_language => 'Systémový jazyk';
+
+  @override
+  String get yes => 'Ano';
 }

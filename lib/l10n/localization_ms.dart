@@ -9,38 +9,35 @@ class LocalizationMs extends Localization {
   LocalizationMs([String locale = 'ms']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Alamak, ada sesuatu yang tidak kena';
-
-  @override
-  String get cli_error_content =>
-      'Ralat tidak dijangka telah berlaku. Adakah anda ingin menghantar laporan melalui e-mel?';
-
-  @override
-  String get cli_error_report => 'E-mel kepada kami';
-
-  @override
-  String get submit => 'Hantar';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Kembali';
 
   @override
   String get cancel => 'Batal';
 
   @override
-  String get yes => 'Ya';
+  String get close => 'Tutup';
+
+  @override
+  String get managed_error_content =>
+      'Ralat tidak dijangka telah berlaku. Kami telah mencatat ralat ini. Sila cuba lagi nanti.';
+
+  @override
+  String get managed_error_oops => 'Alamak, ada sesuatu yang tidak kena';
 
   @override
   String get no => 'Tidak';
 
   @override
-  String get close => 'Tutup';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Kembali';
+  String get submit => 'Hantar';
 
   @override
   String get system_language => 'Bahasa Sistem';
+
+  @override
+  String get yes => 'Ya';
 }
 
 /// The translations for Malay, as used in Singapore (`ms_SG`).
@@ -48,36 +45,33 @@ class LocalizationMsSg extends LocalizationMs {
   LocalizationMsSg() : super('ms_SG');
 
   @override
-  String get cli_error_oops => 'Alamak, ada sesuatu yang tidak betul';
-
-  @override
-  String get cli_error_content =>
-      'Ralat tidak dijangka telah berlaku. Adakah anda ingin menghantar laporan melalui e-mel?';
-
-  @override
-  String get cli_error_report => 'E-mel kepada kami';
-
-  @override
-  String get submit => 'Hantar';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Kembali';
 
   @override
   String get cancel => 'Batal';
 
   @override
-  String get yes => 'Ya';
+  String get close => 'Tutup';
+
+  @override
+  String get managed_error_content =>
+      'Ralat tidak dijangka telah berlaku. Kami telah mencatat ralat ini. Sila cuba lagi nanti.';
+
+  @override
+  String get managed_error_oops => 'Alamak, ada sesuatu yang tidak betul';
 
   @override
   String get no => 'Tidak';
 
   @override
-  String get close => 'Tutup';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Kembali';
+  String get submit => 'Hantar';
 
   @override
   String get system_language => 'Bahasa Sistem';
+
+  @override
+  String get yes => 'Ya';
 }

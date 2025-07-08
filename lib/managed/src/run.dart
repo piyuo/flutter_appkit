@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:libcli/l10n/l10n.dart';
 import 'package:libcli/log/log.dart' as log;
 
-import 'error_email.dart';
 import 'global_context_support.dart';
+import 'show_error.dart';
 
 var showCatchedAlert = false;
 
@@ -22,6 +22,11 @@ void run(Function suspect, {bool Function(dynamic)? alertUser}) {
       alertUser,
     );
     originalOnError?.call(details);
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    catched(error, stack, alertUser);
+    return true;
   };
 
   runZonedGuarded<Future<void>>(
@@ -53,29 +58,7 @@ Future<void> catched(dynamic e, StackTrace? stack, bool Function(dynamic)? alert
   }
   showCatchedAlert = true;
   try {
-    showCupertinoDialog(
-      context: globalContext,
-      builder: (context) => CupertinoAlertDialog(
-        title: Text(context.l.cli_error_oops, style: TextStyle(fontSize: 20.0)),
-        content: Text(context.l.cli_error_content, style: TextStyle(fontSize: 16.0)),
-        actions: [
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            child: Text(context.l.cancel, style: TextStyle(color: CupertinoColors.label.resolveFrom(context))),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          CupertinoDialogAction(
-            isDestructiveAction: true,
-            child: Text(context.l.cli_error_report),
-            onPressed: () {
-              final em = ErrorEmail();
-              em.launchMailTo();
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
+    showError(e, stack);
   } catch (ex) {
     debugPrint(ex.toString()); //don't show error if something wrong in alert
   } finally {

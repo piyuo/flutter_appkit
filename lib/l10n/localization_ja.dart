@@ -9,35 +9,33 @@ class LocalizationJa extends Localization {
   LocalizationJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get cli_error_oops => 'おっと、問題が発生しました';
-
-  @override
-  String get cli_error_content => '予期せぬエラーが発生しました。メールでレポートを送信しますか？';
-
-  @override
-  String get cli_error_report => 'メールで連絡する';
-
-  @override
-  String get submit => '送信';
-
-  @override
-  String get ok => 'OK';
+  String get back => '戻る';
 
   @override
   String get cancel => 'キャンセル';
 
   @override
-  String get yes => 'はい';
+  String get close => '閉じる';
+
+  @override
+  String get managed_error_content =>
+      '予期せぬエラーが発生しました。このエラーはすでに記録されています。後でもう一度お試しください。';
+
+  @override
+  String get managed_error_oops => 'おっと、問題が発生しました';
 
   @override
   String get no => 'いいえ';
 
   @override
-  String get close => '閉じる';
+  String get ok => 'OK';
 
   @override
-  String get back => '戻る';
+  String get submit => '送信';
 
   @override
   String get system_language => 'システム言語';
+
+  @override
+  String get yes => 'はい';
 }

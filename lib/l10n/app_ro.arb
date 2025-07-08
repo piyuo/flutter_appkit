@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Ups, ceva nu a funcționat",
-  "cli_error_content": "A apărut o eroare neașteptată. Doriți să trimiteți un raport prin e-mail?",
-  "cli_error_report": "Trimite-ne un e-mail",
-  "submit": "Trimite",
-  "ok": "OK",
-  "cancel": "Anulează",
-  "yes": "Da",
-  "no": "Nu",
-  "close": "Închide",
   "back": "Înapoi",
-  "system_language": "Limba sistemului"
+  "cancel": "Anulează",
+  "close": "Închide",
+  "managed_error_content": "A apărut o eroare neașteptată. Am înregistrat deja această eroare. Vă rugăm să încercați din nou mai târziu.",
+  "managed_error_oops": "Ups, ceva nu a funcționat",
+  "no": "Nu",
+  "ok": "OK",
+  "submit": "Trimite",
+  "system_language": "Limba sistemului",
+  "yes": "Da"
 }

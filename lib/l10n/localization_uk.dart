@@ -9,36 +9,33 @@ class LocalizationUk extends Localization {
   LocalizationUk([String locale = 'uk']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Упс, щось пішло не так';
-
-  @override
-  String get cli_error_content =>
-      'Сталася неочікувана помилка. Бажаєте надіслати звіт електронною поштою?';
-
-  @override
-  String get cli_error_report => 'Напишіть нам';
-
-  @override
-  String get submit => 'Надіслати';
-
-  @override
-  String get ok => 'Гаразд';
+  String get back => 'Назад';
 
   @override
   String get cancel => 'Скасувати';
 
   @override
-  String get yes => 'Так';
+  String get close => 'Закрити';
+
+  @override
+  String get managed_error_content =>
+      'Сталася неочікувана помилка. Ми вже зареєстрували цю помилку. Будь ласка, спробуйте ще раз пізніше.';
+
+  @override
+  String get managed_error_oops => 'Упс, щось пішло не так';
 
   @override
   String get no => 'Ні';
 
   @override
-  String get close => 'Закрити';
+  String get ok => 'Гаразд';
 
   @override
-  String get back => 'Назад';
+  String get submit => 'Надіслати';
 
   @override
   String get system_language => 'Мова системи';
+
+  @override
+  String get yes => 'Так';
 }

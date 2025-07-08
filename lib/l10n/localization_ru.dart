@@ -9,38 +9,35 @@ class LocalizationRu extends Localization {
   LocalizationRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Упс, что-то пошло не так';
-
-  @override
-  String get cli_error_content =>
-      'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
-
-  @override
-  String get cli_error_report => 'Напишите нам';
-
-  @override
-  String get submit => 'Отправить';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Назад';
 
   @override
   String get cancel => 'Отмена';
 
   @override
-  String get yes => 'Да';
+  String get close => 'Закрыть';
+
+  @override
+  String get managed_error_content =>
+      'Произошла непредвиденная ошибка. Мы уже зарегистрировали эту ошибку. Пожалуйста, попробуйте снова позже.';
+
+  @override
+  String get managed_error_oops => 'Упс, что-то пошло не так';
 
   @override
   String get no => 'Нет';
 
   @override
-  String get close => 'Закрыть';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Назад';
+  String get submit => 'Отправить';
 
   @override
   String get system_language => 'Язык системы';
+
+  @override
+  String get yes => 'Да';
 }
 
 /// The translations for Russian, as used in Kazakhstan (`ru_KZ`).
@@ -48,38 +45,35 @@ class LocalizationRuKz extends LocalizationRu {
   LocalizationRuKz() : super('ru_KZ');
 
   @override
-  String get cli_error_oops => 'Упс, что-то пошло не так';
-
-  @override
-  String get cli_error_content =>
-      'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
-
-  @override
-  String get cli_error_report => 'Напишите нам';
-
-  @override
-  String get submit => 'Отправить';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Назад';
 
   @override
   String get cancel => 'Отмена';
 
   @override
-  String get yes => 'Да';
+  String get close => 'Закрыть';
+
+  @override
+  String get managed_error_content =>
+      'Произошла непредвиденная ошибка. Мы уже зарегистрировали эту ошибку. Пожалуйста, попробуйте снова позже.';
+
+  @override
+  String get managed_error_oops => 'Упс, что-то пошло не так';
 
   @override
   String get no => 'Нет';
 
   @override
-  String get close => 'Закрыть';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Назад';
+  String get submit => 'Отправить';
 
   @override
   String get system_language => 'Мова системи';
+
+  @override
+  String get yes => 'Да';
 }
 
 /// The translations for Russian, as used in Ukraine (`ru_UA`).
@@ -87,36 +81,33 @@ class LocalizationRuUa extends LocalizationRu {
   LocalizationRuUa() : super('ru_UA');
 
   @override
-  String get cli_error_oops => 'Упс, что-то пошло не так';
-
-  @override
-  String get cli_error_content =>
-      'Произошла непредвиденная ошибка. Хотите отправить отчет по электронной почте?';
-
-  @override
-  String get cli_error_report => 'Напишите нам';
-
-  @override
-  String get submit => 'Отправить';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Назад';
 
   @override
   String get cancel => 'Отмена';
 
   @override
-  String get yes => 'Да';
+  String get close => 'Закрыть';
+
+  @override
+  String get managed_error_content =>
+      'Произошла непредвиденная ошибка. Мы уже зарегистрировали эту ошибку. Пожалуйста, попробуйте снова позже.';
+
+  @override
+  String get managed_error_oops => 'Упс, что-то пошло не так';
 
   @override
   String get no => 'Нет';
 
   @override
-  String get close => 'Закрыть';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Назад';
+  String get submit => 'Отправить';
 
   @override
   String get system_language => 'Системски језик';
+
+  @override
+  String get yes => 'Да';
 }

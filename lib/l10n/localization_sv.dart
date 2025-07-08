@@ -9,36 +9,33 @@ class LocalizationSv extends Localization {
   LocalizationSv([String locale = 'sv']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Hoppsan, något gick fel';
-
-  @override
-  String get cli_error_content =>
-      'Ett oväntat fel inträffade. Vill du skicka en rapport via e-post?';
-
-  @override
-  String get cli_error_report => 'Mejla oss';
-
-  @override
-  String get submit => 'Skicka';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Tillbaka';
 
   @override
   String get cancel => 'Avbryt';
 
   @override
-  String get yes => 'Ja';
+  String get close => 'Stäng';
+
+  @override
+  String get managed_error_content =>
+      'Ett oväntat fel inträffade. Vi har redan loggat detta fel. Försök igen senare.';
+
+  @override
+  String get managed_error_oops => 'Hoppsan, något gick fel';
 
   @override
   String get no => 'Nej';
 
   @override
-  String get close => 'Stäng';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Tillbaka';
+  String get submit => 'Skicka';
 
   @override
   String get system_language => 'Systemspråk';
+
+  @override
+  String get yes => 'Ja';
 }
