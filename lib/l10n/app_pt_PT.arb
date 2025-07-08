@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Ups, algo correu mal",
-  "cli_error_content": "Ocorreu um erro inesperado. Pretende enviar um relatório por e-mail?",
-  "cli_error_report": "Enviar-nos e-mail",
-  "submit": "Submeter",
-  "ok": "OK",
-  "cancel": "Cancelar",
-  "yes": "Sim",
-  "no": "Não",
-  "close": "Fechar",
   "back": "Voltar",
-  "system_language": "Língua do sistema"
+  "cancel": "Cancelar",
+  "close": "Fechar",
+  "managed_error_content": "Ocorreu um erro inesperado. Já registámos este erro. Por favor, tente novamente mais tarde.",
+  "managed_error_oops": "Ups, algo correu mal",
+  "no": "Não",
+  "ok": "OK",
+  "submit": "Submeter",
+  "system_language": "Língua do sistema",
+  "yes": "Sim"
 }

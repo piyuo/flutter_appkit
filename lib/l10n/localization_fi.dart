@@ -9,36 +9,33 @@ class LocalizationFi extends Localization {
   LocalizationFi([String locale = 'fi']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Hups, jokin meni pieleen';
-
-  @override
-  String get cli_error_content =>
-      'Tapahtui odottamaton virhe. Haluatko lähettää sähköpostiraportin?';
-
-  @override
-  String get cli_error_report => 'Lähetä meille sähköpostia';
-
-  @override
-  String get submit => 'Lähetä';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Takaisin';
 
   @override
   String get cancel => 'Peruuta';
 
   @override
-  String get yes => 'Kyllä';
+  String get close => 'Sulje';
+
+  @override
+  String get managed_error_content =>
+      'Tapahtui odottamaton virhe. Olemme jo kirjanneet tämän virheen. Yritä myöhemmin uudelleen.';
+
+  @override
+  String get managed_error_oops => 'Hups, jokin meni pieleen';
 
   @override
   String get no => 'Ei';
 
   @override
-  String get close => 'Sulje';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Takaisin';
+  String get submit => 'Lähetä';
 
   @override
   String get system_language => 'Järjestelmän kieli';
+
+  @override
+  String get yes => 'Kyllä';
 }

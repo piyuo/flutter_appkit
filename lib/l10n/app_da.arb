@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Ups, noget gik galt",
-  "cli_error_content": "Der opstod en uventet fejl. Vil du indsende en e-mailrapport?",
-  "cli_error_report": "Send os en e-mail",
-  "submit": "Indsend",
-  "ok": "OK",
-  "cancel": "Annuller",
-  "yes": "Ja",
-  "no": "Nej",
-  "close": "Luk",
   "back": "Tilbage",
-  "system_language": "Systemsprog"
+  "cancel": "Annuller",
+  "close": "Luk",
+  "managed_error_content": "Der opstod en uventet fejl. Vi har allerede logget denne fejl. Prøv venligst igen senere.",
+  "managed_error_oops": "Ups, noget gik galt",
+  "no": "Nej",
+  "ok": "OK",
+  "submit": "Indsend",
+  "system_language": "Systemsprog",
+  "yes": "Ja"
 }

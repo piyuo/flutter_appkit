@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:libcli/cli/cli.dart' as cli;
 import 'package:libcli/l10n/localization.dart';
+import 'package:libcli/managed/managed.dart' as managed;
 
-main() => cli.run(() => const ExampleApp());
+main() => managed.run(() => const ExampleApp());
 
 class ExampleApp extends StatelessWidget {
   const ExampleApp({super.key});
@@ -14,8 +15,19 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Libcli Example',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.light,
+          seedColor: CupertinoColors.activeBlue,
+        ),
+        brightness: Brightness.light,
+        cupertinoOverrideTheme: const CupertinoThemeData(
+          brightness: Brightness.light,
+        ),
+        useMaterial3: true,
+      ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      locale: Intl.defaultLocale == null ? const Locale('en', 'US') : Locale(Intl.defaultLocale!),
+      locale: Intl.defaultLocale == null ? const Locale('en') : Locale(Intl.defaultLocale!),
       localizationsDelegates: const [
         Localization.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -30,7 +42,7 @@ class ExampleApp extends StatelessWidget {
             return supportedLocale;
           }
         }
-        return supportedLocales.first;
+        return const Locale('en');
       },
     );
   }

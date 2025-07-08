@@ -9,36 +9,33 @@ class LocalizationAz extends Localization {
   LocalizationAz([String locale = 'az']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ups, nəsə səhv getdi';
-
-  @override
-  String get cli_error_content =>
-      'Gözlənilməz xəta baş verdi. E-poçt hesabatı göndərmək istəyirsiniz?';
-
-  @override
-  String get cli_error_report => 'Bizə e-poçt göndərin';
-
-  @override
-  String get submit => 'Göndər';
-
-  @override
-  String get ok => 'Tamam';
+  String get back => 'Geri';
 
   @override
   String get cancel => 'Ləğv et';
 
   @override
-  String get yes => 'Bəli';
+  String get close => 'Bağla';
+
+  @override
+  String get managed_error_content =>
+      'Gözlənilməz xəta baş verdi. Bu xətanı artıq qeyd etdik. Xahiş edirik sonra yenidən cəhd edin.';
+
+  @override
+  String get managed_error_oops => 'Ups, nəsə səhv getdi';
 
   @override
   String get no => 'Xeyr';
 
   @override
-  String get close => 'Bağla';
+  String get ok => 'Tamam';
 
   @override
-  String get back => 'Geri';
+  String get submit => 'Göndər';
 
   @override
   String get system_language => 'Sistem Dili';
+
+  @override
+  String get yes => 'Bəli';
 }

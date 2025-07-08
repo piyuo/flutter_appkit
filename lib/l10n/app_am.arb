@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "ይቅርታ፣ የሆነ ስህተት ተከስቷል",
-  "cli_error_content": "የማይጠበቅ ስህተት ተከስቷል። የኢሜይል ሪፖርት ማስገባት ይፈልጋሉ?",
-  "cli_error_report": "ኢሜይል ይላኩልን",
-  "submit": "አስገባ",
-  "ok": "እሺ",
-  "cancel": "ሰርዝ",
-  "yes": "አዎ",
-  "no": "አይ",
-  "close": "ዝጋ",
   "back": "ተመለስ",
-  "system_language": "የስርዓት ቋንቋ"
+  "cancel": "ሰርዝ",
+  "close": "ዝጋ",
+  "managed_error_content": "የማይጠበቅ ስህተት ተከስቷል። ይህን ስህተት አስቀድመን ሰፍረናል። እባክዎ ቆይተው ዳግመኛ ይሞክሩ።",
+  "managed_error_oops": "ይቅርታ፣ የሆነ ስህተት ተከስቷል",
+  "no": "አይ",
+  "ok": "እሺ",
+  "submit": "አስገባ",
+  "system_language": "የስርዓት ቋንቋ",
+  "yes": "አዎ"
 }

@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Vaia, algo saíu mal",
-  "cli_error_content": "Ocorreu un erro inesperado. Queres enviar un informe por correo electrónico?",
-  "cli_error_report": "Envíanos un correo",
-  "submit": "Enviar",
-  "ok": "OK",
-  "cancel": "Cancelar",
-  "yes": "Si",
-  "no": "Non",
-  "close": "Pechar",
   "back": "Atrás",
-  "system_language": "Idioma do sistema"
+  "cancel": "Cancelar",
+  "close": "Pechar",
+  "managed_error_content": "Ocorreu un erro inesperado. Xa rexistramos este erro. Téntao de novo máis tarde.",
+  "managed_error_oops": "Vaia, algo saíu mal",
+  "no": "Non",
+  "ok": "OK",
+  "submit": "Enviar",
+  "system_language": "Idioma do sistema",
+  "yes": "Si"
 }

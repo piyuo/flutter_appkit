@@ -9,36 +9,33 @@ class LocalizationLv extends Localization {
   LocalizationLv([String locale = 'lv']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ak vai, kaut kas nogāja greizi';
-
-  @override
-  String get cli_error_content =>
-      'Notika neparedzēta kļūda. Vai vēlaties nosūtīt ziņojumu pa e-pastu?';
-
-  @override
-  String get cli_error_report => 'Rakstiet mums e-pastu';
-
-  @override
-  String get submit => 'Iesniegt';
-
-  @override
-  String get ok => 'Labi';
+  String get back => 'Atpakaļ';
 
   @override
   String get cancel => 'Atcelt';
 
   @override
-  String get yes => 'Jā';
+  String get close => 'Aizvērt';
+
+  @override
+  String get managed_error_content =>
+      'Notika neparedzēta kļūda. Mēs jau esam reģistrējuši šo kļūdu. Lūdzu, mēģiniet vēlāk.';
+
+  @override
+  String get managed_error_oops => 'Ak vai, kaut kas nogāja greizi';
 
   @override
   String get no => 'Nē';
 
   @override
-  String get close => 'Aizvērt';
+  String get ok => 'Labi';
 
   @override
-  String get back => 'Atpakaļ';
+  String get submit => 'Iesniegt';
 
   @override
   String get system_language => 'Sistēmas valoda';
+
+  @override
+  String get yes => 'Jā';
 }

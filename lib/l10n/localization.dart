@@ -235,35 +235,11 @@ abstract class Localization {
     Locale('zh', 'SG')
   ];
 
-  /// No description provided for @cli_error_oops.
+  /// No description provided for @back.
   ///
   /// In en, this message translates to:
-  /// **'Oops, something went wrong'**
-  String get cli_error_oops;
-
-  /// No description provided for @cli_error_content.
-  ///
-  /// In en, this message translates to:
-  /// **'An unexpected error occurred. Would you like to submit a email report?'**
-  String get cli_error_content;
-
-  /// No description provided for @cli_error_report.
-  ///
-  /// In en, this message translates to:
-  /// **'Email us'**
-  String get cli_error_report;
-
-  /// No description provided for @submit.
-  ///
-  /// In en, this message translates to:
-  /// **'Submit'**
-  String get submit;
-
-  /// No description provided for @ok.
-  ///
-  /// In en, this message translates to:
-  /// **'OK'**
-  String get ok;
+  /// **'Back'**
+  String get back;
 
   /// No description provided for @cancel.
   ///
@@ -271,11 +247,23 @@ abstract class Localization {
   /// **'Cancel'**
   String get cancel;
 
-  /// No description provided for @yes.
+  /// No description provided for @close.
   ///
   /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @managed_error_content.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred. We\'ve already logged this error. Please try again later.'**
+  String get managed_error_content;
+
+  /// No description provided for @managed_error_oops.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops, something went wrong'**
+  String get managed_error_oops;
 
   /// No description provided for @no.
   ///
@@ -283,23 +271,29 @@ abstract class Localization {
   /// **'No'**
   String get no;
 
-  /// No description provided for @close.
+  /// No description provided for @ok.
   ///
   /// In en, this message translates to:
-  /// **'Close'**
-  String get close;
+  /// **'OK'**
+  String get ok;
 
-  /// No description provided for @back.
+  /// No description provided for @submit.
   ///
   /// In en, this message translates to:
-  /// **'Back'**
-  String get back;
+  /// **'Submit'**
+  String get submit;
 
   /// No description provided for @system_language.
   ///
   /// In en, this message translates to:
   /// **'System Language'**
   String get system_language;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
 }
 
 class _LocalizationDelegate extends LocalizationsDelegate<Localization> {

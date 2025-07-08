@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Hoppá, valami hiba történt",
-  "cli_error_content": "Váratlan hiba történt. Szeretne e-mail jelentést küldeni?",
-  "cli_error_report": "E-mail küldése nekünk",
-  "submit": "Küldés",
-  "ok": "OK",
-  "cancel": "Mégse",
-  "yes": "Igen",
-  "no": "Nem",
-  "close": "Bezárás",
   "back": "Vissza",
-  "system_language": "Rendszer nyelve"
+  "cancel": "Mégse",
+  "close": "Bezárás",
+  "managed_error_content": "Váratlan hiba történt. Már rögzítettük ezt a hibát. Kérjük, próbálja újra később.",
+  "managed_error_oops": "Hoppá, valami hiba történt",
+  "no": "Nem",
+  "ok": "OK",
+  "submit": "Küldés",
+  "system_language": "Rendszer nyelve",
+  "yes": "Igen"
 }

@@ -9,36 +9,33 @@ class LocalizationFa extends Localization {
   LocalizationFa([String locale = 'fa']) : super(locale);
 
   @override
-  String get cli_error_oops => 'اوه، مشکلی پیش آمد';
-
-  @override
-  String get cli_error_content =>
-      'یک خطای غیرمنتظره رخ داد. آیا می‌خواهید گزارشی از طریق ایمیل ارسال کنید؟';
-
-  @override
-  String get cli_error_report => 'به ما ایمیل بزنید';
-
-  @override
-  String get submit => 'ارسال';
-
-  @override
-  String get ok => 'تایید';
+  String get back => 'بازگشت';
 
   @override
   String get cancel => 'لغو';
 
   @override
-  String get yes => 'بله';
+  String get close => 'بستن';
+
+  @override
+  String get managed_error_content =>
+      'یک خطای غیرمنتظره رخ داد. ما قبلاً این خطا را ثبت کرده‌ایم. لطفاً بعداً دوباره تلاش کنید.';
+
+  @override
+  String get managed_error_oops => 'اوه، مشکلی پیش آمد';
 
   @override
   String get no => 'خیر';
 
   @override
-  String get close => 'بستن';
+  String get ok => 'تایید';
 
   @override
-  String get back => 'بازگشت';
+  String get submit => 'ارسال';
 
   @override
   String get system_language => 'زبان سیستم';
+
+  @override
+  String get yes => 'بله';
 }

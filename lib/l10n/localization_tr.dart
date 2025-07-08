@@ -9,36 +9,33 @@ class LocalizationTr extends Localization {
   LocalizationTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Hata, bir şeyler yanlış gitti';
-
-  @override
-  String get cli_error_content =>
-      'Beklenmeyen bir hata oluştu. E-posta raporu göndermek ister misiniz?';
-
-  @override
-  String get cli_error_report => 'Bize e-posta gönderin';
-
-  @override
-  String get submit => 'Gönder';
-
-  @override
-  String get ok => 'Tamam';
+  String get back => 'Geri';
 
   @override
   String get cancel => 'İptal';
 
   @override
-  String get yes => 'Evet';
+  String get close => 'Kapat';
+
+  @override
+  String get managed_error_content =>
+      'Beklenmeyen bir hata oluştu. Bu hatayı zaten günlüğe kaydettik. Lütfen daha sonra tekrar deneyin.';
+
+  @override
+  String get managed_error_oops => 'Hata, bir şeyler yanlış gitti';
 
   @override
   String get no => 'Hayır';
 
   @override
-  String get close => 'Kapat';
+  String get ok => 'Tamam';
 
   @override
-  String get back => 'Geri';
+  String get submit => 'Gönder';
 
   @override
   String get system_language => 'Sistem Dili';
+
+  @override
+  String get yes => 'Evet';
 }

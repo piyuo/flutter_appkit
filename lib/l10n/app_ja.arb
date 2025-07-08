@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "おっと、問題が発生しました",
-  "cli_error_content": "予期せぬエラーが発生しました。メールでレポートを送信しますか？",
-  "cli_error_report": "メールで連絡する",
-  "submit": "送信",
-  "ok": "OK",
-  "cancel": "キャンセル",
-  "yes": "はい",
-  "no": "いいえ",
-  "close": "閉じる",
   "back": "戻る",
-  "system_language": "システム言語"
+  "cancel": "キャンセル",
+  "close": "閉じる",
+  "managed_error_content": "予期せぬエラーが発生しました。このエラーはすでに記録されています。後でもう一度お試しください。",
+  "managed_error_oops": "おっと、問題が発生しました",
+  "no": "いいえ",
+  "ok": "OK",
+  "submit": "送信",
+  "system_language": "システム言語",
+  "yes": "はい"
 }

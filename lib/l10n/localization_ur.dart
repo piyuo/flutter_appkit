@@ -9,38 +9,35 @@ class LocalizationUr extends Localization {
   LocalizationUr([String locale = 'ur']) : super(locale);
 
   @override
-  String get cli_error_oops => 'افسوس، کچھ غلط ہو گیا';
-
-  @override
-  String get cli_error_content =>
-      'ایک غیر متوقع خرابی پیش آئی۔ کیا آپ ای میل رپورٹ جمع کرانا چاہتے ہیں؟';
-
-  @override
-  String get cli_error_report => 'ہمیں ای میل کریں';
-
-  @override
-  String get submit => 'جمع کرائیں';
-
-  @override
-  String get ok => 'ٹھیک ہے';
+  String get back => 'واپس';
 
   @override
   String get cancel => 'منسوخ کریں';
 
   @override
-  String get yes => 'ہاں';
+  String get close => 'بند کریں';
+
+  @override
+  String get managed_error_content =>
+      'ایک غیر متوقع خرابی پیش آئی۔ ہم نے اس خرابی کو پہلے سے ہی لاگ کر دیا ہے۔ برائے کرم بعد میں دوبارہ کوشش کریں۔';
+
+  @override
+  String get managed_error_oops => 'افسوس، کچھ غلط ہو گیا';
 
   @override
   String get no => 'نہیں';
 
   @override
-  String get close => 'بند کریں';
+  String get ok => 'ٹھیک ہے';
 
   @override
-  String get back => 'واپس';
+  String get submit => 'جمع کرائیں';
 
   @override
   String get system_language => 'نظام کی زبان';
+
+  @override
+  String get yes => 'ہاں';
 }
 
 /// The translations for Urdu, as used in India (`ur_IN`).
@@ -48,36 +45,33 @@ class LocalizationUrIn extends LocalizationUr {
   LocalizationUrIn() : super('ur_IN');
 
   @override
-  String get cli_error_oops => 'افسوس، کچھ غلط ہو گیا';
-
-  @override
-  String get cli_error_content =>
-      'ایک غیر متوقع خرابی پیش آئی۔ کیا آپ ای میل رپورٹ جمع کرانا چاہتے ہیں؟';
-
-  @override
-  String get cli_error_report => 'ہمیں ای میل کریں';
-
-  @override
-  String get submit => 'جمع کرائیں';
-
-  @override
-  String get ok => 'ٹھیک ہے';
+  String get back => 'واپس';
 
   @override
   String get cancel => 'منسوخ کریں';
 
   @override
-  String get yes => 'ہاں';
+  String get close => 'بند کریں';
+
+  @override
+  String get managed_error_content =>
+      'ایک غیر متوقع خرابی پیش آئی۔ ہم نے اس خرابی کو پہلے سے ہی لاگ کر دیا ہے۔ برائے کرم بعد میں دوبارہ کوشش کریں۔';
+
+  @override
+  String get managed_error_oops => 'افسوس، کچھ غلط ہو گیا';
 
   @override
   String get no => 'نہیں';
 
   @override
-  String get close => 'بند کریں';
+  String get ok => 'ٹھیک ہے';
 
   @override
-  String get back => 'واپس';
+  String get submit => 'جمع کرائیں';
 
   @override
   String get system_language => 'نظام کی زبان';
+
+  @override
+  String get yes => 'ہاں';
 }

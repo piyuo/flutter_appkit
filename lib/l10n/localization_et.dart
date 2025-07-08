@@ -9,36 +9,33 @@ class LocalizationEt extends Localization {
   LocalizationEt([String locale = 'et']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ups, midagi läks valesti';
-
-  @override
-  String get cli_error_content =>
-      'Ilmnes ootamatu viga. Kas soovite saata e-posti aruande?';
-
-  @override
-  String get cli_error_report => 'Saada meile e-kiri';
-
-  @override
-  String get submit => 'Saada';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Tagasi';
 
   @override
   String get cancel => 'Tühista';
 
   @override
-  String get yes => 'Jah';
+  String get close => 'Sulge';
+
+  @override
+  String get managed_error_content =>
+      'Ilmnes ootamatu viga. Oleme selle vea juba registreerinud. Palun proovige hiljem uuesti.';
+
+  @override
+  String get managed_error_oops => 'Ups, midagi läks valesti';
 
   @override
   String get no => 'Ei';
 
   @override
-  String get close => 'Sulge';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Tagasi';
+  String get submit => 'Saada';
 
   @override
   String get system_language => 'Süsteemi keel';
+
+  @override
+  String get yes => 'Jah';
 }

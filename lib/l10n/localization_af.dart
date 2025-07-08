@@ -9,36 +9,33 @@ class LocalizationAf extends Localization {
   LocalizationAf([String locale = 'af']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Oeps, iets het verkeerd gegaan';
-
-  @override
-  String get cli_error_content =>
-      '\'n Onverwagse fout het voorgekom. Wil jy \'n e-posverslag indien?';
-
-  @override
-  String get cli_error_report => 'E-pos ons';
-
-  @override
-  String get submit => 'Indien';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Terug';
 
   @override
   String get cancel => 'Kanselleer';
 
   @override
-  String get yes => 'Ja';
+  String get close => 'Sluit';
+
+  @override
+  String get managed_error_content =>
+      'An onverwagse fout het voorgekom. Ons het reeds hierdie fout aangeteken. Probeer asseblief later weer.';
+
+  @override
+  String get managed_error_oops => 'Oeps, iets het verkeerd gegaan';
 
   @override
   String get no => 'Nee';
 
   @override
-  String get close => 'Sluit';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Terug';
+  String get submit => 'Indien';
 
   @override
   String get system_language => 'Stelsel Taal';
+
+  @override
+  String get yes => 'Ja';
 }

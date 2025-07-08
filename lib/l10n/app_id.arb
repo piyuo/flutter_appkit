@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Ups, terjadi kesalahan",
-  "cli_error_content": "Terjadi kesalahan yang tidak terduga. Apakah Anda ingin mengirimkan laporan email?",
-  "cli_error_report": "Email kami",
-  "submit": "Kirim",
-  "ok": "OK",
-  "cancel": "Batal",
-  "yes": "Ya",
-  "no": "Tidak",
-  "close": "Tutup",
   "back": "Kembali",
-  "system_language": "Bahasa Sistem"
+  "cancel": "Batal",
+  "close": "Tutup",
+  "managed_error_content": "Terjadi kesalahan yang tidak terduga. Kami sudah mencatat kesalahan ini. Silakan coba lagi nanti.",
+  "managed_error_oops": "Ups, terjadi kesalahan",
+  "no": "Tidak",
+  "ok": "OK",
+  "submit": "Kirim",
+  "system_language": "Bahasa Sistem",
+  "yes": "Ya"
 }

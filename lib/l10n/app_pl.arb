@@ -1,13 +1,12 @@
 {
-  "cli_error_oops": "Ups, coś poszło nie tak",
-  "cli_error_content": "Wystąpił nieoczekiwany błąd. Czy chcesz wysłać raport e-mail?",
-  "cli_error_report": "Napisz do nas",
-  "submit": "Wyślij",
-  "ok": "OK",
-  "cancel": "Anuluj",
-  "yes": "Tak",
-  "no": "Nie",
-  "close": "Zamknij",
   "back": "Wstecz",
-  "system_language": "Język systemu"
+  "cancel": "Anuluj",
+  "close": "Zamknij",
+  "managed_error_content": "Wystąpił nieoczekiwany błąd. Już zalogowaliśmy ten błąd. Spróbuj ponownie później.",
+  "managed_error_oops": "Ups, coś poszło nie tak",
+  "no": "Nie",
+  "ok": "OK",
+  "submit": "Wyślij",
+  "system_language": "Język systemu",
+  "yes": "Tak"
 }

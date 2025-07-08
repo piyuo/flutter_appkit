@@ -9,36 +9,33 @@ class LocalizationUz extends Localization {
   LocalizationUz([String locale = 'uz']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Voy, xatolik yuz berdi';
-
-  @override
-  String get cli_error_content =>
-      'Kutilmagan xatolik yuz berdi. Elektron pochta hisobotini yuborishni xohlaysizmi?';
-
-  @override
-  String get cli_error_report => 'Bizga elektron pochta yuboring';
-
-  @override
-  String get submit => 'Yuborish';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Orqaga';
 
   @override
   String get cancel => 'Bekor qilish';
 
   @override
-  String get yes => 'Ha';
+  String get close => 'Yopish';
+
+  @override
+  String get managed_error_content =>
+      'Kutilmagan xatolik yuz berdi. Biz bu xatolikni allaqachon yozib qo\'ygamiz. Iltimos keyinroq qayta urinib ko\'ring.';
+
+  @override
+  String get managed_error_oops => 'Voy, xatolik yuz berdi';
 
   @override
   String get no => 'Yo\'q';
 
   @override
-  String get close => 'Yopish';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Orqaga';
+  String get submit => 'Yuborish';
 
   @override
   String get system_language => 'Tizim tili';
+
+  @override
+  String get yes => 'Ha';
 }

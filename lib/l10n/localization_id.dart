@@ -9,36 +9,33 @@ class LocalizationId extends Localization {
   LocalizationId([String locale = 'id']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Ups, terjadi kesalahan';
-
-  @override
-  String get cli_error_content =>
-      'Terjadi kesalahan yang tidak terduga. Apakah Anda ingin mengirimkan laporan email?';
-
-  @override
-  String get cli_error_report => 'Email kami';
-
-  @override
-  String get submit => 'Kirim';
-
-  @override
-  String get ok => 'OK';
+  String get back => 'Kembali';
 
   @override
   String get cancel => 'Batal';
 
   @override
-  String get yes => 'Ya';
+  String get close => 'Tutup';
+
+  @override
+  String get managed_error_content =>
+      'Terjadi kesalahan yang tidak terduga. Kami sudah mencatat kesalahan ini. Silakan coba lagi nanti.';
+
+  @override
+  String get managed_error_oops => 'Ups, terjadi kesalahan';
 
   @override
   String get no => 'Tidak';
 
   @override
-  String get close => 'Tutup';
+  String get ok => 'OK';
 
   @override
-  String get back => 'Kembali';
+  String get submit => 'Kirim';
 
   @override
   String get system_language => 'Bahasa Sistem';
+
+  @override
+  String get yes => 'Ya';
 }

@@ -9,36 +9,33 @@ class LocalizationCa extends Localization {
   LocalizationCa([String locale = 'ca']) : super(locale);
 
   @override
-  String get cli_error_oops => 'Vaja, alguna cosa ha anat malament';
-
-  @override
-  String get cli_error_content =>
-      'S\'ha produït un error inesperat. Vols enviar un informe per correu electrònic?';
-
-  @override
-  String get cli_error_report => 'Envia\'ns un correu';
-
-  @override
-  String get submit => 'Enviar';
-
-  @override
-  String get ok => 'D\'acord';
+  String get back => 'Enrere';
 
   @override
   String get cancel => 'Cancel·lar';
 
   @override
-  String get yes => 'Sí';
+  String get close => 'Tancar';
+
+  @override
+  String get managed_error_content =>
+      'S\'ha produït un error inesperat. Ja hem registrat aquest error. Torneu-ho a provar més tard.';
+
+  @override
+  String get managed_error_oops => 'Vaja, alguna cosa ha anat malament';
 
   @override
   String get no => 'No';
 
   @override
-  String get close => 'Tancar';
+  String get ok => 'D\'acord';
 
   @override
-  String get back => 'Enrere';
+  String get submit => 'Enviar';
 
   @override
   String get system_language => 'Idioma del sistema';
+
+  @override
+  String get yes => 'Sí';
 }
