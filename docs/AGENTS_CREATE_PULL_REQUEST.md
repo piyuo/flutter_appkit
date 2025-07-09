@@ -30,7 +30,7 @@
 **3a. Clean Up Git History:**
 
 ```bash
-./scripts/squash-commits.sh
+./scripts/squash_commits.sh
 ```
 
 **3b. Create PR:**

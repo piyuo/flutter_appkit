@@ -284,10 +284,10 @@ Transform messy development commits into meaningful commits before creating PR.
 
 ### Interactive Rebase Process
 
-You can automate this using the scripts/squash-commits.sh script:
+You can automate this using the scripts/squash_commits.sh script:
 
 ```bash
-./scripts/squash-commits.sh
+./scripts/squash_commits.sh
 ```
 
 This script rebases your branch onto main, helps you squash commits interactively, edits the final message, and safely force-pushes the result.
