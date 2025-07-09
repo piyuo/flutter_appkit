@@ -87,13 +87,13 @@ fi
 
 # Call cleanup script to remove old branches
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CLEANUP_SCRIPT="$SCRIPT_DIR/cleanup-branches.sh"
+CLEANUP_SCRIPT="$SCRIPT_DIR/cleanup_branches.sh"
 
 if [ -x "$CLEANUP_SCRIPT" ]; then
     echo -e "🧹 Running branch cleanup script..."
     bash "$CLEANUP_SCRIPT"
 else
-    echo -e "${RED}⚠️ Warning: cleanup-branches.sh not found or not executable.${NC}"
+    echo -e "${RED}⚠️ Warning: cleanup_branches.sh not found or not executable.${NC}"
 fi
 
 echo -e "${GREEN}🎉 Issue #$ISSUE is ready for development!${NC}"
