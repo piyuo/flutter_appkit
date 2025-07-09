@@ -1,6 +1,7 @@
+# scripts/start_issue.sh
 #!/bin/bash
 # This script uses GitHub CLI to create and check out a branch linked to an issue.
-# Usage: ./start-issue.sh <issue-number>
+# Usage: ./start_issue.sh <issue-number>
 
 set -e
 

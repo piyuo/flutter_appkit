@@ -49,7 +49,7 @@ All work must begin with a GitHub Issue for proper tracking.
 **ALWAYS** use the provided script:
 
 ```bash
-./scripts/start-issue.sh <issue-number>
+./scripts/start_issue.sh <issue-number>
 ```
 
 This script:
