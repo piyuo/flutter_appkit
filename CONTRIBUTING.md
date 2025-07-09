@@ -110,7 +110,7 @@ create your first commit with the proper format:
 ```bash
 
 # Get the exact issue title for consistency
-./scripts/get-issue-title.sh <issue-number>
+./scripts/get_issue_title.sh <issue-number>
 
 # Example first commit - this will become your PR title
 git commit -m "<issue-title> #<issue-number>"
@@ -308,7 +308,7 @@ This script rebases your branch onto main, helps you squash commits interactivel
 
 ```bash
 # Get the exact issue title for consistency
-./scripts/get-issue-title.sh <issue-number>
+./scripts/get_issue_title.sh <issue-number>
 
 # Create the PR using the body file, add --push to eliminates the interactive prompt.
 gh pr create \
@@ -353,7 +353,7 @@ rm .PR_BODY.md
 
 **Must match:** `<issue-title> #<issue-number>`
 
-Get the exact title: `./scripts/get-issue-title.sh <issue-number>`
+Get the exact title: `./scripts/get_issue_title.sh <issue-number>`
 
 ### PR Body Template
 

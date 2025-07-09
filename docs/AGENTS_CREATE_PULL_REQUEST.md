@@ -45,7 +45,7 @@
 
 ```bash
 # Get the exact issue title for consistency
-./scripts/get-issue-title.sh <issue-number>
+./scripts/get_issue_title.sh <issue-number>
 
 # Create PR, add --push to eliminates the interactive prompt.
 gh pr create \
