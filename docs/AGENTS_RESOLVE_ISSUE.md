@@ -8,7 +8,7 @@
 ## Step 1: Setup Branch
 
 ```bash
-./scripts/start-issue.sh <issue-number>
+./scripts/start_issue.sh <issue-number>
 ```
 
 This creates the proper branch and assigns the issue.
