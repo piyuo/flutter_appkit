@@ -1,5 +1,24 @@
 # LibCLI
 
+<!--
+## Overview
+
+This README documents LibCLI, a robust Flutter foundation library that provides essential
+application infrastructure. Key sections include:
+
+- Features & Installation: Core library capabilities and setup
+- Quick Start: Basic usage with run() function
+- Localization (i18n): Comprehensive multi-language support with CSV-based translations
+- Tech Stack: Flutter, Riverpod/Provider, Firebase, testing tools
+- Testing: Unit, widget, and integration test guidelines
+- Best Practices: Development standards and anti-patterns to avoid
+- Module Structure: Guidelines for adding new modular components
+- Release Process: Automated versioning and deployment workflow
+
+The library supports 70+ locales, provides zero-configuration setup, and includes
+error handling, global context management, and logging capabilities.
+-->
+
 A robust Flutter foundation library that provides essential application infrastructure including error handling, global context management, logging, and internationalization support.
 
 ## Features
@@ -33,6 +52,35 @@ void main() {
   run(() => MyApp());
 }
 ```
+
+## 🧪 Testing
+
+LibCLI follows comprehensive testing practices to ensure reliability and maintainability. We use Flutter's built-in testing framework along with additional tools for robust test coverage.
+
+### 🏃 Running Tests
+
+To run all tests in the project:
+
+```bash
+flutter test lib
+```
+
+Additional test commands:
+
+```bash
+# Run tests with coverage report
+flutter test --coverage lib
+
+# Run tests in verbose mode
+flutter test --verbose lib
+
+# Run specific test file
+flutter test lib/path/to/specific_test.dart
+
+# Run tests with custom reporter
+flutter test --reporter expanded lib
+```
+
 
 ## 🌍 Localization (i18n)
 
