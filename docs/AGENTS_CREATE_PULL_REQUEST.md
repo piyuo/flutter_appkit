@@ -1,5 +1,31 @@
 # Workflow 2: Create Pull Request
 
+<!--
+===============================================
+Document: AGENTS_CREATE_PULL_REQUEST.md
+Purpose: Guide AI assistants through creating pull requests when development is complete
+
+Overview:
+  - Prerequisites: Development work complete, commits exist
+  - Process Steps:
+    1. Identify Issue Number
+    2. Verify Readiness
+    3. Create PR for Review (Clean history, create PR, verify)
+    4. Clean Up
+
+Key Requirements:
+  - Development must be complete before using this workflow
+  - Use Workflow 1 (AGENTS_RESOLVE_ISSUE.md) if starting development
+  - Must read CONTRIBUTING.md for complete PR creation workflow
+  - Must read README.md for project overview and build requirements
+
+Critical Dependencies:
+  - CONTRIBUTING.md → Complete PR creation workflow and pre-submission checklist
+  - README.md → Project overview and build requirements
+  - .github/PULL_REQUEST_TEMPLATE.md → PR body template
+===============================================
+-->
+
 **Trigger:** Human says "create a PR for issue #42" or "create a PR"
 **Prerequisites:** Development work is complete, code is ready for review, commits already exist
 

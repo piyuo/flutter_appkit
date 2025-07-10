@@ -1,5 +1,30 @@
 # AI Agent Instructions for Development
 
+<!--
+===============================================
+Document: AGENTS.md
+Purpose: Guide AI assistants on helping human developers with issue resolution and pull request creation
+
+Overview:
+  - Critical Documents & Requirements
+  - Main Workflows (4 types)
+  - Enhanced Decision Tree
+  - Non-Negotiable Requirements
+  - Troubleshooting Common Issues
+  - Architecture Notes
+
+Key Workflows:
+  1. Resolve Issue → Complete issue resolution from start to finish
+  2. Create Pull Request → When development is complete and ready for review
+  3. Development Flow → Ongoing development work and code improvements
+  4. Translation/Localization → i18n operations and quality review
+
+Critical Dependencies:
+  - CONTRIBUTING.md → Complete workflow, commit formats, testing requirements
+  - README.md → Tech stack, implementation constraints, project setup
+===============================================
+-->
+
 **Purpose:** This document guides AI assistants on how to help human developers with issue resolution and pull request creation.
 
 Since AI assistants tend to focus on the section that seems most relevant and skip the broader context, we need to embed the critical reminders directly into each workflow section.

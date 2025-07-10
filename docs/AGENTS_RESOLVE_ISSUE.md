@@ -1,5 +1,33 @@
 # 🔧 Workflow 1: Resolve Issue
 
+<!--
+===============================================
+Document: AGENTS_RESOLVE_ISSUE.md
+Purpose: Guide AI assistants through complete issue resolution from start to finish
+
+Overview:
+  - Complete end-to-end issue resolution workflow
+  - Process Steps:
+    1. Setup Branch → Create proper branch and assign issue
+    2. Test-First Development → Write tests first, then develop solution
+    3. Complete Development → Use Workflow 3 patterns for ongoing work
+    4. Create PR for Review → Clean history, create PR, verify
+    5. Clean Up → Remove temporary files
+
+Key Requirements:
+  - Test-first development (≥80% coverage mandatory)
+  - Clean Git history before PR submission
+  - Issue numbers in all commits
+  - TOC at top of all code files
+
+Critical Dependencies:
+  - CONTRIBUTING.md → Complete workflow details, testing requirements
+  - README.md → Tech stack and implementation constraints
+  - Workflow 3 (AGENTS_DEVELOPMENT.md) → Development patterns for Step 3
+  - .github/PULL_REQUEST_TEMPLATE.md → PR body template
+===============================================
+-->
+
 **Trigger:** Human says "resolve issue #42" or "solve issue #42"
 **Prerequisites:** None - this workflow handles complete issue resolution from start to finish
 

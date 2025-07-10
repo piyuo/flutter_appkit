@@ -1,5 +1,33 @@
 # 🔧 Workflow 3: Development Flow
 
+<!--
+===============================================
+Document: AGENTS_DEVELOPMENT.md
+Purpose: Guide AI assistants through ongoing development work and code improvements
+
+Overview:
+  - Context Assessment & Current State Analysis
+  - Test-Driven Development (TDD) Application
+  - Programming Best Practices
+  - Iterative Development Process
+  - Collaboration & Documentation
+  - Quality Validation
+
+Key Sections:
+  1. Context Assessment → Understand current state and requirements
+  2. Test-Driven Development → Test-first approach with approved commit types
+  3. Programming Best Practices → Architecture, implementation, documentation
+  4. Iterative Development → Problem-solving approach and commit strategy
+  5. Collaboration & Documentation → Progress docs and code review prep
+  6. Quality Validation → Final checks and completion criteria
+
+Critical Dependencies:
+  - CONTRIBUTING.md → Development guidelines, coding standards, testing requirements
+  - README.md → Tech stack, implementation patterns, project-specific constraints
+  - Approved commit types: feat, fix, docs, chore, refactor
+===============================================
+-->
+
 **Trigger:** Human asks for development help, code improvements, feature implementation, or ongoing work on existing issue/branch
 **Prerequisites:** Working on existing issue/feature (may or may not have existing commits)
 
