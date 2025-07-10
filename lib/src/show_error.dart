@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:libcli/l10n/l10n.dart';
 
-import 'global_context_support.dart';
+import 'global_context.dart';
 
-void showError(dynamic e, StackTrace? stack) {
-  showCupertinoDialog(
+Future<void> showError(dynamic e, StackTrace? stack) async {
+  await showCupertinoDialog(
     context: globalContext,
     builder: (context) => CupertinoAlertDialog(
       title: Row(children: [
@@ -15,10 +15,15 @@ void showError(dynamic e, StackTrace? stack) {
         ),
         Expanded(child: Text(context.l.managed_error_oops)),
       ]),
-      content: Text(context.l.managed_error_content),
+      content: Column(children: [
+        Text(context.l.managed_error_content),
+        SizedBox(height: 10),
+        Text(e.toString(), style: const TextStyle(color: CupertinoColors.systemGrey)),
+      ]),
       actions: [
         CupertinoDialogAction(
           isDefaultAction: true,
+          isDestructiveAction: true,
           child: Text(context.l.close),
           onPressed: () => Navigator.of(context).pop(),
         ),

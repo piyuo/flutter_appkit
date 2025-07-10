@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:libcli/l10n/localization.dart';
-import 'package:libcli/managed/managed.dart' as managed;
+import 'package:libcli/libcli.dart' as libcli;
 
-main() => managed.run(() => const ExampleApp());
+// Security: Use environment variables for sensitive data like Sentry DSN
+// Never hardcode API keys, tokens, or other sensitive information in source code
+// Environment variables are loaded from .env file using flutter_dotenv package
+main() async {
+  await libcli.run(() => const ExampleApp());
+}
 
 class ExampleApp extends StatelessWidget {
   const ExampleApp({super.key});
@@ -48,6 +53,15 @@ class ExampleApp extends StatelessWidget {
   }
 }
 
+class MyException2 implements Exception {
+  final String message;
+
+  MyException2(this.message);
+
+  @override
+  String toString() => 'MyException: $message';
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -68,21 +82,16 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(children: [
             ElevatedButton(
               onPressed: () async {
-                throw Exception('This is an exception');
+                throw MyException2('This is a test exception');
               },
               child: const Text('Throw Exception'),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () {
-                  /*Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const LiveExample(path: 'https://cdn-004.whatsupcams.com/hls/hr_pula06.m3u8')),
-                  );*/
+                  libcli.showConsole(context);
                 },
-                child: const Text('live stream')),
+                child: const Text('show console')),
           ])),
         ));
   }
