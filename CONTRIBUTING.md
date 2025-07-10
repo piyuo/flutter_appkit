@@ -213,7 +213,7 @@ Always reference the issue number in the commit. Use one of the 5 approved commi
 
 #### File Structure for AI Efficiency
 
-**MANDATORY:** Every code file and test file must include a TOC or Overview at the top in comments. This helps AI assistants understand file structure within the first 50-100 lines.
+**MANDATORY:** Every code file and test file and documents like *.md must include a TOC or Overview at the top in comments. This helps AI assistants understand file structure within the first 50-100 lines.
 
 **JavaScript/TypeScript Example:**
 

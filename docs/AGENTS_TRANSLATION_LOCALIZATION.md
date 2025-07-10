@@ -1,5 +1,40 @@
 # 🌍 Workflow 4: Translation/Localization/i18n
 
+<!--
+===============================================
+Document: AGENTS_TRANSLATION_LOCALIZATION.md
+Purpose: Guide AI assistants through translation and localization operations
+
+Overview:
+  - Translation request triggers and context assessment
+  - Process Steps:
+    1. Context Assessment & Setup → Understand i18n setup and current state
+    2. Language Detection & Text Processing → Source language detection and grammar correction
+    3. Translation Operations → Add, delete, update translations
+    4. Quality Review → Contextual analysis and improvements
+    5. Build & Generation → Execute required scripts
+    6. Quality Validation → Final checks
+    7. Documentation & Commit → Proper commit strategy
+
+Key Operations:
+  - Add New Translation → Key-value pairs for all supported languages
+  - Delete Translation → Remove from all language files
+  - Update Translation Key → Rename keys consistently
+  - Update Translation Text → Improve existing translations
+
+Critical Dependencies:
+  - README.md → Localization/i18n setup, file formats, build procedures
+  - Translation files → Current translations and structure
+  - Build scripts → Generation and validation procedures
+
+Quality Standards:
+  - Grammar and vocabulary correction for source language
+  - Cultural appropriateness for all target languages
+  - Consistency across entire translation project
+  - Complete coverage for all supported languages
+===============================================
+-->
+
 **Trigger:** Human asks for translation help, such as:
 - "add translation key: error_text, text: something wrong with this error"
 - "add new translation"
