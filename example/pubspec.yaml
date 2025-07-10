@@ -63,6 +63,8 @@ flutter:
     - asset/data/
     - asset/images/
     - asset/audio/
+    # Environment variables file
+    - .env
 
   # To add assets to your application, add an assets section, like this:
   # assets:

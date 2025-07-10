@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:libcli/log/log.dart' as log;
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'logger.dart';
 
 /// DiskErrorException happen when there is a [disk error] when save data to disk may be not enough space or permission
 class DiskErrorException implements Exception {}
@@ -37,7 +38,7 @@ Future<bool> containsKey(String key) async {
 /// ```
 Future<bool> remove(String key) async {
   assert(key.isNotEmpty);
-  log.log('[preferences] remove $key');
+  info('[preferences] remove $key');
   final instance = await SharedPreferences.getInstance();
   return await instance.remove(key);
 }
@@ -58,7 +59,7 @@ Future<bool?> getBool(String key) async {
 /// ```
 Future<void> setBool(String key, bool? value) async {
   assert(key.isNotEmpty);
-  log.log('[preferences] set $key=$value');
+  info('[preferences] set $key=$value');
   if (value == null) {
     remove(key);
     return;
@@ -86,7 +87,7 @@ Future<int?> getInt(String key) async {
 /// ```
 Future<void> setInt(String key, int? value) async {
   assert(key.isNotEmpty);
-  log.log('[preferences] set $key=$value');
+  info('[preferences] set $key=$value');
   if (value == null) {
     remove(key);
     return;
@@ -114,7 +115,7 @@ Future<double?> getDouble(String key) async {
 /// ```
 Future<void> setDouble(String key, double? value) async {
   assert(key.isNotEmpty);
-  log.log('[preferences] set $key=$value');
+  info('[preferences] set $key=$value');
   if (value == null) {
     remove(key);
     return;
@@ -142,7 +143,7 @@ Future<String?> getString(String key) async {
 /// ```
 Future<void> setString(String key, String? value) async {
   assert(key.isNotEmpty);
-  log.log('[preferences] set $key=$value');
+  info('[preferences] set $key=$value');
   if (value == null) {
     remove(key);
     return;
@@ -223,7 +224,7 @@ Future<List<String>?> getStringList(String key) async {
 /// ```
 setStringList(String key, List<String> value) async {
   assert(key.isNotEmpty);
-  log.log('[preferences] set $key=$value');
+  info('[preferences] set $key=$value');
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setStringList(key, value);
   if (!result) {
