@@ -12,6 +12,7 @@
 // ===============================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,7 +21,7 @@ import 'run.dart';
 
 // Test widgets for various scenarios
 class MockWidget extends StatelessWidget {
-  const MockWidget({Key? key}) : super(key: key);
+  const MockWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +35,30 @@ class MockWidget extends StatelessWidget {
   }
 }
 
+// Helper functions to mock Sentry enablement state
+void _mockSentryEnabled() {
+  // Add SENTRY_DSN to the environment
+  dotenv.env['SENTRY_DSN'] = 'https://test@sentry.io/123456';
+}
+
+void _mockSentryDisabled() {
+  // Remove SENTRY_DSN from the environment
+  dotenv.env.remove('SENTRY_DSN');
+}
+
+void _ensureEnvInitialized() {
+  if (!dotenv.isInitialized) {
+    dotenv.testLoad(fileInput: 'API_URL=https://api.example.com\nSECRET_KEY=supersecret');
+  }
+}
+
 class ThrowingWidget extends StatelessWidget {
   final Object error;
 
   const ThrowingWidget({
-    Key? key,
+    super.key,
     required this.error,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,25 +69,26 @@ class ThrowingWidget extends StatelessWidget {
 void main() {
   group('run.dart', () {
     setUp(() {
-      // Reset global state before each test
-      isSentryEnabled = false;
+      // Ensure environment is initialized for each test
+      _ensureEnvInitialized();
     });
 
     tearDown(() {
-      // Clean up after each test
-      isSentryEnabled = false;
+      // Clean up environment after each test
+      _mockSentryDisabled();
     });
 
-    group('isSentryEnabled flag', () {
-      test('should be false by default', () {
+    group('isSentryEnabled function', () {
+      test('should return false when SENTRY_DSN is not set', () {
+        _mockSentryDisabled();
         expect(isSentryEnabled, false);
       });
 
-      test('should be settable', () {
-        isSentryEnabled = true;
+      test('should return true when SENTRY_DSN is set', () {
+        _mockSentryEnabled();
         expect(isSentryEnabled, true);
 
-        isSentryEnabled = false;
+        _mockSentryDisabled();
         expect(isSentryEnabled, false);
       });
     });
@@ -77,8 +96,10 @@ void main() {
       test('should be accessible from test files', () {
         // Test that the catched function exists and is accessible
         // We can't directly test the function due to @visibleForTesting restrictions
-        // but we can verify it exists by checking the run.dart exports
+        // but we can verify isSentryEnabled function works properly
+        _mockSentryDisabled();
         expect(isSentryEnabled, isA<bool>());
+        expect(isSentryEnabled, false);
       });
     });
 

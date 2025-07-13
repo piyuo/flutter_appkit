@@ -16,22 +16,37 @@
 // ===============================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import 'logger.dart';
-import 'run.dart' as run_module;
 
 // Mock class for LogDetails since the real constructor requires complex parameters
 class _MockLogDetails extends LogDetails {
   _MockLogDetails({
-    required LogLevel level,
-    required Object? message,
+    required super.level,
+    required Object? super.message,
   }) : super(
-          message: message,
-          level: level,
           pen: AnsiPen(),
         );
+}
+
+// Helper functions to mock Sentry enablement state
+void _mockSentryEnabled() {
+  // Add SENTRY_DSN to the environment
+  dotenv.env['SENTRY_DSN'] = 'https://test@sentry.io/123456';
+}
+
+void _mockSentryDisabled() {
+  // Remove SENTRY_DSN from the environment
+  dotenv.env.remove('SENTRY_DSN');
+}
+
+void _ensureEnvInitialized() {
+  if (!dotenv.isInitialized) {
+    dotenv.testLoad(fileInput: 'API_URL=https://api.example.com\nSECRET_KEY=supersecret');
+  }
 }
 
 void main() {
@@ -98,8 +113,9 @@ void main() {
 
   group('Logging Functions', () {
     setUp(() {
-      // Reset Sentry enabled state before each test
-      run_module.isSentryEnabled = false;
+      // Ensure environment is initialized and Sentry is disabled for these tests
+      _ensureEnvInitialized();
+      _mockSentryDisabled();
     });
 
     test('debug() logs message with debug level', () {
@@ -131,19 +147,19 @@ void main() {
 
   group('Sentry Integration', () {
     setUp(() {
-      // Ensure Sentry is disabled by default
-      run_module.isSentryEnabled = false;
+      // Ensure environment is initialized for these tests
+      _ensureEnvInitialized();
     });
 
     test('critical() does not call Sentry when disabled', () {
-      run_module.isSentryEnabled = false;
+      _mockSentryDisabled();
 
       // This should not throw even if Sentry is not initialized
       expect(() => critical('Test critical without Sentry'), returnsNormally);
     });
 
     test('error() does not call Sentry when disabled', () {
-      run_module.isSentryEnabled = false;
+      _mockSentryDisabled();
       final exception = Exception('Test exception');
 
       // This should not throw even if Sentry is not initialized
@@ -151,14 +167,14 @@ void main() {
     });
 
     test('critical() handles Sentry errors gracefully when enabled', () {
-      run_module.isSentryEnabled = true;
+      _mockSentryEnabled();
 
       // Even if Sentry throws an error, critical() should handle it gracefully
       expect(() => critical('Test critical with potential Sentry error'), returnsNormally);
     });
 
     test('error() handles Sentry errors gracefully when enabled', () {
-      run_module.isSentryEnabled = true;
+      _mockSentryEnabled();
       final exception = Exception('Test exception');
 
       // Even if Sentry throws an error, error() should handle it gracefully
@@ -326,12 +342,14 @@ void main() {
     });
 
     test('Sentry state changes affect behavior', () {
+      _ensureEnvInitialized();
+
       // Test with Sentry disabled
-      run_module.isSentryEnabled = false;
+      _mockSentryDisabled();
       expect(() => critical('Test without Sentry'), returnsNormally);
 
       // Test with Sentry enabled
-      run_module.isSentryEnabled = true;
+      _mockSentryEnabled();
       expect(() => critical('Test with Sentry'), returnsNormally);
     });
   });

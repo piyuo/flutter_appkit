@@ -1,26 +1,41 @@
 # LibCLI
 
-<!--
-## Overview
-
-This README documents LibCLI, a robust Flutter foundation library that provides essential
-application infrastructure. Key sections include:
-
-- Features & Installation: Core library capabilities and setup
-- Quick Start: Basic usage with run() function
-- Localization (i18n): Comprehensive multi-language support with CSV-based translations
-- Tech Stack: Flutter, Riverpod/Provider, Firebase, testing tools
-- Testing: Unit, widget, and integration test guidelines
-- Best Practices: Development standards and anti-patterns to avoid
-- Module Structure: Guidelines for adding new modular components
-- Release Process: Automated versioning and deployment workflow
-
-The library supports 70+ locales, provides zero-configuration setup, and includes
-error handling, global context management, and logging capabilities.
--->
-
 A robust Flutter foundation library that provides essential application infrastructure including error handling, global context management, logging, and internationalization support.
 
+<!--
+## Table of Contents
+
+- [LibCLI](#libcli)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Quick Start](#quick-start)
+  - [🧪 Testing](#-testing)
+    - [🏃 Running Tests](#-running-tests)
+  - [🌍 Localization (i18n)](#-localization-i18n)
+    - [📁 File Structure](#-file-structure)
+    - [🔧 How It Works](#-how-it-works)
+    - [📝 CSV Structure](#-csv-structure)
+    - [🛠️ Adding/Updating Translations](#️-addingupdating-translations)
+    - [💻 Usage in Code](#-usage-in-code)
+    - [📋 Best Practices](#-best-practices)
+    - [🔄 Workflow for Teams](#-workflow-for-teams)
+    - [🚨 Important Notes](#-important-notes)
+  - [🧰 Tech Stack](#-tech-stack)
+  - [🛠️ Development Tools](#️-development-tools)
+    - [📦 Dependency Management](#-dependency-management)
+  - [✅ Best Practices to Follow](#-best-practices-to-follow)
+  - [🚫 What to Avoid](#-what-to-avoid)
+  - [📦 Adding a New Module](#-adding-a-new-module)
+    - [🛠️ How to Add a Module](#️-how-to-add-a-module)
+    - [✅ Example](#-example)
+    - [📌 Why This Matters](#-why-this-matters)
+  - [Release Process](#release-process)
+    - [Milestone Completion](#milestone-completion)
+    - [Release](#release)
+    - [Deployment](#deployment)
+  - [Reference Documents](#reference-documents)
+-->
 ## Features
 
 - **Error Handling**: Comprehensive error catching and reporting mechanism
@@ -59,7 +74,7 @@ LibCLI follows comprehensive testing practices to ensure reliability and maintai
 
 ### 🏃 Running Tests
 
-To run all tests in the project:
+Only use flutter test lib to run all tests in the project:
 
 ```bash
 flutter test lib
@@ -98,7 +113,7 @@ LibCLI provides a streamlined localization system that supports 70+ languages an
 
 ### 🔧 How It Works
 
-1. **Central Translation File**: All translations are stored in `/lib/l10n/l10n.csv`
+1. **Central Translation File**: All translations are stored in `/lib/src/l10n/l10n.csv`
 2. **CSV Format**: Standard CSV with key column and locale columns
 3. **Automatic Generation**: Script converts CSV to Flutter ARB format and generates Dart code
 
@@ -118,7 +133,7 @@ save,Stoor,አስቀምጥ,حفظ,Save,Guardar,Sauvegarder,Speichern,保存,저�
 
 ### 🛠️ Adding/Updating Translations
 
-1. **Edit the CSV file**: Open `/lib/l10n/l10n.csv` in any text editor or spreadsheet application
+1. **Edit the CSV file**: Open `/lib/src/l10n/l10n.csv` in any text editor or spreadsheet application
 2. **Add new keys**: Add new rows with translation key and values for each locale
 3. **Update existing translations**: Modify existing values in the CSV
 4. **Generate Flutter files**: Run the convert script

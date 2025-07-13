@@ -198,7 +198,7 @@ Future<DateTime?> getDateTime(String key) async {
 /// ```dart
 /// await preferences.setDateTime('k', DateTime.now());
 /// ```
-setDateTime(String key, DateTime? value) async {
+Future<void> setDateTime(String key, DateTime? value) async {
   assert(key.isNotEmpty);
   if (value == null) {
     remove(key);
@@ -222,7 +222,7 @@ Future<List<String>?> getStringList(String key) async {
 /// ```dart
 /// await preferences.setStringList('k',list);
 /// ```
-setStringList(String key, List<String> value) async {
+Future<void> setStringList(String key, List<String> value) async {
   assert(key.isNotEmpty);
   info('[preferences] set $key=$value');
   final instance = await SharedPreferences.getInstance();

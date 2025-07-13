@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
-import 'package:libcli/l10n/localization.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:libcli/libcli.dart' as libcli;
+
+import 'language_dropdown.dart';
 
 // Security: Use environment variables for sensitive data like Sentry DSN
 // Never hardcode API keys, tokens, or other sensitive information in source code
@@ -12,12 +13,13 @@ main() async {
   await libcli.run(() => const ExampleApp());
 }
 
-class ExampleApp extends StatelessWidget {
+class ExampleApp extends ConsumerWidget {
   const ExampleApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = ref.watch(libcli.localeProvider);
     return MaterialApp(
       title: 'Libcli Example',
       theme: ThemeData(
@@ -32,23 +34,15 @@ class ExampleApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      locale: Intl.defaultLocale == null ? const Locale('en') : Locale(Intl.defaultLocale!),
+      locale: locale,
+      localeResolutionCallback: libcli.localeResolutionCallback,
       localizationsDelegates: const [
-        Localization.delegate,
+        libcli.Localization.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: Localization.supportedLocales,
-      localeResolutionCallback: (locale, supportedLocales) {
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale?.languageCode &&
-              supportedLocale.countryCode == locale?.countryCode) {
-            return supportedLocale;
-          }
-        }
-        return const Locale('en');
-      },
+      supportedLocales: libcli.Localization.supportedLocales,
     );
   }
 }
@@ -80,6 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
         body: SingleChildScrollView(
           child: Center(
               child: Column(children: [
+            const LanguageDropdown(),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 throw MyException2('This is a test exception');
