@@ -1,0 +1,6 @@
+{
+  "close": "Close",
+  "error_content": "An unexpected error occurred. We've already logged this error. Please try again later.",
+  "error_oops": "Oops, something went wrong",
+  "language": "System Language"
+}

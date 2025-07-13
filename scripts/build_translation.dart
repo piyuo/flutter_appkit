@@ -8,12 +8,12 @@ import 'dart:io';
 /// Usage: dart csv_to_arb.dart [csv_file_path] [output_directory]
 ///
 /// Default:
-/// - csv_file_path: ../lib/l10n/translations.csv
-/// - output_directory: ../lib/l10n/
+/// - csv_file_path: ../lib/src/l10n/translations.csv
+/// - output_directory: ../lib/src/l10n/
 void main(List<String> args) {
-  String csvFilePath = args.isNotEmpty ? args[0] : '../lib/l10n/translations.csv';
+  String csvFilePath = args.isNotEmpty ? args[0] : '../lib/src/l10n/translations.csv';
 
-  String outputDir = args.length > 1 ? args[1] : '../lib/l10n/';
+  String outputDir = args.length > 1 ? args[1] : '../lib/src/l10n/';
 
   // Handle absolute vs relative paths
   File csvFile;
@@ -25,7 +25,7 @@ void main(List<String> args) {
   } else {
     // Relative path - resolve from script directory
     final scriptDir = File(Platform.script.toFilePath()).parent;
-    csvFile = File(scriptDir.path + '/' + csvFilePath);
+    csvFile = File('${scriptDir.path}/$csvFilePath');
   }
 
   if (outputDir.startsWith('/')) {
@@ -34,7 +34,7 @@ void main(List<String> args) {
   } else {
     // Relative path - resolve from script directory
     final scriptDir = File(Platform.script.toFilePath()).parent;
-    outputDirectory = Directory(scriptDir.path + '/' + outputDir);
+    outputDirectory = Directory('${scriptDir.path}/$outputDir');
   }
 
   if (!csvFile.existsSync()) {
@@ -169,5 +169,5 @@ void writeArbFile(File arbFile, Map<String, String> translations) {
   const encoder = JsonEncoder.withIndent('  ');
   final jsonString = encoder.convert(jsonMap);
 
-  arbFile.writeAsStringSync(jsonString + '\n');
+  arbFile.writeAsStringSync('$jsonString\n');
 }

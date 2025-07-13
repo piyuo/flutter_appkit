@@ -15,7 +15,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/l10n/localization.dart';
+import 'package:libcli/src/l10n/localization.dart';
 
 import 'global_context.dart';
 import 'show_error.dart';
@@ -367,6 +367,175 @@ void main() {
       // Should still display dialog with long message
       expect(find.byType(CupertinoAlertDialog), findsOneWidget);
       expect(find.textContaining(longMessage), findsOneWidget);
+    });
+  });
+
+  group('showError dialog prevention', () {
+    late Widget testApp;
+
+    setUp(() {
+      testApp = CupertinoApp(
+        localizationsDelegates: Localization.localizationsDelegates,
+        supportedLocales: Localization.supportedLocales,
+        home: GlobalContext(
+          child: const Scaffold(
+            body: Center(
+              child: Text('Test App'),
+            ),
+          ),
+        ),
+      );
+    });
+
+    testWidgets('prevents multiple dialogs from showing simultaneously', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final firstError = Exception('First error');
+      final secondError = Exception('Second error');
+
+      // Show first error dialog
+      showError(firstError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Verify first dialog is displayed
+      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.text('Exception: First error'), findsOneWidget);
+
+      // Try to show second error dialog while first is still open
+      showError(secondError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Should still only have one dialog (the first one)
+      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.text('Exception: First error'), findsOneWidget);
+      expect(find.text('Exception: Second error'), findsNothing);
+
+      // Close the first dialog
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      // Now no dialogs should be showing
+      expect(find.byType(CupertinoAlertDialog), findsNothing);
+    });
+
+    testWidgets('allows new dialog after previous one is closed', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final firstError = Exception('First error');
+      final secondError = Exception('Second error');
+
+      // Show first error dialog
+      showError(firstError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Verify first dialog is displayed
+      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.text('Exception: First error'), findsOneWidget);
+
+      // Close the first dialog
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      // Verify no dialogs are showing
+      expect(find.byType(CupertinoAlertDialog), findsNothing);
+
+      // Now show second error dialog
+      showError(secondError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Should show the second dialog now
+      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.text('Exception: Second error'), findsOneWidget);
+      expect(find.text('Exception: First error'), findsNothing);
+    });
+
+    testWidgets('showError returns immediately when dialog is already showing', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final firstError = Exception('First error');
+      final secondError = Exception('Second error');
+
+      bool firstCallCompleted = false;
+      bool secondCallCompleted = false;
+
+      // Start first showError call
+      showError(firstError, StackTrace.current).then((_) {
+        firstCallCompleted = true;
+      });
+
+      await tester.pumpAndSettle();
+
+      // Verify first dialog is displayed
+      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(firstCallCompleted, false); // Should not complete yet
+
+      // Start second showError call while first dialog is still open
+      showError(secondError, StackTrace.current).then((_) {
+        secondCallCompleted = true;
+      });
+
+      await tester.pumpAndSettle();
+
+      // Second call should complete immediately since it returns early
+      expect(secondCallCompleted, true);
+      expect(firstCallCompleted, false); // First call still waiting
+
+      // Close the first dialog
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      // Now first call should complete
+      expect(firstCallCompleted, true);
+      expect(find.byType(CupertinoAlertDialog), findsNothing);
+    });
+
+    testWidgets('multiple rapid calls only show one dialog', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final errors = [
+        Exception('Error 1'),
+        Exception('Error 2'),
+        Exception('Error 3'),
+        Exception('Error 4'),
+      ];
+
+      // Make multiple rapid calls
+      for (final error in errors) {
+        showError(error, StackTrace.current);
+      }
+
+      await tester.pumpAndSettle();
+
+      // Should only show one dialog (the first one)
+      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+      expect(find.text('Exception: Error 1'), findsOneWidget);
+
+      // Verify other errors are not shown
+      expect(find.text('Exception: Error 2'), findsNothing);
+      expect(find.text('Exception: Error 3'), findsNothing);
+      expect(find.text('Exception: Error 4'), findsNothing);
+    });
+
+    testWidgets('dialog has correct route settings name', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Verify dialog is displayed
+      expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+
+      // Check that the dialog route has the correct name
+      final BuildContext context = tester.element(find.byType(CupertinoAlertDialog));
+      final ModalRoute? route = ModalRoute.of(context);
+      expect(route?.settings.name, 'error_dialog');
     });
   });
 }
