@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0 (2025-07-14)
+
+
+### Features
+
+* add commitlint workflow for enforcing commit message conventions ([c9ed361](https://github.com/piyuo/libcli/commit/c9ed36125dd97ed321b07e5df787162f0601779b))
+* add language support with locale switching and resolution [#121](https://github.com/piyuo/libcli/issues/121) ([eac5bc4](https://github.com/piyuo/libcli/commit/eac5bc4b8b0864fe7de5155f475ddaec7a29fdd5))
+* add talker package for logging, error handling, alerts, and log sharing [#119](https://github.com/piyuo/libcli/issues/119) ([103af0c](https://github.com/piyuo/libcli/commit/103af0c69027996fa882c1fa9ebdb884b2cf5be7))
+* **docs:** add guidelines for adding new modules to README.md [#113](https://github.com/piyuo/libcli/issues/113) ([918aa8f](https://github.com/piyuo/libcli/commit/918aa8fcb48685d173a897524fac5e9c974ad4c2))
+* **docs:** enhance README with milestone completion, release, and deployment sections [#113](https://github.com/piyuo/libcli/issues/113) ([89970e5](https://github.com/piyuo/libcli/commit/89970e52bcb78b4c98c515c9d4ceb4e381828bdb))
+* **docs:** update README.md with new dependencies and tech stack details [#113](https://github.com/piyuo/libcli/issues/113) ([e62844e](https://github.com/piyuo/libcli/commit/e62844e2e468b982ece4665773e37235fc39f11f))
+* **main:** add utility scripts [#113](https://github.com/piyuo/libcli/issues/113) ([42f1b39](https://github.com/piyuo/libcli/commit/42f1b395b01dba6c3d479b6ba16481a95825be2f))
+* **main:** init ai workflow ([a2aedb5](https://github.com/piyuo/libcli/commit/a2aedb5a34b09adce03fc19abe6c4a1d0c8ba1c3))
+* **scripts:** add update_pubspec.dart to manage pubspec.yaml updates [#113](https://github.com/piyuo/libcli/issues/113) ([8395fb0](https://github.com/piyuo/libcli/commit/8395fb0bdadf956e955460877db4a8dd4b1d023e))
+* **scripts:** add update-pubspec.sh to update pubspec [#113](https://github.com/piyuo/libcli/issues/113) ([43683a2](https://github.com/piyuo/libcli/commit/43683a216ead3084ae4e77e82dab35b48fdbe0d7))
+
+
+### Bug Fixes
+
+* **docs:** correct typos and improve clarity in README.md [#113](https://github.com/piyuo/libcli/issues/113) ([edbac6c](https://github.com/piyuo/libcli/commit/edbac6c528f13ad28373a290812d9e1a1cea28ce))
+* enhance commitlint rules for subject validation and error messaging [#102](https://github.com/piyuo/libcli/issues/102) ([5f5be4c](https://github.com/piyuo/libcli/commit/5f5be4c3979b0b0a3766d7f05037c1e240694bdb))
+* enhance commitlint rules to enforce issue number in commit messages [#102](https://github.com/piyuo/libcli/issues/102) ([d7ad216](https://github.com/piyuo/libcli/commit/d7ad216f6f1438c7407522ec2c33d575294ebd8d))
+* improve subject-pattern validation for commit messages [#102](https://github.com/piyuo/libcli/issues/102) ([8ae724d](https://github.com/piyuo/libcli/commit/8ae724d26c415d3cf9b2d24bb7060dd8c2b42f6b))
+* prevent multiple error dialogs from appearing repeatedly [#123](https://github.com/piyuo/libcli/issues/123) ([c8f4cc0](https://github.com/piyuo/libcli/commit/c8f4cc0cc223d8b1a485afc8ca6fdb3c5d0872e6))
+* remove subject-blacklist rule from commitlint configuration ([07d4570](https://github.com/piyuo/libcli/commit/07d4570f4ac3664eef3f504cfbf800577bdf9772))
+* update commitlint configuration [#102](https://github.com/piyuo/libcli/issues/102) ([0300d29](https://github.com/piyuo/libcli/commit/0300d294f5c7b9ac5024c24fe2f12d0c823e658b))
+* update commitlint configuration and workflow for improved commit message validation ([33e16de](https://github.com/piyuo/libcli/commit/33e16ded5842028c12b7150d1a7d2ff3bf187769))
+* update commitlint rules to remove type restrictions and enforce issue number format [#102](https://github.com/piyuo/libcli/issues/102) ([11ecbc9](https://github.com/piyuo/libcli/commit/11ecbc96f84931a89f972ffcc81eab69b51bb84e))
+
 ## [1.8.0](https://github.com/piyuo/libcli/compare/v1.7.5...v1.8.0) (2025-06-08)
 
 
