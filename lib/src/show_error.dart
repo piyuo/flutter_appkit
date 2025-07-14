@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:libcli/src/l10n/l10n.dart';
 
 import 'global_context.dart';
+import 'l10n/l10n.dart';
 
 Future<void> showError(dynamic e, StackTrace? stack) async {
   // First check: prevent multiple dialogs from being open simultaneously

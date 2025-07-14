@@ -26,7 +26,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 ///
 /// Throws [FileSystemException] if the .env file cannot be found or read.
 /// Returns normally if the file loads successfully or if dotenv is already initialized.
-Future<void> initEnv({String fileName = '.env'}) async {
+Future<void> envInit({String fileName = '.env'}) async {
   try {
     if (!dotenv.isInitialized) {
       await dotenv.load(fileName: fileName);
@@ -48,8 +48,8 @@ Future<void> initEnv({String fileName = '.env'}) async {
 ///
 /// Example:
 /// ```dart
-/// String apiUrl = getEnv('API_URL', defaultValue: 'https://localhost:3000');
-/// String secret = getEnv('SECRET_KEY'); // returns empty string if not found
+/// String apiUrl = envGet('API_URL', defaultValue: 'https://localhost:3000');
+/// String secret = envGet('SECRET_KEY'); // returns empty string if not found
 /// ```
 ///
 /// Parameters:
@@ -57,7 +57,7 @@ Future<void> initEnv({String fileName = '.env'}) async {
 /// - [defaultValue]: Value to return if key is not found (default: empty string)
 ///
 /// Returns the environment variable value or default value.
-String getEnv(String key, {String defaultValue = ''}) {
+String envGet(String key, {String defaultValue = ''}) {
   if (!dotenv.isInitialized) {
     return defaultValue;
   }
@@ -71,23 +71,23 @@ String getEnv(String key, {String defaultValue = ''}) {
 /// Checks if the environment is properly initialized.
 ///
 /// Returns true if dotenv has been initialized and is ready to use.
-bool isEnvInitialized() {
+bool envIsInitialized() {
   return dotenv.isInitialized;
 }
 
 /// Gets all environment variables as a map.
 ///
-/// Returns an empty map if environment is not initialized.
+/// Returns an empty map if the environment is not initialized.
 /// This is useful for debugging or when you need to iterate over all variables.
 ///
 /// Example:
 /// ```dart
-/// Map<String, String> allVars = getAllEnvVars();
+/// Map<String, String> allVars = envGetAllVars();
 /// for (var entry in allVars.entries) {
 ///   print('${entry.key}: ${entry.value}');
 /// }
 /// ```
-Map<String, String> getAllEnvVars() {
+Map<String, String> envGetAllVars() {
   if (!dotenv.isInitialized) {
     return {};
   }
@@ -101,12 +101,12 @@ Map<String, String> getAllEnvVars() {
 ///
 /// Example:
 /// ```dart
-/// if (hasEnvVar('API_KEY')) {
-///   String apiKey = getEnv('API_KEY');
+/// if (envHasVar('API_KEY')) {
+///   String apiKey = envGet('API_KEY');
 ///   // use api key
 /// }
 /// ```
-bool hasEnvVar(String key) {
+bool envHasVar(String key) {
   if (!dotenv.isInitialized) {
     return false;
   }

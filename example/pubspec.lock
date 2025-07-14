@@ -243,6 +243,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_appkit:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "1.8.0"
   flutter_dotenv:
     dependency: transitive
     description:
@@ -402,13 +409,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  libcli:
-    dependency: "direct main"
-    description:
-      path: ".."
-      relative: true
-    source: path
-    version: "1.8.0"
   lints:
     dependency: transitive
     description:

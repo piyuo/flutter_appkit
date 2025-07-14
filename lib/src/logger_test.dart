@@ -121,27 +121,27 @@ void main() {
     test('debug() logs message with debug level', () {
       // Note: Since talker is a global instance, we can't easily mock it
       // This test verifies the function doesn't throw an error
-      expect(() => debug('Test debug message'), returnsNormally);
+      expect(() => logDebug('Test debug message'), returnsNormally);
     });
 
     test('info() logs message with info level', () {
-      expect(() => info('Test info message'), returnsNormally);
+      expect(() => logInfo('Test info message'), returnsNormally);
     });
 
     test('warning() logs message with warning level', () {
-      expect(() => warning('Test warning message'), returnsNormally);
+      expect(() => logWarning('Test warning message'), returnsNormally);
     });
 
     test('critical() logs message with critical level', () {
-      expect(() => critical('Test critical message'), returnsNormally);
+      expect(() => logCritical('Test critical message'), returnsNormally);
     });
 
     test('error() logs exception with optional stack trace', () {
       final exception = Exception('Test exception');
       final stackTrace = StackTrace.current;
 
-      expect(() => error(exception, stackTrace), returnsNormally);
-      expect(() => error(exception), returnsNormally);
+      expect(() => logError(exception, stackTrace), returnsNormally);
+      expect(() => logError(exception), returnsNormally);
     });
   });
 
@@ -155,7 +155,7 @@ void main() {
       _mockSentryDisabled();
 
       // This should not throw even if Sentry is not initialized
-      expect(() => critical('Test critical without Sentry'), returnsNormally);
+      expect(() => logCritical('Test critical without Sentry'), returnsNormally);
     });
 
     test('error() does not call Sentry when disabled', () {
@@ -163,14 +163,14 @@ void main() {
       final exception = Exception('Test exception');
 
       // This should not throw even if Sentry is not initialized
-      expect(() => error(exception), returnsNormally);
+      expect(() => logError(exception), returnsNormally);
     });
 
     test('critical() handles Sentry errors gracefully when enabled', () {
       _mockSentryEnabled();
 
       // Even if Sentry throws an error, critical() should handle it gracefully
-      expect(() => critical('Test critical with potential Sentry error'), returnsNormally);
+      expect(() => logCritical('Test critical with potential Sentry error'), returnsNormally);
     });
 
     test('error() handles Sentry errors gracefully when enabled', () {
@@ -178,7 +178,7 @@ void main() {
       final exception = Exception('Test exception');
 
       // Even if Sentry throws an error, error() should handle it gracefully
-      expect(() => error(exception), returnsNormally);
+      expect(() => logError(exception), returnsNormally);
     });
   });
 
@@ -190,7 +190,7 @@ void main() {
           home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
-                onPressed: () => showConsole(context),
+                onPressed: () => logShowConsole(context),
                 child: const Text('Show Console'),
               ),
             ),
@@ -213,7 +213,7 @@ void main() {
           home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
-                onPressed: () => showConsole(context),
+                onPressed: () => logShowConsole(context),
                 child: const Text('Show Console'),
               ),
             ),
@@ -243,39 +243,39 @@ void main() {
 
   group('Error Handling Edge Cases', () {
     test('handles various exception types', () {
-      expect(() => error('String error'), returnsNormally);
-      expect(() => error(42), returnsNormally);
-      expect(() => error(Exception('Test')), returnsNormally);
-      expect(() => error(Error()), returnsNormally);
+      expect(() => logError('String error'), returnsNormally);
+      expect(() => logError(42), returnsNormally);
+      expect(() => logError(Exception('Test')), returnsNormally);
+      expect(() => logError(Error()), returnsNormally);
       // Note: null is handled but may cause type issues in strict mode
     });
 
     test('handles empty and special characters in messages', () {
-      expect(() => debug(''), returnsNormally);
-      expect(() => info('Message with émojis 🚀'), returnsNormally);
-      expect(() => warning('Message\nwith\nnewlines'), returnsNormally);
-      expect(() => critical('Message with "quotes" and \'apostrophes\''), returnsNormally);
+      expect(() => logDebug(''), returnsNormally);
+      expect(() => logInfo('Message with émojis 🚀'), returnsNormally);
+      expect(() => logWarning('Message\nwith\nnewlines'), returnsNormally);
+      expect(() => logCritical('Message with "quotes" and \'apostrophes\''), returnsNormally);
     });
 
     test('handles very long messages', () {
       final longMessage = 'A' * 1000;
-      expect(() => debug(longMessage), returnsNormally);
-      expect(() => info(longMessage), returnsNormally);
-      expect(() => warning(longMessage), returnsNormally);
-      expect(() => critical(longMessage), returnsNormally);
+      expect(() => logDebug(longMessage), returnsNormally);
+      expect(() => logInfo(longMessage), returnsNormally);
+      expect(() => logWarning(longMessage), returnsNormally);
+      expect(() => logCritical(longMessage), returnsNormally);
     });
   });
 
   group('Stack Trace Handling', () {
     test('error() accepts null stack trace', () {
       final exception = Exception('Test');
-      expect(() => error(exception, null), returnsNormally);
+      expect(() => logError(exception, null), returnsNormally);
     });
 
     test('error() accepts valid stack trace', () {
       final exception = Exception('Test');
       final stackTrace = StackTrace.current;
-      expect(() => error(exception, stackTrace), returnsNormally);
+      expect(() => logError(exception, stackTrace), returnsNormally);
     });
   });
 
@@ -333,11 +333,11 @@ void main() {
     test('all logging functions work together', () {
       // Test that we can call all logging functions in sequence without errors
       expect(() {
-        debug('Debug message');
-        info('Info message');
-        warning('Warning message');
-        critical('Critical message');
-        error(Exception('Test exception'));
+        logDebug('Debug message');
+        logInfo('Info message');
+        logWarning('Warning message');
+        logCritical('Critical message');
+        logError(Exception('Test exception'));
       }, returnsNormally);
     });
 
@@ -346,11 +346,11 @@ void main() {
 
       // Test with Sentry disabled
       _mockSentryDisabled();
-      expect(() => critical('Test without Sentry'), returnsNormally);
+      expect(() => logCritical('Test without Sentry'), returnsNormally);
 
       // Test with Sentry enabled
       _mockSentryEnabled();
-      expect(() => critical('Test with Sentry'), returnsNormally);
+      expect(() => logCritical('Test with Sentry'), returnsNormally);
     });
   });
 }

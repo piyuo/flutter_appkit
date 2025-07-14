@@ -1,53 +1,62 @@
+// ============================================================================
+// Table of Contents
+// ============================================================================
+// 1. Imports
+// 2. Test Setup & Teardown
+// 3. Environment Variable Tests
+// ============================================================================
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/env.dart';
+
+import 'env.dart';
 
 void main() {
   const testEnvFile = '.env.test';
 
   setUpAll(() async {
-    // a test .env file already put in root directory, cause dotenv will load from assets, so we need create a test .env file first.
+    // A test .env file is already placed in the root directory. Since dotenv loads from assets, we ensure a test .env file exists for these tests.
     //await File(testEnvFile).writeAsString(testEnvContent);
   });
 
   tearDownAll(() async {
-    // Reset dotenv for other tests
+    // Reset dotenv for other tests. There is no public API to reset isInitialized, so tests must be run in isolation.
     if (dotenv.isInitialized) {
       dotenv.env.clear();
-      // There's no public API to reset isInitialized, so tests must be run in isolation
+      // No public API to reset isInitialized flag.
     }
   });
 
-  group('env_support.dart', () {
-    test('initEnv loads variables from file', () async {
-      await initEnv(fileName: testEnvFile);
+  group('env.dart', () {
+    test('envInit loads variables from file', () async {
+      await envInit(fileName: testEnvFile);
       expect(dotenv.env['API_URL'], 'https://api.example.com');
       expect(dotenv.env['SECRET_KEY'], 'supersecret');
     });
 
-    test('getEnv returns correct value and default', () async {
-      await initEnv(fileName: testEnvFile);
-      expect(getEnv('API_URL'), 'https://api.example.com');
-      expect(getEnv('NOT_EXIST', defaultValue: 'default'), 'default');
-      expect(getEnv('NOT_EXIST'), '');
+    test('envGet returns correct value and default', () async {
+      await envInit(fileName: testEnvFile);
+      expect(envGet('API_URL'), 'https://api.example.com');
+      expect(envGet('NOT_EXIST', defaultValue: 'default'), 'default');
+      expect(envGet('NOT_EXIST'), '');
     });
 
-    test('isEnvInitialized returns true after init', () async {
-      await initEnv(fileName: testEnvFile);
-      expect(isEnvInitialized(), isTrue);
+    test('envIsInitialized returns true after init', () async {
+      await envInit(fileName: testEnvFile);
+      expect(envIsInitialized(), isTrue);
     });
 
-    test('getAllEnvVars returns all variables', () async {
-      await initEnv(fileName: testEnvFile);
-      final vars = getAllEnvVars();
+    test('envGetAllVars returns all variables', () async {
+      await envInit(fileName: testEnvFile);
+      final vars = envGetAllVars();
       expect(vars['API_URL'], 'https://api.example.com');
       expect(vars['SECRET_KEY'], 'supersecret');
     });
 
-    test('hasEnvVar returns true if key exists', () async {
-      await initEnv(fileName: testEnvFile);
-      expect(hasEnvVar('API_URL'), isTrue);
-      expect(hasEnvVar('NOT_EXIST'), isFalse);
+    test('envHasVar returns true if key exists', () async {
+      await envInit(fileName: testEnvFile);
+      expect(envHasVar('API_URL'), isTrue);
+      expect(envHasVar('NOT_EXIST'), isFalse);
     });
   });
 }

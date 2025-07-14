@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_appkit/flutter_appkit.dart' as appkit;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libcli/libcli.dart' as libcli;
 
 class LanguageDropdown extends ConsumerWidget {
   const LanguageDropdown({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final displayLabels = libcli.localeDisplayLabels;
-    final locale = ref.watch(libcli.localeProvider);
-    final libcliLocalization = libcli.Localization.of(context);
+    final displayLabels = appkit.localeDisplayLabels;
+    final locale = ref.watch(appkit.localeProvider);
+    final libcliLocalization = appkit.Localization.of(context);
     return DropdownButton<Locale>(
       alignment: AlignmentDirectional.centerEnd,
       borderRadius: BorderRadius.circular(15),
@@ -40,7 +40,7 @@ class LanguageDropdown extends ConsumerWidget {
           })
         ];
       },
-      onChanged: (Locale? newValue) => ref.read(libcli.localeProvider.notifier).set(newValue),
+      onChanged: (Locale? newValue) => ref.read(appkit.localeProvider.notifier).set(newValue),
       items: [
         DropdownMenuItem<Locale>(
           value: const Locale(' '),
@@ -65,8 +65,8 @@ class LanguageDropdown extends ConsumerWidget {
         ...displayLabels.entries.map<DropdownMenuItem<Locale>>((entry) {
           final currentLocaleKey = entry.key;
           final currentLocaleName = entry.value;
-          final currentLocaleEngName = libcli.localeEngNames[currentLocaleKey] ?? locale.toString();
-          final currentLocale = libcli.localeParseString(currentLocaleKey);
+          final currentLocaleEngName = appkit.localeEngNames[currentLocaleKey] ?? locale.toString();
+          final currentLocale = appkit.localeParseString(currentLocaleKey);
           return DropdownMenuItem<Locale>(
             value: currentLocale,
             child: Padding(

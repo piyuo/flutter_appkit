@@ -11,9 +11,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/locale.dart';
-import 'package:libcli/src/locale_notifier.dart';
-import 'package:libcli/src/preferences.dart' as preferences;
+
+import 'locale.dart';
+import 'locale_notifier.dart';
+import 'preferences.dart' as preferences;
 
 void main() {
   group('LocaleNotifier', () {
@@ -38,8 +39,8 @@ void main() {
 
     test('loads saved locale from preferences on initialization', () async {
       // Setup preferences with saved locale
-      await preferences.setString(kLanguageCodeInPreferences, 'es');
-      await preferences.setString(kCountryCodeInPreferences, 'MX');
+      await preferences.prefSetString(kLanguageCodeInPreferences, 'es');
+      await preferences.prefSetString(kCountryCodeInPreferences, 'MX');
 
       // Create new container to trigger loading
       final newContainer = ProviderContainer();
@@ -59,8 +60,8 @@ void main() {
       await notifier.set(japaneseLocale);
 
       expect(container.read(localeProvider), japaneseLocale);
-      expect(await preferences.getString(kLanguageCodeInPreferences), 'ja');
-      expect(await preferences.getString(kCountryCodeInPreferences), 'JP');
+      expect(await preferences.prefGetString(kLanguageCodeInPreferences), 'ja');
+      expect(await preferences.prefGetString(kCountryCodeInPreferences), 'JP');
     });
     test('set() preserves state even when preferences are cleared due to system locale match', () async {
       // This test verifies the fix for the race condition bug where _load()
@@ -82,36 +83,36 @@ void main() {
       await Future.delayed(Duration.zero);
 
       expect(container.read(localeProvider), locale);
-      expect(await preferences.getString(kLanguageCodeInPreferences), 'fr');
-      expect(await preferences.getString(kCountryCodeInPreferences), isNull);
+      expect(await preferences.prefGetString(kLanguageCodeInPreferences), 'fr');
+      expect(await preferences.prefGetString(kCountryCodeInPreferences), isNull);
     });
 
     test('set(null) clears preferences', () async {
       // First set a locale
       await notifier.set(Locale('fr', 'CA'));
-      expect(await preferences.getString(kLanguageCodeInPreferences), 'fr');
-      expect(await preferences.getString(kCountryCodeInPreferences), 'CA');
+      expect(await preferences.prefGetString(kLanguageCodeInPreferences), 'fr');
+      expect(await preferences.prefGetString(kCountryCodeInPreferences), 'CA');
 
       // Then clear it
       await notifier.set(null);
       await Future.delayed(Duration.zero);
 
       expect(container.read(localeProvider), isNull);
-      expect(await preferences.getString(kLanguageCodeInPreferences), isNull);
-      expect(await preferences.getString(kCountryCodeInPreferences), isNull);
+      expect(await preferences.prefGetString(kLanguageCodeInPreferences), isNull);
+      expect(await preferences.prefGetString(kCountryCodeInPreferences), isNull);
     });
 
     test('set() with whitespace-only languageCode clears preferences', () async {
       // First set a valid locale
       await notifier.set(Locale('de', 'DE'));
-      expect(await preferences.getString(kLanguageCodeInPreferences), 'de');
+      expect(await preferences.prefGetString(kLanguageCodeInPreferences), 'de');
 
       // Then set locale with whitespace-only language code
       await notifier.set(Locale('   ', 'DE'));
 
       expect(container.read(localeProvider), Locale('   ', 'DE'));
-      expect(await preferences.getString(kLanguageCodeInPreferences), isNull);
-      expect(await preferences.getString(kCountryCodeInPreferences), isNull);
+      expect(await preferences.prefGetString(kLanguageCodeInPreferences), isNull);
+      expect(await preferences.prefGetString(kCountryCodeInPreferences), isNull);
     });
   });
 }

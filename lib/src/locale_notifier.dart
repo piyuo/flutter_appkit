@@ -37,8 +37,8 @@ class LocaleNotifier extends StateNotifier<Locale?> {
   /// Loads the locale from preferences asynchronously.
   /// Returns null if no locale is saved.
   Future<Locale?> _loadFromPref() async {
-    final languageCode = await getString(kLanguageCodeInPreferences);
-    final countryCode = await getString(kCountryCodeInPreferences);
+    final languageCode = await prefGetString(kLanguageCodeInPreferences);
+    final countryCode = await prefGetString(kCountryCodeInPreferences);
     if (languageCode != null && languageCode.trim().isNotEmpty) {
       return Locale(languageCode, countryCode?.isNotEmpty == true ? countryCode : null);
     }
@@ -59,14 +59,14 @@ class LocaleNotifier extends StateNotifier<Locale?> {
   /// Saves the locale to preferences. Removes keys if locale is null or matches system locale.
   Future<void> _saveToPref(Locale? locale) async {
     if (locale == null || locale.languageCode.trim().isEmpty || locale.toString() == Intl.systemLocale) {
-      await remove(kLanguageCodeInPreferences);
-      await remove(kCountryCodeInPreferences);
+      await prefRemoveKey(kLanguageCodeInPreferences);
+      await prefRemoveKey(kCountryCodeInPreferences);
     } else {
-      await setString(kLanguageCodeInPreferences, locale.languageCode);
+      await prefSetString(kLanguageCodeInPreferences, locale.languageCode);
       if (locale.countryCode != null && locale.countryCode!.isNotEmpty) {
-        await setString(kCountryCodeInPreferences, locale.countryCode!);
+        await prefSetString(kCountryCodeInPreferences, locale.countryCode!);
       } else {
-        await remove(kCountryCodeInPreferences);
+        await prefRemoveKey(kCountryCodeInPreferences);
       }
     }
   }

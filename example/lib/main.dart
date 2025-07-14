@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_appkit/flutter_appkit.dart' as appkit;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libcli/libcli.dart' as libcli;
 
 import 'language_dropdown.dart';
 
@@ -10,7 +10,7 @@ import 'language_dropdown.dart';
 // Never hardcode API keys, tokens, or other sensitive information in source code
 // Environment variables are loaded from .env file using flutter_dotenv package
 main() async {
-  await libcli.run(() => const ExampleApp());
+  await appkit.appRun(() => const ExampleApp());
 }
 
 class ExampleApp extends ConsumerWidget {
@@ -19,7 +19,7 @@ class ExampleApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locale = ref.watch(libcli.localeProvider);
+    final locale = ref.watch(appkit.localeProvider);
     return MaterialApp(
       title: 'Libcli Example',
       theme: ThemeData(
@@ -33,16 +33,16 @@ class ExampleApp extends ConsumerWidget {
         ),
         useMaterial3: true,
       ),
-      home: const libcli.GlobalContext(child: MyHomePage(title: 'Flutter Demo Home Page')),
+      home: const appkit.GlobalContext(child: MyHomePage(title: 'Flutter Demo Home Page')),
       locale: locale,
-      localeResolutionCallback: libcli.localeResolutionCallback,
+      localeResolutionCallback: appkit.localeResolutionCallback,
       localizationsDelegates: const [
-        libcli.Localization.delegate,
+        appkit.Localization.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: libcli.Localization.supportedLocales,
+      supportedLocales: appkit.Localization.supportedLocales,
     );
   }
 }
@@ -117,10 +117,69 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
+              onPressed: () {
+                appkit.logDebug('Debug log example');
+                appkit.logInfo('Info log example');
+                appkit.logWarning('Warning log example');
+                appkit.logCritical('Critical log example');
+                appkit.logError('Error log example');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Log functions called! Check console.')),
+                );
+              },
+              child: const Text('Show Log Function Usage'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
                 onPressed: () {
-                  libcli.showConsole(context);
+                  appkit.logShowConsole(context);
                 },
                 child: const Text('Show Console')),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                // Show a dialog with the value of a sample environment variable
+                final sentryDsn = appkit.envGet('SENTRY_DSN', defaultValue: 'Not set');
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('envGet Example'),
+                    content: Text('SENTRY_DSN: $sentryDsn'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: const Text('Show envGet("SENTRY_DSN")'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                // Demonstrate preferences usage
+                const key = 'demo_key';
+                await appkit.prefSetString(key, 'Hello Preferences');
+                final value = await appkit.prefGetString(key);
+                await appkit.prefSetInt('demo_int', 42);
+                final intValue = await appkit.prefGetInt('demo_int');
+                await appkit.prefSetBool('demo_bool', true);
+                final boolValue = await appkit.prefGetBool('demo_bool');
+                await appkit.prefRemoveKey('demo_key');
+                final removedValue = await appkit.prefGetString(key);
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'String: $value\nInt: $intValue\nBool: $boolValue\nRemoved: $removedValue',
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Show Preferences Function Usage'),
+            ),
             const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.all(16.0),
