@@ -2,7 +2,6 @@
 
 A robust Flutter foundation library that provides essential application infrastructure including error handling, global context management, logging, and internationalization support.
 
-<!--
 ## Table of Contents
 
 - [LibCLI](#libcli)
@@ -11,6 +10,7 @@ A robust Flutter foundation library that provides essential application infrastr
   - [Installation](#installation)
   - [Quick Start](#quick-start)
   - [🧪 Testing](#-testing)
+    - [📁 Test File Organization](#-test-file-organization)
     - [🏃 Running Tests](#-running-tests)
   - [🌍 Localization (i18n)](#-localization-i18n)
     - [📁 File Structure](#-file-structure)
@@ -35,7 +35,7 @@ A robust Flutter foundation library that provides essential application infrastr
     - [Release](#release)
     - [Deployment](#deployment)
   - [Reference Documents](#reference-documents)
--->
+
 ## Features
 
 - **Error Handling**: Comprehensive error catching and reporting mechanism
@@ -72,17 +72,49 @@ void main() {
 
 LibCLI follows comprehensive testing practices to ensure reliability and maintainability. We use Flutter's built-in testing framework along with additional tools for robust test coverage.
 
-### 🏃 Running Tests
+### 📁 Test File Organization
 
-Only use flutter test lib to run all tests in the project:
+**IMPORTANT for AI Agents**: Test files should be placed alongside their corresponding source files, NOT in a separate `/test` folder.
 
-```bash
-flutter test lib
+**Correct Structure**:
+```
+/lib
+  /your_module
+    /src
+      env.dart
+      env_test.dart          # ✅ Test file beside source file
+      search_impl.dart
+      search_impl_test.dart  # ✅ Test file beside source file
+    your_module.dart
 ```
 
-Additional test commands:
+**Incorrect Structure**:
+```
+/lib
+  /your_module
+    /src
+      env.dart
+      search_impl.dart
+    your_module.dart
+/test                        # ❌ Avoid separate test folder
+  env_test.dart
+  search_impl_test.dart
+```
+
+### 🏃 Running Tests
+
+**Primary Method - VS Code Flutter Test Plugin**:
+- **AI Agents should use the VS Code Flutter test plugin first** for running tests
+- Use the test runner UI in VS Code to run individual tests or test suites
+- The plugin provides better debugging capabilities and integrated test results
+
+**Fallback Method - Command Line**:
+If the VS Code Flutter test plugin has issues, then use command line:
 
 ```bash
+# Run all tests in the project
+flutter test lib
+
 # Run tests with coverage report
 flutter test --coverage lib
 
@@ -96,7 +128,6 @@ flutter test lib/path/to/specific_test.dart
 flutter test --reporter expanded lib
 ```
 
-
 ## 🌍 Localization (i18n)
 
 LibCLI provides a streamlined localization system that supports 70+ languages and locales. All translations are managed through a single CSV file for easy maintenance and collaboration.
@@ -105,10 +136,11 @@ LibCLI provides a streamlined localization system that supports 70+ languages an
 
 ```
 /lib
-  /l10n
-    l10n.csv          # Master translation file (edit this)
-    *.arb             # Generated ARB files (do not edit)
-    *.dart            # Generated Dart files (do not edit)
+  /src
+    /l10n
+      l10n.csv          # Master translation file (edit this)
+      *.arb             # Generated ARB files (do not edit)
+      *.dart            # Generated Dart files (do not edit)
 ```
 
 ### 🔧 How It Works
