@@ -4,22 +4,8 @@ import 'package:libcli/src/l10n/l10n.dart';
 import 'global_context.dart';
 
 Future<void> showError(dynamic e, StackTrace? stack) async {
-  // Hot reload/restart safe approach: check if there's already an error dialog showing
-  // by looking for our specific route name in the navigator
-  final navigator = Navigator.of(globalContext);
+  // First check: prevent multiple dialogs from being open simultaneously
 
-  // Check if there's already an error dialog route active
-  bool hasErrorDialog = false;
-  navigator.popUntil((route) {
-    if (route.settings.name == 'error_dialog' && route.isActive) {
-      hasErrorDialog = true;
-    }
-    return true; // Don't actually pop, just check
-  });
-
-  if (hasErrorDialog) {
-    return; // Already showing an error dialog, don't show another
-  }
   await showCupertinoDialog(
     context: globalContext,
     routeSettings: const RouteSettings(name: 'error_dialog'),

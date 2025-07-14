@@ -25,7 +25,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 
 import 'env.dart';
-import 'global_context.dart';
 import 'logger.dart';
 import 'show_error.dart';
 
@@ -70,7 +69,7 @@ Future<void> run(Widget Function() suspect) async {
       await initEnv();
       final appContent = ProviderScope(observers: [
         TalkerRiverpodObserver(talker: talker),
-      ], child: GlobalContext(child: suspect()));
+      ], child: suspect());
 
       _setupErrorHandlers();
 
