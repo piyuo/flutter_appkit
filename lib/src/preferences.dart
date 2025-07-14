@@ -1,3 +1,20 @@
+// =============================================================
+// File: preferences.dart
+// Overview: Shared Preferences utility functions for persistent
+// key-value storage in Flutter apps. Handles primitives, lists,
+// maps, expiration, and test initialization.
+//
+// Sections:
+//   - Exception definitions
+//   - Constants
+//   - Test initialization
+//   - Primitive get/set/remove
+//   - Expiration support
+//   - DateTime helpers
+//   - List/map helpers
+//   - Clear all
+// =============================================================
+
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
@@ -6,62 +23,62 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'logger.dart';
 
-/// DiskErrorException happen when there is a [disk error] when save data to disk may be not enough space or permission
+/// Exception thrown when a disk error occurs (e.g., out of space or permission denied).
 class DiskErrorException implements Exception {}
 
-/// _expirationExt is for setStringWithExpiration, we need extra expiration time
+/// Suffix for expiration keys used in setStringWithExpiration.
 const expirationExt = '_EXP';
 
-/// initForTest Initializes the value for test
-/// ```dart
-/// prefs.initForTest({});
-/// ```
+/// Initializes mock values for testing SharedPreferences.
+///
+/// Example:
+///   initForTest({'key': 'value'});
 @visibleForTesting
 void initForTest(Map<String, Object> values) {
   // ignore:invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues(values);
 }
 
-/// containsKey return true if key exists
+/// Returns true if the given key exists in preferences.
 /// ```dart
 ///     bool found = await preferences.containsKey('k');
 ///
-Future<bool> containsKey(String key) async {
+Future<bool> prefContainsKey(String key) async {
   assert(key.isNotEmpty);
   final instance = await SharedPreferences.getInstance();
   return instance.containsKey(key);
 }
 
-/// remove value from preferences
+/// Removes the value for the given key from preferences.
 /// ```dart
 /// var result = await preferences.remove('k');
 /// ```
-Future<bool> remove(String key) async {
+Future<bool> prefRemoveKey(String key) async {
   assert(key.isNotEmpty);
-  info('[preferences] remove $key');
+  logInfo('[preferences] remove $key');
   final instance = await SharedPreferences.getInstance();
   return await instance.remove(key);
 }
 
-/// getBool return boolean value from preferences
+/// Gets a boolean value from preferences.
 /// ```dart
 /// var result = await preferences.getBool('k');
 /// ```
-Future<bool?> getBool(String key) async {
+Future<bool?> prefGetBool(String key) async {
   assert(key.isNotEmpty);
   final instance = await SharedPreferences.getInstance();
   return instance.getBool(key);
 }
 
-/// setBool set boolean value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets a boolean value in preferences. Removes the key if [value] is null.
 /// ```dart
 /// await preferences.setBool('k',true);
 /// ```
-Future<void> setBool(String key, bool? value) async {
+Future<void> prefSetBool(String key, bool? value) async {
   assert(key.isNotEmpty);
-  info('[preferences] set $key=$value');
+  logInfo('[preferences] set $key=$value');
   if (value == null) {
-    remove(key);
+    prefRemoveKey(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -71,25 +88,25 @@ Future<void> setBool(String key, bool? value) async {
   }
 }
 
-/// getInt return int value from preferences
+/// Gets an integer value from preferences.
 /// ```dart
 /// var result = await preferences.getInt('k');
 /// ```
-Future<int?> getInt(String key) async {
+Future<int?> prefGetInt(String key) async {
   assert(key.isNotEmpty);
   final instance = await SharedPreferences.getInstance();
   return instance.getInt(key);
 }
 
-/// setInt set int value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets an integer value in preferences. Removes the key if [value] is null.
 /// ```dart
 /// await preferences.setInt('k',1);
 /// ```
-Future<void> setInt(String key, int? value) async {
+Future<void> prefSetInt(String key, int? value) async {
   assert(key.isNotEmpty);
-  info('[preferences] set $key=$value');
+  logInfo('[preferences] set $key=$value');
   if (value == null) {
-    remove(key);
+    prefRemoveKey(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -99,25 +116,25 @@ Future<void> setInt(String key, int? value) async {
   }
 }
 
-/// getDouble return double value from preferences
+/// Gets a double value from preferences.
 /// ```dart
 /// var result = await preferences.getDouble('k');
 /// ```
-Future<double?> getDouble(String key) async {
+Future<double?> prefGetDouble(String key) async {
   assert(key.isNotEmpty);
   final instance = await SharedPreferences.getInstance();
   return instance.getDouble(key);
 }
 
-/// setDouble set double value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets a double value in preferences. Removes the key if [value] is null.
 /// ```dart
 /// await preferences.setDouble('k',1);
 /// ```
-Future<void> setDouble(String key, double? value) async {
+Future<void> prefSetDouble(String key, double? value) async {
   assert(key.isNotEmpty);
-  info('[preferences] set $key=$value');
+  logInfo('[preferences] set $key=$value');
   if (value == null) {
-    remove(key);
+    prefRemoveKey(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -127,25 +144,25 @@ Future<void> setDouble(String key, double? value) async {
   }
 }
 
-/// getString return string value from preferences
+/// Gets a string value from preferences.
 /// ```dart
 /// var result = await preferences.getString('k');
 /// ```
-Future<String?> getString(String key) async {
+Future<String?> prefGetString(String key) async {
   assert(key.isNotEmpty);
   final instance = await SharedPreferences.getInstance();
   return instance.getString(key);
 }
 
-/// setString set string value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets a string value in preferences. Removes the key if [value] is null.
 /// ```dart
 /// await preferences.setString('k','value');
 /// ```
-Future<void> setString(String key, String? value) async {
+Future<void> prefSetString(String key, String? value) async {
   assert(key.isNotEmpty);
-  info('[preferences] set $key=$value');
+  logInfo('[preferences] set $key=$value');
   if (value == null) {
-    remove(key);
+    prefRemoveKey(key);
     return;
   }
   final instance = await SharedPreferences.getInstance();
@@ -155,76 +172,76 @@ Future<void> setString(String key, String? value) async {
   }
 }
 
-/// getStringWithExp return string value from preferences and check expiration date
+/// Gets a string value with expiration. Returns null if expired or not found.
 /// ```dart
 /// final str = await preferences.getStringWithExp('k');
 /// ```
-Future<String?> getStringWithExp(String key) async {
-  var exp = await getDateTime(key + expirationExt);
+Future<String?> prefGetStringWithExp(String key) async {
+  var exp = await prefGetDateTime(key + expirationExt);
   if (exp != null) {
     final now = DateTime.now();
     if (exp.isBefore(now)) {
       //expired
-      remove(key);
-      remove(key + expirationExt);
+      prefRemoveKey(key);
+      prefRemoveKey(key + expirationExt);
       return null;
     }
   }
-  return await getString(key);
+  return await prefGetString(key);
 }
 
-/// setStringWithExp set string value to preferences with a expiration date
+/// Sets a string value with an expiration date.
 /// ```dart
 /// await preferences.setStringWithExp('k', 'a', exp);
 /// ```
-Future<void> setStringWithExp(String key, String value, DateTime expire) async {
-  await setDateTime(key + expirationExt, expire);
-  await setString(key, value);
+Future<void> prefSetStringWithExp(String key, String value, DateTime expire) async {
+  await prefSetDateTime(key + expirationExt, expire);
+  await prefSetString(key, value);
 }
 
-/// getDateTime return datetime value from preferences. return 1970/01/01 Epoch if not exist
+/// Gets a DateTime value from preferences, or null if not found.
 /// ```dart
 /// var result = await preferences.getDateTime('k');
 /// ```
-Future<DateTime?> getDateTime(String key) async {
-  var value = await getString(key);
+Future<DateTime?> prefGetDateTime(String key) async {
+  var value = await prefGetString(key);
   if (value != null) {
     return DateTime.parse(value);
   }
   return null;
 }
 
-/// setDateTime set datetime value to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets a DateTime value in preferences. Removes the key if [value] is null.
 /// ```dart
 /// await preferences.setDateTime('k', DateTime.now());
 /// ```
-Future<void> setDateTime(String key, DateTime? value) async {
+Future<void> prefSetDateTime(String key, DateTime? value) async {
   assert(key.isNotEmpty);
   if (value == null) {
-    remove(key);
+    prefRemoveKey(key);
     return;
   }
   String formatted = value.toString().substring(0, 19);
-  return await setString(key, formatted);
+  return await prefSetString(key, formatted);
 }
 
-/// getStringList return string list from preferences
+/// Gets a list of strings from preferences.
 /// ```dart
 /// var result = await preferences.getStringList('k');
 /// ```
-Future<List<String>?> getStringList(String key) async {
+Future<List<String>?> prefGetStringList(String key) async {
   assert(key.isNotEmpty);
   final instance = await SharedPreferences.getInstance();
   return instance.getStringList(key);
 }
 
-/// setStringList set string list to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets a list of strings in preferences. Removes the key if [value] is null.
 /// ```dart
 /// await preferences.setStringList('k',list);
 /// ```
-Future<void> setStringList(String key, List<String> value) async {
+Future<void> prefSetStringList(String key, List<String> value) async {
   assert(key.isNotEmpty);
-  info('[preferences] set $key=$value');
+  logInfo('[preferences] set $key=$value');
   final instance = await SharedPreferences.getInstance();
   var result = await instance.setStringList(key, value);
   if (!result) {
@@ -232,53 +249,53 @@ Future<void> setStringList(String key, List<String> value) async {
   }
 }
 
-/// getMap return map from preferences
+/// Gets a Map from preferences (decoded from JSON), or null if not found.
 /// ```dart
 /// var result = await preferences.getMap('k');
 /// ```
-Future<dynamic> getMap(String key) async {
-  final j = await getString(key);
+Future<dynamic> prefGetMap(String key) async {
+  final j = await prefGetString(key);
   if (j != null) {
     return jsonDecode(j);
   }
   return null;
 }
 
-/// setMap set string map to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets a Map in preferences (encoded as JSON). Removes the key if [map] is null.
 /// ```dart
 /// await preferences.setMap('k',map);
 /// ```
-Future<void> setMap(String key, Map<String, dynamic> map) async {
+Future<void> prefSetMap(String key, Map<String, dynamic> map) async {
   String j = json.encode(map);
-  return await setString(key, j);
+  return await prefSetString(key, j);
 }
 
-/// getMapList return map list from preferences
+/// Gets a list of Maps from preferences (each decoded from JSON), or null if not found.
 /// ```dart
 /// var result = await preferences.getMapList('k');
 /// ```
-Future<List<Map<String, dynamic>>?> getMapList(String key) async {
-  var list = await getStringList(key);
+Future<List<Map<String, dynamic>>?> prefGetMapList(String key) async {
+  var list = await prefGetStringList(key);
   if (list != null) {
     return list.map((e) => json.decode(e) as Map<String, dynamic>).toList();
   }
   return null;
 }
 
-/// setMapList set string map list to preferences, If [value] is null, this is equivalent to calling [remove()] on the [key].
+/// Sets a list of Maps in preferences (each encoded as JSON). Removes the key if [mapList] is null.
 /// ```dart
 /// await preferences.setMapList('k',list);
 /// ```
-Future<void> setMapList(String key, List<Map<String, dynamic>> mapList) async {
+Future<void> prefSetMapList(String key, List<Map<String, dynamic>> mapList) async {
   List<String> list = mapList.map((e) => json.encode(e)).toList();
-  return await setStringList(key, list);
+  return await prefSetStringList(key, list);
 }
 
-/// clear entire preferences,return true if successfully
+/// Clears all preferences. Returns true if successful.
 /// ```dart
 /// await preferences.clear();
 /// ```
-Future<bool> clear() async {
+Future<bool> prefClear() async {
   final instance = await SharedPreferences.getInstance();
   return await instance.clear();
 }

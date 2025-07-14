@@ -15,9 +15,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:libcli/src/l10n/localization.dart';
 
 import 'global_context.dart';
+import 'l10n/localization.dart';
 import 'show_error.dart';
 
 void main() {

@@ -34,13 +34,13 @@ bool? _sentryEnabledCache;
 bool get isSentryEnabled {
   // In test mode, don't use cache to allow for environment changes
   if (kDebugMode) {
-    final dsn = getEnv('SENTRY_DSN');
+    final dsn = envGet('SENTRY_DSN');
     return dsn.isNotEmpty && _isValidSentryDSN(dsn);
   }
 
   if (_sentryEnabledCache != null) return _sentryEnabledCache!;
 
-  final dsn = getEnv('SENTRY_DSN');
+  final dsn = envGet('SENTRY_DSN');
   _sentryEnabledCache = dsn.isNotEmpty && _isValidSentryDSN(dsn);
   return _sentryEnabledCache!;
 }
@@ -62,11 +62,11 @@ bool get isSentryEnabled {
 /// ```dart
 /// await run(() => MyApp());
 /// ```
-Future<void> run(Widget Function() suspect) async {
+Future<void> appRun(Widget Function() suspect) async {
   runZonedGuarded<Future<void>>(
     () async {
       // Load environment variables from .env file
-      await initEnv();
+      await envInit();
       final appContent = ProviderScope(observers: [
         TalkerRiverpodObserver(talker: talker),
       ], child: suspect());
@@ -85,7 +85,7 @@ Future<void> run(Widget Function() suspect) async {
 
 /// Initializes the app with Sentry integration
 Future<void> _initWithSentry(Widget appContent) async {
-  final sentryDSN = getEnv('SENTRY_DSN');
+  final sentryDSN = envGet('SENTRY_DSN');
 
   try {
     await SentryFlutter.init(
@@ -101,16 +101,16 @@ Future<void> _initWithSentry(Widget appContent) async {
       },
       appRunner: () => runApp(SentryWidget(child: appContent)),
     );
-    info('Sentry is enabled, unhandled exceptions will be sent to Sentry.');
+    logInfo('Sentry is enabled, unhandled exceptions will be sent to Sentry.');
   } catch (e) {
-    warning('Failed to initialize Sentry: $e. Falling back to basic error handling.');
+    logWarning('Failed to initialize Sentry: $e. Falling back to basic error handling.');
     _initWithoutSentry(appContent);
   }
 }
 
 /// Initializes the app without Sentry
 void _initWithoutSentry(Widget appContent) {
-  info('Sentry is not enabled. To use Sentry, provide a valid DSN in the SENTRY_DSN environment variable.');
+  logInfo('Sentry is not enabled. To use Sentry, provide a valid DSN in the SENTRY_DSN environment variable.');
   runApp(appContent);
 }
 
@@ -154,17 +154,17 @@ Future<void> catched(dynamic e, StackTrace? stack) async {
 
   // Handle null exceptions gracefully
   if (e == null) {
-    error('Null exception caught', stack);
+    logError('Null exception caught', stack);
     return;
   }
 
-  error(e, stack);
+  logError(e, stack);
 
   try {
     await showError(e, stack);
   } catch (ex) {
     // Log the error and also print to console for debugging
-    error('Error dialog display failed: $ex');
+    logError('Error dialog display failed: $ex');
     debugPrint('Error dialog display failed: $ex');
   }
 }

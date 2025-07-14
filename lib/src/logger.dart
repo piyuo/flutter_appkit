@@ -13,11 +13,12 @@
 //     - error(dynamic, StackTrace?) - Error logging with Sentry
 // ===============================================
 
+import 'package:flutter/foundation.dart'; // Import for kReleaseMode
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-import 'run.dart'; // Import to access isSentryEnabled
+import 'app.dart'; // Import to access isSentryEnabled
 
 final talker = Talker(
   settings: TalkerSettings(
@@ -32,7 +33,9 @@ final talker = Talker(
   ),
 );
 
-/// Custom formatter that removes borders and provides clean output
+/// Custom log formatter for Talker that outputs clean, borderless log lines.
+///
+/// Format: [level] | HH:mm:ss SSSms | message
 class CleanLogFormatter extends LoggerFormatter {
   @override
   String fmt(LogDetails details, TalkerLoggerSettings settings) {
@@ -49,33 +52,44 @@ class CleanLogFormatter extends LoggerFormatter {
   }
 }
 
-void showConsole(BuildContext context) {
+/// Opens the Talker console screen as a modal route for in-app log viewing.
+///
+/// [context] - The BuildContext to use for navigation.
+void logShowConsole(BuildContext context) {
   Navigator.of(context).push(MaterialPageRoute(
     builder: (context) => TalkerScreen(talker: talker, appBarTitle: 'Console'),
   ));
 }
 
-/// Logs a debug message using Talker.
-/// Debug messages are typically used for development and troubleshooting.
-void debug(String message) {
-  talker.debug(message);
+/// Log a debug-level message for development and troubleshooting.
+///
+/// [message] - The message to log at debug level.
+void logDebug(String message) {
+  if (!kReleaseMode) {
+    talker.debug(message);
+  }
 }
 
-/// Logs an info message using Talker.
-/// Info messages provide general information about application flow.
-void info(String message) {
+/// Log an info-level message for general application flow and status updates.
+///
+/// [message] - The message to log at info level.
+void logInfo(String message) {
   talker.info(message);
 }
 
-/// Logs a warning message using Talker.
-/// Warning messages indicate potential issues that don't prevent execution.
-void warning(String message) {
+/// Log a warning-level message for potential issues that do not stop execution.
+///
+/// [message] - The warning message to log.
+void logWarning(String message) {
   talker.warning(message);
 }
 
-/// Logs a critical message using Talker and sends to Sentry if enabled.
-/// Critical messages indicate serious issues that require immediate attention.
-void critical(String message) {
+/// Log a critical-level message for serious issues, and send to Sentry if enabled.
+///
+/// [message] - The critical message to log and report.
+///
+/// If Sentry is enabled, this will also send the message as a fatal event.
+void logCritical(String message) {
   talker.critical(message);
 
   if (isSentryEnabled) {
@@ -88,9 +102,13 @@ void critical(String message) {
   }
 }
 
-/// Logs an error with optional stack trace using Talker and sends to Sentry if enabled.
-/// This function handles exceptions and errors with full context.
-void error(dynamic exception, [StackTrace? stackTrace]) {
+/// Log an error or exception, optionally with a stack trace, and send to Sentry if enabled.
+///
+/// [exception] - The error or exception object to log.
+/// [stackTrace] - Optional stack trace for context.
+///
+/// If Sentry is enabled, this will also report the exception and stack trace.
+void logError(dynamic exception, [StackTrace? stackTrace]) {
   talker.handle(exception, stackTrace);
 
   if (isSentryEnabled) {
