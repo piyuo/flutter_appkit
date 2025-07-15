@@ -1,5 +1,5 @@
 name: flutter_appkit
-description: piyuo.com client library.
+description: Production-ready runtime and infrastructure support for Flutter apps — error handling, logging, locale, context, Riverpod, and more.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

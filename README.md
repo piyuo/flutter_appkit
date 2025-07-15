@@ -141,7 +141,8 @@ Flutter AppKit follows comprehensive testing practices to ensure reliability and
 **IMPORTANT for AI Agents**: Test files should be placed in the `/test` folder, mirroring the structure of your source files in `/lib`.
 
 **Correct Structure**:
-```
+
+```bash
 /lib
   /src
     env.dart
@@ -155,6 +156,7 @@ Flutter AppKit follows comprehensive testing practices to ensure reliability and
 ```
 
 **Why This Structure**:
+
 - **Consistency and Discoverability**: Easy to find test files - if you're working on `lib/src/foo/bar.dart`, you know to look for `test/src/foo/bar_test.dart`
 - **IDE Support**: Modern IDEs with Flutter plugins support "Go to Test File" commands that rely on this mirroring
 - **Standard Practice**: Widely adopted convention in the Flutter/Dart community
@@ -163,6 +165,7 @@ Flutter AppKit follows comprehensive testing practices to ensure reliability and
 ### 🏃 Running Tests
 
 **Primary Method - VS Code Flutter Test Plugin**:
+
 - **AI Agents should use the VS Code Flutter test plugin first** for running tests
 - Use the test runner UI in VS Code to run individual tests or test suites
 - The plugin provides better debugging capabilities and integrated test results
@@ -193,7 +196,7 @@ Flutter AppKit provides a streamlined localization system that supports 70+ lang
 
 ### 📁 File Structure
 
-```
+```bash
 /lib
   /src
     /l10n
@@ -219,6 +222,7 @@ save,Stoor,አስቀምጥ,حفظ,Save,Guardar,Sauvegarder,Speichern,保存,저�
 ```
 
 **Column Format**:
+
 - `Key`: Translation key used in your Dart code
 - `app_[locale]`: Translation for specific locale (e.g., `app_en` for English, `app_zh_CN` for Chinese Simplified)
 
@@ -237,11 +241,13 @@ save,Stoor,አስቀምጥ,حفظ,Save,Guardar,Sauvegarder,Speichern,保存,저�
 > **⚠️ CRITICAL: CSV Comma Escaping**
 >
 > When adding or updating translations in the CSV file, **always escape commas properly**:
+>
 > - **Text containing commas MUST be wrapped in double quotes**: `"Hello, world"`
 > - **Double quotes within text must be escaped with double quotes**: `"She said ""Hello"""`
 > - **Failure to escape commas will cause column misalignment and build errors**
 >
 > **Examples**:
+>
 > ```csv
 > Key,app_en,app_es,app_fr
 > greeting,"Hello, welcome!","¡Hola, bienvenido!","Bonjour, bienvenue!"
@@ -249,6 +255,7 @@ save,Stoor,አስቀምጥ,حفظ,Save,Guardar,Sauvegarder,Speichern,保存,저�
 > ```
 
 This script:
+
 - Converts `l10n.csv` to standard Flutter ARB files
 - Automatically runs `flutter gen-l10n` to generate Dart localization classes
 - Creates ready-to-use localization files in your project
