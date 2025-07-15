@@ -13,10 +13,14 @@ class LocalizationHi extends Localization {
 
   @override
   String get error_content =>
-      'एक अप्रत्याशित त्रुटि हुई। हमने पहले से ही इस त्रुटि को लॉग किया है। कृपया बाद में पुनः प्रयास करें।';
+      'एक अप्रत्याशित त्रुटि हुई। आप हमें बेहतर बनाने में मदद करने के लिए हमें एक रिपोर्ट भेज सकते हैं, या बाद में पुनः प्रयास कर सकते हैं।';
 
   @override
   String get error_oops => 'उफ़, कुछ गलत हो गया';
+
+  @override
+  String get error_report_anonymously =>
+      'एक अज्ञात रिपोर्ट भेजकर हमें बेहतर बनाने में मदद करें';
 
   @override
   String get language => 'सिस्टम भाषा';

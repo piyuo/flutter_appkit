@@ -1,6 +1,7 @@
 {
   "close": "關閉",
-  "error_content": "發生了意外錯誤。我們已經記錄了這個錯誤。請稍後再試。",
+  "error_content": "發生了意外錯誤。您可以發送報告幫助我們改進，或稍後再試。",
   "error_oops": "糟糕，出了點問題",
+  "error_report_anonymously": "發送匿名報告幫助我們改進",
   "language": "系統語言"
 }

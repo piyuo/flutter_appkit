@@ -1,6 +1,7 @@
 {
   "close": "Închide",
-  "error_content": "A apărut o eroare neașteptată. Am înregistrat deja această eroare. Vă rugăm să încercați din nou mai târziu.",
+  "error_content": "A apărut o eroare neașteptată. Ne puteți trimite un raport pentru a ne ajuta să ne îmbunătățim, sau încercați din nou mai târziu.",
   "error_oops": "Ups, ceva nu a funcționat",
+  "error_report_anonymously": "Ajutați-ne să ne îmbunătățim trimițând un raport anonim",
   "language": "Limba sistemului"
 }

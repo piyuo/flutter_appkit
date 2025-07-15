@@ -1,6 +1,7 @@
 {
   "close": "Fermer",
-  "error_content": "Une erreur inattendue est survenue. Nous avons déjà enregistré cette erreur. Veuillez réessayer plus tard.",
+  "error_content": "Une erreur inattendue est survenue. Vous pouvez nous envoyer un rapport pour nous aider à nous améliorer, ou réessayer plus tard.",
   "error_oops": "Oups, quelque chose s'est mal passé",
+  "error_report_anonymously": "Aidez-nous à améliorer en envoyant un rapport anonyme",
   "language": "Langue du système"
 }

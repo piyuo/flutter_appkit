@@ -1,6 +1,7 @@
 {
   "close": "Lukk",
-  "error_content": "Det oppstod en uventet feil. Vi har allerede loggført denne feilen. Vennligst prøv igjen senere.",
+  "error_content": "Det oppstod en uventet feil. Du kan sende oss en rapport for å hjelpe oss å bli bedre, eller prøv igjen senere.",
   "error_oops": "Ups, noe gikk galt",
+  "error_report_anonymously": "Hjelp oss å bli bedre ved å sende en anonym rapport",
   "language": "Systemspråk"
 }

@@ -1,6 +1,7 @@
 {
   "close": "Uždaryti",
-  "error_content": "Įvyko netikėta klaida. Jau užregistravome šią klaidą. Bandykite dar kartą vėliau.",
+  "error_content": "Įvyko netikėta klaida. Galite atsiųsti mums ataskatą, kad padėtumėte mums tobulėti, arba bandyti dar kartą vėliau.",
   "error_oops": "Oi, kažkas nutiko",
+  "error_report_anonymously": "Padėkite mums tobulėti siųsdami anoniminę ataskaitą",
   "language": "Sistemos kalba"
 }

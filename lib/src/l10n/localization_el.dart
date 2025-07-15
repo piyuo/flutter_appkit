@@ -13,10 +13,14 @@ class LocalizationEl extends Localization {
 
   @override
   String get error_content =>
-      'Παρουσιάστηκε ένα απρόσμενο σφάλμα. Έχουμε ήδη καταγράψει αυτό το σφάλμα. Παρακαλώ δοκιμάστε ξανά αργότερα.';
+      'Παρουσιάστηκε ένα απρόσμενο σφάλμα. Μπορείτε να μας στείλετε μια αναφορά για να μας βοηθήσετε να βελτιωθούμε, ή δοκιμάστε ξανά αργότερα.';
 
   @override
   String get error_oops => 'Ωχ, κάτι πήγε στραβά';
+
+  @override
+  String get error_report_anonymously =>
+      'Βοηθήστε μας να βελτιωθούμε στέλνοντας μια ανώνυμη αναφορά';
 
   @override
   String get language => 'Γλώσσα συστήματος';

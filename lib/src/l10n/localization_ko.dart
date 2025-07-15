@@ -13,10 +13,13 @@ class LocalizationKo extends Localization {
 
   @override
   String get error_content =>
-      '예기치 않은 오류가 발생했습니다. 이미 이 오류를 기록했습니다. 나중에 다시 시도해주세요.';
+      '예기치 않은 오류가 발생했습니다. 개선에 도움을 주기 위해 보고서를 보내주시거나 나중에 다시 시도해주세요.';
 
   @override
   String get error_oops => '앗, 문제가 발생했습니다';
+
+  @override
+  String get error_report_anonymously => '익명 보고서를 보내 개선에 도움을 주세요';
 
   @override
   String get language => '시스템 언어';

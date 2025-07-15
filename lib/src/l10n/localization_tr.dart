@@ -13,10 +13,14 @@ class LocalizationTr extends Localization {
 
   @override
   String get error_content =>
-      'Beklenmeyen bir hata oluştu. Bu hatayı zaten günlüğe kaydettik. Lütfen daha sonra tekrar deneyin.';
+      'Beklenmeyen bir hata oluştu. Gelişmemize yardımcı olmak için bize rapor gönderebilirsiniz veya daha sonra tekrar deneyebilirsiniz.';
 
   @override
   String get error_oops => 'Hata, bir şeyler yanlış gitti';
+
+  @override
+  String get error_report_anonymously =>
+      'Anonim rapor göndererek gelişmemize yardımcı olun';
 
   @override
   String get language => 'Sistem Dili';

@@ -108,10 +108,14 @@ void logCritical(String message) {
 /// [stackTrace] - Optional stack trace for context.
 ///
 /// If Sentry is enabled, this will also report the exception and stack trace.
-void logError(dynamic exception, [StackTrace? stackTrace]) {
+void logError(
+  dynamic exception, {
+  bool sendToSentry = true,
+  StackTrace? stackTrace,
+}) {
   talker.handle(exception, stackTrace);
 
-  if (isSentryEnabled) {
+  if (isSentryEnabled && sendToSentry) {
     try {
       Sentry.captureException(exception, stackTrace: stackTrace);
     } catch (ex) {

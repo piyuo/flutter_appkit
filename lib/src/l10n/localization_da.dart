@@ -13,10 +13,14 @@ class LocalizationDa extends Localization {
 
   @override
   String get error_content =>
-      'Der opstod en uventet fejl. Vi har allerede logget denne fejl. Prøv venligst igen senere.';
+      'Der opstod en uventet fejl. Du kan sende os en rapport for at hjælpe os med at forbedre, eller prøv igen senere.';
 
   @override
   String get error_oops => 'Ups, noget gik galt';
+
+  @override
+  String get error_report_anonymously =>
+      'Hjælp os med at forbedre ved at sende en anonym rapport';
 
   @override
   String get language => 'Systemsprog';

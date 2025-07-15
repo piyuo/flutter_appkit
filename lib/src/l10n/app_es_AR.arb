@@ -1,6 +1,7 @@
 {
   "close": "Cerrar",
-  "error_content": "Ocurrió un error inesperado. Ya registramos este error. Por favor, intentá de nuevo más tarde.",
+  "error_content": "Ocurrió un error inesperado. Podés enviarnos un reporte para ayudarnos a mejorar, o intentá de nuevo más tarde.",
   "error_oops": "Ups, algo salió mal",
+  "error_report_anonymously": "Ayudanos a mejorar enviando un reporte anónimo",
   "language": "Idioma del sistema"
 }

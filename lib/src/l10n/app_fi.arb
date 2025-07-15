@@ -1,6 +1,7 @@
 {
   "close": "Sulje",
-  "error_content": "Tapahtui odottamaton virhe. Olemme jo kirjanneet tämän virheen. Yritä myöhemmin uudelleen.",
+  "error_content": "Tapahtui odottamaton virhe. Voit lähettää meille raportin auttaaksesi meitä parantamaan, tai yritä myöhemmin uudelleen.",
   "error_oops": "Hups, jokin meni pieleen",
+  "error_report_anonymously": "Auta meitä parantamaan lähettämällä anonyymi raportti",
   "language": "Järjestelmän kieli"
 }

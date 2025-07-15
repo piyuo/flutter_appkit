@@ -1,6 +1,7 @@
 {
   "close": "Zatvori",
-  "error_content": "Došlo je do neočekivane pogreške. Već smo zabilježili ovu grešku. Molimo pokušajte ponovo kasnije.",
+  "error_content": "Došlo je do neočekivane pogreške. Možete nam poslati izvještaj kako biste nam pomogli da se poboljšamo, ili pokušajte ponovo kasnije.",
   "error_oops": "Ups, nešto je pošlo po krivu",
+  "error_report_anonymously": "Pomozite nam da se poboljšamo slanjem anonimne prijave",
   "language": "Sistemski jezik"
 }

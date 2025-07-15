@@ -13,10 +13,14 @@ class LocalizationTe extends Localization {
 
   @override
   String get error_content =>
-      'ఊహించని లోపం సంభవించింది. మేము ఈ లోపాన్ని ఇప్పటికే లాగ్ చేసాము. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.';
+      'ఊహించని లోపం సంభవించింది. మెరుగుపరచడంలో మాకు సహాయపడటానికి మీరు మాకు నివేదిక పంపవచ్చు, లేదా తర్వాత మళ్లీ ప్రయత్నించవచ్చు.';
 
   @override
   String get error_oops => 'అయ్యో, ఏదో తప్పు జరిగింది';
+
+  @override
+  String get error_report_anonymously =>
+      'అజ్ఞాత నివేదిక పంపడం ద్వారా మెరుగుపరచడంలో మాకు సహాయపడండి';
 
   @override
   String get language => 'సిస్టం భాష';

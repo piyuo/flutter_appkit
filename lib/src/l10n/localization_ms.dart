@@ -13,10 +13,14 @@ class LocalizationMs extends Localization {
 
   @override
   String get error_content =>
-      'Ralat tidak dijangka telah berlaku. Kami telah mencatat ralat ini. Sila cuba lagi nanti.';
+      'Ralat tidak dijangka telah berlaku. Anda boleh menghantar laporan kepada kami untuk membantu kami bertambah baik, atau cuba lagi nanti.';
 
   @override
   String get error_oops => 'Alamak, ada sesuatu yang tidak kena';
+
+  @override
+  String get error_report_anonymously =>
+      'Bantu kami bertambah baik dengan menghantar laporan tanpa nama';
 
   @override
   String get language => 'Bahasa Sistem';
@@ -31,10 +35,14 @@ class LocalizationMsSg extends LocalizationMs {
 
   @override
   String get error_content =>
-      'Ralat tidak dijangka telah berlaku. Kami telah mencatat ralat ini. Sila cuba lagi nanti.';
+      'Ralat tidak dijangka telah berlaku. Anda boleh menghantar laporan kepada kami untuk membantu kami bertambah baik, atau cuba lagi nanti.';
 
   @override
   String get error_oops => 'Alamak, ada sesuatu yang tidak betul';
+
+  @override
+  String get error_report_anonymously =>
+      'Bantu kami bertambah baik dengan menghantar laporan tanpa nama';
 
   @override
   String get language => 'Bahasa Sistem';

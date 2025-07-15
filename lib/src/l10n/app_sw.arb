@@ -1,6 +1,7 @@
 {
   "close": "Funga",
-  "error_content": "Hitilafu isiyotarajiwa imetokea. Tayari tumerejelea hitilafu hii. Tafadhali jaribu tena baadaye.",
+  "error_content": "Hitilafu isiyotarajiwa imetokea. Unaweza kutuma ripoti kwetu ili kutusaidia kuboresha, au jaribu tena baadaye.",
   "error_oops": "Samahani, kuna hitilafu imetokea",
+  "error_report_anonymously": "Tusaidie kuboresha kwa kutuma ripoti ya siri",
   "language": "Lugha ya Mfumo"
 }

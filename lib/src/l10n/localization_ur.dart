@@ -13,10 +13,14 @@ class LocalizationUr extends Localization {
 
   @override
   String get error_content =>
-      'ایک غیر متوقع خرابی پیش آئی۔ ہم نے اس خرابی کو پہلے سے ہی لاگ کر دیا ہے۔ برائے کرم بعد میں دوبارہ کوشش کریں۔';
+      'ایک غیر متوقع خرابی پیش آئی۔ آپ ہمیں بہتر بنانے میں مدد کے لیے رپورٹ بھیج سکتے ہیں، یا بعد میں دوبارہ کوشش کریں۔';
 
   @override
   String get error_oops => 'افسوس، کچھ غلط ہو گیا';
+
+  @override
+  String get error_report_anonymously =>
+      'گمنام رپورٹ بھیج کر ہمیں بہتر بنانے میں مدد کریں';
 
   @override
   String get language => 'نظام کی زبان';
@@ -31,10 +35,14 @@ class LocalizationUrIn extends LocalizationUr {
 
   @override
   String get error_content =>
-      'ایک غیر متوقع خرابی پیش آئی۔ ہم نے اس خرابی کو پہلے سے ہی لاگ کر دیا ہے۔ برائے کرم بعد میں دوبارہ کوشش کریں۔';
+      'ایک غیر متوقع خرابی پیش آئی۔ آپ ہمیں بہتر بنانے میں مدد کے لیے رپورٹ بھیج سکتے ہیں، یا بعد میں دوبارہ کوشش کریں۔';
 
   @override
   String get error_oops => 'افسوس، کچھ غلط ہو گیا';
+
+  @override
+  String get error_report_anonymously =>
+      'گمنام رپورٹ بھیج کر ہمیں بہتر بنانے میں مدد کریں';
 
   @override
   String get language => 'نظام کی زبان';

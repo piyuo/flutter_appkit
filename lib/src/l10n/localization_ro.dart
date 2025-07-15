@@ -13,10 +13,14 @@ class LocalizationRo extends Localization {
 
   @override
   String get error_content =>
-      'A apărut o eroare neașteptată. Am înregistrat deja această eroare. Vă rugăm să încercați din nou mai târziu.';
+      'A apărut o eroare neașteptată. Ne puteți trimite un raport pentru a ne ajuta să ne îmbunătățim, sau încercați din nou mai târziu.';
 
   @override
   String get error_oops => 'Ups, ceva nu a funcționat';
+
+  @override
+  String get error_report_anonymously =>
+      'Ajutați-ne să ne îmbunătățim trimițând un raport anonim';
 
   @override
   String get language => 'Limba sistemului';

@@ -13,10 +13,13 @@ class LocalizationAm extends Localization {
 
   @override
   String get error_content =>
-      'የማይጠበቅ ስህተት ተከስቷል። ይህን ስህተት አስቀድመን ሰፍረናል። እባክዎ ቆይተው ዳግመኛ ይሞክሩ።';
+      'የማይጠበቅ ስህተት ተከስቷል። ለመሻሻል እንድንችል ሪፖርት ልትልክልን ትችላለህ፣ ወይም ደግሞ ቆይተህ ዳግመኛ ሞክር።';
 
   @override
   String get error_oops => 'ይቅርታ፣ የሆነ ስህተት ተከስቷል';
+
+  @override
+  String get error_report_anonymously => 'ለማሻሻል እንድንችል ስም አልባ ሪፖርት በመላክ ያግዙን';
 
   @override
   String get language => 'የስርዓት ቋንቋ';

@@ -13,10 +13,14 @@ class LocalizationFi extends Localization {
 
   @override
   String get error_content =>
-      'Tapahtui odottamaton virhe. Olemme jo kirjanneet tämän virheen. Yritä myöhemmin uudelleen.';
+      'Tapahtui odottamaton virhe. Voit lähettää meille raportin auttaaksesi meitä parantamaan, tai yritä myöhemmin uudelleen.';
 
   @override
   String get error_oops => 'Hups, jokin meni pieleen';
+
+  @override
+  String get error_report_anonymously =>
+      'Auta meitä parantamaan lähettämällä anonyymi raportti';
 
   @override
   String get language => 'Järjestelmän kieli';

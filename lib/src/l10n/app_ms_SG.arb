@@ -1,6 +1,7 @@
 {
   "close": "Tutup",
-  "error_content": "Ralat tidak dijangka telah berlaku. Kami telah mencatat ralat ini. Sila cuba lagi nanti.",
+  "error_content": "Ralat tidak dijangka telah berlaku. Anda boleh menghantar laporan kepada kami untuk membantu kami bertambah baik, atau cuba lagi nanti.",
   "error_oops": "Alamak, ada sesuatu yang tidak betul",
+  "error_report_anonymously": "Bantu kami bertambah baik dengan menghantar laporan tanpa nama",
   "language": "Bahasa Sistem"
 }

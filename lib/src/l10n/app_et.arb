@@ -1,6 +1,7 @@
 {
   "close": "Sulge",
-  "error_content": "Ilmnes ootamatu viga. Oleme selle vea juba registreerinud. Palun proovige hiljem uuesti.",
+  "error_content": "Ilmnes ootamatu viga. Saate meile saata aruande, et aidata meil paremaks saada, või proovige hiljem uuesti.",
   "error_oops": "Ups, midagi läks valesti",
+  "error_report_anonymously": "Aita meil paremaks saada, saates anonüümse aruande",
   "language": "Süsteemi keel"
 }
