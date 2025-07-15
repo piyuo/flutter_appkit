@@ -148,23 +148,16 @@ void _setupErrorHandlers() {
 @visibleForTesting
 Future<void> catched(dynamic e, StackTrace? stack) async {
   // Ignore assertion errors in development mode
-  if (e is AssertionError) {
+  if (e is AssertionError || e == null) {
     return;
   }
-
-  // Handle null exceptions gracefully
-  if (e == null) {
-    logError('Null exception caught', stack);
-    return;
-  }
-
-  logError(e, stack);
 
   try {
-    await showError(e, stack);
+    final reportAnonymously = await showError(e, stack);
+    logError(e, stackTrace: stack, sendToSentry: reportAnonymously);
+    if (reportAnonymously) {}
   } catch (ex) {
     // Log the error and also print to console for debugging
-    logError('Error dialog display failed: $ex');
     debugPrint('Error dialog display failed: $ex');
   }
 }

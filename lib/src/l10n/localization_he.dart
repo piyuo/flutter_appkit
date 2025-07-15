@@ -13,10 +13,14 @@ class LocalizationHe extends Localization {
 
   @override
   String get error_content =>
-      'אירעה שגיאה בלתי צפויה. כבר רשמנו את השגיאה הזו. אנא נסה שוב מאוחר יותר.';
+      'אירעה שגיאה בלתי צפויה. אתה יכול לשלוח לנו דוח כדי לעזור לנו להשתפר, או לנסות שוב מאוחר יותר.';
 
   @override
   String get error_oops => 'אופס, משהו השתבש';
+
+  @override
+  String get error_report_anonymously =>
+      'עזרו לנו להשתפר על ידי שליחת דוח אנונימי';
 
   @override
   String get language => 'שפת מערכת';

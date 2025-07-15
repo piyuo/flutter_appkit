@@ -1,6 +1,7 @@
 {
   "close": "Isara",
-  "error_content": "Mayroong hindi inaasahang error na nangyari. Na-log na namin ang error na ito. Pakisubukan ulit mamaya.",
+  "error_content": "Mayroong hindi inaasahang error na nangyari. Maaari kang magpadala sa amin ng ulat para matulungan kaming mapabuti, o subukan ulit mamaya.",
   "error_oops": "Oops, may mali na nangyari",
+  "error_report_anonymously": "Tulungang mapabuti kami sa pamamagitan ng pagpapadala ng anonymous na ulat",
   "language": "Wika ng sistema"
 }

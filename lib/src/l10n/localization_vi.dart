@@ -13,10 +13,14 @@ class LocalizationVi extends Localization {
 
   @override
   String get error_content =>
-      'Đã xảy ra lỗi không mong muốn. Chúng tôi đã ghi lại lỗi này rồi. Vui lòng thử lại sau.';
+      'Đã xảy ra lỗi không mong muốn. Bạn có thể gửi cho chúng tôi báo cáo để giúp chúng tôi cải thiện, hoặc thử lại sau.';
 
   @override
   String get error_oops => 'Rất tiếc, đã xảy ra lỗi';
+
+  @override
+  String get error_report_anonymously =>
+      'Giúp chúng tôi cải thiện bằng cách gửi báo cáo ẩn danh';
 
   @override
   String get language => 'Ngôn ngữ hệ thống';

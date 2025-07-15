@@ -13,10 +13,14 @@ class LocalizationNl extends Localization {
 
   @override
   String get error_content =>
-      'Er is een onverwachte fout opgetreden. We hebben deze fout al gelogd. Probeer het later opnieuw.';
+      'Er is een onverwachte fout opgetreden. Je kunt ons een rapport sturen om ons te helpen verbeteren, of probeer het later opnieuw.';
 
   @override
   String get error_oops => 'Oeps, er is iets misgegaan';
+
+  @override
+  String get error_report_anonymously =>
+      'Help ons verbeteren door een anoniem rapport te sturen';
 
   @override
   String get language => 'Systeemtaal';
@@ -31,10 +35,14 @@ class LocalizationNlBe extends LocalizationNl {
 
   @override
   String get error_content =>
-      'Er is een onverwachte fout opgetreden. We hebben deze fout al gelogd. Probeer het later opnieuw.';
+      'Er is een onverwachte fout opgetreden. Je kunt ons een rapport sturen om ons te helpen verbeteren, of probeer het later opnieuw.';
 
   @override
   String get error_oops => 'Oeps, er is iets misgelopen';
+
+  @override
+  String get error_report_anonymously =>
+      'Help ons verbeteren door een anoniem rapport te sturen';
 
   @override
   String get language => 'Systeemtaal';

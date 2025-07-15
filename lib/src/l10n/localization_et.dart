@@ -13,10 +13,14 @@ class LocalizationEt extends Localization {
 
   @override
   String get error_content =>
-      'Ilmnes ootamatu viga. Oleme selle vea juba registreerinud. Palun proovige hiljem uuesti.';
+      'Ilmnes ootamatu viga. Saate meile saata aruande, et aidata meil paremaks saada, või proovige hiljem uuesti.';
 
   @override
   String get error_oops => 'Ups, midagi läks valesti';
+
+  @override
+  String get error_report_anonymously =>
+      'Aita meil paremaks saada, saates anonüümse aruande';
 
   @override
   String get language => 'Süsteemi keel';

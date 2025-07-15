@@ -1,6 +1,7 @@
 {
   "close": "Bezárás",
-  "error_content": "Váratlan hiba történt. Már rögzítettük ezt a hibát. Kérjük, próbálja újra később.",
+  "error_content": "Váratlan hiba történt. Küldhet nekünk jelentést, hogy segítsen fejleszteni, vagy próbálja újra később.",
   "error_oops": "Hoppá, valami hiba történt",
+  "error_report_anonymously": "Segítsen fejleszteni egy névtelen jelentés küldésével",
   "language": "Rendszer nyelve"
 }

@@ -13,10 +13,14 @@ class LocalizationCa extends Localization {
 
   @override
   String get error_content =>
-      'S\'ha produït un error inesperat. Ja hem registrat aquest error. Torneu-ho a provar més tard.';
+      'S\'ha produït un error inesperat. Podeu enviar-nos un informe per ajudar-nos a millorar, o torneu-ho a provar més tard.';
 
   @override
   String get error_oops => 'Vaja, alguna cosa ha anat malament';
+
+  @override
+  String get error_report_anonymously =>
+      'Ajudeu-nos a millorar enviant un informe anònim';
 
   @override
   String get language => 'Idioma del sistema';

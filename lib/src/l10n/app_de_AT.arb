@@ -1,6 +1,7 @@
 {
   "close": "Schließen",
-  "error_content": "Ein unerwarteter Fehler ist aufgetreten. Wir haben diesen Fehler bereits protokolliert. Bitte versuchen Sie es später erneut.",
+  "error_content": "Ein unerwarteter Fehler ist aufgetreten. Sie können uns einen Bericht senden, um uns zu helfen uns zu verbessern, oder versuchen Sie es später erneut.",
   "error_oops": "Hoppla, etwas ist schiefgelaufen",
+  "error_report_anonymously": "Helfen Sie uns zu verbessern, indem Sie einen anonymen Bericht senden",
   "language": "Systemsprache"
 }

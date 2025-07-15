@@ -1,6 +1,7 @@
 {
   "close": "Sluit",
-  "error_content": "An onverwagse fout het voorgekom. Ons het reeds hierdie fout aangeteken. Probeer asseblief later weer.",
+  "error_content": "'n Onverwagse fout het voorgekom. Jy kan vir ons 'n verslag stuur om ons te help verbeter, of probeer later weer.",
   "error_oops": "Oeps, iets het verkeerd gegaan",
+  "error_report_anonymously": "Help ons verbeteren door 'n anonieme verslag te stuur",
   "language": "Stelsel Taal"
 }

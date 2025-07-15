@@ -1,6 +1,7 @@
 {
   "close": "Tutup",
-  "error_content": "Terjadi kesalahan yang tidak terduga. Kami sudah mencatat kesalahan ini. Silakan coba lagi nanti.",
+  "error_content": "Terjadi kesalahan yang tidak terduga. Anda dapat mengirim laporan kepada kami untuk membantu kami berkembang, atau coba lagi nanti.",
   "error_oops": "Ups, terjadi kesalahan",
+  "error_report_anonymously": "Bantu kami berkembang dengan mengirim laporan anonim",
   "language": "Bahasa Sistem"
 }

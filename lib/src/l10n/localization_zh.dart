@@ -12,10 +12,13 @@ class LocalizationZh extends Localization {
   String get close => '關閉';
 
   @override
-  String get error_content => '發生了意外錯誤。我們已經記錄了這個錯誤。請稍後再試。';
+  String get error_content => '發生了意外錯誤。您可以發送報告幫助我們改進，或稍後再試。';
 
   @override
   String get error_oops => '糟糕，出了點問題';
+
+  @override
+  String get error_report_anonymously => '發送匿名報告幫助我們改進';
 
   @override
   String get language => '系統語言';
@@ -29,10 +32,13 @@ class LocalizationZhCn extends LocalizationZh {
   String get close => '关闭';
 
   @override
-  String get error_content => '发生了意外错误。我们已经记录了这个错误。请稍后重试。';
+  String get error_content => '发生了意外错误。您可以发送报告帮助我们改进，或稍后重试。';
 
   @override
   String get error_oops => '糟糕，出错了';
+
+  @override
+  String get error_report_anonymously => '发送匿名报告帮助我们改进';
 
   @override
   String get language => '系统语言';
@@ -46,10 +52,13 @@ class LocalizationZhHk extends LocalizationZh {
   String get close => '關閉';
 
   @override
-  String get error_content => '發生了意外錯誤。我們已經記錄了這個錯誤。請稍後再試。';
+  String get error_content => '發生了意外錯誤。您可以發送報告幫助我們改進，或稍後再試。';
 
   @override
   String get error_oops => '哎呀，出錯了';
+
+  @override
+  String get error_report_anonymously => '發送匿名報告幫助我們改進';
 
   @override
   String get language => '系統語言';
@@ -63,10 +72,13 @@ class LocalizationZhMo extends LocalizationZh {
   String get close => '關閉';
 
   @override
-  String get error_content => '發生了意外錯誤。我們已經記錄了這個錯誤。請稍後再試。';
+  String get error_content => '發生了意外錯誤。您可以發送報告幫助我們改進，或稍後再試。';
 
   @override
   String get error_oops => '哎呀，出錯了';
+
+  @override
+  String get error_report_anonymously => '發送匿名報告幫助我們改進';
 
   @override
   String get language => '系統語言';
@@ -80,10 +92,13 @@ class LocalizationZhSg extends LocalizationZh {
   String get close => '关闭';
 
   @override
-  String get error_content => '发生了意外错误。我们已经记录了这个错误。请稍后重试。';
+  String get error_content => '发生了意外错误。您可以发送报告帮助我们改进，或稍后重试。';
 
   @override
   String get error_oops => '哎呀，出错了';
+
+  @override
+  String get error_report_anonymously => '发送匿名报告帮助我们改进';
 
   @override
   String get language => '系統語言';

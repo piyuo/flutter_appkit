@@ -1,6 +1,7 @@
 {
   "close": "Zapri",
-  "error_content": "Prišlo je do nepričakovane napake. To napako smo že zabeležili. Poskusite znova pozneje.",
+  "error_content": "Prišlo je do nepričakovane napake. Lahko nam pošljete poročilo, da nam pomagate izboljšati, ali poskusite znova pozneje.",
   "error_oops": "Ups, nekaj je šlo narobe",
+  "error_report_anonymously": "Pomagajte nam izboljšati z anonimnim poročilom",
   "language": "Sistemski jezik"
 }

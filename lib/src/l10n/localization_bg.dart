@@ -13,10 +13,14 @@ class LocalizationBg extends Localization {
 
   @override
   String get error_content =>
-      'Възникна неочаквана грешка. Вече записахме тази грешка. Моля, опитайте отново по-късно.';
+      'Възникна неочаквана грешка. Можете да ни изпратите доклад, за да ни помогнете да се подобрим, или да опитате отново по-късно.';
 
   @override
   String get error_oops => 'Опа, нещо се обърка';
+
+  @override
+  String get error_report_anonymously =>
+      'Помогнете ни да се подобрим, като изпратите анонимен доклад';
 
   @override
   String get language => 'Език на системата';

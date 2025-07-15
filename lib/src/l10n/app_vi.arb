@@ -1,6 +1,7 @@
 {
   "close": "Đóng",
-  "error_content": "Đã xảy ra lỗi không mong muốn. Chúng tôi đã ghi lại lỗi này rồi. Vui lòng thử lại sau.",
+  "error_content": "Đã xảy ra lỗi không mong muốn. Bạn có thể gửi cho chúng tôi báo cáo để giúp chúng tôi cải thiện, hoặc thử lại sau.",
   "error_oops": "Rất tiếc, đã xảy ra lỗi",
+  "error_report_anonymously": "Giúp chúng tôi cải thiện bằng cách gửi báo cáo ẩn danh",
   "language": "Ngôn ngữ hệ thống"
 }

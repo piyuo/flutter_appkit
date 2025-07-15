@@ -13,10 +13,14 @@ class LocalizationGu extends Localization {
 
   @override
   String get error_content =>
-      'અનપેક્ષિત ભૂલ આવી. અમે આ ભૂલ પહેલાથી લોગ કરી છે. કૃપા કરીને પછી ફરી પ્રયાસ કરો.';
+      'અનપેક્ષિત ભૂલ આવી. તમે અમને સુધારવામાં મદદ કરવા માટે અમને રિપોર્ટ મોકલી શકો છો, અથવા પછી ફરી પ્રયાસ કરી શકો છો.';
 
   @override
   String get error_oops => 'અરે, કંઈક ખોટું થયું';
+
+  @override
+  String get error_report_anonymously =>
+      'અનામી રિપોર્ટ મોકલીને અમને સુધારવામાં મદદ કરો';
 
   @override
   String get language => 'સિસ્ટમ ભાષા';

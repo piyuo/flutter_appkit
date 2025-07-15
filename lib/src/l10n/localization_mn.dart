@@ -13,10 +13,14 @@ class LocalizationMn extends Localization {
 
   @override
   String get error_content =>
-      'Гэнэтийн алдаа гарлаа. Бид энэ алдааг аль хэдийн бүртгэсэн. Дараа дахин оролдоно уу.';
+      'Гэнэтийн алдаа гарлаа. Та бидэнд сайжруулахад туслахын тулд тайлан илгээж болно, эсвэл дараа дахин оролдоно уу.';
 
   @override
   String get error_oops => 'Өө, ямар нэгэн зүйл буруу болсон';
+
+  @override
+  String get error_report_anonymously =>
+      'Нэрээ нууцалсан тайлан илгээж сайжруулахад тусалаарай';
 
   @override
   String get language => 'Системийн хэл';

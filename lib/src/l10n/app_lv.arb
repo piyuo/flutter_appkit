@@ -1,6 +1,7 @@
 {
   "close": "Aizvērt",
-  "error_content": "Notika neparedzēta kļūda. Mēs jau esam reģistrējuši šo kļūdu. Lūdzu, mēģiniet vēlāk.",
+  "error_content": "Notika neparedzēta kļūda. Jūs varat nosūtīt mums ziņojumu, lai palīdzētu mums uzlaboties, vai mēģiniet vēlāk.",
   "error_oops": "Ak vai, kaut kas nogāja greizi",
+  "error_report_anonymously": "Palīdziet mums uzlaboties, nosūtot anonīmu ziņojumu",
   "language": "Sistēmas valoda"
 }

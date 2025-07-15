@@ -9,6 +9,7 @@
 //   - Dialog Actions Tests
 //   - Error Message Tests
 //   - Localization Tests
+//   - Anonymous Reporting Tests
 //   - Integration Tests
 // ===============================================
 
@@ -55,7 +56,8 @@ void main() {
       expect(find.text('Oops, something went wrong'), findsOneWidget);
 
       // Verify content
-      expect(find.text('An unexpected error occurred. We\'ve already logged this error. Please try again later.'),
+      expect(
+          find.text('An unexpected error occurred. You can send us a report to help us improve, or try again later.'),
           findsOneWidget);
       expect(find.text('Exception: Test error message'), findsOneWidget);
 
@@ -217,11 +219,11 @@ void main() {
       );
       expect(columnFinder, findsAtLeastNWidgets(1));
 
-      // Check for the SizedBox spacing with height 10
+      // Check for the SizedBox spacing with height 10 (should have two: one after error_content and one after error message)
       final sizedBoxFinder = find.byWidgetPredicate(
         (widget) => widget is SizedBox && widget.height == 10.0,
       );
-      expect(sizedBoxFinder, findsOneWidget);
+      expect(sizedBoxFinder, findsNWidgets(2));
     });
 
     testWidgets('handles stack trace parameter correctly', (WidgetTester tester) async {
@@ -310,7 +312,8 @@ void main() {
 
       // Verify English localization
       expect(find.text('Oops, something went wrong'), findsOneWidget);
-      expect(find.text('An unexpected error occurred. We\'ve already logged this error. Please try again later.'),
+      expect(
+          find.text('An unexpected error occurred. You can send us a report to help us improve, or try again later.'),
           findsOneWidget);
       expect(find.text('Close'), findsOneWidget);
     });
@@ -568,6 +571,147 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(CupertinoAlertDialog), findsOneWidget);
+    });
+  });
+
+  group('Anonymous error reporting checkbox', () {
+    late Widget testApp;
+
+    setUp(() {
+      testApp = CupertinoApp(
+        localizationsDelegates: Localization.localizationsDelegates,
+        supportedLocales: Localization.supportedLocales,
+        home: GlobalContext(
+          child: const Scaffold(
+            body: Center(
+              child: Text('Test App'),
+            ),
+          ),
+        ),
+      );
+    });
+
+    testWidgets('displays checkbox with correct label', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Find the checkbox
+      expect(find.byType(CupertinoCheckbox), findsOneWidget);
+
+      // Find the checkbox label
+      expect(find.text('Help us improve by sending an anonymous report'), findsOneWidget);
+    });
+
+    testWidgets('checkbox starts unchecked by default', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      final checkboxFinder = find.byType(CupertinoCheckbox);
+      expect(checkboxFinder, findsOneWidget);
+
+      final CupertinoCheckbox checkboxWidget = tester.widget(checkboxFinder);
+      expect(checkboxWidget.value, false);
+    });
+
+    testWidgets('checkbox can be toggled', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      final checkboxFinder = find.byType(CupertinoCheckbox);
+
+      // Tap the checkbox to check it
+      await tester.tap(checkboxFinder);
+      await tester.pumpAndSettle();
+
+      // Verify checkbox is now checked
+      final CupertinoCheckbox checkedWidget = tester.widget(checkboxFinder);
+      expect(checkedWidget.value, true);
+
+      // Tap again to uncheck
+      await tester.tap(checkboxFinder);
+      await tester.pumpAndSettle();
+
+      // Verify checkbox is unchecked
+      final CupertinoCheckbox uncheckedWidget = tester.widget(checkboxFinder);
+      expect(uncheckedWidget.value, false);
+    });
+
+    testWidgets('checkbox row layout is correct', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Find the row containing checkbox and label
+      final rowFinder = find.byWidgetPredicate(
+        (widget) => widget is Row && widget.children.any((child) => child is CupertinoCheckbox),
+      );
+      expect(rowFinder, findsOneWidget);
+
+      // Verify row contains both checkbox and text
+      final Row rowWidget = tester.widget(rowFinder);
+      expect(rowWidget.children.length, 2);
+      expect(rowWidget.children[0], isA<CupertinoCheckbox>());
+      expect(rowWidget.children[1], isA<Expanded>());
+    });
+
+    testWidgets('checkbox is positioned correctly in dialog content', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Find the content column
+      final columnFinder = find.descendant(
+        of: find.byType(CupertinoAlertDialog),
+        matching: find.byType(Column),
+      );
+      expect(columnFinder, findsAtLeastNWidgets(1));
+
+      // Verify checkbox row is in the column
+      final checkboxRowFinder = find.byWidgetPredicate(
+        (widget) => widget is Row && widget.children.any((child) => child is CupertinoCheckbox),
+      );
+
+      final checkboxInColumn = find.descendant(
+        of: columnFinder.first,
+        matching: checkboxRowFinder,
+      );
+      expect(checkboxInColumn, findsOneWidget);
+    });
+
+    testWidgets('uses localized text for checkbox label', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Should show English translation
+      expect(find.text('Help us improve by sending an anonymous report'), findsOneWidget);
     });
   });
 }

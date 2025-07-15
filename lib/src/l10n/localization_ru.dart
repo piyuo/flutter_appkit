@@ -13,10 +13,14 @@ class LocalizationRu extends Localization {
 
   @override
   String get error_content =>
-      'Произошла непредвиденная ошибка. Мы уже зарегистрировали эту ошибку. Пожалуйста, попробуйте снова позже.';
+      'Произошла непредвиденная ошибка. Вы можете отправить нам отчет, чтобы помочь нам улучшиться, или попробуйте снова позже.';
 
   @override
   String get error_oops => 'Упс, что-то пошло не так';
+
+  @override
+  String get error_report_anonymously =>
+      'Помогите нам улучшиться, отправив анонимный отчет';
 
   @override
   String get language => 'Язык системы';
@@ -31,10 +35,14 @@ class LocalizationRuKz extends LocalizationRu {
 
   @override
   String get error_content =>
-      'Произошла непредвиденная ошибка. Мы уже зарегистрировали эту ошибку. Пожалуйста, попробуйте снова позже.';
+      'Произошла непредвиденная ошибка. Вы можете отправить нам отчет, чтобы помочь нам улучшиться, или попробуйте снова позже.';
 
   @override
   String get error_oops => 'Упс, что-то пошло не так';
+
+  @override
+  String get error_report_anonymously =>
+      'Помогите нам улучшиться, отправив анонимный отчет';
 
   @override
   String get language => 'Мова системи';
@@ -49,10 +57,14 @@ class LocalizationRuUa extends LocalizationRu {
 
   @override
   String get error_content =>
-      'Произошла непредвиденная ошибка. Мы уже зарегистрировали эту ошибку. Пожалуйста, попробуйте снова позже.';
+      'Произошла непредвиденная ошибка. Вы можете отправить нам отчет, чтобы помочь нам улучшиться, или попробуйте снова позже.';
 
   @override
   String get error_oops => 'Упс, что-то пошло не так';
+
+  @override
+  String get error_report_anonymously =>
+      'Помогите нам улучшиться, отправив анонимный отчет';
 
   @override
   String get language => 'Системски језик';

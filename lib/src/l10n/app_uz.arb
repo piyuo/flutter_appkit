@@ -1,6 +1,7 @@
 {
   "close": "Yopish",
-  "error_content": "Kutilmagan xatolik yuz berdi. Biz bu xatolikni allaqachon yozib qo'ygamiz. Iltimos keyinroq qayta urinib ko'ring.",
+  "error_content": "Kutilmagan xatolik yuz berdi. Bizni yaxshilashga yordam berish uchun bizga hisobot yuborishingiz mumkin, yoki keyinroq qayta urinib ko'ring.",
   "error_oops": "Voy, xatolik yuz berdi",
+  "error_report_anonymously": "Anonim hisobot yuborish orqali yaxshilashimizga yordam bering",
   "language": "Tizim tili"
 }

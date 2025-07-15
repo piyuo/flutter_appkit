@@ -13,10 +13,14 @@ class LocalizationHr extends Localization {
 
   @override
   String get error_content =>
-      'Došlo je do neočekivane pogreške. Već smo zabilježili ovu grešku. Molimo pokušajte ponovo kasnije.';
+      'Došlo je do neočekivane pogreške. Možete nam poslati izvještaj kako biste nam pomogli da se poboljšamo, ili pokušajte ponovo kasnije.';
 
   @override
   String get error_oops => 'Ups, nešto je pošlo po krivu';
+
+  @override
+  String get error_report_anonymously =>
+      'Pomozite nam da se poboljšamo slanjem anonimne prijave';
 
   @override
   String get language => 'Sistemski jezik';

@@ -13,10 +13,14 @@ class LocalizationFr extends Localization {
 
   @override
   String get error_content =>
-      'Une erreur inattendue s\'est produite. Nous avons déjà enregistré cette erreur. Veuillez réessayer plus tard.';
+      'Une erreur inattendue s\'est produite. Vous pouvez nous envoyer un rapport pour nous aider à nous améliorer, ou réessayer plus tard.';
 
   @override
   String get error_oops => 'Oups, quelque chose s\'est mal passé';
+
+  @override
+  String get error_report_anonymously =>
+      'Aidez-nous à nous améliorer en envoyant un rapport anonyme';
 
   @override
   String get language => 'Langue du système';
@@ -31,10 +35,14 @@ class LocalizationFrBe extends LocalizationFr {
 
   @override
   String get error_content =>
-      'Une erreur inattendue s\'est produite. Nous avons déjà enregistré cette erreur. Veuillez réessayer plus tard.';
+      'Une erreur inattendue s\'est produite. Vous pouvez nous envoyer un rapport pour nous aider à nous améliorer, ou réessayer plus tard.';
 
   @override
   String get error_oops => 'Oups, quelque chose s\'est mal passé';
+
+  @override
+  String get error_report_anonymously =>
+      'Aidez-nous à nous améliorer en envoyant un rapport anonyme';
 
   @override
   String get language => 'Langue du système';
@@ -49,10 +57,14 @@ class LocalizationFrCa extends LocalizationFr {
 
   @override
   String get error_content =>
-      'Une erreur inattendue est survenue. Nous avons déjà enregistré cette erreur. Veuillez réessayer plus tard.';
+      'Une erreur inattendue est survenue. Vous pouvez nous envoyer un rapport pour nous aider à nous améliorer, ou réessayer plus tard.';
 
   @override
   String get error_oops => 'Oups, quelque chose s\'est mal passé';
+
+  @override
+  String get error_report_anonymously =>
+      'Aidez-nous à améliorer en envoyant un rapport anonyme';
 
   @override
   String get language => 'Langue du système';
@@ -67,10 +79,14 @@ class LocalizationFrCh extends LocalizationFr {
 
   @override
   String get error_content =>
-      'Une erreur inattendue s\'est produite. Nous avons déjà enregistré cette erreur. Veuillez réessayer plus tard.';
+      'Une erreur inattendue s\'est produite. Vous pouvez nous envoyer un rapport pour nous aider à nous améliorer, ou réessayer plus tard.';
 
   @override
   String get error_oops => 'Oups, quelque chose s\'est mal passé';
+
+  @override
+  String get error_report_anonymously =>
+      'Aidez-nous à nous améliorer en envoyant un rapport anonyme';
 
   @override
   String get language => 'Langue du système';

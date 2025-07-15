@@ -1,6 +1,7 @@
 {
   "close": "Stäng",
-  "error_content": "Ett oväntat fel inträffade. Vi har redan loggat detta fel. Försök igen senare.",
+  "error_content": "Ett oväntat fel inträffade. Du kan skicka oss en rapport för att hjälpa oss förbättra, eller försök igen senare.",
   "error_oops": "Hoppsan, något gick fel",
+  "error_report_anonymously": "Hjälp oss förbättra genom att skicka en anonym rapport",
   "language": "Systemspråk"
 }

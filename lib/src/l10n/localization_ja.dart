@@ -12,10 +12,14 @@ class LocalizationJa extends Localization {
   String get close => '閉じる';
 
   @override
-  String get error_content => '予期せぬエラーが発生しました。このエラーはすでに記録されています。後でもう一度お試しください。';
+  String get error_content =>
+      '予期せぬエラーが発生しました。改善にご協力いただくためレポートをお送りいただくか、後でもう一度お試しください。';
 
   @override
   String get error_oops => 'おっと、問題が発生しました';
+
+  @override
+  String get error_report_anonymously => '匿名レポートを送信して改善にご協力ください';
 
   @override
   String get language => 'システム言語';

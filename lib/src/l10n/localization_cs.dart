@@ -13,10 +13,14 @@ class LocalizationCs extends Localization {
 
   @override
   String get error_content =>
-      'Došlo k neočekávané chybě. Tuto chybu jsme již zaznamenali. Zkuste to prosím znovu později.';
+      'Došlo k neočekávané chybě. Můžete nám poslat zprávu, která nám pomůže se zlepšit, nebo to zkusit znovu později.';
 
   @override
   String get error_oops => 'Jejda, něco se pokazilo';
+
+  @override
+  String get error_report_anonymously =>
+      'Pomozte nám zlepšit se zasláním anonymní zprávy';
 
   @override
   String get language => 'Systémový jazyk';

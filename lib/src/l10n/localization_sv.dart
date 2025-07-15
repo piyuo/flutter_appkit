@@ -13,10 +13,14 @@ class LocalizationSv extends Localization {
 
   @override
   String get error_content =>
-      'Ett oväntat fel inträffade. Vi har redan loggat detta fel. Försök igen senare.';
+      'Ett oväntat fel inträffade. Du kan skicka oss en rapport för att hjälpa oss förbättra, eller försök igen senare.';
 
   @override
   String get error_oops => 'Hoppsan, något gick fel';
+
+  @override
+  String get error_report_anonymously =>
+      'Hjälp oss förbättra genom att skicka en anonym rapport';
 
   @override
   String get language => 'Systemspråk';

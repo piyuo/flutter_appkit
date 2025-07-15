@@ -13,10 +13,14 @@ class LocalizationEs extends Localization {
 
   @override
   String get error_content =>
-      'Ocurrió un error inesperado. Ya hemos registrado este error. Por favor, inténtalo de nuevo más tarde.';
+      'Ocurrió un error inesperado. Puedes enviarnos un informe para ayudarnos a mejorar, o inténtalo de nuevo más tarde.';
 
   @override
   String get error_oops => 'Ups, algo salió mal';
+
+  @override
+  String get error_report_anonymously =>
+      'Ayúdanos a mejorar enviando un informe anónimo';
 
   @override
   String get language => 'Idioma del sistema';
@@ -31,10 +35,14 @@ class LocalizationEsAr extends LocalizationEs {
 
   @override
   String get error_content =>
-      'Ocurrió un error inesperado. Ya registramos este error. Por favor, intentá de nuevo más tarde.';
+      'Ocurrió un error inesperado. Podés enviarnos un reporte para ayudarnos a mejorar, o intentá de nuevo más tarde.';
 
   @override
   String get error_oops => 'Ups, algo salió mal';
+
+  @override
+  String get error_report_anonymously =>
+      'Ayudanos a mejorar enviando un reporte anónimo';
 
   @override
   String get language => 'Idioma del sistema';
@@ -49,10 +57,14 @@ class LocalizationEsCo extends LocalizationEs {
 
   @override
   String get error_content =>
-      'Ocurrió un error inesperado. Ya hemos registrado este error. Por favor, inténtalo de nuevo más tarde.';
+      'Ocurrió un error inesperado. Puedes enviarnos un informe para ayudarnos a mejorar, o inténtalo de nuevo más tarde.';
 
   @override
   String get error_oops => 'Ups, algo salió mal';
+
+  @override
+  String get error_report_anonymously =>
+      'Ayúdanos a mejorar enviando un informe anónimo';
 
   @override
   String get language => 'Idioma del sistema';
@@ -67,10 +79,14 @@ class LocalizationEsMx extends LocalizationEs {
 
   @override
   String get error_content =>
-      'Ocurrió un error inesperado. Ya registramos este error. Por favor, inténtalo de nuevo más tarde.';
+      'Ocurrió un error inesperado. Puedes enviarnos un reporte para ayudarnos a mejorar, o inténtalo de nuevo más tarde.';
 
   @override
   String get error_oops => 'Ups, algo salió mal';
+
+  @override
+  String get error_report_anonymously =>
+      'Ayúdanos a mejorar enviando un reporte anónimo';
 
   @override
   String get language => 'Idioma del sistema';
