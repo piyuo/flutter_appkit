@@ -12,9 +12,8 @@
 // ===============================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter_appkit/src/global_context.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'global_context.dart';
 
 void main() {
   group('GlobalContext Widget Tests', () {

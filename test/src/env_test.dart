@@ -6,10 +6,9 @@
 // 3. Environment Variable Tests
 // ============================================================================
 
+import 'package:flutter_appkit/src/env.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'env.dart';
 
 void main() {
   const testEnvFile = '.env.test';
