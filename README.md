@@ -1,10 +1,10 @@
-# LibCLI
+# Flutter AppKit
 
 A robust Flutter foundation library that provides essential application infrastructure including error handling, global context management, logging, and internationalization support.
 
 ## Table of Contents
 
-- [LibCLI](#libcli)
+- [Flutter AppKit](#flutter-appkit)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Installation](#installation)
@@ -27,9 +27,9 @@ A robust Flutter foundation library that provides essential application infrastr
   - [✅ Best Practices to Follow](#-best-practices-to-follow)
   - [🚫 What to Avoid](#-what-to-avoid)
   - [📦 Adding a New Module](#-adding-a-new-module)
-    - [🛠️ How to Add a Module](#️-how-to-add-a-module)
+    - [🛠️ How to Add New Features](#️-how-to-add-new-features)
     - [✅ Example](#-example)
-    - [📌 Why This Matters](#-why-this-matters)
+    - [📌 Why This Structure](#-why-this-structure)
   - [Release Process](#release-process)
     - [Milestone Completion](#milestone-completion)
     - [Release](#release)
@@ -50,9 +50,9 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  libcli:
+  flutter_appkit:
     git:
-      url: https://github.com/piyuo/libcli.git
+      url: https://github.com/piyuo/flutter_appkit.git
       ref: v2.0.0
 ```
 
@@ -61,7 +61,7 @@ dependencies:
 Replace your existing `runApp()` call with `run()`:
 
 ```dart
-import 'package:libcli/libcli.dart';
+import 'package:flutter_appkit/flutter_appkit.dart';
 
 void main() {
   run(() => MyApp());
@@ -70,36 +70,31 @@ void main() {
 
 ## 🧪 Testing
 
-LibCLI follows comprehensive testing practices to ensure reliability and maintainability. We use Flutter's built-in testing framework along with additional tools for robust test coverage.
+Flutter AppKit follows comprehensive testing practices to ensure reliability and maintainability. We use Flutter's built-in testing framework along with additional tools for robust test coverage.
 
 ### 📁 Test File Organization
 
-**IMPORTANT for AI Agents**: Test files should be placed alongside their corresponding source files, NOT in a separate `/test` folder.
+**IMPORTANT for AI Agents**: Test files should be placed in the `/test` folder, mirroring the structure of your source files in `/lib`.
 
 **Correct Structure**:
 ```
 /lib
-  /your_module
-    /src
-      env.dart
-      env_test.dart          # ✅ Test file beside source file
-      search_impl.dart
-      search_impl_test.dart  # ✅ Test file beside source file
-    your_module.dart
+  /src
+    env.dart
+    search_impl.dart
+  flutter_appkit.dart
+/test
+  /src
+    env_test.dart          # ✅ Test file mirrors source structure
+    search_impl_test.dart  # ✅ Test file mirrors source structure
+  flutter_appkit_test.dart
 ```
 
-**Incorrect Structure**:
-```
-/lib
-  /your_module
-    /src
-      env.dart
-      search_impl.dart
-    your_module.dart
-/test                        # ❌ Avoid separate test folder
-  env_test.dart
-  search_impl_test.dart
-```
+**Why This Structure**:
+- **Consistency and Discoverability**: Easy to find test files - if you're working on `lib/src/foo/bar.dart`, you know to look for `test/src/foo/bar_test.dart`
+- **IDE Support**: Modern IDEs with Flutter plugins support "Go to Test File" commands that rely on this mirroring
+- **Standard Practice**: Widely adopted convention in the Flutter/Dart community
+- **Scalability**: As your `lib/src` grows, your `test/src` naturally expands in a structured way
 
 ### 🏃 Running Tests
 
@@ -113,24 +108,24 @@ If the VS Code Flutter test plugin has issues, then use command line:
 
 ```bash
 # Run all tests in the project
-flutter test lib
+flutter test
 
 # Run tests with coverage report
-flutter test --coverage lib
+flutter test --coverage
 
 # Run tests in verbose mode
-flutter test --verbose lib
+flutter test --verbose
 
 # Run specific test file
-flutter test lib/path/to/specific_test.dart
+flutter test test/path/to/specific_test.dart
 
 # Run tests with custom reporter
-flutter test --reporter expanded lib
+flutter test --reporter expanded
 ```
 
 ## 🌍 Localization (i18n)
 
-LibCLI provides a streamlined localization system that supports 70+ languages and locales. All translations are managed through a single CSV file for easy maintenance and collaboration.
+Flutter AppKit provides a streamlined localization system that supports 70+ languages and locales. All translations are managed through a single CSV file for easy maintenance and collaboration.
 
 ### 📁 File Structure
 
@@ -199,7 +194,7 @@ This script:
 After running the generation script, use translations in your Flutter code with the convenient `context.l` extension:
 
 ```dart
-import 'package:libcli/l10n/l10n.dart';
+import 'package:flutter_appkit/l10n/l10n.dart';
 
 class MyWidget extends StatelessWidget {
   @override
@@ -284,7 +279,7 @@ These practices guide our development to ensure code quality, maintainability, p
 - **Implement Robust Error Handling**:
   - Use `try-catch` blocks for asynchronous operations (e.g., network requests, file operations).
   - Consider using custom `Exception` classes for application-specific error types.
-  - Utilize `libcli`'s error handling capabilities for consistent error reporting and user feedback.
+  - Utilize `flutter_appkit`'s error handling capabilities for consistent error reporting and user feedback.
 - **Write Comprehensive Tests**:
   - **Unit Tests**: For business logic, utilities, and individual functions.
   - **Widget Tests**: To verify UI components behave as expected and render correctly.
@@ -318,61 +313,60 @@ These are common pitfalls and anti-patterns that can lead to performance issues,
 
 ## 📦 Adding a New Module
 
-To keep the project modular and maintainable, each feature or domain should be added as a self-contained module under the `/lib` directory.
+Since this is a simple library, all source files are organized directly under `/lib/src/` without a module structure. New features should be added as individual files or logical groupings within the source directory.
 
-### 🛠️ How to Add a Module
+### 🛠️ How to Add New Features
 
-1. **Create a new folder** under `/lib` with the module name:
+1. **Create new implementation files** in the `/lib/src/` directory:
 
    ```bash
    /lib
-     /your_module_name
-       /src
-         your_module_impl.dart
-       your_module_name.dart
+     /src
+       env.dart
+       search_impl.dart
+       your_new_feature.dart    # ✅ Add new files here
+     flutter_appkit.dart
    ```
 
-2. **Put internal implementation files** in the `src/` folder.
-
-3. **Expose only the public interface** in `your_module_name.dart`:
+2. **Expose the public interface** in `flutter_appkit.dart`:
 
    ```dart
-   export 'src/your_module_impl.dart';
+   export 'src/env.dart';
+   export 'src/search_impl.dart';
+   export 'src/your_new_feature.dart';
    ```
 
-4. **Import the module using the public API**:
+3. **Import the library**:
 
    ```dart
-   import 'package:your_package_name/your_module_name/your_module_name.dart' as yourModule;
+   import 'package:flutter_appkit/flutter_appkit.dart';
    ```
 
 ### ✅ Example
 
 ```bash
 /lib
-  /search
-    /src
-      search_impl.dart
-    search.dart
+  /src
+    auth_service.dart
+    user_model.dart
+    api_client.dart
+  flutter_appkit.dart
 ```
 
-In `search.dart`:
+In `flutter_appkit.dart`:
 
 ```dart
-export 'src/search_impl.dart';
+export 'src/auth_service.dart';
+export 'src/user_model.dart';
+export 'src/api_client.dart';
 ```
 
-Usage:
+### 📌 Why This Structure
 
-```dart
-import 'package:libcli/search/search.dart' as search;
-```
-
-### 📌 Why This Matters
-
-- Keeps internal logic hidden and promotes clean public APIs
-- Makes modules easier to test, document, and maintain
-- AI agents and contributors can safely use the public files without depending on internal implementation details
+- **Simplicity**: Flat structure for a focused library
+- **Clear public API**: All exports managed in one place
+- **Easy maintenance**: No complex module dependencies
+- **Scalable**: Can easily reorganize into modules later if needed
 
 ## Release Process
 
