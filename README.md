@@ -9,6 +9,13 @@ A robust Flutter foundation library that provides essential application infrastr
   - [Features](#features)
   - [Installation](#installation)
   - [Quick Start](#quick-start)
+  - [Common Functions](#common-functions)
+    - [App Initialization](#app-initialization)
+    - [Environment Variables](#environment-variables)
+    - [Global Context](#global-context)
+    - [Localization](#localization)
+    - [Logging](#logging)
+    - [Preferences (SharedPreferences)](#preferences-sharedpreferences)
   - [🧪 Testing](#-testing)
     - [📁 Test File Organization](#-test-file-organization)
     - [🏃 Running Tests](#-running-tests)
@@ -67,6 +74,63 @@ void main() {
   run(() => MyApp());
 }
 ```
+
+## Common Functions
+
+Here are the most frequently used functions in Flutter AppKit:
+
+### App Initialization
+
+```dart
+// Replace runApp() with appRun() for enhanced error handling
+appRun(() => MyApp());
+```
+
+### Environment Variables
+
+```dart
+// Get environment variable with optional default
+String apiKey = envGet('API_KEY', defaultValue: 'localhost');
+```
+
+### Global Context
+
+```dart
+// Access BuildContext from anywhere in your app
+showDialog(context: globalContext, builder: (context) => AlertDialog(...));
+```
+
+### Localization
+
+```dart
+// State provider for locale management
+final localeProvider = StateNotifierProvider<LocaleNotifier, Locale?>((ref) {
+  return LocaleNotifier();
+});
+
+// Display names for locales
+String displayName = localeDisplayLabels['en'] ?? 'English';
+```
+
+### Logging
+
+```dart
+logDebug('Debug information');     // Development only
+logInfo('App started');            // General information
+logWarning('Potential issue');     // Warning messages
+logCritical('Critical error');     // Critical issues (sent to Sentry)
+logError(exception, stackTrace);   // Error reporting (sent to Sentry)
+```
+
+### Preferences (SharedPreferences)
+
+```dart
+// Save and retrieve string preferences
+await prefSetString('user_name', 'John');
+String? userName = await prefGetString('user_name');
+```
+
+> **💡 Tip**: For detailed documentation and advanced usage, check the comments in the source code.
 
 ## 🧪 Testing
 
