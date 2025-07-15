@@ -11,10 +11,9 @@
 //   - List and Map
 // =============================================================
 
+import 'package:flutter_appkit/src/preferences.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
-
-import 'preferences.dart';
 
 void main() {
   // Initializes mock preferences for each test run.

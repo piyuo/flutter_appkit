@@ -12,12 +12,11 @@
 // ===============================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter_appkit/src/app.dart';
+import 'package:flutter_appkit/src/global_context.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'app.dart';
-import 'global_context.dart';
 
 // Test widgets for various scenarios
 class MockWidget extends StatelessWidget {
