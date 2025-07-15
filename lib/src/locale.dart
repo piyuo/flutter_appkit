@@ -33,7 +33,7 @@ Locale get localeSystem => localeParseString(Intl.systemLocale);
 bool get localeIsSystem => Intl.defaultLocale == null || Intl.systemLocale == Intl.defaultLocale;
 
 /// A function that returns the locale resolution callback for the app.
-Locale? localeResolutionCallback(locale, supportedLocales) {
+Locale? localeResolutionCallback(Locale? locale, Iterable<Locale> supportedLocales) {
   if (locale == null) {
     return const Locale('en'); // default to 'en'
   }
