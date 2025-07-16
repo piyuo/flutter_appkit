@@ -164,14 +164,9 @@ Flutter AppKit follows comprehensive testing practices to ensure reliability and
 
 ### 🏃 Running Tests
 
-**Primary Method - VS Code Flutter Test Plugin**:
+**Primary Method - Flutter Command Line**:
 
-- **AI Agents should use the VS Code Flutter test plugin first** for running tests
-- Use the test runner UI in VS Code to run individual tests or test suites
-- The plugin provides better debugging capabilities and integrated test results
-
-**Fallback Method - Command Line**:
-If the VS Code Flutter test plugin has issues, then use command line:
+**AI Agents should use the Flutter command line for running tests** as it's more stable and reliable than IDE plugins:
 
 ```bash
 # Run all tests in the project
@@ -186,9 +181,26 @@ flutter test --verbose
 # Run specific test file
 flutter test test/path/to/specific_test.dart
 
-# Run tests with custom reporter
+# Run tests with custom reporter for better output
 flutter test --reporter expanded
+
+# Run tests and watch for changes
+flutter test --watch
+
+# Run tests with specific name pattern
+flutter test --name "test_pattern"
 ```
+
+**Why Command Line Over IDE Plugins**:
+
+- **Stability**: Command line tools are more stable and less prone to hanging
+- **Consistency**: Same behavior across different development environments
+- **Performance**: Faster execution without IDE overhead
+- **Debugging**: Clear error messages and stack traces in terminal
+- **CI/CD Ready**: Same commands work in continuous integration pipelines
+
+**Alternative Method - VS Code Flutter Test Plugin**:
+While the VS Code Flutter test plugin provides UI integration, it can be unstable and may hang during execution. Use it only if you specifically need the visual test runner interface, but be prepared to fall back to command line when issues occur.
 
 ## 🌍 Localization (i18n)
 

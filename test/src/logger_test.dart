@@ -139,7 +139,7 @@ void main() {
       final exception = Exception('Test exception');
       final stackTrace = StackTrace.current;
 
-      expect(() => logError(exception, stackTrace), returnsNormally);
+      expect(() => logError(exception, stackTrace: stackTrace), returnsNormally);
       expect(() => logError(exception), returnsNormally);
     });
   });
@@ -268,13 +268,13 @@ void main() {
   group('Stack Trace Handling', () {
     test('error() accepts null stack trace', () {
       final exception = Exception('Test');
-      expect(() => logError(exception, null), returnsNormally);
+      expect(() => logError(exception), returnsNormally);
     });
 
     test('error() accepts valid stack trace', () {
       final exception = Exception('Test');
       final stackTrace = StackTrace.current;
-      expect(() => logError(exception, stackTrace), returnsNormally);
+      expect(() => logError(exception, stackTrace: stackTrace), returnsNormally);
     });
   });
 
