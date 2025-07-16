@@ -607,7 +607,7 @@ void main() {
       expect(find.text('Help us improve by sending an anonymous report'), findsOneWidget);
     });
 
-    testWidgets('checkbox starts unchecked by default', (WidgetTester tester) async {
+    testWidgets('checkbox starts checked by default', (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
       await tester.pumpAndSettle();
 
@@ -620,7 +620,7 @@ void main() {
       expect(checkboxFinder, findsOneWidget);
 
       final CupertinoCheckbox checkboxWidget = tester.widget(checkboxFinder);
-      expect(checkboxWidget.value, false);
+      expect(checkboxWidget.value, true);
     });
 
     testWidgets('checkbox can be toggled', (WidgetTester tester) async {
@@ -634,21 +634,25 @@ void main() {
 
       final checkboxFinder = find.byType(CupertinoCheckbox);
 
-      // Tap the checkbox to check it
+      // Verify checkbox starts checked
+      final CupertinoCheckbox initialWidget = tester.widget(checkboxFinder);
+      expect(initialWidget.value, true);
+
+      // Tap the checkbox to uncheck it
       await tester.tap(checkboxFinder);
       await tester.pumpAndSettle();
 
-      // Verify checkbox is now checked
-      final CupertinoCheckbox checkedWidget = tester.widget(checkboxFinder);
-      expect(checkedWidget.value, true);
-
-      // Tap again to uncheck
-      await tester.tap(checkboxFinder);
-      await tester.pumpAndSettle();
-
-      // Verify checkbox is unchecked
+      // Verify checkbox is now unchecked
       final CupertinoCheckbox uncheckedWidget = tester.widget(checkboxFinder);
       expect(uncheckedWidget.value, false);
+
+      // Tap again to check
+      await tester.tap(checkboxFinder);
+      await tester.pumpAndSettle();
+
+      // Verify checkbox is checked again
+      final CupertinoCheckbox checkedWidget = tester.widget(checkboxFinder);
+      expect(checkedWidget.value, true);
     });
 
     testWidgets('checkbox row layout is correct', (WidgetTester tester) async {
@@ -712,6 +716,38 @@ void main() {
 
       // Should show English translation
       expect(find.text('Help us improve by sending an anonymous report'), findsOneWidget);
+    });
+
+    testWidgets('returns checkbox value when dialog is closed', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+      await tester.pumpAndSettle();
+
+      final testError = Exception('Test error');
+
+      // Test default case (checkbox checked)
+      final Future<bool> result1 = showError(testError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Close the dialog without changing checkbox (should return true)
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      expect(await result1, true);
+
+      // Test after unchecking the checkbox
+      final differentError = Exception('Different error');
+      final Future<bool> result2 = showError(differentError, StackTrace.current);
+      await tester.pumpAndSettle();
+
+      // Uncheck the checkbox
+      await tester.tap(find.byType(CupertinoCheckbox));
+      await tester.pumpAndSettle();
+
+      // Close the dialog
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      expect(await result2, false);
     });
   });
 }

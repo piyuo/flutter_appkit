@@ -43,7 +43,7 @@ class _ErrorDialog extends StatefulWidget {
 
 class _ErrorDialogState extends State<_ErrorDialog> {
   // Tracks whether the user wants to report the error anonymously.
-  bool _reportAnonymously = false;
+  bool _reportAnonymously = true;
 
   @override
   Widget build(BuildContext context) {
