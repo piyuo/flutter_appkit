@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0 (2025-07-19)
+
+
+### Features
+
+* add checkbox to error dialog for anonymous error reporting [#136](https://github.com/piyuo/flutter-appkit/issues/136) ([377c38b](https://github.com/piyuo/flutter-appkit/commit/377c38b6f14abd531ea5edbccd19f1ebf2a7c679))
+* add commitlint workflow for enforcing commit message conventions ([c9ed361](https://github.com/piyuo/flutter-appkit/commit/c9ed36125dd97ed321b07e5df787162f0601779b))
+* add debugging information for issue retrieval in start_issue.sh [#140](https://github.com/piyuo/flutter-appkit/issues/140) ([1e3e575](https://github.com/piyuo/flutter-appkit/commit/1e3e57506369fe3f25c13c458f9957c75077e614))
+* add function to add issues to project with error handling [#140](https://github.com/piyuo/flutter-appkit/issues/140) ([81624b5](https://github.com/piyuo/flutter-appkit/commit/81624b5a98505d861d6643177d9e1002998c2290))
+* add JSON sanitization and improve project field handling in start_issue.sh [#140](https://github.com/piyuo/flutter-appkit/issues/140) ([889153c](https://github.com/piyuo/flutter-appkit/commit/889153c42bf4f8638827136efacd563c0597480a))
+* add language support with locale switching and resolution [#121](https://github.com/piyuo/flutter-appkit/issues/121) ([eac5bc4](https://github.com/piyuo/flutter-appkit/commit/eac5bc4b8b0864fe7de5155f475ddaec7a29fdd5))
+* add talker package for logging, error handling, alerts, and log sharing [#119](https://github.com/piyuo/flutter-appkit/issues/119) ([103af0c](https://github.com/piyuo/flutter-appkit/commit/103af0c69027996fa882c1fa9ebdb884b2cf5be7))
+* **docs:** add guidelines for adding new modules to README.md [#113](https://github.com/piyuo/flutter-appkit/issues/113) ([918aa8f](https://github.com/piyuo/flutter-appkit/commit/918aa8fcb48685d173a897524fac5e9c974ad4c2))
+* **docs:** enhance README with milestone completion, release, and deployment sections [#113](https://github.com/piyuo/flutter-appkit/issues/113) ([89970e5](https://github.com/piyuo/flutter-appkit/commit/89970e52bcb78b4c98c515c9d4ceb4e381828bdb))
+* **docs:** update README.md with new dependencies and tech stack details [#113](https://github.com/piyuo/flutter-appkit/issues/113) ([e62844e](https://github.com/piyuo/flutter-appkit/commit/e62844e2e468b982ece4665773e37235fc39f11f))
+* enhance debugging information for project item retrieval in start_issue.sh [#140](https://github.com/piyuo/flutter-appkit/issues/140) ([04199ab](https://github.com/piyuo/flutter-appkit/commit/04199abbf2d270e4e0cf29840535b02b640d0142))
+* enhance start_issue.sh with environment variable support and project field management [#138](https://github.com/piyuo/flutter-appkit/issues/138) ([81e8c6a](https://github.com/piyuo/flutter-appkit/commit/81e8c6a936b75d08b1ce69ae0a5577dcd69f3673))
+* enhance start_issue.sh with project management and error handling features [#140](https://github.com/piyuo/flutter-appkit/issues/140) ([55fa6ca](https://github.com/piyuo/flutter-appkit/commit/55fa6ca6a83d1e9edf8cba50ef2a2ffdec9d6228))
+* improve JSON handling and error reporting in get_issue_item_id function [#140](https://github.com/piyuo/flutter-appkit/issues/140) ([ff08b2f](https://github.com/piyuo/flutter-appkit/commit/ff08b2fe541c280ce0bd8a84e25d67896bc34229))
+* **main:** add utility scripts [#113](https://github.com/piyuo/flutter-appkit/issues/113) ([42f1b39](https://github.com/piyuo/flutter-appkit/commit/42f1b395b01dba6c3d479b6ba16481a95825be2f))
+* **main:** init ai workflow ([a2aedb5](https://github.com/piyuo/flutter-appkit/commit/a2aedb5a34b09adce03fc19abe6c4a1d0c8ba1c3))
+* **scripts:** add update_pubspec.dart to manage pubspec.yaml updates [#113](https://github.com/piyuo/flutter-appkit/issues/113) ([8395fb0](https://github.com/piyuo/flutter-appkit/commit/8395fb0bdadf956e955460877db4a8dd4b1d023e))
+* **scripts:** add update-pubspec.sh to update pubspec [#113](https://github.com/piyuo/flutter-appkit/issues/113) ([43683a2](https://github.com/piyuo/flutter-appkit/commit/43683a216ead3084ae4e77e82dab35b48fdbe0d7))
+
+
+### Bug Fixes
+
+* **docs:** correct typos and improve clarity in README.md [#113](https://github.com/piyuo/flutter-appkit/issues/113) ([edbac6c](https://github.com/piyuo/flutter-appkit/commit/edbac6c528f13ad28373a290812d9e1a1cea28ce))
+* enhance commitlint rules for subject validation and error messaging [#102](https://github.com/piyuo/flutter-appkit/issues/102) ([5f5be4c](https://github.com/piyuo/flutter-appkit/commit/5f5be4c3979b0b0a3766d7f05037c1e240694bdb))
+* enhance commitlint rules to enforce issue number in commit messages [#102](https://github.com/piyuo/flutter-appkit/issues/102) ([d7ad216](https://github.com/piyuo/flutter-appkit/commit/d7ad216f6f1438c7407522ec2c33d575294ebd8d))
+* improve subject-pattern validation for commit messages [#102](https://github.com/piyuo/flutter-appkit/issues/102) ([8ae724d](https://github.com/piyuo/flutter-appkit/commit/8ae724d26c415d3cf9b2d24bb7060dd8c2b42f6b))
+* prevent multiple error dialogs from appearing repeatedly [#123](https://github.com/piyuo/flutter-appkit/issues/123) ([c8f4cc0](https://github.com/piyuo/flutter-appkit/commit/c8f4cc0cc223d8b1a485afc8ca6fdb3c5d0872e6))
+* remove subject-blacklist rule from commitlint configuration ([07d4570](https://github.com/piyuo/flutter-appkit/commit/07d4570f4ac3664eef3f504cfbf800577bdf9772))
+* update commitlint configuration [#102](https://github.com/piyuo/flutter-appkit/issues/102) ([0300d29](https://github.com/piyuo/flutter-appkit/commit/0300d294f5c7b9ac5024c24fe2f12d0c823e658b))
+* update commitlint configuration and workflow for improved commit message validation ([33e16de](https://github.com/piyuo/flutter-appkit/commit/33e16ded5842028c12b7150d1a7d2ff3bf187769))
+* update commitlint rules to remove type restrictions and enforce issue number format [#102](https://github.com/piyuo/flutter-appkit/issues/102) ([11ecbc9](https://github.com/piyuo/flutter-appkit/commit/11ecbc96f84931a89f972ffcc81eab69b51bb84e))
+
 ## [1.8.0](https://github.com/piyuo/libcli/compare/v1.7.5...v1.8.0) (2025-06-08)
 
 
