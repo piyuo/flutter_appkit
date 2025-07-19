@@ -1,5 +1,4 @@
 # scripts/start_issue.sh
-# version 1.0.0
 #!/bin/bash
 # This script uses GitHub CLI to create and check out a branch linked to an issue.
 # Usage: ./start_issue.sh <issue-number>
@@ -129,10 +128,28 @@ get_issue_item_id() {
     item_id=$(gh project item-list "$project_number" --owner "$owner" --format json | jq -r ".[] | select(.content.type == \"Issue\" and .content.number == $issue_number) | .id" 2>/dev/null)
 
     if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
-        echo -e "${YELLOW}⚠️ Warning: Issue #$issue_number not found in project or not linked to project.${NC}"
         return 1
     fi
 
+    echo "$item_id"
+}
+
+# Function to add issue to project
+add_issue_to_project() {
+    local owner="$1"
+    local project_number="$2"
+    local issue_url="$3"
+
+    echo "➕ Adding issue to project..."
+    local item_id
+    item_id=$(gh project item-add "$project_number" --owner "$owner" --url "$issue_url" --format json 2>/dev/null | jq -r '.id')
+
+    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+        echo -e "${RED}❌ Failed to add issue to project.${NC}"
+        return 1
+    fi
+
+    echo -e "${GREEN}✅ Successfully added issue to project (Item ID: $item_id).${NC}"
     echo "$item_id"
 }
 
