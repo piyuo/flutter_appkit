@@ -36,7 +36,6 @@ load_env_file() {
 
 # Load environment variables from .env file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-#ENV_FILE="$SCRIPT_DIR/.env"
 ENV_FILE=".env"
 load_env_file "$ENV_FILE"
 
@@ -124,13 +123,43 @@ get_issue_item_id() {
     local project_number="$2"
     local issue_number="$3"
 
-    local item_id
-    item_id=$(gh project item-list "$project_number" --owner "$owner" --format json | jq -r ".[] | select(.content.type == \"Issue\" and .content.number == $issue_number) | .id" 2>/dev/null)
+    echo "🔍 Debug: Looking for issue #$issue_number in project $project_number for owner $owner..." >&2
 
-    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+    # First, let's see all items in the project for debugging
+    local all_items
+    all_items=$(gh project item-list "$project_number" --owner "$owner" --format json 2>/dev/null)
+
+    if [ $? -ne 0 ] || [ -z "$all_items" ]; then
+        echo "❌ Debug: Failed to get project items" >&2
         return 1
     fi
 
+    # Debug: Show all issues in the project
+    echo "📋 Debug: Issues in project:" >&2
+    echo "$all_items" | jq -r '.[] | select(.content.type == "Issue") | "  Issue #\(.content.number): \(.content.title)"' >&2
+
+    # Try different approaches to find the item ID
+    local item_id
+
+    # Method 1: Original query
+    item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and .content.number == $issue_number) | .id" 2>/dev/null)
+
+    # Method 2: Convert issue_number to integer for comparison
+    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+        item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and (.content.number | tonumber) == ($issue_number | tonumber)) | .id" 2>/dev/null)
+    fi
+
+    # Method 3: String comparison
+    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+        item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and (.content.number | tostring) == \"$issue_number\") | .id" 2>/dev/null)
+    fi
+
+    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+        echo "❌ Debug: Issue #$issue_number not found with any method" >&2
+        return 1
+    fi
+
+    echo "✅ Debug: Found issue #$issue_number with item ID: $item_id" >&2
     echo "$item_id"
 }
 
