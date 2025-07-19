@@ -11,6 +11,13 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Helper function to sanitize JSON by removing control characters
+sanitize_json() {
+    local input="$1"
+    # Remove control characters (U+0000 through U+001F and DEL U+007F)
+    echo "$input" | tr -d '\000-\037' | tr -d '\177'
+}
+
 # Load configuration from .env file
 load_env_file() {
     local env_file="$1"
@@ -70,9 +77,23 @@ get_project_info() {
         return
     fi
 
-    # Get project number by name
+    # Get project number by name with sanitized JSON
+    local project_data
+    project_data=$(gh project list --owner "$owner" --format json 2>/dev/null)
+    if [ $? -ne 0 ]; then
+        echo -e "${YELLOW}⚠️ Warning: Failed to fetch projects for owner '$owner'.${NC}"
+        return 1
+    fi
+
+    local sanitized_data
+    sanitized_data=$(sanitize_json "$project_data")
+    if ! echo "$sanitized_data" | jq empty 2>/dev/null; then
+        echo -e "${YELLOW}⚠️ Warning: Invalid JSON data from projects list.${NC}"
+        return 1
+    fi
+
     local project_number
-    project_number=$(gh project list --owner "$owner" --format json | jq -r ".[] | select(.title == \"$project_name\") | .number" 2>/dev/null)
+    project_number=$(echo "$sanitized_data" | jq -r ".[] | select(.title == \"$project_name\") | .number" 2>/dev/null)
 
     if [ -z "$project_number" ] || [ "$project_number" = "null" ]; then
         echo -e "${YELLOW}⚠️ Warning: Could not find project '$project_name' for owner '$owner'.${NC}"
@@ -88,8 +109,20 @@ get_field_id() {
     local project_number="$2"
     local field_name="$3"
 
+    local field_data
+    field_data=$(gh project field-list "$project_number" --owner "$owner" --format json 2>/dev/null)
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
+
+    local sanitized_data
+    sanitized_data=$(sanitize_json "$field_data")
+    if ! echo "$sanitized_data" | jq empty 2>/dev/null; then
+        return 1
+    fi
+
     local field_id
-    field_id=$(gh project field-list "$project_number" --owner "$owner" --format json | jq -r ".[] | select(.name == \"$field_name\") | .id" 2>/dev/null)
+    field_id=$(echo "$sanitized_data" | jq -r ".[] | select(.name == \"$field_name\") | .id" 2>/dev/null)
 
     if [ -z "$field_id" ] || [ "$field_id" = "null" ]; then
         echo -e "${YELLOW}⚠️ Warning: Could not find field '$field_name' in project.${NC}"
@@ -106,8 +139,20 @@ get_option_id() {
     local field_name="$3"
     local option_name="$4"
 
+    local field_data
+    field_data=$(gh project field-list "$project_number" --owner "$owner" --format json 2>/dev/null)
+    if [ $? -ne 0 ]; then
+        return 1
+    fi
+
+    local sanitized_data
+    sanitized_data=$(sanitize_json "$field_data")
+    if ! echo "$sanitized_data" | jq empty 2>/dev/null; then
+        return 1
+    fi
+
     local option_id
-    option_id=$(gh project field-list "$project_number" --owner "$owner" --format json | jq -r ".[] | select(.name == \"$field_name\") | .options[]? | select(.name == \"$option_name\") | .id" 2>/dev/null)
+    option_id=$(echo "$sanitized_data" | jq -r ".[] | select(.name == \"$field_name\") | .options[]? | select(.name == \"$option_name\") | .id" 2>/dev/null)
 
     if [ -z "$option_id" ] || [ "$option_id" = "null" ]; then
         echo -e "${YELLOW}⚠️ Warning: Could not find option '$option_name' for field '$field_name'.${NC}"
@@ -115,6 +160,39 @@ get_option_id() {
     fi
 
     echo "$option_id"
+}
+
+# Function to add issue to project
+add_issue_to_project() {
+    local owner="$1"
+    local project_number="$2"
+    local issue_url="$3"
+
+    echo "➕ Adding issue to project..."
+    local add_result
+    add_result=$(gh project item-add "$project_number" --owner "$owner" --url "$issue_url" --format json 2>/dev/null)
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}❌ Failed to add issue to project.${NC}"
+        return 1
+    fi
+
+    local sanitized_result
+    sanitized_result=$(sanitize_json "$add_result")
+    if ! echo "$sanitized_result" | jq empty 2>/dev/null; then
+        echo -e "${RED}❌ Invalid response when adding issue to project.${NC}"
+        return 1
+    fi
+
+    local item_id
+    item_id=$(echo "$sanitized_result" | jq -r '.id' 2>/dev/null)
+
+    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+        echo -e "${RED}❌ Failed to get item ID after adding to project.${NC}"
+        return 1
+    fi
+
+    echo -e "${GREEN}✅ Successfully added issue to project (Item ID: $item_id).${NC}"
+    echo "$item_id"
 }
 
 # Function to get item ID for the issue in the project
@@ -125,60 +203,80 @@ get_issue_item_id() {
 
     echo "🔍 Debug: Looking for issue #$issue_number in project $project_number for owner $owner..." >&2
 
-    # First, let's see all items in the project for debugging
-    local all_items
-    all_items=$(gh project item-list "$project_number" --owner "$owner" --format json 2>/dev/null)
+    # First, let's get all items in the project with sanitized JSON
+    local all_items_raw
+    all_items_raw=$(gh project item-list "$project_number" --owner "$owner" --format json 2>/dev/null)
 
-    if [ $? -ne 0 ] || [ -z "$all_items" ]; then
+    if [ $? -ne 0 ] || [ -z "$all_items_raw" ]; then
         echo "❌ Debug: Failed to get project items" >&2
         return 1
     fi
 
-    # Debug: Show all issues in the project
+    # Sanitize the JSON data
+    local all_items
+    all_items=$(sanitize_json "$all_items_raw")
+
+    # Additional check for valid JSON after sanitization
+    if ! echo "$all_items" | jq empty 2>/dev/null; then
+        echo "❌ Debug: Invalid JSON after sanitization" >&2
+        # Try alternative approach with sed sanitization
+        all_items=$(echo "$all_items_raw" | sed 's/[\x00-\x1F\x7F]//g')
+        if [ $? -eq 0 ] && echo "$all_items" | jq empty 2>/dev/null; then
+            echo "🔧 Debug: Successfully sanitized JSON with sed" >&2
+        else
+            echo "❌ Debug: Both primary and alternative JSON parsing failed" >&2
+            return 1
+        fi
+    fi
+
+    # Debug: Show all issues in the project (with sanitized output)
     echo "📋 Debug: Issues in project:" >&2
-    echo "$all_items" | jq -r '.[] | select(.content.type == "Issue") | "  Issue #\(.content.number): \(.content.title)"' >&2
+    echo "$all_items" | jq -r '.[] | select(.content.type == "Issue") | "  Issue #\(.content.number): \(.content.title // "No title")"' 2>/dev/null | head -10 >&2
 
     # Try different approaches to find the item ID
     local item_id
 
-    # Method 1: Original query
-    item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and .content.number == $issue_number) | .id" 2>/dev/null)
+    # Method 1: Number comparison
+    item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and (.content.number | tonumber) == ($issue_number | tonumber)) | .id" 2>/dev/null)
 
-    # Method 2: Convert issue_number to integer for comparison
-    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
-        item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and (.content.number | tonumber) == ($issue_number | tonumber)) | .id" 2>/dev/null)
-    fi
-
-    # Method 3: String comparison
+    # Method 2: String comparison as fallback
     if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
         item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and (.content.number | tostring) == \"$issue_number\") | .id" 2>/dev/null)
     fi
 
+    # Method 3: Direct comparison without conversion
+    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+        item_id=$(echo "$all_items" | jq -r ".[] | select(.content.type == \"Issue\" and .content.number == $issue_number) | .id" 2>/dev/null)
+    fi
+
     if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
         echo "❌ Debug: Issue #$issue_number not found with any method" >&2
+
+        # Try to add the issue to the project first
+        echo "🔧 Debug: Attempting to add issue to project..." >&2
+        local repo_data
+        repo_data=$(gh repo view --json url 2>/dev/null)
+        if [ $? -eq 0 ]; then
+            local sanitized_repo_data
+            sanitized_repo_data=$(sanitize_json "$repo_data")
+            local repo_url
+            repo_url=$(echo "$sanitized_repo_data" | jq -r '.url' 2>/dev/null)
+
+            if [ -n "$repo_url" ] && [ "$repo_url" != "null" ]; then
+                local issue_url="$repo_url/issues/$issue_number"
+                item_id=$(add_issue_to_project "$owner" "$project_number" "$issue_url")
+                if [ -n "$item_id" ] && [ "$item_id" != "null" ]; then
+                    echo "✅ Debug: Successfully added issue to project with item ID: $item_id" >&2
+                    echo "$item_id"
+                    return 0
+                fi
+            fi
+        fi
+
         return 1
     fi
 
     echo "✅ Debug: Found issue #$issue_number with item ID: $item_id" >&2
-    echo "$item_id"
-}
-
-# Function to add issue to project
-add_issue_to_project() {
-    local owner="$1"
-    local project_number="$2"
-    local issue_url="$3"
-
-    echo "➕ Adding issue to project..."
-    local item_id
-    item_id=$(gh project item-add "$project_number" --owner "$owner" --url "$issue_url" --format json 2>/dev/null | jq -r '.id')
-
-    if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
-        echo -e "${RED}❌ Failed to add issue to project.${NC}"
-        return 1
-    fi
-
-    echo -e "${GREEN}✅ Successfully added issue to project (Item ID: $item_id).${NC}"
     echo "$item_id"
 }
 
@@ -287,7 +385,11 @@ echo -e "\n${BLUE}🎯 Managing project fields...${NC}"
 
 # Get repo owner if not specified
 if [ -z "$PROJECT_OWNER" ]; then
-    PROJECT_OWNER=$(gh repo view --json owner --jq '.owner.login' 2>/dev/null)
+    REPO_DATA=$(gh repo view --json owner 2>/dev/null)
+    if [ $? -eq 0 ]; then
+        SANITIZED_REPO_DATA=$(sanitize_json "$REPO_DATA")
+        PROJECT_OWNER=$(echo "$SANITIZED_REPO_DATA" | jq -r '.owner.login' 2>/dev/null)
+    fi
 fi
 
 if [ -z "$PROJECT_OWNER" ]; then
@@ -304,44 +406,44 @@ else
             echo "🔗 Issue #$ISSUE found in project (Item ID: $ITEM_ID)"
 
             # Update Status to "In Progress"
-            echo "📊 Updating Status to 'In Progress'..."
-            if STATUS_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "Status"); then
-                if STATUS_OPTION_ID=$(get_option_id "$PROJECT_OWNER" "$PROJECT_NUM" "Status" "In Progress"); then
+            echo "📊 Updating Status to '$PROJECT_STATUS_VALUE'..."
+            if STATUS_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "$PROJECT_STATUS_FIELD"); then
+                if STATUS_OPTION_ID=$(get_option_id "$PROJECT_OWNER" "$PROJECT_NUM" "$PROJECT_STATUS_FIELD" "$PROJECT_STATUS_VALUE"); then
                     if update_project_field "$PROJECT_OWNER" "$PROJECT_NUM" "$ITEM_ID" "$STATUS_FIELD_ID" "$STATUS_OPTION_ID" "single-select"; then
-                        echo -e "${GREEN}✅ Successfully updated Status to 'In Progress'.${NC}"
+                        echo -e "${GREEN}✅ Successfully updated Status to '$PROJECT_STATUS_VALUE'.${NC}"
                     else
                         echo -e "${YELLOW}⚠️ Warning: Could not update Status field.${NC}"
                     fi
                 fi
             fi
 
-            # Update Priority to "P2"
-            echo "⚡ Updating Priority to 'P2'..."
-            if PRIORITY_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "Priority"); then
-                if PRIORITY_OPTION_ID=$(get_option_id "$PROJECT_OWNER" "$PROJECT_NUM" "Priority" "P2"); then
+            # Update Priority
+            echo "⚡ Updating Priority to '$PROJECT_PRIORITY_VALUE'..."
+            if PRIORITY_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "$PROJECT_PRIORITY_FIELD"); then
+                if PRIORITY_OPTION_ID=$(get_option_id "$PROJECT_OWNER" "$PROJECT_NUM" "$PROJECT_PRIORITY_FIELD" "$PROJECT_PRIORITY_VALUE"); then
                     if update_project_field "$PROJECT_OWNER" "$PROJECT_NUM" "$ITEM_ID" "$PRIORITY_FIELD_ID" "$PRIORITY_OPTION_ID" "single-select"; then
-                        echo -e "${GREEN}✅ Successfully updated Priority to 'P2'.${NC}"
+                        echo -e "${GREEN}✅ Successfully updated Priority to '$PROJECT_PRIORITY_VALUE'.${NC}"
                     else
                         echo -e "${YELLOW}⚠️ Warning: Could not update Priority field.${NC}"
                     fi
                 fi
             fi
 
-            # Update Estimate to "1"
-            echo "📏 Updating Estimate to '1'..."
-            if ESTIMATE_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "Estimate"); then
-                if update_project_field "$PROJECT_OWNER" "$PROJECT_NUM" "$ITEM_ID" "$ESTIMATE_FIELD_ID" "1" "number"; then
-                    echo -e "${GREEN}✅ Successfully updated Estimate to '1'.${NC}"
+            # Update Estimate
+            echo "📏 Updating Estimate to '$PROJECT_ESTIMATE_VALUE'..."
+            if ESTIMATE_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "$PROJECT_ESTIMATE_FIELD"); then
+                if update_project_field "$PROJECT_OWNER" "$PROJECT_NUM" "$ITEM_ID" "$ESTIMATE_FIELD_ID" "$PROJECT_ESTIMATE_VALUE" "number"; then
+                    echo -e "${GREEN}✅ Successfully updated Estimate to '$PROJECT_ESTIMATE_VALUE'.${NC}"
                 else
                     echo -e "${YELLOW}⚠️ Warning: Could not update Estimate field.${NC}"
                 fi
             fi
 
-            # Update Iteration to "Current"
-            echo "🔄 Updating Iteration to 'Current'..."
-            if ITERATION_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "Iteration"); then
-                if update_project_field "$PROJECT_OWNER" "$PROJECT_NUM" "$ITEM_ID" "$ITERATION_FIELD_ID" "current" "iteration"; then
-                    echo -e "${GREEN}✅ Successfully updated Iteration to 'Current'.${NC}"
+            # Update Iteration
+            echo "🔄 Updating Iteration to '$PROJECT_ITERATION_VALUE'..."
+            if ITERATION_FIELD_ID=$(get_field_id "$PROJECT_OWNER" "$PROJECT_NUM" "$PROJECT_ITERATION_FIELD"); then
+                if update_project_field "$PROJECT_OWNER" "$PROJECT_NUM" "$ITEM_ID" "$ITERATION_FIELD_ID" "$PROJECT_ITERATION_VALUE" "iteration"; then
+                    echo -e "${GREEN}✅ Successfully updated Iteration to '$PROJECT_ITERATION_VALUE'.${NC}"
                 else
                     echo -e "${YELLOW}⚠️ Warning: Could not update Iteration field.${NC}"
                 fi
