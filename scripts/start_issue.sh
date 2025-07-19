@@ -37,7 +37,8 @@ load_env_file() {
 
 # Load environment variables from .env file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENV_FILE="$SCRIPT_DIR/.env"
+#ENV_FILE="$SCRIPT_DIR/.env"
+ENV_FILE=".env"
 load_env_file "$ENV_FILE"
 
 # Configuration - these can be overridden in .env file
